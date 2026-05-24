@@ -63,7 +63,8 @@ Release: September 12, 2018
 
 1 / 170
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-Date
+
+Date
 
 Revision
 History
@@ -522,716 +524,475 @@ Release: September 12, 2018
 
 3 / 170
 
-Table of Contents
 
-1  Introduction .......................................................................................................... 13
-References ...................................................................................................... 13
+## Table of Contents
 
-1.1
+- [1 Introduction](#1-introduction)
+  - [1.1 References](#11-references)
+- [2 Attributes](#2-attributes)
+  - [2.1 Attribute accountExpires](#21-attribute-accountexpires)
+  - [2.2 Attribute adminContextMenu](#22-attribute-admincontextmenu)
+  - [2.3 Attribute adminDescription](#23-attribute-admindescription)
+  - [2.4 Attribute adminDisplayName](#24-attribute-admindisplayname)
+  - [2.5 Attribute adminMultiselectPropertyPages](#25-attribute-adminmultiselectpropertypages)
+  - [2.6 Attribute adminPropertyPages](#26-attribute-adminpropertypages)
+  - [2.7 Attribute allowedAttributes](#27-attribute-allowedattributes)
+  - [2.8 Attribute allowedAttributesEffective](#28-attribute-allowedattributeseffective)
+  - [2.9 Attribute allowedChildClasses](#29-attribute-allowedchildclasses)
+  - [2.10 Attribute allowedChildClassesEffective](#210-attribute-allowedchildclasseseffective)
+  - [2.11 Attribute aNR](#211-attribute-anr)
+  - [2.12 Attribute appliesTo](#212-attribute-appliesto)
+  - [2.13 Attribute assistant](#213-attribute-assistant)
+  - [2.14 Attribute attributeCertificateAttribute](#214-attribute-attributecertificateattribute)
+  - [2.15 Attribute attributeDisplayNames](#215-attribute-attributedisplaynames)
+  - [2.16 Attribute attributeID](#216-attribute-attributeid)
+  - [2.17 Attribute attributeSecurityGUID](#217-attribute-attributesecurityguid)
+  - [2.18 Attribute attributeSyntax](#218-attribute-attributesyntax)
+  - [2.19 Attribute attributeTypes](#219-attribute-attributetypes)
+  - [2.20 Attribute audio](#220-attribute-audio)
+  - [2.21 Attribute auxiliaryClass](#221-attribute-auxiliaryclass)
+  - [2.22 Attribute badPasswordTime](#222-attribute-badpasswordtime)
+  - [2.23 Attribute badPwdCount](#223-attribute-badpwdcount)
+  - [2.24 Attribute bridgeheadServerListBL](#224-attribute-bridgeheadserverlistbl)
+  - [2.25 Attribute bridgeheadTransportList](#225-attribute-bridgeheadtransportlist)
+  - [2.26 Attribute businessCategory](#226-attribute-businesscategory)
+  - [2.27 Attribute c](#227-attribute-c)
+  - [2.28 Attribute canonicalName](#228-attribute-canonicalname)
+  - [2.29 Attribute carLicense](#229-attribute-carlicense)
+  - [2.30 Attribute classDisplayName](#230-attribute-classdisplayname)
+  - [2.31 Attribute cn](#231-attribute-cn)
+  - [2.32 Attribute co](#232-attribute-co)
+  - [2.33 Attribute comment](#233-attribute-comment)
+  - [2.34 Attribute company](#234-attribute-company)
+  - [2.35 Attribute configurationFile](#235-attribute-configurationfile)
+  - [2.36 Attribute configurationFileGuid](#236-attribute-configurationfileguid)
+  - [2.37 Attribute contextMenu](#237-attribute-contextmenu)
+  - [2.38 Attribute cost](#238-attribute-cost)
+  - [2.39 Attribute countryCode](#239-attribute-countrycode)
+  - [2.40 Attribute createDialog](#240-attribute-createdialog)
+  - [2.41 Attribute createTimeStamp](#241-attribute-createtimestamp)
+  - [2.42 Attribute createWizardExt](#242-attribute-createwizardext)
+  - [2.43 Attribute creationWizard](#243-attribute-creationwizard)
+  - [2.44 Attribute dc](#244-attribute-dc)
+  - [2.45 Attribute defaultClassStore](#245-attribute-defaultclassstore)
+  - [2.46 Attribute defaultGroup](#246-attribute-defaultgroup)
+  - [2.47 Attribute defaultHidingValue](#247-attribute-defaulthidingvalue)
+  - [2.48 Attribute defaultObjectCategory](#248-attribute-defaultobjectcategory)
+  - [2.49 Attribute defaultSecurityDescriptor](#249-attribute-defaultsecuritydescriptor)
+  - [2.50 Attribute department](#250-attribute-department)
+  - [2.51 Attribute departmentNumber](#251-attribute-departmentnumber)
+  - [2.52 Attribute description](#252-attribute-description)
+  - [2.53 Attribute desktopProfile](#253-attribute-desktopprofile)
+  - [2.54 Attribute destinationIndicator](#254-attribute-destinationindicator)
+  - [2.55 Attribute directReports](#255-attribute-directreports)
+  - [2.56 Attribute displayName](#256-attribute-displayname)
+  - [2.57 Attribute displayNamePrintable](#257-attribute-displaynameprintable)
+  - [2.58 Attribute distinguishedName](#258-attribute-distinguishedname)
+  - [2.59 Attribute dITContentRules](#259-attribute-ditcontentrules)
+  - [2.60 Attribute division](#260-attribute-division)
+  - [2.61 Attribute dMDLocation](#261-attribute-dmdlocation)
+  - [2.62 Attribute dmdName](#262-attribute-dmdname)
+  - [2.63 Attribute dNSHostName](#263-attribute-dnshostname)
+  - [2.64 Attribute dnsRoot](#264-attribute-dnsroot)
+  - [2.65 Attribute dSASignature](#265-attribute-dsasignature)
+  - [2.66 Attribute dSCorePropagationData](#266-attribute-dscorepropagationdata)
+  - [2.67 Attribute dSHeuristics](#267-attribute-dsheuristics)
+  - [2.68 Attribute dSUIAdminMaximum](#268-attribute-dsuiadminmaximum)
+  - [2.69 Attribute dSUIAdminNotification](#269-attribute-dsuiadminnotification)
+  - [2.70 Attribute dSUIShellMaximum](#270-attribute-dsuishellmaximum)
+  - [2.71 Attribute dynamicLDAPServer](#271-attribute-dynamicldapserver)
+  - [2.72 Attribute employeeID](#272-attribute-employeeid)
+  - [2.73 Attribute employeeNumber](#273-attribute-employeenumber)
+  - [2.74 Attribute employeeType](#274-attribute-employeetype)
+  - [2.75 Attribute Enabled](#275-attribute-enabled)
+  - [2.76 Attribute enabledConnection](#276-attribute-enabledconnection)
+  - [2.77 Attribute entryTTL](#277-attribute-entryttl)
+  - [2.78 Attribute extendedAttributeInfo](#278-attribute-extendedattributeinfo)
+  - [2.79 Attribute extendedCharsAllowed](#279-attribute-extendedcharsallowed)
+  - [2.80 Attribute extendedClassInfo](#280-attribute-extendedclassinfo)
+  - [2.81 Attribute extensionName](#281-attribute-extensionname)
+  - [2.82 Attribute extraColumns](#282-attribute-extracolumns)
+  - [2.83 Attribute facsimileTelephoneNumber](#283-attribute-facsimiletelephonenumber)
+  - [2.84 Attribute fromEntry](#284-attribute-fromentry)
+  - [2.85 Attribute fromServer](#285-attribute-fromserver)
+  - [2.86 Attribute fSMORoleOwner](#286-attribute-fsmoroleowner)
+  - [2.87 Attribute garbageCollPeriod](#287-attribute-garbagecollperiod)
+  - [2.88 Attribute generatedConnection](#288-attribute-generatedconnection)
+  - [2.89 Attribute generationQualifier](#289-attribute-generationqualifier)
+  - [2.90 Attribute givenName](#290-attribute-givenname)
+  - [2.91 Attribute governsID](#291-attribute-governsid)
+  - [2.92 Attribute groupType](#292-attribute-grouptype)
+  - [2.93 Attribute hasMasterNCs](#293-attribute-hasmasterncs)
+  - [2.94 Attribute hasPartialReplicaNCs](#294-attribute-haspartialreplicancs)
+  - [2.95 Attribute homePhone](#295-attribute-homephone)
+  - [2.96 Attribute homePostalAddress](#296-attribute-homepostaladdress)
+  - [2.97 Attribute houseIdentifier](#297-attribute-houseidentifier)
+  - [2.98 Attribute iconPath](#298-attribute-iconpath)
+  - [2.99 Attribute initials](#299-attribute-initials)
+  - [2.100 Attribute instanceType](#2100-attribute-instancetype)
+  - [2.101 Attribute internationalISDNNumber](#2101-attribute-internationalisdnnumber)
+  - [2.102 Attribute interSiteTopologyFailover](#2102-attribute-intersitetopologyfailover)
+  - [2.103 Attribute interSiteTopologyGenerator](#2103-attribute-intersitetopologygenerator)
+  - [2.104 Attribute interSiteTopologyRenew](#2104-attribute-intersitetopologyrenew)
+  - [2.105 Attribute invocationId](#2105-attribute-invocationid)
+  - [2.106 Attribute ipPhone](#2106-attribute-ipphone)
+  - [2.107 Attribute isCriticalSystemObject](#2107-attribute-iscriticalsystemobject)
+  - [2.108 Attribute isDefunct](#2108-attribute-isdefunct)
+  - [2.109 Attribute isDeleted](#2109-attribute-isdeleted)
+  - [2.110 Attribute isEphemeral](#2110-attribute-isephemeral)
+  - [2.111 Attribute isMemberOfPartialAttributeSet](#2111-attribute-ismemberofpartialattributeset)
+  - [2.112 Attribute isRecycled](#2112-attribute-isrecycled)
+  - [2.113 Attribute isSingleValued](#2113-attribute-issinglevalued)
+  - [2.114 Attribute jpegPhoto](#2114-attribute-jpegphoto)
+  - [2.115 Attribute keywords](#2115-attribute-keywords)
+  - [2.116 Attribute l](#2116-attribute-l)
+  - [2.117 Attribute labeledURI](#2117-attribute-labeleduri)
+  - [2.118 Attribute lastAgedChange](#2118-attribute-lastagedchange)
+  - [2.119 Attribute lastBackupRestorationTime](#2119-attribute-lastbackuprestorationtime)
+  - [2.120 Attribute lastKnownParent](#2120-attribute-lastknownparent)
+  - [2.121 Attribute lastLogonTimestamp](#2121-attribute-lastlogontimestamp)
+  - [2.122 Attribute lDAPAdminLimits](#2122-attribute-ldapadminlimits)
+  - [2.123 Attribute lDAPDisplayName](#2123-attribute-ldapdisplayname)
+  - [2.124 Attribute lDAPIPDenyList](#2124-attribute-ldapipdenylist)
+  - [2.125 Attribute linkID](#2125-attribute-linkid)
+  - [2.126 Attribute localizationDisplayId](#2126-attribute-localizationdisplayid)
+  - [2.127 Attribute location](#2127-attribute-location)
+  - [2.128 Attribute lockoutTime](#2128-attribute-lockouttime)
+  - [2.129 Attribute mail](#2129-attribute-mail)
+  - [2.130 Attribute mailAddress](#2130-attribute-mailaddress)
+  - [2.131 Attribute managedBy](#2131-attribute-managedby)
+  - [2.132 Attribute managedObjects](#2132-attribute-managedobjects)
+  - [2.133 Attribute manager](#2133-attribute-manager)
+  - [2.134 Attribute masteredBy](#2134-attribute-masteredby)
+  - [2.135 Attribute mayContain](#2135-attribute-maycontain)
+  - [2.136 Attribute member](#2136-attribute-member)
+  - [2.137 Attribute memberOf](#2137-attribute-memberof)
+  - [2.138 Attribute middleName](#2138-attribute-middlename)
+  - [2.139 Attribute mobile](#2139-attribute-mobile)
+  - [2.140 Attribute modifyTimeStamp](#2140-attribute-modifytimestamp)
+  - [2.141 Attribute moveTreeState](#2141-attribute-movetreestate)
+  - [2.142 Attribute mS-DS-ConsistencyChildCount](#2142-attribute-ms-ds-consistencychildcount)
+  - [2.143 Attribute mS-DS-ConsistencyGuid](#2143-attribute-ms-ds-consistencyguid)
+  - [2.144 Attribute mS-DS-ReplicatesNCReason](#2144-attribute-ms-ds-replicatesncreason)
+  - [2.145 Attribute ms-DS-UserAccountAutoLocked](#2145-attribute-ms-ds-useraccountautolocked)
+  - [2.146 Attribute ms-DS-UserEncryptedTextPasswordAllowed](#2146-attribute-ms-ds-userencryptedtextpasswordallowed)
+  - [2.147 Attribute ms-DS-UserPasswordNotRequired](#2147-attribute-ms-ds-userpasswordnotrequired)
+  - [2.148 Attribute msDS-AllowedDNSSuffixes](#2148-attribute-msds-alloweddnssuffixes)
+  - [2.149 Attribute msDS-Approx-Immed-Subordinates](#2149-attribute-msds-approx-immed-subordinates)
+  - [2.150 Attribute msDS-Auxiliary-Classes](#2150-attribute-msds-auxiliary-classes)
+  - [2.151 Attribute msDS-AzApplicationData](#2151-attribute-msds-azapplicationdata)
+  - [2.152 Attribute msDS-AzApplicationName](#2152-attribute-msds-azapplicationname)
+  - [2.153 Attribute msDS-AzApplicationVersion](#2153-attribute-msds-azapplicationversion)
+  - [2.154 Attribute msDS-AzBizRule](#2154-attribute-msds-azbizrule)
+  - [2.155 Attribute msDS-AzBizRuleLanguage](#2155-attribute-msds-azbizrulelanguage)
+  - [2.156 Attribute msDS-AzClassId](#2156-attribute-msds-azclassid)
+  - [2.157 Attribute msDS-AzDomainTimeout](#2157-attribute-msds-azdomaintimeout)
+  - [2.158 Attribute msDS-AzGenerateAudits](#2158-attribute-msds-azgenerateaudits)
+  - [2.159 Attribute msDS-AzGenericData](#2159-attribute-msds-azgenericdata)
+  - [2.160 Attribute msDS-AzLastImportedBizRulePath](#2160-attribute-msds-azlastimportedbizrulepath)
+  - [2.161 Attribute msDS-AzLDAPQuery](#2161-attribute-msds-azldapquery)
+  - [2.162 Attribute msDS-AzMajorVersion](#2162-attribute-msds-azmajorversion)
+  - [2.163 Attribute msDS-AzMinorVersion](#2163-attribute-msds-azminorversion)
+  - [2.164 Attribute msDS-AzObjectGuid](#2164-attribute-msds-azobjectguid)
+  - [2.165 Attribute msDS-AzOperationID](#2165-attribute-msds-azoperationid)
+  - [2.166 Attribute msDS-AzScopeName](#2166-attribute-msds-azscopename)
+  - [2.167 Attribute msDS-AzScriptEngineCacheMax](#2167-attribute-msds-azscriptenginecachemax)
+  - [2.168 Attribute msDS-AzScriptTimeout](#2168-attribute-msds-azscripttimeout)
+  - [2.169 Attribute msDS-AzTaskIsRoleDefinition](#2169-attribute-msds-aztaskisroledefinition)
+  - [2.170 Attribute msDS-Behavior-Version](#2170-attribute-msds-behavior-version)
+  - [2.171 Attribute msDS-BridgeHeadServersUsed](#2171-attribute-msds-bridgeheadserversused)
+  - [2.172 Attribute msDS-DefaultNamingContext](#2172-attribute-msds-defaultnamingcontext)
+  - [2.173 Attribute msDS-DefaultNamingContextBL](#2173-attribute-msds-defaultnamingcontextbl)
+  - [2.174 Attribute msDS-DefaultQuota](#2174-attribute-msds-defaultquota)
+  - [2.175 Attribute msDS-DeletedObjectLifetime](#2175-attribute-msds-deletedobjectlifetime)
+  - [2.176 Attribute msDS-DisableForInstances](#2176-attribute-msds-disableforinstances)
+  - [2.177 Attribute msDS-DisableForInstancesBL](#2177-attribute-msds-disableforinstancesbl)
+  - [2.178 Attribute msDS-DnsRootAlias](#2178-attribute-msds-dnsrootalias)
+  - [2.179 Attribute msDS-EnabledFeature](#2179-attribute-msds-enabledfeature)
+  - [2.180 Attribute msDS-EnabledFeatureBL](#2180-attribute-msds-enabledfeaturebl)
+  - [2.181 Attribute msDS-Entry-Time-To-Die](#2181-attribute-msds-entry-time-to-die)
+  - [2.182 Attribute msDS-ExecuteScriptPassword](#2182-attribute-msds-executescriptpassword)
+  - [2.183 Attribute msDS-FilterContainers](#2183-attribute-msds-filtercontainers)
+  - [2.184 Attribute msDS-HasDomainNCs](#2184-attribute-msds-hasdomainncs)
+  - [2.185 Attribute msDS-HasInstantiatedNCs](#2185-attribute-msds-hasinstantiatedncs)
+  - [2.186 Attribute msDS-hasMasterNCs](#2186-attribute-msds-hasmasterncs)
+  - [2.187 Attribute msDS-IntId](#2187-attribute-msds-intid)
+  - [2.188 Attribute msds-memberOfTransitive](#2188-attribute-msds-memberoftransitive)
+  - [2.189 Attribute msds-memberTransitive](#2189-attribute-msds-membertransitive)
+  - [2.190 Attribute msDS-LastKnownRDN](#2190-attribute-msds-lastknownrdn)
+  - [2.191 Attribute msDS-LocalEffectiveDeletionTime](#2191-attribute-msds-localeffectivedeletiontime)
+  - [2.192 Attribute msDS-LocalEffectiveRecycleTime](#2192-attribute-msds-localeffectiverecycletime)
+  - [2.193 Attribute msDs-masteredBy](#2193-attribute-msds-masteredby)
+  - [2.194 Attribute msDS-MembersForAzRole](#2194-attribute-msds-membersforazrole)
+  - [2.195 Attribute msDS-MembersForAzRoleBL](#2195-attribute-msds-membersforazrolebl)
+  - [2.196 Attribute msDS-NC-Replica-Locations](#2196-attribute-msds-nc-replica-locations)
+  - [2.197 Attribute msDS-NCReplCursors](#2197-attribute-msds-ncreplcursors)
+  - [2.198 Attribute msDS-NCReplInboundNeighbors](#2198-attribute-msds-ncreplinboundneighbors)
+  - [2.199 Attribute msDS-NCReplOutboundNeighbors](#2199-attribute-msds-ncreploutboundneighbors)
+  - [2.200 Attribute msDS-Non-Security-Group-Extra-Classes](#2200-attribute-msds-non-security-group-extra-classes)
+  - [2.201 Attribute msDS-NonMembers](#2201-attribute-msds-nonmembers)
+  - [2.202 Attribute msDS-NonMembersBL](#2202-attribute-msds-nonmembersbl)
+  - [2.203 Attribute msDS-OperationsForAzRole](#2203-attribute-msds-operationsforazrole)
+  - [2.204 Attribute msDS-OperationsForAzRoleBL](#2204-attribute-msds-operationsforazrolebl)
+  - [2.205 Attribute msDS-OperationsForAzTask](#2205-attribute-msds-operationsforaztask)
+  - [2.206 Attribute msDS-OperationsForAzTaskBL](#2206-attribute-msds-operationsforaztaskbl)
+  - [2.207 Attribute msDS-OptionalFeatureFlags](#2207-attribute-msds-optionalfeatureflags)
+  - [2.208 Attribute msDS-OptionalFeatureGUID](#2208-attribute-msds-optionalfeatureguid)
+  - [2.209 Attribute msDS-Other-Settings](#2209-attribute-msds-other-settings)
+  - [2.210 Attribute msDS-parentdistname](#2210-attribute-msds-parentdistname)
+  - [2.211 Attribute msDS-PortLDAP](#2211-attribute-msds-portldap)
+  - [2.212 Attribute msDS-PortSSL](#2212-attribute-msds-portssl)
+  - [2.213 Attribute msDS-Preferred-GC-Site](#2213-attribute-msds-preferred-gc-site)
+  - [2.214 Attribute msDS-PrincipalName](#2214-attribute-msds-principalname)
+  - [2.215 Attribute msDS-QuotaAmount](#2215-attribute-msds-quotaamount)
+  - [2.216 Attribute msDS-QuotaEffective](#2216-attribute-msds-quotaeffective)
+  - [2.217 Attribute msDS-QuotaTrustee](#2217-attribute-msds-quotatrustee)
+  - [2.218 Attribute msDS-QuotaUsed](#2218-attribute-msds-quotaused)
+  - [2.219 Attribute msDS-ReplAttributeMetaData](#2219-attribute-msds-replattributemetadata)
+  - [2.220 Attribute msDS-ReplAuthenticationMode](#2220-attribute-msds-replauthenticationmode)
+  - [2.221 Attribute msDS-Replication-Notify-First-DSA-Delay](#2221-attribute-msds-replication-notify-first-dsa-delay)
+  - [2.222 Attribute msDS-Replication-Notify-Subsequent-DSA-Delay](#2222-attribute-msds-replication-notify-subsequent-dsa-delay)
+  - [2.223 Attribute msDS-ReplicationEpoch](#2223-attribute-msds-replicationepoch)
+  - [2.224 Attribute msDS-ReplValueMetaData](#2224-attribute-msds-replvaluemetadata)
+  - [2.225 Attribute msDS-ReplValueMetaDataExt](#2225-attribute-msds-replvaluemetadataext)
+  - [2.226 Attribute msDS-RequiredDomainBehaviorVersion](#2226-attribute-msds-requireddomainbehaviorversion)
+  - [2.227 Attribute msDS-RequiredForestBehaviorVersion](#2227-attribute-msds-requiredforestbehaviorversion)
+  - [2.228 Attribute msDS-RetiredReplNCSignatures](#2228-attribute-msds-retiredreplncsignatures)
+  - [2.229 Attribute msDs-Schema-Extensions](#2229-attribute-msds-schema-extensions)
+  - [2.230 Attribute msDS-SCPContainer](#2230-attribute-msds-scpcontainer)
+  - [2.231 Attribute msDS-SDReferenceDomain](#2231-attribute-msds-sdreferencedomain)
+  - [2.232 Attribute msDS-Security-Group-Extra-Classes](#2232-attribute-msds-security-group-extra-classes)
+  - [2.233 Attribute msDS-ServiceAccount](#2233-attribute-msds-serviceaccount)
+  - [2.234 Attribute msDS-ServiceAccountBL](#2234-attribute-msds-serviceaccountbl)
+  - [2.235 Attribute msDS-ServiceAccountDNSDomain](#2235-attribute-msds-serviceaccountdnsdomain)
+  - [2.236 Attribute msDS-Settings](#2236-attribute-msds-settings)
+  - [2.237 Attribute msDS-TasksForAzRole](#2237-attribute-msds-tasksforazrole)
+  - [2.238 Attribute msDS-TasksForAzRoleBL](#2238-attribute-msds-tasksforazrolebl)
+  - [2.239 Attribute msDS-TasksForAzTask](#2239-attribute-msds-tasksforaztask)
+  - [2.240 Attribute msDS-TasksForAzTaskBL](#2240-attribute-msds-tasksforaztaskbl)
+  - [2.241 Attribute msDS-TombstoneQuotaFactor](#2241-attribute-msds-tombstonequotafactor)
+  - [2.242 Attribute msDS-TopQuotaUsage](#2242-attribute-msds-topquotausage)
+  - [2.243 Attribute msDS-UpdateScript](#2243-attribute-msds-updatescript)
+  - [2.244 Attribute msDS-User-Account-Control-Computed](#2244-attribute-msds-user-account-control-computed)
+  - [2.245 Attribute msDS-UserAccountDisabled](#2245-attribute-msds-useraccountdisabled)
+  - [2.246 Attribute msDS-UserDontExpirePassword](#2246-attribute-msds-userdontexpirepassword)
+  - [2.247 Attribute msDS-UserPasswordExpired](#2247-attribute-msds-userpasswordexpired)
+  - [2.248 Attribute msDS-USNLastSyncSuccess](#2248-attribute-msds-usnlastsyncsuccess)
+  - [2.249 Attribute mustContain](#2249-attribute-mustcontain)
+  - [2.250 Attribute name](#2250-attribute-name)
+  - [2.251 Attribute nCName](#2251-attribute-ncname)
+  - [2.252 Attribute nETBIOSName](#2252-attribute-netbiosname)
+  - [2.253 Attribute networkAddress](#2253-attribute-networkaddress)
+  - [2.254 Attribute nonIndexedMetadata](#2254-attribute-nonindexedmetadata)
+  - [2.255 Attribute notificationList](#2255-attribute-notificationlist)
+  - [2.256 Attribute ntPwdHistory](#2256-attribute-ntpwdhistory)
+  - [2.257 Attribute nTSecurityDescriptor](#2257-attribute-ntsecuritydescriptor)
+  - [2.258 Attribute o](#2258-attribute-o)
+  - [2.259 Attribute objectCategory](#2259-attribute-objectcategory)
+  - [2.260 Attribute objectClass](#2260-attribute-objectclass)
+  - [2.261 Attribute objectClassCategory](#2261-attribute-objectclasscategory)
+  - [2.262 Attribute objectClasses](#2262-attribute-objectclasses)
+  - [2.263 Attribute objectGUID](#2263-attribute-objectguid)
+  - [2.264 Attribute objectSid](#2264-attribute-objectsid)
+  - [2.265 Attribute objectVersion](#2265-attribute-objectversion)
+  - [2.266 Attribute oMObjectClass](#2266-attribute-omobjectclass)
+  - [2.267 Attribute oMSyntax](#2267-attribute-omsyntax)
+  - [2.268 Attribute options](#2268-attribute-options)
+  - [2.269 Attribute otherFacsimileTelephoneNumber](#2269-attribute-otherfacsimiletelephonenumber)
+  - [2.270 Attribute otherHomePhone](#2270-attribute-otherhomephone)
+  - [2.271 Attribute otherIpPhone](#2271-attribute-otheripphone)
+  - [2.272 Attribute otherMobile](#2272-attribute-othermobile)
+  - [2.273 Attribute otherPager](#2273-attribute-otherpager)
+  - [2.274 Attribute otherTelephone](#2274-attribute-othertelephone)
+  - [2.275 Attribute otherWellKnownObjects](#2275-attribute-otherwellknownobjects)
+  - [2.276 Attribute ou](#2276-attribute-ou)
+  - [2.277 Attribute owner](#2277-attribute-owner)
+  - [2.278 Attribute ownerBL](#2278-attribute-ownerbl)
+  - [2.279 Attribute pager](#2279-attribute-pager)
+  - [2.280 Attribute parentGUID](#2280-attribute-parentguid)
+  - [2.281 Attribute partialAttributeDeletionList](#2281-attribute-partialattributedeletionlist)
+  - [2.282 Attribute partialAttributeSet](#2282-attribute-partialattributeset)
+  - [2.283 Attribute pekList](#2283-attribute-peklist)
+  - [2.284 Attribute personalTitle](#2284-attribute-personaltitle)
+  - [2.285 Attribute photo](#2285-attribute-photo)
+  - [2.286 Attribute physicalDeliveryOfficeName](#2286-attribute-physicaldeliveryofficename)
+  - [2.287 Attribute possibleInferiors](#2287-attribute-possibleinferiors)
+  - [2.288 Attribute possSuperiors](#2288-attribute-posssuperiors)
+  - [2.289 Attribute postalAddress](#2289-attribute-postaladdress)
+  - [2.290 Attribute postalCode](#2290-attribute-postalcode)
+  - [2.291 Attribute postOfficeBox](#2291-attribute-postofficebox)
+  - [2.292 Attribute preferredDeliveryMethod](#2292-attribute-preferreddeliverymethod)
+  - [2.293 Attribute preferredLanguage](#2293-attribute-preferredlanguage)
+  - [2.294 Attribute preferredOU](#2294-attribute-preferredou)
+  - [2.295 Attribute prefixMap](#2295-attribute-prefixmap)
+  - [2.296 Attribute primaryGroupToken](#2296-attribute-primarygrouptoken)
+  - [2.297 Attribute primaryInternationalISDNNumber](#2297-attribute-primaryinternationalisdnnumber)
+  - [2.298 Attribute primaryTelexNumber](#2298-attribute-primarytelexnumber)
+  - [2.299 Attribute proxiedObjectName](#2299-attribute-proxiedobjectname)
+  - [2.300 Attribute proxyAddresses](#2300-attribute-proxyaddresses)
+  - [2.301 Attribute pwdLastSet](#2301-attribute-pwdlastset)
+  - [2.302 Attribute queryFilter](#2302-attribute-queryfilter)
+  - [2.303 Attribute queryPolicyBL](#2303-attribute-querypolicybl)
+  - [2.304 Attribute queryPolicyObject](#2304-attribute-querypolicyobject)
+  - [2.305 Attribute rangeLower](#2305-attribute-rangelower)
+  - [2.306 Attribute rangeUpper](#2306-attribute-rangeupper)
+  - [2.307 Attribute rDNAttID](#2307-attribute-rdnattid)
+  - [2.308 Attribute registeredAddress](#2308-attribute-registeredaddress)
+  - [2.309 Attribute replInterval](#2309-attribute-replinterval)
+  - [2.310 Attribute replPropertyMetaData](#2310-attribute-replpropertymetadata)
+  - [2.311 Attribute replTopologyStayOfExecution](#2311-attribute-repltopologystayofexecution)
+  - [2.312 Attribute replUpToDateVector](#2312-attribute-repluptodatevector)
+  - [2.313 Attribute repsFrom](#2313-attribute-repsfrom)
+  - [2.314 Attribute repsTo](#2314-attribute-repsto)
+  - [2.315 Attribute retiredReplDSASignatures](#2315-attribute-retiredrepldsasignatures)
+  - [2.316 Attribute revision](#2316-attribute-revision)
+  - [2.317 Attribute rightsGuid](#2317-attribute-rightsguid)
+  - [2.318 Attribute roomNumber](#2318-attribute-roomnumber)
+  - [2.319 Attribute rootTrust](#2319-attribute-roottrust)
+  - [2.320 Attribute schedule](#2320-attribute-schedule)
+  - [2.321 Attribute schemaFlagsEx](#2321-attribute-schemaflagsex)
+  - [2.322 Attribute schemaIDGUID](#2322-attribute-schemaidguid)
+  - [2.323 Attribute schemaInfo](#2323-attribute-schemainfo)
+  - [2.324 Attribute schemaUpdate](#2324-attribute-schemaupdate)
+  - [2.325 Attribute schemaVersion](#2325-attribute-schemaversion)
+  - [2.326 Attribute scopeFlags](#2326-attribute-scopeflags)
+  - [2.327 Attribute sDRightsEffective](#2327-attribute-sdrightseffective)
+  - [2.328 Attribute searchFlags](#2328-attribute-searchflags)
+  - [2.329 Attribute searchGuide](#2329-attribute-searchguide)
+  - [2.330 Attribute secretary](#2330-attribute-secretary)
+  - [2.331 Attribute seeAlso](#2331-attribute-seealso)
+  - [2.332 Attribute serialNumber](#2332-attribute-serialnumber)
+  - [2.333 Attribute serverReference](#2333-attribute-serverreference)
+  - [2.334 Attribute serverReferenceBL](#2334-attribute-serverreferencebl)
+  - [2.335 Attribute shellContextMenu](#2335-attribute-shellcontextmenu)
+  - [2.336 Attribute shellPropertyPages](#2336-attribute-shellpropertypages)
+  - [2.337 Attribute showInAdvancedViewOnly](#2337-attribute-showinadvancedviewonly)
+  - [2.338 Attribute siteLinkList](#2338-attribute-sitelinklist)
+  - [2.339 Attribute siteList](#2339-attribute-sitelist)
+  - [2.340 Attribute siteObject](#2340-attribute-siteobject)
+  - [2.341 Attribute siteObjectBL](#2341-attribute-siteobjectbl)
+  - [2.342 Attribute siteServer](#2342-attribute-siteserver)
+  - [2.343 Attribute sn](#2343-attribute-sn)
+  - [2.344 Attribute sourceObjectGuid](#2344-attribute-sourceobjectguid)
+  - [2.345 Attribute st](#2345-attribute-st)
+  - [2.346 Attribute street](#2346-attribute-street)
+  - [2.347 Attribute streetAddress](#2347-attribute-streetaddress)
+  - [2.348 Attribute structuralObjectClass](#2348-attribute-structuralobjectclass)
+  - [2.349 Attribute subClassOf](#2349-attribute-subclassof)
+  - [2.350 Attribute subRefs](#2350-attribute-subrefs)
+  - [2.351 Attribute subSchemaSubEntry](#2351-attribute-subschemasubentry)
+  - [2.352 Attribute superiorDNSRoot](#2352-attribute-superiordnsroot)
+  - [2.353 Attribute supplementalCredentials](#2353-attribute-supplementalcredentials)
+  - [2.354 Attribute systemAuxiliaryClass](#2354-attribute-systemauxiliaryclass)
+  - [2.355 Attribute systemFlags](#2355-attribute-systemflags)
+  - [2.356 Attribute systemMayContain](#2356-attribute-systemmaycontain)
+  - [2.357 Attribute systemMustContain](#2357-attribute-systemmustcontain)
+  - [2.358 Attribute systemOnly](#2358-attribute-systemonly)
+  - [2.359 Attribute systemPossSuperiors](#2359-attribute-systemposssuperiors)
+  - [2.360 Attribute telephoneNumber](#2360-attribute-telephonenumber)
+  - [2.361 Attribute teletexTerminalIdentifier](#2361-attribute-teletexterminalidentifier)
+  - [2.362 Attribute telexNumber](#2362-attribute-telexnumber)
+  - [2.363 Attribute thumbnailLogo](#2363-attribute-thumbnaillogo)
+  - [2.364 Attribute thumbnailPhoto](#2364-attribute-thumbnailphoto)
+  - [2.365 Attribute title](#2365-attribute-title)
+  - [2.366 Attribute tokenGroups](#2366-attribute-tokengroups)
+  - [2.367 Attribute tombstoneLifetime](#2367-attribute-tombstonelifetime)
+  - [2.368 Attribute transportAddressAttribute](#2368-attribute-transportaddressattribute)
+  - [2.369 Attribute transportDLLName](#2369-attribute-transportdllname)
+  - [2.370 Attribute transportType](#2370-attribute-transporttype)
+  - [2.371 Attribute treatAsLeaf](#2371-attribute-treatasleaf)
+  - [2.372 Attribute trustParent](#2372-attribute-trustparent)
+  - [2.373 Attribute uid](#2373-attribute-uid)
+  - [2.374 Attribute unicodePwd](#2374-attribute-unicodepwd)
+  - [2.375 Attribute uPNSuffixes](#2375-attribute-upnsuffixes)
+  - [2.376 Attribute url](#2376-attribute-url)
+  - [2.377 Attribute userCertificate](#2377-attribute-usercertificate)
+  - [2.378 Attribute userParameters](#2378-attribute-userparameters)
+  - [2.379 Attribute userPassword](#2379-attribute-userpassword)
+  - [2.380 Attribute userPKCS12](#2380-attribute-userpkcs12)
+  - [2.381 Attribute userPrincipalName](#2381-attribute-userprincipalname)
+  - [2.382 Attribute userSMIMECertificate](#2382-attribute-usersmimecertificate)
+  - [2.383 Attribute uSNChanged](#2383-attribute-usnchanged)
+  - [2.384 Attribute uSNCreated](#2384-attribute-usncreated)
+  - [2.385 Attribute uSNDSALastObjRemoved](#2385-attribute-usndsalastobjremoved)
+  - [2.386 Attribute USNIntersite](#2386-attribute-usnintersite)
+  - [2.387 Attribute uSNLastObjRem](#2387-attribute-usnlastobjrem)
+  - [2.388 Attribute uSNSource](#2388-attribute-usnsource)
+  - [2.389 Attribute validAccesses](#2389-attribute-validaccesses)
+  - [2.390 Attribute wbemPath](#2390-attribute-wbempath)
+  - [2.391 Attribute wellKnownObjects](#2391-attribute-wellknownobjects)
+  - [2.392 Attribute whenChanged](#2392-attribute-whenchanged)
+  - [2.393 Attribute whenCreated](#2393-attribute-whencreated)
+  - [2.394 Attribute wWWHomePage](#2394-attribute-wwwhomepage)
+  - [2.395 Attribute x121Address](#2395-attribute-x121address)
+  - [2.396 Attribute x500uniqueIdentifier](#2396-attribute-x500uniqueidentifier)
+- [3 Classes](#3-classes)
+  - [3.1 Class applicationSettings](#31-class-applicationsettings)
+  - [3.2 Class applicationSiteSettings](#32-class-applicationsitesettings)
+  - [3.3 Class attributeSchema](#33-class-attributeschema)
+  - [3.4 Class classSchema](#34-class-classschema)
+  - [3.5 Class configuration](#35-class-configuration)
+  - [3.6 Class container](#36-class-container)
+  - [3.7 Class controlAccessRight](#37-class-controlaccessright)
+  - [3.8 Class country](#38-class-country)
+  - [3.9 Class crossRef](#39-class-crossref)
+  - [3.10 Class crossRefContainer](#310-class-crossrefcontainer)
+  - [3.11 Class displaySpecifier](#311-class-displayspecifier)
+  - [3.12 Class dMD](#312-class-dmd)
+  - [3.13 Class domain](#313-class-domain)
+  - [3.14 Class domainDNS](#314-class-domaindns)
+  - [3.15 Class dSUISettings](#315-class-dsuisettings)
+  - [3.16 Class dynamicObject](#316-class-dynamicobject)
+  - [3.17 Class foreignSecurityPrincipal](#317-class-foreignsecurityprincipal)
+  - [3.18 Class group](#318-class-group)
+  - [3.19 Class groupOfNames](#319-class-groupofnames)
+  - [3.20 Class inetOrgPerson](#320-class-inetorgperson)
+  - [3.21 Class interSiteTransport](#321-class-intersitetransport)
+  - [3.22 Class interSiteTransportContainer](#322-class-intersitetransportcontainer)
+  - [3.23 Class leaf](#323-class-leaf)
+  - [3.24 Class locality](#324-class-locality)
+  - [3.25 Class lostAndFound](#325-class-lostandfound)
+  - [3.26 Class msDS-AzAdminManager](#326-class-msds-azadminmanager)
+  - [3.27 Class msDS-AzApplication](#327-class-msds-azapplication)
+  - [3.28 Class msDS-AzOperation](#328-class-msds-azoperation)
+  - [3.29 Class msDS-AzRole](#329-class-msds-azrole)
+  - [3.30 Class msDS-AzScope](#330-class-msds-azscope)
+  - [3.31 Class msDS-AzTask](#331-class-msds-aztask)
+  - [3.32 Class msDS-BindableObject](#332-class-msds-bindableobject)
+  - [3.33 Class msDS-BindProxy](#333-class-msds-bindproxy)
+  - [3.34 Class msDS-OptionalFeature](#334-class-msds-optionalfeature)
+  - [3.35 Class msDS-QuotaContainer](#335-class-msds-quotacontainer)
+  - [3.36 Class msDS-QuotaControl](#336-class-msds-quotacontrol)
+  - [3.37 Class msDS-ServiceConnectionPointPublicationService](#337-class-msds-serviceconnectionpointpublicationservice)
+  - [3.38 Class nTDSConnection](#338-class-ntdsconnection)
+  - [3.39 Class nTDSDSA](#339-class-ntdsdsa)
+  - [3.40 Class nTDSService](#340-class-ntdsservice)
+  - [3.41 Class nTDSSiteSettings](#341-class-ntdssitesettings)
+  - [3.42 Class organizationalPerson](#342-class-organizationalperson)
+  - [3.43 Class organization](#343-class-organization)
+  - [3.44 Class organizationalUnit](#344-class-organizationalunit)
+  - [3.45 Class person](#345-class-person)
+  - [3.46 Class queryPolicy](#346-class-querypolicy)
+  - [3.47 Class securityPrincipal](#347-class-securityprincipal)
+  - [3.48 Class server](#348-class-server)
+  - [3.49 Class serversContainer](#349-class-serverscontainer)
+  - [3.50 Class site](#350-class-site)
+  - [3.51 Class siteLink](#351-class-sitelink)
+  - [3.52 Class siteLinkBridge](#352-class-sitelinkbridge)
+  - [3.53 Class sitesContainer](#353-class-sitescontainer)
+  - [3.54 Class subnet](#354-class-subnet)
+  - [3.55 Class subnetContainer](#355-class-subnetcontainer)
+  - [3.56 Class subSchema](#356-class-subschema)
+  - [3.57 Class syncEngineAuxConfiguration](#357-class-syncengineauxconfiguration)
+  - [3.58 Class syncEngineAuxObject](#358-class-syncengineauxobject)
+  - [3.59 Class top](#359-class-top)
+  - [3.60 Class userProxy](#360-class-userproxy)
+  - [3.61 Class userProxyFull](#361-class-userproxyfull)
+  - [3.62 Class user](#362-class-user)
+- [4 Change Tracking](#4-change-tracking)
+- [5 Index](#5-index)
 
-2  Attributes .............................................................................................................. 15
-Attribute accountExpires ................................................................................... 15
-Attribute adminContextMenu ............................................................................. 15
-Attribute adminDescription ................................................................................ 15
-Attribute adminDisplayName ............................................................................. 16
-Attribute adminMultiselectPropertyPages ............................................................. 16
-Attribute adminPropertyPages............................................................................ 16
-Attribute allowedAttributes ................................................................................ 17
-Attribute allowedAttributesEffective .................................................................... 17
-Attribute allowedChildClasses ............................................................................ 17
-Attribute allowedChildClassesEffective ................................................................ 18
-Attribute aNR .................................................................................................. 18
-Attribute appliesTo ........................................................................................... 18
-Attribute assistant ............................................................................................ 19
-Attribute attributeCertificateAttribute .................................................................. 19
-Attribute attributeDisplayNames ........................................................................ 19
-Attribute attributeID ......................................................................................... 20
-Attribute attributeSecurityGUID ......................................................................... 20
-Attribute attributeSyntax .................................................................................. 20
-Attribute attributeTypes .................................................................................... 20
-Attribute audio ................................................................................................. 21
-Attribute auxiliaryClass ..................................................................................... 21
-Attribute badPasswordTime ............................................................................... 21
-Attribute badPwdCount ..................................................................................... 22
-Attribute bridgeheadServerListBL ....................................................................... 22
-Attribute bridgeheadTransportList ...................................................................... 22
-Attribute businessCategory ................................................................................ 23
-Attribute c ....................................................................................................... 23
-Attribute canonicalName ................................................................................... 23
-Attribute carLicense .......................................................................................... 24
-Attribute classDisplayName ............................................................................... 24
-Attribute cn ..................................................................................................... 24
-Attribute co ..................................................................................................... 25
-Attribute comment ........................................................................................... 25
-Attribute company............................................................................................ 25
-Attribute configurationFile ................................................................................. 26
-Attribute configurationFileGuid ........................................................................... 26
-Attribute contextMenu ...................................................................................... 26
-Attribute cost .................................................................................................. 27
-Attribute countryCode ....................................................................................... 27
-Attribute createDialog ....................................................................................... 27
-Attribute createTimeStamp................................................................................ 27
-Attribute createWizardExt ................................................................................. 28
-Attribute creationWizard ................................................................................... 28
-Attribute dc ..................................................................................................... 28
-Attribute defaultClassStore ................................................................................ 29
-Attribute defaultGroup ...................................................................................... 29
-Attribute defaultHidingValue .............................................................................. 29
-Attribute defaultObjectCategory ......................................................................... 30
-Attribute defaultSecurityDescriptor ..................................................................... 30
-Attribute department ........................................................................................ 30
-Attribute departmentNumber ............................................................................. 30
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-2.10
-2.11
-2.12
-2.13
-2.14
-2.15
-2.16
-2.17
-2.18
-2.19
-2.20
-2.21
-2.22
-2.23
-2.24
-2.25
-2.26
-2.27
-2.28
-2.29
-2.30
-2.31
-2.32
-2.33
-2.34
-2.35
-2.36
-2.37
-2.38
-2.39
-2.40
-2.41
-2.42
-2.43
-2.44
-2.45
-2.46
-2.47
-2.48
-2.49
-2.50
-2.51
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-4 / 170
-
-Attribute description ......................................................................................... 31
-2.52
-Attribute desktopProfile .................................................................................... 31
-2.53
-Attribute destinationIndicator ............................................................................ 31
-2.54
-Attribute directReports ...................................................................................... 32
-2.55
-Attribute displayName ...................................................................................... 32
-2.56
-Attribute displayNamePrintable .......................................................................... 33
-2.57
-Attribute distinguishedName .............................................................................. 33
-2.58
-Attribute dITContentRules ................................................................................. 33
-2.59
-Attribute division .............................................................................................. 34
-2.60
-Attribute dMDLocation ...................................................................................... 34
-2.61
-Attribute dmdName .......................................................................................... 34
-2.62
-Attribute dNSHostName .................................................................................... 35
-2.63
-Attribute dnsRoot ............................................................................................. 35
-2.64
-Attribute dSASignature ..................................................................................... 35
-2.65
-Attribute dSCorePropagationData ....................................................................... 36
-2.66
-Attribute dSHeuristics ....................................................................................... 36
-2.67
-Attribute dSUIAdminMaximum ........................................................................... 36
-2.68
-Attribute dSUIAdminNotification ......................................................................... 37
-2.69
-Attribute dSUIShellMaximum ............................................................................. 37
-2.70
-Attribute dynamicLDAPServer ............................................................................ 37
-2.71
-Attribute employeeID ....................................................................................... 37
-2.72
-Attribute employeeNumber ................................................................................ 38
-2.73
-Attribute employeeType .................................................................................... 38
-2.74
-Attribute Enabled ............................................................................................. 38
-2.75
-Attribute enabledConnection .............................................................................. 39
-2.76
-Attribute entryTTL ............................................................................................ 39
-2.77
-Attribute extendedAttributeInfo ......................................................................... 39
-2.78
-Attribute extendedCharsAllowed ........................................................................ 40
-2.79
-Attribute extendedClassInfo .............................................................................. 40
-2.80
-Attribute extensionName ................................................................................... 40
-2.81
-Attribute extraColumns ..................................................................................... 41
-2.82
-Attribute facsimileTelephoneNumber .................................................................. 41
-2.83
-Attribute fromEntry .......................................................................................... 41
-2.84
-Attribute fromServer ........................................................................................ 42
-2.85
-Attribute fSMORoleOwner .................................................................................. 42
-2.86
-Attribute garbageCollPeriod ............................................................................... 42
-2.87
-Attribute generatedConnection .......................................................................... 43
-2.88
-Attribute generationQualifier ............................................................................. 43
-2.89
-Attribute givenName......................................................................................... 43
-2.90
-Attribute governsID .......................................................................................... 44
-2.91
-Attribute groupType ......................................................................................... 44
-2.92
-Attribute hasMasterNCs .................................................................................... 44
-2.93
-Attribute hasPartialReplicaNCs ........................................................................... 45
-2.94
-Attribute homePhone ........................................................................................ 45
-2.95
-Attribute homePostalAddress ............................................................................. 45
-2.96
-Attribute houseIdentifier ................................................................................... 46
-2.97
-Attribute iconPath ............................................................................................ 46
-2.98
-2.99
-Attribute initials ............................................................................................... 46
-2.100  Attribute instanceType ...................................................................................... 47
-2.101  Attribute internationalISDNNumber .................................................................... 47
-2.102  Attribute interSiteTopologyFailover ..................................................................... 47
-2.103  Attribute interSiteTopologyGenerator .................................................................. 48
-2.104  Attribute interSiteTopologyRenew ...................................................................... 48
-2.105  Attribute invocationId ....................................................................................... 48
-2.106  Attribute ipPhone ............................................................................................. 48
-2.107  Attribute isCriticalSystemObject ......................................................................... 49
-2.108  Attribute isDefunct ........................................................................................... 49
-2.109  Attribute isDeleted ........................................................................................... 49
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-5 / 170
-
-2.110  Attribute isEphemeral ....................................................................................... 50
-2.111  Attribute isMemberOfPartialAttributeSet .............................................................. 50
-2.112  Attribute isRecycled .......................................................................................... 50
-2.113  Attribute isSingleValued .................................................................................... 51
-2.114  Attribute jpegPhoto .......................................................................................... 51
-2.115  Attribute keywords ........................................................................................... 51
-2.116  Attribute l ....................................................................................................... 52
-2.117  Attribute labeledURI ......................................................................................... 52
-2.118  Attribute lastAgedChange .................................................................................. 52
-2.119  Attribute lastBackupRestorationTime .................................................................. 53
-2.120  Attribute lastKnownParent ................................................................................. 53
-2.121  Attribute lastLogonTimestamp ........................................................................... 53
-2.122  Attribute lDAPAdminLimits................................................................................. 53
-2.123  Attribute lDAPDisplayName ............................................................................... 54
-2.124  Attribute lDAPIPDenyList ................................................................................... 54
-2.125  Attribute linkID ................................................................................................ 54
-2.126  Attribute localizationDisplayId ............................................................................ 55
-2.127  Attribute location ............................................................................................. 55
-2.128  Attribute lockoutTime ....................................................................................... 55
-2.129  Attribute mail .................................................................................................. 56
-2.130  Attribute mailAddress ....................................................................................... 56
-2.131  Attribute managedBy ........................................................................................ 56
-2.132  Attribute managedObjects ................................................................................. 57
-2.133  Attribute manager ............................................................................................ 57
-2.134  Attribute masteredBy ....................................................................................... 57
-2.135  Attribute mayContain ....................................................................................... 58
-2.136  Attribute member............................................................................................. 58
-2.137  Attribute memberOf ......................................................................................... 58
-2.138  Attribute middleName ....................................................................................... 59
-2.139  Attribute mobile ............................................................................................... 59
-2.140  Attribute modifyTimeStamp ............................................................................... 59
-2.141  Attribute moveTreeState ................................................................................... 60
-2.142  Attribute mS-DS-ConsistencyChildCount ............................................................. 60
-2.143  Attribute mS-DS-ConsistencyGuid ...................................................................... 60
-2.144  Attribute mS-DS-ReplicatesNCReason ................................................................. 61
-2.145  Attribute ms-DS-UserAccountAutoLocked ............................................................ 61
-2.146  Attribute ms-DS-UserEncryptedTextPasswordAllowed ........................................... 61
-2.147  Attribute ms-DS-UserPasswordNotRequired ......................................................... 62
-2.148  Attribute msDS-AllowedDNSSuffixes ................................................................... 62
-2.149  Attribute msDS-Approx-Immed-Subordinates ...................................................... 62
-2.150  Attribute msDS-Auxiliary-Classes ....................................................................... 63
-2.151  Attribute msDS-AzApplicationData ..................................................................... 63
-2.152  Attribute msDS-AzApplicationName .................................................................... 63
-2.153  Attribute msDS-AzApplicationVersion .................................................................. 64
-2.154  Attribute msDS-AzBizRule ................................................................................. 64
-2.155  Attribute msDS-AzBizRuleLanguage .................................................................... 64
-2.156  Attribute msDS-AzClassId ................................................................................. 65
-2.157  Attribute msDS-AzDomainTimeout ..................................................................... 65
-2.158  Attribute msDS-AzGenerateAudits ...................................................................... 65
-2.159  Attribute msDS-AzGenericData .......................................................................... 65
-2.160  Attribute msDS-AzLastImportedBizRulePath ........................................................ 66
-2.161  Attribute msDS-AzLDAPQuery ............................................................................ 66
-2.162  Attribute msDS-AzMajorVersion ......................................................................... 66
-2.163  Attribute msDS-AzMinorVersion ......................................................................... 67
-2.164  Attribute msDS-AzObjectGuid ............................................................................ 67
-2.165  Attribute msDS-AzOperationID .......................................................................... 67
-2.166  Attribute msDS-AzScopeName ........................................................................... 68
-2.167  Attribute msDS-AzScriptEngineCacheMax ............................................................ 68
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-6 / 170
-
-2.168  Attribute msDS-AzScriptTimeout ........................................................................ 68
-2.169  Attribute msDS-AzTaskIsRoleDefinition ............................................................... 69
-2.170  Attribute msDS-Behavior-Version ....................................................................... 69
-2.171  Attribute msDS-BridgeHeadServersUsed ............................................................. 69
-2.172  Attribute msDS-DefaultNamingContext ............................................................... 70
-2.173  Attribute msDS-DefaultNamingContextBL ............................................................ 70
-2.174  Attribute msDS-DefaultQuota ............................................................................ 70
-2.175  Attribute msDS-DeletedObjectLifetime ................................................................ 71
-2.176  Attribute msDS-DisableForInstances ................................................................... 71
-2.177  Attribute msDS-DisableForInstancesBL ............................................................... 71
-2.178  Attribute msDS-DnsRootAlias ............................................................................ 72
-2.179  Attribute msDS-EnabledFeature ......................................................................... 72
-2.180  Attribute msDS-EnabledFeatureBL ...................................................................... 72
-2.181  Attribute msDS-Entry-Time-To-Die ..................................................................... 73
-2.182  Attribute msDS-ExecuteScriptPassword .............................................................. 73
-2.183  Attribute msDS-FilterContainers ......................................................................... 73
-2.184  Attribute msDS-HasDomainNCs ......................................................................... 74
-2.185  Attribute msDS-HasInstantiatedNCs ................................................................... 74
-2.186  Attribute msDS-hasMasterNCs ........................................................................... 74
-2.187  Attribute msDS-IntId ........................................................................................ 75
-2.188  Attribute msds-memberOfTransitive ................................................................... 75
-2.189  Attribute msds-memberTransitive ...................................................................... 75
-2.190  Attribute msDS-LastKnownRDN ......................................................................... 76
-2.191  Attribute msDS-LocalEffectiveDeletionTime ......................................................... 76
-2.192  Attribute msDS-LocalEffectiveRecycleTime .......................................................... 76
-2.193  Attribute msDs-masteredBy .............................................................................. 76
-2.194  Attribute msDS-MembersForAzRole .................................................................... 77
-2.195  Attribute msDS-MembersForAzRoleBL ................................................................. 77
-2.196  Attribute msDS-NC-Replica-Locations ................................................................. 77
-2.197  Attribute msDS-NCReplCursors .......................................................................... 78
-2.198  Attribute msDS-NCReplInboundNeighbors ........................................................... 78
-2.199  Attribute msDS-NCReplOutboundNeighbors ......................................................... 78
-2.200  Attribute msDS-Non-Security-Group-Extra-Classes .............................................. 79
-2.201  Attribute msDS-NonMembers ............................................................................ 79
-2.202  Attribute msDS-NonMembersBL ......................................................................... 79
-2.203  Attribute msDS-OperationsForAzRole .................................................................. 80
-2.204  Attribute msDS-OperationsForAzRoleBL .............................................................. 80
-2.205  Attribute msDS-OperationsForAzTask ................................................................. 80
-2.206  Attribute msDS-OperationsForAzTaskBL .............................................................. 81
-2.207  Attribute msDS-OptionalFeatureFlags ................................................................. 81
-2.208  Attribute msDS-OptionalFeatureGUID ................................................................. 81
-2.209  Attribute msDS-Other-Settings .......................................................................... 82
-2.210  Attribute msDS-parentdistname ......................................................................... 82
-2.211  Attribute msDS-PortLDAP .................................................................................. 82
-2.212  Attribute msDS-PortSSL .................................................................................... 83
-2.213  Attribute msDS-Preferred-GC-Site ...................................................................... 83
-2.214  Attribute msDS-PrincipalName ........................................................................... 83
-2.215  Attribute msDS-QuotaAmount ........................................................................... 84
-2.216  Attribute msDS-QuotaEffective .......................................................................... 84
-2.217  Attribute msDS-QuotaTrustee ............................................................................ 84
-2.218  Attribute msDS-QuotaUsed ............................................................................... 85
-2.219  Attribute msDS-ReplAttributeMetaData ............................................................... 85
-2.220  Attribute msDS-ReplAuthenticationMode ............................................................. 85
-2.221  Attribute msDS-Replication-Notify-First-DSA-Delay .............................................. 86
-2.222  Attribute msDS-Replication-Notify-Subsequent-DSA-Delay .................................... 86
-2.223  Attribute msDS-ReplicationEpoch ....................................................................... 86
-2.224  Attribute msDS-ReplValueMetaData .................................................................... 86
-2.225  Attribute msDS-ReplValueMetaDataExt ............................................................... 87
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-7 / 170
-
-2.226  Attribute msDS-RequiredDomainBehaviorVersion ................................................. 87
-2.227  Attribute msDS-RequiredForestBehaviorVersion ................................................... 87
-2.228  Attribute msDS-RetiredReplNCSignatures ............................................................ 88
-2.229  Attribute msDs-Schema-Extensions .................................................................... 88
-2.230  Attribute msDS-SCPContainer ............................................................................ 88
-2.231  Attribute msDS-SDReferenceDomain .................................................................. 89
-2.232  Attribute msDS-Security-Group-Extra-Classes ..................................................... 89
-2.233  Attribute msDS-ServiceAccount ......................................................................... 89
-2.234  Attribute msDS-ServiceAccountBL ...................................................................... 90
-2.235  Attribute msDS-ServiceAccountDNSDomain......................................................... 90
-2.236  Attribute msDS-Settings ................................................................................... 90
-2.237  Attribute msDS-TasksForAzRole ......................................................................... 91
-2.238  Attribute msDS-TasksForAzRoleBL ..................................................................... 91
-2.239  Attribute msDS-TasksForAzTask ........................................................................ 91
-2.240  Attribute msDS-TasksForAzTaskBL ..................................................................... 92
-2.241  Attribute msDS-TombstoneQuotaFactor .............................................................. 92
-2.242  Attribute msDS-TopQuotaUsage ......................................................................... 92
-2.243  Attribute msDS-UpdateScript ............................................................................. 93
-2.244  Attribute msDS-User-Account-Control-Computed ................................................. 93
-2.245  Attribute msDS-UserAccountDisabled ................................................................. 93
-2.246  Attribute msDS-UserDontExpirePassword ............................................................ 93
-2.247  Attribute msDS-UserPasswordExpired ................................................................. 94
-2.248  Attribute msDS-USNLastSyncSuccess ................................................................. 94
-2.249  Attribute mustContain ...................................................................................... 94
-2.250  Attribute name ................................................................................................ 95
-2.251  Attribute nCName ............................................................................................ 95
-2.252  Attribute nETBIOSName .................................................................................... 95
-2.253  Attribute networkAddress .................................................................................. 96
-2.254  Attribute nonIndexedMetadata ........................................................................... 96
-2.255  Attribute notificationList .................................................................................... 96
-2.256  Attribute ntPwdHistory ...................................................................................... 97
-2.257  Attribute nTSecurityDescriptor ........................................................................... 97
-2.258  Attribute o ...................................................................................................... 97
-2.259  Attribute objectCategory ................................................................................... 98
-2.260  Attribute objectClass ........................................................................................ 98
-2.261  Attribute objectClassCategory ............................................................................ 98
-2.262  Attribute objectClasses ..................................................................................... 99
-2.263  Attribute objectGUID ........................................................................................ 99
-2.264  Attribute objectSid ........................................................................................... 99
-2.265  Attribute objectVersion .................................................................................... 100
-2.266  Attribute oMObjectClass ................................................................................... 100
-2.267  Attribute oMSyntax ......................................................................................... 100
-2.268  Attribute options ............................................................................................. 101
-2.269  Attribute otherFacsimileTelephoneNumber.......................................................... 101
-2.270  Attribute otherHomePhone ............................................................................... 101
-2.271  Attribute otherIpPhone .................................................................................... 102
-2.272  Attribute otherMobile ....................................................................................... 102
-2.273  Attribute otherPager ........................................................................................ 102
-2.274  Attribute otherTelephone ................................................................................. 103
-2.275  Attribute otherWellKnownObjects ...................................................................... 103
-2.276  Attribute ou .................................................................................................... 103
-2.277  Attribute owner ............................................................................................... 104
-2.278  Attribute ownerBL ........................................................................................... 104
-2.279  Attribute pager ............................................................................................... 104
-2.280  Attribute parentGUID ....................................................................................... 105
-2.281  Attribute partialAttributeDeletionList .................................................................. 105
-2.282  Attribute partialAttributeSet ............................................................................. 105
-2.283  Attribute pekList ............................................................................................. 106
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-8 / 170
-
-2.284  Attribute personalTitle ..................................................................................... 106
-2.285  Attribute photo ............................................................................................... 106
-2.286  Attribute physicalDeliveryOfficeName ................................................................ 107
-2.287  Attribute possibleInferiors ................................................................................ 107
-2.288  Attribute possSuperiors.................................................................................... 107
-2.289  Attribute postalAddress .................................................................................... 108
-2.290  Attribute postalCode ........................................................................................ 108
-2.291  Attribute postOfficeBox .................................................................................... 108
-2.292  Attribute preferredDeliveryMethod .................................................................... 109
-2.293  Attribute preferredLanguage ............................................................................. 109
-2.294  Attribute preferredOU ...................................................................................... 109
-2.295  Attribute prefixMap ......................................................................................... 110
-2.296  Attribute primaryGroupToken ........................................................................... 110
-2.297  Attribute primaryInternationalISDNNumber ........................................................ 110
-2.298  Attribute primaryTelexNumber .......................................................................... 110
-2.299  Attribute proxiedObjectName ............................................................................ 111
-2.300  Attribute proxyAddresses ................................................................................. 111
-2.301  Attribute pwdLastSet ....................................................................................... 112
-2.302  Attribute queryFilter ........................................................................................ 112
-2.303  Attribute queryPolicyBL .................................................................................... 112
-2.304  Attribute queryPolicyObject .............................................................................. 112
-2.305  Attribute rangeLower ....................................................................................... 113
-2.306  Attribute rangeUpper ....................................................................................... 113
-2.307  Attribute rDNAttID .......................................................................................... 113
-2.308  Attribute registeredAddress .............................................................................. 114
-2.309  Attribute replInterval ....................................................................................... 114
-2.310  Attribute replPropertyMetaData ......................................................................... 114
-2.311  Attribute replTopologyStayOfExecution .............................................................. 115
-2.312  Attribute replUpToDateVector ........................................................................... 115
-2.313  Attribute repsFrom .......................................................................................... 115
-2.314  Attribute repsTo .............................................................................................. 116
-2.315  Attribute retiredReplDSASignatures ................................................................... 116
-2.316  Attribute revision ............................................................................................ 116
-2.317  Attribute rightsGuid ......................................................................................... 117
-2.318  Attribute roomNumber ..................................................................................... 117
-2.319  Attribute rootTrust .......................................................................................... 117
-2.320  Attribute schedule ........................................................................................... 118
-2.321  Attribute schemaFlagsEx .................................................................................. 118
-2.322  Attribute schemaIDGUID .................................................................................. 118
-2.323  Attribute schemaInfo ....................................................................................... 119
-2.324  Attribute schemaUpdate ................................................................................... 119
-2.325  Attribute schemaVersion .................................................................................. 119
-2.326  Attribute scopeFlags ........................................................................................ 120
-2.327  Attribute sDRightsEffective ............................................................................... 120
-2.328  Attribute searchFlags ....................................................................................... 120
-2.329  Attribute searchGuide ...................................................................................... 121
-2.330  Attribute secretary .......................................................................................... 121
-2.331  Attribute seeAlso ............................................................................................. 121
-2.332  Attribute serialNumber ..................................................................................... 122
-2.333  Attribute serverReference ................................................................................ 122
-2.334  Attribute serverReferenceBL ............................................................................. 122
-2.335  Attribute shellContextMenu .............................................................................. 123
-2.336  Attribute shellPropertyPages ............................................................................. 123
-2.337  Attribute showInAdvancedViewOnly ................................................................... 123
-2.338  Attribute siteLinkList ........................................................................................ 124
-2.339  Attribute siteList ............................................................................................. 124
-2.340  Attribute siteObject ......................................................................................... 124
-2.341  Attribute siteObjectBL ...................................................................................... 125
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-9 / 170
-
-2.342  Attribute siteServer ......................................................................................... 125
-2.343  Attribute sn .................................................................................................... 125
-2.344  Attribute sourceObjectGuid............................................................................... 126
-2.345  Attribute st ..................................................................................................... 126
-2.346  Attribute street ............................................................................................... 126
-2.347  Attribute streetAddress .................................................................................... 127
-2.348  Attribute structuralObjectClass ......................................................................... 127
-2.349  Attribute subClassOf ........................................................................................ 127
-2.350  Attribute subRefs ............................................................................................ 127
-2.351  Attribute subSchemaSubEntry .......................................................................... 128
-2.352  Attribute superiorDNSRoot ............................................................................... 128
-2.353  Attribute supplementalCredentials ..................................................................... 128
-2.354  Attribute systemAuxiliaryClass .......................................................................... 129
-2.355  Attribute systemFlags ...................................................................................... 129
-2.356  Attribute systemMayContain ............................................................................. 129
-2.357  Attribute systemMustContain ............................................................................ 130
-2.358  Attribute systemOnly ....................................................................................... 130
-2.359  Attribute systemPossSuperiors .......................................................................... 130
-2.360  Attribute telephoneNumber .............................................................................. 131
-2.361  Attribute teletexTerminalIdentifier ..................................................................... 131
-2.362  Attribute telexNumber ..................................................................................... 131
-2.363  Attribute thumbnailLogo................................................................................... 132
-2.364  Attribute thumbnailPhoto ................................................................................. 132
-2.365  Attribute title .................................................................................................. 132
-2.366  Attribute tokenGroups ..................................................................................... 133
-2.367  Attribute tombstoneLifetime ............................................................................. 133
-2.368  Attribute transportAddressAttribute ................................................................... 133
-2.369  Attribute transportDLLName ............................................................................. 134
-2.370  Attribute transportType .................................................................................... 134
-2.371  Attribute treatAsLeaf ....................................................................................... 134
-2.372  Attribute trustParent ........................................................................................ 135
-2.373  Attribute uid ................................................................................................... 135
-2.374  Attribute unicodePwd ....................................................................................... 135
-2.375  Attribute uPNSuffixes....................................................................................... 136
-2.376  Attribute url ................................................................................................... 136
-2.377  Attribute userCertificate ................................................................................... 136
-2.378  Attribute userParameters ................................................................................. 137
-2.379  Attribute userPassword .................................................................................... 137
-2.380  Attribute userPKCS12 ...................................................................................... 137
-2.381  Attribute userPrincipalName ............................................................................. 138
-2.382  Attribute userSMIMECertificate ......................................................................... 138
-2.383  Attribute uSNChanged ..................................................................................... 138
-2.384  Attribute uSNCreated ...................................................................................... 139
-2.385  Attribute uSNDSALastObjRemoved .................................................................... 139
-2.386  Attribute USNIntersite ..................................................................................... 139
-2.387  Attribute uSNLastObjRem................................................................................. 140
-2.388  Attribute uSNSource ........................................................................................ 140
-2.389  Attribute validAccesses .................................................................................... 140
-2.390  Attribute wbemPath ......................................................................................... 141
-2.391  Attribute wellKnownObjects .............................................................................. 141
-2.392  Attribute whenChanged ................................................................................... 141
-2.393  Attribute whenCreated ..................................................................................... 142
-2.394  Attribute wWWHomePage................................................................................. 142
-2.395  Attribute x121Address ..................................................................................... 142
-2.396  Attribute x500uniqueIdentifier .......................................................................... 143
-
-3  Classes ................................................................................................................ 144
-Class applicationSettings .................................................................................. 144
-
-3.1
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-10 / 170
-
-3.2
-3.3
-3.4
-3.5
-3.6
-3.7
-3.8
-3.9
-3.10
-3.11
-3.12
-3.13
-3.14
-3.15
-3.16
-3.17
-3.18
-3.19
-3.20
-3.21
-3.22
-3.23
-3.24
-3.25
-3.26
-3.27
-3.28
-3.29
-3.30
-3.31
-3.32
-3.33
-3.34
-3.35
-3.36
-3.37
-3.38
-3.39
-3.40
-3.41
-3.42
-3.43
-3.44
-3.45
-3.46
-3.47
-3.48
-3.49
-3.50
-3.51
-3.52
-3.53
-3.54
-3.55
-3.56
-3.57
-3.58
-3.59
-
-Class applicationSiteSettings ............................................................................ 144
-Class attributeSchema ..................................................................................... 144
-Class classSchema .......................................................................................... 145
-Class configuration .......................................................................................... 145
-Class container ............................................................................................... 146
-Class controlAccessRight .................................................................................. 146
-Class country .................................................................................................. 146
-Class crossRef ................................................................................................ 147
-Class crossRefContainer ................................................................................... 147
-Class displaySpecifier ...................................................................................... 148
-Class dMD ...................................................................................................... 148
-Class domain .................................................................................................. 148
-Class domainDNS ............................................................................................ 149
-Class dSUISettings .......................................................................................... 149
-Class dynamicObject ....................................................................................... 150
-Class foreignSecurityPrincipal ........................................................................... 150
-Class group .................................................................................................... 150
-Class groupOfNames ....................................................................................... 151
-Class inetOrgPerson ........................................................................................ 151
-Class interSiteTransport ................................................................................... 152
-Class interSiteTransportContainer ..................................................................... 152
-Class leaf ....................................................................................................... 152
-Class locality .................................................................................................. 153
-Class lostAndFound ......................................................................................... 153
-Class msDS-AzAdminManager........................................................................... 153
-Class msDS-AzApplication ................................................................................ 154
-Class msDS-AzOperation .................................................................................. 154
-Class msDS-AzRole ......................................................................................... 155
-Class msDS-AzScope ....................................................................................... 155
-Class msDS-AzTask ......................................................................................... 155
-Class msDS-BindableObject .............................................................................. 156
-Class msDS-BindProxy ..................................................................................... 156
-Class msDS-OptionalFeature ............................................................................ 157
-Class msDS-QuotaContainer ............................................................................. 157
-Class msDS-QuotaControl ................................................................................ 157
-Class msDS-ServiceConnectionPointPublicationService ......................................... 158
-Class nTDSConnection ..................................................................................... 158
-Class nTDSDSA ............................................................................................... 158
-Class nTDSService .......................................................................................... 159
-Class nTDSSiteSettings .................................................................................... 159
-Class organizationalPerson ............................................................................... 160
-Class organization ........................................................................................... 160
-Class organizationalUnit ................................................................................... 161
-Class person ................................................................................................... 161
-Class queryPolicy ............................................................................................ 162
-Class securityPrincipal ..................................................................................... 162
-Class server ................................................................................................... 162
-Class serversContainer .................................................................................... 163
-Class site ....................................................................................................... 163
-Class siteLink ................................................................................................. 163
-Class siteLinkBridge......................................................................................... 164
-Class sitesContainer ........................................................................................ 164
-Class subnet ................................................................................................... 164
-Class subnetContainer ..................................................................................... 165
-Class subSchema ............................................................................................ 165
-Class syncEngineAuxConfiguration .................................................................... 165
-Class syncEngineAuxObject .............................................................................. 166
-Class top ........................................................................................................ 166
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-11 / 170
-
-3.60
-3.61
-3.62
-
-Class userProxy .............................................................................................. 167
-Class userProxyFull ......................................................................................... 167
-Class user ...................................................................................................... 168
-
-4  Change Tracking .................................................................................................. 169
-
-5  Index ................................................................................................................... 170
-
-[MS-ADLS] - v20180912
-Active Directory Lightweight Directory Services Schema
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-12 / 170
-
-1  Introduction
+## 1 Introduction
 
 Active Directory Lightweight Directory Services Schema contains a list of the objects that exist in the
 Active Directory Lightweight Directory Services (AD LDS) schema. Active Directory and all
@@ -1250,7 +1011,7 @@ be available in the AD LDS schema in all subsequent versions of the product acco
 products in [MS-ADTS] section 1 and according to the information about AD LDS for Windows Client
 operating systems in [MS-ADTS] section 1.
 
-1.1  References
+### 1.1 References
 
 [JFIF] Hamilton, E., "JPEG File Interchange Format, Version 1.02", September 1992,
 http://www.w3.org/Graphics/JPEG/jfif.txt
@@ -1294,7 +1055,8 @@ Release: September 12, 2018
 
 13 / 170
 
-[X500] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: Overview of
+
+[X500] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: Overview of
 Concepts, Models and Services", Recommendation X.500, August 2005, http://www.itu.int/rec/T-REC-
 X.500-200508-S/en
 
@@ -1307,7 +1069,8 @@ Release: September 12, 2018
 
 14 / 170
 
-2  Attributes
+
+## 2 Attributes
 
 The following sections specify the attributes in the Active Directory Lightweight Directory Services
 schema.
@@ -1320,7 +1083,7 @@ attribute can be used.
 Note: Lines of text in the attribute definitions that are excessively long have been "folded" in
 accordance with [RFC2849] Note 2.
 
-2.1  Attribute accountExpires
+### 2.1 Attribute accountExpires
 
 This attribute specifies the date when an account expires. This value represents the number of 100-
 nanosecond intervals since January 1, 1601, Coordinated Universal Time (Greenwich Mean Time). A
@@ -1341,7 +1104,7 @@ value of 0 or 0x7FFFFFFFFFFFFFFF (9223372036854775807) indicates that the accoun
 Version-Specific Behavior: First implemented on Active Directory Application Mode (ADAM) and
 Windows Server 2008 operating system.
 
-2.2  Attribute adminContextMenu
+### 2.2 Attribute adminContextMenu
 
 This attribute specifies the order number and globally unique identifier (GUID) of the context menu to
 be used on administration screens. GUID is defined in [MS-DTYP] section 2.3.4.
@@ -1357,7 +1120,7 @@ be used on administration screens. GUID is defined in [MS-DTYP] section 2.3.4.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.3  Attribute adminDescription
+### 2.3 Attribute adminDescription
 
 This attribute specifies the description displayed on administration screens.
 
@@ -1372,7 +1135,8 @@ Release: September 12, 2018
 
 15 / 170
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: bf967919-0de6-11d0-a285-00aa003049e2
@@ -1385,7 +1149,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.4  Attribute adminDisplayName
+### 2.4 Attribute adminDisplayName
 
 This attribute specifies the name displayed on administration screens.
 
@@ -1404,7 +1168,7 @@ This attribute specifies the name displayed on administration screens.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.5  Attribute adminMultiselectPropertyPages
+### 2.5 Attribute adminMultiselectPropertyPages
 
 A multivalued attribute whose values are a number representing the order in which the pages are
 added and a GUID of a component object model (COM) object that implements multiselect property
@@ -1421,7 +1185,7 @@ pages for the Active Directory Users and Computers snap-in.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.6  Attribute adminPropertyPages
+### 2.6 Attribute adminPropertyPages
 
 This attribute specifies the order number and GUID of the property pages for an object to be displayed
 on Active Directory administration screens. For more information, see the document "Extending the
@@ -1438,7 +1202,8 @@ Release: September 12, 2018
 
 16 / 170
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: FALSE
  schemaIdGuid: 52458038-ca6a-11d0-afff-0000f80367c1
@@ -1446,7 +1211,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.7  Attribute allowedAttributes
+### 2.7 Attribute allowedAttributes
 
 This attribute specifies attributes that are permitted to be assigned to a class.
 
@@ -1465,7 +1230,7 @@ This attribute specifies attributes that are permitted to be assigned to a class
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.8  Attribute allowedAttributesEffective
+### 2.8 Attribute allowedAttributesEffective
 
 This attribute specifies a list of attributes that can be modified on the object.
 
@@ -1484,7 +1249,7 @@ This attribute specifies a list of attributes that can be modified on the object
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.9  Attribute allowedChildClasses
+### 2.9 Attribute allowedChildClasses
 
 This attribute specifies classes that can be contained by a class.
 
@@ -1505,13 +1270,14 @@ Release: September 12, 2018
 
 17 / 170
 
- attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
+
+ attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
  systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED |
   FLAG_DOMAIN_DISALLOW_RENAME
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.10  Attribute allowedChildClassesEffective
+### 2.10 Attribute allowedChildClassesEffective
 
 This attribute specifies a list of classes that can be modified.
 
@@ -1530,7 +1296,7 @@ This attribute specifies a list of classes that can be modified.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.11  Attribute aNR
+### 2.11 Attribute aNR
 
 This attribute specifies whether ambiguous name resolution is to be used when choosing between
 objects.
@@ -1549,7 +1315,7 @@ objects.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.12  Attribute appliesTo
+### 2.12 Attribute appliesTo
 
 This attribute contains the list of object classes that the extended right applies to. In the list, an object
 class is represented by the schemaIDGUID property for its schemaClass object.
@@ -1571,13 +1337,14 @@ Release: September 12, 2018
 
 18 / 170
 
- rangeLower: 36
+
+ rangeLower: 36
  rangeUpper: 36
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.13  Attribute assistant
+### 2.13 Attribute assistant
 
 This attribute specifies the distinguished name (DN) of a user's administrative assistant.
 
@@ -1595,7 +1362,7 @@ This attribute specifies the distinguished name (DN) of a user's administrative 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.14  Attribute attributeCertificateAttribute
+### 2.14 Attribute attributeCertificateAttribute
 
 This attribute specifies a digitally signed or certified identity and set of attributes. It is used to bind
 authorization information to an identity.
@@ -1612,7 +1379,7 @@ authorization information to an identity.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.15  Attribute attributeDisplayNames
+### 2.15 Attribute attributeDisplayNames
 
 This attribute specifies the name to be displayed for this object.
 
@@ -1634,7 +1401,8 @@ Release: September 12, 2018
 
 19 / 170
 
-2.16  Attribute attributeID
+
+### 2.16 Attribute attributeID
 
 This attribute specifies the unique X.500 object identifier (OID) that identifies an attribute. For more
 information, see [X500].
@@ -1652,7 +1420,7 @@ information, see [X500].
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.17  Attribute attributeSecurityGUID
+### 2.17 Attribute attributeSecurityGUID
 
 This attribute specifies the GUID to be used to apply security credentials to a set of objects.
 
@@ -1671,7 +1439,7 @@ This attribute specifies the GUID to be used to apply security credentials to a 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.18  Attribute attributeSyntax
+### 2.18 Attribute attributeSyntax
 
 This attribute specifies the OID for the syntax for this attribute.
 
@@ -1688,7 +1456,7 @@ This attribute specifies the OID for the syntax for this attribute.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.19  Attribute attributeTypes
+### 2.19 Attribute attributeTypes
 
 This attribute specifies a multivalued property containing strings that represent each attribute in the
 schema.
@@ -1700,7 +1468,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Attribute-Types
+
+ cn: Attribute-Types
  ldapDisplayName: attributeTypes
  attributeId: 2.5.21.5
  attributeSyntax: 2.5.5.12
@@ -1714,7 +1483,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.20  Attribute audio
+### 2.20 Attribute audio
 
 This attribute allows the storing of sounds in Active Directory.
 
@@ -1732,7 +1501,7 @@ This attribute allows the storing of sounds in Active Directory.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.21  Attribute auxiliaryClass
+### 2.21 Attribute auxiliaryClass
 
 This attribute specifies the list of auxiliary classes to be associated with this class.
 
@@ -1749,7 +1518,7 @@ This attribute specifies the list of auxiliary classes to be associated with thi
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.22  Attribute badPasswordTime
+### 2.22 Attribute badPasswordTime
 
 This attribute specifies the last time and date that an attempt to log on to this account was made
 using an invalid password. This value is stored as a large integer that represents the number of 100-
@@ -1766,7 +1535,8 @@ Release: September 12, 2018
 
 21 / 170
 
- attributeId: 1.2.840.113556.1.4.49
+
+ attributeId: 1.2.840.113556.1.4.49
  attributeSyntax: 2.5.5.16
  omSyntax: 65
  isSingleValued: TRUE
@@ -1777,7 +1547,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.23  Attribute badPwdCount
+### 2.23 Attribute badPwdCount
 
 This attribute specifies the number of times the user tried to log on to the account by using an
 incorrect password. A value of 0 indicates that the value is unknown.
@@ -1796,7 +1566,7 @@ incorrect password. A value of 0 indicates that the value is unknown.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.24  Attribute bridgeheadServerListBL
+### 2.24 Attribute bridgeheadServerListBL
 
 This attribute is the back link attribute of bridgeheadServerList and contains the list of servers that are
 bridgeheads for replication.
@@ -1816,7 +1586,7 @@ bridgeheads for replication.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.25  Attribute bridgeheadTransportList
+### 2.25 Attribute bridgeheadTransportList
 
 This attribute specifies transports for which this server is a bridgehead.
 
@@ -1832,7 +1602,8 @@ Release: September 12, 2018
 
 22 / 170
 
- omSyntax: 127
+
+ omSyntax: 127
  omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: FALSE
  schemaIdGuid: d50c2cda-8951-11d1-aebc-0000f80367c1
@@ -1843,7 +1614,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.26  Attribute businessCategory
+### 2.26 Attribute businessCategory
 
 This attribute specifies descriptive text on an organizational unit.
 
@@ -1862,7 +1633,7 @@ This attribute specifies descriptive text on an organizational unit.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.27  Attribute c
+### 2.27 Attribute c
 
 This attribute specifies the country/region in the address of the user. The country/region is
 represented as the two-character country code based on ISO-3166.
@@ -1885,7 +1656,7 @@ represented as the two-character country code based on ISO-3166.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.28  Attribute canonicalName
+### 2.28 Attribute canonicalName
 
 This attribute specifies the name of the object in canonical format.
 "myserver2.fabrikam.com/users/jeffsmith" is an example of a DN in canonical format.
@@ -1897,7 +1668,8 @@ Release: September 12, 2018
 
 23 / 170
 
-This is a constructed attribute. The results returned are identical to those returned by the following
+
+This is a constructed attribute. The results returned are identical to those returned by the following
 Active Directory function: DsCrackNames(NULL, DS_NAME_FLAG_SYNTACTICAL_ONLY,
 DS_FQDN_1779_NAME, DS_CANONICAL_NAME, ...).
 
@@ -1915,7 +1687,7 @@ DS_FQDN_1779_NAME, DS_CANONICAL_NAME, ...).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.29  Attribute carLicense
+### 2.29 Attribute carLicense
 
 This attribute specifies the vehicle license or registration plate.
 
@@ -1932,7 +1704,7 @@ This attribute specifies the vehicle license or registration plate.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.30  Attribute classDisplayName
+### 2.30 Attribute classDisplayName
 
 This attribute specifies the object name to be displayed on dialogs.
 
@@ -1949,7 +1721,7 @@ This attribute specifies the object name to be displayed on dialogs.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.31  Attribute cn
+### 2.31 Attribute cn
 
 This attribute specifies the name that represents an object. This attribute is used to perform searches.
 
@@ -1963,7 +1735,8 @@ Release: September 12, 2018
 
 24 / 170
 
- attributeId: 2.5.4.3
+
+ attributeId: 2.5.4.3
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -1979,7 +1752,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.32  Attribute co
+### 2.32 Attribute co
 
 This attribute specifies the country/region in which the user is located.
 
@@ -1999,7 +1772,7 @@ This attribute specifies the country/region in which the user is located.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.33  Attribute comment
+### 2.33 Attribute comment
 
 This attribute specifies the user's comments.
 
@@ -2016,7 +1789,7 @@ This attribute specifies the user's comments.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.34  Attribute company
+### 2.34 Attribute company
 
 This attribute specifies the user's company name.
 
@@ -2030,7 +1803,8 @@ Release: September 12, 2018
 
 25 / 170
 
- attributeId: 1.2.840.113556.1.2.146
+
+ attributeId: 1.2.840.113556.1.2.146
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -2043,7 +1817,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.35  Attribute configurationFile
+### 2.35 Attribute configurationFile
 
 ms-DS-Configuration-File
 
@@ -2057,7 +1831,7 @@ ms-DS-Configuration-File
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.36  Attribute configurationFileGuid
+### 2.36 Attribute configurationFileGuid
 
 ms-DS-Configuration-File-Guid
 
@@ -2071,7 +1845,7 @@ ms-DS-Configuration-File-Guid
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.37  Attribute contextMenu
+### 2.37 Attribute contextMenu
 
 This attribute specifies the order number and GUID of the context menu to be used for an object.
 
@@ -2093,7 +1867,8 @@ Release: September 12, 2018
 
 26 / 170
 
-2.38  Attribute cost
+
+### 2.38 Attribute cost
 
 This attribute contains the relative cost for routing messages through a particular site connector.
 
@@ -2109,7 +1884,7 @@ This attribute contains the relative cost for routing messages through a particu
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.39  Attribute countryCode
+### 2.39 Attribute countryCode
 
 This attribute specifies the country code for the user's language of choice.
 
@@ -2129,7 +1904,7 @@ This attribute specifies the country code for the user's language of choice.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.40  Attribute createDialog
+### 2.40 Attribute createDialog
 
 This attribute specifies the GUID of a dialog that is used for creating an associated object.
 
@@ -2144,7 +1919,7 @@ This attribute specifies the GUID of a dialog that is used for creating an assoc
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.41  Attribute createTimeStamp
+### 2.41 Attribute createTimeStamp
 
 This attribute specifies the date when this object was created. This value is replicated.
 
@@ -2159,7 +1934,8 @@ Release: September 12, 2018
 
 27 / 170
 
- attributeSyntax: 2.5.5.11
+
+ attributeSyntax: 2.5.5.11
  omSyntax: 24
  isSingleValued: TRUE
  schemaIdGuid: 2df90d73-009f-11d2-aa4c-00c04fd7d83a
@@ -2170,7 +1946,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.42  Attribute createWizardExt
+### 2.42 Attribute createWizardExt
 
 This attribute specifies the GUID of the wizard extensions for creating an associated object.
 
@@ -2185,7 +1961,7 @@ This attribute specifies the GUID of the wizard extensions for creating an assoc
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.43  Attribute creationWizard
+### 2.43 Attribute creationWizard
 
 This attribute specifies the wizard to activate when creating objects of this class.
 
@@ -2200,7 +1976,7 @@ This attribute specifies the wizard to activate when creating objects of this cl
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.44  Attribute dc
+### 2.44 Attribute dc
 
 This attribute specifies the naming attribute for domain and DNS objects. This attribute is usually
 displayed as dc=DomainName.
@@ -2225,12 +2001,13 @@ Release: September 12, 2018
 
 28 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT |
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT |
   FLAG_ATTR_REQ_PARTIAL_SET_MEMBER
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.45  Attribute defaultClassStore
+### 2.45 Attribute defaultClassStore
 
 This attribute specifies the default class store for a given user.
 
@@ -2247,7 +2024,7 @@ This attribute specifies the default class store for a given user.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.46  Attribute defaultGroup
+### 2.46 Attribute defaultGroup
 
 This attribute specifies the group to which this object is assigned when it is created.
 
@@ -2265,7 +2042,7 @@ This attribute specifies the group to which this object is assigned when it is c
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.47  Attribute defaultHidingValue
+### 2.47 Attribute defaultHidingValue
 
 This attribute specifies a Boolean value that specifies the default setting of the
 showInAdvancedViewOnly property of new instances of this class.
@@ -2290,7 +2067,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.48  Attribute defaultObjectCategory
+
+### 2.48 Attribute defaultObjectCategory
 
 This attribute specifies the object category to use for an object if one is not specified.
 
@@ -2308,7 +2086,7 @@ This attribute specifies the object category to use for an object if one is not 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.49  Attribute defaultSecurityDescriptor
+### 2.49 Attribute defaultSecurityDescriptor
 
 This attribute specifies the security descriptor to be assigned to the object when it is first created.
 
@@ -2327,7 +2105,7 @@ This attribute specifies the security descriptor to be assigned to the object wh
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.50  Attribute department
+### 2.50 Attribute department
 
 This attribute contains the name for the department in which the user works.
 
@@ -2346,7 +2124,7 @@ This attribute contains the name for the department in which the user works.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.51  Attribute departmentNumber
+### 2.51 Attribute departmentNumber
 
 This attribute identifies a department within an organization.
 
@@ -2357,7 +2135,8 @@ Release: September 12, 2018
 
 30 / 170
 
- cn: departmentNumber
+
+ cn: departmentNumber
  ldapDisplayName: departmentNumber
  attributeId: 2.16.840.1.113730.3.1.2
  attributeSyntax: 2.5.5.12
@@ -2370,7 +2149,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.52  Attribute description
+### 2.52 Attribute description
 
 This attribute contains the description to display for an object. This value is treated as single-valued
 by the Active Directory system.
@@ -2392,7 +2171,7 @@ by the Active Directory system.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.53  Attribute desktopProfile
+### 2.53 Attribute desktopProfile
 
 This attribute specifies the location of the desktop profile for a user or group of users.
 
@@ -2409,7 +2188,7 @@ This attribute specifies the location of the desktop profile for a user or group
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.54  Attribute destinationIndicator
+### 2.54 Attribute destinationIndicator
 
 This attribute is part of the X.500 specification [X500].
 
@@ -2423,7 +2202,8 @@ Release: September 12, 2018
 
 31 / 170
 
- attributeId: 2.5.4.27
+
+ attributeId: 2.5.4.27
  attributeSyntax: 2.5.5.5
  omSyntax: 19
  isSingleValued: FALSE
@@ -2436,7 +2216,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.55  Attribute directReports
+### 2.55 Attribute directReports
 
 This attribute contains the list of users that directly report to the user. The users that are listed as
 reports are those that have the property manager property set to this user. Each item in the list is a
@@ -2458,7 +2238,7 @@ linked reference to the object that represents the user.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.56  Attribute displayName
+### 2.56 Attribute displayName
 
 This attribute specifies the display name for an object. This attribute is usually the combination of the
 user's first name, middle initial, and last name.
@@ -2487,7 +2267,8 @@ Release: September 12, 2018
 
 32 / 170
 
-2.57  Attribute displayNamePrintable
+
+### 2.57 Attribute displayNamePrintable
 
 This attribute specifies the printable display name for an object. The printable display name is usually
 the combination of the user's first name, middle initial, and last name.
@@ -2507,7 +2288,7 @@ the combination of the user's first name, middle initial, and last name.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.58  Attribute distinguishedName
+### 2.58 Attribute distinguishedName
 
 This attribute is the same as the DN for an object.
 
@@ -2528,7 +2309,7 @@ This attribute is the same as the DN for an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.59  Attribute dITContentRules
+### 2.59 Attribute dITContentRules
 
 This attribute specifies the permissible content of entries of a particular structural object class via the
 identification of an optional set of auxiliary object classes, mandatory, optional, and precluded
@@ -2554,9 +2335,10 @@ Release: September 12, 2018
 
 33 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.60  Attribute division
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.60 Attribute division
 
 This attribute specifies the user's division.
 
@@ -2575,7 +2357,7 @@ This attribute specifies the user's division.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.61  Attribute dMDLocation
+### 2.61 Attribute dMDLocation
 
 This attribute specifies the DN that identifies the schema partition.
 
@@ -2593,7 +2375,7 @@ This attribute specifies the DN that identifies the schema partition.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.62  Attribute dmdName
+### 2.62 Attribute dmdName
 
 This attribute specifies a name that is used to identify the schema partition.
 
@@ -2619,7 +2401,8 @@ Release: September 12, 2018
 
 34 / 170
 
-2.63  Attribute dNSHostName
+
+### 2.63 Attribute dNSHostName
 
 This attribute specifies the name of the computer as it is registered in DNS.
 
@@ -2640,7 +2423,7 @@ This attribute specifies the name of the computer as it is registered in DNS.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.64  Attribute dnsRoot
+### 2.64 Attribute dnsRoot
 
 This attribute specifies the FQDN (1) ([MS-ADTS] section 1.1) that is associated with a naming
 context. This attribute is set on a crossRef object and is used for referral generation.
@@ -2663,7 +2446,7 @@ object. This attribute can be multivalued, in which case multiple referrals are 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.65  Attribute dSASignature
+### 2.65 Attribute dSASignature
 
 This attribute specifies the DSA-Signature of an object, which is the Invocation-ID of the last directory
 to modify the object.
@@ -2686,9 +2469,10 @@ Release: September 12, 2018
 
 35 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.66  Attribute dSCorePropagationData
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.66 Attribute dSCorePropagationData
 
 This attribute is for internal use only.
 
@@ -2707,7 +2491,7 @@ This attribute is for internal use only.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.67  Attribute dSHeuristics
+### 2.67 Attribute dSHeuristics
 
 This attribute contains global settings for the entire forest.
 
@@ -2724,7 +2508,7 @@ This attribute contains global settings for the entire forest.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.68  Attribute dSUIAdminMaximum
+### 2.68 Attribute dSUIAdminMaximum
 
 This attribute specifies the default maximum number of objects that are shown in a container by the
 admin UI.
@@ -2747,7 +2531,8 @@ Release: September 12, 2018
 
 36 / 170
 
-2.69  Attribute dSUIAdminNotification
+
+### 2.69 Attribute dSUIAdminNotification
 
 This attribute specifies a list of the GUIDs of COM objects that support a callback interface that
 DSAdmin calls when an action has occurred on an object through the UI.
@@ -2763,7 +2548,7 @@ DSAdmin calls when an action has occurred on an object through the UI.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.70  Attribute dSUIShellMaximum
+### 2.70 Attribute dSUIShellMaximum
 
 This attribute specifies the default maximum number of objects that are shown in a container by the
 shell UI.
@@ -2779,7 +2564,7 @@ shell UI.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.71  Attribute dynamicLDAPServer
+### 2.71 Attribute dynamicLDAPServer
 
 This attribute specifies the fully qualified domain name (FQDN) (1) ([MS-ADTS] section 1.1) of the
 server handling dynamic properties for this account.
@@ -2797,7 +2582,7 @@ server handling dynamic properties for this account.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.72  Attribute employeeID
+### 2.72 Attribute employeeID
 
 This attribute specifies the ID of an employee.
 
@@ -2812,7 +2597,8 @@ Release: September 12, 2018
 
 37 / 170
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: bf967962-0de6-11d0-a285-00aa003049e2
@@ -2823,7 +2609,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.73  Attribute employeeNumber
+### 2.73 Attribute employeeNumber
 
 This attribute specifies the number assigned to an employee other than the employee ID.
 
@@ -2841,7 +2627,7 @@ This attribute specifies the number assigned to an employee other than the emplo
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.74  Attribute employeeType
+### 2.74 Attribute employeeType
 
 This attribute specifies the job category for an employee.
 
@@ -2859,7 +2645,7 @@ This attribute specifies the job category for an employee.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.75  Attribute Enabled
+### 2.75 Attribute Enabled
 
 This attribute is used to signify whether or not a given crossRef is enabled.
 
@@ -2879,12 +2665,13 @@ Release: September 12, 2018
 
 38 / 170
 
- searchFlags: 0
+
+ searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.76  Attribute enabledConnection
+### 2.76 Attribute enabledConnection
 
 This attribute indicates whether a connection is available for use.
 
@@ -2901,7 +2688,7 @@ This attribute indicates whether a connection is available for use.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.77  Attribute entryTTL
+### 2.77 Attribute entryTTL
 
 This operational attribute is maintained by the server and appears to be present in every dynamic
 entry. The attribute is not present when the entry does not contain the dynamicObject object class.
@@ -2927,7 +2714,7 @@ is marked NO-USER-MODIFICATION because it can only be changed by using the refre
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.78  Attribute extendedAttributeInfo
+### 2.78 Attribute extendedAttributeInfo
 
 This attribute specifies a multivalued property containing strings that represent additional information
 for each attribute.
@@ -2944,7 +2731,8 @@ Release: September 12, 2018
 
 39 / 170
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: FALSE
  schemaIdGuid: 9a7ad947-ca53-11d1-bbd0-0080c76670c0
  systemOnly: TRUE
@@ -2954,7 +2742,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.79  Attribute extendedCharsAllowed
+### 2.79 Attribute extendedCharsAllowed
 
 This attribute indicates whether extended characters are allowed in the value of this attribute. Applies
 only to IA5, Numeric, Printable, and Teletex string attributes.
@@ -2972,7 +2760,7 @@ only to IA5, Numeric, Printable, and Teletex string attributes.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.80  Attribute extendedClassInfo
+### 2.80 Attribute extendedClassInfo
 
 This attribute specifies a multivalued property containing strings that represent additional information
 for each class. Each value contains the governsID, lDAPDisplayName, and schemaIDGUID of the class.
@@ -2991,7 +2779,7 @@ for each class. Each value contains the governsID, lDAPDisplayName, and schemaID
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.81  Attribute extensionName
+### 2.81 Attribute extensionName
 
 This attribute specifies the name of a property page that is used to extend the UI of a directory object.
 
@@ -3010,13 +2798,14 @@ Release: September 12, 2018
 
 40 / 170
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  rangeLower: 1
  rangeUpper: 255
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.82  Attribute extraColumns
+### 2.82 Attribute extraColumns
 
 This is a multivalued attribute whose values consist of a 5 tuple: (attribute name), (column title),
 (default visibility (0,1)), (column width (-1 for auto width)), 0 (reserved for future use; has to be
@@ -3033,7 +2822,7 @@ zero). This value is used by the Active Directory Users and Computers console.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.83  Attribute facsimileTelephoneNumber
+### 2.83 Attribute facsimileTelephoneNumber
 
 This attribute contains the telephone number of the user's business fax machine.
 
@@ -3053,7 +2842,7 @@ This attribute contains the telephone number of the user's business fax machine.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.84  Attribute fromEntry
+### 2.84 Attribute fromEntry
 
 This is a constructed attribute that is TRUE if the object is writable and FALSE if it is read-only; for
 example, a global catalog (GC) replica instance.
@@ -3075,12 +2864,13 @@ Release: September 12, 2018
 
 41 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED |
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED |
   FLAG_DOMAIN_DISALLOW_RENAME
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.85  Attribute fromServer
+### 2.85 Attribute fromServer
 
 This attribute specifies the distinguished name of the replication source server.
 
@@ -3098,7 +2888,7 @@ This attribute specifies the distinguished name of the replication source server
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.86  Attribute fSMORoleOwner
+### 2.86 Attribute fSMORoleOwner
 
 The fSMORoleOwner attribute stores the distinguished name of a DSA object as described in [MS-
 ADTS] section 3.1.1.1.11 (FSMO Roles).
@@ -3117,7 +2907,7 @@ ADTS] section 3.1.1.1.11 (FSMO Roles).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.87  Attribute garbageCollPeriod
+### 2.87 Attribute garbageCollPeriod
 
 This attribute is located on the CN=Directory Service,CN=Windows
 NT,CN=Services,CN=Configuration,... object. It represents the period of time, in hours, between
@@ -3140,11 +2930,12 @@ Release: September 12, 2018
 
 42 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.88  Attribute generatedConnection
+### 2.88 Attribute generatedConnection
 
 This attribute is TRUE if this connection was created by auto-topology generation.
 
@@ -3161,7 +2952,7 @@ This attribute is TRUE if this connection was created by auto-topology generatio
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.89  Attribute generationQualifier
+### 2.89 Attribute generationQualifier
 
 This attribute indicates a person's generation; for example, "Jr." or "II".
 
@@ -3179,7 +2970,7 @@ This attribute indicates a person's generation; for example, "Jr." or "II".
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.90  Attribute givenName
+### 2.90 Attribute givenName
 
 This attribute contains the given name (first name) of the user.
 
@@ -3204,9 +2995,10 @@ Release: September 12, 2018
 
 43 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.91  Attribute governsID
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.91 Attribute governsID
 
 This attribute specifies the unique object ID of the class defined by this Class-Schema object.
 
@@ -3223,7 +3015,7 @@ This attribute specifies the unique object ID of the class defined by this Class
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.92  Attribute groupType
+### 2.92 Attribute groupType
 
 This attribute contains a set of flags that define the type and scope of a group object. For more
 information about the possible values for this attribute, see the Remarks section of [MSDN-
@@ -3244,7 +3036,7 @@ GroupType].
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.93  Attribute hasMasterNCs
+### 2.93 Attribute hasMasterNCs
 
 This attribute specifies the DN for the naming contexts for the DC. It is a forward link for the
 Mastered-By attribute. This attribute is maintained for backward compatibility; msDS-hasMasterNCs is
@@ -3270,9 +3062,10 @@ Release: September 12, 2018
 
 44 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.94  Attribute hasPartialReplicaNCs
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.94 Attribute hasPartialReplicaNCs
 
 This attribute specifies the sibling to Has-Master-NCs. Reflects the DN for all other-domain NCs that
 have been replicated into a global catalog.
@@ -3292,7 +3085,7 @@ have been replicated into a global catalog.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.95  Attribute homePhone
+### 2.95 Attribute homePhone
 
 This attribute specifies the user's main home phone number.
 
@@ -3312,7 +3105,7 @@ This attribute specifies the user's main home phone number.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.96  Attribute homePostalAddress
+### 2.96 Attribute homePostalAddress
 
 This attribute specifies the user's home address.
 
@@ -3336,9 +3129,10 @@ Release: September 12, 2018
 
 45 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.97  Attribute houseIdentifier
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.97 Attribute houseIdentifier
 
 This attribute specifies a linguistic construct used to identify a particular building; for example, a
 house number or house name relative to a street, avenue, town, or city.
@@ -3357,7 +3151,7 @@ house number or house name relative to a street, avenue, town, or city.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.98  Attribute iconPath
+### 2.98 Attribute iconPath
 
 This attribute specifies the source for loading an icon.
 
@@ -3374,7 +3168,7 @@ This attribute specifies the source for loading an icon.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.99  Attribute initials
+### 2.99 Attribute initials
 
 This attribute contains the initials for parts of the user's full name. It can be used as the middle initial
 in the Windows Address Book.
@@ -3401,7 +3195,8 @@ Release: September 12, 2018
 
 46 / 170
 
-2.100  Attribute instanceType
+
+### 2.100 Attribute instanceType
 
 This attribute specifies a bit field that dictates how the object is instantiated on a particular server.
 The value of this attribute can differ on different replicas, even if the replicas are in sync.
@@ -3421,7 +3216,7 @@ The value of this attribute can differ on different replicas, even if the replic
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.101  Attribute internationalISDNNumber
+### 2.101 Attribute internationalISDNNumber
 
 This attribute specifies an international ISDN number associated with an object.
 
@@ -3441,7 +3236,7 @@ This attribute specifies an international ISDN number associated with an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.102  Attribute interSiteTopologyFailover
+### 2.102 Attribute interSiteTopologyFailover
 
 This attribute indicates how much time has to transpire since the last keep-alive in order for the
 intersite topology generator to be considered dead.
@@ -3466,7 +3261,8 @@ Release: September 12, 2018
 
 47 / 170
 
-2.103  Attribute interSiteTopologyGenerator
+
+### 2.103 Attribute interSiteTopologyGenerator
 
 This attribute is used to support failover for the machine designated as the one that runs Knowledge
 Consistency Checker intersite topology generation in a given site.
@@ -3485,7 +3281,7 @@ Consistency Checker intersite topology generation in a given site.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.104  Attribute interSiteTopologyRenew
+### 2.104 Attribute interSiteTopologyRenew
 
 This attribute indicates how often the intersite topology generator updates the keep-alive message
 that is sent to DCs contained in the same site.
@@ -3503,7 +3299,7 @@ that is sent to DCs contained in the same site.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.105  Attribute invocationId
+### 2.105 Attribute invocationId
 
 This attribute is used to uniquely identify the specific version of the directory database associated with
 an AD-LDS instance.
@@ -3521,7 +3317,7 @@ an AD-LDS instance.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.106  Attribute ipPhone
+### 2.106 Attribute ipPhone
 
 This attribute specifies the TCP/IP address for the phone. Used by telephony.
 
@@ -3532,7 +3328,8 @@ Release: September 12, 2018
 
 48 / 170
 
- cn: Phone-Ip-Primary
+
+ cn: Phone-Ip-Primary
  ldapDisplayName: ipPhone
  attributeId: 1.2.840.113556.1.4.721
  attributeSyntax: 2.5.5.12
@@ -3547,7 +3344,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.107  Attribute isCriticalSystemObject
+### 2.107 Attribute isCriticalSystemObject
 
 If TRUE, the object hosting this attribute has to be replicated during installation of a new replica.
 
@@ -3564,7 +3361,7 @@ If TRUE, the object hosting this attribute has to be replicated during installat
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.108  Attribute isDefunct
+### 2.108 Attribute isDefunct
 
 If TRUE, the class or attribute is no longer usable. Old versions of this object can exist, but new ones
 cannot be created.
@@ -3582,7 +3379,7 @@ cannot be created.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.109  Attribute isDeleted
+### 2.109 Attribute isDeleted
 
 If TRUE, this object has been marked for deletion and will be removed from the Active Directory
 system.
@@ -3598,7 +3395,8 @@ Release: September 12, 2018
 
 49 / 170
 
- attributeSyntax: 2.5.5.8
+
+ attributeSyntax: 2.5.5.8
  omSyntax: 1
  isSingleValued: TRUE
  schemaIdGuid: bf96798f-0de6-11d0-a285-00aa003049e2
@@ -3610,7 +3408,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.110  Attribute isEphemeral
+### 2.110 Attribute isEphemeral
 
  cn: Is-Ephemeral
  ldapDisplayName: isEphemeral
@@ -3625,7 +3423,7 @@ Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.111  Attribute isMemberOfPartialAttributeSet
+### 2.111 Attribute isMemberOfPartialAttributeSet
 
 If TRUE, this attribute is replicated to the global catalog.
 
@@ -3642,7 +3440,7 @@ If TRUE, this attribute is replicated to the global catalog.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.112  Attribute isRecycled
+### 2.112 Attribute isRecycled
 
 If TRUE, this object has been marked for permanent deletion. Additionally, if the Recycle Bin optional
 feature is enabled, the value TRUE marks an object that cannot be undeleted. It will be removed from
@@ -3665,12 +3463,13 @@ Release: September 12, 2018
 
 50 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_REQ_PARTIAL_SET_MEMBER
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_REQ_PARTIAL_SET_MEMBER
  isMemberOfPartialAttributeSet: TRUE
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2 operating system.
 
-2.113  Attribute isSingleValued
+### 2.113 Attribute isSingleValued
 
 If TRUE, this attribute can only store one value.
 
@@ -3687,7 +3486,7 @@ If TRUE, this attribute can only store one value.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.114  Attribute jpegPhoto
+### 2.114 Attribute jpegPhoto
 
 This attribute is used to store one or more images of a person using the JPEG File Interchange Format
 [JFIF].
@@ -3705,7 +3504,7 @@ This attribute is used to store one or more images of a person using the JPEG Fi
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.115  Attribute keywords
+### 2.115 Attribute keywords
 
 This attribute specifies a list of keywords that can be used to locate a given connection point.
 
@@ -3730,9 +3529,10 @@ Release: September 12, 2018
 
 51 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.116  Attribute l
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.116 Attribute l
 
 This attribute represents the name of a locality, such as a town or city.
 
@@ -3754,7 +3554,7 @@ This attribute represents the name of a locality, such as a town or city.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.117  Attribute labeledURI
+### 2.117 Attribute labeledURI
 
 This attribute specifies a Uniform Resource Identifier (URI) followed by a label. The label is used to
 describe the resource to which the URI points and is intended as a friendly name fit for human
@@ -3773,7 +3573,7 @@ readers.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.118  Attribute lastAgedChange
+### 2.118 Attribute lastAgedChange
 
 ms-DS-Last-Aged-Change
 
@@ -3794,7 +3594,8 @@ Release: September 12, 2018
 
 52 / 170
 
-2.119  Attribute lastBackupRestorationTime
+
+### 2.119 Attribute lastBackupRestorationTime
 
 This attribute specifies the time when the last system restore operation occurred.
 
@@ -3811,7 +3612,7 @@ This attribute specifies the time when the last system restore operation occurre
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.120  Attribute lastKnownParent
+### 2.120 Attribute lastKnownParent
 
 This attribute specifies the DN of the last known parent of an orphaned or deleted object.
 
@@ -3829,7 +3630,7 @@ This attribute specifies the DN of the last known parent of an orphaned or delet
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.121  Attribute lastLogonTimestamp
+### 2.121 Attribute lastLogonTimestamp
 
 This attribute specifies the time at which the user last logged on to the domain. This value is only
 updated if the user logs on after a week has passed since the last update. This value is replicated.
@@ -3848,7 +3649,7 @@ updated if the user logs on after a week has passed since the last update. This 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.122  Attribute lDAPAdminLimits
+### 2.122 Attribute lDAPAdminLimits
 
 This attribute contains a set of attribute/value pairs that define Lightweight Directory Access Protocol
 (LDAP) server administrative limits.
@@ -3860,7 +3661,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: LDAP-Admin-Limits
+
+ cn: LDAP-Admin-Limits
  ldapDisplayName: lDAPAdminLimits
  attributeId: 1.2.840.113556.1.4.843
  attributeSyntax: 2.5.5.12
@@ -3873,7 +3675,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.123  Attribute lDAPDisplayName
+### 2.123 Attribute lDAPDisplayName
 
 This attribute specifies the name used by LDAP clients, such as the ADSI LDAP provider, to read and
 write the attribute by using the LDAP protocol.
@@ -3894,7 +3696,7 @@ write the attribute by using the LDAP protocol.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.124  Attribute lDAPIPDenyList
+### 2.124 Attribute lDAPIPDenyList
 
 This attribute holds a list of binary IP addresses that are denied access to an LDAP server.
 
@@ -3911,7 +3713,7 @@ This attribute holds a list of binary IP addresses that are denied access to an 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.125  Attribute linkID
+### 2.125 Attribute linkID
 
 This attribute specifies an integer that indicates that the attribute is a linked attribute. An even integer
 is a forward link, and an odd integer is a back link.
@@ -3926,7 +3728,8 @@ Release: September 12, 2018
 
 54 / 170
 
- attributeId: 1.2.840.113556.1.2.50
+
+ attributeId: 1.2.840.113556.1.2.50
  attributeSyntax: 2.5.5.9
  omSyntax: 2
  isSingleValued: TRUE
@@ -3937,7 +3740,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.126  Attribute localizationDisplayId
+### 2.126 Attribute localizationDisplayId
 
 This attribute is used to index into the Extrts.mc file to get the localized displayName of the objects for
 UI purposes.
@@ -3955,7 +3758,7 @@ UI purposes.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.127  Attribute location
+### 2.127 Attribute location
 
 This attribute specifies the user's location, such as an office number.
 
@@ -3975,7 +3778,7 @@ This attribute specifies the user's location, such as an office number.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.128  Attribute lockoutTime
+### 2.128 Attribute lockoutTime
 
 This attribute specifies the date and time (in UTC) that this account was locked out. This value is
 stored as a large integer that represents the number of 100-nanosecond intervals since January 1,
@@ -3992,7 +3795,8 @@ Release: September 12, 2018
 
 55 / 170
 
- attributeSyntax: 2.5.5.16
+
+ attributeSyntax: 2.5.5.16
  omSyntax: 65
  isSingleValued: TRUE
  schemaIdGuid: 28630ebf-41d5-11d1-a9c1-0000f80367c1
@@ -4002,7 +3806,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.129  Attribute mail
+### 2.129 Attribute mail
 
 This attribute specifies the list of email addresses for a contact.
 
@@ -4022,7 +3826,7 @@ This attribute specifies the list of email addresses for a contact.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.130  Attribute mailAddress
+### 2.130 Attribute mailAddress
 
 This attribute specifies the generic mail address attribute. It is used "in the box" as an optional
 attribute of server objects, where it is consumed by mail-based DS replication (if the machines are so
@@ -4041,7 +3845,7 @@ configured).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.131  Attribute managedBy
+### 2.131 Attribute managedBy
 
 This attribute specifies the DN of the object that is assigned to manage this object.
 
@@ -4058,7 +3862,8 @@ Release: September 12, 2018
 
 56 / 170
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: TRUE
  schemaIdGuid: 0296c120-40da-11d1-a9c0-0000f80367c1
  systemOnly: FALSE
@@ -4068,7 +3873,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.132  Attribute managedObjects
+### 2.132 Attribute managedObjects
 
 This attribute contains the list of objects that are managed by the user. The objects listed are those
 that have the managedBy property set to this user. Each item in the list is a linked reference to the
@@ -4089,7 +3894,7 @@ managed object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.133  Attribute manager
+### 2.133 Attribute manager
 
 This attribute contains the DN of the user who is the user's manager. The manager's user object
 contains a directReports property that contains references to all user objects that have their manager
@@ -4111,7 +3916,7 @@ properties set to this DN.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.134  Attribute masteredBy
+### 2.134 Attribute masteredBy
 
 This attribute specifies the back link for the Has-Master-NCs attribute. The DN for its NTDS Settings
 objects.
@@ -4123,7 +3928,8 @@ Release: September 12, 2018
 
 57 / 170
 
- cn: Mastered-By
+
+ cn: Mastered-By
  ldapDisplayName: masteredBy
  attributeId: 1.2.840.113556.1.4.1409
  attributeSyntax: 2.5.5.1
@@ -4138,7 +3944,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.135  Attribute mayContain
+### 2.135 Attribute mayContain
 
 This attribute specifies the list of optional attributes for a class.
 
@@ -4155,7 +3961,7 @@ This attribute specifies the list of optional attributes for a class.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.136  Attribute member
+### 2.136 Attribute member
 
 This attribute specifies the list of users that belong to the group.
 
@@ -4177,7 +3983,7 @@ This attribute specifies the list of users that belong to the group.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.137  Attribute memberOf
+### 2.137 Attribute memberOf
 
 This attribute specifies the DN of the groups to which this object belongs.
 
@@ -4190,7 +3996,8 @@ Release: September 12, 2018
 
 58 / 170
 
- ldapDisplayName: memberOf
+
+ ldapDisplayName: memberOf
  attributeId: 1.2.840.113556.1.2.102
  attributeSyntax: 2.5.5.1
  omSyntax: 127
@@ -4205,7 +4012,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.138  Attribute middleName
+### 2.138 Attribute middleName
 
 This attribute specifies additional names for a user; for example, middle name, patronymic,
 matronymic, or others.
@@ -4224,7 +4031,7 @@ matronymic, or others.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.139  Attribute mobile
+### 2.139 Attribute mobile
 
 This attribute specifies the primary cellular phone number for a user.
 
@@ -4243,7 +4050,7 @@ This attribute specifies the primary cellular phone number for a user.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.140  Attribute modifyTimeStamp
+### 2.140 Attribute modifyTimeStamp
 
 This attribute specifies the date when this object was last changed. This value is replicated.
 
@@ -4256,7 +4063,8 @@ Release: September 12, 2018
 
 59 / 170
 
- ldapDisplayName: modifyTimeStamp
+
+ ldapDisplayName: modifyTimeStamp
  attributeId: 2.5.18.2
  attributeSyntax: 2.5.5.11
  omSyntax: 24
@@ -4269,7 +4077,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.141  Attribute moveTreeState
+### 2.141 Attribute moveTreeState
 
 This attribute is not necessary for Active Directory Lightweight Directory Services (AD LDS) to
 function. The protocol does not define a format beyond that required by the schema.
@@ -4287,7 +4095,7 @@ function. The protocol does not define a format beyond that required by the sche
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.142  Attribute mS-DS-ConsistencyChildCount
+### 2.142 Attribute mS-DS-ConsistencyChildCount
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4305,7 +4113,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.143  Attribute mS-DS-ConsistencyGuid
+### 2.143 Attribute mS-DS-ConsistencyGuid
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4322,7 +4130,8 @@ Release: September 12, 2018
 
 60 / 170
 
- omSyntax: 4
+
+ omSyntax: 4
  isSingleValued: TRUE
  schemaIdGuid: 23773dc2-b63a-11d2-90e1-00c04fd91ab1
  systemOnly: FALSE
@@ -4331,7 +4140,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.144  Attribute mS-DS-ReplicatesNCReason
+### 2.144 Attribute mS-DS-ReplicatesNCReason
 
 This is an attribute of an nTDSConnection object that indicates why (or whether) the Knowledge
 Consistency Checker (KCC) concludes that the connection is useful in the replication topology. This
@@ -4351,7 +4160,7 @@ attribute is multivalued and has DistName+Binary syntax, where the binary part i
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.145  Attribute ms-DS-UserAccountAutoLocked
+### 2.145 Attribute ms-DS-UserAccountAutoLocked
 
 This attribute specifies a Boolean flag that indicates whether the account that this attribute references
 has been locked out. (TRUE means locked out.)
@@ -4369,7 +4178,7 @@ has been locked out. (TRUE means locked out.)
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.146  Attribute ms-DS-UserEncryptedTextPasswordAllowed
+### 2.146 Attribute ms-DS-UserEncryptedTextPasswordAllowed
 
 This attribute specifies a Boolean flag that controls whether Active Directory stores the password in
 reversible encryption format.
@@ -4388,14 +4197,15 @@ Release: September 12, 2018
 
 61 / 170
 
- schemaIdGuid: 5a87c7f2-93c5-454c-a8c5-8cb09613292e
+
+ schemaIdGuid: 5a87c7f2-93c5-454c-a8c5-8cb09613292e
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.147  Attribute ms-DS-UserPasswordNotRequired
+### 2.147 Attribute ms-DS-UserPasswordNotRequired
 
 This attribute specifies a Boolean flag that controls whether a password is required for the account
 that this attribute references.
@@ -4413,7 +4223,7 @@ that this attribute references.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.148  Attribute msDS-AllowedDNSSuffixes
+### 2.148 Attribute msDS-AllowedDNSSuffixes
 
 This attribute specifies the list of allowed suffixes for the dNSHostName attribute in computer objects.
 
@@ -4432,7 +4242,7 @@ This attribute specifies the list of allowed suffixes for the dNSHostName attrib
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.149  Attribute msDS-Approx-Immed-Subordinates
+### 2.149 Attribute msDS-Approx-Immed-Subordinates
 
 The value returned by this attribute is based on index sizes. This value can be off by +/-10 percent on
 large containers, and the error is theoretically unbounded, but the use of this attribute is to assist the
@@ -4454,13 +4264,14 @@ Release: September 12, 2018
 
 62 / 170
 
- searchFlags: 0
+
+ searchFlags: 0
  attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
  systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.150  Attribute msDS-Auxiliary-Classes
+### 2.150 Attribute msDS-Auxiliary-Classes
 
 This attribute lists the auxiliary classes that have been dynamically attached to an object. This
 attribute is not associated with a class. It is automatically populated by the Active Directory system.
@@ -4479,7 +4290,7 @@ attribute is not associated with a class. It is automatically populated by the A
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.151  Attribute msDS-AzApplicationData
+### 2.151 Attribute msDS-AzApplicationData
 
 This attribute specifies a string that is used by individual applications to store needed information.
 
@@ -4496,7 +4307,7 @@ This attribute specifies a string that is used by individual applications to sto
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.152  Attribute msDS-AzApplicationName
+### 2.152 Attribute msDS-AzApplicationName
 
 This attribute specifies a string that uniquely identifies an application object.
 
@@ -4519,9 +4330,10 @@ Release: September 12, 2018
 
 63 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.153  Attribute msDS-AzApplicationVersion
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.153 Attribute msDS-AzApplicationVersion
 
 This attribute specifies a version number to indicate that the AzApplication is updated.
 
@@ -4538,7 +4350,7 @@ This attribute specifies a version number to indicate that the AzApplication is 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.154  Attribute msDS-AzBizRule
+### 2.154 Attribute msDS-AzBizRule
 
 This attribute specifies the text of the script implementing the business rule.
 
@@ -4556,7 +4368,7 @@ This attribute specifies the text of the script implementing the business rule.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.155  Attribute msDS-AzBizRuleLanguage
+### 2.155 Attribute msDS-AzBizRuleLanguage
 
 This attribute specifies the language that the business rule script is in (for example, JScript or Visual
 Basic Scripting Edition).
@@ -4582,7 +4394,8 @@ Release: September 12, 2018
 
 64 / 170
 
-2.156  Attribute msDS-AzClassId
+
+### 2.156 Attribute msDS-AzClassId
 
 This attribute specifies a class ID that is required by the AzRoles UI on the AzApplication object.
 
@@ -4600,7 +4413,7 @@ This attribute specifies a class ID that is required by the AzRoles UI on the Az
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.157  Attribute msDS-AzDomainTimeout
+### 2.157 Attribute msDS-AzDomainTimeout
 
 This attribute specifies the time (in milliseconds) after a domain is detected to be unreachable and
 before the DC is tried again.
@@ -4618,7 +4431,7 @@ before the DC is tried again.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.158  Attribute msDS-AzGenerateAudits
+### 2.158 Attribute msDS-AzGenerateAudits
 
 This attribute specifies a Boolean field indicating whether runtime audits need to be turned on (for
 example, audits for access checks).
@@ -4635,7 +4448,7 @@ example, audits for access checks).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.159  Attribute msDS-AzGenericData
+### 2.159 Attribute msDS-AzGenericData
 
 This attribute specifies AzMan-specific generic data.
 
@@ -4648,7 +4461,8 @@ Release: September 12, 2018
 
 65 / 170
 
- ldapDisplayName: msDS-AzGenericData
+
+ ldapDisplayName: msDS-AzGenericData
  attributeId: 1.2.840.113556.1.4.1950
  attributeSyntax: 2.5.5.12
  omSyntax: 64
@@ -4660,7 +4474,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.160  Attribute msDS-AzLastImportedBizRulePath
+### 2.160 Attribute msDS-AzLastImportedBizRulePath
 
 This attribute specifies the last imported business rule path.
 
@@ -4678,7 +4492,7 @@ This attribute specifies the last imported business rule path.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.161  Attribute msDS-AzLDAPQuery
+### 2.161 Attribute msDS-AzLDAPQuery
 
 This attribute specifies a string that defines the LDAP query (max length 4096) that determines the
 membership of a user object to the group.
@@ -4697,7 +4511,7 @@ membership of a user object to the group.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.162  Attribute msDS-AzMajorVersion
+### 2.162 Attribute msDS-AzMajorVersion
 
 This attribute specifies the major version number for AzRoles.
 
@@ -4714,7 +4528,8 @@ Release: September 12, 2018
 
 66 / 170
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: cfb9adb7-c4b7-4059-9568-1ed9db6b7248
  systemOnly: FALSE
  searchFlags: 0
@@ -4722,7 +4537,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.163  Attribute msDS-AzMinorVersion
+### 2.163 Attribute msDS-AzMinorVersion
 
 This attribute specifies the minor version number for AzRoles.
 
@@ -4739,7 +4554,7 @@ This attribute specifies the minor version number for AzRoles.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.164  Attribute msDS-AzObjectGuid
+### 2.164 Attribute msDS-AzObjectGuid
 
 This attribute specifies the unique and portable identifier of AzMan objects.
 
@@ -4757,7 +4572,7 @@ This attribute specifies the unique and portable identifier of AzMan objects.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.165  Attribute msDS-AzOperationID
+### 2.165 Attribute msDS-AzOperationID
 
 This attribute specifies the application-specific ID that makes the operation unique to the application.
 
@@ -4779,9 +4594,10 @@ Release: September 12, 2018
 
 67 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.166  Attribute msDS-AzScopeName
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.166 Attribute msDS-AzScopeName
 
 This attribute specifies a string that uniquely identifies a scope object.
 
@@ -4799,7 +4615,7 @@ This attribute specifies a string that uniquely identifies a scope object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.167  Attribute msDS-AzScriptEngineCacheMax
+### 2.167 Attribute msDS-AzScriptEngineCacheMax
 
 This attribute specifies the maximum number of scripts that are cached by the application.
 
@@ -4816,7 +4632,7 @@ This attribute specifies the maximum number of scripts that are cached by the ap
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.168  Attribute msDS-AzScriptTimeout
+### 2.168 Attribute msDS-AzScriptTimeout
 
 This attribute specifies the maximum time (in milliseconds) to wait for a script to finish auditing a
 specific policy.
@@ -4841,7 +4657,8 @@ Release: September 12, 2018
 
 68 / 170
 
-2.169  Attribute msDS-AzTaskIsRoleDefinition
+
+### 2.169 Attribute msDS-AzTaskIsRoleDefinition
 
 This attribute specifies a Boolean field that indicates whether AzTask is a classic task or a role
 definition.
@@ -4858,7 +4675,7 @@ definition.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.170  Attribute msDS-Behavior-Version
+### 2.170 Attribute msDS-Behavior-Version
 
 This attribute is used to track the domain or forest behavior version. It is a monotonically increasing
 number that is used to enable certain Active Directory features.
@@ -4877,7 +4694,7 @@ number that is used to enable certain Active Directory features.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.171  Attribute msDS-BridgeHeadServersUsed
+### 2.171 Attribute msDS-BridgeHeadServersUsed
 
 This attribute specifies a list of bridgehead servers used by the KCC in the previous run.
 
@@ -4905,7 +4722,8 @@ Release: September 12, 2018
 
 69 / 170
 
-2.172  Attribute msDS-DefaultNamingContext
+
+### 2.172 Attribute msDS-DefaultNamingContext
 
 This attribute specifies the default naming context (partition) for this AD LDS instance.
 
@@ -4924,7 +4742,7 @@ This attribute specifies the default naming context (partition) for this AD LDS 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.173  Attribute msDS-DefaultNamingContextBL
+### 2.173 Attribute msDS-DefaultNamingContextBL
 
 This attribute specifies a backlink reference for the msDS-DefaultNamingContext attribute.
 
@@ -4943,7 +4761,7 @@ This attribute specifies a backlink reference for the msDS-DefaultNamingContext 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.174  Attribute msDS-DefaultQuota
+### 2.174 Attribute msDS-DefaultQuota
 
 This attribute specifies the default quota that will apply to a security principal that creates an object in
 the NC if no quota specification exists that covers the security principal.
@@ -4968,7 +4786,8 @@ Release: September 12, 2018
 
 70 / 170
 
-2.175  Attribute msDS-DeletedObjectLifetime
+
+### 2.175 Attribute msDS-DeletedObjectLifetime
 
 If the Recycle Bin optional feature is enabled, this attribute specifies the number of days before a
 deleted object is converted to a recycled object. If the Recycle Bin optional feature is not enabled,
@@ -4987,7 +4806,7 @@ values of this attribute have no meaning or effect.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.176  Attribute msDS-DisableForInstances
+### 2.176 Attribute msDS-DisableForInstances
 
 This attribute specifies the set of DSA objects, representing AD LDS instances, for which Service
 Connection Point publication is disabled.
@@ -5007,7 +4826,7 @@ Connection Point publication is disabled.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.177  Attribute msDS-DisableForInstancesBL
+### 2.177 Attribute msDS-DisableForInstancesBL
 
 This attribute specifies the backlink reference to the ms-DS-Service-Connection-Point-Publication-
 Service object.
@@ -5034,7 +4853,8 @@ Release: September 12, 2018
 
 71 / 170
 
-2.178  Attribute msDS-DnsRootAlias
+
+### 2.178 Attribute msDS-DnsRootAlias
 
 This attribute is used to store the domain alias.
 
@@ -5053,7 +4873,7 @@ This attribute is used to store the domain alias.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.179  Attribute msDS-EnabledFeature
+### 2.179 Attribute msDS-EnabledFeature
 
 This attribute lists the enabled optional features.
 
@@ -5073,7 +4893,7 @@ This attribute lists the enabled optional features.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.180  Attribute msDS-EnabledFeatureBL
+### 2.180 Attribute msDS-EnabledFeatureBL
 
 This attribute is the backlink attribute of msDS-EnabledFeature, and it lists the scopes where an
 optional feature is enabled.
@@ -5100,7 +4920,8 @@ Release: September 12, 2018
 
 72 / 170
 
-2.181  Attribute msDS-Entry-Time-To-Die
+
+### 2.181 Attribute msDS-Entry-Time-To-Die
 
 This attribute holds the absolute expiration time of a dynamic object in the directory.
 
@@ -5118,7 +4939,7 @@ This attribute holds the absolute expiration time of a dynamic object in the dir
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.182  Attribute msDS-ExecuteScriptPassword
+### 2.182 Attribute msDS-ExecuteScriptPassword
 
 This attribute is used during domain rename operation. This value cannot be written to or read from
 with LDAP.
@@ -5138,7 +4959,7 @@ with LDAP.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.183  Attribute msDS-FilterContainers
+### 2.183 Attribute msDS-FilterContainers
 
 A multivalued string attribute containing the names of classes that are used to determine which
 container types are shown by the Active Directory Users and Computers snap-in when filtering.
@@ -5163,7 +4984,8 @@ Release: September 12, 2018
 
 73 / 170
 
-2.184  Attribute msDS-HasDomainNCs
+
+### 2.184 Attribute msDS-HasDomainNCs
 
 This attribute specifies DS replication information that details the domain NCs that are present on a
 particular server.
@@ -5185,7 +5007,7 @@ particular server.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.185  Attribute msDS-HasInstantiatedNCs
+### 2.185 Attribute msDS-HasInstantiatedNCs
 
 This attribute specifies DS replication information that details the state of the NCs that are present on
 a particular server.
@@ -5207,7 +5029,7 @@ a particular server.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.186  Attribute msDS-hasMasterNCs
+### 2.186 Attribute msDS-hasMasterNCs
 
 This attribute specifies a list of the naming contexts contained by a DC.
 
@@ -5231,9 +5053,10 @@ Release: September 12, 2018
 
 74 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.187  Attribute msDS-IntId
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.187 Attribute msDS-IntId
 
 The ms-DS-IntId attribute is for internal use only.
 
@@ -5250,7 +5073,7 @@ The ms-DS-IntId attribute is for internal use only.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.188  Attribute msds-memberOfTransitive
+### 2.188 Attribute msds-memberOfTransitive
 
 This attribute specifies the set of distinguished names (DNs) in the memberOf attribute on the current
 object and the DNs from the memberOf attributes of each of the objects specified in the memberOf
@@ -5271,7 +5094,7 @@ attribute on the current object.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2 operating system.
 
-2.189  Attribute msds-memberTransitive
+### 2.189 Attribute msds-memberTransitive
 
 This attribute specifies the set of distinguished names (DNs) in the member attribute on the current
 object and the DNs from the member attribute of each of the objects specified in the member
@@ -5297,9 +5120,10 @@ Release: September 12, 2018
 
 75 / 170
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.190  Attribute msDS-LastKnownRDN
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.190 Attribute msDS-LastKnownRDN
 
 This attribute holds the original RDN of a deleted object.
 
@@ -5318,7 +5142,7 @@ This attribute holds the original RDN of a deleted object.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.191  Attribute msDS-LocalEffectiveDeletionTime
+### 2.191 Attribute msDS-LocalEffectiveDeletionTime
 
 This attribute stores the deletion time of the object in the local domain controller.
 
@@ -5335,7 +5159,7 @@ This attribute stores the deletion time of the object in the local domain contro
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.192  Attribute msDS-LocalEffectiveRecycleTime
+### 2.192 Attribute msDS-LocalEffectiveRecycleTime
 
 This attribute stores the recycle time of the object in the local domain controller.
 
@@ -5352,7 +5176,7 @@ This attribute stores the recycle time of the object in the local domain control
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.193  Attribute msDs-masteredBy
+### 2.193 Attribute msDs-masteredBy
 
 This attribute specifies the backlink for msDS-hasMasterNCs.
 
@@ -5363,7 +5187,8 @@ Release: September 12, 2018
 
 76 / 170
 
- cn: ms-DS-Mastered-By
+
+ cn: ms-DS-Mastered-By
  ldapDisplayName: msDs-masteredBy
  attributeId: 1.2.840.113556.1.4.1837
  attributeSyntax: 2.5.5.1
@@ -5378,7 +5203,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.194  Attribute msDS-MembersForAzRole
+### 2.194 Attribute msDS-MembersForAzRole
 
 This attribute specifies the list of member application groups or users linked to Az-Role.
 
@@ -5397,7 +5222,7 @@ This attribute specifies the list of member application groups or users linked t
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.195  Attribute msDS-MembersForAzRoleBL
+### 2.195 Attribute msDS-MembersForAzRoleBL
 
 This attribute specifies the backlink from a member application group or user to the Az-Role objects
 that link to it.
@@ -5417,7 +5242,7 @@ that link to it.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.196  Attribute msDS-NC-Replica-Locations
+### 2.196 Attribute msDS-NC-Replica-Locations
 
 This attribute specifies a list of servers that are the replica set for the corresponding non-domain
 naming context.
@@ -5429,7 +5254,8 @@ Release: September 12, 2018
 
 77 / 170
 
- cn: ms-DS-NC-Replica-Locations
+
+ cn: ms-DS-NC-Replica-Locations
  ldapDisplayName: msDS-NC-Replica-Locations
  attributeId: 1.2.840.113556.1.4.1661
  attributeSyntax: 2.5.5.1
@@ -5444,7 +5270,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.197  Attribute msDS-NCReplCursors
+### 2.197 Attribute msDS-NCReplCursors
 
 This attribute specifies a list of past and present replication partners for a particular machine, and how
 up-to-date that machine is with each of them.
@@ -5462,7 +5288,7 @@ up-to-date that machine is with each of them.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.198  Attribute msDS-NCReplInboundNeighbors
+### 2.198 Attribute msDS-NCReplInboundNeighbors
 
 This attribute specifies replication partners for this partition. This server obtains replication data from
 these other servers, which act as sources.
@@ -5480,7 +5306,7 @@ these other servers, which act as sources.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.199  Attribute msDS-NCReplOutboundNeighbors
+### 2.199 Attribute msDS-NCReplOutboundNeighbors
 
 This attribute specifies replication partners for this partition. This server sends replication data to
 these other servers, which act as destinations. This server will notify these other servers when new
@@ -5495,7 +5321,8 @@ Release: September 12, 2018
 
 78 / 170
 
- ldapDisplayName: msDS-NCReplOutboundNeighbors
+
+ ldapDisplayName: msDS-NCReplOutboundNeighbors
  attributeId: 1.2.840.113556.1.4.1706
  attributeSyntax: 2.5.5.12
  omSyntax: 64
@@ -5507,7 +5334,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.200  Attribute msDS-Non-Security-Group-Extra-Classes
+### 2.200 Attribute msDS-Non-Security-Group-Extra-Classes
 
 This attribute specifies the common names of the nonstandard classes that can be added to a non-
 security group through the Active Directory Users and Computers snap-in.
@@ -5523,7 +5350,7 @@ security group through the Active Directory Users and Computers snap-in.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.201  Attribute msDS-NonMembers
+### 2.201 Attribute msDS-NonMembers
 
 This attribute serves the same purpose as the Non-Security-Member attribute but with scoping
 rules applied.
@@ -5543,7 +5370,7 @@ rules applied.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.202  Attribute msDS-NonMembersBL
+### 2.202 Attribute msDS-NonMembersBL
 
 This attribute specifies the backlink from a non-member group or user to the Az groups that link to it
 (has the same functionality as Non-Security-Member-BL).
@@ -5561,7 +5388,8 @@ Release: September 12, 2018
 
 79 / 170
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: FALSE
  schemaIdGuid: 2a8c68fc-3a7a-4e87-8720-fe77c51cbe74
  systemOnly: TRUE
@@ -5571,7 +5399,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.203  Attribute msDS-OperationsForAzRole
+### 2.203 Attribute msDS-OperationsForAzRole
 
 This attribute specifies a list of operations linked to Az-Role.
 
@@ -5589,7 +5417,7 @@ This attribute specifies a list of operations linked to Az-Role.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.204  Attribute msDS-OperationsForAzRoleBL
+### 2.204 Attribute msDS-OperationsForAzRoleBL
 
 This attribute specifies the backlink from Az-Operation to the Az-Role objects that link to it.
 
@@ -5608,7 +5436,7 @@ This attribute specifies the backlink from Az-Operation to the Az-Role objects t
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.205  Attribute msDS-OperationsForAzTask
+### 2.205 Attribute msDS-OperationsForAzTask
 
 This attribute specifies a list of operations linked to Az-Task.
 
@@ -5628,14 +5456,15 @@ Release: September 12, 2018
 
 80 / 170
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  linkID: 2018
  showInAdvancedViewOnly: TRUE
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.206  Attribute msDS-OperationsForAzTaskBL
+### 2.206 Attribute msDS-OperationsForAzTaskBL
 
 This attribute specifies the backlink from Az-Operation to the Az-Task objects that link to it.
 
@@ -5654,7 +5483,7 @@ This attribute specifies the backlink from Az-Operation to the Az-Task objects t
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.207  Attribute msDS-OptionalFeatureFlags
+### 2.207 Attribute msDS-OptionalFeatureFlags
 
 This attribute stores an integer value that contains flags that define behavior of an optional feature in
 Active Directory.
@@ -5673,7 +5502,7 @@ Active Directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.208  Attribute msDS-OptionalFeatureGUID
+### 2.208 Attribute msDS-OptionalFeatureGUID
 
 This attribute stores the GUID of an optional feature.
 
@@ -5694,13 +5523,14 @@ Release: September 12, 2018
 
 81 / 170
 
- rangeLower: 16
+
+ rangeLower: 16
  rangeUpper: 16
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.209  Attribute msDS-Other-Settings
+### 2.209 Attribute msDS-Other-Settings
 
 This multivalued attribute is used to store any configurable setting for the DS stored in the
 NAME=VALUE format.
@@ -5718,7 +5548,7 @@ NAME=VALUE format.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.210  Attribute msDS-parentdistname
+### 2.210 Attribute msDS-parentdistname
 
 This attribute specifies the distinguished name (DN) of the parent object of the current object.
 
@@ -5738,7 +5568,7 @@ This attribute specifies the distinguished name (DN) of the parent object of the
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.211  Attribute msDS-PortLDAP
+### 2.211 Attribute msDS-PortLDAP
 
 This attribute is used to specify which port is used by the Directory Service to listen for LDAP requests.
 Currently, this attribute is only used for AD LDS.
@@ -5760,13 +5590,14 @@ Release: September 12, 2018
 
 82 / 170
 
- rangeLower: 0
+
+ rangeLower: 0
  rangeUpper: 65535
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.212  Attribute msDS-PortSSL
+### 2.212 Attribute msDS-PortSSL
 
 ms-Ds-Port-SSL is used to specify which port is used by the Directory Service to listen for SSL-
 protected LDAP requests. Currently, this attribute is used only for AD LDS.
@@ -5786,7 +5617,7 @@ protected LDAP requests. Currently, this attribute is used only for AD LDS.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.213  Attribute msDS-Preferred-GC-Site
+### 2.213 Attribute msDS-Preferred-GC-Site
 
 The ms-DS-Preferred-GC-Site attribute is used by the security accounts manager for group expansion
 during token evaluation.
@@ -5805,7 +5636,7 @@ during token evaluation.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.214  Attribute msDS-PrincipalName
+### 2.214 Attribute msDS-PrincipalName
 
 This attribute specifies the account name for the security principal (constructed).
 
@@ -5826,11 +5657,12 @@ Release: September 12, 2018
 
 83 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.215  Attribute msDS-QuotaAmount
+### 2.215 Attribute msDS-QuotaAmount
 
 This attribute specifies the assigned quota in terms of number of objects owned in the database.
 
@@ -5847,7 +5679,7 @@ This attribute specifies the assigned quota in terms of number of objects owned 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.216  Attribute msDS-QuotaEffective
+### 2.216 Attribute msDS-QuotaEffective
 
 This attribute specifies the effective quota for a security principal computed from the assigned quotas
 for a naming context.
@@ -5865,7 +5697,7 @@ for a naming context.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.217  Attribute msDS-QuotaTrustee
+### 2.217 Attribute msDS-QuotaTrustee
 
 This attribute specifies the SID, as defined in [MS-DTYP] section 2.4.2, of the security principal for
 which a quota is being assigned.
@@ -5890,9 +5722,10 @@ Release: September 12, 2018
 
 84 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.218  Attribute msDS-QuotaUsed
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.218 Attribute msDS-QuotaUsed
 
 This attribute specifies the current quota being consumed by a security principal in the directory
 database.
@@ -5910,7 +5743,7 @@ database.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.219  Attribute msDS-ReplAttributeMetaData
+### 2.219 Attribute msDS-ReplAttributeMetaData
 
 This attribute specifies a list of metadata for each replicated attribute. The metadata indicates who
 changed the attribute last.
@@ -5928,7 +5761,7 @@ changed the attribute last.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.220  Attribute msDS-ReplAuthenticationMode
+### 2.220 Attribute msDS-ReplAuthenticationMode
 
 The ms-DS-Repl-Authentication-Mode attribute is used to specify which authentication method is
 used to authenticate replication partners. This attribute applies to the configuration partition of an AD
@@ -5955,7 +5788,8 @@ Release: September 12, 2018
 
 85 / 170
 
-2.221  Attribute msDS-Replication-Notify-First-DSA-Delay
+
+### 2.221 Attribute msDS-Replication-Notify-First-DSA-Delay
 
 This attribute controls the delay between changes to the DS and notification of the first replica partner
 for an NC.
@@ -5973,7 +5807,7 @@ for an NC.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.222  Attribute msDS-Replication-Notify-Subsequent-DSA-Delay
+### 2.222 Attribute msDS-Replication-Notify-Subsequent-DSA-Delay
 
 This attribute controls the delay between notification of each subsequent replica partner for an NC.
 
@@ -5990,7 +5824,7 @@ This attribute controls the delay between notification of each subsequent replic
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.223  Attribute msDS-ReplicationEpoch
+### 2.223 Attribute msDS-ReplicationEpoch
 
 This attribute is used to hold the epoch under which all of the DCs are replicating. An epoch is the
 period in which a domain has a specific name. A new epoch starts when a domain name change
@@ -6009,7 +5843,7 @@ occurs.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.224  Attribute msDS-ReplValueMetaData
+### 2.224 Attribute msDS-ReplValueMetaData
 
 This attribute specifies a list of metadata for each value of an attribute. The metadata indicates who
 changed the value last.
@@ -6021,7 +5855,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: ms-DS-Repl-Value-Meta-Data
+
+ cn: ms-DS-Repl-Value-Meta-Data
  ldapDisplayName: msDS-ReplValueMetaData
  attributeId: 1.2.840.113556.1.4.1708
  attributeSyntax: 2.5.5.12
@@ -6034,7 +5869,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.225  Attribute msDS-ReplValueMetaDataExt
+### 2.225 Attribute msDS-ReplValueMetaDataExt
 
 This attribute contains no values on any object.
 
@@ -6052,7 +5887,7 @@ This attribute contains no values on any object.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.226  Attribute msDS-RequiredDomainBehaviorVersion
+### 2.226 Attribute msDS-RequiredDomainBehaviorVersion
 
 This attribute specifies the required domain functional level for an optional feature enabled in a
 domain-wide scope.
@@ -6070,7 +5905,7 @@ domain-wide scope.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.227  Attribute msDS-RequiredForestBehaviorVersion
+### 2.227 Attribute msDS-RequiredForestBehaviorVersion
 
 This attribute specifies the required forest functional level for an optional feature.
 
@@ -6086,7 +5921,8 @@ Release: September 12, 2018
 
 87 / 170
 
- omSyntax: 2
+
+ omSyntax: 2
  isSingleValued: TRUE
  schemaIdGuid: 4beca2e8-a653-41b2-8fee-721575474bec
  systemOnly: TRUE
@@ -6095,7 +5931,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.228  Attribute msDS-RetiredReplNCSignatures
+### 2.228 Attribute msDS-RetiredReplNCSignatures
 
 This attribute specifies information about naming contexts that are no longer held on this computer.
 
@@ -6112,7 +5948,7 @@ This attribute specifies information about naming contexts that are no longer he
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.229  Attribute msDs-Schema-Extensions
+### 2.229 Attribute msDs-Schema-Extensions
 
 This attribute specifies a binary BLOB used to store information about extensions to schema objects.
 
@@ -6129,7 +5965,7 @@ This attribute specifies a binary BLOB used to store information about extension
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.230  Attribute msDS-SCPContainer
+### 2.230 Attribute msDS-SCPContainer
 
 This attribute specifies the custom location to place SCP objects. This attribute contains a DN value
 (either FQDN or GUID–based) for the container in Active Directory.
@@ -6151,13 +5987,14 @@ Release: September 12, 2018
 
 88 / 170
 
- rangeLower: 0
+
+ rangeLower: 0
  rangeUpper: 4096
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.231  Attribute msDS-SDReferenceDomain
+### 2.231 Attribute msDS-SDReferenceDomain
 
 This attribute specifies the domain to be used for default security descriptor translation for a non-
 domain naming context.
@@ -6177,7 +6014,7 @@ domain naming context.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.232  Attribute msDS-Security-Group-Extra-Classes
+### 2.232 Attribute msDS-Security-Group-Extra-Classes
 
 This attribute specifies the common names of the nonstandard classes that can be added to a security
 group through the Active Directory Users and Computers snap-in.
@@ -6193,7 +6030,7 @@ group through the Active Directory Users and Computers snap-in.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.233  Attribute msDS-ServiceAccount
+### 2.233 Attribute msDS-ServiceAccount
 
 This attribute specifies the FPO representing the AD LDS service account.
 
@@ -6216,11 +6053,12 @@ Release: September 12, 2018
 
 89 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.234  Attribute msDS-ServiceAccountBL
+### 2.234 Attribute msDS-ServiceAccountBL
 
 This attribute specifies a backlink reference to the AD LDS DSA object that uses this service account.
 
@@ -6239,7 +6077,7 @@ This attribute specifies a backlink reference to the AD LDS DSA object that uses
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.235  Attribute msDS-ServiceAccountDNSDomain
+### 2.235 Attribute msDS-ServiceAccountDNSDomain
 
 This attribute specifies the domain of which the AD LDS service account is a member.
 
@@ -6258,7 +6096,7 @@ This attribute specifies the domain of which the AD LDS service account is a mem
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.236  Attribute msDS-Settings
+### 2.236 Attribute msDS-Settings
 
 This attribute is used to store settings for an object. Its use is solely determined by the object's
 owner. It is recommended to use it to store name/value pairs; for example, color=blue.
@@ -6281,9 +6119,10 @@ Release: September 12, 2018
 
 90 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.237  Attribute msDS-TasksForAzRole
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.237 Attribute msDS-TasksForAzRole
 
 This attribute specifies a list of tasks for Az-Role.
 
@@ -6301,7 +6140,7 @@ This attribute specifies a list of tasks for Az-Role.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.238  Attribute msDS-TasksForAzRoleBL
+### 2.238 Attribute msDS-TasksForAzRoleBL
 
 This attribute specifies a backlink from Az-Task to the Az-Role objects that link to it.
 
@@ -6321,7 +6160,7 @@ This attribute specifies a backlink from Az-Task to the Az-Role objects that lin
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.239  Attribute msDS-TasksForAzTask
+### 2.239 Attribute msDS-TasksForAzTask
 
 This attribute specifies a list of tasks linked to Az-Task.
 
@@ -6346,7 +6185,8 @@ Release: September 12, 2018
 
 91 / 170
 
-2.240  Attribute msDS-TasksForAzTaskBL
+
+### 2.240 Attribute msDS-TasksForAzTaskBL
 
 This attribute specifies a backlink from Az-Task to the Az-Task objects that link to it.
 
@@ -6365,7 +6205,7 @@ This attribute specifies a backlink from Az-Task to the Az-Task objects that lin
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.241  Attribute msDS-TombstoneQuotaFactor
+### 2.241 Attribute msDS-TombstoneQuotaFactor
 
 This attribute specifies the percentage factor by which the tombstone object count is reduced for the
 purpose of quota accounting.
@@ -6385,7 +6225,7 @@ purpose of quota accounting.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.242  Attribute msDS-TopQuotaUsage
+### 2.242 Attribute msDS-TopQuotaUsage
 
 This attribute lists the top quota users, ordered by decreasing quota usage currently in the directory
 database.
@@ -6410,7 +6250,8 @@ Release: September 12, 2018
 
 92 / 170
 
-2.243  Attribute msDS-UpdateScript
+
+### 2.243 Attribute msDS-UpdateScript
 
 This attribute is used to hold the script with the domain restructure instructions.
 
@@ -6427,7 +6268,7 @@ This attribute is used to hold the script with the domain restructure instructio
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.244  Attribute msDS-User-Account-Control-Computed
+### 2.244 Attribute msDS-User-Account-Control-Computed
 
 This attribute specifies flags that control behavior of the user account. For more information, see [MS-
 ADTS] section 3.1.1.4.5.17.
@@ -6446,7 +6287,7 @@ ADTS] section 3.1.1.4.5.17.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.245  Attribute msDS-UserAccountDisabled
+### 2.245 Attribute msDS-UserAccountDisabled
 
 This attribute specifies a Boolean flag that controls whether an account is disabled or enabled.
 
@@ -6463,7 +6304,7 @@ This attribute specifies a Boolean flag that controls whether an account is disa
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.246  Attribute msDS-UserDontExpirePassword
+### 2.246 Attribute msDS-UserDontExpirePassword
 
 This attribute specifies a Boolean flag that controls whether the password will expire for the account
 that this attribute references.
@@ -6475,7 +6316,8 @@ Release: September 12, 2018
 
 93 / 170
 
- cn: ms-DS-User-Dont-Expire-Password
+
+ cn: ms-DS-User-Dont-Expire-Password
  ldapDisplayName: msDS-UserDontExpirePassword
  attributeId: 1.2.840.113556.1.4.1855
  attributeSyntax: 2.5.5.8
@@ -6488,7 +6330,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.247  Attribute msDS-UserPasswordExpired
+### 2.247 Attribute msDS-UserPasswordExpired
 
 This attribute specifies a Boolean flag that indicates whether the password has expired for the account
 that this attribute references. TRUE means that the password has expired.
@@ -6506,7 +6348,7 @@ that this attribute references. TRUE means that the password has expired.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.248  Attribute msDS-USNLastSyncSuccess
+### 2.248 Attribute msDS-USNLastSyncSuccess
 
 This attribute specifies the USN at which the last successful replication synchronization occurred.
 
@@ -6525,7 +6367,7 @@ This attribute specifies the USN at which the last successful replication synchr
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.249  Attribute mustContain
+### 2.249 Attribute mustContain
 
 This attribute specifies the list of mandatory attributes for a class. These attributes have to be
 specified when an instance of the class is created.
@@ -6541,7 +6383,8 @@ Release: September 12, 2018
 
 94 / 170
 
- attributeSyntax: 2.5.5.2
+
+ attributeSyntax: 2.5.5.2
  omSyntax: 6
  isSingleValued: FALSE
  schemaIdGuid: bf9679d3-0de6-11d0-a285-00aa003049e2
@@ -6551,7 +6394,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.250  Attribute name
+### 2.250 Attribute name
 
 This attribute specifies the relative distinguished name of an object.
 
@@ -6573,7 +6416,7 @@ This attribute specifies the relative distinguished name of an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.251  Attribute nCName
+### 2.251 Attribute nCName
 
 This attribute specifies the distinguished name of the naming context for the object.
 
@@ -6591,7 +6434,7 @@ This attribute specifies the distinguished name of the naming context for the ob
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.252  Attribute nETBIOSName
+### 2.252 Attribute nETBIOSName
 
 This attribute specifies the name of the object to be used over NetBIOS.
 
@@ -6608,7 +6451,8 @@ Release: September 12, 2018
 
 95 / 170
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: bf9679d8-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: fATTINDEX
@@ -6618,7 +6462,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.253  Attribute networkAddress
+### 2.253 Attribute networkAddress
 
 This attribute specifies the TCP/IP address for a network segment. Also called the subnet address.
 
@@ -6636,7 +6480,7 @@ This attribute specifies the TCP/IP address for a network segment. Also called t
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.254  Attribute nonIndexedMetadata
+### 2.254 Attribute nonIndexedMetadata
 
 ms-DS-Non-Indexed-Metadata
 
@@ -6649,7 +6493,7 @@ ms-DS-Non-Indexed-Metadata
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.255  Attribute notificationList
+### 2.255 Attribute notificationList
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -6672,11 +6516,12 @@ Release: September 12, 2018
 
 96 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.256  Attribute ntPwdHistory
+### 2.256 Attribute ntPwdHistory
 
 This attribute specifies the password history of the user in Windows NT operating system one-way
 format (OWF). Windows 2000 operating system uses the Windows NT OWF.
@@ -6694,7 +6539,7 @@ format (OWF). Windows 2000 operating system uses the Windows NT OWF.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.257  Attribute nTSecurityDescriptor
+### 2.257 Attribute nTSecurityDescriptor
 
 This attribute specifies the Windows NT security descriptor for an object.
 
@@ -6715,7 +6560,7 @@ This attribute specifies the Windows NT security descriptor for an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.258  Attribute o
+### 2.258 Attribute o
 
 This attribute specifies the name of the company or organization.
 
@@ -6738,14 +6583,15 @@ Release: September 12, 2018
 
 97 / 170
 
- attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
+
+ attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
  isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT |
   FLAG_ATTR_REQ_PARTIAL_SET_MEMBER
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.259  Attribute objectCategory
+### 2.259 Attribute objectCategory
 
 This attribute specifies an object class name used to group objects of this or derived classes.
 
@@ -6766,7 +6612,7 @@ This attribute specifies an object class name used to group objects of this or d
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.260  Attribute objectClass
+### 2.260 Attribute objectClass
 
 This attribute specifies the list of classes of which this object is an instance.
 
@@ -6786,7 +6632,7 @@ This attribute specifies the list of classes of which this object is an instance
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.261  Attribute objectClassCategory
+### 2.261 Attribute objectClassCategory
 
 This attribute contains the class type, such as abstract, auxiliary, or structured.
 
@@ -6805,7 +6651,8 @@ Release: September 12, 2018
 
 98 / 170
 
- systemOnly: TRUE
+
+ systemOnly: TRUE
  searchFlags: 0
  rangeLower: 0
  rangeUpper: 3
@@ -6813,7 +6660,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.262  Attribute objectClasses
+### 2.262 Attribute objectClasses
 
 This attribute is a multivalued property containing strings that represent each class in the schema.
 Each value contains the governsID, lDAPDisplayName, mustContain, mayContain, and so on.
@@ -6832,7 +6679,7 @@ Each value contains the governsID, lDAPDisplayName, mustContain, mayContain, and
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.263  Attribute objectGUID
+### 2.263 Attribute objectGUID
 
 This attribute specifies the unique identifier for an object.
 
@@ -6854,7 +6701,7 @@ This attribute specifies the unique identifier for an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.264  Attribute objectSid
+### 2.264 Attribute objectSid
 
 This attribute contains a binary value that specifies the security identifier (SID) of a security principal
 object. The SID is a unique value used to identify security principal objects.
@@ -6871,7 +6718,8 @@ Release: September 12, 2018
 
 99 / 170
 
- omSyntax: 4
+
+ omSyntax: 4
  isSingleValued: TRUE
  schemaIdGuid: bf9679e8-0de6-11d0-a285-00aa003049e2
  systemOnly: TRUE
@@ -6885,7 +6733,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.265  Attribute objectVersion
+### 2.265 Attribute objectVersion
 
 This attribute can be used to store a version number for the object.
 
@@ -6902,7 +6750,7 @@ This attribute can be used to store a version number for the object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.266  Attribute oMObjectClass
+### 2.266 Attribute oMObjectClass
 
 This attribute specifies the unique OID for the attribute or class.
 
@@ -6919,7 +6767,7 @@ This attribute specifies the unique OID for the attribute or class.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.267  Attribute oMSyntax
+### 2.267 Attribute oMSyntax
 
 Used as part of specifying the syntax of an attribute. See [MS-ADTS] section 3.1.1.2.2.2, LDAP
 Representation, for information on how this object is used by the Active Directory service.
@@ -6937,7 +6785,8 @@ Release: September 12, 2018
 
 100 / 170
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: bf9679ed-0de6-11d0-a285-00aa003049e2
  systemOnly: TRUE
  searchFlags: fPRESERVEONDELETE
@@ -6945,7 +6794,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.268  Attribute options
+### 2.268 Attribute options
 
 This attribute is a bit field, where the meaning of the bits varies from objectClass to objectClass. Can
 occur on Inter-Site-Transport, NTDS-Connection, NTDS-DSA, NTDS-Site-Settings, and Site-Link
@@ -6964,7 +6813,7 @@ objects.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.269  Attribute otherFacsimileTelephoneNumber
+### 2.269 Attribute otherFacsimileTelephoneNumber
 
 This attribute specifies a list of alternate facsimile numbers.
 
@@ -6983,7 +6832,7 @@ This attribute specifies a list of alternate facsimile numbers.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.270  Attribute otherHomePhone
+### 2.270 Attribute otherHomePhone
 
 This attribute specifies a list of alternate home phone numbers.
 
@@ -7003,14 +6852,15 @@ Release: September 12, 2018
 
 101 / 170
 
- searchFlags: 0
+
+ searchFlags: 0
  rangeLower: 1
  rangeUpper: 64
  attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.271  Attribute otherIpPhone
+### 2.271 Attribute otherIpPhone
 
 This attribute specifies the list of alternate TCP/IP addresses for the phone. Used by telephony.
 
@@ -7028,7 +6878,7 @@ This attribute specifies the list of alternate TCP/IP addresses for the phone. U
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.272  Attribute otherMobile
+### 2.272 Attribute otherMobile
 
 This attribute specifies a list of alternate cell phone numbers.
 
@@ -7047,7 +6897,7 @@ This attribute specifies a list of alternate cell phone numbers.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.273  Attribute otherPager
+### 2.273 Attribute otherPager
 
 This attribute specifies a list of alternate pager numbers.
 
@@ -7070,11 +6920,12 @@ Release: September 12, 2018
 
 102 / 170
 
- attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
+
+ attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.274  Attribute otherTelephone
+### 2.274 Attribute otherTelephone
 
 This attribute specifies a list of alternate office phone numbers.
 
@@ -7093,7 +6944,7 @@ This attribute specifies a list of alternate office phone numbers.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.275  Attribute otherWellKnownObjects
+### 2.275 Attribute otherWellKnownObjects
 
 This attribute contains a list of containers by GUID and distinguished name. This permits retrieving an
 object after it has been moved by using just the GUID and the domain name. Whenever the object is
@@ -7115,7 +6966,7 @@ moved, the Active Directory system will automatically update the distinguished n
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.276  Attribute ou
+### 2.276 Attribute ou
 
 This attribute specifies the name of the organizational unit.
 
@@ -7136,7 +6987,8 @@ Release: September 12, 2018
 
 103 / 170
 
- rangeLower: 1
+
+ rangeLower: 1
  rangeUpper: 64
  attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
  isMemberOfPartialAttributeSet: TRUE
@@ -7145,7 +6997,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.277  Attribute owner
+### 2.277 Attribute owner
 
 This attribute specifies the distinguished name of an object that has ownership of an object.
 
@@ -7163,7 +7015,7 @@ This attribute specifies the distinguished name of an object that has ownership 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.278  Attribute ownerBL
+### 2.278 Attribute ownerBL
 
 This attribute specifies the backlink to the owner attribute. It contains a list of owners for an object.
 
@@ -7182,7 +7034,7 @@ This attribute specifies the backlink to the owner attribute. It contains a list
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.279  Attribute pager
+### 2.279 Attribute pager
 
 This attribute specifies the primary pager number.
 
@@ -7203,13 +7055,14 @@ Release: September 12, 2018
 
 104 / 170
 
- rangeLower: 1
+
+ rangeLower: 1
  rangeUpper: 64
  attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.280  Attribute parentGUID
+### 2.280 Attribute parentGUID
 
 This is a constructed attribute, invented to support the DirSync control. Holds the objectGuid of an
 object's parent when replicating an object's creation, rename, or move.
@@ -7228,7 +7081,7 @@ object's parent when replicating an object's creation, rename, or move.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.281  Attribute partialAttributeDeletionList
+### 2.281 Attribute partialAttributeDeletionList
 
 This attribute tacks the internal replication state of partial replicas (that is, on GCs). It is an attribute
 of the partial replica NC object, and is used when the GC is in the process of removing attributes from
@@ -7249,7 +7102,7 @@ the objects in its partial replica NCs.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.282  Attribute partialAttributeSet
+### 2.282 Attribute partialAttributeSet
 
 This attribute tracks the internal replication state of partial replicas (that is, on GCs). It is an attribute
 of the partial replica NC object, and defines the set of attributes present on a particular partial replica
@@ -7269,7 +7122,8 @@ Release: September 12, 2018
 
 105 / 170
 
- schemaIdGuid: 19405b9e-3cfa-11d1-a9c0-0000f80367c1
+
+ schemaIdGuid: 19405b9e-3cfa-11d1-a9c0-0000f80367c1
  systemOnly: TRUE
  searchFlags: 0
  isMemberOfPartialAttributeSet: TRUE
@@ -7278,7 +7132,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.283  Attribute pekList
+### 2.283 Attribute pekList
 
 This attribute specifies a list of password encryption keys. The attribute is used internally. It is not
 replicated and its content is not accessible through any protocol. For more information see [MS-ADTS]
@@ -7297,7 +7151,7 @@ section 3.1.1.4.4 (Extended Access Checks).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.284  Attribute personalTitle
+### 2.284 Attribute personalTitle
 
 This attribute specifies the user's title.
 
@@ -7316,7 +7170,7 @@ This attribute specifies the user's title.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.285  Attribute photo
+### 2.285 Attribute photo
 
 This attribute specifies an object encoded in G3 fax as explained in recommendation T.4, with an
 ASN.1 wrapper to make it compatible with an X.400 BodyPart as defined in X.420.
@@ -7335,14 +7189,15 @@ Release: September 12, 2018
 
 106 / 170
 
- schemaIdGuid: 9c979768-ba1a-4c08-9632-c6a5c1ed649a
+
+ schemaIdGuid: 9c979768-ba1a-4c08-9632-c6a5c1ed649a
  systemOnly: FALSE
  searchFlags: 0
  showInAdvancedViewOnly: FALSE
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.286  Attribute physicalDeliveryOfficeName
+### 2.286 Attribute physicalDeliveryOfficeName
 
 This attribute contains the office location in the user's place of business.
 
@@ -7362,7 +7217,7 @@ This attribute contains the office location in the user's place of business.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.287  Attribute possibleInferiors
+### 2.287 Attribute possibleInferiors
 
 This attribute specifies the list of objects that this object can contain.
 
@@ -7380,7 +7235,7 @@ This attribute specifies the list of objects that this object can contain.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.288  Attribute possSuperiors
+### 2.288 Attribute possSuperiors
 
 This attribute specifies the list of objects that can contain this class.
 
@@ -7402,11 +7257,12 @@ Release: September 12, 2018
 
 107 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.289  Attribute postalAddress
+### 2.289 Attribute postalAddress
 
 This attribute specifies the mailing address for the object.
 
@@ -7426,7 +7282,7 @@ This attribute specifies the mailing address for the object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.290  Attribute postalCode
+### 2.290 Attribute postalCode
 
 This attribute specifies the postal or ZIP code for mail delivery.
 
@@ -7446,7 +7302,7 @@ This attribute specifies the postal or ZIP code for mail delivery.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.291  Attribute postOfficeBox
+### 2.291 Attribute postOfficeBox
 
 This attribute specifies the P.O. box number for this object.
 
@@ -7469,12 +7325,13 @@ Release: September 12, 2018
 
 108 / 170
 
- attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
+
+ attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.292  Attribute preferredDeliveryMethod
+### 2.292 Attribute preferredDeliveryMethod
 
 This attribute specifies the X.500–preferred way [X500] to deliver to the addressee.
 
@@ -7492,7 +7349,7 @@ This attribute specifies the X.500–preferred way [X500] to deliver to the addr
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.293  Attribute preferredLanguage
+### 2.293 Attribute preferredLanguage
 
 This attribute specifies the preferred written or spoken language for a person.
 
@@ -7509,7 +7366,7 @@ This attribute specifies the preferred written or spoken language for a person.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.294  Attribute preferredOU
+### 2.294 Attribute preferredOU
 
 This attribute specifies the organizational unit to show by default on the user's desktop.
 
@@ -7533,7 +7390,8 @@ Release: September 12, 2018
 
 109 / 170
 
-2.295  Attribute prefixMap
+
+### 2.295 Attribute prefixMap
 
 The Prefix-Map attribute is for internal use only.
 
@@ -7550,7 +7408,7 @@ The Prefix-Map attribute is for internal use only.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.296  Attribute primaryGroupToken
+### 2.296 Attribute primaryGroupToken
 
 A computed attribute that is used in retrieving the membership list of a group such as Domain Users.
 The complete membership of such groups is not stored explicitly for scaling reasons.
@@ -7568,7 +7426,7 @@ The complete membership of such groups is not stored explicitly for scaling reas
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.297  Attribute primaryInternationalISDNNumber
+### 2.297 Attribute primaryInternationalISDNNumber
 
 This attribute specifies the primary ISDN number.
 
@@ -7587,7 +7445,7 @@ This attribute specifies the primary ISDN number.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.298  Attribute primaryTelexNumber
+### 2.298 Attribute primaryTelexNumber
 
 This attribute specifies the primary telex number.
 
@@ -7598,7 +7456,8 @@ Release: September 12, 2018
 
 110 / 170
 
- cn: Telex-Primary
+
+ cn: Telex-Primary
  ldapDisplayName: primaryTelexNumber
  attributeId: 1.2.840.113556.1.4.648
  attributeSyntax: 2.5.5.12
@@ -7613,7 +7472,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.299  Attribute proxiedObjectName
+### 2.299 Attribute proxiedObjectName
 
 This attribute is used internally by Active Directory to help track interdomain moves.
 
@@ -7633,7 +7492,7 @@ This attribute is used internally by Active Directory to help track interdomain 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.300  Attribute proxyAddresses
+### 2.300 Attribute proxyAddresses
 
 This attribute specifies proxy addresses.  A proxy address is the address by which a Microsoft
 Exchange Server recipient object is recognized in a foreign mail system. Proxy addresses are required
@@ -7662,7 +7521,8 @@ Release: September 12, 2018
 
 111 / 170
 
-2.301  Attribute pwdLastSet
+
+### 2.301 Attribute pwdLastSet
 
 This attribute specifies the date and time that the password for this account was last changed. This
 value is stored as a large integer that represents the number of 100-nanosecond intervals since
@@ -7682,7 +7542,7 @@ January 1, 1601 (UTC).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.302  Attribute queryFilter
+### 2.302 Attribute queryFilter
 
 Query-Filter attribute.
 
@@ -7697,7 +7557,7 @@ Query-Filter attribute.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.303  Attribute queryPolicyBL
+### 2.303 Attribute queryPolicyBL
 
 This attribute is the back link attribute of queryPolicy and lists all objects holding references to a given
 Query-Policy.
@@ -7717,7 +7577,7 @@ Query-Policy.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.304  Attribute queryPolicyObject
+### 2.304 Attribute queryPolicyObject
 
 This attribute contains a reference to the default Query-Policy in force for this server.
 
@@ -7728,7 +7588,8 @@ Release: September 12, 2018
 
 112 / 170
 
- cn: Query-Policy-Object
+
+ cn: Query-Policy-Object
  ldapDisplayName: queryPolicyObject
  attributeId: 1.2.840.113556.1.4.607
  attributeSyntax: 2.5.5.1
@@ -7743,7 +7604,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.305  Attribute rangeLower
+### 2.305 Attribute rangeLower
 
 This attribute specifies the minimum value or length of an attribute.
 
@@ -7761,7 +7622,7 @@ This attribute specifies the minimum value or length of an attribute.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.306  Attribute rangeUpper
+### 2.306 Attribute rangeUpper
 
 This attribute specifies the maximum value or length of an attribute.
 
@@ -7779,7 +7640,7 @@ This attribute specifies the maximum value or length of an attribute.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.307  Attribute rDNAttID
+### 2.307 Attribute rDNAttID
 
 This attribute specifies the RDN for the attribute that is used to name a class.
 
@@ -7795,7 +7656,8 @@ Release: September 12, 2018
 
 113 / 170
 
- omSyntax: 6
+
+ omSyntax: 6
  isSingleValued: TRUE
  schemaIdGuid: bf967a0f-0de6-11d0-a285-00aa003049e2
  systemOnly: TRUE
@@ -7804,7 +7666,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.308  Attribute registeredAddress
+### 2.308 Attribute registeredAddress
 
 This attribute specifies a mnemonic for an address associated with an object at a particular city
 location. The mnemonic is registered in the country/region in which the city is located and is used in
@@ -7825,7 +7687,7 @@ the provision of the Public Telegram Service.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.309  Attribute replInterval
+### 2.309 Attribute replInterval
 
 The attribute of Site-Link objects that defines the interval in minutes between replication cycles
 between the sites in the Site-List. It has to be a multiple of 15 minutes (the granularity of cross-site
@@ -7844,7 +7706,7 @@ DS replication), a minimum of 15 minutes, and a maximum of 10,080 minutes (one w
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.310  Attribute replPropertyMetaData
+### 2.310 Attribute replPropertyMetaData
 
 This attribute tracks internal replication state information for DS objects. Information here can be
 extracted in public form through the public DsReplicaGetInfo() API. This attribute is present on all DS
@@ -7860,7 +7722,8 @@ Release: September 12, 2018
 
 114 / 170
 
- attributeId: 1.2.840.113556.1.4.3
+
+ attributeId: 1.2.840.113556.1.4.3
  attributeSyntax: 2.5.5.10
  omSyntax: 4
  isSingleValued: TRUE
@@ -7873,7 +7736,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.311  Attribute replTopologyStayOfExecution
+### 2.311 Attribute replTopologyStayOfExecution
 
 This attribute specifies the delay between deleting a server object and permanently removing it from
 the replication topology.
@@ -7891,7 +7754,7 @@ the replication topology.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.312  Attribute replUpToDateVector
+### 2.312 Attribute replUpToDateVector
 
 This attribute tracks internal replication state information for an entire NC. Information here can be
 extracted in public form through the DsReplicaGetInfo() API. Present on all NC root objects.
@@ -7911,7 +7774,7 @@ extracted in public form through the DsReplicaGetInfo() API. Present on all NC r
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.313  Attribute repsFrom
+### 2.313 Attribute repsFrom
 
 This attribute lists the servers from which the directory will accept changes for the defined naming
 context (NC).
@@ -7926,7 +7789,8 @@ Release: September 12, 2018
 
 115 / 170
 
- attributeId: 1.2.840.113556.1.2.91
+
+ attributeId: 1.2.840.113556.1.2.91
  attributeSyntax: 2.5.5.10
  omSyntax: 127
  omObjectClass: 1.2.840.113556.1.1.1.6
@@ -7940,7 +7804,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.314  Attribute repsTo
+### 2.314 Attribute repsTo
 
 This attribute lists the servers that the directory will notify of changes and the servers that the
 directory will send changes to, upon request for the defined NC.
@@ -7961,7 +7825,7 @@ directory will send changes to, upon request for the defined NC.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.315  Attribute retiredReplDSASignatures
+### 2.315 Attribute retiredReplDSASignatures
 
 This attribute tracks the past DS replication identities of a given DC.
 
@@ -7978,7 +7842,7 @@ This attribute tracks the past DS replication identities of a given DC.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.316  Attribute revision
+### 2.316 Attribute revision
 
 This attribute specifies the revision level for a security descriptor or other change. Only used in the
 sam-server and ds-ui-settings objects.
@@ -7992,7 +7856,8 @@ Release: September 12, 2018
 
 116 / 170
 
- ldapDisplayName: revision
+
+ ldapDisplayName: revision
  attributeId: 1.2.840.113556.1.4.145
  attributeSyntax: 2.5.5.9
  omSyntax: 2
@@ -8004,7 +7869,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.317  Attribute rightsGuid
+### 2.317 Attribute rightsGuid
 
 This attribute specifies the GUID that is used to represent an extended right within an access control
 entry.
@@ -8024,7 +7889,7 @@ entry.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.318  Attribute roomNumber
+### 2.318 Attribute roomNumber
 
 This attribute specifies the room number of an object.
 
@@ -8041,7 +7906,7 @@ This attribute specifies the room number of an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.319  Attribute rootTrust
+### 2.319 Attribute rootTrust
 
 This attribute specifies the distinguished name of another Cross-Ref.
 
@@ -8058,7 +7923,8 @@ Release: September 12, 2018
 
 117 / 170
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: FALSE
  schemaIdGuid: 7bfdcb80-4807-11d1-a9c3-0000f80367c1
  systemOnly: FALSE
@@ -8067,7 +7933,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.320  Attribute schedule
+### 2.320 Attribute schedule
 
 This attribute specifies a schedule BLOB as defined by the NT Job Service. Used by replication.
 
@@ -8084,7 +7950,7 @@ This attribute specifies a schedule BLOB as defined by the NT Job Service. Used 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.321  Attribute schemaFlagsEx
+### 2.321 Attribute schemaFlagsEx
 
 This attribute specifies an integer value that contains flags that define additional properties of the
 attribute, as shown below. See [MS-ADTS] for more information. This is an optional attribute.
@@ -8115,7 +7981,7 @@ The schemaFlagsEx attribute was added to this attribute definition in Windows Se
 
 The FLAG_ATTR_IS_CRITICAL value was implemented in Windows Server 2008.
 
-2.322  Attribute schemaIDGUID
+### 2.322 Attribute schemaIDGUID
 
 This attribute specifies the unique identifier for a schema object.
 
@@ -8126,7 +7992,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Schema-ID-GUID
+
+ cn: Schema-ID-GUID
  ldapDisplayName: schemaIDGUID
  attributeId: 1.2.840.113556.1.4.148
  attributeSyntax: 2.5.5.10
@@ -8141,7 +8008,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.323  Attribute schemaInfo
+### 2.323 Attribute schemaInfo
 
 This attribute specifies an internal binary value used to detect schema changes between DCs and force
 a schema NC replication cycle before replicating any other NC. Used to resolve ties when the schema
@@ -8160,7 +8027,7 @@ FSMO is seized and a change is made on more than one DC.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.324  Attribute schemaUpdate
+### 2.324 Attribute schemaUpdate
 
  cn: Schema-Update
  ldapDisplayName: schemaUpdate
@@ -8175,7 +8042,7 @@ Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.325  Attribute schemaVersion
+### 2.325 Attribute schemaVersion
 
 This attribute specifies the version number for the schema.
 
@@ -8193,14 +8060,15 @@ Release: September 12, 2018
 
 119 / 170
 
- schemaIdGuid: bf967a2c-0de6-11d0-a285-00aa003049e2
+
+ schemaIdGuid: bf967a2c-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.326  Attribute scopeFlags
+### 2.326 Attribute scopeFlags
 
  cn: Scope-Flags
  ldapDisplayName: scopeFlags
@@ -8213,7 +8081,7 @@ Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.327  Attribute sDRightsEffective
+### 2.327 Attribute sDRightsEffective
 
 This constructed attribute returns a single DWORD value that can have up to three bits set:
 OWNER_SECURITY_INFORMATION, DACL_SECURITY_INFORMATION, and
@@ -8237,7 +8105,7 @@ Note: "Owner" means both owner and group.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.328  Attribute searchFlags
+### 2.328 Attribute searchFlags
 
 This attribute contains a set of flags that specify search and indexing information for an attribute.
 
@@ -8259,11 +8127,12 @@ Release: September 12, 2018
 
 120 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.329  Attribute searchGuide
+### 2.329 Attribute searchGuide
 
 This attribute specifies information of suggested search criteria that might be included in some entries
 that are expected to be a convenient base object for the search operation; for example,
@@ -8282,7 +8151,7 @@ country/region or organization.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.330  Attribute secretary
+### 2.330 Attribute secretary
 
 This attribute contains the distinguished name of the secretary for an account.
 
@@ -8300,7 +8169,7 @@ This attribute contains the distinguished name of the secretary for an account.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.331  Attribute seeAlso
+### 2.331 Attribute seeAlso
 
 This attribute specifies the list of DNs related to an object.
 
@@ -8323,9 +8192,10 @@ Release: September 12, 2018
 
 121 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.332  Attribute serialNumber
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 2.332 Attribute serialNumber
 
 This attribute is part of the X.500 specification [X500].
 
@@ -8343,7 +8213,7 @@ This attribute is part of the X.500 specification [X500].
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.333  Attribute serverReference
+### 2.333 Attribute serverReference
 
 This attribute specifies a site computer object. The attribute is not necessary for Active Directory
 Lightweight Directory Services to function. The protocol does not define a format beyond that required
@@ -8365,7 +8235,7 @@ by the schema.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.334  Attribute serverReferenceBL
+### 2.334 Attribute serverReferenceBL
 
 This attribute is the backlink attribute of serverReference, and it contains the DN of a server object
 under the sites folder. This attribute is not necessary for Active Directory Lightweight Directory
@@ -8390,11 +8260,12 @@ Release: September 12, 2018
 
 122 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_NOT_REPLICATED
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_NOT_REPLICATED
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.335  Attribute shellContextMenu
+### 2.335 Attribute shellContextMenu
 
 This attribute specifies the order number and GUID of the context menu for this object.
 
@@ -8409,7 +8280,7 @@ This attribute specifies the order number and GUID of the context menu for this 
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.336  Attribute shellPropertyPages
+### 2.336 Attribute shellPropertyPages
 
 This attribute specifies the order number and GUID of property pages for managing Active Directory
 objects. These property pages can be accessed from the Windows shell. For more information, see the
@@ -8426,7 +8297,7 @@ document "Extending the User Interface for Directory Objects" [MSDN-ExtUserIntDi
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.337  Attribute showInAdvancedViewOnly
+### 2.337 Attribute showInAdvancedViewOnly
 
 This attribute is TRUE if the corresponding attribute is to be visible in the advanced mode of the UI.
 
@@ -8451,7 +8322,8 @@ Release: September 12, 2018
 
 123 / 170
 
-2.338  Attribute siteLinkList
+
+### 2.338 Attribute siteLinkList
 
 This attribute specifies a list of site links that are associated with this bridge.
 
@@ -8470,7 +8342,7 @@ This attribute specifies a list of site links that are associated with this brid
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.339  Attribute siteList
+### 2.339 Attribute siteList
 
 This attribute specifies a list of sites that are connected to this link object.
 
@@ -8489,7 +8361,7 @@ This attribute specifies a list of sites that are connected to this link object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.340  Attribute siteObject
+### 2.340 Attribute siteObject
 
 This attribute specifies the DN for the site to which this subnet belongs.
 
@@ -8515,7 +8387,8 @@ Release: September 12, 2018
 
 124 / 170
 
-2.341  Attribute siteObjectBL
+
+### 2.341 Attribute siteObjectBL
 
 This attribute is the backlink attribute of siteObject and contains the list of subnet objects that belong
 to a site.
@@ -8535,7 +8408,7 @@ to a site.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.342  Attribute siteServer
+### 2.342 Attribute siteServer
 
 This attribute specifies the licensing master server for a given site.
 
@@ -8553,7 +8426,7 @@ This attribute specifies the licensing master server for a given site.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.343  Attribute sn
+### 2.343 Attribute sn
 
 This attribute contains the family or last name for a user.
 
@@ -8580,7 +8453,8 @@ Release: September 12, 2018
 
 125 / 170
 
-2.344  Attribute sourceObjectGuid
+
+### 2.344 Attribute sourceObjectGuid
 
 ms-DS-Source-Object-Guid
 
@@ -8594,7 +8468,7 @@ ms-DS-Source-Object-Guid
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.345  Attribute st
+### 2.345 Attribute st
 
 This attribute specifies the name of a user's state or province.
 
@@ -8616,7 +8490,7 @@ This attribute specifies the name of a user's state or province.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.346  Attribute street
+### 2.346 Attribute street
 
 This attribute specifies the user's street address.
 
@@ -8645,7 +8519,8 @@ Release: September 12, 2018
 
 126 / 170
 
-2.347  Attribute streetAddress
+
+### 2.347 Attribute streetAddress
 
 This attribute specifies the user's address.
 
@@ -8664,7 +8539,7 @@ This attribute specifies the user's address.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.348  Attribute structuralObjectClass
+### 2.348 Attribute structuralObjectClass
 
 This constructed attribute stores a list of classes contained in a class hierarchy, including abstract
 classes. This list contains dynamically linked auxiliary classes.
@@ -8682,7 +8557,7 @@ classes. This list contains dynamically linked auxiliary classes.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.349  Attribute subClassOf
+### 2.349 Attribute subClassOf
 
 This attribute specifies the parent class of a class.
 
@@ -8699,7 +8574,7 @@ This attribute specifies the parent class of a class.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.350  Attribute subRefs
+### 2.350 Attribute subRefs
 
 This attribute specifies a list of subordinate references of a naming context.
 
@@ -8710,7 +8585,8 @@ Release: September 12, 2018
 
 127 / 170
 
- cn: Sub-Refs
+
+ cn: Sub-Refs
  ldapDisplayName: subRefs
  attributeId: 1.2.840.113556.1.2.7
  attributeSyntax: 2.5.5.1
@@ -8726,7 +8602,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.351  Attribute subSchemaSubEntry
+### 2.351 Attribute subSchemaSubEntry
 
 This attribute specifies the DN for the location of the subschema object where a class or attribute is
 defined.
@@ -8746,7 +8622,7 @@ defined.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.352  Attribute superiorDNSRoot
+### 2.352 Attribute superiorDNSRoot
 
 This system attribute is used for referrals generation.
 
@@ -8763,7 +8639,7 @@ This system attribute is used for referrals generation.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.353  Attribute supplementalCredentials
+### 2.353 Attribute supplementalCredentials
 
 This attribute specifies stored credentials for use in authenticating. It provides the encrypted version
 of the user's password. This attribute is neither readable nor writable.
@@ -8775,7 +8651,8 @@ Release: September 12, 2018
 
 128 / 170
 
- cn: Supplemental-Credentials
+
+ cn: Supplemental-Credentials
  ldapDisplayName: supplementalCredentials
  attributeId: 1.2.840.113556.1.4.125
  attributeSyntax: 2.5.5.10
@@ -8788,7 +8665,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.354  Attribute systemAuxiliaryClass
+### 2.354 Attribute systemAuxiliaryClass
 
 This attribute specifies a list of auxiliary classes that cannot be modified by the user.
 
@@ -8805,7 +8682,7 @@ This attribute specifies a list of auxiliary classes that cannot be modified by 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.355  Attribute systemFlags
+### 2.355 Attribute systemFlags
 
 This attribute specifies an integer value that contains flags that define additional properties of the
 class.
@@ -8824,7 +8701,7 @@ class.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.356  Attribute systemMayContain
+### 2.356 Attribute systemMayContain
 
 This attribute specifies the list of optional attributes for a class. The list of attributes can only be
 modified by the Active Directory system [MS-ADOD].
@@ -8841,7 +8718,8 @@ Release: September 12, 2018
 
 129 / 170
 
- omSyntax: 6
+
+ omSyntax: 6
  isSingleValued: FALSE
  schemaIdGuid: bf967a44-0de6-11d0-a285-00aa003049e2
  systemOnly: TRUE
@@ -8850,7 +8728,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.357  Attribute systemMustContain
+### 2.357 Attribute systemMustContain
 
 This attribute specifies the list of mandatory attributes for a class. These attributes have to be
 specified when an instance of the class is created. The list of attributes can be modified only by the
@@ -8869,7 +8747,7 @@ Active Directory system.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.358  Attribute systemOnly
+### 2.358 Attribute systemOnly
 
 This attribute is a Boolean value that specifies whether only Active Directory can modify the class.
 System-only classes can be created or deleted only by the directory system agent.
@@ -8887,7 +8765,7 @@ System-only classes can be created or deleted only by the directory system agent
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.359  Attribute systemPossSuperiors
+### 2.359 Attribute systemPossSuperiors
 
 This attribute specifies the list of classes that can contain this class. This list can only be modified by
 the Active Directory system.
@@ -8907,7 +8785,8 @@ Release: September 12, 2018
 
 130 / 170
 
- systemOnly: TRUE
+
+ systemOnly: TRUE
  searchFlags: 0
  isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT |
@@ -8915,7 +8794,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.360  Attribute telephoneNumber
+### 2.360 Attribute telephoneNumber
 
 This attribute specifies the primary telephone number.
 
@@ -8936,7 +8815,7 @@ This attribute specifies the primary telephone number.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.361  Attribute teletexTerminalIdentifier
+### 2.361 Attribute teletexTerminalIdentifier
 
 This attribute specifies the Teletex terminal identifier, and optionally parameters, for a Teletex
 terminal associated with an object.
@@ -8955,7 +8834,7 @@ terminal associated with an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.362  Attribute telexNumber
+### 2.362 Attribute telexNumber
 
 This attribute specifies a list of alternate telex numbers.
 
@@ -8973,7 +8852,8 @@ Release: September 12, 2018
 
 131 / 170
 
- schemaIdGuid: bf967a4b-0de6-11d0-a285-00aa003049e2
+
+ schemaIdGuid: bf967a4b-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: 0
  rangeLower: 1
@@ -8983,7 +8863,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.363  Attribute thumbnailLogo
+### 2.363 Attribute thumbnailLogo
 
 This attribute specifies a BLOB containing a logo for this object.
 
@@ -9002,7 +8882,7 @@ This attribute specifies a BLOB containing a logo for this object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.364  Attribute thumbnailPhoto
+### 2.364 Attribute thumbnailPhoto
 
 Picture
 
@@ -9021,7 +8901,7 @@ Picture
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.365  Attribute title
+### 2.365 Attribute title
 
 This attribute contains the user's job title. This property is commonly used to indicate the formal job
 title, such as Senior Programmer, rather than occupational class, such as programmer. It is not
@@ -9039,7 +8919,8 @@ Release: September 12, 2018
 
 132 / 170
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: bf967a55-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
@@ -9050,7 +8931,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.366  Attribute tokenGroups
+### 2.366 Attribute tokenGroups
 
 This computed attribute contains the list of SIDs due to a transitive group membership expansion
 operation on a given user or computer. Token groups cannot be retrieved if no global catalog is
@@ -9071,7 +8952,7 @@ present to retrieve the transitive reverse memberships.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.367  Attribute tombstoneLifetime
+### 2.367 Attribute tombstoneLifetime
 
 If the Recycle Bin optional feature is not enabled, this attribute specifies the number of days before a
 deleted object is removed from the directory services. If the Recycle Bin optional feature is enabled,
@@ -9091,7 +8972,7 @@ services.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.368  Attribute transportAddressAttribute
+### 2.368 Attribute transportAddressAttribute
 
 This attribute specifies the name of the address type for the transport.
 
@@ -9105,7 +8986,8 @@ Release: September 12, 2018
 
 133 / 170
 
- attributeId: 1.2.840.113556.1.4.895
+
+ attributeId: 1.2.840.113556.1.4.895
  attributeSyntax: 2.5.5.2
  omSyntax: 6
  isSingleValued: TRUE
@@ -9116,7 +8998,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.369  Attribute transportDLLName
+### 2.369 Attribute transportDLLName
 
 This attribute specifies the name of the DLL that will manage a transport.
 
@@ -9135,7 +9017,7 @@ This attribute specifies the name of the DLL that will manage a transport.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.370  Attribute transportType
+### 2.370 Attribute transportType
 
 This attribute specifies the DN for a type of transport that is being used to connect sites together. This
 value can point to an IP or SMTP transport.
@@ -9154,7 +9036,7 @@ value can point to an IP or SMTP transport.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.371  Attribute treatAsLeaf
+### 2.371 Attribute treatAsLeaf
 
 This attribute defines a flag for display specifiers (see the displaySpecifier class in section 3). Display
 specifiers that have this attribute set to true force the related class to be displayed as a leaf class even
@@ -9171,7 +9053,8 @@ Release: September 12, 2018
 
 134 / 170
 
- attributeSyntax: 2.5.5.8
+
+ attributeSyntax: 2.5.5.8
  omSyntax: 1
  isSingleValued: TRUE
  schemaIdGuid: 8fd044e3-771f-11d1-aeae-0000f80367c1
@@ -9179,7 +9062,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.372  Attribute trustParent
+### 2.372 Attribute trustParent
 
 This attribute specifies the parent in the Kerberos trust hierarchy.
 
@@ -9197,7 +9080,7 @@ This attribute specifies the parent in the Kerberos trust hierarchy.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.373  Attribute uid
+### 2.373 Attribute uid
 
 This attribute specifies the user ID.
 
@@ -9215,7 +9098,7 @@ This attribute specifies the user ID.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.374  Attribute unicodePwd
+### 2.374 Attribute unicodePwd
 
 The password of the user in Windows NT one-way format (OWF). Windows 2000 uses the Windows NT
 OWF. This property is used only by the operating system.
@@ -9237,13 +9120,14 @@ Release: September 12, 2018
 
 135 / 170
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.375  Attribute uPNSuffixes
+### 2.375 Attribute uPNSuffixes
 
 This attribute specifies the list of User-Principal-Name suffixes for a domain.
 
@@ -9260,7 +9144,7 @@ This attribute specifies the list of User-Principal-Name suffixes for a domain.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.376  Attribute url
+### 2.376 Attribute url
 
 This attribute specifies a list of alternate webpages.
 
@@ -9278,7 +9162,7 @@ This attribute specifies a list of alternate webpages.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.377  Attribute userCertificate
+### 2.377 Attribute userCertificate
 
 This attribute contains the DER-encoded X509v3 certificates issued to the user ([RFC3280]).
 
@@ -9303,12 +9187,13 @@ Release: September 12, 2018
 
 136 / 170
 
- attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
+
+ attributeSecurityGuid: 77b5b886-944a-11d1-aebd-0000f80367c1
  isMemberOfPartialAttributeSet: TRUE
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.378  Attribute userParameters
+### 2.378 Attribute userParameters
 
 This attribute specifies the user's parameters and is set aside for use by applications. Microsoft
 products use this member to store user data that is specific to the individual program.
@@ -9328,7 +9213,7 @@ products use this member to store user data that is specific to the individual p
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.379  Attribute userPassword
+### 2.379 Attribute userPassword
 
 This attribute specifies the user's password in UTF-8 format. This is a write-only attribute.
 
@@ -9347,7 +9232,7 @@ This attribute specifies the user's password in UTF-8 format. This is a write-on
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.380  Attribute userPKCS12
+### 2.380 Attribute userPKCS12
 
 This attribute specifies PKCS #12 PFX PDU for exchange of personal identity information.
 
@@ -9368,11 +9253,12 @@ Release: September 12, 2018
 
 137 / 170
 
- showInAdvancedViewOnly: FALSE
+
+ showInAdvancedViewOnly: FALSE
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.381  Attribute userPrincipalName
+### 2.381 Attribute userPrincipalName
 
 This attribute contains the UPN that is an Internet-style logon name for a user, as specified in
 [RFC822]. The UPN is shorter than the DN and easier to remember.
@@ -9397,7 +9283,7 @@ the length of the user's ID and the domain name.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.382  Attribute userSMIMECertificate
+### 2.382 Attribute userSMIMECertificate
 
 This attribute specifies a certificate distribution object or tagged certificates.
 
@@ -9416,7 +9302,7 @@ This attribute specifies a certificate distribution object or tagged certificate
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.383  Attribute uSNChanged
+### 2.383 Attribute uSNChanged
 
 This attribute specifies an update sequence number (USN) value assigned by the local directory for the
 latest change, including creation.
@@ -9434,7 +9320,8 @@ Release: September 12, 2018
 
 138 / 170
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: bf967a6f-0de6-11d0-a285-00aa003049e2
  systemOnly: TRUE
  searchFlags: fPRESERVEONDELETE | fATTINDEX
@@ -9444,7 +9331,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.384  Attribute uSNCreated
+### 2.384 Attribute uSNCreated
 
 This attribute specifies a USN-Changed value that is assigned at object creation.
 
@@ -9463,7 +9350,7 @@ This attribute specifies a USN-Changed value that is assigned at object creation
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.385  Attribute uSNDSALastObjRemoved
+### 2.385 Attribute uSNDSALastObjRemoved
 
 This attribute contains the USN for the last system object that was removed from a server.
 
@@ -9480,7 +9367,7 @@ This attribute contains the USN for the last system object that was removed from
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.386  Attribute USNIntersite
+### 2.386 Attribute USNIntersite
 
 This attribute specifies the USN for intersite replication.
 
@@ -9501,11 +9388,12 @@ Release: September 12, 2018
 
 139 / 170
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.387  Attribute uSNLastObjRem
+### 2.387 Attribute uSNLastObjRem
 
 This attribute contains the USN for the last non-system object that was removed from a server.
 
@@ -9524,7 +9412,7 @@ This attribute contains the USN for the last non-system object that was removed 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.388  Attribute uSNSource
+### 2.388 Attribute uSNSource
 
 This attribute specifies the value of the USN-Changed attribute of the object from the remote
 directory that replicated the change to the local server.
@@ -9542,7 +9430,7 @@ directory that replicated the change to the local server.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.389  Attribute validAccesses
+### 2.389 Attribute validAccesses
 
 This attribute specifies the type of access that is permitted with an extended right.
 
@@ -9566,7 +9454,8 @@ Active Directory Lightweight Directory Services Schema
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.390  Attribute wbemPath
+
+### 2.390 Attribute wbemPath
 
 This attribute specifies references to objects in other ADSI namespaces.
 
@@ -9583,7 +9472,7 @@ This attribute specifies references to objects in other ADSI namespaces.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.391  Attribute wellKnownObjects
+### 2.391 Attribute wellKnownObjects
 
 This attribute contains a list of well-known object containers by GUID and distinguished name. The
 well-known objects are system containers. This information is used to retrieve an object after it has
@@ -9613,7 +9502,7 @@ section 6.1.1.4.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.392  Attribute whenChanged
+### 2.392 Attribute whenChanged
 
 This attribute specifies the date when this object was last changed. This value is not replicated and
 exists in the global catalog.
@@ -9634,14 +9523,15 @@ Release: September 12, 2018
 
 141 / 170
 
- searchFlags: 0
+
+ searchFlags: 0
  isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT |
   FLAG_ATTR_REQ_PARTIAL_SET_MEMBER | FLAG_ATTR_NOT_REPLICATED
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.393  Attribute whenCreated
+### 2.393 Attribute whenCreated
 
 This attribute specifies the date when this object was created. This value is replicated and is in the
 global catalog.
@@ -9661,7 +9551,7 @@ global catalog.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.394  Attribute wWWHomePage
+### 2.394 Attribute wWWHomePage
 
 This attribute specifies the primary web page.
 
@@ -9681,7 +9571,7 @@ This attribute specifies the primary web page.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.395  Attribute x121Address
+### 2.395 Attribute x121Address
 
 This attribute specifies the X.121 address for an object, as specified in [X121].
 
@@ -9700,7 +9590,8 @@ Release: September 12, 2018
 
 142 / 170
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  rangeLower: 1
  rangeUpper: 15
@@ -9709,7 +9600,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-2.396  Attribute x500uniqueIdentifier
+### 2.396 Attribute x500uniqueIdentifier
 
 This attribute is used to distinguish between objects when a DN has been reused.
 
@@ -9735,7 +9626,8 @@ Release: September 12, 2018
 
 143 / 170
 
-3  Classes
+
+## 3 Classes
 
 The following sections specify the classes in the Active Directory Lightweight Directory Services
 schema.
@@ -9750,7 +9642,7 @@ information, see [MS-ADTS] section 3.1.1.1.7.
 Note: Lines of text in the class definitions that are excessively long have been "folded" in accordance
 with [RFC2849] Note 2.
 
-3.1  Class applicationSettings
+### 3.1 Class applicationSettings
 
 This is the base class for server-specific application settings.
 
@@ -9771,7 +9663,7 @@ This is the base class for server-specific application settings.
 Version-Specific Behavior: First implemented on Active Directory Application Mode (ADAM) and
 Windows Server 2008 operating system.
 
-3.2  Class applicationSiteSettings
+### 3.2 Class applicationSiteSettings
 
 This class specifies the container that holds all site-specific settings.
 
@@ -9798,7 +9690,8 @@ Release: September 12, 2018
 
 144 / 170
 
-3.3  Class attributeSchema
+
+### 3.3 Class attributeSchema
 
 This class defines an attribute object in the schema.
 
@@ -9824,7 +9717,7 @@ This class defines an attribute object in the schema.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.4  Class classSchema
+### 3.4 Class classSchema
 
 This class defines a class object in the schema.
 
@@ -9851,7 +9744,7 @@ This class defines a class object in the schema.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.5  Class configuration
+### 3.5 Class configuration
 
 This class is a container that holds the configuration information for a domain.
 
@@ -9868,7 +9761,8 @@ Release: September 12, 2018
 
 145 / 170
 
- subClassOf: top
+
+ subClassOf: top
  systemMustContain: cn
  systemMayContain: msDS-USNLastSyncSuccess, msDS-ReplAuthenticationMode
  systemPossSuperiors: domainDNS
@@ -9881,7 +9775,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.6  Class container
+### 3.6 Class container
 
 This class is used to hold other classes.
 
@@ -9905,7 +9799,7 @@ This class is used to hold other classes.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.7  Class controlAccessRight
+### 3.7 Class controlAccessRight
 
 This class identifies an extended right that can be granted or revoked via an access control list (ACL).
 
@@ -9934,7 +9828,8 @@ Release: September 12, 2018
 
 146 / 170
 
-3.8  Class country
+
+### 3.8 Class country
 
 This class specifies the country/region in the address of the user. This is the full name.
 
@@ -9956,7 +9851,7 @@ This class specifies the country/region in the address of the user. This is the 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.9  Class crossRef
+### 3.9 Class crossRef
 
 This class holds knowledge information about all directory service (DS) naming contexts and all
 external directories to which referrals can be generated.
@@ -9983,7 +9878,7 @@ external directories to which referrals can be generated.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.10  Class crossRefContainer
+### 3.10 Class crossRefContainer
 
 This class holds cross-reference objects for all naming contexts.
 
@@ -10003,7 +9898,8 @@ Release: September 12, 2018
 
 147 / 170
 
- systemPossSuperiors: configuration
+
+ systemPossSuperiors: configuration
  schemaIdGuid: ef9e60e0-56f7-11d1-a9c6-0000f80367c1
  defaultSecurityDescriptor: D:S:
  defaultHidingValue: FALSE
@@ -10013,7 +9909,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.11  Class displaySpecifier
+### 3.11 Class displaySpecifier
 
 This class describes the context menus and property pages to be used with an object in the directory.
 
@@ -10035,7 +9931,7 @@ This class describes the context menus and property pages to be used with an obj
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-3.12  Class dMD
+### 3.12 Class dMD
 
 This class specifies the Directory Management Domain. In Active Directory, this is the class that holds
 the schema.
@@ -10059,7 +9955,7 @@ the schema.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.13  Class domain
+### 3.13 Class domain
 
 This class contains information about a domain.
 
@@ -10070,7 +9966,8 @@ Release: September 12, 2018
 
 148 / 170
 
- cn: Domain
+
+ cn: Domain
  ldapDisplayName: domain
  governsId: 1.2.840.113556.1.5.66
  objectClassCategory: 2
@@ -10086,7 +9983,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.14  Class domainDNS
+### 3.14 Class domainDNS
 
 This class specifies a Windows NT operating system domain with DNS-based (DC=) naming.
 
@@ -10108,7 +10005,7 @@ This class specifies a Windows NT operating system domain with DNS-based (DC=) n
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.15  Class dSUISettings
+### 3.15 Class dSUISettings
 
 This class is used to store configuration settings used by the Active Directory Users and Computers
 snap-in.
@@ -10136,7 +10033,8 @@ Release: September 12, 2018
 
 149 / 170
 
-3.16  Class dynamicObject
+
+### 3.16 Class dynamicObject
 
 If present in an entry, this class indicates that this entry has a limited lifetime and can disappear
 automatically when its time-to-live has reached 0. If the client has not supplied a value for the
@@ -10158,7 +10056,7 @@ entryTtl attribute, the server will provide one.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.17  Class foreignSecurityPrincipal
+### 3.17 Class foreignSecurityPrincipal
 
 This class specifies the security principal from an external source.
 
@@ -10179,7 +10077,7 @@ This class specifies the security principal from an external source.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.18  Class group
+### 3.18 Class group
 
 This class stores a list of user names. Used to apply security principals on resources.
 
@@ -10205,7 +10103,8 @@ Release: September 12, 2018
 
 150 / 170
 
- systemPossSuperiors: container, organizationalUnit, domainDNS
+
+ systemPossSuperiors: container, organizationalUnit, domainDNS
  schemaIdGuid: bf967a9c-0de6-11d0-a285-00aa003049e2
  defaultSecurityDescriptor: D:S:
  defaultHidingValue: FALSE
@@ -10215,7 +10114,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.19  Class groupOfNames
+### 3.19 Class groupOfNames
 
 Group-Of-Names
 
@@ -10237,7 +10136,7 @@ Group-Of-Names
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.20  Class inetOrgPerson
+### 3.20 Class inetOrgPerson
 
 This class represents people who are associated with an organization in some way.
 
@@ -10271,7 +10170,8 @@ Release: September 12, 2018
 
 151 / 170
 
-3.21  Class interSiteTransport
+
+### 3.21 Class interSiteTransport
 
 This class specifies an optional attribute of nTDSConnection objects. If present, it holds the DN of an
 interSiteTransport object in the CN=Inter-Site Transports,CN=Sites,CN=Configuration,... container.
@@ -10294,7 +10194,7 @@ interSiteTransport object in the CN=Inter-Site Transports,CN=Sites,CN=Configurat
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.22  Class interSiteTransportContainer
+### 3.22 Class interSiteTransportContainer
 
 This class holds Inter-Site-Transport objects.
 
@@ -10314,7 +10214,7 @@ This class holds Inter-Site-Transport objects.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.23  Class leaf
+### 3.23 Class leaf
 
 This class is the base class for leaf objects.
 
@@ -10338,9 +10238,10 @@ Release: September 12, 2018
 
 152 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.24  Class locality
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 3.24 Class locality
 
 This class contains a locality, such as a street address, city, and state.
 
@@ -10363,7 +10264,7 @@ This class contains a locality, such as a street address, city, and state.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.25  Class lostAndFound
+### 3.25 Class lostAndFound
 
 This class is a special container for orphaned objects.
 
@@ -10384,7 +10285,7 @@ This class is a special container for orphaned objects.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.26  Class msDS-AzAdminManager
+### 3.26 Class msDS-AzAdminManager
 
 This class specifies the root of Authorization Policy store instance.
 
@@ -10407,7 +10308,8 @@ Release: September 12, 2018
 
 153 / 170
 
- systemPossSuperiors: container, organizationalUnit, domainDNS
+
+ systemPossSuperiors: container, organizationalUnit, domainDNS
  schemaIdGuid: cfee1051-5f28-4bae-a863-5d0cc18a8ed1
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
@@ -10418,7 +10320,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.27  Class msDS-AzApplication
+### 3.27 Class msDS-AzApplication
 
 This class defines an installed instance of an application that is bound to a particular policy store.
 
@@ -10443,7 +10345,7 @@ This class defines an installed instance of an application that is bound to a pa
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.28  Class msDS-AzOperation
+### 3.28 Class msDS-AzOperation
 
 This class describes a particular operation supported by an application.
 
@@ -10474,7 +10376,8 @@ Release: September 12, 2018
 
 154 / 170
 
-3.29  Class msDS-AzRole
+
+### 3.29 Class msDS-AzRole
 
 This class defines a set of operations that can be performed by a particular set of users within a
 particular scope.
@@ -10499,7 +10402,7 @@ particular scope.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.30  Class msDS-AzScope
+### 3.30 Class msDS-AzScope
 
 This class describes a set of objects that is managed by an application.
 
@@ -10523,7 +10426,7 @@ This class describes a set of objects that is managed by an application.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.31  Class msDS-AzTask
+### 3.31 Class msDS-AzTask
 
 This class describes a set of operations.
 
@@ -10543,7 +10446,8 @@ Release: September 12, 2018
 
 155 / 170
 
-  msDS-AzBizRuleLanguage, msDS-AzLastImportedBizRulePath,
+
+  msDS-AzBizRuleLanguage, msDS-AzLastImportedBizRulePath,
   msDS-AzTaskIsRoleDefinition, msDS-AzApplicationData,
   msDS-OperationsForAzTask, msDS-TasksForAzTask
  systemPossSuperiors: container, msDS-AzApplication, msDS-AzScope
@@ -10557,7 +10461,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.32  Class msDS-BindableObject
+### 3.32 Class msDS-BindableObject
 
 This class specifies an auxiliary class to represent a bindable object. Any user-defined class that
 represents an entity that can be used to bind to the directory (that is, a user) includes this auxiliary
@@ -10583,7 +10487,7 @@ class.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.33  Class msDS-BindProxy
+### 3.33 Class msDS-BindProxy
 
 This class specifies an auxiliary class to represent a bind proxy in AD LDS. A bind proxy references a
 Windows security principal via its objectSid attribute. When a user performs a simple bind against a
@@ -10610,9 +10514,10 @@ Release: September 12, 2018
 
 156 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.34  Class msDS-OptionalFeature
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 3.34 Class msDS-OptionalFeature
 
 This class defines the configuration object for an optional feature.
 
@@ -10638,7 +10543,7 @@ This class defines the configuration object for an optional feature.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2 operating system.
 
-3.35  Class msDS-QuotaContainer
+### 3.35 Class msDS-QuotaContainer
 
 This class specifies a special container that holds all quota specifications for the directory database.
 
@@ -10661,7 +10566,7 @@ This class specifies a special container that holds all quota specifications for
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.36  Class msDS-QuotaControl
+### 3.36 Class msDS-QuotaControl
 
 This class is used to represent quota specifications for the directory database.
 
@@ -10679,7 +10584,8 @@ Release: September 12, 2018
 
 157 / 170
 
- systemMustContain: msDS-QuotaAmount, msDS-QuotaTrustee, cn
+
+ systemMustContain: msDS-QuotaAmount, msDS-QuotaTrustee, cn
  systemPossSuperiors: msDS-QuotaContainer
  schemaIdGuid: de91fc26-bd02-4b52-ae26-795999e96fc7
  defaultSecurityDescriptor: D:S:
@@ -10690,7 +10596,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.37  Class msDS-ServiceConnectionPointPublicationService
+### 3.37 Class msDS-ServiceConnectionPointPublicationService
 
 This class stores configuration options for the SCP publication service in AD LDS.
 
@@ -10712,7 +10618,7 @@ This class stores configuration options for the SCP publication service in AD LD
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.38  Class nTDSConnection
+### 3.38 Class nTDSConnection
 
 This class specifies a connection from a remote domain controller (DC).
 
@@ -10735,7 +10641,7 @@ This class specifies a connection from a remote domain controller (DC).
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.39  Class nTDSDSA
+### 3.39 Class nTDSDSA
 
 This class represents the Active Directory DSA process on the server.
 
@@ -10746,7 +10652,8 @@ Release: September 12, 2018
 
 158 / 170
 
- cn: NTDS-DSA
+
+ cn: NTDS-DSA
  ldapDisplayName: nTDSDSA
  governsId: 1.2.840.113556.1.5.7000.47
  objectClassCategory: 1
@@ -10770,7 +10677,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.40  Class nTDSService
+### 3.40 Class nTDSService
 
 This class is used for an NTDS services object, which contains information about the configuration of
 the directory service forest. This object is kept in the CN=Directory Service,CN=Windows
@@ -10795,7 +10702,7 @@ NT,CN=Services,CN=Configuration,... container.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.41  Class nTDSSiteSettings
+### 3.41 Class nTDSSiteSettings
 
 This class specifies a container for holding all Active Directory site-specific settings.
 
@@ -10816,7 +10723,8 @@ Release: September 12, 2018
 
 159 / 170
 
- systemPossSuperiors: site
+
+ systemPossSuperiors: site
  schemaIdGuid: 19195a5d-6da0-11d0-afd3-00c04fd930c9
  defaultSecurityDescriptor: D:S:
  defaultHidingValue: TRUE
@@ -10826,7 +10734,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.42  Class organizationalPerson
+### 3.42 Class organizationalPerson
 
 This class is used for objects that contain organizational information about a user, such as the
 employee number, department, manager, title, and office address.
@@ -10858,7 +10766,7 @@ employee number, department, manager, title, and office address.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.43  Class organization
+### 3.43 Class organization
 
 This class stores information about a company or organization.
 
@@ -10886,14 +10794,15 @@ Release: September 12, 2018
 
 160 / 170
 
- defaultHidingValue: FALSE
+
+ defaultHidingValue: FALSE
  systemOnly: FALSE
  defaultObjectCategory: CN=Organization,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.44  Class organizationalUnit
+### 3.44 Class organizationalUnit
 
 This class specifies a container for storing users, computers, and other account objects.
 
@@ -10923,7 +10832,7 @@ This class specifies a container for storing users, computers, and other account
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.45  Class person
+### 3.45 Class person
 
 This class contains personal information about a user.
 
@@ -10953,7 +10862,8 @@ Release: September 12, 2018
 
 161 / 170
 
-3.46  Class queryPolicy
+
+### 3.46 Class queryPolicy
 
 This class holds administrative limits for LDAP server resources for sorted and paged results.
 
@@ -10974,7 +10884,7 @@ This class holds administrative limits for LDAP server resources for sorted and 
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.47  Class securityPrincipal
+### 3.47 Class securityPrincipal
 
 This class contains the security information for an object.
 
@@ -10995,7 +10905,7 @@ This class contains the security information for an object.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.48  Class server
+### 3.48 Class server
 
 This class represents a server computer within a site.
 
@@ -11022,9 +10932,10 @@ Release: September 12, 2018
 
 162 / 170
 
-Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.49  Class serversContainer
+Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
+
+### 3.49 Class serversContainer
 
 This class holds server objects within a site.
 
@@ -11044,7 +10955,7 @@ This class holds server objects within a site.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.50  Class site
+### 3.50 Class site
 
 This class specifies a container for storing server objects. This class represents a physical location
 containing computers; it is used to manage replication.
@@ -11067,7 +10978,7 @@ containing computers; it is used to manage replication.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.51  Class siteLink
+### 3.51 Class siteLink
 
 This object represents the connection between two sites.
 
@@ -11090,14 +11001,15 @@ Release: September 12, 2018
 
 163 / 170
 
- defaultHidingValue: FALSE
+
+ defaultHidingValue: FALSE
  systemOnly: FALSE
  defaultObjectCategory: CN=Site-Link,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.52  Class siteLinkBridge
+### 3.52 Class siteLinkBridge
 
 This class specifies an object for tracking the site links that are transitively connected.
 
@@ -11118,7 +11030,7 @@ This class specifies an object for tracking the site links that are transitively
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.53  Class sitesContainer
+### 3.53 Class sitesContainer
 
 This class specifies a container for storing site objects. Located in the configuration naming context.
 
@@ -11138,7 +11050,7 @@ This class specifies a container for storing site objects. Located in the config
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.54  Class subnet
+### 3.54 Class subnet
 
 This class represents a specific subnet in the network to which servers and workstations are attached.
 
@@ -11157,7 +11069,8 @@ Release: September 12, 2018
 
 164 / 170
 
- systemPossSuperiors: subnetContainer
+
+ systemPossSuperiors: subnetContainer
  schemaIdGuid: b7b13124-b82e-11d0-afee-0000f80367c1
  defaultSecurityDescriptor: D:S:
  defaultHidingValue: TRUE
@@ -11167,7 +11080,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.55  Class subnetContainer
+### 3.55 Class subnetContainer
 
 This class specifies a container for holding all subnet objects.
 
@@ -11187,7 +11100,7 @@ This class specifies a container for holding all subnet objects.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.56  Class subSchema
+### 3.56 Class subSchema
 
 This class contains the schema definition.
 
@@ -11209,7 +11122,7 @@ This class contains the schema definition.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.57  Class syncEngineAuxConfiguration
+### 3.57 Class syncEngineAuxConfiguration
 
 ms-DS-Sync-Engine-Aux-Configuration
 
@@ -11224,7 +11137,8 @@ Release: September 12, 2018
 
 165 / 170
 
- objectClassCategory: 3
+
+ objectClassCategory: 3
  rdnAttId: cn
  subClassOf: top
  systemMayContain: configurationFile
@@ -11234,7 +11148,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.58  Class syncEngineAuxObject
+### 3.58 Class syncEngineAuxObject
 
 ms-DS-Sync-Engine-Aux-Object
 
@@ -11251,7 +11165,7 @@ ms-DS-Sync-Engine-Aux-Object
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.59  Class top
+### 3.59 Class top
 
 This class is the top-level class from which all classes are derived.
 
@@ -11294,7 +11208,8 @@ Release: September 12, 2018
 
 166 / 170
 
-  displayName, description, createTimeStamp, cn, canonicalName,
+
+  displayName, description, createTimeStamp, cn, canonicalName,
   bridgeheadServerListBL, allowedChildClassesEffective,
   allowedChildClasses, allowedAttributesEffective, allowedAttributes,
   adminDisplayName, adminDescription, msds-memberOfTransitive,
@@ -11309,7 +11224,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.60  Class userProxy
+### 3.60 Class userProxy
 
 This class is the sample class for bind proxy implementation.
 
@@ -11331,7 +11246,7 @@ This class is the sample class for bind proxy implementation.
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.61  Class userProxyFull
+### 3.61 Class userProxyFull
 
 This class is the sample user proxy class with the same properties as the native user class.
 
@@ -11364,12 +11279,13 @@ Release: September 12, 2018
 
 167 / 170
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  defaultObjectCategory: CN=Person,<SchemaNCDN>
 
 Version-Specific Behavior: First implemented on ADAM and Windows Server 2008.
 
-3.62  Class user
+### 3.62 Class user
 
 This class is used to store information about an employee or contractor who works for an organization.
 It is also possible to apply this class to long-term visitors.
@@ -11407,7 +11323,8 @@ Release: September 12, 2018
 
 168 / 170
 
-4  Change Tracking
+
+## 4 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -11444,7 +11361,8 @@ Release: September 12, 2018
 
 169 / 170
 
-5  Index
+
+## 5 Index
 A
 
 Active Directory Lightweight Directory Services

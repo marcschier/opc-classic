@@ -63,7 +63,8 @@ Release: October 31, 2025
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: October 31, 2025
 
 2 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Significantly changed the technical content.
 
 3 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -561,148 +564,66 @@ Release: October 31, 2025
 
 4 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 CLNT_BCAST_EX](#221-clntbcastex)
+    - [2.2.2 CLNT_UCAST_EX](#222-clntucastex)
+    - [2.2.3 CLNT_UCAST_INST](#223-clntucastinst)
+    - [2.2.4 CLNT_UCAST_DAC](#224-clntucastdac)
+    - [2.2.5 SVR_RESP](#225-svrresp)
+    - [2.2.6 SVR_RESP (DAC)](#226-svrresp-dac)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Initial State](#3151-initial-state)
+      - [3.1.5.2 Waiting For Request From Client](#3152-waiting-for-request-from-client)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Begin](#3251-begin)
+      - [3.2.5.2 Client Waits For Response From Server](#3252-client-waits-for-response-from-server)
+      - [3.2.5.3 Client Waits For Response From Server(s)](#3253-client-waits-for-response-from-servers)
+      - [3.2.5.4 Waiting Completed](#3254-waiting-completed)
+      - [3.2.5.5 End](#3255-end)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 CLNT_UCAST_EX](#41-clntucastex)
+  - [4.2 CLNT_UCAST_INST](#42-clntucastinst)
+  - [4.3 CLNT_UCAST_DAC](#43-clntucastdac)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-CLNT_BCAST_EX ........................................................................................ 12
-CLNT_UCAST_EX ........................................................................................ 12
-CLNT_UCAST_INST ..................................................................................... 13
-CLNT_UCAST_DAC ...................................................................................... 13
-SVR_RESP ................................................................................................. 14
-SVR_RESP (DAC) ........................................................................................ 16
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-3.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 17
-Server Details .................................................................................................. 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Initial State .......................................................................................... 18
-Waiting For Request From Client ............................................................. 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Client Details ................................................................................................... 18
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Begin .................................................................................................. 20
-Client Waits For Response From Server .................................................... 20
-Client Waits For Response From Server(s) ................................................ 20
-Waiting Completed ................................................................................ 20
-End ..................................................................................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 22
-CLNT_UCAST_EX ............................................................................................. 22
-CLNT_UCAST_INST .......................................................................................... 22
-CLNT_UCAST_DAC ........................................................................................... 23
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-5 / 30
-
-[MC-SQLR] - v20251031
-SQL Server Resolution Protocol
-Copyright © 2025 Microsoft Corporation
-Release: October 31, 2025
-
-6  Appendix A: Product Behavior ............................................................................... 25
-
-7  Change Tracking .................................................................................................... 28
-
-8  Index ..................................................................................................................... 29
-
-[MC-SQLR] - v20251031
-SQL Server Resolution Protocol
-Copyright © 2025 Microsoft Corporation
-Release: October 31, 2025
-
-6 / 30
-
-1  Introduction
+## 1 Introduction
 
 The SQL Server Resolution Protocol is an application-layer request/response protocol that facilitates
 connectivity to a database server. This protocol provides for the following:
@@ -716,7 +637,7 @@ instance of the database server on a machine.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -778,14 +699,15 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -814,7 +736,7 @@ Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 [VIA2002] Cameron, D., and Regnier, G., "The Virtual Interface Architecture", Intel Press, 2002,
 ISBN:0971288704.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CS] Microsoft Corporation, "Character Sets", https://learn.microsoft.com/en-
 us/windows/desktop/Intl/character-sets
@@ -829,7 +751,7 @@ https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms189
 [MSDN-NP] Microsoft Corporation, "Named Pipes", https://learn.microsoft.com/en-
 us/windows/desktop/ipc/named-pipes
 
-1.3  Overview
+### 1.3 Overview
 
 The SQL Server Resolution Protocol is a simple application-level protocol that is used for the transfer
 of requests and responses between clients and database server discovery services. In such a
@@ -844,7 +766,8 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MC-SQLR].images/page009-img01.png)
 ![Extracted image 2 from page 9]([MC-SQLR].images/page009-img02.png)
 <!-- /Extracted images from page 9 -->
@@ -879,11 +802,12 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MC-SQLR].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The SQL Server Resolution Protocol (SSRP) depends on the UDP Transport Protocol to communicate
 with the database server machine or to broadcast/multicast its request to the network. The types of
@@ -892,17 +816,17 @@ details about IPv4, see [RFC791]. For details about IPv6, see [RFC2460].
 
 Figure 3: Protocol relationship
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Unprohibited access to UDP port 1434 is required.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The SQL Server Resolution Protocol is appropriate for use to facilitate retrieval of database endpoint
 information or for database instance enumeration in all scenarios where network or local connectivity
 is available.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -938,11 +862,12 @@ Release: October 31, 2025
 
 10 / 30
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -961,9 +886,10 @@ Release: October 31, 2025
 
 11 / 30
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The SQL Server Resolution Protocol uses port 1434 of the UDP Protocol for message transport. When
 using the UDP Protocol over the IPv4 Protocol, the SQL Server Resolution Protocol uses a unicast or
@@ -971,7 +897,7 @@ broadcast address, depending on the message type, as specified in section 2.2. W
 Protocol over the IPv6 Protocol, the SQL Server Resolution Protocol uses a unicast or multicast
 address, depending on the message type, as specified in section 2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All integer fields are represented in little-endian format. All text strings are represented as a
 multibyte character set (MBCS) string [MS-UCODEREF] on the current system code page of the server
@@ -994,7 +920,7 @@ not case-sensitive.
 
 These messages are explained in more detail in the following sections.
 
-2.2.1  CLNT_BCAST_EX
+#### 2.2.1 CLNT_BCAST_EX
 
 The CLNT_BCAST_EX packet is a broadcast or multicast request that is generated by clients that are
 trying to identify the list of database instances on the network and their network protocol connection
@@ -1015,7 +941,7 @@ CLNT_BCAST_EX
 
 CLNT_BCAST_EX (1 byte): A single byte whose value MUST be 0x02.
 
-2.2.2  CLNT_UCAST_EX
+#### 2.2.2 CLNT_UCAST_EX
 
 The CLNT_UCAST_EX packet is a unicast request that is generated by clients that are trying to
 identify the list of database instances and their network protocol connection information installed on a
@@ -1029,7 +955,8 @@ Release: October 31, 2025
 
 12 / 30
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1044,7 +971,7 @@ CLNT_UCAST_EX
 
 CLNT_UCAST_EX (1 byte): A single byte whose value MUST be 0x03.
 
-2.2.3  CLNT_UCAST_INST
+#### 2.2.3 CLNT_UCAST_INST
 
 The CLNT_UCAST_INST packet is a request for information related to a specific instance. The structure
 of the request is as follows.
@@ -1080,7 +1007,7 @@ Note
 INSTANCENAME corresponds to the name of the database instance for which the information is
 requested.
 
-2.2.4  CLNT_UCAST_DAC
+#### 2.2.4 CLNT_UCAST_DAC
 
 The CLNT_UCAST_DAC packet request is used to determine the TCP [RFC793] port on which the
 Microsoft SQL Server dedicated administrator connection (DAC) [MSDN-DAC] endpoint is
@@ -1121,7 +1048,8 @@ Release: October 31, 2025
 
 13 / 30
 
-2.2.5  SVR_RESP
+
+#### 2.2.5 SVR_RESP
 
 The server responds to all client requests with an SVR_RESP. There is a slight variation in the
 message format for a response to a CLNT_UCAST_DAC (section 2.2.4) request, as described in section
@@ -1213,7 +1141,8 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-Name
+
+Name
 
 Value
 
@@ -1337,7 +1266,8 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-Name
+
+Name
 
 Value
 
@@ -1367,7 +1297,7 @@ by [RFC793].
 
 instance.
 
-2.2.6  SVR_RESP (DAC)
+#### 2.2.6 SVR_RESP (DAC)
 
 The format of the SVR_RESP is different for a CLNT_UCAST_DAC request only.
 
@@ -1415,11 +1345,12 @@ Release: October 31, 2025
 
 16 / 30
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MC-SQLR].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 This section describes the important elements of the client software and the server software necessary
 to support the SQL Server Resolution Protocol.
@@ -1430,30 +1361,30 @@ a limited set of messages through which the client can make a request to the ser
 SQL Server Resolution Protocol involves a single request and a single response from one or more
 servers. The response contains instance-specific values provided by the higher layer.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The following state machine diagram describes the server side of the SQL Server Resolution Protocol.
 
 Figure 4: SQL Server Resolution Protocol server state machine
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The SQL Server Resolution Protocol does not perform any initialization on the server side. A UDP
 socket that is listening on port 1434 is assumed to have been created by the higher layer.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Because the SQL Server Resolution Protocol provides a single response per server for each client
 request, no sequencing issues occur with this protocol.
@@ -1465,12 +1396,13 @@ Release: October 31, 2025
 
 17 / 30
 
-3.1.5.1  Initial State
+
+##### 3.1.5.1 Initial State
 
 In the "Initial State", the initialization found in section 3.1.3 is assumed to have taken place. Upon
 success, the server MUST immediately enter the "Waiting For Request From Client" state.
 
-3.1.5.2  Waiting For Request From Client
+##### 3.1.5.2 Waiting For Request From Client
 
 In the "Waiting For Request From Client" state, the server listens on UDP port 1434 for an incoming
 request. If the request is valid and understood, the server immediately sends an SVR_RESP response
@@ -1510,15 +1442,15 @@ If the request is not valid, not understood, or if there is no instance for whic
 endpoint information, the server MUST ignore the request. The server MUST then enter the "Waiting
 For Request From Client" state.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The following state machine diagram describes the client side of the SQL Server Resolution Protocol.
 
@@ -1529,13 +1461,14 @@ Release: October 31, 2025
 
 18 / 30
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MC-SQLR].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 Figure 5: SQL Server Resolution Protocol client state machine
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1546,7 +1479,7 @@ document.
 A SQL Server Resolution Protocol client does not need to maintain any state data except for the
 knowledge of the request sent to the server.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The SQL Server Resolution Protocol client MUST implement a timer for the amount of time to wait for
 an SVR_RESP message from the server when a CLNT_UCAST_INST or CLNT_UCAST_DAC request is
@@ -1557,7 +1490,7 @@ The SQL Server Resolution Protocol client MUST implement a timer for the amount 
 SVR_RESP messages from servers in the network after a CLNT_UCAST_EX or CLNT_BCAST_EX
 request is sent. The timer mechanism that is used is implementation-specific.<3>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The SQL Server Resolution Protocol does not perform any initialization on the client side. A UDP socket
 is assumed to be created prior to requesting that a SQL Server Resolution Protocol request be sent.
@@ -1569,7 +1502,8 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 The SQL Server Resolution Protocol client implementation MUST support the following event from the
 higher layer:
@@ -1582,12 +1516,12 @@ request message. After the message is sent, the timer MUST be started.
 The higher layer is responsible for closing the UDP socket after the response is received or a time-out
 situation has occurred.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Because the SQL Server Resolution Protocol provides a single response per server for each client
 request, no sequencing issues occur with this protocol.
 
-3.2.5.1  Begin
+##### 3.2.5.1 Begin
 
 In the "Begin" state, the client awaits a request from the higher layer. After a request from the higher
 layer is made, the client sends a request to the server or servers. The request type determines what
@@ -1598,7 +1532,7 @@ then enter the "Client Waits For Response From Server" state. If the client send
 or CLNT_BCAST_EX request to a server or servers, the client MUST then enter the "Client Waits For
 Response From Server(s)" state.
 
-3.2.5.2  Client Waits For Response From Server
+##### 3.2.5.2 Client Waits For Response From Server
 
 In the "Client Waits For Response From Server" state, the client waits either for a time-out to occur or
 for the results of a request to return. As soon as either occurs, the client MUST enter the "Waiting
@@ -1606,7 +1540,7 @@ Completed" state.
 
 The details of the timer are outlined in section 3.2.2.
 
-3.2.5.3  Client Waits For Response From Server(s)
+##### 3.2.5.3 Client Waits For Response From Server(s)
 
 In the "Client Waits For Response From Server(s)" state, the client waits for responses up until the
 time-out expires. If the client receives an invalid message, it MUST ignore the message and continue
@@ -1619,7 +1553,7 @@ messages type.
 
 The details of the timer are outlined in section 3.2.2.
 
-3.2.5.4  Waiting Completed
+##### 3.2.5.4 Waiting Completed
 
 The client's actions upon entering the "Waiting Completed" state are determined by the client
 message type to which the server is responding.
@@ -1631,7 +1565,8 @@ Release: October 31, 2025
 
 20 / 30
 
-CLNT_UCAST_DAC: The client MUST notify the higher layer of the valid and properly formatted
+
+CLNT_UCAST_DAC: The client MUST notify the higher layer of the valid and properly formatted
 SVR_RESP (DAC) messages or notify the higher layer if it received an invalid message. After this, the
 client MUST enter the "End" state.
 
@@ -1656,16 +1591,16 @@ if it contains an NP_PARAMETERS, TCP_PARAMETERS, VIA_PARAMETERS, RPC_PARAMETERS,
 SPX_PARAMETERS, ADSP_PARAMETERS, or BV_PARAMETERS token whose length is more than 255
 bytes).
 
-3.2.5.5  End
+##### 3.2.5.5 End
 
 The client has completed the request.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 When the timer for the response to a broadcast or multicast request expires, the client MUST enter
 the "Waiting Completed" state.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1676,12 +1611,13 @@ Release: October 31, 2025
 
 21 / 30
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following are examples of the binary representation of various client requests and the responses
 from the server.
 
-4.1  CLNT_UCAST_EX
+### 4.1 CLNT_UCAST_EX
 
 Request:
 
@@ -1714,7 +1650,7 @@ Response:
 The response conveys the instance information for three instances named "YUKONSTD", "YUKONDEV",
 and "MSSQLSERVER".
 
-4.2  CLNT_UCAST_INST
+### 4.2 CLNT_UCAST_INST
 
 Request:
 
@@ -1738,7 +1674,8 @@ Release: October 31, 2025
 
 22 / 30
 
-4.3  CLNT_UCAST_DAC
+
+### 4.3 CLNT_UCAST_DAC
 
 Request:
 
@@ -1759,13 +1696,14 @@ Release: October 31, 2025
 
 23 / 30
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 No security considerations are associated with the SQL Server Resolution Protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1776,7 +1714,8 @@ Release: October 31, 2025
 
 24 / 30
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1844,7 +1783,8 @@ Release: October 31, 2025
 
 25 / 30
 
-Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
+
+Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
 (KB) number appears with a product name, the behavior changed in that update. The new behavior
 also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
@@ -1913,7 +1853,8 @@ SQL Server Resolution Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-appended to the results; however, invalid responses are discarded. The default logon time-out is 15
+
+appended to the results; however, invalid responses are discarded. The default logon time-out is 15
 seconds.
 
 <4> Section 3.2.5.4: Microsoft clients, such as Microsoft Data Access Components (MDAC), Windows
@@ -1928,7 +1869,8 @@ Release: October 31, 2025
 
 27 / 30
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1965,7 +1907,8 @@ Release: October 31, 2025
 
 28 / 30
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2097,7 +2040,8 @@ Server
 
 29 / 30
 
-   timers 17
+
+   timers 17
 Standards assignments 11
 SVR_RESP (DAC) message 16
 SVR_RESP message 14

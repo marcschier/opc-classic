@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -563,208 +566,86 @@ Release: April 23, 2024
 
 4 / 39
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Transmitting Messages and Boxcars](#211-transmitting-messages-and-boxcars)
+      - [2.1.1.1 Boxcar Format](#2111-boxcar-format)
+      - [2.1.1.2 Boxcar Size Limitations](#2112-boxcar-size-limitations)
+      - [2.1.1.3 Transmitting Boxcars](#2113-transmitting-boxcars)
+    - [2.1.2 Security](#212-security)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 BOX_CAR_HEADER](#221-boxcarheader)
+    - [2.2.2 MESSAGE_PACKET](#222-messagepacket)
+    - [2.2.3 MTAG_DISCONNECT](#223-mtagdisconnect)
+    - [2.2.4 MTAG_DISCONNECTED](#224-mtagdisconnected)
+    - [2.2.5 MTAG_CONNECTION_REQ_DENIED](#225-mtagconnectionreqdenied)
+    - [2.2.6 MTAG_PING](#226-mtagping)
+    - [2.2.7 MTAG_CONNECTION_REQ](#227-mtagconnectionreq)
+    - [2.2.8 MTAG_USER_MESSAGE](#228-mtagusermessage)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Connection Object](#3111-connection-object)
+      - [3.1.1.2 Boxcar Object](#3112-boxcar-object)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Idle Timer](#3121-idle-timer)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Initialization by a Higher-Layer Protocol](#3131-initialization-by-a-higher-layer-protocol)
+      - [3.1.3.2 Initialization by the Protocol](#3132-initialization-by-the-protocol)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Send Message](#3141-send-message)
+      - [3.1.4.2 Create Connection](#3142-create-connection)
+      - [3.1.4.3 Disconnect Connection](#3143-disconnect-connection)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 MTAG_DISCONNECT (MsgTag 0x00000001)](#3151-mtagdisconnect-msgtag-0x00000001)
+      - [3.1.5.2 MTAG_DISCONNECTED (MsgTag 0x00000002)](#3152-mtagdisconnected-msgtag-0x00000002)
+      - [3.1.5.3 MTAG_CONNECTION_REQ_DENIED (MsgTag 0x00000003)](#3153-mtagconnectionreqdenied-msgtag-0x00000003)
+      - [3.1.5.4 MTAG_PING (MsgTag 0x00000004)](#3154-mtagping-msgtag-0x00000004)
+      - [3.1.5.5 MTAG_CONNECTION_REQ (MsgTag 0x00000005)](#3155-mtagconnectionreq-msgtag-0x00000005)
+      - [3.1.5.6 MTAG_USER_MESSAGE (MsgTag 0x00000FFF)](#3156-mtagusermessage-msgtag-0x00000fff)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Idle Timer](#3161-idle-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Enqueuing a Message](#3171-enqueuing-a-message)
+      - [3.1.7.2 Session Down](#3172-session-down)
+      - [3.1.7.3 Allocate Incoming Connection Objects](#3173-allocate-incoming-connection-objects)
+      - [3.1.7.4 Notify Higher-Layer of Incoming Message Events](#3174-notify-higher-layer-of-incoming-message-events)
+        - [3.1.7.4.1 Receiving a Message](#31741-receiving-a-message)
+        - [3.1.7.4.2 Connection Disconnected](#31742-connection-disconnected)
+        - [3.1.7.4.3 Connection Request Denied](#31743-connection-request-denied)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Sending Messages](#41-sending-messages)
+    - [4.1.1 Creating the MESSAGE_PACKETs](#411-creating-the-messagepackets)
+    - [4.1.2 Creating a Boxcar](#412-creating-a-boxcar)
+    - [4.1.3 Sending the Boxcar Using the Underlying MSDTC Connection Manager: OleTx](#413-sending-the-boxcar-using-the-underlying-msdtc-connection-manager-oletx)
+  - [4.2 A Simple Connection Scenario](#42-a-simple-connection-scenario)
+    - [4.2.1 Initiating a Connection](#421-initiating-a-connection)
+      - [4.2.1.1 Connection Denied](#4211-connection-denied)
+      - [4.2.1.2 Connection Accepted](#4212-connection-accepted)
+    - [4.2.2 Disconnecting a Connection](#422-disconnecting-a-connection)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.2
-
-2.1.1
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Transmitting Messages and Boxcars .............................................................. 12
-Boxcar Format ...................................................................................... 12
-Boxcar Size Limitations .......................................................................... 12
-Transmitting Boxcars ............................................................................. 12
-Security..................................................................................................... 13
-Message Syntax ............................................................................................... 13
-BOX_CAR_HEADER ..................................................................................... 13
-MESSAGE_PACKET ...................................................................................... 13
-MTAG_DISCONNECT ................................................................................... 15
-MTAG_DISCONNECTED ............................................................................... 16
-MTAG_CONNECTION_REQ_DENIED............................................................... 16
-MTAG_PING ............................................................................................... 17
-MTAG_CONNECTION_REQ ........................................................................... 18
-MTAG_USER_MESSAGE ............................................................................... 18
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.4
-
-3.1.3
-
-3.1.2
-
-3.1.1
-
-3.1.2.1
-
-3.1.3.1
-3.1.3.2
-
-3.1.1.1
-3.1.1.2
-
-3  Protocol Details ..................................................................................................... 20
-Common Details .............................................................................................. 20
-Abstract Data Model .................................................................................... 20
-Connection Object ................................................................................. 21
-Boxcar Object ....................................................................................... 21
-Timers ...................................................................................................... 21
-Idle Timer ............................................................................................ 21
-Initialization ............................................................................................... 22
-Initialization by a Higher-Layer Protocol ................................................... 22
-Initialization by the Protocol ................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Send Message ...................................................................................... 22
-Create Connection ................................................................................. 23
-Disconnect Connection ........................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-MTAG_DISCONNECT (MsgTag 0x00000001) ............................................. 24
-MTAG_DISCONNECTED (MsgTag 0x00000002) ......................................... 25
-MTAG_CONNECTION_REQ_DENIED (MsgTag 0x00000003) ........................ 25
-MTAG_PING (MsgTag 0x00000004) ......................................................... 25
-MTAG_CONNECTION_REQ (MsgTag 0x00000005) ..................................... 25
-MTAG_USER_MESSAGE (MsgTag 0x00000FFF) ......................................... 26
-Timer Events .............................................................................................. 26
-Idle Timer ............................................................................................ 26
-Other Local Events ...................................................................................... 27
-Enqueuing a Message ............................................................................ 27
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.6.1
-
-3.1.7.1
-
-3.1.7
-
-3.1.6
-
-3.1.5
-
-[MS-CMP] - v20240423
-MSDTC Connection Manager: OleTx Multiplexing Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 39
-
-3.1.7.2
-3.1.7.3
-3.1.7.4
-
-3.1.7.4.1
-3.1.7.4.2
-3.1.7.4.3
-
-Session Down ....................................................................................... 27
-Allocate Incoming Connection Objects ..................................................... 27
-Notify Higher-Layer of Incoming Message Events ...................................... 27
-Receiving a Message ........................................................................ 27
-Connection Disconnected .................................................................. 28
-Connection Request Denied .............................................................. 28
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 29
-Sending Messages ............................................................................................ 29
-Creating the MESSAGE_PACKETs .................................................................. 29
-Creating a Boxcar ....................................................................................... 30
-Sending the Boxcar Using the Underlying MSDTC Connection Manager: OleTx
-Transports Protocol Session ......................................................................... 32
-A Simple Connection Scenario ........................................................................... 32
-Initiating a Connection ................................................................................ 32
-Connection Denied ................................................................................ 32
-Connection Accepted ............................................................................. 33
-Disconnecting a Connection ......................................................................... 34
-
-4.2.1.1
-4.2.1.2
-
-4.2.2
-
-4.2.1
-
-4.2
-
-5  Security ................................................................................................................. 35
-Security Considerations for Implementers ........................................................... 35
-Index of Security Parameters ............................................................................ 35
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 36
-
-7  Change Tracking .................................................................................................... 37
-
-8  Index ..................................................................................................................... 38
-
-[MS-CMP] - v20240423
-MSDTC Connection Manager: OleTx Multiplexing Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 39
-
-1  Introduction
+## 1 Introduction
 
 This specification specifies MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) that
 multiplexes multiple shortlived connections over a long-lived full-duplex session. CMP provides
@@ -778,7 +659,7 @@ CMPO session and multiplexing multiple protocol messages into a single CMPO.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -836,14 +717,15 @@ Release: April 23, 2024
 
 7 / 39
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -862,11 +744,11 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-TPSOD] Microsoft Corporation, "Transaction Processing Services Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) allows partners to multiplex any
 number of two-way connections over the transport session between them, as specified in [MS-
@@ -885,7 +767,8 @@ Release: April 23, 2024
 
 8 / 39
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-CMP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -915,7 +798,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-CMP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -948,7 +832,7 @@ enclosed in a Boxcar is transparent to connection management and User messages i
 exception occurs when a partner receives an unrecognized message type and discards the rest of the
 messages in the Boxcar.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 MSDTC Connection Manager: OleTx Multiplexing Protocol [MS-CMP] is explicitly layered upon the
 transport protocol that is specified in MSDTC Connection Manager: OleTx Transports Protocol [MS-
@@ -969,33 +853,34 @@ Release: April 23, 2024
 
 10 / 39
 
-Ultimately, the MSDTC Connection Manager suite of protocols is used as the communication
+
+Ultimately, the MSDTC Connection Manager suite of protocols is used as the communication
 mechanism for the Microsoft Distributed Transaction Coordinator, which is used to coordinate atomic
 transactions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol relies on the transports protocol specified in [MS-CMPO] for carrying communication;
 there is no handshake between MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP)
 instances. The initialization of the transports protocol instance occurs during the initialization of the
 instance of this protocol and is as described in section 3.1.3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is suitable for use as a connection multiplexing protocol over the transports protocol
 specified in [MS-CMPO], and it is applicable in all of the same situations.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are no optional capabilities exposed by the MSDTC Connection Manager: OleTx Multiplexing
 Protocol (CMP), and there are no extensibility points within CMP. There are therefore no version
 negotiation capabilities in this protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1006,19 +891,20 @@ Release: April 23, 2024
 
 11 / 39
 
-2  Messages
+
+## 2 Messages
 
 This section specifies how the MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP)
 messages are encapsulated on the wire and common data types.
 
-2.1  Transport
+### 2.1 Transport
 
 Messages in this protocol MUST be transported over an instance of the transports protocol specified in
 [MS-CMPO] session; therefore, each instance of this protocol MUST have an underlying transports
 protocol instance. The initialization of the transports protocol instance occurs during the initialization
 of the instance of this protocol and is specified in section 3.
 
-2.1.1  Transmitting Messages and Boxcars
+#### 2.1.1 Transmitting Messages and Boxcars
 
 Every message in MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) is an extension of
 the MESSAGE_PACKET structure specified in section 2.2.2. When any event causes an
@@ -1029,7 +915,7 @@ message to the end of the Message List in a Boxcar object. For more information 
 objects in the abstract data model, see section 3.1.1.2. For more information about processing
 boxcars, see section 3.1.5.
 
-2.1.1.1  Boxcar Format
+##### 2.1.1.1 Boxcar Format
 
 A Boxcar is formatted as an array of bytes that begins with a BOX_CAR_HEADER (section 2.2.1)
 structure and continues with one or more MESSAGE_PACKET structures, each of which is appended
@@ -1042,7 +928,7 @@ BOX_CAR_HEADER structure MUST be equal to the number of messages in the Boxcar, 
 dwcbTotal field of the BOX_CAR_HEADER structure MUST be equal to the total number of bytes in
 the Boxcar.
 
-2.1.1.2  Boxcar Size Limitations
+##### 2.1.1.2 Boxcar Size Limitations
 
 A Boxcar MUST contain at least one message and MUST NOT contain more than 3,412 messages.
 Furthermore, the total size of a Boxcar MUST be at least 40 bytes and MUST NOT exceed 81,920
@@ -1050,7 +936,7 @@ bytes. Unless otherwise specified, an MSDTC Connection Manager: OleTx Multiplexi
 implementation SHOULD add one or more messages to a Boxcar as long as doing so does not cause
 the Boxcar to exceed any of these size restrictions.
 
-2.1.1.3  Transmitting Boxcars
+##### 2.1.1.3 Transmitting Boxcars
 
 When an implementation of MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) wants to
 transmit a Boxcar over a session, it provides the underlying implementation of the transports
@@ -1068,21 +954,22 @@ Release: April 23, 2024
 
 12 / 39
 
-2.1.2  Security
+
+#### 2.1.2 Security
 
 This protocol does not introduce any additional security beyond what is provided by the transports
 protocol specified in [MS-CMPO]. The security level value provided by the higher-layer protocol during
 initialization, as specified in section 3.1.3, MUST be provided to the transports protocol as specified in
 [MS-CMPO] section 2.1.3.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All structures MUST be aligned with an 8-byte alignment. Any padding bytes that are required to align
 the MESSAGE_PACKET structures (section 2.2.2) within the Boxcar can be set to any value, and
 MUST be ignored on receipt. All integer fields in the following structures are in little-endian byte
 order.
 
-2.2.1  BOX_CAR_HEADER
+#### 2.2.1 BOX_CAR_HEADER
 
 The BOX_CAR_HEADER structure MUST be the first structure in each Boxcar transmitted via the
 underlying protocol specified in [MS-CMPO] session.
@@ -1124,7 +1011,7 @@ dwcMessages (4 bytes):  An unsigned 4-byte integer value which contains the numb
 MESSAGE_PACKET structures (section 2.2.2) that follow the end of this structure in the Boxcar.
 This number MUST be greater than or equal to 1, and MUST BE less than or equal to 3,412.
 
-2.2.2  MESSAGE_PACKET
+#### 2.2.2 MESSAGE_PACKET
 
 The MESSAGE_PACKET structure forms the basis for all messages. Each message sent using this
 protocol MUST be an extension of the MESSAGE_PACKET structure. All integer fields of this structure
@@ -1150,7 +1037,8 @@ Release: April 23, 2024
 
 13 / 39
 
-fIsMaster
+
+fIsMaster
 
 dwConnectionId
 
@@ -1252,7 +1140,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MsgTag field value
+
+MsgTag field value
 
 0x00000001
 
@@ -1351,7 +1240,7 @@ dwReserved1 (4 bytes): Reserved. This value can be set to any value, and MUST be
 
 receipt.<1>
 
-2.2.3  MTAG_DISCONNECT
+#### 2.2.3 MTAG_DISCONNECT
 
 The MTAG_DISCONNECT message indicates a request to disconnect the specified connection.
 
@@ -1362,7 +1251,8 @@ Release: April 23, 2024
 
 15 / 39
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1397,7 +1287,7 @@ The fIsMaster field MUST be set to 0x00000001.
 
 The dwcbVarLenData field MUST be set to 0x00000000.
 
-2.2.4  MTAG_DISCONNECTED
+#### 2.2.4 MTAG_DISCONNECTED
 
 The MTAG_DISCONNECTED message indicates that the request to disconnect the specified
 connection was successful.
@@ -1437,7 +1327,7 @@ The fIsMaster field MUST be set to 0x00000000.
 
 The dwcbVarLenData field MUST be set to 0x00000000.
 
-2.2.5  MTAG_CONNECTION_REQ_DENIED
+#### 2.2.5 MTAG_CONNECTION_REQ_DENIED
 
 The MTAG_CONNECTION_REQ_DENIED message indicates that the connection request for the
 specified connection has been denied. It represents a not-acknowledged response to an
@@ -1451,7 +1341,8 @@ Release: April 23, 2024
 
 16 / 39
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1492,7 +1383,7 @@ Reason (4 bytes): This field contains a 4-byte unsigned integer that indicates t
 
 connection request was denied. The values for this field are defined by the higher-layer protocol.
 
-2.2.6  MTAG_PING
+#### 2.2.6 MTAG_PING
 
 The MTAG_PING message is used by a protocol participant to determine if it can still contact the
 transports protocol session partner as specified in [MS-CMPO]. For more information about the
@@ -1544,7 +1435,8 @@ Release: April 23, 2024
 
 17 / 39
 
-2.2.7  MTAG_CONNECTION_REQ
+
+#### 2.2.7 MTAG_CONNECTION_REQ
 
 The MTAG_CONNECTION_REQ message specifies a request to create the connection. A not-
 acknowledged response to this message is communicated with an
@@ -1586,7 +1478,7 @@ The fIsMaster field MUST be set to 0x00000001.
 
 The dwcbVarLenData field MUST be set to 0x00000000.
 
-2.2.8  MTAG_USER_MESSAGE
+#### 2.2.8 MTAG_USER_MESSAGE
 
 The MTAG_USER_MESSAGE message indicates that a user (level-three protocol) message will be
 delivered on the specified connection.
@@ -1634,7 +1526,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MessageData (variable):  A byte array containing the body of the message. The format of this body
+
+MessageData (variable):  A byte array containing the body of the message. The format of this body
 is defined by the higher-layer software operating over this protocol, and it is generally indicated by
 the value of the dwUserMsgType field in the MsgHeader structure. The contents of this field
 MUST be treated as opaque.
@@ -1646,11 +1539,12 @@ Release: April 23, 2024
 
 19 / 39
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1717,7 +1611,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-number of allocated incoming connections is the value requested by the remote partner. New
+
+number of allocated incoming connections is the value requested by the remote partner. New
 connections are allowed to be created until the number of entries in the Incoming
 Connection Table equals the count requested by the remote partner. If the remote partner
 requires more connections to be created, it MUST request that more be allocated, causing this
@@ -1731,7 +1626,7 @@ implementation as outlined in sections 3.1.4.2, 3.1.5.1, 3.1.5.5, and 3.1.7.3.
 Note It is possible to implement the conceptual data by using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.1.1.1  Connection Object
+##### 3.1.1.1 Connection Object
 
 A Connection object MUST contain the following data elements:
 
@@ -1761,7 +1656,7 @@ this protocol to notify a higher-layer protocol of incoming message events, as s
 Note  It is possible to implement the conceptual data by using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.1.1.2  Boxcar Object
+##### 3.1.1.2 Boxcar Object
 
 A Boxcar object MUST contain the following data elements:
 
@@ -1772,11 +1667,11 @@ When called for, Boxcar objects MUST be formatted and transmitted as specified i
 Note  It is possible to implement the conceptual data by using a variety of techniques. An
 implementation is at liberty to implement such data in any way it wants.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 An implementation of this protocol MUST maintain the following timers.
 
-3.1.2.1  Idle Timer
+##### 3.1.2.1 Idle Timer
 
 There is an instance of the Idle Timer corresponding to each Session object. This timer MUST be set
 when both the Incoming Connection Table and the Outgoing Connection Table are empty, and it
@@ -1788,17 +1683,18 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MUST be canceled when a Connection object (section 3.1.1.1) is added to either the Incoming
+
+MUST be canceled when a Connection object (section 3.1.1.1) is added to either the Incoming
 Connection Table or the Outgoing Connection Table. The default value of the timer is specific to
 the implementation.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 An instance of this protocol is explicitly initialized with the data elements specified in sections 3.1.3.1
 and 3.1.3.2, as specified in [MS-CMPO] section 3.2.1.1. These elements are required for the
 initialization of its underlying transports protocol instance, as specified in [MS-CMPO] section 3.2.3.1.
 
-3.1.3.1  Initialization by a Higher-Layer Protocol
+##### 3.1.3.1 Initialization by a Higher-Layer Protocol
 
 An instance of this protocol is explicitly initialized with the following data elements, as specified in
 [MS-CMPO] section 3.2.3.1.
@@ -1817,7 +1713,7 @@ MUST initialize this public data element.
 
 initializes an instance of this protocol MUST initialize this public data element.
 
-3.1.3.2  Initialization by the Protocol
+##### 3.1.3.2 Initialization by the Protocol
 
 The MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) MUST perform the following
 action:
@@ -1836,9 +1732,9 @@ Connection Manager: OleTx Transports Protocol instance fails as specified in [MS
 3.2.3.2, then the initialization of CMP MUST also fail and the implementation-specific failure result
 MUST be returned to the higher-layer protocol.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Send Message
+##### 3.1.4.1 Send Message
 
 When the higher-layer protocol requests to send a message, it MUST specify the Connection object
 (section 3.1.1.1) on which to send the message (which implies the connection table containing it), an
@@ -1858,14 +1754,15 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the MessageData field to the provided byte array. Finally, if the provided Connection object is
+
+the MessageData field to the provided byte array. Finally, if the provided Connection object is
 contained in an Outgoing Connection Table, then the fIsMaster field of the MsgHeader field
 MUST be set to 0x00000001; otherwise, it MUST be set to 0x00000000.
 
 This message MUST be enqueued on the Session object associated with the provided Connection
 object as described in section 3.1.7.1.
 
-3.1.4.2  Create Connection
+##### 3.1.4.2 Create Connection
 
 When the higher-layer protocol requests a new connection, it MUST specify the following arguments:
 
@@ -1942,10 +1839,11 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwConnectionId field in the MsgHeader field to the connection identifier of the new Connection
+
+dwConnectionId field in the MsgHeader field to the connection identifier of the new Connection
 object. It MUST enqueue the message on the Session object as described in section 3.1.7.1.
 
-3.1.4.3  Disconnect Connection
+##### 3.1.4.3 Disconnect Connection
 
 When the higher-layer protocol requests to disconnect a connection, it MUST specify the following
 argument.
@@ -1960,7 +1858,7 @@ MTAG_DISCONNECT message and set the dwConnectionId field in the MsgHeader field 
 message to the connection identifier of that specified Connection object. It MUST enqueue this
 message on the Session object of the specified Connection object as described in section 3.1.7.1.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) messages are received from the
 underlying transports protocol as specified in [MS-CMPO] section 3.3.4.4. The buffers that are
@@ -1985,7 +1883,7 @@ message depends on the value of that field. If the value of the MsgTag field is 
 range (as specified in section 2.2.2), then all remaining unprocessed messages in the Boxcar MUST
 be ignored, regardless of which connection they are intended for.
 
-3.1.5.1  MTAG_DISCONNECT (MsgTag 0x00000001)
+##### 3.1.5.1 MTAG_DISCONNECT (MsgTag 0x00000001)
 
 When an MTAG_DISCONNECT message is received over a session, the MSDTC Connection Manager:
 OleTx Multiplexing Protocol (CMP) implementation MUST look at the dwConnectionId field of the
@@ -2007,12 +1905,13 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The CMP implementation MUST then allocate a new MTAG_DISCONNECTED message, set the
+
+The CMP implementation MUST then allocate a new MTAG_DISCONNECTED message, set the
 dwUserMsgType field of the MsgHeader field to the connection type of the Connection object, and
 set the dwConnectionId field of the MsgHeader to the Connection ID of the Connection object.
 Finally, the message MUST be enqueued on the Session object as specified in section 3.1.7.1.
 
-3.1.5.2  MTAG_DISCONNECTED (MsgTag 0x00000002)
+##### 3.1.5.2 MTAG_DISCONNECTED (MsgTag 0x00000002)
 
 When an MTAG_DISCONNECTED message (section 2.2.4) is received over a session, the MSDTC
 Connection Manager: OleTx Multiplexing Protocol (CMP) implementation MUST look at the
@@ -2030,7 +1929,7 @@ Outgoing Connection Table of the Session object and there are no connections in 
 Connection Table of the Session object, then the Idle Timer MUST be started as specified in
 section 3.1.2.1.
 
-3.1.5.3  MTAG_CONNECTION_REQ_DENIED (MsgTag 0x00000003)
+##### 3.1.5.3 MTAG_CONNECTION_REQ_DENIED (MsgTag 0x00000003)
 
 When an MTAG_CONNECTION_REQ_DENIED message is received over a session, the MSDTC
 Connection Manager: OleTx Multiplexing Protocol (CMP) implementation MUST look at the
@@ -2048,7 +1947,7 @@ denied for the particular Connection object, along with the value in the Reason 
 by signaling the Connection Request Denied (section 3.1.7.4.3) event using the Incoming
 Message Notification Interface as described in section 3.1.1.1.
 
-3.1.5.4  MTAG_PING (MsgTag 0x00000004)
+##### 3.1.5.4 MTAG_PING (MsgTag 0x00000004)
 
 A protocol implementation SHOULD send out MTAG_PING messages periodically to verify that its
 session with a communication partner is active. (If the session is unavailable, sending the
@@ -2057,7 +1956,7 @@ RPC session with the communication partner is active. When an MTAG_PING message 
 over a session, the MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) implementation
 MUST ignore it.
 
-3.1.5.5  MTAG_CONNECTION_REQ (MsgTag 0x00000005)
+##### 3.1.5.5 MTAG_CONNECTION_REQ (MsgTag 0x00000005)
 
 When this message is received over a Session object, the implementation of the multiplexing protocol
 specified in [MS-CMP] MUST first compare the number of Connection objects in the Incoming
@@ -2071,7 +1970,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Connection objects in the table, then the implementation of the multiplexing protocol MUST ignore
+
+Connection objects in the table, then the implementation of the multiplexing protocol MUST ignore
 this message.
 
 Otherwise, the implementation of the multiplexing protocol MUST look at the dwConnectionId field
@@ -2099,7 +1999,7 @@ this message on the Session object as specified in section 3.1.7.1.
 If the higher-layer protocol accepts the connection, then the implementation of the multiplexing
 protocol MUST set the Accepted field of the Connection object to true.
 
-3.1.5.6  MTAG_USER_MESSAGE (MsgTag 0x00000FFF)
+##### 3.1.5.6 MTAG_USER_MESSAGE (MsgTag 0x00000FFF)
 
 When an MTAG_USER_MESSAGE message is received over a Session object, the MSDTC
 Connection Manager: OleTx Multiplexing Protocol (CMP) implementation MUST examine the fIsMaster
@@ -2119,9 +2019,9 @@ protocol MUST be notified of the incoming message by signaling the Receiving a M
 the value of the dwUserMsgType field of the MsgHeader field of the message, and the
 MessageData field of the MTAG_USER_MESSAGE field if it is present.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Idle Timer
+##### 3.1.6.1 Idle Timer
 
 This timer is active only when there are no Connection objects in both the Outgoing Connection
 Table and the Incoming Connection Table. When this timer associated with a Session object
@@ -2136,12 +2036,13 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Connection Table and the Incoming Connection Table, it is not required to inform the higher-
+
+Connection Table and the Incoming Connection Table, it is not required to inform the higher-
 layer protocol of the teardown.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Enqueuing a Message
+##### 3.1.7.1 Enqueuing a Message
 
 Various events in the protocol require that a message be queued on a particular Session object. This
 section describes how this is done.
@@ -2159,7 +2060,7 @@ least one message; however, an implementation SHOULD transmit this Boxcar object
 possible when there is at least one other Boxcar object in the Boxcar Queue. Boxcars MUST be
 formatted and transmitted as described in section 2.1.1.1.
 
-3.1.7.2  Session Down
+##### 3.1.7.2 Session Down
 
 When the underlying transports protocol Session object specified in [MS-CMPO]  is torn down or fails
 for any reason other than the expiration of the Idle Timer, the higher-layer protocol MUST be notified
@@ -2170,7 +2071,7 @@ Incoming Connection Table of the Session object. The Connection objects MUST the
 removed from their containing tables. Any resources associated with the session SHOULD also be
 reclaimed at this time.
 
-3.1.7.3  Allocate Incoming Connection Objects
+##### 3.1.7.3 Allocate Incoming Connection Objects
 
 When the underlying transports protocol is requested to allocate more Connection object (section
 3.1.1.1) resources from a partner as specified in [MS-CMPO], this protocol determines the number (if
@@ -2183,14 +2084,14 @@ allocation of 20 objects, only 10 will be allocated. This demonstrates how the n
 objects returned by the transports protocol can differ from the number requested by a partner.<2>
 The only limit that is imposed is the amount of available memory.
 
-3.1.7.4  Notify Higher-Layer of Incoming Message Events
+##### 3.1.7.4 Notify Higher-Layer of Incoming Message Events
 
 When the MSDTC Connection Manager: OleTx Multiplexing Protocol (CMP) receives incoming message
 events as described in section 3.1.5, and the protocol expects a higher-layer protocol to be notified of
 these incoming events, then the CMP MUST use the Incoming Message Notification Interface
 provided by the higher-layer protocol.
 
-3.1.7.4.1 Receiving a Message
+###### 3.1.7.4.1 Receiving a Message
 
 27 / 39
 
@@ -2199,7 +2100,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Receiving a Message event MUST be signaled with the following arguments:
+
+The Receiving a Message event MUST be signaled with the following arguments:
 
   A protocol message that extends the MESSAGE_PACKET  structure (section 2.2.2), along with its
 
@@ -2207,13 +2109,13 @@ associated variable dwcbVarLenData field and the appropriate variable-length dat
 
   A Connection object.
 
-3.1.7.4.2 Connection Disconnected
+###### 3.1.7.4.2 Connection Disconnected
 
 The Connection Disconnected event MUST be signaled with the following argument:
 
   A Connection object.
 
-3.1.7.4.3 Connection Request Denied
+###### 3.1.7.4.3 Connection Request Denied
 
 The Connection Request Denied event MUST be signaled with the following arguments:
 
@@ -2230,7 +2132,8 @@ Release: April 23, 2024
 
 28 / 39
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 There are two instances of the transaction protocol specified in [MS-DTCO]: initiator and acceptor. It
 is assumed that the two instances have established a session with each other, and that the initiator
@@ -2240,7 +2143,7 @@ has negotiated a sufficient number of resources with the acceptor. See the follo
 
   A Simple Connection Scenario (section 4.2)
 
-4.1  Sending Messages
+### 4.1 Sending Messages
 
 The Sending Messages example shows how the initiator creates the appropriate structures to create a
 connection and then sends a message on that connection In this case, the connection type of the
@@ -2253,7 +2156,7 @@ boxcar, and then submit them to the underlying transports protocol session to be
 specified in [MS-CMPO]. (Because it is assumed that a connection request will succeed, both
 MESSAGE_PACKET structures are put into the same boxcar.)
 
-4.1.1  Creating the MESSAGE_PACKETs
+#### 4.1.1 Creating the MESSAGE_PACKETs
 
 To start the connection the initiator allocates the next free connection identifier; in this instance, it is
 0x00000001. The initiator then creates a MESSAGE_PACKET, with the MsgTag field set to
@@ -2312,7 +2215,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-a transaction isolation level (isoLevel, set to 0x00100000, which is
+
+a transaction isolation level (isoLevel, set to 0x00100000, which is
 ISOLATIONLEVEL_SERIALIZABLE), and a transaction description (szDesc, set to the string "Example
 Transaction - 39 chars long...."). The following table is the second MESSAGE_PACKET structure that
 the initiator creates.
@@ -2446,7 +2350,8 @@ Release: April 23, 2024
 
 30 / 39
 
-4.1.2  Creating a Boxcar
+
+#### 4.1.2 Creating a Boxcar
 
 A Boxcar always begins with a BOX_CAR_HEADER structure (section 2.2.1). The first two fields
 (dwSeqNumThisCar and dwAckSeqNum) are reserved and are always set to zero. The third field
@@ -2608,7 +2513,8 @@ Release: April 23, 2024
 
 31 / 39
 
-Field
+
+Field
 
 Value
 
@@ -2658,7 +2564,7 @@ Padding
 
 0x00000000
 
-4.1.3  Sending the Boxcar Using the Underlying MSDTC Connection Manager: OleTx
+#### 4.1.3 Sending the Boxcar Using the Underlying MSDTC Connection Manager: OleTx
 
 Transports Protocol Session
 
@@ -2668,12 +2574,12 @@ Boxcar, and the byte array that makes up the Boxcar itself, as specified in [MS-
 3.4.6.5.  The transports protocol session will ensure that the Boxcar is delivered to the acceptor,
 which will parse it and process the messages it contains.
 
-4.2  A Simple Connection Scenario
+### 4.2 A Simple Connection Scenario
 
 In this example, the initiator starts a connection and then, when all of the messages associated with
 the connection are complete, the initiator disconnects the connection
 
-4.2.1  Initiating a Connection
+#### 4.2.1 Initiating a Connection
 
 Sending Messages (section 4.1) shows how the initiator would create two MESSAGE_PACKET
 structures to request a new connection with connection type 0x00000101
@@ -2683,7 +2589,7 @@ that the initiator needs to wait for some sort of response message. Because this
 message that the initiator receives on the connection the initiator will also be informed that the
 connection request was denied.
 
-4.2.1.1  Connection Denied
+##### 4.2.1.1 Connection Denied
 
 Assume for a moment that the acceptor denies the connection request, then the acceptor will create
 a MESSAGE_PACKET with the MsgTag field set to MTAG_CONNECTION_REQ_DENIED
@@ -2699,7 +2605,8 @@ MSDTC Connection Manager: OleTx Multiplexing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwUserMsgType field is set to zero, because this is a MTAG_CONNECTION_REQ_DENIED
+
+dwUserMsgType field is set to zero, because this is a MTAG_CONNECTION_REQ_DENIED
 message; likewise, the fIsMaster field is set to 0x00000000. The acceptor will then drop all incoming
 messages with a dwConnectionId field set to 0x00000001 until it receives a disconnect request.
 
@@ -2739,7 +2646,7 @@ dwReason
 
 0x80070005  E_ACCESSDENIED
 
-4.2.1.2  Connection Accepted
+##### 4.2.1.2 Connection Accepted
 
 If the acceptor accepts the connection request instead, then it does not send back a specific message
 to that effect. Instead, the acceptor will move on to process the next message in the boxcar. In this
@@ -2796,11 +2703,12 @@ Release: April 23, 2024
 
 33 / 39
 
-Regardless of whether the acceptor chooses to accept or reject the connection, the
+
+Regardless of whether the acceptor chooses to accept or reject the connection, the
 MESSAGE_PACKET that the acceptor generates is packed into a boxcar (as described earlier) and it
 is transmitted back to the initiator.
 
-4.2.2  Disconnecting a Connection
+#### 4.2.2 Disconnecting a Connection
 
 The initiator is responsible for disconnecting the connection when the connection is complete, even if
 the connection was denied by the acceptor.
@@ -2892,14 +2800,15 @@ Release: April 23, 2024
 
 34 / 39
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol has no additional security considerations beyond those in the transports protocol
 described in [MS-CMPO] section 5.1.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2910,7 +2819,8 @@ Release: April 23, 2024
 
 35 / 39
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2975,7 +2885,8 @@ Release: April 23, 2024
 
 36 / 39
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3019,7 +2930,8 @@ Release: April 23, 2024
 
 37 / 39
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3153,7 +3065,8 @@ MTAG_CONNECTION_REQ_DENIED message 16
 
 38 / 39
 
-Vendor-extensible fields 11
+
+Vendor-extensible fields 11
 Versioning 11
 
 MTAG_CONNECTION_REQ_DENIED packet 16

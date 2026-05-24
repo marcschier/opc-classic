@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 23
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 23
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 23
 
-Date
+
+Date
 
 Revision
 History
@@ -604,156 +607,69 @@ Release: April 23, 2024
 
 4 / 23
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Trigger Events](#314-higher-layer-trigger-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Authentication-Info](#3151-authentication-info)
+      - [3.1.5.2 Realm Directive](#3152-realm-directive)
+      - [3.1.5.3 Subsequent Authentication](#3153-subsequent-authentication)
+      - [3.1.5.4 Opaque Directive](#3154-opaque-directive)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Trigger Events](#324-higher-layer-trigger-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Client Nonce Generation](#3251-client-nonce-generation)
+      - [3.2.5.2 Qop Directive](#3252-qop-directive)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Trigger Events](#334-higher-layer-trigger-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Server Nonce Generation](#3351-server-nonce-generation)
+      - [3.3.5.2 Qop-Options Directive](#3352-qop-options-directive)
+      - [3.3.5.3 Realm Directive for the Digest Challenge](#3353-realm-directive-for-the-digest-challenge)
+      - [3.3.5.4 Principal Name Validation](#3354-principal-name-validation)
+      - [3.3.5.5 Host Name](#3355-host-name)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-
-2.1
-2.2
-
-3.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 11
-Common Details .............................................................................................. 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Trigger Events ......................................................................... 11
-Processing Events and Sequencing Rules ....................................................... 11
-Authentication-Info ............................................................................... 11
-Realm Directive .................................................................................... 11
-Subsequent Authentication ..................................................................... 12
-Opaque Directive .................................................................................. 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-Client Details ................................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Trigger Events ......................................................................... 12
-Processing Events and Sequencing Rules ....................................................... 13
-Client Nonce Generation ........................................................................ 13
-Qop Directive ....................................................................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-Server Details .................................................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Trigger Events ......................................................................... 13
-Processing Events and Sequencing Rules ....................................................... 14
-Server Nonce Generation ....................................................................... 14
-Qop-Options Directive ........................................................................... 14
-Realm Directive for the Digest Challenge ................................................. 14
-Principal Name Validation ....................................................................... 14
-Host Name ........................................................................................... 14
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.5.1
-3.2.5.2
-
-3.3.6
-3.3.7
-
-3.2.6
-3.2.7
-
-3.3
-
-4  Protocol Examples ................................................................................................. 15
-
-5 / 23
-
-[MS-DPSP] - v20240423
-Digest Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Parameters ............................................................................ 17
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 18
-
-7  Change Tracking .................................................................................................... 21
-
-8  Index ..................................................................................................................... 22
-
-[MS-DPSP] - v20240423
-Digest Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 23
-
-1  Introduction
+## 1 Introduction
 
 This specification describes optional fields and behaviors of the Digest Access Authentication: Microsoft
 Extensions and how to support clients and servers that exhibit nonconforming behavior to [RFC2617]
@@ -768,7 +684,7 @@ digest authentication as an SASL mechanism.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -784,14 +700,14 @@ authentication protocols to prevent replay attacks. For more information, see [R
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -819,7 +735,8 @@ Release: April 23, 2024
 
 7 / 23
 
-[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
+
+[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
 Access Authentication", RFC 2617, June 1999, https://www.rfc-editor.org/info/rfc2617
 
 [RFC2829] Wahl, M., Alvestrand, H., Hodges, J., and Morgan, R., "Authentication Methods for LDAP",
@@ -830,7 +747,7 @@ May 2000, https://www.rfc-editor.org/info/rfc2831
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DRAFT-DIGESTBIND] Kivinen, T., Huttunen, A., Swander, B., and Volpe, V., "Channel binding for
 HTTP Digest Authentication", July 2008, http://tools.ietf.org/html/draft-santesson-digestbind-01.txt
@@ -842,7 +759,7 @@ HTTP Digest Authentication", July 2008, http://tools.ietf.org/html/draft-santess
 [RFC2069] Franks, J., et al., "An Extension to HTTP: Digest Access Authentication", RFC 2069, January
 1997, http://www.ietf.org/rfc/rfc2069.txt
 
-1.3  Overview
+### 1.3 Overview
 
 The digest authentication mechanism [RFC2617] [RFC2831] performs authentication between a client
 and a server based on a user name and a password. The digest authentication protocol can
@@ -863,7 +780,7 @@ provided via an ordered nonce count, as specified in [RFC2831]. Digest authentic
 mechanism expands the digest access authentication protocol by also supporting integrity and
 confidentiality of messages sent between the client and server.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Digest Authentication Protocol was originally specified as a native authentication method for
 HTTP/1.1, as specified in [RFC2616], to serve as an improvement on the HTTP basic authentication.
@@ -872,7 +789,7 @@ the specification in [RFC2831]. Once made into an SASL mechanism, the Digest Aut
 Protocol became available for other protocols, such as Lightweight Directory Access Protocol (LDAP),
 as specified in [RFC2251].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Digest Protocol Extensions assumes the following:
 
@@ -883,7 +800,8 @@ Release: April 23, 2024
 
 8 / 23
 
-1.  Prior to the start of digest authentication, the client and the server have access to the user's
+
+1.  Prior to the start of digest authentication, the client and the server have access to the user's
 
 password (shared knowledge between them).
 
@@ -891,7 +809,7 @@ password (shared knowledge between them).
 
 generating a nonce.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The digest authentication mechanism is used in environments that require users to authenticate to
 servers to access secure resources. Note that Kerberos (for more information, see [MS-KILE]) and
@@ -902,17 +820,17 @@ The digest authentication mechanism can be used in environments where these stro
 are not available and can serve for interoperability purposes with multiple vendors, browsers, web
 servers, and directory services.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Neither the Digest Authentication Protocol nor the Digest Access Authentication: Microsoft Extensions
 have any versioning capability. The Digest Authentication Protocol does have support for negotiating
 what cryptographic algorithms to use. This is specified in [RFC2831] section 2.1.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None beyond those specified in [RFC2831] and [RFC2617].<1>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None beyond what is specified in [RFC2617] and [RFC2831].
 
@@ -923,9 +841,10 @@ Release: April 23, 2024
 
 9 / 23
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The elements of the Digest Access Authentication: Microsoft Extensions messages are embedded
 directly in HTTP/1.1 messages [RFC2616] when digest authentication is used within HTTP, as specified
@@ -939,7 +858,7 @@ An extension to add channel binding to the HTTP Digest Authentication protocol h
 a draft standard to the IETF. The client and server SHOULD<3> support channel binding as specified
 in [DRAFT-DIGESTBIND].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message syntax is as specified in [RFC2617] and [RFC2831].
 
@@ -960,15 +879,16 @@ Release: April 23, 2024
 
 10 / 23
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Digest Access Authentication: Microsoft Extensions,
 including abstract data models and message processing rules that are common for both the client and
 the server. The variations are as specified in [RFC2617] and [RFC2831].
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -984,30 +904,30 @@ addition to simple authentication. This corresponds to the auth-int option, as s
 [RFC2617] sections 3.2.1 and 3.2.2. If this is not set, only auth is specified as the requested
 quality of protection.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The random number generator for keys and nonces is initialized by other components, but
 SHOULD<6> comply with what is specified in [FIPS140].
 
-3.1.4  Higher-Layer Trigger Events
+#### 3.1.4 Higher-Layer Trigger Events
 
 Digest Access Authentication: Microsoft Extensions are triggered by a higher-layer application
 protocol, such as when HTTP or LDAP creates a connection and requires authentication. The higher-
 layer protocol determines whether the Integrity option is enabled for a particular connection.<7>
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Authentication-Info
+##### 3.1.5.1 Authentication-Info
 
 Specifying fields in the Authentication-Info message sent on the third leg of the Digest Access
 Authentication: Microsoft Extensions from the server to the client SHOULD<8> be supported, as
 specified in [RFC2617] section 3.2.3.
 
-3.1.5.2  Realm Directive
+##### 3.1.5.2 Realm Directive
 
 The realm directive is optional; if not present, the client SHOULD<9> solicit it from the user or be able
 to compute a default, as specified in [RFC2831] section 2.1.1.
@@ -1019,27 +939,28 @@ Release: April 23, 2024
 
 11 / 23
 
-3.1.5.3  Subsequent Authentication
+
+##### 3.1.5.3 Subsequent Authentication
 
 Digest Protocol Extensions does not support "subsequent authentication" ([RFC2831] section 2.2)
 when used as a SASL mechanism.
 
-3.1.5.4  Opaque Directive
+##### 3.1.5.4 Opaque Directive
 
 The opaque directive is a string of data that SHOULD<10> be returned by the client unchanged in the
 authorization header, as specified in [RFC2617] section 3.2.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1059,16 +980,16 @@ ClientCompat_QuotedQop is TRUE, the client will send qop values as quoted direct
 When ClientCompat_QuotedQop is FALSE, the client will send qop values as unquoted directive
 values. This value SHOULD be initialized to TRUE.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no additional client-specific timers specified in the Digest Access Authentication: Microsoft
 Extensions.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 For details on initialization for the client, see section 3.1.3.
 
-3.2.4  Higher-Layer Trigger Events
+#### 3.2.4 Higher-Layer Trigger Events
 
 For details on higher-layer trigger events for the client, see section 3.1.4.
 
@@ -1079,14 +1000,15 @@ Release: April 23, 2024
 
 12 / 23
 
-3.2.5  Processing Events and Sequencing Rules
 
-3.2.5.1  Client Nonce Generation
+#### 3.2.5 Processing Events and Sequencing Rules
+
+##### 3.2.5.1 Client Nonce Generation
 
 When the cnonce is generated by the client, it SHOULD<12> contain at least 64 bits of entropy, as
 specified in [RFC2831] section 2.1.2.
 
-3.2.5.2  Qop Directive
+##### 3.2.5.2 Qop Directive
 
 The qop directive, as specified in [RFC2617] section 3.2.2, is optional to preserve backward
 compatibility with minimal implementation of digest access authentication, as specified in [RFC2069].
@@ -1096,17 +1018,17 @@ that qop is supported) by providing a qop directive in the WWW-Authenticate head
 The server MUST treat single unquoted qop values, such as 'qop-value', the same as quoted qop
 values, such as 'qop="value"'.<14>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no additional client-specific timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no additional client-specific local events.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1120,15 +1042,15 @@ nonce count ([RFC2617] section 3.2.2 and [RFC2831] section 2.1.2) for ongoing co
 server might keep all this information longer than an active connection, depending on the length of
 time that is allotted for subsequent authentication, as specified in [RFC2617] section 3.3.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 There are no additional server-specific timers.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 For details on initialization for the server, see section 3.1.3.
 
-3.3.4  Higher-Layer Trigger Events
+#### 3.3.4 Higher-Layer Trigger Events
 
 For details on the higher-layer trigger events for the server, see section 3.1.4.
 
@@ -1139,27 +1061,28 @@ Release: April 23, 2024
 
 13 / 23
 
-3.3.5  Processing Events and Sequencing Rules
 
-3.3.5.1  Server Nonce Generation
+#### 3.3.5 Processing Events and Sequencing Rules
+
+##### 3.3.5.1 Server Nonce Generation
 
 The nonce computed by the server SHOULD<15> contain at least 64 bits of entropy, as specified in
 [RFC2831] section 2.1.1.
 
-3.3.5.2  Qop-Options Directive
+##### 3.3.5.2 Qop-Options Directive
 
 The qop-options directive, as specified in [RFC2617] section 3.2.1, is optional; but it is used for
 backward compatibility with digest access authentication, as specified in [RFC2069]. The qop-options
 directive SHOULD be used by all implementations compliant with this version of the digest
 authentication mechanism and SHOULD be enclosed in quotation marks.
 
-3.3.5.3  Realm Directive for the Digest Challenge
+##### 3.3.5.3 Realm Directive for the Digest Challenge
 
 The realm directive is required if the server provides any realms in the digest challenge; in which case
 it can appear exactly once, and its value SHOULD be one of those realms, as specified in [RFC2831]
 section 2.1.2.
 
-3.3.5.4  Principal Name Validation
+##### 3.3.5.4 Principal Name Validation
 
 Digest-Uri indicates the principal name of the service that the client is attempting to connect with, as
 specified in [RFC2831] section 2.1.2. Servers SHOULD<16> check that the supplied value is correct.
@@ -1168,15 +1091,15 @@ The digest implementation does not do any validation of the digest-uri value. Th
 the digest authentication validates the principal name specified by the digest-uri. The digest
 authentication implementation returns the principal name to the calling application.
 
-3.3.5.5  Host Name
+##### 3.3.5.5 Host Name
 
 The Digest Protocol Extensions do not make use of the host field.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no additional server-specific timer events in the Digest Protocol Extensions.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no additional server-specific local events in the Digest Protocol Extensions.
 
@@ -1187,11 +1110,12 @@ Release: April 23, 2024
 
 14 / 23
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-DPSP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following diagram and procedural steps describe a common scenario to illustrate the function of
 the Digest Protocol Extensions.
@@ -1230,7 +1154,8 @@ Release: April 23, 2024
 
 15 / 23
 
- response="641b92d2d8af170329ce308832a4df13"
+
+ response="641b92d2d8af170329ce308832a4df13"
 
 3.  The server validates the digest-response message by looking up the user's password by using the
 user name that the client sent, recomputing the keyed hash over fields from the digest-response
@@ -1251,16 +1176,17 @@ Release: April 23, 2024
 
 16 / 23
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Kerberos (for more information, see [MS-KILE]) and public key-based authentication offer stronger
 security guarantees both in terms of initial authentication and in subsequent confidentiality and
 integrity of client-server traffic. The digest authentication mechanism can be used in environments
 where these stronger mechanisms are not available.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1271,7 +1197,8 @@ Release: April 23, 2024
 
 17 / 23
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1339,7 +1266,8 @@ Digest Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LDAP clients and servers in an Active Directory domain can make use of the SASL mechanism for
+
+LDAP clients and servers in an Active Directory domain can make use of the SASL mechanism for
 digest authentication.
 
 The LDAP server in Active Directory offers digest authentication by default as one of several
@@ -1406,7 +1334,8 @@ Digest Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<14> Section 3.2.5.2: Windows 2000 Server operating system accepts only quoted qop directive
+
+<14> Section 3.2.5.2: Windows 2000 Server operating system accepts only quoted qop directive
 values as with 'qop="value"'.
 
 <15> Section 3.3.5.1: In Windows (except Windows 2000), the nonce contains 128 bits of entropy
@@ -1424,7 +1353,8 @@ Release: April 23, 2024
 
 20 / 23
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1468,7 +1398,8 @@ Release: April 23, 2024
 
 21 / 23
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1606,7 +1537,8 @@ R
 
 22 / 23
 
-Realm directive (section 3.1.5.2 11, section 3.3.5.3
+
+Realm directive (section 3.1.5.2 11, section 3.3.5.3
 
 14)
 References 7

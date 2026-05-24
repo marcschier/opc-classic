@@ -63,7 +63,8 @@ Release: June 14, 2022
 
 1 / 60
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -208,217 +209,91 @@ Release: June 14, 2022
 
 2 / 60
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1.1.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 DAC Model](#111-dac-model)
+      - [1.1.1.1 Authorization Information (PAC)](#1111-authorization-information-pac)
+      - [1.1.1.2 Security Identifiers (SIDs)](#1112-security-identifiers-sids)
+      - [1.1.1.3 Security Descriptor](#1113-security-descriptor)
+      - [1.1.1.4 Resource Managers](#1114-resource-managers)
+      - [1.1.1.5 Access Rights](#1115-access-rights)
+      - [1.1.1.6 User Rights](#1116-user-rights)
+      - [1.1.1.7 Access Token](#1117-access-token)
+      - [1.1.1.8 Impersonation](#1118-impersonation)
+      - [1.1.1.9 Inheritance](#1119-inheritance)
+      - [1.1.1.10 Windows Integrity Mechanism](#11110-windows-integrity-mechanism)
+      - [1.1.1.11 Claim-Based Access Control (CBAC) Model](#11111-claim-based-access-control-cbac-model)
+    - [1.1.2 AzMan RBAC Model](#112-azman-rbac-model)
+      - [1.1.2.1 Roles, Tasks, and Operations](#1121-roles-tasks-and-operations)
+      - [1.1.2.2 Application-Scoped Groups](#1122-application-scoped-groups)
+      - [1.1.2.3 Authorization Store](#1123-authorization-store)
+    - [1.1.3 COM+ Roles Access Control Model](#113-com-roles-access-control-model)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Capabilities](#211-system-capabilities)
+    - [2.1.2 Applicability](#212-applicability)
+    - [2.1.3 Authorization Process](#213-authorization-process)
+    - [2.1.4 DAC Model](#214-dac-model)
+      - [2.1.4.1 Protocol Communications](#2141-protocol-communications)
+        - [2.1.4.1.1 Kerberos Protocol Extensions](#21411-kerberos-protocol-extensions)
+        - [2.1.4.1.2 NT LAN Manager (NTLM) Authentication Protocol](#21412-nt-lan-manager-ntlm-authentication-protocol)
+        - [2.1.4.1.3 Digest Protocol Extensions](#21413-digest-protocol-extensions)
+        - [2.1.4.1.4 SSL/TLS Protocol](#21414-ssltls-protocol)
+      - [2.1.4.2 Internal Components](#2142-internal-components)
+      - [2.1.4.3 CBAC Model](#2143-cbac-model)
+        - [2.1.4.3.1 Down-Level Scenarios](#21431-down-level-scenarios)
+        - [2.1.4.3.2 Claims Transformation](#21432-claims-transformation)
+    - [2.1.5 Verify Authorization](#215-verify-authorization)
+    - [2.1.6 COM+ Roles Access Control Model](#216-com-roles-access-control-model)
+    - [2.1.7 Relevant Standards](#217-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 DAC Model](#251-dac-model)
+      - [2.5.1.1 File Server](#2511-file-server)
+        - [2.5.1.1.1 Actors](#25111-actors)
+        - [2.5.1.1.2 Check Simple Access](#25112-check-simple-access)
+        - [2.5.1.1.3 Check ACL Inheritance Access](#25113-check-acl-inheritance-access)
+        - [2.5.1.1.4 Check Conditional ACEs-Based Access](#25114-check-conditional-aces-based-access)
+        - [2.5.1.1.5 Check Claims-Based Access](#25115-check-claims-based-access)
+      - [2.5.1.2 Active Directory](#2512-active-directory)
+        - [2.5.1.2.1 Actors](#25121-actors)
+        - [2.5.1.2.2 Check Simple Access](#25122-check-simple-access)
+        - [2.5.1.2.3 Check Object-Specific Access](#25123-check-object-specific-access)
+        - [2.5.1.2.4 Control Access Right-Based Access](#25124-control-access-right-based-access)
+        - [2.5.1.2.5 Control Validated Write-Based Access](#25125-control-validated-write-based-access)
+        - [2.5.1.2.6 Check Object Visibility](#25126-check-object-visibility)
+      - [2.5.1.3 Auxiliary](#2513-auxiliary)
+        - [2.5.1.3.1 Get Access Token](#25131-get-access-token)
+    - [2.5.2 AzMan RBAC Model](#252-azman-rbac-model)
+      - [2.5.2.1 AzMan RBAC Model](#2521-azman-rbac-model)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Reading from a File on Remote CBAC Aware SMB2 Share](#31-reading-from-a-file-on-remote-cbac-aware-smb2-share)
+    - [3.1.1 Kerberos Protocol Extensions [MS-KILE]](#311-kerberos-protocol-extensions-ms-kile)
+      - [3.1.1.1 Service Ticket with the User and Device Claims](#3111-service-ticket-with-the-user-and-device-claims)
+      - [3.1.1.2 Service Ticket Without the User Claims](#3112-service-ticket-without-the-user-claims)
+    - [3.1.2 NT LAN Manager Authentication Protocol [MS-NLMP]](#312-nt-lan-manager-authentication-protocol-ms-nlmp)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-DAC Model ................................................................................................... 6
-Authorization Information (PAC) ............................................................... 6
-1.1.1.1
-Security Identifiers (SIDs)........................................................................ 7
-1.1.1.2
-Security Descriptor .................................................................................. 8
-1.1.1.3
-Resource Managers ............................................................................... 11
-1.1.1.4
-Access Rights ....................................................................................... 11
-1.1.1.5
-User Rights .......................................................................................... 12
-1.1.1.6
-Access Token........................................................................................ 12
-1.1.1.7
-Impersonation ...................................................................................... 13
-1.1.1.8
-1.1.1.9
-Inheritance .......................................................................................... 14
-1.1.1.10  Windows Integrity Mechanism ................................................................ 14
-Claim-Based Access Control (CBAC) Model ............................................... 14
-1.1.1.11
-AzMan RBAC Model ..................................................................................... 15
-Roles, Tasks, and Operations .................................................................. 15
-Application-Scoped Groups ..................................................................... 16
-Authorization Store ............................................................................... 17
-COM+ Roles Access Control Model ................................................................ 17
-Glossary ......................................................................................................... 17
-References ...................................................................................................... 19
+## 1 Introduction
 
-1.1.2.1
-1.1.2.2
-1.1.2.3
-
-1.2
-1.3
-
-1.1.2
-
-1.1.3
-
-2.1
-
-2.1.4.1
-
-2.1.4.2
-2.1.4.3
-
-2.1.4.3.1
-2.1.4.3.2
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-
-2.1.4.1.1
-2.1.4.1.2
-2.1.4.1.3
-2.1.4.1.4
-
-2  Functional Architecture ......................................................................................... 22
-Overview ........................................................................................................ 22
-System Capabilities ..................................................................................... 22
-Applicability ............................................................................................... 22
-Authorization Process .................................................................................. 23
-DAC Model ................................................................................................. 23
-Protocol Communications ....................................................................... 23
-Kerberos Protocol Extensions ............................................................ 23
-NT LAN Manager (NTLM) Authentication Protocol ................................. 25
-Digest Protocol Extensions ................................................................ 25
-SSL/TLS Protocol ............................................................................. 25
-Internal Components ............................................................................. 25
-CBAC Model ......................................................................................... 26
-Down-Level Scenarios ...................................................................... 28
-Claims Transformation ..................................................................... 30
-Verify Authorization .................................................................................... 31
-COM+ Roles Access Control Model ................................................................ 33
-Relevant Standards ..................................................................................... 33
-Protocol Summary ............................................................................................ 33
-Environment .................................................................................................... 34
-Dependencies on This System ...................................................................... 34
-Dependencies on Other Systems/Components ................................................ 34
-Assumptions and Preconditions .......................................................................... 35
-Use Cases ....................................................................................................... 36
-DAC Model ................................................................................................. 36
-File Server ........................................................................................... 36
-Actors ............................................................................................ 37
-Check Simple Access ....................................................................... 37
-Check ACL Inheritance Access ........................................................... 38
-Check Conditional ACEs-Based Access ................................................ 39
-Check Claims-Based Access .............................................................. 40
-Active Directory .................................................................................... 41
-Actors ............................................................................................ 42
-
-2.5.1.1.1
-2.5.1.1.2
-2.5.1.1.3
-2.5.1.1.4
-2.5.1.1.5
-
-2.1.5
-2.1.6
-2.1.7
-
-2.3.1
-2.3.2
-
-2.5.1.2.1
-
-2.5.1.2
-
-2.5.1.1
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.5.1
-
-[MS-AZOD] - v20220614
-Authorization Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-3 / 60
-
-2.5.1.3
-
-2.5.2
-
-2.5.2.1
-
-2.5.1.3.1
-
-2.5.1.2.2
-2.5.1.2.3
-2.5.1.2.4
-2.5.1.2.5
-2.5.1.2.6
-
-Check Simple Access ....................................................................... 42
-Check Object-Specific Access ............................................................ 43
-Control Access Right-Based Access .................................................... 44
-Control Validated Write-Based Access ................................................ 45
-Check Object Visibility ...................................................................... 46
-Auxiliary .............................................................................................. 47
-Get Access Token ............................................................................ 47
-AzMan RBAC Model ..................................................................................... 48
-AzMan RBAC Model ............................................................................... 49
-Versioning, Capability Negotiation, and Extensibility ............................................. 50
-Error Handling ................................................................................................. 50
-Coherency Requirements .................................................................................. 50
-Security .......................................................................................................... 50
-Additional Considerations .................................................................................. 50
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-3.1
-
-3.1.1
-
-3  Examples ............................................................................................................... 51
-Reading from a File on Remote CBAC Aware SMB2 Share ...................................... 51
-Kerberos Protocol Extensions [MS-KILE] ........................................................ 51
-Service Ticket with the User and Device Claims ........................................ 51
-Service Ticket Without the User Claims .................................................... 54
-NT LAN Manager Authentication Protocol [MS-NLMP] ....................................... 55
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-
-4  Microsoft Implementations ................................................................................... 57
-Product Behavior .............................................................................................. 57
-
-4.1
-
-5  Change Tracking .................................................................................................... 58
-
-6  Index ..................................................................................................................... 59
-
-[MS-AZOD] - v20220614
-Authorization Protocols Overview
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-4 / 60
-
-<!-- Extracted images from page 5 -->
-![Extracted image 1 from page 5]([MS-AZOD].images/page005-img01.png)
-<!-- /Extracted images from page 5 -->
-
-1  Introduction
-
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 Authorization is the process of controlling access to resources. Once authentication has been
 accomplished, the next task is to decide whether a particular request is authorized. Management of
@@ -471,7 +346,8 @@ Release: June 14, 2022
 
 5 / 60
 
-In the DAC model, a resource manager (RM) manages its own set of objects, which are protected by a
+
+In the DAC model, a resource manager (RM) manages its own set of objects, which are protected by a
 security descriptor. Whenever a client requests access to a resource protected by an RM, the RM
 makes a call to the authorization system to verify the authorization of the client's identity. In turn, the
 authorization system looks at the client security token, the requested access to the object, and the
@@ -498,9 +374,9 @@ model can be integrated into any application type.
 This section provides an overview of the following concepts, which are required to understand this
 document.
 
-1.1.1  DAC Model
+#### 1.1.1 DAC Model
 
-1.1.1.1  Authorization Information (PAC)
+##### 1.1.1.1 Authorization Information (PAC)
 
 For a server implementation of an authentication protocol, the result of the authentication produces a
 variety of data. Some of the data is related to the authentication protocol, such as keys for encrypted
@@ -567,11 +443,12 @@ Release: June 14, 2022
 
 6 / 60
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-AZOD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
-1.1.1.2  Security Identifiers (SIDs)
+##### 1.1.1.2 Security Identifiers (SIDs)
 
 The security identifier (SID), as specified in [MS-DTYP] section 2.4.2, is an account identifier. It is
 variable in length and encapsulates the hierarchical notion of issuer and identifier. It consists of a 6-
@@ -612,7 +489,8 @@ Release: June 14, 2022
 
 7 / 60
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-AZOD].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -645,7 +523,7 @@ generally no need to know the SID that is assigned to a particular account. SIDs
 intended to be used internally by the operating system to ensure that accounts are uniquely identified
 in the system.
 
-1.1.1.3  Security Descriptor
+##### 1.1.1.3 Security Descriptor
 
 The security descriptor is the basis for specifying the security that is associated with an object.
 Every object that has a security descriptor linked to it is called a securable object. Securable objects
@@ -665,7 +543,8 @@ Release: June 14, 2022
 
 8 / 60
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-AZOD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -710,7 +589,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-AZOD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -765,7 +645,8 @@ Release: June 14, 2022
 
 10 / 60
 
-ACEs that apply to the user are cumulative, which means that the user receives the sum of the ACEs
+
+ACEs that apply to the user are cumulative, which means that the user receives the sum of the ACEs
 that apply to his or her user account and to the groups of which the user is a member. For example, if
 an ACL contains two allow ACEs that apply to the user, one for read access and the other for write
 access, the user receives read/write access.
@@ -787,7 +668,7 @@ based form of the security descriptor is available for situations when a securit
 a text method. This format is the Security Descriptor Description Language (SDDL). For more
 information about this format, see [MS-DTYP] section 2.5.1.
 
-1.1.1.4  Resource Managers
+##### 1.1.1.4 Resource Managers
 
 In the DAC model, a resource manager (RM) is the code or component that implements one or
 more securable object types. Many RMs--including the file system, registry, Active Directory, and
@@ -805,7 +686,7 @@ descriptor with each object that is protected. The resource manager merely needs
 retrieve the security descriptor for an object when authorization validation is required and is not
 required to understand the contents.
 
-1.1.1.5  Access Rights
+##### 1.1.1.5 Access Rights
 
 The access mask or rights communicate to the authorization system what the process (which is acting
 on a user's identity) is requesting to do with a resource, for example, read a file or write to a file. For
@@ -830,7 +711,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-The least significant 16 bits are termed object-specific and are meaningful only to the resource
+
+The least significant 16 bits are termed object-specific and are meaningful only to the resource
 manager that defines them. Thus the file system might define that bit 1 indicates the capability to
 read the file and that bit 2 indicates the capability to write the file, whereas the registry might define
 bit 1 to enumerate subkeys and bit 2 to read a key's value.
@@ -864,7 +746,7 @@ Printer objects
 
 [MS-PAN] section 3.1.1.4.1
 
-1.1.1.6  User Rights
+##### 1.1.1.6 User Rights
 
 User rights determine the authority to perform an operation that affects an entire computer rather
 than a particular object. User rights are assigned by administrators to individual users or groups as
@@ -882,7 +764,7 @@ User rights grant specific privileges and logon rights to users and groups in a 
 For a list of privileges that are supported in Windows versions, see [MS-LSAD] section 3.1.1.2.1, and
 for logon rights, see [MS-LSAD] section 3.1.1.2.2.
 
-1.1.1.7  Access Token
+##### 1.1.1.7 Access Token
 
 Authorization contexts are built from the authorization information that is obtained during or after the
 authentication process, from server-local information, or a combination of the two, depending on
@@ -903,7 +785,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-AZOD].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -912,7 +795,7 @@ Figure 6: Access token abstract representation
 For descriptions of access token structure fields, see [MS-DTYP] section 2.5.2, and for more
 information about tokens in Windows, see [MSDN-ACCTOKENS].
 
-1.1.1.8  Impersonation
+##### 1.1.1.8 Impersonation
 
 In distributed systems, it is typical for a server to accomplish tasks on behalf of a client. The
 functionality of a server performing a task using the security context of a client to access the server's
@@ -935,13 +818,14 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-  Delegation and Impersonation: [MSFT-DAI]
+
+  Delegation and Impersonation: [MSFT-DAI]
 
   Client Impersonation (RPC): [MSFT-RPCCI]
 
   Client Impersonation (API functions): [MSDN-CI]
 
-1.1.1.9  Inheritance
+##### 1.1.1.9 Inheritance
 
 The DAC model supports a concept of inheritance by which new objects can inherit one or more ACEs
 from their parent container. In practice, this allows an administrator to establish default security on,
@@ -958,9 +842,9 @@ security of the child object if either an Object-Inherit or a Container-Inherit 
 parent container object. This Inherit-Only ACE does not control access to the object to which it is
 attached. For more details, see [MS-DTYP] section 2.4.4.1.
 
-1.1.1.10
+##### 1.1.1.10 Windows Integrity Mechanism
 
-Windows Integrity Mechanism
+
 
 Beginning with Windows Vista operating system, the Windows integrity mechanism extends the
 security architecture by defining a new access control entry (ACE) type to represent an integrity
@@ -978,9 +862,9 @@ subsystem implements the integrity level as a mandatory label to distinguish it 
 access (under user control) that DACLs provide. For more information about Windows integrity
 mechanism design, see [MSDN-WIMD].
 
-1.1.1.11
+##### 1.1.1.11 Claim-Based Access Control (CBAC) Model
 
-Claim-Based Access Control (CBAC) Model
+
 
 Conditional ACEs or expressions were introduced to the authorization system to enable its access
 control decisions to be not only based on the identity of the trustees, but also based on whether
@@ -1003,7 +887,8 @@ Release: June 14, 2022
 
 14 / 60
 
-Device claim: A claim that is associated with an authenticated computer account. Along with the
+
+Device claim: A claim that is associated with an authenticated computer account. Along with the
 claims, it can be included in the user token of the user who is trying to access the resource. Examples
 of device claims are the IT management status of the computer and the department in which the
 computer is designated to operate.
@@ -1023,9 +908,9 @@ policy condition can be stated using the SDDL syntax.
 Using this approach, the "Division" claim of the resource can be separately defined and changed
 without having to update the conditional expression on the resource.
 
-1.1.2  AzMan RBAC Model
+#### 1.1.2 AzMan RBAC Model
 
-1.1.2.1  Roles, Tasks, and Operations
+##### 1.1.2.1 Roles, Tasks, and Operations
 
 In contrast to the DAC model, which is oriented around objects, the AzMan RBAC model attempts to
 orient the common administrative experience around user roles. Rather than assigning permissions to
@@ -1044,7 +929,8 @@ Release: June 14, 2022
 
 15 / 60
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-AZOD].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1064,7 +950,7 @@ and the "Executive" role with permission to view status.
 In Windows, the Authorization Manager framework provides an interface for developing RBAC
 applications.
 
-1.1.2.2  Application-Scoped Groups
+##### 1.1.2.2 Application-Scoped Groups
 
 Authorization Manager role-based access control (AzMan RBAC) also allows users to be collected into
 groups. AzMan RBAC groups are similar to groups in the Active Directory service, but they are
@@ -1087,7 +973,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-the LDAP query is run to determine if the user is a member of that group. This allows for flexible
+
+the LDAP query is run to determine if the user is a member of that group. This allows for flexible
 group membership that remains up-to-date with the user's Active Directory account object. For
 example, a Managers group could contain an LDAP query that includes all users who have direct
 reports.
@@ -1097,7 +984,7 @@ reports.
  BizRule-Based Group: This group allows membership to a group to be based on the AzMan
 BizRule script evaluation.
 
-1.1.2.3  Authorization Store
+##### 1.1.2.3 Authorization Store
 
 The object-based authorization framework maintains access rights in DACLs on the objects. In the
 role-based model, however, security information is maintained in a separate location from objects, in
@@ -1116,11 +1003,11 @@ Authorization Manager also allows the authorization policy to be stored in .xml 
 on an NTFS file system (protected by an ACL). The XML store can be kept on the same computer as
 an Authorization Manager server or it can be stored remotely.
 
-1.1.3  COM+ Roles Access Control Model
+#### 1.1.3 COM+ Roles Access Control Model
 
 For details on the COM+ roles access control model, see [MSDN-COM+Security].
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -1156,7 +1043,8 @@ Release: June 14, 2022
 
 17 / 60
 
-application client: The application that is running on the client computer.  The user who is the
+
+application client: The application that is running on the client computer.  The user who is the
 
 primary actor uses this application to perform required business operations and business tasks.
 
@@ -1230,7 +1118,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Local Security Authority (LSA) database: A Microsoft-specific terminology for the part of the
+
+Local Security Authority (LSA) database: A Microsoft-specific terminology for the part of the
 
 user account database containing account privilege information (such as specific account rights)
 and domain security policy information.
@@ -1283,7 +1172,7 @@ The TGT is obtained after the initial authentication in the Authentication Servi
 thereafter, users do not need to present their credentials, but can use the TGT to obtain
 subsequent tickets.
 
-1.3  References
+### 1.3 References
 
 [MS-ADA3] Microsoft Corporation, "Active Directory Schema Attributes N-Z".
 
@@ -1304,7 +1193,8 @@ Release: June 14, 2022
 
 19 / 60
 
-[MS-AZMP] Microsoft Corporation, "Authorization Manager (AzMan) Policy File Format".
+
+[MS-AZMP] Microsoft Corporation, "Authorization Manager (AzMan) Policy File Format".
 
 [MS-CAPR] Microsoft Corporation, "Central Access Policy Identifier (ID) Retrieval Protocol".
 
@@ -1371,7 +1261,8 @@ Release: June 14, 2022
 
 20 / 60
 
-[MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
+
+[MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
 
 [MS-SMB] Microsoft Corporation, "Server Message Block (SMB) Protocol".
 
@@ -1413,14 +1304,15 @@ Release: June 14, 2022
 
 21 / 60
 
-2  Functional Architecture
 
-2.1  Overview
+## 2 Functional Architecture
+
+### 2.1 Overview
 
 This section provides overviews of the following authorization models: The DAC and CBAC models, the
 AzMan RBAC model, and the COM+ roles access control model.
 
-2.1.1  System Capabilities
+#### 2.1.1 System Capabilities
 
 The Authorization protocols enable the applications to make access control decisions. In Windows, the
 authorization system has the capability to support the following authorization models:
@@ -1494,7 +1386,7 @@ Claims (CBAC)
 
 No
 
-2.1.2  Applicability
+#### 2.1.2 Applicability
 
 No
 
@@ -1546,10 +1438,11 @@ Release: June 14, 2022
 
 22 / 60
 
-The COM+ roles authorization model is applicable to applications that are developed using COM and
+
+The COM+ roles authorization model is applicable to applications that are developed using COM and
 COM+ development frameworks.
 
-2.1.3  Authorization Process
+#### 2.1.3 Authorization Process
 
 Windows determines access so that the results are always predictable and consistent. The
 authorization process is as follows:
@@ -1592,11 +1485,11 @@ there are still values left in the access request, processing continues. The thi
 and grants write access. The granted write access is removed from the access request, and now there
 are no remaining access requests. The access is granted, and processing stops.
 
-2.1.4  DAC Model
+#### 2.1.4 DAC Model
 
-2.1.4.1  Protocol Communications
+##### 2.1.4.1 Protocol Communications
 
-2.1.4.1.1 Kerberos Protocol Extensions
+###### 2.1.4.1.1 Kerberos Protocol Extensions
 
 [MS-AZOD] - v20220614
 Authorization Protocols Overview
@@ -1605,7 +1498,8 @@ Release: June 14, 2022
 
 23 / 60
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-AZOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1641,13 +1535,14 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-The application server impersonates the user using this access token and invokes the access check
+
+The application server impersonates the user using this access token and invokes the access check
 function in the authorization system (through the resource manager) by passing the access token,
 access mask, and security descriptor of the requested object. The authorization system executes the
 access check algorithm, as described in [MS-DTYP] section 2.5.3.2, to verify whether the requested
 identity has sufficient access permissions to access the object.
 
-2.1.4.1.2 NT LAN Manager (NTLM) Authentication Protocol
+###### 2.1.4.1.2 NT LAN Manager (NTLM) Authentication Protocol
 
 The identity of the application client has been authenticated using the NT LAN Manager Authentication
 Protocol Specification (NTLM) and Authentication Protocol Domain Support Specification (APDS)
@@ -1663,7 +1558,7 @@ requested object. The authorization system executes the access check algorithm, 
 DTYP] section 2.5.3.2, to verify whether the requested identity has sufficient access permissions to
 access the object.
 
-2.1.4.1.3 Digest Protocol Extensions
+###### 2.1.4.1.3 Digest Protocol Extensions
 
 The identity of the application client has been authenticated using the [MS-DPSP] and [MS-APDS]
 protocols, as described in [MS-AUTHSOD] section 2.1.2.4. After authentication, the domain
@@ -1683,7 +1578,7 @@ access token, access mask, and security descriptor of the requested object. The 
 executes the access check algorithm, as described in [MS-DTYP] section 2.5.3.2, to verify whether the
 requested identity has sufficient access permissions to access the requesting object.
 
-2.1.4.1.4 SSL/TLS Protocol
+###### 2.1.4.1.4 SSL/TLS Protocol
 
 The identity of the application client has been authenticated using the SSL/TLS (see [MS-TLSP]) and
 RCMP (see [MS-RCMP]) protocols, as described in [MS-AUTHSOD] section 2.1.2.4.
@@ -1706,11 +1601,12 @@ Release: June 14, 2022
 
 25 / 60
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-AZOD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
-2.1.4.2  Internal Components
+##### 2.1.4.2 Internal Components
 
 The following diagram shows the internal components of the DAC system.
 
@@ -1727,7 +1623,7 @@ privileged  operating system kernel mode. It implements the access check algorit
 access to resources by comparing the access control entries (ACEs) in the security descriptor with
 the group membership information in the user's access token.
 
-2.1.4.3  CBAC Model
+##### 2.1.4.3 CBAC Model
 
 The following diagram shows the components of the claim-based access control (CBAC) architecture.
 
@@ -1738,7 +1634,8 @@ Release: June 14, 2022
 
 26 / 60
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-AZOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1772,7 +1669,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-
+
+
 
 The Group Policy server pushes access rules and policies to the specified file servers via Group
 Policy Central Access Policies Protocol Extension. For more information, see [MS-GPCAP].
@@ -1824,7 +1722,7 @@ system to determine access to files.
 
 The authorization system verifies access to the files, as described in [MS-DTYP] section 2.5.3.2.
 
-2.1.4.3.1 Down-Level Scenarios
+###### 2.1.4.3.1 Down-Level Scenarios
 
 The following diagram shows the protocol communications for the CBAC down-level scenario, where
 the user tries to access the CBAC-aware shared-file resources on the file server using a file access
@@ -1855,7 +1753,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-AZOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1882,13 +1781,14 @@ Release: June 14, 2022
 
 29 / 60
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-AZOD].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
 Figure 12: Protocol communications when NTLM is the authentication protocol
 
-2.1.4.3.2 Claims Transformation
+###### 2.1.4.3.2 Claims Transformation
 
 Claim type definitions are specific to a particular forest. In cross-forest authentication scenarios,
 claims need to be examined, filtered, possibly modified, and reissued when traversing from one forest
@@ -1912,7 +1812,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-of the realm for the inter-realm trust. If the names do not match the TGT, they are rejected,
+
+of the realm for the inter-realm trust. If the names do not match the TGT, they are rejected,
 subject to other mitigating constraints. For more information, see [MS-PAC]  sections 4.1.2.2 and
 4.1.2.3.
 
@@ -1929,7 +1830,7 @@ transformation rules are then passed to the claims transformation algorithm, as 
 CTA]. The output of the claims transformation algorithm is further processed using the Claims
 Dictionary to produce claims that are relevant to the new forest in which they are used.
 
-2.1.5  Verify Authorization
+#### 2.1.5 Verify Authorization
 
 The following diagram shows the Authorization Manager architecture and its processes for verifying
 authorization.
@@ -1941,7 +1842,8 @@ Release: June 14, 2022
 
 31 / 60
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-AZOD].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -1977,16 +1879,17 @@ Release: June 14, 2022
 
 32 / 60
 
-2.1.6  COM+ Roles Access Control Model
+
+#### 2.1.6 COM+ Roles Access Control Model
 
 The COM+ access control model implements the same set of authentication and authorization
 protocols as are implemented in the core DAC model.
 
-2.1.7  Relevant Standards
+#### 2.1.7 Relevant Standards
 
 None.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the authorization member protocols and data
 structures.
@@ -2127,7 +2030,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -2170,9 +2074,9 @@ TDS]
 
 AzMan RBAC
 
-2.3  Environment
+### 2.3 Environment
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 Windows components and subsystems that require making authorization decisions depend on the
 authorization system. As a result, the authorization system influences a large number of systems and
@@ -2211,7 +2115,7 @@ In Windows, except for components of the COM+ platform, there are no components/
 depend on this model. However, any enterprise application that uses the services of the COM+
 platform can depend on this model.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The authorization system depends on the following components and protocols:
 
@@ -2226,7 +2130,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-
+
+
 
 Local Security Authority (LSA) database for the user privileges and policies
 
@@ -2278,7 +2183,7 @@ depends on the following components:
 
 (COM+) Remote Administration Protocol [MS-COMA]
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions apply to this document:
 
@@ -2323,7 +2228,8 @@ Release: June 14, 2022
 
 35 / 60
 
-  Group Policy
+
+  Group Policy
 
   Network Time Protocol (NTP)
 
@@ -2331,7 +2237,7 @@ Release: June 14, 2022
 
 LDAP
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following table lists the use cases that span the functionality of the authorization protocols. The
 use cases were grouped based on authorization models.
@@ -2364,9 +2270,9 @@ AzMan RBAC model
 
 Verify Authorization (section 2.5.2.1)
 
-2.5.1  DAC Model
+#### 2.5.1 DAC Model
 
-2.5.1.1  File Server
+##### 2.5.1.1 File Server
 
 The following use case diagram shows the DAC authorization system on the file server.
 
@@ -2377,13 +2283,14 @@ Release: June 14, 2022
 
 36 / 60
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-AZOD].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
 Figure 14: File server authorization use cases
 
-2.5.1.1.1 Actors
+###### 2.5.1.1.1 Actors
 
 The actors that participate in the file server DAC model use cases are:
 
@@ -2399,7 +2306,7 @@ CAP Admin client: The CAP Admin client is the administration tool that enables t
 configure the claim definitions, the user, and device claims in Active Directory and the central
 access policies and classification rules on the Group Policy server.
 
-2.5.1.1.2 Check Simple Access
+###### 2.5.1.1.2 Check Simple Access
 
 Goal
 
@@ -2417,7 +2324,8 @@ Release: June 14, 2022
 
 37 / 60
 
-interacts with the authorization system through the file system resource manager to verify the
+
+interacts with the authorization system through the file system resource manager to verify the
 requested access rights using this use case.
 
 Actors
@@ -2466,7 +2374,7 @@ Postcondition
 
 The user of the file client is granted access to a file on remote file share.
 
-2.5.1.1.3 Check ACL Inheritance Access
+###### 2.5.1.1.3 Check ACL Inheritance Access
 
  Goal
 
@@ -2494,7 +2402,8 @@ Release: June 14, 2022
 
 38 / 60
 
-The primary interest of a user is to access the file on the remote file server.
+
+The primary interest of a user is to access the file on the remote file server.
 
 Preconditions
 
@@ -2535,7 +2444,7 @@ Postcondition
 
 The user of the file client is granted access to a file on the remote file share.
 
-2.5.1.1.4 Check Conditional ACEs-Based Access
+###### 2.5.1.1.4 Check Conditional ACEs-Based Access
 
  Goal
 
@@ -2576,7 +2485,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-
+
+
 
 The file server obtains the access token for the requesting user as described in section 2.5.1.3,
 and the file server makes a request to the file system resource manager by passing the obtained
@@ -2602,7 +2512,7 @@ manager, indicating user access is granted.
 
  The user of the file client is granted access to a file on a remote file share.
 
-2.5.1.1.5 Check Claims-Based Access
+###### 2.5.1.1.5 Check Claims-Based Access
 
  Goal
 
@@ -2660,7 +2570,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-system resource manager by passing the obtained user access token (which is also called security
+
+system resource manager by passing the obtained user access token (which is also called security
 context), access rights, and other information, as specified in [MS-FSA] section 2.1.5.1.
 
  Main success scenario
@@ -2682,7 +2593,7 @@ manager, indicating user access is granted.
 
  The user of the file client is granted access to open a file on a remote file share.
 
-2.5.1.2  Active Directory
+##### 2.5.1.2 Active Directory
 
 The following use case diagram shows the components of Active Directory authorization through the
 Active Directory resource manager.
@@ -2694,13 +2605,14 @@ Release: June 14, 2022
 
 41 / 60
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-AZOD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
 Figure 15: Active Directory authorization use cases
 
-2.5.1.2.1 Actors
+###### 2.5.1.2.1 Actors
 
 The actors that participate in the Active Directory DAC model use cases are:
 
@@ -2713,7 +2625,7 @@ Admin client: The Admin client is the authorization tool that helps the administ
 access permissions for the entire Active Directory object or individual attributes of an object or the
 set of attributes of an object.
 
-2.5.1.2.2 Check Simple Access
+###### 2.5.1.2.2 Check Simple Access
 
 Goal
 
@@ -2729,7 +2641,8 @@ Release: June 14, 2022
 
 42 / 60
 
-The user of the Active Directory client needs to access the Active Directory object on the Active
+
+The user of the Active Directory client needs to access the Active Directory object on the Active
 Directory server, and the Active Directory server needs to verify the access rights of the user before
 providing the access to the user. Therefore, the Active Directory server interacts with the
 authorization system through the Active Directory resource manager to verify the requested access
@@ -2789,7 +2702,7 @@ Postcondition
 The Active Directory server enables access to the user to read all the information associated with the
 requested Active Directory object.
 
-2.5.1.2.3 Check Object-Specific Access
+###### 2.5.1.2.3 Check Object-Specific Access
 
 Goal
 
@@ -2809,7 +2722,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Actors
+
+Actors
 
 The actors are the same as described in section 2.5.1.2.1.
 
@@ -2861,7 +2775,7 @@ Post condition
 The Active Directory server enables access to the user to read all the information associated with the
 requested Active Directory object.
 
-2.5.1.2.4 Control Access Right-Based Access
+###### 2.5.1.2.4 Control Access Right-Based Access
 
  Goal
 
@@ -2889,7 +2803,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Stakeholders
+
+Stakeholders
 
 The primary interest of a user is to perform certain operations that have semantics that are not tied to
 specific properties ([MS-ADTS] section 5.1.3.2.1).
@@ -2940,7 +2855,7 @@ Postcondition
 
  The Active Directory server enables the user to perform the requested operation.
 
-2.5.1.2.5 Control Validated Write-Based Access
+###### 2.5.1.2.5 Control Validated Write-Based Access
 
 Goal
 
@@ -2970,7 +2885,8 @@ Release: June 14, 2022
 
 45 / 60
 
-
+
+
 
 
 
@@ -3011,7 +2927,7 @@ Postcondition
 
 The Active Directory server enables the user to perform a requested write operation.
 
-2.5.1.2.6 Check Object Visibility
+###### 2.5.1.2.6 Check Object Visibility
 
  Goal
 
@@ -3053,7 +2969,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-AZOD].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3089,14 +3006,14 @@ Postcondition
 The Active Directory server makes Active Directory objects and attributes visible to whichever user
 has access to them.
 
-2.5.1.3  Auxiliary
+##### 2.5.1.3 Auxiliary
 
 The following use case diagram shows the components in the DAC authorization system to get an
 access token.
 
 Figure 16: Get Access Token use case
 
-2.5.1.3.1 Get Access Token
+###### 2.5.1.3.1 Get Access Token
 
 Goal
 
@@ -3111,7 +3028,8 @@ Release: June 14, 2022
 
 47 / 60
 
-The identity of the application client associated with a specific user needs to access resources on the
+
+The identity of the application client associated with a specific user needs to access resources on the
 application server, and the application server needs to access a token to call access-check-related
 authorization use cases.
 
@@ -3166,7 +3084,7 @@ Postcondition
 The application server process gets the access token for the requested identity and proceeds to the
 next steps of the authorization process.
 
-2.5.2  AzMan RBAC Model
+#### 2.5.2 AzMan RBAC Model
 
 The following use case diagram shows the components in the RBAC authorization system to verify
 authorization.
@@ -3178,13 +3096,14 @@ Release: June 14, 2022
 
 48 / 60
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-AZOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
 Figure 17: Verify AzMan RBAC authorization use case
 
-2.5.2.1  AzMan RBAC Model
+##### 2.5.2.1 AzMan RBAC Model
 
 Goal
 
@@ -3238,7 +3157,8 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Main success scenario
+
+Main success scenario
 
 1.  Trigger: The user of the application client is required to perform certain protected tasks with the
 
@@ -3264,7 +3184,7 @@ Extensions
 
 None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 No capability negotiation is associated with this authorization system. Any deviations from a specific
 version's implementation of these protocol specifications are documented in the respective protocol
@@ -3273,22 +3193,22 @@ specified in the System Versioning and Capability Negotiation sections in their 
 documents (TDs). For more details, see sections 1.7 of the member protocol technical documents
 listed in section 2.2 of this document.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The authorization system does not handle errors at the system level for cross-protocol error states.
 The individual protocol documents describe the errors that the protocols return and what they mean
 for the system. How to handle the errors, based on the protocol descriptions, is determined by the
 implementer.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 This system has no special coherency requirements.
 
-2.9  Security
+### 2.9 Security
 
 None.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -3299,9 +3219,10 @@ Release: June 14, 2022
 
 50 / 60
 
-3  Examples
 
-3.1  Reading from a File on Remote CBAC Aware SMB2 Share
+## 3 Examples
+
+### 3.1 Reading from a File on Remote CBAC Aware SMB2 Share
 
 This scenario demonstrates the use cases described in sections 2.5.1.1.5 and 2.5.1.3.1. The client and
 server can negotiate each other by using the Simple and Protected Generic Security Service
@@ -3376,9 +3297,10 @@ Release: June 14, 2022
 
 51 / 60
 
-3.1.1  Kerberos Protocol Extensions [MS-KILE]
 
-3.1.1.1  Service Ticket with the User and Device Claims
+#### 3.1.1 Kerberos Protocol Extensions [MS-KILE]
+
+##### 3.1.1.1 Service Ticket with the User and Device Claims
 
 Prerequisites
 
@@ -3449,7 +3371,8 @@ Release: June 14, 2022
 
 52 / 60
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-AZOD].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -3497,12 +3420,13 @@ Authorization Protocols Overview
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-8.
+
+8.
 
  The server sends an SMB2 CLOSE response([MS-SMB2] section 2.2.16) indicating that the close
 operation was successful.
 
-3.1.1.2  Service Ticket Without the User Claims
+##### 3.1.1.2 Service Ticket Without the User Claims
 
 This example is applicable when the client computer uses a Windows operating system before
 Windows 8 operating system and uses Kerberos as authentication protocol.
@@ -3565,7 +3489,8 @@ Release: June 14, 2022
 
 54 / 60
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-AZOD].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -3589,7 +3514,7 @@ PAC] section 3.
 3-10. The steps are the same as steps 1-8 in "Service Ticket with the User and Device Claims" variant
 as described in section 3.1.1.1.
 
-3.1.2  NT LAN Manager Authentication Protocol [MS-NLMP]
+#### 3.1.2 NT LAN Manager Authentication Protocol [MS-NLMP]
 
 Prerequisites
 
@@ -3602,7 +3527,8 @@ Release: June 14, 2022
 
 55 / 60
 
-Initial System State
+
+Initial System State
 
 
 
@@ -3638,7 +3564,8 @@ Release: June 14, 2022
 
 56 / 60
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this overview is applicable to the following versions of Windows:
 
@@ -3680,7 +3607,7 @@ The information in this overview is applicable to the following versions of Wind
 
 Exceptions, if any, are noted in the following section.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 None.
 
@@ -3691,7 +3618,8 @@ Release: June 14, 2022
 
 57 / 60
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3703,7 +3631,8 @@ Release: June 14, 2022
 
 58 / 60
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 50
@@ -3838,7 +3767,8 @@ Tracking changes 58
 
 59 / 60
 
-U
+
+U
 
 Use cases 36
    azman rbac model 48

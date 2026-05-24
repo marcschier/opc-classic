@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 12
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -98,85 +99,42 @@ Release: April 23, 2024
 
 2 / 12
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Gateway Details](#31-gateway-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 5
-Vendor-Extensible Fields ..................................................................................... 5
-Standards Assignments ....................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 6
-Transport .......................................................................................................... 6
-Message Syntax ................................................................................................. 6
-
-2.1
-2.2
-
-3.1
-
-3  Protocol Details ....................................................................................................... 7
-Gateway Details ................................................................................................. 7
-Abstract Data Model ...................................................................................... 7
-Timers ........................................................................................................ 7
-Initialization ................................................................................................. 7
-Higher-Layer Triggered Events ....................................................................... 7
-Message Processing Events and Sequencing Rules ............................................ 7
-Timer Events ................................................................................................ 7
-Other Local Events ........................................................................................ 7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................... 8
-
-5  Security ................................................................................................................... 9
-Security Considerations for Implementers ............................................................. 9
-Index of Security Parameters .............................................................................. 9
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 10
-
-7  Change Tracking .................................................................................................... 11
-
-8  Index ..................................................................................................................... 12
-
-[MS-BGPP] - v20240423
-Border Gateway Protocol (BGP) Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 12
-
-1  Introduction
+## 1 Introduction
 
 The Border Gateway Protocol (BGP) is an inter-domain routing protocol. The primary function of a BGP
 speaking system is to exchange network reachability information with other BGP systems. BGP
@@ -189,7 +147,7 @@ differences between the profile and the published BGP standard.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -202,14 +160,14 @@ TCP/IP routing.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -227,7 +185,7 @@ https://www.rfc-editor.org/info/rfc2385
 [RFC4271] Rekhter, Y., Li, T., Hares, S., Eds., "A Border Gateway Protocol 4 (BGP-4)", RFC 4271,
 https://www.rfc-editor.org/info/rfc4271
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDOCS-BGP] Microsoft Corporation, "Border Gateway Protocol (BGP)",
 https://learn.microsoft.com/en-us/windows-server/remote/remote-access/bgp/border-gateway-
@@ -240,37 +198,38 @@ Release: April 23, 2024
 
 4 / 12
 
-1.3  Overview
+
+### 1.3 Overview
 
 The Border Gateway Protocol (BGP) Profile does not implement some of the MUST clauses called
 out in BGP RFCs. For more details see section 2.2 and section 3.1.5. For more information on BGP see
 [MSDOCS-BGP].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Border Gateway Protocol (BGP) Profile is a subset of the Border Gateway Protocol 4 (BGP-4)
 specified in [RFC4271]. BGP Profile relies on BGP Communities Attributes specified in [RFC1997] with
 some omissions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This profile assumes that an administrator only configures the use of this profile in an applicable
 environment.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Since this profile is not compliant with the standard BGP-4 requirements specified in [RFC4271], it is
 not applicable for use on the global Internet.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This profile does not provide any way to discover whether a peer supports this profile.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -281,13 +240,14 @@ Release: April 23, 2024
 
 5 / 12
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 There are no transport deviations from the BGP-4 specification [RFC4271].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Message syntax is based on the BGP-4 specification [RFC4271].
 
@@ -305,29 +265,30 @@ Release: April 23, 2024
 
 6 / 12
 
-3  Protocol Details
 
-3.1  Gateway Details
+## 3 Protocol Details
+
+### 3.1 Gateway Details
 
 BGP Profile applies to the server side as specified in [RFC4271].
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 No changes from [RFC4271].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No changes from [RFC4271].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No changes from [RFC4271].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No changes from [RFC4271].
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The deviations from the Border Gateway Protocol 4 (BGP-4) specification [RFC4271] are:
 
@@ -342,11 +303,11 @@ replacement route SHALL be advertised to its peers by means of an UPDATE message
 implemented. An External Border Gateway Protocol (EBGP) or (eBGP) learned route will not be re-
 advertised to another eBGP peer even if that’s the best route from the decision process.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No changes from [RFC4271].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No changes from [RFC4271].
 
@@ -357,7 +318,8 @@ Release: April 23, 2024
 
 7 / 12
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Protocol examples of Boarder Gateway message formats can be found in [RFC4271] section 4.
 
@@ -368,14 +330,15 @@ Release: April 23, 2024
 
 8 / 12
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The "Security Considerations" section in specification [RFC4271] states that implementations MUST
 support TCP MD5 ([RFC2385]) for authentication. Authentication is not implemented.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -386,7 +349,8 @@ Release: April 23, 2024
 
 9 / 12
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -418,7 +382,8 @@ Release: April 23, 2024
 
 10 / 12
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -462,7 +427,8 @@ Release: April 23, 2024
 
 11 / 12
 
-Tracking changes 11
+
+Tracking changes 11
 Transport 6
 
 V
@@ -470,7 +436,7 @@ V
 Vendor-extensible fields 5
 Versioning 5
 
-8  Index
+## 8 Index
 A
 
 Applicability 5

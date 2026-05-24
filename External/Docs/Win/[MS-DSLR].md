@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 41
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -277,7 +278,8 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Date
+
+Date
 
 Revision
 History
@@ -339,205 +341,87 @@ Release: June 1, 2017
 
 3 / 41
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.3.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 DSLR OSI Layers](#131-dslr-osi-layers)
+      - [1.3.1.1 Dispenser (Application Layer)](#1311-dispenser-application-layer)
+      - [1.3.1.2 Serializer/Deserializer (Presentation Layer)](#1312-serializerdeserializer-presentation-layer)
+        - [1.3.1.2.1 Proxy Code (Remote)](#13121-proxy-code-remote)
+        - [1.3.1.2.2 Stub Code (Local)](#13122-stub-code-local)
+      - [1.3.1.3 Dispatcher (Session Layer)](#1313-dispatcher-session-layer)
+      - [1.3.1.4 Transport/Tags (Transport Layer)](#1314-transporttags-transport-layer)
+    - [1.3.2 DSLR Messages](#132-dslr-messages)
+      - [1.3.2.1 CreateService](#1321-createservice)
+      - [1.3.2.2 DeleteService](#1322-deleteservice)
+      - [1.3.2.3 Dispatch Event (DSLR One-Way Request)](#1323-dispatch-event-dslr-one-way-request)
+      - [1.3.2.4 Dispatch Request (DSLR Two-Way Request)](#1324-dispatch-request-dslr-two-way-request)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Tag Format](#221-tag-format)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 Dispatcher Request Tag Payload](#2221-dispatcher-request-tag-payload)
+      - [2.2.2.2 Dispatcher Response Tag Payload](#2222-dispatcher-response-tag-payload)
+      - [2.2.2.3 CreateService Message Payload](#2223-createservice-message-payload)
+      - [2.2.2.4 DeleteService Message Payload](#2224-deleteservice-message-payload)
+      - [2.2.2.5 Response Payload for CreateService and DeleteService Messages](#2225-response-payload-for-createservice-and-deleteservice-messages)
+      - [2.2.2.6 Generic Service Request Payload](#2226-generic-service-request-payload)
+      - [2.2.2.7 Generic Service Response Payload](#2227-generic-service-response-payload)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details (Remote/Proxy Side of the DSLR Connection)](#31-client-details-remoteproxy-side-of-the-dslr-connection)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 CreateService](#3151-createservice)
+      - [3.1.5.2 Service Requests](#3152-service-requests)
+        - [3.1.5.2.1 One-Way Events](#31521-one-way-events)
+        - [3.1.5.2.2 Two-Way Requests](#31522-two-way-requests)
+      - [3.1.5.3 DeleteService](#3153-deleteservice)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 OnConnected](#3171-onconnected)
+      - [3.1.7.2 OnDisconnected](#3172-ondisconnected)
+  - [3.2 Server Details (Local/Stub Side of DSLR Connection)](#32-server-details-localstub-side-of-dslr-connection)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 CreateService](#3251-createservice)
+      - [3.2.5.2 Service Requests](#3252-service-requests)
+        - [3.2.5.2.1 One-Way Events](#32521-one-way-events)
+        - [3.2.5.2.2 Two-Way Requests](#32522-two-way-requests)
+      - [3.2.5.3 DeleteService](#3253-deleteservice)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 OnConnected](#3271-onconnected)
+      - [3.2.7.2 OnDisconnected](#3272-ondisconnected)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Typical DSLR Session](#41-typical-dslr-session)
+  - [4.2 Typical DSLR Message](#42-typical-dslr-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-
-1.3.1.2.1
-1.3.1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-DSLR OSI Layers .......................................................................................... 8
-Dispenser (Application Layer) ................................................................... 9
-Serializer/Deserializer (Presentation Layer) ................................................ 9
-Proxy Code (Remote) ....................................................................... 10
-Stub Code (Local) ............................................................................ 10
-Dispatcher (Session Layer) ..................................................................... 10
-Transport/Tags (Transport Layer) ........................................................... 11
-DSLR Messages .......................................................................................... 11
-CreateService ....................................................................................... 11
-DeleteService ....................................................................................... 12
-Dispatch Event (DSLR One-Way Request) ................................................ 12
-Dispatch Request (DSLR Two-Way Request) ............................................. 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1.3
-1.3.1.4
-
-1.3.2
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Tag Format ................................................................................................ 14
-Messages ................................................................................................... 14
-Dispatcher Request Tag Payload ............................................................. 14
-Dispatcher Response Tag Payload ........................................................... 16
-CreateService Message Payload .............................................................. 16
-DeleteService Message Payload .............................................................. 17
-Response Payload for CreateService and DeleteService Messages ............... 18
-Generic Service Request Payload ............................................................ 20
-Generic Service Response Payload .......................................................... 22
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 24
-Client Details (Remote/Proxy Side of the DSLR Connection) .................................. 24
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 26
-Processing Events and Sequencing Rules ....................................................... 26
-CreateService ....................................................................................... 26
-Service Requests .................................................................................. 27
-One-Way Events ............................................................................. 28
-Two-Way Requests .......................................................................... 29
-DeleteService ....................................................................................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-OnConnected ........................................................................................ 29
-OnDisconnected .................................................................................... 29
-Server Details (Local/Stub Side of DSLR Connection) ............................................ 29
-
-3.1.5.2.1
-3.1.5.2.2
-
-3.1.7.1
-3.1.7.2
-
-3.1.6
-3.1.7
-
-3.1.5.3
-
-3.2
-
-[MS-DSLR] - v20170601
-Device Services Lightweight Remoting Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 41
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 31
-Higher-Layer Triggered Events ..................................................................... 31
-Processing Events and Sequencing Rules ....................................................... 31
-CreateService ....................................................................................... 31
-Service Requests .................................................................................. 33
-One-Way Events ............................................................................. 33
-Two-Way Requests .......................................................................... 34
-DeleteService ....................................................................................... 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-OnConnected ........................................................................................ 34
-OnDisconnected .................................................................................... 34
-
-3.2.5.1
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.5.3
-
-3.2.6
-3.2.7
-
-3.2.7.1
-3.2.7.2
-
-4  Protocol Examples ................................................................................................. 35
-Typical DSLR Session ........................................................................................ 35
-Typical DSLR Message ...................................................................................... 36
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 38
-
-7  Change Tracking .................................................................................................... 39
-
-8  Index ..................................................................................................................... 40
-
-[MS-DSLR] - v20170601
-Device Services Lightweight Remoting Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 41
-
-1  Introduction
+## 1 Introduction
 
 The Device Services Lightweight Remoting (DSLR) Protocol enables remoting of services (objects,
 function calls, events, and so on) over a reliable point-to-point channel.
@@ -545,7 +429,7 @@ function calls, events, and so on) over a reliable point-to-point channel.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -615,7 +499,8 @@ Release: June 1, 2017
 
 6 / 41
 
-standardizes levels of service and types of interaction for computers that are exchanging
+
+standardizes levels of service and types of interaction for computers that are exchanging
 information through a communications network. Also called the OSI reference model.
 
 network byte order: The order in which the bytes of a multiple-byte number are transmitted on a
@@ -649,14 +534,14 @@ includes the size of the payload, number of children, and the tag payload itself
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -669,7 +554,7 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DMCT] Microsoft Corporation, "Device Media Control Protocol".
 
@@ -682,7 +567,8 @@ Release: June 1, 2017
 
 7 / 41
 
-1.3  Overview
+
+### 1.3 Overview
 
 The Device Services Lightweight Remoting (DSLR) Protocol enables an application to call functions on
 and send events to a remote service over a reliable point-to-point connection. The service itself is
@@ -694,7 +580,7 @@ functions/events exposed by the service, as well as the input/output parameters 
 following sections describe the DSLR architecture in more detail, as well as the distinction between
 proxy and stub.
 
-1.3.1  DSLR OSI Layers
+#### 1.3.1 DSLR OSI Layers
 
 The following sections describe the OSI layers (from the ISO/OSI reference model) exposed by
 DSLR.
@@ -725,13 +611,14 @@ Release: June 1, 2017
 
 8 / 41
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-DSLR].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 1: OSI layers and DSLR
 
-1.3.1.1  Dispenser (Application Layer)
+##### 1.3.1.1 Dispenser (Application Layer)
 
 The dispenser is exposed on both sides of the connection (both client and server). The dispenser is
 itself a service with two exposed functions: CreateService (section 1.3.2.1) and
@@ -766,7 +653,8 @@ Release: June 1, 2017
 
 9 / 41
 
-
+
+
 
 The service creator: all local services that are going to be used are required to have a service
 creator function.
@@ -776,7 +664,7 @@ creator function.
 At startup, the dispenser adds itself as the first service (with service handle = 0), and starts the
 transport.
 
-1.3.1.2  Serializer/Deserializer (Presentation Layer)
+##### 1.3.1.2 Serializer/Deserializer (Presentation Layer)
 
 DSLR uses tags to encapsulate data from each protocol layer. Tags are the binary equivalent of an
 XML element, although very much simplified.
@@ -807,14 +695,14 @@ parameters, and serializes the output parameters (if any) and the return value. 
 use the interface exposed by the service, the function handles (unsigned integers) that map to the
 exposed functions, and the in/out parameters for those functions.
 
-1.3.1.2.1 Proxy Code (Remote)
+###### 1.3.1.2.1 Proxy Code (Remote)
 
 For each of the remoted functions, the proxy implementation requests a tag and a request handle
 from the dispatcher, serialize the in parameter into the tag, send it, and (in the case of a two-way
 call) wait for the server to return the dispatcher response for that call. The returned tag is then
 deserialized (including the returned HRESULT and the out parameters), and the function returns.
 
-1.3.1.2.2 Stub Code (Local)
+###### 1.3.1.2.2 Stub Code (Local)
 
 The stub is not an object, but rather, an application used to deserialize and dispatch an incoming tag
 to an object. Based on the function handle, the stub implementation deserializes the [in] parameters,
@@ -822,7 +710,7 @@ call the real object (pointed to by the service argument), and (for a two-way ca
 parameters, starting with the HRESULT, which is followed by all other parameters if the HRESULT was
 successful.
 
-1.3.1.3  Dispatcher (Session Layer)
+##### 1.3.1.3 Dispatcher (Session Layer)
 
 While the dispenser tracks services, the dispatcher tracks transactions. The DSLR client dispatcher
 achieves this by allocating a transaction (request) handle for each roundtrip. Note that transaction
@@ -835,7 +723,8 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-they are allocated on one side, and used on the other). This remark also applies to the dispenser's
+
+they are allocated on one side, and used on the other). This remark also applies to the dispenser's
 service handles.
 
 The dispatcher defines the calling conventions available to the customer: a two-way request/response
@@ -881,7 +770,7 @@ The calls might not be processed in the order they were sent.
 
 There might not be any out parameters.
 
-1.3.1.4  Transport/Tags (Transport Layer)
+##### 1.3.1.4 Transport/Tags (Transport Layer)
 
 Finally, the tag transport notifies the dispatcher when a new tag arrives and sends outgoing tags.
 The actual sequencing of outgoing tags is controlled by the dispatcher.
@@ -889,7 +778,7 @@ The actual sequencing of outgoing tags is controlled by the dispatcher.
 DSLR uses a "buffered" delivery of tags; that is, the transport will wait for a tag and all of its children
 to be received (as well as the tag objects created) before dispatching it.
 
-1.3.2  DSLR Messages
+#### 1.3.2 DSLR Messages
 
 The following messages are sent from the DSLR client to the DSLR server during the lifetime of a
 given remote service:
@@ -901,13 +790,14 @@ Release: June 1, 2017
 
 11 / 41
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-DSLR].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 2: Messages sent from DSLR client to server for a given remote service
 
-1.3.2.1  CreateService
+##### 1.3.2.1 CreateService
 
 The CreateService message is called by the client to instantiate the remote service on the server. The
 client allocates a service handle and sends it to the server. This service handle is then used by both
@@ -916,19 +806,19 @@ sides of the connection to uniquely identify the specific service.
 This is a two-way request; the client waits for the server to send back a response (containing the
 result of the call).
 
-1.3.2.2  DeleteService
+##### 1.3.2.2 DeleteService
 
 The DeleteService message is called by the client when the client is shutting down, or simply no
 longer needs to access the remote service. This is a two-way request; the client waits for the server to
 send back a response (containing the result of the call).
 
-1.3.2.3  Dispatch Event (DSLR One-Way Request)
+##### 1.3.2.3 Dispatch Event (DSLR One-Way Request)
 
 The Dispatch Event message is called by the client to send an event to a remote service. This is a one-
 way request; no response is sent back from the server. The event messages available are defined by
 the specific service that has been instantiated.
 
-1.3.2.4  Dispatch Request (DSLR Two-Way Request)
+##### 1.3.2.4 Dispatch Request (DSLR Two-Way Request)
 
 The Dispatch Request message is sent by the client to call a function on a remote service. This is a
 two-way request; the client waits for the server to send back the dispatch response (containing the
@@ -940,10 +830,11 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-result of the call as well as any out parameters returned by the specific function). The request
+
+result of the call as well as any out parameters returned by the specific function). The request
 messages available are defined by the specific service that has been instantiated.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 DSLR does not rely on any specific protocol, except for whichever protocol defines the transport used
 for the point-to-point connection.
@@ -951,19 +842,19 @@ for the point-to-point connection.
 Device Session protocols (for example, Device Session Monitoring Protocol [MS-DSMN]) and Device
 Media protocols (for example, Device Media Control Protocol [MS-DMCT]) can build on DSLR.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 For DSLR services to function properly, it is only necessary that a reliable point-to-point connection
 has been established between the client and the server, and the DSLR dispenser service has been
 started on both sides of the connection. There are no prerequisites required before DSLR itself can be
 instantiated.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 DSLR is applicable to environments that require the ability to make function calls on and send events
 to remote services (objects) over a reliable point-to-point channel.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol has no specific capability negotiation or versioning aspects, aside from the following
 considerations:
@@ -984,7 +875,7 @@ unique GUID is analogous to the COM QueryInterface call.
 
   Adding functions: DSLR services are backwards compatible as long as old functions are kept.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses GUIDs, as specified in [MS-DTYP], to represent services. Each DSLR service is
 defined by two GUIDS: a class ID and a service ID. Vendors are free to choose their own values for
@@ -994,7 +885,7 @@ This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1, as well 
 this document, in section 2.2.2.5. Vendors can define their own HRESULT values, provided they set
 the C bit (0x20000000) for each vendor-defined value, indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1005,13 +896,14 @@ Release: June 1, 2017
 
 13 / 41
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DSLR can be implemented on top of any stream-based or message-based reliable transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The DSLR protocol defines a tag-based message format. Each tag contains the payload size, the
 payload, the child count, and the children's payloads.
@@ -1024,7 +916,7 @@ section 4.2 for a typical message layout.
 Note that the network byte order for all numeric data in all DSLR messages (both tags and
 payloads) is big-endian. The high-order byte is the first to hit the wire.
 
-2.2.1  Tag Format
+#### 2.2.1 Tag Format
 
 The format for each DSLR tag is as follows:
 
@@ -1064,7 +956,7 @@ Children (variable): Child tags (if applicable). Examples of DSLR child tags inc
 parameters for dispatcher request, and the result/out parameters for the dispatcher response.
 These are also described in the following sections.
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 The following sections describe the tag payloads for each DSLR message.
 
@@ -1075,7 +967,8 @@ Release: June 1, 2017
 
 14 / 41
 
-2.2.2.1  Dispatcher Request Tag Payload
+
+##### 2.2.2.1 Dispatcher Request Tag Payload
 
 The Dispatcher Request tag payload precedes all DSLR remote service request tags and payloads.
 (DSLR service requests are children of the Dispatcher Request tag.) It includes all information relevant
@@ -1166,7 +1059,8 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-service that corresponds to the specified ServiceHandle. (Note that for the dispenser service calls,
+
+service that corresponds to the specified ServiceHandle. (Note that for the dispenser service calls,
 CreateService and DeleteService, these values MUST be 0x00000001 and 0x00000002
 respectively.
 
@@ -1194,7 +1088,7 @@ Delete remote service. Used by the DSLR dispenser service.
 Function handle for the specific function, defined and exposed by the DSLR
 service that corresponds to the specified ServiceHandle.
 
-2.2.2.2  Dispatcher Response Tag Payload
+##### 2.2.2.2 Dispatcher Response Tag Payload
 
 The Dispatcher Response tag payload precedes all DSLR service response tags and payloads returned
 from DSLR two-way service requests. (DSLR service responses are children of the Dispatcher
@@ -1238,7 +1132,7 @@ RequestHandle (4 bytes): An unsigned 32-bit integer. The request handle to which
 corresponds. The request handle for each request is allocated by the client and passed to the
 server in the Dispatcher Request tag payload.
 
-2.2.2.3  CreateService Message Payload
+##### 2.2.2.3 CreateService Message Payload
 
 The purpose of the CreateService message is to allow a client to instantiate a remote service, and the
 message payload contains all information needed to that end: the class ID and service ID that
@@ -1252,7 +1146,8 @@ Release: June 1, 2017
 
 16 / 41
 
-As the CreateService message is a function exposed by the DSLR built-in dispenser service, it follows
+
+As the CreateService message is a function exposed by the DSLR built-in dispenser service, it follows
 the same convention as would a call on an application-defined DSLR remote service call. The message
 tag and payload is a child of the DSLR Dispatch Request tag defined in section 2.2.1, and includes the
 input parameters for the CreateService function call.
@@ -1317,7 +1212,7 @@ remote service.
 
 See section 2.2.2.5 for the format of the Response payload for the CreateService message.
 
-2.2.2.4  DeleteService Message Payload
+##### 2.2.2.4 DeleteService Message Payload
 
 The purpose of the DeleteService message is to allow a client to shut down a previously instantiated
 remote service, and the message payload contains all information needed to that end: the service
@@ -1330,7 +1225,8 @@ Release: June 1, 2017
 
 17 / 41
 
-As the DeleteService message is a function exposed by the DSLR built-in dispenser service, it follows
+
+As the DeleteService message is a function exposed by the DSLR built-in dispenser service, it follows
 the same convention as would a call on an application-defined DSLR remote service call. The message
 tag and payload is a child of the DSLR Dispatch Request tag defined in section 2.2.1, and includes the
 input parameters for the DeleteService function call.
@@ -1376,7 +1272,7 @@ through the CreateService call.
 
 See the following section about the format of the Response payload for the DeleteService message.
 
-2.2.2.5  Response Payload for CreateService and DeleteService Messages
+##### 2.2.2.5 Response Payload for CreateService and DeleteService Messages
 
 The CreateService and DeleteService messages are both two-way DSLR requests, and as such, follow
 the same convention as would any application-defined, DSLR two-way service request. The message
@@ -1418,7 +1314,8 @@ Release: June 1, 2017
 
 18 / 41
 
-Value
+
+Value
 
 Meaning
 
@@ -1531,7 +1428,8 @@ Release: June 1, 2017
 
 19 / 41
 
-Value
+
+Value
 
 Meaning
 
@@ -1609,7 +1507,7 @@ The transport was disconnected unexpectedly.
 
 The CreateService and DeleteService messages have no additional out parameters.
 
-2.2.2.6  Generic Service Request Payload
+##### 2.2.2.6 Generic Service Request Payload
 
 The purpose of the DSLR protocol is to allow DSLR consumers to define remote services and requests
 (or function calls) on those services. To that end, all DSLR service requests follow the same
@@ -1639,7 +1537,8 @@ Release: June 1, 2017
 
 20 / 41
 
-...
+
+...
 
 SerializedArgument_N (variable)
 
@@ -1727,7 +1626,8 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Data2
+
+Data2
 
 Data3
 
@@ -1781,7 +1681,7 @@ Data (variable)
 
 ...
 
-2.2.2.7  Generic Service Response Payload
+##### 2.2.2.7 Generic Service Response Payload
 
 All DSLR two-way service requests follow the same convention for their responses. The message tag
 and payload is a child of the DSLR dispatch response tag defined in section 2.2.2.2 and includes the
@@ -1812,7 +1712,8 @@ Release: June 1, 2017
 
 22 / 41
 
-...
+
+...
 
 SerializedArgument_N (variable)
 
@@ -1838,18 +1739,19 @@ Release: June 1, 2017
 
 23 / 41
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-DSLR].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 As previously stated, DSLR is direction agnostic. In other words, a machine or a device can be either a
 client (which implements a proxy that makes calls on a remote service) or a server (which
 implements a remote service), depending on the specific service implementation. Either side of the
 DSLR connection can act as a client, a server, or both.
 
-3.1  Client Details (Remote/Proxy Side of the DSLR Connection)
+### 3.1 Client Details (Remote/Proxy Side of the DSLR Connection)
 
 The client (remote/proxy) side of the DSLR connection is responsible for calling CreateService to
 create the remote service on the server; then for sending dispatcher requests and receiving dispatcher
@@ -1890,10 +1792,11 @@ Release: June 1, 2017
 
 24 / 41
 
-Finish state: The client has called DeleteService to clean up the remote service. No events are
+
+Finish state: The client has called DeleteService to clean up the remote service. No events are
 processed in this state.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1931,11 +1834,11 @@ the Dispatcher Request tag and service function input parameters) that will be s
 When a response is received (for a two-way request), the DSLR client dispatcher retrieves the out
 tag for the specific request, and returns it to the proxy.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 On startup, DSLR performs the following initialization:
 
@@ -1961,17 +1864,18 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 The DSLR client is driven by applications calling CreateService to create the service on the remote
 side, and then by an application calling functions on that service. The application is also responsible
 for calling DeleteService to clean up the remote service.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The following sections describe the states and events outlined in 3.1.
 
-3.1.5.1  CreateService
+##### 3.1.5.1 CreateService
 
 When initialization and startup is complete, the client sends the CreateService message to the server
 to instantiate the service on the server, and also creates a proxy for that service (an object that
@@ -1992,13 +1896,14 @@ Release: June 1, 2017
 
 26 / 41
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-DSLR].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 4: CreateService flow diagram
 
-3.1.5.2  Service Requests
+##### 3.1.5.2 Service Requests
 
 When the remote service has been instantiated, the client then calls functions on the service (one-way
 events and two-way requests), and waits for responses for any two-way requests.
@@ -2012,13 +1917,14 @@ Release: June 1, 2017
 
 27 / 41
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-DSLR].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
 Figure 5: Flow diagram for calling remote functions
 
-3.1.5.2.1 One-Way Events
+###### 3.1.5.2.1 One-Way Events
 
 If this event occurs while the client is in the Accepting Requests state, the client moves into the
 Sending Request state and sends the request to the server. Otherwise, the event is queued until the
@@ -2035,7 +1941,8 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.5.2.2 Two-Way Requests
+
+###### 3.1.5.2.2 Two-Way Requests
 
 If this event occurs while the client is in the Accepting Requests state, the client moves into the
 Sending Request state and sends the request to the server. Otherwise, the event is queued until the
@@ -2046,7 +1953,7 @@ client returns to the Accepting Requests state when the response has been receiv
 is the one received from the server, or an appropriate error code from the set of DSLR error codes
 defined in section 2.2.2.5.
 
-3.1.5.3  DeleteService
+##### 3.1.5.3 DeleteService
 
 When the client no longer needs to make requests on the remote service, it sends the DeleteService
 message to the server to clean up the remote service. Clean up on the server entails removing the
@@ -2058,23 +1965,23 @@ If this event occurs while the client is in the Accepting Requests state, the cl
 state and return S_OK(0x00000000). Otherwise, the client returns an appropriate error code from the
 set of DSLR error codes defined in section 2.2.2.5.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  OnConnected
+##### 3.1.7.1 OnConnected
 
 When the transport is connected, it notifies its dispatcher, which in turn calls the dispenser's connect
 callback (if provided at initialization).
 
-3.1.7.2  OnDisconnected
+##### 3.1.7.2 OnDisconnected
 
 When the transport is disconnected it notifies its dispatcher, which in turn calls the dispenser's
 disconnect callback (if provided at initialization).
 
-3.2  Server Details (Local/Stub Side of DSLR Connection)
+### 3.2 Server Details (Local/Stub Side of DSLR Connection)
 
 After CreateService has been called by a client, the server side of the DSLR is responsible for receiving
 dispatcher requests, executing the function calls for those requests, and sending dispatcher responses
@@ -2090,7 +1997,8 @@ Release: June 1, 2017
 
 29 / 41
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-DSLR].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2119,7 +2027,7 @@ state:
 Finish state: The server has received the DeleteService message and cleaned up the remote service.
 No events are processed in this state.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2141,7 +2049,8 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-StubTable: The stub function for a given service (identified by a service GUID) is provided by the
+
+StubTable: The stub function for a given service (identified by a service GUID) is provided by the
 application at initialization. The service dispenser maintains a table mapping each service GUID to its
 stub function. When the client application requests that a remote service be created through the
 CreateService message, the DSLR server uses this table to determine the stub function for the
@@ -2161,11 +2070,11 @@ ServiceTable: The DSLR service dispatcher maintains a table for each service cre
 CreateService. It maps the client provided service handle to the stub function specified at initialization
 for a given service GUID.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 On startup, DSLR performs the following initialization on the server:
 
@@ -2184,15 +2093,15 @@ methods required to instantiate the services, as well as the stubs responsible f
 requests. Optionally, the service can register to receive notification when the transport for the services
 has been either connected or disconnected, or both.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The following sections describe the states and events outlined in section 3.2.1.
 
-3.2.5.1  CreateService
+##### 3.2.5.1 CreateService
 
 When initialization and startup are complete, the server waits for the client to call CreateService to
 instantiate the service. When the CreateService message is received, the server calls the service
@@ -2206,7 +2115,8 @@ Release: June 1, 2017
 
 31 / 41
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-DSLR].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2228,11 +2138,12 @@ Release: June 1, 2017
 
 32 / 41
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-DSLR].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
-3.2.5.2  Service Requests
+##### 3.2.5.2 Service Requests
 
 When the remote service has been instantiated, the server then waits for the client to issue service
 requests on the service. When it receives such requests, the server executes the service requests and
@@ -2242,7 +2153,7 @@ The flow for processing function calls is diagrammed in the following figure:
 
 Figure 8: Flow diagram for processing function calls
 
-3.2.5.2.1 One-Way Events
+###### 3.2.5.2.1 One-Way Events
 
 If this event occurs while the server is in the Accepting Messages state, the server moves into the
 Processing Message state and processes the one-way event. Otherwise, the event is queued until the
@@ -2255,11 +2166,12 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Once the event message has been processed (the local function has been called), the client returns to
+
+Once the event message has been processed (the local function has been called), the client returns to
 the Accepting Messages state. The return value is S_OK (0x00000000), or an appropriate error code
 from the set of error codes defined in section 2.2.2.5.
 
-3.2.5.2.2 Two-Way Requests
+###### 3.2.5.2.2 Two-Way Requests
 
 If this event occurs while the server is in the Accepting Messages state, the server moves into the
 Accepting Messages state and processes the two-way request. Otherwise, the event is queued until
@@ -2270,7 +2182,7 @@ value and out parameters sent back to the client), the server returns to the Acc
 The return value is the result of the function call, or an appropriate error code from the set of error
 codes defined in section 2.2.2.5.
 
-3.2.5.3  DeleteService
+##### 3.2.5.3 DeleteService
 
 Once the server receives the DeleteService message from the client, it stops processing service
 requests and cleans up the service. (See figure in section 3.1.)
@@ -2279,18 +2191,18 @@ If this event occurs while the server is in the Accepting Messages state, the cl
 Finish state and return S_OK(0x00000000). Otherwise, the client returns an appropriate error code
 from the set of error codes defined in section 2.2.2.5.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  OnConnected
+##### 3.2.7.1 OnConnected
 
 When the transport is connected it notifies its dispatcher, which in turn sets the connect event for
 each registered service (including the dispenser service), if specified at initialization.
 
-3.2.7.2  OnDisconnected
+##### 3.2.7.2 OnDisconnected
 
 When the transport is disconnected it notifies its dispatcher, which in turn sets the disconnect event
 for each registered service (including the dispenser service), if specified at initialization.
@@ -2302,13 +2214,14 @@ Release: June 1, 2017
 
 34 / 41
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-DSLR].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Typical DSLR Session
+### 4.1 Typical DSLR Session
 
 The following diagram shows a typical DSLR session for a given remote service:
 
@@ -2341,11 +2254,12 @@ Device Services Lightweight Remoting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-7.  The server returns S_OK(0x00000000) if the service was deleted successfully; otherwise, it
+
+7.  The server returns S_OK(0x00000000) if the service was deleted successfully; otherwise, it
 
 returns an appropriate error code.
 
-4.2  Typical DSLR Message
+### 4.2 Typical DSLR Message
 
 The following is a sample of a typical DSLR message: the Dispatcher Request tag and payload,
 followed by one child, the CreateService tag and payload (the CreateService input parameters). A
@@ -2415,14 +2329,15 @@ Release: June 1, 2017
 
 36 / 41
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The DSLR framework is security neutral. Security and privacy are implemented and enforced in the
 transport layer. Possible transport layers include, but are not limited to, TCP and RDP virtual channels.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2433,7 +2348,8 @@ Release: June 1, 2017
 
 37 / 41
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2467,7 +2383,8 @@ Release: June 1, 2017
 
 38 / 41
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2479,7 +2396,8 @@ Release: June 1, 2017
 
 39 / 41
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2613,7 +2531,8 @@ R
 
 40 / 41
 
-References 7
+
+References 7
    informative 7
    normative 7
 Relationship to other protocols 12

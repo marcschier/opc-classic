@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -299,7 +300,8 @@ Release: April 23, 2024
 
 2 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -477,184 +479,77 @@ Release: April 23, 2024
 
 3 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Error Report Level 1 Data](#221-error-report-level-1-data)
+      - [2.2.1.1 Namespaces](#2211-namespaces)
+      - [2.2.1.2 Simple Types](#2212-simple-types)
+        - [2.2.1.2.1 maxpathstring](#22121-maxpathstring)
+        - [2.2.1.2.2 osstring](#22122-osstring)
+        - [2.2.1.2.3 lcidvalue](#22123-lcidvalue)
+        - [2.2.1.2.4 reporttypevalues](#22124-reporttypevalues)
+        - [2.2.1.2.5 filetypevalues](#22125-filetypevalues)
+        - [2.2.1.2.6 string32](#22126-string32)
+        - [2.2.1.2.7 parameterid](#22127-parameterid)
+      - [2.2.1.3 Element Types](#2213-element-types)
+        - [2.2.1.3.1 WERREPORT](#22131-werreport)
+        - [2.2.1.3.2 USERINFO](#22132-userinfo)
+        - [2.2.1.3.3 MACHINEINFO](#22133-machineinfo)
+        - [2.2.1.3.4 APPLICATIONINFO](#22134-applicationinfo)
+        - [2.2.1.3.5 EVENTINFO](#22135-eventinfo)
+        - [2.2.1.3.6 SIGNATURE](#22136-signature)
+          - [2.2.1.3.6.1 PARAMETER](#221361-parameter)
+          - [2.2.1.3.6.2 SECONDARYPARAMETER](#221362-secondaryparameter)
+        - [2.2.1.3.7 FILES](#22137-files)
+          - [2.2.1.3.7.1 FILE](#221371-file)
+    - [2.2.2 Level 1 Server Response](#222-level-1-server-response)
+    - [2.2.3 Error Report Level 2 Data](#223-error-report-level-2-data)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Application Fault Example with Request for Error Report Level 2 Data (Level 2 of](#41-application-fault-example-with-request-for-error-report-level-2-data-level-2-of)
+  - [4.2 Application Fault Example without Request for Error Report Level 2 Data (Level 2](#42-application-fault-example-without-request-for-error-report-level-2-data-level-2)
+  - [4.3 Kernel Fault Example with Request for Error Report Level 2 Data (Level 2 of the](#43-kernel-fault-example-with-request-for-error-report-level-2-data-level-2-of-the)
+  - [4.4 Generic Error Reporting Example with Request for Error Report Level 2 Data](#44-generic-error-reporting-example-with-request-for-error-report-level-2-data)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-2.2.1.2.6
-2.2.1.2.7
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Error Report Level 1 Data ............................................................................ 11
-Namespaces ......................................................................................... 11
-Simple Types ........................................................................................ 11
-maxpathstring ................................................................................ 11
-osstring .......................................................................................... 12
-lcidvalue ......................................................................................... 12
-reporttypevalues ............................................................................. 12
-filetypevalues.................................................................................. 12
-string32 ......................................................................................... 12
-parameterid .................................................................................... 13
-Element Types ...................................................................................... 13
-WERREPORT ................................................................................... 13
-USERINFO ...................................................................................... 14
-MACHINEINFO ................................................................................ 14
-APPLICATIONINFO ........................................................................... 14
-EVENTINFO..................................................................................... 15
-SIGNATURE .................................................................................... 15
-PARAMETER .............................................................................. 15
-SECONDARYPARAMETER ............................................................. 15
-FILES ............................................................................................. 15
-FILE ......................................................................................... 16
-Level 1 Server Response ............................................................................. 16
-Error Report Level 2 Data ............................................................................ 17
-
-2.2.1.3.1
-2.2.1.3.2
-2.2.1.3.3
-2.2.1.3.4
-2.2.1.3.5
-2.2.1.3.6
-
-2.2.1.3.6.1
-2.2.1.3.6.2
-
-2.2.1.3.7.1
-
-2.2.2
-2.2.3
-
-2.2.1.3.7
-
-2.2.1.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 18
-Client Details ................................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-Server Details .................................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2
-
-[MS-CER2] - v20240423
-Corporate Error Reporting V.2 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 29
-
-3.2.6
-3.2.7
-
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 20
-
-4  Protocol Examples ................................................................................................. 21
-
-4.1
-
-4.2
-
-4.3
-
-4.4
-
-Application Fault Example with Request for Error Report Level 2 Data (Level 2 of the
-Protocol Is Executed)........................................................................................ 21
-Application Fault Example without Request for Error Report Level 2 Data (Level 2 of the
-Protocol Is Not Executed) .................................................................................. 22
-Kernel Fault Example with Request for Error Report Level 2 Data (Level 2 of the
-Protocol Is Executed)........................................................................................ 22
-Generic Error Reporting Example with Request for Error Report Level 2 Data (Level 2 of
-the Protocol Is Executed) .................................................................................. 23
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 26
-
-7  Change Tracking .................................................................................................... 27
-
-8  Index ..................................................................................................................... 28
-
-[MS-CER2] - v20240423
-Corporate Error Reporting V.2 Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 29
-
-1  Introduction
+## 1 Introduction
 
 The Corporate Error Reporting V.2 Protocol is designed to enable enterprise computing sites to
 manage all error reporting information within the organization. Through the use of this protocol,
@@ -664,7 +559,7 @@ server. This protocol is layered on top of the HTTP protocol.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -724,7 +619,8 @@ Release: April 23, 2024
 
 6 / 29
 
-error report level 1 data: The data that is transmitted to the CER server that contains basic
+
+error report level 1 data: The data that is transmitted to the CER server that contains basic
 
 information about the problem.
 
@@ -766,14 +662,14 @@ transmits it to another network agent.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -799,7 +695,8 @@ Release: April 23, 2024
 
 7 / 29
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-CER2].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -822,7 +719,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CAB] Microsoft Corporation, "Microsoft Cabinet Format", March 1997,
 http://msdn.microsoft.com/en-us/library/bb417343.aspx
@@ -830,7 +727,7 @@ http://msdn.microsoft.com/en-us/library/bb417343.aspx
 [MSDN-WER] Microsoft Corporation, "Windows Error Reporting", http://msdn.microsoft.com/en-
 us/library/bb513641(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Corporate Error Reporting V.2 Protocol provides an enterprise computing site with the ability to
 transfer error reports from a set of client machines to a CER server, and to get a response from the
@@ -855,12 +752,13 @@ Release: April 23, 2024
 
 8 / 29
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-CER2].images/page009-img01.png)
 ![Extracted image 2 from page 9]([MS-CER2].images/page009-img02.png)
 <!-- /Extracted images from page 9 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is built on top of the HTTP 1.1 protocol [RFC2616] and has direct dependency on it.
 Depending on the authentication mechanism needed to perform the upload to a URL, this protocol can
@@ -870,7 +768,7 @@ Figure 2: Protocol dependency over HTTP
 
 Figure 3: Protocol dependency over HTTP and TLS
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following prerequisites or preconditions apply to this protocol:
 
@@ -912,13 +810,14 @@ Release: April 23, 2024
 
 9 / 29
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is not designed to be used by any other protocols. It is appropriate for small, medium, or
 large organizations that want to manage and review all error reporting information within the
 organization.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
   Supported Transports: This protocol is implemented on top of HTTP 1.1 [RFC2616].
 
@@ -926,11 +825,11 @@ organization.
 
 and Kerberos [RFC4559] network authentication.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -941,24 +840,25 @@ Release: April 23, 2024
 
 10 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use HTTP 1.1. The client or server can impose additional requirements on
 authentication and security as part of the transfer. When additional requirements are imposed,
 authentication information MUST be exchanged between the clients and server as required by HTTP
 and the relevant authentication and security protocols. The transport can require proxy resolution.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Error Report Level 1 Data
+#### 2.2.1 Error Report Level 1 Data
 
 This message is a Unicode XML document. The contents MUST be formatted by using the XML schema
 that is specified in the following sections. This message is sent from the CER client to the CER
 server.
 
-2.2.1.1  Namespaces
+##### 2.2.1.1 Namespaces
 
 This specification defines and references an XML namespace using the mechanisms specified in
 [XMLNS]. The namespace used throughout this specification is as follows:
@@ -977,7 +877,7 @@ http://www.w3.org/2001/XMLSchema
 
 [XMLSCHEMA2]
 
-2.2.1.2  Simple Types
+##### 2.2.1.2 Simple Types
 
 The following table summarizes the XML schema and set of simple type definitions that are defined by
 this specification.
@@ -1012,7 +912,7 @@ parameterid
 
 An integer in the range of 0–9.
 
-2.2.1.2.1 maxpathstring
+###### 2.2.1.2.1 maxpathstring
 
 The maxpathstring simple type specifies the path to a file.
 
@@ -1027,10 +927,11 @@ Release: April 23, 2024
 
 11 / 29
 
-    </xs:restriction>
+
+    </xs:restriction>
  </xs:simpleType>
 
-2.2.1.2.2 osstring
+###### 2.2.1.2.2 osstring
 
 The osstring simple type specifies a format for an operating system version string.
 
@@ -1041,7 +942,7 @@ The osstring simple type specifies a format for an operating system version stri
     </xs:restriction>
  </xs:simpleType>
 
-2.2.1.2.3 lcidvalue
+###### 2.2.1.2.3 lcidvalue
 
 The lcidvalue simple type specifies the format for the LCID value [MS-LCID].
 
@@ -1051,7 +952,7 @@ The lcidvalue simple type specifies the format for the LCID value [MS-LCID].
      </xs:restriction>
    </xs:simpleType>
 
-2.2.1.2.4 reporttypevalues
+###### 2.2.1.2.4 reporttypevalues
 
 The reporttypevalues simple type specifies a type of Windows Error Reporting (WER) report [MSDN-
 WER].
@@ -1062,7 +963,7 @@ WER].
  </xs:restriction>
  </xs:simpleType>
 
-2.2.1.2.5 filetypevalues
+###### 2.2.1.2.5 filetypevalues
 
 The filetypevalues simple type specifies a type of WER file that is added to the report [MSDN-WER].
 
@@ -1072,7 +973,7 @@ The filetypevalues simple type specifies a type of WER file that is added to the
     </xs:restriction>
  </xs:simpleType>
 
-2.2.1.2.6 string32
+###### 2.2.1.2.6 string32
 
 The string32 simple type specifies the format for a string that has 32 or fewer characters.
 
@@ -1089,7 +990,8 @@ Release: April 23, 2024
 
 12 / 29
 
-2.2.1.2.7 parameterid
+
+###### 2.2.1.2.7 parameterid
 
 The parameterid simple type specifies the index of the parameter that is sent in the error report
 level 1 data.
@@ -1100,7 +1002,7 @@ level 1 data.
      </xs:restriction>
  </xs:simpleType>
 
-2.2.1.3  Element Types
+##### 2.2.1.3 Element Types
 
 The following table summarizes the set of XML schema element definitions defined by this
 specification.
@@ -1172,7 +1074,7 @@ Files that are added as part of the report. This contains 0 or more FILE element
 
 Note  The CER server can ask for additional files in addition to the ones already added.
 
-2.2.1.3.1 WERREPORT
+###### 2.2.1.3.1 WERREPORT
 
 [MS-CER2] - v20240423
 Corporate Error Reporting V.2 Protocol
@@ -1181,7 +1083,8 @@ Release: April 23, 2024
 
 13 / 29
 
-This element specifies an allowable format for a block of information that represents a report that is
+
+This element specifies an allowable format for a block of information that represents a report that is
 uploaded to the CER server as an error report level 1 data message. It consists of the following
 complex types:
 
@@ -1201,7 +1104,7 @@ EVENTINFO
 
 FILES
 
-2.2.1.3.2 USERINFO
+###### 2.2.1.3.2 USERINFO
 
 This element specifies an allowable format for a block of information about the user that encountered
 the error, for whom the report is uploaded. This block includes the name of the user for whom the
@@ -1213,7 +1116,7 @@ error report is sent.
      </xs:complexType>
  </xs:element>
 
-2.2.1.3.3 MACHINEINFO
+###### 2.2.1.3.3 MACHINEINFO
 
 This element specifies an allowable format for a block of information about the machine that
 encountered the error for which the report is uploaded. This block includes the following information
@@ -1227,7 +1130,7 @@ about the machine from which the report is sent: the machine name, the OS versio
     <xs:attribute name="oem" type="string32" use="optional" />
  <xs:complexType>
 
-2.2.1.3.4 APPLICATIONINFO
+###### 2.2.1.3.4 APPLICATIONINFO
 
 This element specifies an allowable format for a block of information about the application that
 encountered the error for which the report is uploaded. This block includes the following information
@@ -1250,7 +1153,8 @@ Release: April 23, 2024
 
 14 / 29
 
-2.2.1.3.5 EVENTINFO
+
+###### 2.2.1.3.5 EVENTINFO
 
 This element specifies an allowable format for a block of information about the event for which the
 report is uploaded. This block includes the following information about the event for which the report
@@ -1271,13 +1175,13 @@ and the time that the event occurred. The time is in UTC format.
     </xs:complexType>
  </xs:element>
 
-2.2.1.3.6 SIGNATURE
+###### 2.2.1.3.6 SIGNATURE
 
 This element specifies an allowable format for a block of information about the signature for the report
 that is uploaded. It has two elements: PARAMETER, which can occur 0 to 10 times, and
 SECONDARYPARAMETER, which can occur 0 to an unbounded number of times.
 
-2.2.1.3.6.1  PARAMETER
+###### 2.2.1.3.6.1 PARAMETER
 
 This element specifies an allowable format for a block of information about a parameter for the report
 that is uploaded. It consists of the parameter's name, value, and identification index.
@@ -1290,7 +1194,7 @@ that is uploaded. It consists of the parameter's name, value, and identification
     </xs:complexType>
  </xs:element>
 
-2.2.1.3.6.2  SECONDARYPARAMETER
+###### 2.2.1.3.6.2 SECONDARYPARAMETER
 
 This element specifies an allowable format for a block of information about a secondary parameter for
 the report that is uploaded. It consists of the name and value of the secondary parameter.
@@ -1302,7 +1206,7 @@ the report that is uploaded. It consists of the name and value of the secondary 
     </xs:complexType>
  </xs:element>
 
-2.2.1.3.7 FILES
+###### 2.2.1.3.7 FILES
 
 The FILES element specifies an allowable format for a block of information about the files that are
 added as part of the report that is uploaded. The FILES element has one element, FILE, which can
@@ -1315,7 +1219,8 @@ Release: April 23, 2024
 
 15 / 29
 
-2.2.1.3.7.1  FILE
+
+###### 2.2.1.3.7.1 FILE
 
 The FILE element consists of the file's name and type.
 
@@ -1326,7 +1231,7 @@ The FILE element consists of the file's name and type.
      </xs:complexType>
  </xs:element>
 
-2.2.2  Level 1 Server Response
+#### 2.2.2 Level 1 Server Response
 
 This message is an ANSI text response ([ISO/IEC-8859-1], code page 1252) that is sent from the
 CER server to the CER client.
@@ -1386,7 +1291,8 @@ Corporate Error Reporting V.2 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BucketID: This parameter is a Bucket; that is, it is a positive decimal integer.
+
+BucketID: This parameter is a Bucket; that is, it is a positive decimal integer.
 
 BucketTableID: A positive decimal integer. If present, BucketTableID is used to categorize
 
@@ -1434,7 +1340,7 @@ DumpFile: This parameter is used as the level 2 destination url-path for uploadi
 
 CER server.
 
-2.2.3  Error Report Level 2 Data
+#### 2.2.3 Error Report Level 2 Data
 
 Level 2 of the protocol is initiated if there are files added to the report that have to be uploaded, and if
 the server requests additional files. In error report level 2 data of the protocol, the client will create
@@ -1448,11 +1354,12 @@ Release: April 23, 2024
 
 17 / 29
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1468,11 +1375,11 @@ document.
 
   UseAuthentication: Indicates that uploads MUST use network authentication.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 1.  The CER client MUST check for the existence of a destination server. If a destination server is
 
@@ -1483,11 +1390,11 @@ not set or if it is not valid, the CER client MUST stop processing.
 CER client MUST use the destination server port for any communication with the CER server. If
 the destination server port is not set, it defaults to port 1273.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 1.  When the CER server receives an error report level 1 data message, it MUST respond with a
 
@@ -1518,19 +1425,20 @@ Corporate Error Reporting V.2 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  There is no requirement that two clients use the same file compression scheme.
 
-3.1.6  Timer Events
+Note  There is no requirement that two clients use the same file compression scheme.
 
-None.
-
-3.1.7  Other Local Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.2  Server Details
+#### 3.1.7 Other Local Events
 
-3.2.1  Abstract Data Model
+None.
+
+### 3.2 Server Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1548,20 +1456,20 @@ document.
 
 FileShare URL
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The CER server MUST listen on the specified Server Listening Port according to the specified
 protocol setting of either HTTP or HTTPS.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 When the CER server receives an error report level 1 data message, it MUST respond with a Level
 1 Server Response reply. The CER server authenticates the client, if required. The CER server can add
@@ -1571,7 +1479,7 @@ the appropriate URL to the Level 1 Server Response as specified in [RFC3986].
 
 the information contained in the error report level 1 data to the CER fileshare.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -1582,7 +1490,8 @@ Release: April 23, 2024
 
 19 / 29
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1593,13 +1502,14 @@ Release: April 23, 2024
 
 20 / 29
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe examples for communication between the client and CER server.
 These examples describe problems that might occur on a client that is configured to use the Corporate
 Error Reporting Version 2.0 Protocol.
 
-4.1  Application Fault Example with Request for Error Report Level 2 Data (Level 2 of
+### 4.1 Application Fault Example with Request for Error Report Level 2 Data (Level 2 of
 
 the Protocol Is Executed)
 
@@ -1664,12 +1574,13 @@ Corporate Error Reporting V.2 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-670d\c0000005\000031de\8747c307-c461-42ba-abf5-7fd98d8bb0ec.cab, and uploads the cab
+
+670d\c0000005\000031de\8747c307-c461-42ba-abf5-7fd98d8bb0ec.cab, and uploads the cab
 data by using an HTTP PUT.
 
 9.  The CER server returns an HTTP code of 200.
 
-4.2  Application Fault Example without Request for Error Report Level 2 Data (Level 2
+### 4.2 Application Fault Example without Request for Error Report Level 2 Data (Level 2
 
 of the Protocol Is Not Executed)
 
@@ -1716,7 +1627,7 @@ and the URL path as "/stage2.htm", and does an HTTP POST of the error report lev
  Bucket = 500
  BucketTable = 5
 
-4.3  Kernel Fault Example with Request for Error Report Level 2 Data (Level 2 of the
+### 4.3 Kernel Fault Example with Request for Error Report Level 2 Data (Level 2 of the
 
 Protocol Is Executed)
 
@@ -1735,7 +1646,8 @@ Corporate Error Reporting V.2 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The CER client creates the error report level 1 data in Unicode.
+
+4.  The CER client creates the error report level 1 data in Unicode.
 
  <?xml version="1.0" encoding="UTF-16"?>
  <WERREPORT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1782,7 +1694,7 @@ uploads the cab data by using an HTTP PUT.
 
 9.  The CER server returns an HTTP code of 200.
 
-4.4  Generic Error Reporting Example with Request for Error Report Level 2 Data
+### 4.4 Generic Error Reporting Example with Request for Error Report Level 2 Data
 
 (Level 2 of the Protocol Is Executed)
 
@@ -1806,7 +1718,8 @@ Corporate Error Reporting V.2 Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <MACHINEINFO machinename="client-machine.corp.cliendomain.com" os="6.1.6561.2.0.0.256.1"
+
+ <MACHINEINFO machinename="client-machine.corp.cliendomain.com" os="6.1.6561.2.0.0.256.1"
 lcid="1033"/>
  <USERINFO username="Username"/>
  <APPLICATIONINFO appname="Test" apppath="E:\tools\wersample.exe" appcompany="Test
@@ -1846,13 +1759,14 @@ Release: April 23, 2024
 
 24 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -1871,7 +1785,8 @@ Release: April 23, 2024
 
 25 / 29
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1934,7 +1849,8 @@ Release: April 23, 2024
 
 26 / 29
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1978,7 +1894,8 @@ Release: April 23, 2024
 
 27 / 29
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2116,7 +2033,8 @@ Prerequisites 9
 
 28 / 29
 
-Product behavior 26
+
+Product behavior 26
 
 R
 

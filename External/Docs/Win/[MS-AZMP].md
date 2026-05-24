@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 18
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -245,65 +246,33 @@ Release: April 23, 2024
 
 2 / 18
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Structure Overview (Synopsis)](#13-structure-overview-synopsis)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 AzAdminManager](#21-azadminmanager)
+  - [2.2 AzApplicationGroup](#22-azapplicationgroup)
+  - [2.3 AzRole](#23-azrole)
+  - [2.4 AzTask](#24-aztask)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+- [5 Appendix A: Full XML Schema](#5-appendix-a-full-xml-schema)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Structure Overview (Synopsis) ............................................................................ 5
-Relationship to Protocols and Other Structures ...................................................... 5
-Applicability Statement ....................................................................................... 5
-Versioning and Localization ................................................................................. 5
-Vendor-Extensible Fields ..................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 6
-AzAdminManager ............................................................................................... 6
-AzApplicationGroup ............................................................................................ 7
-AzRole .............................................................................................................. 9
-AzTask ............................................................................................................ 10
-
-2.1
-2.2
-2.3
-2.4
-
-3  Structure Examples ............................................................................................... 11
-
-4  Security Considerations ......................................................................................... 13
-Security Considerations for Implementers ........................................................... 13
-
-4.1
-
-5  Appendix A: Full XML Schema ................................................................................ 14
-
-6  Appendix B: Product Behavior ............................................................................... 16
-
-7  Change Tracking .................................................................................................... 17
-
-8  Index ..................................................................................................................... 18
-
-[MS-AZMP] - v20240423
-Authorization Manager (AzMan) Policy File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 18
-
-1  Introduction
+## 1 Introduction
 
 This document describes the structure of the XML file format used to preserve policy settings for
 Microsoft Authorization Manager (AzMan). Other formats are possible, but are not addressed in this
@@ -322,7 +291,7 @@ make authorization decisions.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -343,14 +312,14 @@ representation of SIDs is specified in [MS-DTYP] section 2.4.2 and [MS-AZOD] sec
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -369,14 +338,15 @@ Release: April 23, 2024
 
 4 / 18
 
-[XMLSCHEMA1/2] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema
+
+[XMLSCHEMA1/2] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema
 Part 1: Structures Second Edition", W3C Recommendation, October 2004,
 https://www.w3.org/TR/2004/REC-xmlschema-1-20041028/
 
 [XMLSCHEMA2/2] Biron, P., and Malhotra, A., Eds., "XML Schema Part 2: Datatypes Second Edition",
 W3C Recommendation, October 2004, https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-JScript] Microsoft Corporation, "JScript Language Reference (Windows Scripting - JScript)",
 http://msdn.microsoft.com/en-us/library/yek4tbz0(v=VS.85).aspx
@@ -384,7 +354,7 @@ http://msdn.microsoft.com/en-us/library/yek4tbz0(v=VS.85).aspx
 [MSDN-VBScript] Microsoft Corporation, "VBScript Language Reference",
 http://msdn.microsoft.com/en-us/library/d1wf56tt(v=VS.85).aspx
 
-1.3  Structure Overview (Synopsis)
+### 1.3 Structure Overview (Synopsis)
 
 The XML structure (as described in [XMLSCHEMA1/2] and [XMLSCHEMA2/2])  defined in this
 document describes the Microsoft Authorization Manager (AzMan) policy. AzMan policy files are
@@ -398,24 +368,24 @@ which allows the administrator to create and modify the authorization manager po
 
 decisions.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The authorization manager policy file is used only by the authorization manager runtime and the
 Authorization Manager Microsoft Management Console snap-in. Otherwise, the structure is
 independent of any other structures or protocols except those referenced in this document.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The Microsoft Authorization Manager Policy XML policy file can be used in any environment where
 AzMan is supported. See Appendix C for a list of supported Operating System versions. It can be used
 in Active Directory domain-based environments or on stand-alone servers.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 Microsoft Authorization Manager policy files can be either version 1.0 or 2.0<1>. The differences
 between version 1.0 and version 2.0 are minor and are pointed out in section 2.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -426,9 +396,10 @@ Release: April 23, 2024
 
 5 / 18
 
-2  Structures
 
-2.1  AzAdminManager
+## 2 Structures
+
+### 2.1 AzAdminManager
 
 The AzAdminManager complex type defines an instance of an authorization manager policy.
 
@@ -499,7 +470,8 @@ Authorization Manager (AzMan) Policy File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AzApplication.AzOperation: The AzOperation complex type defines each authorization manager
+
+AzApplication.AzOperation: The AzOperation complex type defines each authorization manager
 
 operation in the policy.
 
@@ -562,7 +534,7 @@ Guid: The unique identifier for the AzAdminManager policy.
 
 Description: The description for the AzAdminManager policy.
 
-2.2  AzApplicationGroup
+### 2.2 AzApplicationGroup
 
 This element defines an authorization manager group. AzApplicationGroup can be used to define a
 global group that is used by all applications (every instance of AzApplication) in the policy or to
@@ -576,7 +548,8 @@ Release: April 23, 2024
 
 7 / 18
 
-AzAdminManager) the AzApplicationGroup is global. When the AzApplicationGroup element
+
+AzAdminManager) the AzApplicationGroup is global. When the AzApplicationGroup element
 appears as a child of AzApplication, it defines a group local to the AzApplication.
 
 The following is the XSD definition for the AzApplicationGroup complex type.
@@ -650,7 +623,8 @@ Authorization Manager (AzMan) Policy File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Guid: The Globally Unique Identifier (GUID) of the AzApplicationGroup.
+
+Guid: The Globally Unique Identifier (GUID) of the AzApplicationGroup.
 
 Name: The name of the AzApplicationGroup.
 
@@ -674,7 +648,7 @@ the following strings:
 
 Note The "Bizrule" GroupType is supported only in version 2.0 AzMan policies.
 
-2.3  AzRole
+### 2.3 AzRole
 
 The AzRole complex type defines each authorization manager role assignment in the policy.
 
@@ -725,7 +699,8 @@ Release: April 23, 2024
 
 9 / 18
 
-2.4  AzTask
+
+### 2.4 AzTask
 
 The AzTask complex type defines each authorization manager task and authorization manager role
 definition in the policy.
@@ -778,7 +753,8 @@ Release: April 23, 2024
 
 10 / 18
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following is an example of an AzMan XML policy file:
 
@@ -853,7 +829,8 @@ Authorization Manager (AzMan) Policy File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         AzBizRuleContext.BusinessRuleResult = FALSE
+
+         AzBizRuleContext.BusinessRuleResult = FALSE
          Dim Amount
          Amount = AzBizRuleContext.GetParameter("Age")
          if Amount &gt; 25 then AzBizRuleContext.BusinessRuleResult = TRUE
@@ -883,9 +860,10 @@ Release: April 23, 2024
 
 12 / 18
 
-4  Security Considerations
 
-4.1  Security Considerations for Implementers
+## 4 Security Considerations
+
+### 4.1 Security Considerations for Implementers
 
 None.
 
@@ -896,7 +874,8 @@ Release: April 23, 2024
 
 13 / 18
 
-5  Appendix A: Full XML Schema
+
+## 5 Appendix A: Full XML Schema
 
 For ease of implementation, the following is the full XML schema for this protocol.
 
@@ -971,7 +950,8 @@ Authorization Manager (AzMan) Policy File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-               </xs:extension>
+
+               </xs:extension>
              </xs:simpleContent>
            </xs:complexType>
          </xs:element>
@@ -1047,7 +1027,8 @@ Release: April 23, 2024
 
 15 / 18
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1108,7 +1089,8 @@ Release: April 23, 2024
 
 16 / 18
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1152,7 +1134,8 @@ Release: April 23, 2024
 
 17 / 18
 
-V
+
+V
 
 Vendor-extensible fields 5
 Versioning 5
@@ -1162,7 +1145,7 @@ X
 XML 14
 XML schema 14
 
-8  Index
+## 8 Index
 A
 
 Applicability 5

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 87
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 87
 
-Date
+
+Date
 
 Revision
 History
@@ -520,7 +522,8 @@ Release: April 23, 2024
 
 3 / 87
 
-Date
+
+Date
 
 Revision
 History
@@ -595,600 +598,262 @@ Release: April 23, 2024
 
 4 / 87
 
-Table of Contents
 
-1.3
-
-1.3.2
-
-1.3.1
-
-1.1
-1.2
-
-1.3.1.3
-
-1.3.1.2
-
-1.3.1.1
-
-1.3.1.3.1
-
-1.3.1.2.1
-
-1.2.1
-1.2.2
-
-1.3.1.1.1
-1.3.1.1.2
-1.3.1.1.3
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Context Properties ...................................................................................... 13
-Context Properties and Activations .......................................................... 13
-Client Context Within Activations ....................................................... 13
-Prototype Context Within Activations ................................................. 14
-Diagram ......................................................................................... 14
-Context Properties and Marshaling .......................................................... 14
-Diagram ......................................................................................... 15
-Context Properties and ORPC Calls .......................................................... 15
-Diagram ......................................................................................... 16
-Transactions .............................................................................................. 16
-Transaction Stream ............................................................................... 16
-Root Transaction Object ......................................................................... 16
-Non-root Transaction Object ................................................................... 17
-Diagram .............................................................................................. 17
-MS-DTC Transaction Propagation Methods................................................ 17
-Transaction Lifetime .............................................................................. 18
-Activities ................................................................................................... 18
-Security..................................................................................................... 18
-User-Defined Properties ............................................................................... 18
-Partitions ................................................................................................... 18
-Relationship to Other Protocols .......................................................................... 19
-Prerequisites/Preconditions ............................................................................... 19
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-1.3.2.5
-1.3.2.6
-
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.2.2.2
-2.2.2.3
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-
-2  Messages ............................................................................................................... 21
-Transport ........................................................................................................ 21
-Common Data Types ........................................................................................ 21
-LengthPrefixedName ................................................................................... 21
-Activation Context Properties ....................................................................... 21
-Transaction Context Property ................................................................. 22
-TransactionContextPropertyHeader .................................................... 22
-TransactionStream .......................................................................... 23
-TransactionBuffer ............................................................................ 23
-Activity Context Property ....................................................................... 24
-User-Defined Context Property ............................................................... 25
-UserProperty ................................................................................... 25
-Context ORPC Extensions ............................................................................ 26
-Transaction ORPC Extensions ................................................................. 27
-Transaction ORPC Call Extensions ...................................................... 27
-TransactionPropCallHeader .......................................................... 27
-TransactionPropCallExportCookie ................................................. 28
-TransactionPropCallTransmitterBuffer ........................................... 28
-Transaction ORPC Return Extensions.................................................. 29
-TransactionPropRetHeader .......................................................... 29
-TransactionPropRetWhereabouts .................................................. 30
-Security ORPC Extension ........................................................................ 30
-
-2.2.3.1.1.1
-2.2.3.1.1.2
-2.2.3.1.1.3
-
-2.2.3.1.2.1
-2.2.3.1.2.2
-
-2.2.2.3.1
-
-2.2.3.1.1
-
-2.2.3.1.2
-
-2.2.3.2
-
-2.2.3.1
-
-2.2.3
-
-[MS-COM] - v20240423
-Component Object Model Plus (COM+) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 87
-
-2.2.3.2.1
-
-2.2.3.2.1.1
-
-2.2.3.2.2
-2.2.3.2.3
-2.2.3.2.4
-
-Security Property ............................................................................ 31
-Security Property Types .............................................................. 31
-Security Property Collection Header ................................................... 32
-Security Property Collection .............................................................. 33
-Security ORPC Extension .................................................................. 33
-OBJREF_EXTENDED Context Properties ......................................................... 34
-Transaction Envoy Property .................................................................... 34
-Security Envoy Property ......................................................................... 35
-Class Factory Wrapper................................................................................. 36
-Constants .................................................................................................. 38
-DTCO Capabilities ................................................................................. 38
-Transaction Isolation Levels ................................................................... 38
-
-2.2.4
-
-2.2.4.1
-2.2.4.2
-
-2.2.5
-2.2.6
-
-2.2.6.1
-2.2.6.2
-
-3.2
-
-3.3
-
-3.1
-
-3.2.6.1
-
-3.1.5
-3.1.6
-
-3.1.4.1
-3.1.4.2
-
-3.1.6.1
-3.1.6.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3  Protocol Details ..................................................................................................... 39
-Client Root Transaction Object Activation Details .................................................. 39
-Abstract Data Model .................................................................................... 39
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Activation Using Transaction Stream ....................................................... 40
-Activation Using Transaction Buffer ......................................................... 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-Transaction Commit .............................................................................. 41
-Transaction Abort.................................................................................. 41
-Client Non-Root Transaction Object Activation Details ........................................... 41
-Abstract Data Model .................................................................................... 41
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 42
-Message Processing Events and Sequencing Rules .......................................... 42
-Timer Events .............................................................................................. 42
-Other Local Events ...................................................................................... 42
-Transaction Outcome Participation .......................................................... 42
-Client Activity Activation Details ......................................................................... 42
-Abstract Data Model .................................................................................... 42
-Timers ...................................................................................................... 43
-Initialization ............................................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-Timer Events .............................................................................................. 43
-Other Local Events ...................................................................................... 43
-Client Partition Activation Details ....................................................................... 43
-Abstract Data Model .................................................................................... 43
-Timers ...................................................................................................... 43
-Initialization ............................................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-Client User Property Activation Details ................................................................ 44
-Abstract Data Model .................................................................................... 44
-Timers ...................................................................................................... 44
-Initialization ............................................................................................... 44
-Message Processing Events and Sequencing Rules .......................................... 44
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-Client Class Factory Wrapper Activation Details .................................................... 44
-Abstract Data Model .................................................................................... 44
-Timers ...................................................................................................... 45
-Initialization ............................................................................................... 45
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-3.5.6
-
-3.6.1
-3.6.2
-3.6.3
-
-3.5
-
-3.6
-
-3.4
-
-[MS-COM] - v20240423
-Component Object Model Plus (COM+) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 87
-
-3.7
-
-3.8
-
-3.9
-
-3.8.6.1
-
-3.6.4
-3.6.5
-3.6.6
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-3.7.5
-3.7.6
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-3.8.5
-3.8.6
-
-3.9.1
-3.9.2
-3.9.3
-3.9.4
-3.9.5
-3.9.6
-
-Message Processing Events and Sequencing Rules .......................................... 45
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-Server Root Transaction Object Activation Details ................................................ 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 46
-Initialization ............................................................................................... 46
-Message Processing Events and Sequencing Rules .......................................... 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-Server Non-Root Transaction Object Activation Details.......................................... 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Message Processing Events and Sequencing Rules .......................................... 48
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-Transaction Outcome Participation .......................................................... 48
-Server Activity Activation Details ........................................................................ 48
-Abstract Data Model .................................................................................... 48
-Timers ...................................................................................................... 48
-Initialization ............................................................................................... 48
-Message Processing Events and Sequencing Rules .......................................... 48
-Timer Events .............................................................................................. 49
-Other Local Events ...................................................................................... 49
-Server Partition Activation Details ...................................................................... 49
-Abstract Data Model .................................................................................... 49
-3.10.1
-Timers ...................................................................................................... 49
-3.10.2
-3.10.3
-Initialization ............................................................................................... 49
-3.10.4  Message Processing Events and Sequencing Rules .......................................... 49
-3.10.5
-Timer Events .............................................................................................. 49
-3.10.6  Other Local Events ...................................................................................... 50
-Server User Property Activation Details ............................................................... 50
-Abstract Data Model .................................................................................... 50
-3.11.1
-Timers ...................................................................................................... 50
-3.11.2
-3.11.3
-Initialization ............................................................................................... 50
-3.11.4  Message Processing Events and Sequencing Rules .......................................... 50
-3.11.5
-Timer Events .............................................................................................. 50
-3.11.6  Other Local Events ...................................................................................... 50
-Server Class Factory Wrapper Activation Details .................................................. 50
-Abstract Data Model .................................................................................... 50
-3.12.1
-Timers ...................................................................................................... 50
-3.12.2
-3.12.3
-Initialization ............................................................................................... 50
-3.12.4  Message Processing Events and Sequencing Rules .......................................... 50
-3.12.5
-Timer Events .............................................................................................. 51
-3.12.6  Other Local Events ...................................................................................... 51
-Client Transaction ORPC Extension Details........................................................... 51
-Abstract Data Model .................................................................................... 51
-3.13.1
-Timers ...................................................................................................... 52
-3.13.2
-3.13.3
-Initialization ............................................................................................... 52
-3.13.4  Message Processing Events and Sequencing Rules .......................................... 52
-3.13.4.1  Diagram .............................................................................................. 53
-Timer Events .............................................................................................. 54
-3.13.5
-3.13.6  Other Local Events ...................................................................................... 54
-Transaction Outcome Participation .......................................................... 54
-Client Security ORPC Extension Details ............................................................... 55
-Abstract Data Model .................................................................................... 55
-Timers ...................................................................................................... 55
-
-3.14.1
-3.14.2
-
-3.13.6.1
-
-3.10
-
-3.11
-
-3.12
-
-3.13
-
-3.14
-
-[MS-COM] - v20240423
-Component Object Model Plus (COM+) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 87
-
-3.16
-
-3.15
-
-3.15.6.1
-3.15.6.2
-
-3.14.3
-Initialization ............................................................................................... 55
-3.14.4  Message Processing Events and Sequencing Rules .......................................... 55
-Timer Events .............................................................................................. 57
-3.14.5
-3.14.6  Other Local Events ...................................................................................... 57
-Server Transaction ORPC Extension Details ......................................................... 58
-Abstract Data Model .................................................................................... 58
-3.15.1
-Timers ...................................................................................................... 58
-3.15.2
-3.15.3
-Initialization ............................................................................................... 58
-3.15.4  Message Processing Events and Sequencing Rules .......................................... 58
-3.15.5
-Timer Events .............................................................................................. 62
-3.15.6  Other Local Events ...................................................................................... 62
-Server Non-Root Transaction Object Communication ................................. 62
-Transaction Outcome Participation .......................................................... 62
-Server Security ORPC Extension Details .............................................................. 62
-3.16.1
-Abstract Data Model .................................................................................... 62
-3.16.2
-Timers ...................................................................................................... 62
-Initialization ............................................................................................... 62
-3.16.3
-3.16.4  Message Processing Events and Sequencing Rules .......................................... 63
-3.16.5
-Timer Events .............................................................................................. 63
-3.16.6  Other Local Events ...................................................................................... 63
-Server Activity ORPC Processing Details .............................................................. 63
-Abstract Data Model .................................................................................... 63
-3.17.1
-Timers ...................................................................................................... 63
-3.17.2
-3.17.3
-Initialization ............................................................................................... 63
-3.17.4  Message Processing Events and Sequencing Rules .......................................... 63
-Timer Events .............................................................................................. 64
-3.17.5
-3.17.6  Other Local Events ...................................................................................... 64
-Server Transaction Envoy Marshaling Details ....................................................... 64
-Abstract Data Model .................................................................................... 64
-3.18.1
-Timers ...................................................................................................... 65
-3.18.2
-3.18.3
-Initialization ............................................................................................... 65
-3.18.4  Message Processing Events and Sequencing Rules .......................................... 65
-3.18.5
-Timer Events .............................................................................................. 65
-3.18.6  Other Local Events ...................................................................................... 66
-Server Security Envoy Marshaling Details ............................................................ 66
-Abstract Data Model .................................................................................... 66
-3.19.1
-Timers ...................................................................................................... 66
-3.19.2
-3.19.3
-Initialization ............................................................................................... 66
-3.19.4  Message Processing Events and Sequencing Rules .......................................... 66
-3.19.5
-Timer Events .............................................................................................. 66
-3.19.6  Other Local Events ...................................................................................... 66
-Client Transaction Envoy Unmarshaling Details .................................................... 67
-Abstract Data Model .................................................................................... 67
-3.20.1
-Timers ...................................................................................................... 67
-3.20.2
-3.20.3
-Initialization ............................................................................................... 67
-3.20.4  Message Processing Events and Sequencing Rules .......................................... 68
-3.20.5
-Timer Events .............................................................................................. 68
-3.20.6  Other Local Events ...................................................................................... 68
-Client Transaction Envoy Marshaling Details ........................................................ 68
-Abstract Data Model .................................................................................... 68
-3.21.1
-Timers ...................................................................................................... 68
-3.21.2
-3.21.3
-Initialization ............................................................................................... 68
-3.21.4  Message Processing Events and Sequencing Rules .......................................... 68
-3.21.5
-Timer Events .............................................................................................. 69
-3.21.6  Other Local Events ...................................................................................... 69
-Client Security Unmarshaling Details .................................................................. 69
-Abstract Data Model .................................................................................... 69
-Timers ...................................................................................................... 69
-
-3.22.1
-3.22.2
-
-3.17
-
-3.18
-
-3.19
-
-3.20
-
-3.21
-
-3.22
-
-[MS-COM] - v20240423
-Component Object Model Plus (COM+) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 87
-
-3.23
-
-3.22.3
-Initialization ............................................................................................... 69
-3.22.4  Message Processing Events and Sequencing Rules .......................................... 69
-Timer Events .............................................................................................. 69
-3.22.5
-3.22.6  Other Local Events ...................................................................................... 69
-ITransactionStream Server Details ..................................................................... 70
-Abstract Data Model .................................................................................... 70
-3.23.1
-Timers ...................................................................................................... 70
-3.23.2
-3.23.3
-Initialization ............................................................................................... 70
-3.23.4  Message Processing Events and Sequencing Rules .......................................... 70
-ITransactionStream::GetSeqAndTxViaExport (Opnum 3) ........................... 70
-ITransactionStream::GetSeqAndTxViaTransmitter (Opnum 4) .................... 71
-ITransactionStream::GetTxViaExport (Opnum 5) ...................................... 72
-ITransactionStream::GetTxViaTransmitter (Opnum 6) ............................... 73
-3.23.5
-Timer Events .............................................................................................. 73
-3.23.6  Other Local Events ...................................................................................... 73
-
-3.23.4.1
-3.23.4.2
-3.23.4.3
-3.23.4.4
-
-4  Protocol Examples ................................................................................................. 74
-Client to RootTxn to Non-RootTxn Example ......................................................... 74
-
-4.1
-
-5  Security ................................................................................................................. 77
-Security Considerations for Implementers ........................................................... 77
-Index of Security Parameters ............................................................................ 77
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 78
-
-7  Appendix B: Product Behavior ............................................................................... 79
-
-8  Change Tracking .................................................................................................... 81
-
-9  Index ..................................................................................................................... 82
-
-[MS-COM] - v20240423
-Component Object Model Plus (COM+) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 87
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Context Properties](#131-context-properties)
+      - [1.3.1.1 Context Properties and Activations](#1311-context-properties-and-activations)
+        - [1.3.1.1.1 Client Context Within Activations](#13111-client-context-within-activations)
+        - [1.3.1.1.2 Prototype Context Within Activations](#13112-prototype-context-within-activations)
+        - [1.3.1.1.3 Diagram](#13113-diagram)
+      - [1.3.1.2 Context Properties and Marshaling](#1312-context-properties-and-marshaling)
+        - [1.3.1.2.1 Diagram](#13121-diagram)
+      - [1.3.1.3 Context Properties and ORPC Calls](#1313-context-properties-and-orpc-calls)
+        - [1.3.1.3.1 Diagram](#13131-diagram)
+    - [1.3.2 Transactions](#132-transactions)
+      - [1.3.2.1 Transaction Stream](#1321-transaction-stream)
+      - [1.3.2.2 Root Transaction Object](#1322-root-transaction-object)
+      - [1.3.2.3 Non-root Transaction Object](#1323-non-root-transaction-object)
+      - [1.3.2.4 Diagram](#1324-diagram)
+      - [1.3.2.5 MS-DTC Transaction Propagation Methods](#1325-ms-dtc-transaction-propagation-methods)
+      - [1.3.2.6 Transaction Lifetime](#1326-transaction-lifetime)
+    - [1.3.3 Activities](#133-activities)
+    - [1.3.4 Security](#134-security)
+    - [1.3.5 User-Defined Properties](#135-user-defined-properties)
+    - [1.3.6 Partitions](#136-partitions)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 LengthPrefixedName](#221-lengthprefixedname)
+    - [2.2.2 Activation Context Properties](#222-activation-context-properties)
+      - [2.2.2.1 Transaction Context Property](#2221-transaction-context-property)
+        - [2.2.2.1.1 TransactionContextPropertyHeader](#22211-transactioncontextpropertyheader)
+        - [2.2.2.1.2 TransactionStream](#22212-transactionstream)
+        - [2.2.2.1.3 TransactionBuffer](#22213-transactionbuffer)
+      - [2.2.2.2 Activity Context Property](#2222-activity-context-property)
+      - [2.2.2.3 User-Defined Context Property](#2223-user-defined-context-property)
+        - [2.2.2.3.1 UserProperty](#22231-userproperty)
+    - [2.2.3 Context ORPC Extensions](#223-context-orpc-extensions)
+      - [2.2.3.1 Transaction ORPC Extensions](#2231-transaction-orpc-extensions)
+        - [2.2.3.1.1 Transaction ORPC Call Extensions](#22311-transaction-orpc-call-extensions)
+          - [2.2.3.1.1.1 TransactionPropCallHeader](#223111-transactionpropcallheader)
+          - [2.2.3.1.1.2 TransactionPropCallExportCookie](#223112-transactionpropcallexportcookie)
+          - [2.2.3.1.1.3 TransactionPropCallTransmitterBuffer](#223113-transactionpropcalltransmitterbuffer)
+        - [2.2.3.1.2 Transaction ORPC Return Extensions](#22312-transaction-orpc-return-extensions)
+          - [2.2.3.1.2.1 TransactionPropRetHeader](#223121-transactionpropretheader)
+          - [2.2.3.1.2.2 TransactionPropRetWhereabouts](#223122-transactionpropretwhereabouts)
+      - [2.2.3.2 Security ORPC Extension](#2232-security-orpc-extension)
+        - [2.2.3.2.1 Security Property](#22321-security-property)
+          - [2.2.3.2.1.1 Security Property Types](#223211-security-property-types)
+        - [2.2.3.2.2 Security Property Collection Header](#22322-security-property-collection-header)
+        - [2.2.3.2.3 Security Property Collection](#22323-security-property-collection)
+        - [2.2.3.2.4 Security ORPC Extension](#22324-security-orpc-extension)
+    - [2.2.4 OBJREF_EXTENDED Context Properties](#224-objrefextended-context-properties)
+      - [2.2.4.1 Transaction Envoy Property](#2241-transaction-envoy-property)
+      - [2.2.4.2 Security Envoy Property](#2242-security-envoy-property)
+    - [2.2.5 Class Factory Wrapper](#225-class-factory-wrapper)
+    - [2.2.6 Constants](#226-constants)
+      - [2.2.6.1 DTCO Capabilities](#2261-dtco-capabilities)
+      - [2.2.6.2 Transaction Isolation Levels](#2262-transaction-isolation-levels)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Root Transaction Object Activation Details](#31-client-root-transaction-object-activation-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Activation Using Transaction Stream](#3141-activation-using-transaction-stream)
+      - [3.1.4.2 Activation Using Transaction Buffer](#3142-activation-using-transaction-buffer)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Transaction Commit](#3161-transaction-commit)
+      - [3.1.6.2 Transaction Abort](#3162-transaction-abort)
+  - [3.2 Client Non-Root Transaction Object Activation Details](#32-client-non-root-transaction-object-activation-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 Transaction Outcome Participation](#3261-transaction-outcome-participation)
+  - [3.3 Client Activity Activation Details](#33-client-activity-activation-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 Client Partition Activation Details](#34-client-partition-activation-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 Client User Property Activation Details](#35-client-user-property-activation-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+  - [3.6 Client Class Factory Wrapper Activation Details](#36-client-class-factory-wrapper-activation-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Message Processing Events and Sequencing Rules](#364-message-processing-events-and-sequencing-rules)
+    - [3.6.5 Timer Events](#365-timer-events)
+    - [3.6.6 Other Local Events](#366-other-local-events)
+  - [3.7 Server Root Transaction Object Activation Details](#37-server-root-transaction-object-activation-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Message Processing Events and Sequencing Rules](#374-message-processing-events-and-sequencing-rules)
+    - [3.7.5 Timer Events](#375-timer-events)
+    - [3.7.6 Other Local Events](#376-other-local-events)
+  - [3.8 Server Non-Root Transaction Object Activation Details](#38-server-non-root-transaction-object-activation-details)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Message Processing Events and Sequencing Rules](#384-message-processing-events-and-sequencing-rules)
+    - [3.8.5 Timer Events](#385-timer-events)
+    - [3.8.6 Other Local Events](#386-other-local-events)
+      - [3.8.6.1 Transaction Outcome Participation](#3861-transaction-outcome-participation)
+  - [3.9 Server Activity Activation Details](#39-server-activity-activation-details)
+    - [3.9.1 Abstract Data Model](#391-abstract-data-model)
+    - [3.9.2 Timers](#392-timers)
+    - [3.9.3 Initialization](#393-initialization)
+    - [3.9.4 Message Processing Events and Sequencing Rules](#394-message-processing-events-and-sequencing-rules)
+    - [3.9.5 Timer Events](#395-timer-events)
+    - [3.9.6 Other Local Events](#396-other-local-events)
+  - [3.10 Server Partition Activation Details](#310-server-partition-activation-details)
+    - [3.10.1 Abstract Data Model](#3101-abstract-data-model)
+    - [3.10.2 Timers](#3102-timers)
+    - [3.10.3 Initialization](#3103-initialization)
+    - [3.10.4 Message Processing Events and Sequencing Rules](#3104-message-processing-events-and-sequencing-rules)
+    - [3.10.5 Timer Events](#3105-timer-events)
+    - [3.10.6 Other Local Events](#3106-other-local-events)
+  - [3.11 Server User Property Activation Details](#311-server-user-property-activation-details)
+    - [3.11.1 Abstract Data Model](#3111-abstract-data-model)
+    - [3.11.2 Timers](#3112-timers)
+    - [3.11.3 Initialization](#3113-initialization)
+    - [3.11.4 Message Processing Events and Sequencing Rules](#3114-message-processing-events-and-sequencing-rules)
+    - [3.11.5 Timer Events](#3115-timer-events)
+    - [3.11.6 Other Local Events](#3116-other-local-events)
+  - [3.12 Server Class Factory Wrapper Activation Details](#312-server-class-factory-wrapper-activation-details)
+    - [3.12.1 Abstract Data Model](#3121-abstract-data-model)
+    - [3.12.2 Timers](#3122-timers)
+    - [3.12.3 Initialization](#3123-initialization)
+    - [3.12.4 Message Processing Events and Sequencing Rules](#3124-message-processing-events-and-sequencing-rules)
+    - [3.12.5 Timer Events](#3125-timer-events)
+    - [3.12.6 Other Local Events](#3126-other-local-events)
+  - [3.13 Client Transaction ORPC Extension Details](#313-client-transaction-orpc-extension-details)
+    - [3.13.1 Abstract Data Model](#3131-abstract-data-model)
+    - [3.13.2 Timers](#3132-timers)
+    - [3.13.3 Initialization](#3133-initialization)
+    - [3.13.4 Message Processing Events and Sequencing Rules](#3134-message-processing-events-and-sequencing-rules)
+      - [3.13.4.1 Diagram](#31341-diagram)
+    - [3.13.5 Timer Events](#3135-timer-events)
+    - [3.13.6 Other Local Events](#3136-other-local-events)
+      - [3.13.6.1 Transaction Outcome Participation](#31361-transaction-outcome-participation)
+  - [3.14 Client Security ORPC Extension Details](#314-client-security-orpc-extension-details)
+    - [3.14.1 Abstract Data Model](#3141-abstract-data-model)
+    - [3.14.2 Timers](#3142-timers)
+    - [3.14.3 Initialization](#3143-initialization)
+    - [3.14.4 Message Processing Events and Sequencing Rules](#3144-message-processing-events-and-sequencing-rules)
+    - [3.14.5 Timer Events](#3145-timer-events)
+    - [3.14.6 Other Local Events](#3146-other-local-events)
+  - [3.15 Server Transaction ORPC Extension Details](#315-server-transaction-orpc-extension-details)
+    - [3.15.1 Abstract Data Model](#3151-abstract-data-model)
+    - [3.15.2 Timers](#3152-timers)
+    - [3.15.3 Initialization](#3153-initialization)
+    - [3.15.4 Message Processing Events and Sequencing Rules](#3154-message-processing-events-and-sequencing-rules)
+    - [3.15.5 Timer Events](#3155-timer-events)
+    - [3.15.6 Other Local Events](#3156-other-local-events)
+      - [3.15.6.1 Server Non-Root Transaction Object Communication](#31561-server-non-root-transaction-object-communication)
+      - [3.15.6.2 Transaction Outcome Participation](#31562-transaction-outcome-participation)
+  - [3.16 Server Security ORPC Extension Details](#316-server-security-orpc-extension-details)
+    - [3.16.1 Abstract Data Model](#3161-abstract-data-model)
+    - [3.16.2 Timers](#3162-timers)
+    - [3.16.3 Initialization](#3163-initialization)
+    - [3.16.4 Message Processing Events and Sequencing Rules](#3164-message-processing-events-and-sequencing-rules)
+    - [3.16.5 Timer Events](#3165-timer-events)
+    - [3.16.6 Other Local Events](#3166-other-local-events)
+  - [3.17 Server Activity ORPC Processing Details](#317-server-activity-orpc-processing-details)
+    - [3.17.1 Abstract Data Model](#3171-abstract-data-model)
+    - [3.17.2 Timers](#3172-timers)
+    - [3.17.3 Initialization](#3173-initialization)
+    - [3.17.4 Message Processing Events and Sequencing Rules](#3174-message-processing-events-and-sequencing-rules)
+    - [3.17.5 Timer Events](#3175-timer-events)
+    - [3.17.6 Other Local Events](#3176-other-local-events)
+  - [3.18 Server Transaction Envoy Marshaling Details](#318-server-transaction-envoy-marshaling-details)
+    - [3.18.1 Abstract Data Model](#3181-abstract-data-model)
+    - [3.18.2 Timers](#3182-timers)
+    - [3.18.3 Initialization](#3183-initialization)
+    - [3.18.4 Message Processing Events and Sequencing Rules](#3184-message-processing-events-and-sequencing-rules)
+    - [3.18.5 Timer Events](#3185-timer-events)
+    - [3.18.6 Other Local Events](#3186-other-local-events)
+  - [3.19 Server Security Envoy Marshaling Details](#319-server-security-envoy-marshaling-details)
+    - [3.19.1 Abstract Data Model](#3191-abstract-data-model)
+    - [3.19.2 Timers](#3192-timers)
+    - [3.19.3 Initialization](#3193-initialization)
+    - [3.19.4 Message Processing Events and Sequencing Rules](#3194-message-processing-events-and-sequencing-rules)
+    - [3.19.5 Timer Events](#3195-timer-events)
+    - [3.19.6 Other Local Events](#3196-other-local-events)
+  - [3.20 Client Transaction Envoy Unmarshaling Details](#320-client-transaction-envoy-unmarshaling-details)
+    - [3.20.1 Abstract Data Model](#3201-abstract-data-model)
+    - [3.20.2 Timers](#3202-timers)
+    - [3.20.3 Initialization](#3203-initialization)
+    - [3.20.4 Message Processing Events and Sequencing Rules](#3204-message-processing-events-and-sequencing-rules)
+    - [3.20.5 Timer Events](#3205-timer-events)
+    - [3.20.6 Other Local Events](#3206-other-local-events)
+  - [3.21 Client Transaction Envoy Marshaling Details](#321-client-transaction-envoy-marshaling-details)
+    - [3.21.1 Abstract Data Model](#3211-abstract-data-model)
+    - [3.21.2 Timers](#3212-timers)
+    - [3.21.3 Initialization](#3213-initialization)
+    - [3.21.4 Message Processing Events and Sequencing Rules](#3214-message-processing-events-and-sequencing-rules)
+    - [3.21.5 Timer Events](#3215-timer-events)
+    - [3.21.6 Other Local Events](#3216-other-local-events)
+  - [3.22 Client Security Unmarshaling Details](#322-client-security-unmarshaling-details)
+    - [3.22.1 Abstract Data Model](#3221-abstract-data-model)
+    - [3.22.2 Timers](#3222-timers)
+    - [3.22.3 Initialization](#3223-initialization)
+    - [3.22.4 Message Processing Events and Sequencing Rules](#3224-message-processing-events-and-sequencing-rules)
+    - [3.22.5 Timer Events](#3225-timer-events)
+    - [3.22.6 Other Local Events](#3226-other-local-events)
+  - [3.23 ITransactionStream Server Details](#323-itransactionstream-server-details)
+    - [3.23.1 Abstract Data Model](#3231-abstract-data-model)
+    - [3.23.2 Timers](#3232-timers)
+    - [3.23.3 Initialization](#3233-initialization)
+    - [3.23.4 Message Processing Events and Sequencing Rules](#3234-message-processing-events-and-sequencing-rules)
+      - [3.23.4.1 ITransactionStream::GetSeqAndTxViaExport (Opnum 3)](#32341-itransactionstreamgetseqandtxviaexport-opnum-3)
+      - [3.23.4.2 ITransactionStream::GetSeqAndTxViaTransmitter (Opnum 4)](#32342-itransactionstreamgetseqandtxviatransmitter-opnum-4)
+      - [3.23.4.3 ITransactionStream::GetTxViaExport (Opnum 5)](#32343-itransactionstreamgettxviaexport-opnum-5)
+      - [3.23.4.4 ITransactionStream::GetTxViaTransmitter (Opnum 6)](#32344-itransactionstreamgettxviatransmitter-opnum-6)
+    - [3.23.5 Timer Events](#3235-timer-events)
+    - [3.23.6 Other Local Events](#3236-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Client to RootTxn to Non-RootTxn Example](#41-client-to-roottxn-to-non-roottxn-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Component Object Model Plus (COM+) Protocol consists of a DCOM interface, and remote protocol
 extensions described in [MS-DCOM], used for adding transactions, implementing synchronization,
@@ -1198,7 +863,7 @@ functionality and attributes to DCOM-based distributed object applications.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1264,7 +929,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Interface Definition Language (IDL): The International Standards Organization (ISO) standard
+
+Interface Definition Language (IDL): The International Standards Organization (ISO) standard
 language for specifying the interface for remote procedure calls. For more information, see
 [C706] section 4.
 
@@ -1339,21 +1005,22 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Windows NT account name: A string identifying the name of a Windows NT operating system
+
+Windows NT account name: A string identifying the name of a Windows NT operating system
 
 account.
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1381,12 +1048,12 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-DTC] Microsoft Corporation, "Distributed Transaction Coordinator",
 https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms684146(v=vs.85)
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol extends the protocol described in [MS-DCOM] by providing facilities to add
 transactions, synchronization, multiple object class configurations, security, and other attributes to
@@ -1400,13 +1067,14 @@ Release: April 23, 2024
 
 12 / 87
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-COM].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 1: Layering of the protocol stack
 
-1.3.1  Context Properties
+#### 1.3.1 Context Properties
 
 This protocol operates by passing COM+ specific information in object activations, ORPC calls, and as
 part of marshaled OBJREFs, using the context and context property extension mechanisms as
@@ -1436,13 +1104,13 @@ The Security Context Property (section 1.3.4)
 
 The User-Defined Context Property (section 1.3.5)
 
-1.3.1.1  Context Properties and Activations
+##### 1.3.1.1 Context Properties and Activations
 
 Context properties can flow as part of activation. [MS-DCOM] specifies two ways to accomplish this:
 the client context and the prototype context passed as part of an ActivationContextInfoData structure
 ([MS-DCOM] section 2.2.22.2.5) within an Activation Properties BLOB ([MS-DCOM] section 2.2.22).
 
-1.3.1.1.1 Client Context Within Activations
+###### 1.3.1.1.1 Client Context Within Activations
 
 The client context within the Activation Properties BLOB ([MS-DCOM] section 2.2.22) represents a set
 of context properties associated with the client object context, and guides the creation of the server
@@ -1463,22 +1131,23 @@ Release: April 23, 2024
 
 13 / 87
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-COM].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-1.3.1.1.2 Prototype Context Within Activations
+###### 1.3.1.1.2 Prototype Context Within Activations
 
 The prototype context within the Activation Properties BLOB ([MS-DCOM] section 2.2.22) represents
 the set of context properties of the client that the server needs to add to its object context. While the
 client context is merely advisory, the prototype context is not. All the prototype context properties
 have to be present among the context properties of the server object.
 
-1.3.1.1.3 Diagram
+###### 1.3.1.1.3 Diagram
 
 Figure 2: A client object sending an activation with context properties to a server
 
-1.3.1.2  Context Properties and Marshaling
+##### 1.3.1.2 Context Properties and Marshaling
 
 When a server marshals a COM+ object running in a context, the server returns an
 OBJREF_EXTENDED instance ([MS-DCOM] section 2.2.18.7). Within an OBJREF_EXTENDED instance,
@@ -1492,7 +1161,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-COM].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1506,12 +1176,12 @@ property. If they share the same transaction, the client can send extra informat
 ORPC calls to the server, for example, to denote the current transaction sequence number, or to
 send a new transaction if the previous transaction has ended.
 
-1.3.1.2.1 Diagram
+###### 1.3.1.2.1 Diagram
 
 Figure 3: A client object with references to two server objects, each with a reference-
 specific envoy property (EP1 and EP2) returned from the server during marshaling
 
-1.3.1.3  Context Properties and ORPC Calls
+##### 1.3.1.3 Context Properties and ORPC Calls
 
 Context properties can participate in out-of-band communication on ORPC calls. Via the Context ORPC
 Extension mechanism ([MS-DCOM] section 2.2.21.4), a client-side context property and a server-side
@@ -1526,18 +1196,19 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-COM].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 object can send extra information about the state of the current transaction to a COM+ server
 object.
 
-1.3.1.3.1 Diagram
+###### 1.3.1.3.1 Diagram
 
 Figure 4: An ORPC call with out-of-band communication between context properties
 
-1.3.2  Transactions
+#### 1.3.2 Transactions
 
 This protocol is designed to combine the work of collaborating objects under the aegis of a single
 distributed transaction. The protocol itself does not define or implement distributed transaction
@@ -1547,7 +1218,7 @@ transaction protocol references. This protocol implements transactional semantic
 extending the protocol described in [MS-DCOM] to send transactions and associated information
 during object activations, in ORPC calls, and within marshaled OBJREF instances.
 
-1.3.2.1  Transaction Stream
+##### 1.3.2.1 Transaction Stream
 
 A transaction stream is an object that supplies a series of transactions, each identified by a
 monotonically increasing transaction sequence number (TSN). Each transaction stream is uniquely
@@ -1558,7 +1229,7 @@ be initiated until the previous transaction has completed.
 Transaction streams make it possible for sets of distributed objects to collaborate on sequential units
 of work.
 
-1.3.2.2  Root Transaction Object
+##### 1.3.2.2 Root Transaction Object
 
 The root transaction object is the object for which the initial transaction is created. There can only be
 one root transaction object within a transaction. The root transaction object has an associated
@@ -1572,11 +1243,12 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-COM].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-1.3.2.3  Non-root Transaction Object
+##### 1.3.2.3 Non-root Transaction Object
 
 Non-root transaction objects are objects created by or downstream from the root transaction object,
 and those that share the root transaction object's transaction. There can be multiple non-root objects
@@ -1588,12 +1260,12 @@ After a transaction completes, the non-root transaction object retrieves the nex
 communicating with the transaction stream, or by receiving it directly as part of an ORPC call from
 another object running within the transaction.
 
-1.3.2.4  Diagram
+##### 1.3.2.4 Diagram
 
 Figure 5: A root and non-root transaction object, each with a transaction context property
 holding a reference to the transaction stream
 
-1.3.2.5  MS-DTC Transaction Propagation Methods
+##### 1.3.2.5 MS-DTC Transaction Propagation Methods
 
 The transaction protocol described in [MS-DTCO] specifies two methods for propagating a
 transaction from one machine to another. For historical reasons, this protocol accommodates
@@ -1607,13 +1279,14 @@ Release: April 23, 2024
 
 17 / 87
 
-1.3.2.6  Transaction Lifetime
+
+##### 1.3.2.6 Transaction Lifetime
 
 Transactions in this protocol are started only by the root transaction object. Only the root
 transaction object can commit a transaction. A transaction can be canceled by any participant in the
 transaction.
 
-1.3.3  Activities
+#### 1.3.3 Activities
 
 An activity is a synchronization boundary; ORPC calls to objects within the boundary are serialized
 based on the DCOM causality of the currently executing ORPC call. An activity is uniquely identified by
@@ -1623,7 +1296,7 @@ section 2.2.6) to other objects within the same activity are blocked for a speci
 the time-out expires before the incoming ORPC call is allowed to enter the activity, the call is rejected
 and an error is returned to the client.
 
-1.3.4  Security
+#### 1.3.4 Security
 
 The protocol offers the capability to send a collection of security identities and other security
 information along an ORPC call chain; each element in the collection represents a caller in the ORPC
@@ -1656,14 +1329,14 @@ computer of the object. The protocol uses this information to translate SIDs to 
 account names when sending the security identity of the caller in cross-computer and cross-domain
 ORPC calls.
 
-1.3.5  User-Defined Properties
+#### 1.3.5 User-Defined Properties
 
 User-defined properties are name/value pairs that are part of an object's context. These properties are
 supplied and consumed by higher-level protocols or applications. This protocol supports the string
 value type and the OBJREF value type. The protocol sends these properties as part of both the client
 and prototype contexts during object activations.
 
-1.3.6  Partitions
+#### 1.3.6 Partitions
 
 Partitions are used to support the side-by-side installation of multiple configurations of a COM+
 object class. Each partition is uniquely identified by a GUID known as the partition ID. An object
@@ -1677,7 +1350,8 @@ Release: April 23, 2024
 
 18 / 87
 
-Every machine has at minimum one partition, the global partition, which contains the default
+
+Every machine has at minimum one partition, the global partition, which contains the default
 configuration for every object class on the machine. The global partition serves as the default partition
 when no criteria, such as a client-specified partition, exist to choose any other partition.
 
@@ -1689,24 +1363,24 @@ For historical reasons, the client's partition information is not sent across th
 context property; instead, it is sent as part of the base DCOM protocol. See the guidPartition field of
 the SpecialPropertiesData structure, as specified in [MS-DCOM] section 2.2.22.2.2.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is built on top of the protocol described in [MS-DCOM]. This protocol requires the
 protocol described in [MS-DTCO] to implement the transactional features in this specification.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that both client and server possess implementations of the protocol described in
 [MS-DCOM]. If the transactional features of this protocol are to be used, both client and server have
 to possess implementations of the protocol described in [MS-DTCO].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is useful and appropriate when a distributed, object-based architecture with
 transactions, synchronization, security, and side-by-side installation of multiple configurations of an
 object class is required.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following area:
 
@@ -1720,12 +1394,12 @@ This document covers versioning issues in the following area:
 
 section 2.2.4.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
  This protocol uses HRESULTs as specified in [MS-ERREF] section 2.1. Vendors can define their own
 HRESULT values, provided that the C bit (0x20000000) is set for each vendor-specific value.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following is a table of well-known GUIDs in this protocol.
 
@@ -1753,7 +1427,8 @@ Release: April 23, 2024
 
 19 / 87
 
-Parameter
+
+Parameter
 
 Value
 
@@ -1860,7 +1535,8 @@ Release: April 23, 2024
 
 20 / 87
 
-2  Messages
+
+## 2 Messages
 
 All structures are defined in the IDL syntax and are marshaled as per [C706] part 3. The IDL is
 specified in Appendix A.
@@ -1873,16 +1549,16 @@ This protocol references commonly used data types as defined in [MS-DTYP].
 
 Unless otherwise qualified, instances of GUID in sections 2 and 3 refer to [MS-DTYP] section 2.3.4.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol uses RPC dynamic endpoints as specified in [C706] part 4.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data
 types are specified in this section.
 
-2.2.1  LengthPrefixedName
+#### 2.2.1 LengthPrefixedName
 
 The LengthPrefixedName type specifies an array of Unicode characters prefixed by the array length,
 in characters.
@@ -1910,7 +1586,7 @@ and MUST NOT be zero.
 
 Name (variable):  A Unicode string; the string SHOULD NOT end in a NULL terminator.
 
-2.2.2  Activation Context Properties
+#### 2.2.2 Activation Context Properties
 
 Activation context properties are included as part of the client and/or prototype contexts in a DCOM
 Activation Properties BLOB ([MS-DCOM] section 2.2.22).
@@ -1937,7 +1613,8 @@ Release: April 23, 2024
 
 21 / 87
 
- Context property
+
+ Context property
 
  In client or prototype context?
 
@@ -1948,7 +1625,7 @@ If present, this property MUST be in both client and prototype contexts.
 The user context property, if present, MUST be sent within both the client and prototype contexts, and
 both copies MUST be identical.
 
-2.2.2.1  Transaction Context Property
+##### 2.2.2.1 Transaction Context Property
 
 To indicate to the server that the client is running within a transaction, the client MUST include a
 transaction context property as part of the client context in an object activation request.
@@ -1963,7 +1640,7 @@ OBJREF_CUSTOM instance MUST be set to CLSID_TransactionUnmarshal, as specified i
 The format of the OBJREF_CUSTOM.pObjectData buffer for CLSID_TransactionUnmarshal MUST be
 specified as follows.
 
-2.2.2.1.1 TransactionContextPropertyHeader
+###### 2.2.2.1.1 TransactionContextPropertyHeader
 
 The TransactionContextPropertyHeader structure is the common header for all variants of the
 Transaction Context Property.
@@ -2020,7 +1697,8 @@ Release: April 23, 2024
 
 22 / 87
 
-Value
+
+Value
 
 Meaning
 
@@ -2038,7 +1716,7 @@ TransactionVariant
 The TransactionContextPropertyHeader structure MUST be contained as part of a
 TransactionBuffer (section 2.2.2.1.3) structure.
 
-2.2.2.1.2 TransactionStream
+###### 2.2.2.1.2 TransactionStream
 
 The TransactionStream structure is used when the client passes a reference to the client's
 ITransactionStream interface and conveys information about the capabilities of the DTCO transaction
@@ -2096,7 +1774,7 @@ IsolationLevel (optional) (4 bytes): The Transaction Isolation Level (section 2.
 COM+ client. This field MUST be present if the MaxVersion field of the header is 0x0002;
 otherwise, this field MUST NOT be present.
 
-2.2.2.1.3 TransactionBuffer
+###### 2.2.2.1.3 TransactionBuffer
 
 The TransactionBuffer structure is used when the client passes the currently active transaction to the
 server.
@@ -2108,7 +1786,8 @@ Release: April 23, 2024
 
 23 / 87
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2151,7 +1830,7 @@ IsolationLevel (optional) (4 bytes): The Transaction Isolation Level (section 2.
 COM+ client. This field MUST be present if the MaxVersion field of header is 0x0002; otherwise,
 this field MUST NOT be present.
 
-2.2.2.2  Activity Context Property
+##### 2.2.2.2 Activity Context Property
 
 To indicate to the server that the client is running within an activity, the client MUST include an
 activity context property as part of the client context in an object activation request.
@@ -2192,7 +1871,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Timeout
 
@@ -2210,7 +1890,7 @@ Timeout (4 bytes): An unsigned long that MUST specify the activity time-out in m
 
 of 0xFFFFFFFF MUST be interpreted to specify an INFINITE time-out.
 
-2.2.2.3  User-Defined Context Property
+##### 2.2.2.3 User-Defined Context Property
 
 The user-defined context property, if present, MUST be included as part of both the client and
 prototype contexts during activation requests. This context property contains a logical set of
@@ -2261,7 +1941,7 @@ Properties array.
 
 Properties (variable): An array of UserProperty structures.
 
-2.2.2.3.1 UserProperty
+###### 2.2.2.3.1 UserProperty
 
 The UserProperty structure is used to define a single name/value pair.
 
@@ -2272,7 +1952,8 @@ Release: April 23, 2024
 
 25 / 87
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2338,7 +2019,7 @@ unused (14 bytes): SHOULD be set to zero, and MUST be ignored upon receipt.<1>
 
 Value (variable): MUST contain the data for this name/value pair, as specified by the vt field.
 
-2.2.3  Context ORPC Extensions
+#### 2.2.3 Context ORPC Extensions
 
 Context ORPC extensions are specified in [MS-DCOM] section 2.2.21.4. These extension formats are
 passed as out-of-band data on ORPC calls. Each individual extension is identified by a "policyID" of
@@ -2354,7 +2035,8 @@ Release: April 23, 2024
 
 26 / 87
 
-2.2.3.1  Transaction ORPC Extensions
+
+##### 2.2.3.1 Transaction ORPC Extensions
 
 These extensions are used to coordinate the state of a transaction in use by both the client and the
 server.
@@ -2362,12 +2044,12 @@ server.
 The policyID field of the EntryHeader for this extension MUST be set to
 guidTransactionProperty (section 1.9).
 
-2.2.3.1.1 Transaction ORPC Call Extensions
+###### 2.2.3.1.1 Transaction ORPC Call Extensions
 
 These extensions are sent by a client in order to inform the server of the current transaction state,
 and to request that other transaction-related data be returned by the server within the same call.
 
-2.2.3.1.1.1  TransactionPropCallHeader
+###### 2.2.3.1.1.1 TransactionPropCallHeader
 
 The TransactionPropCallHeader structure is used to pass the TSN of the current transaction to the
 server.
@@ -2454,7 +2136,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2468,7 +2151,7 @@ The TransactionPropCallHeader structure MUST be contained as part
 of the TransactionPropCallTransmitterBuffer (section 2.2.3.1.1.3)
 structure.
 
-2.2.3.1.1.2  TransactionPropCallExportCookie
+###### 2.2.3.1.1.2 TransactionPropCallExportCookie
 
 The TransactionPropCallExportCookie structure is used to send the currently active transaction to the
 server, using the STxInfo format. For more details, see [MS-DTCO].
@@ -2512,7 +2195,7 @@ the size of the TransactionPropCallHeader structure and the size of the cbExport
 the TransactionPropCallExportCookie structure from the value of the cbEHBuffer field. The size of
 the STxInfo structure is the result.
 
-2.2.3.1.1.3  TransactionPropCallTransmitterBuffer
+###### 2.2.3.1.1.3 TransactionPropCallTransmitterBuffer
 
 The TransactionPropCallTransmitterBuffer structure is used to send the currently active transaction
 to the server, using the Propagation Token format; see [MS-DTCO] section 2.2.5.4 for more details.
@@ -2541,7 +2224,8 @@ Release: April 23, 2024
 
 28 / 87
 
-Reserved
+
+Reserved
 
 TransmitterBuffer (variable)
 
@@ -2563,7 +2247,7 @@ the size of the TransactionPropCallHeader (section 2.2.3.1.1.1) structure and th
 cbTransmitterBuffer field in the TransactionPropCallTransmitterBuffer structure from the value
 of the cbEHBuffer field. The size of the Propagation Token structure is the result.
 
-2.2.3.1.2 Transaction ORPC Return Extensions
+###### 2.2.3.1.2 Transaction ORPC Return Extensions
 
 These extensions are returned in the ORPC response by a server in response to one of the call
 extensions specified in section 2.2.3.1.
@@ -2571,7 +2255,7 @@ extensions specified in section 2.2.3.1.
 The policyID field of the EntryHeader for these extensions MUST be set to
 guidTransactionProperty (section 1.9).
 
-2.2.3.1.2.1  TransactionPropRetHeader
+###### 2.2.3.1.2.1 TransactionPropRetHeader
 
 The server uses the TransactionPropRetHeader structure to communicate transaction status, and
 optionally to return additional data that advises the client to cancel the current transaction or to stop
@@ -2634,7 +2318,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2660,7 +2345,7 @@ TransactionPropRet_Whereabouts
 The TransactionPropRetHeader structure MUST be contained as part of
 TransactionPropRetWhereabouts (section 2.2.3.1.2.2).
 
-2.2.3.1.2.2  TransactionPropRetWhereabouts
+###### 2.2.3.1.2.2 TransactionPropRetWhereabouts
 
 The TransactionPropRetWhereabouts structure is used by the server to return additional data and to
 communicate transaction status to the client.
@@ -2702,7 +2387,7 @@ the size of the TransactionPropRetHeader structure and the size of the cbWhereab
 the TransactionPropRetWhereabouts structure from the value of the cbEHBuffer field. The size of
 the SWhereabouts structure is the result.
 
-2.2.3.2  Security ORPC Extension
+##### 2.2.3.2 Security ORPC Extension
 
 This extension sends security information for this protocol as out-of-band data on ORPC calls between
 two instances of this protocol. The security information provides a record of the chain of caller
@@ -2720,10 +2405,11 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The policyID field of the EntryHeader ([MS-DCOM] section 2.2.21.5) of the Security ORPC Extension
+
+The policyID field of the EntryHeader ([MS-DCOM] section 2.2.21.5) of the Security ORPC Extension
 MUST be set to guidSecurityProperty (section 1.9).
 
-2.2.3.2.1 Security Property
+###### 2.2.3.2.1 Security Property
 
 The Security Property structure specifies a security property sent by the security ORPC extension.
 
@@ -2758,7 +2444,7 @@ Data (variable): An array of bytes that MUST contain a security property value a
 
 2.2.3.2.1.1.
 
-2.2.3.2.1.1  Security Property Types
+###### 2.2.3.2.1.1 Security Property Types
 
 The following table lists the valid Security Property Types for the PropertyType field of the Security
 Property structure. See Security Property (section 2.2.3.2.1).
@@ -2842,7 +2528,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Size field of
+
+ Size field of
 Security
 Property
 
@@ -2920,7 +2607,7 @@ property collection
 header (section 2.2.3.2.2) MUST be set to
 0x0a01.
 
-2.2.3.2.2 Security Property Collection Header
+###### 2.2.3.2.2 Security Property Collection Header
 
 The Security Property Collection Header structure specifies the header of a Security
 Property (section 2.2.3.2.1) collection.
@@ -2954,7 +2641,7 @@ cProperties (2 bytes):  An unsigned short that MUST contain the number of Securi
 
 structures in the collection. MUST NOT be zero.
 
-2.2.3.2.3 Security Property Collection
+###### 2.2.3.2.3 Security Property Collection
 
 [MS-COM] - v20240423
 Component Object Model Plus (COM+) Protocol
@@ -2963,7 +2650,8 @@ Release: April 23, 2024
 
 32 / 87
 
-The Security Property Collection structure is used to specify an array of Security
+
+The Security Property Collection structure is used to specify an array of Security
 Property (section 2.2.3.2.1) structures. It consists of a collection header followed by the Security
 Property structures.
 
@@ -3008,7 +2696,7 @@ computer boundary and if the security identity of the client is scoped to the lo
 Properties array SHOULD contain an additional element with the PropertyType value set to 0x0b02,
 specifying the Windows NT account name of the caller.
 
-2.2.3.2.4 Security ORPC Extension
+###### 2.2.3.2.4 Security ORPC Extension
 
 The Security ORPC Extension structure is used to specify the version, style, and number of security
 property collections in the out-of-band data sent by the security ORPC extension.
@@ -3047,7 +2735,8 @@ Release: April 23, 2024
 
 33 / 87
 
-MinVersion (2 bytes):  The minor version number for this Security ORPC Extension format; this field
+
+MinVersion (2 bytes):  The minor version number for this Security ORPC Extension format; this field
 
 MUST be set to 0x0001.
 
@@ -3074,13 +2763,13 @@ Property Collection Header of the remaining elements of the array, if present, M
 caller. Subsequent array elements, if present, indicate the security properties of previous callers in
 the ORPC call chain.
 
-2.2.4  OBJREF_EXTENDED Context Properties
+#### 2.2.4 OBJREF_EXTENDED Context Properties
 
 The server represents some or all server context properties as part of the marshaled OBJREF using
 the OBJREF_EXTENDED format ([MS-DCOM] section 2.2.18.7). Such properties are also known as
 envoy properties.
 
-2.2.4.1  Transaction Envoy Property
+##### 2.2.4.1 Transaction Envoy Property
 
 The Transaction Envoy Property is used to notify the unmarshaling client that the server object is
 running within a transaction. The server object returns the transaction envoy context property as
@@ -3125,7 +2814,8 @@ Release: April 23, 2024
 
 34 / 87
 
-...
+
+...
 
 DtcCapabilities
 
@@ -3147,7 +2837,7 @@ DtcCapabilities (2 bytes):  An unsigned short that MUST be set to one or more of
 
 in section 2.2.6.1.
 
-2.2.4.2  Security Envoy Property
+##### 2.2.4.2 Security Envoy Property
 
 This property is used to notify the unmarshaling client that the server object is using security specified
 by this protocol. The server object returns the security envoy context property as part of an
@@ -3202,13 +2892,14 @@ Release: April 23, 2024
 
 35 / 87
 
-guidServerDomain (16 bytes): A GUID that uniquely identifies the domain of the server machine.
+
+guidServerDomain (16 bytes): A GUID that uniquely identifies the domain of the server machine.
 
 For more information, see [MS-NRPC] section 2.2.1.2.1.
 
 guidServerMachine (16 bytes): A GUID that uniquely identifies the server machine.
 
-2.2.5  Class Factory Wrapper
+#### 2.2.5 Class Factory Wrapper
 
 If a client with a COMVERSION ([MS-DCOM] section 2.2.11) greater than or equal to 5.6 requests a
 class factory reference during activation ([MS-DCOM] section 3.1.2.5.2.3.2), the server MUST return
@@ -3273,7 +2964,8 @@ Release: April 23, 2024
 
 36 / 87
 
-LongNameBytes (optional)
+
+LongNameBytes (optional)
 
 LongNames (variable)
 
@@ -3341,9 +3033,10 @@ Release: April 23, 2024
 
 37 / 87
 
-2.2.6  Constants
 
-2.2.6.1  DTCO Capabilities
+#### 2.2.6 Constants
+
+##### 2.2.6.1 DTCO Capabilities
 
 The constants in the following table specify the transaction propagation methods supported by a
 DTCO implementation.
@@ -3366,7 +3059,7 @@ DtcCap_CanTransmit
 The DTCO implementation supports transaction transmitter/receiver functionality via
 Propagation_Token as specified in [MS-DTCO] section 2.2.5.4.
 
-2.2.6.2  Transaction Isolation Levels
+##### 2.2.6.2 Transaction Isolation Levels
 
 The constants in the following table map a subset of the isolation levels defined in [MS-DTCO] section
 2.2.6.9 to COM+ Protocol-specific values indicating the transaction isolation level used by the COM+
@@ -3407,7 +3100,8 @@ Release: April 23, 2024
 
 38 / 87
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This protocol influences object activations in two ways:
 
@@ -3433,9 +3127,9 @@ This protocol influences and adds special behaviors to ORPCs in several places:
 The following ORPCs-related sections detail these operations as they pertain to the different features
 of the protocol.
 
-3.1  Client Root Transaction Object Activation Details
+### 3.1 Client Root Transaction Object Activation Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3465,7 +3159,7 @@ shared with the ITransactionStream Server (section 3.23).
 
 Extension (section 3.13).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -3476,7 +3170,8 @@ Release: April 23, 2024
 
 39 / 87
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 When a client root transaction object is initialized, it MUST do the following:
 
@@ -3505,7 +3200,7 @@ instance.
 
   Set the TransactionStreamID GUID to a unique GUID.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 When a client root transaction object issues an object activation request, it MUST include a
 Transaction Context Property (section 2.2.2.1) as part of the client context.
@@ -3518,7 +3213,7 @@ Otherwise, if the client designates the server object as able to participate in 
 it MUST send a TransactionBuffer (section 2.2.2.1.3) structure and MUST initialize it as specified in
 section 3.1.4.2.
 
-3.1.4.1  Activation Using Transaction Stream
+##### 3.1.4.1 Activation Using Transaction Stream
 
 The client root transaction object MUST do the following:
 
@@ -3548,11 +3243,12 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Set the MarshalSize field to the size, in bytes, of the TransactionStream field.
+
+  Set the MarshalSize field to the size, in bytes, of the TransactionStream field.
 
   Set the IsolationLevel field, if present, to the IsolationLevel value.
 
-3.1.4.2  Activation Using Transaction Buffer
+##### 3.1.4.2 Activation Using Transaction Buffer
 
 The client root transaction object MUST set the following:
 
@@ -3587,13 +3283,13 @@ The IsolationLevel field, if present, to the IsolationLevel value.
 When the activation request returns, the client root transaction object MUST unmarshal the application
 object reference contained in the activation response as specified in section 3.20.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
-3.1.6.1  Transaction Commit
+##### 3.1.6.1 Transaction Commit
 
 The client root transaction object MUST initiate a commit of the current transaction no later than the
 point of destruction of the client root transaction object. It MUST also initiate a commit of the current
@@ -3602,14 +3298,14 @@ transaction if requested by a higher-level protocol.
 When the client root transaction object initiates the commit of the current transaction, it MUST
 increment the CurrentTSN value.
 
-3.1.6.2  Transaction Abort
+##### 3.1.6.2 Transaction Abort
 
 The client root transaction object MUST initiate a cancellation of the current transaction if requested
 by a higher-level protocol or by the client Transaction ORPC Extension.
 
-3.2  Client Non-Root Transaction Object Activation Details
+### 3.2 Client Non-Root Transaction Object Activation Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 A client non-root transaction object maintains the following data structure:
 
@@ -3624,11 +3320,12 @@ Release: April 23, 2024
 
 41 / 87
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 At initialization time, a client non-root transaction object MUST do the following:
 
@@ -3638,7 +3335,7 @@ At initialization time, a client non-root transaction object MUST do the followi
 
 [MS-DTCO] section 3.5.5.1) with its local DTCO resource manager implementation.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 When a client non-root transaction object issues an object activation request, it MUST include a
 Transaction Context Property (section 2.2.2.1) as part of the client context.
@@ -3656,13 +3353,13 @@ as specified in section 3.1.4.2.
 When the activation request returns, the client non-root transaction object MUST unmarshal the
 application object reference returned in the activation response as specified in section 3.20.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
-3.2.6.1  Transaction Outcome Participation
+##### 3.2.6.1 Transaction Outcome Participation
 
 A client non-root transaction object MUST vote on the outcome of each transaction in which it
 participates, when so requested by its local DTCO transaction manager implementation (see [MS-
@@ -3671,9 +3368,9 @@ DTCO], section 3.4.7.6).
 A client non-root transaction object MUST vote to cancel a transaction if so requested by a higher-
 level protocol or by the Client Transaction ORPC Extension Details (section 3.13).
 
-3.3  Client Activity Activation Details
+### 3.3 Client Activity Activation Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3688,50 +3385,51 @@ Release: April 23, 2024
 
 42 / 87
 
- A client object running within an activity maintains the following data structures:
+
+ A client object running within an activity maintains the following data structures:
 
   An activity identifier GUID.
 
   An activity time-out value.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 Not applicable to client activity activation.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Not applicable to Client Activity Activation (section 3.3).
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 If the client object is running in a context with an activity context property, the client MUST create an
 activity context property (see section 2.2.2.2) as part of the client context in the activation request. It
 MUST set the ActivityID field to the activity identifier of the client object's activity. It MUST set the
 TimeOut field to the activity time-out of the client object's activity.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 Not applicable to Client Activity Activation (section 3.3).
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 Not applicable to Client Activity Activation (section 3.3).
 
-3.4  Client Partition Activation Details
+### 3.4 Client Partition Activation Details
 
-3.4.1  Abstract Data Model
-
-Not applicable to Client Partition Activation (section 3.4).
-
-3.4.2  Timers
+#### 3.4.1 Abstract Data Model
 
 Not applicable to Client Partition Activation (section 3.4).
 
-3.4.3  Initialization
+#### 3.4.2 Timers
 
 Not applicable to Client Partition Activation (section 3.4).
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.3 Initialization
+
+Not applicable to Client Partition Activation (section 3.4).
+
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 When a client object issues an object activation, the client MUST specify a partition ID in the
 guidPartition field of the SpecialPropertiesData structure ([MS-DCOM] section 2.2.22.2.2). The
@@ -3754,17 +3452,18 @@ Release: April 23, 2024
 
 43 / 87
 
-3.4.5  Timer Events
+
+#### 3.4.5 Timer Events
 
 Not applicable to Client Partition Activation (section 3.4).
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 Not applicable to Client Partition Activation (section 3.4).
 
-3.5  Client User Property Activation Details
+### 3.5 Client User Property Activation Details
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3778,31 +3477,31 @@ A client user context property maintains the following data structures:
 
 2.2.2.3.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 Not applicable to Client User Property Activation (section 3.5).
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 Not applicable to Client User Property Activation (section 3.5).
 
-3.5.4  Message Processing Events and Sequencing Rules
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 If an application or higher-level protocol supplies user-defined context properties (see section 2.2.2.3)
 during activation, the client MUST copy and propagate them as part of both the client context and the
 prototype context in the activation request.
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 Not applicable to Client User Property Activation (section 3.5).
 
-3.5.6  Other Local Events
+#### 3.5.6 Other Local Events
 
 Not applicable to Client User Property Activation (section 3.5).
 
-3.6  Client Class Factory Wrapper Activation Details
+### 3.6 Client Class Factory Wrapper Activation Details
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3817,15 +3516,16 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client maintains the following data structure:
+
+The client maintains the following data structure:
 
   A Class Factory Wrapper (section 2.2.5).
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 Not applicable to Client Class Factory Wrapper Activation (section 3.6).
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 On initialization, the client MUST:
 
@@ -3839,7 +3539,7 @@ Initialize the Class Factory Wrapper (section 2.2.5) structure with the correspo
 the Class Factory Wrapper structure contained in the pObjectData field of the OBJREF_CUSTOM
 instance.
 
-3.6.4  Message Processing Events and Sequencing Rules
+#### 3.6.4 Message Processing Events and Sequencing Rules
 
 When the application makes object creation requests on the class factory object reference, the client
 MUST:
@@ -3898,35 +3598,36 @@ Release: April 23, 2024
 
 45 / 87
 
-
+
+
 
 If the activation request succeeds, return success; otherwise, continue processing.
 
   Return the error code from the last activation request to the application or higher layer protocol.
 
-3.6.5  Timer Events
+#### 3.6.5 Timer Events
 
 Not applicable to Client Class Factory Wrapper Activation (section 3.6).
 
-3.6.6  Other Local Events
+#### 3.6.6 Other Local Events
 
 Not applicable to Client Class Factory Wrapper Activation (section 3.6).
 
-3.7  Server Root Transaction Object Activation Details
+### 3.7 Server Root Transaction Object Activation Details
 
-3.7.1  Abstract Data Model
-
-None.
-
-3.7.2  Timers
+#### 3.7.1 Abstract Data Model
 
 None.
 
-3.7.3  Initialization
+#### 3.7.2 Timers
 
 None.
 
-3.7.4  Message Processing Events and Sequencing Rules
+#### 3.7.3 Initialization
+
+None.
+
+#### 3.7.4 Message Processing Events and Sequencing Rules
 
 When processing an activation, the server root transaction object MUST:
 
@@ -3934,17 +3635,17 @@ When processing an activation, the server root transaction object MUST:
 
   Marshal the object as described in section 3.18.
 
-3.7.5  Timer Events
+#### 3.7.5 Timer Events
 
 None.
 
-3.7.6  Other Local Events
+#### 3.7.6 Other Local Events
 
 None.
 
-3.8  Server Non-Root Transaction Object Activation Details
+### 3.8 Server Non-Root Transaction Object Activation Details
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3961,7 +3662,8 @@ Release: April 23, 2024
 
 46 / 87
 
-  A TransactionStream (section 2.2.2.1.2) object reference. This object reference is shared with the
+
+  A TransactionStream (section 2.2.2.1.2) object reference. This object reference is shared with the
 
 Server Transaction ORPC Extension (section 3.15).
 
@@ -3981,11 +3683,11 @@ shared with the Server Transaction ORPC Extension.
 
   A CommitTransaction flag. This flag is shared with the Server Transaction ORPC Extension.
 
-3.8.2  Timers
+#### 3.8.2 Timers
 
 None.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
 When a server non-root transaction object is initialized, it MUST do the following:
 
@@ -4036,11 +3738,12 @@ Release: April 23, 2024
 
 47 / 87
 
-  Register as a transaction voter (see [MS-DTCO] section 3.5.4.9) or as a resource manager (see
+
+  Register as a transaction voter (see [MS-DTCO] section 3.5.4.9) or as a resource manager (see
 
 [MS-DTCO] section 3.5.5.1) with its local DTCO resource manager implementation.
 
-3.8.4  Message Processing Events and Sequencing Rules
+#### 3.8.4 Message Processing Events and Sequencing Rules
 
 When processing an activation, the server non-root transaction object MUST do the following:
 
@@ -4048,13 +3751,13 @@ When processing an activation, the server non-root transaction object MUST do th
 
   Marshal the application object as described in section 3.18.
 
-3.8.5  Timer Events
+#### 3.8.5 Timer Events
 
 None.
 
-3.8.6  Other Local Events
+#### 3.8.6 Other Local Events
 
-3.8.6.1  Transaction Outcome Participation
+##### 3.8.6.1 Transaction Outcome Participation
 
 A server non-root transaction object MUST vote on the outcome of each transaction in which it
 participates when so requested by its local DTCO transaction manager implementation (see [MS-
@@ -4064,9 +3767,9 @@ to TRUE. It MUST vote to abort the transaction if the CommitTransaction flag is 
 The server non-root transaction object MUST set the InTransaction flag to FALSE after it votes on the
 outcome of the transaction.
 
-3.9  Server Activity Activation Details
+### 3.9 Server Activity Activation Details
 
-3.9.1  Abstract Data Model
+#### 3.9.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -4079,15 +3782,15 @@ The server maintains the following data structures per object:
 
   An activity time-out value.
 
-3.9.2  Timers
+#### 3.9.2 Timers
 
 Not applicable to Server Activity Activation (section 3.9).
 
-3.9.3  Initialization
+#### 3.9.3 Initialization
 
 Not applicable to Server Activity Activation (section 3.9).
 
-3.9.4  Message Processing Events and Sequencing Rules
+#### 3.9.4 Message Processing Events and Sequencing Rules
 
 When processing an activation, the server MUST decide, in an implementation-specific way, if the
 object is to share the client's activity, run in a new activity, or not use an activity at all.
@@ -4099,7 +3802,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the object is to share the client's activity, the server MUST:
+
+If the object is to share the client's activity, the server MUST:
 
   Set the activity ID and activity time-out to the values from the corresponding fields in the client's
 
@@ -4114,29 +3818,29 @@ If the object is to run in a new activity, the server MUST:
 If the server object is to run without an activity, the server MUST NOT associate activity data with the
 object.
 
-3.9.5  Timer Events
+#### 3.9.5 Timer Events
 
 Not applicable to Server Activity Activation (section 3.9).
 
-3.9.6  Other Local Events
+#### 3.9.6 Other Local Events
 
 Not applicable to Server Activity Activation (section 3.9).
 
-3.10  Server Partition Activation Details
+### 3.10 Server Partition Activation Details
 
-3.10.1 Abstract Data Model
-
-Not applicable to Server Partition Activation (section 3.10).
-
-3.10.2 Timers
+#### 3.10.1 Abstract Data Model
 
 Not applicable to Server Partition Activation (section 3.10).
 
-3.10.3 Initialization
+#### 3.10.2 Timers
 
 Not applicable to Server Partition Activation (section 3.10).
 
-3.10.4 Message Processing Events and Sequencing Rules
+#### 3.10.3 Initialization
+
+Not applicable to Server Partition Activation (section 3.10).
+
+#### 3.10.4 Message Processing Events and Sequencing Rules
 
 When processing an activation request, the server MUST do the following:
 
@@ -4154,7 +3858,7 @@ structure ([MS-DCOM] section 2.2.22.2.2) is not GUID_NULL, the server MUST selec
 specified by the partition ID. If the partition does not exist, the server MUST select the global
 partition.
 
-3.10.5 Timer Events
+#### 3.10.5 Timer Events
 
 Not applicable to Server Partition Activation (section 3.10).
 
@@ -4165,53 +3869,54 @@ Release: April 23, 2024
 
 49 / 87
 
-3.10.6 Other Local Events
+
+#### 3.10.6 Other Local Events
 
 Not applicable to Server Partition Activation (section 3.10).
 
-3.11  Server User Property Activation Details
+### 3.11 Server User Property Activation Details
 
-3.11.1 Abstract Data Model
-
-Not applicable to Server User Property Activation (section 3.11).
-
-3.11.2 Timers
+#### 3.11.1 Abstract Data Model
 
 Not applicable to Server User Property Activation (section 3.11).
 
-3.11.3 Initialization
+#### 3.11.2 Timers
 
 Not applicable to Server User Property Activation (section 3.11).
 
-3.11.4 Message Processing Events and Sequencing Rules
+#### 3.11.3 Initialization
+
+Not applicable to Server User Property Activation (section 3.11).
+
+#### 3.11.4 Message Processing Events and Sequencing Rules
 
 When processing an activation, if user-defined context properties (section 2.2.2.3) are present in the
 client and prototype contexts, the server MUST copy and supply these properties to applications or
 higher-level protocols that consume the properties.
 
-3.11.5 Timer Events
+#### 3.11.5 Timer Events
 
 Not applicable to Server User Property Activation (section 3.11).
 
-3.11.6 Other Local Events
+#### 3.11.6 Other Local Events
 
 Not applicable to Server User Property Activation (section 3.11).
 
-3.12  Server Class Factory Wrapper Activation Details
+### 3.12 Server Class Factory Wrapper Activation Details
 
-3.12.1 Abstract Data Model
-
-Not applicable to Server Class Factory Wrapper Activation (section 3.12).
-
-3.12.2 Timers
+#### 3.12.1 Abstract Data Model
 
 Not applicable to Server Class Factory Wrapper Activation (section 3.12).
 
-3.12.3 Initialization
+#### 3.12.2 Timers
 
 Not applicable to Server Class Factory Wrapper Activation (section 3.12).
 
-3.12.4 Message Processing Events and Sequencing Rules
+#### 3.12.3 Initialization
+
+Not applicable to Server Class Factory Wrapper Activation (section 3.12).
+
+#### 3.12.4 Message Processing Events and Sequencing Rules
 
 If the activation request is for a class factory object ([MS-DCOM] section 3.1.2.5.2.3.2), and if the
 COMVERSION ([MS-DCOM] section 2.2.11) of the client is greater than or equal to 5.6, the server
@@ -4224,7 +3929,8 @@ Release: April 23, 2024
 
 50 / 87
 
-  Create an OBJREF_CUSTOM instance ([MS-DCOM] section 2.2.18.6) for the marshaled object
+
+  Create an OBJREF_CUSTOM instance ([MS-DCOM] section 2.2.18.6) for the marshaled object
 
 reference of the class factory object.
 
@@ -4285,17 +3991,17 @@ The LongNameCount field to the number of elements in the LongNames array.
 The LongNames field to an array of Unicode strings. Each element in the array MUST contain
 an alternate computer name or a network address of the server machine.<5>
 
-3.12.5 Timer Events
+#### 3.12.5 Timer Events
 
 Not applicable to Server Class Factory Wrapper Activation (section 3.12).
 
-3.12.6 Other Local Events
+#### 3.12.6 Other Local Events
 
 Not applicable to Server Class Factory Wrapper Activation (section 3.12).
 
-3.13  Client Transaction ORPC Extension Details
+### 3.13 Client Transaction ORPC Extension Details
 
-3.13.1 Abstract Data Model
+#### 3.13.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -4315,7 +4021,8 @@ Release: April 23, 2024
 
 51 / 87
 
-  A DtcCapabilities value, consisting of a set of flags as specified in section 2.2.6.1. This value is
+
+  A DtcCapabilities value, consisting of a set of flags as specified in section 2.2.6.1. This value is
 
 shared with and initialized by the Client Transaction Envoy Unmarshaling (section 3.20).
 
@@ -4337,11 +4044,11 @@ reference unmarshaled by the client, where each entry contains a WhereaboutsID G
 SWhereabouts structure identified by the WhereaboutsID GUID. The table is shared with and
 initialized by the Client Transaction Envoy Unmarshaling.
 
-3.13.2 Timers
+#### 3.13.2 Timers
 
 None.
 
-3.13.3 Initialization
+#### 3.13.3 Initialization
 
 When the client transaction ORPC extension is initialized, it MUST do the following:
 
@@ -4358,7 +4065,7 @@ value of the client root transaction object (section 3.1).
 
 It MUST set the KnownTSN value to 0.
 
-3.13.4 Message Processing Events and Sequencing Rules
+#### 3.13.4 Message Processing Events and Sequencing Rules
 
 When the client transaction ORPC extension participates in an ORPC request, it MUST perform the
 following sequence of operations.
@@ -4397,7 +4104,8 @@ Release: April 23, 2024
 
 52 / 87
 
-  Otherwise, it MUST set the m_usFlags field to
+
+  Otherwise, it MUST set the m_usFlags field to
 TransactionPropCallFlag_NeedWhereabouts.
 
   Otherwise, it MUST set the m_usFlags field to 0x00000000.
@@ -4459,9 +4167,9 @@ Look up the WhereaboutsID GUID in the global Whereabouts table.
 
 TransactionPropRetWhereabouts (section 2.2.3.1.2.2) structure in the table entry.
 
-3.13.4.1
+##### 3.13.4.1 Diagram
 
-Diagram
+
 
 This diagram shows the logical processing flow when issuing an ORPC from a client transactional
 object to a server object, which might or might not be running in the same transaction as the client
@@ -4474,21 +4182,22 @@ Release: April 23, 2024
 
 53 / 87
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-COM].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
 Figure 6: Flow chart of outgoing ORPC from a transactional object
 
-3.13.5 Timer Events
+#### 3.13.5 Timer Events
 
 None.
 
-3.13.6 Other Local Events
+#### 3.13.6 Other Local Events
 
-3.13.6.1
+##### 3.13.6.1 Transaction Outcome Participation
 
-Transaction Outcome Participation
+
 
 The Client Transaction ORPC Extension MUST instruct the Client Root Transaction Object (section 3.1)
 to initiate the cancellation of the transaction if the TransactionPropRetFlag_Abort flag is set in the
@@ -4502,13 +4211,14 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Client Transaction ORPC Extension MUST instruct the Client Non-Root Transaction
+
+The Client Transaction ORPC Extension MUST instruct the Client Non-Root Transaction
 Object (section 3.2) to vote to cancel the transaction if the TransactionPropRetFlag_Abort flag is set in
 the m_usFlags field of TransactionPropRetHeader contained in the ORPC response.
 
-3.14  Client Security ORPC Extension Details
+### 3.14 Client Security ORPC Extension Details
 
-3.14.1 Abstract Data Model
+#### 3.14.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -4518,15 +4228,15 @@ as their external behavior is consistent with that described in this document.
 If the client receives an ORPC, it acts as a server and maintains the data structures specified in
 section 3.16.1. In addition, it maintains the data structures specified in section 3.22.1.
 
-3.14.2 Timers
+#### 3.14.2 Timers
 
 Not applicable to Client Security ORPC Extensions (section 3.14).
 
-3.14.3 Initialization
+#### 3.14.3 Initialization
 
 Not applicable to Client Security ORPC Extensions (section 3.14).
 
-3.14.4 Message Processing Events and Sequencing Rules
+#### 3.14.4 Message Processing Events and Sequencing Rules
 
 When the client makes an ORPC request (see [MS-DCOM] section 3.2.4.2), the extension MUST add a
 Security ORPC Extension (section 2.2.3.2.4) structure to the ORPC message. The extension MUST
@@ -4577,7 +4287,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Look up the Security Property value for type 0x0b10 in the Security ORPC
 Extension structure.
@@ -4685,7 +4396,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The Data field to the SID.
 
@@ -4769,11 +4481,11 @@ corresponding data from the Security ORPC Extension structure of the incoming OR
 
   Otherwise, the extension MUST set the cCollections field to 0x0000.
 
-3.14.5 Timer Events
+#### 3.14.5 Timer Events
 
 Not applicable to Client Security ORPC Extensions (section 3.14).
 
-3.14.6 Other Local Events
+#### 3.14.6 Other Local Events
 
 Not applicable to Client Security ORPC Extensions (section 3.14).
 
@@ -4784,12 +4496,13 @@ Release: April 23, 2024
 
 57 / 87
 
-3.15  Server Transaction ORPC Extension Details
+
+### 3.15 Server Transaction ORPC Extension Details
 
 The server transaction ORPC extension is applicable only to non-root transaction objects. It is not
 applicable to root transaction objects.
 
-3.15.1 Abstract Data Model
+#### 3.15.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -4818,11 +4531,11 @@ Transaction Object.
 An InTransaction flag. This flag is shared with and initialized by the Server Non-Root Transaction
 Object.
 
-3.15.2 Timers
+#### 3.15.2 Timers
 
 None.
 
-3.15.3 Initialization
+#### 3.15.3 Initialization
 
 When the server transaction ORPC extension is initialized, it MUST do the following:
 
@@ -4832,7 +4545,7 @@ When the server transaction ORPC extension is initialized, it MUST do the follow
 
   Set the TransactionUpdated flag to FALSE.
 
-3.15.4 Message Processing Events and Sequencing Rules
+#### 3.15.4 Message Processing Events and Sequencing Rules
 
 When a Server Transaction ORPC Extension receives an ORPC, it MUST perform the following
 sequence of operations.
@@ -4852,7 +4565,8 @@ Release: April 23, 2024
 
 58 / 87
 
-transaction ORPC extension MUST stop further processing and MUST return
+
+transaction ORPC extension MUST stop further processing and MUST return
 CONTEXT_E_TMNOTAVAILABLE from the ORPC request.
 
 
@@ -4945,7 +4659,8 @@ Release: April 23, 2024
 
 59 / 87
 
-
+
+
 
 
 
@@ -5041,7 +4756,8 @@ Release: April 23, 2024
 
 60 / 87
 
-
+
+
 
 If the DtcCap_CanTransmit bit is set in the DtcCapabilities value and the local DTCO
 transaction manager implementation supports the Propagation_Token method of sending
@@ -5131,7 +4847,8 @@ Release: April 23, 2024
 
 61 / 87
 
-TransactionPropCallHeader, the server transaction ORPC extension MUST return a
+
+TransactionPropCallHeader, the server transaction ORPC extension MUST return a
 TransactionPropRetWhereabouts (section 2.2.3.1.2.2) structure.
 
 
@@ -5152,32 +4869,32 @@ If the CommitTransaction flag is set to FALSE, the server transaction ORPC exten
 the TransactionPropRetFlag_Abort bit in the m_usFlag field of the TransactionPropRetHeader
 structure.
 
-3.15.5 Timer Events
+#### 3.15.5 Timer Events
 
 None.
 
-3.15.6 Other Local Events
+#### 3.15.6 Other Local Events
 
-3.15.6.1
+##### 3.15.6.1 Server Non-Root Transaction Object Communication
 
-Server Non-Root Transaction Object Communication
+
 
 When the Server Transaction ORPC Extension (section 3.15) is contacted by Server Non-Root
 Transaction Object (section 3.8) to inform it that the current transaction is being aborted by a higher
 level protocol, the Server Transaction ORPC Extension MUST set the AbortCurrentTransaction flag to
 TRUE.
 
-3.15.6.2
+##### 3.15.6.2 Transaction Outcome Participation
 
-Transaction Outcome Participation
+
 
 The server transaction ORPC extension MUST instruct the Server Non-Root Transaction
 Object (section 3.8) to vote to cancel the previous transaction if the AbortPreviousTransaction flag is
 set to TRUE.
 
-3.16  Server Security ORPC Extension Details
+### 3.16 Server Security ORPC Extension Details
 
-3.16.1 Abstract Data Model
+#### 3.16.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5187,11 +4904,11 @@ as their external behavior is consistent with that described in this document.
 The server security ORPC extension (section 3.16) maintains a table of Security ORPC
 Extension (section 2.2.3.2.4) structures.
 
-3.16.2 Timers
+#### 3.16.2 Timers
 
 None.
 
-3.16.3 Initialization
+#### 3.16.3 Initialization
 
 None.
 
@@ -5202,7 +4919,8 @@ Release: April 23, 2024
 
 62 / 87
 
-3.16.4 Message Processing Events and Sequencing Rules
+
+#### 3.16.4 Message Processing Events and Sequencing Rules
 
 On receipt of an ORPC ([MS-DCOM] section 3.1.1.5.4), the Security ORPC
 Extension (section 2.2.3.2.4) MUST:
@@ -5213,17 +4931,17 @@ corresponding fields in the Security ORPC Extension structure contained in the O
 When returning from an ORPC ([MS-DCOM] section 3.1.1.5.4), the Security ORPC Extension MUST
 remove the entry corresponding to the ORPC from the Security ORPC Extension table.
 
-3.16.5 Timer Events
+#### 3.16.5 Timer Events
 
 None.
 
-3.16.6 Other Local Events
+#### 3.16.6 Other Local Events
 
 None.
 
-3.17  Server Activity ORPC Processing Details
+### 3.17 Server Activity ORPC Processing Details
 
-3.17.1 Abstract Data Model
+#### 3.17.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5248,16 +4966,16 @@ the following:
  For each object, the causality identifier of the current outstanding ORPC call into the object, if
 any.
 
-3.17.2 Timers
+#### 3.17.2 Timers
 
 The server MUST maintain a per-activity timer.
 
-3.17.3 Initialization
+#### 3.17.3 Initialization
 
 The server MUST initialize the per-activity timer to the time-out value of the activity set during the
 object activation request (see section 3.9.4).
 
-3.17.4 Message Processing Events and Sequencing Rules
+#### 3.17.4 Message Processing Events and Sequencing Rules
 
 When processing an incoming ORPC call, the server MUST:
 
@@ -5276,7 +4994,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 For each object in the list, the server MUST:
 
@@ -5340,18 +5059,18 @@ Take the activity lock.
 
   Relinquish the activity lock.
 
-3.17.5 Timer Events
+#### 3.17.5 Timer Events
 
 The server MUST return CONTEXT_E_SYNCH_TIMEOUT to each outstanding ORPC call when the
 activity timer of the current activity expires.
 
-3.17.6 Other Local Events
+#### 3.17.6 Other Local Events
 
 None.
 
-3.18  Server Transaction Envoy Marshaling Details
+### 3.18 Server Transaction Envoy Marshaling Details
 
-3.18.1 Abstract Data Model
+#### 3.18.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5363,7 +5082,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-protocol behaves. This document does not mandate that implementations adhere to this model as long
+
+protocol behaves. This document does not mandate that implementations adhere to this model as long
 as their external behavior is consistent with that described in this document.
 
 The server transaction envoy (section 3.18) maintains the following data structures:
@@ -5376,11 +5096,11 @@ Transaction Object (section 3.8).
 
   A DtcCapabilities value, consisting of a set of flags specified in section 2.2.6.1.
 
-3.18.2 Timers
+#### 3.18.2 Timers
 
 None.
 
-3.18.3 Initialization
+#### 3.18.3 Initialization
 
 When a server transaction envoy object is initialized, it MUST do the following:
 
@@ -5398,7 +5118,7 @@ transactions.
 
 DTCO] section 2.2.5.11) of the local DTCO transaction manager implementation.
 
-3.18.4 Message Processing Events and Sequencing Rules
+#### 3.18.4 Message Processing Events and Sequencing Rules
 
 When an application object is marshaled, the server transaction envoy MUST produce an
 OBJREF_EXTENDED ([MS-DCOM] section 2.2.18.7) instance if the DCOM version of the client is 5.6 or
@@ -5423,7 +5143,7 @@ The WhereaboutsID field MUST be set to the SWhereaboutsID GUID.
 
 The DtcCapabilities field MUST be set to the DtcCapabilities value.
 
-3.18.5 Timer Events
+#### 3.18.5 Timer Events
 
 None.
 
@@ -5434,13 +5154,14 @@ Release: April 23, 2024
 
 65 / 87
 
-3.18.6 Other Local Events
+
+#### 3.18.6 Other Local Events
 
 None.
 
-3.19  Server Security Envoy Marshaling Details
+### 3.19 Server Security Envoy Marshaling Details
 
-3.19.1 Abstract Data Model
+#### 3.19.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5455,11 +5176,11 @@ domainGUID, which identifies the domain of the computer.
 
   machineGUID, which identifies the computer.
 
-3.19.2 Timers
+#### 3.19.2 Timers
 
 None.
 
-3.19.3 Initialization
+#### 3.19.3 Initialization
 
 On initialization, the server security envoy (section 3.19) MUST:
 
@@ -5469,7 +5190,7 @@ NRPC] section 2.2.1.2.1.
 
   Set the machineGUID to a GUID that uniquely identifies the computer.
 
-3.19.4 Message Processing Events and Sequencing Rules
+#### 3.19.4 Message Processing Events and Sequencing Rules
 
 When an object is marshaled, the server security envoy (section 3.19) MUST contribute a security
 envoy context property (section 2.2.4.2) to the OBJREF_EXTENDED ([MS-DCOM] section 2.2.18.7)
@@ -5484,11 +5205,11 @@ The guidServerDomain field MUST be set to domainGUID.
 
 The guidServerMachine field MUST be set to machineGUID.
 
-3.19.5 Timer Events
+#### 3.19.5 Timer Events
 
 None.
 
-3.19.6 Other Local Events
+#### 3.19.6 Other Local Events
 
 None.
 
@@ -5499,9 +5220,10 @@ Release: April 23, 2024
 
 66 / 87
 
-3.20  Client Transaction Envoy Unmarshaling Details
 
-3.20.1 Abstract Data Model
+### 3.20 Client Transaction Envoy Unmarshaling Details
+
+#### 3.20.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5537,11 +5259,11 @@ A Whereabouts Table. A table of entries for OBJREF_EXTENDED object references un
 the client where each entry contains a WhereaboutsID GUID and the SWhereabouts identified by the
 WhereaboutsID GUID. The table is shared with the Client Transaction ORPC Extension.
 
-3.20.2 Timers
+#### 3.20.2 Timers
 
 None.
 
-3.20.3 Initialization
+#### 3.20.3 Initialization
 
 Upon unmarshaling an OBJREF_EXTENDED (section 2.2.4) object reference, the client transaction
 envoy unmarshaling MUST do the following:
@@ -5573,7 +5295,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5.4) method of sending transactions and if the DtcCap_CanTransmit bit is set in the
+
+2.2.5.4) method of sending transactions and if the DtcCap_CanTransmit bit is set in the
 DtcCapabilities field of the Transaction Envoy Property contained in the OBJREF_EXTENDED
 structure.
 
@@ -5591,21 +5314,21 @@ OBJREF_EXTENDED structure and look it up in the Whereabouts table. If the entry 
 the table, create an entry with the WhereaboutsID GUID and an empty SWhereabouts ([MS-
 DTCO] section 2.2.5.11) and add the entry to the Whereabouts table.
 
-3.20.4 Message Processing Events and Sequencing Rules
+#### 3.20.4 Message Processing Events and Sequencing Rules
 
 None.
 
-3.20.5 Timer Events
+#### 3.20.5 Timer Events
 
 None.
 
-3.20.6 Other Local Events
+#### 3.20.6 Other Local Events
 
 None.
 
-3.21  Client Transaction Envoy Marshaling Details
+### 3.21 Client Transaction Envoy Marshaling Details
 
-3.21.1 Abstract Data Model
+#### 3.21.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5619,15 +5342,15 @@ reference unmarshaled by the client:
 
 by the Client Transaction Envoy Unmarshaling (section 3.20).
 
-3.21.2 Timers
+#### 3.21.2 Timers
 
 None.
 
-3.21.3 Initialization
+#### 3.21.3 Initialization
 
 None.
 
-3.21.4 Message Processing Events and Sequencing Rules
+#### 3.21.4 Message Processing Events and Sequencing Rules
 
 When marshaling of an OBJREF_EXTENDED object reference, the client transaction envoy marshaling
 MUST do the following:
@@ -5639,19 +5362,20 @@ Release: April 23, 2024
 
 68 / 87
 
-  Copy the Transaction Envoy Property value to the OBJREF_EXTENDED structure.
 
-3.21.5 Timer Events
+  Copy the Transaction Envoy Property value to the OBJREF_EXTENDED structure.
 
-None.
-
-3.21.6 Other Local Events
+#### 3.21.5 Timer Events
 
 None.
 
-3.22  Client Security Unmarshaling Details
+#### 3.21.6 Other Local Events
 
-3.22.1 Abstract Data Model
+None.
+
+### 3.22 Client Security Unmarshaling Details
+
+#### 3.22.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5667,15 +5391,15 @@ domainGUID, which identifies the domain of the computer of the object reference.
 
   machineGUID, which identifies the computer of the object reference.
 
-3.22.2 Timers
+#### 3.22.2 Timers
 
 None.
 
-3.22.3 Initialization
+#### 3.22.3 Initialization
 
 None.
 
-3.22.4 Message Processing Events and Sequencing Rules
+#### 3.22.4 Message Processing Events and Sequencing Rules
 
 When an OBJREF_EXTENDED ([MS-DCOM] section 2.2.18.7) object reference is unmarshaled ([MS-
 DCOM] section 3.2.4.1.2), the client security envoy MUST associate the following with the object
@@ -5690,11 +5414,11 @@ The domainGUID field MUST be set to guidServerDomain from the security envoy pro
 The guidServerMachine field MUST be set to guidServerMachine from the security envoy
 property.
 
-3.22.5 Timer Events
+#### 3.22.5 Timer Events
 
 None.
 
-3.22.6 Other Local Events
+#### 3.22.6 Other Local Events
 
 None.
 
@@ -5705,9 +5429,10 @@ Release: April 23, 2024
 
 69 / 87
 
-3.23  ITransactionStream Server Details
 
-3.23.1 Abstract Data Model
+### 3.23 ITransactionStream Server Details
+
+#### 3.23.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -5724,15 +5449,15 @@ Object (section 3.1).
 
 shared with and initialized by the Client Root Transaction Object.
 
-3.23.2 Timers
+#### 3.23.2 Timers
 
 None.
 
-3.23.3 Initialization
+#### 3.23.3 Initialization
 
 None.
 
-3.23.4 Message Processing Events and Sequencing Rules
+#### 3.23.4 Message Processing Events and Sequencing Rules
 
 Methods in RPC Opnum Order
 
@@ -5769,9 +5494,9 @@ Opnum: 6
 
 The methods MUST NOT throw exceptions.
 
-3.23.4.1
+##### 3.23.4.1 ITransactionStream::GetSeqAndTxViaExport (Opnum 3)
 
-ITransactionStream::GetSeqAndTxViaExport (Opnum 3)
+
 
 This method returns the STxInfo ([MS-DTCO] section 2.2.5.10) of the currently active transaction
 and the CurrentTSN value.
@@ -5787,7 +5512,8 @@ Release: April 23, 2024
 
 70 / 87
 
-   [in, size_is(ulcbWhereabouts)] BYTE* rgbWhereabouts,
+
+   [in, size_is(ulcbWhereabouts)] BYTE* rgbWhereabouts,
    [out] unsigned long* pulCurrentSeq,
    [out] unsigned long* pulcbExportCookie,
    [out, size_is(,*pulcbExportCookie)]
@@ -5839,9 +5565,9 @@ If ulKnownSeq is the same as the CurrentTSN value, the ITransactionStream Server
 
   Copy the STxInfo of the currently active transaction to the prgbExportCookie out parameter.
 
-3.23.4.2
+##### 3.23.4.2 ITransactionStream::GetSeqAndTxViaTransmitter (Opnum 4)
 
-ITransactionStream::GetSeqAndTxViaTransmitter (Opnum 4)
+
 
 This method returns the Propagation_Token (as specified in [MS-DTCO]  section 2.2.5.4) of the
 currently active transaction and the CurrentTSN value.
@@ -5863,7 +5589,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pulCurrentSeq: The TSN of the currently active transaction.
+
+pulCurrentSeq: The TSN of the currently active transaction.
 
 pulcbTransmitterBuffer: The unsigned size, in bytes, of prgbTransmitterBuffer.
 
@@ -5901,9 +5628,9 @@ following:
 
 out parameter.
 
-3.23.4.3
+##### 3.23.4.3 ITransactionStream::GetTxViaExport (Opnum 5)
 
-ITransactionStream::GetTxViaExport (Opnum 5)
+
 
 This method returns the STxInfo instance (as specified in [MS-DTCO] section 2.2.5.10) of the
 currently active transaction or returns an error if the specified TSN is not the same as the CurrentTSN
@@ -5939,7 +5666,8 @@ Release: April 23, 2024
 
 72 / 87
 
-Return Values: The method MUST return a positive value or zero to indicate successful completion,
+
+Return Values: The method MUST return a positive value or zero to indicate successful completion,
 or a negative value to indicate failure. The client MUST treat any negative return value as a fatal
 error.
 
@@ -5952,9 +5680,9 @@ ITransactionStream Server (section 3.23) MUST do the following:
 
 Otherwise, the ITransactionStream Server MUST return CONTEXT_E_ABORTED.
 
-3.23.4.4
+##### 3.23.4.4 ITransactionStream::GetTxViaTransmitter (Opnum 6)
 
-ITransactionStream::GetTxViaTransmitter (Opnum 6)
+
 
 This method returns the Propagation_Token ([MS-DTCO] section 2.2.5.4) of the currently active
 transaction, or returns an error if the specified TSN is not the same as the CurrentTSN value.
@@ -5987,11 +5715,11 @@ parameter.
 
 Otherwise, the ITransactionStream Server MUST return CONTEXT_E_ABORTED.
 
-3.23.5 Timer Events
+#### 3.23.5 Timer Events
 
 None.
 
-3.23.6 Other Local Events
+#### 3.23.6 Other Local Events
 
 None.
 
@@ -6002,13 +5730,14 @@ Release: April 23, 2024
 
 73 / 87
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-COM].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Client to RootTxn to Non-RootTxn Example
+### 4.1 Client to RootTxn to Non-RootTxn Example
 
 The following figure shows a sequence for a client that activates and then calls a root txn object; the
 root txn activates and calls a non-root txn object, and returns a reference to the non-root txn object
@@ -6036,7 +5765,8 @@ Release: April 23, 2024
 
 74 / 87
 
-ORPC1_REQ: The client makes a call to the root txn object. There are no ORPC extensions sent on
+
+ORPC1_REQ: The client makes a call to the root txn object. There are no ORPC extensions sent on
 this call, because the client previously discarded the transaction envoy property after unmarshaling
 the ACT1_RESP message.
 
@@ -6103,7 +5833,8 @@ Component Object Model Plus (COM+) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-REL1_REQ: The client releases its reference to the root txn object. Since this is the last reference on
+
+REL1_REQ: The client releases its reference to the root txn object. Since this is the last reference on
 the root txn object, it is destroyed.
 
 REL2_REQ: The root txn object releases its reference on the non-root txn object.
@@ -6124,13 +5855,14 @@ Release: April 23, 2024
 
 76 / 87
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6141,7 +5873,8 @@ Release: April 23, 2024
 
 77 / 87
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided, where "ms-dcom.idl" is the IDL found in [MS-
 DCOM] Appendix A.
@@ -6196,7 +5929,8 @@ Release: April 23, 2024
 
 78 / 87
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6264,7 +5998,8 @@ Release: April 23, 2024
 
 79 / 87
 
-<5> Section 3.12.4: Applicable Windows Server releases will set this field to the IPV6 addresses of
+
+<5> Section 3.12.4: Applicable Windows Server releases will set this field to the IPV6 addresses of
 the server machine.
 
 <6> Section 3.15.4: Applicable Windows Server releases do not set the
@@ -6278,7 +6013,8 @@ Release: April 23, 2024
 
 80 / 87
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6322,7 +6058,8 @@ Release: April 23, 2024
 
 81 / 87
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -6455,7 +6192,8 @@ Client transaction unmarshaling
 
 82 / 87
 
-   initialization 67
+
+   initialization 67
    local events 68
    message processing 68
    sequencing rules 68
@@ -6600,7 +6338,8 @@ Local events
 
 83 / 87
 
-   client activity activation 43
+
+   client activity activation 43
    client class factory wrapper activation 46
    client partition activation 44
    client security ORPC extension 57
@@ -6747,7 +6486,8 @@ Security
 
 84 / 87
 
-Security envoy marshaling - server
+
+Security envoy marshaling - server
    abstract data model 66
    initialization 66
    message processing 66
@@ -6892,7 +6632,8 @@ Server transaction activation
 
 85 / 87
 
-   local events 46
+
+   local events 46
    message processing 46
    sequencing rules 46
    timer events 46
@@ -7033,7 +6774,8 @@ Transaction unmarshaling - client
 
 86 / 87
 
-   message processing 68
+
+   message processing 68
    sequencing rules 68
    timer events 68
    timers 67

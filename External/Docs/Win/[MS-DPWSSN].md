@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 22
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -294,7 +295,8 @@ Release: April 23, 2024
 
 2 / 22
 
-Date
+
+Date
 
 Revision
 History
@@ -452,138 +454,62 @@ Release: April 23, 2024
 
 3 / 22
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 lms:LargeMetadataSupport](#2231-lmslargemetadatasupport)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Request From a Client Using This Protocol Extension](#41-request-from-a-client-using-this-protocol-extension)
+  - [4.2 Request From a Client Without This Protocol Extension](#42-request-from-a-client-without-this-protocol-extension)
+  - [4.3 Response Message from DPWS](#43-response-message-from-dpws)
+  - [4.4 Using the lms:LargeMetadataSupport Element](#44-using-the-lmslargemetadatasupport-element)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Message Syntax ................................................................................. 10
-Namespaces .............................................................................................. 10
-Messages ................................................................................................... 11
-Elements ................................................................................................... 11
-lms:LargeMetadataSupport .................................................................... 11
-Complex Types ........................................................................................... 11
-Simple Types ............................................................................................. 11
-Attributes .................................................................................................. 11
-Groups ...................................................................................................... 12
-Attribute Groups ......................................................................................... 12
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2.2.3.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-3  Protocol Details ..................................................................................................... 13
-Server Details .................................................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-Client Details ................................................................................................... 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 15
-Request From a Client Using This Protocol Extension ............................................ 15
-Request From a Client Without This Protocol Extension ......................................... 15
-Response Message from DPWS .......................................................................... 15
-Using the lms:LargeMetadataSupport Element ..................................................... 15
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Parameters ............................................................................ 17
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 18
-
-7  Appendix B: Product Behavior ............................................................................... 19
-
-8  Change Tracking .................................................................................................... 20
-
-[MS-DPWSSN] - v20240423
-Devices Profile for Web Services (DPWS): Size Negotiation Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 22
-
-9  Index ..................................................................................................................... 21
-
-[MS-DPWSSN] - v20240423
-Devices Profile for Web Services (DPWS): Size Negotiation Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 22
-
-1  Introduction
+## 1 Introduction
 
 This document specifies an extension to the Devices Profile for Web Services (DPWS) to allow the
 negotiation of message sizes between a client and a service for a specific message transaction. This
@@ -594,7 +520,7 @@ themselves.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -657,17 +583,18 @@ Release: April 23, 2024
 
 6 / 22
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -703,11 +630,11 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 Devices Profile for Web Services (DPWS) specifies a device friendly, well-structured messaging model
 providing basic functionality such as discovery of an endpoint, metadata for that endpoint, and
@@ -722,7 +649,8 @@ Devices Profile for Web Services (DPWS): Size Negotiation Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-service endpoints that host other services, and the services hosted within the device. Additionally,
+
+service endpoints that host other services, and the services hosted within the device. Additionally,
 DPWS defines metadata for both devices and the service endpoints hosted by devices.
 
 This model maps to the requirements of modern home computers in most cases. Home computers are
@@ -770,7 +698,7 @@ do not support the large message support indicator. These clients will still see
 description of the device, but will not see all of the associated resources and services, as these clients
 expect services to manage their metadata to within the 32,767 octet limit.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This extension is built on DPWS and relies on DPWS functionality to work. This extension is designed
 to allow DPWS compliant implementations to negotiate larger message sizes, as supported by
@@ -780,7 +708,7 @@ protocol extension.
 This extension does not define new SOAP messages or patterns, but instead defines XML Schema
 that can be added to existing schema extensibility points.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Both the client and the device in this exchange must be DPWS compliant.
 
@@ -795,7 +723,8 @@ Release: April 23, 2024
 
 8 / 22
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 Use of this protocol is appropriate for client implementations if:
 
@@ -821,17 +750,17 @@ The service intends to represent itself as a DPWS compliant computer on the netw
 
 The service supports sending messages larger than 32,767 in length.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol extension covers a single version of the extension as specified in section 2.1. There are
 no previous versions. There are no special transport requirements or other restrictions placed on
 DPWS resulting from use of this extension.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The schema for this protocol extension does define additional vendor extensions.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no specific standards assignments for this protocol extension.
 
@@ -842,9 +771,10 @@ Release: April 23, 2024
 
 9 / 22
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Use of this protocol extension requires support for the underlying specifications:
 
@@ -881,13 +811,13 @@ use of this extension.
 
 This extension does not define a finite boundary for the size of the SOAP Message response.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2] and Web Services Description
 Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -927,11 +857,12 @@ Release: April 23, 2024
 
 10 / 22
 
-2.2.2  Messages
+
+#### 2.2.2 Messages
 
 This protocol does not define any messages.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML Schema element definitions defined by this
 specification. XML Schema element definitions that are specific to a particular operation are described
@@ -945,7 +876,7 @@ lms:LargeMetadataSupport
 
 Indicator for support of large metadata messages.
 
-2.2.3.1  lms:LargeMetadataSupport
+##### 2.2.3.1 lms:LargeMetadataSupport
 
 The lms:LargeMetadataSupport element is used to indicate client side support for large metadata
 responses. The normative form for this element is as follows.
@@ -970,15 +901,15 @@ where the wsa:Action is not http://schemas.xmlsoap.org/ws/2004/09/transfer/Get. 
 used in a SOAP header when the action is not http://schemas.xmlsoap.org/ws/2004/09/transfer/Get
 and the service understands the action, then the element will be ignored.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
@@ -989,11 +920,12 @@ Release: April 23, 2024
 
 11 / 22
 
-2.2.7  Groups
+
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -1004,14 +936,15 @@ Release: April 23, 2024
 
 12 / 22
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This protocol extension governs the behavior of a device's use of the data model specified in [DPWS]
 depending on whether a client supports large metadata responses.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This protocol extension does not describe a separate data model.
 
@@ -1022,15 +955,15 @@ Data specified in [DPWS] section 5.2 is sent in part or in full depending on cli
 metadata responses (as indicated by the presence of the <lms:LargeMetadataSupport> element as
 defined in section 2.2.3.1) and the size of the metadata response.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol extension requires no new timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 This protocol extension requires no new initialization.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 If the data specified in [DPWS] section 5.2 is sent with a full response exceeding 32,767 octets in
 length and the client supports large metadata responses, the full response
@@ -1050,11 +983,11 @@ cause the response to exceed 32,767 octets in length.
 This specification does not define any new Web Services Description Language (WSDL)
 operations.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 This protocol extension defines no timer events.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 This protocol extension defines no local events and is not subject to any new local events.
 
@@ -1065,9 +998,10 @@ Release: April 23, 2024
 
 13 / 22
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 This protocol extension does not describe a separate data model.
 
@@ -1081,25 +1015,25 @@ are passed directly back to the higher-layer protocol or application.
 Clients supporting large metadata responses MUST include the <lms:LargerMetadataSupport>
 element as defined in section 2.2.3.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This protocol extension requires no new timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 This protocol extension requires no new initialization.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This protocol extension describes no separate message processing events and sequencing rules.
 
 This specification does not define any new WSDL operations.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 This protocol extension defines no timer events.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 This protocol extension defines no local events and is not subject to any new local events.
 
@@ -1110,9 +1044,10 @@ Release: April 23, 2024
 
 14 / 22
 
-4  Protocol Examples
 
-4.1  Request From a Client Using This Protocol Extension
+## 4 Protocol Examples
+
+### 4.1 Request From a Client Using This Protocol Extension
 
 The following is an abbreviated example request from a client using this protocol extension:
 
@@ -1128,7 +1063,7 @@ The following is an abbreviated example request from a client using this protoco
    <s:Body/>
  </s:Envelope>
 
-4.2  Request From a Client Without This Protocol Extension
+### 4.2 Request From a Client Without This Protocol Extension
 
 The following is an abbreviated example request from a client without this protocol extension:
 
@@ -1143,7 +1078,7 @@ The following is an abbreviated example request from a client without this proto
    <s:Body/>
  </s:Envelope>
 
-4.3  Response Message from DPWS
+### 4.3 Response Message from DPWS
 
 The following is an abbreviated example response message from DPWS (see [DPWS] section 5.1).
 
@@ -1170,7 +1105,8 @@ Release: April 23, 2024
 
 15 / 22
 
-4.4  Using the lms:LargeMetadataSupport Element
+
+### 4.4 Using the lms:LargeMetadataSupport Element
 
 A usage example of the lms:LargeMetadataSupport element is as follows.
 
@@ -1195,9 +1131,10 @@ Release: April 23, 2024
 
 16 / 22
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Clients indicating they support large metadata response can use this in a DDoS attack on services .
 The nature of the attack is to have a large number of distributed clients issue requests indicating they
@@ -1212,7 +1149,7 @@ Similarly, clients indicating they support large metadata responses can end up r
 response at a very slow rate, and might be impacted by the same in-memory state concerns as
 services.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for this protocol extension.
 
@@ -1223,7 +1160,8 @@ Release: April 23, 2024
 
 17 / 22
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 This protocol extension does not define a WSDL. It extends the WSDL defined and referenced by
 [DPWS]. The following XSD contains a definition of the lms:LargeMetadataSupport element (section
@@ -1249,7 +1187,8 @@ Release: April 23, 2024
 
 18 / 22
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1297,7 +1236,8 @@ Release: April 23, 2024
 
 19 / 22
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1341,7 +1281,8 @@ Release: April 23, 2024
 
 20 / 22
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1475,7 +1416,8 @@ Release: April 23, 2024
 
 21 / 22
 
-Overview (synopsis) 7
+
+Overview (synopsis) 7
 
 P
 

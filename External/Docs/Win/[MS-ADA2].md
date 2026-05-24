@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 276
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 276
 
-Date
+
+Date
 
 Revision
 History
@@ -553,994 +555,779 @@ Release: April 23, 2024
 
 3 / 276
 
-Table of Contents
 
-1  Introduction .......................................................................................................... 18
-References ...................................................................................................... 18
+## Table of Contents
 
-1.1
+- [1 Introduction](#1-introduction)
+  - [1.1 References](#11-references)
+- [2 Attributes](#2-attributes)
+  - [2.1 Attribute macAddress](#21-attribute-macaddress)
+  - [2.2 Attribute machineArchitecture](#22-attribute-machinearchitecture)
+  - [2.3 Attribute machinePasswordChangeInterval](#23-attribute-machinepasswordchangeinterval)
+  - [2.4 Attribute machineRole](#24-attribute-machinerole)
+  - [2.5 Attribute machineWidePolicy](#25-attribute-machinewidepolicy)
+  - [2.6 Attribute mail](#26-attribute-mail)
+  - [2.7 Attribute mailAddress](#27-attribute-mailaddress)
+  - [2.8 Attribute managedBy](#28-attribute-managedby)
+  - [2.9 Attribute managedObjects](#29-attribute-managedobjects)
+  - [2.10 Attribute manager](#210-attribute-manager)
+  - [2.11 Attribute mAPIID](#211-attribute-mapiid)
+  - [2.12 Attribute marshalledInterface](#212-attribute-marshalledinterface)
+  - [2.13 Attribute masteredBy](#213-attribute-masteredby)
+  - [2.14 Attribute maxPwdAge](#214-attribute-maxpwdage)
+  - [2.15 Attribute maxRenewAge](#215-attribute-maxrenewage)
+  - [2.16 Attribute maxStorage](#216-attribute-maxstorage)
+  - [2.17 Attribute maxTicketAge](#217-attribute-maxticketage)
+  - [2.18 Attribute mayContain](#218-attribute-maycontain)
+  - [2.19 Attribute meetingAdvertiseScope](#219-attribute-meetingadvertisescope)
+  - [2.20 Attribute meetingApplication](#220-attribute-meetingapplication)
+  - [2.21 Attribute meetingBandwidth](#221-attribute-meetingbandwidth)
+  - [2.22 Attribute meetingBlob](#222-attribute-meetingblob)
+  - [2.23 Attribute meetingContactInfo](#223-attribute-meetingcontactinfo)
+  - [2.24 Attribute meetingDescription](#224-attribute-meetingdescription)
+  - [2.25 Attribute meetingEndTime](#225-attribute-meetingendtime)
+  - [2.26 Attribute meetingID](#226-attribute-meetingid)
+  - [2.27 Attribute meetingIP](#227-attribute-meetingip)
+  - [2.28 Attribute meetingIsEncrypted](#228-attribute-meetingisencrypted)
+  - [2.29 Attribute meetingKeyword](#229-attribute-meetingkeyword)
+  - [2.30 Attribute meetingLanguage](#230-attribute-meetinglanguage)
+  - [2.31 Attribute meetingLocation](#231-attribute-meetinglocation)
+  - [2.32 Attribute meetingMaxParticipants](#232-attribute-meetingmaxparticipants)
+  - [2.33 Attribute meetingName](#233-attribute-meetingname)
+  - [2.34 Attribute meetingOriginator](#234-attribute-meetingoriginator)
+  - [2.35 Attribute meetingOwner](#235-attribute-meetingowner)
+  - [2.36 Attribute meetingProtocol](#236-attribute-meetingprotocol)
+  - [2.37 Attribute meetingRating](#237-attribute-meetingrating)
+  - [2.38 Attribute meetingRecurrence](#238-attribute-meetingrecurrence)
+  - [2.39 Attribute meetingScope](#239-attribute-meetingscope)
+  - [2.40 Attribute meetingStartTime](#240-attribute-meetingstarttime)
+  - [2.41 Attribute meetingType](#241-attribute-meetingtype)
+  - [2.42 Attribute meetingURL](#242-attribute-meetingurl)
+  - [2.43 Attribute member](#243-attribute-member)
+  - [2.44 Attribute memberNisNetgroup](#244-attribute-membernisnetgroup)
+  - [2.45 Attribute memberOf](#245-attribute-memberof)
+  - [2.46 Attribute memberUid](#246-attribute-memberuid)
+  - [2.47 Attribute mhsORAddress](#247-attribute-mhsoraddress)
+  - [2.48 Attribute middleName](#248-attribute-middlename)
+  - [2.49 Attribute minPwdAge](#249-attribute-minpwdage)
+  - [2.50 Attribute minPwdLength](#250-attribute-minpwdlength)
+  - [2.51 Attribute minTicketAge](#251-attribute-minticketage)
+  - [2.52 Attribute mobile](#252-attribute-mobile)
+  - [2.53 Attribute modifiedCount](#253-attribute-modifiedcount)
+  - [2.54 Attribute modifiedCountAtLastProm](#254-attribute-modifiedcountatlastprom)
+  - [2.55 Attribute modifyTimeStamp](#255-attribute-modifytimestamp)
+  - [2.56 Attribute moniker](#256-attribute-moniker)
+  - [2.57 Attribute monikerDisplayName](#257-attribute-monikerdisplayname)
+  - [2.58 Attribute moveTreeState](#258-attribute-movetreestate)
+  - [2.59 Attribute mS-DS-ConsistencyChildCount](#259-attribute-ms-ds-consistencychildcount)
+  - [2.60 Attribute mS-DS-ConsistencyGuid](#260-attribute-ms-ds-consistencyguid)
+  - [2.61 Attribute mS-DS-CreatorSID](#261-attribute-ms-ds-creatorsid)
+  - [2.62 Attribute ms-DS-MachineAccountQuota](#262-attribute-ms-ds-machineaccountquota)
+  - [2.63 Attribute mS-DS-ReplicatesNCReason](#263-attribute-ms-ds-replicatesncreason)
+  - [2.64 Attribute ms-LAPS-Password](#264-attribute-ms-laps-password)
+  - [2.65 Attribute ms-LAPS-PasswordExpirationTime](#265-attribute-ms-laps-passwordexpirationtime)
+  - [2.66 Attribute ms-LAPS-EncryptedPassword](#266-attribute-ms-laps-encryptedpassword)
+  - [2.67 Attribute ms-LAPS-EncryptedPasswordHistory](#267-attribute-ms-laps-encryptedpasswordhistory)
+  - [2.68 Attribute ms-LAPS-EncryptedDSRMPassword](#268-attribute-ms-laps-encrypteddsrmpassword)
+  - [2.69 Attribute ms-LAPS-EncryptedDSRMPasswordHistory](#269-attribute-ms-laps-encrypteddsrmpasswordhistory)
+  - [2.70 Attribute ms-Mcs-AdmPwd](#270-attribute-ms-mcs-admpwd)
+  - [2.71 Attribute ms-Mcs-AdmPwdExpirationTime](#271-attribute-ms-mcs-admpwdexpirationtime)
+  - [2.72 Attribute ms-net-ieee-80211-GP-PolicyData](#272-attribute-ms-net-ieee-80211-gp-policydata)
+  - [2.73 Attribute ms-net-ieee-80211-GP-PolicyGUID](#273-attribute-ms-net-ieee-80211-gp-policyguid)
+  - [2.74 Attribute ms-net-ieee-80211-GP-PolicyReserved](#274-attribute-ms-net-ieee-80211-gp-policyreserved)
+  - [2.75 Attribute ms-net-ieee-8023-GP-PolicyData](#275-attribute-ms-net-ieee-8023-gp-policydata)
+  - [2.76 Attribute ms-net-ieee-8023-GP-PolicyGUID](#276-attribute-ms-net-ieee-8023-gp-policyguid)
+  - [2.77 Attribute ms-net-ieee-8023-GP-PolicyReserved](#277-attribute-ms-net-ieee-8023-gp-policyreserved)
+  - [2.78 Attribute mS-SQL-Alias](#278-attribute-ms-sql-alias)
+  - [2.79 Attribute mS-SQL-AllowAnonymousSubscription](#279-attribute-ms-sql-allowanonymoussubscription)
+  - [2.80 Attribute mS-SQL-AllowImmediateUpdatingSubscription](#280-attribute-ms-sql-allowimmediateupdatingsubscription)
+  - [2.81 Attribute mS-SQL-AllowKnownPullSubscription](#281-attribute-ms-sql-allowknownpullsubscription)
+  - [2.82 Attribute mS-SQL-AllowQueuedUpdatingSubscription](#282-attribute-ms-sql-allowqueuedupdatingsubscription)
+  - [2.83 Attribute mS-SQL-AllowSnapshotFilesFTPDownloading](#283-attribute-ms-sql-allowsnapshotfilesftpdownloading)
+  - [2.84 Attribute mS-SQL-AppleTalk](#284-attribute-ms-sql-appletalk)
+  - [2.85 Attribute mS-SQL-Applications](#285-attribute-ms-sql-applications)
+  - [2.86 Attribute mS-SQL-Build](#286-attribute-ms-sql-build)
+  - [2.87 Attribute mS-SQL-CharacterSet](#287-attribute-ms-sql-characterset)
+  - [2.88 Attribute mS-SQL-Clustered](#288-attribute-ms-sql-clustered)
+  - [2.89 Attribute mS-SQL-ConnectionURL](#289-attribute-ms-sql-connectionurl)
+  - [2.90 Attribute mS-SQL-Contact](#290-attribute-ms-sql-contact)
+  - [2.91 Attribute mS-SQL-CreationDate](#291-attribute-ms-sql-creationdate)
+  - [2.92 Attribute mS-SQL-Database](#292-attribute-ms-sql-database)
+  - [2.93 Attribute mS-SQL-Description](#293-attribute-ms-sql-description)
+  - [2.94 Attribute mS-SQL-GPSHeight](#294-attribute-ms-sql-gpsheight)
+  - [2.95 Attribute mS-SQL-GPSLatitude](#295-attribute-ms-sql-gpslatitude)
+  - [2.96 Attribute mS-SQL-GPSLongitude](#296-attribute-ms-sql-gpslongitude)
+  - [2.97 Attribute mS-SQL-InformationDirectory](#297-attribute-ms-sql-informationdirectory)
+  - [2.98 Attribute mS-SQL-InformationURL](#298-attribute-ms-sql-informationurl)
+  - [2.99 Attribute mS-SQL-Keywords](#299-attribute-ms-sql-keywords)
+  - [2.100 Attribute mS-SQL-Language](#2100-attribute-ms-sql-language)
+  - [2.101 Attribute mS-SQL-LastBackupDate](#2101-attribute-ms-sql-lastbackupdate)
+  - [2.102 Attribute mS-SQL-LastDiagnosticDate](#2102-attribute-ms-sql-lastdiagnosticdate)
+  - [2.103 Attribute mS-SQL-LastUpdatedDate](#2103-attribute-ms-sql-lastupdateddate)
+  - [2.104 Attribute mS-SQL-Location](#2104-attribute-ms-sql-location)
+  - [2.105 Attribute mS-SQL-Memory](#2105-attribute-ms-sql-memory)
+  - [2.106 Attribute mS-SQL-MultiProtocol](#2106-attribute-ms-sql-multiprotocol)
+  - [2.107 Attribute mS-SQL-Name](#2107-attribute-ms-sql-name)
+  - [2.108 Attribute mS-SQL-NamedPipe](#2108-attribute-ms-sql-namedpipe)
+  - [2.109 Attribute mS-SQL-PublicationURL](#2109-attribute-ms-sql-publicationurl)
+  - [2.110 Attribute mS-SQL-Publisher](#2110-attribute-ms-sql-publisher)
+  - [2.111 Attribute mS-SQL-RegisteredOwner](#2111-attribute-ms-sql-registeredowner)
+  - [2.112 Attribute mS-SQL-ServiceAccount](#2112-attribute-ms-sql-serviceaccount)
+  - [2.113 Attribute mS-SQL-Size](#2113-attribute-ms-sql-size)
+  - [2.114 Attribute mS-SQL-SortOrder](#2114-attribute-ms-sql-sortorder)
+  - [2.115 Attribute mS-SQL-SPX](#2115-attribute-ms-sql-spx)
+  - [2.116 Attribute mS-SQL-Status](#2116-attribute-ms-sql-status)
+  - [2.117 Attribute mS-SQL-TCPIP](#2117-attribute-ms-sql-tcpip)
+  - [2.118 Attribute mS-SQL-ThirdParty](#2118-attribute-ms-sql-thirdparty)
+  - [2.119 Attribute mS-SQL-Type](#2119-attribute-ms-sql-type)
+  - [2.120 Attribute mS-SQL-UnicodeSortOrder](#2120-attribute-ms-sql-unicodesortorder)
+  - [2.121 Attribute mS-SQL-Version](#2121-attribute-ms-sql-version)
+  - [2.122 Attribute mS-SQL-Vines](#2122-attribute-ms-sql-vines)
+  - [2.123 Attribute msAuthz-CentralAccessPolicyID](#2123-attribute-msauthz-centralaccesspolicyid)
+  - [2.124 Attribute msAuthz-EffectiveSecurityPolicy](#2124-attribute-msauthz-effectivesecuritypolicy)
+  - [2.125 Attribute msAuthz-LastEffectiveSecurityPolicy](#2125-attribute-msauthz-lasteffectivesecuritypolicy)
+  - [2.126 Attribute msAuthz-MemberRulesInCentralAccessPolicy](#2126-attribute-msauthz-memberrulesincentralaccesspolicy)
+  - [2.127 Attribute msAuthz-MemberRulesInCentralAccessPolicyBL](#2127-attribute-msauthz-memberrulesincentralaccesspolicybl)
+  - [2.128 Attribute msAuthz-ProposedSecurityPolicy](#2128-attribute-msauthz-proposedsecuritypolicy)
+  - [2.129 Attribute msAuthz-ResourceCondition](#2129-attribute-msauthz-resourcecondition)
+  - [2.130 Attribute msCOM-DefaultPartitionLink](#2130-attribute-mscom-defaultpartitionlink)
+  - [2.131 Attribute msCOM-ObjectId](#2131-attribute-mscom-objectid)
+  - [2.132 Attribute msCOM-PartitionLink](#2132-attribute-mscom-partitionlink)
+  - [2.133 Attribute msCOM-PartitionSetLink](#2133-attribute-mscom-partitionsetlink)
+  - [2.134 Attribute msCOM-UserLink](#2134-attribute-mscom-userlink)
+  - [2.135 Attribute msCOM-UserPartitionSetLink](#2135-attribute-mscom-userpartitionsetlink)
+  - [2.136 Attribute mscopeId](#2136-attribute-mscopeid)
+  - [2.137 Attribute msDFS-Commentv2](#2137-attribute-msdfs-commentv2)
+  - [2.138 Attribute msDFS-GenerationGUIDv2](#2138-attribute-msdfs-generationguidv2)
+  - [2.139 Attribute msDFS-LastModifiedv2](#2139-attribute-msdfs-lastmodifiedv2)
+  - [2.140 Attribute msDFS-LinkIdentityGUIDv2](#2140-attribute-msdfs-linkidentityguidv2)
+  - [2.141 Attribute msDFS-LinkPathv2](#2141-attribute-msdfs-linkpathv2)
+  - [2.142 Attribute msDFS-LinkSecurityDescriptorv2](#2142-attribute-msdfs-linksecuritydescriptorv2)
+  - [2.143 Attribute msDFS-NamespaceIdentityGUIDv2](#2143-attribute-msdfs-namespaceidentityguidv2)
+  - [2.144 Attribute msDFS-Propertiesv2](#2144-attribute-msdfs-propertiesv2)
+  - [2.145 Attribute msDFS-SchemaMajorVersion](#2145-attribute-msdfs-schemamajorversion)
+  - [2.146 Attribute msDFS-SchemaMinorVersion](#2146-attribute-msdfs-schemaminorversion)
+  - [2.147 Attribute msDFS-ShortNameLinkPathv2](#2147-attribute-msdfs-shortnamelinkpathv2)
+  - [2.148 Attribute msDFS-TargetListv2](#2148-attribute-msdfs-targetlistv2)
+  - [2.149 Attribute msDFS-Ttlv2](#2149-attribute-msdfs-ttlv2)
+  - [2.150 Attribute msDFSR-CachePolicy](#2150-attribute-msdfsr-cachepolicy)
+  - [2.151 Attribute msDFSR-CommonStagingPath](#2151-attribute-msdfsr-commonstagingpath)
+  - [2.152 Attribute msDFSR-CommonStagingSizeInMb](#2152-attribute-msdfsr-commonstagingsizeinmb)
+  - [2.153 Attribute msDFSR-ComputerReference](#2153-attribute-msdfsr-computerreference)
+  - [2.154 Attribute msDFSR-ComputerReferenceBL](#2154-attribute-msdfsr-computerreferencebl)
+  - [2.155 Attribute msDFSR-ConflictPath](#2155-attribute-msdfsr-conflictpath)
+  - [2.156 Attribute msDFSR-ConflictSizeInMb](#2156-attribute-msdfsr-conflictsizeinmb)
+  - [2.157 Attribute msDFSR-ContentSetGuid](#2157-attribute-msdfsr-contentsetguid)
+  - [2.158 Attribute msDFSR-DefaultCompressionExclusionFilter](#2158-attribute-msdfsr-defaultcompressionexclusionfilter)
+  - [2.159 Attribute msDFSR-DeletedPath](#2159-attribute-msdfsr-deletedpath)
+  - [2.160 Attribute msDFSR-DeletedSizeInMb](#2160-attribute-msdfsr-deletedsizeinmb)
+  - [2.161 Attribute msDFSR-DfsLinkTarget](#2161-attribute-msdfsr-dfslinktarget)
+  - [2.162 Attribute msDFSR-DfsPath](#2162-attribute-msdfsr-dfspath)
+  - [2.163 Attribute msDFSR-DirectoryFilter](#2163-attribute-msdfsr-directoryfilter)
+  - [2.164 Attribute msDFSR-DisablePacketPrivacy](#2164-attribute-msdfsr-disablepacketprivacy)
+  - [2.165 Attribute msDFSR-Enabled](#2165-attribute-msdfsr-enabled)
+  - [2.166 Attribute msDFSR-Extension](#2166-attribute-msdfsr-extension)
+  - [2.167 Attribute msDFSR-FileFilter](#2167-attribute-msdfsr-filefilter)
+  - [2.168 Attribute msDFSR-Flags](#2168-attribute-msdfsr-flags)
+  - [2.169 Attribute msDFSR-Keywords](#2169-attribute-msdfsr-keywords)
+  - [2.170 Attribute msDFSR-MaxAgeInCacheInMin](#2170-attribute-msdfsr-maxageincacheinmin)
+  - [2.171 Attribute msDFSR-MemberReference](#2171-attribute-msdfsr-memberreference)
+  - [2.172 Attribute msDFSR-MemberReferenceBL](#2172-attribute-msdfsr-memberreferencebl)
+  - [2.173 Attribute msDFSR-MinDurationCacheInMin](#2173-attribute-msdfsr-mindurationcacheinmin)
+  - [2.174 Attribute msDFSR-OnDemandExclusionDirectoryFilter](#2174-attribute-msdfsr-ondemandexclusiondirectoryfilter)
+  - [2.175 Attribute msDFSR-OnDemandExclusionFileFilter](#2175-attribute-msdfsr-ondemandexclusionfilefilter)
+  - [2.176 Attribute msDFSR-Options](#2176-attribute-msdfsr-options)
+  - [2.177 Attribute msDFSR-Options2](#2177-attribute-msdfsr-options2)
+  - [2.178 Attribute msDFSR-Priority](#2178-attribute-msdfsr-priority)
+  - [2.179 Attribute msDFSR-RdcEnabled](#2179-attribute-msdfsr-rdcenabled)
+  - [2.180 Attribute msDFSR-RdcMinFileSizeInKb](#2180-attribute-msdfsr-rdcminfilesizeinkb)
+  - [2.181 Attribute msDFSR-ReadOnly](#2181-attribute-msdfsr-readonly)
+  - [2.182 Attribute msDFSR-ReplicationGroupGuid](#2182-attribute-msdfsr-replicationgroupguid)
+  - [2.183 Attribute msDFSR-ReplicationGroupType](#2183-attribute-msdfsr-replicationgrouptype)
+  - [2.184 Attribute msDFSR-RootFence](#2184-attribute-msdfsr-rootfence)
+  - [2.185 Attribute msDFSR-RootPath](#2185-attribute-msdfsr-rootpath)
+  - [2.186 Attribute msDFSR-RootSizeInMb](#2186-attribute-msdfsr-rootsizeinmb)
+  - [2.187 Attribute msDFSR-Schedule](#2187-attribute-msdfsr-schedule)
+  - [2.188 Attribute msDFSR-StagingCleanupTriggerInPercent](#2188-attribute-msdfsr-stagingcleanuptriggerinpercent)
+  - [2.189 Attribute msDFSR-StagingPath](#2189-attribute-msdfsr-stagingpath)
+  - [2.190 Attribute msDFSR-StagingSizeInMb](#2190-attribute-msdfsr-stagingsizeinmb)
+  - [2.191 Attribute msDFSR-TombstoneExpiryInMin](#2191-attribute-msdfsr-tombstoneexpiryinmin)
+  - [2.192 Attribute msDFSR-Version](#2192-attribute-msdfsr-version)
+  - [2.193 Attribute msDNS-DNSKEYRecords](#2193-attribute-msdns-dnskeyrecords)
+  - [2.194 Attribute msDNS-DNSKEYRecordSetTTL](#2194-attribute-msdns-dnskeyrecordsetttl)
+  - [2.195 Attribute msDNS-DSRecordAlgorithms](#2195-attribute-msdns-dsrecordalgorithms)
+  - [2.196 Attribute msDNS-DSRecordSetTTL](#2196-attribute-msdns-dsrecordsetttl)
+  - [2.197 Attribute msDNS-IsSigned](#2197-attribute-msdns-issigned)
+  - [2.198 Attribute msDNS-KeymasterZones](#2198-attribute-msdns-keymasterzones)
+  - [2.199 Attribute msDNS-MaintainTrustAnchor](#2199-attribute-msdns-maintaintrustanchor)
+  - [2.200 Attribute msDNS-NSEC3CurrentSalt](#2200-attribute-msdns-nsec3currentsalt)
+  - [2.201 Attribute msDNS-NSEC3HashAlgorithm](#2201-attribute-msdns-nsec3hashalgorithm)
+  - [2.202 Attribute msDNS-NSEC3Iterations](#2202-attribute-msdns-nsec3iterations)
+  - [2.203 Attribute msDNS-NSEC3OptOut](#2203-attribute-msdns-nsec3optout)
+  - [2.204 Attribute msDNS-NSEC3RandomSaltLength](#2204-attribute-msdns-nsec3randomsaltlength)
+  - [2.205 Attribute msDNS-NSEC3UserSalt](#2205-attribute-msdns-nsec3usersalt)
+  - [2.206 Attribute msDNS-ParentHasSecureDelegation](#2206-attribute-msdns-parenthassecuredelegation)
+  - [2.207 Attribute msDNS-PropagationTime](#2207-attribute-msdns-propagationtime)
+  - [2.208 Attribute msDNS-RFC5011KeyRollovers](#2208-attribute-msdns-rfc5011keyrollovers)
+  - [2.209 Attribute msDNS-SecureDelegationPollingPeriod](#2209-attribute-msdns-securedelegationpollingperiod)
+  - [2.210 Attribute msDNS-SignatureInceptionOffset](#2210-attribute-msdns-signatureinceptionoffset)
+  - [2.211 Attribute msDNS-SigningKeyDescriptors](#2211-attribute-msdns-signingkeydescriptors)
+  - [2.212 Attribute msDNS-SigningKeys](#2212-attribute-msdns-signingkeys)
+  - [2.213 Attribute msDNS-SignWithNSEC3](#2213-attribute-msdns-signwithnsec3)
+  - [2.214 Attribute msDRM-IdentityCertificate](#2214-attribute-msdrm-identitycertificate)
+  - [2.215 Attribute msDS-AdditionalDnsHostName](#2215-attribute-msds-additionaldnshostname)
+  - [2.216 Attribute msDS-AdditionalSamAccountName](#2216-attribute-msds-additionalsamaccountname)
+  - [2.217 Attribute msDS-AllowedDNSSuffixes](#2217-attribute-msds-alloweddnssuffixes)
+  - [2.218 Attribute msDS-AllowedToActOnBehalfOfOtherIdentity](#2218-attribute-msds-allowedtoactonbehalfofotheridentity)
+  - [2.219 Attribute msDS-AllowedToDelegateTo](#2219-attribute-msds-allowedtodelegateto)
+  - [2.220 Attribute msDS-AllUsersTrustQuota](#2220-attribute-msds-alluserstrustquota)
+  - [2.221 Attribute msDS-AppliesToResourceTypes](#2221-attribute-msds-appliestoresourcetypes)
+  - [2.222 Attribute msDS-Approx-Immed-Subordinates](#2222-attribute-msds-approx-immed-subordinates)
+  - [2.223 Attribute msDS-ApproximateLastLogonTimeStamp](#2223-attribute-msds-approximatelastlogontimestamp)
+  - [2.224 Attribute msDS-AssignedAuthNPolicy](#2224-attribute-msds-assignedauthnpolicy)
+  - [2.225 Attribute msDS-AssignedAuthNPolicyBL](#2225-attribute-msds-assignedauthnpolicybl)
+  - [2.226 Attribute msDS-AssignedAuthNPolicySilo](#2226-attribute-msds-assignedauthnpolicysilo)
+  - [2.227 Attribute msDS-AssignedAuthNPolicySiloBL](#2227-attribute-msds-assignedauthnpolicysilobl)
+  - [2.228 Attribute msDS-AuthenticatedAtDC](#2228-attribute-msds-authenticatedatdc)
+  - [2.229 Attribute msDS-AuthenticatedToAccountlist](#2229-attribute-msds-authenticatedtoaccountlist)
+  - [2.230 Attribute msDS-AuthNPolicyEnforced](#2230-attribute-msds-authnpolicyenforced)
+  - [2.231 Attribute msDS-AuthNPolicySiloEnforced](#2231-attribute-msds-authnpolicysiloenforced)
+  - [2.232 Attribute msDS-AuthNPolicySiloMembers](#2232-attribute-msds-authnpolicysilomembers)
+  - [2.233 Attribute msDS-AuthNPolicySiloMembersBL](#2233-attribute-msds-authnpolicysilomembersbl)
+  - [2.234 Attribute msDS-Auxiliary-Classes](#2234-attribute-msds-auxiliary-classes)
+  - [2.235 Attribute msDS-AzApplicationData](#2235-attribute-msds-azapplicationdata)
+  - [2.236 Attribute msDS-AzApplicationName](#2236-attribute-msds-azapplicationname)
+  - [2.237 Attribute msDS-AzApplicationVersion](#2237-attribute-msds-azapplicationversion)
+  - [2.238 Attribute msDS-AzBizRule](#2238-attribute-msds-azbizrule)
+  - [2.239 Attribute msDS-AzBizRuleLanguage](#2239-attribute-msds-azbizrulelanguage)
+  - [2.240 Attribute msDS-AzClassId](#2240-attribute-msds-azclassid)
+  - [2.241 Attribute msDS-AzDomainTimeout](#2241-attribute-msds-azdomaintimeout)
+  - [2.242 Attribute msDS-AzGenerateAudits](#2242-attribute-msds-azgenerateaudits)
+  - [2.243 Attribute msDS-AzGenericData](#2243-attribute-msds-azgenericdata)
+  - [2.244 Attribute msDS-AzLastImportedBizRulePath](#2244-attribute-msds-azlastimportedbizrulepath)
+  - [2.245 Attribute msDS-AzLDAPQuery](#2245-attribute-msds-azldapquery)
+  - [2.246 Attribute msDS-AzMajorVersion](#2246-attribute-msds-azmajorversion)
+  - [2.247 Attribute msDS-AzMinorVersion](#2247-attribute-msds-azminorversion)
+  - [2.248 Attribute msDS-AzObjectGuid](#2248-attribute-msds-azobjectguid)
+  - [2.249 Attribute msDS-AzOperationID](#2249-attribute-msds-azoperationid)
+  - [2.250 Attribute msDS-AzScopeName](#2250-attribute-msds-azscopename)
+  - [2.251 Attribute msDS-AzScriptEngineCacheMax](#2251-attribute-msds-azscriptenginecachemax)
+  - [2.252 Attribute msDS-AzScriptTimeout](#2252-attribute-msds-azscripttimeout)
+  - [2.253 Attribute msDS-AzTaskIsRoleDefinition](#2253-attribute-msds-aztaskisroledefinition)
+  - [2.254 Attribute msDS-Behavior-Version](#2254-attribute-msds-behavior-version)
+  - [2.255 Attribute msDS-BridgeHeadServersUsed](#2255-attribute-msds-bridgeheadserversused)
+  - [2.256 Attribute msDS-ByteArray](#2256-attribute-msds-bytearray)
+  - [2.257 Attribute msDS-Cached-Membership](#2257-attribute-msds-cached-membership)
+  - [2.258 Attribute msDS-Cached-Membership-Time-Stamp](#2258-attribute-msds-cached-membership-time-stamp)
+  - [2.259 Attribute msDS-ClaimAttributeSource](#2259-attribute-msds-claimattributesource)
+  - [2.260 Attribute msDS-ClaimIsSingleValued](#2260-attribute-msds-claimissinglevalued)
+  - [2.261 Attribute msDS-ClaimIsValueSpaceRestricted](#2261-attribute-msds-claimisvaluespacerestricted)
+  - [2.262 Attribute msDS-ClaimPossibleValues](#2262-attribute-msds-claimpossiblevalues)
+  - [2.263 Attribute msDS-ClaimSharesPossibleValuesWith](#2263-attribute-msds-claimsharespossiblevalueswith)
+  - [2.264 Attribute msDS-ClaimSharesPossibleValuesWithBL](#2264-attribute-msds-claimsharespossiblevalueswithbl)
+  - [2.265 Attribute msDS-ClaimSource](#2265-attribute-msds-claimsource)
+  - [2.266 Attribute msDS-ClaimSourceType](#2266-attribute-msds-claimsourcetype)
+  - [2.267 Attribute msDS-ClaimTypeAppliesToClass](#2267-attribute-msds-claimtypeappliestoclass)
+  - [2.268 Attribute msDS-ClaimValueType](#2268-attribute-msds-claimvaluetype)
+  - [2.269 Attribute msDS-CloudAnchor](#2269-attribute-msds-cloudanchor)
+  - [2.270 Attribute msDS-cloudExtensionAttribute1](#2270-attribute-msds-cloudextensionattribute1)
+  - [2.271 Attribute msDS-cloudExtensionAttribute2](#2271-attribute-msds-cloudextensionattribute2)
+  - [2.272 Attribute msDS-cloudExtensionAttribute3](#2272-attribute-msds-cloudextensionattribute3)
+  - [2.273 Attribute msDS-cloudExtensionAttribute4](#2273-attribute-msds-cloudextensionattribute4)
+  - [2.274 Attribute msDS-cloudExtensionAttribute5](#2274-attribute-msds-cloudextensionattribute5)
+  - [2.275 Attribute msDS-cloudExtensionAttribute6](#2275-attribute-msds-cloudextensionattribute6)
+  - [2.276 Attribute msDS-cloudExtensionAttribute7](#2276-attribute-msds-cloudextensionattribute7)
+  - [2.277 Attribute msDS-cloudExtensionAttribute8](#2277-attribute-msds-cloudextensionattribute8)
+  - [2.278 Attribute msDS-cloudExtensionAttribute9](#2278-attribute-msds-cloudextensionattribute9)
+  - [2.279 Attribute msDS-cloudExtensionAttribute10](#2279-attribute-msds-cloudextensionattribute10)
+  - [2.280 Attribute msDS-cloudExtensionAttribute11](#2280-attribute-msds-cloudextensionattribute11)
+  - [2.281 Attribute msDS-cloudExtensionAttribute12](#2281-attribute-msds-cloudextensionattribute12)
+  - [2.282 Attribute msDS-cloudExtensionAttribute13](#2282-attribute-msds-cloudextensionattribute13)
+  - [2.283 Attribute msDS-cloudExtensionAttribute14](#2283-attribute-msds-cloudextensionattribute14)
+  - [2.284 Attribute msDS-cloudExtensionAttribute15](#2284-attribute-msds-cloudextensionattribute15)
+  - [2.285 Attribute msDS-cloudExtensionAttribute16](#2285-attribute-msds-cloudextensionattribute16)
+  - [2.286 Attribute msDS-cloudExtensionAttribute17](#2286-attribute-msds-cloudextensionattribute17)
+  - [2.287 Attribute msDS-cloudExtensionAttribute18](#2287-attribute-msds-cloudextensionattribute18)
+  - [2.288 Attribute msDS-cloudExtensionAttribute19](#2288-attribute-msds-cloudextensionattribute19)
+  - [2.289 Attribute msDS-cloudExtensionAttribute20](#2289-attribute-msds-cloudextensionattribute20)
+  - [2.290 Attribute msDS-CloudIsEnabled](#2290-attribute-msds-cloudisenabled)
+  - [2.291 Attribute msDS-CloudIsManaged](#2291-attribute-msds-cloudismanaged)
+  - [2.292 Attribute msDS-CloudIssuerPublicCertificates](#2292-attribute-msds-cloudissuerpubliccertificates)
+  - [2.293 Attribute msDS-ComputerAllowedToAuthenticateTo](#2293-attribute-msds-computerallowedtoauthenticateto)
+  - [2.294 Attribute msDS-ComputerAuthNPolicy](#2294-attribute-msds-computerauthnpolicy)
+  - [2.295 Attribute msDS-ComputerAuthNPolicyBL](#2295-attribute-msds-computerauthnpolicybl)
+  - [2.296 Attribute msDS-ComputerSID](#2296-attribute-msds-computersid)
+  - [2.297 Attribute msDS-ComputerTGTLifetime](#2297-attribute-msds-computertgtlifetime)
+  - [2.298 Attribute msDS-CustomKeyInformation](#2298-attribute-msds-customkeyinformation)
+  - [2.299 Attribute msDS-DateTime](#2299-attribute-msds-datetime)
+  - [2.300 Attribute msDS-DefaultQuota](#2300-attribute-msds-defaultquota)
+  - [2.301 Attribute msDS-DelegatedMSAState](#2301-attribute-msds-delegatedmsastate)
+  - [2.302 Attribute msDS-DeletedObjectLifetime](#2302-attribute-msds-deletedobjectlifetime)
+  - [2.303 Attribute msDS-DeviceDN](#2303-attribute-msds-devicedn)
+  - [2.304 Attribute msDS-DeviceID](#2304-attribute-msds-deviceid)
+  - [2.305 Attribute msDS-DeviceLocation](#2305-attribute-msds-devicelocation)
+  - [2.306 Attribute msDS-DeviceMDMStatus](#2306-attribute-msds-devicemdmstatus)
+  - [2.307 Attribute msDS-DeviceObjectVersion](#2307-attribute-msds-deviceobjectversion)
+  - [2.308 Attribute msDS-DeviceOSType](#2308-attribute-msds-deviceostype)
+  - [2.309 Attribute msDS-DeviceOSVersion](#2309-attribute-msds-deviceosversion)
+  - [2.310 Attribute msDS-DevicePhysicalIDs](#2310-attribute-msds-devicephysicalids)
+  - [2.311 Attribute msDS-DeviceTrustType](#2311-attribute-msds-devicetrusttype)
+  - [2.312 Attribute msDS-DnsRootAlias](#2312-attribute-msds-dnsrootalias)
+  - [2.313 Attribute msDS-DrsFarmID](#2313-attribute-msds-drsfarmid)
+  - [2.314 Attribute msDS-EgressClaimsTransformationPolicy](#2314-attribute-msds-egressclaimstransformationpolicy)
+  - [2.315 Attribute msDS-EnabledFeature](#2315-attribute-msds-enabledfeature)
+  - [2.316 Attribute msDS-EnabledFeatureBL](#2316-attribute-msds-enabledfeaturebl)
+  - [2.317 Attribute msDS-Entry-Time-To-Die](#2317-attribute-msds-entry-time-to-die)
+  - [2.318 Attribute msDS-ExecuteScriptPassword](#2318-attribute-msds-executescriptpassword)
+  - [2.319 Attribute msDS-ExpirePasswordsOnSmartCardOnlyAccounts](#2319-attribute-msds-expirepasswordsonsmartcardonlyaccounts)
+  - [2.320 Attribute msDS-ExternalDirectoryObjectId](#2320-attribute-msds-externaldirectoryobjectid)
+  - [2.321 Attribute msDS-ExternalKey](#2321-attribute-msds-externalkey)
+  - [2.322 Attribute msDS-ExternalStore](#2322-attribute-msds-externalstore)
+  - [2.323 Attribute msDS-FailedInteractiveLogonCount](#2323-attribute-msds-failedinteractivelogoncount)
+  - [2.324 Attribute msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon](#2324-attribute-msds-failedinteractivelogoncountatlastsuccessfullogon)
+  - [2.325 Attribute msDS-FilterContainers](#2325-attribute-msds-filtercontainers)
+  - [2.326 Attribute msDS-GenerationId](#2326-attribute-msds-generationid)
+  - [2.327 Attribute msDS-GeoCoordinatesAltitude](#2327-attribute-msds-geocoordinatesaltitude)
+  - [2.328 Attribute msDS-GeoCoordinatesLatitude](#2328-attribute-msds-geocoordinateslatitude)
+  - [2.329 Attribute msDS-GeoCoordinatesLongitude](#2329-attribute-msds-geocoordinateslongitude)
+  - [2.330 Attribute msDS-GroupMSAMembership](#2330-attribute-msds-groupmsamembership)
+  - [2.331 Attribute msDS-HABSeniorityIndex](#2331-attribute-msds-habseniorityindex)
+  - [2.332 Attribute msDS-HasDomainNCs](#2332-attribute-msds-hasdomainncs)
+  - [2.333 Attribute msDS-hasFullReplicaNCs](#2333-attribute-msds-hasfullreplicancs)
+  - [2.334 Attribute msDS-HasInstantiatedNCs](#2334-attribute-msds-hasinstantiatedncs)
+  - [2.335 Attribute msDS-hasMasterNCs](#2335-attribute-msds-hasmasterncs)
+  - [2.336 Attribute msDS-HostServiceAccount](#2336-attribute-msds-hostserviceaccount)
+  - [2.337 Attribute msDS-HostServiceAccountBL](#2337-attribute-msds-hostserviceaccountbl)
+  - [2.338 Attribute msDS-IngressClaimsTransformationPolicy](#2338-attribute-msds-ingressclaimstransformationpolicy)
+  - [2.339 Attribute msDS-Integer](#2339-attribute-msds-integer)
+  - [2.340 Attribute msDS-IntId](#2340-attribute-msds-intid)
+  - [2.341 Attribute msDS-IsCompliant](#2341-attribute-msds-iscompliant)
+  - [2.342 Attribute msDS-IsDomainFor](#2342-attribute-msds-isdomainfor)
+  - [2.343 Attribute msDS-IsEnabled](#2343-attribute-msds-isenabled)
+  - [2.344 Attribute msDS-IsFullReplicaFor](#2344-attribute-msds-isfullreplicafor)
+  - [2.345 Attribute msDS-isGC](#2345-attribute-msds-isgc)
+  - [2.346 Attribute msDS-IsManaged](#2346-attribute-msds-ismanaged)
+  - [2.347 Attribute msDS-IsPartialReplicaFor](#2347-attribute-msds-ispartialreplicafor)
+  - [2.348 Attribute msDS-IsPossibleValuesPresent](#2348-attribute-msds-ispossiblevaluespresent)
+  - [2.349 Attribute msDS-IsPrimaryComputerFor](#2349-attribute-msds-isprimarycomputerfor)
+  - [2.350 Attribute msDS-isRODC](#2350-attribute-msds-isrodc)
+  - [2.351 Attribute msDS-IssuerCertificates](#2351-attribute-msds-issuercertificates)
+  - [2.352 Attribute msDS-IssuerPublicCertificates](#2352-attribute-msds-issuerpubliccertificates)
+  - [2.353 Attribute msDS-IsUsedAsResourceSecurityAttribute](#2353-attribute-msds-isusedasresourcesecurityattribute)
+  - [2.354 Attribute msDS-IsUserCachableAtRodc](#2354-attribute-msds-isusercachableatrodc)
+  - [2.355 Attribute msDS-JetDBPageSize](#2355-attribute-msds-jetdbpagesize)
+  - [2.356 Attribute msDS-JetGetRecordSize3](#2356-attribute-msds-jetgetrecordsize3)
+  - [2.357 Attribute msDS-KeyApproximateLastLogonTimeStamp](#2357-attribute-msds-keyapproximatelastlogontimestamp)
+  - [2.358 msDS-KeyCredentialLink](#2358-msds-keycredentiallink)
+  - [2.359 msDS-KeyCredentialLink-BL](#2359-msds-keycredentiallink-bl)
+  - [2.360 Attribute msDS-KeyId](#2360-attribute-msds-keyid)
+  - [2.361 Attribute msDS-KeyMaterial](#2361-attribute-msds-keymaterial)
+  - [2.362 Attribute msDS-KeyPrincipal](#2362-attribute-msds-keyprincipal)
+  - [2.363 Attribute msDS-KeyPrincipalBL](#2363-attribute-msds-keyprincipalbl)
+  - [2.364 Attribute msDS-KeyUsage](#2364-attribute-msds-keyusage)
+  - [2.365 Attribute msDS-KeyVersionNumber](#2365-attribute-msds-keyversionnumber)
+  - [2.366 Attribute msDS-KrbTgtLink](#2366-attribute-msds-krbtgtlink)
+  - [2.367 Attribute msDS-KrbTgtLinkBl](#2367-attribute-msds-krbtgtlinkbl)
+  - [2.368 Attribute msDS-LastFailedInteractiveLogonTime](#2368-attribute-msds-lastfailedinteractivelogontime)
+  - [2.369 Attribute msDS-LastKnownRDN](#2369-attribute-msds-lastknownrdn)
+  - [2.370 Attribute msDS-LastSuccessfulInteractiveLogonTime](#2370-attribute-msds-lastsuccessfulinteractivelogontime)
+  - [2.371 Attribute msDS-LocalEffectiveDeletionTime](#2371-attribute-msds-localeffectivedeletiontime)
+  - [2.372 Attribute msDS-LocalEffectiveRecycleTime](#2372-attribute-msds-localeffectiverecycletime)
+  - [2.373 Attribute msDS-LockoutDuration](#2373-attribute-msds-lockoutduration)
+  - [2.374 Attribute msDS-LockoutThreshold](#2374-attribute-msds-lockoutthreshold)
+  - [2.375 Attribute msDS-LockoutObservationWindow](#2375-attribute-msds-lockoutobservationwindow)
+  - [2.376 Attribute msDS-LogonTimeSyncInterval](#2376-attribute-msds-logontimesyncinterval)
+  - [2.377 Attribute msDS-ManagedAccountPrecededByLink](#2377-attribute-msds-managedaccountprecededbylink)
+  - [2.378 Attribute msDS-ManagedAccountPrecededByLinkBL](#2378-attribute-msds-managedaccountprecededbylinkbl)
+  - [2.379 Attribute msDS-ManagedPassword](#2379-attribute-msds-managedpassword)
+  - [2.380 Attribute msDS-ManagedPasswordId](#2380-attribute-msds-managedpasswordid)
+  - [2.381 Attribute msDS-ManagedPasswordInterval](#2381-attribute-msds-managedpasswordinterval)
+  - [2.382 Attribute msDS-ManagedPasswordPreviousId](#2382-attribute-msds-managedpasswordpreviousid)
+  - [2.383 Attribute msDs-masteredBy](#2383-attribute-msds-masteredby)
+  - [2.384 Attribute msDS-MaximumPasswordAge](#2384-attribute-msds-maximumpasswordage)
+  - [2.385 Attribute msDS-MaximumRegistrationInactivityPeriod](#2385-attribute-msds-maximumregistrationinactivityperiod)
+  - [2.386 Attribute msDs-MaxValues](#2386-attribute-msds-maxvalues)
+  - [2.387 Attribute msds-memberOfTransitive](#2387-attribute-msds-memberoftransitive)
+  - [2.388 Attribute msDS-MembersForAzRole](#2388-attribute-msds-membersforazrole)
+  - [2.389 Attribute msDS-MembersForAzRoleBL](#2389-attribute-msds-membersforazrolebl)
+  - [2.390 Attribute msDS-MembersOfResourcePropertyList](#2390-attribute-msds-membersofresourcepropertylist)
+  - [2.391 Attribute msDS-MembersOfResourcePropertyListBL](#2391-attribute-msds-membersofresourcepropertylistbl)
+  - [2.392 Attribute msds-memberTransitive](#2392-attribute-msds-membertransitive)
+  - [2.393 Attribute msDS-MinimumPasswordAge](#2393-attribute-msds-minimumpasswordage)
+  - [2.394 Attribute msDS-MinimumPasswordLength](#2394-attribute-msds-minimumpasswordlength)
+  - [2.395 Attribute msDS-NC-Replica-Locations](#2395-attribute-msds-nc-replica-locations)
+  - [2.396 Attribute msDS-NC-RO-Replica-Locations](#2396-attribute-msds-nc-ro-replica-locations)
+  - [2.397 Attribute msDS-NC-RO-Replica-Locations-BL](#2397-attribute-msds-nc-ro-replica-locations-bl)
+  - [2.398 Attribute msDS-NcType](#2398-attribute-msds-nctype)
+  - [2.399 Attribute msDS-NCReplCursors](#2399-attribute-msds-ncreplcursors)
+  - [2.400 Attribute msDS-NCReplInboundNeighbors](#2400-attribute-msds-ncreplinboundneighbors)
+  - [2.401 Attribute msDS-NCReplOutboundNeighbors](#2401-attribute-msds-ncreploutboundneighbors)
+  - [2.402 Attribute msDS-NeverRevealGroup](#2402-attribute-msds-neverrevealgroup)
+  - [2.403 Attribute msDS-Non-Security-Group-Extra-Classes](#2403-attribute-msds-non-security-group-extra-classes)
+  - [2.404 Attribute msDS-NonMembers](#2404-attribute-msds-nonmembers)
+  - [2.405 Attribute msDS-NonMembersBL](#2405-attribute-msds-nonmembersbl)
+  - [2.406 Attribute msDS-ObjectReference](#2406-attribute-msds-objectreference)
+  - [2.407 Attribute msDS-ObjectReferenceBL](#2407-attribute-msds-objectreferencebl)
+  - [2.408 Attribute msDS-ObjectSoa](#2408-attribute-msds-objectsoa)
+  - [2.409 Attribute msDS-OIDToGroupLink](#2409-attribute-msds-oidtogrouplink)
+  - [2.410 Attribute msDS-OIDToGroupLinkBl](#2410-attribute-msds-oidtogrouplinkbl)
+  - [2.411 Attribute msDS-OperationsForAzRole](#2411-attribute-msds-operationsforazrole)
+  - [2.412 Attribute msDS-OperationsForAzRoleBL](#2412-attribute-msds-operationsforazrolebl)
+  - [2.413 Attribute msDS-OperationsForAzTask](#2413-attribute-msds-operationsforaztask)
+  - [2.414 Attribute msDS-OperationsForAzTaskBL](#2414-attribute-msds-operationsforaztaskbl)
+  - [2.415 Attribute msDS-OptionalFeatureFlags](#2415-attribute-msds-optionalfeatureflags)
+  - [2.416 Attribute msDS-OptionalFeatureGUID](#2416-attribute-msds-optionalfeatureguid)
+  - [2.417 Attribute msDS-Other-Settings](#2417-attribute-msds-other-settings)
+  - [2.418 Attribute msDS-parentdistname](#2418-attribute-msds-parentdistname)
+  - [2.419 Attribute msDS-PasswordComplexityEnabled](#2419-attribute-msds-passwordcomplexityenabled)
+  - [2.420 Attribute msDS-PasswordHistoryLength](#2420-attribute-msds-passwordhistorylength)
+  - [2.421 Attribute msDS-PasswordReversibleEncryptionEnabled](#2421-attribute-msds-passwordreversibleencryptionenabled)
+  - [2.422 Attribute msDS-PasswordSettingsPrecedence](#2422-attribute-msds-passwordsettingsprecedence)
+  - [2.423 Attribute msDS-PerUserTrustQuota](#2423-attribute-msds-perusertrustquota)
+  - [2.424 Attribute msDS-PerUserTrustTombstonesQuota](#2424-attribute-msds-perusertrusttombstonesquota)
+  - [2.425 Attribute msDS-PhoneticCompanyName](#2425-attribute-msds-phoneticcompanyname)
+  - [2.426 Attribute msDS-PhoneticDepartment](#2426-attribute-msds-phoneticdepartment)
+  - [2.427 Attribute msDS-PhoneticDisplayName](#2427-attribute-msds-phoneticdisplayname)
+  - [2.428 Attribute msDS-PhoneticFirstName](#2428-attribute-msds-phoneticfirstname)
+  - [2.429 Attribute msDS-PhoneticLastName](#2429-attribute-msds-phoneticlastname)
+  - [2.430 Attribute msDS-Preferred-GC-Site](#2430-attribute-msds-preferred-gc-site)
+  - [2.431 Attribute msDS-preferredDataLocation](#2431-attribute-msds-preferreddatalocation)
+  - [2.432 Attribute msDS-PrimaryComputer](#2432-attribute-msds-primarycomputer)
+  - [2.433 Attribute msDS-PrincipalName](#2433-attribute-msds-principalname)
+  - [2.434 Attribute msDS-PromotionSettings](#2434-attribute-msds-promotionsettings)
+  - [2.435 Attribute msDS-PSOApplied](#2435-attribute-msds-psoapplied)
+  - [2.436 Attribute msDS-PSOAppliesTo](#2436-attribute-msds-psoappliesto)
+  - [2.437 Attribute msDS-QuotaAmount](#2437-attribute-msds-quotaamount)
+  - [2.438 Attribute msDS-QuotaEffective](#2438-attribute-msds-quotaeffective)
+  - [2.439 Attribute msDS-QuotaTrustee](#2439-attribute-msds-quotatrustee)
+  - [2.440 Attribute msDS-QuotaUsed](#2440-attribute-msds-quotaused)
+  - [2.441 Attribute msDS-RegisteredOwner](#2441-attribute-msds-registeredowner)
+  - [2.442 Attribute msDS-RegisteredUsers](#2442-attribute-msds-registeredusers)
+  - [2.443 Attribute msDS-RegistrationQuota](#2443-attribute-msds-registrationquota)
+  - [2.444 Attribute msDS-ReplAttributeMetaData](#2444-attribute-msds-replattributemetadata)
+  - [2.445 Attribute msDS-Replication-Notify-First-DSA-Delay](#2445-attribute-msds-replication-notify-first-dsa-delay)
+  - [2.446 Attribute msDS-Replication-Notify-Subsequent-DSA-Delay](#2446-attribute-msds-replication-notify-subsequent-dsa-delay)
+  - [2.447 Attribute msDS-ReplicationEpoch](#2447-attribute-msds-replicationepoch)
+  - [2.448 Attribute msDS-ReplValueMetaData](#2448-attribute-msds-replvaluemetadata)
+  - [2.449 Attribute msDS-ReplValueMetaDataExt](#2449-attribute-msds-replvaluemetadataext)
+  - [2.450 Attribute msDS-RequiredDomainBehaviorVersion](#2450-attribute-msds-requireddomainbehaviorversion)
+  - [2.451 Attribute msDS-RequiredForestBehaviorVersion](#2451-attribute-msds-requiredforestbehaviorversion)
+  - [2.452 Attribute msDS-ResultantPSO](#2452-attribute-msds-resultantpso)
+  - [2.453 Attribute msDS-RetiredReplNCSignatures](#2453-attribute-msds-retiredreplncsignatures)
+  - [2.454 Attribute msDS-RevealedDSAs](#2454-attribute-msds-revealeddsas)
+  - [2.455 Attribute msDS-RevealedList](#2455-attribute-msds-revealedlist)
+  - [2.456 Attribute msDS-RevealedListBL](#2456-attribute-msds-revealedlistbl)
+  - [2.457 Attribute msDS-RevealedUsers](#2457-attribute-msds-revealedusers)
+  - [2.458 Attribute msDS-RevealOnDemandGroup](#2458-attribute-msds-revealondemandgroup)
+  - [2.459 Attribute msDS-RIDPoolAllocationEnabled](#2459-attribute-msds-ridpoolallocationenabled)
+  - [2.460 Attribute msDs-Schema-Extensions](#2460-attribute-msds-schema-extensions)
+  - [2.461 Attribute msDS-SDReferenceDomain](#2461-attribute-msds-sdreferencedomain)
+  - [2.462 Attribute msDS-SecondaryKrbTgtNumber](#2462-attribute-msds-secondarykrbtgtnumber)
+  - [2.463 Attribute msDS-Security-Group-Extra-Classes](#2463-attribute-msds-security-group-extra-classes)
+  - [2.464 Attribute msDS-ServiceAllowedNTLMNetworkAuthentication](#2464-attribute-msds-serviceallowedntlmnetworkauthentication)
+  - [2.465 Attribute msDS-ServiceAllowedToAuthenticateFrom](#2465-attribute-msds-serviceallowedtoauthenticatefrom)
+  - [2.466 Attribute msDS-ServiceAllowedToAuthenticateTo](#2466-attribute-msds-serviceallowedtoauthenticateto)
+  - [2.467 Attribute msDS-ServiceAuthNPolicy](#2467-attribute-msds-serviceauthnpolicy)
+  - [2.468 Attribute msDS-ServiceAuthNPolicyBL](#2468-attribute-msds-serviceauthnpolicybl)
+  - [2.469 Attribute msDS-ServiceTGTLifetime](#2469-attribute-msds-servicetgtlifetime)
+  - [2.470 Attribute msDS-Settings](#2470-attribute-msds-settings)
+  - [2.471 Attribute msDS-ShadowPrincipalSid](#2471-attribute-msds-shadowprincipalsid)
+  - [2.472 Attribute msDS-SiteName](#2472-attribute-msds-sitename)
+  - [2.473 Attribute msDS-Site-Affinity](#2473-attribute-msds-site-affinity)
+  - [2.474 Attribute msDS-SourceAnchor](#2474-attribute-msds-sourceanchor)
+  - [2.475 Attribute msDS-SourceObjectDN](#2475-attribute-msds-sourceobjectdn)
+  - [2.476 Attribute msDS-SPNSuffixes](#2476-attribute-msds-spnsuffixes)
+  - [2.477 Attribute msDS-StrongNTLMPolicy](#2477-attribute-msds-strongntlmpolicy)
+  - [2.478 Attribute msDS-SupersededManagedAccountLink](#2478-attribute-msds-supersededmanagedaccountlink)
+  - [2.479 Attribute msDS-SupersededManagedAccountLinkBL](#2479-attribute-msds-supersededmanagedaccountlinkbl)
+  - [2.480 Attribute msDS-SupersededServiceAccountState](#2480-attribute-msds-supersededserviceaccountstate)
+  - [2.481 Attribute msDS-SupportedEncryptionTypes](#2481-attribute-msds-supportedencryptiontypes)
+  - [2.482 Attribute msDS-SyncServerUrl](#2482-attribute-msds-syncserverurl)
+  - [2.483 Attribute msDS-TasksForAzRole](#2483-attribute-msds-tasksforazrole)
+  - [2.484 Attribute msDS-TasksForAzRoleBL](#2484-attribute-msds-tasksforazrolebl)
+  - [2.485 Attribute msDS-TasksForAzTask](#2485-attribute-msds-tasksforaztask)
+  - [2.486 Attribute msDS-TasksForAzTaskBL](#2486-attribute-msds-tasksforaztaskbl)
+  - [2.487 Attribute msDS-TDOEgressBL](#2487-attribute-msds-tdoegressbl)
+  - [2.488 Attribute msDS-TDOIngressBL](#2488-attribute-msds-tdoingressbl)
+  - [2.489 Attribute msds-tokenGroupNames](#2489-attribute-msds-tokengroupnames)
+  - [2.490 Attribute msds-tokenGroupNamesGlobalAndUniversal](#2490-attribute-msds-tokengroupnamesglobalanduniversal)
+  - [2.491 Attribute msds-tokenGroupNamesNoGCAcceptable](#2491-attribute-msds-tokengroupnamesnogcacceptable)
+  - [2.492 Attribute msDS-TombstoneQuotaFactor](#2492-attribute-msds-tombstonequotafactor)
+  - [2.493 Attribute msDS-TopQuotaUsage](#2493-attribute-msds-topquotausage)
+  - [2.494 Attribute msDS-TransformationRules](#2494-attribute-msds-transformationrules)
+  - [2.495 Attribute msDS-TransformationRulesCompiled](#2495-attribute-msds-transformationrulescompiled)
+  - [2.496 Attribute msDS-TrustForestTrustInfo](#2496-attribute-msds-trustforesttrustinfo)
+  - [2.497 Attribute msDS-UpdateScript](#2497-attribute-msds-updatescript)
+  - [2.498 Attribute msDS-User-Account-Control-Computed](#2498-attribute-msds-user-account-control-computed)
+  - [2.499 Attribute msDS-UserAllowedNTLMNetworkAuthentication](#2499-attribute-msds-userallowedntlmnetworkauthentication)
+  - [2.500 Attribute msDS-UserAllowedToAuthenticateFrom](#2500-attribute-msds-userallowedtoauthenticatefrom)
+  - [2.501 Attribute msDS-UserAllowedToAuthenticateTo](#2501-attribute-msds-userallowedtoauthenticateto)
+  - [2.502 Attribute msDS-UserAuthNPolicy](#2502-attribute-msds-userauthnpolicy)
+  - [2.503 Attribute msDS-UserAuthNPolicyBL](#2503-attribute-msds-userauthnpolicybl)
+  - [2.504 Attribute msDS-UserPasswordExpiryTimeComputed](#2504-attribute-msds-userpasswordexpirytimecomputed)
+  - [2.505 Attribute msDS-UserTGTLifetime](#2505-attribute-msds-usertgtlifetime)
+  - [2.506 Attribute msDS-USNLastSyncSuccess](#2506-attribute-msds-usnlastsyncsuccess)
+  - [2.507 Attribute msDS-ValueTypeReference](#2507-attribute-msds-valuetypereference)
+  - [2.508 Attribute msDS-ValueTypeReferenceBL](#2508-attribute-msds-valuetypereferencebl)
+  - [2.509 Attribute msExchAssistantName](#2509-attribute-msexchassistantname)
+  - [2.510 Attribute msExchHouseIdentifier](#2510-attribute-msexchhouseidentifier)
+  - [2.511 Attribute msExchLabeledURI](#2511-attribute-msexchlabeleduri)
+  - [2.512 Attribute msFRS-Hub-Member](#2512-attribute-msfrs-hub-member)
+  - [2.513 Attribute msFRS-Topology-Pref](#2513-attribute-msfrs-topology-pref)
+  - [2.514 Attribute msFVE-KeyPackage](#2514-attribute-msfve-keypackage)
+  - [2.515 Attribute msFVE-RecoveryGuid](#2515-attribute-msfve-recoveryguid)
+  - [2.516 Attribute msFVE-RecoveryPassword](#2516-attribute-msfve-recoverypassword)
+  - [2.517 Attribute msFVE-VolumeGuid](#2517-attribute-msfve-volumeguid)
+  - [2.518 Attribute msieee80211-Data](#2518-attribute-msieee80211-data)
+  - [2.519 Attribute msieee80211-DataType](#2519-attribute-msieee80211-datatype)
+  - [2.520 Attribute msieee80211-ID](#2520-attribute-msieee80211-id)
+  - [2.521 Attribute msiFileList](#2521-attribute-msifilelist)
+  - [2.522 Attribute msIIS-FTPDir](#2522-attribute-msiis-ftpdir)
+  - [2.523 Attribute msIIS-FTPRoot](#2523-attribute-msiis-ftproot)
+  - [2.524 Attribute msImaging-HashAlgorithm](#2524-attribute-msimaging-hashalgorithm)
+  - [2.525 Attribute msImaging-PSPIdentifier](#2525-attribute-msimaging-pspidentifier)
+  - [2.526 Attribute msImaging-PSPString](#2526-attribute-msimaging-pspstring)
+  - [2.527 Attribute msImaging-ThumbprintHash](#2527-attribute-msimaging-thumbprinthash)
+  - [2.528 Attribute msiScript](#2528-attribute-msiscript)
+  - [2.529 Attribute msiScriptName](#2529-attribute-msiscriptname)
+  - [2.530 Attribute msiScriptPath](#2530-attribute-msiscriptpath)
+  - [2.531 Attribute msiScriptSize](#2531-attribute-msiscriptsize)
+  - [2.532 Attribute msKds-CreateTime](#2532-attribute-mskds-createtime)
+  - [2.533 Attribute msKds-DomainID](#2533-attribute-mskds-domainid)
+  - [2.534 Attribute msKds-KDFAlgorithmID](#2534-attribute-mskds-kdfalgorithmid)
+  - [2.535 Attribute msKds-KDFParam](#2535-attribute-mskds-kdfparam)
+  - [2.536 Attribute msKds-PrivateKeyLength](#2536-attribute-mskds-privatekeylength)
+  - [2.537 Attribute msKds-PublicKeyLength](#2537-attribute-mskds-publickeylength)
+  - [2.538 Attribute msKds-RootKeyData](#2538-attribute-mskds-rootkeydata)
+  - [2.539 Attribute msKds-SecretAgreementAlgorithmID](#2539-attribute-mskds-secretagreementalgorithmid)
+  - [2.540 Attribute msKds-SecretAgreementParam](#2540-attribute-mskds-secretagreementparam)
+  - [2.541 Attribute msKds-UseStartTime](#2541-attribute-mskds-usestarttime)
+  - [2.542 Attribute msKds-Version](#2542-attribute-mskds-version)
+  - [2.543 Attribute MSMQ-MulticastAddress](#2543-attribute-msmq-multicastaddress)
+  - [2.544 Attribute msMQ-Recipient-FormatName](#2544-attribute-msmq-recipient-formatname)
+  - [2.545 Attribute MSMQ-SecuredSource](#2545-attribute-msmq-securedsource)
+  - [2.546 Attribute mSMQAuthenticate](#2546-attribute-msmqauthenticate)
+  - [2.547 Attribute mSMQBasePriority](#2547-attribute-msmqbasepriority)
+  - [2.548 Attribute mSMQComputerType](#2548-attribute-msmqcomputertype)
+  - [2.549 Attribute mSMQComputerTypeEx](#2549-attribute-msmqcomputertypeex)
+  - [2.550 Attribute mSMQCost](#2550-attribute-msmqcost)
+  - [2.551 Attribute mSMQCSPName](#2551-attribute-msmqcspname)
+  - [2.552 Attribute mSMQDependentClientService](#2552-attribute-msmqdependentclientservice)
+  - [2.553 Attribute mSMQDependentClientServices](#2553-attribute-msmqdependentclientservices)
+  - [2.554 Attribute mSMQDigests](#2554-attribute-msmqdigests)
+  - [2.555 Attribute mSMQDigestsMig](#2555-attribute-msmqdigestsmig)
+  - [2.556 Attribute mSMQDsService](#2556-attribute-msmqdsservice)
+  - [2.557 Attribute mSMQDsServices](#2557-attribute-msmqdsservices)
+  - [2.558 Attribute mSMQEncryptKey](#2558-attribute-msmqencryptkey)
+  - [2.559 Attribute mSMQForeign](#2559-attribute-msmqforeign)
+  - [2.560 Attribute mSMQInRoutingServers](#2560-attribute-msmqinroutingservers)
+  - [2.561 Attribute mSMQInterval1](#2561-attribute-msmqinterval1)
+  - [2.562 Attribute mSMQInterval2](#2562-attribute-msmqinterval2)
+  - [2.563 Attribute mSMQJournal](#2563-attribute-msmqjournal)
+  - [2.564 Attribute mSMQJournalQuota](#2564-attribute-msmqjournalquota)
+  - [2.565 Attribute mSMQLabel](#2565-attribute-msmqlabel)
+  - [2.566 Attribute mSMQLabelEx](#2566-attribute-msmqlabelex)
+  - [2.567 Attribute mSMQLongLived](#2567-attribute-msmqlonglived)
+  - [2.568 Attribute mSMQMigrated](#2568-attribute-msmqmigrated)
+  - [2.569 Attribute mSMQNameStyle](#2569-attribute-msmqnamestyle)
+  - [2.570 Attribute mSMQNt4Flags](#2570-attribute-msmqnt4flags)
+  - [2.571 Attribute mSMQNt4Stub](#2571-attribute-msmqnt4stub)
+  - [2.572 Attribute mSMQOSType](#2572-attribute-msmqostype)
+  - [2.573 Attribute mSMQOutRoutingServers](#2573-attribute-msmqoutroutingservers)
+  - [2.574 Attribute mSMQOwnerID](#2574-attribute-msmqownerid)
+  - [2.575 Attribute mSMQPrevSiteGates](#2575-attribute-msmqprevsitegates)
+  - [2.576 Attribute mSMQPrivacyLevel](#2576-attribute-msmqprivacylevel)
+  - [2.577 Attribute mSMQQMID](#2577-attribute-msmqqmid)
+  - [2.578 Attribute mSMQQueueJournalQuota](#2578-attribute-msmqqueuejournalquota)
+  - [2.579 Attribute mSMQQueueNameExt](#2579-attribute-msmqqueuenameext)
+  - [2.580 Attribute mSMQQueueQuota](#2580-attribute-msmqqueuequota)
+  - [2.581 Attribute mSMQQueueType](#2581-attribute-msmqqueuetype)
+  - [2.582 Attribute mSMQQuota](#2582-attribute-msmqquota)
+  - [2.583 Attribute mSMQRoutingService](#2583-attribute-msmqroutingservice)
+  - [2.584 Attribute mSMQRoutingServices](#2584-attribute-msmqroutingservices)
+  - [2.585 Attribute mSMQServices](#2585-attribute-msmqservices)
+  - [2.586 Attribute mSMQServiceType](#2586-attribute-msmqservicetype)
+  - [2.587 Attribute mSMQSignCertificates](#2587-attribute-msmqsigncertificates)
+  - [2.588 Attribute mSMQSignCertificatesMig](#2588-attribute-msmqsigncertificatesmig)
+  - [2.589 Attribute mSMQSignKey](#2589-attribute-msmqsignkey)
+  - [2.590 Attribute mSMQSite1](#2590-attribute-msmqsite1)
+  - [2.591 Attribute mSMQSite2](#2591-attribute-msmqsite2)
+  - [2.592 Attribute mSMQSiteForeign](#2592-attribute-msmqsiteforeign)
+  - [2.593 Attribute mSMQSiteGates](#2593-attribute-msmqsitegates)
+  - [2.594 Attribute mSMQSiteGatesMig](#2594-attribute-msmqsitegatesmig)
+  - [2.595 Attribute mSMQSiteID](#2595-attribute-msmqsiteid)
+  - [2.596 Attribute mSMQSiteName](#2596-attribute-msmqsitename)
+  - [2.597 Attribute mSMQSiteNameEx](#2597-attribute-msmqsitenameex)
+  - [2.598 Attribute mSMQSites](#2598-attribute-msmqsites)
+  - [2.599 Attribute mSMQTransactional](#2599-attribute-msmqtransactional)
+  - [2.600 Attribute mSMQUserSid](#2600-attribute-msmqusersid)
+  - [2.601 Attribute mSMQVersion](#2601-attribute-msmqversion)
+  - [2.602 Attribute msNPAllowDialin](#2602-attribute-msnpallowdialin)
+  - [2.603 Attribute msNPCalledStationID](#2603-attribute-msnpcalledstationid)
+  - [2.604 Attribute msNPCallingStationID](#2604-attribute-msnpcallingstationid)
+  - [2.605 Attribute msNPSavedCallingStationID](#2605-attribute-msnpsavedcallingstationid)
+  - [2.606 Attribute msPKI-Cert-Template-OID](#2606-attribute-mspki-cert-template-oid)
+  - [2.607 Attribute msPKI-Certificate-Application-Policy](#2607-attribute-mspki-certificate-application-policy)
+  - [2.608 Attribute msPKI-Certificate-Name-Flag](#2608-attribute-mspki-certificate-name-flag)
+  - [2.609 Attribute msPKI-Certificate-Policy](#2609-attribute-mspki-certificate-policy)
+  - [2.610 Attribute msPKI-CredentialRoamingTokens](#2610-attribute-mspki-credentialroamingtokens)
+  - [2.611 Attribute msPKI-Enrollment-Flag](#2611-attribute-mspki-enrollment-flag)
+  - [2.612 Attribute msPKI-Enrollment-Servers](#2612-attribute-mspki-enrollment-servers)
+  - [2.613 Attribute msPKI-Minimal-Key-Size](#2613-attribute-mspki-minimal-key-size)
+  - [2.614 Attribute msPKI-OID-Attribute](#2614-attribute-mspki-oid-attribute)
+  - [2.615 Attribute msPKI-OID-CPS](#2615-attribute-mspki-oid-cps)
+  - [2.616 Attribute msPKI-OID-User-Notice](#2616-attribute-mspki-oid-user-notice)
+  - [2.617 Attribute msPKI-OIDLocalizedName](#2617-attribute-mspki-oidlocalizedname)
+  - [2.618 Attribute msPKI-Private-Key-Flag](#2618-attribute-mspki-private-key-flag)
+  - [2.619 Attribute msPKI-RA-Application-Policies](#2619-attribute-mspki-ra-application-policies)
+  - [2.620 Attribute msPKI-RA-Policies](#2620-attribute-mspki-ra-policies)
+  - [2.621 Attribute msPKI-RA-Signature](#2621-attribute-mspki-ra-signature)
+  - [2.622 Attribute msPKI-Site-Name](#2622-attribute-mspki-site-name)
+  - [2.623 Attribute msPKI-Supersede-Templates](#2623-attribute-mspki-supersede-templates)
+  - [2.624 Attribute msPKI-Template-Minor-Revision](#2624-attribute-mspki-template-minor-revision)
+  - [2.625 Attribute msPKI-Template-Schema-Version](#2625-attribute-mspki-template-schema-version)
+  - [2.626 Attribute msPKIAccountCredentials](#2626-attribute-mspkiaccountcredentials)
+  - [2.627 Attribute msPKIDPAPIMasterKeys](#2627-attribute-mspkidpapimasterkeys)
+  - [2.628 Attribute msPKIRoamingTimeStamp](#2628-attribute-mspkiroamingtimestamp)
+  - [2.629 Attribute msRADIUSCallbackNumber](#2629-attribute-msradiuscallbacknumber)
+  - [2.630 Attribute msRADIUS-FramedInterfaceId](#2630-attribute-msradius-framedinterfaceid)
+  - [2.631 Attribute msRADIUSFramedIPAddress](#2631-attribute-msradiusframedipaddress)
+  - [2.632 Attribute msRADIUS-FramedIpv6Prefix](#2632-attribute-msradius-framedipv6prefix)
+  - [2.633 Attribute msRADIUS-FramedIpv6Route](#2633-attribute-msradius-framedipv6route)
+  - [2.634 Attribute msRADIUSFramedRoute](#2634-attribute-msradiusframedroute)
+  - [2.635 Attribute msRADIUS-SavedFramedInterfaceId](#2635-attribute-msradius-savedframedinterfaceid)
+  - [2.636 Attribute msRADIUS-SavedFramedIpv6Prefix](#2636-attribute-msradius-savedframedipv6prefix)
+  - [2.637 Attribute msRADIUS-SavedFramedIpv6Route](#2637-attribute-msradius-savedframedipv6route)
+  - [2.638 Attribute msRADIUSServiceType](#2638-attribute-msradiusservicetype)
+  - [2.639 Attribute msRASSavedCallbackNumber](#2639-attribute-msrassavedcallbacknumber)
+  - [2.640 Attribute msRASSavedFramedIPAddress](#2640-attribute-msrassavedframedipaddress)
+  - [2.641 Attribute msRASSavedFramedRoute](#2641-attribute-msrassavedframedroute)
+  - [2.642 Attribute msRRASAttribute](#2642-attribute-msrrasattribute)
+  - [2.643 Attribute msRRASVendorAttributeEntry](#2643-attribute-msrrasvendorattributeentry)
+  - [2.644 Attribute msSFU30Aliases](#2644-attribute-mssfu30aliases)
+  - [2.645 Attribute msSFU30CryptMethod](#2645-attribute-mssfu30cryptmethod)
+  - [2.646 Attribute msSFU30Domains](#2646-attribute-mssfu30domains)
+  - [2.647 Attribute msSFU30FieldSeparator](#2647-attribute-mssfu30fieldseparator)
+  - [2.648 Attribute msSFU30IntraFieldSeparator](#2648-attribute-mssfu30intrafieldseparator)
+  - [2.649 Attribute msSFU30IsValidContainer](#2649-attribute-mssfu30isvalidcontainer)
+  - [2.650 Attribute msSFU30KeyAttributes](#2650-attribute-mssfu30keyattributes)
+  - [2.651 Attribute msSFU30KeyValues](#2651-attribute-mssfu30keyvalues)
+  - [2.652 Attribute msSFU30MapFilter](#2652-attribute-mssfu30mapfilter)
+  - [2.653 Attribute msSFU30MasterServerName](#2653-attribute-mssfu30masterservername)
+  - [2.654 Attribute msSFU30MaxGidNumber](#2654-attribute-mssfu30maxgidnumber)
+  - [2.655 Attribute msSFU30MaxUidNumber](#2655-attribute-mssfu30maxuidnumber)
+  - [2.656 Attribute msSFU30Name](#2656-attribute-mssfu30name)
+  - [2.657 Attribute msSFU30NetgroupHostAtDomain](#2657-attribute-mssfu30netgrouphostatdomain)
+  - [2.658 Attribute msSFU30NetgroupUserAtDomain](#2658-attribute-mssfu30netgroupuseratdomain)
+  - [2.659 Attribute msSFU30NisDomain](#2659-attribute-mssfu30nisdomain)
+  - [2.660 Attribute msSFU30NSMAPFieldPosition](#2660-attribute-mssfu30nsmapfieldposition)
+  - [2.661 Attribute msSFU30OrderNumber](#2661-attribute-mssfu30ordernumber)
+  - [2.662 Attribute msSFU30PosixMember](#2662-attribute-mssfu30posixmember)
+  - [2.663 Attribute msSFU30PosixMemberOf](#2663-attribute-mssfu30posixmemberof)
+  - [2.664 Attribute msSFU30ResultAttributes](#2664-attribute-mssfu30resultattributes)
+  - [2.665 Attribute msSFU30SearchAttributes](#2665-attribute-mssfu30searchattributes)
+  - [2.666 Attribute msSFU30SearchContainer](#2666-attribute-mssfu30searchcontainer)
+  - [2.667 Attribute msSFU30YpServers](#2667-attribute-mssfu30ypservers)
+  - [2.668 Attribute msSPP-ConfigLicense](#2668-attribute-msspp-configlicense)
+  - [2.669 Attribute msSPP-ConfirmationId](#2669-attribute-msspp-confirmationid)
+  - [2.670 Attribute msSPP-CSVLKPartialProductKey](#2670-attribute-msspp-csvlkpartialproductkey)
+  - [2.671 Attribute msSPP-CSVLKPid](#2671-attribute-msspp-csvlkpid)
+  - [2.672 Attribute msSPP-CSVLKSkuId](#2672-attribute-msspp-csvlkskuid)
+  - [2.673 Attribute msSPP-InstallationId](#2673-attribute-msspp-installationid)
+  - [2.674 Attribute msSPP-IssuanceLicense](#2674-attribute-msspp-issuancelicense)
+  - [2.675 Attribute msSPP-KMSIds](#2675-attribute-msspp-kmsids)
+  - [2.676 Attribute msSPP-OnlineLicense](#2676-attribute-msspp-onlinelicense)
+  - [2.677 Attribute msSPP-PhoneLicense](#2677-attribute-msspp-phonelicense)
+  - [2.678 Attribute msTAPI-ConferenceBlob](#2678-attribute-mstapi-conferenceblob)
+  - [2.679 Attribute msTAPI-IpAddress](#2679-attribute-mstapi-ipaddress)
+  - [2.680 Attribute msTAPI-ProtocolId](#2680-attribute-mstapi-protocolid)
+  - [2.681 Attribute msTAPI-uid](#2681-attribute-mstapi-uid)
+  - [2.682 Attribute msTPM-OwnerInformation](#2682-attribute-mstpm-ownerinformation)
+  - [2.683 Attribute msTPM-OwnerInformationTemp](#2683-attribute-mstpm-ownerinformationtemp)
+  - [2.684 Attribute msTPM-SrkPubThumbprint](#2684-attribute-mstpm-srkpubthumbprint)
+  - [2.685 Attribute msTPM-TpmInformationForComputer](#2685-attribute-mstpm-tpminformationforcomputer)
+  - [2.686 Attribute msTPM-TpmInformationForComputerBL](#2686-attribute-mstpm-tpminformationforcomputerbl)
+  - [2.687 Attribute msTSAllowLogon](#2687-attribute-mstsallowlogon)
+  - [2.688 Attribute msTSBrokenConnectionAction](#2688-attribute-mstsbrokenconnectionaction)
+  - [2.689 Attribute msTSConnectClientDrives](#2689-attribute-mstsconnectclientdrives)
+  - [2.690 Attribute msTSConnectPrinterDrives](#2690-attribute-mstsconnectprinterdrives)
+  - [2.691 Attribute msTSDefaultToMainPrinter](#2691-attribute-mstsdefaulttomainprinter)
+  - [2.692 Attribute msTSEndpointData](#2692-attribute-mstsendpointdata)
+  - [2.693 Attribute msTSEndpointPlugin](#2693-attribute-mstsendpointplugin)
+  - [2.694 Attribute msTSEndpointType](#2694-attribute-mstsendpointtype)
+  - [2.695 Attribute msTSExpireDate](#2695-attribute-mstsexpiredate)
+  - [2.696 Attribute msTSExpireDate2](#2696-attribute-mstsexpiredate2)
+  - [2.697 Attribute msTSExpireDate3](#2697-attribute-mstsexpiredate3)
+  - [2.698 Attribute msTSExpireDate4](#2698-attribute-mstsexpiredate4)
+  - [2.699 Attribute msTSHomeDirectory](#2699-attribute-mstshomedirectory)
+  - [2.700 Attribute msTSHomeDrive](#2700-attribute-mstshomedrive)
+  - [2.701 Attribute msTSInitialProgram](#2701-attribute-mstsinitialprogram)
+  - [2.702 Attribute msTSLicenseVersion](#2702-attribute-mstslicenseversion)
+  - [2.703 Attribute msTSLicenseVersion2](#2703-attribute-mstslicenseversion2)
+  - [2.704 Attribute msTSLicenseVersion3](#2704-attribute-mstslicenseversion3)
+  - [2.705 Attribute msTSLicenseVersion4](#2705-attribute-mstslicenseversion4)
+  - [2.706 Attribute msTSLSProperty01](#2706-attribute-mstslsproperty01)
+  - [2.707 Attribute msTSLSProperty02](#2707-attribute-mstslsproperty02)
+  - [2.708 Attribute msTSManagingLS](#2708-attribute-mstsmanagingls)
+  - [2.709 Attribute msTSManagingLS2](#2709-attribute-mstsmanagingls2)
+  - [2.710 Attribute msTSManagingLS3](#2710-attribute-mstsmanagingls3)
+  - [2.711 Attribute msTSManagingLS4](#2711-attribute-mstsmanagingls4)
+  - [2.712 Attribute msTSMaxConnectionTime](#2712-attribute-mstsmaxconnectiontime)
+  - [2.713 Attribute msTSMaxDisconnectionTime](#2713-attribute-mstsmaxdisconnectiontime)
+  - [2.714 Attribute msTSMaxIdleTime](#2714-attribute-mstsmaxidletime)
+  - [2.715 Attribute msTSPrimaryDesktop](#2715-attribute-mstsprimarydesktop)
+  - [2.716 Attribute msTSPrimaryDesktopBL](#2716-attribute-mstsprimarydesktopbl)
+  - [2.717 Attribute msTSProfilePath](#2717-attribute-mstsprofilepath)
+  - [2.718 Attribute msTSProperty01](#2718-attribute-mstsproperty01)
+  - [2.719 Attribute msTSProperty02](#2719-attribute-mstsproperty02)
+  - [2.720 Attribute msTSReconnectionAction](#2720-attribute-mstsreconnectionaction)
+  - [2.721 Attribute msTSRemoteControl](#2721-attribute-mstsremotecontrol)
+  - [2.722 Attribute msTSSecondaryDesktops](#2722-attribute-mstssecondarydesktops)
+  - [2.723 Attribute msTSSecondaryDesktopBL](#2723-attribute-mstssecondarydesktopbl)
+  - [2.724 Attribute msTSWorkDirectory](#2724-attribute-mstsworkdirectory)
+  - [2.725 Attribute msWMI-Author](#2725-attribute-mswmi-author)
+  - [2.726 Attribute msWMI-ChangeDate](#2726-attribute-mswmi-changedate)
+  - [2.727 Attribute msWMI-Class](#2727-attribute-mswmi-class)
+  - [2.728 Attribute msWMI-ClassDefinition](#2728-attribute-mswmi-classdefinition)
+  - [2.729 Attribute msWMI-CreationDate](#2729-attribute-mswmi-creationdate)
+  - [2.730 Attribute msWMI-Genus](#2730-attribute-mswmi-genus)
+  - [2.731 Attribute msWMI-ID](#2731-attribute-mswmi-id)
+  - [2.732 Attribute msWMI-Int8Default](#2732-attribute-mswmi-int8default)
+  - [2.733 Attribute msWMI-Int8Max](#2733-attribute-mswmi-int8max)
+  - [2.734 Attribute msWMI-Int8Min](#2734-attribute-mswmi-int8min)
+  - [2.735 Attribute msWMI-Int8ValidValues](#2735-attribute-mswmi-int8validvalues)
+  - [2.736 Attribute msWMI-IntDefault](#2736-attribute-mswmi-intdefault)
+  - [2.737 Attribute msWMI-intFlags1](#2737-attribute-mswmi-intflags1)
+  - [2.738 Attribute msWMI-intFlags2](#2738-attribute-mswmi-intflags2)
+  - [2.739 Attribute msWMI-intFlags3](#2739-attribute-mswmi-intflags3)
+  - [2.740 Attribute msWMI-intFlags4](#2740-attribute-mswmi-intflags4)
+  - [2.741 Attribute msWMI-IntMax](#2741-attribute-mswmi-intmax)
+  - [2.742 Attribute msWMI-IntMin](#2742-attribute-mswmi-intmin)
+  - [2.743 Attribute msWMI-IntValidValues](#2743-attribute-mswmi-intvalidvalues)
+  - [2.744 Attribute msWMI-Mof](#2744-attribute-mswmi-mof)
+  - [2.745 Attribute msWMI-Name](#2745-attribute-mswmi-name)
+  - [2.746 Attribute msWMI-NormalizedClass](#2746-attribute-mswmi-normalizedclass)
+  - [2.747 Attribute msWMI-Parm1](#2747-attribute-mswmi-parm1)
+  - [2.748 Attribute msWMI-Parm2](#2748-attribute-mswmi-parm2)
+  - [2.749 Attribute msWMI-Parm3](#2749-attribute-mswmi-parm3)
+  - [2.750 Attribute msWMI-Parm4](#2750-attribute-mswmi-parm4)
+  - [2.751 Attribute msWMI-PropertyName](#2751-attribute-mswmi-propertyname)
+  - [2.752 Attribute msWMI-Query](#2752-attribute-mswmi-query)
+  - [2.753 Attribute msWMI-QueryLanguage](#2753-attribute-mswmi-querylanguage)
+  - [2.754 Attribute msWMI-ScopeGuid](#2754-attribute-mswmi-scopeguid)
+  - [2.755 Attribute msWMI-SourceOrganization](#2755-attribute-mswmi-sourceorganization)
+  - [2.756 Attribute msWMI-StringDefault](#2756-attribute-mswmi-stringdefault)
+  - [2.757 Attribute msWMI-StringValidValues](#2757-attribute-mswmi-stringvalidvalues)
+  - [2.758 Attribute msWMI-TargetClass](#2758-attribute-mswmi-targetclass)
+  - [2.759 Attribute msWMI-TargetNameSpace](#2759-attribute-mswmi-targetnamespace)
+  - [2.760 Attribute msWMI-TargetObject](#2760-attribute-mswmi-targetobject)
+  - [2.761 Attribute msWMI-TargetPath](#2761-attribute-mswmi-targetpath)
+  - [2.762 Attribute msWMI-TargetType](#2762-attribute-mswmi-targettype)
+  - [2.763 Attribute mustContain](#2763-attribute-mustcontain)
+- [3 Change Tracking](#3-change-tracking)
+- [4 Index](#4-index)
 
-2  Attributes .............................................................................................................. 19
-Attribute macAddress ....................................................................................... 19
-Attribute machineArchitecture ........................................................................... 19
-Attribute machinePasswordChangeInterval .......................................................... 19
-Attribute machineRole ...................................................................................... 20
-Attribute machineWidePolicy .............................................................................. 20
-Attribute mail .................................................................................................. 20
-Attribute mailAddress ....................................................................................... 21
-Attribute managedBy ........................................................................................ 21
-Attribute managedObjects ................................................................................. 22
-Attribute manager ............................................................................................ 22
-Attribute mAPIID ............................................................................................. 22
-Attribute marshalledInterface ............................................................................ 23
-Attribute masteredBy ....................................................................................... 23
-Attribute maxPwdAge ....................................................................................... 23
-Attribute maxRenewAge .................................................................................... 24
-Attribute maxStorage ....................................................................................... 24
-Attribute maxTicketAge ..................................................................................... 24
-Attribute mayContain ....................................................................................... 25
-Attribute meetingAdvertiseScope ....................................................................... 25
-Attribute meetingApplication ............................................................................. 25
-Attribute meetingBandwidth .............................................................................. 26
-Attribute meetingBlob ....................................................................................... 26
-Attribute meetingContactInfo............................................................................. 26
-Attribute meetingDescription ............................................................................. 27
-Attribute meetingEndTime ................................................................................. 27
-Attribute meetingID ......................................................................................... 27
-Attribute meetingIP .......................................................................................... 28
-Attribute meetingIsEncrypted ............................................................................ 28
-Attribute meetingKeyword ................................................................................. 28
-Attribute meetingLanguage ............................................................................... 29
-Attribute meetingLocation ................................................................................. 29
-Attribute meetingMaxParticipants ....................................................................... 29
-Attribute meetingName ..................................................................................... 29
-Attribute meetingOriginator ............................................................................... 30
-Attribute meetingOwner .................................................................................... 30
-Attribute meetingProtocol .................................................................................. 30
-Attribute meetingRating .................................................................................... 31
-Attribute meetingRecurrence ............................................................................. 31
-Attribute meetingScope .................................................................................... 31
-Attribute meetingStartTime ............................................................................... 32
-Attribute meetingType ...................................................................................... 32
-Attribute meetingURL ....................................................................................... 32
-Attribute member............................................................................................. 33
-Attribute memberNisNetgroup ........................................................................... 33
-Attribute memberOf ......................................................................................... 33
-Attribute memberUid ........................................................................................ 34
-Attribute mhsORAddress ................................................................................... 34
-Attribute middleName ....................................................................................... 34
-Attribute minPwdAge ........................................................................................ 35
-Attribute minPwdLength .................................................................................... 35
-Attribute minTicketAge ..................................................................................... 36
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-2.10
-2.11
-2.12
-2.13
-2.14
-2.15
-2.16
-2.17
-2.18
-2.19
-2.20
-2.21
-2.22
-2.23
-2.24
-2.25
-2.26
-2.27
-2.28
-2.29
-2.30
-2.31
-2.32
-2.33
-2.34
-2.35
-2.36
-2.37
-2.38
-2.39
-2.40
-2.41
-2.42
-2.43
-2.44
-2.45
-2.46
-2.47
-2.48
-2.49
-2.50
-2.51
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 276
-
-Attribute mobile ............................................................................................... 36
-2.52
-Attribute modifiedCount .................................................................................... 36
-2.53
-Attribute modifiedCountAtLastProm .................................................................... 37
-2.54
-Attribute modifyTimeStamp ............................................................................... 37
-2.55
-Attribute moniker ............................................................................................. 37
-2.56
-Attribute monikerDisplayName .......................................................................... 38
-2.57
-Attribute moveTreeState ................................................................................... 38
-2.58
-Attribute mS-DS-ConsistencyChildCount ............................................................. 38
-2.59
-Attribute mS-DS-ConsistencyGuid ...................................................................... 39
-2.60
-Attribute mS-DS-CreatorSID ............................................................................. 39
-2.61
-Attribute ms-DS-MachineAccountQuota ............................................................... 39
-2.62
-Attribute mS-DS-ReplicatesNCReason ................................................................. 40
-2.63
-Attribute ms-LAPS-Password ............................................................................. 40
-2.64
-Attribute ms-LAPS-PasswordExpirationTime ........................................................ 41
-2.65
-Attribute ms-LAPS-EncryptedPassword ............................................................... 41
-2.66
-Attribute ms-LAPS-EncryptedPasswordHistory ..................................................... 42
-2.67
-Attribute ms-LAPS-EncryptedDSRMPassword ....................................................... 42
-2.68
-Attribute ms-LAPS-EncryptedDSRMPasswordHistory ............................................. 42
-2.69
-Attribute ms-Mcs-AdmPwd ................................................................................ 43
-2.70
-Attribute ms-Mcs-AdmPwdExpirationTime ........................................................... 43
-2.71
-Attribute ms-net-ieee-80211-GP-PolicyData ........................................................ 43
-2.72
-Attribute ms-net-ieee-80211-GP-PolicyGUID ....................................................... 44
-2.73
-Attribute ms-net-ieee-80211-GP-PolicyReserved .................................................. 44
-2.74
-Attribute ms-net-ieee-8023-GP-PolicyData .......................................................... 44
-2.75
-Attribute ms-net-ieee-8023-GP-PolicyGUID ......................................................... 45
-2.76
-Attribute ms-net-ieee-8023-GP-PolicyReserved .................................................... 45
-2.77
-Attribute mS-SQL-Alias ..................................................................................... 45
-2.78
-Attribute mS-SQL-AllowAnonymousSubscription .................................................. 46
-2.79
-Attribute mS-SQL-AllowImmediateUpdatingSubscription ....................................... 46
-2.80
-Attribute mS-SQL-AllowKnownPullSubscription .................................................... 46
-2.81
-Attribute mS-SQL-AllowQueuedUpdatingSubscription............................................ 47
-2.82
-Attribute mS-SQL-AllowSnapshotFilesFTPDownloading .......................................... 47
-2.83
-Attribute mS-SQL-AppleTalk .............................................................................. 47
-2.84
-Attribute mS-SQL-Applications ........................................................................... 48
-2.85
-Attribute mS-SQL-Build .................................................................................... 48
-2.86
-Attribute mS-SQL-CharacterSet ......................................................................... 48
-2.87
-Attribute mS-SQL-Clustered .............................................................................. 48
-2.88
-Attribute mS-SQL-ConnectionURL ...................................................................... 49
-2.89
-Attribute mS-SQL-Contact ................................................................................. 49
-2.90
-Attribute mS-SQL-CreationDate ......................................................................... 49
-2.91
-Attribute mS-SQL-Database .............................................................................. 50
-2.92
-Attribute mS-SQL-Description ............................................................................ 50
-2.93
-Attribute mS-SQL-GPSHeight ............................................................................. 50
-2.94
-Attribute mS-SQL-GPSLatitude .......................................................................... 51
-2.95
-Attribute mS-SQL-GPSLongitude ........................................................................ 51
-2.96
-Attribute mS-SQL-InformationDirectory .............................................................. 51
-2.97
-Attribute mS-SQL-InformationURL ..................................................................... 52
-2.98
-2.99
-Attribute mS-SQL-Keywords .............................................................................. 52
-2.100  Attribute mS-SQL-Language .............................................................................. 52
-2.101  Attribute mS-SQL-LastBackupDate ..................................................................... 53
-2.102  Attribute mS-SQL-LastDiagnosticDate ................................................................. 53
-2.103  Attribute mS-SQL-LastUpdatedDate ................................................................... 53
-2.104  Attribute mS-SQL-Location ................................................................................ 53
-2.105  Attribute mS-SQL-Memory ................................................................................ 54
-2.106  Attribute mS-SQL-MultiProtocol ......................................................................... 54
-2.107  Attribute mS-SQL-Name ................................................................................... 54
-2.108  Attribute mS-SQL-NamedPipe ............................................................................ 55
-2.109  Attribute mS-SQL-PublicationURL ....................................................................... 55
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 276
-
-2.110  Attribute mS-SQL-Publisher ............................................................................... 55
-2.111  Attribute mS-SQL-RegisteredOwner ................................................................... 56
-2.112  Attribute mS-SQL-ServiceAccount ...................................................................... 56
-2.113  Attribute mS-SQL-Size ...................................................................................... 56
-2.114  Attribute mS-SQL-SortOrder .............................................................................. 57
-2.115  Attribute mS-SQL-SPX ...................................................................................... 57
-2.116  Attribute mS-SQL-Status .................................................................................. 57
-2.117  Attribute mS-SQL-TCPIP ................................................................................... 58
-2.118  Attribute mS-SQL-ThirdParty ............................................................................. 58
-2.119  Attribute mS-SQL-Type ..................................................................................... 58
-2.120  Attribute mS-SQL-UnicodeSortOrder................................................................... 58
-2.121  Attribute mS-SQL-Version ................................................................................. 59
-2.122  Attribute mS-SQL-Vines .................................................................................... 59
-2.123  Attribute msAuthz-CentralAccessPolicyID ............................................................ 59
-2.124  Attribute msAuthz-EffectiveSecurityPolicy ........................................................... 60
-2.125  Attribute msAuthz-LastEffectiveSecurityPolicy ...................................................... 60
-2.126  Attribute msAuthz-MemberRulesInCentralAccessPolicy .......................................... 60
-2.127  Attribute msAuthz-MemberRulesInCentralAccessPolicyBL ...................................... 61
-2.128  Attribute msAuthz-ProposedSecurityPolicy ........................................................... 61
-2.129  Attribute msAuthz-ResourceCondition ................................................................. 61
-2.130  Attribute msCOM-DefaultPartitionLink ................................................................. 62
-2.131  Attribute msCOM-ObjectId ................................................................................ 62
-2.132  Attribute msCOM-PartitionLink ........................................................................... 62
-2.133  Attribute msCOM-PartitionSetLink ...................................................................... 63
-2.134  Attribute msCOM-UserLink ................................................................................ 63
-2.135  Attribute msCOM-UserPartitionSetLink ................................................................ 63
-2.136  Attribute mscopeId ........................................................................................... 64
-2.137  Attribute msDFS-Commentv2 ............................................................................ 64
-2.138  Attribute msDFS-GenerationGUIDv2 ................................................................... 64
-2.139  Attribute msDFS-LastModifiedv2 ........................................................................ 65
-2.140  Attribute msDFS-LinkIdentityGUIDv2 .................................................................. 65
-2.141  Attribute msDFS-LinkPathv2 .............................................................................. 65
-2.142  Attribute msDFS-LinkSecurityDescriptorv2 .......................................................... 66
-2.143  Attribute msDFS-NamespaceIdentityGUIDv2 ....................................................... 66
-2.144  Attribute msDFS-Propertiesv2 ............................................................................ 66
-2.145  Attribute msDFS-SchemaMajorVersion ................................................................ 67
-2.146  Attribute msDFS-SchemaMinorVersion ................................................................ 67
-2.147  Attribute msDFS-ShortNameLinkPathv2 .............................................................. 67
-2.148  Attribute msDFS-TargetListv2 ............................................................................ 68
-2.149  Attribute msDFS-Ttlv2 ...................................................................................... 68
-2.150  Attribute msDFSR-CachePolicy ........................................................................... 68
-2.151  Attribute msDFSR-CommonStagingPath .............................................................. 68
-2.152  Attribute msDFSR-CommonStagingSizeInMb ....................................................... 69
-2.153  Attribute msDFSR-ComputerReference................................................................ 69
-2.154  Attribute msDFSR-ComputerReferenceBL ............................................................ 69
-2.155  Attribute msDFSR-ConflictPath ........................................................................... 70
-2.156  Attribute msDFSR-ConflictSizeInMb .................................................................... 70
-2.157  Attribute msDFSR-ContentSetGuid ..................................................................... 70
-2.158  Attribute msDFSR-DefaultCompressionExclusionFilter ........................................... 71
-2.159  Attribute msDFSR-DeletedPath .......................................................................... 71
-2.160  Attribute msDFSR-DeletedSizeInMb .................................................................... 71
-2.161  Attribute msDFSR-DfsLinkTarget ........................................................................ 71
-2.162  Attribute msDFSR-DfsPath ................................................................................ 72
-2.163  Attribute msDFSR-DirectoryFilter ....................................................................... 72
-2.164  Attribute msDFSR-DisablePacketPrivacy .............................................................. 72
-2.165  Attribute msDFSR-Enabled ................................................................................ 73
-2.166  Attribute msDFSR-Extension .............................................................................. 73
-2.167  Attribute msDFSR-FileFilter ............................................................................... 73
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 276
-
-2.168  Attribute msDFSR-Flags .................................................................................... 74
-2.169  Attribute msDFSR-Keywords .............................................................................. 74
-2.170  Attribute msDFSR-MaxAgeInCacheInMin ............................................................. 74
-2.171  Attribute msDFSR-MemberReference .................................................................. 74
-2.172  Attribute msDFSR-MemberReferenceBL ............................................................... 75
-2.173  Attribute msDFSR-MinDurationCacheInMin .......................................................... 75
-2.174  Attribute msDFSR-OnDemandExclusionDirectoryFilter ........................................... 75
-2.175  Attribute msDFSR-OnDemandExclusionFileFilter ................................................... 76
-2.176  Attribute msDFSR-Options................................................................................. 76
-2.177  Attribute msDFSR-Options2 ............................................................................... 76
-2.178  Attribute msDFSR-Priority ................................................................................. 76
-2.179  Attribute msDFSR-RdcEnabled ........................................................................... 77
-2.180  Attribute msDFSR-RdcMinFileSizeInKb ................................................................ 77
-2.181  Attribute msDFSR-ReadOnly .............................................................................. 77
-2.182  Attribute msDFSR-ReplicationGroupGuid ............................................................. 78
-2.183  Attribute msDFSR-ReplicationGroupType ............................................................. 78
-2.184  Attribute msDFSR-RootFence ............................................................................. 78
-2.185  Attribute msDFSR-RootPath ............................................................................... 78
-2.186  Attribute msDFSR-RootSizeInMb ........................................................................ 79
-2.187  Attribute msDFSR-Schedule............................................................................... 79
-2.188  Attribute msDFSR-StagingCleanupTriggerInPercent .............................................. 79
-2.189  Attribute msDFSR-StagingPath .......................................................................... 80
-2.190  Attribute msDFSR-StagingSizeInMb .................................................................... 80
-2.191  Attribute msDFSR-TombstoneExpiryInMin ........................................................... 80
-2.192  Attribute msDFSR-Version ................................................................................. 81
-2.193  Attribute msDNS-DNSKEYRecords ...................................................................... 81
-2.194  Attribute msDNS-DNSKEYRecordSetTTL .............................................................. 81
-2.195  Attribute msDNS-DSRecordAlgorithms ................................................................ 81
-2.196  Attribute msDNS-DSRecordSetTTL ..................................................................... 82
-2.197  Attribute msDNS-IsSigned ................................................................................ 82
-2.198  Attribute msDNS-KeymasterZones ..................................................................... 82
-2.199  Attribute msDNS-MaintainTrustAnchor ................................................................ 83
-2.200  Attribute msDNS-NSEC3CurrentSalt ................................................................... 83
-2.201  Attribute msDNS-NSEC3HashAlgorithm ............................................................... 83
-2.202  Attribute msDNS-NSEC3Iterations ...................................................................... 84
-2.203  Attribute msDNS-NSEC3OptOut ......................................................................... 84
-2.204  Attribute msDNS-NSEC3RandomSaltLength ......................................................... 84
-2.205  Attribute msDNS-NSEC3UserSalt ....................................................................... 85
-2.206  Attribute msDNS-ParentHasSecureDelegation ...................................................... 85
-2.207  Attribute msDNS-PropagationTime ..................................................................... 85
-2.208  Attribute msDNS-RFC5011KeyRollovers .............................................................. 85
-2.209  Attribute msDNS-SecureDelegationPollingPeriod .................................................. 86
-2.210  Attribute msDNS-SignatureInceptionOffset .......................................................... 86
-2.211  Attribute msDNS-SigningKeyDescriptors ............................................................. 86
-2.212  Attribute msDNS-SigningKeys ............................................................................ 87
-2.213  Attribute msDNS-SignWithNSEC3 ....................................................................... 87
-2.214  Attribute msDRM-IdentityCertificate ................................................................... 87
-2.215  Attribute msDS-AdditionalDnsHostName ............................................................. 88
-2.216  Attribute msDS-AdditionalSamAccountName ....................................................... 88
-2.217  Attribute msDS-AllowedDNSSuffixes ................................................................... 88
-2.218  Attribute msDS-AllowedToActOnBehalfOfOtherIdentity.......................................... 89
-2.219  Attribute msDS-AllowedToDelegateTo ................................................................. 89
-2.220  Attribute msDS-AllUsersTrustQuota .................................................................... 90
-2.221  Attribute msDS-AppliesToResourceTypes ............................................................ 90
-2.222  Attribute msDS-Approx-Immed-Subordinates ...................................................... 90
-2.223  Attribute msDS-ApproximateLastLogonTimeStamp ............................................... 91
-2.224  Attribute msDS-AssignedAuthNPolicy .................................................................. 91
-2.225  Attribute msDS-AssignedAuthNPolicyBL .............................................................. 91
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 276
-
-2.226  Attribute msDS-AssignedAuthNPolicySilo ............................................................. 92
-2.227  Attribute msDS-AssignedAuthNPolicySiloBL ......................................................... 92
-2.228  Attribute msDS-AuthenticatedAtDC .................................................................... 92
-2.229  Attribute msDS-AuthenticatedToAccountlist ......................................................... 93
-2.230  Attribute msDS-AuthNPolicyEnforced .................................................................. 93
-2.231  Attribute msDS-AuthNPolicySiloEnforced ............................................................. 93
-2.232  Attribute msDS-AuthNPolicySiloMembers ............................................................ 94
-2.233  Attribute msDS-AuthNPolicySiloMembersBL ......................................................... 94
-2.234  Attribute msDS-Auxiliary-Classes ....................................................................... 94
-2.235  Attribute msDS-AzApplicationData ..................................................................... 95
-2.236  Attribute msDS-AzApplicationName .................................................................... 95
-2.237  Attribute msDS-AzApplicationVersion .................................................................. 95
-2.238  Attribute msDS-AzBizRule ................................................................................. 96
-2.239  Attribute msDS-AzBizRuleLanguage .................................................................... 96
-2.240  Attribute msDS-AzClassId ................................................................................. 96
-2.241  Attribute msDS-AzDomainTimeout ..................................................................... 97
-2.242  Attribute msDS-AzGenerateAudits ...................................................................... 97
-2.243  Attribute msDS-AzGenericData .......................................................................... 97
-2.244  Attribute msDS-AzLastImportedBizRulePath ........................................................ 98
-2.245  Attribute msDS-AzLDAPQuery ............................................................................ 98
-2.246  Attribute msDS-AzMajorVersion ......................................................................... 98
-2.247  Attribute msDS-AzMinorVersion ......................................................................... 99
-2.248  Attribute msDS-AzObjectGuid ............................................................................ 99
-2.249  Attribute msDS-AzOperationID .......................................................................... 99
-2.250  Attribute msDS-AzScopeName .......................................................................... 100
-2.251  Attribute msDS-AzScriptEngineCacheMax ........................................................... 100
-2.252  Attribute msDS-AzScriptTimeout ....................................................................... 100
-2.253  Attribute msDS-AzTaskIsRoleDefinition .............................................................. 101
-2.254  Attribute msDS-Behavior-Version ...................................................................... 101
-2.255  Attribute msDS-BridgeHeadServersUsed ............................................................ 101
-2.256  Attribute msDS-ByteArray ................................................................................ 102
-2.257  Attribute msDS-Cached-Membership ................................................................. 102
-2.258  Attribute msDS-Cached-Membership-Time-Stamp ............................................... 102
-2.259  Attribute msDS-ClaimAttributeSource ................................................................ 103
-2.260  Attribute msDS-ClaimIsSingleValued ................................................................. 103
-2.261  Attribute msDS-ClaimIsValueSpaceRestricted ..................................................... 103
-2.262  Attribute msDS-ClaimPossibleValues.................................................................. 104
-2.263  Attribute msDS-ClaimSharesPossibleValuesWith .................................................. 104
-2.264  Attribute msDS-ClaimSharesPossibleValuesWithBL .............................................. 104
-2.265  Attribute msDS-ClaimSource ............................................................................ 105
-2.266  Attribute msDS-ClaimSourceType ..................................................................... 105
-2.267  Attribute msDS-ClaimTypeAppliesToClass .......................................................... 105
-2.268  Attribute msDS-ClaimValueType ....................................................................... 106
-2.269  Attribute msDS-CloudAnchor ............................................................................ 106
-2.270  Attribute msDS-cloudExtensionAttribute1 ........................................................... 106
-2.271  Attribute msDS-cloudExtensionAttribute2 ........................................................... 106
-2.272  Attribute msDS-cloudExtensionAttribute3 ........................................................... 107
-2.273  Attribute msDS-cloudExtensionAttribute4 ........................................................... 107
-2.274  Attribute msDS-cloudExtensionAttribute5 ........................................................... 107
-2.275  Attribute msDS-cloudExtensionAttribute6 ........................................................... 108
-2.276  Attribute msDS-cloudExtensionAttribute7 ........................................................... 108
-2.277  Attribute msDS-cloudExtensionAttribute8 ........................................................... 108
-2.278  Attribute msDS-cloudExtensionAttribute9 ........................................................... 109
-2.279  Attribute msDS-cloudExtensionAttribute10 ......................................................... 109
-2.280  Attribute msDS-cloudExtensionAttribute11 ......................................................... 109
-2.281  Attribute msDS-cloudExtensionAttribute12 ......................................................... 110
-2.282  Attribute msDS-cloudExtensionAttribute13 ......................................................... 110
-2.283  Attribute msDS-cloudExtensionAttribute14 ......................................................... 110
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 276
-
-2.284  Attribute msDS-cloudExtensionAttribute15 ......................................................... 111
-2.285  Attribute msDS-cloudExtensionAttribute16 ......................................................... 111
-2.286  Attribute msDS-cloudExtensionAttribute17 ......................................................... 111
-2.287  Attribute msDS-cloudExtensionAttribute18 ......................................................... 112
-2.288  Attribute msDS-cloudExtensionAttribute19 ......................................................... 112
-2.289  Attribute msDS-cloudExtensionAttribute20 ......................................................... 112
-2.290  Attribute msDS-CloudIsEnabled ........................................................................ 113
-2.291  Attribute msDS-CloudIsManaged ....................................................................... 113
-2.292  Attribute msDS-CloudIssuerPublicCertificates ..................................................... 113
-2.293  Attribute msDS-ComputerAllowedToAuthenticateTo ............................................. 114
-2.294  Attribute msDS-ComputerAuthNPolicy ............................................................... 114
-2.295  Attribute msDS-ComputerAuthNPolicyBL ............................................................ 114
-2.296  Attribute msDS-ComputerSID ........................................................................... 115
-2.297  Attribute msDS-ComputerTGTLifetime ............................................................... 115
-2.298  Attribute msDS-CustomKeyInformation ............................................................. 115
-2.299  Attribute msDS-DateTime ................................................................................ 116
-2.300  Attribute msDS-DefaultQuota ........................................................................... 116
-2.301  Attribute msDS-DelegatedMSAState .................................................................. 116
-2.302  Attribute msDS-DeletedObjectLifetime ............................................................... 117
-2.303  Attribute msDS-DeviceDN ................................................................................ 117
-2.304  Attribute msDS-DeviceID ................................................................................. 117
-2.305  Attribute msDS-DeviceLocation ......................................................................... 118
-2.306  Attribute msDS-DeviceMDMStatus ..................................................................... 118
-2.307  Attribute msDS-DeviceObjectVersion ................................................................. 118
-2.308  Attribute msDS-DeviceOSType .......................................................................... 119
-2.309  Attribute msDS-DeviceOSVersion ...................................................................... 119
-2.310  Attribute msDS-DevicePhysicalIDs .................................................................... 119
-2.311  Attribute msDS-DeviceTrustType ...................................................................... 120
-2.312  Attribute msDS-DnsRootAlias ........................................................................... 120
-2.313  Attribute msDS-DrsFarmID .............................................................................. 120
-2.314  Attribute msDS-EgressClaimsTransformationPolicy .............................................. 121
-2.315  Attribute msDS-EnabledFeature ........................................................................ 121
-2.316  Attribute msDS-EnabledFeatureBL ..................................................................... 121
-2.317  Attribute msDS-Entry-Time-To-Die .................................................................... 122
-2.318  Attribute msDS-ExecuteScriptPassword ............................................................. 122
-2.319  Attribute msDS-ExpirePasswordsOnSmartCardOnlyAccounts................................. 122
-2.320  Attribute msDS-ExternalDirectoryObjectId ......................................................... 123
-2.321  Attribute msDS-ExternalKey ............................................................................. 123
-2.322  Attribute msDS-ExternalStore ........................................................................... 123
-2.323  Attribute msDS-FailedInteractiveLogonCount ...................................................... 124
-2.324  Attribute msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon ...................... 124
-2.325  Attribute msDS-FilterContainers ........................................................................ 124
-2.326  Attribute msDS-GenerationId ........................................................................... 125
-2.327  Attribute msDS-GeoCoordinatesAltitude ............................................................. 125
-2.328  Attribute msDS-GeoCoordinatesLatitude ............................................................ 125
-2.329  Attribute msDS-GeoCoordinatesLongitude .......................................................... 126
-2.330  Attribute msDS-GroupMSAMembership .............................................................. 126
-2.331  Attribute msDS-HABSeniorityIndex ................................................................... 126
-2.332  Attribute msDS-HasDomainNCs ........................................................................ 127
-2.333  Attribute msDS-hasFullReplicaNCs..................................................................... 127
-2.334  Attribute msDS-HasInstantiatedNCs .................................................................. 127
-2.335  Attribute msDS-hasMasterNCs .......................................................................... 128
-2.336  Attribute msDS-HostServiceAccount .................................................................. 128
-2.337  Attribute msDS-HostServiceAccountBL ............................................................... 129
-2.338  Attribute msDS-IngressClaimsTransformationPolicy ............................................. 129
-2.339  Attribute msDS-Integer ................................................................................... 129
-2.340  Attribute msDS-IntId ....................................................................................... 130
-2.341  Attribute msDS-IsCompliant ............................................................................. 130
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 276
-
-2.342  Attribute msDS-IsDomainFor ............................................................................ 130
-2.343  Attribute msDS-IsEnabled ................................................................................ 131
-2.344  Attribute msDS-IsFullReplicaFor ........................................................................ 131
-2.345  Attribute msDS-isGC ....................................................................................... 131
-2.346  Attribute msDS-IsManaged............................................................................... 132
-2.347  Attribute msDS-IsPartialReplicaFor .................................................................... 132
-2.348  Attribute msDS-IsPossibleValuesPresent ............................................................ 132
-2.349  Attribute msDS-IsPrimaryComputerFor .............................................................. 133
-2.350  Attribute msDS-isRODC ................................................................................... 133
-2.351  Attribute msDS-IssuerCertificates ..................................................................... 133
-2.352  Attribute msDS-IssuerPublicCertificates ............................................................. 134
-2.353  Attribute msDS-IsUsedAsResourceSecurityAttribute ............................................ 134
-2.354  Attribute msDS-IsUserCachableAtRodc .............................................................. 134
-2.355  Attribute msDS-JetDBPageSize ......................................................................... 135
-2.356  Attribute msDS-JetGetRecordSize3 .................................................................... 135
-2.357  Attribute msDS-KeyApproximateLastLogonTimeStamp ......................................... 135
-2.358  msDS-KeyCredentialLink .................................................................................. 135
-2.359  msDS-KeyCredentialLink-BL ............................................................................. 136
-2.360  Attribute msDS-KeyId ...................................................................................... 136
-2.361  Attribute msDS-KeyMaterial ............................................................................. 137
-2.362  Attribute msDS-KeyPrincipal ............................................................................. 137
-2.363  Attribute msDS-KeyPrincipalBL ......................................................................... 137
-2.364  Attribute msDS-KeyUsage ................................................................................ 138
-2.365  Attribute msDS-KeyVersionNumber ................................................................... 138
-2.366  Attribute msDS-KrbTgtLink ............................................................................... 138
-2.367  Attribute msDS-KrbTgtLinkBl ............................................................................ 139
-2.368  Attribute msDS-LastFailedInteractiveLogonTime ................................................. 139
-2.369  Attribute msDS-LastKnownRDN ........................................................................ 139
-2.370  Attribute msDS-LastSuccessfulInteractiveLogonTime ........................................... 140
-2.371  Attribute msDS-LocalEffectiveDeletionTime ........................................................ 140
-2.372  Attribute msDS-LocalEffectiveRecycleTime ......................................................... 140
-2.373  Attribute msDS-LockoutDuration ....................................................................... 141
-2.374  Attribute msDS-LockoutThreshold ..................................................................... 141
-2.375  Attribute msDS-LockoutObservationWindow ....................................................... 141
-2.376  Attribute msDS-LogonTimeSyncInterval ............................................................. 142
-2.377  Attribute msDS-ManagedAccountPrecededByLink ................................................ 142
-2.378  Attribute msDS-ManagedAccountPrecededByLinkBL ............................................. 142
-2.379  Attribute msDS-ManagedPassword .................................................................... 143
-2.380  Attribute msDS-ManagedPasswordId ................................................................. 143
-2.381  Attribute msDS-ManagedPasswordInterval ......................................................... 143
-2.382  Attribute msDS-ManagedPasswordPreviousId ..................................................... 144
-2.383  Attribute msDs-masteredBy ............................................................................. 144
-2.384  Attribute msDS-MaximumPasswordAge .............................................................. 144
-2.385  Attribute msDS-MaximumRegistrationInactivityPeriod .......................................... 145
-2.386  Attribute msDs-MaxValues ............................................................................... 145
-2.387  Attribute msds-memberOfTransitive .................................................................. 145
-2.388  Attribute msDS-MembersForAzRole ................................................................... 146
-2.389  Attribute msDS-MembersForAzRoleBL ................................................................ 146
-2.390  Attribute msDS-MembersOfResourcePropertyList ................................................ 147
-2.391  Attribute msDS-MembersOfResourcePropertyListBL ............................................. 147
-2.392  Attribute msds-memberTransitive ..................................................................... 147
-2.393  Attribute msDS-MinimumPasswordAge............................................................... 148
-2.394  Attribute msDS-MinimumPasswordLength .......................................................... 148
-2.395  Attribute msDS-NC-Replica-Locations ................................................................ 148
-2.396  Attribute msDS-NC-RO-Replica-Locations ........................................................... 149
-2.397  Attribute msDS-NC-RO-Replica-Locations-BL ...................................................... 149
-2.398  Attribute msDS-NcType ................................................................................... 149
-2.399  Attribute msDS-NCReplCursors ......................................................................... 150
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-10 / 276
-
-2.400  Attribute msDS-NCReplInboundNeighbors .......................................................... 150
-2.401  Attribute msDS-NCReplOutboundNeighbors ........................................................ 150
-2.402  Attribute msDS-NeverRevealGroup .................................................................... 151
-2.403  Attribute msDS-Non-Security-Group-Extra-Classes ............................................. 151
-2.404  Attribute msDS-NonMembers ........................................................................... 151
-2.405  Attribute msDS-NonMembersBL ........................................................................ 152
-2.406  Attribute msDS-ObjectReference ....................................................................... 152
-2.407  Attribute msDS-ObjectReferenceBL ................................................................... 152
-2.408  Attribute msDS-ObjectSoa ............................................................................... 153
-2.409  Attribute msDS-OIDToGroupLink ....................................................................... 153
-2.410  Attribute msDS-OIDToGroupLinkBl .................................................................... 153
-2.411  Attribute msDS-OperationsForAzRole ................................................................. 154
-2.412  Attribute msDS-OperationsForAzRoleBL ............................................................. 154
-2.413  Attribute msDS-OperationsForAzTask ................................................................ 155
-2.414  Attribute msDS-OperationsForAzTaskBL ............................................................. 155
-2.415  Attribute msDS-OptionalFeatureFlags ................................................................ 155
-2.416  Attribute msDS-OptionalFeatureGUID ................................................................ 156
-2.417  Attribute msDS-Other-Settings ......................................................................... 156
-2.418  Attribute msDS-parentdistname ........................................................................ 156
-2.419  Attribute msDS-PasswordComplexityEnabled ...................................................... 157
-2.420  Attribute msDS-PasswordHistoryLength ............................................................. 157
-2.421  Attribute msDS-PasswordReversibleEncryptionEnabled ........................................ 157
-2.422  Attribute msDS-PasswordSettingsPrecedence ..................................................... 157
-2.423  Attribute msDS-PerUserTrustQuota ................................................................... 158
-2.424  Attribute msDS-PerUserTrustTombstonesQuota .................................................. 158
-2.425  Attribute msDS-PhoneticCompanyName ............................................................. 158
-2.426  Attribute msDS-PhoneticDepartment ................................................................. 159
-2.427  Attribute msDS-PhoneticDisplayName ................................................................ 159
-2.428  Attribute msDS-PhoneticFirstName .................................................................... 160
-2.429  Attribute msDS-PhoneticLastName .................................................................... 160
-2.430  Attribute msDS-Preferred-GC-Site ..................................................................... 160
-2.431  Attribute msDS-preferredDataLocation............................................................... 161
-2.432  Attribute msDS-PrimaryComputer ..................................................................... 161
-2.433  Attribute msDS-PrincipalName .......................................................................... 161
-2.434  Attribute msDS-PromotionSettings .................................................................... 162
-2.435  Attribute msDS-PSOApplied .............................................................................. 162
-2.436  Attribute msDS-PSOAppliesTo ........................................................................... 162
-2.437  Attribute msDS-QuotaAmount .......................................................................... 163
-2.438  Attribute msDS-QuotaEffective ......................................................................... 163
-2.439  Attribute msDS-QuotaTrustee ........................................................................... 163
-2.440  Attribute msDS-QuotaUsed .............................................................................. 164
-2.441  Attribute msDS-RegisteredOwner ...................................................................... 164
-2.442  Attribute msDS-RegisteredUsers ....................................................................... 165
-2.443  Attribute msDS-RegistrationQuota ..................................................................... 165
-2.444  Attribute msDS-ReplAttributeMetaData .............................................................. 165
-2.445  Attribute msDS-Replication-Notify-First-DSA-Delay ............................................. 166
-2.446  Attribute msDS-Replication-Notify-Subsequent-DSA-Delay ................................... 166
-2.447  Attribute msDS-ReplicationEpoch ...................................................................... 166
-2.448  Attribute msDS-ReplValueMetaData ................................................................... 167
-2.449  Attribute msDS-ReplValueMetaDataExt .............................................................. 167
-2.450  Attribute msDS-RequiredDomainBehaviorVersion ................................................ 167
-2.451  Attribute msDS-RequiredForestBehaviorVersion .................................................. 168
-2.452  Attribute msDS-ResultantPSO ........................................................................... 168
-2.453  Attribute msDS-RetiredReplNCSignatures ........................................................... 168
-2.454  Attribute msDS-RevealedDSAs .......................................................................... 169
-2.455  Attribute msDS-RevealedList ............................................................................ 169
-2.456  Attribute msDS-RevealedListBL ......................................................................... 169
-2.457  Attribute msDS-RevealedUsers ......................................................................... 170
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-11 / 276
-
-2.458  Attribute msDS-RevealOnDemandGroup ............................................................ 170
-2.459  Attribute msDS-RIDPoolAllocationEnabled .......................................................... 170
-2.460  Attribute msDs-Schema-Extensions ................................................................... 171
-2.461  Attribute msDS-SDReferenceDomain ................................................................. 171
-2.462  Attribute msDS-SecondaryKrbTgtNumber ........................................................... 171
-2.463  Attribute msDS-Security-Group-Extra-Classes .................................................... 172
-2.464  Attribute msDS-ServiceAllowedNTLMNetworkAuthentication ................................. 172
-2.465  Attribute msDS-ServiceAllowedToAuthenticateFrom ............................................ 172
-2.466  Attribute msDS-ServiceAllowedToAuthenticateTo ................................................ 172
-2.467  Attribute msDS-ServiceAuthNPolicy ................................................................... 173
-2.468  Attribute msDS-ServiceAuthNPolicyBL ............................................................... 173
-2.469  Attribute msDS-ServiceTGTLifetime ................................................................... 173
-2.470  Attribute msDS-Settings .................................................................................. 174
-2.471  Attribute msDS-ShadowPrincipalSid ................................................................... 174
-2.472  Attribute msDS-SiteName ................................................................................ 174
-2.473  Attribute msDS-Site-Affinity ............................................................................. 175
-2.474  Attribute msDS-SourceAnchor .......................................................................... 175
-2.475  Attribute msDS-SourceObjectDN ....................................................................... 175
-2.476  Attribute msDS-SPNSuffixes ............................................................................. 176
-2.477  Attribute msDS-StrongNTLMPolicy ..................................................................... 176
-2.478  Attribute msDS-SupersededManagedAccountLink ................................................ 176
-2.479  Attribute msDS-SupersededManagedAccountLinkBL ............................................ 177
-2.480  Attribute msDS-SupersededServiceAccountState................................................. 177
-2.481  Attribute msDS-SupportedEncryptionTypes ........................................................ 178
-2.482  Attribute msDS-SyncServerUrl .......................................................................... 178
-2.483  Attribute msDS-TasksForAzRole ........................................................................ 178
-2.484  Attribute msDS-TasksForAzRoleBL .................................................................... 179
-2.485  Attribute msDS-TasksForAzTask ....................................................................... 179
-2.486  Attribute msDS-TasksForAzTaskBL .................................................................... 179
-2.487  Attribute msDS-TDOEgressBL ........................................................................... 180
-2.488  Attribute msDS-TDOIngressBL .......................................................................... 180
-2.489  Attribute msds-tokenGroupNames ..................................................................... 180
-2.490  Attribute msds-tokenGroupNamesGlobalAndUniversal .......................................... 181
-2.491  Attribute msds-tokenGroupNamesNoGCAcceptable .............................................. 181
-2.492  Attribute msDS-TombstoneQuotaFactor ............................................................. 181
-2.493  Attribute msDS-TopQuotaUsage ........................................................................ 182
-2.494  Attribute msDS-TransformationRules ................................................................. 182
-2.495  Attribute msDS-TransformationRulesCompiled .................................................... 183
-2.496  Attribute msDS-TrustForestTrustInfo ................................................................. 183
-2.497  Attribute msDS-UpdateScript ............................................................................ 183
-2.498  Attribute msDS-User-Account-Control-Computed ................................................ 184
-2.499  Attribute msDS-UserAllowedNTLMNetworkAuthentication ..................................... 184
-2.500  Attribute msDS-UserAllowedToAuthenticateFrom ................................................ 184
-2.501  Attribute msDS-UserAllowedToAuthenticateTo .................................................... 185
-2.502  Attribute msDS-UserAuthNPolicy ....................................................................... 185
-2.503  Attribute msDS-UserAuthNPolicyBL ................................................................... 185
-2.504  Attribute msDS-UserPasswordExpiryTimeComputed ............................................ 186
-2.505  Attribute msDS-UserTGTLifetime ....................................................................... 186
-2.506  Attribute msDS-USNLastSyncSuccess ................................................................ 186
-2.507  Attribute msDS-ValueTypeReference ................................................................. 186
-2.508  Attribute msDS-ValueTypeReferenceBL .............................................................. 187
-2.509  Attribute msExchAssistantName ........................................................................ 187
-2.510  Attribute msExchHouseIdentifier ....................................................................... 187
-2.511  Attribute msExchLabeledURI............................................................................. 188
-2.512  Attribute msFRS-Hub-Member .......................................................................... 188
-2.513  Attribute msFRS-Topology-Pref ......................................................................... 188
-2.514  Attribute msFVE-KeyPackage ............................................................................ 189
-2.515  Attribute msFVE-RecoveryGuid ......................................................................... 189
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-12 / 276
-
-2.516  Attribute msFVE-RecoveryPassword................................................................... 189
-2.517  Attribute msFVE-VolumeGuid ............................................................................ 190
-2.518  Attribute msieee80211-Data ............................................................................. 190
-2.519  Attribute msieee80211-DataType ...................................................................... 190
-2.520  Attribute msieee80211-ID ................................................................................ 191
-2.521  Attribute msiFileList ......................................................................................... 191
-2.522  Attribute msIIS-FTPDir .................................................................................... 191
-2.523  Attribute msIIS-FTPRoot .................................................................................. 191
-2.524  Attribute msImaging-HashAlgorithm .................................................................. 192
-2.525  Attribute msImaging-PSPIdentifier .................................................................... 192
-2.526  Attribute msImaging-PSPString ......................................................................... 192
-2.527  Attribute msImaging-ThumbprintHash ............................................................... 193
-2.528  Attribute msiScript .......................................................................................... 193
-2.529  Attribute msiScriptName .................................................................................. 193
-2.530  Attribute msiScriptPath .................................................................................... 194
-2.531  Attribute msiScriptSize .................................................................................... 194
-2.532  Attribute msKds-CreateTime ............................................................................. 194
-2.533  Attribute msKds-DomainID ............................................................................... 194
-2.534  Attribute msKds-KDFAlgorithmID ...................................................................... 195
-2.535  Attribute msKds-KDFParam .............................................................................. 195
-2.536  Attribute msKds-PrivateKeyLength .................................................................... 195
-2.537  Attribute msKds-PublicKeyLength ...................................................................... 196
-2.538  Attribute msKds-RootKeyData .......................................................................... 196
-2.539  Attribute msKds-SecretAgreementAlgorithmID ................................................... 196
-2.540  Attribute msKds-SecretAgreementParam ........................................................... 197
-2.541  Attribute msKds-UseStartTime .......................................................................... 197
-2.542  Attribute msKds-Version .................................................................................. 197
-2.543  Attribute MSMQ-MulticastAddress ...................................................................... 197
-2.544  Attribute msMQ-Recipient-FormatName ............................................................. 198
-2.545  Attribute MSMQ-SecuredSource ........................................................................ 198
-2.546  Attribute mSMQAuthenticate ............................................................................ 198
-2.547  Attribute mSMQBasePriority ............................................................................. 199
-2.548  Attribute mSMQComputerType.......................................................................... 199
-2.549  Attribute mSMQComputerTypeEx ...................................................................... 199
-2.550  Attribute mSMQCost ........................................................................................ 200
-2.551  Attribute mSMQCSPName ................................................................................ 200
-2.552  Attribute mSMQDependentClientService ............................................................. 200
-2.553  Attribute mSMQDependentClientServices ........................................................... 201
-2.554  Attribute mSMQDigests .................................................................................... 201
-2.555  Attribute mSMQDigestsMig ............................................................................... 201
-2.556  Attribute mSMQDsService ................................................................................ 202
-2.557  Attribute mSMQDsServices ............................................................................... 202
-2.558  Attribute mSMQEncryptKey .............................................................................. 202
-2.559  Attribute mSMQForeign .................................................................................... 203
-2.560  Attribute mSMQInRoutingServers ...................................................................... 203
-2.561  Attribute mSMQInterval1 ................................................................................. 203
-2.562  Attribute mSMQInterval2 ................................................................................. 204
-2.563  Attribute mSMQJournal .................................................................................... 204
-2.564  Attribute mSMQJournalQuota ............................................................................ 204
-2.565  Attribute mSMQLabel ....................................................................................... 205
-2.566  Attribute mSMQLabelEx ................................................................................... 205
-2.567  Attribute mSMQLongLived ................................................................................ 205
-2.568  Attribute mSMQMigrated .................................................................................. 206
-2.569  Attribute mSMQNameStyle ............................................................................... 206
-2.570  Attribute mSMQNt4Flags .................................................................................. 206
-2.571  Attribute mSMQNt4Stub ................................................................................... 206
-2.572  Attribute mSMQOSType ................................................................................... 207
-2.573  Attribute mSMQOutRoutingServers .................................................................... 207
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-13 / 276
-
-2.574  Attribute mSMQOwnerID .................................................................................. 207
-2.575  Attribute mSMQPrevSiteGates .......................................................................... 208
-2.576  Attribute mSMQPrivacyLevel ............................................................................. 208
-2.577  Attribute mSMQQMID ...................................................................................... 208
-2.578  Attribute mSMQQueueJournalQuota................................................................... 209
-2.579  Attribute mSMQQueueNameExt ........................................................................ 209
-2.580  Attribute mSMQQueueQuota ............................................................................. 209
-2.581  Attribute mSMQQueueType .............................................................................. 210
-2.582  Attribute mSMQQuota ...................................................................................... 210
-2.583  Attribute mSMQRoutingService ......................................................................... 210
-2.584  Attribute mSMQRoutingServices ........................................................................ 211
-2.585  Attribute mSMQServices .................................................................................. 211
-2.586  Attribute mSMQServiceType ............................................................................. 211
-2.587  Attribute mSMQSignCertificates ........................................................................ 212
-2.588  Attribute mSMQSignCertificatesMig ................................................................... 212
-2.589  Attribute mSMQSignKey ................................................................................... 212
-2.590  Attribute mSMQSite1 ....................................................................................... 213
-2.591  Attribute mSMQSite2 ....................................................................................... 213
-2.592  Attribute mSMQSiteForeign .............................................................................. 213
-2.593  Attribute mSMQSiteGates ................................................................................. 214
-2.594  Attribute mSMQSiteGatesMig ............................................................................ 214
-2.595  Attribute mSMQSiteID ..................................................................................... 214
-2.596  Attribute mSMQSiteName................................................................................. 215
-2.597  Attribute mSMQSiteNameEx ............................................................................. 215
-2.598  Attribute mSMQSites ....................................................................................... 215
-2.599  Attribute mSMQTransactional ........................................................................... 216
-2.600  Attribute mSMQUserSid ................................................................................... 216
-2.601  Attribute mSMQVersion .................................................................................... 216
-2.602  Attribute msNPAllowDialin ................................................................................ 217
-2.603  Attribute msNPCalledStationID ......................................................................... 217
-2.604  Attribute msNPCallingStationID ......................................................................... 217
-2.605  Attribute msNPSavedCallingStationID ................................................................ 218
-2.606  Attribute msPKI-Cert-Template-OID .................................................................. 218
-2.607  Attribute msPKI-Certificate-Application-Policy ..................................................... 218
-2.608  Attribute msPKI-Certificate-Name-Flag .............................................................. 218
-2.609  Attribute msPKI-Certificate-Policy...................................................................... 219
-2.610  Attribute msPKI-CredentialRoamingTokens ......................................................... 219
-2.611  Attribute msPKI-Enrollment-Flag ....................................................................... 219
-2.612  Attribute msPKI-Enrollment-Servers .................................................................. 220
-2.613  Attribute msPKI-Minimal-Key-Size ..................................................................... 220
-2.614  Attribute msPKI-OID-Attribute .......................................................................... 220
-2.615  Attribute msPKI-OID-CPS ................................................................................. 221
-2.616  Attribute msPKI-OID-User-Notice ...................................................................... 221
-2.617  Attribute msPKI-OIDLocalizedName ................................................................... 221
-2.618  Attribute msPKI-Private-Key-Flag ...................................................................... 222
-2.619  Attribute msPKI-RA-Application-Policies ............................................................. 222
-2.620  Attribute msPKI-RA-Policies .............................................................................. 222
-2.621  Attribute msPKI-RA-Signature .......................................................................... 223
-2.622  Attribute msPKI-Site-Name .............................................................................. 223
-2.623  Attribute msPKI-Supersede-Templates ............................................................... 223
-2.624  Attribute msPKI-Template-Minor-Revision .......................................................... 224
-2.625  Attribute msPKI-Template-Schema-Version ........................................................ 224
-2.626  Attribute msPKIAccountCredentials.................................................................... 224
-2.627  Attribute msPKIDPAPIMasterKeys ...................................................................... 225
-2.628  Attribute msPKIRoamingTimeStamp .................................................................. 225
-2.629  Attribute msRADIUSCallbackNumber ................................................................. 225
-2.630  Attribute msRADIUS-FramedInterfaceId ............................................................. 226
-2.631  Attribute msRADIUSFramedIPAddress ............................................................... 226
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-14 / 276
-
-2.632  Attribute msRADIUS-FramedIpv6Prefix .............................................................. 226
-2.633  Attribute msRADIUS-FramedIpv6Route .............................................................. 226
-2.634  Attribute msRADIUSFramedRoute ..................................................................... 227
-2.635  Attribute msRADIUS-SavedFramedInterfaceId .................................................... 227
-2.636  Attribute msRADIUS-SavedFramedIpv6Prefix ..................................................... 227
-2.637  Attribute msRADIUS-SavedFramedIpv6Route ..................................................... 228
-2.638  Attribute msRADIUSServiceType ....................................................................... 228
-2.639  Attribute msRASSavedCallbackNumber .............................................................. 228
-2.640  Attribute msRASSavedFramedIPAddress ............................................................ 229
-2.641  Attribute msRASSavedFramedRoute .................................................................. 229
-2.642  Attribute msRRASAttribute ............................................................................... 229
-2.643  Attribute msRRASVendorAttributeEntry .............................................................. 230
-2.644  Attribute msSFU30Aliases ................................................................................ 230
-2.645  Attribute msSFU30CryptMethod ........................................................................ 230
-2.646  Attribute msSFU30Domains .............................................................................. 230
-2.647  Attribute msSFU30FieldSeparator ...................................................................... 231
-2.648  Attribute msSFU30IntraFieldSeparator ............................................................... 231
-2.649  Attribute msSFU30IsValidContainer ................................................................... 231
-2.650  Attribute msSFU30KeyAttributes ....................................................................... 232
-2.651  Attribute msSFU30KeyValues............................................................................ 232
-2.652  Attribute msSFU30MapFilter ............................................................................. 232
-2.653  Attribute msSFU30MasterServerName ............................................................... 233
-2.654  Attribute msSFU30MaxGidNumber..................................................................... 233
-2.655  Attribute msSFU30MaxUidNumber ..................................................................... 233
-2.656  Attribute msSFU30Name .................................................................................. 233
-2.657  Attribute msSFU30NetgroupHostAtDomain ......................................................... 234
-2.658  Attribute msSFU30NetgroupUserAtDomain ......................................................... 234
-2.659  Attribute msSFU30NisDomain ........................................................................... 234
-2.660  Attribute msSFU30NSMAPFieldPosition ............................................................... 235
-2.661  Attribute msSFU30OrderNumber ....................................................................... 235
-2.662  Attribute msSFU30PosixMember ....................................................................... 235
-2.663  Attribute msSFU30PosixMemberOf .................................................................... 235
-2.664  Attribute msSFU30ResultAttributes .................................................................... 236
-2.665  Attribute msSFU30SearchAttributes ................................................................... 236
-2.666  Attribute msSFU30SearchContainer ................................................................... 236
-2.667  Attribute msSFU30YpServers ............................................................................ 237
-2.668  Attribute msSPP-ConfigLicense ......................................................................... 237
-2.669  Attribute msSPP-ConfirmationId ........................................................................ 237
-2.670  Attribute msSPP-CSVLKPartialProductKey ........................................................... 238
-2.671  Attribute msSPP-CSVLKPid ............................................................................... 238
-2.672  Attribute msSPP-CSVLKSkuId ........................................................................... 238
-2.673  Attribute msSPP-InstallationId .......................................................................... 239
-2.674  Attribute msSPP-IssuanceLicense ...................................................................... 239
-2.675  Attribute msSPP-KMSIds .................................................................................. 239
-2.676  Attribute msSPP-OnlineLicense ......................................................................... 240
-2.677  Attribute msSPP-PhoneLicense .......................................................................... 240
-2.678  Attribute msTAPI-ConferenceBlob ..................................................................... 240
-2.679  Attribute msTAPI-IpAddress ............................................................................. 241
-2.680  Attribute msTAPI-ProtocolId ............................................................................. 241
-2.681  Attribute msTAPI-uid ....................................................................................... 241
-2.682  Attribute msTPM-OwnerInformation .................................................................. 241
-2.683  Attribute msTPM-OwnerInformationTemp ........................................................... 242
-2.684  Attribute msTPM-SrkPubThumbprint .................................................................. 242
-2.685  Attribute msTPM-TpmInformationForComputer ................................................... 242
-2.686  Attribute msTPM-TpmInformationForComputerBL ................................................ 243
-2.687  Attribute msTSAllowLogon ................................................................................ 243
-2.688  Attribute msTSBrokenConnectionAction ............................................................. 243
-2.689  Attribute msTSConnectClientDrives ................................................................... 244
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-15 / 276
-
-2.690  Attribute msTSConnectPrinterDrives .................................................................. 244
-2.691  Attribute msTSDefaultToMainPrinter .................................................................. 244
-2.692  Attribute msTSEndpointData............................................................................. 245
-2.693  Attribute msTSEndpointPlugin ........................................................................... 245
-2.694  Attribute msTSEndpointType ............................................................................ 245
-2.695  Attribute msTSExpireDate ................................................................................ 246
-2.696  Attribute msTSExpireDate2 .............................................................................. 246
-2.697  Attribute msTSExpireDate3 .............................................................................. 246
-2.698  Attribute msTSExpireDate4 .............................................................................. 247
-2.699  Attribute msTSHomeDirectory .......................................................................... 247
-2.700  Attribute msTSHomeDrive ................................................................................ 247
-2.701  Attribute msTSInitialProgram ............................................................................ 248
-2.702  Attribute msTSLicenseVersion ........................................................................... 248
-2.703  Attribute msTSLicenseVersion2 ......................................................................... 248
-2.704  Attribute msTSLicenseVersion3 ......................................................................... 249
-2.705  Attribute msTSLicenseVersion4 ......................................................................... 249
-2.706  Attribute msTSLSProperty01 ............................................................................. 249
-2.707  Attribute msTSLSProperty02 ............................................................................. 250
-2.708  Attribute msTSManagingLS............................................................................... 250
-2.709  Attribute msTSManagingLS2 ............................................................................. 250
-2.710  Attribute msTSManagingLS3 ............................................................................. 251
-2.711  Attribute msTSManagingLS4 ............................................................................. 251
-2.712  Attribute msTSMaxConnectionTime ................................................................... 251
-2.713  Attribute msTSMaxDisconnectionTime................................................................ 252
-2.714  Attribute msTSMaxIdleTime .............................................................................. 252
-2.715  Attribute msTSPrimaryDesktop ......................................................................... 252
-2.716  Attribute msTSPrimaryDesktopBL ...................................................................... 253
-2.717  Attribute msTSProfilePath ................................................................................ 253
-2.718  Attribute msTSProperty01 ................................................................................ 253
-2.719  Attribute msTSProperty02 ................................................................................ 254
-2.720  Attribute msTSReconnectionAction .................................................................... 254
-2.721  Attribute msTSRemoteControl ........................................................................... 254
-2.722  Attribute msTSSecondaryDesktops .................................................................... 255
-2.723  Attribute msTSSecondaryDesktopBL .................................................................. 255
-2.724  Attribute msTSWorkDirectory ........................................................................... 256
-2.725  Attribute msWMI-Author .................................................................................. 256
-2.726  Attribute msWMI-ChangeDate .......................................................................... 256
-2.727  Attribute msWMI-Class .................................................................................... 257
-2.728  Attribute msWMI-ClassDefinition ....................................................................... 257
-2.729  Attribute msWMI-CreationDate ......................................................................... 257
-2.730  Attribute msWMI-Genus ................................................................................... 257
-2.731  Attribute msWMI-ID ........................................................................................ 258
-2.732  Attribute msWMI-Int8Default ............................................................................ 258
-2.733  Attribute msWMI-Int8Max ................................................................................ 258
-2.734  Attribute msWMI-Int8Min ................................................................................. 259
-2.735  Attribute msWMI-Int8ValidValues ...................................................................... 259
-2.736  Attribute msWMI-IntDefault ............................................................................. 259
-2.737  Attribute msWMI-intFlags1 ............................................................................... 260
-2.738  Attribute msWMI-intFlags2 ............................................................................... 260
-2.739  Attribute msWMI-intFlags3 ............................................................................... 260
-2.740  Attribute msWMI-intFlags4 ............................................................................... 261
-2.741  Attribute msWMI-IntMax .................................................................................. 261
-2.742  Attribute msWMI-IntMin ................................................................................... 261
-2.743  Attribute msWMI-IntValidValues ....................................................................... 261
-2.744  Attribute msWMI-Mof ...................................................................................... 262
-2.745  Attribute msWMI-Name ................................................................................... 262
-2.746  Attribute msWMI-NormalizedClass..................................................................... 262
-2.747  Attribute msWMI-Parm1 .................................................................................. 263
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-16 / 276
-
-2.748  Attribute msWMI-Parm2 .................................................................................. 263
-2.749  Attribute msWMI-Parm3 .................................................................................. 263
-2.750  Attribute msWMI-Parm4 .................................................................................. 264
-2.751  Attribute msWMI-PropertyName........................................................................ 264
-2.752  Attribute msWMI-Query ................................................................................... 264
-2.753  Attribute msWMI-QueryLanguage ...................................................................... 265
-2.754  Attribute msWMI-ScopeGuid ............................................................................. 265
-2.755  Attribute msWMI-SourceOrganization ................................................................ 265
-2.756  Attribute msWMI-StringDefault ......................................................................... 265
-2.757  Attribute msWMI-StringValidValues ................................................................... 266
-2.758  Attribute msWMI-TargetClass ........................................................................... 266
-2.759  Attribute msWMI-TargetNameSpace .................................................................. 266
-2.760  Attribute msWMI-TargetObject ......................................................................... 267
-2.761  Attribute msWMI-TargetPath ............................................................................ 267
-2.762  Attribute msWMI-TargetType ............................................................................ 267
-2.763  Attribute mustContain ..................................................................................... 268
-
-3  Change Tracking .................................................................................................. 269
-
-4  Index ................................................................................................................... 270
-
-[MS-ADA2] - v20240423
-Active Directory Schema Attributes M
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-17 / 276
-
-1  Introduction
+## 1 Introduction
 
 Active Directory Schema Attributes M contains a partial list of the objects that exist in the Active
 Directory schema for Active Directory Domain Services (AD DS); it contains schema objects of type
@@ -1559,7 +1346,7 @@ objects were first implemented in the Active Directory schema. Unless otherwise 
 continue to be available in the Active Directory schema in all subsequent versions of the product
 according to the list of products in [MS-ADTS] section 1.
 
-1.1  References
+### 1.1 References
 
 [MS-ADA1] Microsoft Corporation, "Active Directory Schema Attributes A-L".
 
@@ -1604,7 +1391,8 @@ Release: April 23, 2024
 
 18 / 276
 
-[X400] ITU-T, "Message handling systems - Message handling system and service overview",
+
+[X400] ITU-T, "Message handling systems - Message handling system and service overview",
 Recommendation F.400/X.400, June 1999, http://www.itu.int/rec/T-REC-X.400/en
 
 [MS-ADA2] - v20240423
@@ -1614,7 +1402,8 @@ Release: April 23, 2024
 
 19 / 276
 
-2  Attributes
+
+## 2 Attributes
 
 The following sections specify attributes in the Active Directory schema whose names start with the
 letter M.
@@ -1627,7 +1416,7 @@ attribute can be used.
 Note: Lines of text in the attribute definitions that are excessively long have been "folded" in
 accordance with [RFC2849] Note 2.
 
-2.1  Attribute macAddress
+### 2.1 Attribute macAddress
 
 This attribute specifies the Media Access Control (MAC) address of a network endpoint in colon-
 separated hexadecimal notation.
@@ -1645,7 +1434,7 @@ separated hexadecimal notation.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2 operating system.
 
-2.2  Attribute machineArchitecture
+### 2.2 Attribute machineArchitecture
 
 This attribute specifies a list of hardware processors supported by a given application.
 
@@ -1662,7 +1451,7 @@ This attribute specifies a list of hardware processors supported by a given appl
 
 Version-Specific Behavior: First implemented on Windows 2000 Server operating system.
 
-2.3  Attribute machinePasswordChangeInterval
+### 2.3 Attribute machinePasswordChangeInterval
 
  cn: Machine-Password-Change-Interval
  ldapDisplayName: machinePasswordChangeInterval
@@ -1681,12 +1470,13 @@ Release: April 23, 2024
 
 20 / 276
 
- attributeSecurityGuid: a29b89fe-c7e8-11d0-9bae-00c04fd92ef5
+
+ attributeSecurityGuid: a29b89fe-c7e8-11d0-9bae-00c04fd92ef5
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.4  Attribute machineRole
+### 2.4 Attribute machineRole
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1708,7 +1498,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008 operating
 system.
 
-2.5  Attribute machineWidePolicy
+### 2.5 Attribute machineWidePolicy
 
 For a given Active Directory domain, this attribute specifies the policy to be replicated to the clients.
 
@@ -1726,7 +1516,7 @@ For a given Active Directory domain, this attribute specifies the policy to be r
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.6  Attribute mail
+### 2.6 Attribute mail
 
 This attribute specifies the list of email addresses belonging to a contact object in the directory.
 
@@ -1747,7 +1537,8 @@ Release: April 23, 2024
 
 21 / 276
 
- rangeLower: 0
+
+ rangeLower: 0
  rangeUpper: 256
  attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
  mapiID: 14846
@@ -1756,7 +1547,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.7  Attribute mailAddress
+### 2.7 Attribute mailAddress
 
 This attribute specifies the email address to be used by a DC when email–based replication is
 configured.
@@ -1777,7 +1568,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.8  Attribute managedBy
+### 2.8 Attribute managedBy
 
 This attribute can be used by administrators to specify the DN of an object representing the entity
 assigned to manage this object. A read-only domain controller object uses this attribute to store the
@@ -1810,7 +1601,8 @@ Release: April 23, 2024
 
 22 / 276
 
-2.9  Attribute managedObjects
+
+### 2.9 Attribute managedObjects
 
 This attribute specifies the list of objects that are managed by a user.
 
@@ -1830,7 +1622,7 @@ This attribute specifies the list of objects that are managed by a user.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.10  Attribute manager
+### 2.10 Attribute manager
 
 For user object a, this attribute specifies the name of the user who is a's manager.
 
@@ -1852,7 +1644,7 @@ For user object a, this attribute specifies the name of the user who is a's mana
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.11  Attribute mAPIID
+### 2.11 Attribute mAPIID
 
 This attribute specifies an integer used by Messaging Application Program Interface (MAPI) clients to
 define behavior.
@@ -1877,11 +1669,12 @@ Release: April 23, 2024
 
 23 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.12  Attribute marshalledInterface
+### 2.12 Attribute marshalledInterface
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1899,7 +1692,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.13  Attribute masteredBy
+### 2.13 Attribute masteredBy
 
 This attribute specifies the distinguished name (DN) for the NTDS Settings objects, and is the back
 link for the hasMasterNCs attribute as specified in [MS-ADA1] section 2.289.
@@ -1922,7 +1715,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.14  Attribute maxPwdAge
+### 2.14 Attribute maxPwdAge
 
 This attribute specifies the maximum amount of time that a password is valid. It is stored as a
 negative FILETIME, which represents a period of time expressed in a negative number of 100-
@@ -1944,7 +1737,8 @@ Release: April 23, 2024
 
 24 / 276
 
- schemaIdGuid: bf9679bb-0de6-11d0-a285-00aa003049e2
+
+ schemaIdGuid: bf9679bb-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: 0
  attributeSecurityGuid: c7407360-20bf-11d0-a768-00aa006e0529
@@ -1955,7 +1749,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.15  Attribute maxRenewAge
+### 2.15 Attribute maxRenewAge
 
 This attribute specifies the time period (in days) during which a user's ticket-granting ticket (TGT) can
 be renewed for the purposes of Kerberos authentication.
@@ -1976,7 +1770,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.16  Attribute maxStorage
+### 2.16 Attribute maxStorage
 
 This attribute specifies the maximum amount of disk space that a given user can consume.
 
@@ -1993,7 +1787,7 @@ This attribute specifies the maximum amount of disk space that a given user can 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.17  Attribute maxTicketAge
+### 2.17 Attribute maxTicketAge
 
 This attribute specifies the maximum amount of time (in hours) that a user's ticket-granting ticket
 (TGT) can be used for the purpose of Kerberos authentication.
@@ -2010,7 +1804,8 @@ Release: April 23, 2024
 
 25 / 276
 
- omSyntax: 65
+
+ omSyntax: 65
  isSingleValued: TRUE
  schemaIdGuid: bf9679be-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
@@ -2022,7 +1817,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.18  Attribute mayContain
+### 2.18 Attribute mayContain
 
 This attribute specifies the list of optional attributes for a given class object.
 
@@ -2042,7 +1837,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.19  Attribute meetingAdvertiseScope
+### 2.19 Attribute meetingAdvertiseScope
 
 For a given meeting object, this attribute specifies whether the data contained is visible or advertised
 outside the corporate network.
@@ -2060,7 +1855,7 @@ outside the corporate network.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.20  Attribute meetingApplication
+### 2.20 Attribute meetingApplication
 
 For a given meeting object, this attribute specifies the application that can be used to enable Internet
 meeting services, for example, Microsoft NetMeeting or Microsoft Exchange 2000 Conferencing Server.
@@ -2076,7 +1871,8 @@ Release: April 23, 2024
 
 26 / 276
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: FALSE
  schemaIdGuid: 11b6cc83-48c4-11d1-a9c3-0000f80367c1
@@ -2086,7 +1882,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.21  Attribute meetingBandwidth
+### 2.21 Attribute meetingBandwidth
 
 For a given meeting object, this attribute specifies the bandwidth available to conduct that meeting.
 
@@ -2103,7 +1899,7 @@ For a given meeting object, this attribute specifies the bandwidth available to 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.22  Attribute meetingBlob
+### 2.22 Attribute meetingBlob
 
 For a given meeting object, this attribute specifies general information about the meeting. The
 structure of the contents of this attribute is not constrained by Active Directory and is determined by
@@ -2123,7 +1919,7 @@ the application that uses the binary large object (BLOB).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.23  Attribute meetingContactInfo
+### 2.23 Attribute meetingContactInfo
 
 For a given meeting object, this attribute specifies how meeting attendees can attend the meeting by
 using the contact information specified, for example, a phone number or URL.
@@ -2142,14 +1938,15 @@ Release: April 23, 2024
 
 27 / 276
 
- schemaIdGuid: 11b6cc87-48c4-11d1-a9c3-0000f80367c1
+
+ schemaIdGuid: 11b6cc87-48c4-11d1-a9c3-0000f80367c1
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.24  Attribute meetingDescription
+### 2.24 Attribute meetingDescription
 
 For a given meeting object, this attribute specifies a description of the meeting (for example, agenda
 and attendees).
@@ -2168,7 +1965,7 @@ and attendees).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.25  Attribute meetingEndTime
+### 2.25 Attribute meetingEndTime
 
 For a given meeting object, this attribute specifies the end date and time of a meeting.
 
@@ -2185,7 +1982,7 @@ For a given meeting object, this attribute specifies the end date and time of a 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.26  Attribute meetingID
+### 2.26 Attribute meetingID
 
 For a given meeting object, this attribute specifies a numerical ID for the meeting.
 
@@ -2207,9 +2004,10 @@ Release: April 23, 2024
 
 28 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.27  Attribute meetingIP
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.27 Attribute meetingIP
 
 For a given meeting object, this attribute specifies an IP address for the online meeting.
 
@@ -2226,7 +2024,7 @@ For a given meeting object, this attribute specifies an IP address for the onlin
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.28  Attribute meetingIsEncrypted
+### 2.28 Attribute meetingIsEncrypted
 
 For a given meeting object, this attribute specifies whether network traffic associated with the meeting
 is to be encrypted. A value of TRUE indicates that encryption is required.
@@ -2244,7 +2042,7 @@ is to be encrypted. A value of TRUE indicates that encryption is required.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.29  Attribute meetingKeyword
+### 2.29 Attribute meetingKeyword
 
 For a given meeting object, this attribute specifies a keyword that enables users to search for the
 meeting.
@@ -2269,7 +2067,8 @@ Release: April 23, 2024
 
 29 / 276
 
-2.30  Attribute meetingLanguage
+
+### 2.30 Attribute meetingLanguage
 
 For a given meeting object, this attribute specifies the language of the meeting.
 
@@ -2286,7 +2085,7 @@ For a given meeting object, this attribute specifies the language of the meeting
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.31  Attribute meetingLocation
+### 2.31 Attribute meetingLocation
 
 For a given meeting object, this attribute specifies the physical location of the meeting.
 
@@ -2303,7 +2102,7 @@ For a given meeting object, this attribute specifies the physical location of th
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.32  Attribute meetingMaxParticipants
+### 2.32 Attribute meetingMaxParticipants
 
 For a given meeting object, this attribute specifies the maximum number of participants for the
 meeting.
@@ -2321,7 +2120,7 @@ meeting.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.33  Attribute meetingName
+### 2.33 Attribute meetingName
 
 For a given meeting object, this attribute specifies the name of the meeting.
 
@@ -2335,7 +2134,8 @@ Release: April 23, 2024
 
 30 / 276
 
- attributeId: 1.2.840.113556.1.4.566
+
+ attributeId: 1.2.840.113556.1.4.566
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -2347,7 +2147,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.34  Attribute meetingOriginator
+### 2.34 Attribute meetingOriginator
 
 For a given meeting object, this attribute specifies the name of the individual who scheduled the
 meeting.
@@ -2365,7 +2165,7 @@ meeting.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.35  Attribute meetingOwner
+### 2.35 Attribute meetingOwner
 
 For a given meeting object, this attribute specifies the name of the individual who owns the meeting.
 
@@ -2382,7 +2182,7 @@ For a given meeting object, this attribute specifies the name of the individual 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.36  Attribute meetingProtocol
+### 2.36 Attribute meetingProtocol
 
 For a given meeting object, this attribute specifies the video conferencing protocol(s) to be used for
 the meeting, for example, H.320 or T.120.
@@ -2401,7 +2201,8 @@ Release: April 23, 2024
 
 31 / 276
 
- schemaIdGuid: 11b6cc81-48c4-11d1-a9c3-0000f80367c1
+
+ schemaIdGuid: 11b6cc81-48c4-11d1-a9c3-0000f80367c1
  systemOnly: FALSE
  searchFlags: 0
  isMemberOfPartialAttributeSet: TRUE
@@ -2409,7 +2210,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.37  Attribute meetingRating
+### 2.37 Attribute meetingRating
 
 For a given meeting object, this attribute specifies the Platform for Internet Content Selection (PICS)
 rating for the meeting.
@@ -2427,7 +2228,7 @@ rating for the meeting.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.38  Attribute meetingRecurrence
+### 2.38 Attribute meetingRecurrence
 
 For a given meeting object, this attribute specifies the recurrence parameters for the meeting, for
 example, "Every weekday, 6/1/2006–6/1/2007". The semantics of this attribute are not determined
@@ -2446,7 +2247,7 @@ by Active Directory but by the application that uses the attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.39  Attribute meetingScope
+### 2.39 Attribute meetingScope
 
 For a given meeting object, this attribute specifies the scope of the meeting (for example, global or
 local). The semantics of this attribute are not determined by Active Directory but by the application
@@ -2467,13 +2268,14 @@ Release: April 23, 2024
 
 32 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.40  Attribute meetingStartTime
+### 2.40 Attribute meetingStartTime
 
 For a given meeting object, this attribute specifies the start date and time of the meeting.
 
@@ -2490,7 +2292,7 @@ For a given meeting object, this attribute specifies the start date and time of 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.41  Attribute meetingType
+### 2.41 Attribute meetingType
 
 For a given meeting object, this attribute specifies the type of the meeting. The semantics of this
 attribute are not determined by Active Directory but by the application that uses the attribute.
@@ -2508,7 +2310,7 @@ attribute are not determined by Active Directory but by the application that use
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.42  Attribute meetingURL
+### 2.42 Attribute meetingURL
 
 For a given meeting object, this attribute specifies the URL for the meeting.
 
@@ -2532,7 +2334,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.43  Attribute member
+
+### 2.43 Attribute member
 
 For a given group object, this attribute specifies the list of objects that belong to the group, except for
 user accounts whose primaryGroupID specifies the given group object. Those user accounts are
@@ -2561,7 +2364,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.44  Attribute memberNisNetgroup
+### 2.44 Attribute memberNisNetgroup
 
 For a given group object, this attribute specifies the list of netgroups that are members of this
 netgroup.
@@ -2579,7 +2382,7 @@ netgroup.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.45  Attribute memberOf
+### 2.45 Attribute memberOf
 
 For a given user or group object, this attribute specifies the distinguished names of the groups to
 which this object belongs, except for a user object's primary group. The user object's primary group is
@@ -2600,7 +2403,8 @@ Release: April 23, 2024
 
 34 / 276
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: FALSE
  schemaIdGuid: bf967991-0de6-11d0-a285-00aa003049e2
  systemOnly: TRUE
@@ -2615,7 +2419,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.46  Attribute memberUid
+### 2.46 Attribute memberUid
 
 For a given group object, this attribute specifies the logon names of the members of the group.
 
@@ -2632,7 +2436,7 @@ For a given group object, this attribute specifies the logon names of the member
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.47  Attribute mhsORAddress
+### 2.47 Attribute mhsORAddress
 
 For a given user or contact object, this attribute specifies the X.400 ([X400]) address of the individual
 represented by that object.
@@ -2650,7 +2454,7 @@ represented by that object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.48  Attribute middleName
+### 2.48 Attribute middleName
 
 For a given user or contact object, this attribute specifies the middle name of the individual
 represented by that object.
@@ -2666,7 +2470,8 @@ Release: April 23, 2024
 
 35 / 276
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: bf9679f2-0de6-11d0-a285-00aa003049e2
@@ -2678,7 +2483,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.49  Attribute minPwdAge
+### 2.49 Attribute minPwdAge
 
 For a given security principle, this attribute specifies the minimum amount of time that a password
 can be used. It is stored as a negative FILETIME, which represents a period of time expressed in a
@@ -2704,7 +2509,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.50  Attribute minPwdLength
+### 2.50 Attribute minPwdLength
 
 For a given security principle, this attribute specifies the minimum number of characters that a
 password has to contain.
@@ -2733,7 +2538,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.51  Attribute minTicketAge
+
+### 2.51 Attribute minTicketAge
 
 For a given security principle, this attribute specifies the minimum time period (in hours) that a user's
 TGT can be used for Kerberos authentication before a request can be made to renew the ticket.
@@ -2754,7 +2560,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.52  Attribute mobile
+### 2.52 Attribute mobile
 
 For a given user or contact object, this attribute specifies the primary mobile phone number of the
 individual represented by that object.
@@ -2776,7 +2582,7 @@ individual represented by that object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.53  Attribute modifiedCount
+### 2.53 Attribute modifiedCount
 
 This attribute specifies the NetLogon change log serial number, as specified in [MS-SAMR] section
 2.2.3.1.
@@ -2801,13 +2607,14 @@ Release: April 23, 2024
 
 37 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, attribute attributeSecurityGuid is not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.54  Attribute modifiedCountAtLastProm
+### 2.54 Attribute modifiedCountAtLastProm
 
 This attribute specifies the NetLogon change log serial number at the last update, as specified in [MS-
 SAMR] section 2.2.3.1.
@@ -2828,7 +2635,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.55  Attribute modifyTimeStamp
+### 2.55 Attribute modifyTimeStamp
 
 For a given object, this attribute specifies the date when that object was last changed.
 
@@ -2849,7 +2656,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.56  Attribute moniker
+### 2.56 Attribute moniker
 
 For a given Component Object Model (COM) object, this attribute specifies the name or path location
 for that COM object.
@@ -2868,14 +2675,15 @@ Release: April 23, 2024
 
 38 / 276
 
- schemaIdGuid: bf9679c7-0de6-11d0-a285-00aa003049e2
+
+ schemaIdGuid: bf9679c7-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.57  Attribute monikerDisplayName
+### 2.57 Attribute monikerDisplayName
 
 For a given COM object, this attribute specifies the display name of that COM object.
 
@@ -2892,7 +2700,7 @@ For a given COM object, this attribute specifies the display name of that COM ob
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.58  Attribute moveTreeState
+### 2.58 Attribute moveTreeState
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -2910,7 +2718,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.59  Attribute mS-DS-ConsistencyChildCount
+### 2.59 Attribute mS-DS-ConsistencyChildCount
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -2933,9 +2741,10 @@ Release: April 23, 2024
 
 39 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.60  Attribute mS-DS-ConsistencyGuid
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.60 Attribute mS-DS-ConsistencyGuid
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -2953,7 +2762,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.61  Attribute mS-DS-CreatorSID
+### 2.61 Attribute mS-DS-CreatorSID
 
 For a given object, this attribute specifies the security identifier (SID), as defined in [MS-DTYP]
 section 2.4.2, of the account that created the object.
@@ -2974,7 +2783,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.62  Attribute ms-DS-MachineAccountQuota
+### 2.62 Attribute ms-DS-MachineAccountQuota
 
 For a given security principle, this attribute specifies, the quota of machine accounts that can be
 allocated, as specified in [MS-ADTS] section 6.1.1.4.
@@ -2998,11 +2807,12 @@ Release: April 23, 2024
 
 40 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.63  Attribute mS-DS-ReplicatesNCReason
+### 2.63 Attribute mS-DS-ReplicatesNCReason
 
 This attribute specifies the ntdsConnection object that indicates the connection as used by the
 Knowledge Consistency Checker (KCC) in the replication topology, as specified in [MS-ADTS] section
@@ -3025,7 +2835,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.64  Attribute ms-LAPS-Password
+### 2.64 Attribute ms-LAPS-Password
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3068,7 +2878,8 @@ Release: April 23, 2024
 
 41 / 276
 
-2.65  Attribute ms-LAPS-PasswordExpirationTime
+
+### 2.65 Attribute ms-LAPS-PasswordExpirationTime
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3088,7 +2899,7 @@ LAPS-Password attribute (section 2.64), the ms-LAPS-EncryptedPassword attribute 
 Version-specific behavior: This attribute is added to Active Directory Domain Services (AD DS) by an
 Administrator.
 
-2.66  Attribute ms-LAPS-EncryptedPassword
+### 2.66 Attribute ms-LAPS-EncryptedPassword
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3139,7 +2950,8 @@ Release: April 23, 2024
 
 42 / 276
 
-PasswordUpdateTimestamp (8 bytes): contains the UTC timestamp specifying when this password
+
+PasswordUpdateTimestamp (8 bytes): contains the UTC timestamp specifying when this password
 
 was stored.
 
@@ -3151,7 +2963,7 @@ EncryptedPassword (variable): variable-length data containing an encrypted buffe
 encrypted using a group key obtained via [MS-GKDI]. The decrypted data contains a JSON string
 that uses the format specified in ms-LAPS-Password (section 2.64).
 
-2.67  Attribute ms-LAPS-EncryptedPasswordHistory
+### 2.67 Attribute ms-LAPS-EncryptedPasswordHistory
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3171,7 +2983,7 @@ Version-specific behavior: This attribute is added to AD DS by an Administrator.
 Each value in this attribute MUST use the same format as specified for the ms-LAPS-
 EncryptedPassword attribute (section 2.66).
 
-2.68  Attribute ms-LAPS-EncryptedDSRMPassword
+### 2.68 Attribute ms-LAPS-EncryptedDSRMPassword
 
 This attribute is used by the Local Administrator Password Solution feature.
 
@@ -3191,7 +3003,7 @@ Version-specific behavior: This attribute is added to AD DS by an Administrator.
 The value stored in this attribute MUST use the same format as specified for the ms-LAPS-
 EncryptedPassword attribute (section 2.66).
 
-2.69  Attribute ms-LAPS-EncryptedDSRMPasswordHistory
+### 2.69 Attribute ms-LAPS-EncryptedDSRMPasswordHistory
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3206,7 +3018,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- ldapDisplayName: msLAPS-EncryptedPasswordHistory
+
+ ldapDisplayName: msLAPS-EncryptedPasswordHistory
  attributeId: 1.2.840.113556.1.6.44.1.6
  attributeSyntax: 2.5.5.10
  omSyntax: 4
@@ -3219,7 +3032,7 @@ Version-specific behavior: This attribute is added to AD DS by an Administrator.
 Each value in this attribute MUST use the same format as specified for the ms-LAPS-
 EncryptedPassword attribute (section 2.66).
 
-2.70  Attribute ms-Mcs-AdmPwd
+### 2.70 Attribute ms-Mcs-AdmPwd
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3236,7 +3049,7 @@ This attribute contains a cleartext password.
 
 Version-specific behavior: This attribute is added to AD DS by an Administrator.
 
-2.71  Attribute ms-Mcs-AdmPwdExpirationTime
+### 2.71 Attribute ms-Mcs-AdmPwdExpirationTime
 
 This attribute is used by the Local Administrator Password Solution (LAPS) feature.
 
@@ -3254,7 +3067,7 @@ AdmPwd attribute (section 2.70).
 
 Version-specific behavior: This attribute is added to AD DS by an Administrator.
 
-2.72  Attribute ms-net-ieee-80211-GP-PolicyData
+### 2.72 Attribute ms-net-ieee-80211-GP-PolicyData
 
 This attribute contains all the settings and data that comprise a group policy configuration for 802.11
 wireless networks.
@@ -3271,7 +3084,8 @@ Release: April 23, 2024
 
 44 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 9c1495a5-4d76-468e-991e-1433b0a67855
  systemOnly: FALSE
@@ -3281,7 +3095,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.73  Attribute ms-net-ieee-80211-GP-PolicyGUID
+### 2.73 Attribute ms-net-ieee-80211-GP-PolicyGUID
 
 This attribute contains a GUID that identifies a specific 802.11 group policy object on the domain.
 GUID is defined in [MS-DTYP] section 2.3.4.
@@ -3300,7 +3114,7 @@ GUID is defined in [MS-DTYP] section 2.3.4.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.74  Attribute ms-net-ieee-80211-GP-PolicyReserved
+### 2.74 Attribute ms-net-ieee-80211-GP-PolicyReserved
 
 This attribute is reserved for future use.
 
@@ -3318,7 +3132,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.75  Attribute ms-net-ieee-8023-GP-PolicyData
+### 2.75 Attribute ms-net-ieee-8023-GP-PolicyData
 
 This attribute contains all the settings and data that comprise a group policy configuration for 802.3
 wired networks.
@@ -3337,7 +3151,8 @@ Release: April 23, 2024
 
 45 / 276
 
- schemaIdGuid: 8398948b-7457-4d91-bd4d-8d7ed669c9f7
+
+ schemaIdGuid: 8398948b-7457-4d91-bd4d-8d7ed669c9f7
  systemOnly: FALSE
  searchFlags: 0
  rangeUpper: 1048576
@@ -3345,7 +3160,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.76  Attribute ms-net-ieee-8023-GP-PolicyGUID
+### 2.76 Attribute ms-net-ieee-8023-GP-PolicyGUID
 
 This attribute contains a GUID that identifies a specific 802.3 group policy object on the domain.
 
@@ -3363,7 +3178,7 @@ This attribute contains a GUID that identifies a specific 802.3 group policy obj
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.77  Attribute ms-net-ieee-8023-GP-PolicyReserved
+### 2.77 Attribute ms-net-ieee-8023-GP-PolicyReserved
 
 This attribute is reserved for future use.
 
@@ -3381,7 +3196,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.78  Attribute mS-SQL-Alias
+### 2.78 Attribute mS-SQL-Alias
 
 This attribute is used by Microsoft SQL Server. This attribute is not necessary for Active Directory to
 function. The protocol does not define a format beyond that required by the schema.
@@ -3403,12 +3218,13 @@ Release: April 23, 2024
 
 46 / 276
 
- isMemberOfPartialAttributeSet: TRUE
+
+ isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.79  Attribute mS-SQL-AllowAnonymousSubscription
+### 2.79 Attribute mS-SQL-AllowAnonymousSubscription
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3426,7 +3242,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.80  Attribute mS-SQL-AllowImmediateUpdatingSubscription
+### 2.80 Attribute mS-SQL-AllowImmediateUpdatingSubscription
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3444,7 +3260,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.81  Attribute mS-SQL-AllowKnownPullSubscription
+### 2.81 Attribute mS-SQL-AllowKnownPullSubscription
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3467,9 +3283,10 @@ Release: April 23, 2024
 
 47 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.82  Attribute mS-SQL-AllowQueuedUpdatingSubscription
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.82 Attribute mS-SQL-AllowQueuedUpdatingSubscription
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3487,7 +3304,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.83  Attribute mS-SQL-AllowSnapshotFilesFTPDownloading
+### 2.83 Attribute mS-SQL-AllowSnapshotFilesFTPDownloading
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3505,7 +3322,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.84  Attribute mS-SQL-AppleTalk
+### 2.84 Attribute mS-SQL-AppleTalk
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3530,7 +3347,8 @@ Release: April 23, 2024
 
 48 / 276
 
-2.85  Attribute mS-SQL-Applications
+
+### 2.85 Attribute mS-SQL-Applications
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3548,7 +3366,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.86  Attribute mS-SQL-Build
+### 2.86 Attribute mS-SQL-Build
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3566,7 +3384,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.87  Attribute mS-SQL-CharacterSet
+### 2.87 Attribute mS-SQL-CharacterSet
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3584,7 +3402,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.88  Attribute mS-SQL-Clustered
+### 2.88 Attribute mS-SQL-Clustered
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3596,7 +3414,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: MS-SQL-Clustered
+
+ cn: MS-SQL-Clustered
  ldapDisplayName: mS-SQL-Clustered
  attributeId: 1.2.840.113556.1.4.1373
  attributeSyntax: 2.5.5.8
@@ -3609,7 +3428,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.89  Attribute mS-SQL-ConnectionURL
+### 2.89 Attribute mS-SQL-ConnectionURL
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3627,7 +3446,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.90  Attribute mS-SQL-Contact
+### 2.90 Attribute mS-SQL-Contact
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3645,7 +3464,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.91  Attribute mS-SQL-CreationDate
+### 2.91 Attribute mS-SQL-CreationDate
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3662,7 +3481,8 @@ Release: April 23, 2024
 
 50 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: ede14754-ccee-11d2-9993-0000f87a57d4
  systemOnly: FALSE
@@ -3671,7 +3491,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.92  Attribute mS-SQL-Database
+### 2.92 Attribute mS-SQL-Database
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3690,7 +3510,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.93  Attribute mS-SQL-Description
+### 2.93 Attribute mS-SQL-Description
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3708,7 +3528,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.94  Attribute mS-SQL-GPSHeight
+### 2.94 Attribute mS-SQL-GPSHeight
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3728,13 +3548,14 @@ Release: April 23, 2024
 
 51 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.95  Attribute mS-SQL-GPSLatitude
+### 2.95 Attribute mS-SQL-GPSLatitude
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3752,7 +3573,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.96  Attribute mS-SQL-GPSLongitude
+### 2.96 Attribute mS-SQL-GPSLongitude
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3770,7 +3591,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.97  Attribute mS-SQL-InformationDirectory
+### 2.97 Attribute mS-SQL-InformationDirectory
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3793,9 +3614,10 @@ Release: April 23, 2024
 
 52 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.98  Attribute mS-SQL-InformationURL
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.98 Attribute mS-SQL-InformationURL
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3813,7 +3635,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.99  Attribute mS-SQL-Keywords
+### 2.99 Attribute mS-SQL-Keywords
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3831,7 +3653,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.100  Attribute mS-SQL-Language
+### 2.100 Attribute mS-SQL-Language
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3856,7 +3678,8 @@ Release: April 23, 2024
 
 53 / 276
 
-2.101  Attribute mS-SQL-LastBackupDate
+
+### 2.101 Attribute mS-SQL-LastBackupDate
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3874,7 +3697,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.102  Attribute mS-SQL-LastDiagnosticDate
+### 2.102 Attribute mS-SQL-LastDiagnosticDate
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3892,7 +3715,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.103  Attribute mS-SQL-LastUpdatedDate
+### 2.103 Attribute mS-SQL-LastUpdatedDate
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3910,7 +3733,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.104  Attribute mS-SQL-Location
+### 2.104 Attribute mS-SQL-Location
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3922,7 +3745,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: MS-SQL-Location
+
+ cn: MS-SQL-Location
  ldapDisplayName: mS-SQL-Location
  attributeId: 1.2.840.113556.1.4.1366
  attributeSyntax: 2.5.5.12
@@ -3935,7 +3759,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.105  Attribute mS-SQL-Memory
+### 2.105 Attribute mS-SQL-Memory
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3953,7 +3777,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.106  Attribute mS-SQL-MultiProtocol
+### 2.106 Attribute mS-SQL-MultiProtocol
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3971,7 +3795,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.107  Attribute mS-SQL-Name
+### 2.107 Attribute mS-SQL-Name
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -3988,7 +3812,8 @@ Release: April 23, 2024
 
 55 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 3532dfd8-ccee-11d2-9993-0000f87a57d4
  systemOnly: FALSE
@@ -3998,7 +3823,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.108  Attribute mS-SQL-NamedPipe
+### 2.108 Attribute mS-SQL-NamedPipe
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4016,7 +3841,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.109  Attribute mS-SQL-PublicationURL
+### 2.109 Attribute mS-SQL-PublicationURL
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4034,7 +3859,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.110  Attribute mS-SQL-Publisher
+### 2.110 Attribute mS-SQL-Publisher
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4054,13 +3879,14 @@ Release: April 23, 2024
 
 56 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.111  Attribute mS-SQL-RegisteredOwner
+### 2.111 Attribute mS-SQL-RegisteredOwner
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4078,7 +3904,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.112  Attribute mS-SQL-ServiceAccount
+### 2.112 Attribute mS-SQL-ServiceAccount
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4096,7 +3922,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.113  Attribute mS-SQL-Size
+### 2.113 Attribute mS-SQL-Size
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4119,9 +3945,10 @@ Release: April 23, 2024
 
 57 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.114  Attribute mS-SQL-SortOrder
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.114 Attribute mS-SQL-SortOrder
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4139,7 +3966,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.115  Attribute mS-SQL-SPX
+### 2.115 Attribute mS-SQL-SPX
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4157,7 +3984,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.116  Attribute mS-SQL-Status
+### 2.116 Attribute mS-SQL-Status
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4182,7 +4009,8 @@ Release: April 23, 2024
 
 58 / 276
 
-2.117  Attribute mS-SQL-TCPIP
+
+### 2.117 Attribute mS-SQL-TCPIP
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4200,7 +4028,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.118  Attribute mS-SQL-ThirdParty
+### 2.118 Attribute mS-SQL-ThirdParty
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4218,7 +4046,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.119  Attribute mS-SQL-Type
+### 2.119 Attribute mS-SQL-Type
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4236,7 +4064,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.120  Attribute mS-SQL-UnicodeSortOrder
+### 2.120 Attribute mS-SQL-UnicodeSortOrder
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4248,7 +4076,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: MS-SQL-UnicodeSortOrder
+
+ cn: MS-SQL-UnicodeSortOrder
  ldapDisplayName: mS-SQL-UnicodeSortOrder
  attributeId: 1.2.840.113556.1.4.1372
  attributeSyntax: 2.5.5.9
@@ -4261,7 +4090,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.121  Attribute mS-SQL-Version
+### 2.121 Attribute mS-SQL-Version
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4280,7 +4109,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.122  Attribute mS-SQL-Vines
+### 2.122 Attribute mS-SQL-Vines
 
 This attribute is used by SQL Server. This attribute is not necessary for Active Directory to function.
 The protocol does not define a format beyond that required by the schema.
@@ -4298,7 +4127,7 @@ The protocol does not define a format beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.123  Attribute msAuthz-CentralAccessPolicyID
+### 2.123 Attribute msAuthz-CentralAccessPolicyID
 
 For a Central Access Policy, this attribute defines a GUID that can be used to identify the set of
 policies when applied to a resource.
@@ -4314,7 +4143,8 @@ Release: April 23, 2024
 
 60 / 276
 
- attributeSyntax: 2.5.5.17
+
+ attributeSyntax: 2.5.5.17
  omSyntax: 4
  isSingleValued: TRUE
  systemOnly: FALSE
@@ -4324,7 +4154,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012 operating system.
 
-2.124  Attribute msAuthz-EffectiveSecurityPolicy
+### 2.124 Attribute msAuthz-EffectiveSecurityPolicy
 
 For a central access rule, this attribute defines the permission that is applying to the target resources
 on the central access rule.
@@ -4342,7 +4172,7 @@ on the central access rule.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.125  Attribute msAuthz-LastEffectiveSecurityPolicy
+### 2.125 Attribute msAuthz-LastEffectiveSecurityPolicy
 
 For a central access policy entry (CAPE), this attribute defines the security policy that was last applied
 to the objects that the CAPE is applied to.
@@ -4360,7 +4190,7 @@ to the objects that the CAPE is applied to.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.126  Attribute msAuthz-MemberRulesInCentralAccessPolicy
+### 2.126 Attribute msAuthz-MemberRulesInCentralAccessPolicy
 
 For a central access policy, this attribute identifies the central access rules that make up the policy.
 
@@ -4380,14 +4210,15 @@ Release: April 23, 2024
 
 61 / 276
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  schemaIdGuid: 57f22f7a-377e-42c3-9872-cec6f21d2e3e
  linkID: 2184
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.127  Attribute msAuthz-MemberRulesInCentralAccessPolicyBL
+### 2.127 Attribute msAuthz-MemberRulesInCentralAccessPolicyBL
 
 This attribute is the back link for the msAuthz-MemberRulesInCentralAccessPolicy attribute. For a
 central access rule object, this attribute references one or more central access policies that point to it.
@@ -4407,7 +4238,7 @@ central access rule object, this attribute references one or more central access
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.128  Attribute msAuthz-ProposedSecurityPolicy
+### 2.128 Attribute msAuthz-ProposedSecurityPolicy
 
 This attribute defines, for a central access policy entry (CAPE), the proposed security policy of the
 objects that the CAPE is applied to.
@@ -4425,7 +4256,7 @@ objects that the CAPE is applied to.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.129  Attribute msAuthz-ResourceCondition
+### 2.129 Attribute msAuthz-ResourceCondition
 
 For a central access rule, this attribute is an expression that identifies the scope of the target resource
 to which the policy applies.
@@ -4446,12 +4277,13 @@ Release: April 23, 2024
 
 62 / 276
 
- schemaIdGuid: 80997877-f874-4c68-864d-6e508a83bdbd
+
+ schemaIdGuid: 80997877-f874-4c68-864d-6e508a83bdbd
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.130  Attribute msCOM-DefaultPartitionLink
+### 2.130 Attribute msCOM-DefaultPartitionLink
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4470,7 +4302,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 operating system.
 
-2.131  Attribute msCOM-ObjectId
+### 2.131 Attribute msCOM-ObjectId
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4488,7 +4320,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.132  Attribute msCOM-PartitionLink
+### 2.132 Attribute msCOM-PartitionLink
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4512,11 +4344,12 @@ Release: April 23, 2024
 
 63 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.133  Attribute msCOM-PartitionSetLink
+### 2.133 Attribute msCOM-PartitionSetLink
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4536,7 +4369,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.134  Attribute msCOM-UserLink
+### 2.134 Attribute msCOM-UserLink
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4556,7 +4389,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.135  Attribute msCOM-UserPartitionSetLink
+### 2.135 Attribute msCOM-UserPartitionSetLink
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -4578,13 +4411,14 @@ Release: April 23, 2024
 
 64 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
  linkID: 1048
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.136  Attribute mscopeId
+### 2.136 Attribute mscopeId
 
 For a given computer object that is a Dynamic Host Configuration Protocol (DHCP) server, this
 attribute specifies that there is a multicast scope on the DHCP server represented by that object.
@@ -4602,7 +4436,7 @@ attribute specifies that there is a multicast scope on the DHCP server represent
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.137  Attribute msDFS-Commentv2
+### 2.137 Attribute msDFS-Commentv2
 
 A comment associated with a Distributed File System (DFS) root or link.
 
@@ -4621,7 +4455,7 @@ A comment associated with a Distributed File System (DFS) root or link.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.138  Attribute msDFS-GenerationGUIDv2
+### 2.138 Attribute msDFS-GenerationGUIDv2
 
 This attribute is updated each time the entry that contains this attribute is modified.
 
@@ -4644,11 +4478,12 @@ Release: April 23, 2024
 
 65 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.139  Attribute msDFS-LastModifiedv2
+### 2.139 Attribute msDFS-LastModifiedv2
 
 This attribute is updated on each write to the entry that contains the attribute.
 
@@ -4665,7 +4500,7 @@ This attribute is updated on each write to the entry that contains the attribute
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.140  Attribute msDFS-LinkIdentityGUIDv2
+### 2.140 Attribute msDFS-LinkIdentityGUIDv2
 
 This attribute is set only when the link is created.
 
@@ -4684,7 +4519,7 @@ This attribute is set only when the link is created.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.141  Attribute msDFS-LinkPathv2
+### 2.141 Attribute msDFS-LinkPathv2
 
 This attribute specifies the DFS link path relative to the DFS root target share.
 
@@ -4708,9 +4543,10 @@ Release: April 23, 2024
 
 66 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.142  Attribute msDFS-LinkSecurityDescriptorv2
+Version-Specific Behavior: First implemented on Windows Server 2008.
+
+### 2.142 Attribute msDFS-LinkSecurityDescriptorv2
 
 A security descriptor of the DFS link's reparse point on the file system.
 
@@ -4727,7 +4563,7 @@ A security descriptor of the DFS link's reparse point on the file system.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.143  Attribute msDFS-NamespaceIdentityGUIDv2
+### 2.143 Attribute msDFS-NamespaceIdentityGUIDv2
 
 A GUID to identify the DFS namespace.
 
@@ -4746,7 +4582,7 @@ A GUID to identify the DFS namespace.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.144  Attribute msDFS-Propertiesv2
+### 2.144 Attribute msDFS-Propertiesv2
 
 Properties associated with DFS root/link.
 
@@ -4772,7 +4608,8 @@ Release: April 23, 2024
 
 67 / 276
 
-2.145  Attribute msDFS-SchemaMajorVersion
+
+### 2.145 Attribute msDFS-SchemaMajorVersion
 
 Major version of the schema of DFS metadata.
 
@@ -4791,7 +4628,7 @@ Major version of the schema of DFS metadata.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.146  Attribute msDFS-SchemaMinorVersion
+### 2.146 Attribute msDFS-SchemaMinorVersion
 
 Minor version of the schema of DFS metadata.
 
@@ -4810,7 +4647,7 @@ Minor version of the schema of DFS metadata.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.147  Attribute msDFS-ShortNameLinkPathv2
+### 2.147 Attribute msDFS-ShortNameLinkPathv2
 
 The short name DFS link path relative to the DFS root target share.
 
@@ -4836,7 +4673,8 @@ Release: April 23, 2024
 
 68 / 276
 
-2.148  Attribute msDFS-TargetListv2
+
+### 2.148 Attribute msDFS-TargetListv2
 
 Targets corresponding to DFS root/link.
 
@@ -4855,7 +4693,7 @@ Targets corresponding to DFS root/link.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.149  Attribute msDFS-Ttlv2
+### 2.149 Attribute msDFS-Ttlv2
 
 The Time to Live (TTL) associated with a DFS root or link. This attribute is used at DFS referral time.
 
@@ -4872,7 +4710,7 @@ The Time to Live (TTL) associated with a DFS root or link. This attribute is use
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.150  Attribute msDFSR-CachePolicy
+### 2.150 Attribute msDFSR-CachePolicy
 
 This attribute is reserved for future use.
 
@@ -4887,7 +4725,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.151  Attribute msDFSR-CommonStagingPath
+### 2.151 Attribute msDFSR-CommonStagingPath
 
 This attribute is reserved for future use.
 
@@ -4902,7 +4740,8 @@ Release: April 23, 2024
 
 69 / 276
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 936eac41-d257-4bb9-bd55-f310a3cf09ad
@@ -4912,7 +4751,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.152  Attribute msDFSR-CommonStagingSizeInMb
+### 2.152 Attribute msDFSR-CommonStagingSizeInMb
 
 This attribute is reserved for future use.
 
@@ -4929,7 +4768,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.153  Attribute msDFSR-ComputerReference
+### 2.153 Attribute msDFSR-ComputerReference
 
 This attribute is used by the Distributed File System Replication Protocol and contains a forward-link to
 a computer object.
@@ -4947,7 +4786,7 @@ a computer object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.154  Attribute msDFSR-ComputerReferenceBL
+### 2.154 Attribute msDFSR-ComputerReferenceBL
 
 This attribute specifies a back link attribute and contains a value used to indicate a back reference
 from a computer by the Distributed File System Replication Protocol.
@@ -4968,13 +4807,14 @@ Release: April 23, 2024
 
 70 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
  linkID: 2051
  systemFlags: FLAG_ATTR_NOT_REPLICATED
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.155  Attribute msDFSR-ConflictPath
+### 2.155 Attribute msDFSR-ConflictPath
 
 This attribute specifies the full path of the conflict directory used by the Distributed File System
 Replication Protocol.
@@ -4992,7 +4832,7 @@ Replication Protocol.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.156  Attribute msDFSR-ConflictSizeInMb
+### 2.156 Attribute msDFSR-ConflictSizeInMb
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to control the
 size of the ConflictAndDeleted directory.
@@ -5010,7 +4850,7 @@ size of the ConflictAndDeleted directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.157  Attribute msDFSR-ContentSetGuid
+### 2.157 Attribute msDFSR-ContentSetGuid
 
 This attribute specifies the GUID of a content set in the Distributed File System Replication Protocol.
 
@@ -5032,9 +4872,10 @@ Release: April 23, 2024
 
 71 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.158  Attribute msDFSR-DefaultCompressionExclusionFilter
+Version-Specific Behavior: First implemented on Windows Server 2003 R2.
+
+### 2.158 Attribute msDFSR-DefaultCompressionExclusionFilter
 
 This attribute specifies a filter string containing extensions of file types not to be compressed.
 
@@ -5051,7 +4892,7 @@ This attribute specifies a filter string containing extensions of file types not
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.159  Attribute msDFSR-DeletedPath
+### 2.159 Attribute msDFSR-DeletedPath
 
 This attribute specifies the full path of the Deleted directory.
 
@@ -5067,7 +4908,7 @@ This attribute specifies the full path of the Deleted directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.160  Attribute msDFSR-DeletedSizeInMb
+### 2.160 Attribute msDFSR-DeletedSizeInMb
 
 This attribute specifies the size (in megabytes) of the Deleted directory.
 
@@ -5083,7 +4924,7 @@ This attribute specifies the size (in megabytes) of the Deleted directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.161  Attribute msDFSR-DfsLinkTarget
+### 2.161 Attribute msDFSR-DfsLinkTarget
 
 This attribute specifies a value used by the Distributed File System Replication Protocol.
 
@@ -5097,7 +4938,8 @@ Release: April 23, 2024
 
 72 / 276
 
- attributeId: 1.2.840.113556.1.6.13.3.24
+
+ attributeId: 1.2.840.113556.1.6.13.3.24
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -5108,7 +4950,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.162  Attribute msDFSR-DfsPath
+### 2.162 Attribute msDFSR-DfsPath
 
 This attribute specifies a value used by the Distributed File System Replication Protocol.
 
@@ -5125,7 +4967,7 @@ This attribute specifies a value used by the Distributed File System Replication
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.163  Attribute msDFSR-DirectoryFilter
+### 2.163 Attribute msDFSR-DirectoryFilter
 
 This attribute specifies a value used by the Distributed File System Replication Protocol for folder
 name filters.
@@ -5143,7 +4985,7 @@ name filters.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.164  Attribute msDFSR-DisablePacketPrivacy
+### 2.164 Attribute msDFSR-DisablePacketPrivacy
 
 This attribute is reserved for future use.
 
@@ -5162,11 +5004,12 @@ Release: April 23, 2024
 
 73 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.165  Attribute msDFSR-Enabled
+### 2.165 Attribute msDFSR-Enabled
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to identify
 whether a replicated folder is enabled or disabled.
@@ -5182,7 +5025,7 @@ whether a replicated folder is enabled or disabled.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.166  Attribute msDFSR-Extension
+### 2.166 Attribute msDFSR-Extension
 
 This attribute is reserved for future use.
 
@@ -5199,7 +5042,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.167  Attribute msDFSR-FileFilter
+### 2.167 Attribute msDFSR-FileFilter
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to control file
 replication.
@@ -5224,7 +5067,8 @@ Release: April 23, 2024
 
 74 / 276
 
-2.168  Attribute msDFSR-Flags
+
+### 2.168 Attribute msDFSR-Flags
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to reflect
 state.
@@ -5240,7 +5084,7 @@ state.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.169  Attribute msDFSR-Keywords
+### 2.169 Attribute msDFSR-Keywords
 
 This attribute specifies a value used by the Distributed File System Replication Protocol.
 
@@ -5257,7 +5101,7 @@ This attribute specifies a value used by the Distributed File System Replication
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.170  Attribute msDFSR-MaxAgeInCacheInMin
+### 2.170 Attribute msDFSR-MaxAgeInCacheInMin
 
 This attribute is reserved for future use.
 
@@ -5273,7 +5117,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.171  Attribute msDFSR-MemberReference
+### 2.171 Attribute msDFSR-MemberReference
 
 This attribute specifies a value used by the Distributed File System Replication Protocol as a forward
 link to the msDFSR-Member object [MS-ADSC].
@@ -5290,7 +5134,8 @@ Release: April 23, 2024
 
 75 / 276
 
- omSyntax: 127
+
+ omSyntax: 127
  omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: TRUE
  schemaIdGuid: 261337aa-f1c3-44b2-bbea-c88d49e6f0c7
@@ -5299,7 +5144,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.172  Attribute msDFSR-MemberReferenceBL
+### 2.172 Attribute msDFSR-MemberReferenceBL
 
 This attribute is a back link attribute and contains a value used by the Distributed File System
 Replication Protocol.
@@ -5318,7 +5163,7 @@ Replication Protocol.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.173  Attribute msDFSR-MinDurationCacheInMin
+### 2.173 Attribute msDFSR-MinDurationCacheInMin
 
 This attribute is reserved for future use.
 
@@ -5334,7 +5179,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.174  Attribute msDFSR-OnDemandExclusionDirectoryFilter
+### 2.174 Attribute msDFSR-OnDemandExclusionDirectoryFilter
 
 This attribute is reserved for future use.
 
@@ -5355,11 +5200,12 @@ Release: April 23, 2024
 
 76 / 276
 
- rangeUpper: 32767
+
+ rangeUpper: 32767
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.175  Attribute msDFSR-OnDemandExclusionFileFilter
+### 2.175 Attribute msDFSR-OnDemandExclusionFileFilter
 
 This attribute is reserved for future use.
 
@@ -5376,7 +5222,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.176  Attribute msDFSR-Options
+### 2.176 Attribute msDFSR-Options
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to control
 optional behavior.
@@ -5392,7 +5238,7 @@ optional behavior.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.177  Attribute msDFSR-Options2
+### 2.177 Attribute msDFSR-Options2
 
 This attribute is reserved for future use.
 
@@ -5407,7 +5253,7 @@ This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.178  Attribute msDFSR-Priority
+### 2.178 Attribute msDFSR-Priority
 
 This attribute is reserved for future use.
 
@@ -5418,7 +5264,8 @@ Release: April 23, 2024
 
 77 / 276
 
- cn: ms-DFSR-Priority
+
+ cn: ms-DFSR-Priority
  ldapDisplayName: msDFSR-Priority
  attributeId: 1.2.840.113556.1.6.13.3.25
  attributeSyntax: 2.5.5.9
@@ -5429,7 +5276,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.179  Attribute msDFSR-RdcEnabled
+### 2.179 Attribute msDFSR-RdcEnabled
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to control the
 use of Remote Differential Compression [MS-RDC].
@@ -5445,7 +5292,7 @@ use of Remote Differential Compression [MS-RDC].
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.180  Attribute msDFSR-RdcMinFileSizeInKb
+### 2.180 Attribute msDFSR-RdcMinFileSizeInKb
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to control the
 minimum size of files that will then be chunked by Remote Differential Compression [MS-RDC].
@@ -5463,7 +5310,7 @@ minimum size of files that will then be chunked by Remote Differential Compressi
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.181  Attribute msDFSR-ReadOnly
+### 2.181 Attribute msDFSR-ReadOnly
 
 This attribute specifies whether the content is read-only or read-write.
 
@@ -5483,9 +5330,10 @@ Release: April 23, 2024
 
 78 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.182  Attribute msDFSR-ReplicationGroupGuid
+Version-Specific Behavior: First implemented on Windows Server 2008.
+
+### 2.182 Attribute msDFSR-ReplicationGroupGuid
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to store the
 replication group GUID.
@@ -5503,7 +5351,7 @@ replication group GUID.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.183  Attribute msDFSR-ReplicationGroupType
+### 2.183 Attribute msDFSR-ReplicationGroupType
 
 This attribute specifies a value used by the Distributed File System Replication Protocol to store the
 replication group type.
@@ -5519,7 +5367,7 @@ replication group type.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.184  Attribute msDFSR-RootFence
+### 2.184 Attribute msDFSR-RootFence
 
 This attribute specifies a value used by the Distributed File System Replication Protocol for the root
 directory fence value.
@@ -5535,7 +5383,7 @@ directory fence value.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.185  Attribute msDFSR-RootPath
+### 2.185 Attribute msDFSR-RootPath
 
 This attribute specifies a value used by the Distributed File System Replication Protocol for the
 replicated folder root directory.
@@ -5547,7 +5395,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DFSR-RootPath
+
+ cn: ms-DFSR-RootPath
  ldapDisplayName: msDFSR-RootPath
  attributeId: 1.2.840.113556.1.6.13.3.3
  attributeSyntax: 2.5.5.12
@@ -5560,7 +5409,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.186  Attribute msDFSR-RootSizeInMb
+### 2.186 Attribute msDFSR-RootSizeInMb
 
 This attribute specifies a value used by the Distributed File System Replication Protocol.
 
@@ -5576,7 +5425,7 @@ This attribute specifies a value used by the Distributed File System Replication
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.187  Attribute msDFSR-Schedule
+### 2.187 Attribute msDFSR-Schedule
 
 This attribute specifies a value used by the Distributed File System Replication Protocol for replication
 schedule.
@@ -5594,7 +5443,7 @@ schedule.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.188  Attribute msDFSR-StagingCleanupTriggerInPercent
+### 2.188 Attribute msDFSR-StagingCleanupTriggerInPercent
 
 This attribute specifies the staging cleanup trigger in percentage of free disk space.
 
@@ -5613,11 +5462,12 @@ Release: April 23, 2024
 
 80 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.189  Attribute msDFSR-StagingPath
+### 2.189 Attribute msDFSR-StagingPath
 
 This attribute specifies a value used by the Distributed File System Replication Protocol for the
 replicated folder staging directory.
@@ -5635,7 +5485,7 @@ replicated folder staging directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.190  Attribute msDFSR-StagingSizeInMb
+### 2.190 Attribute msDFSR-StagingSizeInMb
 
 This attribute specifies a value used by the Distributed File System Replication Protocol for the staging
 directory’s cleanup quota size.
@@ -5653,7 +5503,7 @@ directory’s cleanup quota size.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.191  Attribute msDFSR-TombstoneExpiryInMin
+### 2.191 Attribute msDFSR-TombstoneExpiryInMin
 
 This attribute is reserved for future use.
 
@@ -5677,7 +5527,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.192  Attribute msDFSR-Version
+
+### 2.192 Attribute msDFSR-Version
 
 This attribute specifies a value used by the Distributed File System Replication Protocol.
 
@@ -5693,7 +5544,7 @@ This attribute specifies a value used by the Distributed File System Replication
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.193  Attribute msDNS-DNSKEYRecords
+### 2.193 Attribute msDNS-DNSKEYRecords
 
 This attribute is written onto dnsZone objects. It is used to store DNS state in BLOB format.
 
@@ -5711,7 +5562,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS state in
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.194  Attribute msDNS-DNSKEYRecordSetTTL
+### 2.194 Attribute msDNS-DNSKEYRecordSetTTL
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5730,7 +5581,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.195  Attribute msDNS-DSRecordAlgorithms
+### 2.195 Attribute msDNS-DSRecordAlgorithms
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5743,7 +5594,8 @@ Release: April 23, 2024
 
 82 / 276
 
- ldapDisplayName: msDNS-DSRecordAlgorithms
+
+ ldapDisplayName: msDNS-DSRecordAlgorithms
  attributeId: 1.2.840.113556.1.4.2134
  attributeSyntax: 2.5.5.9
  omSyntax: 2
@@ -5755,7 +5607,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.196  Attribute msDNS-DSRecordSetTTL
+### 2.196 Attribute msDNS-DSRecordSetTTL
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5774,7 +5626,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.197  Attribute msDNS-IsSigned
+### 2.197 Attribute msDNS-IsSigned
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5791,7 +5643,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.198  Attribute msDNS-KeymasterZones
+### 2.198 Attribute msDNS-KeymasterZones
 
 This attribute is written onto msDNS-ServerSettings objects. It is used to store DNS state.
 
@@ -5810,13 +5662,14 @@ Release: April 23, 2024
 
 83 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.199  Attribute msDNS-MaintainTrustAnchor
+### 2.199 Attribute msDNS-MaintainTrustAnchor
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5833,7 +5686,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.200  Attribute msDNS-NSEC3CurrentSalt
+### 2.200 Attribute msDNS-NSEC3CurrentSalt
 
 This attribute is written onto dnsZone objects. It is used to store DNS state.
 
@@ -5852,7 +5705,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS state.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.201  Attribute msDNS-NSEC3HashAlgorithm
+### 2.201 Attribute msDNS-NSEC3HashAlgorithm
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5874,9 +5727,10 @@ Release: April 23, 2024
 
 84 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.202  Attribute msDNS-NSEC3Iterations
+Version-Specific Behavior: First implemented on Windows Server 2012.
+
+### 2.202 Attribute msDNS-NSEC3Iterations
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5895,7 +5749,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.203  Attribute msDNS-NSEC3OptOut
+### 2.203 Attribute msDNS-NSEC3OptOut
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5912,7 +5766,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.204  Attribute msDNS-NSEC3RandomSaltLength
+### 2.204 Attribute msDNS-NSEC3RandomSaltLength
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5938,7 +5792,8 @@ Release: April 23, 2024
 
 85 / 276
 
-2.205  Attribute msDNS-NSEC3UserSalt
+
+### 2.205 Attribute msDNS-NSEC3UserSalt
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5957,7 +5812,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.206  Attribute msDNS-ParentHasSecureDelegation
+### 2.206 Attribute msDNS-ParentHasSecureDelegation
 
 This attribute is written onto dnsZone objects. It is used to store DNS state.
 
@@ -5974,7 +5829,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS state.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.207  Attribute msDNS-PropagationTime
+### 2.207 Attribute msDNS-PropagationTime
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -5991,7 +5846,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.208  Attribute msDNS-RFC5011KeyRollovers
+### 2.208 Attribute msDNS-RFC5011KeyRollovers
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -6004,7 +5859,8 @@ Release: April 23, 2024
 
 86 / 276
 
- ldapDisplayName: msDNS-RFC5011KeyRollovers
+
+ ldapDisplayName: msDNS-RFC5011KeyRollovers
  attributeId: 1.2.840.113556.1.4.2135
  attributeSyntax: 2.5.5.8
  omSyntax: 1
@@ -6016,7 +5872,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.209  Attribute msDNS-SecureDelegationPollingPeriod
+### 2.209 Attribute msDNS-SecureDelegationPollingPeriod
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -6035,7 +5891,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.210  Attribute msDNS-SignatureInceptionOffset
+### 2.210 Attribute msDNS-SignatureInceptionOffset
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -6054,7 +5910,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.211  Attribute msDNS-SigningKeyDescriptors
+### 2.211 Attribute msDNS-SigningKeyDescriptors
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -6071,7 +5927,8 @@ Release: April 23, 2024
 
 87 / 276
 
- isSingleValued: FALSE
+
+ isSingleValued: FALSE
  schemaIdGuid: 3443d8cd-e5b6-4f3b-b098-659a0214a079
  systemOnly: FALSE
  searchFlags: fPRESERVEONDELETE
@@ -6080,7 +5937,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.212  Attribute msDNS-SigningKeys
+### 2.212 Attribute msDNS-SigningKeys
 
 This attribute is written onto dnsZone objects. It is used to store DNS state.
 
@@ -6098,7 +5955,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS state.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.213  Attribute msDNS-SignWithNSEC3
+### 2.213 Attribute msDNS-SignWithNSEC3
 
 This attribute is written onto dnsZone objects. It is used to store DNS configuration information.
 
@@ -6115,7 +5972,7 @@ This attribute is written onto dnsZone objects. It is used to store DNS configur
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.214  Attribute msDRM-IdentityCertificate
+### 2.214 Attribute msDRM-IdentityCertificate
 
 For a given user object, this attribute specifies the XrML digital rights management (DRM) certificates
 for the individual represented by that object.
@@ -6137,13 +5994,14 @@ Release: April 23, 2024
 
 88 / 276
 
- rangeUpper: 10240
+
+ rangeUpper: 10240
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  isMemberOfPartialAttributeSet: TRUE
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.215  Attribute msDS-AdditionalDnsHostName
+### 2.215 Attribute msDS-AdditionalDnsHostName
 
 For a given computer object, this attribute specifies additional fully qualified domain names (FQDNs)
 (1) ([MS-ADTS] section 1.1) of that computer, as specified in [MS-ADTS] section 3.1.1.
@@ -6167,7 +6025,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.216  Attribute msDS-AdditionalSamAccountName
+### 2.216 Attribute msDS-AdditionalSamAccountName
 
 For a given computer object, this attribute specifies the additional Security Accounts Manager (SAM)
 account names of that computer. For more information, see [MS-ADTS].
@@ -6190,7 +6048,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.217  Attribute msDS-AllowedDNSSuffixes
+### 2.217 Attribute msDS-AllowedDNSSuffixes
 
 For a given Active Directory domain, this attribute specifies the list of DNS suffixes (by their fully
 qualified domain name (FQDN) (1) ([MS-ADTS] section 1.1)) allowed to be used to identify computers
@@ -6203,7 +6061,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Allowed-DNS-Suffixes
+
+ cn: ms-DS-Allowed-DNS-Suffixes
  ldapDisplayName: msDS-AllowedDNSSuffixes
  attributeId: 1.2.840.113556.1.4.1710
  attributeSyntax: 2.5.5.12
@@ -6221,7 +6080,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.218  Attribute msDS-AllowedToActOnBehalfOfOtherIdentity
+### 2.218 Attribute msDS-AllowedToActOnBehalfOfOtherIdentity
 
 This attribute is used for access checks to determine if a requestor has permission to act on the behalf
 of other identities to services running as this account.
@@ -6243,7 +6102,7 @@ of other identities to services running as this account.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.219  Attribute msDS-AllowedToDelegateTo
+### 2.219 Attribute msDS-AllowedToDelegateTo
 
 For a given computer or user account, this attribute specifies the list of service principal names (SPN)
 corresponding to Windows services that can act on behalf of the computer or user account.
@@ -6270,9 +6129,10 @@ Release: April 23, 2024
 
 90 / 276
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.220  Attribute msDS-AllUsersTrustQuota
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.220 Attribute msDS-AllUsersTrustQuota
 
 For a given Active Directory forest, this attribute specifies the maximum number of trusted domain
 objects (TDOs) allowed. For more information on the use of this attribute, see [MS-LSAD].
@@ -6293,7 +6153,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.221  Attribute msDS-AppliesToResourceTypes
+### 2.221 Attribute msDS-AppliesToResourceTypes
 
 For a resource property, this attribute indicates what resource types this resource property applies to.
 
@@ -6311,7 +6171,7 @@ For a resource property, this attribute indicates what resource types this resou
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.222  Attribute msDS-Approx-Immed-Subordinates
+### 2.222 Attribute msDS-Approx-Immed-Subordinates
 
 For a given object in the directory, this attribute specifies the approximate number of direct
 descendants. For more information, see [MS-ADTS] section 3.1.1.4.5.15.
@@ -6336,11 +6196,12 @@ Release: April 23, 2024
 
 91 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
+
+Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.223  Attribute msDS-ApproximateLastLogonTimeStamp
+### 2.223 Attribute msDS-ApproximateLastLogonTimeStamp
 
 This attribute specifies the approximate time a user last logged on from the device.
 
@@ -6359,7 +6220,7 @@ This attribute specifies the approximate time a user last logged on from the dev
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2 operating system.
 
-2.224  Attribute msDS-AssignedAuthNPolicy
+### 2.224 Attribute msDS-AssignedAuthNPolicy
 
 This attribute specifies which AuthNPolicy is applied to this principal.
 
@@ -6378,7 +6239,7 @@ This attribute specifies which AuthNPolicy is applied to this principal.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.225  Attribute msDS-AssignedAuthNPolicyBL
+### 2.225 Attribute msDS-AssignedAuthNPolicyBL
 
 This attribute is the backlink for msDS-AssignedAuthNPolicy.
 
@@ -6402,9 +6263,10 @@ Release: April 23, 2024
 
 92 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.226  Attribute msDS-AssignedAuthNPolicySilo
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.226 Attribute msDS-AssignedAuthNPolicySilo
 
 This attribute specifies the AuthNPolicySilo that a principal is assigned to.
 
@@ -6423,7 +6285,7 @@ This attribute specifies the AuthNPolicySilo that a principal is assigned to.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.227  Attribute msDS-AssignedAuthNPolicySiloBL
+### 2.227 Attribute msDS-AssignedAuthNPolicySiloBL
 
 This attribute is the backlink for msDS-AssignedAuthNPolicySilo.
 
@@ -6442,7 +6304,7 @@ This attribute is the backlink for msDS-AssignedAuthNPolicySilo.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.228  Attribute msDS-AuthenticatedAtDC
+### 2.228 Attribute msDS-AuthenticatedAtDC
 
 This attribute specifies the forward link for ms-DS-AuthenticatedTo-Accountlist. For a user, it identifies
 which DC a user has authenticated to.
@@ -6468,9 +6330,10 @@ Release: April 23, 2024
 
 93 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.229  Attribute msDS-AuthenticatedToAccountlist
+Version-Specific Behavior: First implemented on Windows Server 2008.
+
+### 2.229 Attribute msDS-AuthenticatedToAccountlist
 
 This attribute specifies the back link for ms-DS-AuthenticatedAt-DC. For a computer, it identifies which
 users have authenticated to this computer.
@@ -6491,7 +6354,7 @@ users have authenticated to this computer.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.230  Attribute msDS-AuthNPolicyEnforced
+### 2.230 Attribute msDS-AuthNPolicyEnforced
 
 This attribute specifies whether the authentication policy is enforced.
 
@@ -6508,7 +6371,7 @@ This attribute specifies whether the authentication policy is enforced.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.231  Attribute msDS-AuthNPolicySiloEnforced
+### 2.231 Attribute msDS-AuthNPolicySiloEnforced
 
 This attribute specifies whether the authentication policy silo is enforced.
 
@@ -6532,7 +6395,8 @@ Release: April 23, 2024
 
 94 / 276
 
-2.232  Attribute msDS-AuthNPolicySiloMembers
+
+### 2.232 Attribute msDS-AuthNPolicySiloMembers
 
 This attribute specifies which principals are assigned to the AuthNPolicySilo object.
 
@@ -6551,7 +6415,7 @@ This attribute specifies which principals are assigned to the AuthNPolicySilo ob
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.233  Attribute msDS-AuthNPolicySiloMembersBL
+### 2.233 Attribute msDS-AuthNPolicySiloMembersBL
 
 This attribute is the backlink for msDS-AuthNPolicySiloMembers.
 
@@ -6570,7 +6434,7 @@ This attribute is the backlink for msDS-AuthNPolicySiloMembers.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.234  Attribute msDS-Auxiliary-Classes
+### 2.234 Attribute msDS-Auxiliary-Classes
 
 For a given object, this attribute specifies the list of auxiliary classes that have been dynamically
 attached to an object. For more information, see [MS-ADTS] section 3.1.1.2.
@@ -6599,7 +6463,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.235  Attribute msDS-AzApplicationData
+
+### 2.235 Attribute msDS-AzApplicationData
 
 This attribute specifies a string that is used by individual applications to store needed information.
 
@@ -6617,7 +6482,7 @@ This attribute specifies a string that is used by individual applications to sto
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.236  Attribute msDS-AzApplicationName
+### 2.236 Attribute msDS-AzApplicationName
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6637,7 +6502,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.237  Attribute msDS-AzApplicationVersion
+### 2.237 Attribute msDS-AzApplicationVersion
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6663,7 +6528,8 @@ Release: April 23, 2024
 
 96 / 276
 
-2.238  Attribute msDS-AzBizRule
+
+### 2.238 Attribute msDS-AzBizRule
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6683,7 +6549,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.239  Attribute msDS-AzBizRuleLanguage
+### 2.239 Attribute msDS-AzBizRuleLanguage
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6703,7 +6569,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.240  Attribute msDS-AzClassId
+### 2.240 Attribute msDS-AzClassId
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6730,7 +6596,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.241  Attribute msDS-AzDomainTimeout
+
+### 2.241 Attribute msDS-AzDomainTimeout
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6749,7 +6616,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.242  Attribute msDS-AzGenerateAudits
+### 2.242 Attribute msDS-AzGenerateAudits
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6767,7 +6634,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.243  Attribute msDS-AzGenericData
+### 2.243 Attribute msDS-AzGenericData
 
 This attribute specifies AzMan-specific generic data.
 
@@ -6792,7 +6659,8 @@ Release: April 23, 2024
 
 98 / 276
 
-2.244  Attribute msDS-AzLastImportedBizRulePath
+
+### 2.244 Attribute msDS-AzLastImportedBizRulePath
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6812,7 +6680,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.245  Attribute msDS-AzLDAPQuery
+### 2.245 Attribute msDS-AzLDAPQuery
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6835,7 +6703,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.246  Attribute msDS-AzMajorVersion
+### 2.246 Attribute msDS-AzMajorVersion
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6859,9 +6727,10 @@ Release: April 23, 2024
 
 99 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.247  Attribute msDS-AzMinorVersion
+Version-Specific Behavior: First implemented on Windows Server 2003.
+
+### 2.247 Attribute msDS-AzMinorVersion
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6880,7 +6749,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.248  Attribute msDS-AzObjectGuid
+### 2.248 Attribute msDS-AzObjectGuid
 
 This attribute specifies the unique and portable identifier of AzMan objects.
 
@@ -6899,7 +6768,7 @@ This attribute specifies the unique and portable identifier of AzMan objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.249  Attribute msDS-AzOperationID
+### 2.249 Attribute msDS-AzOperationID
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6925,7 +6794,8 @@ Release: April 23, 2024
 
 100 / 276
 
-2.250  Attribute msDS-AzScopeName
+
+### 2.250 Attribute msDS-AzScopeName
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6945,7 +6815,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.251  Attribute msDS-AzScriptEngineCacheMax
+### 2.251 Attribute msDS-AzScriptEngineCacheMax
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6964,7 +6834,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.252  Attribute msDS-AzScriptTimeout
+### 2.252 Attribute msDS-AzScriptTimeout
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -6990,7 +6860,8 @@ Release: April 23, 2024
 
 101 / 276
 
-2.253  Attribute msDS-AzTaskIsRoleDefinition
+
+### 2.253 Attribute msDS-AzTaskIsRoleDefinition
 
 This attribute is used by applications that leverage Active Directory for authentication and
 authorization.
@@ -7008,7 +6879,7 @@ authorization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.254  Attribute msDS-Behavior-Version
+### 2.254 Attribute msDS-Behavior-Version
 
 For a given Active Directory domain or forest, this attribute specifies the domain or forest behavior
 version. It is a monotonically increasing number that is used to enable certain Active Directory
@@ -7031,7 +6902,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.255  Attribute msDS-BridgeHeadServersUsed
+### 2.255 Attribute msDS-BridgeHeadServersUsed
 
 This attribute specifies the list of bridge head servers used by the KCC in the previous run.
 
@@ -7057,9 +6928,10 @@ Release: April 23, 2024
 
 102 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.256  Attribute msDS-ByteArray
+Version-Specific Behavior: First implemented on Windows Server 2008.
+
+### 2.256 Attribute msDS-ByteArray
 
 This attribute specifies binary data for a given object. Its use is dependent on the object with which it
 is associated.
@@ -7077,7 +6949,7 @@ is associated.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.257  Attribute msDS-Cached-Membership
+### 2.257 Attribute msDS-Cached-Membership
 
 This attribute specifies a membership of cached groups and is used during group expansion. For more
 information, see [MS-SAMR].
@@ -7098,7 +6970,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.258  Attribute msDS-Cached-Membership-Time-Stamp
+### 2.258 Attribute msDS-Cached-Membership-Time-Stamp
 
 This attribute specifies the time stamp of cached groups and is used during group expansion. For more
 information, see [MS-SAMR].
@@ -7122,11 +6994,12 @@ Release: April 23, 2024
 
 103 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
+
+Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.259  Attribute msDS-ClaimAttributeSource
+### 2.259 Attribute msDS-ClaimAttributeSource
 
 For a claim type object, this attribute points to the attribute that will be used as the source for the
 claim type.
@@ -7145,7 +7018,7 @@ claim type.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.260  Attribute msDS-ClaimIsSingleValued
+### 2.260 Attribute msDS-ClaimIsSingleValued
 
 For a claim type object, this attribute identifies whether the claim type or resource property can
 contain only a single value.
@@ -7163,7 +7036,7 @@ contain only a single value.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.261  Attribute msDS-ClaimIsValueSpaceRestricted
+### 2.261 Attribute msDS-ClaimIsValueSpaceRestricted
 
 For a claim type, this attribute identifies whether a user can enter values in applications other than
 those described for the msDS-ClaimPossibleValues attribute.
@@ -7188,7 +7061,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.262  Attribute msDS-ClaimPossibleValues
+
+### 2.262 Attribute msDS-ClaimPossibleValues
 
 For a claim type or resource property object, this attribute describes the values suggested to a user
 when he or she uses the claim type or resource property in applications.
@@ -7207,7 +7081,7 @@ when he or she uses the claim type or resource property in applications.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.263  Attribute msDS-ClaimSharesPossibleValuesWith
+### 2.263 Attribute msDS-ClaimSharesPossibleValuesWith
 
 For a claim type object, this attribute indicates that the possible values of the claims issued are
 defined on the object that this linked attribute points to. If populated, this attribute overrides msDS-
@@ -7228,7 +7102,7 @@ ClaimPossibleValues, msDS-ClaimValueType, and msDS-ClaimIsValueSpaceRestricted.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.264  Attribute msDS-ClaimSharesPossibleValuesWithBL
+### 2.264 Attribute msDS-ClaimSharesPossibleValuesWithBL
 
 For a claim type object, this attribute indicates that the possible values described in msDS-
 ClaimPossibleValues are being referenced by other claim type objects.
@@ -7255,7 +7129,8 @@ Release: April 23, 2024
 
 105 / 276
 
-2.265  Attribute msDS-ClaimSource
+
+### 2.265 Attribute msDS-ClaimSource
 
 For a claim type, this attribute indicates the source of the claim type. For example, the source can be
 a certificate.
@@ -7273,7 +7148,7 @@ a certificate.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.266  Attribute msDS-ClaimSourceType
+### 2.266 Attribute msDS-ClaimSourceType
 
 For a security principal claim type, this attribute lists the type of store the issued claim is sourced
 from.
@@ -7291,7 +7166,7 @@ from.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.267  Attribute msDS-ClaimTypeAppliesToClass
+### 2.267 Attribute msDS-ClaimTypeAppliesToClass
 
 For a claim type object, this linked attribute points to the Active Directory security principal classes for
 which claims are issued (for example, a link to the user class).
@@ -7318,7 +7193,8 @@ Release: April 23, 2024
 
 106 / 276
 
-2.268  Attribute msDS-ClaimValueType
+
+### 2.268 Attribute msDS-ClaimValueType
 
 For a claim type object, this attribute specifies the value type of the claims issued.
 
@@ -7335,7 +7211,7 @@ For a claim type object, this attribute specifies the value type of the claims i
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.269  Attribute msDS-CloudAnchor
+### 2.269 Attribute msDS-CloudAnchor
 
 This attribute is used by the DirSync engine to specify the object start of authority and to maintain the
 relationship between on-premises and cloud objects.
@@ -7354,7 +7230,7 @@ relationship between on-premises and cloud objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.270  Attribute msDS-cloudExtensionAttribute1
+### 2.270 Attribute msDS-cloudExtensionAttribute1
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7373,7 +7249,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.271  Attribute msDS-cloudExtensionAttribute2
+### 2.271 Attribute msDS-cloudExtensionAttribute2
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7384,7 +7260,8 @@ Release: April 23, 2024
 
 107 / 276
 
- cn: ms-DS-cloudExtensionAttribute2
+
+ cn: ms-DS-cloudExtensionAttribute2
  lDAPDisplayName: msDS-cloudExtensionAttribute2
  attributeID: 1.2.840.113556.1.4.2215
  attributeSyntax: 2.5.5.12
@@ -7399,7 +7276,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.272  Attribute msDS-cloudExtensionAttribute3
+### 2.272 Attribute msDS-cloudExtensionAttribute3
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7418,7 +7295,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.273  Attribute msDS-cloudExtensionAttribute4
+### 2.273 Attribute msDS-cloudExtensionAttribute4
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7437,7 +7314,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.274  Attribute msDS-cloudExtensionAttribute5
+### 2.274 Attribute msDS-cloudExtensionAttribute5
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7451,7 +7328,8 @@ Release: April 23, 2024
 
 108 / 276
 
- attributeID: 1.2.840.113556.1.4.2218
+
+ attributeID: 1.2.840.113556.1.4.2218
  attributeSyntax: 2.5.5.12
  oMSyntax: 64
  isSingleValued: TRUE
@@ -7464,7 +7342,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.275  Attribute msDS-cloudExtensionAttribute6
+### 2.275 Attribute msDS-cloudExtensionAttribute6
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7483,7 +7361,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.276  Attribute msDS-cloudExtensionAttribute7
+### 2.276 Attribute msDS-cloudExtensionAttribute7
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7502,7 +7380,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.277  Attribute msDS-cloudExtensionAttribute8
+### 2.277 Attribute msDS-cloudExtensionAttribute8
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7518,7 +7396,8 @@ Release: April 23, 2024
 
 109 / 276
 
- oMSyntax: 64
+
+ oMSyntax: 64
  isSingleValued: TRUE
  systemOnly: FALSE
  searchFlags: fATTINDEX
@@ -7529,7 +7408,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.278  Attribute msDS-cloudExtensionAttribute9
+### 2.278 Attribute msDS-cloudExtensionAttribute9
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7548,7 +7427,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.279  Attribute msDS-cloudExtensionAttribute10
+### 2.279 Attribute msDS-cloudExtensionAttribute10
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7567,7 +7446,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.280  Attribute msDS-cloudExtensionAttribute11
+### 2.280 Attribute msDS-cloudExtensionAttribute11
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7585,7 +7464,8 @@ Release: April 23, 2024
 
 110 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: fATTINDEX
  isMemberOfPartialAttributeSet: TRUE
  schemaIDGUID: 9e9ebbc8-7da5-42a6-8925-244e12a56e24
@@ -7594,7 +7474,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.281  Attribute msDS-cloudExtensionAttribute12
+### 2.281 Attribute msDS-cloudExtensionAttribute12
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7613,7 +7493,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.282  Attribute msDS-cloudExtensionAttribute13
+### 2.282 Attribute msDS-cloudExtensionAttribute13
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7632,7 +7512,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.283  Attribute msDS-cloudExtensionAttribute14
+### 2.283 Attribute msDS-cloudExtensionAttribute14
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7652,14 +7532,15 @@ Release: April 23, 2024
 
 111 / 276
 
- isMemberOfPartialAttributeSet: TRUE
+
+ isMemberOfPartialAttributeSet: TRUE
  schemaIDGUID: cebcb6ba-6e80-4927-8560-98feca086a9f
  attributeSecurityGUID: 77b5b886-944a-11d1-aebd-0000f80367c1
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.284  Attribute msDS-cloudExtensionAttribute15
+### 2.284 Attribute msDS-cloudExtensionAttribute15
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7678,7 +7559,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.285  Attribute msDS-cloudExtensionAttribute16
+### 2.285 Attribute msDS-cloudExtensionAttribute16
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7697,7 +7578,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.286  Attribute msDS-cloudExtensionAttribute17
+### 2.286 Attribute msDS-cloudExtensionAttribute17
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7719,12 +7600,13 @@ Release: April 23, 2024
 
 112 / 276
 
- attributeSecurityGUID: 77b5b886-944a-11d1-aebd-0000f80367c1
+
+ attributeSecurityGUID: 77b5b886-944a-11d1-aebd-0000f80367c1
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.287  Attribute msDS-cloudExtensionAttribute18
+### 2.287 Attribute msDS-cloudExtensionAttribute18
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7743,7 +7625,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.288  Attribute msDS-cloudExtensionAttribute19
+### 2.288 Attribute msDS-cloudExtensionAttribute19
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7762,7 +7644,7 @@ This attribute contains an arbitrary, cloud-relevant string.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.289  Attribute msDS-cloudExtensionAttribute20
+### 2.289 Attribute msDS-cloudExtensionAttribute20
 
 This attribute contains an arbitrary, cloud-relevant string.
 
@@ -7785,11 +7667,12 @@ Release: April 23, 2024
 
 113 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.290  Attribute msDS-CloudIsEnabled
+### 2.290 Attribute msDS-CloudIsEnabled
 
 This attribute is used to indicate whether the cloud device registration service is enabled.
 
@@ -7807,7 +7690,7 @@ This attribute is used to indicate whether the cloud device registration service
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.291  Attribute msDS-CloudIsManaged
+### 2.291 Attribute msDS-CloudIsManaged
 
 This attribute is used to indicate that the device is managed by a cloud mobile device manager.
 
@@ -7825,7 +7708,7 @@ This attribute is used to indicate that the device is managed by a cloud mobile 
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.292  Attribute msDS-CloudIssuerPublicCertificates
+### 2.292 Attribute msDS-CloudIssuerPublicCertificates
 
 This attribute specifies the public keys used by the cloud device registration service to sign certificates
 that have been issued by the registration service.
@@ -7850,11 +7733,12 @@ Release: April 23, 2024
 
 114 / 276
 
- showInAdvancedViewOnly: TRUE
+
+ showInAdvancedViewOnly: TRUE
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.293  Attribute msDS-ComputerAllowedToAuthenticateTo
+### 2.293 Attribute msDS-ComputerAllowedToAuthenticateTo
 
 This attribute is used to determine whether a computer has permission to authenticate to a service.
 
@@ -7873,7 +7757,7 @@ This attribute is used to determine whether a computer has permission to authent
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.294  Attribute msDS-ComputerAuthNPolicy
+### 2.294 Attribute msDS-ComputerAuthNPolicy
 
 This attribute specifies which AuthNPolicy is applied to computers assigned to this silo object.
 
@@ -7892,7 +7776,7 @@ This attribute specifies which AuthNPolicy is applied to computers assigned to t
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.295  Attribute msDS-ComputerAuthNPolicyBL
+### 2.295 Attribute msDS-ComputerAuthNPolicyBL
 
 This attribute is the backlink for msDS-ComputerAuthNPolicy.
 
@@ -7916,9 +7800,10 @@ Release: April 23, 2024
 
 115 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.296  Attribute msDS-ComputerSID
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.296 Attribute msDS-ComputerSID
 
 This attribute identifies a domain-joined computer.
 
@@ -7937,7 +7822,7 @@ This attribute identifies a domain-joined computer.
 
 Version-Specific Behavior: First implemented on Windows Server 2016 operating system.
 
-2.297  Attribute msDS-ComputerTGTLifetime
+### 2.297 Attribute msDS-ComputerTGTLifetime
 
 This attribute specifies the maximum age of a Kerberos TGT issued to a computer in units of 10^(-7)
 seconds.
@@ -7955,7 +7840,7 @@ seconds.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.298  Attribute msDS-CustomKeyInformation
+### 2.298 Attribute msDS-CustomKeyInformation
 
 This attribute contains additional information about the key.
 
@@ -7983,7 +7868,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.299  Attribute msDS-DateTime
+
+### 2.299 Attribute msDS-DateTime
 
 This attribute specifies the date and time for a given object. Its use is dependent on the object with
 which it is associated.
@@ -8000,7 +7886,7 @@ which it is associated.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.300  Attribute msDS-DefaultQuota
+### 2.300 Attribute msDS-DefaultQuota
 
 This attribute specifies the default object creation quota for a given security principle. For more
 information, see [MS-ADTS] section 6.1.1.4.
@@ -8021,7 +7907,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.301  Attribute msDS-DelegatedMSAState
+### 2.301 Attribute msDS-DelegatedMSAState
 
 This attribute is used to track whether a DelegatedManagedServiceAccount has been linked to a
 Service Account.
@@ -8047,7 +7933,8 @@ Release: April 23, 2024
 
 117 / 276
 
-2.302  Attribute msDS-DeletedObjectLifetime
+
+### 2.302 Attribute msDS-DeletedObjectLifetime
 
 This attribute specifies the lifetime of deleted objects.
 
@@ -8065,7 +7952,7 @@ This attribute specifies the lifetime of deleted objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2 operating system.
 
-2.303  Attribute msDS-DeviceDN
+### 2.303 Attribute msDS-DeviceDN
 
 This attribute identifies the registered device from which this key object was provisioned.
 
@@ -8084,7 +7971,7 @@ This attribute identifies the registered device from which this key object was p
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.304  Attribute msDS-DeviceID
+### 2.304 Attribute msDS-DeviceID
 
 This attribute stores the ID of the device.
 
@@ -8112,7 +7999,8 @@ Release: April 23, 2024
 
 118 / 276
 
-2.305  Attribute msDS-DeviceLocation
+
+### 2.305 Attribute msDS-DeviceLocation
 
 This attribute specifies the DN under which the device objects will be created.
 
@@ -8131,7 +8019,7 @@ This attribute specifies the DN under which the device objects will be created.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.306  Attribute msDS-DeviceMDMStatus
+### 2.306 Attribute msDS-DeviceMDMStatus
 
 This attribute is used to manage the mobile device management status of the device.
 
@@ -8150,7 +8038,7 @@ This attribute is used to manage the mobile device management status of the devi
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.307  Attribute msDS-DeviceObjectVersion
+### 2.307 Attribute msDS-DeviceObjectVersion
 
 This attribute is used to identify the schema version of the device.
 
@@ -8176,7 +8064,8 @@ Release: April 23, 2024
 
 119 / 276
 
-2.308  Attribute msDS-DeviceOSType
+
+### 2.308 Attribute msDS-DeviceOSType
 
 This attribute is used to track the type of device based on the operating system.
 
@@ -8197,7 +8086,7 @@ This attribute is used to track the type of device based on the operating system
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.309  Attribute msDS-DeviceOSVersion
+### 2.309 Attribute msDS-DeviceOSVersion
 
 This attribute is used to track the operating system version of the device.
 
@@ -8218,7 +8107,7 @@ This attribute is used to track the operating system version of the device.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.310  Attribute msDS-DevicePhysicalIDs
+### 2.310 Attribute msDS-DevicePhysicalIDs
 
 This attribute is used to store identifiers of the physical device.
 
@@ -8244,9 +8133,10 @@ Release: April 23, 2024
 
 120 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.311  Attribute msDS-DeviceTrustType
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.311 Attribute msDS-DeviceTrustType
 
 This attribute represents the join type for devices.
 
@@ -8265,7 +8155,7 @@ This attribute represents the join type for devices.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.312  Attribute msDS-DnsRootAlias
+### 2.312 Attribute msDS-DnsRootAlias
 
 This attribute specifies the additional fully qualified domain names (FQDNs) (1) ([MS-ADTS] section
 1.1) for a given application naming context (NC).
@@ -8288,7 +8178,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.313  Attribute msDS-DrsFarmID
+### 2.313 Attribute msDS-DrsFarmID
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -8312,11 +8202,12 @@ Release: April 23, 2024
 
 121 / 276
 
- isDefunct: TRUE
+
+ isDefunct: TRUE
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.314  Attribute msDS-EgressClaimsTransformationPolicy
+### 2.314 Attribute msDS-EgressClaimsTransformationPolicy
 
 This attribute is a link to a claims transformation policy object for the egress claims (that is, claims
 leaving this forest) to the Trusted Domain. This attribute is applicable only for an incoming or
@@ -8338,7 +8229,7 @@ bidirectional cross-forest trust. When this link is not present, all claims are 
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.315  Attribute msDS-EnabledFeature
+### 2.315 Attribute msDS-EnabledFeature
 
 This attribute lists the enabled optional features.
 
@@ -8359,7 +8250,7 @@ This attribute lists the enabled optional features.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.316  Attribute msDS-EnabledFeatureBL
+### 2.316 Attribute msDS-EnabledFeatureBL
 
 This attribute is the back link attribute of msDS-EnabledFeature, and it lists the scopes where an
 optional feature is enabled.
@@ -8378,7 +8269,8 @@ Release: April 23, 2024
 
 122 / 276
 
- linkId: 2169
+
+ linkId: 2169
  isSingleValued: FALSE
  schemaIdGuid: ce5b01bc-17c6-44b8-9dc1-a9668b00901b
  systemOnly: TRUE
@@ -8388,7 +8280,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.317  Attribute msDS-Entry-Time-To-Die
+### 2.317 Attribute msDS-Entry-Time-To-Die
 
 This attribute specifies the absolute expiration time of a dynamic object in the directory. For more
 information, see [MS-ADTS].
@@ -8410,7 +8302,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.318  Attribute msDS-ExecuteScriptPassword
+### 2.318 Attribute msDS-ExecuteScriptPassword
 
 This attribute specifies a password to be used when renaming an Active Directory domain or forest.
 
@@ -8432,7 +8324,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.319  Attribute msDS-ExpirePasswordsOnSmartCardOnlyAccounts
+### 2.319 Attribute msDS-ExpirePasswordsOnSmartCardOnlyAccounts
 
 This attribute controls whether the passwords on smart-card-only accounts expire in accordance with
 the password policy.
@@ -8444,7 +8336,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Expire-Passwords-On-Smart-Card-Only-Accounts
+
+ cn: ms-DS-Expire-Passwords-On-Smart-Card-Only-Accounts
  lDAPDisplayName: msDS-ExpirePasswordsOnSmartCardOnlyAccounts
  attributeID: 1.2.840.113556.1.4.2344
  attributeSyntax: 2.5.5.8
@@ -8458,7 +8351,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.320  Attribute msDS-ExternalDirectoryObjectId
+### 2.320 Attribute msDS-ExternalDirectoryObjectId
 
 This attribute specifies the unique identifier for users and groups and is populated when applicable
 Windows Server releases of Active Directory are federated with Azure Active Directory.
@@ -8480,7 +8373,7 @@ Windows Server releases of Active Directory are federated with Azure Active Dire
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.321  Attribute msDS-ExternalKey
+### 2.321 Attribute msDS-ExternalKey
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -8498,7 +8391,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.322  Attribute msDS-ExternalStore
+### 2.322 Attribute msDS-ExternalStore
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -8510,7 +8403,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-External-Store
+
+ cn: ms-DS-External-Store
  ldapDisplayName: msDS-ExternalStore
  attributeId: 1.2.840.113556.1.4.1834
  attributeSyntax: 2.5.5.12
@@ -8523,7 +8417,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.323  Attribute msDS-FailedInteractiveLogonCount
+### 2.323 Attribute msDS-FailedInteractiveLogonCount
 
 This attribute specifies the total number of failed interactive logons since this feature was turned on.
 
@@ -8542,7 +8436,7 @@ This attribute specifies the total number of failed interactive logons since thi
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.324  Attribute msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon
+### 2.324 Attribute msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon
 
 This attribute specifies the total number of failed interactive logons up until the last successful Ctrl-Alt-
 Del logon.
@@ -8562,7 +8456,7 @@ Del logon.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.325  Attribute msDS-FilterContainers
+### 2.325 Attribute msDS-FilterContainers
 
 This attribute specifies which container types are shown by the Active Directory Users and Computers
 Microsoft Management Console (ADUC MMC) snap-in.
@@ -8576,7 +8470,8 @@ Release: April 23, 2024
 
 125 / 276
 
- ldapDisplayName: msDS-FilterContainers
+
+ ldapDisplayName: msDS-FilterContainers
  attributeId: 1.2.840.113556.1.4.1703
  attributeSyntax: 2.5.5.12
  omSyntax: 64
@@ -8590,7 +8485,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.326  Attribute msDS-GenerationId
+### 2.326 Attribute msDS-GenerationId
 
 For a virtual machine (VM) snapshot resuming detection, this attribute represents the VM Generation
 ID.
@@ -8610,7 +8505,7 @@ ID.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.327  Attribute msDS-GeoCoordinatesAltitude
+### 2.327 Attribute msDS-GeoCoordinatesAltitude
 
 This attribute describes the elevation in a geographic coordinate system.
 
@@ -8627,7 +8522,7 @@ This attribute describes the elevation in a geographic coordinate system.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.328  Attribute msDS-GeoCoordinatesLatitude
+### 2.328 Attribute msDS-GeoCoordinatesLatitude
 
 This attribute describes the latitude in a geographic coordinate system.
 
@@ -8642,7 +8537,8 @@ Release: April 23, 2024
 
 126 / 276
 
- attributeSyntax: 2.5.5.16
+
+ attributeSyntax: 2.5.5.16
  omSyntax: 65
  isSingleValued: TRUE
  searchFlags: fATTINDEX
@@ -8652,7 +8548,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.329  Attribute msDS-GeoCoordinatesLongitude
+### 2.329 Attribute msDS-GeoCoordinatesLongitude
 
 This attribute describes the longitude in a geographic coordinate system.
 
@@ -8669,7 +8565,7 @@ This attribute describes the longitude in a geographic coordinate system.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.330  Attribute msDS-GroupMSAMembership
+### 2.330 Attribute msDS-GroupMSAMembership
 
 This attribute is used for access checks to determine if a requestor has permission to retrieve the
 password for a group MSA.
@@ -8689,7 +8585,7 @@ password for a group MSA.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.331  Attribute msDS-HABSeniorityIndex
+### 2.331 Attribute msDS-HABSeniorityIndex
 
 This attribute contains the seniority index as applied by the organization where the individual works.
 
@@ -8708,7 +8604,8 @@ Release: April 23, 2024
 
 127 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: fATTINDEX
  attributeSecurityGuid: e48d0154-bcf8-11d1-8702-00c04fb96050
  mapiID: 36000
@@ -8717,7 +8614,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.332  Attribute msDS-HasDomainNCs
+### 2.332 Attribute msDS-HasDomainNCs
 
 This attribute specifies replication information regarding the domain NCs that are present in a
 particular server. For more information, see [MS-DRSR].
@@ -8742,7 +8639,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.333  Attribute msDS-hasFullReplicaNCs
+### 2.333 Attribute msDS-hasFullReplicaNCs
 
 For an Active Directory instance, this attribute identifies the partitions held as full replicas.
 
@@ -8762,7 +8659,7 @@ For an Active Directory instance, this attribute identifies the partitions held 
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.334  Attribute msDS-HasInstantiatedNCs
+### 2.334 Attribute msDS-HasInstantiatedNCs
 
 This attribute specifies replication information in the form of the distinguished name of each naming
 context that is present on a particular server. For more information, see [MS-DRSR].
@@ -8774,7 +8671,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Has-Instantiated-NCs
+
+ cn: ms-DS-Has-Instantiated-NCs
  ldapDisplayName: msDS-HasInstantiatedNCs
  attributeId: 1.2.840.113556.1.4.1709
  attributeSyntax: 2.5.5.7
@@ -8794,7 +8692,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.335  Attribute msDS-hasMasterNCs
+### 2.335 Attribute msDS-hasMasterNCs
 
 This attribute specifies the NCs contained on a domain controller (DC). For more information, see [MS-
 ADTS].
@@ -8817,7 +8715,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.336  Attribute msDS-HostServiceAccount
+### 2.336 Attribute msDS-HostServiceAccount
 
 On a computer object, this attribute lists service accounts that are configured to run on this computer.
 
@@ -8842,9 +8740,10 @@ Release: April 23, 2024
 
 129 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.337  Attribute msDS-HostServiceAccountBL
+Version-Specific Behavior: First implemented on Windows Server 2008 R2.
+
+### 2.337 Attribute msDS-HostServiceAccountBL
 
 This attribute is the back link attribute for msDS-HostServiceAccount. It lists computer objects
 associated with a service account.
@@ -8864,7 +8763,7 @@ associated with a service account.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.338  Attribute msDS-IngressClaimsTransformationPolicy
+### 2.338 Attribute msDS-IngressClaimsTransformationPolicy
 
 This attribute is a link to a claims transformation policy object for the ingress claims (that is, claims
 entering this forest) from the Trusted Domain. This is applicable only for an outgoing or bidirectional
@@ -8886,7 +8785,7 @@ cross-forest trust. If this link is absent, all the ingress claims are dropped.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.339  Attribute msDS-Integer
+### 2.339 Attribute msDS-Integer
 
 This attribute specifies an integer for a given object. Its use is dependent on the object with which it is
 associated.
@@ -8908,9 +8807,10 @@ Release: April 23, 2024
 
 130 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.340  Attribute msDS-IntId
+Version-Specific Behavior: First implemented on Windows Server 2003.
+
+### 2.340 Attribute msDS-IntId
 
 This attribute specifies an integer for a schema object. It can also be used to uniquely identify the
 associated schema object. For more information, see [MS-ADTS] section 3.1.1.2.3 and [MS-DRSR]
@@ -8932,7 +8832,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.341  Attribute msDS-IsCompliant
+### 2.341 Attribute msDS-IsCompliant
 
 This attribute is used to determine if the object is compliant with company policies.
 
@@ -8950,7 +8850,7 @@ This attribute is used to determine if the object is compliant with company poli
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.342  Attribute msDS-IsDomainFor
+### 2.342 Attribute msDS-IsDomainFor
 
 This attribute specifies a back link for ms-DS-Has-Domain-NCs. For a partition root object, it identifies
 which Active Directory instances hold that partition as their primary domain.
@@ -8975,9 +8875,10 @@ Release: April 23, 2024
 
 131 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.343  Attribute msDS-IsEnabled
+Version-Specific Behavior: First implemented on Windows Server 2008.
+
+### 2.343 Attribute msDS-IsEnabled
 
 This attribute is used to enable or disable the user-device relationship.
 
@@ -8996,7 +8897,7 @@ This attribute is used to enable or disable the user-device relationship.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.344  Attribute msDS-IsFullReplicaFor
+### 2.344 Attribute msDS-IsFullReplicaFor
 
 This attribute specifies back link for ms-Ds-Has-Full-Replica-NCs. For a partition root object, it
 identifies which Active Directory instances hold that partition as a full replica.
@@ -9016,7 +8917,7 @@ identifies which Active Directory instances hold that partition as a full replic
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.345  Attribute msDS-isGC
+### 2.345 Attribute msDS-isGC
 
 For an Active Directory instance, this attribute identifies the state of the global catalog (GC) on the
 directory system agent (DSA).
@@ -9042,7 +8943,8 @@ Release: April 23, 2024
 
 132 / 276
 
-2.346  Attribute msDS-IsManaged
+
+### 2.346 Attribute msDS-IsManaged
 
 This attribute is used to indicate that the device is managed by an on-premises mobile device
 manager.
@@ -9061,7 +8963,7 @@ manager.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.347  Attribute msDS-IsPartialReplicaFor
+### 2.347 Attribute msDS-IsPartialReplicaFor
 
 This attribute specifies a back link for has-Partial-Replica-NCs. For a partition root object, it identifies
 which Active Directory instances hold that partition as a partial replica.
@@ -9081,7 +8983,7 @@ which Active Directory instances hold that partition as a partial replica.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.348  Attribute msDS-IsPossibleValuesPresent
+### 2.348 Attribute msDS-IsPossibleValuesPresent
 
 This attribute identifies whether msDS-ClaimPossibleValues on a linked resource property has a value
 or does not have a value.
@@ -9107,7 +9009,8 @@ Release: April 23, 2024
 
 133 / 276
 
-2.349  Attribute msDS-IsPrimaryComputerFor
+
+### 2.349 Attribute msDS-IsPrimaryComputerFor
 
 This is the back link attribute for msDS-IsPrimaryComputer.
 
@@ -9126,7 +9029,7 @@ This is the back link attribute for msDS-IsPrimaryComputer.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.350  Attribute msDS-isRODC
+### 2.350 Attribute msDS-isRODC
 
 For an Active Directory instance, this attribute identifies whether the DSA is a read-only DSA.
 
@@ -9144,7 +9047,7 @@ For an Active Directory instance, this attribute identifies whether the DSA is a
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.351  Attribute msDS-IssuerCertificates
+### 2.351 Attribute msDS-IssuerCertificates
 
 This attribute specifies the keys used to sign certificates that have been issued by the Registration
 Service.
@@ -9172,7 +9075,8 @@ Release: April 23, 2024
 
 134 / 276
 
-2.352  Attribute msDS-IssuerPublicCertificates
+
+### 2.352 Attribute msDS-IssuerPublicCertificates
 
 This attribute specifies the public keys of the key pairs used to sign the certificates that have been
 issued by the device registration service.
@@ -9193,7 +9097,7 @@ issued by the device registration service.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.353  Attribute msDS-IsUsedAsResourceSecurityAttribute
+### 2.353 Attribute msDS-IsUsedAsResourceSecurityAttribute
 
 For a resource property, this attribute indicates whether it is being used as a secure attribute.
 
@@ -9210,7 +9114,7 @@ For a resource property, this attribute indicates whether it is being used as a 
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.354  Attribute msDS-IsUserCachableAtRodc
+### 2.354 Attribute msDS-IsUserCachableAtRodc
 
 For a read-only Active Directory instance, this attribute identifies whether the specified user's secrets
 can be cached.
@@ -9236,7 +9140,8 @@ Release: April 23, 2024
 
 135 / 276
 
-2.355  Attribute msDS-JetDBPageSize
+
+### 2.355 Attribute msDS-JetDBPageSize
 
 This attribute advertises what Jet database page size the DSA supports.
 
@@ -9254,7 +9159,7 @@ showInAdvancedViewOnly: TRUE
 
 Version-Specific Behavior: First implemented on Windows Server 2025.
 
-2.356  Attribute msDS-JetGetRecordSize3
+### 2.356 Attribute msDS-JetGetRecordSize3
 
 This attribute provides the result of the JetGetRecordSize3 API call which gives you details about the
 record's size in the database.
@@ -9273,7 +9178,7 @@ systemOnly: FALSE
 
 Version-Specific Behavior: First implemented on Windows Server 2025.
 
-2.357  Attribute msDS-KeyApproximateLastLogonTimeStamp
+### 2.357 Attribute msDS-KeyApproximateLastLogonTimeStamp
 
 The approximate time this key was last used in a logon operation.
 
@@ -9292,7 +9197,7 @@ The approximate time this key was last used in a logon operation.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.358  msDS-KeyCredentialLink
+### 2.358 msDS-KeyCredentialLink
 
 This attribute contains key material and usage information.
 
@@ -9303,7 +9208,8 @@ Release: April 23, 2024
 
 136 / 276
 
- cn: ms-DS-Key-Credential-Link
+
+ cn: ms-DS-Key-Credential-Link
  ldapDisplayName: msDS-KeyCredentialLink
  attributeID: 1.2.840.113556.1.4.2328
  attributeSyntax: 2.5.5.7
@@ -9320,7 +9226,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.359  msDS-KeyCredentialLink-BL
+### 2.359 msDS-KeyCredentialLink-BL
 
 This attribute is the backlink for msDS-KeyCredentialLink.
 
@@ -9340,7 +9246,7 @@ This attribute is the backlink for msDS-KeyCredentialLink.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.360  Attribute msDS-KeyId
+### 2.360 Attribute msDS-KeyId
 
 This attribute contains a key identifier.
 
@@ -9368,7 +9274,8 @@ Release: April 23, 2024
 
 137 / 276
 
-2.361  Attribute msDS-KeyMaterial
+
+### 2.361 Attribute msDS-KeyMaterial
 
 This attribute contains key material.
 
@@ -9389,7 +9296,7 @@ This attribute contains key material.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.362  Attribute msDS-KeyPrincipal
+### 2.362 Attribute msDS-KeyPrincipal
 
 This attribute specifies the principal to which a key object applies.
 
@@ -9410,7 +9317,7 @@ This attribute specifies the principal to which a key object applies.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.363  Attribute msDS-KeyPrincipalBL
+### 2.363 Attribute msDS-KeyPrincipalBL
 
 This attribute is the backlink for msDS-KeyPrincipal.
 
@@ -9436,9 +9343,10 @@ Release: April 23, 2024
 
 138 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.364  Attribute msDS-KeyUsage
+Version-Specific Behavior: First implemented on Windows Server 2016.
+
+### 2.364 Attribute msDS-KeyUsage
 
 This attribute identifies the usage scenario for the key.
 
@@ -9459,7 +9367,7 @@ This attribute identifies the usage scenario for the key.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.365  Attribute msDS-KeyVersionNumber
+### 2.365 Attribute msDS-KeyVersionNumber
 
 For a given user, computer, or built-in account, this attribute specifies the Kerberos version number of
 the current key for that account. The Kerberos key version number for trusts is stored in the trusted
@@ -9481,7 +9389,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.366  Attribute msDS-KrbTgtLink
+### 2.366 Attribute msDS-KrbTgtLink
 
 For a computer, this attribute identifies the user object (krbtgt) that acts as the domain or secondary
 domain master secret. This depends on which domain or secondary domain the computer resides in.
@@ -9504,13 +9412,14 @@ Release: April 23, 2024
 
 139 / 276
 
- linkID: 2100
+
+ linkID: 2100
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.367  Attribute msDS-KrbTgtLinkBl
+### 2.367 Attribute msDS-KrbTgtLinkBl
 
 This attribute specifies the back link for ms-DS-KrbTgt-Link. For a user object (krbtgt) that acts as a
 domain or secondary domain master secret, it identifies which computers are in that domain or
@@ -9532,7 +9441,7 @@ secondary domain.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.368  Attribute msDS-LastFailedInteractiveLogonTime
+### 2.368 Attribute msDS-LastFailedInteractiveLogonTime
 
 This attribute specifies the time that an incorrect password was presented during a Ctrl-Alt-Del logon.
 
@@ -9551,7 +9460,7 @@ This attribute specifies the time that an incorrect password was presented durin
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.369  Attribute msDS-LastKnownRDN
+### 2.369 Attribute msDS-LastKnownRDN
 
 This attribute holds the original relative distinguished name (RDN) of a deleted object.
 
@@ -9570,7 +9479,8 @@ Release: April 23, 2024
 
 140 / 276
 
- systemOnly: TRUE
+
+ systemOnly: TRUE
  searchFlags: 0
  rangeLower: 1
  rangeUpper: 255
@@ -9579,7 +9489,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.370  Attribute msDS-LastSuccessfulInteractiveLogonTime
+### 2.370 Attribute msDS-LastSuccessfulInteractiveLogonTime
 
 This attribute specifies the time that the correct password was presented during a Ctrl-Alt-Del logon.
 
@@ -9598,7 +9508,7 @@ This attribute specifies the time that the correct password was presented during
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.371  Attribute msDS-LocalEffectiveDeletionTime
+### 2.371 Attribute msDS-LocalEffectiveDeletionTime
 
 This attribute stores the deletion time of the object in the local domain controller.
 
@@ -9616,7 +9526,7 @@ This attribute stores the deletion time of the object in the local domain contro
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.372  Attribute msDS-LocalEffectiveRecycleTime
+### 2.372 Attribute msDS-LocalEffectiveRecycleTime
 
 This attribute stores the recycle time of the object in the local domain controller.
 
@@ -9637,12 +9547,13 @@ Release: April 23, 2024
 
 141 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT|FLAG_ATTR_IS_CONSTRUCTED
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT|FLAG_ATTR_IS_CONSTRUCTED
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.373  Attribute msDS-LockoutDuration
+### 2.373 Attribute msDS-LockoutDuration
 
 This attribute specifies the lockout duration for locked-out user accounts.
 
@@ -9661,7 +9572,7 @@ This attribute specifies the lockout duration for locked-out user accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.374  Attribute msDS-LockoutThreshold
+### 2.374 Attribute msDS-LockoutThreshold
 
 This attribute specifies the lockout threshold for lockout of user accounts.
 
@@ -9681,7 +9592,7 @@ This attribute specifies the lockout threshold for lockout of user accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.375  Attribute msDS-LockoutObservationWindow
+### 2.375 Attribute msDS-LockoutObservationWindow
 
 This attribute specifies the observation window for lockout of user accounts.
 
@@ -9704,11 +9615,12 @@ Release: April 23, 2024
 
 142 / 276
 
- schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
+
+ schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.376  Attribute msDS-LogonTimeSyncInterval
+### 2.376 Attribute msDS-LogonTimeSyncInterval
 
 This attribute specifies the frequency (in days) with which the last logon time for a user/computer,
 recorded in the lastLogonTimestamp attribute, is updated.
@@ -9730,7 +9642,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.377  Attribute msDS-ManagedAccountPrecededByLink
+### 2.377 Attribute msDS-ManagedAccountPrecededByLink
 
 This attribute is the forward link from a delegated managed service account to a service account
 object.
@@ -9751,7 +9663,7 @@ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2025.
 
-2.378  Attribute msDS-ManagedAccountPrecededByLinkBL
+### 2.378 Attribute msDS-ManagedAccountPrecededByLinkBL
 
 This attribute is the back link from a delegated managed service account to a service account object.
 
@@ -9770,7 +9682,8 @@ Release: April 23, 2024
 
 143 / 276
 
-oMSyntax: 127
+
+oMSyntax: 127
 schemaIDGUID: 94774af0-5355-402c-9c9a-12470c873e4a
 systemOnly: FALSE
 searchFlags: 0
@@ -9779,7 +9692,7 @@ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2025.
 
-2.379  Attribute msDS-ManagedPassword
+### 2.379 Attribute msDS-ManagedPassword
 
 This attribute is the managed password data for a group MSA.
 
@@ -9797,7 +9710,7 @@ This attribute is the managed password data for a group MSA.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.380  Attribute msDS-ManagedPasswordId
+### 2.380 Attribute msDS-ManagedPasswordId
 
 This attribute is the identifier for the current managed password data for a group MSA.
 
@@ -9816,7 +9729,7 @@ This attribute is the identifier for the current managed password data for a gro
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.381  Attribute msDS-ManagedPasswordInterval
+### 2.381 Attribute msDS-ManagedPasswordInterval
 
 This attribute is used to retrieve the number of days before a managed password is automatically
 changed for a group MSA.
@@ -9836,14 +9749,15 @@ Release: April 23, 2024
 
 144 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
  schemaIdGuid: f8758ef7-ac76-8843-a2ee-a26b4dcaf409
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.382  Attribute msDS-ManagedPasswordPreviousId
+### 2.382 Attribute msDS-ManagedPasswordPreviousId
 
 This attribute is the identifier for the previous managed password data for a group MSA.
 
@@ -9862,7 +9776,7 @@ This attribute is the identifier for the previous managed password data for a gr
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.383  Attribute msDs-masteredBy
+### 2.383 Attribute msDs-masteredBy
 
 This attribute specifies the back link for ms-DS-Has-Master-NCs. For more information, see [MS-
 ADTS].
@@ -9885,7 +9799,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.384  Attribute msDS-MaximumPasswordAge
+### 2.384 Attribute msDS-MaximumPasswordAge
 
 This attribute specifies the maximum age of passwords for user accounts.
 
@@ -9902,7 +9816,8 @@ Release: April 23, 2024
 
 145 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  systemOnly: FALSE
  searchFlags: 0
  rangeUpper: 0
@@ -9912,7 +9827,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.385  Attribute msDS-MaximumRegistrationInactivityPeriod
+### 2.385 Attribute msDS-MaximumRegistrationInactivityPeriod
 
 This attribute specifies the maximum number of days used to detect inactivity of registration objects.
 
@@ -9930,7 +9845,7 @@ This attribute specifies the maximum number of days used to detect inactivity of
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.386  Attribute msDs-MaxValues
+### 2.386 Attribute msDs-MaxValues
 
 This attribute specifies the maximum values allowed for a given object. Its use is dependent on the
 object with which it is associated.
@@ -9949,7 +9864,7 @@ object with which it is associated.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.387  Attribute msds-memberOfTransitive
+### 2.387 Attribute msds-memberOfTransitive
 
 This attribute specifies the set of distinguished names (DNs) in the memberOf attribute on the current
 object and the DNs from the memberOf attributes of each of the objects specified in the memberOf
@@ -9968,7 +9883,8 @@ Release: April 23, 2024
 
 146 / 276
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: FALSE
  schemaIdGuid: 862166b6-c941-4727-9565-48bfff2941de
  systemOnly: TRUE
@@ -9979,7 +9895,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.388  Attribute msDS-MembersForAzRole
+### 2.388 Attribute msDS-MembersForAzRole
 
 This attribute is used by the Authorization Manager feature of Windows Server 2003 and is not
 necessary for Active Directory to function. It specifies the list of member application groups or users
@@ -10003,7 +9919,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.389  Attribute msDS-MembersForAzRoleBL
+### 2.389 Attribute msDS-MembersForAzRoleBL
 
 This attribute specifies the back link from a member application group or user to the Az-Role objects
 that link to it. It is used by the Authorization Manager feature of Windows Server 2003 and is not
@@ -10031,7 +9947,8 @@ Release: April 23, 2024
 
 147 / 276
 
-2.390  Attribute msDS-MembersOfResourcePropertyList
+
+### 2.390 Attribute msDS-MembersOfResourcePropertyList
 
 For a resource property list object, this multivalued link attribute points to one or more resource
 property objects.
@@ -10051,7 +9968,7 @@ property objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.391  Attribute msDS-MembersOfResourcePropertyListBL
+### 2.391 Attribute msDS-MembersOfResourcePropertyListBL
 
 This attribute is the back link for msDS-MembersOfResourcePropertyList. For a resource property
 object, this attribute references the resource property list object that it is a member of.
@@ -10071,7 +9988,7 @@ object, this attribute references the resource property list object that it is a
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.392  Attribute msds-memberTransitive
+### 2.392 Attribute msds-memberTransitive
 
 This attribute specifies the set of distinguished names (DNs) in the member attribute on the current
 object and the DNs from the member attribute of each of the objects specified in the member
@@ -10098,9 +10015,10 @@ Release: April 23, 2024
 
 148 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.393  Attribute msDS-MinimumPasswordAge
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.393 Attribute msDS-MinimumPasswordAge
 
 This attribute specifies the minimum age of passwords for user accounts.
 
@@ -10119,7 +10037,7 @@ This attribute specifies the minimum age of passwords for user accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.394  Attribute msDS-MinimumPasswordLength
+### 2.394 Attribute msDS-MinimumPasswordLength
 
 This attribute specifies the minimum length of passwords for user accounts.
 
@@ -10139,7 +10057,7 @@ This attribute specifies the minimum length of passwords for user accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.395  Attribute msDS-NC-Replica-Locations
+### 2.395 Attribute msDS-NC-Replica-Locations
 
 This attribute specifies the list of servers that are the replica set for the corresponding non-domain
 NC. For more information, see [MS-ADTS] section 6.1.1.2.1.1.5.
@@ -10165,11 +10083,12 @@ Release: April 23, 2024
 
 149 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
+
+Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.396  Attribute msDS-NC-RO-Replica-Locations
+### 2.396 Attribute msDS-NC-RO-Replica-Locations
 
 This attribute specifies a linked attribute on a cross ref object for a partition. This attribute lists the
 DSA instances that host the partition in a read-only manner.
@@ -10190,7 +10109,7 @@ DSA instances that host the partition in a read-only manner.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.397  Attribute msDS-NC-RO-Replica-Locations-BL
+### 2.397 Attribute msDS-NC-RO-Replica-Locations-BL
 
 This attribute specifies a back link attribute for ms-DS-NC-RO-Replica-Locations.
 
@@ -10209,7 +10128,7 @@ This attribute specifies a back link attribute for ms-DS-NC-RO-Replica-Locations
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.398  Attribute msDS-NcType
+### 2.398 Attribute msDS-NcType
 
 This attribute specifies a bit field that maintains information about aspects of an NC replica that are
 relevant to replication.
@@ -10233,11 +10152,12 @@ Release: April 23, 2024
 
 150 / 276
 
- schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
+
+ schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.399  Attribute msDS-NCReplCursors
+### 2.399 Attribute msDS-NCReplCursors
 
 This attribute specifies a list of past and present replication partners for a particular machine, and how
 up-to-date that machine is with each of them. For more information, see [MS-DRSR].
@@ -10258,7 +10178,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.400  Attribute msDS-NCReplInboundNeighbors
+### 2.400 Attribute msDS-NCReplInboundNeighbors
 
 This attribute specifies replication partners for this NC. For more information, see [MS-DRSR].
 
@@ -10278,7 +10198,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.401  Attribute msDS-NCReplOutboundNeighbors
+### 2.401 Attribute msDS-NCReplOutboundNeighbors
 
 This attribute specifies replication partners for this NC. For more information, see [MS-DRSR].
 
@@ -10299,14 +10219,15 @@ Release: April 23, 2024
 
 151 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_IS_CONSTRUCTED
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.402  Attribute msDS-NeverRevealGroup
+### 2.402 Attribute msDS-NeverRevealGroup
 
 For an Active Directory instance, this attribute identifies the security group whose users never have
 their secrets disclosed to that instance.
@@ -10327,7 +10248,7 @@ their secrets disclosed to that instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.403  Attribute msDS-Non-Security-Group-Extra-Classes
+### 2.403 Attribute msDS-Non-Security-Group-Extra-Classes
 
 This attribute specifies the common names of the nonstandard classes that can be added to a
 nonsecurity group through the Active Directory Users and Computers snap-in (ADUC MMC). For more
@@ -10346,7 +10267,7 @@ information, see [MSDN-ACL].
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.404  Attribute msDS-NonMembers
+### 2.404 Attribute msDS-NonMembers
 
 This attribute holds non-security members of a group and is used for Microsoft Exchange Server
 distribution lists.
@@ -10365,7 +10286,8 @@ Release: April 23, 2024
 
 152 / 276
 
- isSingleValued: FALSE
+
+ isSingleValued: FALSE
  schemaIdGuid: cafcb1de-f23c-46b5-adf7-1e64957bd5db
  systemOnly: FALSE
  searchFlags: 0
@@ -10377,7 +10299,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.405  Attribute msDS-NonMembersBL
+### 2.405 Attribute msDS-NonMembersBL
 
 This attribute specifies the back link from a nonmember group or a user to the nonmember groups
 that link to it. Groups of this type are not used by Active Directory, and this attribute is not necessary
@@ -10399,7 +10321,7 @@ schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.406  Attribute msDS-ObjectReference
+### 2.406 Attribute msDS-ObjectReference
 
 For a given object, this attribute specifies a link to another object. Its use is dependent on the object
 with which it is associated.
@@ -10418,7 +10340,7 @@ with which it is associated.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.407  Attribute msDS-ObjectReferenceBL
+### 2.407 Attribute msDS-ObjectReferenceBL
 
 For a given object, this attribute specifies a back link to another object. Its use is dependent on the
 object with which it is associated.
@@ -10430,7 +10352,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Object-Reference-BL
+
+ cn: ms-DS-Object-Reference-BL
  ldapDisplayName: msDS-ObjectReferenceBL
  attributeId: 1.2.840.113556.1.4.1841
  attributeSyntax: 2.5.5.1
@@ -10445,7 +10368,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.408  Attribute msDS-ObjectSoa
+### 2.408 Attribute msDS-ObjectSoa
 
 This attribute is used to identify the source of authority of an object.
 
@@ -10464,7 +10387,7 @@ This attribute is used to identify the source of authority of an object.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.409  Attribute msDS-OIDToGroupLink
+### 2.409 Attribute msDS-OIDToGroupLink
 
 On an object of class msPKI-Enterprise-Oid, this attribute identifies the group object corresponding to
 the issuance policy represented by this object.
@@ -10485,7 +10408,7 @@ the issuance policy represented by this object.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.410  Attribute msDS-OIDToGroupLinkBl
+### 2.410 Attribute msDS-OIDToGroupLinkBl
 
 This attribute is the back link attribute for ms-DS-OIDToGroupLink; it identifies the issuance policy,
 represented by an object of class msPKI-Enterprise-Oid, that is mapped to this group.
@@ -10497,7 +10420,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-OIDToGroup-Link-BL
+
+ cn: ms-DS-OIDToGroup-Link-BL
  ldapDisplayName: msDS-OIDToGroupLinkBl
  attributeId: 1.2.840.113556.1.4.2052
  attributeSyntax: 2.5.5.1
@@ -10513,7 +10437,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.411  Attribute msDS-OperationsForAzRole
+### 2.411 Attribute msDS-OperationsForAzRole
 
 This attribute is used by the Authorization Manager feature of Windows Server 2003 and is not
 necessary for Active Directory to function. It specifies a list of operations.
@@ -10533,7 +10457,7 @@ necessary for Active Directory to function. It specifies a list of operations.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.412  Attribute msDS-OperationsForAzRoleBL
+### 2.412 Attribute msDS-OperationsForAzRoleBL
 
 This attribute specifies a back link from Az-Operation to the Az-Role objects that link to it. It is used
 by the Authorization Manager feature of Windows Server 2003 and is not necessary for Active
@@ -10561,7 +10485,8 @@ Release: April 23, 2024
 
 155 / 276
 
-2.413  Attribute msDS-OperationsForAzTask
+
+### 2.413 Attribute msDS-OperationsForAzTask
 
 This attribute is used by the Authorization Manager feature of Windows Server 2003 and is not
 necessary for Active Directory to function. It specifies a list of operations linked to Az-Task.
@@ -10581,7 +10506,7 @@ necessary for Active Directory to function. It specifies a list of operations li
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.414  Attribute msDS-OperationsForAzTaskBL
+### 2.414 Attribute msDS-OperationsForAzTaskBL
 
 This attribute specifies a back link from Az-Operation to the Az-Task object(s) that link to it.  It  is
 used by the Authorization Manager Feature of Windows Server 2003 and is not necessary for Active
@@ -10602,7 +10527,7 @@ Directory functioning.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.415  Attribute msDS-OptionalFeatureFlags
+### 2.415 Attribute msDS-OptionalFeatureFlags
 
 This attribute stores an integer value that contains flags that define behavior of an optional feature in
 Active Directory.
@@ -10628,7 +10553,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.416  Attribute msDS-OptionalFeatureGUID
+
+### 2.416 Attribute msDS-OptionalFeatureGUID
 
 This attribute stores the GUID of an optional feature.
 
@@ -10648,7 +10574,7 @@ This attribute stores the GUID of an optional feature.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.417  Attribute msDS-Other-Settings
+### 2.417 Attribute msDS-Other-Settings
 
 For a given object, this attribute specifies any configurable setting in the "Name, Value" format. Its
 use is dependent on the object with which it is associated.
@@ -10669,7 +10595,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.418  Attribute msDS-parentdistname
+### 2.418 Attribute msDS-parentdistname
 
 This attribute specifies the distinguished name (DN) of the parent object of the current object.
 
@@ -10696,7 +10622,8 @@ Release: April 23, 2024
 
 157 / 276
 
-2.419  Attribute msDS-PasswordComplexityEnabled
+
+### 2.419 Attribute msDS-PasswordComplexityEnabled
 
 This attribute specifies password complexity status for user accounts.
 
@@ -10714,7 +10641,7 @@ This attribute specifies password complexity status for user accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.420  Attribute msDS-PasswordHistoryLength
+### 2.420 Attribute msDS-PasswordHistoryLength
 
 This attribute specifies the length of password history for user accounts.
 
@@ -10734,7 +10661,7 @@ This attribute specifies the length of password history for user accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.421  Attribute msDS-PasswordReversibleEncryptionEnabled
+### 2.421 Attribute msDS-PasswordReversibleEncryptionEnabled
 
 This attribute specifies password-reversible encryption status for user accounts.
 
@@ -10752,7 +10679,7 @@ This attribute specifies password-reversible encryption status for user accounts
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.422  Attribute msDS-PasswordSettingsPrecedence
+### 2.422 Attribute msDS-PasswordSettingsPrecedence
 
 This attribute specifies the precedence of password settings.
 
@@ -10763,7 +10690,8 @@ Release: April 23, 2024
 
 158 / 276
 
- cn: ms-DS-Password-Settings-Precedence
+
+ cn: ms-DS-Password-Settings-Precedence
  ldapDisplayName: msDS-PasswordSettingsPrecedence
  attributeId: 1.2.840.113556.1.4.2023
  attributeSyntax: 2.5.5.9
@@ -10778,7 +10706,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.423  Attribute msDS-PerUserTrustQuota
+### 2.423 Attribute msDS-PerUserTrustQuota
 
 For a given user, this attribute specifies a quota for creating trusted domain objects (TDOs).
 
@@ -10798,7 +10726,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.424  Attribute msDS-PerUserTrustTombstonesQuota
+### 2.424 Attribute msDS-PerUserTrustTombstonesQuota
 
 For a given user, this attribute specifies a quota for deleting TDOs.
 
@@ -10818,7 +10746,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.425  Attribute msDS-PhoneticCompanyName
+### 2.425 Attribute msDS-PhoneticCompanyName
 
 This attribute contains the phonetic company name where the person works.
 
@@ -10829,7 +10757,8 @@ Release: April 23, 2024
 
 159 / 276
 
- cn: ms-DS-Phonetic-Company-Name
+
+ cn: ms-DS-Phonetic-Company-Name
  ldapDisplayName: msDS-PhoneticCompanyName
  attributeId: 1.2.840.113556.1.4.1945
  attributeSyntax: 2.5.5.12
@@ -10847,7 +10776,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.426  Attribute msDS-PhoneticDepartment
+### 2.426 Attribute msDS-PhoneticDepartment
 
 This attribute contains the phonetic department name where the person works.
 
@@ -10869,7 +10798,7 @@ This attribute contains the phonetic department name where the person works.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.427  Attribute msDS-PhoneticDisplayName
+### 2.427 Attribute msDS-PhoneticDisplayName
 
 This attribute contains the phonetic display name of an object. In the absence of a phonetic display
 name, the existing display name is used.
@@ -10898,9 +10827,10 @@ Release: April 23, 2024
 
 160 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.428  Attribute msDS-PhoneticFirstName
+Version-Specific Behavior: First implemented on Windows Server 2008.
+
+### 2.428 Attribute msDS-PhoneticFirstName
 
 This attribute contains the phonetic given name or first name of the person.
 
@@ -10922,7 +10852,7 @@ This attribute contains the phonetic given name or first name of the person.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.429  Attribute msDS-PhoneticLastName
+### 2.429 Attribute msDS-PhoneticLastName
 
 This attribute contains the phonetic last name of the person.
 
@@ -10944,7 +10874,7 @@ This attribute contains the phonetic last name of the person.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.430  Attribute msDS-Preferred-GC-Site
+### 2.430 Attribute msDS-Preferred-GC-Site
 
 This attribute specifies a preferred global catalog server and is used during group expansion. For more
 information, see [MS-SAMR].
@@ -10966,7 +10896,8 @@ Release: April 23, 2024
 
 161 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
@@ -10974,7 +10905,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.431  Attribute msDS-preferredDataLocation
+### 2.431 Attribute msDS-preferredDataLocation
 
 This attribute indicates the preferred data location.
 
@@ -10995,7 +10926,7 @@ This attribute indicates the preferred data location.
 
 Version-Specific Behavior: First implemented on Windows Server v1803 operating system.
 
-2.432  Attribute msDS-PrimaryComputer
+### 2.432 Attribute msDS-PrimaryComputer
 
 For a user or group object, this attribute identifies the primary computers.
 
@@ -11015,7 +10946,7 @@ For a user or group object, this attribute identifies the primary computers.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.433  Attribute msDS-PrincipalName
+### 2.433 Attribute msDS-PrincipalName
 
 This attribute specifies the account name for the security principal (constructed).
 
@@ -11032,7 +10963,8 @@ Release: April 23, 2024
 
 162 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 564e9325-d057-c143-9e3b-4f9e5ef46f93
  systemOnly: FALSE
  searchFlags: 0
@@ -11041,7 +10973,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.434  Attribute msDS-PromotionSettings
+### 2.434 Attribute msDS-PromotionSettings
 
 For a computer, this attribute contains an XML string to be used for delegated DSA promotion.
 
@@ -11059,7 +10991,7 @@ For a computer, this attribute contains an XML string to be used for delegated D
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.435  Attribute msDS-PSOApplied
+### 2.435 Attribute msDS-PSOApplied
 
 This attribute specifies a password settings object. When present on a user or group object, it
 identifies the password settings object applied to that user or group object.
@@ -11080,7 +11012,7 @@ identifies the password settings object applied to that user or group object.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.436  Attribute msDS-PSOAppliesTo
+### 2.436 Attribute msDS-PSOAppliesTo
 
 This attribute specifies the links to objects that this password settings object applies to.
 
@@ -11098,7 +11030,8 @@ Release: April 23, 2024
 
 163 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  omObjectClass: 1.3.12.2.1011.28.0.714
  schemaIdGuid: 64c80f48-cdd2-4881-a86d-4e97b6f561fc
@@ -11107,7 +11040,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.437  Attribute msDS-QuotaAmount
+### 2.437 Attribute msDS-QuotaAmount
 
 This attribute specifies the assigned quota in terms of the number of objects owned in the database.
 For more information on how Active Directory uses this attribute, refer to [MS-ADTS].
@@ -11128,7 +11061,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.438  Attribute msDS-QuotaEffective
+### 2.438 Attribute msDS-QuotaEffective
 
 For a given user, this attribute specifies the cumulative quota based on multiple policies within a given
 NC. For more information about this attribute, see [MS-ADTS] section 3.1.1.4.5.22.
@@ -11149,7 +11082,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.439  Attribute msDS-QuotaTrustee
+### 2.439 Attribute msDS-QuotaTrustee
 
 For a given set of quotas, this attribute specifies the SID for a security principal who is constrained by
 the quota policy. For more information on how Active Directory uses this attribute, refer to [MS-
@@ -11162,7 +11095,8 @@ Release: April 23, 2024
 
 164 / 276
 
- cn: ms-DS-Quota-Trustee
+
+ cn: ms-DS-Quota-Trustee
  ldapDisplayName: msDS-QuotaTrustee
  attributeId: 1.2.840.113556.1.4.1844
  attributeSyntax: 2.5.5.17
@@ -11180,7 +11114,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.440  Attribute msDS-QuotaUsed
+### 2.440 Attribute msDS-QuotaUsed
 
 For a given user, this attribute specifies the quota currently consumed. For more information about
 this attribute, see [MS-ADTS] section 3.1.1.4.5.23.
@@ -11201,7 +11135,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.441  Attribute msDS-RegisteredOwner
+### 2.441 Attribute msDS-RegisteredOwner
 
 This attribute is a single-valued binary attribute containing the primary SID that references the first
 user to register the device. The value is not removed during de-registration, but could be managed by
@@ -11229,7 +11163,8 @@ Release: April 23, 2024
 
 165 / 276
 
-2.442  Attribute msDS-RegisteredUsers
+
+### 2.442 Attribute msDS-RegisteredUsers
 
 This attribute contains the list of users that have registered the device. Users in this list have access
 to all of the features provided by the "Company Portal" application, and they have single-sign-on
@@ -11250,7 +11185,7 @@ access to company resources.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.443  Attribute msDS-RegistrationQuota
+### 2.443 Attribute msDS-RegistrationQuota
 
 This attribute specifies the policy used to limit the number of registrations allowed for a single user.
 
@@ -11268,7 +11203,7 @@ This attribute specifies the policy used to limit the number of registrations al
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.444  Attribute msDS-ReplAttributeMetaData
+### 2.444 Attribute msDS-ReplAttributeMetaData
 
 This attribute specifies a list of metadata for each replicated attribute. The metadata indicates who
 last changed the attribute. For more information, see [MS-DRSR].
@@ -11296,7 +11231,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.445  Attribute msDS-Replication-Notify-First-DSA-Delay
+
+### 2.445 Attribute msDS-Replication-Notify-First-DSA-Delay
 
 This attribute specifies the delay between changes to directory objects and notification of the first
 replica partner for an NC.
@@ -11317,7 +11253,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.446  Attribute msDS-Replication-Notify-Subsequent-DSA-Delay
+### 2.446 Attribute msDS-Replication-Notify-Subsequent-DSA-Delay
 
 This attribute specifies the delay between notification of each subsequent replica partner for an NC.
 
@@ -11337,7 +11273,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.447  Attribute msDS-ReplicationEpoch
+### 2.447 Attribute msDS-ReplicationEpoch
 
 This attribute specifies the epoch under which all the DCs are replicating. For more information, see
 [MS-DRSR].
@@ -11363,9 +11299,10 @@ Release: April 23, 2024
 
 167 / 276
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.448  Attribute msDS-ReplValueMetaData
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.448 Attribute msDS-ReplValueMetaData
 
 This attribute specifies a list of metadata for each value of an attribute. The metadata indicates who
 last changed the value. For more information, see [MS-DRSR].
@@ -11386,7 +11323,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.449  Attribute msDS-ReplValueMetaDataExt
+### 2.449 Attribute msDS-ReplValueMetaDataExt
 
 This attribute contains no values on any object.
 
@@ -11404,7 +11341,7 @@ This attribute contains no values on any object.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.450  Attribute msDS-RequiredDomainBehaviorVersion
+### 2.450 Attribute msDS-RequiredDomainBehaviorVersion
 
 This attribute specifies the required domain functional level for an optional feature enabled in a
 domain-mode scope.
@@ -11430,7 +11367,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.451  Attribute msDS-RequiredForestBehaviorVersion
+
+### 2.451 Attribute msDS-RequiredForestBehaviorVersion
 
 This attribute specifies the required forest functional level for an optional feature.
 
@@ -11448,7 +11386,7 @@ This attribute specifies the required forest functional level for an optional fe
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.452  Attribute msDS-ResultantPSO
+### 2.452 Attribute msDS-ResultantPSO
 
 This attribute specifies the effective password policy applied to this object.
 
@@ -11467,7 +11405,7 @@ This attribute specifies the effective password policy applied to this object.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.453  Attribute msDS-RetiredReplNCSignatures
+### 2.453 Attribute msDS-RetiredReplNCSignatures
 
 This attribute specifies information about NCs that are no longer held on this computer. For more
 information, see [MS-DRSR].
@@ -11495,7 +11433,8 @@ Release: April 23, 2024
 
 169 / 276
 
-2.454  Attribute msDS-RevealedDSAs
+
+### 2.454 Attribute msDS-RevealedDSAs
 
 This attribute specifies the back link for ms-DS-Revealed-Users. For a user, it identifies which Active
 Directory instances hold that user's secret.
@@ -11516,7 +11455,7 @@ Directory instances hold that user's secret.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.455  Attribute msDS-RevealedList
+### 2.455 Attribute msDS-RevealedList
 
 For an Active Directory instance, this attribute identifies the user objects whose secrets have been
 disclosed to that instance.
@@ -11536,7 +11475,7 @@ disclosed to that instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.456  Attribute msDS-RevealedListBL
+### 2.456 Attribute msDS-RevealedListBL
 
 This attribute specifies the back link attribute for ms-DS-Revealed-List.
 
@@ -11562,7 +11501,8 @@ Release: April 23, 2024
 
 170 / 276
 
-2.457  Attribute msDS-RevealedUsers
+
+### 2.457 Attribute msDS-RevealedUsers
 
 For an Active Directory instance, this attribute identifies the user objects whose secrets have been
 disclosed to that instance.
@@ -11583,7 +11523,7 @@ disclosed to that instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.458  Attribute msDS-RevealOnDemandGroup
+### 2.458 Attribute msDS-RevealOnDemandGroup
 
 For an Active Directory instance, this attribute identifies the security group whose users can have their
 secrets disclosed to that instance.
@@ -11604,7 +11544,7 @@ secrets disclosed to that instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.459  Attribute msDS-RIDPoolAllocationEnabled
+### 2.459 Attribute msDS-RIDPoolAllocationEnabled
 
 This attribute indicates whether RID pool allocation is enabled.
 
@@ -11629,7 +11569,8 @@ Release: April 23, 2024
 
 171 / 276
 
-2.460  Attribute msDs-Schema-Extensions
+
+### 2.460 Attribute msDs-Schema-Extensions
 
 This attribute specifies a BLOB used to store information about extensions to schema objects.
 
@@ -11646,7 +11587,7 @@ This attribute specifies a BLOB used to store information about extensions to sc
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.461  Attribute msDS-SDReferenceDomain
+### 2.461 Attribute msDS-SDReferenceDomain
 
 This attribute specifies the domain to be used for default security descriptor translation for a non-
 domain NC. For more information, see [MS-WPO].
@@ -11669,7 +11610,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.462  Attribute msDS-SecondaryKrbTgtNumber
+### 2.462 Attribute msDS-SecondaryKrbTgtNumber
 
 For a user object (krbtgt) acting as a secondary domain master secret, this attribute identifies the
 protocol identification number associated with the secondary domain.
@@ -11697,7 +11638,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.463  Attribute msDS-Security-Group-Extra-Classes
+
+### 2.463 Attribute msDS-Security-Group-Extra-Classes
 
 This attribute specifies the common names of the nonstandard classes that can be added to a security
 group through the Active Directory Users and Computers snap-in (ADUC MMC).
@@ -11715,7 +11657,7 @@ group through the Active Directory Users and Computers snap-in (ADUC MMC).
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.464  Attribute msDS-ServiceAllowedNTLMNetworkAuthentication
+### 2.464 Attribute msDS-ServiceAllowedNTLMNetworkAuthentication
 
 This attribute is used to determine if a service is allowed to authenticate using NTLM authentication.
 
@@ -11733,7 +11675,7 @@ This attribute is used to determine if a service is allowed to authenticate usin
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.465  Attribute msDS-ServiceAllowedToAuthenticateFrom
+### 2.465 Attribute msDS-ServiceAllowedToAuthenticateFrom
 
 This attribute is used to determine whether a service has permission to authenticate from a computer.
 
@@ -11752,7 +11694,7 @@ This attribute is used to determine whether a service has permission to authenti
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.466  Attribute msDS-ServiceAllowedToAuthenticateTo
+### 2.466 Attribute msDS-ServiceAllowedToAuthenticateTo
 
 This attribute is used to determine whether a service has permission to authenticate to a service.
 
@@ -11763,7 +11705,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Service-Allowed-To-Authenticate-To
+
+ cn: ms-DS-Service-Allowed-To-Authenticate-To
  ldapDisplayName: msDS-ServiceAllowedToAuthenticateTo
  attributeId: 1.2.840.113556.1.4.2282
  attributeSyntax: 2.5.5.10
@@ -11778,7 +11721,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.467  Attribute msDS-ServiceAuthNPolicy
+### 2.467 Attribute msDS-ServiceAuthNPolicy
 
 This attribute specifies which AuthNPolicy is applied to services assigned to this silo object.
 
@@ -11797,7 +11740,7 @@ This attribute specifies which AuthNPolicy is applied to services assigned to th
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.468  Attribute msDS-ServiceAuthNPolicyBL
+### 2.468 Attribute msDS-ServiceAuthNPolicyBL
 
 This attribute is the backlink for msDS-ServiceAuthNPolicy.
 
@@ -11816,7 +11759,7 @@ This attribute is the backlink for msDS-ServiceAuthNPolicy.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.469  Attribute msDS-ServiceTGTLifetime
+### 2.469 Attribute msDS-ServiceTGTLifetime
 
 This attribute specifies the maximum age of a Kerberos TGT issued to a service in units of 10^(-7)
 seconds.
@@ -11828,7 +11771,8 @@ Release: April 23, 2024
 
 174 / 276
 
- cn: ms-DS-Service-TGT-Lifetime
+
+ cn: ms-DS-Service-TGT-Lifetime
  ldapDisplayName: msDS-ServiceTGTLifetime
  attributeId: 1.2.840.113556.1.4.2284
  attributeSyntax: 2.5.5.16
@@ -11841,7 +11785,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.470  Attribute msDS-Settings
+### 2.470 Attribute msDS-Settings
 
 This attribute specifies settings for a given object. Its use is dependent on the object with which it is
 associated.
@@ -11859,7 +11803,7 @@ associated.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.471  Attribute msDS-ShadowPrincipalSid
+### 2.471 Attribute msDS-ShadowPrincipalSid
 
 This attribute contains the SID of a principal from an external forest.
 
@@ -11877,7 +11821,7 @@ This attribute contains the SID of a principal from an external forest.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.472  Attribute msDS-SiteName
+### 2.472 Attribute msDS-SiteName
 
 For an Active Directory instance, this attribute identifies the site name that contains the DSA.
 
@@ -11894,7 +11838,8 @@ Release: April 23, 2024
 
 175 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 98a7f36d-3595-448a-9e6f-6b8965baed9c
  systemOnly: FALSE
  searchFlags: 0
@@ -11903,7 +11848,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.473  Attribute msDS-Site-Affinity
+### 2.473 Attribute msDS-Site-Affinity
 
 This attribute specifies site affinity and is used during group expansion. For more information, see
 [MS-SAMR].
@@ -11924,7 +11869,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.474  Attribute msDS-SourceAnchor
+### 2.474 Attribute msDS-SourceAnchor
 
 The msDS-SourceAnchor attribute defines a unique, immutable identifier for the object in the
 authoritative directory. This attribute is reserved for future use.
@@ -11944,7 +11889,7 @@ authoritative directory. This attribute is reserved for future use.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.475  Attribute msDS-SourceObjectDN
+### 2.475 Attribute msDS-SourceObjectDN
 
 This attribute specifies a string representation of the DN of the object in another forest that has a
 relationship to this object. The details of the relationship are defined by the objects.
@@ -11960,7 +11905,8 @@ Release: April 23, 2024
 
 176 / 276
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 773e93af-d3b4-48d4-b3f9-06457602d3d0
@@ -11972,7 +11918,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.476  Attribute msDS-SPNSuffixes
+### 2.476 Attribute msDS-SPNSuffixes
 
 This attribute specifies the suffixes of DNS host names used by servers in the forest. These DNS
 suffixes are shared with other forests that have cross-forest trust with this forest.
@@ -11994,7 +11940,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.477  Attribute msDS-StrongNTLMPolicy
+### 2.477 Attribute msDS-StrongNTLMPolicy
 
 This attribute specifies policy options for NTLM secrets with strong entropy.
 
@@ -12012,7 +11958,7 @@ This attribute specifies policy options for NTLM secrets with strong entropy.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.478  Attribute msDS-SupersededManagedAccountLink
+### 2.478 Attribute msDS-SupersededManagedAccountLink
 
 This attribute is the forward link from a service account to a delegated managed service account
 object
@@ -12026,7 +11972,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ldapDisplayName: : msDS-SupersededManagedAccountLink
+
+ldapDisplayName: : msDS-SupersededManagedAccountLink
 attributeID: 1.2.840.113556.1.4.2373
 attributeSyntax: 2.5.5.1
 isSingleValued: TRUE
@@ -12041,7 +11988,7 @@ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2025.
 
-2.479  Attribute msDS-SupersededManagedAccountLinkBL
+### 2.479 Attribute msDS-SupersededManagedAccountLinkBL
 
 This attribute is the forward link from a service account to a delegated managed service account
 object.
@@ -12062,7 +12009,7 @@ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2025.
 
-2.480  Attribute msDS-SupersededServiceAccountState
+### 2.480 Attribute msDS-SupersededServiceAccountState
 
 This attribute is used to track whether a service account has been superseded by a Delegated
 Managed Service Account.
@@ -12089,7 +12036,8 @@ Release: April 23, 2024
 
 178 / 276
 
-2.481  Attribute msDS-SupportedEncryptionTypes
+
+### 2.481 Attribute msDS-SupportedEncryptionTypes
 
 This attribute specifies the encryption algorithms supported by user, computer, or trust accounts. The
 Key Distribution Center (KDC) uses this information while generating a service ticket for this account.
@@ -12111,7 +12059,7 @@ Directory, and therefore need write access to this attribute.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.482  Attribute msDS-SyncServerUrl
+### 2.482 Attribute msDS-SyncServerUrl
 
 This attribute stores information about the sync server (in URL format) that hosts the user's sync
 folder.
@@ -12132,7 +12080,7 @@ folder.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.483  Attribute msDS-TasksForAzRole
+### 2.483 Attribute msDS-TasksForAzRole
 
 This attribute is used by the Authorization Manager feature of Windows Server 2003 and is not
 necessary for Active Directory to function. It specifies a list of tasks for Az-Role.
@@ -12157,9 +12105,10 @@ Release: April 23, 2024
 
 179 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.484  Attribute msDS-TasksForAzRoleBL
+Version-Specific Behavior: First implemented on Windows Server 2003.
+
+### 2.484 Attribute msDS-TasksForAzRoleBL
 
 This attribute specifies a back link from Az-Task to Az-Role objects linking to it. It is used by the
 Authorization Manager feature of Windows Server 2003 and is not necessary for Active Directory to
@@ -12180,7 +12129,7 @@ function.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.485  Attribute msDS-TasksForAzTask
+### 2.485 Attribute msDS-TasksForAzTask
 
 This attribute is used by the Authorization Manager feature of Windows Server 2003 and is not
 necessary for Active Directory to function. It specifies a list of tasks linked to Az-Task.
@@ -12200,7 +12149,7 @@ necessary for Active Directory to function. It specifies a list of tasks linked 
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.486  Attribute msDS-TasksForAzTaskBL
+### 2.486 Attribute msDS-TasksForAzTaskBL
 
 This attribute specifies a back link from Az-Task to the Az-Task objects linking to it. It is used by the
 Authorization Manager feature of Windows Server 2003 and is not necessary for Active Directory to
@@ -12225,11 +12174,12 @@ Release: April 23, 2024
 
 180 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_NOT_REPLICATED
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_NOT_REPLICATED
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.487  Attribute msDS-TDOEgressBL
+### 2.487 Attribute msDS-TDOEgressBL
 
 This attribute is the back link to the TDO egress rules link on an object.
 
@@ -12249,7 +12199,7 @@ This attribute is the back link to the TDO egress rules link on an object.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.488  Attribute msDS-TDOIngressBL
+### 2.488 Attribute msDS-TDOIngressBL
 
 This attribute is the back link to the TDO ingress rules link on an object.
 
@@ -12269,7 +12219,7 @@ This attribute is the back link to the TDO ingress rules link on an object.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.489  Attribute msds-tokenGroupNames
+### 2.489 Attribute msds-tokenGroupNames
 
 This attribute contains the distinguished names of security groups that the principal is directly or
 indirectly a member of.
@@ -12291,7 +12241,8 @@ Release: April 23, 2024
 
 181 / 276
 
- attributeSecurityGuid: 037088f8-0ae1-11d2-b422-00a0c968f939
+
+ attributeSecurityGuid: 037088f8-0ae1-11d2-b422-00a0c968f939
  searchFlags: fBASEONLY
  systemFlags: FLAG_ATTR_NOT_REPLICATED | FLAG_ATTR_IS_CONSTRUCTED |
   FLAG_ATTR_IS_OPERATIONAL | FLAG_SCHEMA_BASE_OBJECT
@@ -12299,7 +12250,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.490  Attribute msds-tokenGroupNamesGlobalAndUniversal
+### 2.490 Attribute msds-tokenGroupNamesGlobalAndUniversal
 
 This attribute contains the distinguished names of global and universal security groups the principal is
 directly or indirectly a member of.
@@ -12321,7 +12272,7 @@ directly or indirectly a member of.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.491  Attribute msds-tokenGroupNamesNoGCAcceptable
+### 2.491 Attribute msds-tokenGroupNamesNoGCAcceptable
 
 This attribute contains the distinguished names of security groups that the principal is directly or
 indirectly a member of as reported by the local DC.
@@ -12343,7 +12294,7 @@ indirectly a member of as reported by the local DC.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.492  Attribute msDS-TombstoneQuotaFactor
+### 2.492 Attribute msDS-TombstoneQuotaFactor
 
 This attribute specifies the percentage factor by which tombstone object count is reduced for the
 purpose of quota accounting. ("Tombstoned" objects are objects that have been deleted but not yet
@@ -12357,7 +12308,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Tombstone-Quota-Factor
+
+ cn: ms-DS-Tombstone-Quota-Factor
  ldapDisplayName: msDS-TombstoneQuotaFactor
  attributeId: 1.2.840.113556.1.4.1847
  attributeSyntax: 2.5.5.9
@@ -12375,7 +12327,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.493  Attribute msDS-TopQuotaUsage
+### 2.493 Attribute msDS-TopQuotaUsage
 
 This attribute specifies the top quota users ordered by decreasing quota usage currently in the
 directory. For more information about this attribute, see [MS-ADTS] section 3.1.1.3.2.31.
@@ -12396,7 +12348,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.494  Attribute msDS-TransformationRules
+### 2.494 Attribute msDS-TransformationRules
 
 This attribute specifies the transformation rules for cross-forest claims transformation.
 
@@ -12421,7 +12373,8 @@ Release: April 23, 2024
 
 183 / 276
 
-2.495  Attribute msDS-TransformationRulesCompiled
+
+### 2.495 Attribute msDS-TransformationRulesCompiled
 
 This attribute is a blob containing compiled transformation rules.
 
@@ -12439,7 +12392,7 @@ This attribute is a blob containing compiled transformation rules.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.496  Attribute msDS-TrustForestTrustInfo
+### 2.496 Attribute msDS-TrustForestTrustInfo
 
 This attribute specifies forest trust information (BLOB) that is used by the Active Directory system
 [MS-ADOD] for a trusted domain object (TDO). For more information about this attribute, see [MS-
@@ -12462,7 +12415,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.497  Attribute msDS-UpdateScript
+### 2.497 Attribute msDS-UpdateScript
 
 This attribute stores an XML script that is generated during a domain rename operation.
 
@@ -12487,9 +12440,10 @@ Release: April 23, 2024
 
 184 / 276
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.498  Attribute msDS-User-Account-Control-Computed
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.498 Attribute msDS-User-Account-Control-Computed
 
 This attribute specifies flags that control behavior of the user account. For more information, see [MS-
 ADTS] section 3.1.1.4.5.17.
@@ -12511,7 +12465,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.499  Attribute msDS-UserAllowedNTLMNetworkAuthentication
+### 2.499 Attribute msDS-UserAllowedNTLMNetworkAuthentication
 
 This attribute is used to determine if a user is allowed to authenticate using NTLM authentication.
 
@@ -12529,7 +12483,7 @@ This attribute is used to determine if a user is allowed to authenticate using N
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.500  Attribute msDS-UserAllowedToAuthenticateFrom
+### 2.500 Attribute msDS-UserAllowedToAuthenticateFrom
 
 This attribute is used to determine whether a user has permission to authenticate from a computer.
 
@@ -12553,9 +12507,10 @@ Release: April 23, 2024
 
 185 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.501  Attribute msDS-UserAllowedToAuthenticateTo
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.501 Attribute msDS-UserAllowedToAuthenticateTo
 
 This attribute is used to determine whether a user has permission to authenticate to a service.
 
@@ -12574,7 +12529,7 @@ This attribute is used to determine whether a user has permission to authenticat
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.502  Attribute msDS-UserAuthNPolicy
+### 2.502 Attribute msDS-UserAuthNPolicy
 
 This attribute specifies which AuthNPolicy is applied to users assigned to this silo object.
 
@@ -12593,7 +12548,7 @@ This attribute specifies which AuthNPolicy is applied to users assigned to this 
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.503  Attribute msDS-UserAuthNPolicyBL
+### 2.503 Attribute msDS-UserAuthNPolicyBL
 
 This attribute is the backlink for msDS-UserAuthNPolicy.
 
@@ -12619,7 +12574,8 @@ Release: April 23, 2024
 
 186 / 276
 
-2.504  Attribute msDS-UserPasswordExpiryTimeComputed
+
+### 2.504 Attribute msDS-UserPasswordExpiryTimeComputed
 
 This attribute contains the expiry time for the user's current password.
 
@@ -12638,7 +12594,7 @@ This attribute contains the expiry time for the user's current password.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.505  Attribute msDS-UserTGTLifetime
+### 2.505 Attribute msDS-UserTGTLifetime
 
 This attribute specifies the maximum age of a Kerberos TGT issued to a user in units of 10^(-7)
 seconds.
@@ -12656,7 +12612,7 @@ seconds.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.506  Attribute msDS-USNLastSyncSuccess
+### 2.506 Attribute msDS-USNLastSyncSuccess
 
 The update sequence number (USN) at which the last successful replication synchronization occurred.
 
@@ -12674,7 +12630,7 @@ The update sequence number (USN) at which the last successful replication synchr
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.507  Attribute msDS-ValueTypeReference
+### 2.507 Attribute msDS-ValueTypeReference
 
 This attribute is used to link a resource property object to its value type.
 
@@ -12685,7 +12641,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-DS-Value-Type-Reference
+
+ cn: ms-DS-Value-Type-Reference
  ldapDisplayName: msDS-ValueTypeReference
  attributeId: 1.2.840.113556.1.4.2187
  attributeSyntax: 2.5.5.1
@@ -12701,7 +12658,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.508  Attribute msDS-ValueTypeReferenceBL
+### 2.508 Attribute msDS-ValueTypeReferenceBL
 
 This attribute is the back link for msDS-ValueTypeReference. It links a value type object back to
 resource properties.
@@ -12722,7 +12679,7 @@ resource properties.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.509  Attribute msExchAssistantName
+### 2.509 Attribute msExchAssistantName
 
 This attribute is used by Exchange Server. This attribute is not necessary for Active Directory to
 function. The protocol does not define a format beyond that required by the schema.
@@ -12741,7 +12698,7 @@ function. The protocol does not define a format beyond that required by the sche
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.510  Attribute msExchHouseIdentifier
+### 2.510 Attribute msExchHouseIdentifier
 
 This attribute specifies a physical address for a contact in an Exchange Server address book.
 
@@ -12752,7 +12709,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-Exch-House-Identifier
+
+ cn: ms-Exch-House-Identifier
  ldapDisplayName: msExchHouseIdentifier
  attributeId: 1.2.840.113556.1.2.596
  attributeSyntax: 2.5.5.12
@@ -12766,7 +12724,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.511  Attribute msExchLabeledURI
+### 2.511 Attribute msExchLabeledURI
 
 This attribute is used by Exchange Server. This attribute is not necessary for Active Directory to
 function. The protocol does not define a format beyond that required by the schema.
@@ -12785,7 +12743,7 @@ function. The protocol does not define a format beyond that required by the sche
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.512  Attribute msFRS-Hub-Member
+### 2.512 Attribute msFRS-Hub-Member
 
 This attribute specifies a value used by the File Replication Service.
 
@@ -12802,7 +12760,7 @@ This attribute specifies a value used by the File Replication Service.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.513  Attribute msFRS-Topology-Pref
+### 2.513 Attribute msFRS-Topology-Pref
 
 This attribute specifies a value used by the File Replication Service.
 
@@ -12818,14 +12776,15 @@ Release: April 23, 2024
 
 189 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 92aa27e0-5c50-402d-9ec1-ee847def9788
  searchFlags: 0
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.514  Attribute msFVE-KeyPackage
+### 2.514 Attribute msFVE-KeyPackage
 
 This attribute contains a volume's BitLocker encryption key secured by the corresponding recovery
 password. Full Volume Encryption (FVE) was the prerelease name for BitLocker Drive Encryption.
@@ -12844,7 +12803,7 @@ password. Full Volume Encryption (FVE) was the prerelease name for BitLocker Dri
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.515  Attribute msFVE-RecoveryGuid
+### 2.515 Attribute msFVE-RecoveryGuid
 
 This attribute contains the GUID associated with a BitLocker recovery password. Full Volume
 Encryption (FVE) was the prerelease name for BitLocker Drive Encryption.
@@ -12863,7 +12822,7 @@ Encryption (FVE) was the prerelease name for BitLocker Drive Encryption.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.516  Attribute msFVE-RecoveryPassword
+### 2.516 Attribute msFVE-RecoveryPassword
 
 This attribute contains a password that can recover a BitLocker-encrypted volume. Full Volume
 Encryption (FVE) was the prerelease name for BitLocker Drive Encryption.
@@ -12884,13 +12843,14 @@ Release: April 23, 2024
 
 190 / 276
 
- searchFlags: fRODCFilteredAttribute | fCONFIDENTIAL | fCOPY |
+
+ searchFlags: fRODCFilteredAttribute | fCONFIDENTIAL | fCOPY |
   fPRESERVEONDELETE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.517  Attribute msFVE-VolumeGuid
+### 2.517 Attribute msFVE-VolumeGuid
 
 This attribute contains the GUID associated with a BitLocker-supported disk volume. Full Volume
 Encryption (FVE) was the prerelease name for BitLocker Drive Encryption.
@@ -12909,7 +12869,7 @@ Encryption (FVE) was the prerelease name for BitLocker Drive Encryption.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.518  Attribute msieee80211-Data
+### 2.518 Attribute msieee80211-Data
 
 This attribute specifies the network configurations for wireless support.
 
@@ -12925,7 +12885,7 @@ This attribute specifies the network configurations for wireless support.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.519  Attribute msieee80211-DataType
+### 2.519 Attribute msieee80211-DataType
 
 This attribute specifies the network configurations for wireless support.
 
@@ -12948,7 +12908,8 @@ Release: April 23, 2024
 
 191 / 276
 
-2.520  Attribute msieee80211-ID
+
+### 2.520 Attribute msieee80211-ID
 
 This attribute specifies the network configurations for wireless support.
 
@@ -12964,7 +12925,7 @@ This attribute specifies the network configurations for wireless support.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.521  Attribute msiFileList
+### 2.521 Attribute msiFileList
 
 For a given Active Directory domain, this attribute specifies a list of Microsoft installer files, such as
 the base MSI file (.msi) and MST transform files (.mst).
@@ -12982,7 +12943,7 @@ the base MSI file (.msi) and MST transform files (.mst).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.522  Attribute msIIS-FTPDir
+### 2.522 Attribute msIIS-FTPDir
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -13002,7 +12963,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.523  Attribute msIIS-FTPRoot
+### 2.523 Attribute msIIS-FTPRoot
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -13014,7 +12975,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-IIS-FTP-Root
+
+ cn: ms-IIS-FTP-Root
  ldapDisplayName: msIIS-FTPRoot
  attributeId: 1.2.840.113556.1.4.1785
  attributeSyntax: 2.5.5.12
@@ -13029,7 +12991,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.524  Attribute msImaging-HashAlgorithm
+### 2.524 Attribute msImaging-HashAlgorithm
 
 This attribute contains the name of the hash algorithm used to create the thumbprint hash for the
 Scan Repository/Secure Print device.
@@ -13048,7 +13010,7 @@ Scan Repository/Secure Print device.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.525  Attribute msImaging-PSPIdentifier
+### 2.525 Attribute msImaging-PSPIdentifier
 
 This attribute contains the unique identifier for this PostScan Process.
 
@@ -13064,7 +13026,7 @@ This attribute contains the unique identifier for this PostScan Process.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.526  Attribute msImaging-PSPString
+### 2.526 Attribute msImaging-PSPString
 
 This attribute contains the XML sequence for this PostScan Process.
 
@@ -13080,7 +13042,8 @@ Release: April 23, 2024
 
 193 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 7b6760ae-d6ed-44a6-b6be-9de62c09ec67
  searchFlags: 0
@@ -13089,7 +13052,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.527  Attribute msImaging-ThumbprintHash
+### 2.527 Attribute msImaging-ThumbprintHash
 
 This attribute contains a hash of the security certificate for the Scan Repository/Secure Print device.
 
@@ -13107,7 +13070,7 @@ This attribute contains a hash of the security certificate for the Scan Reposito
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.528  Attribute msiScript
+### 2.528 Attribute msiScript
 
 For a given application, this attribute specifies the Microsoft Installer (MSI) script.
 
@@ -13124,7 +13087,7 @@ For a given application, this attribute specifies the Microsoft Installer (MSI) 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.529  Attribute msiScriptName
+### 2.529 Attribute msiScriptName
 
 For a given application, this attribute specifies the MSI script name.
 
@@ -13146,9 +13109,10 @@ Release: April 23, 2024
 
 194 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.530  Attribute msiScriptPath
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.530 Attribute msiScriptPath
 
 For a given application, this attribute specifies the MSI script file path.
 
@@ -13165,7 +13129,7 @@ For a given application, this attribute specifies the MSI script file path.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.531  Attribute msiScriptSize
+### 2.531 Attribute msiScriptSize
 
 For a given application, this attribute specifies the MSI script file size.
 
@@ -13182,7 +13146,7 @@ For a given application, this attribute specifies the MSI script file size.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.532  Attribute msKds-CreateTime
+### 2.532 Attribute msKds-CreateTime
 
 This attribute contains the time when this root key was created.
 
@@ -13199,7 +13163,7 @@ This attribute contains the time when this root key was created.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.533  Attribute msKds-DomainID
+### 2.533 Attribute msKds-DomainID
 
 This attribute holds the distinguished name of the domain controller that generated this root key.
 
@@ -13210,7 +13174,8 @@ Release: April 23, 2024
 
 195 / 276
 
- cn: ms-Kds-DomainID
+
+ cn: ms-Kds-DomainID
  ldapDisplayName: msKds-DomainID
  attributeId: 1.2.840.113556.1.4.2177
  attributeSyntax: 2.5.5.1
@@ -13224,7 +13189,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.534  Attribute msKds-KDFAlgorithmID
+### 2.534 Attribute msKds-KDFAlgorithmID
 
 This attribute contains the algorithm name of the key derivation function used to compute keys.
 
@@ -13242,7 +13207,7 @@ This attribute contains the algorithm name of the key derivation function used t
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.535  Attribute msKds-KDFParam
+### 2.535 Attribute msKds-KDFParam
 
 This attribute holds parameters for the key derivation algorithm.
 
@@ -13260,7 +13225,7 @@ This attribute holds parameters for the key derivation algorithm.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.536  Attribute msKds-PrivateKeyLength
+### 2.536 Attribute msKds-PrivateKeyLength
 
 This attribute contains the length of the secret agreement private key.
 
@@ -13277,7 +13242,8 @@ Release: April 23, 2024
 
 196 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  systemOnly: FALSE
  searchFlags: fRODCFilteredAttribute | fCONFIDENTIAL
  schemaIdGuid: 615f42a1-37e7-1148-a0dd-3007e09cfc81
@@ -13285,7 +13251,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.537  Attribute msKds-PublicKeyLength
+### 2.537 Attribute msKds-PublicKeyLength
 
 This attribute contains the length of the secret agreement public key.
 
@@ -13302,7 +13268,7 @@ This attribute contains the length of the secret agreement public key.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.538  Attribute msKds-RootKeyData
+### 2.538 Attribute msKds-RootKeyData
 
 This attribute contains the data for the root key.
 
@@ -13320,7 +13286,7 @@ This attribute contains the data for the root key.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.539  Attribute msKds-SecretAgreementAlgorithmID
+### 2.539 Attribute msKds-SecretAgreementAlgorithmID
 
 This attribute contains the name of the secret agreement algorithm to be used with public keys.
 
@@ -13343,9 +13309,10 @@ Release: April 23, 2024
 
 197 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.540  Attribute msKds-SecretAgreementParam
+Version-Specific Behavior: First implemented on Windows Server 2012.
+
+### 2.540 Attribute msKds-SecretAgreementParam
 
 This attribute holds the parameters for the secret agreement algorithm.
 
@@ -13363,7 +13330,7 @@ This attribute holds the parameters for the secret agreement algorithm.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.541  Attribute msKds-UseStartTime
+### 2.541 Attribute msKds-UseStartTime
 
 This attribute contains the time after which a root key can be used.
 
@@ -13380,7 +13347,7 @@ This attribute contains the time after which a root key can be used.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.542  Attribute msKds-Version
+### 2.542 Attribute msKds-Version
 
 This attribute holds the version number of this root key.
 
@@ -13397,7 +13364,7 @@ This attribute holds the version number of this root key.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.543  Attribute MSMQ-MulticastAddress
+### 2.543 Attribute MSMQ-MulticastAddress
 
 For a given Microsoft Message Queuing (MSMQ) object, this attribute specifies the multicast address
 associated with the queue.
@@ -13409,7 +13376,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: MSMQ-Multicast-Address
+
+ cn: MSMQ-Multicast-Address
  ldapDisplayName: MSMQ-MulticastAddress
  attributeId: 1.2.840.113556.1.4.1714
  attributeSyntax: 2.5.5.12
@@ -13424,7 +13392,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.544  Attribute msMQ-Recipient-FormatName
+### 2.544 Attribute msMQ-Recipient-FormatName
 
 For a given MSMQ object, this attribute specifies the recipient format name of a queue.
 
@@ -13443,7 +13411,7 @@ For a given MSMQ object, this attribute specifies the recipient format name of a
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.545  Attribute MSMQ-SecuredSource
+### 2.545 Attribute MSMQ-SecuredSource
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -13462,7 +13430,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.546  Attribute mSMQAuthenticate
+### 2.546 Attribute mSMQAuthenticate
 
 For a given MSMQ object, this attribute specifies whether authenticated messages are accepted.
 
@@ -13475,7 +13443,8 @@ Release: April 23, 2024
 
 199 / 276
 
- ldapDisplayName: mSMQAuthenticate
+
+ ldapDisplayName: mSMQAuthenticate
  attributeId: 1.2.840.113556.1.4.923
  attributeSyntax: 2.5.5.8
  omSyntax: 1
@@ -13488,7 +13457,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.547  Attribute mSMQBasePriority
+### 2.547 Attribute mSMQBasePriority
 
 For a given MSMQ object, this attribute specifies the base priority of messages transmitted to this
 queue.
@@ -13507,7 +13476,7 @@ queue.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.548  Attribute mSMQComputerType
+### 2.548 Attribute mSMQComputerType
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -13525,7 +13494,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.549  Attribute mSMQComputerTypeEx
+### 2.549 Attribute mSMQComputerTypeEx
 
 For a given MSMQ object, this attribute specifies the operating system and MSMQ version.
 
@@ -13541,7 +13510,8 @@ Release: April 23, 2024
 
 200 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 18120de8-f4c4-4341-bd95-32eb5bcf7c80
  systemOnly: FALSE
@@ -13550,7 +13520,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.550  Attribute mSMQCost
+### 2.550 Attribute mSMQCost
 
 For a given MSMQ object, this attribute specifies the cost of routing between two MSMQ endpoints.
 
@@ -13567,7 +13537,7 @@ For a given MSMQ object, this attribute specifies the cost of routing between tw
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.551  Attribute mSMQCSPName
+### 2.551 Attribute mSMQCSPName
 
 For a given MSMQ object, this attribute specifies the type of cryptographic provider used by MSMQ for
 a given Active Directory domain.
@@ -13585,7 +13555,7 @@ a given Active Directory domain.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.552  Attribute mSMQDependentClientService
+### 2.552 Attribute mSMQDependentClientService
 
 For a given server, this attribute specifies whether this server can be a supporting MSMQ server for
 dependent clients.
@@ -13607,11 +13577,12 @@ Release: April 23, 2024
 
 201 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.553  Attribute mSMQDependentClientServices
+### 2.553 Attribute mSMQDependentClientServices
 
 For a given server, this attribute specifies whether the Microsoft Message Queuing service installed on
 the server provides MSMQ-dependent client services.
@@ -13630,7 +13601,7 @@ the server provides MSMQ-dependent client services.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.554  Attribute mSMQDigests
+### 2.554 Attribute mSMQDigests
 
 For a given MSMQ object, this attribute specifies an array of digests used by MSMQ.
 
@@ -13651,7 +13622,7 @@ For a given MSMQ object, this attribute specifies an array of digests used by MS
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.555  Attribute mSMQDigestsMig
+### 2.555 Attribute mSMQDigestsMig
 
 For a given MSMQ object, this attribute is to be empty.
 
@@ -13673,14 +13644,15 @@ Release: April 23, 2024
 
 202 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, the value of this attribute is set to the value of mSMQDigests attribute when
 the MSMQ object is created.
 
-2.556  Attribute mSMQDsService
+### 2.556 Attribute mSMQDsService
 
 For a given MSMQ object, this attribute specifies whether the MSMQ server provides access to Active
 Directory.
@@ -13698,7 +13670,7 @@ Directory.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.557  Attribute mSMQDsServices
+### 2.557 Attribute mSMQDsServices
 
 For a given MSMQ object, this attribute specifies whether the MSMQ server provides access to Active
 Directory.
@@ -13717,7 +13689,7 @@ Directory.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.558  Attribute mSMQEncryptKey
+### 2.558 Attribute mSMQEncryptKey
 
 For a given MSMQ object, this attribute specifies the computer's public key certificate used for
 encryption.
@@ -13739,12 +13711,13 @@ Release: April 23, 2024
 
 203 / 276
 
- isMemberOfPartialAttributeSet: TRUE
+
+ isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.559  Attribute mSMQForeign
+### 2.559 Attribute mSMQForeign
 
 For a given MSMQ object, this attribute specifies whether the queue manager is a foreign system that
 services foreign queues.
@@ -13763,7 +13736,7 @@ services foreign queues.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.560  Attribute mSMQInRoutingServers
+### 2.560 Attribute mSMQInRoutingServers
 
 For a given MSMQ object, this attribute specifies the distinguished names of MSMQ routing servers
 through which all incoming traffic to the server is routed.
@@ -13783,7 +13756,7 @@ through which all incoming traffic to the server is routed.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.561  Attribute mSMQInterval1
+### 2.561 Attribute mSMQInterval1
 
 For a given MSMQ object, this attribute specifies the default replication time within an MSMQ site.
 
@@ -13804,11 +13777,12 @@ Release: April 23, 2024
 
 204 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.562  Attribute mSMQInterval2
+### 2.562 Attribute mSMQInterval2
 
 For a given MSMQ object, this attribute specifies the default replication time between MSMQ sites.
 
@@ -13825,7 +13799,7 @@ For a given MSMQ object, this attribute specifies the default replication time b
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.563  Attribute mSMQJournal
+### 2.563 Attribute mSMQJournal
 
 For a given MSMQ object, this attribute specifies how MSMQ tracks messages removed from the
 queue.
@@ -13844,7 +13818,7 @@ queue.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.564  Attribute mSMQJournalQuota
+### 2.564 Attribute mSMQJournalQuota
 
 For a given MSMQ object, this attribute specifies the journal storage quota.
 
@@ -13868,7 +13842,8 @@ Release: April 23, 2024
 
 205 / 276
 
-2.565  Attribute mSMQLabel
+
+### 2.565 Attribute mSMQLabel
 
 This attribute has been superseded by the mSMQLabelEx attribute.
 
@@ -13888,7 +13863,7 @@ This attribute has been superseded by the mSMQLabelEx attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.566  Attribute mSMQLabelEx
+### 2.566 Attribute mSMQLabelEx
 
 For a given MSMQ object, this attribute specifies a descriptive label for a queue.
 
@@ -13908,7 +13883,7 @@ For a given MSMQ object, this attribute specifies a descriptive label for a queu
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.567  Attribute mSMQLongLived
+### 2.567 Attribute mSMQLongLived
 
 For a given MSMQ object, this attribute specifies the default value for the length of time a message
 has to reach a queue.
@@ -13933,7 +13908,8 @@ Release: April 23, 2024
 
 206 / 276
 
-2.568  Attribute mSMQMigrated
+
+### 2.568 Attribute mSMQMigrated
 
 For a given MSMQ object, this attribute specifies information used for MSMQ migration.
 
@@ -13950,7 +13926,7 @@ For a given MSMQ object, this attribute specifies information used for MSMQ migr
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.569  Attribute mSMQNameStyle
+### 2.569 Attribute mSMQNameStyle
 
 For a given MSMQ object, this attribute specifies whether weakened security is enabled.
 
@@ -13967,7 +13943,7 @@ For a given MSMQ object, this attribute specifies whether weakened security is e
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.570  Attribute mSMQNt4Flags
+### 2.570 Attribute mSMQNt4Flags
 
 For a given MSMQ object, this attribute specifies whether the server is MSMQ 1.0.
 
@@ -13984,7 +13960,7 @@ For a given MSMQ object, this attribute specifies whether the server is MSMQ 1.0
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.571  Attribute mSMQNt4Stub
+### 2.571 Attribute mSMQNt4Stub
 
 For a given MSMQ object, this attribute specifies whether the server was migrated from an MSMQ 1.0
 database.
@@ -13999,7 +13975,8 @@ Release: April 23, 2024
 
 207 / 276
 
- attributeId: 1.2.840.113556.1.4.960
+
+ attributeId: 1.2.840.113556.1.4.960
  attributeSyntax: 2.5.5.9
  omSyntax: 2
  isSingleValued: FALSE
@@ -14010,7 +13987,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.572  Attribute mSMQOSType
+### 2.572 Attribute mSMQOSType
 
 For a given MSMQ object, this attribute specifies the operating system type of the queue manager.
 
@@ -14028,7 +14005,7 @@ For a given MSMQ object, this attribute specifies the operating system type of t
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.573  Attribute mSMQOutRoutingServers
+### 2.573 Attribute mSMQOutRoutingServers
 
 For a given MSMQ object, this attribute specifies the distinguished names of the MSMQ routing servers
 through which outgoing traffic is routed.
@@ -14048,7 +14025,7 @@ through which outgoing traffic is routed.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.574  Attribute mSMQOwnerID
+### 2.574 Attribute mSMQOwnerID
 
 For a given MSMQ object, this attribute specifies the GUID of the MSMQ server that owns the queue.
 
@@ -14065,7 +14042,8 @@ Release: April 23, 2024
 
 208 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 9a0dc328-c100-11d1-bbc5-0080c76670c0
  systemOnly: FALSE
  searchFlags: fPRESERVEONDELETE | fATTINDEX
@@ -14079,7 +14057,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.575  Attribute mSMQPrevSiteGates
+### 2.575 Attribute mSMQPrevSiteGates
 
 This attribute was intended for use by MSMQ.
 
@@ -14097,7 +14075,7 @@ This attribute was intended for use by MSMQ.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.576  Attribute mSMQPrivacyLevel
+### 2.576 Attribute mSMQPrivacyLevel
 
 For a given MSMQ object, this attribute specifies the privacy level of the queue.
 
@@ -14117,7 +14095,7 @@ For a given MSMQ object, this attribute specifies the privacy level of the queue
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.577  Attribute mSMQQMID
+### 2.577 Attribute mSMQQMID
 
 For a given MSMQ object, this attribute contains the GUID of the server's MSMQ configuration object.
 
@@ -14131,7 +14109,8 @@ Release: April 23, 2024
 
 209 / 276
 
- attributeId: 1.2.840.113556.1.4.951
+
+ attributeId: 1.2.840.113556.1.4.951
  attributeSyntax: 2.5.5.10
  omSyntax: 4
  isSingleValued: TRUE
@@ -14144,7 +14123,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.578  Attribute mSMQQueueJournalQuota
+### 2.578 Attribute mSMQQueueJournalQuota
 
 For a given MSMQ object, this attribute contains the maximum size of the queue journal.
 
@@ -14162,7 +14141,7 @@ For a given MSMQ object, this attribute contains the maximum size of the queue j
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.579  Attribute mSMQQueueNameExt
+### 2.579 Attribute mSMQQueueNameExt
 
 For a given MSMQ object, this attribute contains the suffix of the queue name if the name exceeds 64
 characters.
@@ -14183,7 +14162,7 @@ characters.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.580  Attribute mSMQQueueQuota
+### 2.580 Attribute mSMQQueueQuota
 
 For a given MSMQ object, this attribute contains the maximum size of the queue.
 
@@ -14197,7 +14176,8 @@ Release: April 23, 2024
 
 210 / 276
 
- attributeId: 1.2.840.113556.1.4.962
+
+ attributeId: 1.2.840.113556.1.4.962
  attributeSyntax: 2.5.5.9
  omSyntax: 2
  isSingleValued: TRUE
@@ -14209,7 +14189,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.581  Attribute mSMQQueueType
+### 2.581 Attribute mSMQQueueType
 
 For a given MSMQ object, this attribute specifies the type of service that the queue provides.
 
@@ -14229,7 +14209,7 @@ For a given MSMQ object, this attribute specifies the type of service that the q
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.582  Attribute mSMQQuota
+### 2.582 Attribute mSMQQuota
 
 For a given MSMQ object, this attribute specifies the disk quota for all queues located at the queue
 manager.
@@ -14247,7 +14227,7 @@ manager.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.583  Attribute mSMQRoutingService
+### 2.583 Attribute mSMQRoutingService
 
 For a given MSMQ object, this attribute specifies whether the server is a routing server.
 
@@ -14263,7 +14243,8 @@ Release: April 23, 2024
 
 211 / 276
 
- omSyntax: 1
+
+ omSyntax: 1
  isSingleValued: TRUE
  schemaIdGuid: 2df90d81-009f-11d2-aa4c-00c04fd7d83a
  systemOnly: FALSE
@@ -14272,7 +14253,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.584  Attribute mSMQRoutingServices
+### 2.584 Attribute mSMQRoutingServices
 
 For a given MSMQ object, this attribute specifies whether the queue manager is configured as a
 routing server.
@@ -14291,7 +14272,7 @@ routing server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.585  Attribute mSMQServices
+### 2.585 Attribute mSMQServices
 
 For a given MSMQ object, this attribute specifies the type of service.
 
@@ -14308,7 +14289,7 @@ For a given MSMQ object, this attribute specifies the type of service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.586  Attribute mSMQServiceType
+### 2.586 Attribute mSMQServiceType
 
 For a given MSMQ object, this attribute specifies the type of service.
 
@@ -14329,12 +14310,13 @@ Release: April 23, 2024
 
 212 / 276
 
- isMemberOfPartialAttributeSet: TRUE
+
+ isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.587  Attribute mSMQSignCertificates
+### 2.587 Attribute mSMQSignCertificates
 
 For a given MSMQ object, this attribute contains an array of certificates.
 
@@ -14356,7 +14338,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, the rangeUpper attribute is not defined.
 
-2.588  Attribute mSMQSignCertificatesMig
+### 2.588 Attribute mSMQSignCertificatesMig
 
 For a given MSMQ object, this attribute is to be empty.
 
@@ -14378,7 +14360,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 In Windows 2000 Server, the rangeUpper attribute is not defined, and the value of this attribute is set
 to the value of the mSMQSignCertificates attribute when the MSMQ object is created.
 
-2.589  Attribute mSMQSignKey
+### 2.589 Attribute mSMQSignKey
 
 For a given MSMQ object, this attribute specifies the computer's public key certificate used for signing.
 
@@ -14395,7 +14377,8 @@ Release: April 23, 2024
 
 213 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 9a0dc332-c100-11d1-bbc5-0080c76670c0
  systemOnly: FALSE
  searchFlags: 0
@@ -14404,7 +14387,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.590  Attribute mSMQSite1
+### 2.590 Attribute mSMQSite1
 
 For a given MSMQ object, this attribute contains the GUID of a routing site.
 
@@ -14422,7 +14405,7 @@ For a given MSMQ object, this attribute contains the GUID of a routing site.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.591  Attribute mSMQSite2
+### 2.591 Attribute mSMQSite2
 
 For a given MSMQ object, this attribute contains the GUID of a routing site.
 
@@ -14440,7 +14423,7 @@ For a given MSMQ object, this attribute contains the GUID of a routing site.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.592  Attribute mSMQSiteForeign
+### 2.592 Attribute mSMQSiteForeign
 
 For a given MSMQ object, this attribute specifies whether a site is an external messaging system.
 
@@ -14461,11 +14444,12 @@ Release: April 23, 2024
 
 214 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.593  Attribute mSMQSiteGates
+### 2.593 Attribute mSMQSiteGates
 
 For a given MSMQ object, this attribute contains the GUIDs of the MSMQ configuration objects of the
 servers that are site gates on the link.
@@ -14484,7 +14468,7 @@ servers that are site gates on the link.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.594  Attribute mSMQSiteGatesMig
+### 2.594 Attribute mSMQSiteGatesMig
 
 For a given MSMQ object, this attribute contains the previous value of the mSMQSiteGates attribute.
 
@@ -14502,7 +14486,7 @@ For a given MSMQ object, this attribute contains the previous value of the mSMQS
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.595  Attribute mSMQSiteID
+### 2.595 Attribute mSMQSiteID
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -14525,9 +14509,10 @@ Release: April 23, 2024
 
 215 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.596  Attribute mSMQSiteName
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.596 Attribute mSMQSiteName
 
 For a given MSMQ object, this attribute contains the name of a site. This attribute has been
 superseded by the mSMQSiteNameEx attribute.
@@ -14545,7 +14530,7 @@ superseded by the mSMQSiteNameEx attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.597  Attribute mSMQSiteNameEx
+### 2.597 Attribute mSMQSiteNameEx
 
 For a given MSMQ object, this attribute contains the name of a site.
 
@@ -14562,7 +14547,7 @@ For a given MSMQ object, this attribute contains the name of a site.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.598  Attribute mSMQSites
+### 2.598 Attribute mSMQSites
 
 For a given MSMQ object, this attribute contains the site identifiers for sites to which the server
 belongs.
@@ -14590,7 +14575,8 @@ Release: April 23, 2024
 
 216 / 276
 
-2.599  Attribute mSMQTransactional
+
+### 2.599 Attribute mSMQTransactional
 
 This attribute specifies, for a queue in MSMQ, the transaction level of the queue.
 
@@ -14608,7 +14594,7 @@ This attribute specifies, for a queue in MSMQ, the transaction level of the queu
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.600  Attribute mSMQUserSid
+### 2.600 Attribute mSMQUserSid
 
 For a given MSMQ object, this attribute contains the SID of a migrated user.
 
@@ -14633,7 +14619,7 @@ In Windows 2000 Server, the following attributes are defined differently.
 
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
-2.601  Attribute mSMQVersion
+### 2.601 Attribute mSMQVersion
 
 For a given MSMQ object, this attribute contains the version number of the MSMQ information.
 
@@ -14655,9 +14641,10 @@ Release: April 23, 2024
 
 217 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.602  Attribute msNPAllowDialin
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.602 Attribute msNPAllowDialin
 
 For a given user or machine account, this attribute specifies whether the account has permission to
 dial in to the Remote Access Service from outside the corporate network.
@@ -14676,7 +14663,7 @@ dial in to the Remote Access Service from outside the corporate network.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.603  Attribute msNPCalledStationID
+### 2.603 Attribute msNPCalledStationID
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -14694,7 +14681,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.604  Attribute msNPCallingStationID
+### 2.604 Attribute msNPCallingStationID
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -14720,7 +14707,8 @@ Release: April 23, 2024
 
 218 / 276
 
-2.605  Attribute msNPSavedCallingStationID
+
+### 2.605 Attribute msNPSavedCallingStationID
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -14738,7 +14726,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.606  Attribute msPKI-Cert-Template-OID
+### 2.606 Attribute msPKI-Cert-Template-OID
 
 For the certificate authority (CA) for the Active Directory domain, this attribute specifies the object
 identifier for a certificate template.
@@ -14756,7 +14744,7 @@ identifier for a certificate template.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.607  Attribute msPKI-Certificate-Application-Policy
+### 2.607 Attribute msPKI-Certificate-Application-Policy
 
 For the CA for the Active Directory domain, this attribute specifies application identifiers that can be
 found in a certificate.
@@ -14774,7 +14762,7 @@ found in a certificate.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.608  Attribute msPKI-Certificate-Name-Flag
+### 2.608 Attribute msPKI-Certificate-Name-Flag
 
 For the CA for the Active Directory domain, this attribute specifies flags to construct the subject name
 in an issued certificate.
@@ -14786,7 +14774,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-PKI-Certificate-Name-Flag
+
+ cn: ms-PKI-Certificate-Name-Flag
  ldapDisplayName: msPKI-Certificate-Name-Flag
  attributeId: 1.2.840.113556.1.4.1432
  attributeSyntax: 2.5.5.9
@@ -14799,7 +14788,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.609  Attribute msPKI-Certificate-Policy
+### 2.609 Attribute msPKI-Certificate-Policy
 
 For the CA for the Active Directory domain, this attribute specifies the list of policy identifiers and
 (optional) certificate service providers (CSPs) in an issued certificate.
@@ -14817,7 +14806,7 @@ For the CA for the Active Directory domain, this attribute specifies the list of
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.610  Attribute msPKI-CredentialRoamingTokens
+### 2.610 Attribute msPKI-CredentialRoamingTokens
 
 This attribute stores the encrypted user credential token blobs for roaming.
 
@@ -14837,7 +14826,7 @@ This attribute stores the encrypted user credential token blobs for roaming.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.611  Attribute msPKI-Enrollment-Flag
+### 2.611 Attribute msPKI-Enrollment-Flag
 
 For the CA for the Active Directory domain, this attribute specifies enrollment flags for clients.
 
@@ -14852,7 +14841,8 @@ Release: April 23, 2024
 
 220 / 276
 
- attributeSyntax: 2.5.5.9
+
+ attributeSyntax: 2.5.5.9
  omSyntax: 2
  isSingleValued: TRUE
  schemaIdGuid: d15ef7d8-f226-46db-ae79-b34e560bd12c
@@ -14862,7 +14852,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.612  Attribute msPKI-Enrollment-Servers
+### 2.612 Attribute msPKI-Enrollment-Servers
 
 For the certificate authority (CA) for the Active Directory domain, this attribute specifies priority,
 authentication type, and URI of each certificate enrollment Web service.
@@ -14882,7 +14872,7 @@ authentication type, and URI of each certificate enrollment Web service.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.613  Attribute msPKI-Minimal-Key-Size
+### 2.613 Attribute msPKI-Minimal-Key-Size
 
 For the CA for the Active Directory domain, this attribute specifies the minimum private key size for a
 certificate.
@@ -14900,7 +14890,7 @@ certificate.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.614  Attribute msPKI-OID-Attribute
+### 2.614 Attribute msPKI-OID-Attribute
 
 For the CA for the Active Directory domain, this attribute specifies the enterprise object identifier
 (OID).
@@ -14918,7 +14908,8 @@ Release: April 23, 2024
 
 221 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 8c9e1288-5028-4f4f-a704-76d026f246ef
  systemOnly: FALSE
  searchFlags: 0
@@ -14926,7 +14917,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.615  Attribute msPKI-OID-CPS
+### 2.615 Attribute msPKI-OID-CPS
 
 For the CA for the Active Directory domain, this attribute specifies the certification practice statement
 (CPS).
@@ -14945,7 +14936,7 @@ For the CA for the Active Directory domain, this attribute specifies the certifi
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.616  Attribute msPKI-OID-User-Notice
+### 2.616 Attribute msPKI-OID-User-Notice
 
 For the CA for the Active Directory domain, this attribute specifies the user notice for the enterprise
 issuer policy OID.
@@ -14964,7 +14955,7 @@ issuer policy OID.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.617  Attribute msPKI-OIDLocalizedName
+### 2.617 Attribute msPKI-OIDLocalizedName
 
 For the CA for the Active Directory domain, this attribute specifies the list of display names used to
 describe an OID by locale.
@@ -14984,14 +14975,15 @@ Release: April 23, 2024
 
 222 / 276
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  rangeUpper: 512
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.618  Attribute msPKI-Private-Key-Flag
+### 2.618 Attribute msPKI-Private-Key-Flag
 
 For the CA for the Active Directory domain, this attribute specifies the private key-related flags.
 
@@ -15008,7 +15000,7 @@ For the CA for the Active Directory domain, this attribute specifies the private
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.619  Attribute msPKI-RA-Application-Policies
+### 2.619 Attribute msPKI-RA-Application-Policies
 
 For the CA for the Active Directory domain, this attribute specifies the required registration authority
 (RA) application policy OID in the counter signatures of the certificate request.
@@ -15026,7 +15018,7 @@ For the CA for the Active Directory domain, this attribute specifies the require
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.620  Attribute msPKI-RA-Policies
+### 2.620 Attribute msPKI-RA-Policies
 
 For the CA for the Active Directory domain, this attribute specifies the required RA application policy
 OID in the counter signatures of the certificate request.
@@ -15049,9 +15041,10 @@ Release: April 23, 2024
 
 223 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.621  Attribute msPKI-RA-Signature
+Version-Specific Behavior: First implemented on Windows Server 2003.
+
+### 2.621 Attribute msPKI-RA-Signature
 
 For the CA for the Active Directory domain, this attribute specifies the number of enrollment RA
 signatures required in an enrollment request.
@@ -15069,7 +15062,7 @@ signatures required in an enrollment request.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.622  Attribute msPKI-Site-Name
+### 2.622 Attribute msPKI-Site-Name
 
 For the CA for the Active Directory domain, this attribute specifies the Active Directory site to which
 the CA machine belongs.
@@ -15089,7 +15082,7 @@ the CA machine belongs.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.623  Attribute msPKI-Supersede-Templates
+### 2.623 Attribute msPKI-Supersede-Templates
 
 For the CA for the Active Directory domain, this attribute specifies the names of the certificate
 templates that are superseded by the current template.
@@ -15114,7 +15107,8 @@ Release: April 23, 2024
 
 224 / 276
 
-2.624  Attribute msPKI-Template-Minor-Revision
+
+### 2.624 Attribute msPKI-Template-Minor-Revision
 
 For the CA for the Active Directory domain, this attribute specifies the attributes in the template that
 are changing.
@@ -15132,7 +15126,7 @@ are changing.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.625  Attribute msPKI-Template-Schema-Version
+### 2.625 Attribute msPKI-Template-Schema-Version
 
 For the CA for the Active Directory domain, this attribute specifies the schema updates of the
 Certificate Template class object.
@@ -15150,7 +15144,7 @@ Certificate Template class object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.626  Attribute msPKIAccountCredentials
+### 2.626 Attribute msPKIAccountCredentials
 
 This attribute specifies the storage of encrypted user credential token BLOBS for roaming.
 
@@ -15178,7 +15172,8 @@ Release: April 23, 2024
 
 225 / 276
 
-2.627  Attribute msPKIDPAPIMasterKeys
+
+### 2.627 Attribute msPKIDPAPIMasterKeys
 
 This attribute specifies the storage of encrypted Data Protection API (DPAPI) master keys for the user.
 
@@ -15199,7 +15194,7 @@ This attribute specifies the storage of encrypted Data Protection API (DPAPI) ma
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.628  Attribute msPKIRoamingTimeStamp
+### 2.628 Attribute msPKIRoamingTimeStamp
 
 This attribute specifies the time stamp for last change to roaming tokens.
 
@@ -15218,7 +15213,7 @@ This attribute specifies the time stamp for last change to roaming tokens.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.629  Attribute msRADIUSCallbackNumber
+### 2.629 Attribute msRADIUSCallbackNumber
 
 This attribute specifies values used by the Microsoft Network Access Protection (NAP) service.
 
@@ -15243,7 +15238,8 @@ Release: April 23, 2024
 
 226 / 276
 
-2.630  Attribute msRADIUS-FramedInterfaceId
+
+### 2.630 Attribute msRADIUS-FramedInterfaceId
 
 This attribute indicates the IPv6 interface identifier to be configured for the user.
 
@@ -15261,7 +15257,7 @@ This attribute indicates the IPv6 interface identifier to be configured for the 
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.631  Attribute msRADIUSFramedIPAddress
+### 2.631 Attribute msRADIUSFramedIPAddress
 
 This attribute specifies values used by the NAP service.
 
@@ -15279,7 +15275,7 @@ This attribute specifies values used by the NAP service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.632  Attribute msRADIUS-FramedIpv6Prefix
+### 2.632 Attribute msRADIUS-FramedIpv6Prefix
 
 This attribute indicates an IPv6 prefix (and corresponding route) to be configured for the user.
 
@@ -15297,7 +15293,7 @@ This attribute indicates an IPv6 prefix (and corresponding route) to be configur
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.633  Attribute msRADIUS-FramedIpv6Route
+### 2.633 Attribute msRADIUS-FramedIpv6Route
 
 This attribute provides routing information to be configured for the user on the network attached
 storage (NAS).
@@ -15309,7 +15305,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-RADIUS-FramedIpv6Route
+
+ cn: ms-RADIUS-FramedIpv6Route
  ldapDisplayName: msRADIUS-FramedIpv6Route
  attributeId: 1.2.840.113556.1.4.1917
  attributeSyntax: 2.5.5.5
@@ -15322,7 +15319,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.634  Attribute msRADIUSFramedRoute
+### 2.634 Attribute msRADIUSFramedRoute
 
 This attribute specifies values used by the NAP service.
 
@@ -15340,7 +15337,7 @@ This attribute specifies values used by the NAP service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.635  Attribute msRADIUS-SavedFramedInterfaceId
+### 2.635 Attribute msRADIUS-SavedFramedInterfaceId
 
 This attribute indicates the IPv6 interface identifier to be configured for the user.
 
@@ -15358,7 +15355,7 @@ This attribute indicates the IPv6 interface identifier to be configured for the 
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.636  Attribute msRADIUS-SavedFramedIpv6Prefix
+### 2.636 Attribute msRADIUS-SavedFramedIpv6Prefix
 
 This attribute indicates an IPv6 prefix (and corresponding route) to be configured for the user.
 
@@ -15376,7 +15373,8 @@ Release: April 23, 2024
 
 228 / 276
 
- schemaIdGuid: 0965a062-b1e1-403b-b48d-5c0eb0e952cc
+
+ schemaIdGuid: 0965a062-b1e1-403b-b48d-5c0eb0e952cc
  systemOnly: FALSE
  searchFlags: fCOPY
  rangeUpper: 16
@@ -15384,7 +15382,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.637  Attribute msRADIUS-SavedFramedIpv6Route
+### 2.637 Attribute msRADIUS-SavedFramedIpv6Route
 
 This attribute provides routing information to be configured for the user on the NAS.
 
@@ -15401,7 +15399,7 @@ This attribute provides routing information to be configured for the user on the
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.638  Attribute msRADIUSServiceType
+### 2.638 Attribute msRADIUSServiceType
 
 This attribute specifies values used by the Microsoft NAP service.
 
@@ -15419,7 +15417,7 @@ This attribute specifies values used by the Microsoft NAP service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.639  Attribute msRASSavedCallbackNumber
+### 2.639 Attribute msRASSavedCallbackNumber
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -15441,11 +15439,12 @@ Release: April 23, 2024
 
 229 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.640  Attribute msRASSavedFramedIPAddress
+### 2.640 Attribute msRASSavedFramedIPAddress
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -15463,7 +15462,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.641  Attribute msRASSavedFramedRoute
+### 2.641 Attribute msRASSavedFramedRoute
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -15481,7 +15480,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.642  Attribute msRRASAttribute
+### 2.642 Attribute msRRASAttribute
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -15505,9 +15504,10 @@ Release: April 23, 2024
 
 230 / 276
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.643  Attribute msRRASVendorAttributeEntry
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.643 Attribute msRRASVendorAttributeEntry
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -15525,7 +15525,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.644  Attribute msSFU30Aliases
+### 2.644 Attribute msSFU30Aliases
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15542,7 +15542,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.645  Attribute msSFU30CryptMethod
+### 2.645 Attribute msSFU30CryptMethod
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15559,7 +15559,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.646  Attribute msSFU30Domains
+### 2.646 Attribute msSFU30Domains
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15570,7 +15570,8 @@ Release: April 23, 2024
 
 231 / 276
 
- cn: msSFU-30-Domains
+
+ cn: msSFU-30-Domains
  ldapDisplayName: msSFU30Domains
  attributeId: 1.2.840.113556.1.6.18.1.340
  attributeSyntax: 2.5.5.5
@@ -15583,7 +15584,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.647  Attribute msSFU30FieldSeparator
+### 2.647 Attribute msSFU30FieldSeparator
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15600,7 +15601,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.648  Attribute msSFU30IntraFieldSeparator
+### 2.648 Attribute msSFU30IntraFieldSeparator
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15617,7 +15618,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.649  Attribute msSFU30IsValidContainer
+### 2.649 Attribute msSFU30IsValidContainer
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15637,11 +15638,12 @@ Release: April 23, 2024
 
 232 / 276
 
- searchFlags: fATTINDEX
+
+ searchFlags: fATTINDEX
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.650  Attribute msSFU30KeyAttributes
+### 2.650 Attribute msSFU30KeyAttributes
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15658,7 +15660,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.651  Attribute msSFU30KeyValues
+### 2.651 Attribute msSFU30KeyValues
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15675,7 +15677,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.652  Attribute msSFU30MapFilter
+### 2.652 Attribute msSFU30MapFilter
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15699,7 +15701,8 @@ Release: April 23, 2024
 
 233 / 276
 
-2.653  Attribute msSFU30MasterServerName
+
+### 2.653 Attribute msSFU30MasterServerName
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15716,7 +15719,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.654  Attribute msSFU30MaxGidNumber
+### 2.654 Attribute msSFU30MaxGidNumber
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15732,7 +15735,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.655  Attribute msSFU30MaxUidNumber
+### 2.655 Attribute msSFU30MaxUidNumber
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15748,7 +15751,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.656  Attribute msSFU30Name
+### 2.656 Attribute msSFU30Name
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15765,7 +15768,8 @@ Release: April 23, 2024
 
 234 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 16c5d1d3-35c2-4061-a870-a5cefda804f0
  systemOnly: FALSE
  searchFlags: fATTINDEX
@@ -15773,7 +15777,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.657  Attribute msSFU30NetgroupHostAtDomain
+### 2.657 Attribute msSFU30NetgroupHostAtDomain
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15790,7 +15794,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.658  Attribute msSFU30NetgroupUserAtDomain
+### 2.658 Attribute msSFU30NetgroupUserAtDomain
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15807,7 +15811,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.659  Attribute msSFU30NisDomain
+### 2.659 Attribute msSFU30NisDomain
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15829,9 +15833,10 @@ Release: April 23, 2024
 
 235 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.660  Attribute msSFU30NSMAPFieldPosition
+Version-Specific Behavior: First implemented on Windows Server 2003 R2.
+
+### 2.660 Attribute msSFU30NSMAPFieldPosition
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15848,7 +15853,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.661  Attribute msSFU30OrderNumber
+### 2.661 Attribute msSFU30OrderNumber
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15865,7 +15870,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.662  Attribute msSFU30PosixMember
+### 2.662 Attribute msSFU30PosixMember
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15883,7 +15888,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.663  Attribute msSFU30PosixMemberOf
+### 2.663 Attribute msSFU30PosixMemberOf
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15894,7 +15899,8 @@ Release: April 23, 2024
 
 236 / 276
 
- cn: msSFU-30-Posix-Member-Of
+
+ cn: msSFU-30-Posix-Member-Of
  ldapDisplayName: msSFU30PosixMemberOf
  attributeId: 1.2.840.113556.1.6.18.1.347
  attributeSyntax: 2.5.5.1
@@ -15909,7 +15915,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.664  Attribute msSFU30ResultAttributes
+### 2.664 Attribute msSFU30ResultAttributes
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15926,7 +15932,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.665  Attribute msSFU30SearchAttributes
+### 2.665 Attribute msSFU30SearchAttributes
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15943,7 +15949,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.666  Attribute msSFU30SearchContainer
+### 2.666 Attribute msSFU30SearchContainer
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15961,14 +15967,15 @@ Release: April 23, 2024
 
 237 / 276
 
- schemaIdGuid: 27eebfa2-fbeb-4f8e-aad6-c50247994291
+
+ schemaIdGuid: 27eebfa2-fbeb-4f8e-aad6-c50247994291
  systemOnly: FALSE
  searchFlags: 0
  rangeUpper: 2048
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.667  Attribute msSFU30YpServers
+### 2.667 Attribute msSFU30YpServers
 
 This attribute is used by Windows Services for UNIX.
 
@@ -15985,7 +15992,7 @@ This attribute is used by Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.668  Attribute msSPP-ConfigLicense
+### 2.668 Attribute msSPP-ConfigLicense
 
 This attribute contains the product-key configuration license used during online/phone activation of
 the Active Directory forest.
@@ -16004,7 +16011,7 @@ the Active Directory forest.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.669  Attribute msSPP-ConfirmationId
+### 2.669 Attribute msSPP-ConfirmationId
 
 This attribute contains the confirmation ID (CID) used for phone activation of the Active Directory
 forest.
@@ -16027,11 +16034,12 @@ Release: April 23, 2024
 
 238 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.670  Attribute msSPP-CSVLKPartialProductKey
+### 2.670 Attribute msSPP-CSVLKPartialProductKey
 
 This attribute contains the last five characters of the CSVLK product key used to create the activation
 object.
@@ -16051,7 +16059,7 @@ object.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.671  Attribute msSPP-CSVLKPid
+### 2.671 Attribute msSPP-CSVLKPid
 
 This attribute contains the ID of the CSVLK product key used to create the activation object.
 
@@ -16069,7 +16077,7 @@ This attribute contains the ID of the CSVLK product key used to create the activ
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.672  Attribute msSPP-CSVLKSkuId
+### 2.672 Attribute msSPP-CSVLKSkuId
 
 This attribute contains the SKU ID of the CSVLK product key used to create the activation object.
 
@@ -16092,11 +16100,12 @@ Release: April 23, 2024
 
 239 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.673  Attribute msSPP-InstallationId
+### 2.673 Attribute msSPP-InstallationId
 
 This attribute contains the installation ID (IID) used for phone activation of the Active Directory forest.
 
@@ -16114,7 +16123,7 @@ This attribute contains the installation ID (IID) used for phone activation of t
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.674  Attribute msSPP-IssuanceLicense
+### 2.674 Attribute msSPP-IssuanceLicense
 
 This attribute contains the issuance license used during online/phone activation of the Active Directory
 forest.
@@ -16133,7 +16142,7 @@ forest.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.675  Attribute msSPP-KMSIds
+### 2.675 Attribute msSPP-KMSIds
 
 This attribute holds the KMS IDs enabled by the activation object.
 
@@ -16157,9 +16166,10 @@ Release: April 23, 2024
 
 240 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.676  Attribute msSPP-OnlineLicense
+Version-Specific Behavior: First implemented on Windows Server 2012.
+
+### 2.676 Attribute msSPP-OnlineLicense
 
 This attribute contains the license that is used during online activation of the Active Directory forest.
 
@@ -16177,7 +16187,7 @@ This attribute contains the license that is used during online activation of the
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.677  Attribute msSPP-PhoneLicense
+### 2.677 Attribute msSPP-PhoneLicense
 
 This attribute contains the license that is used during phone activation of the Active Directory forest.
 
@@ -16195,7 +16205,7 @@ This attribute contains the license that is used during phone activation of the 
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.678  Attribute msTAPI-ConferenceBlob
+### 2.678 Attribute msTAPI-ConferenceBlob
 
 This attribute is used by the Telephonic Application Programming Interface (TAPI). For more
 information, see [RFC2327].
@@ -16220,7 +16230,8 @@ Release: April 23, 2024
 
 241 / 276
 
-2.679  Attribute msTAPI-IpAddress
+
+### 2.679 Attribute msTAPI-IpAddress
 
 This attribute is used by TAPI. For more information, see [RFC2327].
 
@@ -16237,7 +16248,7 @@ This attribute is used by TAPI. For more information, see [RFC2327].
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.680  Attribute msTAPI-ProtocolId
+### 2.680 Attribute msTAPI-ProtocolId
 
 This attribute is used by TAPI. For more information, see [RFC2327].
 
@@ -16254,7 +16265,7 @@ This attribute is used by TAPI. For more information, see [RFC2327].
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.681  Attribute msTAPI-uid
+### 2.681 Attribute msTAPI-uid
 
 This attribute is used by TAPI. For more information, see [RFC2327].
 
@@ -16272,7 +16283,7 @@ This attribute is used by TAPI. For more information, see [RFC2327].
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.682  Attribute msTPM-OwnerInformation
+### 2.682 Attribute msTPM-OwnerInformation
 
 This attribute contains the owner information of a particular trusted platform module (TPM).
 
@@ -16286,7 +16297,8 @@ Release: April 23, 2024
 
 242 / 276
 
- attributeId: 1.2.840.113556.1.4.1966
+
+ attributeId: 1.2.840.113556.1.4.1966
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -16298,7 +16310,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.683  Attribute msTPM-OwnerInformationTemp
+### 2.683 Attribute msTPM-OwnerInformationTemp
 
 This attribute contains temporary owner information for a particular TPM.
 
@@ -16316,7 +16328,7 @@ This attribute contains temporary owner information for a particular TPM.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.684  Attribute msTPM-SrkPubThumbprint
+### 2.684 Attribute msTPM-SrkPubThumbprint
 
 This attribute contains the thumbprint of the SrkPub corresponding to a particular TPM. This
 thumbprint helps to index the TPM devices in the directory.
@@ -16335,7 +16347,7 @@ thumbprint helps to index the TPM devices in the directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.685  Attribute msTPM-TpmInformationForComputer
+### 2.685 Attribute msTPM-TpmInformationForComputer
 
 This attribute links a computer object to a TPM object.
 
@@ -16352,7 +16364,8 @@ Release: April 23, 2024
 
 243 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  systemOnly: FALSE
  searchFlags: fCOPY
  omObjectClass: 1.3.12.2.1011.28.0.714
@@ -16362,7 +16375,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.686  Attribute msTPM-TpmInformationForComputerBL
+### 2.686 Attribute msTPM-TpmInformationForComputerBL
 
 This attribute links a TPM object to the computer objects associated with it.
 
@@ -16381,7 +16394,7 @@ This attribute links a TPM object to the computer objects associated with it.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.687  Attribute msTSAllowLogon
+### 2.687 Attribute msTSAllowLogon
 
 This attribute specifies whether the user is allowed to log on to the terminal server. The value is 1 if
 logon is allowed or 0 if logon is not allowed.
@@ -16399,7 +16412,7 @@ logon is allowed or 0 if logon is not allowed.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.688  Attribute msTSBrokenConnectionAction
+### 2.688 Attribute msTSBrokenConnectionAction
 
 This attribute specifies the action to take when a Terminal Services session limit is reached. The value
 is 1 if the client session is to be terminated or 0 if the client session is to be disconnected.
@@ -16418,14 +16431,15 @@ Release: April 23, 2024
 
 244 / 276
 
- schemaIdGuid: 1cf41bba-5604-463e-94d6-1a1287b72ca3
+
+ schemaIdGuid: 1cf41bba-5604-463e-94d6-1a1287b72ca3
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.689  Attribute msTSConnectClientDrives
+### 2.689 Attribute msTSConnectClientDrives
 
 This attribute specifies whether to reconnect to mapped client drives at logon. The value is 1 if
 reconnection is enabled or 0 if reconnection is disabled.
@@ -16443,7 +16457,7 @@ reconnection is enabled or 0 if reconnection is disabled.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.690  Attribute msTSConnectPrinterDrives
+### 2.690 Attribute msTSConnectPrinterDrives
 
 This attribute specifies whether to reconnect to mapped client printers at logon. The value is 1 if
 reconnection is enabled or 0 if reconnection is disabled.
@@ -16461,7 +16475,7 @@ reconnection is enabled or 0 if reconnection is disabled.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.691  Attribute msTSDefaultToMainPrinter
+### 2.691 Attribute msTSDefaultToMainPrinter
 
 This attribute specifies whether to print automatically to the client's default printer. The value is 1 if
 printing to the client's default printer is enabled or 0 if it is disabled.
@@ -16483,11 +16497,12 @@ Release: April 23, 2024
 
 245 / 276
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.692  Attribute msTSEndpointData
+### 2.692 Attribute msTSEndpointData
 
 This attribute represents the virtual machine name for a machine.
 
@@ -16506,7 +16521,7 @@ This attribute represents the virtual machine name for a machine.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.693  Attribute msTSEndpointPlugin
+### 2.693 Attribute msTSEndpointPlugin
 
 This attribute represents the name of the plugin for the terminal server connection.
 
@@ -16525,7 +16540,7 @@ This attribute represents the name of the plugin for the terminal server connect
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.694  Attribute msTSEndpointType
+### 2.694 Attribute msTSEndpointType
 
 This attribute defines whether the machine is a physical machine or a virtual machine.
 
@@ -16547,9 +16562,10 @@ Release: April 23, 2024
 
 246 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.695  Attribute msTSExpireDate
+Version-Specific Behavior: First implemented on Windows Server 2008 R2.
+
+### 2.695 Attribute msTSExpireDate
 
 This attribute specifies the expiration date of the Terminal Services session per user Client Address
 License (CAL).
@@ -16569,7 +16585,7 @@ License (CAL).
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.696  Attribute msTSExpireDate2
+### 2.696 Attribute msTSExpireDate2
 
 This attribute specifies the expiration date of the second Terminal Services session per user CAL.
 
@@ -16588,7 +16604,7 @@ This attribute specifies the expiration date of the second Terminal Services ses
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.697  Attribute msTSExpireDate3
+### 2.697 Attribute msTSExpireDate3
 
 This attribute specifies the expiration date of the third Terminal Services session per user CAL.
 
@@ -16614,7 +16630,8 @@ Release: April 23, 2024
 
 247 / 276
 
-2.698  Attribute msTSExpireDate4
+
+### 2.698 Attribute msTSExpireDate4
 
 This attribute specifies the expiration date of the fourth Terminal Services session per user CAL.
 
@@ -16633,7 +16650,7 @@ This attribute specifies the expiration date of the fourth Terminal Services ses
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.699  Attribute msTSHomeDirectory
+### 2.699 Attribute msTSHomeDirectory
 
 This attribute specifies the home directory for the user. Each user on a terminal server has a unique
 home directory. This ensures that application information is stored separately for each user in a
@@ -16657,7 +16674,7 @@ Convention (UNC) path.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.700  Attribute msTSHomeDrive
+### 2.700 Attribute msTSHomeDrive
 
 This attribute specifies a home drive for the user. In a network environment, this property is a string
 containing a drive specification (a drive letter followed by a colon) to which the UNC path specified in
@@ -16682,13 +16699,14 @@ Release: April 23, 2024
 
 248 / 276
 
- rangeLower: 0
+
+ rangeLower: 0
  rangeUpper: 32767
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.701  Attribute msTSInitialProgram
+### 2.701 Attribute msTSInitialProgram
 
 This attribute specifies the path and file name of the application that the user wants to start
 automatically when the user logs on to the terminal server. To set an initial application to start when
@@ -16712,7 +16730,7 @@ directory.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.702  Attribute msTSLicenseVersion
+### 2.702 Attribute msTSLicenseVersion
 
 This attribute specifies the version of the Terminal Services session per user CAL.
 
@@ -16730,7 +16748,7 @@ This attribute specifies the version of the Terminal Services session per user C
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.703  Attribute msTSLicenseVersion2
+### 2.703 Attribute msTSLicenseVersion2
 
 This attribute specifies the version of the second Terminal Services session per user CAL.
 
@@ -16748,7 +16766,8 @@ Release: April 23, 2024
 
 249 / 276
 
- schemaIdGuid: 4b0df103-8d97-45d9-ad69-85c3080ba4e7
+
+ schemaIdGuid: 4b0df103-8d97-45d9-ad69-85c3080ba4e7
  systemOnly: FALSE
  searchFlags: fATTINDEX
  rangeLower: 0
@@ -16758,7 +16777,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.704  Attribute msTSLicenseVersion3
+### 2.704 Attribute msTSLicenseVersion3
 
 This attribute specifies the version of the third Terminal Services session per user CAL.
 
@@ -16778,7 +16797,7 @@ This attribute specifies the version of the third Terminal Services session per 
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.705  Attribute msTSLicenseVersion4
+### 2.705 Attribute msTSLicenseVersion4
 
 This attribute specifies the version of the fourth Terminal Services session per user CAL.
 
@@ -16798,7 +16817,7 @@ This attribute specifies the version of the fourth Terminal Services session per
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.706  Attribute msTSLSProperty01
+### 2.706 Attribute msTSLSProperty01
 
 This attribute is a placeholder for Terminal Server License Server Property 01.
 
@@ -16815,7 +16834,8 @@ Release: April 23, 2024
 
 250 / 276
 
- isSingleValued: FALSE
+
+ isSingleValued: FALSE
  systemOnly: FALSE
  searchFlags: fATTINDEX
  rangeLower: 0
@@ -16825,7 +16845,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.707  Attribute msTSLSProperty02
+### 2.707 Attribute msTSLSProperty02
 
 This attribute is a placeholder for Terminal Server License Server Property 02.
 
@@ -16844,7 +16864,7 @@ This attribute is a placeholder for Terminal Server License Server Property 02.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.708  Attribute msTSManagingLS
+### 2.708 Attribute msTSManagingLS
 
 This attribute specifies the issuer name of the Terminal Services session per user CAL.
 
@@ -16862,7 +16882,7 @@ This attribute specifies the issuer name of the Terminal Services session per us
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.709  Attribute msTSManagingLS2
+### 2.709 Attribute msTSManagingLS2
 
 This attribute specifies the issuer name of the second Terminal Services session per user CAL.
 
@@ -16882,7 +16902,8 @@ Release: April 23, 2024
 
 251 / 276
 
- rangeUpper: 255
+
+ rangeUpper: 255
  schemaIdGuid: 349f0757-51bd-4fc8-9d66-3eceea8a25be
  searchFlags: fATTINDEX
  attributeSecurityGuid: 5805bc62-bdc9-4428-a5e2-856a0f4c185e
@@ -16890,7 +16911,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.710  Attribute msTSManagingLS3
+### 2.710 Attribute msTSManagingLS3
 
 This attribute specifies the issuer name of the third Terminal Services session per user CAL.
 
@@ -16910,7 +16931,7 @@ This attribute specifies the issuer name of the third Terminal Services session 
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.711  Attribute msTSManagingLS4
+### 2.711 Attribute msTSManagingLS4
 
 This attribute specifies the issuer name of the fourth Terminal Services session per user CAL.
 
@@ -16930,7 +16951,7 @@ This attribute specifies the issuer name of the fourth Terminal Services session
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.712  Attribute msTSMaxConnectionTime
+### 2.712 Attribute msTSMaxConnectionTime
 
 This attribute specifies the maximum duration (in minutes) of the Terminal Services session. After the
 specified number of minutes have elapsed, the session can be disconnected or terminated.
@@ -16948,7 +16969,8 @@ Release: April 23, 2024
 
 252 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 1d960ee2-6464-4e95-a781-e3b5cd5f9588
  systemOnly: FALSE
  searchFlags: 0
@@ -16956,7 +16978,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.713  Attribute msTSMaxDisconnectionTime
+### 2.713 Attribute msTSMaxDisconnectionTime
 
 This attribute specifies the maximum amount of time (in minutes) that a disconnected Terminal
 Services session remains active on the terminal server. After the specified number of minutes have
@@ -16975,7 +16997,7 @@ elapsed, the session is terminated.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.714  Attribute msTSMaxIdleTime
+### 2.714 Attribute msTSMaxIdleTime
 
 This attribute specifies the maximum amount of time (in minutes) that the Terminal Services session
 can remain idle. After the specified number of minutes have elapsed, the session can be disconnected
@@ -16994,7 +17016,7 @@ or terminated.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.715  Attribute msTSPrimaryDesktop
+### 2.715 Attribute msTSPrimaryDesktop
 
 This attribute links to the computer object of the primary desktop assigned to a user. If this attribute
 is empty, the user has no assigned desktop.
@@ -17014,7 +17036,8 @@ Release: April 23, 2024
 
 253 / 276
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 29259694-09e4-4237-9f72-9306ebe63ab2
  systemOnly: FALSE
  searchFlags: 0
@@ -17022,7 +17045,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.716  Attribute msTSPrimaryDesktopBL
+### 2.716 Attribute msTSPrimaryDesktopBL
 
 This attribute is the back link attribute for attribute msTSPrimaryDesktop.
 
@@ -17041,7 +17064,7 @@ This attribute is the back link attribute for attribute msTSPrimaryDesktop.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.717  Attribute msTSProfilePath
+### 2.717 Attribute msTSProfilePath
 
 This attribute specifies a roaming or mandatory profile path to use when the user logs on to the
 terminal server. The profile path is in the following network path format: "\\servername\profiles folder
@@ -17062,7 +17085,7 @@ name\username".
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.718  Attribute msTSProperty01
+### 2.718 Attribute msTSProperty01
 
 This attribute is a placeholder for Terminal Server Property 01.
 
@@ -17080,7 +17103,8 @@ Release: April 23, 2024
 
 254 / 276
 
- schemaIdGuid: faaea977-9655-49d7-853d-f27bb7aaca0f
+
+ schemaIdGuid: faaea977-9655-49d7-853d-f27bb7aaca0f
  systemOnly: FALSE
  searchFlags: fATTINDEX
  rangeLower: 0
@@ -17089,7 +17113,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.719  Attribute msTSProperty02
+### 2.719 Attribute msTSProperty02
 
 This attribute is a placeholder for Terminal Server Property 02.
 
@@ -17108,7 +17132,7 @@ This attribute is a placeholder for Terminal Server Property 02.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.720  Attribute msTSReconnectionAction
+### 2.720 Attribute msTSReconnectionAction
 
 This attribute specifies whether to allow reconnection to a disconnected Terminal Services session
 from any client computer. The value is 1 if reconnection is allowed from the original client computer
@@ -17127,7 +17151,7 @@ only, or 0 if reconnection from any client computer is allowed.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.721  Attribute msTSRemoteControl
+### 2.721 Attribute msTSRemoteControl
 
 This attribute specifies whether to allow remote observation or remote control of the user's Terminal
 Services session. The values are as follows:
@@ -17145,7 +17169,8 @@ Release: April 23, 2024
 
 255 / 276
 
-  3: EnableNoInputNotify
+
+  3: EnableNoInputNotify
 
   4: EnableNoInputNoNotify
 
@@ -17165,7 +17190,7 @@ Win32_TSRemoteControlSetting WMI class.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.722  Attribute msTSSecondaryDesktops
+### 2.722 Attribute msTSSecondaryDesktops
 
 This attribute links to the computer objects of the secondary desktops that a user can be assigned.
 
@@ -17184,7 +17209,7 @@ This attribute links to the computer objects of the secondary desktops that a us
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.723  Attribute msTSSecondaryDesktopBL
+### 2.723 Attribute msTSSecondaryDesktopBL
 
 This attribute is the back link attribute for msTSSecondaryDesktops.
 
@@ -17210,7 +17235,8 @@ Release: April 23, 2024
 
 256 / 276
 
-2.724  Attribute msTSWorkDirectory
+
+### 2.724 Attribute msTSWorkDirectory
 
 This attribute specifies the working directory path for the user. To set an initial application to start
 when the user logs on to the terminal server, the implementer first sets the
@@ -17231,7 +17257,7 @@ TerminalServicesInitialProgram property and then sets this property.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.725  Attribute msWMI-Author
+### 2.725 Attribute msWMI-Author
 
 This attribute is used by the Windows Management Instrumentation (WMI) Remote Protocol for
 network communication and specifies the author of an instance of a class.
@@ -17249,7 +17275,7 @@ network communication and specifies the author of an instance of a class.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.726  Attribute msWMI-ChangeDate
+### 2.726 Attribute msWMI-ChangeDate
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the last
 date that an object was changed.
@@ -17274,7 +17300,8 @@ Release: April 23, 2024
 
 257 / 276
 
-2.727  Attribute msWMI-Class
+
+### 2.727 Attribute msWMI-Class
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the name
 of a WMI Class object in an associated encoding (for example, Win32_ComputerSystem).
@@ -17292,7 +17319,7 @@ of a WMI Class object in an associated encoding (for example, Win32_ComputerSyst
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.728  Attribute msWMI-ClassDefinition
+### 2.728 Attribute msWMI-ClassDefinition
 
 This attribute is for the WMI Remote Protocol for network communication and specifies a class
 definition to be instated in some WMI namespace.
@@ -17310,7 +17337,7 @@ definition to be instated in some WMI namespace.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.729  Attribute msWMI-CreationDate
+### 2.729 Attribute msWMI-CreationDate
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 creation time of an instance.
@@ -17328,7 +17355,7 @@ creation time of an instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.730  Attribute msWMI-Genus
+### 2.730 Attribute msWMI-Genus
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the object
 type of an encoding.
@@ -17340,7 +17367,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-WMI-Genus
+
+ cn: ms-WMI-Genus
  ldapDisplayName: msWMI-Genus
  attributeId: 1.2.840.113556.1.4.1677
  attributeSyntax: 2.5.5.9
@@ -17353,7 +17381,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.731  Attribute msWMI-ID
+### 2.731 Attribute msWMI-ID
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies a unique
 ID for an object instance.
@@ -17371,7 +17399,7 @@ ID for an object instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.732  Attribute msWMI-Int8Default
+### 2.732 Attribute msWMI-Int8Default
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 default value for WMI 64-bit integer parameter objects.
@@ -17389,7 +17417,7 @@ default value for WMI 64-bit integer parameter objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.733  Attribute msWMI-Int8Max
+### 2.733 Attribute msWMI-Int8Max
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 maximum value for a WMI 64-bit integer parameter object.
@@ -17406,7 +17434,8 @@ Release: April 23, 2024
 
 259 / 276
 
- omSyntax: 65
+
+ omSyntax: 65
  isSingleValued: TRUE
  schemaIdGuid: e3d8b547-003d-4946-a32b-dc7cedc96b74
  systemOnly: FALSE
@@ -17415,7 +17444,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.734  Attribute msWMI-Int8Min
+### 2.734 Attribute msWMI-Int8Min
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 minimum value for a WMI 64-bit integer parameter object.
@@ -17433,7 +17462,7 @@ minimum value for a WMI 64-bit integer parameter object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.735  Attribute msWMI-Int8ValidValues
+### 2.735 Attribute msWMI-Int8ValidValues
 
 This attribute is for the WMI Remote Protocol for network communication and specifies the valid
 values for a WMI 64-bit integer parameter object.
@@ -17451,7 +17480,7 @@ values for a WMI 64-bit integer parameter object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.736  Attribute msWMI-IntDefault
+### 2.736 Attribute msWMI-IntDefault
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 default value for WMI 32-bit integer parameter objects.
@@ -17472,12 +17501,13 @@ Release: April 23, 2024
 
 260 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.737  Attribute msWMI-intFlags1
+### 2.737 Attribute msWMI-intFlags1
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17494,7 +17524,7 @@ This attribute is used by the WMI Remote Protocol for network communication.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.738  Attribute msWMI-intFlags2
+### 2.738 Attribute msWMI-intFlags2
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17511,7 +17541,7 @@ This attribute is used by the WMI Remote Protocol for network communication.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.739  Attribute msWMI-intFlags3
+### 2.739 Attribute msWMI-intFlags3
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17535,7 +17565,8 @@ Release: April 23, 2024
 
 261 / 276
 
-2.740  Attribute msWMI-intFlags4
+
+### 2.740 Attribute msWMI-intFlags4
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17552,7 +17583,7 @@ This attribute is used by the WMI Remote Protocol for network communication.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.741  Attribute msWMI-IntMax
+### 2.741 Attribute msWMI-IntMax
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 maximum value for a WMI 32-bit integer parameter object.
@@ -17570,7 +17601,7 @@ maximum value for a WMI 32-bit integer parameter object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.742  Attribute msWMI-IntMin
+### 2.742 Attribute msWMI-IntMin
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 minimum value for a WMI 32-bit integer parameter object.
@@ -17588,7 +17619,7 @@ minimum value for a WMI 32-bit integer parameter object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.743  Attribute msWMI-IntValidValues
+### 2.743 Attribute msWMI-IntValidValues
 
 This attribute is for the WMI Remote Protocol for network communication and specifies the valid
 values for a WMI 32-bit integer parameter object.
@@ -17600,7 +17631,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-WMI-intValidValues
+
+ cn: ms-WMI-intValidValues
  ldapDisplayName: msWMI-IntValidValues
  attributeId: 1.2.840.113556.1.4.1631
  attributeSyntax: 2.5.5.9
@@ -17613,7 +17645,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.744  Attribute msWMI-Mof
+### 2.744 Attribute msWMI-Mof
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 Manage Operations Framework (MOF) definition of some WMI object.
@@ -17631,7 +17663,7 @@ Manage Operations Framework (MOF) definition of some WMI object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.745  Attribute msWMI-Name
+### 2.745 Attribute msWMI-Name
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 friendly name for top-level policy objects.
@@ -17649,7 +17681,7 @@ friendly name for top-level policy objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.746  Attribute msWMI-NormalizedClass
+### 2.746 Attribute msWMI-NormalizedClass
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the name
 of a core WMI policy class.
@@ -17666,7 +17698,8 @@ Release: April 23, 2024
 
 263 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: FALSE
  schemaIdGuid: eaba628f-eb8e-4fe9-83fc-693be695559b
  systemOnly: FALSE
@@ -17675,7 +17708,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.747  Attribute msWMI-Parm1
+### 2.747 Attribute msWMI-Parm1
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17692,7 +17725,7 @@ This attribute is used by the WMI Remote Protocol for network communication.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.748  Attribute msWMI-Parm2
+### 2.748 Attribute msWMI-Parm2
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17709,7 +17742,7 @@ This attribute is used by the WMI Remote Protocol for network communication.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.749  Attribute msWMI-Parm3
+### 2.749 Attribute msWMI-Parm3
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17731,9 +17764,10 @@ Release: April 23, 2024
 
 264 / 276
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.750  Attribute msWMI-Parm4
+Version-Specific Behavior: First implemented on Windows Server 2003.
+
+### 2.750 Attribute msWMI-Parm4
 
 This attribute is used by the WMI Remote Protocol for network communication.
 
@@ -17750,7 +17784,7 @@ This attribute is used by the WMI Remote Protocol for network communication.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.751  Attribute msWMI-PropertyName
+### 2.751 Attribute msWMI-PropertyName
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the target
 policy object name for a parameter object.
@@ -17768,7 +17802,7 @@ policy object name for a parameter object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.752  Attribute msWMI-Query
+### 2.752 Attribute msWMI-Query
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies a single
 WMI Query Language (WQL) query.
@@ -17793,7 +17827,8 @@ Release: April 23, 2024
 
 265 / 276
 
-2.753  Attribute msWMI-QueryLanguage
+
+### 2.753 Attribute msWMI-QueryLanguage
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies a WMI
 Query Language (WQL).
@@ -17811,7 +17846,7 @@ Query Language (WQL).
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.754  Attribute msWMI-ScopeGuid
+### 2.754 Attribute msWMI-ScopeGuid
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the GUID
 for the scope in which the associated encoding is located.
@@ -17829,7 +17864,7 @@ for the scope in which the associated encoding is located.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.755  Attribute msWMI-SourceOrganization
+### 2.755 Attribute msWMI-SourceOrganization
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 business organization that initially created a policy object.
@@ -17847,7 +17882,7 @@ business organization that initially created a policy object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.756  Attribute msWMI-StringDefault
+### 2.756 Attribute msWMI-StringDefault
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 default string setting for a set of string parameter objects.
@@ -17859,7 +17894,8 @@ Active Directory Schema Attributes M
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: ms-WMI-stringDefault
+
+ cn: ms-WMI-stringDefault
  ldapDisplayName: msWMI-StringDefault
  attributeId: 1.2.840.113556.1.4.1636
  attributeSyntax: 2.5.5.12
@@ -17872,7 +17908,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.757  Attribute msWMI-StringValidValues
+### 2.757 Attribute msWMI-StringValidValues
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the set of
 strings belonging to a string set parameter object.
@@ -17890,7 +17926,7 @@ strings belonging to a string set parameter object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.758  Attribute msWMI-TargetClass
+### 2.758 Attribute msWMI-TargetClass
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the class
 name of the policy object to be created.
@@ -17908,7 +17944,7 @@ name of the policy object to be created.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.759  Attribute msWMI-TargetNameSpace
+### 2.759 Attribute msWMI-TargetNameSpace
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the
 namespace in which the object is to be created.
@@ -17925,7 +17961,8 @@ Release: April 23, 2024
 
 267 / 276
 
- omSyntax: 64
+
+ omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 1c4ab61f-3420-44e5-849d-8b5dbf60feb7
  systemOnly: FALSE
@@ -17934,7 +17971,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.760  Attribute msWMI-TargetObject
+### 2.760 Attribute msWMI-TargetObject
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the one or
 more binary sequences representing compiled WMI objects.
@@ -17952,7 +17989,7 @@ more binary sequences representing compiled WMI objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.761  Attribute msWMI-TargetPath
+### 2.761 Attribute msWMI-TargetPath
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the list of
 key/value pairs that uniquely identify a WMI object.
@@ -17970,7 +18007,7 @@ key/value pairs that uniquely identify a WMI object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.762  Attribute msWMI-TargetType
+### 2.762 Attribute msWMI-TargetType
 
 This attribute is used by the WMI Remote Protocol for network communication and specifies the WMI
 reference to a type definition for a policy object.
@@ -17991,12 +18028,13 @@ Release: April 23, 2024
 
 268 / 276
 
- searchFlags: 0
+
+ searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.763  Attribute mustContain
+### 2.763 Attribute mustContain
 
 This attribute is used by Active Directory to specify the list of mandatory attributes for a class.
 
@@ -18023,7 +18061,8 @@ Release: April 23, 2024
 
 269 / 276
 
-3  Change Tracking
+
+## 3 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -18123,7 +18162,8 @@ Release: April 23, 2024
 
 270 / 276
 
-4  Index
+
+## 4 Index
 A
 
 Attributes - overview 19
@@ -18263,7 +18303,8 @@ msDFSR-OnDemandExclusionDirectoryFilter attribute
 
 271 / 276
 
-msDFSR-OnDemandExclusionFileFilter attribute 76
+
+msDFSR-OnDemandExclusionFileFilter attribute 76
 msDFSR-Options attribute 76
 msDFSR-Options2 attribute 76
 msDFSR-Priority attribute 76
@@ -18416,7 +18457,8 @@ msDS-IntId attribute 130
 
 272 / 276
 
-msDS-IsDomainFor attribute 130
+
+msDS-IsDomainFor attribute 130
 msDS-IsFullReplicaFor attribute 131
 msDS-isGC attribute 131
 msDS-IsPartialReplicaFor attribute 132
@@ -18570,7 +18612,8 @@ msExchHouseIdentifier attribute 187
 
 273 / 276
 
-msExchLabeledURI attribute 188
+
+msExchLabeledURI attribute 188
 msFRS-Hub-Member attribute 188
 msFRS-Topology-Pref attribute 188
 msFVE-KeyPackage attribute 189
@@ -18711,7 +18754,8 @@ msPKI-Site-Name attribute 223
 
 274 / 276
 
-msPKI-Supersede-Templates attribute 223
+
+msPKI-Supersede-Templates attribute 223
 msPKI-Template-Minor-Revision attribute 224
 msPKI-Template-Schema-Version attribute 224
 msRADIUSCallbackNumber attribute 225
@@ -18856,7 +18900,8 @@ msTSLSProperty02 attribute 250
 
 275 / 276
 
-msTSManagingLS attribute 250
+
+msTSManagingLS attribute 250
 msTSManagingLS2 attribute 250
 msTSManagingLS3 attribute 251
 msTSManagingLS4 attribute 251

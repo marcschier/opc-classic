@@ -64,7 +64,8 @@ Release: September 9, 2025
 
 1 / 86
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: September 9, 2025
 
 2 / 86
 
-Date
+
+Date
 
 Revision
 History
@@ -523,7 +525,8 @@ Release: September 9, 2025
 
 3 / 86
 
-Date
+
+Date
 
 Revision
 History
@@ -548,362 +551,160 @@ Release: September 9, 2025
 
 4 / 86
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Component Object Model Plus (COM+) Event System Protocol](#132-component-object-model-plus-com-event-system-protocol)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Query Strings](#221-query-strings)
+    - [2.2.2 Application-Specific Properties](#222-application-specific-properties)
+      - [2.2.2.1 Property Names](#2221-property-names)
+      - [2.2.2.2 Property Value Types](#2222-property-value-types)
+    - [2.2.3 Curly-Braced GUID Strings](#223-curly-braced-guid-strings)
+    - [2.2.4 Entity Name String](#224-entity-name-string)
+    - [2.2.5 ImplementationSpecificPathProperty](#225-implementationspecificpathproperty)
+    - [2.2.6 EventClassCollectionIdentifier](#226-eventclasscollectionidentifier)
+    - [2.2.7 SubscriptionCollectionIdentifier](#227-subscriptioncollectionidentifier)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Event Classes](#3111-event-classes)
+      - [3.1.1.2 Subscriptions](#3112-subscriptions)
+      - [3.1.1.3 Event System](#3113-event-system)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 IEventSystem](#3141-ieventsystem)
+        - [3.1.4.1.1 Query (Opnum 7)](#31411-query-opnum-7)
+        - [3.1.4.1.2 Store (Opnum 8)](#31412-store-opnum-8)
+        - [3.1.4.1.3 Remove (Opnum 9)](#31413-remove-opnum-9)
+        - [3.1.4.1.4 get_EventObjectChangeEventClassID (Opnum 10)](#31414-geteventobjectchangeeventclassid-opnum-10)
+        - [3.1.4.1.5 QueryS (Opnum 11)](#31415-querys-opnum-11)
+        - [3.1.4.1.6 RemoveS (Opnum 12)](#31416-removes-opnum-12)
+      - [3.1.4.2 IEventClass](#3142-ieventclass)
+        - [3.1.4.2.1 get_EventClassID (Opnum 7)](#31421-geteventclassid-opnum-7)
+        - [3.1.4.2.2 put_EventClassID (Opnum 8)](#31422-puteventclassid-opnum-8)
+        - [3.1.4.2.3 get_EventClassName (Opnum 9)](#31423-geteventclassname-opnum-9)
+        - [3.1.4.2.4 put_EventClassName (Opnum 10)](#31424-puteventclassname-opnum-10)
+        - [3.1.4.2.5 get_OwnerSID (Opnum 11)](#31425-getownersid-opnum-11)
+        - [3.1.4.2.6 put_OwnerSID (Opnum 12)](#31426-putownersid-opnum-12)
+        - [3.1.4.2.7 get_FiringInterfaceID (Opnum 13)](#31427-getfiringinterfaceid-opnum-13)
+        - [3.1.4.2.8 put_FiringInterfaceID (Opnum 14)](#31428-putfiringinterfaceid-opnum-14)
+        - [3.1.4.2.9 get_Description (Opnum 15)](#31429-getdescription-opnum-15)
+        - [3.1.4.2.10 put_Description (Opnum 16)](#314210-putdescription-opnum-16)
+        - [3.1.4.2.11 get_TypeLib (Opnum 19)](#314211-gettypelib-opnum-19)
+        - [3.1.4.2.12 put_TypeLib (Opnum 20)](#314212-puttypelib-opnum-20)
+      - [3.1.4.3 IEventClass2](#3143-ieventclass2)
+        - [3.1.4.3.1 get_PublisherID (Opnum 21)](#31431-getpublisherid-opnum-21)
+        - [3.1.4.3.2 put_PublisherID (Opnum 22)](#31432-putpublisherid-opnum-22)
+        - [3.1.4.3.3 get_MultiInterfacePublisherFilterCLSID (Opnum 23)](#31433-getmultiinterfacepublisherfilterclsid-opnum-23)
+        - [3.1.4.3.4 put_MultiInterfacePublisherFilterCLSID (Opnum 24)](#31434-putmultiinterfacepublisherfilterclsid-opnum-24)
+        - [3.1.4.3.5 get_AllowInprocActivation (Opnum 25)](#31435-getallowinprocactivation-opnum-25)
+        - [3.1.4.3.6 put_AllowInprocActivation (Opnum 26)](#31436-putallowinprocactivation-opnum-26)
+        - [3.1.4.3.7 get_FireInParallel (Opnum 27)](#31437-getfireinparallel-opnum-27)
+        - [3.1.4.3.8 put_FireInParallel (Opnum 28)](#31438-putfireinparallel-opnum-28)
+      - [3.1.4.4 IEventSubscription](#3144-ieventsubscription)
+        - [3.1.4.4.1 get_SubscriptionID (Opnum 7)](#31441-getsubscriptionid-opnum-7)
+        - [3.1.4.4.2 put_SubscriptionID (Opnum 8)](#31442-putsubscriptionid-opnum-8)
+        - [3.1.4.4.3 get_SubscriptionName (Opnum 9)](#31443-getsubscriptionname-opnum-9)
+        - [3.1.4.4.4 put_SubscriptionName (Opnum 10)](#31444-putsubscriptionname-opnum-10)
+        - [3.1.4.4.5 get_PublisherID (Opnum 11)](#31445-getpublisherid-opnum-11)
+        - [3.1.4.4.6 put_PublisherID (Opnum 12)](#31446-putpublisherid-opnum-12)
+        - [3.1.4.4.7 get_EventClassID (Opnum 13)](#31447-geteventclassid-opnum-13)
+        - [3.1.4.4.8 put_EventClassID (Opnum 14)](#31448-puteventclassid-opnum-14)
+        - [3.1.4.4.9 get_MethodName (Opnum 15)](#31449-getmethodname-opnum-15)
+        - [3.1.4.4.10 put_MethodName (Opnum 16)](#314410-putmethodname-opnum-16)
+        - [3.1.4.4.11 get_SubscriberCLSID (Opnum 17)](#314411-getsubscriberclsid-opnum-17)
+        - [3.1.4.4.12 put_SubscriberCLSID (Opnum 18)](#314412-putsubscriberclsid-opnum-18)
+        - [3.1.4.4.13 get_SubscriberInterface (Opnum 19)](#314413-getsubscriberinterface-opnum-19)
+        - [3.1.4.4.14 put_SubscriberInterface (Opnum 20)](#314414-putsubscriberinterface-opnum-20)
+        - [3.1.4.4.15 get_PerUser (Opnum 21)](#314415-getperuser-opnum-21)
+        - [3.1.4.4.16 put_PerUser (Opnum 22)](#314416-putperuser-opnum-22)
+        - [3.1.4.4.17 get_OwnerSID (Opnum 23)](#314417-getownersid-opnum-23)
+        - [3.1.4.4.18 put_OwnerSID (Opnum 24)](#314418-putownersid-opnum-24)
+        - [3.1.4.4.19 get_Enabled (Opnum 25)](#314419-getenabled-opnum-25)
+        - [3.1.4.4.20 put_Enabled (Opnum 26)](#314420-putenabled-opnum-26)
+        - [3.1.4.4.21 get_Description (Opnum 27)](#314421-getdescription-opnum-27)
+        - [3.1.4.4.22 put_Description (Opnum 28)](#314422-putdescription-opnum-28)
+        - [3.1.4.4.23 get_MachineName (Opnum 29)](#314423-getmachinename-opnum-29)
+        - [3.1.4.4.24 put_MachineName (Opnum 30)](#314424-putmachinename-opnum-30)
+        - [3.1.4.4.25 GetPublisherProperty (Opnum 31)](#314425-getpublisherproperty-opnum-31)
+        - [3.1.4.4.26 PutPublisherProperty (Opnum 32)](#314426-putpublisherproperty-opnum-32)
+        - [3.1.4.4.27 RemovePublisherProperty (Opnum 33)](#314427-removepublisherproperty-opnum-33)
+        - [3.1.4.4.28 GetPublisherPropertyCollection (Opnum 34)](#314428-getpublisherpropertycollection-opnum-34)
+        - [3.1.4.4.29 GetSubscriberProperty (Opnum 35)](#314429-getsubscriberproperty-opnum-35)
+        - [3.1.4.4.30 PutSubscriberProperty (Opnum 36)](#314430-putsubscriberproperty-opnum-36)
+        - [3.1.4.4.31 RemoveSubscriberProperty (Opnum 37)](#314431-removesubscriberproperty-opnum-37)
+        - [3.1.4.4.32 GetSubscriberPropertyCollection (Opnum 38)](#314432-getsubscriberpropertycollection-opnum-38)
+        - [3.1.4.4.33 get_InterfaceID (Opnum 39)](#314433-getinterfaceid-opnum-39)
+        - [3.1.4.4.34 put_InterfaceID (Opnum 40)](#314434-putinterfaceid-opnum-40)
+      - [3.1.4.5 IEnumEventObject](#3145-ienumeventobject)
+        - [3.1.4.5.1 Clone (Opnum 3)](#31451-clone-opnum-3)
+        - [3.1.4.5.2 Next (Opnum 4)](#31452-next-opnum-4)
+        - [3.1.4.5.3 Reset (Opnum 5)](#31453-reset-opnum-5)
+        - [3.1.4.5.4 Skip (Opnum 6)](#31454-skip-opnum-6)
+      - [3.1.4.6 IEventObjectCollection](#3146-ieventobjectcollection)
+        - [3.1.4.6.1 get__NewEnum (Opnum 7)](#31461-getnewenum-opnum-7)
+        - [3.1.4.6.2 get_Item (Opnum 8)](#31462-getitem-opnum-8)
+        - [3.1.4.6.3 get_NewEnum (Opnum 9)](#31463-getnewenum-opnum-9)
+        - [3.1.4.6.4 get_Count (Opnum 10)](#31464-getcount-opnum-10)
+        - [3.1.4.6.5 Add (Opnum 11)](#31465-add-opnum-11)
+        - [3.1.4.6.6 Remove (Opnum 12)](#31466-remove-opnum-12)
+      - [3.1.4.7 IEventClass3](#3147-ieventclass3)
+        - [3.1.4.7.1 get_EventClassPartitionID (Opnum 29)](#31471-geteventclasspartitionid-opnum-29)
+        - [3.1.4.7.2 put_EventClassPartitionID (Opnum 30)](#31472-puteventclasspartitionid-opnum-30)
+        - [3.1.4.7.3 get_EventClassApplicationID (Opnum 31)](#31473-geteventclassapplicationid-opnum-31)
+        - [3.1.4.7.4 put_EventClassApplicationID (Opnum 32)](#31474-puteventclassapplicationid-opnum-32)
+      - [3.1.4.8 IEventSubscription2](#3148-ieventsubscription2)
+        - [3.1.4.8.1 get_FilterCriteria (Opnum 41)](#31481-getfiltercriteria-opnum-41)
+        - [3.1.4.8.2 put_FilterCriteria (Opnum 42)](#31482-putfiltercriteria-opnum-42)
+        - [3.1.4.8.3 get_SubscriberMoniker (Opnum 43)](#31483-getsubscribermoniker-opnum-43)
+        - [3.1.4.8.4 put_SubscriberMoniker (Opnum 44)](#31484-putsubscribermoniker-opnum-44)
+      - [3.1.4.9 IEventSubscription3](#3149-ieventsubscription3)
+        - [3.1.4.9.1 get_EventClassPartitionID (Opnum 45)](#31491-geteventclasspartitionid-opnum-45)
+        - [3.1.4.9.2 put_EventClassPartitionID (Opnum 46)](#31492-puteventclasspartitionid-opnum-46)
+        - [3.1.4.9.3 get_EventClassApplicationID (Opnum 47)](#31493-geteventclassapplicationid-opnum-47)
+        - [3.1.4.9.4 put_EventClassApplicationID (Opnum 48)](#31494-puteventclassapplicationid-opnum-48)
+        - [3.1.4.9.5 get_SubscriberPartitionID (Opnum 49)](#31495-getsubscriberpartitionid-opnum-49)
+        - [3.1.4.9.6 put_SubscriberPartitionID (Opnum 50)](#31496-putsubscriberpartitionid-opnum-50)
+        - [3.1.4.9.7 get_SubscriberApplicationID (Opnum 51)](#31497-getsubscriberapplicationid-opnum-51)
+        - [3.1.4.9.8 put_SubscriberApplicationID (Opnum 52)](#31498-putsubscriberapplicationid-opnum-52)
+      - [3.1.4.10 IEventSystem2](#31410-ieventsystem2)
+        - [3.1.4.10.1 GetVersion (Opnum 13)](#314101-getversion-opnum-13)
+        - [3.1.4.10.2 VerifyTransientSubscribers (Opnum 14)](#314102-verifytransientsubscribers-opnum-14)
+      - [3.1.4.11 IEventSystemInitialize](#31411-ieventsysteminitialize)
+        - [3.1.4.11.1 SetCOMCatalogBehaviour (Opnum 3)](#314111-setcomcatalogbehaviour-opnum-3)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Creating an Event Class](#41-creating-an-event-class)
+  - [4.2 Creating a Subscription](#42-creating-a-subscription)
+  - [4.3 Updating a Subscription](#43-updating-a-subscription)
+  - [4.4 Removing a Subscription](#44-removing-a-subscription)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 11
-Background ............................................................................................... 11
-Component Object Model Plus (COM+) Event System Protocol ......................... 11
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Data Types ........................................................................................ 13
-Query Strings ............................................................................................. 13
-Application-Specific Properties ...................................................................... 14
-Property Names .................................................................................... 14
-Property Value Types ............................................................................. 14
-Curly-Braced GUID Strings .......................................................................... 14
-Entity Name String ..................................................................................... 14
-ImplementationSpecificPathProperty ............................................................. 14
-EventClassCollectionIdentifier ...................................................................... 14
-SubscriptionCollectionIdentifier .................................................................... 15
-
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2.2.2.1
-2.2.2.2
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3  Protocol Details ..................................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Event Classes ....................................................................................... 16
-Subscriptions ........................................................................................ 17
-Event System ....................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-IEventSystem ....................................................................................... 19
-Query (Opnum 7) ............................................................................ 19
-Store (Opnum 8) ............................................................................. 20
-Remove (Opnum 9) ......................................................................... 22
-get_EventObjectChangeEventClassID (Opnum 10) .............................. 23
-QueryS (Opnum 11) ........................................................................ 24
-RemoveS (Opnum 12) ..................................................................... 24
-IEventClass .......................................................................................... 26
-get_EventClassID (Opnum 7) ............................................................ 27
-put_EventClassID (Opnum 8)............................................................ 27
-get_EventClassName (Opnum 9) ....................................................... 27
-put_EventClassName (Opnum 10) ..................................................... 28
-get_OwnerSID (Opnum 11) .............................................................. 28
-put_OwnerSID (Opnum 12) .............................................................. 29
-get_FiringInterfaceID (Opnum 13) ..................................................... 29
-put_FiringInterfaceID (Opnum 14)..................................................... 29
-get_Description (Opnum 15) ............................................................. 30
-put_Description (Opnum 16) ............................................................. 30
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-3.1.4.2.9
-3.1.4.2.10
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-
-3.1.4.2
-
-[MS-COMEV] - v20250909
-Component Object Model Plus (COM+) Event System Protocol
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-5 / 86
-
-3.1.4.3
-
-3.1.4.4
-
-3.1.4.2.11
-3.1.4.2.12
-
-3.1.4.3.1
-3.1.4.3.2
-3.1.4.3.3
-3.1.4.3.4
-3.1.4.3.5
-3.1.4.3.6
-3.1.4.3.7
-3.1.4.3.8
-
-get_TypeLib (Opnum 19) .................................................................. 30
-put_TypeLib (Opnum 20) ................................................................. 31
-IEventClass2 ........................................................................................ 31
-get_PublisherID (Opnum 21) ............................................................ 32
-put_PublisherID (Opnum 22) ............................................................ 32
-get_MultiInterfacePublisherFilterCLSID (Opnum 23) ............................. 32
-put_MultiInterfacePublisherFilterCLSID (Opnum 24) ............................ 33
-get_AllowInprocActivation (Opnum 25) .............................................. 33
-put_AllowInprocActivation (Opnum 26) .............................................. 34
-get_FireInParallel (Opnum 27) .......................................................... 34
-put_FireInParallel (Opnum 28) .......................................................... 34
-IEventSubscription ................................................................................ 35
-get_SubscriptionID (Opnum 7) .......................................................... 37
-3.1.4.4.1
-put_SubscriptionID (Opnum 8) ......................................................... 37
-3.1.4.4.2
-get_SubscriptionName (Opnum 9) ..................................................... 37
-3.1.4.4.3
-put_SubscriptionName (Opnum 10) ................................................... 38
-3.1.4.4.4
-get_PublisherID (Opnum 11) ............................................................ 38
-3.1.4.4.5
-put_PublisherID (Opnum 12) ............................................................ 39
-3.1.4.4.6
-get_EventClassID (Opnum 13) .......................................................... 39
-3.1.4.4.7
-put_EventClassID (Opnum 14) .......................................................... 39
-3.1.4.4.8
-get_MethodName (Opnum 15) .......................................................... 40
-3.1.4.4.9
-put_MethodName (Opnum 16) .......................................................... 40
-3.1.4.4.10
-get_SubscriberCLSID (Opnum 17) ..................................................... 40
-3.1.4.4.11
-put_SubscriberCLSID (Opnum 18) ..................................................... 41
-3.1.4.4.12
-get_SubscriberInterface (Opnum 19) ................................................. 41
-3.1.4.4.13
-put_SubscriberInterface (Opnum 20) ................................................. 41
-3.1.4.4.14
-get_PerUser (Opnum 21).................................................................. 42
-3.1.4.4.15
-put_PerUser (Opnum 22) ................................................................. 42
-3.1.4.4.16
-get_OwnerSID (Opnum 23) .............................................................. 42
-3.1.4.4.17
-put_OwnerSID (Opnum 24) .............................................................. 43
-3.1.4.4.18
-get_Enabled (Opnum 25) ................................................................. 43
-3.1.4.4.19
-put_Enabled (Opnum 26) ................................................................. 43
-3.1.4.4.20
-get_Description (Opnum 27) ............................................................. 44
-3.1.4.4.21
-put_Description (Opnum 28) ............................................................. 44
-3.1.4.4.22
-get_MachineName (Opnum 29) ......................................................... 44
-3.1.4.4.23
-3.1.4.4.24
-put_MachineName (Opnum 30) ......................................................... 45
-3.1.4.4.25  GetPublisherProperty (Opnum 31) ..................................................... 45
-PutPublisherProperty (Opnum 32) ..................................................... 46
-3.1.4.4.26
-RemovePublisherProperty (Opnum 33) ............................................... 46
-3.1.4.4.27
-3.1.4.4.28  GetPublisherPropertyCollection (Opnum 34) ........................................ 46
-3.1.4.4.29  GetSubscriberProperty (Opnum 35) ................................................... 47
-PutSubscriberProperty (Opnum 36) ................................................... 47
-3.1.4.4.30
-3.1.4.4.31
-RemoveSubscriberProperty (Opnum 37) ............................................. 48
-3.1.4.4.32  GetSubscriberPropertyCollection (Opnum 38) ..................................... 48
-get_InterfaceID (Opnum 39) ............................................................ 49
-3.1.4.4.33
-put_InterfaceID (Opnum 40) ............................................................ 49
-3.1.4.4.34
-IEnumEventObject ................................................................................ 49
-Clone (Opnum 3) ............................................................................. 50
-Next (Opnum 4) .............................................................................. 50
-Reset (Opnum 5) ............................................................................. 51
-Skip (Opnum 6) .............................................................................. 51
-IEventObjectCollection ........................................................................... 52
-get__NewEnum (Opnum 7) .............................................................. 52
-get_Item (Opnum 8) ....................................................................... 53
-get_NewEnum (Opnum 9) ................................................................ 53
-get_Count (Opnum 10) .................................................................... 54
-Add (Opnum 11) ............................................................................. 54
-Remove (Opnum 12) ....................................................................... 54
-
-3.1.4.6.1
-3.1.4.6.2
-3.1.4.6.3
-3.1.4.6.4
-3.1.4.6.5
-3.1.4.6.6
-
-3.1.4.5.1
-3.1.4.5.2
-3.1.4.5.3
-3.1.4.5.4
-
-3.1.4.5
-
-3.1.4.6
-
-[MS-COMEV] - v20250909
-Component Object Model Plus (COM+) Event System Protocol
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-6 / 86
-
-3.1.4.7
-
-3.1.4.8
-
-3.1.4.9
-
-3.1.4.8.1
-3.1.4.8.2
-3.1.4.8.3
-3.1.4.8.4
-
-3.1.4.7.1
-3.1.4.7.2
-3.1.4.7.3
-3.1.4.7.4
-
-IEventClass3 ........................................................................................ 55
-get_EventClassPartitionID (Opnum 29) .............................................. 55
-put_EventClassPartitionID (Opnum 30) .............................................. 56
-get_EventClassApplicationID (Opnum 31) ........................................... 56
-put_EventClassApplicationID (Opnum 32) .......................................... 57
-IEventSubscription2 .............................................................................. 57
-get_FilterCriteria (Opnum 41) ........................................................... 57
-put_FilterCriteria (Opnum 42) ........................................................... 58
-get_SubscriberMoniker (Opnum 43)................................................... 58
-put_SubscriberMoniker (Opnum 44) .................................................. 58
-IEventSubscription3 .............................................................................. 59
-get_EventClassPartitionID (Opnum 45) .............................................. 59
-put_EventClassPartitionID (Opnum 46) .............................................. 60
-get_EventClassApplicationID (Opnum 47) ........................................... 60
-put_EventClassApplicationID (Opnum 48) .......................................... 61
-get_SubscriberPartitionID (Opnum 49)............................................... 61
-put_SubscriberPartitionID (Opnum 50) .............................................. 61
-get_SubscriberApplicationID (Opnum 51) ........................................... 62
-put_SubscriberApplicationID (Opnum 52) ........................................... 62
-IEventSystem2 ..................................................................................... 62
-3.1.4.10.1  GetVersion (Opnum 13) ................................................................... 63
-VerifyTransientSubscribers (Opnum 14) ............................................. 63
-3.1.4.10.2
-IEventSystemInitialize ........................................................................... 64
-SetCOMCatalogBehaviour (Opnum 3) ................................................. 64
-Timer Events .............................................................................................. 64
-Other Local Events ...................................................................................... 64
-
-3.1.4.9.1
-3.1.4.9.2
-3.1.4.9.3
-3.1.4.9.4
-3.1.4.9.5
-3.1.4.9.6
-3.1.4.9.7
-3.1.4.9.8
-
-3.1.4.11.1
-
-3.1.4.10
-
-3.1.4.11
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ................................................................................................. 65
-Creating an Event Class .................................................................................... 65
-Creating a Subscription ..................................................................................... 67
-Updating a Subscription .................................................................................... 69
-Removing a Subscription ................................................................................... 71
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 73
-Security Considerations for Implementers ........................................................... 73
-Index of Security Parameters ............................................................................ 73
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 74
-
-7  Appendix B: Product Behavior ............................................................................... 80
-
-8  Change Tracking .................................................................................................... 82
-
-9  Index ..................................................................................................................... 83
-
-[MS-COMEV] - v20250909
-Component Object Model Plus (COM+) Event System Protocol
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-7 / 86
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the behavior of the Component Object Model Plus (COM+) Event System
 Protocol.
@@ -916,7 +717,7 @@ subscribers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -976,7 +777,8 @@ Release: September 9, 2025
 
 8 / 86
 
-object: In the DCOM protocol, a software entity that implements one or more object remote
+
+object: In the DCOM protocol, a software entity that implements one or more object remote
 protocol (ORPC) interfaces and which is uniquely identified, within the scope of an object
 exporter, by an object identifier (OID). For more information, see [MS-DCOM].
 
@@ -1053,7 +855,8 @@ Release: September 9, 2025
 
 9 / 86
 
-Universal Naming Convention (UNC): A string format that specifies the location of a resource.
+
+Universal Naming Convention (UNC): A string format that specifies the location of a resource.
 
 For more information, see [MS-DTYP] section 2.2.57.
 
@@ -1071,14 +874,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1106,7 +909,7 @@ Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-COMA] Microsoft Corporation, "Component Object Model Plus (COM+) Remote Administration
 Protocol".
@@ -1121,15 +924,16 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-[MSDN-COM+] Microsoft Corporation, "COM+ (Component Services)", http://msdn.microsoft.com/en-
+
+[MSDN-COM+] Microsoft Corporation, "COM+ (Component Services)", http://msdn.microsoft.com/en-
 us/library/ms685978.aspx
 
 [MSDN-ITypeLib] Microsoft Corporation, "ITypeLib", http://msdn.microsoft.com/en-
 us/library/ms890643.aspx
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Background
+#### 1.3.1 Background
 
 A publisher-subscriber framework allows applications to publish historical information that might
 be of interest to other applications. The applications publishing the information are called publishers,
@@ -1137,7 +941,7 @@ while the applications subscribing to the information are called subscribers. A 
 information in discrete sets called events. Similarly, a subscriber can subscribe to an event by
 creating a subscription for it.
 
-1.3.2  Component Object Model Plus (COM+) Event System Protocol
+#### 1.3.2 Component Object Model Plus (COM+) Event System Protocol
 
 The COM+ Event System Protocol provides a way to manage events and their respective
 subscriptions on a remote machine. The protocol is exposed as a set of DCOM [MS-DCOM]
@@ -1150,7 +954,7 @@ machine. It can also modify, query, or delete subscriptions for an event on the 
 A subscriber can specify that it wishes to receive a specific type of event or a collection of events. This
 is defined by specifying filtering criteria.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
  The COM+ Event System Protocol uses DCOM [MS-DCOM] to communicate over the wire and
 authenticate all requests issued against the infrastructure. Along with DCOM, this protocol also uses
@@ -1162,12 +966,12 @@ event classes and subscriber DCOM components used by the COM+ Event System Proto
 also be used to discover subscriber DCOM components registered on the server to create
 subscriptions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes that the client is in possession of valid credentials recognized by the server
 accepting the client requests.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The COM+ Event System Protocol is applicable to managing a store for publisher/subscriber
 events and subscriptions for scenarios where scalability requirements are minimal. It is not
@@ -1182,7 +986,8 @@ Release: September 9, 2025
 
 11 / 86
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1190,12 +995,12 @@ This document covers versioning issues in the following areas:
 server. The client of this protocol can determine the version of the server by calling GetVersion
 method (section 3.1.4.10.1).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs as defined in [MS-ERREF]. Vendors are free to choose their own values
 for this field, as long as the C bit (0x20000000) is set, indicating it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following is a table of well-known GUIDs (generated using the mechanism specified in [C706]
 section A.2.5) in this protocol.
@@ -1231,19 +1036,20 @@ Release: September 9, 2025
 
 12 / 86
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All the protocol messages MUST be transported using DCOM [MS-DCOM]. The protocol uses the
 dynamic endpoints allocated and managed by the DCOM infrastructure.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data
 types are defined in the following sections.
 
-2.2.1  Query Strings
+#### 2.2.1 Query Strings
 
 The query string in the protocol is used for querying for subscriptions, querying for events, and
 specifying filtering criteria. The following is the Augmented Backus-Naur Form (ABNF) [RFC4234]
@@ -1296,24 +1102,25 @@ Release: September 9, 2025
 
 13 / 86
 
-2.2.2  Application-Specific Properties
+
+#### 2.2.2 Application-Specific Properties
 
 The protocol allows applications to associate custom properties with its objects. Each property is
 identified by means of a unique name, and has a value.
 
-2.2.2.1  Property Names
+##### 2.2.2.1 Property Names
 
 The following is the ABNF [RFC4234] syntax for these names.
 
  APPPROPERTYNAME = 1*255ALPHA
 
-2.2.2.2  Property Value Types
+##### 2.2.2.2 Property Value Types
 
 These are of VARIANT type as specified in [MS-OAUT] section 2.2.29.2. The VARIANT type MUST be
 one of the following: VT_BSTR, VT_I4, VT_I8, VT_I2, or VT_UNKNOWN as specified in [MS-OAUT]
 section 2.2.7.
 
-2.2.3  Curly-Braced GUID Strings
+#### 2.2.3 Curly-Braced GUID Strings
 
 This type is a string representation of the GUID type, as specified in [MS-DTYP] section 2.3.4. The
 following is the ABNF [RFC4234] syntax for this representation.
@@ -1322,13 +1129,13 @@ following is the ABNF [RFC4234] syntax for this representation.
 
 UUID represents the string form of a UUID as specified in [RFC4122] section 3.
 
-2.2.4  Entity Name String
+#### 2.2.4 Entity Name String
 
 The following is the ABNF [RFC4234] syntax for these names.
 
  APPPROPERTYNAME = 1*255ALPHA
 
-2.2.5  ImplementationSpecificPathProperty
+#### 2.2.5 ImplementationSpecificPathProperty
 
  The ImplementationSpecificPathProperty represents a path to a resource in a format that is specific to
 a COMEV server implementation. For writes to properties of this type, a server SHOULD accept a path
@@ -1338,7 +1145,7 @@ path in a local namespace to a local resource).
  Properties of this type MUST be specified as a BSTR and MUST have a character length of at least 1
 and at most 260.
 
-2.2.6  EventClassCollectionIdentifier
+#### 2.2.6 EventClassCollectionIdentifier
 
 The EventClassCollectionIdentifier is used to identify an event class in an event collection (see section
 3.1.4.6.2). The format of the identifier depends on the protocol version that is implemented by the
@@ -1357,14 +1164,15 @@ Release: September 9, 2025
 
 14 / 86
 
-The following is the ABNF syntax for these identifiers on servers that implement protocol version 2.
+
+The following is the ABNF syntax for these identifiers on servers that implement protocol version 2.
 
  EventClassCollectionIdentifier = EventClassID "-" PartitionID "-" ApplicationID
  EventClassID = CurlyBraceGuidString
  PartitionID = CurlyBraceGuidString
  ApplicationID = CurlyBraceGuidString
 
-2.2.7  SubscriptionCollectionIdentifier
+#### 2.2.7 SubscriptionCollectionIdentifier
 
 The SubscriptionCollectionIdentifier is used to identify a subscription in a subscription collection (see
 section 3.1.4.6.2). The format of the identifier depends on the version of the protocol that is
@@ -1390,7 +1198,8 @@ Release: September 9, 2025
 
 15 / 86
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client application initiates the conversation with the server by performing DCOM activation (as
 specified in [MS-DCOM] section 3.2.4.1.1) of one of the class identifiers (CLSIDs) specified in
@@ -1398,9 +1207,9 @@ section 1.9. After getting the interface pointer to the DCOM object as a result 
 client application works with the object by making calls on the DCOM interface it supports. Once done,
 the client application releases the interface pointer.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1408,7 +1217,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Event Classes
+##### 3.1.1.1 Event Classes
 
 A collection of event interfaces is grouped into an event class. An event class manifests as a DCOM
 object that supports each of the event interfaces that are part of the event class. This is known as the
@@ -1462,7 +1271,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-indicates that it wants to be activated in a separate process. The KNOWNCOLUMNID for this
+
+indicates that it wants to be activated in a separate process. The KNOWNCOLUMNID for this
 property is "ALLOWINPROCACTIVATION".
 
 FireInParallel: An application-specific Boolean value for controlling the way to fire the events for
@@ -1479,7 +1289,7 @@ EventClassApplicationID: The UUID of the conglomeration of the event class objec
 in addition to EventClassID and EventClassPartitionID. The KNOWNCOLUMNID for this property is
 "EVENTCLASSAPPLICATIONID". This property always has the value GUID_NULL.<6>
 
-3.1.1.2  Subscriptions
+##### 3.1.1.2 Subscriptions
 
 The server also maintains a table of subscriptions. As with event classes, subscriptions have a set
 of properties. Some of the properties can also be specified as part of the query (as specified in section
@@ -1540,7 +1350,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Description: An application-specific description for the subscription. The KNOWNCOLUMNID for this
+
+Description: An application-specific description for the subscription. The KNOWNCOLUMNID for this
 
 property is "DESCRIPTION".
 
@@ -1589,7 +1400,7 @@ SubscriberProperties: A set of application-specific properties that are associat
 
 subscription that pertains to the subscriber, as specified in section 2.2.2.
 
-3.1.1.3  Event System
+##### 3.1.1.3 Event System
 
 The server has two state variables that affect the behavior of the Store, Remove, and RemoveS
 methods of the IEventSystem interface. The sections describing each method provide more detail. To
@@ -1609,7 +1420,7 @@ are retained and are not deleted, even if they do not exist within the new objec
 variable is FALSE, the PublisherProperties and SubscriberProperties of the new object replace the
 PublisherProperties and SubscriberProperties of the existing object.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
  None.
 
@@ -1620,19 +1431,20 @@ Release: September 9, 2025
 
 18 / 86
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 When the Component Object Model Plus (COM+) Event System Protocol server starts up, the server
 MUST begin listening for DCOM activation (as specified in [MS-DCOM] section 3.2.4.1.1) for the
 CLSIDs specified in section 1.9.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Interfaces described in this section are accessed through DCOM. Therefore, any method call can return
 DCOM error codes, as specified in [MS-DCOM] and [MS-ERREF], in addition to the COM+ Event
 method-specific codes described in this document.
 
-3.1.4.1  IEventSystem
+##### 3.1.4.1 IEventSystem
 
 The IEventSystem interface provides methods to create, query, delete, and update event classes and
 subscriptions. The interface inherits opnums 0 through 6 from IDispatch as specified in [MS-OAUT]
@@ -1687,7 +1499,7 @@ Removes a single event class or subscription based on a query.
 
 Opnum: 12
 
-3.1.4.1.1 Query (Opnum 7)
+###### 3.1.4.1.1 Query (Opnum 7)
 
 The Query method is called by a client to query a collection for a collection of event classes or
 subscriptions.
@@ -1703,7 +1515,8 @@ Release: September 9, 2025
 
 19 / 86
 
-   [out] int* errorIndex,
+
+   [out] int* errorIndex,
    [out, retval] IUnknown** ppInterface
  );
 
@@ -1764,7 +1577,7 @@ MAY<9> support IEventSubscription3 if it is a subscription object. These DCOM ob
 encapsulated into a collection-based DCOM object that supports the IEventObjectCollection interface.
 This object MUST be returned through the ppInterface parameter.
 
-3.1.4.1.2 Store (Opnum 8)
+###### 3.1.4.1.2 Store (Opnum 8)
 
 The Store method is called by a client to store either an event class or a subscription.
 
@@ -1780,7 +1593,8 @@ Release: September 9, 2025
 
 20 / 86
 
-ProgID: A string that uniquely identifies the kind of object that the client is trying to store. It MUST
+
+ProgID: A string that uniquely identifies the kind of object that the client is trying to store. It MUST
 
 be one of the following values.
 
@@ -1859,7 +1673,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-the server MAY fail the call, returning a failure HRESULT to the client. If the server does not fail
+
+the server MAY fail the call, returning a failure HRESULT to the client. If the server does not fail
 the call, the server behavior is undefined.
 
   Protocol version is 1; CatalogMode is FALSE
@@ -1882,7 +1697,7 @@ MUST treat the PartitionID property as if it were set to the default partition i
 The DCOM object MUST have a PartitionID property equal to GUID_NULL. If not, the server
 SHOULD fail the call, returning a failure HRESULT to the client.
 
-3.1.4.1.3 Remove (Opnum 9)
+###### 3.1.4.1.3 Remove (Opnum 9)
 
 The Remove method is called by a client to remove a collection of event classes or subscriptions by
 criteria represented by a query string in the queryCriteria parameter.
@@ -1941,7 +1756,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1991,7 +1807,7 @@ the client.
 If the verification succeeds, the server MUST attempt to remove the event classes or subscriptions
 from its internal collection and fail the call if it cannot.
 
-3.1.4.1.4 get_EventObjectChangeEventClassID (Opnum 10)
+###### 3.1.4.1.4 get_EventObjectChangeEventClassID (Opnum 10)
 
 The get_EventObjectChangeEventClassID method extracts the server-specific EventClassID for server-
 specific event class or subscription change notifications.
@@ -2013,7 +1829,8 @@ Release: September 9, 2025
 
 23 / 86
 
-Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
+
+Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
 
 same, and all failure codes MUST be treated the same.
 
@@ -2021,7 +1838,7 @@ When this method is called, a server SHOULD return the EventClassID of an event 
 notifications of changes to the server’s event class store and subscriber store. The server MAY
 instead fail the method call if it does not support such an event class.
 
-3.1.4.1.5 QueryS (Opnum 11)
+###### 3.1.4.1.5 QueryS (Opnum 11)
 
 The QueryS method is called by the client to query a specific event class or subscription.
 
@@ -2085,7 +1902,7 @@ IEventSubscription2 and MAY<11> support IEventSubscription3 if it is a subscript
 object MUST be stored in a collection-based DCOM object supporting IEventObjectCollection which
 MUST be returned through the ppInterface parameter.
 
-3.1.4.1.6 RemoveS (Opnum 12)
+###### 3.1.4.1.6 RemoveS (Opnum 12)
 
 The RemoveS method is called by the client to remove an event class or subscription.
 
@@ -2096,7 +1913,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
- [id(6), helpstring("method RemoveS")] HRESULT RemoveS(
+
+ [id(6), helpstring("method RemoveS")] HRESULT RemoveS(
    [in] BSTR progID,
    [in] BSTR queryCriteria
  );
@@ -2179,7 +1997,8 @@ Release: September 9, 2025
 
 25 / 86
 
-MAY fail the call, returning a failure HRESULT to the client. If the server does not fail the call,
+
+MAY fail the call, returning a failure HRESULT to the client. If the server does not fail the call,
 the server behavior is undefined.
 
   Protocol version is 2; CatalogMode is FALSE
@@ -2191,7 +2010,7 @@ the client.
 If the verification succeeds, the server MUST attempt to remove the event classes or subscriptions
 from its internal collection and fail the call if it cannot.
 
-3.1.4.2  IEventClass
+##### 3.1.4.2 IEventClass
 
 The IEventClass interface provides methods that are used by the client to manipulate an event class
 on the server. The interface inherits Opnums 0 to 6 from IDispatch as specified in [MS-OAUT] section
@@ -2278,7 +2097,8 @@ Release: September 9, 2025
 
 26 / 86
 
-Method
+
+Method
 
 Description
 
@@ -2303,7 +2123,7 @@ Opnum: 20
 In the preceding table, the term "Reserved for local use" means that the client MUST NOT send the
 opnum, and the server behavior is undefined<12> because it does not affect interoperability.
 
-3.1.4.2.1 get_EventClassID (Opnum 7)
+###### 3.1.4.2.1 get_EventClassID (Opnum 7)
 
 The get_EventClassID method is used to get the EventClassID property of the event class.
 
@@ -2325,7 +2145,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the EventClassID
 property.
 
-3.1.4.2.2 put_EventClassID (Opnum 8)
+###### 3.1.4.2.2 put_EventClassID (Opnum 8)
 
 The put_EventClassID method sets the EventClassID property of the event class.
 
@@ -2347,7 +2167,7 @@ the state of the DCOM object servicing this method with the new value of the Eve
 and fail the call, returning a failure HRESULT back to the client if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.2.3 get_EventClassName (Opnum 9)
+###### 3.1.4.2.3 get_EventClassName (Opnum 9)
 
 [MS-COMEV] - v20250909
 Component Object Model Plus (COM+) Event System Protocol
@@ -2356,7 +2176,8 @@ Release: September 9, 2025
 
 27 / 86
 
-The get_EventClassName method gets the EventClassName property of the event class.
+
+The get_EventClassName method gets the EventClassName property of the event class.
 
  [propget, id(2), helpstring("property EventClassName")] HRESULT EventClassName(
    [out, retval] BSTR* pbstrEventClassName
@@ -2376,7 +2197,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the EventClassName
 property.
 
-3.1.4.2.4 put_EventClassName (Opnum 10)
+###### 3.1.4.2.4 put_EventClassName (Opnum 10)
 
 The put_EventClassName method sets the EventClassName property of the event class.
 
@@ -2399,7 +2220,7 @@ property, and fail the call, returning a failure HRESULT back to the client if i
 MUST override any previous value that was set for this DCOM object instance servicing this method
 call.
 
-3.1.4.2.5 get_OwnerSID (Opnum 11)
+###### 3.1.4.2.5 get_OwnerSID (Opnum 11)
 
 The get_OwnerSID method gets the OwnerSID property of the event class.
 
@@ -2423,11 +2244,12 @@ Release: September 9, 2025
 
 28 / 86
 
-When this method is invoked, the server MUST verify that this value was previously set on this DCOM
+
+When this method is invoked, the server MUST verify that this value was previously set on this DCOM
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the OwnerSID property.
 
-3.1.4.2.6 put_OwnerSID (Opnum 12)
+###### 3.1.4.2.6 put_OwnerSID (Opnum 12)
 
 The put_OwnerSID method sets the OwnerSID property of the event class.
 
@@ -2449,7 +2271,7 @@ the state of the DCOM object servicing this method with the new value of the Own
 and fail the call, returning a failure HRESULT back to the client if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.2.7 get_FiringInterfaceID (Opnum 13)
+###### 3.1.4.2.7 get_FiringInterfaceID (Opnum 13)
 
 The get_FiringInterfaceID method gets the FiringInterfaceID property of the event class.
 
@@ -2471,7 +2293,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the FiringInterfaceID
 property.
 
-3.1.4.2.8 put_FiringInterfaceID (Opnum 14)
+###### 3.1.4.2.8 put_FiringInterfaceID (Opnum 14)
 
 The put_FiringInterfaceID method sets the FiringInterfaceID property of the event class.
 
@@ -2490,7 +2312,8 @@ Release: September 9, 2025
 
 29 / 86
 
-Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
+
+Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
 
 same, and all failure codes MUST be treated the same.
 
@@ -2501,7 +2324,7 @@ property, and fail the call, returning a failure HRESULT back to the client if i
 MUST override any previous value that was set for this DCOM object instance servicing this method
 call.
 
-3.1.4.2.9 get_Description (Opnum 15)
+###### 3.1.4.2.9 get_Description (Opnum 15)
 
 The get_Description method gets the Description property of the event class.
 
@@ -2522,9 +2345,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the Description property.
 
-3.1.4.2.10
+###### 3.1.4.2.10 put_Description (Opnum 16)
 
-put_Description (Opnum 16)
+
 
 The put_Description method sets the Description property of the event class.
 
@@ -2546,9 +2369,9 @@ the state of the DCOM object servicing this method with the new value of the Des
 and fail the call, returning a failure HRESULT back to the client if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call
 
-3.1.4.2.11
+###### 3.1.4.2.11 get_TypeLib (Opnum 19)
 
-get_TypeLib (Opnum 19)
+
 
 The get_TypeLib method gets the Typelib property of the event class.
 
@@ -2563,7 +2386,8 @@ Release: September 9, 2025
 
 30 / 86
 
-pbstrTypeLib: If the method returns a success HRESULT, this MUST contain the Typelib property of
+
+pbstrTypeLib: If the method returns a success HRESULT, this MUST contain the Typelib property of
 
 the event class, as specified in section 3.1.1.1. The value MUST conform to the format specified in
 section 2.2.5.
@@ -2576,9 +2400,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the Typelib property.
 
-3.1.4.2.12
+###### 3.1.4.2.12 put_TypeLib (Opnum 20)
 
-put_TypeLib (Opnum 20)
+
 
 The put_TypeLib method sets the Typelib property of the event class.
 
@@ -2600,7 +2424,7 @@ the state of the DCOM object servicing this method with the new value of the Typ
 fail the call, returning a failure HRESULT back to the client if it cannot. Otherwise, it MUST override
 any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.3  IEventClass2
+##### 3.1.4.3 IEventClass2
 
 The IEventClass2 interface provides additional methods that are used by the client to manipulate
 event class properties on the server. This interface inherits opnums 0 through 20 from IEventClass
@@ -2645,7 +2469,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Method
+
+Method
 
 Description
 
@@ -2673,7 +2498,7 @@ Sets the FireInParallel property of the event class.
 
 Opnum: 28
 
-3.1.4.3.1 get_PublisherID (Opnum 21)
+###### 3.1.4.3.1 get_PublisherID (Opnum 21)
 
 The get_PublisherID method gets the PublisherID property of the event class.
 
@@ -2694,7 +2519,7 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the PublisherID property.
 
-3.1.4.3.2 put_PublisherID (Opnum 22)
+###### 3.1.4.3.2 put_PublisherID (Opnum 22)
 
 The put_PublisherID method sets the PublisherID property of the event class.
 
@@ -2716,7 +2541,7 @@ the state of the DCOM object servicing this method with the new value of the Pub
 and fail the call, returning a failure HRESULT back to the client if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.3.3 get_MultiInterfacePublisherFilterCLSID (Opnum 23)
+###### 3.1.4.3.3 get_MultiInterfacePublisherFilterCLSID (Opnum 23)
 
 32 / 86
 
@@ -2725,7 +2550,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-The get_MultiInterfacePublisherFilterCLSID method gets the MultiInterfacePublisherFilterCLSID
+
+The get_MultiInterfacePublisherFilterCLSID method gets the MultiInterfacePublisherFilterCLSID
 property of the event class.
 
  [id(9), propget, helpstring("property MultiInterfacePublisherFilterCLSID")]
@@ -2747,7 +2573,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the
 MultiInterfacePublisherFilterCLSID property.
 
-3.1.4.3.4 put_MultiInterfacePublisherFilterCLSID (Opnum 24)
+###### 3.1.4.3.4 put_MultiInterfacePublisherFilterCLSID (Opnum 24)
 
 The put_MultiInterfacePublisherFilterCLSID method sets the MultiInterfacePublisherFilterCLSID
 property of the event class.
@@ -2772,7 +2598,7 @@ MultiInterfacePublisherFilterCLSID property, and fail the call, returning a fail
 client if it cannot. Otherwise, it MUST override any previous value that was set for this DCOM object
 instance servicing this method call.
 
-3.1.4.3.5 get_AllowInprocActivation (Opnum 25)
+###### 3.1.4.3.5 get_AllowInprocActivation (Opnum 25)
 
 The get_AllowInprocActivation method gets the AllowInprocActivation property of the event class.
 
@@ -2796,12 +2622,13 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-When this method is invoked, the server MUST verify that this value was previously set on this DCOM
+
+When this method is invoked, the server MUST verify that this value was previously set on this DCOM
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the AllowInprocActivation
 property.
 
-3.1.4.3.6 put_AllowInprocActivation (Opnum 26)
+###### 3.1.4.3.6 put_AllowInprocActivation (Opnum 26)
 
 The put_AllowInprocActivation method sets the AllowInprocActivation property of the event class.
 
@@ -2825,7 +2652,7 @@ property, and fail the call, returning a failure HRESULT back to the client if i
 MUST override any previous value that was set for this DCOM object instance servicing this method
 call.
 
-3.1.4.3.7 get_FireInParallel (Opnum 27)
+###### 3.1.4.3.7 get_FireInParallel (Opnum 27)
 
 The get_FireInParallel method gets the FireInParallel property of the event class.
 
@@ -2846,7 +2673,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the FireInParallel
 property.
 
-3.1.4.3.8 put_FireInParallel (Opnum 28)
+###### 3.1.4.3.8 put_FireInParallel (Opnum 28)
 
 The put_FireInParallel method sets the value of the FireInParallel property of the event class.
 
@@ -2865,7 +2692,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
+
+Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
 
 same, and all failure codes MUST be treated the same.
 
@@ -2875,7 +2703,7 @@ the state of the DCOM object servicing this method with the new value of the Fir
 and fail the call, returning a failure HRESULT back to the client if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4  IEventSubscription
+##### 3.1.4.4 IEventSubscription
 
 The IEventSubscription interface provides methods to get and set the properties of a subscription.
 This interface inherits opnums 0 through 6 from [MS-OAUT] IDispatch as specified in [MS-OAUT]
@@ -2970,7 +2798,8 @@ Release: September 9, 2025
 
 35 / 86
 
-Method
+
+Method
 
 Description
 
@@ -3095,7 +2924,8 @@ Release: September 9, 2025
 
 36 / 86
 
-Method
+
+Method
 
 Description
 
@@ -3119,7 +2949,7 @@ Sets the InterfaceID property for the subscription.
 
 Opnum: 40
 
-3.1.4.4.1 get_SubscriptionID (Opnum 7)
+###### 3.1.4.4.1 get_SubscriptionID (Opnum 7)
 
 The get_SubscriptionID method gets the SubscriptionID property for the subscription.
 
@@ -3141,7 +2971,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the SubscriptionID
 property.
 
-3.1.4.4.2 put_SubscriptionID (Opnum 8)
+###### 3.1.4.4.2 put_SubscriptionID (Opnum 8)
 
 The put_SubscriptionID method sets the SubscriptionID property of the subscription.
 
@@ -3162,7 +2992,7 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the SubscriptionID property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.3 get_SubscriptionName (Opnum 9)
+###### 3.1.4.4.3 get_SubscriptionName (Opnum 9)
 
 [MS-COMEV] - v20250909
 Component Object Model Plus (COM+) Event System Protocol
@@ -3171,7 +3001,8 @@ Release: September 9, 2025
 
 37 / 86
 
-The get_SubscriptionName method gets the SubscriptionName property of the subscription.
+
+The get_SubscriptionName method gets the SubscriptionName property of the subscription.
 
  [propget, id(2), helpstring("property SubscriptionName")] HRESULT SubscriptionName(
    [out, retval] BSTR* pbstrSubscriptionName
@@ -3191,7 +3022,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the SubscriptionName
 property.
 
-3.1.4.4.4 put_SubscriptionName (Opnum 10)
+###### 3.1.4.4.4 put_SubscriptionName (Opnum 10)
 
 The put_SubscriptionName method sets the SubscriptionName property of the subscription.
 
@@ -3213,7 +3044,7 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the SubscriptionName property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.5 get_PublisherID (Opnum 11)
+###### 3.1.4.4.5 get_PublisherID (Opnum 11)
 
 The get_PublisherID method gets the PublisherID property of the subscription.
 
@@ -3241,7 +3072,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-3.1.4.4.6 put_PublisherID (Opnum 12)
+
+###### 3.1.4.4.6 put_PublisherID (Opnum 12)
 
 The put_PublisherID method sets the PublisherID property of the subscription.
 
@@ -3263,7 +3095,7 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the PublisherID property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.7 get_EventClassID (Opnum 13)
+###### 3.1.4.4.7 get_EventClassID (Opnum 13)
 
 The get_EventClassID method gets the EventClassID property of the subscription.
 
@@ -3284,7 +3116,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the EventClassID
 property.
 
-3.1.4.4.8 put_EventClassID (Opnum 14)
+###### 3.1.4.4.8 put_EventClassID (Opnum 14)
 
 The put_EventClassID method sets the EventClassID property of the subscription.
 
@@ -3310,11 +3142,12 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Otherwise, the server MUST attempt to update the state of the DCOM object servicing this method
+
+Otherwise, the server MUST attempt to update the state of the DCOM object servicing this method
 with the new value of the EventClassID property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.9 get_MethodName (Opnum 15)
+###### 3.1.4.4.9 get_MethodName (Opnum 15)
 
 The get_MethodName method gets the MethodName property of the subscription.
 
@@ -3335,9 +3168,9 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the MethodName
 property.
 
-3.1.4.4.10
+###### 3.1.4.4.10 put_MethodName (Opnum 16)
 
-put_MethodName (Opnum 16)
+
 
 The put_MethodName method sets the MethodName property of the subscription.
 
@@ -3359,9 +3192,9 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the MethodName property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.11
+###### 3.1.4.4.11 get_SubscriberCLSID (Opnum 17)
 
-get_SubscriberCLSID (Opnum 17)
+
 
 The get_SubscriberCLSID method gets the SubscriberCLSID property of the subscription.
 
@@ -3381,7 +3214,8 @@ Release: September 9, 2025
 
 40 / 86
 
-Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
+
+Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
 
 same, and all failure codes MUST be treated the same.
 
@@ -3390,9 +3224,9 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the SubscriberCLSID
 property.
 
-3.1.4.4.12
+###### 3.1.4.4.12 put_SubscriberCLSID (Opnum 18)
 
-put_SubscriberCLSID (Opnum 18)
+
 
 The put_SubscriberCLSID method sets the SubscriberCLSID property of the subscription.
 
@@ -3414,9 +3248,9 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the SubscriberCLSID property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.13
+###### 3.1.4.4.13 get_SubscriberInterface (Opnum 19)
 
-get_SubscriberInterface (Opnum 19)
+
 
 The get_SubscriberInterface method gets the SubscriberInterface property of the subscription.
 
@@ -3437,9 +3271,9 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the SubscriberInterface
 property.
 
-3.1.4.4.14
+###### 3.1.4.4.14 put_SubscriberInterface (Opnum 20)
 
-put_SubscriberInterface (Opnum 20)
+
 
 The put_SubscriberInterface method sets the SubscriberInterface property of the subscription.
 
@@ -3454,7 +3288,8 @@ Release: September 9, 2025
 
 41 / 86
 
-pSubscriberInterface: The SubscriberInterface property of the subscription, as specified in section
+
+pSubscriberInterface: The SubscriberInterface property of the subscription, as specified in section
 
 3.1.1.2.
 
@@ -3468,9 +3303,9 @@ the state of the DCOM object servicing this method with the new value of the Sub
 property, and fail the call if it cannot. Otherwise, it MUST override any previous value that was set for
 this DCOM object instance servicing this method call.
 
-3.1.4.4.15
+###### 3.1.4.4.15 get_PerUser (Opnum 21)
 
-get_PerUser (Opnum 21)
+
 
 The get_PerUser method gets the PerUser property of the subscription.
 
@@ -3490,9 +3325,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the PerUser property.
 
-3.1.4.4.16
+###### 3.1.4.4.16 put_PerUser (Opnum 22)
 
-put_PerUser (Opnum 22)
+
 
 The put_PerUser method sets the PerUser property of the subscription.
 
@@ -3512,9 +3347,9 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the PerUser property, and fail the call if it cannot. Otherwise, it MUST override
 any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.17
+###### 3.1.4.4.17 get_OwnerSID (Opnum 23)
 
-get_OwnerSID (Opnum 23)
+
 
 The get_OwnerSID method gets the OwnerSID property of the subscription.
 
@@ -3529,7 +3364,8 @@ Release: September 9, 2025
 
 42 / 86
 
-pbstrOwnerSID: If the method returns a success HRESULT, this MUST contain the value of the
+
+pbstrOwnerSID: If the method returns a success HRESULT, this MUST contain the value of the
 OwnerSID property of the subscription, as specified in section 3.1.1.2. The value MUST be
 specified in the Security Descriptor Description Language specified in [MS-DTYP] section 2.5.1.
 
@@ -3541,9 +3377,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the OwnerSID property.
 
-3.1.4.4.18
+###### 3.1.4.4.18 put_OwnerSID (Opnum 24)
 
-put_OwnerSID (Opnum 24)
+
 
 The put_OwnerSID method sets the OwnerSID property of the subscription
 
@@ -3565,9 +3401,9 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the OwnerSID property, and fail the call if it cannot. Otherwise, it MUST override
 any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.19
+###### 3.1.4.4.19 get_Enabled (Opnum 25)
 
-get_Enabled (Opnum 25)
+
 
 The get_Enabled method gets the Enabled property of the subscription.
 
@@ -3587,9 +3423,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the Enabled property.
 
-3.1.4.4.20
+###### 3.1.4.4.20 put_Enabled (Opnum 26)
 
-put_Enabled (Opnum 26)
+
 
 The put_Enabled method sets the Enabled property of the subscription.
 
@@ -3603,7 +3439,8 @@ Release: September 9, 2025
 
 43 / 86
 
- );
+
+ );
 
 fEnabled: The new value of the Enabled property of the subscription, as specified in section 3.1.1.2.
 
@@ -3617,9 +3454,9 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the Enabled property, and fail the call if it cannot. Otherwise, it MUST override
 any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.21
+###### 3.1.4.4.21 get_Description (Opnum 27)
 
-get_Description (Opnum 27)
+
 
 The get_Description method gets the Description property of the subscription.
 
@@ -3640,9 +3477,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the Description property.
 
-3.1.4.4.22
+###### 3.1.4.4.22 put_Description (Opnum 28)
 
-put_Description (Opnum 28)
+
 
 The put_Description method sets the Description property of the subscription.
 
@@ -3664,9 +3501,9 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the Description property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.23
+###### 3.1.4.4.23 get_MachineName (Opnum 29)
 
-get_MachineName (Opnum 29)
+
 
 The get_MachineName method gets the MachineName property of the subscription.
 
@@ -3677,7 +3514,8 @@ Release: September 9, 2025
 
 44 / 86
 
- [propget, id(12), helpstring("property MachineName")] HRESULT MachineName(
+
+ [propget, id(12), helpstring("property MachineName")] HRESULT MachineName(
    [out, retval] BSTR* pbstrMachineName
  );
 
@@ -3694,9 +3532,9 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the MachineName
 property.
 
-3.1.4.4.24
+###### 3.1.4.4.24 put_MachineName (Opnum 30)
 
-put_MachineName (Opnum 30)
+
 
 The put_MachineName method sets the MachineName property of the subscription.
 
@@ -3718,7 +3556,7 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the MachineName property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.4.25  GetPublisherProperty (Opnum 31)
+###### 3.1.4.4.25 GetPublisherProperty (Opnum 31)
 
 The GetPublisherProperty method gets the application-specific publisher property of the subscription.
 See publisher properties in section 3.1.1.2.
@@ -3750,14 +3588,15 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-server MUST then check to see if the value for this property is associated with the state of the
+
+server MUST then check to see if the value for this property is associated with the state of the
 instance of the DCOM object servicing this call specific to publisher properties. The server MUST
 verify that the value was previously set on this DCOM object instance servicing this method call. If
 not, the server MUST fail the call. Otherwise, the server MUST return the value of the property.
 
-3.1.4.4.26
+###### 3.1.4.4.26 PutPublisherProperty (Opnum 32)
 
-PutPublisherProperty (Opnum 32)
+
 
 The PutPublisherProperty method sets the application-specific publisher property of the subscription.
 If the subscription does not already have a publisher property, this method will add it to the
@@ -3787,7 +3626,7 @@ HRESULT back to the client. Otherwise, the server MUST attempt to store the valu
 the DCOM object instance servicing this call specific to publisher properties, and fail the call if it
 cannot. Otherwise, the server MUST override any previously associated value with this property name.
 
-3.1.4.4.27  RemovePublisherProperty (Opnum 33)
+###### 3.1.4.4.27 RemovePublisherProperty (Opnum 33)
 
 The RemovePublisherProperty method removes the specified application-specific publisher property
 for the subscription. See publisher properties in section 3.1.1.2.
@@ -3811,7 +3650,7 @@ state of the DCOM object servicing this call specific to publisher properties. I
 fail the call. Otherwise, the server MUST remove any state specific to this property name associated
 with the state of the DCOM object servicing this call specific to publisher properties.
 
-3.1.4.4.28  GetPublisherPropertyCollection (Opnum 34)
+###### 3.1.4.4.28 GetPublisherPropertyCollection (Opnum 34)
 
 [MS-COMEV] - v20250909
 Component Object Model Plus (COM+) Event System Protocol
@@ -3820,7 +3659,8 @@ Release: September 9, 2025
 
 46 / 86
 
-The GetPublisherPropertyCollection method gets all the application-specific publisher properties as a
+
+The GetPublisherPropertyCollection method gets all the application-specific publisher properties as a
 collection of the subscription. See publisher properties in section 3.1.1.2.
 
  [id(16), helpstring("method GetPublisherPropertyCollection")]
@@ -3842,7 +3682,7 @@ object supporting IEventObjectCollection interface and fail the call, returning 
 to the client if it cannot. It MUST then return this DCOM object instance through the collection
 parameter.
 
-3.1.4.4.29  GetSubscriberProperty (Opnum 35)
+###### 3.1.4.4.29 GetSubscriberProperty (Opnum 35)
 
 The GetSubscriberProperty method gets the value of an application-specific subscriber property of
 the subscription, as specified in section 3.1.1.2.
@@ -3871,9 +3711,9 @@ instance of the DCOM object servicing this call specific to subscriber propertie
 verify that the value was previously set on this DCOM object instance servicing this method call. If
 not, the server MUST fail the call. Otherwise, the server MUST return the value of the property.
 
-3.1.4.4.30
+###### 3.1.4.4.30 PutSubscriberProperty (Opnum 36)
 
-PutSubscriberProperty (Opnum 36)
+
 
 The PutSubscriberProperty method sets the value of an application-specific subscriber property of the
 subscription, as specified in section 3.1.1.2.
@@ -3890,7 +3730,8 @@ Release: September 9, 2025
 
 47 / 86
 
-bstrPropertyName: The application-specific name for the subscriber property. The format for the
+
+bstrPropertyName: The application-specific name for the subscriber property. The format for the
 
 subscriber property name MUST adhere to the format specified in section 2.2.2.1.
 
@@ -3908,7 +3749,7 @@ HRESULT back to the client. Otherwise, the server MUST attempt to store the valu
 the DCOM object instance servicing this call specific to the subscriber properties, and fail the call if it
 cannot. The server MUST override any previously associated value with this property name.
 
-3.1.4.4.31  RemoveSubscriberProperty (Opnum 37)
+###### 3.1.4.4.31 RemoveSubscriberProperty (Opnum 37)
 
 The RemoveSubscriberProperty method removes the specified application-specific subscriber
 property for the subscription, as specified in section 3.1.1.2.
@@ -3933,7 +3774,7 @@ MUST fail the call. Otherwise, the server MUST attempt to remove any state speci
 name associated with the state of the DCOM object servicing this call specific to subscriber properties,
 and fail the call if it cannot.
 
-3.1.4.4.32  GetSubscriberPropertyCollection (Opnum 38)
+###### 3.1.4.4.32 GetSubscriberPropertyCollection (Opnum 38)
 
 The GetSubscriberPropertyCollection method gets the collection of all the application-specific
 subscriber properties for the subscription, as specified in section 3.1.1.2.
@@ -3962,13 +3803,14 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-DCOM object supporting IEventObjectCollection interface, and fail the call, returning a failure
+
+DCOM object supporting IEventObjectCollection interface, and fail the call, returning a failure
 HRESULT back to the client if it cannot. It MUST then return this DCOM object instance through the
 collection parameter and fail the call if it cannot.
 
-3.1.4.4.33
+###### 3.1.4.4.33 get_InterfaceID (Opnum 39)
 
-get_InterfaceID (Opnum 39)
+
 
 The get_InterfaceID method gets the InterfaceID property for the subscription.
 
@@ -3989,9 +3831,9 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the InterfaceID property.
 
-3.1.4.4.34
+###### 3.1.4.4.34 put_InterfaceID (Opnum 40)
 
-put_InterfaceID (Opnum 40)
+
 
 The put_InterfaceID method sets the InterfaceID property for the subscription.
 
@@ -4013,7 +3855,7 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the InterfaceID property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.5  IEnumEventObject
+##### 3.1.4.5 IEnumEventObject
 
 The IEnumEventObject interface provides methods that are used to enumerate a collection of event
 classes or subscriptions. The version for this interface is 0.0.
@@ -4035,7 +3877,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Method  Description
+
+Method  Description
 
 Clone
 
@@ -4061,7 +3904,7 @@ Skips ahead in the collection.
 
 Opnum: 6
 
-3.1.4.5.1 Clone (Opnum 3)
+###### 3.1.4.5.1 Clone (Opnum 3)
 
 The Clone method clones the underlying collection into another DCOM object implementing the
 IEnumEventObject interface.
@@ -4081,7 +3924,7 @@ same, and all failure codes MUST be treated the same.
 When this method is invoked, the server MUST attempt to clone the underlying collection into another
 DCOM object implementing the IEnumEventObject interface, and return the result.
 
-3.1.4.5.2 Next (Opnum 4)
+###### 3.1.4.5.2 Next (Opnum 4)
 
 The Next method gets up to a specified number of items from the collection, if they are available,
 starting at the current enumerator position.
@@ -4113,7 +3956,8 @@ Release: September 9, 2025
 
 50 / 86
 
-Return Values: An HRESULT specifying success or failure. All success codes other than S_FALSE
+
+Return Values: An HRESULT specifying success or failure. All success codes other than S_FALSE
 
 MUST be treated the same, and all failure codes MUST be treated the same.
 
@@ -4130,7 +3974,7 @@ the enumerator on the collection, and move the enumerator ahead in the collectio
 cRetElem. If the number of elements in the collection is less than cReqElem, the function MUST return
 S_FALSE for failure.
 
-3.1.4.5.3 Reset (Opnum 5)
+###### 3.1.4.5.3 Reset (Opnum 5)
 
 The Reset method resets the enumerator back to the first element in the collection.
 
@@ -4154,7 +3998,7 @@ When this method is invoked, the server MUST attempt to reset the enumerator bac
 element in the collection, and fail the call, returning a failure HRESULT back to the client if it cannot. If
 there are no elements in this collection, the function MUST return a success.
 
-3.1.4.5.4 Skip (Opnum 6)
+###### 3.1.4.5.4 Skip (Opnum 6)
 
 The Skip method skips ahead in the collection by the number of elements specified.
 
@@ -4188,7 +4032,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-3.1.4.6  IEventObjectCollection
+
+##### 3.1.4.6 IEventObjectCollection
 
 The IEventObjectCollection interface provides methods that manage and enumerate over a collection
 of objects. The interface inherits opnums 0 through 6 from IDispatch as specified in [MS-OAUT]
@@ -4246,7 +4091,7 @@ Removes an item from the collection.
 
 Opnum: 12
 
-3.1.4.6.1 get__NewEnum (Opnum 7)
+###### 3.1.4.6.1 get__NewEnum (Opnum 7)
 
 The get__NewEnum method gets a DCOM object for enumerating the underlying collection.
 
@@ -4273,11 +4118,12 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-the client if it cannot. The underlying collection MUST be the same collection that is being enumerated
+
+the client if it cannot. The underlying collection MUST be the same collection that is being enumerated
 by the DCOM object instance servicing this call. The created collection DCOM object MUST be returned
 through the ppUnkEnum interface.
 
-3.1.4.6.2 get_Item (Opnum 8)
+###### 3.1.4.6.2 get_Item (Opnum 8)
 
 The get_Item method gets the item in the collection with a specified ID.
 
@@ -4313,7 +4159,7 @@ Otherwise, the server MUST enumerate the collection and match the objectID to th
 in the collection. If an object is found that has a matching objectID, it MUST be returned through the
 pItem parameter. Otherwise, the server MUST fail the call.
 
-3.1.4.6.3 get_NewEnum (Opnum 9)
+###### 3.1.4.6.3 get_NewEnum (Opnum 9)
 
 The get_NewEnum method gets an IEnumEventObject-based object for enumerating the underlying
 collection.
@@ -4341,10 +4187,11 @@ Release: September 9, 2025
 
 53 / 86
 
-by the DCOM object instance servicing this call. The created collection DCOM object MUST be returned
+
+by the DCOM object instance servicing this call. The created collection DCOM object MUST be returned
 through the ppEnum interface.
 
-3.1.4.6.4 get_Count (Opnum 10)
+###### 3.1.4.6.4 get_Count (Opnum 10)
 
 The get_Count method gets the count of the number of items in the collection contained by the
 enumerator.
@@ -4365,7 +4212,7 @@ When this method is invoked, the server MUST attempt to return the count of the 
 elements in the collection. If the server is not able to return the count, it MUST fail the call, returning
 a failure HRESULT back to the client.
 
-3.1.4.6.5 Add (Opnum 11)
+###### 3.1.4.6.5 Add (Opnum 11)
 
 The Add method adds an item to the underlying collection of the enumerator; if the item is already
 present in the collection, it is replaced by the one being passed to this method.
@@ -4401,7 +4248,7 @@ Otherwise, the server MUST attempt to add this item to the collection of the enu
 servicing this call, and fail the call if it cannot. If the object in the collection already has the objectID
 specified in the call, the server MUST fail the call.
 
-3.1.4.6.6 Remove (Opnum 12)
+###### 3.1.4.6.6 Remove (Opnum 12)
 
 [MS-COMEV] - v20250909
 Component Object Model Plus (COM+) Event System Protocol
@@ -4410,7 +4257,8 @@ Release: September 9, 2025
 
 54 / 86
 
-The Remove method removes an item from the underlying collection of the enumerator.
+
+The Remove method removes an item from the underlying collection of the enumerator.
 
  [id(4), helpstring("Remove an item from the collection")] HRESULT Remove(
    [in] BSTR objectID
@@ -4433,7 +4281,7 @@ fails, the server MUST fail the call, returning a failure HRESULT back to the cl
 server MUST enumerate through the collection and remove the object matching the given objectID. If
 the object matching the objectID is not found in the collection, the server MUST fail the call.
 
-3.1.4.7  IEventClass3
+##### 3.1.4.7 IEventClass3
 
 The IEventClass3 interface provides additional methods that are used by the client to manipulate an
 event class on the server. This interface inherits opnums 0 through 28 from the IEventClass2
@@ -4471,7 +4319,7 @@ put_EventClassApplicationID  Has no effect.
 
 Opnum: 32
 
-3.1.4.7.1 get_EventClassPartitionID (Opnum 29)
+###### 3.1.4.7.1 get_EventClassPartitionID (Opnum 29)
 
 The get_EventClassPartitionID method gets the EventClassPartitionID property of the event class.
 
@@ -4485,7 +4333,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-   [out, retval] BSTR* pbstrEventClassPartitionID
+
+   [out, retval] BSTR* pbstrEventClassPartitionID
  );
 
 pbstrEventClassPartitionID: If the function returns a success HRESULT, this MUST contain the
@@ -4502,7 +4351,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the EventClassPartitionID
 property.
 
-3.1.4.7.2 put_EventClassPartitionID (Opnum 30)
+###### 3.1.4.7.2 put_EventClassPartitionID (Opnum 30)
 
 The put_EventClassPartitionID method sets the EventClassPartitionID property for the event class.
 
@@ -4526,7 +4375,7 @@ property, and fail the call, returning a failure HRESULT back to the client if i
 MUST override any previous value that was set for this DCOM object instance servicing this method
 call.
 
-3.1.4.7.3 get_EventClassApplicationID (Opnum 31)
+###### 3.1.4.7.3 get_EventClassApplicationID (Opnum 31)
 
 The get_EventClassApplicationID method gets the EventClassApplicationID property of the event class.
 
@@ -4553,7 +4402,8 @@ Release: September 9, 2025
 
 56 / 86
 
-3.1.4.7.4 put_EventClassApplicationID (Opnum 32)
+
+###### 3.1.4.7.4 put_EventClassApplicationID (Opnum 32)
 
 The put_EventClassApplicationID method has no effect.
 
@@ -4570,7 +4420,7 @@ same, and all failure codes MUST be treated the same.
 
 When this method is invoked, the server MUST do nothing, that is, this method has no effect.
 
-3.1.4.8  IEventSubscription2
+##### 3.1.4.8 IEventSubscription2
 
 The IEventSubscription2 interface provides methods to get and set the properties of a subscription.
 This interface inherits opnums 0 through 40 from IEventSubscription as specified in section 3.1.4.4.
@@ -4608,7 +4458,7 @@ put_SubscriberMoniker  Sets the SubscriberMoniker property of the subscription.
 
 Opnum: 44
 
-3.1.4.8.1 get_FilterCriteria (Opnum 41)
+###### 3.1.4.8.1 get_FilterCriteria (Opnum 41)
 
 The get_FilterCriteria method gets the FilterCriteria property for the subscription.
 
@@ -4628,7 +4478,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
+
+Return Values: An HRESULT specifying success or failure. All success codes MUST be treated the
 
 same, and all failure codes MUST be treated the same.
 
@@ -4636,7 +4487,7 @@ When this method is invoked, the server MUST verify that this value was previous
 object instance servicing this method call. If not, the server MUST fail the call, returning a failure
 HRESULT back to the client. Otherwise, the server MUST return the value of the FilterCriteria property.
 
-3.1.4.8.2 put_FilterCriteria (Opnum 42)
+###### 3.1.4.8.2 put_FilterCriteria (Opnum 42)
 
 The put_FilterCriteria method sets the value of the FilterCriteria property of the subscription.
 
@@ -4658,7 +4509,7 @@ Otherwise, the server MUST attempt to update the state of the DCOM object servic
 with the new value of the FilterCriteria property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.8.3 get_SubscriberMoniker (Opnum 43)
+###### 3.1.4.8.3 get_SubscriberMoniker (Opnum 43)
 
 The get_SubscriberMoniker method gets the SubscriberMoniker property of the subscription.
 
@@ -4680,7 +4531,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the SubscriberMoniker
 property.
 
-3.1.4.8.4 put_SubscriberMoniker (Opnum 44)
+###### 3.1.4.8.4 put_SubscriberMoniker (Opnum 44)
 
 The put_SubscriberMoniker method sets the SubscriberMoniker property of the subscription.
 
@@ -4695,7 +4546,8 @@ Release: September 9, 2025
 
 58 / 86
 
-bstrMoniker: The SubscriberMoniker property of the subscription, as specified in section 3.1.1.2. This
+
+bstrMoniker: The SubscriberMoniker property of the subscription, as specified in section 3.1.1.2. This
 
 MUST be a string of character length less than or equal to 255.
 
@@ -4709,7 +4561,7 @@ the state of the DCOM object servicing this method with the new value of the Sub
 property, and fail the call if it cannot. Otherwise, it MUST override any previous value that was set for
 this DCOM object instance servicing this method call.
 
-3.1.4.9  IEventSubscription3
+##### 3.1.4.9 IEventSubscription3
 
 The IEventSubscription3 interface provides methods to get or set the properties of a
 subscription.<14> This interface inherits opnums 0 through 44 from IEventSubscription2, as
@@ -4767,7 +4619,7 @@ put_SubscriberApplicationID  Sets the SubscriberApplicationID property of the su
 
 Opnum: 52
 
-3.1.4.9.1 get_EventClassPartitionID (Opnum 45)
+###### 3.1.4.9.1 get_EventClassPartitionID (Opnum 45)
 
 The get_EventClassPartitionID gets the EventClassPartitionID property for the subscription.
 
@@ -4778,7 +4630,8 @@ Release: September 9, 2025
 
 59 / 86
 
- [propget, id(24), helpstring("property EventClassPartitionID")]
+
+ [propget, id(24), helpstring("property EventClassPartitionID")]
 HRESULT EventClassPartitionID(
    [out, retval] BSTR* pbstrEventClassPartitionID
  );
@@ -4797,7 +4650,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the EventClassPartitionID
 property.
 
-3.1.4.9.2 put_EventClassPartitionID (Opnum 46)
+###### 3.1.4.9.2 put_EventClassPartitionID (Opnum 46)
 
 The put_EventClassPartitionID method sets the EventClassPartitionID property for the subscription.
 
@@ -4820,7 +4673,7 @@ the server MUST attempt to update the state of the DCOM object servicing this me
 value of the EventClassPartitionID property, and fail the call if it cannot. Otherwise, it MUST override
 any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.9.3 get_EventClassApplicationID (Opnum 47)
+###### 3.1.4.9.3 get_EventClassApplicationID (Opnum 47)
 
 The get_EventClassApplicationID method gets the EventClassApplicationID property for the
 subscription.
@@ -4848,7 +4701,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-3.1.4.9.4 put_EventClassApplicationID (Opnum 48)
+
+###### 3.1.4.9.4 put_EventClassApplicationID (Opnum 48)
 
 The put_EventClassApplicationID method has no effect.
 
@@ -4865,7 +4719,7 @@ same, and all failure codes MUST be treated the same.
 
 When this method is invoked, the server MUST do nothing, that is, this method has no effect.
 
-3.1.4.9.5 get_SubscriberPartitionID (Opnum 49)
+###### 3.1.4.9.5 get_SubscriberPartitionID (Opnum 49)
 
 The get_SubscriberPartitionID method gets the SubscriberPartitionID for the subscription.
 
@@ -4888,7 +4742,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the SubscriberPartitionID
 property.
 
-3.1.4.9.6 put_SubscriberPartitionID (Opnum 50)
+###### 3.1.4.9.6 put_SubscriberPartitionID (Opnum 50)
 
 The put_SubscriberPartitionID method sets the SubscriberPartitionID property for the subscription.
 
@@ -4917,10 +4771,11 @@ Release: September 9, 2025
 
 61 / 86
 
-MUST override any previous value that was set for this DCOM object instance servicing this method
+
+MUST override any previous value that was set for this DCOM object instance servicing this method
 call.
 
-3.1.4.9.7 get_SubscriberApplicationID (Opnum 51)
+###### 3.1.4.9.7 get_SubscriberApplicationID (Opnum 51)
 
 The get_SubscriberApplicationID method gets the SubscriberApplicationID property for the
 subscription.
@@ -4944,7 +4799,7 @@ object instance servicing this method call. If not, the server MUST fail the cal
 HRESULT back to the client. Otherwise, the server MUST return the value of the
 SubscriberApplicationID property.
 
-3.1.4.9.8 put_SubscriberApplicationID (Opnum 52)
+###### 3.1.4.9.8 put_SubscriberApplicationID (Opnum 52)
 
 The put_SubscriberApplicationID method sets the SubscriberApplicationID property for the
 subscription.
@@ -4968,9 +4823,9 @@ the server MUST attempt to update the state of the DCOM object servicing this me
 value of the SubscriberApplicationID property, and fail the call if it cannot. Otherwise, it MUST
 override any previous value that was set for this DCOM object instance servicing this method call.
 
-3.1.4.10
+##### 3.1.4.10 IEventSystem2
 
-IEventSystem2
+
 
 This interface is used to perform version checking and transient subscription verifications on the
 server by the client. IEventSystem2 inherits opnums 0 through 12 from the IEventSystem interface,
@@ -4987,7 +4842,8 @@ Release: September 9, 2025
 
 62 / 86
 
-The interface contains the following methods beyond those of IEventSystem.
+
+The interface contains the following methods beyond those of IEventSystem.
 
 Methods in RPC Opnum Order
 
@@ -5005,7 +4861,7 @@ VerifyTransientSubscribers  Verifies the state of the transient subscribers.
 
 Opnum: 14
 
-3.1.4.10.1  GetVersion (Opnum 13)
+###### 3.1.4.10.1 GetVersion (Opnum 13)
 
 The GetVersion method retrieves the version of the server implementation of the protocol.
 
@@ -5035,7 +4891,7 @@ When this method is invoked, the server MUST attempt to return the pnVersion val
 to the interfaces it supports, and fail the call, returning a failure HRESULT back to the client if it
 cannot.
 
-3.1.4.10.2  VerifyTransientSubscribers (Opnum 14)
+###### 3.1.4.10.2 VerifyTransientSubscribers (Opnum 14)
 
 The VerifyTransientSubscribers method verifies the state of the transient subscribers.
 
@@ -5057,9 +4913,10 @@ Release: September 9, 2025
 
 63 / 86
 
-3.1.4.11
 
-IEventSystemInitialize
+##### 3.1.4.11 IEventSystemInitialize
+
+
 
 The IEventSystemInitialize interface is used to initialize the server implementing this protocol. As this
 is a DCOM interface, Opnum 0 to Opnum 2 are IUnknown methods, which MUST be implemented by
@@ -5084,9 +4941,9 @@ Initializes the server.
 
 Opnum: 3
 
-3.1.4.11.1
+###### 3.1.4.11.1 SetCOMCatalogBehaviour (Opnum 3)
 
-SetCOMCatalogBehaviour (Opnum 3)
+
 
 The SetCOMCatalogBehaviour method controls the event system CatalogMode and RetainSubKeys
 state variables.
@@ -5107,11 +4964,11 @@ client does not call this method, the server will be in non-catalog mode. The St
 RemoveS methods of IEventSystem will have different behavior when the server is in catalog mode.
 See section 3.1.1.3 for more details.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -5122,15 +4979,16 @@ Release: September 9, 2025
 
 64 / 86
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-COMEV].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
  The following examples build on the examples given in [MS-DCOM] section 4.1.
 
-4.1  Creating an Event Class
+### 4.1 Creating an Event Class
 
 Figure 1: Creating an event class
 
@@ -5141,7 +4999,8 @@ Release: September 9, 2025
 
 65 / 86
 
-The previous figure shows the sequence for a client publisher application that is creating an event
+
+The previous figure shows the sequence for a client publisher application that is creating an event
 on the server. It assumes that the client already knows that the type library ID for the EventClass is
 3BFF4039-03C2-410f-B6A6-F4EBC250C2CC.
 
@@ -5205,7 +5064,8 @@ Release: September 9, 2025
 
 66 / 86
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-COMEV].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -5216,7 +5076,7 @@ update the current entry with a new value for the properties and return S_OK. Ho
 example, it is not already in the store, and so the server creates an entry for the event class in its
 store and returns S_OK.
 
-4.2  Creating a Subscription
+### 4.2 Creating a Subscription
 
 Figure 2: Creating a subscription
 
@@ -5227,7 +5087,8 @@ Release: September 9, 2025
 
 67 / 86
 
-The previous figure shows the sequence when a client application creates a subscription on the
+
+The previous figure shows the sequence when a client application creates a subscription on the
 server for the event class that has the UUID DF01D194-D694-41e5-BA79-8DEDE00ED0EA. It
 assumes that the client application already knows the subscriber application DCOM object CLSID,
 which is 19D10A70-1B07-4b76-87B6-99F58DEE37E7.
@@ -5294,7 +5155,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-   [in] IUnknown* pInterface = {pointer to CLSID_Subscription
+
+   [in] IUnknown* pInterface = {pointer to CLSID_Subscription
                               interface created above}
    );
 
@@ -5310,11 +5172,12 @@ Release: September 9, 2025
 
 69 / 86
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-COMEV].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
-4.3  Updating a Subscription
+### 4.3 Updating a Subscription
 
 Figure 3: Updating a subscription
 
@@ -5335,7 +5198,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
- HRESULT
+
+ HRESULT
  HRESULT Query(
    [in] BSTR progID= "EventSystem.EventSubscriptionCollection",
    [in] BSTR queryCriteria = "SubscriberCLSID='{19D10A70-1B07-4b76-87B6-99F58DEE37E7}'",
@@ -5398,7 +5262,8 @@ Release: September 9, 2025
 
 71 / 86
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-COMEV].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -5423,7 +5288,7 @@ subscription in its local state, and returns S_OK.
 
 Note that the same set of operations can be performed by the client to update an event class.
 
-4.4  Removing a Subscription
+### 4.4 Removing a Subscription
 
 Figure 4: Removing a subscription
 
@@ -5442,7 +5307,8 @@ Release: September 9, 2025
 
 72 / 86
 
-2.  The client calls the Remove method with the appropriate collection name for subscriptions (that is,
+
+2.  The client calls the Remove method with the appropriate collection name for subscriptions (that is,
 
 "EventSystem.EventSubscriptionCollection"), along with the criteria for removing it.
 
@@ -5473,14 +5339,15 @@ Release: September 9, 2025
 
 73 / 86
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers need to ensure that authorization checks exist on the event class and subscription
 stores.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -5491,7 +5358,8 @@ Release: September 9, 2025
 
 74 / 86
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  For ease of implementation, the full IDL is provided below, where "ms-oaut.idl" is the IDL found in
 [MS-OAUT] Appendix A.
@@ -5571,7 +5439,8 @@ Release: September 9, 2025
 
 75 / 86
 
-[propget, id(3), helpstring("property OwnerSID")]
+
+[propget, id(3), helpstring("property OwnerSID")]
 HRESULT OwnerSID([out,retval] BSTR* pbstrOwnerSID);
 [propput, id(3), helpstring("property OwnerSID")]
 HRESULT OwnerSID([in] BSTR bstrOwnerSID);
@@ -5651,7 +5520,8 @@ Release: September 9, 2025
 
 76 / 86
 
-[id(1), helpstring("method Clone")]
+
+[id(1), helpstring("method Clone")]
 HRESULT Clone([out] IEnumEventObject** ppInterface);
 
 [id(3), helpstring("method Next")]
@@ -5734,7 +5604,8 @@ Release: September 9, 2025
 
 77 / 86
 
-[propget, id(4), helpstring("property EventClassID")]
+
+[propget, id(4), helpstring("property EventClassID")]
 HRESULT EventClassID([out,retval] BSTR* pbstrEventClassID);
 [propput, id(4), helpstring("property EventClassID")]
 HRESULT EventClassID([in] BSTR bstrEventClassID);
@@ -5818,7 +5689,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-HRESULT InterfaceID([out,retval] BSTR* pbstrInterfaceID);
+
+HRESULT InterfaceID([out,retval] BSTR* pbstrInterfaceID);
 [id(21), propput, helpstring("property InterfaceID")]
 HRESULT InterfaceID([in] BSTR bstrInterfaceID);
 
@@ -5905,7 +5777,8 @@ Release: September 9, 2025
 
 79 / 86
 
-HRESULT SubscriberPartitionID([in] BSTR bstrSubscriberPartitionID);
+
+HRESULT SubscriberPartitionID([in] BSTR bstrSubscriberPartitionID);
 
 [propget, id(27), helpstring("property SubscriberApplicationID")]
 HRESULT SubscriberApplicationID([out,retval] BSTR* pbstrSubscriberApplicationID);
@@ -5953,7 +5826,8 @@ Release: September 9, 2025
 
 80 / 86
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6023,7 +5897,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<5> Section 3.1.1.1: EventClassPartitionID specifies a COM+ partition. For more information about
+
+<5> Section 3.1.1.1: EventClassPartitionID specifies a COM+ partition. For more information about
 COM+ partitions, see [MSDN-COM+]. This property is not available in Windows 2000.
 
 <6> Section 3.1.1.1: EventClassApplicationID specifies a COM+ Application. For more information
@@ -6062,7 +5937,8 @@ Release: September 9, 2025
 
 82 / 86
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6113,7 +5989,8 @@ Release: September 9, 2025
 
 83 / 86
 
-9  Index
+
+## 9 Index
 _
 
 _NewEnum method 52
@@ -6262,7 +6139,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-   server 64
+
+   server 64
 Local events - server 64
 
 M
@@ -6423,7 +6301,8 @@ Component Object Model Plus (COM+) Event System Protocol
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Subscriptions 17
+
+Subscriptions 17
 
 T
 

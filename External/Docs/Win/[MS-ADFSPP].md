@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 52
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -290,7 +291,8 @@ Release: April 23, 2024
 
 2 / 52
 
-Date
+
+Date
 
 Revision
 History
@@ -407,323 +409,134 @@ Release: April 23, 2024
 
 3 / 52
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Versioning](#171-versioning)
+    - [1.7.2 Capability Negotiation](#172-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 All Messages](#221-all-messages)
+    - [2.2.2 GetProxyTrustConfiguration Request](#222-getproxytrustconfiguration-request)
+    - [2.2.3 GetProxyTrustConfiguration Response](#223-getproxytrustconfiguration-response)
+    - [2.2.4 LsRequestSecurityToken Request](#224-lsrequestsecuritytoken-request)
+    - [2.2.5 LsRequestSecurityToken Response](#225-lsrequestsecuritytoken-response)
+    - [2.2.6 RequestSecurityTokenWithToken Request](#226-requestsecuritytokenwithtoken-request)
+    - [2.2.7 RequestSecurityTokenWithToken Response](#227-requestsecuritytokenwithtoken-response)
+    - [2.2.8 LsRequestSecurityTokenWithCookie Request](#228-lsrequestsecuritytokenwithcookie-request)
+    - [2.2.9 LsRequestSecurityTokenWithCookie Response](#229-lsrequestsecuritytokenwithcookie-response)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Role Details](#31-client-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 GetProxyTrustConfiguration](#3111-getproxytrustconfiguration)
+      - [3.1.1.2 LsRequestSecurityToken, RequestSecurityTokenWithToken, and](#3112-lsrequestsecuritytoken-requestsecuritytokenwithtoken-and)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 GetProxyTrustConfiguration Initialization](#3131-getproxytrustconfiguration-initialization)
+      - [3.1.3.2 LsRequestSecurityToken, RequestSecurityTokenWithToken, and](#3132-lsrequestsecuritytoken-requestsecuritytokenwithtoken-and)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 GetProxyTrustConfiguration](#3141-getproxytrustconfiguration)
+      - [3.1.4.2 LsRequestSecurityToken](#3142-lsrequestsecuritytoken)
+      - [3.1.4.3 RequestSecurityTokenWithToken](#3143-requestsecuritytokenwithtoken)
+      - [3.1.4.4 LsRequestSecurityTokenWithCookie](#3144-lsrequestsecuritytokenwithcookie)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 GetProxyTrustConfiguration](#3151-getproxytrustconfiguration)
+        - [3.1.5.1.1 GetProxyTrustConfiguration Request Processing](#31511-getproxytrustconfiguration-request-processing)
+        - [3.1.5.1.2 GetProxyTrustConfiguration Response Processing](#31512-getproxytrustconfiguration-response-processing)
+          - [3.1.5.1.2.1 Versioning](#315121-versioning)
+          - [3.1.5.1.2.2 STS Data](#315122-sts-data)
+          - [3.1.5.1.2.3 Cookie Data](#315123-cookie-data)
+          - [3.1.5.1.2.4 Security Realm Data](#315124-security-realm-data)
+      - [3.1.5.2 LsRequestSecurityToken](#3152-lsrequestsecuritytoken)
+        - [3.1.5.2.1 LsRequestSecurityToken Request](#31521-lsrequestsecuritytoken-request)
+        - [3.1.5.2.2 LsRequestSecurityToken Response](#31522-lsrequestsecuritytoken-response)
+          - [3.1.5.2.2.1 Status](#315221-status)
+          - [3.1.5.2.2.2 PolicyVersion](#315222-policyversion)
+          - [3.1.5.2.2.3 CredentialsVerification](#315223-credentialsverification)
+          - [3.1.5.2.2.4 ForeignRealmUri](#315224-foreignrealmuri)
+          - [3.1.5.2.2.5 SecurityToken](#315225-securitytoken)
+          - [3.1.5.2.2.6 LogonAcceleratorToken](#315226-logonacceleratortoken)
+      - [3.1.5.3 RequestSecurityTokenWithToken](#3153-requestsecuritytokenwithtoken)
+        - [3.1.5.3.1 RequestSecurityTokenWithToken Request](#31531-requestsecuritytokenwithtoken-request)
+        - [3.1.5.3.2 RequestSecurityTokenWithToken Response](#31532-requestsecuritytokenwithtoken-response)
+      - [3.1.5.4 LsRequestSecurityTokenWithCookie](#3154-lsrequestsecuritytokenwithcookie)
+        - [3.1.5.4.1 LsRequestSecurityTokenWithCookie Request](#31541-lsrequestsecuritytokenwithcookie-request)
+        - [3.1.5.4.2 LsRequestSecurityTokenWithCookie Response](#31542-lsrequestsecuritytokenwithcookie-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Role Details](#32-server-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 GetProxyTrustConfiguration](#3251-getproxytrustconfiguration)
+        - [3.2.5.1.1 GetProxyTrustConfiguration Request Processing](#32511-getproxytrustconfiguration-request-processing)
+        - [3.2.5.1.2 GetProxyTrustConfiguration Response Processing](#32512-getproxytrustconfiguration-response-processing)
+          - [3.2.5.1.2.1 Versioning Processing](#325121-versioning-processing)
+          - [3.2.5.1.2.2 STS Data](#325122-sts-data)
+          - [3.2.5.1.2.3 Cookie Data](#325123-cookie-data)
+          - [3.2.5.1.2.4 Security Realm Data](#325124-security-realm-data)
+      - [3.2.5.2 LsRequestSecurityToken](#3252-lsrequestsecuritytoken)
+        - [3.2.5.2.1 LsRequestSecurityToken Request](#32521-lsrequestsecuritytoken-request)
+        - [3.2.5.2.2 LsRequestSecurityToken Response](#32522-lsrequestsecuritytoken-response)
+          - [3.2.5.2.2.1 Status](#325221-status)
+          - [3.2.5.2.2.2 PolicyVersion](#325222-policyversion)
+          - [3.2.5.2.2.3 CredentialsVerification](#325223-credentialsverification)
+          - [3.2.5.2.2.4 ForeignRealmUri](#325224-foreignrealmuri)
+          - [3.2.5.2.2.5 SecurityToken](#325225-securitytoken)
+          - [3.2.5.2.2.6 LogonAcceleratorToken](#325226-logonacceleratortoken)
+      - [3.2.5.3 RequestSecurityTokenWithToken](#3253-requestsecuritytokenwithtoken)
+        - [3.2.5.3.1 RequestSecurityTokenWithToken Request](#32531-requestsecuritytokenwithtoken-request)
+        - [3.2.5.3.2 RequestSecurityTokenWithToken Response](#32532-requestsecuritytokenwithtoken-response)
+          - [3.2.5.3.2.1 Status](#325321-status)
+          - [3.2.5.3.2.2 PolicyVersion](#325322-policyversion)
+          - [3.2.5.3.2.3 CredentialsVerification](#325323-credentialsverification)
+          - [3.2.5.3.2.4 ForeignRealmUri](#325324-foreignrealmuri)
+          - [3.2.5.3.2.5 SecurityToken](#325325-securitytoken)
+          - [3.2.5.3.2.6 LogonAcceleratorToken](#325326-logonacceleratortoken)
+      - [3.2.5.4 LsRequestSecurityTokenWithCookie](#3254-lsrequestsecuritytokenwithcookie)
+        - [3.2.5.4.1 LsRequestSecurityTokenWithCookie Request](#32541-lsrequestsecuritytokenwithcookie-request)
+        - [3.2.5.4.2 LsRequestSecurityTokenWithCookie Response](#32542-lsrequestsecuritytokenwithcookie-response)
+          - [3.2.5.4.2.1 Status](#325421-status)
+          - [3.2.5.4.2.2 PolicyVersion](#325422-policyversion)
+          - [3.2.5.4.2.3 CredentialsVerification](#325423-credentialsverification)
+          - [3.2.5.4.2.4 ForeignRealmUri](#325424-foreignrealmuri)
+          - [3.2.5.4.2.5 SecurityToken](#325425-securitytoken)
+          - [3.2.5.4.2.6 LogonAcceleratorToken](#325426-logonacceleratortoken)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Service WSDL](#41-service-wsdl)
+  - [4.2 GetProxyTrustConfiguration Request](#42-getproxytrustconfiguration-request)
+  - [4.3 GetProxyTrustConfiguration Response](#43-getproxytrustconfiguration-response)
+  - [4.4 LsRequestSecurityToken Request](#44-lsrequestsecuritytoken-request)
+  - [4.5 LsRequestSecurityToken Response](#45-lsrequestsecuritytoken-response)
+  - [4.6 RequestSecurityTokenWithToken Request](#46-requestsecuritytokenwithtoken-request)
+  - [4.7 RequestSecurityTokenWithToken Response](#47-requestsecuritytokenwithtoken-response)
+  - [4.8 LsRequestSecurityTokenWithCookie Request](#48-lsrequestsecuritytokenwithcookie-request)
+  - [4.9 LsRequestSecurityTokenWithCookie Response](#49-lsrequestsecuritytokenwithcookie-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Versioning ................................................................................................. 10
-Capability Negotiation ................................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-All Messages .............................................................................................. 12
-GetProxyTrustConfiguration Request ............................................................. 12
-GetProxyTrustConfiguration Response ........................................................... 12
-LsRequestSecurityToken Request .................................................................. 14
-LsRequestSecurityToken Response................................................................ 15
-RequestSecurityTokenWithToken Request ...................................................... 16
-RequestSecurityTokenWithToken Response .................................................... 16
-LsRequestSecurityTokenWithCookie Request .................................................. 17
-LsRequestSecurityTokenWithCookie Response ................................................ 17
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-3.1
-
-3.1.4
-
-3.1.1
-
-3.1.2
-3.1.3
-
-3.1.3.1
-3.1.3.2
-
-3.1.1.1
-3.1.1.2
-
-3  Protocol Details ..................................................................................................... 18
-Client Role Details ............................................................................................ 18
-Abstract Data Model .................................................................................... 18
-GetProxyTrustConfiguration .................................................................... 18
-LsRequestSecurityToken, RequestSecurityTokenWithToken, and
-LsRequestSecurityTokenWithCookie ........................................................ 19
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 21
-GetProxyTrustConfiguration Initialization ................................................. 21
-LsRequestSecurityToken, RequestSecurityTokenWithToken, and
-LsRequestSecurityTokenWithCookie Initialization ...................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-GetProxyTrustConfiguration .................................................................... 21
-LsRequestSecurityToken ........................................................................ 21
-RequestSecurityTokenWithToken ............................................................ 21
-LsRequestSecurityTokenWithCookie ........................................................ 22
-Message Processing Events and Sequencing Rules .......................................... 22
-GetProxyTrustConfiguration .................................................................... 22
-GetProxyTrustConfiguration Request Processing .................................. 22
-GetProxyTrustConfiguration Response Processing ................................ 22
-Versioning ................................................................................. 22
-STS Data .................................................................................. 22
-Cookie Data .............................................................................. 22
-Security Realm Data .................................................................. 23
-LsRequestSecurityToken ........................................................................ 23
-LsRequestSecurityToken Request ...................................................... 23
-LsRequestSecurityToken Response .................................................... 23
-
-3.1.5.1.2.1
-3.1.5.1.2.2
-3.1.5.1.2.3
-3.1.5.1.2.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.2.1
-3.1.5.2.2
-
-3.1.5.2
-
-3.1.5.1
-
-3.1.5
-
-[MS-ADFSPP] - v20240423
-Active Directory Federation Service (AD FS) Proxy Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 52
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.5.3
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.5.4
-
-3.1.5.4.1
-3.1.5.4.2
-
-3.2.5.1.2.1
-3.2.5.1.2.2
-3.2.5.1.2.3
-3.2.5.1.2.4
-
-3.1.5.2.2.1
-3.1.5.2.2.2
-3.1.5.2.2.3
-3.1.5.2.2.4
-3.1.5.2.2.5
-3.1.5.2.2.6
-
-Status ...................................................................................... 24
-PolicyVersion ............................................................................. 24
-CredentialsVerification ................................................................ 24
-ForeignRealmUri ........................................................................ 24
-SecurityToken ........................................................................... 24
-LogonAcceleratorToken ............................................................... 24
-RequestSecurityTokenWithToken ............................................................ 24
-RequestSecurityTokenWithToken Request........................................... 25
-RequestSecurityTokenWithToken Response ........................................ 25
-LsRequestSecurityTokenWithCookie ........................................................ 25
-LsRequestSecurityTokenWithCookie Request ....................................... 25
-LsRequestSecurityTokenWithCookie Response ..................................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Server Role Details ........................................................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-GetProxyTrustConfiguration .................................................................... 26
-GetProxyTrustConfiguration Request Processing .................................. 27
-GetProxyTrustConfiguration Response Processing ................................ 27
-Versioning Processing ................................................................. 27
-STS Data .................................................................................. 27
-Cookie Data .............................................................................. 27
-Security Realm Data .................................................................. 27
-LsRequestSecurityToken ........................................................................ 28
-LsRequestSecurityToken Request ...................................................... 28
-LsRequestSecurityToken Response .................................................... 28
-Status ...................................................................................... 29
-PolicyVersion ............................................................................. 29
-CredentialsVerification ................................................................ 29
-ForeignRealmUri ........................................................................ 30
-SecurityToken ........................................................................... 30
-LogonAcceleratorToken ............................................................... 30
-RequestSecurityTokenWithToken ............................................................ 30
-RequestSecurityTokenWithToken Request........................................... 30
-RequestSecurityTokenWithToken Response ........................................ 30
-Status ...................................................................................... 30
-PolicyVersion ............................................................................. 30
-CredentialsVerification ................................................................ 30
-ForeignRealmUri ........................................................................ 31
-SecurityToken ........................................................................... 31
-LogonAcceleratorToken ............................................................... 31
-LsRequestSecurityTokenWithCookie ........................................................ 31
-LsRequestSecurityTokenWithCookie Request ....................................... 31
-LsRequestSecurityTokenWithCookie Response ..................................... 31
-Status ...................................................................................... 31
-PolicyVersion ............................................................................. 31
-CredentialsVerification ................................................................ 31
-ForeignRealmUri ........................................................................ 32
-SecurityToken ........................................................................... 32
-LogonAcceleratorToken ............................................................... 32
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-
-3.2.5.2.2.1
-3.2.5.2.2.2
-3.2.5.2.2.3
-3.2.5.2.2.4
-3.2.5.2.2.5
-3.2.5.2.2.6
-
-3.2.5.4.2.1
-3.2.5.4.2.2
-3.2.5.4.2.3
-3.2.5.4.2.4
-3.2.5.4.2.5
-3.2.5.4.2.6
-
-3.2.5.3.2.1
-3.2.5.3.2.2
-3.2.5.3.2.3
-3.2.5.3.2.4
-3.2.5.3.2.5
-3.2.5.3.2.6
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-
-3.2.5.4
-
-3.2.5.4.1
-3.2.5.4.2
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 33
-
-5 / 52
-
-[MS-ADFSPP] - v20240423
-Active Directory Federation Service (AD FS) Proxy Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-
-Service WSDL .................................................................................................. 33
-GetProxyTrustConfiguration Request .................................................................. 42
-GetProxyTrustConfiguration Response ................................................................ 42
-LsRequestSecurityToken Request ....................................................................... 43
-LsRequestSecurityToken Response ..................................................................... 43
-RequestSecurityTokenWithToken Request ........................................................... 44
-RequestSecurityTokenWithToken Response ......................................................... 45
-LsRequestSecurityTokenWithCookie Request ....................................................... 45
-LsRequestSecurityTokenWithCookie Response ..................................................... 46
-
-5  Security ................................................................................................................. 47
-Security Considerations for Implementers ........................................................... 47
-Index of Security Parameters ............................................................................ 47
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 48
-
-7  Change Tracking .................................................................................................... 50
-
-8  Index ..................................................................................................................... 51
-
-[MS-ADFSPP] - v20240423
-Active Directory Federation Service (AD FS) Proxy Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 52
-
-1  Introduction
+## 1 Introduction
 
 The Active Directory Federation Services (AD FS) Proxy Protocol is used by a security token service
 (STS) proxy to obtain configuration data about an STS in order to assist users in selecting an
@@ -733,7 +546,7 @@ STS to relay Microsoft Web Browser Federated Sign-On Protocol [MS-MWBF] requests
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -795,14 +608,15 @@ Release: April 23, 2024
 
 7 / 52
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -862,11 +676,12 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Microsoft Web Browser Federated Sign-On Protocol specified in [MS-MWBF] defines a standard
 mechanism that can be used by a client to acquire a security token from a security token service
@@ -926,7 +741,8 @@ Release: April 23, 2024
 
 9 / 52
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Active Directory Federation Services (AD FS) Proxy Protocol uses standard web protocols. To use
 this document effectively, the reader has to be familiar with the following IETF specifications.
@@ -958,20 +774,20 @@ Extensible Markup Language (XML) 1.0 (Fourth Edition) ([XML]).
 
   XML Schema Part 2: Datatypes Second Edition ([XMLSCHEMA2]).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client MUST be configured with the URL of the server's SOAP service in order to call the service.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Active Directory Federation Services (AD FS) Proxy Protocol is used by any implementer that
 requires data about the configuration of an STS in order to validate security tokens from that STS.
 The software that needs knowledge of an STS's configuration is often WS resources software that
 expects to receive security tokens from users that are attempting to access the WS resource.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.7.1  Versioning
+#### 1.7.1 Versioning
 
 This protocol uses the versioning mechanisms defined in the following specifications.
 
@@ -991,11 +807,12 @@ Release: April 23, 2024
 
 10 / 52
 
-1.7.2  Capability Negotiation
+
+#### 1.7.2 Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 As specified in section 2, the Active Directory Federation Services (AD FS) Proxy Protocol uses SOAP
 messages for communication, as specified in [SOAP1.1] and [SOAP1.2-1/2007]. The core functionality
@@ -1003,7 +820,7 @@ of SOAP is to provide extensibility. [SOAP1.2-1/2007] and [SOAP1.1] contains det
 SOAP messaging framework extensibility model. Vendors can use these SOAP extensibility points as
 specified.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 
 
@@ -1021,9 +838,10 @@ Release: April 23, 2024
 
 11 / 52
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The GetProxyTrustConfiguration request, LsRequestSecurityToken request,
 RequestSecurityTokenWithToken request, and LsRequestSecurityTokenWithCookie request messages
@@ -1034,18 +852,18 @@ The client role and server role MUST use the HTTPS URL scheme to identify the se
 processing the GetProxyTrustConfiguration request, LsRequestSecurityToken request,
 RequestSecurityTokenWithToken request, and LsRequestSecurityTokenWithCookie request messages.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section specifies the transport and syntax of request and response messages in normative detail.
 References to the Protocol Details section are included when knowledge of the protocol details are
 necessary to understand the context of message transport or syntax.
 
-2.2.1  All Messages
+#### 2.2.1 All Messages
 
 All protocol messages MUST be well-formed XML placed within a SOAP envelope conforming to
 [SOAP1.2-1/2007] section 5.1 or [SOAP1.1] section 4.
 
-2.2.2  GetProxyTrustConfiguration Request
+#### 2.2.2 GetProxyTrustConfiguration Request
 
 The SOAP body of the request message MUST conform to the following XML Schema.
 
@@ -1074,7 +892,7 @@ F]{12}" />
 SoftwareVersion Parameter: The value of this parameter MUST be 1. See sections 3.1.5.1.2.1
 (Versioning) and 3.2.5.1.2.1 (Versioning Processing) for details.
 
-2.2.3  GetProxyTrustConfiguration Response
+#### 2.2.3 GetProxyTrustConfiguration Response
 
 The SOAP body of the response message MUST conform to the following XML Schema.
 
@@ -1085,7 +903,8 @@ Release: April 23, 2024
 
 12 / 52
 
- <s:element name="GetProxyTrustConfigurationResponse">
+
+ <s:element name="GetProxyTrustConfigurationResponse">
    <s:complexType>
      <s:sequence>
        <s:element minOccurs="1" maxOccurs="1" name="GetProxyTrustConfigurationResult"
@@ -1162,7 +981,8 @@ Release: April 23, 2024
 
 13 / 52
 
-     <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true"
+
+     <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true"
 type="s:string" />
    </s:sequence>
  </s:complexType>
@@ -1199,7 +1019,7 @@ acceptableAuthenticationMethodStrings   This parameter MUST be an empty element 
 
 to [RFC2396].
 
-2.2.4  LsRequestSecurityToken Request
+#### 2.2.4 LsRequestSecurityToken Request
 
 The SOAP body of the request message MUST conform to the following XML Schema.
 
@@ -1251,7 +1071,8 @@ Release: April 23, 2024
 
 14 / 52
 
-2.2.5  LsRequestSecurityToken Response
+
+#### 2.2.5 LsRequestSecurityToken Response
 
 The SOAP body of the response message MUST conform to the following XML Schema.
 
@@ -1328,7 +1149,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   </s:sequence>
+
+   </s:sequence>
  </s:complexType>
  <s:complexType name="ArrayOfString">
    <s:sequence>
@@ -1356,7 +1178,7 @@ This parameter MUST be a Base64-encoded [RFC4648] security token conforming to
 
 AccountStoreUriString   The syntax of this parameter is specified in section 3.2.5.2.2.3.
 
-2.2.6  RequestSecurityTokenWithToken Request
+#### 2.2.6 RequestSecurityTokenWithToken Request
 
 The SOAP body of the request message MUST conform to the following XML Schema.
 
@@ -1380,7 +1202,7 @@ The syntax of this parameter is specified in section 3.1.1.2.
 
 targetRealmName   The syntax of this parameter is specified in section 2.2.4.
 
-2.2.7  RequestSecurityTokenWithToken Response
+#### 2.2.7 RequestSecurityTokenWithToken Response
 
 The SOAP body of the response message MUST conform to the following XML Schema.
 
@@ -1401,7 +1223,8 @@ Release: April 23, 2024
 
 16 / 52
 
-2.2.8  LsRequestSecurityTokenWithCookie Request
+
+#### 2.2.8 LsRequestSecurityTokenWithCookie Request
 
 The SOAP body of the request message MUST conform to the following XML Schema.
 
@@ -1433,7 +1256,7 @@ authMethodUris
 The syntax of this parameter is identical to the syntax of
 <acceptableAuthenticationMethodStrings> defined in section 2.2.3.
 
-2.2.9  LsRequestSecurityTokenWithCookie Response
+#### 2.2.9 LsRequestSecurityTokenWithCookie Response
 
 The SOAP body of the response message MUST conform to the following XML Schema.
 
@@ -1454,14 +1277,15 @@ Release: April 23, 2024
 
 17 / 52
 
-3  Protocol Details
 
-3.1  Client Role Details
+## 3 Protocol Details
+
+### 3.1 Client Role Details
 
 This section describes details of protocol processing that must be understood to implement a client
 that can correctly perform its role in the protocol message exchange.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1473,7 +1297,7 @@ The data used by each message exchange is different. The abstract data models fo
 GetProxyTrustConfiguration, LsRequestSecurityToken, RequestSecurityTokenWithToken, and
 LsRequestSecurityTokenWithCookie message exchanges can be found in the following sections.
 
-3.1.1.1  GetProxyTrustConfiguration
+##### 3.1.1.1 GetProxyTrustConfiguration
 
 The client calls this method to get the information required by the client to verify security tokens
 issued by the server to the client using the protocol specified in [MS-MWBF]. The following data is
@@ -1573,7 +1397,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Name
+
+ Name
 
  Description
 
@@ -1648,7 +1473,7 @@ in [MS-MWBF] section 2.2.3.
 Response:
 <acceptableAuthenticationMethodStrings>
 
-3.1.1.2  LsRequestSecurityToken, RequestSecurityTokenWithToken, and
+##### 3.1.1.2 LsRequestSecurityToken, RequestSecurityTokenWithToken, and
 
 LsRequestSecurityTokenWithCookie
 
@@ -1707,7 +1532,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Name
+
+ Name
 
  Description
 
@@ -1823,7 +1649,7 @@ requestor.
 
 All Responses: <CredentialsVerification>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no protocol-specific timer events that MUST be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
@@ -1837,14 +1663,15 @@ Release: April 23, 2024
 
 20 / 52
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 The initialization steps required for each of the three protocol message request and response pairs are
 unrelated to one another. Prior to sending any protocol message, the client MUST be configured with
 the URL to which the request is to be sent. The following sections define the initialization required for
 the client role prior to sending each request message.
 
-3.1.3.1  GetProxyTrustConfiguration Initialization
+##### 3.1.3.1 GetProxyTrustConfiguration Initialization
 
 The client MAY maintain a cached copy of the data described in the GetProxyTrustConfiguration
 section.<1>
@@ -1854,19 +1681,19 @@ and GUID, as specified in [RFC4122] section 3, of the currently cached trust inf
 information is cached on the client, the client MUST use a version number equal to 0, and a GUID
 equal to 00000000-0000-0000-0000-000000000000.
 
-3.1.3.2  LsRequestSecurityToken, RequestSecurityTokenWithToken, and
+##### 3.1.3.2 LsRequestSecurityToken, RequestSecurityTokenWithToken, and
 
 LsRequestSecurityTokenWithCookie Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The GetProxyTrustConfiguration, LsRequestSecurityToken, RequestSecurityTokenWithToken, and
 LsRequestSecurityTokenWithCookie message exchanges are triggered by various events. The following
 sections describe the events that trigger each exchange.
 
-3.1.4.1  GetProxyTrustConfiguration
+##### 3.1.4.1 GetProxyTrustConfiguration
 
 As described in the GetProxyTrustConfiguration section, the client sends a GetProxyTrustConfiguration
 request when the client needs the data described in the GetProxyTrustConfiguration section to verify
@@ -1876,7 +1703,7 @@ Implementations MAY choose to improve the performance of handling security token
 sending a GetProxyTrustConfiguration request and caching the data from the response prior to
 receiving a request for a security token.<2>
 
-3.1.4.2  LsRequestSecurityToken
+##### 3.1.4.2 LsRequestSecurityToken
 
 When the client is serving as a proxy for an STS in the Requestor STS role described in [MS-MWBF],
 the client MUST emit an <LsRequestSecurityToken> request message after it authenticates a new
@@ -1889,7 +1716,7 @@ If a session cookie is presented by the web browser requestor, the client MAY em
 message, given that no token has been posted in the wresult parameter described by [MS-
 MWBF].<3>
 
-3.1.4.3  RequestSecurityTokenWithToken
+##### 3.1.4.3 RequestSecurityTokenWithToken
 
 When the client is serving as a proxy for an STS in the relying party role described in [MS-MWBF],
 the client MUST emit a RequestSecurityTokenWithToken request message after it receives a security
@@ -1902,7 +1729,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.4  LsRequestSecurityTokenWithCookie
+
+##### 3.1.4.4 LsRequestSecurityTokenWithCookie
 
 When the client is serving as a proxy for an STS in the Requestor STS role described in [MS-MWBF],
 the client SHOULD emit an LsRequestSecurityTokenWithCookie request message after it receives a
@@ -1910,7 +1738,7 @@ session cookie from a web browser requestor requesting a security token using th
 described in [MS-MWBF], given that no token has been posted in the wresult parameter described by
 [MS-MWBF].<4>
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The request messages detailed in section 2 are all unrelated to one another. A client MUST emit
 request messages according to the events that trigger the requests as described above in the Higher-
@@ -1918,23 +1746,23 @@ Layer Triggered Events section. The following sections define the message proces
 for the GetProxyTrustConfiguration, LsRequestSecurityToken, RequestSecurityTokenWithToken, and
 LsRequestSecurityTokenWithCookie message exchanges.
 
-3.1.5.1  GetProxyTrustConfiguration
+##### 3.1.5.1 GetProxyTrustConfiguration
 
 The GetProxyTrustConfiguration exchange MUST consist of a single request message and a single
 response message. The exchange MUST be initiated by the client with a request message to the
 server. The following sections describe the client processing for the request and response messages.
 
-3.1.5.1.1 GetProxyTrustConfiguration Request Processing
+###### 3.1.5.1.1 GetProxyTrustConfiguration Request Processing
 
 As described in GetProxyTrustConfiguration Initialization section, the client MUST include the current
 policy version number and corresponding GUID in the request.
 
-3.1.5.1.2 GetProxyTrustConfiguration Response Processing
+###### 3.1.5.1.2 GetProxyTrustConfiguration Response Processing
 
 Processing the response can be divided into processing the versioning, certificates and other aspects
 of the response. The following sections address this processing.
 
-3.1.5.1.2.1  Versioning
+###### 3.1.5.1.2.1 Versioning
 
 As detailed in section 3.1.1.1, the response MUST contain a version number and GUID representing
 the configuration data described in section 2.2.2. This version number and GUID MUST be compared
@@ -1945,14 +1773,14 @@ less than the response version number, then the response contains newer data tha
 instead of the locally cached data. If there is no locally cached data, the version number and GUID
 MUST be ignored.
 
-3.1.5.1.2.2  STS Data
+###### 3.1.5.1.2.2 STS Data
 
 The STS data contained in the response MUST be cached for use in the protocol described in [MS-
 MWBF]. The Login Service URL MUST be cached to use for listening for requests according to [MS-
 MWBF]. The Hosted Realm URI MUST be cached for identifying the server in the wtrealm parameter
 sent to another security realm after the web browser requestor selects the security realm.
 
-3.1.5.1.2.3  Cookie Data
+###### 3.1.5.1.2.3 Cookie Data
 
 The cookie data returned in the response MUST be cached in order to appropriately issue [RFC2965]
 cookies. The Cookie Path value MUST be cached, and MUST be used for every cookie sent to the web
@@ -1967,10 +1795,11 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lifetime of cookies storing the web browser requestor's security realm selection MUST be the value of
+
+lifetime of cookies storing the web browser requestor's security realm selection MUST be the value of
 RealmCookieLifetime in minutes.
 
-3.1.5.1.2.4  Security Realm Data
+###### 3.1.5.1.2.4 Security Realm Data
 
 The security realm data returned in the response MUST be cached in order to offer the web
 browser requestor the appropriate security realm choices. All security realm entries from the
@@ -1985,13 +1814,13 @@ request to the appropriate URL after a web browser requestor has selected a secu
 security realm Display Name MAY be used to provide a human readable identifier for the security
 realm.<5>
 
-3.1.5.2  LsRequestSecurityToken
+##### 3.1.5.2 LsRequestSecurityToken
 
 The LsRequestSecurityToken exchange MUST consist of a single request message and a single
 response message. The exchange MUST be initiated by the client with a request message to the
 server. The following sections describe the client processing for the request and response messages.
 
-3.1.5.2.1 LsRequestSecurityToken Request
+###### 3.1.5.2.1 LsRequestSecurityToken Request
 
 As described above in the LsRequestSecurityToken section, when the client is serving as a proxy for
 an STS in the Requestor STS role described in [MS-MWBF], the client MUST emit an
@@ -2024,7 +1853,7 @@ generating claims for the web browser requestor using the accountStoreUri elemen
 The client MAY specify an [RFC2965] cookie value that is Base64-encoded per [RFC4648] in the cookie
 element of the request.<8>
 
-3.1.5.2.2 LsRequestSecurityToken Response
+###### 3.1.5.2.2 LsRequestSecurityToken Response
 
 23 / 52
 
@@ -2033,10 +1862,11 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The parameters of the LsRequestSecurityTokenResponse are processed as described in the following
+
+The parameters of the LsRequestSecurityTokenResponse are processed as described in the following
 sections.
 
-3.1.5.2.2.1  Status
+###### 3.1.5.2.2.1 Status
 
 If the Status value is Success, then the request was successful and the client MUST consume the
 PolicyVersion, ForeignRealmUri, SecurityToken and LogonAcceleratorToken message parameters.
@@ -2047,7 +1877,7 @@ also be used to provide guidance on the error to the web browser requestor. Othe
 be ignored and the client MUST fault and return an error to the web browser requestor as described in
 section 2 of [MS-MWBF].<9>
 
-3.1.5.2.2.2  PolicyVersion
+###### 3.1.5.2.2.2 PolicyVersion
 
 As detailed in the LsRequestSecurityToken Response section, the response MUST contain a version
 number and GUID representing the configuration data described in the LsRequestSecurityToken,
@@ -2061,22 +1891,22 @@ then the server has newer configuration data and the client SHOULD emit a
 GetProxyTrustConfiguration request to update its local cache. If there is no locally cached data, the
 version number and GUID MUST be ignored.<10>
 
-3.1.5.2.2.3  CredentialsVerification
+###### 3.1.5.2.2.3 CredentialsVerification
 
 The information found within the CredentialsVerification structure is informational only, and clients
 MAY ignore it.
 
-3.1.5.2.2.4  ForeignRealmUri
+###### 3.1.5.2.2.4 ForeignRealmUri
 
 The ForeignRealmUri value MUST be ignored by the client.
 
-3.1.5.2.2.5  SecurityToken
+###### 3.1.5.2.2.5 SecurityToken
 
 This parameter MUST be a Base64-encoded [RFC4648] security token conforming to [MS-MWBF]
 section 2.2.4.2. This is the security token to issue in the wresult parameter of [MS-MWBF]. Prior to
 issuing the security token in the wresult parameter, the security token MUST be Base64-decoded.
 
-3.1.5.2.2.6  LogonAcceleratorToken
+###### 3.1.5.2.2.6 LogonAcceleratorToken
 
 This parameter MUST be Base64-encoded [RFC4648] data used by the STS to cache information
 about the user as a [RFC2965] cookie. The protocol does not constrain the format of this data since it
@@ -2084,7 +1914,7 @@ is written by the STS for later processing by the STS. STS implementations can u
 data format, and proxy implementations need only write the data to the web browser requestor as
 an [RFC2965] cookie.
 
-3.1.5.3  RequestSecurityTokenWithToken
+##### 3.1.5.3 RequestSecurityTokenWithToken
 
 The RequestSecurityTokenWithToken exchange MUST consist of a single request message and a single
 response message. The exchange MUST be initiated by the client with a request message to the
@@ -2097,7 +1927,8 @@ Release: April 23, 2024
 
 24 / 52
 
-3.1.5.3.1 RequestSecurityTokenWithToken Request
+
+###### 3.1.5.3.1 RequestSecurityTokenWithToken Request
 
 As described in the RequestSecurityTokenWithToken section, when the client is serving as a proxy for
 an STS in the relying party role described in [MS-MWBF], the client MUST emit an
@@ -2114,7 +1945,7 @@ the request.
 If the web browser requestor also presents a cookie as part of the request for a security token, that
 cookie MUST be included in the cookie element of the request.
 
-3.1.5.3.2 RequestSecurityTokenWithToken Response
+###### 3.1.5.3.2 RequestSecurityTokenWithToken Response
 
 Response processing for a RequestSecurityTokenWithToken response MUST be the same as the
 processing for a LsRequestSecurityToken response as described in the LsRequestSecurityToken
@@ -2126,13 +1957,13 @@ value is false, then the client MUST use the value of the ForeignRealmUri elemen
 presented by web browser requestor’s using [MS-MWBF]. If the SuppressRealmCookie configuration
 value is true, then the ForeignRealmUri parameter MUST be ignored.
 
-3.1.5.4  LsRequestSecurityTokenWithCookie
+##### 3.1.5.4 LsRequestSecurityTokenWithCookie
 
 The LsRequestSecurityTokenWithCookie exchange MUST consist of a single request message and a
 single response message. The exchange MUST be initiated by the client with a request message to the
 server. The following sections describe the client processing for the request and response messages.
 
-3.1.5.4.1 LsRequestSecurityTokenWithCookie Request
+###### 3.1.5.4.1 LsRequestSecurityTokenWithCookie Request
 
 As described in the LsRequestSecurityTokenWithCookie section, when the client is serving as a proxy
 for an STS in the Requestor STS role described in [MS-MWBF], the client MUST emit an
@@ -2149,7 +1980,7 @@ If the security token request includes a wauth parameter as described in section
 the URIs of that parameter MUST be included in the authMethodUris list of string elements in the
 request.
 
-3.1.5.4.2 LsRequestSecurityTokenWithCookie Response
+###### 3.1.5.4.2 LsRequestSecurityTokenWithCookie Response
 
 Response processing for an LsRequestSecurityTokenWithCookie response MUST be the same as the
 processing for a LsRequestSecurityToken response as described in the LsRequestSecurityToken
@@ -2162,55 +1993,56 @@ Release: April 23, 2024
 
 25 / 52
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 There are no protocol-specific timer events that MUST be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
 receive messages over HTTPS. The protocol does not include provisions for time-based retry for
 sending protocol messages.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 This protocol does not have dependencies on any transport protocols other than HTTP 1.1. This
 protocol relies on this transport mechanism for the correct and timely delivery of protocol messages.
 The protocol does not take action in response to any changes or failure in machine state or network
 communications.
 
-3.2  Server Role Details
+### 3.2 Server Role Details
 
 This section describes details of protocol processing that must be understood to implement a server
 that can correctly perform its role in the protocol message exchange.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model described in section 3.1.1 applies for the server role as well.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no protocol-specific timer events that MUST be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
 receive messages over HTTP. The protocol does not include provisions for time-based retry for sending
 protocol messages.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Prior to receiving request messages, the server MUST open an endpoint to listen for request
 messages. In order to provide the data described in the abstract data model, that data MUST be
 configured on the server by an administrator.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 An STS server is triggered on receipt of a protocol message to process that message and respond to
 the client that sent it.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The request messages detailed in section 2 are all unrelated to one another. The following sections
 define the message processing rules separately for the GetProxyTrustConfiguration,
 LsRequestSecurityToken, RequestSecurityTokenWithToken, and LsRequestSecurityTokenWithCookie
 message exchanges.
 
-3.2.5.1  GetProxyTrustConfiguration
+##### 3.2.5.1 GetProxyTrustConfiguration
 
 The GetProxyTrustConfiguration exchange MUST consist of a single request message and a single
 response message. The exchange MUST be initiated by the client with a request message to the
@@ -2223,7 +2055,8 @@ Release: April 23, 2024
 
 26 / 52
 
-3.2.5.1.1 GetProxyTrustConfiguration Request Processing
+
+###### 3.2.5.1.1 GetProxyTrustConfiguration Request Processing
 
 The version number and GUID parameters in GetProxyTrustConfiguration requests MUST be
 compared to the current version number and GUID of the server’s local configuration. If the GUID in
@@ -2232,12 +2065,12 @@ outdated copy. If the version number in the request is different than the versio
 server’s local configuration, then the client has an outdated copy. Otherwise the client has an up-to-
 date copy. For the corresponding response processing, see section 3.2.5.1.2 below.
 
-3.2.5.1.2 GetProxyTrustConfiguration Response Processing
+###### 3.2.5.1.2 GetProxyTrustConfiguration Response Processing
 
 GetProxyTrustConfiguration response processing can be divided into version processing, certificates
 processing and other processing. The following sections discuss these processing steps.
 
-3.2.5.1.2.1  Versioning Processing
+###### 3.2.5.1.2.1 Versioning Processing
 
 If the client's version is up-to-date, as described in the preceding section 3.2.5.1.1, then the
 GetProxyTrustConfigurationResult MUST be set to false, and the fsVersion, proxyInformation, and
@@ -2251,7 +2084,7 @@ The Version element MUST be set to the version number for the current configurat
 the server. The Guid element MUST be set to the GUID for the current configuration maintained by
 the server.
 
-3.2.5.1.2.2  STS Data
+###### 3.2.5.1.2.2 STS Data
 
 The server MUST maintain a URI to identify itself as described in GetProxyTrustConfiguration section.
 This URI MUST be included in the response as the HostedRealmUriStr element.
@@ -2259,7 +2092,7 @@ This URI MUST be included in the response as the HostedRealmUriStr element.
 The server MUST maintain a URL that represents the endpoint on which it listens for [MS-MWBF]
 requests. This URL MUST be included in the response as the LsUrlStr element.
 
-3.2.5.1.2.3  Cookie Data
+###### 3.2.5.1.2.3 Cookie Data
 
 The server MUST maintain a configuration setting for the cookie path to use for [RFC2965] session
 cookies. This cookie path MUST be included in the response as the CookiePath element.
@@ -2274,7 +2107,7 @@ The server MUST maintain a configuration setting for how long a web browser requ
 realm selection is to be cached in a cookie. This realm cookie lifetime MUST be included in the
 response as the RealmCookieLifetime element.
 
-3.2.5.1.2.4  Security Realm Data
+###### 3.2.5.1.2.4 Security Realm Data
 
 The server MUST maintain a list of all security realms from which it accepts security tokens. For
 each security realm from which the server maintains tokens, the server MUST maintain the following:
@@ -2288,7 +2121,8 @@ Release: April 23, 2024
 
 27 / 52
 
-The Logon Service URL for the security realm, which MUST be returned in the response in the
+
+The Logon Service URL for the security realm, which MUST be returned in the response in the
 trustLsUrl element.
 
 The display name of the security realm, which MUST be returned in the response in the
@@ -2302,13 +2136,13 @@ identified by URIs. If the server maintains this list, the list of URIs MUST be 
 acceptableAuthenticationMethodStrings element. If the server does not maintain this list, the
 acceptableAuthenticationMethodStrings MUST be empty.<11>
 
-3.2.5.2  LsRequestSecurityToken
+##### 3.2.5.2 LsRequestSecurityToken
 
 The LsRequestSecurityToken exchange MUST consist of a single request message and a single
 response message. The exchange MUST be initiated by the client with a request message to the
 server. The following sections describe the server processing for the request and response messages.
 
-3.2.5.2.1 LsRequestSecurityToken Request
+###### 3.2.5.2.1 LsRequestSecurityToken Request
 
 When the server receives an LsRequestSecurityToken request message, it must respond to it as if it
 were an [MS-MWBF] request for a security token.
@@ -2340,7 +2174,7 @@ generating claims for the web browser requestor using the accountStoreUri elemen
 The client MAY specify an [RFC2965] cookie value that is Base64-encoded per [RFC4648] in the cookie
 element of the request.<14>
 
-3.2.5.2.2 LsRequestSecurityToken Response
+###### 3.2.5.2.2 LsRequestSecurityToken Response
 
 LsRequestSecurityToken response processing can be divided into Status, PolicyVersion,
 CredentialsVerification, ForeignRealmUri, SecurityToken and LogonAcceleratorToken processing. The
@@ -2354,7 +2188,8 @@ Release: April 23, 2024
 
 28 / 52
 
-3.2.5.2.2.1  Status
+
+###### 3.2.5.2.2.1 Status
 
 If the security token is successfully generated, the Status value MUST be Success.
 
@@ -2403,7 +2238,7 @@ Unset
 
 An internal error occurred and the Status value was not set correctly.
 
-3.2.5.2.2.2  PolicyVersion
+###### 3.2.5.2.2.2 PolicyVersion
 
 As detailed in the LsRequestSecurityToken Response section, the response MUST contain a version
 number and GUID representing the configuration data described in the LsRequestSecurityToken,
@@ -2412,7 +2247,7 @@ GetProxyTrustConfiguration response message, the Version element MUST be set to 
 number for the current configuration maintained by the server. The Guid element MUST be set to the
 GUID for the current configuration maintained by the server.
 
-3.2.5.2.2.3  CredentialsVerification
+###### 3.2.5.2.2.3 CredentialsVerification
 
 The information found within the CredentialsVerification structure is informational only, and the server
 MAY omit it.
@@ -2439,30 +2274,31 @@ Release: April 23, 2024
 
 29 / 52
 
-3.2.5.2.2.4  ForeignRealmUri
+
+###### 3.2.5.2.2.4 ForeignRealmUri
 
 The ForeignRealmUri value MUST be the URI "urn:federation:self".
 
-3.2.5.2.2.5  SecurityToken
+###### 3.2.5.2.2.5 SecurityToken
 
 This parameter MUST be a Base64-encoded [RFC4648] security token conforming to [MS-MWBF]
 section 2.2.4.2. This is the security token that the server would normally issue in the wresult
 parameter of [MS-MWBF]. The process for generating this value is specified in [MS-MWBF].
 
-3.2.5.2.2.6  LogonAcceleratorToken
+###### 3.2.5.2.2.6 LogonAcceleratorToken
 
 This parameter MUST be Base64-encoded [RFC4648] data used by the STS to cache information
 about the user as a [RFC2965] cookie. The protocol does not constrain the format of this data since it
 is written by the STS for later processing by the STS. STS implementations can use any data format
 desired.
 
-3.2.5.3  RequestSecurityTokenWithToken
+##### 3.2.5.3 RequestSecurityTokenWithToken
 
 The RequestSecurityTokenWithToken exchange MUST consist of a single request message and a single
 response message. The exchange MUST be initiated by the client with a request message to the
 server. The following sections describe the server processing for the request and response messages.
 
-3.2.5.3.1 RequestSecurityTokenWithToken Request
+###### 3.2.5.3.1 RequestSecurityTokenWithToken Request
 
 When the server receives an RequestSecurityTokenWithToken request message, it must respond to it
 as if it were an [MS-MWBF] request for a security token with a wresult populated.
@@ -2476,24 +2312,24 @@ parameter of the [MS-MWBF] request for a security token.
 The client MAY specify an [RFC2965] cookie value that is Base64-encoded per [RFC4648] in the cookie
 element of the request.<16>
 
-3.2.5.3.2 RequestSecurityTokenWithToken Response
+###### 3.2.5.3.2 RequestSecurityTokenWithToken Response
 
 RequestSecurityTokenWithToken response processing can be divided into Status, PolicyVersion,
 CredentialsVerification, ForeignRealmUri, SecurityToken and LogonAcceleratorToken processing. The
 response MUST be adequate to be converted into an [MS-MWBF] sign-in response by the client. The
 following sections discuss these processing steps.
 
-3.2.5.3.2.1  Status
+###### 3.2.5.3.2.1 Status
 
 The server MUST process the Status element in an RequestSecurityTokenWithToken response as
 specified in the Status section.
 
-3.2.5.3.2.2  PolicyVersion
+###### 3.2.5.3.2.2 PolicyVersion
 
 The server MUST process the PolicyVersion element in a RequestSecurityTokenWithToken response as
 specified in the PolicyVersion section.
 
-3.2.5.3.2.3  CredentialsVerification
+###### 3.2.5.3.2.3 CredentialsVerification
 
 The server MUST not include the CredentialsVerification element in the
 RequestSecurityTokenWithToken response.
@@ -2505,29 +2341,30 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.3.2.4  ForeignRealmUri
+
+###### 3.2.5.3.2.4 ForeignRealmUri
 
 The foreign realm URI MUST be the URI of the security realm that issued the security token
 received in the inToken element of the request.
 
-3.2.5.3.2.5  SecurityToken
+###### 3.2.5.3.2.5 SecurityToken
 
 The server MUST generate the value of the SecurityToken element as specified in [MS-MWBF],
 treating the inToken value of the request as a wresult parameter of [MS-MWBF]. Once the security
 token is generated, the value MUST be Base64-encoded.
 
-3.2.5.3.2.6  LogonAcceleratorToken
+###### 3.2.5.3.2.6 LogonAcceleratorToken
 
 The server MUST process the LogonAcceleratorToken element in an RequestSecurityTokenWithToken
 response as specified in the LogonAcceleratorToken section.
 
-3.2.5.4  LsRequestSecurityTokenWithCookie
+##### 3.2.5.4 LsRequestSecurityTokenWithCookie
 
 The LsRequestSecurityTokenWithCookie exchange MUST consist of a single request message and a
 single response message. The exchange MUST be initiated by the client with a request message to the
 server. The following sections describe the server processing for the request and response messages.
 
-3.2.5.4.1 LsRequestSecurityTokenWithCookie Request
+###### 3.2.5.4.1 LsRequestSecurityTokenWithCookie Request
 
 When the server receives an LsRequestSecurityTokenWithCookie request message, it must respond to
 it as if it were an [MS-MWBF] request for a security token with an [RFC2965] cookie previously set
@@ -2542,24 +2379,24 @@ latToken element of the request.
 If the authMethodUris element is present, the server MUST consider the list of URIs in the
 authMethodUris set as if it were the wauth parameter of the [MS-MWBF] request for a security token.
 
-3.2.5.4.2 LsRequestSecurityTokenWithCookie Response
+###### 3.2.5.4.2 LsRequestSecurityTokenWithCookie Response
 
 LsRequestSecurityTokenWithCookie response processing can be divided into Status, PolicyVersion,
 CredentialsVerification, ForeignRealmUri, SecurityToken and LogonAcceleratorToken processing. The
 response MUST be adequate to be converted into an [MS-MWBF] sign-in response by the client. The
 following sections discuss these processing steps.
 
-3.2.5.4.2.1  Status
+###### 3.2.5.4.2.1 Status
 
 The server MUST process the Status element in an LsRequestSecurityTokenWithCookie response as
 specified in the Status section.
 
-3.2.5.4.2.2  PolicyVersion
+###### 3.2.5.4.2.2 PolicyVersion
 
 The server MUST process the PolicyVersion element in an LsRequestSecurityTokenWithCookie
 response as specified in the PolicyVersion section.
 
-3.2.5.4.2.3  CredentialsVerification
+###### 3.2.5.4.2.3 CredentialsVerification
 
 The server MUST NOT include the CredentialsVerification element in the
 LsRequestSecurityTokenWithCookie response.
@@ -2571,28 +2408,29 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.4.2.4  ForeignRealmUri
+
+###### 3.2.5.4.2.4 ForeignRealmUri
 
 The server MUST not include a ForeignRealmUri element in the response.
 
-3.2.5.4.2.5  SecurityToken
+###### 3.2.5.4.2.5 SecurityToken
 
 The server MUST generate the value of the <SecurityToken> element as specified in [MS-MWBF],
 using the data cached in the <latToken> element to generate the claims for the user. Once the
 security token is generated, the value MUST be Base64-encoded.
 
-3.2.5.4.2.6  LogonAcceleratorToken
+###### 3.2.5.4.2.6 LogonAcceleratorToken
 
 The server MUST not include a LogonAcceleratorToken element in the response.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no protocol-specific timer events that MUST be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
 receive messages over HTTPS. The protocol does not include provisions for time-based retry for
 sending protocol messages.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 This protocol does not have dependencies on any transport protocols other than HTTP 1.1. This
 protocol relies on this transport mechanism for the correct and timely delivery of protocol messages.
@@ -2606,9 +2444,10 @@ Release: April 23, 2024
 
 32 / 52
 
-4  Protocol Examples
 
-4.1  Service WSDL
+## 4 Protocol Examples
+
+### 4.1 Service WSDL
 
 The following is a WSDL example describing a service that offers the protocol ([WSDL]). This
 particular service description also details operations from other protocols.
@@ -2680,7 +2519,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           <s:enumeration value="NoAcceptableCredential" />
+
+           <s:enumeration value="NoAcceptableCredential" />
            <s:enumeration value="InvalidTarget" />
            <s:enumeration value="ValidationFailure" />
            <s:enumeration value="GenerationFailure" />
@@ -2757,7 +2597,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           </s:sequence>
+
+           </s:sequence>
          </s:complexType>
        </s:element>
        <s:element name="LsRequestSecurityTokenWithCookieResponse">
@@ -2834,7 +2675,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           <s:enumeration value="SelfhostedRealm" />
+
+           <s:enumeration value="SelfhostedRealm" />
            <s:enumeration value="UnknownTrustType" />
          </s:restriction>
        </s:simpleType>
@@ -2911,7 +2753,8 @@ Release: April 23, 2024
 
 36 / 52
 
-       </s:simpleType>
+
+       </s:simpleType>
        <s:complexType name="FederationCertificates">
          <s:sequence>
            <s:element minOccurs="0" maxOccurs="1" name="SerializedStore" type="s:base64Binary"
@@ -2987,7 +2830,8 @@ Release: April 23, 2024
 
 37 / 52
 
-               <s:element minOccurs="0" maxOccurs="1" name="CustomClaimName" type="s:string"
+
+               <s:element minOccurs="0" maxOccurs="1" name="CustomClaimName" type="s:string"
 />
              </s:sequence>
              <s:attribute name="IsSensitive" type="s:boolean" use="required" />
@@ -3064,7 +2908,8 @@ Release: April 23, 2024
 
 38 / 52
 
-   <wsdl:message name="GetClaimsSoapIn">
+
+   <wsdl:message name="GetClaimsSoapIn">
      <wsdl:part name="parameters" element="tns:GetClaims" />
    </wsdl:message>
    <wsdl:message name="GetClaimsSoapOut">
@@ -3141,7 +2986,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       </wsdl:output>
+
+       </wsdl:output>
      </wsdl:operation>
      <wsdl:operation name="GetProxyTrustConfiguration">
        <soap:operation
@@ -3218,7 +3064,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       </wsdl:output>
+
+       </wsdl:output>
      </wsdl:operation>
      <wsdl:operation name="LsRequestSecurityTokenWithCookie">
        <soap12:operation
@@ -3294,7 +3141,8 @@ Release: April 23, 2024
 
 41 / 52
 
-4.2  GetProxyTrustConfiguration Request
+
+### 4.2 GetProxyTrustConfiguration Request
 
  <?xml version="1.0" encoding="utf-8"?>
  - <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3318,7 +3166,7 @@ xmlns="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/">
      </soap:Body>
   </soap:Envelope>
 
-4.3  GetProxyTrustConfiguration Response
+### 4.3 GetProxyTrustConfiguration Response
 
  <?xml version="1.0" encoding="utf-8"?><soap:Envelope
 xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3368,7 +3216,8 @@ Release: April 23, 2024
 
 42 / 52
 
-                     <trustDisplayName>test resource partner</trustDisplayName>
+
+                     <trustDisplayName>test resource partner</trustDisplayName>
                      <trustUri>urn:federation:rpsts</trustUri>
                      <trustLsUrl>https://rpsts</trustLsUrl>
                  </TrustConfigurationData>
@@ -3384,7 +3233,7 @@ Release: April 23, 2024
      </soap:Body>
  </soap:Envelope>
 
-4.4  LsRequestSecurityToken Request
+### 4.4 LsRequestSecurityToken Request
 
  <?xml version="1.0" encoding="utf-8"?>
  - <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3417,7 +3266,7 @@ xmlns="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/">
      </soap:Body>
  </soap:Envelope>
 
-4.5  LsRequestSecurityToken Response
+### 4.5 LsRequestSecurityToken Response
 
  <?xml version="1.0" encoding="utf-8"?>
  - <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3441,7 +3290,8 @@ Release: April 23, 2024
 
 43 / 52
 
-                     </SoftwareVersion>
+
+                     </SoftwareVersion>
                      - <Guid>
                          c8fbb077-6f57-43b9-a8c1-1884fe8813b5
                      </Guid>
@@ -3483,7 +3333,7 @@ Release: April 23, 2024
      </soap:Body>
  </soap:Envelope>
 
-4.6  RequestSecurityTokenWithToken Request
+### 4.6 RequestSecurityTokenWithToken Request
 
  <?xml version="1.0" encoding="utf-8"?>
  - <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3511,7 +3361,8 @@ Release: April 23, 2024
 
 44 / 52
 
-4.7  RequestSecurityTokenWithToken Response
+
+### 4.7 RequestSecurityTokenWithToken Response
 
  <?xml version="1.0" encoding="utf-8"?>
  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3553,7 +3404,7 @@ BnAC8AdwBzAC8AMgAwADAANQAvADAAMgAvAHQAcgB1AHMAdAAiAD4APAB3AHMAdAA6AF
      </soap:Body>
  </soap:Envelope>
 
-4.8  LsRequestSecurityTokenWithCookie Request
+### 4.8 LsRequestSecurityTokenWithCookie Request
 
  <?xml version="1.0" encoding="utf-8"?>
  - <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3581,7 +3432,8 @@ Release: April 23, 2024
 
 45 / 52
 
-4.9  LsRequestSecurityTokenWithCookie Response
+
+### 4.9 LsRequestSecurityTokenWithCookie Response
 
  <?xml version="1.0" encoding="utf-8"?>
  - <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -3623,9 +3475,10 @@ Release: April 23, 2024
 
 46 / 52
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers need to ensure that SSL is used to authenticate that the server is the intended server
 referred to by the server endpoint URL. Implementers also need to ensure that the client role
@@ -3633,7 +3486,7 @@ authenticates to the server role such that the server can trust the client to pe
 certificate authentication where appropriate. Otherwise there are no specific security considerations
 beyond those specified in normative references.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3644,7 +3497,8 @@ Release: April 23, 2024
 
 47 / 52
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3712,7 +3566,8 @@ Active Directory Federation Service (AD FS) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<11> Section 3.2.5.1.2.4: Windows allows administrators to enter the accepted authentication
+
+<11> Section 3.2.5.1.2.4: Windows allows administrators to enter the accepted authentication
 methods for a security realm. By default, all methods are acceptable and Windows returns an empty
 list for the acceptableAuthenticationMethodStrings element.
 
@@ -3744,7 +3599,8 @@ Release: April 23, 2024
 
 49 / 52
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3788,7 +3644,8 @@ Release: April 23, 2024
 
 50 / 52
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3933,7 +3790,8 @@ N
 
 51 / 52
 
-   server role 32
+
+   server role 32
 Timers
    client role 20
    server role 26

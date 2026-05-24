@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: June 1, 2017
 
 2 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -516,310 +518,125 @@ Release: June 1, 2017
 
 3 / 54
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Peer-to-Peer Framework Details ..................................................................... 9
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-Common Data Types ................................................................................... 15
-guid .................................................................................................... 15
-url ....................................................................................................... 16
-searchStatus ........................................................................................ 16
-fileRange ............................................................................................. 17
-cacheRecord ......................................................................................... 17
-searchRequest ...................................................................................... 18
-searchResponse .................................................................................... 18
-DISCOVERY-REQUEST ................................................................................. 19
-Standard HTTP Header Fields.................................................................. 19
-HTTP Header Fields ............................................................................... 19
-Message Body ...................................................................................... 19
-DISCOVERY-RESPONSE ............................................................................... 19
-Standard HTTP Header Fields.................................................................. 19
-Body Data ............................................................................................ 20
-DOWNLOAD-REQUEST................................................................................. 20
-DOWNLOAD-RESPONSE ............................................................................... 20
-HEAD-REQUEST .......................................................................................... 21
-HEAD-RESPONSE ........................................................................................ 21
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2.2.3.1
-2.2.3.2
-
-2.2.3
-
-2.2.2
-
-3.1
-
-3.1.1
-
-3.1.2
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 22
-Client Details ................................................................................................... 22
-Abstract Data Model .................................................................................... 22
-Table of Servers ................................................................................... 22
-FileDiscoveryAttempt ............................................................................. 22
-FileSearchRequest ................................................................................. 23
-Download Request ................................................................................ 24
-Timers ...................................................................................................... 25
-FileSearchRequest Timeout .................................................................... 25
-File Discovery Attempt Request Timeout .................................................. 25
-Download Request Timeout .................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-New FileSearchRequest .......................................................................... 25
-Cancel a FileSearchRequest in Progress ................................................... 25
-New Download Request ......................................................................... 25
-Remove Server from PEER SERVER TABLE ............................................... 25
-Message Processing Events and Sequencing Rules .......................................... 26
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-
-3.1.3
-3.1.4
-
-3.1.5
-
-[MS-BPCR] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 54
-
-3.1.5.1
-3.1.5.2
-
-3.1.6
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.1.7
-
-3.1.7.1
-
-3.1.7.4
-
-3.1.7.1.1
-3.1.7.1.2
-
-3.1.7.2
-
-3.1.7.2.1
-3.1.7.2.2
-
-3.1.7.3
-
-3.1.7.3.1
-3.1.7.3.2
-3.1.7.3.3
-3.1.7.3.4
-3.1.7.3.5
-
-3.1.7.3.6
-3.1.7.3.7
-3.1.7.3.8
-3.1.7.3.9
-
-3.1.7.4.1
-3.1.7.4.2
-3.1.7.4.3
-3.1.7.4.4
-3.1.7.4.5
-3.1.7.4.6
-
-FileDiscoveryAttempt Response .............................................................. 26
-Download Response .............................................................................. 26
-Timer Events .............................................................................................. 27
-FileDiscoveryAttempt Response Timeout .................................................. 27
-Download Response Timeout .................................................................. 27
-FileSearchRequest Timeout .................................................................... 27
-Other Local Events ...................................................................................... 27
-FileDiscoveryAttempt Events .................................................................. 27
-Problem with Server Certificate During a FileDiscoveryAttempt ............. 27
-Connection Failure During a FileDiscoveryAttempt ............................... 27
-Download Events .................................................................................. 27
-Problem with Server Certificate During a Download ............................. 27
-Connection Failure During Download .................................................. 28
-FileSearchRequest Events ...................................................................... 28
-A Pending FileDiscoveryAttempt Completes......................................... 28
-RESULT_FOUND .............................................................................. 28
-RESULT_NOT_FOUND ...................................................................... 28
-RESULT_CLIENT_CERT_UNKNOWN .................................................... 28
-RESULT_ACCESS_DENIED or RESULT_INVALID_SEARCH or
-RESULT_UNKNOWN ......................................................................... 28
-RESULT_SERVER_CERT_UNKNOWN ................................................... 28
-RESULT_TRANSPORT_ERROR or RESULT_OUT_OF_RESOURCES............ 28
-Notification of New Server or Address ................................................ 29
-Protocol Shutdown ........................................................................... 29
-FileSearchRequest State Transitions ........................................................ 29
-STATE_INIT .................................................................................... 29
-STATE_CHOOSE_SERVER ................................................................. 29
-STATE_SEND_REQUEST ................................................................... 29
-STATE_WAIT .................................................................................. 30
-STATE_DISCOVER_SERVERS ............................................................ 30
-STATE_COMPLETE ........................................................................... 30
-Server Details .................................................................................................. 30
-Abstract Data Model .................................................................................... 30
-Table of Content Records ....................................................................... 30
-Maximum Cache Size............................................................................. 31
-Maximum Record Age ............................................................................ 31
-Timers ...................................................................................................... 31
-Record Expiration .................................................................................. 31
-Initialization ............................................................................................... 31
-Higher-Layer Triggered Events ..................................................................... 31
-Cache Data .......................................................................................... 31
-Protocol Shutdown ................................................................................ 31
-Message Processing Events and Sequencing Rules .......................................... 32
-General Rules for HTTP-Level Error Responses .......................................... 32
-Message Validation ................................................................................ 32
-DISCOVERY-REQUEST ........................................................................... 32
-DOWNLOAD-REQUEST ........................................................................... 33
-HEAD-REQUEST .................................................................................... 34
-Timer Events .............................................................................................. 34
-Record Expiration .................................................................................. 34
-Other Local Events ...................................................................................... 34
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-3.2
-
-3.2.1
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.2.2.1
-
-3.2.2
-
-3.2.3
-3.2.4
-
-3.2.5
-
-4  Protocol Example................................................................................................... 35
-Successful FileSearchRequest with Two Servers ................................................... 35
-BITS and Peer-caching Interactions: Initial Download ........................................... 40
-BITS and Peer-caching Interactions: Second Download ......................................... 42
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 45
-Security Considerations for Implementers ........................................................... 45
-
-5.1
-
-[MS-BPCR] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 54
-
-5.2
-
-Index of Security Parameters ............................................................................ 45
-
-6  Appendix A: XML Schema ...................................................................................... 46
-
-7  Appendix B: Product Behavior ............................................................................... 48
-
-8  Change Tracking .................................................................................................... 51
-
-9  Index ..................................................................................................................... 52
-
-[MS-BPCR] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 54
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Peer-to-Peer Framework Details](#131-peer-to-peer-framework-details)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 guid](#2211-guid)
+      - [2.2.1.2 url](#2212-url)
+      - [2.2.1.3 searchStatus](#2213-searchstatus)
+      - [2.2.1.4 fileRange](#2214-filerange)
+      - [2.2.1.5 cacheRecord](#2215-cacherecord)
+      - [2.2.1.6 searchRequest](#2216-searchrequest)
+      - [2.2.1.7 searchResponse](#2217-searchresponse)
+    - [2.2.2 DISCOVERY-REQUEST](#222-discovery-request)
+      - [2.2.2.1 Standard HTTP Header Fields](#2221-standard-http-header-fields)
+      - [2.2.2.2 HTTP Header Fields](#2222-http-header-fields)
+      - [2.2.2.3 Message Body](#2223-message-body)
+    - [2.2.3 DISCOVERY-RESPONSE](#223-discovery-response)
+      - [2.2.3.1 Standard HTTP Header Fields](#2231-standard-http-header-fields)
+      - [2.2.3.2 Body Data](#2232-body-data)
+    - [2.2.4 DOWNLOAD-REQUEST](#224-download-request)
+    - [2.2.5 DOWNLOAD-RESPONSE](#225-download-response)
+    - [2.2.6 HEAD-REQUEST](#226-head-request)
+    - [2.2.7 HEAD-RESPONSE](#227-head-response)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Table of Servers](#3111-table-of-servers)
+      - [3.1.1.2 FileDiscoveryAttempt](#3112-filediscoveryattempt)
+      - [3.1.1.3 FileSearchRequest](#3113-filesearchrequest)
+      - [3.1.1.4 Download Request](#3114-download-request)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 FileSearchRequest Timeout](#3121-filesearchrequest-timeout)
+      - [3.1.2.2 File Discovery Attempt Request Timeout](#3122-file-discovery-attempt-request-timeout)
+      - [3.1.2.3 Download Request Timeout](#3123-download-request-timeout)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 New FileSearchRequest](#3141-new-filesearchrequest)
+      - [3.1.4.2 Cancel a FileSearchRequest in Progress](#3142-cancel-a-filesearchrequest-in-progress)
+      - [3.1.4.3 New Download Request](#3143-new-download-request)
+      - [3.1.4.4 Remove Server from PEER SERVER TABLE](#3144-remove-server-from-peer-server-table)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 FileDiscoveryAttempt Response](#3151-filediscoveryattempt-response)
+      - [3.1.5.2 Download Response](#3152-download-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 FileDiscoveryAttempt Response Timeout](#3161-filediscoveryattempt-response-timeout)
+      - [3.1.6.2 Download Response Timeout](#3162-download-response-timeout)
+      - [3.1.6.3 FileSearchRequest Timeout](#3163-filesearchrequest-timeout)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 FileDiscoveryAttempt Events](#3171-filediscoveryattempt-events)
+        - [3.1.7.1.1 Problem with Server Certificate During a FileDiscoveryAttempt](#31711-problem-with-server-certificate-during-a-filediscoveryattempt)
+        - [3.1.7.1.2 Connection Failure During a FileDiscoveryAttempt](#31712-connection-failure-during-a-filediscoveryattempt)
+      - [3.1.7.2 Download Events](#3172-download-events)
+        - [3.1.7.2.1 Problem with Server Certificate During a Download](#31721-problem-with-server-certificate-during-a-download)
+        - [3.1.7.2.2 Connection Failure During Download](#31722-connection-failure-during-download)
+      - [3.1.7.3 FileSearchRequest Events](#3173-filesearchrequest-events)
+        - [3.1.7.3.1 A Pending FileDiscoveryAttempt Completes](#31731-a-pending-filediscoveryattempt-completes)
+        - [3.1.7.3.2 RESULT_FOUND](#31732-resultfound)
+        - [3.1.7.3.3 RESULT_NOT_FOUND](#31733-resultnotfound)
+        - [3.1.7.3.4 RESULT_CLIENT_CERT_UNKNOWN](#31734-resultclientcertunknown)
+        - [3.1.7.3.5 RESULT_ACCESS_DENIED or RESULT_INVALID_SEARCH or](#31735-resultaccessdenied-or-resultinvalidsearch-or)
+        - [3.1.7.3.6 RESULT_SERVER_CERT_UNKNOWN](#31736-resultservercertunknown)
+        - [3.1.7.3.7 RESULT_TRANSPORT_ERROR or RESULT_OUT_OF_RESOURCES](#31737-resulttransporterror-or-resultoutofresources)
+        - [3.1.7.3.8 Notification of New Server or Address](#31738-notification-of-new-server-or-address)
+        - [3.1.7.3.9 Protocol Shutdown](#31739-protocol-shutdown)
+      - [3.1.7.4 FileSearchRequest State Transitions](#3174-filesearchrequest-state-transitions)
+        - [3.1.7.4.1 STATE_INIT](#31741-stateinit)
+        - [3.1.7.4.2 STATE_CHOOSE_SERVER](#31742-statechooseserver)
+        - [3.1.7.4.3 STATE_SEND_REQUEST](#31743-statesendrequest)
+        - [3.1.7.4.4 STATE_WAIT](#31744-statewait)
+        - [3.1.7.4.5 STATE_DISCOVER_SERVERS](#31745-statediscoverservers)
+        - [3.1.7.4.6 STATE_COMPLETE](#31746-statecomplete)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Table of Content Records](#3211-table-of-content-records)
+      - [3.2.1.2 Maximum Cache Size](#3212-maximum-cache-size)
+      - [3.2.1.3 Maximum Record Age](#3213-maximum-record-age)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Record Expiration](#3221-record-expiration)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Cache Data](#3241-cache-data)
+      - [3.2.4.2 Protocol Shutdown](#3242-protocol-shutdown)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 General Rules for HTTP-Level Error Responses](#3251-general-rules-for-http-level-error-responses)
+      - [3.2.5.2 Message Validation](#3252-message-validation)
+      - [3.2.5.3 DISCOVERY-REQUEST](#3253-discovery-request)
+      - [3.2.5.4 DOWNLOAD-REQUEST](#3254-download-request)
+      - [3.2.5.5 HEAD-REQUEST](#3255-head-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Record Expiration](#3261-record-expiration)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Example](#4-protocol-example)
+  - [4.1 Successful FileSearchRequest with Two Servers](#41-successful-filesearchrequest-with-two-servers)
+  - [4.2 BITS and Peer-caching Interactions: Initial Download](#42-bits-and-peer-caching-interactions-initial-download)
+  - [4.3 BITS and Peer-caching Interactions: Second Download](#43-bits-and-peer-caching-interactions-second-download)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: XML Schema](#6-appendix-a-xml-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document is a specification for the Background Intelligent Transfer Service (BITS) Peer-Caching:
 Content Retrieval Protocol. This is one protocol in a family of protocols that implement a distributed
@@ -830,7 +647,7 @@ Protocol to search an existing set of peers for content and to download from tho
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -891,17 +708,18 @@ Release: June 1, 2017
 
 7 / 54
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -939,7 +757,7 @@ editor.org/info/rfc3280
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-BUP] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Upload Protocol".
 
@@ -956,7 +774,8 @@ Release: June 1, 2017
 
 8 / 54
 
-[MS-CCROD] Microsoft Corporation, "Content Caching and Retrieval Protocols Overview".
+
+[MS-CCROD] Microsoft Corporation, "Content Caching and Retrieval Protocols Overview".
 
 [MSDN-BITS] Microsoft Corporation, "Background Intelligent Transfer Service",
 http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
@@ -964,7 +783,7 @@ http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 [WS-Discovery] Beatty, J., Kakivaya, G., Kemp D., et al., "Web Services Dynamic Discovery (WS-
 Discovery)", April 2005, http://specs.xmlsoap.org/ws/2005/04/discovery/ws-discovery.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval Protocol defines
 methods for a network client both to query multiple servers for data associated with a given URL and
@@ -974,7 +793,7 @@ In Windows, the BITS component uses the BITS Peer-Caching: Content Retrieval Pro
 implement a distributed peer-to-peer cache of data items based on associated HTTP and HTTPS URLs
 as well as UNC paths<1>.
 
-1.3.1  Peer-to-Peer Framework Details
+#### 1.3.1 Peer-to-Peer Framework Details
 
 BITS discovers peer servers by using the Background Intelligent Transfer Service (BITS) Peer-
 Caching: Peer Discovery Protocol specified in [MS-BPDP]) and authenticates them by using the
@@ -994,7 +813,8 @@ Release: June 1, 2017
 
 9 / 54
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-BPCR].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1022,7 +842,8 @@ Release: June 1, 2017
 
 10 / 54
 
-2.  The application initiates a BITS Peer-Caching: Content Retrieval Protocol search to determine
+
+2.  The application initiates a BITS Peer-Caching: Content Retrieval Protocol search to determine
 
 whether any peer servers contain the necessary URL data. The BITS Peer-Caching: Content
 Retrieval Protocol client chooses a set of peer servers and queries them for the URL data. BITS
@@ -1040,7 +861,7 @@ URL data to its cache, thus making it available to other peers.
 
 For more detailed sequence diagrams, see section 4.2 and section 4.3.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval Protocol is a
 client/server protocol that uses HTTP over TLS 1.0 as its transport. A host that implements the client
@@ -1060,7 +881,8 @@ Release: June 1, 2017
 
 11 / 54
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-BPCR].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1091,7 +913,8 @@ Release: June 1, 2017
 
 12 / 54
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-BPCR].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1104,12 +927,12 @@ authentication.
 
 Figure 3: Protocol relationship for BITS
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Computers in both the client and server roles must be provisioned with certificates accessible to the
 HTTPS protocol, as specified in [RFC2246] sections 7.4.2 and 7.4.3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Because the BITS Peer-Caching: Content Retrieval Protocol uses unicast communication to poll
 multiple servers for content, it is best suited for situations in which the client is connected to the
@@ -1129,19 +952,20 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval P
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The BITS Peer-Caching: Content Retrieval Protocol does not define an explicit system for version
 negotiation. The presence of individual capabilities is implicitly signaled in each message by the
 presence or absence of optional fields. For details of each message, see section 2.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The BITS Peer-Caching: Content Retrieval Protocol uses HRESULTs, as specified in [MS-ERREF],
 primarily in DISCOVERY-REQUEST (section 3.2.5.3). Vendors are free to choose their own values as
 long as the C bit (0x20000000) is set, indicating it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following table shows the standard assignments that apply to this protocol.
 
@@ -1160,9 +984,10 @@ Release: June 1, 2017
 
 14 / 54
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Messages MUST be transported over HTTPS by using port 2178.
 
@@ -1173,7 +998,7 @@ The certificates used MUST be within their validity interval when the connection
 A client or server MAY impose additional requirements on the certificate for authentication
 purposes.<3>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages follow HTTP/1.1 syntax. The required HTTP headers and the format of the HTTP message
 body for each message are specified in the following sections. The message body contains the content
@@ -1187,7 +1012,7 @@ A future version of the BITS Peer-Caching: Content Retrieval Protocol will defin
 fields (as defined in [RFC2616] section 4.2) and XML elements. The recipient of a message MUST
 ignore header fields and XML elements it does not understand.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 The DISCOVERY-REQUEST message and the DISCOVERY-RESPONSE message rely on XML (as
 specified in [XML]). The following table shows the standard XML namespaces used within the BITS
@@ -1212,7 +1037,7 @@ http://schemas.microsoft.com/windows/2007/01/BITS/ContentDiscovery
 
 The following sections list the elements defined in this namespace.
 
-2.2.1.1  guid
+##### 2.2.1.1 guid
 
 A globally unique identifier (GUID) of an object or entity within the protocol. The GUIDString
 element is defined by the following XML.
@@ -1228,11 +1053,12 @@ Release: June 1, 2017
 
 15 / 54
 
-     [0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+
+     [0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
    </s:restriction>
    </s:simpleType>
 
-2.2.1.2  url
+##### 2.2.1.2 url
 
 A URL string. URLs within the BITS Peer-Caching: Content Retrieval Protocol are limited to a maximum
 of 2,200 characters, as shown in the following XML for the url element.
@@ -1243,7 +1069,7 @@ of 2,200 characters, as shown in the following XML for the url element.
      </restriction>
    </simpleType>
 
-2.2.1.3  searchStatus
+##### 2.2.1.3 searchStatus
 
 The status code for a search request is shown next.
 
@@ -1302,7 +1128,8 @@ Release: June 1, 2017
 
 16 / 54
 
-2.2.1.4  fileRange
+
+##### 2.2.1.4 fileRange
 
 The following code example describes a contiguous range of data within a URL.
 
@@ -1317,7 +1144,7 @@ Offset: Location of the beginning of the range, in bytes, relative to the start 
 
 Length: Length of the range, in bytes.
 
-2.2.1.5  cacheRecord
+##### 2.2.1.5 cacheRecord
 
 The following XML defines a record description.
 
@@ -1368,7 +1195,8 @@ Release: June 1, 2017
 
 17 / 54
 
-ContentRange: One such element is returned, in order, for each range of bytes that is present in the
+
+ContentRange: One such element is returned, in order, for each range of bytes that is present in the
 content record. For example, if the record contained 100 bytes at offset 2,000 followed by 100
 bytes at offset 3,000, the returned XML would include the following <ContentRange> data:
 
@@ -1384,7 +1212,7 @@ bytes at offset 3,000, the returned XML would include the following <ContentRang
 A content record encompassing the entire URL is represented as a single range with offset zero and
 length equal to the FileSize element.
 
-2.2.1.6  searchRequest
+##### 2.2.1.6 searchRequest
 
 A query to a single server for a single URL:
 
@@ -1417,7 +1245,7 @@ in the reply.<5> The server's response MUST abide by the limit, and the client S
 response records beyond the limit.<6> If this element is omitted, there is no explicit limit on the
 number of records returned.
 
-2.2.1.7  searchResponse
+##### 2.2.1.7 searchResponse
 
 The result of a search request:
 
@@ -1435,11 +1263,12 @@ Release: June 1, 2017
 
 18 / 54
 
-       processContents="lax" namespace="##other"/>
+
+       processContents="lax" namespace="##other"/>
      </sequence>
    </complexType>
 
-2.2.2  DISCOVERY-REQUEST
+#### 2.2.2 DISCOVERY-REQUEST
 
 The client sends a DISCOVERY-REQUEST to a server to inquire whether the server has cached a
 particular URL. The message is encoded as an HTTP POST request to the following URL:
@@ -1451,18 +1280,18 @@ fields (as specified in [RFC2616] section 4.5) that are required to take on spec
 are new fields defined by the BITS Peer-Caching: Content Retrieval Protocol. The fields MUST follow
 the rules defined in [RFC2616] section 4.2.
 
-2.2.2.1  Standard HTTP Header Fields
+##### 2.2.2.1 Standard HTTP Header Fields
 
 Content-Length: The size, in bytes, of the HTTP message body (as defined in [RFC2616] section
 4.3.). This field MUST be present.
 
-2.2.2.2  HTTP Header Fields
+##### 2.2.2.2 HTTP Header Fields
 
  X-ETW-ACTIVITY-ID: A GUID-encoded activity correlation ID. An activity ID is a GUID that uniquely
 identifies the discovery request. The client MAY include this header as an aid to logging, enabling
 correlation between a client activity and the server activity.<7>
 
-2.2.2.3  Message Body
+##### 2.2.2.3 Message Body
 
 The HTTP message body (as defined in [RFC2616] section 4.3) MUST be a Unicode XML 1.0
 document that uses http://schemas.microsoft.com/windows/2007/01/BITS/ContentDiscovery as its
@@ -1474,14 +1303,14 @@ content, as specified in [XML] section 2.1.
 
 A server MUST support a maximum body size of at least 16 KB.
 
-2.2.3  DISCOVERY-RESPONSE
+#### 2.2.3 DISCOVERY-RESPONSE
 
 The DISCOVERY-RESPONSE message is the response to a DISCOVERY-REQUEST message. It contains
 the results of the search—either an error or a set of matching content records.
 
 The HTTP status code MUST be 200. The following sections specify additional requirements.
 
-2.2.3.1  Standard HTTP Header Fields
+##### 2.2.3.1 Standard HTTP Header Fields
 
 Content-Length: MUST be the size, in bytes, of the HTTP message body. This field MUST be present.
 
@@ -1492,7 +1321,8 @@ Release: June 1, 2017
 
 19 / 54
 
-2.2.3.2  Body Data
+
+##### 2.2.3.2 Body Data
 
 The HTTP message body MUST be a Unicode XML 1.0 document that uses
 http://schemas.microsoft.com/windows/2007/01/BITS/ContentDiscovery as its default XML
@@ -1508,7 +1338,7 @@ size of at least 1,024 KB. The XML MAY include comment tags to aid in readabilit
 If the value of the "Status" child element is "Success", one or more CacheRecord elements MUST be
 present.
 
-2.2.4  DOWNLOAD-REQUEST
+#### 2.2.4 DOWNLOAD-REQUEST
 
 To download data from a server, the client sends a DOWNLOAD-REQUEST, which is encoded as an
 HTTP GET request, as specified in [RFC2616] section 9.3. The request specifies the record ID and the
@@ -1526,7 +1356,7 @@ A client MAY request a fraction of the record data by including a Content-Range 
 original URL data. For example, if a record contains bytes 100 to 199 of the URL, "Content-Range: 0-1
 / 100" refers to bytes 100 and 101 of the original URL.
 
-2.2.5  DOWNLOAD-RESPONSE
+#### 2.2.5 DOWNLOAD-RESPONSE
 
 A DOWNLOAD-RESPONSE message is a standard HTTP/1.1 response packet. The HTTP status code
 MUST be either 200 or 206.
@@ -1554,16 +1384,17 @@ Release: June 1, 2017
 
 20 / 54
 
-FILE_ATTRIBUTE_SYSTEM are allowed to be set; other flags MUST be set to zero and MUST be ignored
+
+FILE_ATTRIBUTE_SYSTEM are allowed to be set; other flags MUST be set to zero and MUST be ignored
 by the recipient.
 
-2.2.6  HEAD-REQUEST
+#### 2.2.6 HEAD-REQUEST
 
 A client MAY request the attributes of a record without downloading data, by sending a HEAD-
 REQUEST.<13> The request is encoded as a HEAD request; otherwise, the format is the same as a
 DOWNLOAD-REQUEST (section 2.2.4).
 
-2.2.7  HEAD-RESPONSE
+#### 2.2.7 HEAD-RESPONSE
 
 Following standard procedure for HEAD requests in HTTP, the reply to a HEAD-REQUEST is a reply that
 is identical to the reply for the equivalent DOWNLOAD-REQUEST, except that a reply with status 200
@@ -1576,11 +1407,12 @@ Release: June 1, 2017
 
 21 / 54
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1588,7 +1420,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with what is described in this
 document.
 
-3.1.1.1  Table of Servers
+##### 3.1.1.1 Table of Servers
 
 The client maintains a table of servers. Each row of the table contains the following data:
 
@@ -1598,7 +1430,7 @@ Authenticated: A Boolean variable indicating whether the server has been authent
 
 BITS Peer-Caching: Peer Authentication Protocol [MS-BPAU].
 
-3.1.1.2  FileDiscoveryAttempt
+##### 3.1.1.2 FileDiscoveryAttempt
 
 A FileDiscoveryAttempt abstract data model (ADM) element object represents a single attempt to send
 a DISCOVERY-REQUEST message to a server.
@@ -1659,7 +1491,8 @@ Release: June 1, 2017
 
 22 / 54
 
-3.1.1.3  FileSearchRequest
+
+##### 3.1.1.3 FileSearchRequest
 
 FileSearchRequest is a data element that encapsulates a particular search request from the higher-
 level protocol. A FileSearchRequest element can be represented by a state machine with the
@@ -1726,7 +1559,8 @@ Release: June 1, 2017
 
 23 / 54
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-BPCR].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1735,7 +1569,7 @@ Figure 4: Possible state transitions
 Note  The conceptual data can be implemented by using a variety of techniques. Any data structure
 that stores the conceptual data can be used in the implementation.
 
-3.1.1.4  Download Request
+##### 3.1.1.4 Download Request
 
 A Download Request abstract data model (ADM) element represents a request from a higher-layer
 protocol for some or all of the data contained in a particular content record. The Download Request
@@ -1754,54 +1588,55 @@ Release: June 1, 2017
 
 24 / 54
 
-RESULT: An abstract completion result with the same range of values as the FileDiscoveryAttempt
+
+RESULT: An abstract completion result with the same range of values as the FileDiscoveryAttempt
 
 result.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  FileSearchRequest Timeout
+##### 3.1.2.1 FileSearchRequest Timeout
 
 This timer limits the amount of time taken by any one FileSearchRequest element, regardless of the
 state transitions involved. The default value is 60 seconds; the legal range is any positive value.
 
-3.1.2.2  File Discovery Attempt Request Timeout
+##### 3.1.2.2 File Discovery Attempt Request Timeout
 
 This timer limits the amount of time that a FileDiscoveryAttempt waits for the response from the
 server. The default value is 15 seconds. An implementation MAY use a different value to accelerate
 detection of offline servers.
 
-3.1.2.3  Download Request Timeout
+##### 3.1.2.3 Download Request Timeout
 
 This timer limits the amount of time that a Download request waits for the response from the server.
 The default SHOULD be at least 30 seconds.<14>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the client is initialized, it instantiates the client role of the BITS Peer-Caching: Peer Discovery
 Protocol, as described in [MS-BPDP] section 3.2.3. The client initializes the table of servers as
 described in [MS-BPDP] section 3.2.6.6. The value Authenticated for all rows in the table of servers
 (as specified in section 3.1.1.1) is initially set to false.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  New FileSearchRequest
+##### 3.1.4.1 New FileSearchRequest
 
 The higher layer passes the URL search criteria.
 
 The client instantiates a FileSearchRequest element object (3.1.1.3) with the associated URL data.
 
-3.1.4.2  Cancel a FileSearchRequest in Progress
+##### 3.1.4.2 Cancel a FileSearchRequest in Progress
 
 To cancel a FileSearchRequest element in progress, cancel each FileDiscoveryAttempt in the
 PENDING-CALLS-TABLE element.
 
-3.1.4.3  New Download Request
+##### 3.1.4.3 New Download Request
 
 To download cached data from a server, the higher-layer protocol passes the server, the content
 record, and (optionally) one or more byte ranges to download. A new Download object is created.
 
-3.1.4.4  Remove Server from PEER SERVER TABLE
+##### 3.1.4.4 Remove Server from PEER SERVER TABLE
 
 To remove a peer server from the PEER SERVER TABLE, the higher-layer protocol passes the host
 name of the server to be removed to the client. The client then removes the server name from the
@@ -1814,7 +1649,8 @@ Release: June 1, 2017
 
 25 / 54
 
-3.1.5  Message Processing Events and Sequencing Rules
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 In the TLS negotiation, the client provides the "Local Certificate" exposed by [MS-BPAU] section
 3.2.1.1. Whenever the client establishes a TLS session in order to send a message, it MUST verify that
@@ -1842,7 +1678,7 @@ domain.
 If any verification test fails, the client MUST terminate the TLS session as detailed in [RFC2246]
 section 7.3 and react as to a connection failure.
 
-3.1.5.1  FileDiscoveryAttempt Response
+##### 3.1.5.1 FileDiscoveryAttempt Response
 
 As mentioned in DISCOVERY-RESPONSE (section 2.2.3), a reply is considered a DISCOVERY-
 RESPONSE only if the HTTP status is set to 200. Any other HTTP status causes the
@@ -1886,7 +1722,7 @@ RESULT_INVALID_SEARCH
 
 RESULT_UNKNOWN
 
-3.1.5.2  Download Response
+##### 3.1.5.2 Download Response
 
 The response to a DOWNLOAD-REQUEST message is an HTTP reply. If the HTTP status is not 200, the
 download fails with RESULT_TRANSPORT_ERROR, and the error is reported to the higher-layer
@@ -1899,7 +1735,8 @@ Release: June 1, 2017
 
 26 / 54
 
-If the HTTP status is 200, the client validates the syntax of the response message. If it is not valid,
+
+If the HTTP status is 200, the client validates the syntax of the response message. If it is not valid,
 the download fails with RESULT_TRANSPORT_ERROR, and the error is reported to the higher-layer
 protocol.
 
@@ -1907,25 +1744,25 @@ If the message is valid, the download succeeds with RESULT_FOUND. The result is 
 higher-layer protocol along with the data from the content record and the values from the
 BITS_BASIC_INFO header, if present.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  FileDiscoveryAttempt Response Timeout
+##### 3.1.6.1 FileDiscoveryAttempt Response Timeout
 
 Complete the FileDiscoveryAttempt element with RESULT_TIMEOUT.
 
-3.1.6.2  Download Response Timeout
+##### 3.1.6.2 Download Response Timeout
 
 Complete the download with RESULT_TIMEOUT.
 
-3.1.6.3  FileSearchRequest Timeout
+##### 3.1.6.3 FileSearchRequest Timeout
 
 Cancel each FileDiscoveryAttempt element in the PENDING-CALLS-TABLE element.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  FileDiscoveryAttempt Events
+##### 3.1.7.1 FileDiscoveryAttempt Events
 
-3.1.7.1.1 Problem with Server Certificate During a FileDiscoveryAttempt
+###### 3.1.7.1.1 Problem with Server Certificate During a FileDiscoveryAttempt
 
 During HTTPS connection setup, the FileDiscoveryAttempt element judges the server's certificate by
 querying the BITS Peer-Caching: Peer Authentication section for the presence of the server's
@@ -1936,14 +1773,14 @@ client completes the FileDiscoveryAttempt element with the result
 RESULT_SERVER_CERT_UNKNOWN.<15> Otherwise, the client completes the FileDiscoveryAttempt
 element with the result RESULT_TRANSPORT_ERROR.
 
-3.1.7.1.2 Connection Failure During a FileDiscoveryAttempt
+###### 3.1.7.1.2 Connection Failure During a FileDiscoveryAttempt
 
 The FileDiscoveryAttempt element result is set to RESULT_TRANSPORT_ERROR, and the
 FileDiscoveryAttempt element is completed.
 
-3.1.7.2  Download Events
+##### 3.1.7.2 Download Events
 
-3.1.7.2.1 Problem with Server Certificate During a Download
+###### 3.1.7.2.1 Problem with Server Certificate During a Download
 
 During HTTPS connection setup, the client tries to find the server's certificate by querying the table of
 peer certificates, as described in BITS Peer-Caching: Peer Authentication section 3.2.6.1.<16> If the
@@ -1960,13 +1797,14 @@ Release: June 1, 2017
 
 27 / 54
 
-3.1.7.2.2 Connection Failure During Download
+
+###### 3.1.7.2.2 Connection Failure During Download
 
 The Download result is set to RESULT_TRANSPORT_ERROR, and the Download is completed.
 
-3.1.7.3  FileSearchRequest Events
+##### 3.1.7.3 FileSearchRequest Events
 
-3.1.7.3.1 A Pending FileDiscoveryAttempt Completes
+###### 3.1.7.3.1 A Pending FileDiscoveryAttempt Completes
 
 Remove the call from the PENDING_CALLS_TABLE element.
 
@@ -1975,17 +1813,17 @@ Based on the response, the client MAY change the status of the server in the ser
 Take additional action based on the FileDiscoveryAttempt element response status (see the following
 sections).
 
-3.1.7.3.2 RESULT_FOUND
+###### 3.1.7.3.2 RESULT_FOUND
 
 Report the received records to the higher-layer protocol. If the PENDING_CALLS_TABLE is empty, set
 state to STATE_COMPLETE; otherwise, set state to STATE_WAIT.
 
-3.1.7.3.3 RESULT_NOT_FOUND
+###### 3.1.7.3.3 RESULT_NOT_FOUND
 
 If the PENDING_CALLS_TABLE is empty, set state to STATE_COMPLETE; otherwise, set state to
 STATE_WAIT.
 
-3.1.7.3.4 RESULT_CLIENT_CERT_UNKNOWN
+###### 3.1.7.3.4 RESULT_CLIENT_CERT_UNKNOWN
 
 Authenticate the client certificate to the server by calling the method
 ExchangePublicKeys (section 3.2.4.1), as specified in [MS-BPAU]. <18> For more details on certificate
@@ -1997,14 +1835,14 @@ element, and set state to STATE_SEND_REQUEST.
 Otherwise, remove the server from the server table, increment SERVERS_NEEDED element, and set
 state to STATE_CHOOSE_SERVER.
 
-3.1.7.3.5 RESULT_ACCESS_DENIED or RESULT_INVALID_SEARCH or
+###### 3.1.7.3.5 RESULT_ACCESS_DENIED or RESULT_INVALID_SEARCH or
 
 RESULT_UNKNOWN
 
 Remove the server from the server table, increment SERVERS_NEEDED, and set state to
 STATE_CHOOSE_SERVER.
 
-3.1.7.3.6 RESULT_SERVER_CERT_UNKNOWN
+###### 3.1.7.3.6 RESULT_SERVER_CERT_UNKNOWN
 
 Authenticate the server certificate to the client by calling the method
 ExchangePublicKeys (section 3.1.4.1), as specified in [MS-BPAU].<19> For more details on certificate
@@ -2016,7 +1854,7 @@ STATE_SEND_REQUEST.
 Otherwise, remove the server from the server table, increment the SERVERS_NEEDED element, and
 set state to STATE_CHOOSE_SERVER.
 
-3.1.7.3.7 RESULT_TRANSPORT_ERROR or RESULT_OUT_OF_RESOURCES
+###### 3.1.7.3.7 RESULT_TRANSPORT_ERROR or RESULT_OUT_OF_RESOURCES
 
 Increment SERVERS_NEEDED, and set state to STATE_CHOOSE_SERVER.
 
@@ -2027,7 +1865,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval P
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.7.3.8 Notification of New Server or Address
+
+###### 3.1.7.3.8 Notification of New Server or Address
 
 Each FileSearchRequest element checks its F_WAITING_FOR_DISCOVERY element flag and
 ignores the notification if this flag is false.
@@ -2038,17 +1877,17 @@ FileSearchRequest element's PENDING-CALLS-TABLE element. The search decrements
 SERVERS_NEEDED element; if it is now zero, the F_WAITING_FOR_DISCOVERY element flag is
 cleared.
 
-3.1.7.3.9 Protocol Shutdown
+###### 3.1.7.3.9 Protocol Shutdown
 
 Each pending Search object is canceled. The client shuts down the client role of the BITS Peer-
 Caching: Peer Discovery Protocol, as described in [MS-BPDP] section 3.2.6.8.
 
-3.1.7.4  FileSearchRequest State Transitions
+##### 3.1.7.4 FileSearchRequest State Transitions
 
  The following sections describe the actions that the FileSearchRequest element object (3.1.1.3)
 MUST take at entry to each state.
 
-3.1.7.4.1 STATE_INIT
+###### 3.1.7.4.1 STATE_INIT
 
 Construct a DISCOVERY-REQUEST body from the supplied URL search criteria. Set F_DISCOVERED to
 false, and set F_WAITING_FOR_DISCOVERY to false. Set SERVERS-NEEDED to IDEAL-SERVER-
@@ -2057,7 +1896,7 @@ TABLE are authenticated, set AUTH_NEEDED=10; otherwise, set AUTH_NEEDED=5.
 
 Set state to STATE_CHOOSE_SERVER.
 
-3.1.7.4.2 STATE_CHOOSE_SERVER
+###### 3.1.7.4.2 STATE_CHOOSE_SERVER
 
  If F_DISCOVERED is false:
 
@@ -2083,7 +1922,7 @@ STATE_SEND_REQUEST; otherwise, set the state to STATE_DISCOVER_SERVERS.
 Set NEW_SERVER to a FileSearchRequest element (not chosen yet by this search) from the table.
 Decrement SERVERS-NEEDED, and set state to STATE_SEND_REQUEST.
 
-3.1.7.4.3 STATE_SEND_REQUEST
+###### 3.1.7.4.3 STATE_SEND_REQUEST
 
 Create a FileDiscoveryAttempt element to NEW_SERVER element, add it to the
 PENDING_CALLS_TABLE element, and send the DISCOVERY-REQUEST message to the
@@ -2095,14 +1934,15 @@ Release: June 1, 2017
 
 29 / 54
 
-NEW_SERVER element. If (SERVERS-NEEDED > 0), set state to STATE_CHOOSE_SERVER;
+
+NEW_SERVER element. If (SERVERS-NEEDED > 0), set state to STATE_CHOOSE_SERVER;
 otherwise, set F_WAITING_FOR_DISCOVERY element to false, and set state to STATE_WAIT.
 
-3.1.7.4.4 STATE_WAIT
+###### 3.1.7.4.4 STATE_WAIT
 
 Block, waiting for search timeout or a FileDiscoveryAttempt element to complete.
 
-3.1.7.4.5 STATE_DISCOVER_SERVERS
+###### 3.1.7.4.5 STATE_DISCOVER_SERVERS
 
 If F_DISCOVERED is false, trigger a peer-discovery request as described in [MS-BPDP] section 3.2.6.4.
 Set F_DISCOVERED to true. If additional servers are discovered, notification will occur
@@ -2110,13 +1950,13 @@ asynchronously, as specified in section 3.1.7.3.8.
 
 Set state to STATE_WAIT.
 
-3.1.7.4.6 STATE_COMPLETE
+###### 3.1.7.4.6 STATE_COMPLETE
 
 This is the terminal state. Indicate completion to the higher-layer protocol.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2124,7 +1964,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model, as long as their external behavior is consistent with what is described in this
 document.
 
-3.2.1.1  Table of Content Records
+##### 3.2.1.1 Table of Content Records
 
 The server reads from a persistent table of the URL data that can be updated by the system. Each row
 of the table contains the following fields:
@@ -2172,24 +2012,25 @@ Release: June 1, 2017
 
 30 / 54
 
-3.2.1.2  Maximum Cache Size
+
+##### 3.2.1.2 Maximum Cache Size
 
 This is a size, in bytes, that represents the maximum amount of data that can be cached. The value is
 passed by the higher-layer protocol.
 
-3.2.1.3  Maximum Record Age
+##### 3.2.1.3 Maximum Record Age
 
 This is the maximum amount of time a record can be part of the table of content records. The value is
 passed by the higher-layer protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Record Expiration
+##### 3.2.2.1 Record Expiration
 
 This timer represents the amount of time before the next cache record expires. The timer has no
 default value, as the interval is calculated when the timer is started.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The BITS Peer-Caching: Content Retrieval Protocol is initialized when a server is ready to begin
 accepting client requests. The server begins listening for HTTPS connections on TCP port 2178 and
@@ -2204,9 +2045,9 @@ layer protocol.
 The record expiration timer interval value is set when the oldest record from the table of content
 records exceeds the maximum record age. The record expiration timer is then started.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Cache Data
+##### 3.2.4.1 Cache Data
 
 Higher-layer protocols use this event to add new data in the table of content records. It passes values
 of all the fields in the table of content records section 3.2.1.1.
@@ -2217,7 +2058,7 @@ oldest record from the table until the cache size is less than maximum cache siz
 If the record expiration timer is not started, then its interval value is set when the oldest record from
 the table of content records exceeds the maximum record age. The timer is then started.
 
-3.2.4.2  Protocol Shutdown
+##### 3.2.4.2 Protocol Shutdown
 
 When the BITS Peer-Caching: Content Retrieval Protocol is halted, the server shuts down the server
 role of the BITS Peer-Caching: Peer Discovery Protocol as described in [MS-BPDP] section 3.1.6.1. The
@@ -2232,16 +2073,17 @@ Release: June 1, 2017
 
 31 / 54
 
-3.2.5  Message Processing Events and Sequencing Rules
 
-3.2.5.1  General Rules for HTTP-Level Error Responses
+#### 3.2.5 Message Processing Events and Sequencing Rules
+
+##### 3.2.5.1 General Rules for HTTP-Level Error Responses
 
 This section describes several circumstances in which the server's response to an incoming message is
 a response at the HTTP level rather than a message from section 2.2. In all such cases, the response
 MUST conform to the format specified in [RFC2616] section 6. The HTTP message body of these
 messages SHOULD be empty.<20>
 
-3.2.5.2  Message Validation
+##### 3.2.5.2 Message Validation
 
 The server MUST request that the client provide a certificate as detailed in [RFC2246] section 7.3. In
 this TLS negotiation, the server provides the "Local Certificate" exposed by [MS-BPAU] section
@@ -2303,7 +2145,7 @@ The server MAY impose limits on the number of messages processed simultaneously.
 incoming message surpasses the server limits, the server SHOULD reply with an HTTP error response,
 as specified in section 2.2, using an HTTP status code of 503.
 
-3.2.5.3  DISCOVERY-REQUEST
+##### 3.2.5.3 DISCOVERY-REQUEST
 
 The server MUST query BITS Peer-Caching: Peer Authentication for the presence of certificate as
 specified in BITS Peer-Caching: Peer Authentication section 3.1.6.1. If BITS Peer-Caching: Peer
@@ -2316,7 +2158,8 @@ Release: June 1, 2017
 
 32 / 54
 
-MUST return a DISCOVERY-RESPONSE with the value of the SearchResults/Status element set to
+
+MUST return a DISCOVERY-RESPONSE with the value of the SearchResults/Status element set to
 "CertificateNotFound".
 
 If the URL of the message is not "/BITS-peer-caching", the server MUST reply with an HTTP error
@@ -2353,7 +2196,7 @@ DISCOVERY-RESPONSE message with the <SearchResults>/<Status> element set to "Suc
 message contains one <SearchResults>/<CacheRecord> element for each record in the truncated
 list.<23>
 
-3.2.5.4  DOWNLOAD-REQUEST
+##### 3.2.5.4 DOWNLOAD-REQUEST
 
 The server MUST query BITS Peer-Caching: Peer Authentication for the status of the certificate as
 specified in BITS Peer-Caching: Peer Authentication section 3.1.6.1. If BITS Peer-Caching: Peer
@@ -2386,7 +2229,8 @@ Release: June 1, 2017
 
 33 / 54
 
-Otherwise, the server MUST return status 206 when the request contains a Content-Range header and
+
+Otherwise, the server MUST return status 206 when the request contains a Content-Range header and
 status 200 when the request does not contain a Content-Range header. The following also applies to
 the request:
 
@@ -2411,15 +2255,15 @@ For the record found, the content record's FileCreationTime, FileLastAccessTime,
 FileModificationTime, and FileAttributes are copied from the ADM record fields of the same name
 into the same named elements of the Download response.
 
-3.2.5.5  HEAD-REQUEST
+##### 3.2.5.5 HEAD-REQUEST
 
 The server MUST respond with the HTTP headers that would be generated for the corresponding GET
 request, but with no message body. This follows the recommendations for HEAD requests, as specified
 in [RFC2616] section 9.4.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Record Expiration
+##### 3.2.6.1 Record Expiration
 
 The server removes all records from the table of content records with an age that exceeds the
 maximum record age section 3.2.1.3.
@@ -2427,7 +2271,7 @@ maximum record age section 3.2.1.3.
 The timer interval value is then set when the oldest record from the table of content records will
 exceed the maximum record age. The timer is then started.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2438,9 +2282,10 @@ Release: June 1, 2017
 
 34 / 54
 
-4  Protocol Example
 
-4.1  Successful FileSearchRequest with Two Servers
+## 4 Protocol Example
+
+### 4.1 Successful FileSearchRequest with Two Servers
 
 This section describes a successful FileSearchRequest with two servers, to illustrate the function of
 the BITS Peer-Caching: Content Retrieval Protocol.
@@ -2511,7 +2356,8 @@ Release: June 1, 2017
 
 35 / 54
 
- 0320  00 0d 00 0a 00 20 00 20-00 20 00 20 00 3c 00 4d   ..... . . . .<.M
+
+ 0320  00 0d 00 0a 00 20 00 20-00 20 00 20 00 3c 00 4d   ..... . . . .<.M
  0330  00 61 00 78 00 52 00 65-00 63 00 6f 00 72 00 64   .a.x.R.e.c.o.r.d
  0340  00 73 00 3e 00 22 00 35-00 22 00 3c 00 2f 00 4d   .s.>.".5.".<./.M
  0350  00 61 00 78 00 52 00 65-00 63 00 6f 00 72 00 64   .a.x.R.e.c.o.r.d
@@ -2584,7 +2430,8 @@ Release: June 1, 2017
 
 36 / 54
 
- 0370  00 61 00 72 00 63 00 68-00 52 00 65 00 71 00 75   .a.r.c.h.R.e.q.u
+
+ 0370  00 61 00 72 00 63 00 68-00 52 00 65 00 71 00 75   .a.r.c.h.R.e.q.u
  0380  00 65 00 73 00 74 00 3e-00 0d 00 0a 00            .e.s.t.>.....
 
 Server "jroberts19" holds cached data, and responds with an affirmative DISCOVERY-RESPONSE:
@@ -2658,7 +2505,8 @@ Release: June 1, 2017
 
 37 / 54
 
- 03D0  00 69 00 6e 00 64 00 6f-00 77 00 73 00 75 00 70   .i.n.d.o.w.s.u.p
+
+ 03D0  00 69 00 6e 00 64 00 6f-00 77 00 73 00 75 00 70   .i.n.d.o.w.s.u.p
  03E0  00 64 00 61 00 74 00 65-00 2e 00 63 00 6f 00 6d   .d.a.t.e...c.o.m
  03F0  00 2f 00 6d 00 73 00 64-00 6f 00 77 00 6e 00 6c   ./.m.s.d.o.w.n.l
  0400  00 6f 00 61 00 64 00 2f-00 75 00 70 00 64 00 61   .o.a.d./.u.p.d.a
@@ -2735,7 +2583,8 @@ Release: June 1, 2017
 
 38 / 54
 
- 0820  00 20 00 20 00 20 00 3c-00 2f 00 43 00 6f 00 6e   . . . .<./.C.o.n
+
+ 0820  00 20 00 20 00 20 00 3c-00 2f 00 43 00 6f 00 6e   . . . .<./.C.o.n
  0830  00 74 00 65 00 6e 00 74-00 52 00 61 00 6e 00 67   .t.e.n.t.R.a.n.g
  0840  00 65 00 3e 00 0d 00 0a-00 20 00 20 00 20 00 20   .e.>..... . . .
  0850  00 3c 00 2f 00 43 00 61-00 63 00 68 00 65 00 52   .<./.C.a.c.h.e.R
@@ -2800,7 +2649,8 @@ Release: June 1, 2017
 
 39 / 54
 
-The server replies with a DOWNLOAD-RESPONSE:
+
+The server replies with a DOWNLOAD-RESPONSE:
 
  0000  48 54 54 50 2f 31 2e 31-20 32 30 36 20 0d 0a 43   HTTP/1.1 206 ..C
  0010  6f 6e 74 65 6e 74 2d 4c-65 6e 67 74 68 3a 20 31   ontent-Length: 1
@@ -2821,7 +2671,7 @@ Release: June 1, 2017
  0100  3a 35 35 3a 33 39 20 47-4d 54 0d 0a 0d 0a 20 72   :55:39 GMT.... r
  0110  75 6e 20 69 6e 20 44 4f-53 20 6d 6f 64 65         un in DOS mode
 
-4.2  BITS and Peer-caching Interactions: Initial Download
+### 4.2 BITS and Peer-caching Interactions: Initial Download
 
 The following sequence diagram illustrates a scenario where an application uses the BITS Upload
 Protocol and BITS Peer-caching protocols to download content. In this scenario:
@@ -2845,7 +2695,8 @@ Release: June 1, 2017
 
 40 / 54
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-BPCR].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2883,7 +2734,8 @@ Release: June 1, 2017
 
 41 / 54
 
-7.  BPCR Client adds the server to its Table of Servers element, creates a new
+
+7.  BPCR Client adds the server to its Table of Servers element, creates a new
 
 FileDiscoveryAttempt element entry, and sends a DISCOVERY-REQUEST message.
 
@@ -2918,7 +2770,7 @@ state and downloads from the origin server until the URL is completely downloade
 
 16. Application adds the content to the BPCR server cache.
 
-4.3  BITS and Peer-caching Interactions: Second Download
+### 4.3 BITS and Peer-caching Interactions: Second Download
 
 The following sequence diagram illustrates a download of a different URL from the same client as in
 the example in section 4.1, occurring less than 10 minutes after the sequence of that example. Thus,
@@ -2943,7 +2795,8 @@ Release: June 1, 2017
 
 42 / 54
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-BPCR].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2980,7 +2833,8 @@ Release: June 1, 2017
 
 43 / 54
 
-7.  The client FileDiscoveryAttempt element completes with result RESULT_FOUND (see section
+
+7.  The client FileDiscoveryAttempt element completes with result RESULT_FOUND (see section
 
 3.1.5.1) and section 3.1.7.3.1). The content record is returned to the BITS Upload Protocol. The
 FileDiscoveryAttempt element is removed from the PENDING_CALLS_TABLE element, and
@@ -3010,13 +2864,14 @@ Release: June 1, 2017
 
 44 / 54
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3027,7 +2882,8 @@ Release: June 1, 2017
 
 45 / 54
 
-6  Appendix A: XML Schema
+
+## 6 Appendix A: XML Schema
 
 The XSD for XML namespace http://schemas.microsoft.com/windows/2007/01/BITS/ContentDiscovery
 is reproduced as follows:
@@ -3102,7 +2958,8 @@ Release: June 1, 2017
 
 46 / 54
 
-       <element name="Id" type="cd:guid"/>
+
+       <element name="Id" type="cd:guid"/>
        <element name="CreationTime" type="dateTime"/>
        <element name="ModificationTime" type="dateTime"/>
        <element name="LastAccessTime" type="dateTime"/>
@@ -3140,7 +2997,8 @@ Release: June 1, 2017
 
 47 / 54
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3207,7 +3065,8 @@ Release: June 1, 2017
 
 48 / 54
 
-bg_job_priority_foreground, and it omits the HEAD when the priority is bg_job_priority_foreground.
+
+bg_job_priority_foreground, and it omits the HEAD when the priority is bg_job_priority_foreground.
 For an overview of BITS in Windows, see [MSDN-BITS].
 
 <14> Section 3.1.2.3: Windows uses a value of five minutes.
@@ -3278,7 +3137,8 @@ Release: June 1, 2017
 
 49 / 54
 
-HRESULT value
+
+HRESULT value
 
 Corresponding string in <Status> element
 
@@ -3308,7 +3168,8 @@ Release: June 1, 2017
 
 50 / 54
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3320,7 +3181,8 @@ Release: June 1, 2017
 
 51 / 54
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3464,7 +3326,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Content Retrieval P
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-M
+
+M
 
 Message body 19
 Message processing
@@ -3607,7 +3470,8 @@ Release: June 1, 2017
 
 53 / 54
 
-V
+
+V
 
 Validation 32
 Vendor-extensible fields 14

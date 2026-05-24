@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 58
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -279,7 +280,8 @@ Release: April 23, 2024
 
 2 / 58
 
-Date
+
+Date
 
 Revision
 History
@@ -361,340 +363,137 @@ Release: April 23, 2024
 
 3 / 58
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.3
-
-2.2.2.2
-
-2.2.2.1
-
-2.2.1.1
-
-2.2.2.1.1
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-2.2.2.2.6
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-Extensions to RTP ....................................................................................... 13
-ASF Payload Extension System Extension ................................................. 13
-Extensions to SDP....................................................................................... 13
-Bandwidth Modifiers for the b= Field ....................................................... 13
-X-AV Bandwidth Modifier .................................................................. 13
-Attributes for the a= Field ...................................................................... 14
-Leaky Bucket Parameters Attribute (a=bucketinfo) .............................. 14
-Buffer Size Attribute (a=bufsize) ....................................................... 14
-Marker Attribute (a=marker) ............................................................ 14
-Media Stream Identification Attribute (a=mid) .................................... 15
-Program Parameters URL Attribute (a=pgmpu) ................................... 15
-Type Attribute (a=type) ................................................................... 15
-Generic RTP Payload Format ................................................................... 15
-VIDEOINFOHEADER ......................................................................... 16
-VIDEOINFOHEADER2 ....................................................................... 17
-RECT ............................................................................................. 18
-ASF Payload Extension Systems .............................................................. 18
-Extensions to RTSP ..................................................................................... 19
-Cache-Control ...................................................................................... 19
-Content-Type ....................................................................................... 19
-Supported ............................................................................................ 19
-Supported Sent by a Client ............................................................... 19
-Supported Sent by a Server .............................................................. 20
-Transport ............................................................................................. 20
-User-Agent ........................................................................................... 20
-X-Accept-Authentication ........................................................................ 21
-X-Playlist-Gen-Id .................................................................................. 21
-X-Playlist-Seek-Id ................................................................................. 21
-Extensions to HTTP ..................................................................................... 21
-User-Agent ........................................................................................... 21
-X-AvailableSeekRange ........................................................................... 22
-magic packet ............................................................................................. 22
-
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-
-2.2.2.3.1
-2.2.2.3.2
-2.2.2.3.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.3.3.1
-2.2.3.3.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.2.4
-
-2.2.4
-
-2.2.5
-
-2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 23
-Client Details ................................................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-[MS-DLNHND] - v20240423
-Digital Living Network Alliance (DLNA) Networked Device Interoperability Guidelines: Microsoft Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 58
-
-3.1.4.3.1
-
-3.1.5
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-Request to start streaming using HTTP .................................................... 24
-Request to start streaming using RTSP .................................................... 24
-Request to perform DLNA Media Operation using RTSP .............................. 25
-Common rules for sending RTSP requests ........................................... 25
-Processing Events and Sequencing Rules ....................................................... 25
-Receiving an HTTP GET response ............................................................ 25
-Receiving an RTSP DESCRIBE response ................................................... 26
-Receiving a RTSP response ..................................................................... 26
-Receiving an RTP packet ........................................................................ 27
-Receiving a RTSP ANNOUNCE request ...................................................... 27
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-Digital Media Player Details ............................................................................... 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Request to Browse the ContentDirectory Service ....................................... 29
-Request to Start Streaming .................................................................... 30
-Processing Events and Sequencing Rules ....................................................... 30
-Response to the Search or Browse UPnP action is received ......................... 30
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-UPnP Device Discovery notification is received .......................................... 30
-Notification that streaming has ended ...................................................... 31
-Notification that the Digital Media Server leaves the network ...................... 31
-Digital Media Renderer Details ........................................................................... 31
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Request to initialize the DMR .................................................................. 32
-Request to shut down the DMR ............................................................... 33
-Processing Events and Sequencing Rules ....................................................... 33
-Request to start streaming ..................................................................... 33
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-Notification that Streaming Ended ........................................................... 33
-Digital Media Server Details ............................................................................... 34
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 35
-Requesting to Start the DMS .................................................................. 35
-Requesting to Shut Down the DMS .......................................................... 36
-Notification that a RTP or RTCP Packet is Ready to Send ............................ 36
-Notification That the Last RTP Packet Has Been Sent ................................. 36
-Processing Events and Sequencing Rules ....................................................... 36
-Invoking a UPnP Browse or Search Action ................................................ 36
-Requesting to Start Streaming Using HTTP ............................................... 39
-Receiving a RTSP DESCRIBE Request ...................................................... 39
-Common Rules for Responses to RTSP Requests .................................. 41
-Receiving a RTSP SETUP Request ............................................................ 41
-Receiving a RTSP PLAY request ............................................................... 42
-Receiving an RTSP PAUSE Request .......................................................... 42
-Receiving an RTSP TEARDOWN Request ................................................... 43
-Receiving an RTSP OPTIONS Request ...................................................... 43
-Timer Events .............................................................................................. 44
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-
-3.3.5.1
-
-3.3.5
-
-3.3.6
-3.3.7
-
-3.3.7.1
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-
-3.4.4.1
-3.4.4.2
-3.4.4.3
-3.4.4.4
-
-3.4.5.1
-3.4.5.2
-3.4.5.3
-
-3.4.5.4
-3.4.5.5
-3.4.5.6
-3.4.5.7
-3.4.5.8
-
-3.4.6
-
-3.4.5.3.1
-
-[MS-DLNHND] - v20240423
-Digital Living Network Alliance (DLNA) Networked Device Interoperability Guidelines: Microsoft Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 58
-
-3.4.7
-
-3.4.7.1
-3.4.7.2
-
-Other Local Events ...................................................................................... 44
-Receiving a UPnP Device Discovery Notification ......................................... 44
-Notifying that Streaming Has Ended ........................................................ 44
-
-4.1
-
-4  Protocol Examples ................................................................................................. 45
-SDP Examples ................................................................................................. 45
-Generic RTP Payload Format ........................................................................ 45
-Variable Bit Rate Content ............................................................................. 45
-RTSP Playback ................................................................................................. 47
-HTTP Playback ................................................................................................. 51
-
-4.1.1
-4.1.2
-
-4.2
-4.3
-
-5  Security ................................................................................................................. 52
-Security Considerations for Implementers ........................................................... 52
-Index of Security Parameters ............................................................................ 52
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 53
-
-7  Change Tracking .................................................................................................... 55
-
-8  Index ..................................................................................................................... 56
-
-[MS-DLNHND] - v20240423
-Digital Living Network Alliance (DLNA) Networked Device Interoperability Guidelines: Microsoft Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 58
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Extensions to RTP](#221-extensions-to-rtp)
+      - [2.2.1.1 ASF Payload Extension System Extension](#2211-asf-payload-extension-system-extension)
+    - [2.2.2 Extensions to SDP](#222-extensions-to-sdp)
+      - [2.2.2.1 Bandwidth Modifiers for the b= Field](#2221-bandwidth-modifiers-for-the-b-field)
+        - [2.2.2.1.1 X-AV Bandwidth Modifier](#22211-x-av-bandwidth-modifier)
+      - [2.2.2.2 Attributes for the a= Field](#2222-attributes-for-the-a-field)
+        - [2.2.2.2.1 Leaky Bucket Parameters Attribute (a=bucketinfo)](#22221-leaky-bucket-parameters-attribute-abucketinfo)
+        - [2.2.2.2.2 Buffer Size Attribute (a=bufsize)](#22222-buffer-size-attribute-abufsize)
+        - [2.2.2.2.3 Marker Attribute (a=marker)](#22223-marker-attribute-amarker)
+        - [2.2.2.2.4 Media Stream Identification Attribute (a=mid)](#22224-media-stream-identification-attribute-amid)
+        - [2.2.2.2.5 Program Parameters URL Attribute (a=pgmpu)](#22225-program-parameters-url-attribute-apgmpu)
+        - [2.2.2.2.6 Type Attribute (a=type)](#22226-type-attribute-atype)
+      - [2.2.2.3 Generic RTP Payload Format](#2223-generic-rtp-payload-format)
+        - [2.2.2.3.1 VIDEOINFOHEADER](#22231-videoinfoheader)
+        - [2.2.2.3.2 VIDEOINFOHEADER2](#22232-videoinfoheader2)
+        - [2.2.2.3.3 RECT](#22233-rect)
+      - [2.2.2.4 ASF Payload Extension Systems](#2224-asf-payload-extension-systems)
+    - [2.2.3 Extensions to RTSP](#223-extensions-to-rtsp)
+      - [2.2.3.1 Cache-Control](#2231-cache-control)
+      - [2.2.3.2 Content-Type](#2232-content-type)
+      - [2.2.3.3 Supported](#2233-supported)
+        - [2.2.3.3.1 Supported Sent by a Client](#22331-supported-sent-by-a-client)
+        - [2.2.3.3.2 Supported Sent by a Server](#22332-supported-sent-by-a-server)
+      - [2.2.3.4 Transport](#2234-transport)
+      - [2.2.3.5 User-Agent](#2235-user-agent)
+      - [2.2.3.6 X-Accept-Authentication](#2236-x-accept-authentication)
+      - [2.2.3.7 X-Playlist-Gen-Id](#2237-x-playlist-gen-id)
+      - [2.2.3.8 X-Playlist-Seek-Id](#2238-x-playlist-seek-id)
+    - [2.2.4 Extensions to HTTP](#224-extensions-to-http)
+      - [2.2.4.1 User-Agent](#2241-user-agent)
+      - [2.2.4.2 X-AvailableSeekRange](#2242-x-availableseekrange)
+    - [2.2.5 magic packet](#225-magic-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Request to start streaming using HTTP](#3141-request-to-start-streaming-using-http)
+      - [3.1.4.2 Request to start streaming using RTSP](#3142-request-to-start-streaming-using-rtsp)
+      - [3.1.4.3 Request to perform DLNA Media Operation using RTSP](#3143-request-to-perform-dlna-media-operation-using-rtsp)
+        - [3.1.4.3.1 Common rules for sending RTSP requests](#31431-common-rules-for-sending-rtsp-requests)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving an HTTP GET response](#3151-receiving-an-http-get-response)
+      - [3.1.5.2 Receiving an RTSP DESCRIBE response](#3152-receiving-an-rtsp-describe-response)
+      - [3.1.5.3 Receiving a RTSP response](#3153-receiving-a-rtsp-response)
+      - [3.1.5.4 Receiving an RTP packet](#3154-receiving-an-rtp-packet)
+      - [3.1.5.5 Receiving a RTSP ANNOUNCE request](#3155-receiving-a-rtsp-announce-request)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Digital Media Player Details](#32-digital-media-player-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Request to Browse the ContentDirectory Service](#3241-request-to-browse-the-contentdirectory-service)
+      - [3.2.4.2 Request to Start Streaming](#3242-request-to-start-streaming)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Response to the Search or Browse UPnP action is received](#3251-response-to-the-search-or-browse-upnp-action-is-received)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 UPnP Device Discovery notification is received](#3271-upnp-device-discovery-notification-is-received)
+      - [3.2.7.2 Notification that streaming has ended](#3272-notification-that-streaming-has-ended)
+      - [3.2.7.3 Notification that the Digital Media Server leaves the network](#3273-notification-that-the-digital-media-server-leaves-the-network)
+  - [3.3 Digital Media Renderer Details](#33-digital-media-renderer-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Request to initialize the DMR](#3341-request-to-initialize-the-dmr)
+      - [3.3.4.2 Request to shut down the DMR](#3342-request-to-shut-down-the-dmr)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Request to start streaming](#3351-request-to-start-streaming)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Notification that Streaming Ended](#3371-notification-that-streaming-ended)
+  - [3.4 Digital Media Server Details](#34-digital-media-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 Requesting to Start the DMS](#3441-requesting-to-start-the-dms)
+      - [3.4.4.2 Requesting to Shut Down the DMS](#3442-requesting-to-shut-down-the-dms)
+      - [3.4.4.3 Notification that a RTP or RTCP Packet is Ready to Send](#3443-notification-that-a-rtp-or-rtcp-packet-is-ready-to-send)
+      - [3.4.4.4 Notification That the Last RTP Packet Has Been Sent](#3444-notification-that-the-last-rtp-packet-has-been-sent)
+    - [3.4.5 Processing Events and Sequencing Rules](#345-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Invoking a UPnP Browse or Search Action](#3451-invoking-a-upnp-browse-or-search-action)
+      - [3.4.5.2 Requesting to Start Streaming Using HTTP](#3452-requesting-to-start-streaming-using-http)
+      - [3.4.5.3 Receiving a RTSP DESCRIBE Request](#3453-receiving-a-rtsp-describe-request)
+        - [3.4.5.3.1 Common Rules for Responses to RTSP Requests](#34531-common-rules-for-responses-to-rtsp-requests)
+      - [3.4.5.4 Receiving a RTSP SETUP Request](#3454-receiving-a-rtsp-setup-request)
+      - [3.4.5.5 Receiving a RTSP PLAY request](#3455-receiving-a-rtsp-play-request)
+      - [3.4.5.6 Receiving an RTSP PAUSE Request](#3456-receiving-an-rtsp-pause-request)
+      - [3.4.5.7 Receiving an RTSP TEARDOWN Request](#3457-receiving-an-rtsp-teardown-request)
+      - [3.4.5.8 Receiving an RTSP OPTIONS Request](#3458-receiving-an-rtsp-options-request)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+      - [3.4.7.1 Receiving a UPnP Device Discovery Notification](#3471-receiving-a-upnp-device-discovery-notification)
+      - [3.4.7.2 Notifying that Streaming Has Ended](#3472-notifying-that-streaming-has-ended)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 SDP Examples](#41-sdp-examples)
+    - [4.1.1 Generic RTP Payload Format](#411-generic-rtp-payload-format)
+    - [4.1.2 Variable Bit Rate Content](#412-variable-bit-rate-content)
+  - [4.2 RTSP Playback](#42-rtsp-playback)
+  - [4.3 HTTP Playback](#43-http-playback)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document defines Microsoft Extensions to the Digital Living Network Alliance (DLNA) Home
 Networked Device Interoperability Guidelines, as specified in [DLNA]. The DLNA Guidelines define
@@ -715,7 +514,7 @@ document, except for section 1.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -766,7 +565,8 @@ Release: April 23, 2024
 
 7 / 58
 
-SOAP: A lightweight protocol for exchanging structured information in a decentralized, distributed
+
+SOAP: A lightweight protocol for exchanging structured information in a decentralized, distributed
 
 environment. SOAP uses XML technologies to define an extensible messaging framework, which
 provides a message construct that can be exchanged over a variety of underlying protocols. The
@@ -802,14 +602,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -836,7 +636,8 @@ Release: April 23, 2024
 
 8 / 58
 
-[MS-RTSP] Microsoft Corporation, "Real-Time Streaming Protocol (RTSP) Windows Media Extensions".
+
+[MS-RTSP] Microsoft Corporation, "Real-Time Streaming Protocol (RTSP) Windows Media Extensions".
 
 [MS-UPMC] Microsoft Corporation, "UPnP Device and Service Templates: Media Property and
 Compatibility Extensions".
@@ -903,14 +704,15 @@ Release: April 23, 2024
 
 9 / 58
 
-[XML10] World Wide Web Consortium, "Extensible Markup Language (XML) 1.0 (Third Edition)",
+
+[XML10] World Wide Web Consortium, "Extensible Markup Language (XML) 1.0 (Third Edition)",
 February 2004, http://www.w3.org/TR/2004/REC-xml-20040204/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The DLNA Guidelines define a concept called Device Class. A Device Class is a role assumed by an
 implementation of the DLNA Guidelines. The Microsoft Extensions to the DLNA Guidelines specify
@@ -954,7 +756,7 @@ HTTP header extension is defined in this document, which allows the client to de
 range for seeking, in time units, without having to request that the server seek through the content to
 a particular time.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Microsoft Extensions to the DLNA Guidelines extend the RTSP protocol [MS-RTSP], the RTP
 protocol [RFC3550], and the SDP [RFC4566] syntax used by RTSP. The RTSP extensions do not affect
@@ -969,7 +771,8 @@ Release: April 23, 2024
 
 10 / 58
 
-Extensions to the DLNA Guidelines describes the use of RTCP but it does not define extensions to this
+
+Extensions to the DLNA Guidelines describes the use of RTCP but it does not define extensions to this
 protocol.
 
 All implementations of this protocol implement the UPnP Device Architecture [UPNPARCH1] with the
@@ -986,20 +789,20 @@ guideline 7.4.2.
 All implementations of the Microsoft Extensions to the DLNA Guidelines use IPv4 and can also use
 IPv6.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Microsoft Extensions to the DLNA Guidelines are for use on home networks. When IPv4 is used,
 the client and the server are on the same IP subnet. When IPv6 is used, the client and server use IPv6
 addresses from the Link Local address scope.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Microsoft Extensions to the DLNA Guidelines are only applicable to implementations that use the
 DLNA Guidelines. Implementation of the Microsoft Extensions is not required in order to interoperate
 with Windows, as these extensions only enhance the DLNA Guidelines without breaking
 interoperability.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1037,7 +840,8 @@ Release: April 23, 2024
 
 11 / 58
 
-The DLNA Guidelines define additional mechanisms for capability negotiation. For more details, see
+
+The DLNA Guidelines define additional mechanisms for capability negotiation. For more details, see
 [DLNA]. For example, [DLNA] guideline 7.4.239 specifies how a DMP or DMR can state which kind
 of RTP retransmission scheme it supports. The concept of the "4th field of protocolInfo" is widely
 used throughout the DLNA Guidelines (see [DLNA] guideline 7.3.26) and is used as a mechanism
@@ -1045,11 +849,11 @@ to state which media formats are supported, and if features like seeking are sup
 Microsoft Extensions do not extend the protocolInfo token, it is not covered further in this
 document.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Vendor-extensible fields are as defined in [DLNA].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1060,9 +864,10 @@ Release: April 23, 2024
 
 12 / 58
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Microsoft Extensions to the DLNA Guidelines allow the use of IPv6, in addition to the use of IPv4
 which is already allowed by the DLNA Guidelines (see [DLNA] guideline 7.1.27). When IPv4 is used,
@@ -1078,11 +883,11 @@ version 1.0, as specified in [DLNA] guideline 7.4.42.
 For details about transport protocols used by the DLNA Guidelines, see [DLNA] guidelines 7.4.1 and
 7.4.2. Note that the terminology used in the DLNA Guidelines for RTSP streaming is "RTP Transport".
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Extensions to RTP
+#### 2.2.1 Extensions to RTP
 
-2.2.1.1  ASF Payload Extension System Extension
+##### 2.2.1.1 ASF Payload Extension System Extension
 
 The RTP Payload Format for WMA and WMV [WMRTP] defines a field called Extension. This field can
 contain extensions to the RTP Payload Format. The Microsoft Extensions to the DLNA Guidelines
@@ -1106,14 +911,14 @@ are listed in the SDP.
 
 For details about how to list ASF Payload Extension Systems in the SDP, see section 2.2.2.4.
 
-2.2.2  Extensions to SDP
+#### 2.2.2 Extensions to SDP
 
-2.2.2.1  Bandwidth Modifiers for the b= Field
+##### 2.2.2.1 Bandwidth Modifiers for the b= Field
 
 The b= field is specified in [RFC4566] section 5.8 and is augmented with additional bandwidth
 modifiers in [RFC3556], and in section 2.2.2.1.1 of this document.
 
-2.2.2.1.1 X-AV Bandwidth Modifier
+###### 2.2.2.1.1 X-AV Bandwidth Modifier
 
 [MS-DLNHND] - v20240423
 Digital Living Network Alliance (DLNA) Networked Device Interoperability Guidelines: Microsoft Extensions
@@ -1122,11 +927,12 @@ Release: April 23, 2024
 
 13 / 58
 
-The X-AV bandwidth modifier specifies the average bit rate of the stream in kilobits per second.
 
-2.2.2.2  Attributes for the a= Field
+The X-AV bandwidth modifier specifies the average bit rate of the stream in kilobits per second.
 
-2.2.2.2.1 Leaky Bucket Parameters Attribute (a=bucketinfo)
+##### 2.2.2.2 Attributes for the a= Field
+
+###### 2.2.2.2.1 Leaky Bucket Parameters Attribute (a=bucketinfo)
 
 The bucketinfo attribute is defined for use at the SDP session level and consists of a list of leaky
 bucket parameter sets. Each leaky bucket parameter set specifies a streaming bit rate and a
@@ -1150,7 +956,7 @@ they are receiving the data at the bit rate given by the bitrate parameter. The 
 window parameter is expressed in millisecond time units. The valid numerical range of the buffer-
 window parameter is from 0 to 4,294,967,265, inclusive.
 
-2.2.2.2.2 Buffer Size Attribute (a=bufsize)
+###### 2.2.2.2.2 Buffer Size Attribute (a=bufsize)
 
 The bufsize attribute is defined for use at the SDP media level. It specifies the buffer window that
 corresponds to the bit rate specified in the b=AS attribute defined in section 5.8 of [RFC4566] when
@@ -1169,7 +975,7 @@ they are receiving the data at the bit rate given by the b=AS field. The value o
 parameter is expressed in millisecond time units. The valid numerical range of the buffer-window
 parameter is from 0 to 4,294,967,265, inclusive.
 
-2.2.2.2.3 Marker Attribute (a=marker)
+###### 2.2.2.2.3 Marker Attribute (a=marker)
 
 The marker attribute is specified for use at the SDP session level. If the content is stored in an ASF
 file, the ASF file can contain a Marker Object (defined in [ASF], section 3.7). The purpose of the
@@ -1184,7 +990,8 @@ Release: April 23, 2024
 
 14 / 58
 
- marker = "a=marker:-" 1*( SP marker-entry )
+
+ marker = "a=marker:-" 1*( SP marker-entry )
  marker-entry = presentation-time ";" marker-desc
  presentation-time = 1*10DIGIT
  marker-desc = *ALPHA ; see below for restrictions on this field
@@ -1211,11 +1018,11 @@ The Unicode characters MUST be converted to UTF-8 characters, as specified in [R
 encoded by using percent-encoding, as specified in [RFC3986] section 2.1. The resulting
 characters are used as the value of the marker-desc syntax element.
 
-2.2.2.2.4 Media Stream Identification Attribute (a=mid)
+###### 2.2.2.2.4 Media Stream Identification Attribute (a=mid)
 
 The syntax of the mid (Media Stream Identification) attribute is defined in section 3 of [RFC3388].
 
-2.2.2.2.5 Program Parameters URL Attribute (a=pgmpu)
+###### 2.2.2.2.5 Program Parameters URL Attribute (a=pgmpu)
 
 The pgmpu (program parameters URL) attribute adheres to the syntax defined in section 2.2.5.2.3 of
 [MS-RTSP], with the exception that the MIME type "application/x-wms-contentdesc" is the only MIME
@@ -1227,7 +1034,7 @@ section 2.2.5.2.3.2 of [MS-RTSP].
 When the Microsoft Extensions to the DLNA Guidelines are used, the pgmpu attribute can be used
 at both at the SDP session level and the SDP media level.
 
-2.2.2.2.6 Type Attribute (a=type)
+###### 2.2.2.2.6 Type Attribute (a=type)
 
 The type attribute is defined for use at the SDP session level. The presence of the attribute indicates
 that the server does not support the RTSP Scale header (see [RFC2326] section 12.34) for the current
@@ -1237,7 +1044,7 @@ The syntax of the attribute is defined as follows.
 
  type = "a=type:notstridable"
 
-2.2.2.3  Generic RTP Payload Format
+##### 2.2.2.3 Generic RTP Payload Format
 
 If the RTP Payload Format for WMA and WMV [WMRTP] is used for audio content that is not encoded
 using Windows Media Audio, then the RTP Payload Format MUST be identified in SDP by the MIME type
@@ -1250,7 +1057,8 @@ Release: April 23, 2024
 
 15 / 58
 
-If the RTP Payload Format for WMA and WMV [WMRTP] is used for video content that is not encoded
+
+If the RTP Payload Format for WMA and WMV [WMRTP] is used for video content that is not encoded
 using Windows Media Video, then the RTP Payload Format MUST be identified in SDP by the MIME type
 "video/x-wmf-pf".
 
@@ -1305,7 +1113,7 @@ VIDEOINFOHEADER structure, as defined in section 2.2.2.3.1.
 If the value of FormatType is "F72A76A0-EB0A-11D0-ACE4-0000C0CC16BA" then FormatData is a
 VIDEOINFOHEADER2 structure, as defined in section 2.2.2.3.2.
 
-2.2.2.3.1 VIDEOINFOHEADER
+###### 2.2.2.3.1 VIDEOINFOHEADER
 
 The VIDEOINFOHEADER structure is defined as follows.
 
@@ -1316,7 +1124,8 @@ Release: April 23, 2024
 
 16 / 58
 
- typedef struct tagVIDEOINFOHEADER {
+
+ typedef struct tagVIDEOINFOHEADER {
    RECT             rcSource;
    RECT             rcTarget;
    DWORD         dwBitRate;
@@ -1342,7 +1151,7 @@ The bmiHeader parameter is a BITMAPINFOHEADER structure as defined in section 9.
 
 For definitions of the DWORD and QWORD data types, see [MS-DTYP].
 
-2.2.2.3.2 VIDEOINFOHEADER2
+###### 2.2.2.3.2 VIDEOINFOHEADER2
 
 The VIDEOINFOHEADER2 structure is defined as follows:
 
@@ -1383,13 +1192,14 @@ Release: April 23, 2024
 
 17 / 58
 
-The dwReserved1 parameter MUST be set to 0x00000000.
+
+The dwReserved1 parameter MUST be set to 0x00000000.
 
 The dwReserved2 parameter MUST be set to 0x00000000.
 
 For a definition of the DWORD data type, see [MS-DTYP].
 
-2.2.2.3.3 RECT
+###### 2.2.2.3.3 RECT
 
 The RECT structure is defined as follows:
 
@@ -1410,7 +1220,7 @@ image, in pixels.
 
 For a definition of the LONG data type, see [MS-DTYP].
 
-2.2.2.4  ASF Payload Extension Systems
+##### 2.2.2.4 ASF Payload Extension Systems
 
 If the RTP Payload Format for WMA and WMV [WMRTP] is used, or if the Generic RTP Payload Format
 defined in section 2.2.2.3 is used, then the RTP packets can include the ASF Payload Extension
@@ -1446,13 +1256,14 @@ Release: April 23, 2024
 
 18 / 58
 
-If the ExtensionInfo field is present, then it MUST be set to the value of the ExtensionSystemInfo
+
+If the ExtensionInfo field is present, then it MUST be set to the value of the ExtensionSystemInfo
 field from the definition of the ASF Payload Extension System. Each byte in the
 ExtensionSystemInfo field MUST be written as two hexadecimal digits in the ExtensionInfo field.
 See section 4.1 in [ASF] for details about how to locate the ExtensionSystemInfo field in the ASF
 file.
 
-2.2.3  Extensions to RTSP
+#### 2.2.3 Extensions to RTSP
 
 This section defines extensions to RTSP, in addition to the extensions defined in [DLNA].
 
@@ -1465,7 +1276,7 @@ This section defines the syntax of the RTSP headers by using the ABNF syntax, as
 [RFC5234]. Any ABNF syntax rules that are not specified in [RFC5234] use the ABNF extensions that
 are specified in [RFC2326].
 
-2.2.3.1  Cache-Control
+##### 2.2.3.1 Cache-Control
 
 The Cache-Control header is defined for use in responses sent to a client.
 
@@ -1478,7 +1289,7 @@ The syntax of the header is as follows.
 
 The valid numerical range of the content-size parameter is from 0 to 4,294,967,265 inclusive.
 
-2.2.3.2  Content-Type
+##### 2.2.3.2 Content-Type
 
 When the Content-Type header is included in an ANNOUNCE request that is sent to a client in
 accordance with [DLNA] guideline 7.4.261, then the Content-Type header is defined as follows.
@@ -1489,14 +1300,14 @@ If the Content-Type header is used in other RTSP requests and responses, or in a
 for which [DLNA] guideline 7.4.261 does not apply, then the Content-Type header follows the syntax
 defined in section 12.16 of [RFC2326].
 
-2.2.3.3  Supported
+##### 2.2.3.3 Supported
 
 The Supported header is defined in [DLNA] guideline 7.4.223 and is extended by the Microsoft
 Extensions. The Microsoft Extensions define two variants of the Supported header, one for use in
 requests sent by a client (section 2.2.3.3.1) and another for responses sent by a server (section
 2.2.3.3.2).
 
-2.2.3.3.1 Supported Sent by a Client
+###### 2.2.3.3.1 Supported Sent by a Client
 
 When the Supported header is sent by a client, the syntax of the header is defined as follows.
 
@@ -1507,7 +1318,8 @@ Release: April 23, 2024
 
 19 / 58
 
- Supported = "Supported: "
+
+ Supported = "Supported: "
              "com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, "
              "com.microsoft.wm.eosmsg, com.microsoft.wm.predstrm, "
              "com.microsoft.wm.fastcache, com.microsoft.wm.locid, "
@@ -1515,7 +1327,7 @@ Release: April 23, 2024
              "dlna.announce, dlna.rtx, dlna.rtx-dup, "
              "com.microsoft.wm.startupprofile"
 
-2.2.3.3.2 Supported Sent by a Server
+###### 2.2.3.3.2 Supported Sent by a Server
 
 When the Supported header is sent by a server, the syntax of the header is defined as follows.
 
@@ -1526,7 +1338,7 @@ When the Supported header is sent by a server, the syntax of the header is defin
              "dlna.announce, dlna.rtx, dlna.rtx-dup, "
              "com.microsoft.wmdrm-nd"
 
-2.2.3.4  Transport
+##### 2.2.3.4 Transport
 
 The Transport header is defined for use in responses sent to a client. The syntax of the Transport
 header is as defined in section 12.39 of [RFC2326], with the extensions defined by the DLNA
@@ -1542,7 +1354,7 @@ The syntax of the Transport header is defined as follows.
       [ ";rtcp-fb-ssrc=" 8HEXDIG ]
      *parameter ; defined in [RFC2326] section 12.39
 
-2.2.3.5  User-Agent
+##### 2.2.3.5 User-Agent
 
 The User-Agent header identifies the software product that is sending the RTSP request.
 
@@ -1568,7 +1380,8 @@ Release: April 23, 2024
 
 20 / 58
 
-2.2.3.6  X-Accept-Authentication
+
+##### 2.2.3.6 X-Accept-Authentication
 
 The X-Accept-Authentication is defined for use in requests sent to a server.
 
@@ -1576,7 +1389,7 @@ The syntax of the header is as follows:
 
  X-Accept-Authentication = "X-Accept-Authentication: Negotiate, NTLM, Digest"
 
-2.2.3.7  X-Playlist-Gen-Id
+##### 2.2.3.7 X-Playlist-Gen-Id
 
 The X-Playlist-Gen-Id header is defined for use in requests sent to a server and for both requests and
 responses sent to a client.
@@ -1585,7 +1398,7 @@ The syntax of the header is as follows:
 
  X-Playlist-Gen-Id = "X-Playlist-Gen-Id: 1"
 
-2.2.3.8  X-Playlist-Seek-Id
+##### 2.2.3.8 X-Playlist-Seek-Id
 
 The X-Playlist-Seek-Id header is defined for use in requests sent to a server.
 
@@ -1593,7 +1406,7 @@ The syntax of the header is as follows:
 
  X-Playlist-Seek-Id = "X-Playlist-Seek-Id: 1"
 
-2.2.4  Extensions to HTTP
+#### 2.2.4 Extensions to HTTP
 
 This section defines extensions to HTTP, in addition to the extensions defined in [DLNA].
 
@@ -1605,7 +1418,7 @@ This section defines the syntax of the HTTP headers by using the ABNF syntax, as
 [RFC5234]. Any ABNF syntax rules that are not specified in [RFC5234] use the ABNF extensions that
 are specified in [RFC2326].
 
-2.2.4.1  User-Agent
+##### 2.2.4.1 User-Agent
 
 The definition of the User-Agent header provided here is only applicable to HTTP requests sent for the
 purpose of invoking a UPnP action. For any other HTTP requests, the User-Agent header adheres to
@@ -1626,10 +1439,11 @@ Release: April 23, 2024
 
 21 / 58
 
-The numerical value in the devicecaps token is a bitwise-OR combination of the compatibility flags
+
+The numerical value in the devicecaps token is a bitwise-OR combination of the compatibility flags
 defined in [MS-UPMC] section 2.2.1.
 
-2.2.4.2  X-AvailableSeekRange
+##### 2.2.4.2 X-AvailableSeekRange
 
 The X-AvailableSeekRange header is defined for use in responses sent to a client.
 
@@ -1647,7 +1461,7 @@ The range specified by the X-AvailableSeekRange is an inclusive range. For examp
 specified as 0-100, it means that the client can send a GET request with the TimeSeekRange.dlna.org
 requesting the server to seek to 0, 100, or any value in between.
 
-2.2.5  magic packet
+#### 2.2.5 magic packet
 
 The magic packet is a UDP packet that is encapsulated in an IPv4 or IPv6 datagram. The IP datagram
 is sent as a link layer broadcast packet.
@@ -1665,15 +1479,16 @@ Release: April 23, 2024
 
 22 / 58
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-DLNHND].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-3.1  Client Details
+### 3.1 Client Details
 
 This section specifies details of the HTTP and RTSP client role. The section is applicable to
 implementations of the DMP role and the DMR role.
@@ -1688,7 +1503,7 @@ Figure 1: HTTP and RTSP state diagram (client perspective)
 Note that support for RTSP is optional. Any normative statements related to RTSP, RTP, or SDP, only
 apply to clients that actually implement RTSP.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1703,7 +1518,8 @@ Release: April 23, 2024
 
 23 / 58
 
-Extension-info: This variable stores the information related to ASF Extension Systems obtained from
+
+Extension-info: This variable stores the information related to ASF Extension Systems obtained from
 
 the SDP that the client needs in order to parse RTP packets that contain the ASF Payload
 Extension System extension. For each stream, the variable needs to store the ID of each
@@ -1724,20 +1540,20 @@ State: This variable stores the client's state. Possible values are INIT, READY,
 
 initial value of this variable is INIT.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Microsoft Extensions to the client role do not include any timers beyond any prescribed by [DLNA]
 and [RFC2326].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization occurs when a higher layer wants to start streaming content from a server. If the HTTP
 protocol will be used, this step is specified in section 3.1.4.1. If the RTSP protocol will be used, this
 step is specified in section 3.1.4.2.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Request to start streaming using HTTP
+##### 3.1.4.1 Request to start streaming using HTTP
 
 This event occurs when a higher layer wants to start streaming from a server using HTTP. The event
 corresponds to one of the Media Operations defined by the DLNA Guidelines (see [DLNA], Table 7-
@@ -1760,7 +1576,7 @@ guideline 7.4.42 for details related to HTTP protocol versions.)
 
 Processing for the HTTP GET response is specified in section 3.1.5.1.
 
-3.1.4.2  Request to start streaming using RTSP
+##### 3.1.4.2 Request to start streaming using RTSP
 
 This event occurs when a higher layer requests to start streaming from a server using RTSP.
 
@@ -1771,7 +1587,8 @@ Release: April 23, 2024
 
 24 / 58
 
-The client MUST set the value of the State variable to READY.
+
+The client MUST set the value of the State variable to READY.
 
 As part of the standard operation of the RTSP protocol, the client will send a DESCRIBE request to the
 server. The client MUST adhere to the rules referenced by [DLNA] guideline 7.4.210 that apply to
@@ -1784,7 +1601,7 @@ MAY include the User-Agent header defined in section 2.2.3.5.<1>
 
 Processing for the RTSP DESCRIBE response is specified in section 3.1.5.2.
 
-3.1.4.3  Request to perform DLNA Media Operation using RTSP
+##### 3.1.4.3 Request to perform DLNA Media Operation using RTSP
 
 This event occurs when a higher layer wants to start streaming from a server using RTSP. The event
 can only occur when the client has already received a DESCRIBE response, as specified in section
@@ -1802,7 +1619,7 @@ requests have to be sent. For more details, see [DLNA] guideline 7.4.210.
 
 For each RTSP request that the client sends, it MUST follow the rules in section 3.1.4.3.1.
 
-3.1.4.3.1 Common rules for sending RTSP requests
+###### 3.1.4.3.1 Common rules for sending RTSP requests
 
 The client MUST adhere to the rules specified in [DLNA] guideline 7.4.210 that apply to the kind of
 RTSP request being sent.
@@ -1820,9 +1637,9 @@ Id header, as defined in section 2.2.3.8.
 
 Processing for the RTSP response is specified in section 3.1.5.3.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving an HTTP GET response
+##### 3.1.5.1 Receiving an HTTP GET response
 
 The client MUST process the HTTP GET response in accordance with the rules referenced by [DLNA]
 guideline 7.4.1. For example, [DLNA] guidelines 7.4.21, 7.4.22, 7.4.46 specify HTTP processing rules
@@ -1838,7 +1655,8 @@ Release: April 23, 2024
 
 25 / 58
 
-be ignored. The values of the "start" and "stop" tokens on the X-AvailableSeekRange header SHOULD
+
+be ignored. The values of the "start" and "stop" tokens on the X-AvailableSeekRange header SHOULD
 be made available to the higher layer.
 
 The content received in the GET response SHOULD be made available to the higher layer.
@@ -1850,7 +1668,7 @@ position in the content. Processing for this kind of request is specified in sec
 If the GET response ends without a new request being issued by a higher layer, the protocol ends. The
 value of the State variable is then set to INIT.
 
-3.1.5.2  Receiving an RTSP DESCRIBE response
+##### 3.1.5.2 Receiving an RTSP DESCRIBE response
 
 The client MUST process the RTSP DESCRIBE response in accordance with the rules in [DLNA]
 guideline 7.4.210.
@@ -1877,7 +1695,7 @@ If the DESCRIBE response includes the Supported header (section 2.2.3.3.2), it M
 The client MUST wait for a higher layer to request a DLNA Media Operation, as specified in section
 3.1.4.3.
 
-3.1.5.3  Receiving a RTSP response
+##### 3.1.5.3 Receiving a RTSP response
 
 The client MUST process the RTSP response in accordance with the rules in [DLNA] guideline 7.4.210.
 
@@ -1907,14 +1725,15 @@ Release: April 23, 2024
 
 26 / 58
 
-
+
+
 
 If an ANNOUNCE request is received, the rules in section 3.1.5.5 MUST be followed.
 
 The client MUST also be prepared for a higher layer to request a DLNA Media Operation, as specified
 in section 3.1.4.3.
 
-3.1.5.4  Receiving an RTP packet
+##### 3.1.5.4 Receiving an RTP packet
 
 The client MUST process the RTP packet in accordance with the rules in [DLNA] guideline 7.4.85.
 
@@ -1948,7 +1767,7 @@ If an ANNOUNCE request is received, the rules in section 3.1.5.5 MUST be followe
 The client MUST also be prepared for a higher layer to request a DLNA Media Operation, as specified
 in section 3.1.4.3.
 
-3.1.5.5  Receiving a RTSP ANNOUNCE request
+##### 3.1.5.5 Receiving a RTSP ANNOUNCE request
 
 The client MUST process the ANNOUNCE request in accordance with the rules in [DLNA] guideline
 7.4.261.
@@ -1963,11 +1782,11 @@ section 3.2.7.2.
 If the client is used by the DMR role, then it MUST indicate that streaming has ended, as specified in
 section 3.3.7.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The Microsoft Extensions to the client role do not include any behaviors in response to local events
 beyond those prescribed by [DLNA] and [RFC2326].
@@ -1979,11 +1798,12 @@ Release: April 23, 2024
 
 27 / 58
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-DLNHND].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
-3.2  Digital Media Player Details
+### 3.2 Digital Media Player Details
 
 The Microsoft Extensions to the DLNA Guidelines do not introduce any new states, state transitions
 or timers to DMP role. Consequently, this section does not provide a complete description of the DMP
@@ -2000,7 +1820,7 @@ The preceding state diagram only shows interaction with a single DMS. Hence, the
 that DMS leaves the network. DMP implementations SHOULD support interactions with multiple DMSs.
 This can be accomplished by running multiple instances of the protocol state machine in parallel.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2032,7 +1852,8 @@ Release: April 23, 2024
 
 28 / 58
 
-State: This variable stores the DMP's state. Possible values are Initialized, Server_Available,
+
+State: This variable stores the DMP's state. Possible values are Initialized, Server_Available,
 
 CDS_Available and Streaming. The initial value of this variable is Initialized.
 
@@ -2044,18 +1865,18 @@ WoL-Supported: This is a Boolean variable which is set to True if the DMS claims
 on-LAN using a magic packet (specified in section 2.2.5) .The default value of this variable is
 False.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The Microsoft Extensions to the DMP role do not include any timers beyond any prescribed by [DLNA].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization occurs when the UPnP layer notifies the client that a DMS has been discovered, as
 specified in section 3.2.7.1.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Request to Browse the ContentDirectory Service
+##### 3.2.4.1 Request to Browse the ContentDirectory Service
 
 This event occurs when a higher layer attempts to obtain a list of content exposed by the DMS. It is
 a prerequisite for this event that the DMP MUST already have discovered the DMS, as specified in
@@ -2100,13 +1921,14 @@ Release: April 23, 2024
 
 29 / 58
 
-All UPnP Browse and search action invocations performed by the DMP, SHOULD include a User-Agent
+
+All UPnP Browse and search action invocations performed by the DMP, SHOULD include a User-Agent
 header as specified in section 2.2.4.1. The numerical value in the devicecaps token in the User-Agent
 header SHOULD be 1024.<4>
 
 Processing for the response to the Browse and search actions is specified in section 3.2.5.1.
 
-3.2.4.2  Request to Start Streaming
+##### 3.2.4.2 Request to Start Streaming
 
 This event occurs when a higher layer wants the DMP to start streaming a content item from the
 DMS. It is a prerequisite for this event that the value of the State variable MUST be CDS_Available.
@@ -2120,9 +1942,9 @@ higher layer is requesting streaming using RTSP, then the client role rules star
 Once streaming has ended, a notification will be received from the client role, as specified in section
 3.2.7.2.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Response to the Search or Browse UPnP action is received
+##### 3.2.5.1 Response to the Search or Browse UPnP action is received
 
 The DMP MUST process the response to the UPnP Browse and search actions according to the rules in
 [DLNA] and [UPnP].
@@ -2145,13 +1967,13 @@ ContentDirectory service of the DMS for additional content items, as specified i
 If the value of the State variable is CDS_Available, then the DMP MUST also be prepared to receive a
 request from a higher layer to start streaming a content item, as specified in section 3.2.4.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Not applicable to the DMP role.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  UPnP Device Discovery notification is received
+##### 3.2.7.1 UPnP Device Discovery notification is received
 
 The DMP role is initialized when the UPnP layer reports that UPnP Device has been discovered, and
 the UPnP Device can be considered to be a DMS. The DMP MUST only treat a UPnP Device as a DMS if
@@ -2164,7 +1986,8 @@ Release: April 23, 2024
 
 30 / 58
 
-If the value of the manufacturer XML tag in the UPnP Device Description Document of the DMS
+
+If the value of the manufacturer XML tag in the UPnP Device Description Document of the DMS
 contains the word "Microsoft", then the Microsoft-CDS variable MUST be set to True.<6>
 
 The Ethernet or IEEE 802.3 address used by the server SHOULD be saved in the Server-Link-
@@ -2188,7 +2011,7 @@ service of the DMS, as specified in section 3.2.4.1.
 The DMP MUST also be prepared to receive a notification indicating that the DMS has left the network,
 as specified in section 3.2.7.3.
 
-3.2.7.2  Notification that streaming has ended
+##### 3.2.7.2 Notification that streaming has ended
 
 This event occurs when the value of the State variable is Streaming and streaming from the DMS
 has ended.
@@ -2201,7 +2024,7 @@ service of the DMS, as specified in section 3.2.4.1.
 The DMP MUST also be prepared to receive a notification indicating that the DMS has left the network,
 as specified in section 3.2.7.3.
 
-3.2.7.3  Notification that the Digital Media Server leaves the network
+##### 3.2.7.3 Notification that the Digital Media Server leaves the network
 
 This event occurs when the UPnP layer indicates that the DMS is leaving, or has already left, the
 network. Such events are accepted when the value of the State variable is Server_Available or
@@ -2213,7 +2036,7 @@ Server-Offline variable to True.<7>
 If the value of the WoL-Supported variable is False or if the DMP chose not to set the value of the
 Server-Offline variable to True, then the service exchange ends at this point.
 
-3.3  Digital Media Renderer Details
+### 3.3 Digital Media Renderer Details
 
 This section specifies details of the Digital Media Renderer (DMR) role.
 
@@ -2229,7 +2052,8 @@ Release: April 23, 2024
 
 31 / 58
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-DLNHND].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2239,22 +2063,22 @@ The DMR role incorporates the client role defined in section 3.1. This is shown 
 by means of the state labeled Streaming. The Streaming state corresponds to the client state machine
 illustrated in the HTTP and RTSP state diagram (client perspective).
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 An abstract data model has not been defined for the DMR role.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The Microsoft Extensions to the DMR role do not include any timers beyond any prescribed by [DLNA].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization occurs when a higher layer requests that the DMR be initialized, as specified in section
 3.3.4.1.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Request to initialize the DMR
+##### 3.3.4.1 Request to initialize the DMR
 
 This event occurs when the higher layer wants to initialize the protocol. The higher layer specifies if
 the DMR will implement a DMR that supports streaming as specified in [DLNA], or a discovery-only
@@ -2274,7 +2098,8 @@ Release: April 23, 2024
 
 32 / 58
 
-If a higher layer implements a DMP together with the DMR, and the DMP supports sending a magic
+
+If a higher layer implements a DMP together with the DMR, and the DMP supports sending a magic
 packet to wake a DMS as specified in section 3.2.4.1, then the DMR SHOULD add the
 microsoft:magicPacketSendSupported XML tag to its UPnP Device Description Document, and set the
 value of that tag to 1. For more details about microsoft:magicPacketSendSupported, see [MS-UPMC]
@@ -2289,15 +2114,15 @@ The DMR MUST also be prepared to receive action invocations for any other UPnP s
 supports, such as the UPnP ConnectionManager service. For more details, see [DLNA]. The DMR MUST
 also be prepared to receive a request to shut down the DMR, as specified in section 3.3.4.2.
 
-3.3.4.2  Request to shut down the DMR
+##### 3.3.4.2 Request to shut down the DMR
 
 The protocol ends when a higher layer requests that the DMR be shut down. The DMR MUST be shut
 down in accordance with [DLNA] and [UPNPARCH1]. For more details, see [UPNPARCH1] section
 1.1.3.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Request to start streaming
+##### 3.3.5.1 Request to start streaming
 
 In order for a Digital Media Controller (DMC) to request the DMR to start streaming, it needs to
 invoke one or more UPnP actions on the UPnP services implemented by the DMR. At a minimum, the
@@ -2316,13 +2141,13 @@ chosen for streaming is a RTSP URL, then the client role rules start in section 
 Once streaming has ended a notification will be received from the client role, as specified in section
 3.3.7.1.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  Notification that Streaming Ended
+##### 3.3.7.1 Notification that Streaming Ended
 
 This event occurs when the client role notifies that the DMR that streaming from the DMS has
 ended.
@@ -2337,14 +2162,15 @@ Release: April 23, 2024
 
 33 / 58
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-DLNHND].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
 The DMR MUST also be prepared to receive a request from the higher layer to shut down the DMR, as
 specified in section 3.3.4.2.
 
-3.4  Digital Media Server Details
+### 3.4 Digital Media Server Details
 
 This section specifies details of the Digital Media Server (DMS) role.
 
@@ -2362,7 +2188,7 @@ from multiple control points concurrently.
 Note that support for RTSP is optional. Any normative statements related to RTSP, RTP, or SDP, only
 apply to a DMS that actually implements RTSP.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2392,23 +2218,24 @@ Release: April 23, 2024
 
 34 / 58
 
-State: This variable stores the DMS's state. Possible values are Uninitialized, Ready, RTSP_Init,
+
+State: This variable stores the DMS's state. Possible values are Uninitialized, Ready, RTSP_Init,
 
 RTSP_Ready, and Streaming. The initial value of this variable is Uninitialized.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 The Microsoft Extensions to the DMS role do not include any timers beyond any prescribed by [DLNA]
 and [RFC2326].
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 Initialization of the protocol occurs when a higher layer requests that the DMS be started, as specified
 in section 3.4.4.1.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
-3.4.4.1  Requesting to Start the DMS
+##### 3.4.4.1 Requesting to Start the DMS
 
 This event occurs when the higher layer initializes the protocol.
 
@@ -2453,13 +2280,14 @@ Release: April 23, 2024
 
 35 / 58
 
-3.4.4.2  Requesting to Shut Down the DMS
+
+##### 3.4.4.2 Requesting to Shut Down the DMS
 
 The protocol ends streaming when a higher layer requests that the DMS be shut down. The DMS
 MUST be shut down in accordance with [UPNPARCH1]. For more details, see [UPNPARCH1] section
 1.1.3.
 
-3.4.4.3  Notification that a RTP or RTCP Packet is Ready to Send
+##### 3.4.4.3 Notification that a RTP or RTCP Packet is Ready to Send
 
 This event can occur when the value of the State variable is Streaming.
 
@@ -2479,7 +2307,7 @@ The Extension Data field in the RTP packet MUST include the ASF Payload Extensio
 for each ASF Payload Extension System in the same order as the ASF Payload Extension Systems
 are listed in the Extension-info variable.
 
-3.4.4.4  Notification That the Last RTP Packet Has Been Sent
+##### 3.4.4.4 Notification That the Last RTP Packet Has Been Sent
 
 This notification indicates that the higher layer does not have any more RTP packets to send to the
 client.
@@ -2509,9 +2337,9 @@ TEARDOWN: specified in section 3.4.5.7
 
   OPTIONS: specified in section 3.4.5.8
 
-3.4.5  Processing Events and Sequencing Rules
+#### 3.4.5 Processing Events and Sequencing Rules
 
-3.4.5.1  Invoking a UPnP Browse or Search Action
+##### 3.4.5.1 Invoking a UPnP Browse or Search Action
 
 This event occurs when a UPnP Control Point invokes the browse or search action on the UPnP
 ContentDirectory service. This event can be received in any state except when the value of the State
@@ -2527,7 +2355,8 @@ Release: April 23, 2024
 
 36 / 58
 
-The DMS MUST set the WMC_COMPAT_EXCLUDE_DLNA_1_5 bit (defined in [MS-UPMC] section
+
+The DMS MUST set the WMC_COMPAT_EXCLUDE_DLNA_1_5 bit (defined in [MS-UPMC] section
 2.2.1.4) in the CompatFlags variable to 1 and all other bits in the CompatFlags variable MUST be
 set to 0.
 
@@ -2593,7 +2422,8 @@ Release: April 23, 2024
 
 37 / 58
 
-If the WMC_COMPAT_EXCLUDE_DLNA_1_5 bit in the CompatFlags variable is 1, then the DMS MUST
+
+If the WMC_COMPAT_EXCLUDE_DLNA_1_5 bit in the CompatFlags variable is 1, then the DMS MUST
 set the WMC_COMPAT_EXCLUDE_RTSP bit and the WMC_COMPAT_DO_NOT_LIMIT_RESPONSE_SIZE
 bit (defined in [MS-UPMC] section 2.2.1.10) in the CompatFlags variable to 1.
 
@@ -2661,7 +2491,8 @@ Release: April 23, 2024
 
 38 / 58
 
-If the value of the WMC_COMPAT_EXCLUDE_PCMPARAMS bit (defined in [MS-UPMC] section 2.2.1.5)
+
+If the value of the WMC_COMPAT_EXCLUDE_PCMPARAMS bit (defined in [MS-UPMC] section 2.2.1.5)
 in the CompatFlags variable is 1, and the MIME type res XML tag begins with "audio/L16" or
 "audio/L8", then the MIME type SHOULD NOT include any additional parameters, such as channel or
 rate.
@@ -2694,7 +2525,7 @@ If the value of the WMC_COMPAT_DO_NOT_LIMIT_RESPONSE_SIZE bit in the CompatFlags
 is 0, then the size of the SOAP response to the Browse or Search action SHOULD NOT exceed 204,800
 bytes.<15>
 
-3.4.5.2  Requesting to Start Streaming Using HTTP
+##### 3.4.5.2 Requesting to Start Streaming Using HTTP
 
 The DMS MUST process requests to stream content using HTTP according to the rules specified in
 [DLNA] guideline 7.4.1.
@@ -2714,7 +2545,7 @@ requested, or portions thereof, in accordance with the rules referenced by [DLNA
 When the DMS has finished sending the HTTP response, it will receive a notification that streaming has
 ended. Processing of this notification is specified in section 3.4.7.2.
 
-3.4.5.3  Receiving a RTSP DESCRIBE Request
+##### 3.4.5.3 Receiving a RTSP DESCRIBE Request
 
 The DMS MUST process the DESCRIBE request according to the rules in [DLNA] guideline 7.4.210.
 
@@ -2727,7 +2558,8 @@ Release: April 23, 2024
 
 39 / 58
 
-If the DESCRIBE request includes the X-Accept-Authentication header (section 2.2.3.6), it MUST be
+
+If the DESCRIBE request includes the X-Accept-Authentication header (section 2.2.3.6), it MUST be
 ignored.
 
 If the DESCRIBE request includes a Supported header that complies with the syntax in [DLNA],
@@ -2793,7 +2625,8 @@ Release: April 23, 2024
 
 40 / 58
 
-If a stream (either the audio stream or video stream) has the concept of a peak bit rate which is
+
+If a stream (either the audio stream or video stream) has the concept of a peak bit rate which is
 higher than the average bit rate, then both the peak and average bit rates SHOULD be specified in
 SDP as follows: The peak bit rate MUST be specified using the b= attribute with the AS modifier, as
 specified in [DLNA] guideline 7.4.280.1, and the average bit rate MUST be specified using the b=
@@ -2822,7 +2655,7 @@ following requests:
 
   OPTIONS: specified in section 3.4.5.8.
 
-3.4.5.3.1 Common Rules for Responses to RTSP Requests
+###### 3.4.5.3.1 Common Rules for Responses to RTSP Requests
 
 The following rules apply for all RTSP responses sent by the DMS, unless specified otherwise.
 
@@ -2840,7 +2673,7 @@ case of a DESCRIBE request, in which case the response SHOULD include the header
 The response MAY include the X-Playlist-Gen-Id header, as specified in section 2.2.3.7, except in
 the case of a DESCRIBE  request, in which case the response SHOULD include the header.
 
-3.4.5.4  Receiving a RTSP SETUP Request
+##### 3.4.5.4 Receiving a RTSP SETUP Request
 
 The DMS MUST process the SETUP request according to the rules in [DLNA] guideline 7.4.210.
 
@@ -2866,7 +2699,8 @@ Release: April 23, 2024
 
 41 / 58
 
-If the value of the State variable is RTSP_Init and the RTSP response status code is 200, then the
+
+If the value of the State variable is RTSP_Init and the RTSP response status code is 200, then the
 DMS MUST set the value of the State variable to RTSP_Ready.
 
 If the value of the State variable is RTSP_Ready, then the DMS MUST be prepared to receive any of
@@ -2887,7 +2721,7 @@ TEARDOWN: specified in section 3.4.5.7
 If the RTSP response status code is anything other than 200, then the DMS MUST continue following
 the rules that are applicable according to the current value of the State variable.
 
-3.4.5.5  Receiving a RTSP PLAY request
+##### 3.4.5.5 Receiving a RTSP PLAY request
 
 The DMS MUST process the PLAY request according to the rules in [DLNA] guideline 7.4.210.
 
@@ -2927,7 +2761,7 @@ specified in section 3.4.4.4, and a notification that streaming has ended, as sp
 If the RTSP response status code is anything other than 200, then the DMS MUST continue following
 the rules that are applicable according to the current value of the State variable.
 
-3.4.5.6  Receiving an RTSP PAUSE Request
+##### 3.4.5.6 Receiving an RTSP PAUSE Request
 
 The DMS MUST process the PAUSE request according to the rules in [DLNA] guideline 7.4.210.
 
@@ -2943,7 +2777,8 @@ Release: April 23, 2024
 
 42 / 58
 
-The DMS MUST include headers in the RTSP response, as specified in section 3.4.5.3.1.
+
+The DMS MUST include headers in the RTSP response, as specified in section 3.4.5.3.1.
 
 If the RTSP response status code is 200, then the DMS MUST set the value of the State variable to
 RTSP_Ready.
@@ -2966,7 +2801,7 @@ TEARDOWN: specified in section 3.4.5.7
 If the RTSP response status code is anything other than 200, then the DMS MUST continue following
 the rules that are applicable according to the current value of the State variable.
 
-3.4.5.7  Receiving an RTSP TEARDOWN Request
+##### 3.4.5.7 Receiving an RTSP TEARDOWN Request
 
 The DMS MUST process the TEARDOWN request according to the rules in [DLNA] guideline 7.4.210.
 
@@ -3000,7 +2835,7 @@ TEARDOWN: specified in section 3.4.5.7.
 If the RTSP response status code is anything other than 200, then the DMS MUST continue following
 the rules that are applicable according to the current value of the State variable.
 
-3.4.5.8  Receiving an RTSP OPTIONS Request
+##### 3.4.5.8 Receiving an RTSP OPTIONS Request
 
 The OPTIONS request can be processed in any RTSP state, and does not cause a state transition.
 
@@ -3020,16 +2855,17 @@ Release: April 23, 2024
 
 43 / 58
 
-The DMS MUST continue following the rules that are applicable according to the current value of the
+
+The DMS MUST continue following the rules that are applicable according to the current value of the
 State variable.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
-3.4.7.1  Receiving a UPnP Device Discovery Notification
+##### 3.4.7.1 Receiving a UPnP Device Discovery Notification
 
 This event occurs when the UPnP layer notifies that a UPnP MediaRenderer Device has been
 discovered. This event can be received in any state except when the value of the State variable is
@@ -3044,7 +2880,7 @@ address to the DMR's UPnP Device Description Document MUST be added to the Devic
 variable. The value of the mapping is the DMR's UPnP Device Description Document. Any previously
 existing mapping for this link layer address MUST be removed.
 
-3.4.7.2  Notifying that Streaming Has Ended
+##### 3.4.7.2 Notifying that Streaming Has Ended
 
 This event can occur when the value of the State variable is Streaming. The event is sent by the HTTP
 or RTSP protocol stack, depending on which streaming protocol is used.
@@ -3070,11 +2906,12 @@ Release: April 23, 2024
 
 44 / 58
 
-4  Protocol Examples
 
-4.1  SDP Examples
+## 4 Protocol Examples
 
-4.1.1  Generic RTP Payload Format
+### 4.1 SDP Examples
+
+#### 4.1.1 Generic RTP Payload Format
 
 This example shows the SDP that a DMS can generate when it responds to a RTSP DESCRIBE request,
 following the rules in section 3.4.5.3.
@@ -3119,7 +2956,7 @@ version=STD;samplesize=16;samplerate=8000;blocksize=64;bitrate=8000;preroll=3551
  a=mid:8
  a=control:stream=8
 
-4.1.2  Variable Bit Rate Content
+#### 4.1.2 Variable Bit Rate Content
 
 This example shows the SDP that a DMS generates when it responds to a RTSP DESCRIBE request,
 following the rules in section 3.4.5.3.
@@ -3136,7 +2973,8 @@ Release: April 23, 2024
 
 45 / 58
 
-The example also shows that both the audio stream and the video stream have the notion of a peak
+
+The example also shows that both the audio stream and the video stream have the notion of a peak
 bit rate which is different from the average bit rate. This difference can be seen through the inclusion
 of a "b=" line with the "X-AV" bandwidth modifier, which is specified in section 2.2.2.1.1.
 
@@ -3210,13 +3048,14 @@ Release: April 23, 2024
 
 46 / 58
 
- a=pgmpu:data:application/x-wms-contentdesc,8,language,31,5,en-
+
+ a=pgmpu:data:application/x-wms-contentdesc,8,language,31,5,en-
 us,25,DeviceConformanceTemplate,31,66,Complexity%20profile%20WMV9%20standard%20320x240%2030.0
 0fps%20176976bps%203000ms,5,IsVBR,19,1,1%0d%0a
  a=mid:2
  a=control:video
 
-4.2  RTSP Playback
+### 4.2 RTSP Playback
 
 This example shows the RTSP messages exchanged between a client and a DMS to initiate streaming
 of video content.
@@ -3234,7 +3073,8 @@ Release: April 23, 2024
 
 47 / 58
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-DLNHND].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3258,7 +3098,8 @@ Release: April 23, 2024
 
 48 / 58
 
- Accept-Language: en-US, *;q=0.1
+
+ Accept-Language: en-US, *;q=0.1
  CSeq: 1
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch, com.microsoft.wm.eosmsg,
 com.microsoft.wm.predstrm, com.microsoft.wm.fastcache, com.microsoft.wm.locid,
@@ -3330,7 +3171,8 @@ Release: April 23, 2024
 
 49 / 58
 
- Accept-Language: en-US, *;q=0.1
+
+ Accept-Language: en-US, *;q=0.1
  Session: 11626846570809248029
  CSeq: 3
  X-Playlist-Gen-Id: 1
@@ -3400,14 +3242,15 @@ Release: April 23, 2024
 
 50 / 58
 
- Session: 11626846570809248029
+
+ Session: 11626846570809248029
  CSeq: 1
 
 The ANNOUNCE request shows the usage of the Content-Type header (section 2.2.3.2).
 
 All other RTSP headers shown in this section are defined in either [RFC2326] or [DLNA].
 
-4.3  HTTP Playback
+### 4.3 HTTP Playback
 
 This example shows the HTTP messages exchanged between a client and a DMS to initiate streaming
 of content.
@@ -3447,9 +3290,10 @@ Release: April 23, 2024
 
 51 / 58
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Microsoft Extensions to the DLNA Guidelines do not introduce any changes that affect security.
 Thus, the same security considerations that apply to the DLNA Guidelines also apply to
@@ -3461,7 +3305,7 @@ RTSP protocols are used without any access authentication. Implementations can b
 extent by employing security mechanisms at the network and link layers, such as firewalls and WPA or
 WEP encryption for Wi-Fi networks, if applicable.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3472,7 +3316,8 @@ Release: April 23, 2024
 
 52 / 58
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3540,7 +3385,8 @@ Release: April 23, 2024
 
 53 / 58
 
-<9> Section 3.3.4.1: Windows Vista does not specify the microsoft:magicPacketSendSupported XML
+
+<9> Section 3.3.4.1: Windows Vista does not specify the microsoft:magicPacketSendSupported XML
 tag.
 
 <10> Section 3.4.4.1: The value of the manufacturer XML tag is set to "Microsoft Corporation", only
@@ -3564,7 +3410,8 @@ Release: April 23, 2024
 
 54 / 58
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3608,7 +3455,8 @@ Release: April 23, 2024
 
 55 / 58
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3752,7 +3600,8 @@ Digital Living Network Alliance (DLNA) Networked Device Interoperability Guideli
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      RTSP TEARDOWN request - receiving 43
+
+      RTSP TEARDOWN request - receiving 43
       UPnP browse or search action - invoking 36
    timer events 44
    timers 35
@@ -3901,7 +3750,8 @@ Release: April 23, 2024
 
 57 / 58
 
-   Digital Media Server 44
+
+   Digital Media Server 44
    server 44
 Timers
    client 24

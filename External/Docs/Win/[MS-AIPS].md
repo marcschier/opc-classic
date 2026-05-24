@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 91
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: September 16, 2024
 
 2 / 91
 
-Date
+
+Date
 
 Revision
 History
@@ -531,7 +533,8 @@ Release: September 16, 2024
 
 3 / 91
 
-Date
+
+Date
 
 Revision
 History
@@ -605,473 +608,195 @@ Release: September 16, 2024
 
 4 / 91
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 18
-Standards Assignments ..................................................................................... 18
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.3.1
-2.2.3.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Message Syntax ............................................................................................... 19
-ISAKMP Header Format Packet ..................................................................... 19
-Generic Payload Header Packet .................................................................... 22
-Payload Types ............................................................................................ 22
-GSS-API Payload (Payload Type 0x81) Packet .......................................... 23
-Crypto Payload (Payload Type 0x85) Packet ............................................. 24
-Crypto Payload 0x85 Encryption Flag Set ............................................ 24
-Crypto Payload 0x85 Encryption Flag Not Set ...................................... 26
-Format of the Generic Payload Header for the Crypto Payload ............... 26
-GSS_ID 0x86 Payload Packet ................................................................. 27
-Auth Payload (Payload Type 0x87) Packet ................................................ 27
-Notify Payload (Payload Type 0x0B) Packet .............................................. 28
-Notify Payload (Payload Type 0x0B) Notify Acquire Packet ......................... 30
-Key Dictation Payload (Payload Type 0x88) .............................................. 30
-Key Dictation Weight Payload (Payload Type 0x89) ................................... 31
-
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-
-3.1
-
-3.1.5
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 32
-Common Details .............................................................................................. 32
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 41
-IP Traffic Match SPD Protect-using-IPsec Rule .......................................... 41
-Explicit IPsec Negotiation Request ........................................................... 41
-Processing Events and Sequencing Rules ....................................................... 41
-Receiving a Reliable Notify Message ........................................................ 41
-Receiving an Unreliable Notify Message ................................................... 42
-Receiving a Reliable Notify Acknowledgement ........................................... 42
-Timer Events .............................................................................................. 42
-Negotiation Retransmission Timer ........................................................... 42
-Notify Retransmission Timer ................................................................... 42
-Responder Time-Out Timer .................................................................... 42
-MM SA Lifetime ..................................................................................... 42
-QM Rekey Timer ................................................................................... 42
-Connection State Timer Events ............................................................... 42
-Other Local Events ...................................................................................... 43
-IP Address Deletion ............................................................................... 43
-AuthIP Shutdown .................................................................................. 43
-IPSec Policy Change .............................................................................. 43
-AuthIP Key Material Generation .............................................................. 43
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-3.1.7.4
-
-3.1.7
-
-3.1.6
-
-[MS-AIPS] - v20240916
-Authenticated Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 91
-
-3.2.5.1
-
-3.1.7.5
-3.1.7.6
-3.1.7.7
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3
-
-Sending QM Notify Messages .................................................................. 45
-Enter DoS Protection Mode ..................................................................... 45
-New Connection Initiation ...................................................................... 45
-AuthIP Main Mode Initiator Role ......................................................................... 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 46
-Initialization ............................................................................................... 46
-Higher-Layer Triggered Events ..................................................................... 46
-Processing Events and Sequencing Rules ....................................................... 47
-Received Generalized Main Mode First Exchange Response ......................... 47
-Timer Events .............................................................................................. 49
-Other Local Events ...................................................................................... 49
-AuthIP Main Mode Responder Role ..................................................................... 49
-Abstract Data Model .................................................................................... 49
-Timers ...................................................................................................... 49
-Initialization ............................................................................................... 49
-Higher-Layer Triggered Events ..................................................................... 49
-Processing Events and Sequencing Rules ....................................................... 49
-Received Generalize Main Mode First Exchange Response .......................... 49
-Received IKEv1 Packet .......................................................................... 52
-Invalid Message Received ...................................................................... 52
-Timer Events .............................................................................................. 52
-Other Local Events ...................................................................................... 52
-Limits on New Negotiations from Peer Reached ......................................... 52
-AuthIP Quick Mode Initiator Role ........................................................................ 52
-Abstract Data Model .................................................................................... 52
-Timers ...................................................................................................... 52
-QM SA Time Lifetime Expiration .............................................................. 52
-Initialization ............................................................................................... 52
-Higher-Layer Triggered Events ..................................................................... 52
-Processing Events and Sequencing Rules ....................................................... 53
-Quick Mode First Exchange Response ...................................................... 53
-Quick Mode Second Exchange Response .................................................. 55
-QM Rekey Acquire Notification Received ................................................... 56
-Error Notify Received ............................................................................. 57
-Timer Events .............................................................................................. 57
-QM SA Lifetime Timer Expiration ............................................................. 57
-Other Local Events ...................................................................................... 57
-Invalid Message Received ...................................................................... 57
-QM SA Byte Lifetime Expiration ............................................................... 58
-Transition to Main Mode Initiator First Exchange Done ............................... 58
-Transition to QM Rekey Requested State .................................................. 59
-AuthIP Quick Mode Responder Role .................................................................... 60
-Abstract Data Model .................................................................................... 60
-Timers ...................................................................................................... 60
-Initialization ............................................................................................... 60
-Higher Layer Triggered Events ..................................................................... 60
-Processing Events and Sequencing Rules ....................................................... 61
-Received Quick Mode First Exchange Request ........................................... 61
-Received Quick Mode Second Exchange Request ....................................... 63
-Timer Events .............................................................................................. 64
-Other Local Events ...................................................................................... 64
-Invalid Message Received ...................................................................... 64
-AuthIP Extended Mode Initiator Role .................................................................. 64
-Abstract Data Model .................................................................................... 64
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 64
-Higher Layer Triggered Events ..................................................................... 65
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.6
-3.3.7
-
-3.3.7.1
-
-3.4
-
-3.4.1
-3.4.2
-
-3.4.3
-3.4.4
-3.4.5
-
-3.4.2.1
-
-3.4.5.1
-3.4.5.2
-3.4.5.3
-3.4.5.4
-
-3.4.6
-
-3.4.7
-
-3.4.6.1
-
-3.4.7.1
-3.4.7.2
-3.4.7.3
-3.4.7.4
-
-3.5
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-
-3.5.5.1
-3.5.5.2
-
-3.5.6
-3.5.7
-
-3.5.7.1
-
-3.6
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-
-[MS-AIPS] - v20240916
-Authenticated Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 91
-
-3.7
-
-3.8
-
-3.9
-
-3.6.5
-
-3.8.7.1
-
-3.8.5.1
-
-3.7.7.1
-
-3.6.6
-3.6.7
-
-3.8.6
-3.8.7
-
-3.7.6
-3.7.7
-
-3.7.5.1
-3.7.5.2
-
-3.6.7.1
-3.6.7.2
-
-3.6.5.1
-3.6.5.2
-3.6.5.3
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-3.8.5
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-3.7.5
-
-Processing Events and Sequencing Rules ....................................................... 65
-Received Extended Mode First Exchange Response .................................... 65
-Received Extended Mode Final Exchange Response ................................... 66
-Invalid Message Received ...................................................................... 66
-Timer Events .............................................................................................. 66
-Other Local Events ...................................................................................... 67
-Transition Quick Mode Initiator Done ....................................................... 67
-Extended Mode Initiator GSS Exchange Success ....................................... 67
-AuthIP Extended Mode Responder Role ............................................................... 68
-Abstract Data Model .................................................................................... 68
-Timers ...................................................................................................... 68
-Initialization ............................................................................................... 68
-Higher-Layer Triggered Events ..................................................................... 68
-Processing Events and Sequencing Rules ....................................................... 69
-Received Extended Mode First Exchange Request ...................................... 69
-Received Extended Mode Final Exchange Request ..................................... 70
-Timer Events .............................................................................................. 72
-Other Local Events ...................................................................................... 72
-Invalid Message Received ...................................................................... 72
-Generalized AuthIP GSS-API Initiator Role ........................................................... 72
-Abstract Data Model .................................................................................... 72
-Timers ...................................................................................................... 72
-Initialization ............................................................................................... 72
-Higher-Layer Triggered Events ..................................................................... 72
-Processing Events and Sequencing Rules ....................................................... 72
-GSS-API Response Received ................................................................... 72
-Timer Events .............................................................................................. 73
-Other Local Events ...................................................................................... 73
-GSS-API Start ...................................................................................... 73
-Generalized AuthIP GSS-API Responder Role ....................................................... 74
-Abstract Data Model .................................................................................... 74
-Timers ...................................................................................................... 74
-Initialization ............................................................................................... 74
-Higher-Layer Triggered Events ..................................................................... 74
-Processing Events and Sequencing Rules ....................................................... 74
-GSS-API Request Received ..................................................................... 74
-Timer Events .............................................................................................. 75
-Other Local Events ...................................................................................... 76
-Invalid Message Received ...................................................................... 76
-Authenticated Firewall Mode .............................................................................. 76
-Abstract Data Model .................................................................................... 76
-3.10.1
-Timers ...................................................................................................... 76
-3.10.2
-3.10.3
-Initialization ............................................................................................... 76
-3.10.4  Higher-Layer Triggered Events ..................................................................... 76
-3.10.4.1  New Connection Initiated ....................................................................... 76
-3.10.4.2  Negotiation of Authenticated Firewall Encapsulation .................................. 76
-Sending a Packet on an Existing Connection ............................................. 77
-3.10.4.3
-3.10.5  Message Processing Rules ............................................................................ 77
-Responder Receiving an Encapsulated Authenticated Firewall Connection Packet
- .......................................................................................................... 77
-Responder Receiving a Plaintext Authenticated Firewall Connection Packet ... 77
-Initiator Receiving a Plaintext Authenticated Firewall Connection Packet ...... 77
-Receiving an ICMP Packet ...................................................................... 78
-Impersonated SA lookup ................................................................................... 78
-Abstract Data Model .................................................................................... 78
-3.11.1
-Timers ...................................................................................................... 78
-3.11.2
-3.11.3
-Initialization ............................................................................................... 78
-3.11.4  Higher-Layer Triggered Events ..................................................................... 78
-
-3.9.1
-3.9.2
-3.9.3
-3.9.4
-3.9.5
-
-3.10.5.2
-3.10.5.3
-3.10.5.4
-
-3.9.6
-3.9.7
-
-3.10.5.1
-
-3.9.5.1
-
-3.9.7.1
-
-3.11
-
-3.10
-
-[MS-AIPS] - v20240916
-Authenticated Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 91
-
-3.11.4.1  New Connection Initiated ....................................................................... 78
-Sending a Packet on an Existing Connection ............................................. 78
-3.11.4.2
-3.11.5  Message Processing Rules ............................................................................ 78
-Responder Receiving a Packet on an SA ................................................... 78
-
-3.11.5.1
-
-4  Protocol Examples ................................................................................................. 79
-Main Mode - No Extended Mode ......................................................................... 79
-Kerberos Extended Mode ................................................................................... 80
-Extended Mode Authentication Retry .................................................................. 81
-
-4.1
-4.2
-4.3
-
-5.1
-
-5  Security ................................................................................................................. 82
-Security Considerations for Implementers ........................................................... 82
-Policy Construction ..................................................................................... 82
-Credential/Identity Protection ....................................................................... 82
-Index of Security Parameters ............................................................................ 82
-
-5.1.1
-5.1.2
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 83
-
-7  Change Tracking .................................................................................................... 89
-
-8  Index ..................................................................................................................... 90
-
-[MS-AIPS] - v20240916
-Authenticated Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 91
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 ISAKMP Header Format Packet](#221-isakmp-header-format-packet)
+    - [2.2.2 Generic Payload Header Packet](#222-generic-payload-header-packet)
+    - [2.2.3 Payload Types](#223-payload-types)
+      - [2.2.3.1 GSS-API Payload (Payload Type 0x81) Packet](#2231-gss-api-payload-payload-type-0x81-packet)
+      - [2.2.3.2 Crypto Payload (Payload Type 0x85) Packet](#2232-crypto-payload-payload-type-0x85-packet)
+        - [2.2.3.2.1 Crypto Payload 0x85 Encryption Flag Set](#22321-crypto-payload-0x85-encryption-flag-set)
+        - [2.2.3.2.2 Crypto Payload 0x85 Encryption Flag Not Set](#22322-crypto-payload-0x85-encryption-flag-not-set)
+        - [2.2.3.2.3 Format of the Generic Payload Header for the Crypto Payload](#22323-format-of-the-generic-payload-header-for-the-crypto-payload)
+      - [2.2.3.3 GSS_ID 0x86 Payload Packet](#2233-gssid-0x86-payload-packet)
+      - [2.2.3.4 Auth Payload (Payload Type 0x87) Packet](#2234-auth-payload-payload-type-0x87-packet)
+      - [2.2.3.5 Notify Payload (Payload Type 0x0B) Packet](#2235-notify-payload-payload-type-0x0b-packet)
+      - [2.2.3.6 Notify Payload (Payload Type 0x0B) Notify Acquire Packet](#2236-notify-payload-payload-type-0x0b-notify-acquire-packet)
+      - [2.2.3.7 Key Dictation Payload (Payload Type 0x88)](#2237-key-dictation-payload-payload-type-0x88)
+      - [2.2.3.8 Key Dictation Weight Payload (Payload Type 0x89)](#2238-key-dictation-weight-payload-payload-type-0x89)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 IP Traffic Match SPD Protect-using-IPsec Rule](#3141-ip-traffic-match-spd-protect-using-ipsec-rule)
+      - [3.1.4.2 Explicit IPsec Negotiation Request](#3142-explicit-ipsec-negotiation-request)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Reliable Notify Message](#3151-receiving-a-reliable-notify-message)
+      - [3.1.5.2 Receiving an Unreliable Notify Message](#3152-receiving-an-unreliable-notify-message)
+      - [3.1.5.3 Receiving a Reliable Notify Acknowledgement](#3153-receiving-a-reliable-notify-acknowledgement)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Negotiation Retransmission Timer](#3161-negotiation-retransmission-timer)
+      - [3.1.6.2 Notify Retransmission Timer](#3162-notify-retransmission-timer)
+      - [3.1.6.3 Responder Time-Out Timer](#3163-responder-time-out-timer)
+      - [3.1.6.4 MM SA Lifetime](#3164-mm-sa-lifetime)
+      - [3.1.6.5 QM Rekey Timer](#3165-qm-rekey-timer)
+      - [3.1.6.6 Connection State Timer Events](#3166-connection-state-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 IP Address Deletion](#3171-ip-address-deletion)
+      - [3.1.7.2 AuthIP Shutdown](#3172-authip-shutdown)
+      - [3.1.7.3 IPSec Policy Change](#3173-ipsec-policy-change)
+      - [3.1.7.4 AuthIP Key Material Generation](#3174-authip-key-material-generation)
+      - [3.1.7.5 Sending QM Notify Messages](#3175-sending-qm-notify-messages)
+      - [3.1.7.6 Enter DoS Protection Mode](#3176-enter-dos-protection-mode)
+      - [3.1.7.7 New Connection Initiation](#3177-new-connection-initiation)
+  - [3.2 AuthIP Main Mode Initiator Role](#32-authip-main-mode-initiator-role)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Received Generalized Main Mode First Exchange Response](#3251-received-generalized-main-mode-first-exchange-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 AuthIP Main Mode Responder Role](#33-authip-main-mode-responder-role)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Received Generalize Main Mode First Exchange Response](#3351-received-generalize-main-mode-first-exchange-response)
+      - [3.3.5.2 Received IKEv1 Packet](#3352-received-ikev1-packet)
+      - [3.3.5.3 Invalid Message Received](#3353-invalid-message-received)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Limits on New Negotiations from Peer Reached](#3371-limits-on-new-negotiations-from-peer-reached)
+  - [3.4 AuthIP Quick Mode Initiator Role](#34-authip-quick-mode-initiator-role)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+      - [3.4.2.1 QM SA Time Lifetime Expiration](#3421-qm-sa-time-lifetime-expiration)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Processing Events and Sequencing Rules](#345-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Quick Mode First Exchange Response](#3451-quick-mode-first-exchange-response)
+      - [3.4.5.2 Quick Mode Second Exchange Response](#3452-quick-mode-second-exchange-response)
+      - [3.4.5.3 QM Rekey Acquire Notification Received](#3453-qm-rekey-acquire-notification-received)
+      - [3.4.5.4 Error Notify Received](#3454-error-notify-received)
+    - [3.4.6 Timer Events](#346-timer-events)
+      - [3.4.6.1 QM SA Lifetime Timer Expiration](#3461-qm-sa-lifetime-timer-expiration)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+      - [3.4.7.1 Invalid Message Received](#3471-invalid-message-received)
+      - [3.4.7.2 QM SA Byte Lifetime Expiration](#3472-qm-sa-byte-lifetime-expiration)
+      - [3.4.7.3 Transition to Main Mode Initiator First Exchange Done](#3473-transition-to-main-mode-initiator-first-exchange-done)
+      - [3.4.7.4 Transition to QM Rekey Requested State](#3474-transition-to-qm-rekey-requested-state)
+  - [3.5 AuthIP Quick Mode Responder Role](#35-authip-quick-mode-responder-role)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Processing Events and Sequencing Rules](#355-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Received Quick Mode First Exchange Request](#3551-received-quick-mode-first-exchange-request)
+      - [3.5.5.2 Received Quick Mode Second Exchange Request](#3552-received-quick-mode-second-exchange-request)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+      - [3.5.7.1 Invalid Message Received](#3571-invalid-message-received)
+  - [3.6 AuthIP Extended Mode Initiator Role](#36-authip-extended-mode-initiator-role)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher Layer Triggered Events](#364-higher-layer-triggered-events)
+    - [3.6.5 Processing Events and Sequencing Rules](#365-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Received Extended Mode First Exchange Response](#3651-received-extended-mode-first-exchange-response)
+      - [3.6.5.2 Received Extended Mode Final Exchange Response](#3652-received-extended-mode-final-exchange-response)
+      - [3.6.5.3 Invalid Message Received](#3653-invalid-message-received)
+    - [3.6.6 Timer Events](#366-timer-events)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+      - [3.6.7.1 Transition Quick Mode Initiator Done](#3671-transition-quick-mode-initiator-done)
+      - [3.6.7.2 Extended Mode Initiator GSS Exchange Success](#3672-extended-mode-initiator-gss-exchange-success)
+  - [3.7 AuthIP Extended Mode Responder Role](#37-authip-extended-mode-responder-role)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+    - [3.7.5 Processing Events and Sequencing Rules](#375-processing-events-and-sequencing-rules)
+      - [3.7.5.1 Received Extended Mode First Exchange Request](#3751-received-extended-mode-first-exchange-request)
+      - [3.7.5.2 Received Extended Mode Final Exchange Request](#3752-received-extended-mode-final-exchange-request)
+    - [3.7.6 Timer Events](#376-timer-events)
+    - [3.7.7 Other Local Events](#377-other-local-events)
+      - [3.7.7.1 Invalid Message Received](#3771-invalid-message-received)
+  - [3.8 Generalized AuthIP GSS-API Initiator Role](#38-generalized-authip-gss-api-initiator-role)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Higher-Layer Triggered Events](#384-higher-layer-triggered-events)
+    - [3.8.5 Processing Events and Sequencing Rules](#385-processing-events-and-sequencing-rules)
+      - [3.8.5.1 GSS-API Response Received](#3851-gss-api-response-received)
+    - [3.8.6 Timer Events](#386-timer-events)
+    - [3.8.7 Other Local Events](#387-other-local-events)
+      - [3.8.7.1 GSS-API Start](#3871-gss-api-start)
+  - [3.9 Generalized AuthIP GSS-API Responder Role](#39-generalized-authip-gss-api-responder-role)
+    - [3.9.1 Abstract Data Model](#391-abstract-data-model)
+    - [3.9.2 Timers](#392-timers)
+    - [3.9.3 Initialization](#393-initialization)
+    - [3.9.4 Higher-Layer Triggered Events](#394-higher-layer-triggered-events)
+    - [3.9.5 Processing Events and Sequencing Rules](#395-processing-events-and-sequencing-rules)
+      - [3.9.5.1 GSS-API Request Received](#3951-gss-api-request-received)
+    - [3.9.6 Timer Events](#396-timer-events)
+    - [3.9.7 Other Local Events](#397-other-local-events)
+      - [3.9.7.1 Invalid Message Received](#3971-invalid-message-received)
+  - [3.10 Authenticated Firewall Mode](#310-authenticated-firewall-mode)
+    - [3.10.1 Abstract Data Model](#3101-abstract-data-model)
+    - [3.10.2 Timers](#3102-timers)
+    - [3.10.3 Initialization](#3103-initialization)
+    - [3.10.4 Higher-Layer Triggered Events](#3104-higher-layer-triggered-events)
+      - [3.10.4.1 New Connection Initiated](#31041-new-connection-initiated)
+      - [3.10.4.2 Negotiation of Authenticated Firewall Encapsulation](#31042-negotiation-of-authenticated-firewall-encapsulation)
+      - [3.10.4.3 Sending a Packet on an Existing Connection](#31043-sending-a-packet-on-an-existing-connection)
+    - [3.10.5 Message Processing Rules](#3105-message-processing-rules)
+      - [3.10.5.1 Responder Receiving an Encapsulated Authenticated Firewall Connection](#31051-responder-receiving-an-encapsulated-authenticated-firewall-connection)
+      - [3.10.5.2 Responder Receiving a Plaintext Authenticated Firewall Connection](#31052-responder-receiving-a-plaintext-authenticated-firewall-connection)
+      - [3.10.5.3 Initiator Receiving a Plaintext Authenticated Firewall Connection Packet](#31053-initiator-receiving-a-plaintext-authenticated-firewall-connection-packet)
+      - [3.10.5.4 Receiving an ICMP Packet](#31054-receiving-an-icmp-packet)
+  - [3.11 Impersonated SA lookup](#311-impersonated-sa-lookup)
+    - [3.11.1 Abstract Data Model](#3111-abstract-data-model)
+    - [3.11.2 Timers](#3112-timers)
+    - [3.11.3 Initialization](#3113-initialization)
+    - [3.11.4 Higher-Layer Triggered Events](#3114-higher-layer-triggered-events)
+      - [3.11.4.1 New Connection Initiated](#31141-new-connection-initiated)
+      - [3.11.4.2 Sending a Packet on an Existing Connection](#31142-sending-a-packet-on-an-existing-connection)
+    - [3.11.5 Message Processing Rules](#3115-message-processing-rules)
+      - [3.11.5.1 Responder Receiving a Packet on an SA](#31151-responder-receiving-a-packet-on-an-sa)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Main Mode - No Extended Mode](#41-main-mode-no-extended-mode)
+  - [4.2 Kerberos Extended Mode](#42-kerberos-extended-mode)
+  - [4.3 Extended Mode Authentication Retry](#43-extended-mode-authentication-retry)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Policy Construction](#511-policy-construction)
+    - [5.1.2 Credential/Identity Protection](#512-credentialidentity-protection)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Authenticated Internet Protocol (AuthIP) is derived from the Internet Key Exchange (IKE)
 Protocol. AuthIP enables computers using IP security (IPsec) to authenticate each other and to
@@ -1083,7 +808,7 @@ optimizations in key exchange and policy discoverability.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1138,7 +863,8 @@ Release: September 16, 2024
 
 9 / 91
 
-extended mode (EM): An optional phase of AuthIP negotiation during which the peers perform a
+
+extended mode (EM): An optional phase of AuthIP negotiation during which the peers perform a
 
 second round of authentication. This phase does not exist in the Internet Key Exchange
 (IKE) protocol.
@@ -1211,7 +937,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-main mode security association database (MMSAD): A database that contains operational
+
+main mode security association database (MMSAD): A database that contains operational
 
 state for each main mode (MM) security association (SA). For more information, see [MS-
 AIPS] section 3.1.1 and [MS-IKEE] section 3.1.1.
@@ -1292,7 +1019,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-security principal name (SPN): The name that identifies a security principal (for example,
+
+security principal name (SPN): The name that identifies a security principal (for example,
 
 machinename$@domainname for a machine joined to a domain or username@domainname for
 a user). Domainname is resolved using the Domain Name System (DNS).
@@ -1346,7 +1074,7 @@ maintaining backward compatibility. For more information, see [RFC2408] section 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1360,7 +1088,8 @@ Release: September 16, 2024
 
 12 / 91
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1427,7 +1156,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[RFC3602] Frankel, S., Glenn, R., and Kelly, S., "The AES-CBC Cipher Algorithm and Its Use with
+
+[RFC3602] Frankel, S., Glenn, R., and Kelly, S., "The AES-CBC Cipher Algorithm and Its Use with
 IPsec", RFC 3602, September 2003, https://www.rfc-editor.org/info/rfc3602
 
 [RFC3947] Kivinen, T., Swander, B., Huttunen, A., and Volpe, V., "Negotiation of NAT-Traversal in the
@@ -1461,7 +1191,7 @@ Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 Logarithm Cryptography", March 2006, http://csrc.nist.gov/groups/ST/toolkit/documents/SP800-
 56Arev1_3-8-07.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ECP] Fu, D. and Solinas, J., "ECP Groups For IKE and IKEv2", September 2005,
 http://tools.ietf.org/id/draft-ietf-ipsec-ike-ecp-groups-02.txt
@@ -1494,7 +1224,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[RFC2104] Krawczyk, H., Bellare, M., and Canetti, R., "HMAC: Keyed-Hashing for Message
+
+[RFC2104] Krawczyk, H., Bellare, M., and Canetti, R., "HMAC: Keyed-Hashing for Message
 Authentication", RFC 2104, February 1997, https://www.rfc-editor.org/info/rfc2104
 
 [RFC2403] Madson, C. and Glenn, R., "The Use of HMAC-MD5-96 Within ESP and AH", RFC 2403,
@@ -1527,7 +1258,7 @@ IPsec ESP and AH", RFC 4543, May 2006, https://www.rfc-editor.org/info/rfc4555
 [RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
-1.3  Overview
+### 1.3 Overview
 
 The Authenticated Internet Protocol (AuthIP) is a keying protocol that is similar to Internet Key
 Exchange (IKE) version 1 (IKEv1) described in [RFC2409] and Internet Key Exchange (IKEv2)
@@ -1564,7 +1295,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  One-way trust: The Authenticated Internet Protocol allows one-way trust between peers. IKEv1
+
+  One-way trust: The Authenticated Internet Protocol allows one-way trust between peers. IKEv1
 
 always requires mutual authentication. IKEv2 can support one-way authentication by using
 EAP methods that support one-way authentication.
@@ -1598,7 +1330,7 @@ An Authenticated Internet Protocol implementation can support the Internet Key E
 Extensions: IKE fragmentation, fast failover, negotiation discovery, dead peer detection, and denial
 of service protection described in [MS-IKEE].<1>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Authenticated Internet Protocol operates on top of the User Datagram Protocol (UDP)
 ([RFC768]). This protocol extends the Internet Key Exchange version 1 (IKEv1) and retains most
@@ -1618,7 +1350,7 @@ The relationship between the Authenticated Internet Protocol and the Group Polic
 (IPSec) Protocol Extension [MS-GPIPSEC] and Group Policy: Firewall and Advanced Security Data
 Structure [MS-GPFAS] is described in [MS-WPO] section 7.5.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Authenticated Internet Protocol assumes that both the initiator and the responder have an IP
 address and have UDP connectivity. The Authenticated Internet Protocol also assumes that the
@@ -1631,7 +1363,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Authenticated Internet Protocol extends IKEv1 and can be enabled for negotiating any Internet
 Protocol security (IPsec) transport mode or tunnel mode security associations (SAs).
@@ -1640,7 +1373,7 @@ Credentials that are negotiated on a per-flow basis can be used to implement fin
 control on the responder, for example, per connection/per user. This fine-grained access control is
 not possible in IKEv1 or IKEv2.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning in the following areas:
 
@@ -1713,7 +1446,8 @@ Release: September 16, 2024
 
 17 / 91
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 The Authenticated Internet Protocol (AuthIP) inherits the extensibility features of the Internet
 Security Association and Key Management Protocol (ISAKMP): private exchange types,
@@ -1725,7 +1459,7 @@ the mechanisms that are provided by ISAKMP and IKEv1.
 The Authenticated Internet Protocol uses GSS-API exchanges for authentication ([RFC2743] section
 2), but non-extensibly, supporting only a fixed set of security services.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Authenticated Internet Protocol uses the assigned numbers from the Internet Assigned Numbers
 Authority (IANA), IPsec Registry (IANAIPSEC), and ISAKMP Registry (IANAISAKMP). All the new
@@ -1739,9 +1473,10 @@ Release: September 16, 2024
 
 18 / 91
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Authenticated Internet Protocol messages are transported over the Internet Security Association
 and Key Management Protocol (ISAKMP) as specified in [RFC2408], which by default, uses UDP
@@ -1756,9 +1491,9 @@ format as specified in [RFC2408] section 3.1.
 
 Unless otherwise specified, all fields are sent and encoded in network byte order.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  ISAKMP Header Format Packet
+#### 2.2.1 ISAKMP Header Format Packet
 
 The Authenticated Internet Protocol messages are Internet Security Association and Key
 Management Protocol (ISAKMP) messages, as specified in [RFC2408] section 3, and [RFC3947]
@@ -1809,7 +1544,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1920,7 +1656,8 @@ Release: September 16, 2024
 
 20 / 91
 
-ISAKMP payload type
+
+ISAKMP payload type
 
 Value
 
@@ -2010,7 +1747,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-by the initiator of the quick mode negotiation. This is identical to those specified in [RFC2408]
+
+by the initiator of the quick mode negotiation. This is identical to those specified in [RFC2408]
 section 3.1. This is set from the Current state field in the SA. See section 3.1.1 for details.
 
 Length (4 bytes): The length, in bytes, of the total message (header + payloads). This is
@@ -2021,7 +1759,7 @@ Payload (variable): MUST contain a valid ISAKMP payload. The payload is used to 
 
 information such as SA data, or key generation and authentication data.
 
-2.2.2  Generic Payload Header Packet
+#### 2.2.2 Generic Payload Header Packet
 
 Each payload in Authenticated Internet Protocol messages starts with the Generic payload header, as
 specified in [RFC2408] section 3.2.
@@ -2055,7 +1793,7 @@ Payload_Length (2 bytes): The length, in bytes, of this payload, including the G
 
 header.
 
-2.2.3  Payload Types
+#### 2.2.3 Payload Types
 
 The Authenticated Internet Protocol reuses the following payload types from [RFC2408] section 3.1.
 
@@ -2112,7 +1850,8 @@ Release: September 16, 2024
 
 22 / 91
 
-This protocol also defines the following additional payload types. The payload types are allocated from
+
+This protocol also defines the following additional payload types. The payload types are allocated from
 the private use range as defined in [RFC2408] section 3.1.
 
 AuthIP payload types
@@ -2137,7 +1876,7 @@ Authentication (Auth)
 
 Implementers can add additional payload types for their own purposes.
 
-2.2.3.1  GSS-API Payload (Payload Type 0x81) Packet
+##### 2.2.3.1 GSS-API Payload (Payload Type 0x81) Packet
 
 This is the GSS-API payload (as specified in [GSS] section 3.3.3) without the vendor-encoding field
 and with additional status and flag fields.
@@ -2212,7 +1951,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x10
 
@@ -2251,7 +1991,7 @@ No additional GSS methods are supported.
 Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) is not supported in AuthIP.
 See section 2.2.3.4 for specific GSS method negotiation.
 
-2.2.3.2  Crypto Payload (Payload Type 0x85) Packet
+##### 2.2.3.2 Crypto Payload (Payload Type 0x85) Packet
 
 The Crypto payload is used to encrypt other payloads. On the wire, Authenticated Internet Protocol
 messages MUST contain one and only one Crypto payload, which MUST follow and be adjacent to the
@@ -2271,7 +2011,7 @@ The encryption flag MUST be set on any payload indicated with a HDR* in the payl
 See the figure in section 3.4.7.3 for an example. If the payloads are denoted HDR* in the payload
 exchanges, then the receiver MUST verify that the encryption flag is set.
 
-2.2.3.2.1 Crypto Payload 0x85 Encryption Flag Set
+###### 2.2.3.2.1 Crypto Payload 0x85 Encryption Flag Set
 
 [MS-AIPS] - v20240916
 Authenticated Internet Protocol
@@ -2280,7 +2020,8 @@ Release: September 16, 2024
 
 24 / 91
 
-The Crypto payload is constructed in a similar manner as ESP (see [RFC4303] section 2) minus the
+
+The Crypto payload is constructed in a similar manner as ESP (see [RFC4303] section 2) minus the
 SPI field.
 
 The Crypto payload type 0x85 with the encryption flag set format is structured as follows.
@@ -2360,7 +2101,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If one of the following vendor IDs is received, the integrity checksum data size of 12 bytes MUST
+
+If one of the following vendor IDs is received, the integrity checksum data size of 12 bytes MUST
 be used for all algorithms.
 
 Vendor IDs that require 12-byte integrity checksum data:
@@ -2377,7 +2119,7 @@ database (SAD), as described in [RFC4301] section 4.4.2. For the negotiated inte
 HMAC-MD5 and HMAC-SHA-1, the integrity checksum data size is 12 bytes. For all other integrity
 algorithms, the integrity checksum data size is specified in [RFC4868] section 2.3.
 
-2.2.3.2.2 Crypto Payload 0x85 Encryption Flag Not Set
+###### 2.2.3.2.2 Crypto Payload 0x85 Encryption Flag Not Set
 
 If the encryption flag is not set in the flags field of the ISAKMP header, the format is as follows.
 
@@ -2416,7 +2158,7 @@ payload header. In addition, the next payload field of the Generic payload heade
 payload MUST be set to the payload type of the first payload in the clear-text payload sequence that is
 carried by the Crypto payload.
 
-2.2.3.2.3 Format of the Generic Payload Header for the Crypto Payload
+###### 2.2.3.2.3 Format of the Generic Payload Header for the Crypto Payload
 
 The following diagram shows the format of the Generic payload header for the Crypto payload.
 
@@ -2448,11 +2190,12 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Payload_Length (2 bytes): The value of the payload length is computed as:
+
+Payload_Length (2 bytes): The value of the payload length is computed as:
 
 4 (the header) + 4 (the sequence number) + the length of the IV in bytes.
 
-2.2.3.3  GSS_ID 0x86 Payload Packet
+##### 2.2.3.3 GSS_ID 0x86 Payload Packet
 
 In IKEv1, the identity information is passed between peers as an attribute of the security
 association (SA) in the form of an identity payload, as specified in [RFC2408] section 3.8. In the
@@ -2481,7 +2224,7 @@ specified in [MS-KILE] section 3.1.5.11. The security principal name sent MUST b
 string. The security principal name MUST NOT contain the NULL string terminator. All
 authentication mechanisms MUST use this representation of the security principal name.
 
-2.2.3.4  Auth Payload (Payload Type 0x87) Packet
+##### 2.2.3.4 Auth Payload (Payload Type 0x87) Packet
 
 The authenticated payload is used to convey a list of authentication methods to the responder. The
 number of authentication methods MUST be computed from the payload size in the generic header
@@ -2534,7 +2277,8 @@ Release: September 16, 2024
 
 27 / 91
 
-Value  Meaning
+
+Value  Meaning
 
 0x0005  NTLM [MS-NLMP]
 
@@ -2542,7 +2286,7 @@ Flags (2 bytes): This field is currently unused. It MUST be set to 0 by the init
 
 the responder.
 
-2.2.3.5  Notify Payload (Payload Type 0x0B) Packet
+##### 2.2.3.5 Notify Payload (Payload Type 0x0B) Packet
 
 The notify payload is similar to the IKEv1 notification payload, as specified in [RFC2408] section 3.14.
 However, the field that is referred to as spiSize in IKEv1 is referred to as Flags in the Authenticated
@@ -2618,7 +2362,8 @@ Release: September 16, 2024
 
 28 / 91
 
-Value  Meaning
+
+Value  Meaning
 
 0x9C45  EXCHANGE_INFO
 
@@ -2703,7 +2448,8 @@ Release: September 16, 2024
 
 29 / 91
 
-Value
+
+Value
 
 Meaning
 
@@ -2713,7 +2459,7 @@ IKEE] section 2.2.6.
 These flags can be set independently. All other flags MUST be set to zero by the sender and MUST
 be ignored by the recipient.
 
-2.2.3.6  Notify Payload (Payload Type 0x0B) Notify Acquire Packet
+##### 2.2.3.6 Notify Payload (Payload Type 0x0B) Notify Acquire Packet
 
 The following diagram shows the Notify Acquire packet structure.
 
@@ -2749,7 +2495,7 @@ extension, as specified in [MS-IKEE] section 2.2.6.
 
 All other flags MUST be set to zero by the sender and MUST be ignored by the recipient.
 
-2.2.3.7  Key Dictation Payload (Payload Type 0x88)
+##### 2.2.3.7 Key Dictation Payload (Payload Type 0x88)
 
 The Key Dictation payload is used by an AuthIP node to explicitly supply quick mode keys to the
 peer node. The payload carries keys for a unidirectional SA. Inbound and outbound keys need
@@ -2788,7 +2534,8 @@ Release: September 16, 2024
 
 30 / 91
 
-...
+
+...
 
 Pad_Length
 
@@ -2820,7 +2567,7 @@ already has this information.
 Integrity_Checksum_Data (variable): Use the same encryption algorithm as the Crypto payload
 (section 2.2.3.2.1). The integrity checksum data covers the encrypted portion of the payload.
 
-2.2.3.8  Key Dictation Weight Payload (Payload Type 0x89)
+##### 2.2.3.8 Key Dictation Weight Payload (Payload Type 0x89)
 
 The Key Dictation Weight Payload is used by an AuthIP node to dictate the quick mode keys to its
 peer. If both peers want to dictate keys, then the end with the higher weight wins.
@@ -2849,13 +2596,14 @@ Release: September 16, 2024
 
 31 / 91
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-AIPS].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
 This section specifies details common to all roles in AuthIP.
 
@@ -2888,7 +2636,8 @@ Release: September 16, 2024
 
 32 / 91
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-AIPS].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2905,7 +2654,8 @@ Release: September 16, 2024
 
 33 / 91
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-AIPS].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2929,7 +2679,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-parameter to TLS. When multiple certificates and certification authorities are available to be matched
+
+parameter to TLS. When multiple certificates and certification authorities are available to be matched
 in order to get a successful authentication, each Authenticated Internet Protocol peer MUST retry all
 its applicable credentials (for example, certificates) before failing the TLS negotiation and moving to
 the next authentication method. The authentication retry is controlled by flags on the GSS-API
@@ -3019,7 +2770,8 @@ Release: September 16, 2024
 
 35 / 91
 
-
+
+
 
 prf(key, msg): The keyed pseudorandom function (PRF) that is used to generate a deterministic
 output that appears pseudorandom. PRF is used both for key derivations and for authentication
@@ -3099,7 +2851,8 @@ Release: September 16, 2024
 
 36 / 91
 
-3.1.1  Abstract Data Model
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3174,7 +2927,8 @@ Release: September 16, 2024
 
 37 / 91
 
-  Request Non-notify Message pending Queue: When there is an outstanding notify request any
+
+  Request Non-notify Message pending Queue: When there is an outstanding notify request any
 
 non-notify request generated will be queued here until an ACK arrives (see section 3.1.7.5).
 
@@ -3267,7 +3021,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 IsImpersonationConnection: Type: BOOLEAN. Indicates whether impersonation was used
 in the EM negotiation for the MM SA associated with the connection.
@@ -3351,7 +3106,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  KeyDictationWtRemote: Type: DWORD Set if, during negotiation, it is discovered that the peer
+
+  KeyDictationWtRemote: Type: DWORD Set if, during negotiation, it is discovered that the peer
 
 end wants to dictate quick mode keys to peer.
 
@@ -3369,7 +3125,7 @@ local end has a higher Key Dictation Weight.
 
 the remote end has a higher Key Dictation Weight.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The following timers are used by the Authenticated Internet Protocol:<12>
 
@@ -3404,7 +3160,7 @@ then acts as the initiator for the rekey.
 Per-Connection state entry timer: All entries in the connection state table (except the TCP state
 entries) each have their own timer. This timer triggers connection entry state deletion.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The following flags MUST be initialized to FALSE in the MM SA database:
 
@@ -3441,11 +3197,12 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  KeyDictationWtRemote: Initialized to zero.
 
-3.1.4  Higher-Layer Triggered Events
+  KeyDictationWtRemote: Initialized to zero.
 
-3.1.4.1  IP Traffic Match SPD Protect-using-IPsec Rule
+#### 3.1.4 Higher-Layer Triggered Events
+
+##### 3.1.4.1 IP Traffic Match SPD Protect-using-IPsec Rule
 
 When inbound or outbound packets trigger AuthIP negotiation based on standard Ipsec processing
 rules ([RFC4301] section 5), the protocol acts as the initiator for this negotiation and sends message
@@ -3459,7 +3216,7 @@ In the new MMSAD entry, the initiator MUST also copy the values "Require Imperso
 EM flags, and copy the ImpersonationHandle value representing the user that generated the traffic to
 ImpersonationHandle.
 
-3.1.4.2  Explicit IPsec Negotiation Request
+##### 3.1.4.2 Explicit IPsec Negotiation Request
 
 The Authenticated Internet Protocol negotiation can be explicitly triggered by the user or
 administrator prior to packets being sent or received. The protocol then acts as the initiator for this
@@ -3469,7 +3226,7 @@ negotiation. When triggered this way, the initiator MUST create a main mode secu
 algorithm, hash algorithm, group description, life type, and life duration values before sending
 message #1 (section 3.2.4).
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 Authenticated Internet Protocol negotiations are tracked according to the same rules that are
 specified for IKE negotiations, as specified in [RFC2409]. Each Authenticated Internet Protocol
@@ -3484,7 +3241,7 @@ mode (MM) and MUST be one during extended mode (EM).
 All Authenticated Internet Protocol exchanges follow the retransmission state transitions that are
 presented in section 3.1.
 
-3.1.5.1  Receiving a Reliable Notify Message
+##### 3.1.5.1 Receiving a Reliable Notify Message
 
 When an Authenticated Internet Protocol peer receives a Notify message with
 RELIABLE_NOTIFY_FLAG set (as specified in section 2.2.3.5), it MUST send an acknowledgment
@@ -3505,29 +3262,30 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.5.2  Receiving an Unreliable Notify Message
+
+##### 3.1.5.2 Receiving an Unreliable Notify Message
 
 When an Authenticated Internet Protocol peer receives a Notify message with
 RELIABLE_NOTIFY_FLAG not set (as specified in section 2.2.3.5) then it MUST handle it exactly like a
 reliable notify (section 3.1.5.1) except for not sending back an acknowledgment.
 
-3.1.5.3  Receiving a Reliable Notify Acknowledgement
+##### 3.1.5.3 Receiving a Reliable Notify Acknowledgement
 
 When an Authenticated Internet Protocol peer receives a Notify message of type NOTIFY_ACK (see
 section 2.2.3.5 for verification details), it MUST check to see if any Notify messages are queued
 waiting for the notify ACK to arrive. If so, the first non-Notify message in the Request Non-notify
 Message pending Queue is sent at this time (section 3.1.7.5).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Negotiation Retransmission Timer
+##### 3.1.6.1 Negotiation Retransmission Timer
 
 The negotiation retransmission timer is started by the initiator when it sends a message. Upon
 expiration of this timer, the initiator MUST retransmit the message and increment the retransmission
 counter. After seven retransmissions (tracked by the Retransmission timer context of the MM SA
 (section 3.1.1), the initiator MUST delete the state for the corresponding MM SA.
 
-3.1.6.2  Notify Retransmission Timer
+##### 3.1.6.2 Notify Retransmission Timer
 
 The notify retransmission timer is started by the initiator or the responder when it sends a Notify
 payload within a message. Upon expiration of this timer, the initiator MUST retransmit the Notify
@@ -3536,23 +3294,23 @@ the state for the corresponding main mode security association (MM SA). During A
 shutdown, however, the delete notification messages (section 3.1.7.3) are retransmitted at most once
 if not acknowledged.
 
-3.1.6.3  Responder Time-Out Timer
+##### 3.1.6.3 Responder Time-Out Timer
 
 This timer MUST be started by the responder upon receipt of a message from the initiator if the
 responder expects a subsequent message from the initiator. Upon expiration of this timer, the
 responder MUST delete the corresponding main mode security association (MM SA).
 
-3.1.6.4  MM SA Lifetime
+##### 3.1.6.4 MM SA Lifetime
 
 The main mode security association (MM SA) lifetime is negotiated between peers. Upon
 expiration of this timer, the initiator or responder MUST delete the corresponding MM SA.
 
-3.1.6.5  QM Rekey Timer
+##### 3.1.6.5 QM Rekey Timer
 
 This timer starts at the beginning of a quick mode rekey. Upon expiration, any other quick mode
 security associations (QM SAs) MUST be deleted.
 
-3.1.6.6  Connection State Timer Events
+##### 3.1.6.6 Connection State Timer Events
 
 On per-connection timer expiry, the connection state for the timer's associated connection MUST be
 deleted from the connection state table.
@@ -3566,9 +3324,10 @@ Release: September 16, 2024
 
 42 / 91
 
-3.1.7  Other Local Events
 
-3.1.7.1  IP Address Deletion
+#### 3.1.7 Other Local Events
+
+##### 3.1.7.1 IP Address Deletion
 
 The Authenticated Internet Protocol reacts to IP address Plug and Play notifications. If an IP address
 on the system is deleted, the Authenticated Internet Protocol MUST delete all corresponding SAs and
@@ -3582,7 +3341,7 @@ packet MUST be constructed as follows:
 
 2.2.3.5, set to TRUE.
 
-3.1.7.2  AuthIP Shutdown
+##### 3.1.7.2 AuthIP Shutdown
 
 Upon shutdown of the AuthIP protocol implementation, the Authenticated Internet Protocol MUST
 send delete notification messages (Notify payload of Notify type NOTIFY_STATUS) for all SAs (section
@@ -3597,7 +3356,7 @@ This packet MUST be constructed as follows:
 
 2.2.3.5, set to TRUE.
 
-3.1.7.3  IPSec Policy Change
+##### 3.1.7.3 IPSec Policy Change
 
 Upon policy change, the Authenticated Internet Protocol MUST revalidate all SAs against the new
 policy, delete SAs that do not match the new policy, and send a delete notification to the peer for each
@@ -3612,7 +3371,7 @@ This delete notification packet MUST be constructed as follows:
 
 2.2.3.5, set to TRUE.
 
-3.1.7.4  AuthIP Key Material Generation
+##### 3.1.7.4 AuthIP Key Material Generation
 
 A number of Authenticated Internet Protocol exchanges involve the generation of keying material.
 Each AuthIP peer MUST generate keying material as follows.
@@ -3635,7 +3394,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- Define Function: OtherInfo (pubInof, privInfo) as:
+
+ Define Function: OtherInfo (pubInof, privInfo) as:
 AlgorithmID|PartyUInfo|PartyVInfo|pubInfo|privInfo
 
 The function OtherInfo takes as input (pubInfo, privInfo), and performs the given concatenation.
@@ -3705,7 +3465,8 @@ Release: September 16, 2024
 
 44 / 91
 
-For the first two payloads, the cumulative hash for Auth1 MUST start with a hard-coded sha256 (as
+
+For the first two payloads, the cumulative hash for Auth1 MUST start with a hard-coded sha256 (as
 specified in [SHA256]) because a hash method has not yet been negotiated between the peers.
 Starting with payload #3, the peers MUST use the negotiated hash algorithm.
 
@@ -3734,7 +3495,7 @@ For DES-CBC and TripleDES-CBC, the key MUST be computed in the following way:
 
 so that the number of bits set to one is odd.
 
-3.1.7.5  Sending QM Notify Messages
+##### 3.1.7.5 Sending QM Notify Messages
 
 Each Authenticated Internet Protocol peer MUST allow only one outstanding Notify message affiliated
 with a QM SA (section 2.2.3.5) at a time. The initiator MUST NOT send a Notify message until it has
@@ -3747,14 +3508,14 @@ response to a previously sent message, each message MUST be queued in the Reques
 Message pending Queue (section 3.1.1) until all preceding Notify messages are acknowledged (section
 3.1.5.3). If there are no outstanding notifies the packet MUST be sent immediately.
 
-3.1.7.6  Enter DoS Protection Mode
+##### 3.1.7.6 Enter DoS Protection Mode
 
 When the number of SAs in a state other than Quick Mode Initiator Done or Quick Mode Responder
 Done states is at least 500, the host MUST enter DoS protection mode. This mode is used by the
 responder to handle denial of service protection attacks. While the host is in DoS protection mode, it
 MUST behave as specified in [MS-IKEE] section 3.9.
 
-3.1.7.7  New Connection Initiation
+##### 3.1.7.7 New Connection Initiation
 
 Whenever a new connection is initiated, a new entry MUST first be created and stored in the
 connection state table (see section 3.1.1). The IsAuthenticatedFirewallConnection and
@@ -3767,7 +3528,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-AIPS].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -3784,22 +3546,22 @@ IsAuthenticatedFirewallConnection and AuthFWAuthorized flags MUST be set to TRUE
 The connection state tracking timer for the connection MUST be reset back to its default time every
 time a packet is sent or received on that connection.
 
-3.2  AuthIP Main Mode Initiator Role
+### 3.2 AuthIP Main Mode Initiator Role
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 On receiving the new MM request, the responder MUST set the Current role to responder. See
 sections 3.1.1 and 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 See section 3.2.4.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 When the higher level event described in section 3.1.4 is triggered, it MUST create a main mode
 security association (MM SA) in its main mode security association database (MMSAD)
@@ -3817,7 +3579,8 @@ Release: September 16, 2024
 
 46 / 91
 
-  HDR: The ISAKMP header MUST be identical to the first IKE phase 1 initiator header (see
+
+  HDR: The ISAKMP header MUST be identical to the first IKE phase 1 initiator header (see
 
 section 2.2.1), except that the exchange type MUST be 243 (main mode exchange type). The
 Encrypted flag SHOULD NOT be set.
@@ -3874,9 +3637,9 @@ MamieExists" IKE Vendor ID payload.
 The initiator MUST also set the negotiation retransmission timer for each of these messages (section
 3.1.2).
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Received Generalized Main Mode First Exchange Response
+##### 3.2.5.1 Received Generalized Main Mode First Exchange Response
 
 When the initiator receives a response:
 
@@ -3887,7 +3650,8 @@ Release: September 16, 2024
 
 47 / 91
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-AIPS].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3945,39 +3709,40 @@ Release: September 16, 2024
 
 48 / 91
 
-If the initiator is not in Main Mode First Generalized Packet Sent state when it receives this packet, it
+
+If the initiator is not in Main Mode First Generalized Packet Sent state when it receives this packet, it
 MUST tear down the corresponding main mode SA if it can match the packet to one, or silently discard
 the packet otherwise.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 See section 3.1.6.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  AuthIP Main Mode Responder Role
+### 3.3 AuthIP Main Mode Responder Role
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 See section 3.1.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Received Generalize Main Mode First Exchange Response
+##### 3.3.5.1 Received Generalize Main Mode First Exchange Response
 
 If the responder is not in Start state, when it receives the above packet it MUST tear down the
 corresponding main mode SA if it can match the packet to an existing main mode, or silently discard
@@ -3990,7 +3755,8 @@ Release: September 16, 2024
 
 49 / 91
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-AIPS].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
@@ -4048,7 +3814,8 @@ Release: September 16, 2024
 
 50 / 91
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-AIPS].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -4112,13 +3879,14 @@ Release: September 16, 2024
 
 51 / 91
 
-3.3.5.2  Received IKEv1 Packet
+
+##### 3.3.5.2 Received IKEv1 Packet
 
 If a responder supports the Authenticated Internet Protocol and receives an IKEv1 initiator packet,
 the responder MUST silently discard the packet. (See [MS-IKEE] section 3 for details on the IKEv1
 initiator packet).
 
-3.3.5.3  Invalid Message Received
+##### 3.3.5.3 Invalid Message Received
 
 If the main mode responder encounters any errors in the processing of a message after the Crypto
 payload has been processed, it MUST handle them by returning a Notify message with a Notify type
@@ -4127,13 +3895,13 @@ machine from section 3.1. This behavior applies to every message received, as we
 received out of order. The only exception is the DoS protection mode, as specified in [MS-IKEE]
 section 3.9.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 See section 3.1.6.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  Limits on New Negotiations from Peer Reached
+##### 3.3.7.1 Limits on New Negotiations from Peer Reached
 
 When processing an incoming Main Mode First Exchange Request packet (section 3.3.5.1), the
 receiver silently drops incoming new negotiation requests from a peer if any of the following
@@ -4143,24 +3911,24 @@ conditions are met:
 
   More than 35 in-progress negotiations exist in the MMSAD with the same peer.
 
-3.4  AuthIP Quick Mode Initiator Role
+### 3.4 AuthIP Quick Mode Initiator Role
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
-3.4.2.1  QM SA Time Lifetime Expiration
+##### 3.4.2.1 QM SA Time Lifetime Expiration
 
 This timer is started when a QM SA is negotiated. Its duration is the lifetime of the QM SA, as
 specified in the SAD.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 Initial state for this role is captured in section 3.2.5.1.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
@@ -4171,13 +3939,14 @@ Release: September 16, 2024
 
 52 / 91
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-AIPS].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
-3.4.5  Processing Events and Sequencing Rules
+#### 3.4.5 Processing Events and Sequencing Rules
 
-3.4.5.1  Quick Mode First Exchange Response
+##### 3.4.5.1 Quick Mode First Exchange Response
 
 Figure 8: Quick Mode First Exchange Response packet
 
@@ -4231,7 +4000,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 IDi, IDr, SA, Ni(qm), KE: These payloads MUST be identical to the corresponding IKE payloads
 ([RFC2408] sections 3.8, 3.4, and 3.13). The SA, IDi, and IDr payloads MUST be constructed by
@@ -4290,14 +4060,15 @@ Release: September 16, 2024
 
 54 / 91
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-AIPS].images/page055-img01.png)
 ![Extracted image 2 from page 55]([MS-AIPS].images/page055-img02.png)
 <!-- /Extracted images from page 55 -->
 
 Figure 9: Quick Mode Synchronize Notify packet
 
-3.4.5.2  Quick Mode Second Exchange Response
+##### 3.4.5.2 Quick Mode Second Exchange Response
 
 Figure 10: Quick Mode Second Exchange Response packet
 
@@ -4315,7 +4086,8 @@ Release: September 16, 2024
 
 55 / 91
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-AIPS].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
@@ -4336,7 +4108,7 @@ Message event. See section 3.4.7.1.
 
 The initiator MUST start an EM exchange, as specified in section 3.6.7.2, if the PAD requires it.
 
-3.4.5.3  QM Rekey Acquire Notification Received
+##### 3.4.5.3 QM Rekey Acquire Notification Received
 
 Figure 11: Quick Mode Rekey Acquire Notification packet
 
@@ -4361,7 +4133,8 @@ Release: September 16, 2024
 
 56 / 91
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-AIPS].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -4380,20 +4153,20 @@ The message MUST be constructed as follows:
 After sending this packet, the responder MUST transition to Quick Mode Rekey Requested State and
 proceed as specified in section 3.4.7.4.
 
-3.4.5.4  Error Notify Received
+##### 3.4.5.4 Error Notify Received
 
 Upon receipt of this message, the initiator MUST delete its state for its corresponding MM SA.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
-3.4.6.1  QM SA Lifetime Timer Expiration
+##### 3.4.6.1 QM SA Lifetime Timer Expiration
 
 When the QM SA lifetime expiration timer (see section 3.4.2.1) fires, the initiator or responder
 MUST enter the Quick Mode Rekey Requested State.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
-3.4.7.1  Invalid Message Received
+##### 3.4.7.1 Invalid Message Received
 
 If an invalid message is received, the initiator MUST send a NOTIFY_STATUS Notify payload and
 delete its SA state for this negotiation.
@@ -4414,17 +4187,18 @@ Release: September 16, 2024
 
 57 / 91
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-AIPS].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
-3.4.7.2  QM SA Byte Lifetime Expiration
+##### 3.4.7.2 QM SA Byte Lifetime Expiration
 
 When the number of bytes transmitted over the SA exceeds the byte lifetime of the QM SA, as
 specified in the SAD, the initiator or responder MUST transition into Quick Mode Rekey Requested
 state.
 
-3.4.7.3  Transition to Main Mode Initiator First Exchange Done
+##### 3.4.7.3 Transition to Main Mode Initiator First Exchange Done
 
 When the main mode initiator enters Main Mode Initiator First Exchange Done state, it MUST
 proceed to Quick Mode Initiator First Packet Sent state after sending a packet formatted as specified in
@@ -4466,7 +4240,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -4511,7 +4286,7 @@ options MUST be implemented as specified in [MS-IKEE] section 3.7.4.
 then it can optionally construct the Key Dictation Weight payload using the per QM SA state
 KeyDictationWtLocal field to negotiate Key Dictation with the peer.
 
-3.4.7.4  Transition to QM Rekey Requested State
+##### 3.4.7.4 Transition to QM Rekey Requested State
 
 When initiator enters Quick Mode Rekey Requested state (see sections 3.4.5.3 and 3.4.7.4), it MUST
 check whether all the following conditions are met:
@@ -4538,7 +4313,8 @@ Release: September 16, 2024
 
 59 / 91
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-AIPS].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
@@ -4554,21 +4330,21 @@ type). The Encrypted flag MUST be set.
 
 section 2.2.3.5, and have the RELIABLE_NOTIFY_FLAG set.
 
-3.5  AuthIP Quick Mode Responder Role
+### 3.5 AuthIP Quick Mode Responder Role
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 See section 3.1.2.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 Initial state for this role is captured in section 3.3.5.1.
 
-3.5.4  Higher Layer Triggered Events
+#### 3.5.4 Higher Layer Triggered Events
 
 None.
 
@@ -4579,13 +4355,14 @@ Release: September 16, 2024
 
 60 / 91
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-AIPS].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
-3.5.5  Processing Events and Sequencing Rules
+#### 3.5.5 Processing Events and Sequencing Rules
 
-3.5.5.1  Received Quick Mode First Exchange Request
+##### 3.5.5.1 Received Quick Mode First Exchange Request
 
 Figure 15: Quick Mode First Exchange packet
 
@@ -4630,7 +4407,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-AIPS].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -4682,11 +4460,12 @@ Release: September 16, 2024
 
 62 / 91
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-AIPS].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
-3.5.5.2  Received Quick Mode Second Exchange Request
+##### 3.5.5.2 Received Quick Mode Second Exchange Request
 
 Figure 17: Quick Mode Synchronize Notify packet
 
@@ -4733,7 +4512,8 @@ Release: September 16, 2024
 
 63 / 91
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MS-AIPS].images/page064-img01.png)
 <!-- /Extracted images from page 64 -->
 
@@ -4745,29 +4525,29 @@ over to the QM SA.
 
 The inbound/outbound QM SAs MUST also be added to the SAD prior to sending this packet.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 See section 3.1.6.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
-3.5.7.1  Invalid Message Received
+##### 3.5.7.1 Invalid Message Received
 
 If the AuthIP responder experiences a failure in processing a packet, the responder MUST send the
 initiator a Notify message with a Notify type of NOTIFY_STATUS and tear down the corresponding
 quick mode state.
 
-3.6  AuthIP Extended Mode Initiator Role
+### 3.6 AuthIP Extended Mode Initiator Role
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 See section 3.1.2.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 Initial State for this role is captured in section 3.4.5.2.
 
@@ -4778,17 +4558,18 @@ Release: September 16, 2024
 
 64 / 91
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-AIPS].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
-3.6.4  Higher Layer Triggered Events
+#### 3.6.4 Higher Layer Triggered Events
 
 None.
 
-3.6.5  Processing Events and Sequencing Rules
+#### 3.6.5 Processing Events and Sequencing Rules
 
-3.6.5.1  Received Extended Mode First Exchange Response
+##### 3.6.5.1 Received Extended Mode First Exchange Response
 
 Figure 19: Extended Mode First Exchange Response packet
 
@@ -4822,11 +4603,12 @@ Release: September 16, 2024
 
 65 / 91
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-AIPS].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
-3.6.5.2  Received Extended Mode Final Exchange Response
+##### 3.6.5.2 Received Extended Mode Final Exchange Response
 
 Figure 20: Extended Mode Final Exchange Response packet
 
@@ -4856,12 +4638,12 @@ Transition to Extended Mode Complete state.
 If the initiator encounters any errors in the processing of this message, it MUST be treated as an
 Invalid Message event. See section 3.6.7.1.
 
-3.6.5.3  Invalid Message Received
+##### 3.6.5.3 Invalid Message Received
 
 If the AuthIP Extended Mode initiator receives an invalid packet that causes an error in response
 processing, the initiator MUST tear down the corresponding main mode and quick mode states.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
 See section 3.1.6.
 
@@ -4872,13 +4654,14 @@ Release: September 16, 2024
 
 66 / 91
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-AIPS].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
-3.6.7.1  Transition Quick Mode Initiator Done
+##### 3.6.7.1 Transition Quick Mode Initiator Done
 
 On reaching the Quick Mode Initiator Done state, the initiator MUST automatically proceed to
 Extended Mode, if required by policy, by sending the packet specified in the following diagram, and
@@ -4902,7 +4685,7 @@ The payloads that remain MUST be encapsulated in a Crypto payload.
 
 constructed by looking up the PAD's Peer Authentication Data (see [RFC4301] section 4.4.3.2).
 
-3.6.7.2  Extended Mode Initiator GSS Exchange Success
+##### 3.6.7.2 Extended Mode Initiator GSS Exchange Success
 
 On successfully completing the GSS exchange within Extended mode (that is, reaching
 GSS_API_Done state in the GSS state machine, as in section 3.8.5.1), the initiator MUST add the
@@ -4916,7 +4699,8 @@ Release: September 16, 2024
 
 67 / 91
 
-<!-- Extracted images from page 68 -->
+
+<!-- Extracted images from page 68 -->
 ![Extracted image 1 from page 68]([MS-AIPS].images/page068-img01.png)
 <!-- /Extracted images from page 68 -->
 
@@ -4942,21 +4726,21 @@ computed as specified in section 3.1.7.4.
 KeyDictationLocalWinner is set) and Extended Mode was used, then at this time the initiator can
 construct the Key Dictation payload to supply quick mode keys to a peer.
 
-3.7  AuthIP Extended Mode Responder Role
+### 3.7 AuthIP Extended Mode Responder Role
 
-3.7.1  Abstract Data Model
+#### 3.7.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 See section 3.1.2.
 
-3.7.3  Initialization
+#### 3.7.3 Initialization
 
 The initial state for this role is captured in section 3.5.5.2.
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
 None.
 
@@ -4967,13 +4751,14 @@ Release: September 16, 2024
 
 68 / 91
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-AIPS].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
-3.7.5  Processing Events and Sequencing Rules
+#### 3.7.5 Processing Events and Sequencing Rules
 
-3.7.5.1  Received Extended Mode First Exchange Request
+##### 3.7.5.1 Received Extended Mode First Exchange Request
 
 Figure 23: Transition to Extended Mode Initiator packet
 
@@ -5026,7 +4811,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-AIPS].images/page070-img01.png)
 ![Extracted image 2 from page 70]([MS-AIPS].images/page070-img02.png)
 <!-- /Extracted images from page 70 -->
@@ -5046,7 +4832,7 @@ Figure 24: Quick Mode Synchronize Notify packet
 If the responder encounters any errors in the processing of this message, it MUST be treated as an
 Invalid Message Received (section 3.7.7.1) event.
 
-3.7.5.2  Received Extended Mode Final Exchange Request
+##### 3.7.5.2 Received Extended Mode Final Exchange Request
 
 Figure 25: Extended Mode Final Exchange packet
 
@@ -5062,7 +4848,8 @@ Release: September 16, 2024
 
 70 / 91
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-AIPS].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
@@ -5121,42 +4908,43 @@ Release: September 16, 2024
 
 71 / 91
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-AIPS].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
-3.7.6  Timer Events
+#### 3.7.6 Timer Events
 
 See section 3.1.6.
 
-3.7.7  Other Local Events
+#### 3.7.7 Other Local Events
 
-3.7.7.1  Invalid Message Received
+##### 3.7.7.1 Invalid Message Received
 
 If the AuthIP Extended mode responder receives an invalid packet that causes an error in request
 processing, it MUST tear down the corresponding main mode and quick mode state.
 
-3.8  Generalized AuthIP GSS-API Initiator Role
+### 3.8 Generalized AuthIP GSS-API Initiator Role
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.8.2  Timers
+#### 3.8.2 Timers
 
 See section 3.1.2.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
 The initial state for this role is captured in section 3.6.5.1.
 
-3.8.4  Higher-Layer Triggered Events
+#### 3.8.4 Higher-Layer Triggered Events
 
 None.
 
-3.8.5  Processing Events and Sequencing Rules
+#### 3.8.5 Processing Events and Sequencing Rules
 
-3.8.5.1  GSS-API Response Received
+##### 3.8.5.1 GSS-API Response Received
 
 To understand how the initiator can get to GSS-API Request Sent state, see section 3.8.7.1.
 
@@ -5169,7 +4957,8 @@ Release: September 16, 2024
 
 72 / 91
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-AIPS].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -5195,13 +4984,13 @@ The remaining payloads MUST follow a non-encrypted Crypto payload.
 
   GSS-API: MUST be constructed as specified in [GSS] and section 2.2.3.1.
 
-3.8.6  Timer Events
+#### 3.8.6 Timer Events
 
 See section 3.1.6.
 
-3.8.7  Other Local Events
+#### 3.8.7 Other Local Events
 
-3.8.7.1  GSS-API Start
+##### 3.8.7.1 GSS-API Start
 
 When the initiator starts a GSS-API exchange, it MUST begin by sending a packet formatted as
 specified in the following diagram, and transition into the GSS-API Request Sent state.
@@ -5221,7 +5010,8 @@ Release: September 16, 2024
 
 73 / 91
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-AIPS].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -5238,27 +5028,27 @@ The remaining payloads MUST follow a non-encrypted Crypto payload.
 it MUST set the GSS_EXPLICIT_CREDENTIALS in the Flags field of the GSS-API payload to "1" (see
 section 2.2.3.1).
 
-3.9  Generalized AuthIP GSS-API Responder Role
+### 3.9 Generalized AuthIP GSS-API Responder Role
 
-3.9.1  Abstract Data Model
+#### 3.9.1 Abstract Data Model
 
 See section 3.1.1.
 
-3.9.2  Timers
+#### 3.9.2 Timers
 
 See section 3.1.2.
 
-3.9.3  Initialization
+#### 3.9.3 Initialization
 
 The initial state for this role is captured in sections 3.3.5.1 and 3.7.5.1.
 
-3.9.4  Higher-Layer Triggered Events
+#### 3.9.4 Higher-Layer Triggered Events
 
 None.
 
-3.9.5  Processing Events and Sequencing Rules
+#### 3.9.5 Processing Events and Sequencing Rules
 
-3.9.5.1  GSS-API Request Received
+##### 3.9.5.1 GSS-API Request Received
 
 Figure 29: GSS-API initial exchange packet
 
@@ -5272,7 +5062,8 @@ Release: September 16, 2024
 
 74 / 91
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-AIPS].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
@@ -5316,7 +5107,7 @@ The remaining payloads MUST follow a non-encrypted Crypto payload.
 
 Figure 30: GSS-API Response packet
 
-3.9.6  Timer Events
+#### 3.9.6 Timer Events
 
 See section 3.1.6.
 
@@ -5327,33 +5118,34 @@ Release: September 16, 2024
 
 75 / 91
 
-3.9.7  Other Local Events
 
-3.9.7.1  Invalid Message Received
+#### 3.9.7 Other Local Events
+
+##### 3.9.7.1 Invalid Message Received
 
 If the AuthIP GSS_API exchange responder receives an invalid packet that causes an error in
 request processing, it MUST tear down the corresponding main mode state (and quick mode state if
 present).
 
-3.10  Authenticated Firewall Mode
+### 3.10 Authenticated Firewall Mode
 
-3.10.1 Abstract Data Model
+#### 3.10.1 Abstract Data Model
 
 All necessary state information is described in section 3.1.1.
 
-3.10.2 Timers
+#### 3.10.2 Timers
 
 None.
 
-3.10.3 Initialization
+#### 3.10.3 Initialization
 
 None.
 
-3.10.4 Higher-Layer Triggered Events
+#### 3.10.4 Higher-Layer Triggered Events
 
-3.10.4.1
+##### 3.10.4.1 New Connection Initiated
 
-New Connection Initiated
+
 
 If the IsAuthenticatedFirewallConnection flag is set to TRUE in the connection state table entry
 corresponding to the connection, the first packet of every new connection (that is, the first packet sent
@@ -5378,9 +5170,9 @@ If the selected encapsulation in the SAD (section 3.1.1) for the SA associated w
 MUST be the standard IPSec UDP ESP transport encapsulation of the packet, as specified in
 [RFC3948].
 
-3.10.4.2
+##### 3.10.4.2 Negotiation of Authenticated Firewall Encapsulation
 
-Negotiation of Authenticated Firewall Encapsulation
+
 
 To negotiate Authenticated Firewall encapsulation, the initiator MUST include one of the two
 encapsulation attributes listed below in the SA payload of quick mode (see section 3.4.7.3). The
@@ -5397,7 +5189,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-IPSEC_TRANSPORT_UDP_AUTH_FW: 62001
+
+IPSEC_TRANSPORT_UDP_AUTH_FW: 62001
 
 The former signals Authenticated Firewall (authFW) mode with ESP encapsulation. The latter
 signals Authenticated Firewall (authFW) mode with UDP-encapsulated. If a NAT was detected, then
@@ -5406,9 +5199,9 @@ the latter attribute MUST be used; otherwise, the former attribute MUST be used
 On negotiating an authFW SA, both peers MUST set the IsAuthenticatedFWSA attribute of the SA to
 TRUE.
 
-3.10.4.3
+##### 3.10.4.3 Sending a Packet on an Existing Connection
 
-Sending a Packet on an Existing Connection
+
 
 If IsAuthenticatedFirewallConnection is set to TRUE for this connection, then the packet MUST be sent
 in the clear with no IPSec encapsulation applied, unless exception conditions where IPSec
@@ -5416,11 +5209,11 @@ encapsulation is used as specified in section 3.1.7.7 are met. This specifies th
 packets by both the initiator and the responder once the connection has been flagged
 IsAuthenticatedFirewallConnection as specified in section 3.1.7.7.
 
-3.10.5 Message Processing Rules
+#### 3.10.5 Message Processing Rules
 
-3.10.5.1
+##### 3.10.5.1 Responder Receiving an Encapsulated Authenticated Firewall Connection
 
-Responder Receiving an Encapsulated Authenticated Firewall Connection
+
 
 Packet
 
@@ -5430,9 +5223,9 @@ succeeded, and IsAuthenticatedFWSA is set to TRUE for the SA that secured that p
 3.1.1), then the responder MUST set the authFWAuthorized flag in the corresponding entry for this
 connection in the connection state table to TRUE, and the responder MUST drop this packet.
 
-3.10.5.2
+##### 3.10.5.2 Responder Receiving a Plaintext Authenticated Firewall Connection
 
-Responder Receiving a Plaintext Authenticated Firewall Connection
+
 
 Packet
 
@@ -5452,9 +5245,9 @@ and further IPSec processing MUST NOT be performed on that packet.
 On receiving a non-TCP packet, if there is a connection state entry that matches that packet, the per-
 connection timer MUST be reset to 60 seconds.
 
-3.10.5.3
+##### 3.10.5.3 Initiator Receiving a Plaintext Authenticated Firewall Connection Packet
 
-Initiator Receiving a Plaintext Authenticated Firewall Connection Packet
+
 
 When the initiator receives any plaintext packet, the initiator MUST look up the SA that would secure
 that packet, as described in [RFC4301] section 4.4.2.2. If the cleartext packet matches an authFW
@@ -5468,34 +5261,35 @@ Release: September 16, 2024
 
 77 / 91
 
-3.10.5.4
 
-Receiving an ICMP Packet
+##### 3.10.5.4 Receiving an ICMP Packet
+
+
 
 After receiving an ICMP packet and processing it as specified in [RFC792] and [RFC1122], if the traffic
 description that is embedded in the ICMP packet matches a connection state table entry for which
 IsAuthenticatedFirewallConnection is set to TRUE, the receiver of the ICMP packet MUST send the next
 packet on the connection doubled as specified in section 3.10.4.2.
 
-3.11  Impersonated SA lookup
+### 3.11 Impersonated SA lookup
 
-3.11.1 Abstract Data Model
+#### 3.11.1 Abstract Data Model
 
 All necessary state information is specified in section 3.1.1.
 
-3.11.2 Timers
+#### 3.11.2 Timers
 
 None.
 
-3.11.3 Initialization
+#### 3.11.3 Initialization
 
 None.
 
-3.11.4 Higher-Layer Triggered Events
+#### 3.11.4 Higher-Layer Triggered Events
 
-3.11.4.1
+##### 3.11.4.1 New Connection Initiated
 
-New Connection Initiated
+
 
 When a new connection is initiated, the initiator MUST use the ImpersonationHandle from the
 connection's Connection State Table entry to look up the corresponding SA in the SAD, as specified in
@@ -5516,19 +5310,19 @@ section 4.2.
 When the correct SA is found, the initiator MUST process the packet as specified in [RFC4301], section
 5.1.
 
-3.11.4.2
+##### 3.11.4.2 Sending a Packet on an Existing Connection
 
-Sending a Packet on an Existing Connection
+
 
 If the IsImpersonatedConnection flag is TRUE in the connection state table entry corresponding to the
 connection, the ImpersonationHandle from the connection MUST be used to look up the correct SA for
 the packet in the SAD. See [RFC4301], section 4.4.2.2.
 
-3.11.5 Message Processing Rules
+#### 3.11.5 Message Processing Rules
 
-3.11.5.1
+##### 3.11.5.1 Responder Receiving a Packet on an SA
 
-Responder Receiving a Packet on an SA
+
 
 On receiving an IPsec encapsulation packet, the responder MUST process the packet as specified in
 [RFC4301], section 5.2.  If this processing succeeds, and the ImpersonationHandle on the SA is not
@@ -5542,13 +5336,14 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-AIPS].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Main Mode - No Extended Mode
+### 4.1 Main Mode - No Extended Mode
 
 The following figure details a main mode (MM) exchange without a Diffie-Hellman exchange where
 the GSS-API secret is used to generate the keying material.
@@ -5583,7 +5378,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-AIPS].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -5598,7 +5394,7 @@ When the initiator receives the last packet, it validates HAuth2 and adds its QM
 that is sent by the responder is lost, the initiator retransmits its last packet. Upon receiving it, the
 responder resends its last Authenticated Internet Protocol packet.
 
-4.2  Kerberos Extended Mode
+### 4.2 Kerberos Extended Mode
 
 The following example shows a Kerberos authentication in extended mode (EM).
 
@@ -5632,11 +5428,12 @@ Release: September 16, 2024
 
 80 / 91
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-AIPS].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
-4.3  Extended Mode Authentication Retry
+### 4.3 Extended Mode Authentication Retry
 
 In extended mode (EM), failures are handled by retrying the authentication, if possible. The
 following example shows an authentication retry.
@@ -5660,20 +5457,21 @@ Release: September 16, 2024
 
 81 / 91
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The security considerations that are listed for IKEv1 in the relevant RFCs apply to the Authenticated
 Internet Protocol. In addition, protocol-specific security considerations might apply.
 
-5.1.1  Policy Construction
+#### 5.1.1 Policy Construction
 
 The Authenticated Internet Protocol supports different authentication methods that do not necessarily
 offer the same strength. These differences should be taken into account when designing Authenticated
 Internet Protocol policies in order to minimize the risk of downgrade attacks.
 
-5.1.2  Credential/Identity Protection
+#### 5.1.2 Credential/Identity Protection
 
 When the Authenticated Internet Protocol performs an authentication, it might be necessary for one
 party to reveal information about its identity to the other party in order to perform the authentication.
@@ -5694,7 +5492,7 @@ Certificates
 As part of a TLS exchange, the responder might pass a list of trusted roots in the clear so that the
 initiator can select a certificate that is trusted by the responder.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -5725,7 +5523,8 @@ Release: September 16, 2024
 
 82 / 91
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5856,7 +5655,8 @@ Release: September 16, 2024
 
 83 / 91
 
-<1> Section 1.3: The following Internet Key Exchange Protocol Extensions ([MS-IKEE]) are supported
+
+<1> Section 1.3: The following Internet Key Exchange Protocol Extensions ([MS-IKEE]) are supported
 in Windows releases:
 
 
@@ -5951,7 +5751,8 @@ Release: September 16, 2024
 
 84 / 91
 
-Common name
+
+Common name
 
 String representation
 
@@ -6093,7 +5894,8 @@ Release: September 16, 2024
 
 85 / 91
 
-<6> Section 2.2.3.1: The Authenticated Internet Protocol logs the failure to the Security Event Log; it
+
+<6> Section 2.2.3.1: The Authenticated Internet Protocol logs the failure to the Security Event Log; it
 does not report the error to the application whose network activity triggered the Authenticated
 Internet Protocol exchange. For more information about these codes, see [MS-ERREF].
 
@@ -6179,7 +5981,8 @@ Release: September 16, 2024
 
 86 / 91
 
-<11> Section 3.1.1: Kerberos via proxy authentication is not supported in Windows Vista, Windows
+
+<11> Section 3.1.1: Kerberos via proxy authentication is not supported in Windows Vista, Windows
 Server 2008, Windows 7, or Windows Server 2008 R2.
 
 <12> Section 3.1.2: Negotiation retransmission timer: The first retransmission occurs after two
@@ -6254,7 +6057,8 @@ Authenticated Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<20> Section 3.8.7.1: Windows implementations do not verify that the encrypted flag is not set for
+
+<20> Section 3.8.7.1: Windows implementations do not verify that the encrypted flag is not set for
 payloads denoted as HDR in the payload exchange.
 
 <21> Section 3.10.4.1: It is possible for the cleartext SYN message to be received before the ESP
@@ -6276,7 +6080,8 @@ Release: September 16, 2024
 
 88 / 91
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -6288,7 +6093,8 @@ Release: September 16, 2024
 
 89 / 91
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 76
@@ -6438,7 +6244,8 @@ Security
 
 90 / 91
 
-      overview 82
+
+      overview 82
       policy construction 82
    parameter index 82
 Standards assignments 18

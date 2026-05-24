@@ -63,7 +63,8 @@ Release: April 7, 2025
 
 1 / 58
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 7, 2025
 
 2 / 58
 
-Date
+
+Date
 
 Revision
 History
@@ -532,7 +534,8 @@ Release: April 7, 2025
 
 3 / 58
 
-Date
+
+Date
 
 Revision
 History
@@ -605,121 +608,63 @@ Release: April 7, 2025
 
 4 / 58
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols and Other Structures](#14-relationship-to-other-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 cn Attribute](#21-cn-attribute)
+  - [2.2 displayName Attribute](#22-displayname-attribute)
+  - [2.3 distinguishedName Attribute](#23-distinguishedname-attribute)
+  - [2.4 flags Attribute](#24-flags-attribute)
+  - [2.5 ntSecurityDescriptor Attribute](#25-ntsecuritydescriptor-attribute)
+    - [2.5.1 Determining Enrollment Permission of an End Entity for a Template](#251-determining-enrollment-permission-of-an-end-entity-for-a-template)
+    - [2.5.2 Determining Autoenrollment Permission of an End Entity for a Template](#252-determining-autoenrollment-permission-of-an-end-entity-for-a-template)
+    - [2.5.3 Sets of Permission Bits](#253-sets-of-permission-bits)
+  - [2.6 revision Attribute](#26-revision-attribute)
+  - [2.7 pKICriticalExtensions Attribute](#27-pkicriticalextensions-attribute)
+  - [2.8 pKIDefaultCSPs Attribute](#28-pkidefaultcsps-attribute)
+  - [2.9 pKIDefaultKeySpec Attribute](#29-pkidefaultkeyspec-attribute)
+  - [2.10 pKIEnrollmentAccess Attribute](#210-pkienrollmentaccess-attribute)
+  - [2.11 pKIExpirationPeriod Attribute](#211-pkiexpirationperiod-attribute)
+  - [2.12 pKIExtendedKeyUsage Attribute](#212-pkiextendedkeyusage-attribute)
+  - [2.13 pKIKeyUsage Attribute](#213-pkikeyusage-attribute)
+  - [2.14 pKIMaxIssuingDepth Attribute](#214-pkimaxissuingdepth-attribute)
+  - [2.15 pKIOverlapPeriod Attribute](#215-pkioverlapperiod-attribute)
+  - [2.16 msPKI-Template-Schema-Version Attribute](#216-mspki-template-schema-version-attribute)
+  - [2.17 msPKI-Template-Minor-Revision Attribute](#217-mspki-template-minor-revision-attribute)
+  - [2.18 msPKI-RA-Signature Attribute](#218-mspki-ra-signature-attribute)
+  - [2.19 msPKI-Minimal-Key-Size Attribute](#219-mspki-minimal-key-size-attribute)
+  - [2.20 msPKI-Cert-Template-OID Attribute](#220-mspki-cert-template-oid-attribute)
+  - [2.21 msPKI-Supersede-Templates Attribute](#221-mspki-supersede-templates-attribute)
+  - [2.22 msPKI-RA-Policies Attribute](#222-mspki-ra-policies-attribute)
+  - [2.23 msPKI-RA-Application-Policies Attribute](#223-mspki-ra-application-policies-attribute)
+    - [2.23.1 Syntax Option 1](#2231-syntax-option-1)
+    - [2.23.2 Syntax Option 2](#2232-syntax-option-2)
+  - [2.24 msPKI-Certificate-Policy Attribute](#224-mspki-certificate-policy-attribute)
+  - [2.25 msPKI-Certificate-Application-Policy Attribute](#225-mspki-certificate-application-policy-attribute)
+  - [2.26 msPKI-Enrollment-Flag Attribute](#226-mspki-enrollment-flag-attribute)
+  - [2.27 msPKI-Private-Key-Flag Attribute](#227-mspki-private-key-flag-attribute)
+  - [2.28 msPKI-Certificate-Name-Flag Attribute](#228-mspki-certificate-name-flag-attribute)
+- [3 Structure Example](#3-structure-example)
+- [4 Security Considerations](#4-security-considerations)
+  - [4.1 Policy](#41-policy)
+  - [4.2 Access Control](#42-access-control)
+  - [4.3 Auditing](#43-auditing)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Relationship to Other Protocols and Other Structures ............................................ 12
-Applicability Statement ..................................................................................... 12
-Versioning and Localization ............................................................................... 12
-Vendor-Extensible Fields ................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.5.1
-2.5.2
-2.5.3
-
-2.1
-2.2
-2.3
-2.4
-2.5
-
-2  Structures ............................................................................................................. 13
-cn Attribute ..................................................................................................... 13
-displayName Attribute ...................................................................................... 13
-distinguishedName Attribute .............................................................................. 13
-flags Attribute .................................................................................................. 13
-ntSecurityDescriptor Attribute............................................................................ 14
-Determining Enrollment Permission of an End Entity for a Template .................. 14
-Determining Autoenrollment Permission of an End Entity for a Template ........... 15
-Sets of Permission Bits ................................................................................ 16
-revision Attribute ............................................................................................. 18
-2.6
-pKICriticalExtensions Attribute ........................................................................... 18
-2.7
-pKIDefaultCSPs Attribute .................................................................................. 18
-2.8
-pKIDefaultKeySpec Attribute ............................................................................. 18
-2.9
-pKIEnrollmentAccess Attribute ........................................................................... 18
-2.10
-pKIExpirationPeriod Attribute ............................................................................. 18
-2.11
-pKIExtendedKeyUsage Attribute ......................................................................... 19
-2.12
-pKIKeyUsage Attribute ...................................................................................... 19
-2.13
-pKIMaxIssuingDepth Attribute ........................................................................... 19
-2.14
-2.15
-pKIOverlapPeriod Attribute ................................................................................ 19
-2.16  msPKI-Template-Schema-Version Attribute ......................................................... 19
-2.17  msPKI-Template-Minor-Revision Attribute ........................................................... 19
-2.18  msPKI-RA-Signature Attribute ........................................................................... 19
-2.19  msPKI-Minimal-Key-Size Attribute ...................................................................... 19
-2.20  msPKI-Cert-Template-OID Attribute ................................................................... 19
-2.21  msPKI-Supersede-Templates Attribute ................................................................ 20
-2.22  msPKI-RA-Policies Attribute ............................................................................... 20
-2.23  msPKI-RA-Application-Policies Attribute .............................................................. 20
-Syntax Option 1 ......................................................................................... 20
-Syntax Option 2 ......................................................................................... 20
-2.24  msPKI-Certificate-Policy Attribute ...................................................................... 21
-2.25  msPKI-Certificate-Application-Policy Attribute ...................................................... 22
-2.26  msPKI-Enrollment-Flag Attribute ........................................................................ 22
-2.27  msPKI-Private-Key-Flag Attribute ....................................................................... 24
-2.28  msPKI-Certificate-Name-Flag Attribute ............................................................... 26
-
-2.23.1
-2.23.2
-
-3  Structure Example ................................................................................................. 28
-
-4  Security Considerations ......................................................................................... 30
-Policy ............................................................................................................. 30
-Access Control ................................................................................................. 30
-Auditing .......................................................................................................... 30
-
-4.1
-4.2
-4.3
-
-5  Appendix A: Product Behavior ............................................................................... 31
-
-6  Change Tracking .................................................................................................... 56
-
-5 / 58
-
-[MS-CRTD] - v20250407
-Certificate Templates Structure
-Copyright © 2025 Microsoft Corporation
-Release: April 7, 2025
-
-7  Index ..................................................................................................................... 57
-
-[MS-CRTD] - v20250407
-Certificate Templates Structure
-Copyright © 2025 Microsoft Corporation
-Release: April 7, 2025
-
-6 / 58
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the syntax and interpretation of certificate templates. While not strictly a
 protocol, the templates form the basis of certificate management for the Windows Client Certificate
@@ -733,7 +678,7 @@ complete understanding of this specification.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -793,7 +738,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-establish a trusted identity for an entity that is using the public key–based services and
+
+establish a trusted identity for an entity that is using the public key–based services and
 applications. Also referred to as simply "enrollment".
 
 certificate renewal request: An enrollment request for a new certificate where the request is
@@ -869,7 +815,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-with other DCs to ensure that a local change to an object replicates correctly across all DCs.
+
+with other DCs to ensure that a local change to an object replicates correctly across all DCs.
 When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
 contains full NC replicas of the configuration naming context (config NC), schema naming
 context (schema NC), and one of the domain NCs in its forest. If the AD DS DC is a global
@@ -947,7 +894,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-object identifier (OID): In the context of a directory service, a number identifying an object
+
+object identifier (OID): In the context of a directory service, a number identifying an object
 class or attribute. Object identifiers are issued by the ITU and form a hierarchy. An OID is
 represented as a dotted decimal string (for example, "1.2.3.4"). For more information on OIDs,
 see [X660] and [RFC3280] Appendix A. OIDs are used to uniquely identify certificate templates
@@ -1004,7 +952,7 @@ known to all communicating parties. For an introduction to this concept, see [CR
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1016,10 +964,11 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1063,7 +1012,7 @@ Certificates", RFC 4523, June 2006, https://www.rfc-editor.org/info/rfc4523
 [RFC7292] Moriarty, K., Ed., Nystrom, M., Parkinson, S., et al., "PKCS #12: Personal Information
 Exchange Syntax v1.1", July 2014, https://www.rfc-editor.org/info/rfc7292
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-CERSOD] Microsoft Corporation, "Certificate Services Protocols Overview".
 
@@ -1081,7 +1030,8 @@ Release: April 7, 2025
 
 11 / 58
 
-1.3  Overview
+
+### 1.3 Overview
 
 This specification defines the syntax and interpretation of certificate templates. Certificate
 templates are data structures that specify how certificate requests and certificates are constructed
@@ -1099,7 +1049,7 @@ specify a template for the CA to use in building a certificate, but in that cont
 another complex data structure that is passed as a parameter to a Windows Client Certificate
 Enrollment Protocol method.
 
-1.4  Relationship to Other Protocols and Other Structures
+### 1.4 Relationship to Other Protocols and Other Structures
 
 When used, certificate templates control the behavior of the CA that is accessed by the Windows
 Client Certificate Enrollment Protocol, as specified in [MS-WCCE], by specifying enrollment policies. If
@@ -1108,7 +1058,7 @@ Protocol are unconstrained. LDAP, as specified in [MS-ADTS], is the protocol tha
 certificate templates. The process of storing templates in the directory is an implementation-specific
 detail and is not specified in this document.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The data structure specified in this protocol specification is applicable to an environment that enables
 clients to interact with a CA to enroll or manage X.509 certificates. Certificate templates are only
@@ -1116,13 +1066,13 @@ appropriate in an Active Directory domain configuration, as specified in [MS-ADT
 (carrying templates) is only used to communicate from computers in the domain to a domain
 controller (DC) for the domain.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 To determine the certificate template schema version, clients and servers read the msPKI-
 Template-Schema-Version attribute on the certificate template object. For more information, see
 section 2.16.<1>
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -1133,31 +1083,32 @@ Release: April 7, 2025
 
 12 / 58
 
-2  Structures
+
+## 2 Structures
 
 The PKI-Certificate-Template class ([MS-ADSC] section 2.222) is the Active Directory schema class
 that is used for storing template information and attributes. PKI-Certificate-Template is a container
 in which all subsequent properties are contained. All attributes defined later in this section are
 identified by their ldapDisplayName and are case-insensitive.
 
-2.1  cn Attribute
+### 2.1 cn Attribute
 
 The cn attribute is the common name (CN) of the certificate template.<2> For schema details of
 this attribute, see [MS-ADA1] section 2.110.
 
-2.2  displayName Attribute
+### 2.2 displayName Attribute
 
 The displayName attribute is the display name of a certificate template.<3> For schema details of
 this attribute, see [MS-ADA1] section 2.175.
 
-2.3  distinguishedName Attribute
+### 2.3 distinguishedName Attribute
 
 The distinguishedName attribute is the distinguished name (DN) of the certificate template.<4>
 For schema details of this attribute, see [MS-ADA1] section 2.177.
 
-2.4
+### 2.4 flags Attribute
 
-flags Attribute
+
 
 The flags attribute is the general-enrollment flags attribute. These flags are communicated as an
 integer value of this attribute.<5> The attribute value can be 0, or it can consist of a bitwise OR of
@@ -1232,7 +1183,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-Flag
+
+Flag
 
 Meaning
 
@@ -1256,7 +1208,7 @@ CT_FLAG_EXPORTABLE_KEY
 
 For schema details of this attribute, see [MS-ADA1] section 2.231.
 
-2.5  ntSecurityDescriptor Attribute
+### 2.5 ntSecurityDescriptor Attribute
 
 The ntSecurityDescriptor attribute ([MS-ADA3] section 2.37) is a security descriptor as specified in
 [MS-DTYP] section 2.4.6.<7> The discretionary access control list (DACL) field of the security
@@ -1268,7 +1220,7 @@ The data structure in this attribute supports all types of ACE. However, the Win
 Enrollment Protocol uses only two predefined permissions: Enroll and AutoEnroll. The AutoEnroll
 permission instructs the Windows autoenrollment client to enroll for that template automatically.
 
-2.5.1  Determining Enrollment Permission of an End Entity for a Template
+#### 2.5.1 Determining Enrollment Permission of an End Entity for a Template
 
 The following processing rules are to determine the enrollment for end entities on a certificate
 template. The protocol behavior for these permissions is specified in [MS-WCCE] section
@@ -1315,7 +1267,8 @@ Release: April 7, 2025
 
 14 / 58
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1369,7 +1322,7 @@ An entity is denied enrollment permissions if the DACL of the security descripto
 parameter Template_ntSecurityDescriptor has the same ACE as previously described, except that
 the AceType field is set to ACCESS_DENIED_OBJECT_ACE_TYPE (0x06).
 
-2.5.2  Determining Autoenrollment Permission of an End Entity for a Template
+#### 2.5.2 Determining Autoenrollment Permission of an End Entity for a Template
 
 The following processing rules are to determine the enrollment for end entities on a certificate
 template.
@@ -1412,7 +1365,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1479,7 +1433,7 @@ Enroll
 
 CR; a05b8cc2-17bc-4802-a710-e7c15ab866a2  AutoEnroll
 
-2.5.3  Sets of Permission Bits
+#### 2.5.3 Sets of Permission Bits
 
 If an administrator wants to set permissions for a certificate template, the combined effect of three
 sets of permission bits can be meaningful: Read, Write, and Full Control.
@@ -1507,7 +1461,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-
+
+
 
 The Mask field of the ACCESS_ALLOWED_ACE_TYPE structure MUST have the following
 bits set as shown in [MS-DTYP] section 2.4.3:
@@ -1600,21 +1555,22 @@ Release: April 7, 2025
 
 17 / 58
 
-  CR as specified in [MS-ADTS] section 5.1.3.2
 
-2.6  revision Attribute
+  CR as specified in [MS-ADTS] section 5.1.3.2
+
+### 2.6 revision Attribute
 
 The revision attribute is the major version of the template.<8> For more information and examples
 regarding usage, see [MS-WCCE] sections 3.1.2.4.2.2.1.9 and 3.2.2.6.2.1.4.2. For schema details of
 this attribute, see [MS-ADA3] section 2.199.
 
-2.7  pKICriticalExtensions Attribute
+### 2.7 pKICriticalExtensions Attribute
 
 The pKICriticalExtensions attribute is a list of OIDs that identify extensions that MUST have critical
 flags enabled, if present, in an issued certificate. For more information about critical extensions, see
 [RFC3280] section 4.2.<9> For schema details of this attribute, see [MS-ADA3] section 2.95.
 
-2.8  pKIDefaultCSPs Attribute
+### 2.8 pKIDefaultCSPs Attribute
 
 The pKIDefaultCSPs attribute is a list of cryptographic service providers (CSPs) that are used to
 create the private key and public key.<10>
@@ -1633,7 +1589,7 @@ administrator who established that priority ranking to determine and to document
 
 For schema details of this attribute, see [MS-ADA3] section 2.96.
 
-2.9  pKIDefaultKeySpec Attribute
+### 2.9 pKIDefaultKeySpec Attribute
 
 The following table shows the values that are allowed for the pKIDefaultKeySpec attribute.<11>
 
@@ -1649,12 +1605,12 @@ AT_SIGNATURE – Keys used to create and verify digital signatures.
 
 For schema details of this attribute, see [MS-ADA3] section 2.97.
 
-2.10  pKIEnrollmentAccess Attribute
+### 2.10 pKIEnrollmentAccess Attribute
 
 The pKIEnrollmentAccess attribute is not used by any protocol.<12> For schema details of this
 attribute, see [MS-ADA3] section 2.98.
 
-2.11  pKIExpirationPeriod Attribute
+### 2.11 pKIExpirationPeriod Attribute
 
 The pKIExpirationPeriod attribute represents the maximum validity period of the certificate.<13>
 The attribute is an 8-byte octet string that initializes the FILETIME structure defined in [MS-DTYP]
@@ -1669,24 +1625,25 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-2.12  pKIExtendedKeyUsage Attribute
+
+### 2.12 pKIExtendedKeyUsage Attribute
 
 The pKIExtendedKeyUsage attribute is a list of OIDs that represent extended key usages, as specified
 in [RFC3280] section 4.2.1.13.<14> For schema details of this attribute, see [MS-ADA3] section
 2.100.
 
-2.13  pKIKeyUsage Attribute
+### 2.13 pKIKeyUsage Attribute
 
 The pKIKeyUsage attribute is a key usage extension.<15> For schema details of this attribute, see
 [MS-ADA3] section 2.101.
 
-2.14  pKIMaxIssuingDepth Attribute
+### 2.14 pKIMaxIssuingDepth Attribute
 
 The pKIMaxIssuingDepth attribute is the maximum depth value for the Basic Constraint extension, as
 specified in [RFC3280] section 4.2.1.10.<16> For schema details of this attribute, see [MS-ADA3]
 section 2.102.
 
-2.15  pKIOverlapPeriod Attribute
+### 2.15 pKIOverlapPeriod Attribute
 
 The pKIOverlapPeriod attribute represents the time before a certificate expires, during which time,
 clients need to send a certificate renewal request, as described in [MS-CERSOD] sections 2.5.2,
@@ -1695,31 +1652,31 @@ defined in [MS-DTYP] section 2.3.3.
 
 For schema details of this attribute, see [MS-ADA3] section 2.103.
 
-2.16  msPKI-Template-Schema-Version Attribute
+### 2.16 msPKI-Template-Schema-Version Attribute
 
 The msPKI-Template-Schema-Version attribute specifies the schema version of the templates. The
 allowed values are 1, 2, 3, and 4.<17> For schema details of this attribute, see [MS-ADA2] section
 2.625.
 
-2.17  msPKI-Template-Minor-Revision Attribute
+### 2.17 msPKI-Template-Minor-Revision Attribute
 
 The msPKI-Template-Minor-Revision attribute specifies the minor version of the templates.<18>
 Supported values are 0 to 0x7fffffff. For schema details of this attribute, see [MS-ADA2] section
 2.624.
 
-2.18  msPKI-RA-Signature Attribute
+### 2.18 msPKI-RA-Signature Attribute
 
 The msPKI-RA-Signature attribute specifies the number of recovery agent signatures that are required
 on a request that references this template.<19> For schema details of this attribute, see [MS-ADA2]
 section 2.621.
 
-2.19  msPKI-Minimal-Key-Size Attribute
+### 2.19 msPKI-Minimal-Key-Size Attribute
 
 The msPKI-Minimal-Key-Size attribute specifies the minimum size, in bits, of the public key that the
 client creates to obtain a certificate based on this template.<20> For schema details of this
 attribute, see [MS-ADA2] section 2.613.
 
-2.20  msPKI-Cert-Template-OID Attribute
+### 2.20 msPKI-Cert-Template-OID Attribute
 
 The msPKI-Cert-Template-OID attribute specifies the object identifier (OID) of this template.<21>
 For schema details of this attribute, see [MS-ADA2] section 2.606.
@@ -1731,25 +1688,26 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-2.21  msPKI-Supersede-Templates Attribute
+
+### 2.21 msPKI-Supersede-Templates Attribute
 
 The msPKI-Supersede-Templates attribute that contains the CNs of all superseded templates.<22>
 For schema details of this attribute, see [MS-ADA2] section 2.623.
 
-2.22  msPKI-RA-Policies Attribute
+### 2.22 msPKI-RA-Policies Attribute
 
 The msPKI-RA-Policies attribute is a multistring attribute that specifies a set of certificate policy
 OIDs, as specified in [RFC3280] section 4.2.1.5, for the registration authority (RA)
 certificates.<23> For schema details of this attribute, see [MS-ADA2] section 2.620.
 
-2.23  msPKI-RA-Application-Policies Attribute
+### 2.23 msPKI-RA-Application-Policies Attribute
 
 The msPKI-RA-Application-Policies attribute encapsulates embedded properties for multipurpose use.
 The syntax for the data that is stored in this attribute is different, depending on the schema version
 for the template. The schema version of the template is stored in the msPKI-Template-Schema-
 Version attribute of the certificate template, as described in section 2.16.<24>
 
-2.23.1 Syntax Option 1
+#### 2.23.1 Syntax Option 1
 
 Note  An alternative scenario for template schema version 4 is defined in section 2.23.2.
 
@@ -1768,7 +1726,7 @@ Then the msPKI-RA-Application-Policies attribute contains multistring attributes
 application policy OIDs for the RA certificates. Application policy OIDs are the same as extended
 key usage OIDs, as specified in [RFC3280] section 4.2.1.13.
 
-2.23.2 Syntax Option 2
+#### 2.23.2 Syntax Option 2
 
 Note  An alternative scenario for template schema version 4 is defined in section 2.23.1.
 
@@ -1809,7 +1767,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-Tag
+
+Tag
 
 Description
 
@@ -1886,7 +1845,7 @@ For example:
 
 For schema details of this attribute, see [MS-ADA2] section 2.619.
 
-2.24  msPKI-Certificate-Policy Attribute
+### 2.24 msPKI-Certificate-Policy Attribute
 
 The msPKI-Certificate-Policy attribute specifies each string that represents a policy OID to be added
 to the certificate policy extension, as specified in [RFC3280] section 4.2.1.5.<25> For schema details
@@ -1899,7 +1858,8 @@ Release: April 7, 2025
 
 21 / 58
 
-2.25  msPKI-Certificate-Application-Policy Attribute
+
+### 2.25 msPKI-Certificate-Application-Policy Attribute
 
 Each string in the msPKI-Certificate-Application-Policy attribute represents an application policy OID
 to be added to the certificate application policy extension.<26> Application policy OIDs are the same
@@ -1907,7 +1867,7 @@ as extended key usage OIDs, as specified in [RFC3280] section 4.2.1.13.
 
 For schema details of this attribute, see [MS-ADA2] section 2.607.
 
-2.26  msPKI-Enrollment-Flag Attribute
+### 2.26 msPKI-Enrollment-Flag Attribute
 
 The msPKI-Enrollment-Flag attribute specifies the enrollment flags. The attribute value can be 0, or
 it can consist of a bitwise OR of flags from the following table.<27>
@@ -2000,7 +1960,8 @@ using the private key of the
 
 22 / 58
 
-Flag
+
+Flag
 
 0x00000100
 
@@ -2108,7 +2069,8 @@ in [MS-WCCE] section
 
 23 / 58
 
-Flag
+
+Flag
 
 0x00020000
 
@@ -2161,7 +2123,7 @@ issued certificate.
 
 For schema details of this attribute, see [MS-ADA2] section 2.611.
 
-2.27  msPKI-Private-Key-Flag Attribute
+### 2.27 msPKI-Private-Key-Flag Attribute
 
 The msPKI-Private-Key-Flag attribute specifies the private key flags. Its value can be 0 or can consist
 of a bitwise OR of flags from the following table.<35>
@@ -2209,7 +2171,8 @@ Release: April 7, 2025
 
 24 / 58
 
-Flag
+
+Flag
 
 0x00000080
 
@@ -2325,9 +2288,10 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-For schema details of this attribute, see [MS-ADA2] section 2.618.
 
-2.28  msPKI-Certificate-Name-Flag Attribute
+For schema details of this attribute, see [MS-ADA2] section 2.618.
+
+### 2.28 msPKI-Certificate-Name-Flag Attribute
 
 The msPKI-Certificate-Name-Flag attribute specifies the subject name flags. Its value can be 0, or it
 can consist of a bitwise OR of flags from the following table.<39> The processing rules for these flags
@@ -2446,7 +2410,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-Flag
+
+Flag
 
 Client processing
 
@@ -2471,7 +2436,8 @@ Release: April 7, 2025
 
 27 / 58
 
-3  Structure Example
+
+## 3 Structure Example
 
 The example in this section is a result of executing the following command on any computer that runs
 applicable Windows Server releases.
@@ -2543,7 +2509,8 @@ Release: April 7, 2025
 
 28 / 58
 
-       -- 400 (1024))
+
+       -- 400 (1024))
  (CT_FLAG_ALLOW_ENROLL_ON_BEHALF_OF -- 800 (2048))
  msPKI-Private-Key-Flag = "16" 0x10**
 
@@ -2587,16 +2554,17 @@ Release: April 7, 2025
 
 29 / 58
 
-4  Security Considerations
 
-4.1  Policy
+## 4 Security Considerations
+
+### 4.1 Policy
 
 Certificate templates, including their access control lists (ACLs), express policy by which the
 enterprise certificate authority (enterprise CA) policy algorithm controls which certificates to
 issue to end entities in an organization. It is the job of the administrator to translate corporate policy
 into certificate template contents and ACLs.
 
-4.2  Access Control
+### 4.2 Access Control
 
 The ACL of a certificate template can grant one permission that the default certificate server
 policy algorithm consults: the enrollment permissions. If an entity has the enrollment permission
@@ -2608,7 +2576,7 @@ powerful certificate. Because an Enrollment Agent is allowed to specify certific
 subject, it can bypass corporate security policy. As a result, administrators need to be especially
 careful when allowing subjects to enroll for Enrollment Agent certificates.
 
-4.3  Auditing
+### 4.3 Auditing
 
 It might be appropriate to use auditing mechanisms provided by the directory storing certificate
 templates objects in order to monitor important types of access like writing to the certificate
@@ -2621,7 +2589,8 @@ Release: April 7, 2025
 
 30 / 58
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2690,7 +2659,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-templates are supported by Microsoft CAs that run on Windows Server 2003 Enterprise Edition
+
+templates are supported by Microsoft CAs that run on Windows Server 2003 Enterprise Edition
 operating system, Windows Server 2003 R2 Datacenter Edition operating system, and Windows Server
 2008 and later. Version 3 templates are supported by CAs that run on Windows Server 2008 and later.
 Version 4 templates are supported by CAs that run on Windows Server 2012 and later.
@@ -2759,7 +2729,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
-<23> Section 2.22: The msPKI-RA-Policies attribute is implemented in Windows Server 2003 and
+
+<23> Section 2.22: The msPKI-RA-Policies attribute is implemented in Windows Server 2003 and
 later.
 
 <24> Section 2.23: The msPKI-RA-Application-Policies attribute is implemented in Windows Server
@@ -2829,7 +2800,8 @@ Release: April 7, 2025
 
 33 / 58
 
- pKIDefaultKeySpec: 1;
+
+ pKIDefaultKeySpec: 1;
  pKIExpirationPeriod: 0x00 0x40 0x39 0x87 0x2E 0xE1 0xFE 0xFF
  pKIExtendedKeyUsage (4): 1.3.6.1.4.1.311.10.3.1;
      1.3.6.1.4.1.311.10.3.4; 1.3.6.1.5.5.7.3.4; 1.3.6.1.5.5.7.3.2;
@@ -2906,7 +2878,8 @@ Release: April 7, 2025
 
 34 / 58
 
- revision: 4;
+
+ revision: 4;
 
  cn: CertificateRequestAgent;
  displayName: Certificate Request Agent;
@@ -2983,7 +2956,8 @@ Release: April 7, 2025
 
 35 / 58
 
- displayName: Cross Certification Authority;
+
+ displayName: Cross Certification Authority;
  flags: 198672;
  msPKI-Certificate-Name-Flag: 1;
  msPKI-Enrollment-Flag: 0;
@@ -3060,7 +3034,8 @@ Release: April 7, 2025
 
 36 / 58
 
- msPKI-Enrollment-Flag: 41;
+
+ msPKI-Enrollment-Flag: 41;
  msPKI-Minimal-Key-Size: 1024;
  msPKI-Private-Key-Flag: 0;
  msPKI-RA-Signature: 0;
@@ -3137,7 +3112,8 @@ Release: April 7, 2025
 
 37 / 58
 
- msPKI-RA-Signature: 0;
+
+ msPKI-RA-Signature: 0;
  msPKI-Template-Minor-Revision: 1;
  msPKI-Template-Schema-Version: 1;
  name: EFSRecovery;
@@ -3214,7 +3190,8 @@ Release: April 7, 2025
 
 38 / 58
 
- pKIDefaultCSPs (2): 2,Microsoft Base Cryptographic Provider v1.0;
+
+ pKIDefaultCSPs (2): 2,Microsoft Base Cryptographic Provider v1.0;
     1,Microsoft Enhanced Cryptographic Provider v1.0;
  pKIDefaultKeySpec: 1;
  pKIExpirationPeriod: 0x00 0x40 0x39 0x87 0x2E 0xE1 0xFE 0xFF
@@ -3291,7 +3268,8 @@ Release: April 7, 2025
 
 39 / 58
 
- pKIOverlapPeriod: 0x00 0x80 0xA6 0x0A 0xFF 0xDE 0xFF 0xFF
+
+ pKIOverlapPeriod: 0x00 0x80 0xA6 0x0A 0xFF 0xDE 0xFF 0xFF
  revision: 8;
 
  cn: KeyRecoveryAgent;
@@ -3368,7 +3346,8 @@ Release: April 7, 2025
 
 40 / 58
 
- flags: 66113;
+
+ flags: 66113;
  msPKI-Certificate-Name-Flag: 1;
  msPKI-Enrollment-Flag: 0;
  msPKI-Minimal-Key-Size: 1024;
@@ -3444,7 +3423,8 @@ Release: April 7, 2025
 
 41 / 58
 
- msPKI-RA-Signature: 0;
+
+ msPKI-RA-Signature: 0;
  msPKI-Template-Minor-Revision: 1;
  msPKI-Template-Schema-Version: 1;
  name: SmartcardUser;
@@ -3521,7 +3501,8 @@ Release: April 7, 2025
 
 42 / 58
 
- pKIDefaultKeySpec: 2;
+
+ pKIDefaultKeySpec: 2;
  pKIExpirationPeriod: 0x00 0x40 0x39 0x87 0x2E 0xE1 0xFE 0xFF
  pKIExtendedKeyUsage (2): 1.3.6.1.5.5.7.3.4; 1.3.6.1.5.5.7.3.2;
  pKIKeyUsage: 0x80 0x00
@@ -3592,7 +3573,8 @@ Release: April 7, 2025
 
 43 / 58
 
- msPKI-RA-Signature: 0;
+
+ msPKI-RA-Signature: 0;
  msPKI-Template-Minor-Revision: 1;
  msPKI-Template-Schema-Version: 1;
  name: Administrator;
@@ -3669,7 +3651,8 @@ Certificate Templates Structure
 Copyright © 2025 Microsoft Corporation
 Release: April 7, 2025
 
- msPKI-Enrollment-Flag: 0;
+
+ msPKI-Enrollment-Flag: 0;
  msPKI-Minimal-Key-Size: 1024;
  msPKI-Private-Key-Flag: 0;
  msPKI-RA-Signature: 0;
@@ -3745,7 +3728,8 @@ Release: April 7, 2025
 
 45 / 58
 
- msPKI-Cert-Template-OID:
+
+ msPKI-Cert-Template-OID:
 1.3.6.1.4.1.311.21.8.11034890.834619.12601478.16236816.7255827.176.1.25;
  msPKI-Certificate-Name-Flag: 1;
  msPKI-Enrollment-Flag: 8;
@@ -3821,7 +3805,8 @@ Release: April 7, 2025
 
 46 / 58
 
- cn: DomainController;
+
+ cn: DomainController;
  displayName: Domain Controller;
  flags: 66156;
  msPKI-Cert-Template-OID:
@@ -3898,7 +3883,8 @@ Release: April 7, 2025
 
 47 / 58
 
- pKIMaxIssuingDepth: 0;
+
+ pKIMaxIssuingDepth: 0;
  pKIOverlapPeriod: 0x00 0x80 0xA6 0x0A 0xFF 0xDE 0xFF 0xFF;
  revision: 3;
 
@@ -3975,7 +3961,8 @@ Release: April 7, 2025
 
 48 / 58
 
- pKIExpirationPeriod: 0x00 0x80 0x72 0x0E 0x5D 0xC2 0xFD 0xFF;
+
+ pKIExpirationPeriod: 0x00 0x80 0x72 0x0E 0x5D 0xC2 0xFD 0xFF;
  pKIExtendedKeyUsage: 1.3.6.1.4.1.311.20.2.1;
  pKIKeyUsage: 0x80 0x00;
  pKIMaxIssuingDepth: 0;
@@ -4052,7 +4039,8 @@ Release: April 7, 2025
 
 49 / 58
 
- pKIDefaultCSPs: 1,Microsoft RSA SChannel Cryptographic Provider;
+
+ pKIDefaultCSPs: 1,Microsoft RSA SChannel Cryptographic Provider;
  pKIDefaultKeySpec: 1;
  pKIExpirationPeriod: 0x00 0x80 0x72 0x0E 0x5D 0xC2 0xFD 0xFF;
  pKIExtendedKeyUsage: 1.3.6.1.5.5.8.2.2;
@@ -4129,7 +4117,8 @@ Release: April 7, 2025
 
 50 / 58
 
- msPKI-Template-Minor-Revision: 0;
+
+ msPKI-Template-Minor-Revision: 0;
  msPKI-Template-Schema-Version: 2;
  name: KeyRecoveryAgent;
  pKICriticalExtensions: 2.5.29.15;
@@ -4206,7 +4195,8 @@ Release: April 7, 2025
 
 51 / 58
 
- msPKI-Private-Key-Flag: 0;
+
+ msPKI-Private-Key-Flag: 0;
  msPKI-RA-Application-Policies: msPKI-Asymmetric-Algorithm`PZPWSTR`RSA`msPKI-Hash-
 Algorithm`PZPWSTR`SHA1`msPKI-Key-Security-
 Descriptor`PZPWSTR`D:(A;;FA;;;BA)(A;;FA;;;SY)(A;;GR;;;S-1-5-80-3804348527-3718992918-
@@ -4282,7 +4272,8 @@ Release: April 7, 2025
 
 52 / 58
 
- msPKI-Cert-Template-OID:
+
+ msPKI-Cert-Template-OID:
 1.3.6.1.4.1.311.21.8.11034890.834619.12601478.16236816.7255827.176.1.5;
  msPKI-Certificate-Name-Flag: -2113929216;
  msPKI-Enrollment-Flag: 0;
@@ -4359,7 +4350,8 @@ Release: April 7, 2025
 
 53 / 58
 
- msPKI-Enrollment-Flag: 41;
+
+ msPKI-Enrollment-Flag: 41;
  msPKI-Minimal-Key-Size: 2048;
  msPKI-Private-Key-Flag: 16;
  msPKI-RA-Signature: 0;
@@ -4436,7 +4428,8 @@ Release: April 7, 2025
 
 54 / 58
 
- msPKI-Cert-Template-OID:
+
+ msPKI-Cert-Template-OID:
 1.3.6.1.4.1.311.21.8.11034890.834619.12601478.16236816.7255827.176.1.30;
  msPKI-Certificate-Application-Policy: 1.3.6.1.5.5.7.3.2;
  msPKI-Certificate-Name-Flag: 134217728;
@@ -4464,7 +4457,8 @@ Release: April 7, 2025
 
 55 / 58
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4518,7 +4512,8 @@ Release: April 7, 2025
 
 56 / 58
 
-7  Index
+
+## 7 Index
 A
 
 Access control - security 30
@@ -4654,7 +4649,8 @@ M
 
 57 / 58
 
-msPKI-Certificate-Application-Policy attribute 22
+
+msPKI-Certificate-Application-Policy attribute 22
 msPKI-Certificate-Name-Flag attribute 26
 msPKI-Certificate-Policy attribute 21
 msPKI-Cert-Template-OID attribute 19

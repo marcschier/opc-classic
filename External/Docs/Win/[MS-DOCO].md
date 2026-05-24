@@ -63,7 +63,8 @@ Release: June 14, 2022
 
 1 / 125
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -230,193 +231,79 @@ Release: June 14, 2022
 
 2 / 125
 
-Table of Contents
 
-1.1
-1.2
-1.3
+## Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 9
-Overview ........................................................................................................ 10
-Product Applicability .................................................................................... 11
-Relationships Among Documents .................................................................. 12
-Naming Conventions ................................................................................... 13
-Document Versions ..................................................................................... 14
-Audience ......................................................................................................... 15
-Localization ..................................................................................................... 15
-Licensing ......................................................................................................... 15
-Support .......................................................................................................... 16
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Product Applicability](#131-product-applicability)
+    - [1.3.2 Relationships Among Documents](#132-relationships-among-documents)
+    - [1.3.3 Naming Conventions](#133-naming-conventions)
+    - [1.3.4 Document Versions](#134-document-versions)
+  - [1.4 Audience](#14-audience)
+  - [1.5 Localization](#15-localization)
+  - [1.6 Licensing](#16-licensing)
+  - [1.7 Support](#17-support)
+- [2 Documentation Contents](#2-documentation-contents)
+  - [2.1 Overview Documents](#21-overview-documents)
+    - [2.1.1 Windows Protocols Documentation Roadmap](#211-windows-protocols-documentation-roadmap)
+    - [2.1.2 Windows Protocols Overview](#212-windows-protocols-overview)
+    - [2.1.3 Technology Overviews](#213-technology-overviews)
+  - [2.2 Technical Specifications](#22-technical-specifications)
+    - [2.2.1 Normative Content](#221-normative-content)
+    - [2.2.2 Informative Content](#222-informative-content)
+    - [2.2.3 Template Types](#223-template-types)
+      - [2.2.3.1 Algorithm](#2231-algorithm)
+      - [2.2.3.2 Block](#2232-block)
+      - [2.2.3.3 Data Structure](#2233-data-structure)
+        - [2.2.3.3.1 Active Directory Objects](#22331-active-directory-objects)
+        - [2.2.3.3.2 Windows Data Types](#22332-windows-data-types)
+        - [2.2.3.3.3 Windows Error Codes](#22333-windows-error-codes)
+        - [2.2.3.3.4 Windows Language Code Identifier (LCID) Reference](#22334-windows-language-code-identifier-lcid-reference)
+      - [2.2.3.4 File Structure](#2234-file-structure)
+      - [2.2.3.5 HTTP](#2235-http)
+      - [2.2.3.6 RPC](#2236-rpc)
+      - [2.2.3.7 SOAP](#2237-soap)
+      - [2.2.3.8 Standards Support](#2238-standards-support)
+  - [2.3 Reference Documents](#23-reference-documents)
+    - [2.3.1 Windows Protocols Unicode Reference](#231-windows-protocols-unicode-reference)
+  - [2.4 External References](#24-external-references)
+    - [2.4.1 Microsoft Corporation](#241-microsoft-corporation)
+    - [2.4.2 Standards Bodies](#242-standards-bodies)
+    - [2.4.3 RFCs](#243-rfcs)
+- [3 Navigating the Documentation Set](#3-navigating-the-documentation-set)
+  - [3.1 Document Nodes](#31-document-nodes)
+    - [3.1.1 Windows Protocols](#311-windows-protocols)
+      - [3.1.1.1 Overview Documents Landing Page](#3111-overview-documents-landing-page)
+        - [3.1.1.1.1 Overview Documents](#31111-overview-documents)
+      - [3.1.1.2 Technical Specifications Landing Page](#3112-technical-specifications-landing-page)
+        - [3.1.1.2.1 Technical Specifications](#31121-technical-specifications)
+      - [3.1.1.3 Reference Documents Landing Page](#3113-reference-documents-landing-page)
+        - [3.1.1.3.1 Reference Documents](#31131-reference-documents)
+    - [3.1.2 Windows WordPad Standards Support](#312-windows-wordpad-standards-support)
+  - [3.2 Document Types](#32-document-types)
+    - [3.2.1 Windows Protocols](#321-windows-protocols)
+      - [3.2.1.1 Overview Documents](#3211-overview-documents)
+      - [3.2.1.2 Technical Specifications](#3212-technical-specifications)
+      - [3.2.1.3 Reference Documents](#3213-reference-documents)
+  - [3.3 Document Citations](#33-document-citations)
+    - [3.3.1 Normative Citations](#331-normative-citations)
+      - [3.3.1.1 External Normative Citations](#3311-external-normative-citations)
+      - [3.3.1.2 Internal Normative Citations](#3312-internal-normative-citations)
+    - [3.3.2 Informative Citations](#332-informative-citations)
+      - [3.3.2.1 External Informative Citations](#3321-external-informative-citations)
+      - [3.3.2.2 Internal Informative Citations](#3322-internal-informative-citations)
+- [4 Appendix A: Cross-Reference Matrixes](#4-appendix-a-cross-reference-matrixes)
+  - [4.1 Technical Specification Cross-Reference Matrix](#41-technical-specification-cross-reference-matrix)
+  - [4.2 Technical Area Cross-Reference Matrix](#42-technical-area-cross-reference-matrix)
+  - [4.3 Technology Collection Cross-Reference Matrix](#43-technology-collection-cross-reference-matrix)
+- [5 Appendix B: Open Specifications Site Map](#5-appendix-b-open-specifications-site-map)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2.2
-
-2.1.1
-2.1.2
-2.1.3
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2  Documentation Contents ....................................................................................... 17
-Overview Documents ........................................................................................ 18
-Windows Protocols Documentation Roadmap .................................................. 18
-Windows Protocols Overview ........................................................................ 18
-Technology Overviews ................................................................................. 18
-Technical Specifications .................................................................................... 21
-Normative Content...................................................................................... 21
-Informative Content .................................................................................... 23
-Template Types .......................................................................................... 23
-Algorithm ............................................................................................. 24
-Block ................................................................................................... 24
-Data Structure ...................................................................................... 25
-Active Directory Objects ................................................................... 25
-Windows Data Types ........................................................................ 26
-Windows Error Codes ....................................................................... 26
-Windows Language Code Identifier (LCID) Reference ........................... 27
-File Structure ....................................................................................... 27
-HTTP ................................................................................................... 28
-RPC ..................................................................................................... 28
-SOAP ................................................................................................... 29
-Standards Support ................................................................................ 30
-Reference Documents ....................................................................................... 30
-Windows Protocols Unicode Reference ........................................................... 30
-External References .......................................................................................... 31
-Microsoft Corporation .................................................................................. 31
-Standards Bodies ........................................................................................ 31
-RFCs ......................................................................................................... 33
-
-2.2.3.3.1
-2.2.3.3.2
-2.2.3.3.3
-2.2.3.3.4
-
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-
-2.4.1
-2.4.2
-2.4.3
-
-2.3.1
-
-2.4
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.2
-
-3.1.1.1
-
-3.1.1.1.1
-
-3  Navigating the Documentation Set ........................................................................ 34
-Document Nodes .............................................................................................. 34
-Windows Protocols ...................................................................................... 35
-Overview Documents Landing Page ......................................................... 36
-Overview Documents ....................................................................... 37
-Technical Specifications Landing Page ...................................................... 39
-Technical Specifications .................................................................... 40
-Reference Documents Landing Page ........................................................ 41
-Reference Documents ...................................................................... 43
-Windows WordPad Standards Support ........................................................... 44
-Document Types .............................................................................................. 45
-Windows Protocols ...................................................................................... 45
-Overview Documents ............................................................................. 45
-Technical Specifications ......................................................................... 46
-
-3.2.1.1
-3.2.1.2
-
-3.1.1.2.1
-
-3.1.1.3.1
-
-3.1.1.3
-
-3.2.1
-
-3.1.2
-
-3.2
-
-[MS-DOCO] - v20220614
-Windows Protocols Documentation Roadmap
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-3 / 125
-
-3.3
-
-3.3.1
-
-3.2.1.3
-
-Reference Documents ............................................................................ 47
-Document Citations .......................................................................................... 48
-Normative Citations .................................................................................... 49
-External Normative Citations .................................................................. 50
-Internal Normative Citations ................................................................... 50
-Informative Citations .................................................................................. 50
-External Informative Citations ................................................................ 50
-Internal Informative Citations ................................................................. 51
-
-3.3.1.1
-3.3.1.2
-
-3.3.2.1
-3.3.2.2
-
-3.3.2
-
-4  Appendix A: Cross-Reference Matrixes .................................................................. 52
-Technical Specification Cross-Reference Matrix .................................................... 52
-Technical Area Cross-Reference Matrix............................................................... 105
-Technology Collection Cross-Reference Matrix..................................................... 115
-
-4.1
-4.2
-4.3
-
-5  Appendix B: Open Specifications Site Map ........................................................... 123
-
-6  Change Tracking .................................................................................................. 124
-
-7  Index ................................................................................................................... 125
-
-[MS-DOCO] - v20220614
-Windows Protocols Documentation Roadmap
-Copyright © 2022 Microsoft Corporation
-Release: June 14, 2022
-
-4 / 125
-
-1  Introduction
+## 1 Introduction
 
 This document describes the Windows protocols documentation set and provides a roadmap for
 navigating it. This document set includes detailed technical specifications for Windows protocols and
@@ -429,7 +316,7 @@ relationships, and technical reference information, such as common data types an
 
 A cross-reference of the entire Windows protocols documentation set is provided in section 4.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -486,7 +373,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-authentication: The ability of one entity to determine the identity of another entity.
+
+authentication: The ability of one entity to determine the identity of another entity.
 
 authorization: The secure computation of roles and accesses granted to an identity.
 
@@ -560,7 +448,8 @@ Release: June 14, 2022
 
 6 / 125
 
-Hypertext Transfer Protocol (HTTP): An application-level protocol for distributed, collaborative,
+
+Hypertext Transfer Protocol (HTTP): An application-level protocol for distributed, collaborative,
 hypermedia information systems (text, graphic images, sound, video, and other multimedia
 files) on the World Wide Web.
 
@@ -635,7 +524,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-which provides a message construct that can be exchanged over a variety of underlying
+
+which provides a message construct that can be exchanged over a variety of underlying
 protocols. The framework has been designed to be independent of any particular programming
 model and other implementation-specific semantics. SOAP 1.2 supersedes SOAP 1.1. See
 [SOAP1.2-1/2003].
@@ -710,7 +600,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-XML: The Extensible Markup Language, as described in [XML1.0].
+
+XML: The Extensible Markup Language, as described in [XML1.0].
 
 XML schema definition (XSD): The World Wide Web Consortium (W3C) standard language that
 is used in defining XML schemas. Schemas are useful for enforcing structure and constraining
@@ -725,7 +616,7 @@ transform XML data. It is designed for use as part of the Extensible Stylesheet 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -778,7 +669,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-[RFC7232] Fielding, R., and Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1: Conditional
+
+[RFC7232] Fielding, R., and Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1: Conditional
 Requests", RFC7232, June 2014, https://www.rfc-editor.org/info/rfc7232
 
 [RFC7233] Fielding, R., Lafon, Y., Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1: Range
@@ -823,7 +715,7 @@ https://www.w3.org/TR/2004/REC-xmlschema-1-20041028/
 [XMLSCHEMA2/2] Biron, P., and Malhotra, A., Eds., "XML Schema Part 2: Datatypes Second Edition",
 W3C Recommendation, October 2004, https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/
 
-1.3  Overview
+### 1.3 Overview
 
 The purpose of the Windows Protocols Documentation Roadmap is to provide a useful starting point
 for obtaining the information needed to create interoperable protocol software. By traversing the links
@@ -845,7 +737,8 @@ Release: June 14, 2022
 
 10 / 125
 
-  Documentation Contents (section 2): A description of the different types of documents,
+
+  Documentation Contents (section 2): A description of the different types of documents,
 
 including technical areas.
 
@@ -879,7 +772,7 @@ The relationship of documents to each other in the documentation set.
 
 The system for identifying versions of the documents.
 
-1.3.1  Product Applicability
+#### 1.3.1 Product Applicability
 
 The Windows protocols documentation set supports interoperability with technologies used by various
 versions of Windows Client operating system and applicable Windows Server releases.
@@ -923,7 +816,8 @@ Release: June 14, 2022
 
 11 / 125
 
-The versions of applicable Windows Server releases covered in the documentation set include:
+
+The versions of applicable Windows Server releases covered in the documentation set include:
 
   Windows NT Server 3.1 operating system
 
@@ -955,7 +849,7 @@ Release: June 14, 2022
 
   Windows Server 2022 operating system
 
-1.3.2  Relationships Among Documents
+#### 1.3.2 Relationships Among Documents
 
 The Windows protocols documentation set consists of the following types of documents:
 
@@ -982,7 +876,8 @@ Release: June 14, 2022
 
 12 / 125
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-DOCO].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -997,7 +892,7 @@ Specification Cross-Reference Matrix (section 4.1); the technical areas are list
 Cross-Reference Matrix (section 4.2); and the technology collections are listed in the Technology
 Collection Cross-Reference Matrix (section 4.3).
 
-1.3.3  Naming Conventions
+#### 1.3.3 Naming Conventions
 
 The Windows protocols documentation set uses the following naming conventions for all overview
 documents, technical specifications, and reference documents.
@@ -1022,7 +917,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-the suffix "BUP" is an abbreviation for "Background Intelligent Transfer Service (BITS)
+
+the suffix "BUP" is an abbreviation for "Background Intelligent Transfer Service (BITS)
 Upload Protocol".
 
 
@@ -1086,7 +982,7 @@ Each document has a long name, which is composed of its short name, a colon, and
 Examples of long names are "[MS-DOCO]: Windows Protocols Documentation Roadmap" and
 "[MS-RPRN]: Print System Remote Protocol Specification".
 
-1.3.4  Document Versions
+#### 1.3.4 Document Versions
 
 Documents in the Windows protocols documentation set are assigned a version number that changes
 each time the document is updated. The title page of each document contains a revision summary
@@ -1130,7 +1026,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Version
+
+Version
 number
 
 Revision
@@ -1175,7 +1072,7 @@ or 0.01.
 Each overview document and technical specification also contains its own more detailed Change
 Tracking Appendix, which lists the changes made to each section in the latest release.
 
-1.4  Audience
+### 1.4 Audience
 
 The Windows documentation set is intended for use in conjunction with publicly available and
 standards-based specifications, network programming background material, and Windows distributed
@@ -1194,12 +1091,12 @@ more protocol specifications for a given task or scenario.
 For architects: Structural and interoperability information for an implementation of a
 technology consisting of a group of related protocols.
 
-1.5  Localization
+### 1.5 Localization
 
 The Windows documentation set is not localized, but individual documents can contain locale-specific
 information.
 
-1.6  Licensing
+### 1.6 Licensing
 
 The Windows protocols documentation set is available to view and download from the Microsoft
 Developer web site at no charge. Some specifications include patented inventions, and others do not.
@@ -1226,7 +1123,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-as well as between applicable Windows Server releases systems, to provide file, print and user
+
+as well as between applicable Windows Server releases systems, to provide file, print and user
 and group administration services in a Windows Client network.
 
 Note  Microsoft is no longer updating this content regularly. Check the Microsoft Lifecycle Policy for
@@ -1235,7 +1133,7 @@ information about how these document programs are supported.
 For more information about patent license and patent covenant agreements available for Windows,
 visit Patent Promises and Patents.
 
-1.7  Support
+### 1.7 Support
 
 Many types of support are available for the protocol implementer. Information on the following
 resources can be found on the Open Specifications Developer Center:
@@ -1273,7 +1171,8 @@ Release: June 14, 2022
 
 16 / 125
 
-2  Documentation Contents
+
+## 2 Documentation Contents
 
 This section describes the documents that are part of the Windows protocols documentation set and
 the information they contain. The following types of documents are defined:
@@ -1353,7 +1252,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-protocols that support dynamic configuration of IP addresses, the enforcement of computer health
+
+protocols that support dynamic configuration of IP addresses, the enforcement of computer health
 policies, the management of Web services, and wireless service discovery.
 
 Remote connectivity: Remote connectivity refers to services that allow users to access applications
@@ -1382,7 +1282,7 @@ Terminal services: Terminal services provide functionality for communicating rem
 desktop interaction and display data packets, and sound, file redirection, and print redirection data
 packets from client applications to a Windows server configured as a terminal server.
 
-2.1  Overview Documents
+### 2.1 Overview Documents
 
 This section describes the overview documents in the Windows protocols documentation set. In
 general, overview documents provide information that pertains to groups of documents in the
@@ -1397,12 +1297,12 @@ The following types of overview documents are defined:
 
 Technology Overviews (section 2.1.3)
 
-2.1.1  Windows Protocols Documentation Roadmap
+#### 2.1.1 Windows Protocols Documentation Roadmap
 
 [MS-DOCO]: Windows Protocols Documentation Roadmap is the starting point for navigating within
 and understanding all the other documents in the Windows protocols documentation set.
 
-2.1.2  Windows Protocols Overview
+#### 2.1.2 Windows Protocols Overview
 
 [MS-WPO]: Windows Protocols Overview provides a conceptual overview of Windows protocols,
 including their functionality, how they interact, and their relationships to Windows technologies. Each
@@ -1410,7 +1310,7 @@ technology is further broken down into subsystems with information about the tec
 (section 2.1.3) and technical specifications (section 2.2) that pertain to each subsystem. The Windows
 technologies are grouped into the technical areas described in Documentation Contents (section 2).
 
-2.1.3  Technology Overviews
+#### 2.1.3 Technology Overviews
 
 Technology overviews provide informative content that describes protocols in a technical area that are
 functionally related or are commonly used together to accomplish specific goals. Each technology
@@ -1422,7 +1322,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-overview and the technical specifications it describes comprise a technology collection. The technology
+
+overview and the technical specifications it describes comprise a technology collection. The technology
 collections in the Windows protocols documentation set are listed in the Technology Collection Cross-
 Reference Matrix (section 4.3).
 
@@ -1508,7 +1409,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-information, a foundation for authentication services in a domain environment, domain
+
+information, a foundation for authentication services in a domain environment, domain
 services, and directory replication services in Windows.
 
 File, fax, and printing services:
@@ -1598,7 +1500,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-
+
+
 
 [MS-RMSOD]: Rights Management Services Protocols Overview: This document describes the
 protocols of the Rights Management Services (RMS) system, which allows individuals and
@@ -1629,7 +1532,7 @@ describes the Windows Server Update Services system, which enables IT administra
 distribute and manage software updates from a central location to a large number of
 computers.
 
-2.2  Technical Specifications
+### 2.2 Technical Specifications
 
 This section describes the details of protocols, structures and standards that are specified in technical
 specifications. The goal of the technical specifications is to support interoperability, not to describe the
@@ -1655,7 +1558,7 @@ interoperability in both Windows and non-Windows operating environments.
 
 Technical specifications consist of both normative and informative content.
 
-2.2.1  Normative Content
+#### 2.2.1 Normative Content
 
 Normative content refers to technical details that are essential for implementing software that
 interoperates with Windows. This content is written using the prescriptive language of RFCs as defined
@@ -1679,7 +1582,8 @@ Release: June 14, 2022
 
 21 / 125
 
-means that no Windows version implements the behavior. PBNs are informative content
+
+means that no Windows version implements the behavior. PBNs are informative content
 (section 2.2.2).
 
   SHOULD means that the behavior is optional but recommended by the designers of the
@@ -1768,14 +1672,15 @@ Release: June 14, 2022
 
 22 / 125
 
-Technical specifications that reference landing code identifiers (LCIDs) (section 2.2.3.3.4) cite the
+
+Technical specifications that reference landing code identifiers (LCIDs) (section 2.2.3.3.4) cite the
 following normative reference:
 
 
 
 [MS-LCID]: Windows Language Code Identifier (LCID) Reference
 
-2.2.2  Informative Content
+#### 2.2.2 Informative Content
 
 Content that is not normative in technical specifications is informative, and it is provided only as a
 helpful guide to the implementer. Informative content is not essential for implementation and includes
@@ -1833,7 +1738,7 @@ The information concerns a specific buffer size choice, when other buffer sizes 
 The information concerns loading implementation-specific configuration information from the
 Windows registry.
 
-2.2.3  Template Types
+#### 2.2.3 Template Types
 
 In general, each technical specification conforms to one of a set of document templates, based on the
 type of information that is conveyed by the associated protocol or structure:
@@ -1857,7 +1762,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-  RPC: Remote procedure call (RPC) method-based client/server protocols.
+
+  RPC: Remote procedure call (RPC) method-based client/server protocols.
 
   SOAP: Request/response protocols that are defined by using Web Services Description
 
@@ -1869,7 +1775,7 @@ The following sections provide general descriptions of these document templates.
 for each technical specification in the Windows protocols documentation set is listed in Technical
 Specification Cross-Reference Matrix (section 4.1).
 
-2.2.3.1  Algorithm
+##### 2.2.3.1 Algorithm
 
 An Algorithm technical specification defines an algorithm or extension to an algorithm that is used in
 network communication. An Algorithm document defines no data structure or data sent over the wire.
@@ -1896,7 +1802,7 @@ Processing rules
 
   State transitions
 
-2.2.3.2  Block
+##### 2.2.3.2 Block
 
 A Block technical specification defines a packet-based protocol. The name "Block" is a reference to the
 block diagrams that are frequently used to express interaction patterns. The Block type of technical
@@ -1935,7 +1841,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-network is in bit 31. The byte order format can be different in the operating environment, so it is
+
+network is in bit 31. The byte order format can be different in the operating environment, so it is
 specified in the document for multibyte data fields.
 
 Block technical specifications can contain the following types of normative information, where
@@ -1961,7 +1868,7 @@ ADLS] [MS-ADSC]
 
 [XMLSCHEMA2/2]
 
-2.2.3.3  Data Structure
+##### 2.2.3.3 Data Structure
 
 A Data Structure technical specification specifies a common structure or an extension to a common
 data structure that is used by multiple protocols. The description does not include related behavior.
@@ -1986,7 +1893,7 @@ applicable:
 Specific data structure technical specifications that are cited normatively by other technical
 specifications are described in the following subsections.
 
-2.2.3.3.1 Active Directory Objects
+###### 2.2.3.3.1 Active Directory Objects
 
 Active Directory objects are normative definitions of the objects that exist in the Microsoft Active
 Directory. The objects of type "attribute" that exist in the Active Directory schema are presented in
@@ -2011,7 +1918,8 @@ Release: June 14, 2022
 
 25 / 125
 
-The objects of type "class" that exist in the Active Directory schema are presented in the following
+
+The objects of type "class" that exist in the Active Directory schema are presented in the following
 technical specification:
 
 
@@ -2029,7 +1937,7 @@ These specifications are not intended to stand on their own; they are intended t
 to the Active Directory Technical Specification. For details about the Active Directory schema, see [MS-
 ADTS]: Active Directory Technical Specification.
 
-2.2.3.3.2 Windows Data Types
+###### 2.2.3.3.2 Windows Data Types
 
 Windows data types are common data types that are used in the Windows protocols documentation
 set. They are presented in the following document:
@@ -2061,7 +1969,7 @@ security model; for example, security identifier (SID), and SECURITY_DESCRIPTOR.
 Impersonation abstract interface: Methods for managing the underlying security infrastructure
 for server roles in Windows.
 
-2.2.3.3.3 Windows Error Codes
+###### 2.2.3.3.3 Windows Error Codes
 
 Windows error codes are method return values and status codes that are used in the Windows
 protocols documentation set. They are presented in the following document:
@@ -2097,7 +2005,8 @@ Release: June 14, 2022
 
 26 / 125
 
-
+
+
 
 The HRESULT from WIN32 error code macro, which converts a Win32 error code to an
 HRESULT value.
@@ -2142,7 +2051,7 @@ LDAP result codes: Windows contains an implementation of the LDAP resultCode [RF
 which is used by higher-layer protocols to interpret the results of an LDAP operation. Each
 LDAP error value is mapped to the closest Win32 error value; this mapping is provided.
 
-2.2.3.3.4 Windows Language Code Identifier (LCID) Reference
+###### 2.2.3.3.4 Windows Language Code Identifier (LCID) Reference
 
 Windows language code identifiers (LCID) are presented in the following document:
 
@@ -2167,7 +2076,7 @@ The structure of the LCID data type.
 
 Locale-specific sort order values.
 
-2.2.3.4  File Structure
+##### 2.2.3.4 File Structure
 
 A File Structure technical specification specifies the structure and contents of a file that can be sent
 over the network. Rules for accessing and processing the contents of the file can be specified in this
@@ -2184,7 +2093,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-File Structure technical specifications can contain the following types of normative information, where
+
+File Structure technical specifications can contain the following types of normative information, where
 applicable:
 
   Augmented Backus-Naur Form (ABNF) syntax [RFC5234]
@@ -2197,7 +2107,7 @@ applicable:
 
 [XMLSCHEMA2/2]
 
-2.2.3.5  HTTP
+##### 2.2.3.5 HTTP
 
 An HTTP technical specification defines a protocol that uses an HTTP-based API with a simplified set of
 HTTP functions, such as GET and POST, to make API calls. It can also use a Representational State
@@ -2240,7 +2150,7 @@ JavaScript Object Notation (JSON) definitions [ECMA-404] [JSON-Schema]
 
 [XMLSCHEMA2/2]
 
-2.2.3.6  RPC
+##### 2.2.3.6 RPC
 
 An RPC technical specification defines a method-based protocol, which uses a formal syntax with calls
 and return codes, and in which a protocol client initiates all communication and a protocol server
@@ -2255,7 +2165,8 @@ Release: June 14, 2022
 
 28 / 125
 
-Some RPC specifications specify protocols that use the Distributed Component Object Model
+
+Some RPC specifications specify protocols that use the Distributed Component Object Model
 (DCOM) as their transport, which uses the TCP/IP RPC protocol sequence. Such protocols can use the
 DCOM security and authentication framework and interface activation.
 
@@ -2311,7 +2222,7 @@ For DCOM-based RPC protocols, the following normative reference is included:
 
 [MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol Specification
 
-2.2.3.7  SOAP
+##### 2.2.3.7 SOAP
 
 A Simple Object Access Protocol (SOAP) [SOAP1.1] [SOAP1.2/1] [SOAP1.2/2] technical
 specification defines a packet-based protocols. Unlike Block technical specifications, SOAP specifies
@@ -2336,7 +2247,8 @@ Release: June 14, 2022
 
 29 / 125
 
-is provided. If the grammar is defined in the technical specification, the packet definition format used
+
+is provided. If the grammar is defined in the technical specification, the packet definition format used
 in Block technical specifications (section 2.2.3.2) is used.
 
 SOAP technical specifications can contain the following types of normative information, where
@@ -2356,7 +2268,7 @@ ADLS] [MS-ADSC]
 
 [XMLSCHEMA2/2]
 
-2.2.3.8  Standards Support
+##### 2.2.3.8 Standards Support
 
 A Standards Support technical specification describes how a Microsoft implementation or set of
 implementations conform to or vary from an existing specification such as a standard, a third-party
@@ -2382,7 +2294,7 @@ Extensions to the standard
 
   Normative variations from the standard
 
-2.3  Reference Documents
+### 2.3 Reference Documents
 
 This section describes the non-normative information that is found in reference documents in the
 Windows documentation set. It is supplementary to the overview and technical documents and are
@@ -2393,7 +2305,7 @@ Reference documents contain the following categories of information:
 
   Windows protocols Unicode reference
 
-2.3.1  Windows Protocols Unicode Reference
+#### 2.3.1 Windows Protocols Unicode Reference
 
 This reference provides related Unicode processing algorithms on the Windows platform, including
 Unicode string comparison and conversion of Unicode to legacy code pages. They are presented in
@@ -2410,7 +2322,8 @@ Release: June 14, 2022
 
 30 / 125
 
-The following information is provided in the Windows protocols Unicode reference:
+
+The following information is provided in the Windows protocols Unicode reference:
 
   UTF-16 string comparison: Provides linguistic-specific comparisons between two Unicode
 
@@ -2428,7 +2341,7 @@ The mechanism for the transport of Windows protocols Unicode reference messages.
 
   Windows protocols Unicode reference message syntax.
 
-2.4  External References
+### 2.4 External References
 
 This section describes the external references used by the Windows protocols documentation set,
 including the following:
@@ -2441,7 +2354,7 @@ Information made available by the Microsoft Corporation
 
   RFCs
 
-2.4.1  Microsoft Corporation
+#### 2.4.1 Microsoft Corporation
 
 Microsoft makes available supplementary documentation that can be cited by Windows technical
 documents to provide helpful information to the implementer, including the following:
@@ -2460,7 +2373,7 @@ technologies.
 
 TechNet Wiki, providing community-generated content about Microsoft technologies.
 
-2.4.2  Standards Bodies
+#### 2.4.2 Standards Bodies
 
 Documents from the following non-Microsoft standards bodies are cited normatively and informatively
 in the Windows protocols documentation set.
@@ -2489,7 +2402,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-ECMA International: Standards organization for communications technology and consumer electronics.
+
+ECMA International: Standards organization for communications technology and consumer electronics.
 
 Federal Information Processing Standards (FIPS): Standards and guidelines issued by the National
 Institute of Standards and Technology (NIST). NIST develops FIPS when there are compelling
@@ -2565,7 +2479,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-2.4.3  RFCs
+
+#### 2.4.3 RFCs
 
 RFCs constitute a large body of standards and proposed standards describing methods, behaviors,
 research, and innovations applicable to the working of network-connected systems. Technical
@@ -2579,11 +2494,12 @@ Release: June 14, 2022
 
 33 / 125
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-DOCO].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
-3  Navigating the Documentation Set
+## 3 Navigating the Documentation Set
 
 This section describes ways to navigate within the online Microsoft Docs library to find components of
 the Windows protocols documentation set. The subsections that follow describe the following paths to
@@ -2602,7 +2518,7 @@ Specifications nodes.
 A complete site map of the Open Specifications node tree for the Windows protocols documentation
 set is presented in Appendix B: Open Specification Site Map (section 5).
 
-3.1  Document Nodes
+### 3.1 Document Nodes
 
 This section describes how to navigate to document nodes in the Windows protocols documentation
 set from the Open Specifications node, which contains the nodes shown in the following diagram.
@@ -2628,7 +2544,8 @@ Release: June 14, 2022
 
 34 / 125
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-DOCO].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2640,7 +2557,7 @@ for more information.
 
   Workgroup Server Protocol Program (WSPP)
 
-3.1.1  Windows Protocols
+#### 3.1.1 Windows Protocols
 
 The Windows Protocols node is reached from the Open Specifications node as shown in section 3.1. It
 is possible to navigate from this node to the nodes shown in the following diagram.
@@ -2675,7 +2592,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-DOCO].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2685,7 +2603,7 @@ Technical Specifications Landing Page: The technical specifications landing page
 Reference Documents Landing Page: The reference documents landing page is described in section
 3.1.1.3.
 
-3.1.1.1  Overview Documents Landing Page
+##### 3.1.1.1 Overview Documents Landing Page
 
 The Overview Documents Landing Page node can be reached from the Windows Protocols node as
 shown in section 3.1.1. From this node it is possible to navigate to the nodes shown in the following
@@ -2703,13 +2621,14 @@ Release: June 14, 2022
 
 36 / 125
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-DOCO].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
 Figure 5: Overview documents landing page
 
-3.1.1.1.1 Overview Documents
+###### 3.1.1.1.1 Overview Documents
 
 Overview Document Landing Page nodes can be reached from the Overview Documents Landing Page
 node as shown in section 3.1.1.1. A landing page is defined for every overview document in the
@@ -2722,7 +2641,8 @@ Release: June 14, 2022
 
 37 / 125
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-DOCO].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2758,11 +2678,12 @@ Release: June 14, 2022
 
 38 / 125
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-DOCO].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
-3.1.1.2  Technical Specifications Landing Page
+##### 3.1.1.2 Technical Specifications Landing Page
 
 The Technical Specifications Landing Page node can be reached from the Windows Protocols node as
 shown in section 3.1.1. From this node it is possible to navigate to the nodes shown in the following
@@ -2780,13 +2701,14 @@ Release: June 14, 2022
 
 39 / 125
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-DOCO].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
 Figure 8: Technical specifications landing page
 
-3.1.1.2.1 Technical Specifications
+###### 3.1.1.2.1 Technical Specifications
 
 Technical Specification Landing Page nodes can be reached from the Technical Specifications Landing
 Page node as shown in section 3.1.1.2. A landing page is defined for every technical specification in
@@ -2799,7 +2721,8 @@ Release: June 14, 2022
 
 40 / 125
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-DOCO].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2824,7 +2747,7 @@ changed from the last to the current release for the technical specification.
 
 The structures of technical specifications are described in section 2.2.
 
-3.1.1.3  Reference Documents Landing Page
+##### 3.1.1.3 Reference Documents Landing Page
 
 The Reference Documents Landing Page node can be reached from the Windows Protocols node as
 shown in section 3.1.1. From this node it is possible to navigate to the nodes shown in the following
@@ -2837,7 +2760,8 @@ Release: June 14, 2022
 
 41 / 125
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-DOCO].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -2853,13 +2777,14 @@ Release: June 14, 2022
 
 42 / 125
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-DOCO].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
 Figure 11: Reference documents landing page
 
-3.1.1.3.1 Reference Documents
+###### 3.1.1.3.1 Reference Documents
 
 Reference Document Landing Page nodes can be reached from the Reference Documents Landing
 Page node as shown in section 3.1.1.3. A landing page is defined for every reference document in the
@@ -2872,7 +2797,8 @@ Release: June 14, 2022
 
 43 / 125
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-DOCO].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -2897,7 +2823,7 @@ from the last to the current release for the reference document.
 
 The structures of reference documents are described in sections 2.2 and 2.3.
 
-3.1.2  Windows WordPad Standards Support
+#### 3.1.2 Windows WordPad Standards Support
 
 The Windows WordPad Standards Support node is reached from the Open Specifications node as
 shown in section 3.1. It is possible to navigate from this node to the nodes shown in the following
@@ -2910,7 +2836,8 @@ Release: June 14, 2022
 
 44 / 125
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-DOCO].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -2933,7 +2860,7 @@ transformations using an XSL Transformation (XSLT) or similar XML-based tools.
 
 The documents on this node are based on the Standards Support template (section 2.2.3.8).
 
-3.2  Document Types
+### 3.2 Document Types
 
 This section describes how to find documents in the Windows protocols documentation set according
 to the following document types:
@@ -2949,11 +2876,11 @@ Technical specifications (section 2.2)
 The navigation to these document types relative to the Open Specifications node are shown in
 Document Nodes (section 3.1).
 
-3.2.1  Windows Protocols
+#### 3.2.1 Windows Protocols
 
 This section describes the documents by type relative to the Windows Protocols node.
 
-3.2.1.1  Overview Documents
+##### 3.2.1.1 Overview Documents
 
 Overview documents of the Windows protocols documentation set can be reached from the Windows
 Protocols node as shown in the following diagram.
@@ -2965,7 +2892,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-DOCO].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -2974,7 +2902,7 @@ Figure 14: Overview documents
 Overview Documents Landing Page: This node contains links to the landing pages of individual
 overview documents, as described in section 3.1.1.1.
 
-3.2.1.2  Technical Specifications
+##### 3.2.1.2 Technical Specifications
 
 Technical specifications of the Windows protocols documentation set can be reached from the Windows
 Protocols node as shown in the following diagram.
@@ -2986,7 +2914,8 @@ Release: June 14, 2022
 
 46 / 125
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-DOCO].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3014,7 +2943,7 @@ normative reference specifications:
 
 [MS-LCID]: Windows Language Code Identifier (LCID) Reference
 
-3.2.1.3  Reference Documents
+##### 3.2.1.3 Reference Documents
 
 Reference documents of the Windows protocols documentation set can be reached from the Windows
 Protocols node as shown in the following diagram.
@@ -3026,7 +2955,8 @@ Release: June 14, 2022
 
 47 / 125
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-DOCO].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3039,7 +2969,7 @@ informative reference document:
 
 [MS-UCODEREF]: Windows Protocols Unicode Reference
 
-3.3  Document Citations
+### 3.3 Document Citations
 
 This section describes how to navigate from document to document in the Windows protocols
 documentation set by using links. The following figure shows the hierarchy of citations in the
@@ -3052,7 +2982,8 @@ Release: June 14, 2022
 
 48 / 125
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-DOCO].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3091,7 +3022,7 @@ when one is available.
 
 The subsections in this section describe the types of links in the Windows protocols documentation set.
 
-3.3.1  Normative Citations
+#### 3.3.1 Normative Citations
 
 Normative citations refer to information that is required in order to understand or implement the
 technology defined in a specification or for that technology to work.
@@ -3103,10 +3034,11 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Citations to normative content are distinguished by the use of the words "defined", "specified", and
+
+Citations to normative content are distinguished by the use of the words "defined", "specified", and
 "details".
 
-3.3.1.1  External Normative Citations
+##### 3.3.1.1 External Normative Citations
 
 External citations to normative content include references to any of the following:
 
@@ -3119,7 +3051,7 @@ External citations to normative content include references to any of the followi
 All external normative documents are listed in the normative references section of the referencing
 technical specification.
 
-3.3.1.2  Internal Normative Citations
+##### 3.3.1.2 Internal Normative Citations
 
 Internal citations to normative content are references to normative sections within a technical
 specification. The sections—including their subsections—that contain normative content in a technical
@@ -3151,7 +3083,7 @@ Data and File Structure templates:
 
 For more information about the document templates, see section 2.2.
 
-3.3.2  Informative Citations
+#### 3.3.2 Informative Citations
 
 Informative citations refer to information that is not required in order to understand or implement the
 technology defined in a specification, such as background or implementation-specific information.
@@ -3159,7 +3091,7 @@ technology defined in a specification, such as background or implementation-spec
 Citations to informative content are distinguished by the use of the words "described" and
 "information".
 
-3.3.2.1  External Informative Citations
+##### 3.3.2.1 External Informative Citations
 
 Citations to external informative content include references to any of the following:
 
@@ -3170,7 +3102,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-  Any content that could qualify as an external normative reference (section 3.3.1.1).
+
+  Any content that could qualify as an external normative reference (section 3.3.1.1).
 
   Microsoft Developer articles.
 
@@ -3185,7 +3118,7 @@ Informative sections in other Windows technical specifications (section 2.2).
 All external informative documents are listed in the informative references section of the referencing
 technical specification.
 
-3.3.2.2  Internal Informative Citations
+##### 3.3.2.2 Internal Informative Citations
 
 Internal citations to informative content are references to informative sections within a technical
 specification. Any content that is not normative is by definition informative, including Windows product
@@ -3201,9 +3134,10 @@ Release: June 14, 2022
 
 51 / 125
 
-4  Appendix A: Cross-Reference Matrixes
 
-4.1  Technical Specification Cross-Reference Matrix
+## 4 Appendix A: Cross-Reference Matrixes
+
+### 4.1 Technical Specification Cross-Reference Matrix
 
 This section contains a table that provides, for each technical specification in the Windows protocols
 documentation set, the following information:
@@ -3393,7 +3327,8 @@ cited
 
 [MS-OAUT]
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -3641,7 +3576,8 @@ Release: June 14, 2022
 
 53 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -3873,7 +3809,8 @@ Release: June 14, 2022
 
 54 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -4083,7 +4020,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -4293,7 +4231,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -4477,7 +4416,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -4698,7 +4638,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-[MS-BRWSA]
+
+[MS-BRWSA]
 
 [MS-ERREF]
 
@@ -4929,7 +4870,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -5133,7 +5075,8 @@ Protocol
 
 60 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -5346,7 +5289,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -5559,7 +5503,8 @@ Release: June 14, 2022
 
 62 / 125
 
-Technical
+
+Technical
 specifications
 cited
 
@@ -5769,7 +5714,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -5996,7 +5942,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -6203,7 +6150,8 @@ Markup Language
 
 65 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -6422,7 +6370,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -6639,7 +6588,8 @@ cited
 
 67 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -6838,7 +6788,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -7006,7 +6957,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -7214,7 +7166,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -7440,7 +7393,8 @@ cited
 
 71 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -7626,7 +7580,8 @@ cited
 
 72 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -7870,7 +7825,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -8086,7 +8042,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -8296,7 +8253,8 @@ Release: June 14, 2022
 
 75 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -8502,7 +8460,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -8748,7 +8707,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -8949,7 +8909,8 @@ cited
 
 78 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -9172,7 +9133,8 @@ cited
 
 79 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -9430,7 +9392,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -9639,7 +9602,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Technical
+
+Technical
 specifications
 cited
 
@@ -9854,7 +9818,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -10067,7 +10032,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -10298,7 +10264,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -10540,7 +10507,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -10751,7 +10719,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -10973,7 +10942,8 @@ None
 
 87 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -11246,7 +11216,8 @@ cited
 
 88 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -11529,7 +11500,8 @@ cited
 
 [MS-RDPEGDI]
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -11795,7 +11767,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -12006,7 +11979,8 @@ None
 
 91 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -12204,7 +12178,8 @@ Release: June 14, 2022
 
 92 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -12461,7 +12436,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -12692,7 +12668,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -12900,7 +12877,8 @@ None
 
 95 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -13127,7 +13105,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Technical
+
+Technical
 specifications
 cited
 
@@ -13384,7 +13363,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -13589,7 +13569,8 @@ Release: June 14, 2022
 
 98 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -13817,7 +13798,8 @@ Release: June 14, 2022
 
 99 / 125
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -14043,7 +14025,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -14250,7 +14233,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -14485,7 +14469,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -14721,7 +14706,8 @@ Release: June 14, 2022
 
 [MS-DTYP]
 
-Document
+
+Document
 short name  Document title
 
 Template
@@ -14912,7 +14898,7 @@ Services Profile
 
 None
 
-4.2  Technical Area Cross-Reference Matrix
+### 4.2 Technical Area Cross-Reference Matrix
 
 This section contains a table that shows, for each technical area, the following information:
 
@@ -14935,7 +14921,8 @@ Release: June 14, 2022
 
 104 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15050,7 +15037,8 @@ Release: June 14, 2022
 
 105 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15165,7 +15153,8 @@ Release: June 14, 2022
 
 106 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15284,7 +15273,8 @@ Release: June 14, 2022
 
 107 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15389,7 +15379,8 @@ Release: June 14, 2022
 
 108 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15502,7 +15493,8 @@ Release: June 14, 2022
 
 109 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15611,7 +15603,8 @@ Release: June 14, 2022
 
 110 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15726,7 +15719,8 @@ Release: June 14, 2022
 
 111 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15833,7 +15827,8 @@ Release: June 14, 2022
 
 112 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15946,7 +15941,8 @@ Release: June 14, 2022
 
 113 / 125
 
-Technical area
+
+Technical area
 
 Technology overviews  Technical specifications
 
@@ -15996,7 +15992,7 @@ Technology overviews  Technical specifications
 
 [MS-WUSP]
 
-4.3  Technology Collection Cross-Reference Matrix
+### 4.3 Technology Collection Cross-Reference Matrix
 
 This section contains a table that shows the technology collections in the Windows protocols
 documentation set. Each technology collection consists of a technology overview (section 2.1.3) in a
@@ -16053,7 +16049,8 @@ specifications
 
 114 / 125
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16167,7 +16164,8 @@ Release: June 14, 2022
 
 115 / 125
 
-Technology overview
+
+Technology overview
 
 [MS-AZOD]: Authorization Protocols Overview
 
@@ -16289,7 +16287,8 @@ Release: June 14, 2022
 
 116 / 125
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16410,7 +16409,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16531,7 +16531,8 @@ specifications
 
 118 / 125
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16644,7 +16645,8 @@ Release: June 14, 2022
 
 119 / 125
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16760,7 +16762,8 @@ Remote Connectivity
 
 120 / 125
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16887,7 +16890,8 @@ Windows Protocols Documentation Roadmap
 Copyright © 2022 Microsoft Corporation
 Release: June 14, 2022
 
-Technology overview
+
+Technology overview
 
 Technical area
 
@@ -16916,11 +16920,12 @@ Release: June 14, 2022
 
 122 / 125
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-DOCO].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
-5  Appendix B: Open Specifications Site Map
+## 5 Appendix B: Open Specifications Site Map
 
 Figure 18: Open Specifications site map
 
@@ -16931,7 +16936,8 @@ Release: June 14, 2022
 
 123 / 125
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -16982,7 +16988,8 @@ Release: June 14, 2022
 
 124 / 125
 
-7  Index
+
+## 7 Index
 A
 
 Audience 15

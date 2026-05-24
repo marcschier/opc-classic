@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 18
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: March 13, 2019
 
 2 / 18
 
-Date
+
+Date
 
 Revision
 History
@@ -499,94 +501,45 @@ Release: March 13, 2019
 
 3 / 18
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Message Type](#131-message-type)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 PacketRoutable](#221-packetroutable)
+    - [2.2.2 .NET Packet](#222-net-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 .NET Packet Router Server Details](#31-net-packet-router-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Message Type .............................................................................................. 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-PacketRoutable ............................................................................................ 9
-.NET Packet ................................................................................................. 9
-
-2.2.1
-2.2.2
-
-3.1
-
-3  Protocol Details ..................................................................................................... 10
-.NET Packet Router Server Details ...................................................................... 10
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 13
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 15
-
-7  Change Tracking .................................................................................................... 16
-
-8  Index ..................................................................................................................... 17
-
-[MC-NPR] - v20190313
-.NET Packet Routing Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 18
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the .NET Packet Routing Protocol, which defines a SOAP header for
 indicating that a SOAP message can safely be treated as a packet or datagram. A .NET Packet
@@ -598,7 +551,7 @@ router.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -637,14 +590,14 @@ to deliver the message from the source to the destination.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -657,7 +610,8 @@ assist you in finding the relevant information.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MC-NPR].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -678,11 +632,11 @@ October 2004, http://www.w3.org/TR/2004/REC-xmlschema-2-20041028
 (XML) 1.0 (Second Edition)", W3C Recommendation, October 2000,
 https://www.w3.org/TR/2000/REC-xml-20001006
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 Packet routing is the predominant form of routing on the Internet. Packet routing does not preserve
 connection-oriented features such as routing paths, message-delivery order, or the presence of a back
@@ -711,19 +665,20 @@ Release: March 13, 2019
 
 6 / 18
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MC-NPR].images/page007-img01.png)
 ![Extracted image 2 from page 7]([MC-NPR].images/page007-img02.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 2: Circuit routing of SOAP messages
 
-1.3.1  Message Type
+#### 1.3.1 Message Type
 
 SOAP messages that use packet routing need to be well-formed and complete. They need to
 contain the PacketRoutable element in the SOAP header, as specified in section 2.2.2.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The .NET Packet Routing Protocol uses any network transport capable of transmitting SOAP 1.1
 messages [SOAP1.1] or SOAP 1.2 messages [SOAP1.2-1/2007]. The following figure shows the
@@ -732,13 +687,13 @@ medium.
 
 Figure 3: Dependency stack in a SOAP packet router
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The .NET Packet Routing Protocol requires the communication channel transmitting SOAP packets to
 be capable of producing a self-contained, independent data entity that carries sufficient information to
 be routed from the source to the destination computer without reliance on earlier exchanges.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The .NET Packet Routing Protocol can be used when an application determines that circuit routing is
 consuming more resources than necessary. The application requests a downgrade to packet routing
@@ -752,7 +707,8 @@ Release: March 13, 2019
 
 7 / 18
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -766,11 +722,11 @@ This document covers versioning issues in the following areas:
  Capability negotiation: The .NET Packet Routing Protocol does not support negotiation of the
 version to be used.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -781,9 +737,10 @@ Release: March 13, 2019
 
 8 / 18
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The .NET Packet Routing Protocol can be used over any transport protocol that supports SOAP version
 1.1 [SOAP1.1] or SOAP version 1.2 [SOAP1.2-1/2007]. This specification uses the term SOAP to mean
@@ -796,9 +753,9 @@ from the source to the destination computer without reliance on earlier exchange
 not prescribe any specific algorithm or communications infrastructure for forwarding a packet after it
 has been received by the router.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  PacketRoutable
+#### 2.2.1 PacketRoutable
 
 PacketRoutable is an XML element [XML1.0] that indicates a node is permitted to treat a SOAP
 message as a SOAP packet. The PacketRoutable element is specified by the following XML schema
@@ -812,7 +769,7 @@ message as a SOAP packet. The PacketRoutable element is specified by the followi
    <xs:element name="PacketRoutable" />
  </xs:schema>
 
-2.2.2  .NET Packet
+#### 2.2.2 .NET Packet
 
 A .NET packet is a SOAP packet that contains a PacketRoutable element as a SOAP header. A .NET
 packet SHOULD NOT include a SOAP mustUnderstand attribute for the PacketRoutable element.
@@ -824,11 +781,12 @@ Release: March 13, 2019
 
 9 / 18
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MC-NPR].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The client side of the .NET Packet Routing Protocol MUST implement the insertion of the
 PacketRoutable element into the SOAP header of the message for a .NET Packet Routing Protocol
@@ -837,9 +795,9 @@ packet.
 
 Figure 4: State diagram of client processing of a message
 
-3.1
+### 3.1 .NET Packet Router Server Details
 
-.NET Packet Router Server Details
+
 
 Every .NET Packet Routing Protocol router MUST implement processing to receive and send the
 PacketRoutable element.<1>
@@ -862,7 +820,8 @@ Release: March 13, 2019
 
 10 / 18
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MC-NPR].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -887,7 +846,8 @@ Release: March 13, 2019
 
 11 / 18
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MC-NPR].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -896,23 +856,23 @@ failure. This protocol does not recommend any specific handling of such failures
 
 Figure 6: State diagram of the sending side of a .NET Packet Routing Protocol router
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The .NET Packet Routing Protocol does not specify how or when to open an outbound connection when
 a router receives a packet. For example, an implementation of the .NET Packet Routing Protocol MAY
@@ -920,11 +880,11 @@ require that a packet be fully received before an outbound connection is opened 
 forwarded. Another implementation MAY open an outbound connection and start forwarding the data
 in the packet as it is received on the inbound connection.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -935,7 +895,8 @@ Release: March 13, 2019
 
 12 / 18
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Messages might have no relation to the underlying transport connection. By inserting the
 PacketRoutable element into the SOAP header, packet routing would be used instead of circuit
@@ -974,9 +935,10 @@ Release: March 13, 2019
 
 13 / 18
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The .NET Packet Routing Protocol does not carry any security consideration. A vendor can extend the
 protocol to provide additional security considerations as long as the default and basic routing
@@ -984,7 +946,7 @@ scenarios, as specified by this document, function as expected. In addition, ven
 of this protocol need to account for the fallback scenario when a message is routed through a .NET
 Packet Routing Protocol router that does not support the additional security extensions.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -995,7 +957,8 @@ Release: March 13, 2019
 
 14 / 18
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1038,7 +1001,8 @@ Release: March 13, 2019
 
 15 / 18
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1082,7 +1046,8 @@ Release: March 13, 2019
 
 16 / 18
 
-8  Index
+
+## 8 Index
 .
 
 .NET Packet message 9
@@ -1211,7 +1176,8 @@ V
 
 17 / 18
 
-Vendor-extensible fields 8
+
+Vendor-extensible fields 8
 Versioning 8
 
 [MC-NPR] - v20190313

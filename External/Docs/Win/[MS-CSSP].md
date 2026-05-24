@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -525,7 +527,8 @@ Release: April 23, 2024
 
 3 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -615,107 +618,50 @@ Release: April 23, 2024
 
 4 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 TSRequest](#221-tsrequest)
+      - [2.2.1.1 NegoData](#2211-negodata)
+      - [2.2.1.2 TSCredentials](#2212-tscredentials)
+        - [2.2.1.2.1 TSPasswordCreds](#22121-tspasswordcreds)
+        - [2.2.1.2.2 TSSmartCardCreds](#22122-tssmartcardcreds)
+          - [2.2.1.2.2.1 TSCspDataDetail](#221221-tscspdatadetail)
+        - [2.2.1.2.3 TSRemoteGuardCreds](#22123-tsremoteguardcreds)
+          - [2.2.1.2.3.1 TSRemoteGuardPackageCred](#221231-tsremoteguardpackagecred)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementors](#51-security-considerations-for-implementors)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-TSRequest ................................................................................................. 12
-NegoData ............................................................................................. 13
-TSCredentials ....................................................................................... 13
-TSPasswordCreds ............................................................................ 13
-TSSmartCardCreds .......................................................................... 14
-TSCspDataDetail ........................................................................ 14
-TSRemoteGuardCreds ...................................................................... 14
-TSRemoteGuardPackageCred ...................................................... 15
-
-2.2.1.2.1
-2.2.1.2.2
-
-2.2.1.2.2.1
-
-2.2.1.2.3.1
-
-2.2.1.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 16
-Common Details .............................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 19
-
-5  Security ................................................................................................................. 21
-Security Considerations for Implementors ........................................................... 21
-Index of Security Parameters ............................................................................ 21
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 22
-
-7  Change Tracking .................................................................................................... 26
-
-8  Index ..................................................................................................................... 27
-
-[MS-CSSP] - v20240423
-Credential Security Support Provider (CredSSP) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 27
-
-1  Introduction
+## 1 Introduction
 
 The Credential Security Support Provider (CredSSP) Protocol enables an application to securely
 delegate a user's credentials from a client to a target server. This protocol first establishes an
@@ -730,7 +676,7 @@ sent over the encrypted TLS channel.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -788,7 +734,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-attacker's host that is manipulating the network so that the attacker's host appears to be the
+
+attacker's host that is manipulating the network so that the attacker's host appears to be the
 desired destination. This enables the attacker to decrypt and access all network traffic that
 would go to the legitimate host. The attacker is able to read, insert, and modify at-will messages
 between two hosts without either party knowing that the link between them is compromised.
@@ -865,7 +812,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
+
+Unicode string: A Unicode 8-bit string is an ordered sequence of 8-bit units, a Unicode 16-bit
 string is an ordered sequence of 16-bit code units, and a Unicode 32-bit string is an ordered
 sequence of 32-bit code units. In some cases, it could be acceptable not to terminate with a
 terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
@@ -874,14 +822,14 @@ encoding scheme with no Byte Order Mark (BOM).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -929,11 +877,12 @@ Release: April 23, 2024
 
 8 / 27
 
-[X690] ITU-T, "Information Technology - ASN.1 Encoding Rules: Specification of Basic Encoding Rules
+
+[X690] ITU-T, "Information Technology - ASN.1 Encoding Rules: Specification of Basic Encoding Rules
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [KERB-TICKET-LOGON] Microsoft Corporation, "KERB_TICKET_LOGON structure",
 https://msdn.microsoft.com/en-us/library/windows/desktop/aa378143(v=vs.85).aspx
@@ -949,7 +898,7 @@ http://www.catalog.update.microsoft.com/Search.aspx?q=4088776
 [RFC2898] Kaliski, B., "PKCS #5: Password-Based Cryptography Specification Version 2.0", RFC 2898,
 September 2000, https://www.rfc-editor.org/info/rfc2898
 
-1.3  Overview
+### 1.3 Overview
 
 The Credential Security Support Provider (CredSSP) Protocol enables an application to securely
 delegate a user's credentials from a client to a target server. For example, the Microsoft Terminal
@@ -993,12 +942,13 @@ Release: April 23, 2024
 
 9 / 27
 
-All subsequent data that is sent between the client and server application by using the CredSSP
+
+All subsequent data that is sent between the client and server application by using the CredSSP
 Protocol is encrypted under TLS. The only new on-the-wire formats that are introduced by the
 CredSSP Protocol are the encapsulation of the SPNEGO tokens sent over the TLS channel, the binding
 between the TLS and SPNEGO protocols, and the format of the user credentials.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The CredSSP Protocol uses the TLS Protocol, as specified in [RFC2246], to encrypt all traffic between
 the CredSSP client and the CredSSP server. The TLS Protocol requires a reliable transport, such as
@@ -1016,7 +966,7 @@ The Remote Desktop Protocol (RDP) uses the CredSSP Protocol to delegate credenti
 client to the RDP server and to encrypt all data that follows by using the TLS channel that is
 established as part of the CredSSP Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The CredSSP Protocol assumes the following:
 
@@ -1041,7 +991,7 @@ The CredSSP Protocol uses the SPNEGO protocol for mutual client/server authentic
 one other GSS-compatible authentication protocol, in addition to the CredSSP Protocol, MUST be
 present for it to work.<3>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The CredSSP protocol delegates the user's credentials from a client to a server over a mutually
 authenticated encrypted channel. To avoid revealing the user credentials to unauthorized hosts, the
@@ -1050,7 +1000,7 @@ governs the client's computer. The CredSSP protocol was designed to enable the s
 impersonate the client across a number of different applications that require the user's long-lived
 credentials (password).
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Versioning and capability negotiation are supported in the CredSSP Protocol as follows:
 
@@ -1066,7 +1016,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Security and authentication methods: The CredSSP Protocol uses the SPNEGO protocol to
+
+  Security and authentication methods: The CredSSP Protocol uses the SPNEGO protocol to
 
 negotiate the underlying authentication mechanism. Similarly, the CredSSP Protocol relies on the
 TLS Protocol to negotiate the cryptographic algorithms that are used for channel confidentiality
@@ -1076,11 +1027,11 @@ and integrity.
 
 Localization: The CredSSP Protocol is not localization dependent.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The CredSSP Protocol does not have any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The CredSSP Protocol does not have any standards assignments. Standards assignments for the
 Simple and Protected GSS-API Negotiation Mechanism (SPNEGO), Kerberos, NTLM, and TLS
@@ -1094,14 +1045,15 @@ Release: April 23, 2024
 
 11 / 27
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Because the CredSSP Protocol uses TLS, all messages exchanged between the client and server
 SHOULD<4> be transmitted over a reliable transport protocol, such as TCP (as specified in [RFC793]).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The CredSSP Protocol introduces the TSRequest message, section 2.2.1. The client and server use
 this message to encapsulate the SPNEGO tokens and TSCredentials message, section 2.2.1.2,  that
@@ -1109,7 +1061,7 @@ the client SHOULD<5> use to delegate the user's credentials to the CredSSP serve
 connection. These messages are encoded by using ASN.1 (as specified in [X690]) and Distinguished
 Encoding Rules (DER).<6>
 
-2.2.1  TSRequest
+#### 2.2.1 TSRequest
 
 The TSRequest structure is the top-most structure used by the CredSSP client and CredSSP
 server. It contains the SPNEGO tokens and MAY<7> contain Kerberos/NTLM messages that are
@@ -1161,7 +1113,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-errorCode: A 32-bit value encoded as an ASN.1 INTEGER. If the negotiated protocol version is 3, 4,
+
+errorCode: A 32-bit value encoded as an ASN.1 INTEGER. If the negotiated protocol version is 3, 4,
 or 6, and the SPNEGO exchange fails on the server, this field SHOULD<12> be used to send the
 NTSTATUS failure code ([MS-ERREF] section 2.3) to the client so that it knows what failed and be
 able to display a descriptive error to the user.
@@ -1170,7 +1123,7 @@ clientNonce: A 32-byte array of cryptographically random bytes encoded as an ASN
 used to provide sufficient entropy during hash computation. This value is only used in version 5 or
 higher of this protocol.
 
-2.2.1.1  NegoData
+##### 2.2.1.1 NegoData
 
 The NegoData structure contains the SPNEGO tokens ([MS-SPNG] section 2), the Kerberos
 messages ([MS-KILE] section 2), or the NTLM messages ([MS-NLMP] section 2).<13>
@@ -1183,7 +1136,7 @@ negoToken: An ASN.1 OCTET STRING that contains one or more SPNEGO tokens and all
 
 or NTLM messages, as negotiated by SPNEGO.
 
-2.2.1.2  TSCredentials
+##### 2.2.1.2 TSCredentials
 
 The TSCredentials structure contains both the user's credentials that are delegated to the server
 and their type.<14>
@@ -1219,7 +1172,7 @@ credentials: An ASN.1 OCTET STRING that contains the user's password, smart card
 Remote Credential Guard credentials in a TSPasswordCreds structure, a TSSmartCardCreds
 structure, or a TSRemoteGuardCreds structure, respectively.
 
-2.2.1.2.1 TSPasswordCreds
+###### 2.2.1.2.1 TSPasswordCreds
 
 The TSPasswordCreds structure contains the user's password credentials that are delegated to the
 server.<15>
@@ -1234,7 +1187,8 @@ Release: April 23, 2024
 
 13 / 27
 
-         userName    [1] OCTET STRING,
+
+         userName    [1] OCTET STRING,
          password    [2] OCTET STRING
  }
 
@@ -1244,7 +1198,7 @@ userName: An ASN.1 OCTET STRING that contains the user's account name.
 
 password: An ASN.1OCTET STRING that contains the user's account password.
 
-2.2.1.2.2 TSSmartCardCreds
+###### 2.2.1.2.2 TSSmartCardCreds
 
 The TSSmartCardCreds structure contains the user's smart card credentials that are delegated to
 the server.<16>
@@ -1269,7 +1223,7 @@ domainHint: An ASN.1 OCTET STRING that contains the user's domain name to which 
 account belongs. This name could be entered by the user when the user is first prompted for the
 PIN.
 
-2.2.1.2.2.1  TSCspDataDetail
+###### 2.2.1.2.2.1 TSCspDataDetail
 
 The TSCspDataDetail structure contains CSP information used during smart card logon.<17>
 
@@ -1293,7 +1247,7 @@ containerName: An ASN.1 OCTET STRING that specifies the name of the certificate 
 
 cspName: An ASN.1 OCTET STRING that specifies the name of the CSP.
 
-2.2.1.2.3 TSRemoteGuardCreds
+###### 2.2.1.2.3 TSRemoteGuardCreds
 
 [MS-CSSP] - v20240423
 Credential Security Support Provider (CredSSP) Protocol
@@ -1302,7 +1256,8 @@ Release: April 23, 2024
 
 14 / 27
 
-The TSRemoteGuardCreds structure SHOULD<18> contain a logon credential and supplemental
+
+The TSRemoteGuardCreds structure SHOULD<18> contain a logon credential and supplemental
 credentials provided by security packages. The format of the individual credentials depends on the
 package that provided them.<19> The logon credential is passed to the Negotiate package, which in
 turn passes the credential to the default authentication package.
@@ -1321,7 +1276,7 @@ supplementalCreds: An ASN.1 SEQUENCE OF type that contains an array of
 TSRemoteGuardPackageCred structures that contains supplemental credentials for other
 security packages.
 
-2.2.1.2.3.1  TSRemoteGuardPackageCred
+###### 2.2.1.2.3.1 TSRemoteGuardPackageCred
 
 The TSRemoteGuardPackageCred structure contains credentials for a specific security
 package.<20>
@@ -1347,11 +1302,12 @@ Release: April 23, 2024
 
 15 / 27
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1362,21 +1318,21 @@ document.
 The CredSSP Protocol SHOULD<23> require the client to perform a policy check to verify that the
 target server is trusted to receive the user's credentials.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There are no changes to the initialization of TLS, Kerberos, NTLM, and SPNEGO, as specified in
 [RFC2246], [MS-KILE], [MS-NLMP], and [MS-SPNG], respectively.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The CredSSP Protocol is triggered by a higher-layer application protocol, such as RDP, for
 delegating the user's credentials to the target server.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The CredSSP Protocol is carried out in the following sequence and is subject to the protocol rules that
 are described in the following steps:
@@ -1411,7 +1367,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-encryption key that is established under SPNEGO is either a Kerberos subsession key or an NTLM
+
+encryption key that is established under SPNEGO is either a Kerberos subsession key or an NTLM
 session key that is shared by both sides upon completion of the SPNEGO exchange.
 
 Note  During this phase of the protocol, the OPTIONAL authInfo field is omitted from the
@@ -1478,7 +1435,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To-Client Binding Hash" and the provided nonce, and encrypts the binary result using the
+
+To-Client Binding Hash" and the provided nonce, and encrypts the binary result using the
 authentication protocol's encryption services.
 
 The process is defined as:
@@ -1530,11 +1488,11 @@ omitted from the TSRequest structure.
 Note  If the credentials were of type TSRemoteGuardCreds, the TLS channel continues to be used
 for redirected authentication requests, as specified in [MS-RDPEAR].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no timer events for the CredSSP Protocol.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no other local events that impact the operation of this protocol.
 
@@ -1545,11 +1503,12 @@ Release: April 23, 2024
 
 18 / 27
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-CSSP].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Figure 1: CredSSP negotiation sequence using SPNEGO
 
@@ -1586,7 +1545,8 @@ Release: April 23, 2024
 
 19 / 27
 
-00 74 00 63 00 61 00 72-00 64 00 55 00 73 00 65  .t.c.a.r.d.U.s.e
+
+00 74 00 63 00 61 00 72-00 64 00 55 00 73 00 65  .t.c.a.r.d.U.s.e
 00 72 00 2d 00 38 00 62-00 64 00 61 00 30 00 31  .r.-.8.b.d.a.0.1
 00 39 00 66 00 2d 00 31-00 32 00 36 00 36 00 2d  .9.f.-.1.2.6.6.-
 00 2d 00 35 00 33 00 32-00 36 00 38 00 a4 54 04  .-.5.3.2.6.8..T.
@@ -1628,9 +1588,10 @@ Release: April 23, 2024
 
 20 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementors
+## 5 Security
+
+### 5.1 Security Considerations for Implementors
 
 The purpose of the CredSSP Protocol is to delegate a user's clear text password or pin from the
 CredSSP client to a CredSSP server, and it is important to make certain that the server receiving
@@ -1645,7 +1606,7 @@ SPNG], and the allowed methods by which the CredSSP client can obtain the user's
 A major revision has been applied to the protocol in version 5 for improved security. Implementors are
 advised to support version 5 or higher only.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters in the CredSSP Protocol.
 
@@ -1656,7 +1617,8 @@ Release: April 23, 2024
 
 21 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1725,7 +1687,8 @@ Credential Security Support Provider (CredSSP) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<3> Section 1.5: In Windows, the SPNEGO client negotiates Kerberos or NTLM. The Kerberos Protocol
+
+<3> Section 1.5: In Windows, the SPNEGO client negotiates Kerberos or NTLM. The Kerberos Protocol
 is always preferred over NTLM. NTLM is negotiated only if one or both parties do not support the
 Kerberos Protocol, as specified in [MS-NLMP] section 1.5 and in [MS-KILE].
 
@@ -1792,7 +1755,8 @@ Release: April 23, 2024
 
 23 / 27
 
-<19> Section 2.2.1.2.3: Where data is a text string, Windows uses a Unicode string defined by a
+
+<19> Section 2.2.1.2.3: Where data is a text string, Windows uses a Unicode string defined by a
 UNICODE_STRING structure to encode to ASN.1 OCTET STRING format. For more information see
 [MSDOCS-UNICODE_STRING]. For a description of Octet String see [MS-DTYP] and [X690].
 
@@ -1871,7 +1835,8 @@ Release: April 23, 2024
 
 24 / 27
 
-CredentialKey: An MSV1_0_CREDENTIAL_KEY structure, see reserved5 field in [MS-RDPEAR]
+
+CredentialKey: An MSV1_0_CREDENTIAL_KEY structure, see reserved5 field in [MS-RDPEAR]
 
 section 2.2.1.3.6. The credential key is a 20-byte length unsigned char (UCHAR [MS-DTYP] section
 2.2.45) array and is calculated from the user’s password as follows:
@@ -1924,7 +1889,8 @@ Release: April 23, 2024
 
 25 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1993,7 +1959,8 @@ Release: April 23, 2024
 
 26 / 27
 
-Protocol
+
+Protocol
    higher-layer triggered events 16
    initialization 16
    local events 18
@@ -2037,7 +2004,7 @@ V
 Vendor-extensible fields 11
 Versioning 10
 
-8  Index
+## 8 Index
 A
 
 Applicability 10

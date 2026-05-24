@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 46
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -264,7 +265,8 @@ Release: April 23, 2024
 
 2 / 46
 
-Date
+
+Date
 
 Revision
 History
@@ -346,112 +348,52 @@ Release: April 23, 2024
 
 3 / 46
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Compound File Sector Numbers and Types](#21-compound-file-sector-numbers-and-types)
+  - [2.2 Compound File Header](#22-compound-file-header)
+  - [2.3 Compound File FAT Sectors](#23-compound-file-fat-sectors)
+  - [2.4 Compound File Mini FAT Sectors](#24-compound-file-mini-fat-sectors)
+  - [2.5 Compound File DIFAT Sectors](#25-compound-file-difat-sectors)
+  - [2.6 Compound File Directory Sectors](#26-compound-file-directory-sectors)
+    - [2.6.1 Compound File Directory Entry](#261-compound-file-directory-entry)
+    - [2.6.2 Root Directory Entry](#262-root-directory-entry)
+    - [2.6.3 Other Directory Entries](#263-other-directory-entries)
+    - [2.6.4 Red-Black Tree](#264-red-black-tree)
+  - [2.7 Compound File User-Defined Data Sectors](#27-compound-file-user-defined-data-sectors)
+  - [2.8 Compound File Range Lock Sector](#28-compound-file-range-lock-sector)
+  - [2.9 Compound File Size Limits](#29-compound-file-size-limits)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 The Header](#31-the-header)
+  - [3.2 Sector #0: FAT Sector](#32-sector-0-fat-sector)
+  - [3.3 Sector #1: Directory Sector](#33-sector-1-directory-sector)
+    - [3.3.1 Stream ID 0: Root Directory Entry](#331-stream-id-0-root-directory-entry)
+    - [3.3.2 Stream ID 1: Storage 1](#332-stream-id-1-storage-1)
+    - [3.3.3 Stream ID 2: Stream 1](#333-stream-id-2-stream-1)
+    - [3.3.4 Stream ID 3: Unused, Free](#334-stream-id-3-unused-free)
+  - [3.4 Sector #2: MiniFAT Sector](#34-sector-2-minifat-sector)
+  - [3.5 Sector #3: Mini Stream Sector](#35-sector-3-mini-stream-sector)
+- [4 Security Considerations](#4-security-considerations)
+  - [4.1 Validation and Corruption](#41-validation-and-corruption)
+  - [4.2 File Security](#42-file-security)
+  - [4.3 Unallocated Ranges](#43-unallocated-ranges)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Protocols and Other Structures .................................................... 11
-Applicability Statement ..................................................................................... 12
-Versioning and Localization ............................................................................... 12
-Vendor-Extensible Fields ................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-
-2  Structures ............................................................................................................. 13
-Compound File Sector Numbers and Types .......................................................... 15
-Compound File Header ...................................................................................... 17
-Compound File FAT Sectors ............................................................................... 20
-Compound File Mini FAT Sectors ........................................................................ 21
-Compound File DIFAT Sectors ............................................................................ 22
-Compound File Directory Sectors ....................................................................... 23
-Compound File Directory Entry ..................................................................... 23
-Root Directory Entry ................................................................................... 27
-Other Directory Entries ................................................................................ 27
-Red-Black Tree ........................................................................................... 28
-Compound File User-Defined Data Sectors .......................................................... 29
-Compound File Range Lock Sector ...................................................................... 29
-Compound File Size Limits ................................................................................. 29
-
-2.6.1
-2.6.2
-2.6.3
-2.6.4
-
-2.7
-2.8
-2.9
-
-3.1
-3.2
-3.3
-
-3  Structure Examples ............................................................................................... 31
-The Header ..................................................................................................... 31
-Sector #0: FAT Sector ...................................................................................... 32
-Sector #1: Directory Sector .............................................................................. 33
-Stream ID 0: Root Directory Entry ................................................................ 33
-Stream ID 1: Storage 1 ............................................................................... 34
-Stream ID 2: Stream 1 ................................................................................ 35
-Stream ID 3: Unused, Free .......................................................................... 35
-Sector #2: MiniFAT Sector ................................................................................ 36
-Sector #3: Mini Stream Sector .......................................................................... 37
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.4
-3.5
-
-4  Security Considerations ......................................................................................... 39
-Validation and Corruption .................................................................................. 39
-File Security .................................................................................................... 39
-Unallocated Ranges .......................................................................................... 39
-
-4.1
-4.2
-4.3
-
-5  Appendix A: Product Behavior ............................................................................... 40
-
-6  Change Tracking .................................................................................................... 44
-
-7  Index ..................................................................................................................... 45
-
-[MS-CFB] - v20240423
-Compound File Binary File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 46
-
-<!-- Extracted images from page 5 -->
-![Extracted image 1 from page 5]([MS-CFB].images/page005-img01.png)
-<!-- /Extracted images from page 5 -->
-
-1  Introduction
+## 1 Introduction
 
 This document specifies a new structure that is called the Microsoft Compound File Binary (CFB) file
 format, also known as the Object Linking and Embedding (OLE) or Component Object Model (COM)
@@ -488,7 +430,8 @@ Release: April 23, 2024
 
 5 / 46
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-CFB].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -498,7 +441,7 @@ and stream objects
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -541,7 +484,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-directory: The database that stores information about objects such as users, groups, computers,
+
+directory: The database that stores information about objects such as users, groups, computers,
 
 printers, and the directory service that makes this information available to users and
 applications.
@@ -617,7 +561,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-case that two replicas contain "the same objects". In this usage, objects in two replicas are
+
+case that two replicas contain "the same objects". In this usage, objects in two replicas are
 considered the same if they have the same value of the identifying attribute and if there is a
 process in place (replication) to converge the values of the remaining attributes. When the
 members of a set of replicas are considered to be the same, it is common to say "an object" as
@@ -692,14 +637,15 @@ Release: April 23, 2024
 
 8 / 46
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -716,7 +662,7 @@ assist you in finding the relevant information.
 [UNICODE5.0.0] The Unicode Consortium, "Unicode Default Case Conversion Algorithm 5.0.0", March
 2006, http://www.unicode.org/Public/5.0.0/ucd/CaseFolding.txt
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-OLEDS] Microsoft Corporation, "Object Linking and Embedding (OLE) Data Structures".
 
@@ -729,7 +675,7 @@ us/library/aa380369.aspx
 [MSDN-STGMC] Microsoft Corporation, "STGM Constants", http://msdn.microsoft.com/en-
 us/library/aa380337.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 A compound file is a structure that is used to store a hierarchy of storage objects and stream
 objects into a single file or memory buffer.
@@ -757,7 +703,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-CFB].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -798,7 +745,8 @@ Release: April 23, 2024
 
 10 / 46
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-CFB].images/page011-img01.png)
 ![Extracted image 2 from page 11]([MS-CFB].images/page011-img02.png)
 <!-- /Extracted images from page 11 -->
@@ -825,7 +773,7 @@ used for the following purposes:
 
 3.  Special sector numbers are used to represent chain termination and free sectors.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 [MS-DTYP], "Windows Data Types", Revision 3.0, September 2007, MS-DTYP-v1.02.doc
 
@@ -856,7 +804,8 @@ Release: April 23, 2024
 
 11 / 46
 
-OLE property sets are a standard set of stream formats that are typically implemented as compound
+
+OLE property sets are a standard set of stream formats that are typically implemented as compound
 file stream objects. Most applications that save their data in compound files also write out
 summary information property set data in the OLE property sets stream formats.
 
@@ -874,7 +823,7 @@ applications that implement the OLE interfaces and APIs.
 The Unicode Default Case Conversion Algorithm, simple case conversion variant, is used to compare
 storage object and stream object names.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This protocol structure is recommended for persisting objects in a random access file system or
 random access memory system.
@@ -884,7 +833,7 @@ protocols where the size of streams is unknown when the compound file is transmi
 size of all structures within a compound file needs to be specified when the compound file is
 transmitted or retrieved.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This document covers versioning issues in the following areas:
 
@@ -900,7 +849,7 @@ an error if a version 4 compound file is being opened.
 In the implementation, all Unicode character comparisons need to be locale-invariant and all
 timestamps need to be stored in the Coordinated Universal Time (UTC) time zone.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 A compound file does not contain any vendor-extensible fields. However, a compound file does contain
 ways to store user-defined data in storage objects and stream objects. The vendor can store
@@ -913,12 +862,13 @@ Release: April 23, 2024
 
 12 / 46
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-CFB].images/page013-img01.png)
 ![Extracted image 2 from page 13]([MS-CFB].images/page013-img02.png)
 <!-- /Extracted images from page 13 -->
 
-2  Structures
+## 2 Structures
 
 This document references commonly used data types as defined in [MS-DTYP].
 
@@ -984,7 +934,8 @@ Release: April 23, 2024
 
 13 / 46
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-CFB].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1041,7 +992,8 @@ Release: April 23, 2024
 
 14 / 46
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-CFB].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1056,7 +1008,7 @@ In a compound file, all integer fields, including Unicode characters that are en
 be stored in little-endian byte order. The only exception is in user-defined data streams, where the
 compound file structure does not impose any restrictions.
 
-2.1  Compound File Sector Numbers and Types
+### 2.1 Compound File Sector Numbers and Types
 
 Each sector, except for the header, is identified by a nonnegative, 32-bit sector number. The
 following sector numbers above 0xFFFFFFFA are reserved and MUST NOT be used to identify the
@@ -1114,7 +1066,8 @@ Release: April 23, 2024
 
 15 / 46
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-CFB].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1192,7 +1145,8 @@ Release: April 23, 2024
 
 16 / 46
 
-All the sector types are eventually linked back to the header sector, except for the range lock sector
+
+All the sector types are eventually linked back to the header sector, except for the range lock sector
 and unallocated free sectors. Unallocated free sectors are marked in the FAT as FREESECT
 (0xFFFFFFFF). Unallocated free sectors can be in the middle of the file, and they can be created by
 extending the file size and allocating additional FAT sectors to cover the increased length. The range
@@ -1204,7 +1158,7 @@ MAXREGSECT (0xFFFFFFFA). In a sector chain, the last sector's next pointer MUST 
 file. A sector chain MUST NOT link to a sector appearing earlier in the same chain, which would result
 in a cycle. Finally, the actual sector count MUST match the size that is specified for a sector chain.
 
-2.2  Compound File Header
+### 2.2 Compound File Header
 
 The Compound File Header structure MUST be at the beginning of the file (offset 0).
 
@@ -1266,7 +1220,8 @@ Release: April 23, 2024
 
 17 / 46
 
-Number of DIFAT Sectors
+
+Number of DIFAT Sectors
 
 DIFAT (436 bytes)
 
@@ -1356,7 +1311,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If Major Version is 3, the Number of Directory Sectors MUST be zero. This field is not
 supported for version 3 compound files.
@@ -1441,11 +1397,12 @@ Release: April 23, 2024
 
 19 / 46
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-CFB].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-2.3  Compound File FAT Sectors
+### 2.3 Compound File FAT Sectors
 
 The FAT is the main allocator for space within a compound file. Every sector in the file is represented
 within the FAT in some fashion, including those sectors that are unallocated (free). The FAT is a
@@ -1514,7 +1471,8 @@ Release: April 23, 2024
 
 20 / 46
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-CFB].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1546,7 +1504,7 @@ Free sectors (FREESECT = 0xFFFFFFFF).
 
 0xFFFFFFFF
 
-2.4  Compound File Mini FAT Sectors
+### 2.4 Compound File Mini FAT Sectors
 
 The mini FAT is used to allocate space in the mini stream. The mini stream is divided into smaller,
 equal-length sectors, and the sector size that is used for the mini stream is specified from the
@@ -1594,7 +1552,8 @@ Release: April 23, 2024
 
 21 / 46
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-CFB].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1618,7 +1577,7 @@ Chain terminators (ENDOFCHAIN = 0xFFFFFFFE).
 
 0xFFFFFFFE
 
-2.5  Compound File DIFAT Sectors
+### 2.5 Compound File DIFAT Sectors
 
 The DIFAT array is used to represent storage of the FAT sectors. The DIFAT is represented by an
 array of 32-bit sector numbers. The DIFAT array is stored both in the header and in DIFAT sectors.
@@ -1669,7 +1628,8 @@ Release: April 23, 2024
 
 22 / 46
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-CFB].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1698,7 +1658,7 @@ Value
 
 ENDOFCHAIN  0xFFFFFFFE
 
-2.6  Compound File Directory Sectors
+### 2.6 Compound File Directory Sectors
 
 The directory entry array is a structure that is used to contain information about the stream and
 storage objects in a compound file, and to maintain a tree-style containment structure. The
@@ -1709,7 +1669,7 @@ stream ID 0.
 
 Figure 14: Sectors of a directory entry array
 
-2.6.1  Compound File Directory Entry
+#### 2.6.1 Compound File Directory Entry
 
 The directory entry array is an array of directory entries that are grouped into a directory sector.
 Each storage object or stream object within a compound file is represented by a single directory
@@ -1741,7 +1701,8 @@ Release: April 23, 2024
 
 23 / 46
 
-Stream ID name  Integer value
+
+Stream ID name  Integer value
 
 Description
 
@@ -1819,7 +1780,8 @@ Release: April 23, 2024
 
 24 / 46
 
-Directory Entry Name (64 bytes): This field MUST contain a Unicode string for the storage or
+
+Directory Entry Name (64 bytes): This field MUST contain a Unicode string for the storage or
 
 stream name encoded in UTF-16. The name MUST be terminated with a UTF-16 terminating null
 character. Thus, storage and stream names are limited to 32 UTF-16 code points, including the
@@ -1921,7 +1883,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 NOSTREAM
 
@@ -2010,7 +1973,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2039,7 +2003,7 @@ that parsers ignore the most significant 32 bits of this field in version 3 comp
 treating it as if its value were zero, unless there is a specific reason to do otherwise (for
 example, a parser whose purpose is to verify the correctness of a compound file).
 
-2.6.2  Root Directory Entry
+#### 2.6.2 Root Directory Entry
 
 The first entry in the first sector of the directory chain (also referred to as the first element of the
 directory array, or stream ID #0) is known as the root directory entry, and it is reserved for two
@@ -2059,7 +2023,7 @@ system.
 The Creation Time field in the root storage directory entry MUST be all zeroes. The Modified Time
 field in the root storage directory entry MAY be all zeroes.
 
-2.6.3  Other Directory Entries
+#### 2.6.3 Other Directory Entries
 
 Directory entries other than the root storage directory entry are marked as either stream objects,
 storage objects, or unallocated objects.
@@ -2081,7 +2045,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Cutoff Size value (typically 4,096 bytes) for the file exist in the mini stream. The Starting Sector
+
+Cutoff Size value (typically 4,096 bytes) for the file exist in the mini stream. The Starting Sector
 Location is used as an index into the mini FAT (which starts at mini FAT Starting Location) to track the
 chain of sectors through the mini stream. Streams whose size is greater than or equal to the Mini
 Stream Cutoff Size value for the file exist as standard streams. Their Starting Sector Location value
@@ -2098,7 +2063,7 @@ Free (unused) directory entries are marked with Object Type 0x0 (unknown or unal
 entire directory entry must consist of all zeroes except for the child, right sibling, and left sibling
 pointers, which must be initialized to NOSTREAM (0xFFFFFFFF).
 
-2.6.4  Red-Black Tree
+#### 2.6.4 Red-Black Tree
 
 Each set of sibling objects in one level of the containment hierarchy (all child objects under a
 storage object) is represented as a red-black tree. The parent object of this set of siblings will have
@@ -2157,7 +2122,8 @@ Release: April 23, 2024
 
 28 / 46
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-CFB].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2165,7 +2131,7 @@ All sibling objects within a storage object (all immediate child objects in one 
 MUST have unique names in the Directory Entry Name field, where uniqueness is determined by the
 sorting relationship.
 
-2.7  Compound File User-Defined Data Sectors
+### 2.7 Compound File User-Defined Data Sectors
 
 Stream sectors are simply collections of arbitrary bytes. They are the building blocks of user-
 defined data streams, and no restrictions are imposed on their contents. User-defined data sectors
@@ -2183,7 +2149,7 @@ than or equal to the stream size that is specified in the stream object's direct
 portion of the last sector of a stream object's user-defined data SHOULD be filled with zeroes to avoid
 leaking unintended information.
 
-2.8  Compound File Range Lock Sector
+### 2.8 Compound File Range Lock Sector
 
 The range lock sector is the sector that covers file offsets 0x7FFFFF00-0x7FFFFFFF in the file, which
 are just before 2 GB. These offsets are reserved for byte-range locking to support concurrency,
@@ -2196,7 +2162,7 @@ the range lock sector SHOULD be marked as FREESECT (0xFFFFFFFF) in the FAT.
 The range lock sector MUST NOT contain any user-defined data. The header, FAT, DIFAT, mini
 FAT, and directory chains MUST NOT point to the range lock sector location.
 
-2.9  Compound File Size Limits
+### 2.9 Compound File Size Limits
 
 The minimum size of a compound file is one header, one FAT sector, and one directory sector, which
 is three sectors total. Therefore, a compound file MUST be at least three sectors in length.
@@ -2215,7 +2181,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The maximum number of directory entries (storage objects and stream objects) is MAXREGSID
+
+The maximum number of directory entries (storage objects and stream objects) is MAXREGSID
 (0xFFFFFFFA), roughly 4 billion. This corresponds to a maximum directory sector chain length of
 slightly less than 512 GB for a 4,096-byte sector compound file. (See section 2.6.1 for details about
 directory-entry size and directory-sector composition.)
@@ -2235,11 +2202,12 @@ Release: April 23, 2024
 
 30 / 46
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-CFB].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
-3  Structure Examples
+## 3 Structure Examples
 
 This section contains a hexadecimal dump of a structured storage compound file to clarify the binary
 file format. This compound file consists of the header sector plus five sectors that are numbered as
@@ -2248,7 +2216,7 @@ of 512 bytes.
 
 Figure 16: Example of a compound file
 
-3.1  The Header
+### 3.1 The Header
 
 Byte offset  Field name
 
@@ -2375,7 +2343,8 @@ Release: April 23, 2024
 
 31 / 46
 
- 000010: 0000 0000 0000 0000 3E00 0300 FEFF 0900 ........;.......
+
+ 000010: 0000 0000 0000 0000 3E00 0300 FEFF 0900 ........;.......
  000020: 0600 0000 0000 0000 0000 0000 0100 0000 ................
  000030: 0100 0000 0000 0000 0010 0000 0200 0000 ................
  000040: 0100 0000 FEFF FFFF 0000 0000 0000 0000 ................
@@ -2407,7 +2376,7 @@ Release: April 23, 2024
  0001E0: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
  0001F0: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
 
-3.2  Sector #0: FAT Sector
+### 3.2 Sector #0: FAT Sector
 
 This sector is the first and only FAT sector in the file, with five non-empty entries.
 
@@ -2460,7 +2429,8 @@ Release: April 23, 2024
 
 32 / 46
 
- 000210: FEFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
+
+ 000210: FEFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
  000220: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
  000230: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
  000240: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
@@ -2493,7 +2463,7 @@ Release: April 23, 2024
  0003E0: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
  0003F0: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
 
-3.3  Sector #1: Directory Sector
+### 3.3 Sector #1: Directory Sector
 
 This is the first and only directory sector in the file. This directory sector consists of four directory
 entries.
@@ -2506,7 +2476,7 @@ Stream ID 2: Stream Name = "Stream 1" (section 2.6.3)
 
  Stream ID 3: Unused
 
-3.3.1  Stream ID 0: Root Directory Entry
+#### 3.3.1 Stream ID 0: Root Directory Entry
 
 Byte offset  Field name
 
@@ -2553,7 +2523,8 @@ Release: April 23, 2024
 
 33 / 46
 
-Byte offset  Field name
+
+Byte offset  Field name
 
 Field value
 
@@ -2608,7 +2579,7 @@ Stream Size
  000460: 0000 0000 0000 0000 0000 0000 801E 9213 ................
  000470: 4BB4 BA01 0300 0000 4002 0000 0000 0000 K.......@.......
 
-3.3.2  Stream ID 1: Storage 1
+#### 3.3.2 Stream ID 1: Storage 1
 
 Byte offset  Field name
 
@@ -2706,7 +2677,8 @@ Release: April 23, 2024
 
 34 / 46
 
-3.3.3  Stream ID 2: Stream 1
+
+#### 3.3.3 Stream ID 2: Stream 1
 
 Byte offset  Field name
 
@@ -2797,7 +2769,7 @@ Stream Size
  000560: 0000 0000 0000 0000 0000 0000 0000 0000 ................
  000570: 0000 0000 0000 0000 2002 0000 0000 0000 ........ .......
 
-3.3.4  Stream ID 3: Unused, Free
+#### 3.3.4 Stream ID 3: Unused, Free
 
 Byte offset  Field name
 
@@ -2874,7 +2846,8 @@ Release: April 23, 2024
 
 35 / 46
 
-Byte offset  Field name
+
+Byte offset  Field name
 
 Field value
 
@@ -2902,7 +2875,7 @@ NOSTREAM.
  0005E0: 0000 0000 0000 0000 0000 0000 0000 0000 ................
  0005F0: 0000 0000 0000 0000 0000 0000 0000 0000 ................
 
-3.4  Sector #2: MiniFAT Sector
+### 3.4 Sector #2: MiniFAT Sector
 
 The mini FAT sector is identical to a FAT sector in structure, but instead of describing allocations for
 the file, the mini FAT describes allocations for the mini stream. The following is a chain of eight
@@ -2968,7 +2941,8 @@ Release: April 23, 2024
 
 36 / 46
 
-Byte offset  Field name
+
+Byte offset  Field name
 
 Field value
 
@@ -3017,7 +2991,7 @@ Next Sector in Chain  0xFFFFFFFF (free)
  0007E0: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
  0007F0: FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF ................
 
-3.5  Sector #3: Mini Stream Sector
+### 3.5 Sector #3: Mini Stream Sector
 
 The mini stream contains data for all streams whose length is less than the header's Mini Stream
 Cutoff Size (4,096 bytes). In this example, the mini stream contains the user-defined data for
@@ -3045,7 +3019,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 000A50: 0000 0000 0000 0000 0000 0000 0000 0000 ................
+
+ 000A50: 0000 0000 0000 0000 0000 0000 0000 0000 ................
  000A60: 0000 0000 0000 0000 0000 0000 0000 0000 ................
  000A70: 0000 0000 0000 0000 0000 0000 0000 0000 ................
  000A80: 0000 0000 0000 0000 0000 0000 0000 0000 ................
@@ -3080,9 +3055,10 @@ Release: April 23, 2024
 
 38 / 46
 
-4  Security Considerations
 
-4.1  Validation and Corruption
+## 4 Security Considerations
+
+### 4.1 Validation and Corruption
 
 It is recommended that implementers be aware of the technical challenges of validating the CFB
 format and the potential security implications of insufficient validation.
@@ -3122,13 +3098,13 @@ can break the assumptions of directory entry allocation algorithms. Such corrupt
 include improper sorting of child object names, invalid red/black marking, multiple child object
 trees referencing the same directory entry, and the aforementioned cyclical references.
 
-4.2  File Security
+### 4.2 File Security
 
 Because a compound file is stored as a single file in the file system, normal file-system security
 mechanisms can be used to help secure the compound file. This includes read/write permissions,
 access control list (ACL), and encryption (NTFS EFS or BitLocker) where appropriate.
 
-4.3  Unallocated Ranges
+### 4.3 Unallocated Ranges
 
 Usually, a compound file includes ranges of bytes that are not allocated for either CFB structures or
 user-defined data. For instance, each stream whose length is not an exact multiple of the sector size
@@ -3143,7 +3119,8 @@ Release: April 23, 2024
 
 39 / 46
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3212,7 +3189,8 @@ Compound File Binary File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
+
+Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
 using the terms "SHOULD" or "SHOULD NOT" implies product behavior in accordance with the
 SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
@@ -3381,7 +3359,8 @@ DOT ABOVE
 
 41 / 46
 
-Added or subtracted
+
+Added or subtracted
 from Unicode 3.0.1
 
 Lowercase UTF-16
@@ -3588,7 +3567,8 @@ Release: April 23, 2024
 
 42 / 46
 
-Added or subtracted
+
+Added or subtracted
 from Unicode 5.0
 
 Lowercase UTF-16
@@ -3694,7 +3674,8 @@ Release: April 23, 2024
 
 43 / 46
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3738,7 +3719,8 @@ Release: April 23, 2024
 
 44 / 46
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 12
@@ -3868,7 +3850,8 @@ Tracking changes 44
 
 45 / 46
 
-U
+
+U
 
 User-defined data sectors 29
 

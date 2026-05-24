@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 25
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 25
 
-Date
+
+Date
 
 Revision
 History
@@ -522,116 +524,55 @@ Significantly changed the technical content.
 
 3 / 25
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Frame Format, Player Indexes Header](#221-frame-format-player-indexes-header)
+    - [2.2.2 Frame Format, Data Frame](#222-frame-format-data-frame)
+    - [2.2.3 Frame Format, NACK Frame](#223-frame-format-nack-frame)
+    - [2.2.4 Frame Format, ACK Frame](#224-frame-format-ack-frame)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Player Indexes Header Processing](#3151-player-indexes-header-processing)
+      - [3.1.5.2 Data Frame Processing](#3152-data-frame-processing)
+      - [3.1.5.3 ACK and NACK Processing](#3153-ack-and-nack-processing)
+      - [3.1.5.4 Bytes Received Processing](#3154-bytes-received-processing)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 One-Way Traffic Between Node A and Node B](#41-one-way-traffic-between-node-a-and-node-b)
+    - [4.1.1 Message 1](#411-message-1)
+    - [4.1.2 Message 2](#412-message-2)
+    - [4.1.3 Message 3](#413-message-3)
+    - [4.1.4 Message 4](#414-message-4)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Frame Format, Player Indexes Header ............................................................. 9
-Frame Format, Data Frame .......................................................................... 10
-Frame Format, NACK Frame ......................................................................... 12
-Frame Format, ACK Frame ........................................................................... 13
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-Player Indexes Header Processing ........................................................... 16
-Data Frame Processing .......................................................................... 16
-ACK and NACK Processing ...................................................................... 17
-Bytes Received Processing ..................................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.6
-3.1.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 18
-One-Way Traffic Between Node A and Node B ...................................................... 18
-Message 1 ................................................................................................. 18
-Message 2 ................................................................................................. 18
-Message 3 ................................................................................................. 18
-Message 4 ................................................................................................. 19
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-
-5  Security ................................................................................................................. 20
-Security Considerations for Implementers ........................................................... 20
-Index of Security Parameters ............................................................................ 20
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 21
-
-7  Change Tracking .................................................................................................... 23
-
-8  Index ..................................................................................................................... 24
-
-[MC-DPL4R] - v20240423
-DirectPlay 4 Protocol: Reliable
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 25
-
-1  Introduction
+## 1 Introduction
 
 This specification pertains to the DirectPlay 4 Protocol and describes functionality related to the
 reliable delivery of DirectPlay 4 messages. The DirectPlay 4 Protocol guarantees message delivery and
@@ -640,7 +581,7 @@ provides throttling for applications that use DirectPlay 4.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -707,7 +648,8 @@ DirectPlay 4 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-peer-to-peer: A server-less networking technology that allows several participating network
+
+peer-to-peer: A server-less networking technology that allows several participating network
 
 devices to share resources and communicate directly with each other.
 
@@ -762,14 +704,14 @@ network library as a transport.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -782,7 +724,8 @@ DirectPlay 4 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MC-DPL4CS] Microsoft Corporation, "DirectPlay 4 Protocol: Core and Service Providers".
+
+[MC-DPL4CS] Microsoft Corporation, "DirectPlay 4 Protocol: Core and Service Providers".
 
 [MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
@@ -795,11 +738,11 @@ https://patft.uspto.gov/netacgi/nph-
 Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f
 =G&l=50&s1=6438603.PN.&OS=PN/6438603&RS=PN/6438603
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This specification describes the reliable transport mechanism that can be used with the DirectPlay 4
 Protocol. This mechanism provides for reliable delivery of messages, message throttling , and for
@@ -818,7 +761,7 @@ The application determines whether the reliable transport mechanism is activated
 transport is exclusive of the use of some of the normally available security functionality in DirectPlay
 4. However, when reliable transport is activated, user-level security is not available.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DirectPlay 4 Protocol is an envelope that wraps both operating system messages and user
 messages. This protocol is media-independent because it resides in the session layer of the protocol
@@ -832,7 +775,7 @@ as specified in the DirectPlay 4 Protocol: Core and Service Providers Specificat
 discretion of the game, all of the messages listed in [MC-DPL4CS] can be transmitted via the
 DirectPlay 4 Protocol, as described in this specification [MC-DPL4R].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DirectPlay 4 Protocol requires the DirectX 6 Runtime.<1>
 
@@ -843,7 +786,8 @@ Release: April 23, 2024
 
 7 / 25
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The DirectPlay 4 Protocol is activated only at the request of an application that is written for the
 IDirectPlay4 interface and written with the DirectX 6 Software Development Kit or a later version
@@ -852,7 +796,7 @@ DirectPlay 4 Protocol has been superseded by the DirectPlay 8 Protocol and, as s
 4 Protocol is only to be used when the game has a requirement to interoperate with other DirectPlay 4
 games.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is only one version of the DirectPlay 4 Protocol. It is activated at the request of the application.
 It is assumed that the application has taken measures to ensure that the appropriate version of the
@@ -866,11 +810,11 @@ rejected during its join attempt.
 
 For version negotiation between versions of DirectPlay, see [MC-DPL4CS].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -881,7 +825,8 @@ Release: April 23, 2024
 
 8 / 25
 
-2  Messages
+
+## 2 Messages
 
 In the DirectPlay 4 Protocol, the terms "frame" and "packet" are used interchangeably. Frames and
 packets refer to a single payload that is passed to a lower-layer transport, which is typically
@@ -915,14 +860,14 @@ Non-zero
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 Messages are transported over DirectPlay service providers. They can use UDP, IPX, serial, and
 modem, or a third-party service provider.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Frame Format, Player Indexes Header
+#### 2.2.1 Frame Format, Player Indexes Header
 
 All DirectPlay 4 Protocol frames begin with source and destination player indexes. A player index
 value is the raw index assigned to the player as specified in [MC-DPL4CS] section 3.2.5.4. The index
@@ -962,7 +907,8 @@ Release: April 23, 2024
 
 9 / 25
 
-For example, a player index value of 0x01 is encoded by using a single byte (0x01), and a player
+
+For example, a player index value of 0x01 is encoded by using a single byte (0x01), and a player
 index value of 0xFFFE is encoded by using three bytes (0xFE, 0xFF, 0x03).
 
 0  1  2  3  4  5  6  7  8  9
@@ -990,7 +936,7 @@ IdTo (variable): The player index of the destination encoded by using one to thr
 
 to the formatting rules described in this section.
 
-2.2.2  Frame Format, Data Frame
+#### 2.2.2 Frame Format, Data Frame
 
 Data frames are messages that deliver user-specified data. The Data frames format specifies message
 boundaries and sequencing. Each message is identified by a messageid and each part of the message
@@ -1064,7 +1010,8 @@ Release: April 23, 2024
 
 10 / 25
 
-Value  Meaning
+
+Value  Meaning
 
 0x04
 
@@ -1159,7 +1106,8 @@ DirectPlay 4 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The size of the NACK MASK is specified in the nNACK bits of the extended flags field, if that
+
+The size of the NACK MASK is specified in the nNACK bits of the extended flags field, if that
 field is present. When nNACK is greater than 0, there is a NACK MASK. When the extended
 flags field is not present, there is no NACK MASK field.
 
@@ -1170,7 +1118,7 @@ Data (variable): The higher-layer data payload. The length of this field MUST be
 remaining size of the packet reported by the lower-level transport. The size is the total number of
 bytes in the packet minus the 4–8 bytes of previous Data frame fields.
 
-2.2.3  Frame Format, NACK Frame
+#### 2.2.3 Frame Format, NACK Frame
 
 NACK, or Negative Acknowledge, frames specify which data frames were expected but were not
 received by the receiving end of the link. Messages that are not sent reliably MUST NOT generate a
@@ -1256,7 +1204,8 @@ Release: April 23, 2024
 
 12 / 25
 
-extended flags (1 byte): This field is optional. It is present if the EXT bit is set in the flags
+
+extended flags (1 byte): This field is optional. It is present if the EXT bit is set in the flags
 
 field.<5>
 
@@ -1332,7 +1281,7 @@ flags field is not present, there is no NACK MASK field.
 
 The NACK MASK field is optional.<6>
 
-2.2.4  Frame Format, ACK Frame
+#### 2.2.4 Frame Format, ACK Frame
 
 Acknowledgment (ACK) frames specify which data frames have successfully arrived at the receiving
 end of the link.
@@ -1344,7 +1293,8 @@ Release: April 23, 2024
 
 13 / 25
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1438,16 +1388,17 @@ Release: April 23, 2024
 
 14 / 25
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The DirectPlay 4 Protocol is inherently peer-to-peer. It was also designed to ride on top of existing
 connection and game session logic of the existing DirectPlay 4 implementation. Therefore, it needs
 no explicit connection logic or game session management logic because that is handled by the
 DirectPlay 4 core, as specified in [MC-DPL4CS].
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 First Message: The messageid of the first reliable outstanding message on the outbound link. A
 
@@ -1491,7 +1442,7 @@ Bytes Received: Count of bytes received on this link.
 
 Average Latency: Average latency of messages sent on this link.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The DirectPlay 4 Protocol utilizes the computing system specified in [USPATENT6438603 B1] for
 estimating available bandwidth and tuning the link appropriately. However, using the scheme
@@ -1512,7 +1463,8 @@ DirectPlay 4 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 All sequence numbers MUST start at 1. All serial numbers MUST start at 0.
 
@@ -1531,20 +1483,20 @@ ACKs are triggered by either the SAK bit in the message header or by the end of 
 
 ACKs MAY wait for a timer before sending, unless the SAK bit has been specified by the sender.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Player Indexes Header Processing
+##### 3.1.5.1 Player Indexes Header Processing
 
 When any frame arrives, the player indexes header specified in section 2.2.1 MUST be evaluated to
 ensure that the source and destination player indexes represent valid players participating in the
 game session, as specified in [MC-DPL4CS]. When delivering data frame payloads to the higher
 layer, these indexes SHOULD be provided.
 
-3.1.5.2  Data Frame Processing
+##### 3.1.5.2 Data Frame Processing
 
 When a Data frame (section 2.2.2) arrives, the value of its messageid field MUST be compared to the
 list of receiving messages using 8-bit unsigned integer math, and according to the following rules:
@@ -1584,7 +1536,8 @@ DirectPlay 4 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the sequence numbers associated with the messageid as necessary. When all of the following Data
+
+the sequence numbers associated with the messageid as necessary. When all of the following Data
 frames have been received, the Data (variable) areas of those messages are concatenated in
 sequence order to make up the receive data for that message:
 
@@ -1619,7 +1572,7 @@ without waiting for more time to elapse or more data to be received.
 After the receive data is fully assembled, the data is indicated to the higher layers, and the
 messageid of the message MUST be removed from the list of receiving messages.
 
-3.1.5.3  ACK and NACK Processing
+##### 3.1.5.3 ACK and NACK Processing
 
 When an ACK frame (section 2.2.4) arrives, the data associated with the messageid in the
 acknowledgment (ACK) message and any earlier messageids MAY be discarded.
@@ -1628,18 +1581,18 @@ When a NACK frame (section 2.2.3) arrives, the data associated with the messagei
 frame (section 2.2.3) MAY be discarded. Any other data is indicated as received, but the presence of a
 0 bit in the NACK mask can also be discarded. Any other data MUST be retransmitted.
 
-3.1.5.4  Bytes Received Processing
+##### 3.1.5.4 Bytes Received Processing
 
 Any time that data arrives from a remote sender, the size of the entire Data Frame (section 2.2.2),
 not including the player indexes header (section 2.2.1), is accumulated in a per-link value called bytes
 received. This value is included in any acknowledgment (ACK) or NACK message on that link.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 Timers are recommended as specified in [USPATENT6438603 B1]. However, this scheme is not
 required to achieve interoperability.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1650,9 +1603,10 @@ Release: April 23, 2024
 
 17 / 25
 
-4  Protocol Examples
 
-4.1  One-Way Traffic Between Node A and Node B
+## 4 Protocol Examples
+
+### 4.1 One-Way Traffic Between Node A and Node B
 
 In the following examples, one-way traffic between Node A and Node B is covered. Node A sends four
 messages to Node B:
@@ -1665,7 +1619,7 @@ messages to Node B:
 
   Message 4: Two Data frames in length, not marked as reliable.
 
-4.1.1  Message 1
+#### 4.1.1 Message 1
 
 Node A sends Message 1 to the receiver, Node B. This message is three Data frames (section 2.2.2) in
 length and is marked as reliable.
@@ -1684,7 +1638,7 @@ The receiver sends back an ACK frame to the sender, Node A.
 
  Flags:      ACK messageid: 0, sequence: 2, bytes received: 4500
 
-4.1.2  Message 2
+#### 4.1.2 Message 2
 
 Node A sends Message 2 to the receiver, Node B. This message is one Data frame (section 2.2.2) in
 length and is not marked as reliable.
@@ -1696,7 +1650,7 @@ It is possible that there can be an ACK by the receiver for a frame that is not 
 is at the discretion of the implementation. However, sending an ACK allows the sender, Node A, to
 manage resources more efficiently.
 
-4.1.3  Message 3
+#### 4.1.3 Message 3
 
 Node A sends Message 3 to the receiver, Node B. This message is one Data frame (section 2.2.2) in
 length, is marked as reliable, and will drop the first transmission.
@@ -1711,7 +1665,8 @@ DirectPlay 4 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If Message 3 is dropped, but the sender, Node A, still sends Message 4 (section 4.1.4) to the receiver,
+
+If Message 3 is dropped, but the sender, Node A, still sends Message 4 (section 4.1.4) to the receiver,
 Node B, this would result in the following.
 
  Message 4:  DATA FRAME: 1
@@ -1731,7 +1686,7 @@ In response to the NACK, the sender, Node A, attempts a retransmission of Messag
  Message 3:  DATA FRAME (retry)
  Flags:      STA, EOM, RLY messageid: 2, sequence: 4, serial: 1
 
-4.1.4  Message 4
+#### 4.1.4 Message 4
 
 The sender, Node A, sends Message 4 to the receiver, Node B. This message is two Data
 frames (section 2.2.2) in length and is not marked as reliable.
@@ -1750,13 +1705,14 @@ Release: April 23, 2024
 
 19 / 25
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1767,7 +1723,8 @@ Release: April 23, 2024
 
 20 / 25
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1834,7 +1791,8 @@ Release: April 23, 2024
 
 21 / 25
 
-<4> Section 2.2.2: Because the extended flags field is not supported by Windows implementations,
+
+<4> Section 2.2.2: Because the extended flags field is not supported by Windows implementations,
 the NACK MASK field is also not supported
 
 <5> Section 2.2.3: The Windows DirectPlay 4 implementation does not support extended flags and
@@ -1870,7 +1828,8 @@ Release: April 23, 2024
 
 22 / 25
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1914,7 +1873,8 @@ Release: April 23, 2024
 
 23 / 25
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 15
@@ -2046,7 +2006,8 @@ Triggered events - higher-layer 16
 
 24 / 25
 
-V
+
+V
 
 Vendor-extensible fields 8
 Versioning 8

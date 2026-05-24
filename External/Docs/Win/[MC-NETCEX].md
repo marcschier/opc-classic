@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 44
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -298,7 +299,8 @@ Release: March 13, 2019
 
 2 / 44
 
-Date
+
+Date
 
 Revision
 History
@@ -464,258 +466,106 @@ Release: March 13, 2019
 
 3 / 44
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 CONTEXT_XML](#221-contextxml)
+    - [2.2.2 CALLBACK_CONTEXT_XML](#222-callbackcontextxml)
+    - [2.2.3 CONTEXT_NV](#223-contextnv)
+    - [2.2.4 HTTP Client Message Header](#224-http-client-message-header)
+    - [2.2.5 HTTP Server Message Header](#225-http-server-message-header)
+    - [2.2.6 Server Context Establishing Message](#226-server-context-establishing-message)
+    - [2.2.7 Context Participating Message](#227-context-participating-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Context Exchange Client Role Details](#31-context-exchange-client-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 IDLE State](#3111-idle-state)
+      - [3.1.1.2 WAIT_CORRELATED_SM State](#3112-waitcorrelatedsm-state)
+      - [3.1.1.3 WAIT_SM State](#3113-waitsm-state)
+      - [3.1.1.4 ENDED State](#3114-ended-state)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 SEND_CM](#3141-sendcm)
+      - [3.1.4.2 TERMINATE](#3142-terminate)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 RECEIVE_SM](#3151-receivesm)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Context Exchange Server Role Details](#32-context-exchange-server-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 WAIT_CM State](#3211-waitcm-state)
+      - [3.2.1.2 ENDED State](#3212-ended-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 TERMINATE](#3241-terminate)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 RECEIVE_CM](#3251-receivecm)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Callback Context Exchange Client Role Details](#33-callback-context-exchange-client-role-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 WAIT_SM State](#3311-waitsm-state)
+      - [3.3.1.2 ENDED State](#3312-ended-state)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 TERMINATE](#3341-terminate)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 SEND_CM](#3351-sendcm)
+      - [3.3.5.2 RECEIVE_SM](#3352-receivesm)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Callback Context Exchange Server Role Details](#34-callback-context-exchange-server-role-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+      - [3.4.1.1 WAIT_CM State](#3411-waitcm-state)
+      - [3.4.1.2 ENDED State](#3412-ended-state)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 TERMINATE](#3441-terminate)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 RECEIVE_CM](#3451-receivecm)
+      - [3.4.5.2 SEND_SM](#3452-sendsm)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Using the .NET Context Exchange Protocol with SOAP 1.2](#41-using-the-net-context-exchange-protocol-with-soap-12)
+    - [4.1.1 Establishing Context Using SOAP 1.2](#411-establishing-context-using-soap-12)
+    - [4.1.2 Subsequent Context Participating Messages Using SOAP 1.2](#412-subsequent-context-participating-messages-using-soap-12)
+    - [4.1.3 Continue Using Context Using SOAP 1.2](#413-continue-using-context-using-soap-12)
+    - [4.1.4 Establish a Callback Context](#414-establish-a-callback-context)
+    - [4.1.5 Subsequent Callback Messages](#415-subsequent-callback-messages)
+  - [4.2 Using the .NET Context Exchange Protocol with HTTP](#42-using-the-net-context-exchange-protocol-with-http)
+    - [4.2.1 Establishing Context Using HTTP](#421-establishing-context-using-http)
+    - [4.2.2 Subsequent Context Participating Messages Using HTTP](#422-subsequent-context-participating-messages-using-http)
+    - [4.2.3 Continue Using the Context Using HTTP](#423-continue-using-the-context-using-http)
+  - [4.3 Processing an Unrecognized Context Using SOAP 1.2](#43-processing-an-unrecognized-context-using-soap-12)
+  - [4.4 Processing an Unrecognized Context Using HTTP](#44-processing-an-unrecognized-context-using-http)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-CONTEXT_XML ........................................................................................... 15
-CALLBACK_CONTEXT_XML ........................................................................... 16
-CONTEXT_NV ............................................................................................. 17
-HTTP Client Message Header ........................................................................ 17
-HTTP Server Message Header ....................................................................... 17
-Server Context Establishing Message ............................................................ 18
-Context Participating Message ...................................................................... 18
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-3.1
-
-3.1.5
-
-3.1.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.4.1
-3.1.4.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Context Exchange Client Role Details .................................................................. 19
-Abstract Data Model .................................................................................... 19
-IDLE State ........................................................................................... 20
-WAIT_CORRELATED_SM State ................................................................ 20
-WAIT_SM State .................................................................................... 20
-ENDED State ........................................................................................ 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-SEND_CM ............................................................................................ 21
-TERMINATE .......................................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-RECEIVE_SM ........................................................................................ 22
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-Context Exchange Server Role Details ................................................................ 23
-Abstract Data Model .................................................................................... 23
-WAIT_CM State .................................................................................... 24
-ENDED State ........................................................................................ 24
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-TERMINATE .......................................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 25
-RECEIVE_CM ........................................................................................ 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Callback Context Exchange Client Role Details ..................................................... 27
-Abstract Data Model .................................................................................... 27
-WAIT_SM State .................................................................................... 27
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.1.1
-3.2.1.2
-
-3.2.6
-3.2.7
-
-3.3.1.1
-
-3.2.4.1
-
-3.2.5.1
-
-3.3.1
-
-3.2.5
-
-3.2.1
-
-3.3
-
-3.2
-
-[MC-NETCEX] - v20190313
-.NET Context Exchange Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 44
-
-3.3.6
-3.3.7
-
-3.4.1
-
-3.4
-
-3.3.1.2
-
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.4.1
-
-3.3.5.1
-3.3.5.2
-
-ENDED State ........................................................................................ 27
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-TERMINATE .......................................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-SEND_CM ............................................................................................ 28
-RECEIVE_SM ........................................................................................ 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Callback Context Exchange Server Role Details .................................................... 29
-Abstract Data Model .................................................................................... 29
-WAIT_CM State .................................................................................... 30
-ENDED State ........................................................................................ 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 31
-TERMINATE .......................................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-RECEIVE_CM ........................................................................................ 31
-SEND_SM ............................................................................................ 31
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-
-3.4.1.1
-3.4.1.2
-
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-
-3.4.4.1
-
-3.4.5.1
-3.4.5.2
-
-3.4.6
-3.4.7
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-
-4  Protocol Examples ................................................................................................. 33
-Using the .NET Context Exchange Protocol with SOAP 1.2 ..................................... 33
-Establishing Context Using SOAP 1.2 ............................................................. 33
-Subsequent Context Participating Messages Using SOAP 1.2 ............................ 34
-Continue Using Context Using SOAP 1.2 ........................................................ 35
-Establish a Callback Context ........................................................................ 35
-Subsequent Callback Messages .................................................................... 36
-Using the .NET Context Exchange Protocol with HTTP ........................................... 36
-Establishing Context Using HTTP ................................................................... 36
-Subsequent Context Participating Messages Using HTTP .................................. 37
-Continue Using the Context Using HTTP ......................................................... 38
-Processing an Unrecognized Context Using SOAP 1.2 ............................................ 38
-Processing an Unrecognized Context Using HTTP .................................................. 39
-
-4.2.1
-4.2.2
-4.2.3
-
-4.3
-4.4
-
-4.2
-
-5  Security ................................................................................................................. 40
-Security Considerations for Implementers ........................................................... 40
-Index of Security Parameters ............................................................................ 40
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 41
-
-7  Change Tracking .................................................................................................... 42
-
-8  Index ..................................................................................................................... 43
-
-[MC-NETCEX] - v20190313
-.NET Context Exchange Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 44
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the .NET Context Exchange Protocol, which specifies a message syntax for
 identifying context that is shared between a client and a server, and a protocol for establishing that
@@ -724,7 +574,7 @@ context.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -790,7 +640,8 @@ Release: March 13, 2019
 
 6 / 44
 
-SOAP envelope: A container for SOAP message information and the root element of a SOAP
+
+SOAP envelope: A container for SOAP message information and the root element of a SOAP
 
 document. See [SOAP1.2-1/2007] section 5.1 for more information.
 
@@ -813,14 +664,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -858,14 +709,15 @@ Release: March 13, 2019
 
 7 / 44
 
-[WSA] Gudgin, M., Hadley, M., and Rogers, T., "Web Services Addressing 1.0 - Core", W3C
+
+[WSA] Gudgin, M., Hadley, M., and Rogers, T., "Web Services Addressing 1.0 - Core", W3C
 Recommendation, May 2006, http://www.w3.org/TR/2006/REC-ws-addr-core-20060509/
 
 [XML1.0] Bray, T., Paoli, J., Sperberg-McQueen, C.M., and Maler, E., "Extensible Markup Language
 (XML) 1.0 (Second Edition)", W3C Recommendation, October 2000,
 https://www.w3.org/TR/2000/REC-xml-20001006
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -882,7 +734,7 @@ RFC 4346, April 2006, https://www.rfc-editor.org/info/rfc4346
 Security 1.0 (WS-Security 2004)", March 2004, http://docs.oasis-open.org/wss/2004/01/oasis-
 200401-wss-soap-message-security-1.0.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET Context Exchange Protocol specifies a message syntax for identifying context that is shared
 between a client and a server independent of connection usage, and a protocol for establishing that
@@ -926,7 +778,8 @@ from the server role, and attaches the context identifier to all subsequent clie
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-related to the resources in question. For example, a client shopping application can use the previously
+
+related to the resources in question. For example, a client shopping application can use the previously
 mentioned shopping service to create a shopping cart resource using the .NET Context Exchange
 Protocol. The client stores the context identifier that is generated by the server and attaches it to each
 message that is intended to manipulate the shopping cart.
@@ -957,7 +810,8 @@ Release: March 13, 2019
 
 9 / 44
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MC-NETCEX].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -981,7 +835,8 @@ associates the resource with the new context identifier.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.  The server returns a Server Context Establishing Message to the client with the newly created
+
+3.  The server returns a Server Context Establishing Message to the client with the newly created
 
 context identifier attached.
 
@@ -1053,18 +908,19 @@ Release: March 13, 2019
 
 11 / 44
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MC-NETCEX].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The .NET Context Exchange Protocol can be used with HTTP [RFC2616] or SOAP-formatted messages
 [SOAP1.2-1/2007] [SOAP1.1]. The following figure shows a protocol stack.
 
 Figure 2: Protocol stack for the .NET Context Exchange Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The .NET Context Exchange Protocol requires that the client role can communicate with a server role
 so that client messages and server messages can be exchanged.
@@ -1072,13 +928,13 @@ so that client messages and server messages can be exchanged.
 The .NET Context Exchange Protocol requires an underlying protocol in which a server message can
 be correlated to a unique client message.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The .NET Context Exchange Protocol is applicable to scenarios where a client and server application
 requires a set of client messages to be associated with a resource independent of a connection. The
 client and server application use this protocol to share context.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1102,7 +958,8 @@ Release: March 13, 2019
 
 12 / 44
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 Vendors and implementers MAY extend the protocol by including additional attributes [XML1.0] on the
 CONTEXT_XML element or its child Property element. The interpretation of these attributes is defined
@@ -1116,7 +973,7 @@ Similarly, vendors and implementers MAY extend the protocol by including additio
 [XML1.0] on the CALLBACK_CONTEXT_XML element. The interpretation of these attributes is defined
 by the implementation.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol.
 
@@ -1127,14 +984,15 @@ Release: March 13, 2019
 
 13 / 44
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MC-NETCEX].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MC-NETCEX].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
 
-2  Messages
+## 2 Messages
 
-2.1  Transport
+### 2.1 Transport
 
 The .NET Context Exchange Protocol can be used over any transport protocol that supports
 transmitting messages that are specified by the following protocols:
@@ -1152,7 +1010,7 @@ An implementation of the .NET Context Exchange Protocol MUST support the process
 that are specified by HTTP 1.1 or either of the SOAP versions. This section specifies the format of .NET
 Context Exchange Protocol messages using the message formats of both HTTP 1.1 and SOAP.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section specifies the messages that are used by the .NET Context Exchange Protocol and their
 relationship to HTTP 1.1 [RFC2616] and SOAP.
@@ -1184,7 +1042,8 @@ Participating Message; or
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MC-NETCEX].images/page015-img01.png)
 ![Extracted image 2 from page 15]([MC-NETCEX].images/page015-img02.png)
 <!-- /Extracted images from page 15 -->
@@ -1203,7 +1062,7 @@ within an HTTP response message.
 
 Figure 6: Server Context Establishing Message using HTTP 1.1
 
-2.2.1  CONTEXT_XML
+#### 2.2.1 CONTEXT_XML
 
 CONTEXT_XML is an XML element [XML1.0] that represents a context identifier, as specified by the
 following XML schema [W3C-XSD].
@@ -1235,7 +1094,8 @@ Release: March 13, 2019
 
 15 / 44
 
-               </xs:extension>
+
+               </xs:extension>
              </xs:simpleContent>
            </xs:complexType>
          </xs:element>
@@ -1271,7 +1131,7 @@ element, and
 
 The Property value is equal to the value of the content of the Property XML element.
 
-2.2.2  CALLBACK_CONTEXT_XML
+#### 2.2.2 CALLBACK_CONTEXT_XML
 
 CALLBACK_CONTEXT_XML is an XML element [XML1.0] that represents a callback context, as
 specified by the following XML schema [W3C-XSD].
@@ -1310,7 +1170,8 @@ Release: March 13, 2019
 
 16 / 44
 
-2.2.3  CONTEXT_NV
+
+#### 2.2.3 CONTEXT_NV
 
 CONTEXT_NV specifies a literal that results from resolving the following context_nv Augmented
 Backus-Naur Form (ABNF) rule [RFC2234].
@@ -1326,7 +1187,7 @@ For a context identifier and a CONTEXT_NV literal to be isomorphic, the value of
 a base64 [RFC3548] encoding of a UTF-8 encoding [RFC3629] of a CONTEXT_XML element that is
 isomorphic to the context identifier.
 
-2.2.4  HTTP Client Message Header
+#### 2.2.4 HTTP Client Message Header
 
 The HTTP Client Message Header is an HTTP header [RFC2616] that results from resolving the
 following client_context_header ABNF rule [RFC2234].
@@ -1348,7 +1209,7 @@ The context_nv rule MUST resolve to a CONTEXT_NV literal.
 For a context identifier and an HTTP Client Message Header to be isomorphic, the context_nv rule
 MUST resolve to a value that is isomorphic to the context identifier, as specified in CONTEXT_NV.
 
-2.2.5  HTTP Server Message Header
+#### 2.2.5 HTTP Server Message Header
 
 The HTTP Server Message Header is an HTTP header [RFC2616] that results from resolving the
 following server_context_header ABNF rule [RFC2234].
@@ -1374,10 +1235,11 @@ Release: March 13, 2019
 
 17 / 44
 
-For a context identifier and an HTTP Server Message Header to be isomorphic, the context_nv rule
+
+For a context identifier and an HTTP Server Message Header to be isomorphic, the context_nv rule
 MUST resolve to a value that is isomorphic to the context identifier, as specified in CONTEXT_NV.
 
-2.2.6  Server Context Establishing Message
+#### 2.2.6 Server Context Establishing Message
 
 The Server Context Establishing Message MUST be either:
 
@@ -1389,7 +1251,7 @@ Message Header.
 
 header.
 
-2.2.7  Context Participating Message
+#### 2.2.7 Context Participating Message
 
 The Context Participating Message MUST be either:
 
@@ -1408,13 +1270,14 @@ Release: March 13, 2019
 
 18 / 44
 
-3  Protocol Details
 
-3.1  Context Exchange Client Role Details
+## 3 Protocol Details
+
+### 3.1 Context Exchange Client Role Details
 
 In this section, "client role" refers to the client role for context exchange.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1453,13 +1316,14 @@ Release: March 13, 2019
 
 19 / 44
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MC-NETCEX].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
 Figure 7: State diagram for the client role
 
-3.1.1.1  IDLE State
+##### 3.1.1.1 IDLE State
 
 IDLE is the initial state. The following events are processed in this state:
 
@@ -1469,7 +1333,7 @@ IDLE is the initial state. The following events are processed in this state:
 
 TERMINATE
 
-3.1.1.2  WAIT_CORRELATED_SM State
+##### 3.1.1.2 WAIT_CORRELATED_SM State
 
 The following events are processed in the WAIT_CORRELATED_SM state:
 
@@ -1479,7 +1343,7 @@ The following events are processed in the WAIT_CORRELATED_SM state:
 
 TERMINATE
 
-3.1.1.3  WAIT_SM State
+##### 3.1.1.3 WAIT_SM State
 
 The following events are processed in the WAIT_SM state:
 
@@ -1490,21 +1354,22 @@ Release: March 13, 2019
 
 20 / 44
 
-  RECEIVE_SM
+
+  RECEIVE_SM
 
 
 
 TERMINATE
 
-3.1.1.4  ENDED State
+##### 3.1.1.4 ENDED State
 
 The ENDED state is the final state.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the client role is initialized:
 
@@ -1517,9 +1382,9 @@ The State field MUST be set to IDLE.
 The Context Identifier Store field MUST be set to a value that is obtained from an
 implementation-specific source.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  SEND_CM
+##### 3.1.4.1 SEND_CM
 
 The SEND_CM event MUST be signaled by the higher-layer business logic with the following
 arguments:
@@ -1579,7 +1444,8 @@ Identifier Store.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Add the CONTEXT_XML element to the client message as a SOAP header.
+
+  Add the CONTEXT_XML element to the client message as a SOAP header.
 
   Otherwise:
 
@@ -1595,7 +1461,7 @@ If the ServerMessageExpected value is true:
 
   Set the State field to WAIT_SM.
 
-3.1.4.2  TERMINATE
+##### 3.1.4.2 TERMINATE
 
 The TERMINATE event MUST be signaled by the higher-layer business logic.
 
@@ -1603,9 +1469,9 @@ If the TERMINATE event is signaled, the client role implementation MUST perform 
 
   Set the State field to ENDED.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  RECEIVE_SM
+##### 3.1.5.1 RECEIVE_SM
 
 The RECEIVE_SM event MUST be signaled by the underlying transport protocol with the following
 arguments:
@@ -1666,7 +1532,8 @@ server message that matches a CONTEXT_XML element.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Return an implementation-specific failure result to the higher-layer business logic.
+
+  Return an implementation-specific failure result to the higher-layer business logic.
 
   Set the Context Identifier Store field to the value of the created context identifier.
 
@@ -1706,19 +1573,19 @@ If the ServerMessageExpected value is true:
 
   Set the State field to IDLE.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Context Exchange Server Role Details
+### 3.2 Context Exchange Server Role Details
 
 In this section "server role" refers to the server role for context exchange.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1743,7 +1610,8 @@ possible values:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MC-NETCEX].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1757,7 +1625,7 @@ The following figure shows the relationship between server role states.
 
 Figure 8: State diagram for the server role
 
-3.2.1.1  WAIT_CM State
+##### 3.2.1.1 WAIT_CM State
 
 The WAIT_CM state is the initial state. The following events are processed in the WAIT_CM state:
 
@@ -1767,15 +1635,15 @@ The WAIT_CM state is the initial state. The following events are processed in th
 
 TERMINATE
 
-3.2.1.2  ENDED State
+##### 3.2.1.2 ENDED State
 
 The ENDED state is the final state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When the server role is initialized:
 
@@ -1788,9 +1656,9 @@ The State field MUST be set to WAIT_CM.
 The Context Identifier Store field MUST be set to a value that is obtained from an
 implementation-specific source.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  TERMINATE
+##### 3.2.4.1 TERMINATE
 
 The TERMINATE event MUST be signaled by the higher-layer business logic.
 
@@ -1801,14 +1669,15 @@ Release: March 13, 2019
 
 24 / 44
 
-If the TERMINATE event is signaled, the server role implementation MUST perform the following
+
+If the TERMINATE event is signaled, the server role implementation MUST perform the following
 action:
 
   Set the State field to ENDED.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  RECEIVE_CM
+##### 3.2.5.1 RECEIVE_CM
 
 The RECEIVE_CM event MUST be signaled by the underlying transport protocol with the following
 arguments:
@@ -1892,7 +1761,8 @@ Release: March 13, 2019
 
 25 / 44
 
-  Otherwise:
+
+  Otherwise:
 
   Set NEW_CONTEXT to true.
 
@@ -1966,11 +1836,11 @@ For each server message in the collection of the server messages:
 
   Send the server message to the client role by using the underlying transport protocol.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1981,15 +1851,16 @@ Release: March 13, 2019
 
 26 / 44
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MC-NETCEX].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-3.3  Callback Context Exchange Client Role Details
+### 3.3 Callback Context Exchange Client Role Details
 
 In this section, "client role" refers to the client role for callback context exchange.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2017,7 +1888,7 @@ The following figure shows the relationship between the client role states.
 
 Figure 9: State diagram for the callback context exchange client role
 
-3.3.1.1  WAIT_SM State
+##### 3.3.1.1 WAIT_SM State
 
 The WAIT_SM state is the initial state. The following events are processed in the WAIT_SM state:
 
@@ -2029,11 +1900,11 @@ The WAIT_SM state is the initial state. The following events are processed in th
 
 TERMINATE
 
-3.3.1.2  ENDED State
+##### 3.3.1.2 ENDED State
 
 The ENDED state is the final state.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 There are no timers specified for the client role.
 
@@ -2044,7 +1915,8 @@ Release: March 13, 2019
 
 27 / 44
 
-3.3.3  Initialization
+
+#### 3.3.3 Initialization
 
 When the client role is initialized:
 
@@ -2057,9 +1929,9 @@ The State field MUST be set to WAIT_SM.
 The Context Identifier Store field MUST be set to a value that is obtained from an
 implementation-specific source.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  TERMINATE
+##### 3.3.4.1 TERMINATE
 
 The TERMINATE event MUST be signaled by the higher-layer business logic.
 
@@ -2068,9 +1940,9 @@ actions:
 
   Set the State field to ENDED.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  SEND_CM
+##### 3.3.5.1 SEND_CM
 
 The SEND_CM event MUST be signaled by the higher-layer business logic with the following
 arguments:
@@ -2114,7 +1986,7 @@ If the callback context specifies a context identifier:
 
   Set the Context Identifier Store field to the value of the context identifier.
 
-3.3.5.2  RECEIVE_SM
+##### 3.3.5.2 RECEIVE_SM
 
 The RECEIVE_SM event MUST be signaled by the underlying transport protocol with the following
 arguments:
@@ -2126,7 +1998,8 @@ arguments:
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 The Server Message argument.
 
@@ -2183,19 +2056,19 @@ For each client message in the collection of the client messages:
 
   Send the client message to the server role by using the underlying transport protocol.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  Callback Context Exchange Server Role Details
+### 3.4 Callback Context Exchange Server Role Details
 
 In this section, "server role" refers to the server role for the callback context exchange.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2210,7 +2083,8 @@ Release: March 13, 2019
 
 29 / 44
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MC-NETCEX].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2234,7 +2108,7 @@ The following figure shows the relationship between server role states.
 
 Figure 10: State diagram for the callback context exchange server role
 
-3.4.1.1  WAIT_CM State
+##### 3.4.1.1 WAIT_CM State
 
 The WAIT_CM state is the initial state. The following events are processed in the WAIT_CM state:
 
@@ -2246,15 +2120,15 @@ The WAIT_CM state is the initial state. The following events are processed in th
 
 TERMINATE
 
-3.4.1.2  ENDED State
+##### 3.4.1.2 ENDED State
 
 The ENDED state is the final state.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 When the server role is initialized:
 
@@ -2274,9 +2148,10 @@ Release: March 13, 2019
 
 30 / 44
 
-3.4.4  Higher-Layer Triggered Events
 
-3.4.4.1  TERMINATE
+#### 3.4.4 Higher-Layer Triggered Events
+
+##### 3.4.4.1 TERMINATE
 
 The TERMINATE event MUST be signaled by the higher-layer business logic.
 
@@ -2285,9 +2160,9 @@ actions:
 
   Set the State field to ENDED.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
-3.4.5.1  RECEIVE_CM
+##### 3.4.5.1 RECEIVE_CM
 
 The RECEIVE_CM event MUST be signaled by the underlying transport protocol with the following
 arguments:
@@ -2320,7 +2195,7 @@ created callback context.
 
 Provide the client message to the higher-layer business logic.
 
-3.4.5.2  SEND_SM
+##### 3.4.5.2 SEND_SM
 
 The SEND_SM event MUST be signaled by the underlying transport protocol with the following
 argument:
@@ -2357,11 +2232,12 @@ Reference Store field by using the process that is specified in [WSA] section 3.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.4.6  Timer Events
+
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
@@ -2372,7 +2248,8 @@ Release: March 13, 2019
 
 32 / 44
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe common scenarios to illustrate typical use of the .NET Context
 Exchange Protocol:
@@ -2388,7 +2265,7 @@ Processing an Unrecognized Context Using SOAP 1.2 [SOAP1.2-1/2007].
 These examples assume that the client role can establish a connection with the server role by using a
 transport protocol that supports exchanging HTTP or SOAP messages.
 
-4.1  Using the .NET Context Exchange Protocol with SOAP 1.2
+### 4.1 Using the .NET Context Exchange Protocol with SOAP 1.2
 
 This scenario shows how a client establishes a context with a server that associates Context
 Participating Messages to a shopping cart resource. The scenario also shows how the client
@@ -2400,7 +2277,7 @@ the exchange of SOAP messages.
 
 All messages that are exchanged in this scenario use [SOAP1.2-1/2007].
 
-4.1.1  Establishing Context Using SOAP 1.2
+#### 4.1.1 Establishing Context Using SOAP 1.2
 
 A client establishes context with a server by sending the server a Client Context Initiating
 Message. This message is a SOAP message [SOAP1.2-1/2007] that does not contain CONTEXT_XML
@@ -2437,7 +2314,8 @@ Release: March 13, 2019
 
 33 / 44
 
- Property name
+
+ Property name
 
  Property value
 
@@ -2468,7 +2346,7 @@ n>
 When the client receives the Server Context Establishing Message, it creates a context identifier that
 is isomorphic to the CONTEXT_XML element from the SOAP message and stores it.
 
-4.1.2  Subsequent Context Participating Messages Using SOAP 1.2
+#### 4.1.2 Subsequent Context Participating Messages Using SOAP 1.2
 
 After the context is established as described in section 4.1.1, the client sends SOAP messages
 [SOAP1.2-1/2007] that are intended to manipulate the associated shopping cart. All these messages
@@ -2507,19 +2385,20 @@ rules for processing SOAP messages. This function determines that a shopping car
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-provided context identifier and performs the appropriate action on the shopping cart by using the
+
+provided context identifier and performs the appropriate action on the shopping cart by using the
 content of the SOAP message.
 
 The client then closes the connection to the server.
 
-4.1.3  Continue Using Context Using SOAP 1.2
+#### 4.1.3 Continue Using Context Using SOAP 1.2
 
 To continue using the context that is associated with the shopping cart that was created in section
 4.1.1, the client connects to the server by using a transport protocol that supports the exchange of
 SOAP messages [SOAP1.2-1/2007]. It then sends Context Participating Messages to the server. The
 creation, transmission, and processing of these messages is as described in section 4.1.2.
 
-4.1.4  Establish a Callback Context
+#### 4.1.4 Establish a Callback Context
 
 To enable duplex communication with the server, the client sends another Context Participating
 Message to the server (as in section 4.1.2) that is also a Callback Context Establishing Message.
@@ -2576,13 +2455,14 @@ Release: March 13, 2019
 
 35 / 44
 
-When the server receives the Server Context Establishing Message, it creates an endpoint reference
+
+When the server receives the Server Context Establishing Message, it creates an endpoint reference
 that is isomorphic to the endpoint reference in the CALLBACK_CONTEXT_XML element from the SOAP
 message and stores it.
 
 The client then closes the connection with the server.
 
-4.1.5  Subsequent Callback Messages
+#### 4.1.5 Subsequent Callback Messages
 
 After the callback context is established as described in section 4.1.4, the client connects to the
 server by using a transport protocol that supports exchanging SOAP messages as specified in
@@ -2619,7 +2499,7 @@ rules for processing SOAP messages. This function determines that the customer e
 provided context identifier and performs the appropriate action on the customer instance by using the
 content of the SOAP message.
 
-4.2  Using the .NET Context Exchange Protocol with HTTP
+### 4.2 Using the .NET Context Exchange Protocol with HTTP
 
 This scenario shows how a client establishes a context with a server that associates a Context
 Participating Message to a shopping cart resource and how the client reestablishes that context after
@@ -2628,7 +2508,7 @@ the original connection with the server is closed.
 All messages that are exchanged in this scenario use HTTP [RFC2616]. This scenario starts after the
 client has connected to the server by using a transport that supports HTTP.
 
-4.2.1  Establishing Context Using HTTP
+#### 4.2.1 Establishing Context Using HTTP
 
 A client establishes context with a server by sending the server a Client Context Initiating
 Message. This message is an HTTP request message [RFC2616] that does not contain an HTTP Client
@@ -2641,7 +2521,8 @@ Release: March 13, 2019
 
 36 / 44
 
- POST /ShoppingCart/ HTTP/1.1
+
+ POST /ShoppingCart/ HTTP/1.1
  Content-Type: application/xml; charset=utf-8
  Host: machine2.example.org
  Content-Length: 87
@@ -2682,7 +2563,7 @@ context identifier that is associated with the shopping cart.
 When the client receives the Server Context Establishing Message, it creates a context identifier that
 is isomorphic to the HTTP Server Message Header and stores it.
 
-4.2.2  Subsequent Context Participating Messages Using HTTP
+#### 4.2.2 Subsequent Context Participating Messages Using HTTP
 
 After the context is established as described in section 4.2.1, the client sends HTTP messages
 [RFC2616] that are intended to manipulate the associated shopping cart. All these messages are
@@ -2708,21 +2589,22 @@ Release: March 13, 2019
 
 37 / 44
 
-When the server receives each message, it creates a context identifier that is isomorphic to the HTTP
+
+When the server receives each message, it creates a context identifier that is isomorphic to the HTTP
 Client Message Header and invokes a business logic function according to its rules for processing HTTP
 messages. This function determines that a shopping cart exists for the provided context identifier and
 performs the appropriate action on the shopping cart based on the content of the HTTP message.
 
 The client then closes the connection to the server.
 
-4.2.3  Continue Using the Context Using HTTP
+#### 4.2.3 Continue Using the Context Using HTTP
 
 To continue using the context that is associated with the shopping cart that was created in section
 4.2.1, the client connects to the server by using a transport that supports HTTP [RFC2616]; it then
 sends Context Participating Messages to the server. The creation, transmission, and processing of
 these messages is as described in section 4.2.2.
 
-4.3  Processing an Unrecognized Context Using SOAP 1.2
+### 4.3 Processing an Unrecognized Context Using SOAP 1.2
 
 A client sends a SOAP message [SOAP1.2-1/2007] that is intended to manipulate a particular
 shopping cart. This message is a Context Participating Message with a CONTEXT_XML element that is
@@ -2776,7 +2658,8 @@ SOAP fault message follows.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- ion/dispatcher">a:InternalServiceFault</s:Value>
+
+ ion/dispatcher">a:InternalServiceFault</s:Value>
  </s:Subcode>
  </s:Code>
  <s:Reason>
@@ -2792,7 +2675,7 @@ Release: March 13, 2019
  </s:Body>
  </s:Envelope>
 
-4.4  Processing an Unrecognized Context Using HTTP
+### 4.4 Processing an Unrecognized Context Using HTTP
 
 A client sends an HTTP message, as specified in [RFC2616], that is intended to manipulate a particular
 shopping cart. This message is a Context Participating Message with an HTTP Client Message Header
@@ -2825,9 +2708,10 @@ Release: March 13, 2019
 
 39 / 44
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 If the context information in the HTTP Message and SOAP Headers is not secured, it can be
 intercepted, tampered with, and sent to the server with malicious intent. The following mechanisms
@@ -2843,7 +2727,7 @@ Layer Security Protocol [RFC4346].
 CALLBACK_CONTEXT_XML SOAP Headers over a secure channel using the Transport Layer
 Security Protocol [RFC4346] or secured using WS-* security mechanisms, such as [WSS1].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2854,7 +2738,8 @@ Release: March 13, 2019
 
 40 / 44
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2902,7 +2787,8 @@ Release: March 13, 2019
 
 41 / 44
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2946,7 +2832,8 @@ Release: March 13, 2019
 
 42 / 44
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3076,7 +2963,8 @@ Overview (synopsis) 8
 
 43 / 44
 
-P
+
+P
 
 Parameters - security index 40
 Preconditions 12

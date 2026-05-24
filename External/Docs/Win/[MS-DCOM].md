@@ -64,7 +64,8 @@ Release: September 16, 2024
 
 1 / 119
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: September 16, 2024
 
 2 / 119
 
-Date
+
+Date
 
 Revision
 History
@@ -533,7 +535,8 @@ Release: September 16, 2024
 
 3 / 119
 
-Date
+
+Date
 
 Revision
 History
@@ -618,435 +621,187 @@ Release: September 16, 2024
 
 4 / 119
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 15
-Activation .................................................................................................. 16
-Object References ....................................................................................... 17
-Object Exporter .......................................................................................... 17
-ORPC Calls ................................................................................................. 17
-Causality Identifiers .................................................................................... 18
-Reference Counts ....................................................................................... 19
-Object Resolver Service ............................................................................... 19
-Relationship to Other Protocols .......................................................................... 19
-Prerequisites/Preconditions ............................................................................... 19
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 20
-Vendor-Extensible Fields ................................................................................... 21
-Standards Assignments ..................................................................................... 21
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-1.3.7
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 23
-Transport ........................................................................................................ 23
-Common Data Types ........................................................................................ 23
-2.2.1
-OID .......................................................................................................... 24
-2.2.2
-SETID ....................................................................................................... 24
-2.2.3
-HRESULT ................................................................................................... 24
-2.2.4
-error_status_t ............................................................................................ 24
-2.2.5
-GUID ........................................................................................................ 24
-2.2.6
-CID ........................................................................................................... 24
-2.2.7
-CLSID ....................................................................................................... 24
-2.2.8
-IID ........................................................................................................... 25
-IPID .......................................................................................................... 25
-2.2.9
-2.2.10  OXID ......................................................................................................... 25
-COMVERSION ............................................................................................. 25
-2.2.11
-2.2.12
-object IDL Attribute .................................................................................... 26
-2.2.13  ORPCTHIS and ORPCTHAT ........................................................................... 26
-2.2.13.1  ORPC_EXTENT ...................................................................................... 26
-2.2.13.2  ORPC_EXTENT_ARRAY ........................................................................... 26
-2.2.13.3  ORPCTHIS ............................................................................................ 27
-2.2.13.4  ORPCTHAT ........................................................................................... 27
-2.2.14  MInterfacePointer ....................................................................................... 27
-PMInterfacePointerInternal .......................................................................... 28
-2.2.15
-PMInterfacePointer...................................................................................... 28
-2.2.16
-2.2.17
-iid_is IDL Attribute ...................................................................................... 28
-2.2.18  OBJREF ..................................................................................................... 29
-STDOBJREF .......................................................................................... 29
-2.2.18.1
-STDOBJREF (Packet Version) .................................................................. 30
-2.2.18.2
-2.2.18.3
-STDOBJREF (IDL Version) ...................................................................... 30
-2.2.18.4  OBJREF_STANDARD .............................................................................. 31
-2.2.18.5  OBJREF_HANDLER ................................................................................ 31
-2.2.18.6  OBJREF_CUSTOM .................................................................................. 32
-2.2.18.7  OBJREF_EXTENDED ............................................................................... 32
-2.2.18.8  DATAELEMENT ...................................................................................... 33
-2.2.19  DUALSTRINGARRAY .................................................................................... 34
-2.2.19.1  DUALSTRINGARRAY (Packet Version) ...................................................... 34
-
-[MS-DCOM] - v20240916
-Distributed Component Object Model (DCOM) Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 119
-
-2.2.22
-
-2.2.20
-
-2.2.20.1
-
-2.2.22.1
-2.2.22.2
-
-2.2.22.2.1
-2.2.22.2.2
-2.2.22.2.3
-2.2.22.2.4
-
-2.2.21.1
-2.2.21.2
-2.2.21.3
-2.2.21.4
-2.2.21.5
-
-2.2.19.2  DUALSTRINGARRAY (IDL Version) ........................................................... 35
-STRINGBINDING ................................................................................... 35
-2.2.19.3
-SECURITYBINDING ............................................................................... 36
-2.2.19.4
-Context ..................................................................................................... 36
-PROPMARSHALHEADER .......................................................................... 38
-2.2.21  ORPC Extensions ........................................................................................ 39
-Error Information ORPC Extension ........................................................... 39
-Custom-Marshaled Error Information Format ............................................ 39
-ErrorInfoString ..................................................................................... 41
-Context ORPC Extension ........................................................................ 41
-EntryHeader ......................................................................................... 42
-Activation Properties BLOB ........................................................................... 43
-CustomHeader ...................................................................................... 44
-Activation Properties ............................................................................. 44
-InstantiationInfoData ....................................................................... 44
-SpecialPropertiesData ...................................................................... 45
-InstanceInfoData ............................................................................. 47
-ScmRequestInfoData ....................................................................... 47
-customREMOTE_REQUEST_SCM_INFO .......................................... 47
-ActivationContextInfoData ................................................................ 48
-LocationInfoData ............................................................................. 48
-SecurityInfoData ............................................................................. 49
-COSERVERINFO ......................................................................... 49
-ScmReplyInfoData ........................................................................... 49
-customREMOTE_REPLY_SCM_INFO .............................................. 50
-PropsOutInfo .................................................................................. 50
-REMINTERFACEREF ..................................................................................... 51
-REMQIRESULT ............................................................................................ 51
-PREMQIRESULT .......................................................................................... 51
-REFIPID..................................................................................................... 52
-Local IDL Attribute ...................................................................................... 52
-Constant Definitions .................................................................................... 52
-IDL Range Constants ............................................................................. 52
-
-2.2.23
-2.2.24
-2.2.25
-2.2.26
-2.2.27
-2.2.28
-
-2.2.22.2.5
-2.2.22.2.6
-2.2.22.2.7
-
-2.2.22.2.4.1
-
-2.2.22.2.7.1
-
-2.2.22.2.8.1
-
-2.2.22.2.8
-
-2.2.22.2.9
-
-2.2.28.1
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3.1.1.5.1
-3.1.1.5.2
-3.1.1.5.3
-3.1.1.5.4
-3.1.1.5.5
-3.1.1.5.6
-
-3  Protocol Details ..................................................................................................... 53
-Server Details .................................................................................................. 53
-Object Exporter Details ............................................................................... 53
-Abstract Data Model .............................................................................. 53
-Timers ................................................................................................. 54
-Initialization ......................................................................................... 54
-Higher-Layer Triggered Events ............................................................... 54
-Message Processing Events and Sequencing Rules .................................... 55
-Marshaling an Object ....................................................................... 55
-Marshaling an Object Reference ........................................................ 56
-Unmarshaling an Object Reference .................................................... 57
-ORPC Invocations ............................................................................ 57
-Lazy Protocol Registration ................................................................ 58
-IRemUnknown Interface ................................................................... 58
-IRemUnknown Methods .............................................................. 59
-IRemUnknown::RemQueryInterface (Opnum 3) ....................... 59
-IRemUnknown::RemAddRef (Opnum 4 ) ................................. 60
-IRemUnknown::RemRelease (Opnum 5) ................................. 61
-IRemUnknown2 Interface ................................................................. 62
-IRemUnknown2 Methods ............................................................ 62
-IRemUnknown2::RemQueryInterface2 (Opnum 6) .................... 62
-IUnknown Interface ......................................................................... 63
-Timer Events ........................................................................................ 63
-Pinging ........................................................................................... 63
-
-3.1.1.5.6.1.1
-3.1.1.5.6.1.2
-3.1.1.5.6.1.3
-
-3.1.1.5.7.1.1
-
-3.1.1.5.6.1
-
-3.1.1.5.7.1
-
-3.1.1.6.1
-
-3.1.1.5.7
-
-3.1.1.5.8
-
-3.1.1.6
-
-[MS-DCOM] - v20240916
-Distributed Component Object Model (DCOM) Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 119
-
-3.1.2.5.2
-
-3.1.1.6.2
-
-3.1.1.7
-
-3.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-3.1.2.5
-
-3.1.2.5.1
-
-3.1.2.5.2.1
-3.1.2.5.2.2
-3.1.2.5.2.3
-
-3.1.2.5.2.3.1
-3.1.2.5.2.3.2
-3.1.2.5.2.3.3
-
-3.1.2.5.1.1
-3.1.2.5.1.2
-3.1.2.5.1.3
-3.1.2.5.1.4
-3.1.2.5.1.5
-3.1.2.5.1.6
-3.1.2.5.1.7
-3.1.2.5.1.8
-
-Object Reclamation .......................................................................... 63
-Other Local Events ................................................................................ 64
-Object Resolver Details ............................................................................... 64
-Abstract Data Model .............................................................................. 64
-Timers ................................................................................................. 65
-Initialization ......................................................................................... 65
-Higher-Layer Triggered Events ............................................................... 65
-Message Processing Events and Sequencing Rules .................................... 65
-IObjectExporter Methods .................................................................. 65
-IObjectExporter::ResolveOxid (Opnum 0) ..................................... 66
-IObjectExporter::SimplePing (Opnum 1) ....................................... 67
-IObjectExporter::ComplexPing (Opnum 2) .................................... 67
-IObjectExporter::ServerAlive (Opnum 3) ...................................... 69
-IObjectExporter::ResolveOxid2 (Opnum 4) ................................... 69
-IObjectExporter::ServerAlive2 (Opnum 5) .................................... 70
-Allocating and Deleting OID Entries .............................................. 71
-Allocating OXID Entries ............................................................... 71
-IActivation and IRemoteSCMActivator Methods ................................... 71
-IActivation Methods.................................................................... 71
-IRemoteSCMActivator Methods .................................................... 71
-IActivation::RemoteActivation,
-IRemoteSCMActivator::RemoteGetClassObject,
-IRemoteSCMActivator::RemoteCreateInstance .............................. 72
-IActivation:: RemoteActivation (Opnum 0) .............................. 74
-IRemoteSCMActivator:: RemoteGetClassObject (Opnum 3) ....... 75
-IRemoteSCMActivator::RemoteCreateInstance (Opnum 4) ........ 76
-Timer Events ........................................................................................ 78
-Other Local Events ................................................................................ 78
-Client Details ................................................................................................... 78
-Abstract Data Model .................................................................................... 78
-Timers ...................................................................................................... 79
-Initialization ............................................................................................... 79
-Higher-Layer Triggered Events ..................................................................... 79
-Creating Object References .................................................................... 80
-Activation ....................................................................................... 80
-Determining RPC Binding Information for Activation ....................... 80
-Issuing the Activation Request ..................................................... 81
-Updating the Client OXID Table after Activation ............................. 83
-Unmarshaling an Object Reference .................................................... 84
-Determining RPC Binding Information for OXID Resolution .............. 85
-Issuing the OXID Resolution Request ........................................... 86
-Updating Client Tables After Unmarshaling .................................... 86
-Updating the OXID Table After Unmarshaling ........................... 87
-Updating the OID/IPID/Resolver Tables After Unmarshaling ....... 87
-ORPC Invocations ................................................................................. 88
-Marshaling an Object Reference .............................................................. 89
-Managing Object Lifetime ....................................................................... 90
-Requesting Reference Counts on an Interface ..................................... 90
-Releasing Reference Counts on an Interface ....................................... 91
-Acquiring Additional Interfaces on the Object ...................................... 91
-Message Processing Events and Sequencing Rules .......................................... 92
-Timer Events .............................................................................................. 92
-Pinging ................................................................................................ 92
-Other Local Events ...................................................................................... 93
-
-3.2.4.1.1.1
-3.2.4.1.1.2
-3.2.4.1.1.3
-
-3.2.4.1.2.1
-3.2.4.1.2.2
-3.2.4.1.2.3
-
-3.2.4.1.2.3.1
-3.2.4.1.2.3.2
-
-3.1.2.6
-3.1.2.7
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.4.1.1
-
-3.2.4.1.2
-
-3.2.4.2
-3.2.4.3
-3.2.4.4
-
-3.2.4.4.1
-3.2.4.4.2
-3.2.4.4.3
-
-3.2.5
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-4  Protocol Examples ................................................................................................. 94
-Object Activation + ORPC Call + Release Sequence .............................................. 94
-QueryInterface + ORPC Call + Release Sequence ................................................. 95
-
-4.1
-4.2
-
-7 / 119
-
-[MS-DCOM] - v20240916
-Distributed Component Object Model (DCOM) Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4.3
-4.4
-4.5
-
-Pinging Sequence ............................................................................................. 96
-OXID Resolution Sequence ................................................................................ 97
-IDL Correlation Example for iid_is ...................................................................... 98
-
-5  Security ................................................................................................................. 99
-Security Considerations for Implementers ........................................................... 99
-Index of Security Parameters ............................................................................ 99
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 100
-
-7  Appendix B: Product Behavior ............................................................................. 107
-
-8  Change Tracking .................................................................................................. 116
-
-9  Index ................................................................................................................... 117
-
-[MS-DCOM] - v20240916
-Distributed Component Object Model (DCOM) Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 119
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Activation](#131-activation)
+    - [1.3.2 Object References](#132-object-references)
+    - [1.3.3 Object Exporter](#133-object-exporter)
+    - [1.3.4 ORPC Calls](#134-orpc-calls)
+    - [1.3.5 Causality Identifiers](#135-causality-identifiers)
+    - [1.3.6 Reference Counts](#136-reference-counts)
+    - [1.3.7 Object Resolver Service](#137-object-resolver-service)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 OID](#221-oid)
+    - [2.2.2 SETID](#222-setid)
+    - [2.2.3 HRESULT](#223-hresult)
+    - [2.2.4 error_status_t](#224-errorstatust)
+    - [2.2.5 GUID](#225-guid)
+    - [2.2.6 CID](#226-cid)
+    - [2.2.7 CLSID](#227-clsid)
+    - [2.2.8 IID](#228-iid)
+    - [2.2.9 IPID](#229-ipid)
+    - [2.2.10 OXID](#2210-oxid)
+    - [2.2.11 COMVERSION](#2211-comversion)
+    - [2.2.12 object IDL Attribute](#2212-object-idl-attribute)
+    - [2.2.13 ORPCTHIS and ORPCTHAT](#2213-orpcthis-and-orpcthat)
+      - [2.2.13.1 ORPC_EXTENT](#22131-orpcextent)
+      - [2.2.13.2 ORPC_EXTENT_ARRAY](#22132-orpcextentarray)
+      - [2.2.13.3 ORPCTHIS](#22133-orpcthis)
+      - [2.2.13.4 ORPCTHAT](#22134-orpcthat)
+    - [2.2.14 MInterfacePointer](#2214-minterfacepointer)
+    - [2.2.15 PMInterfacePointerInternal](#2215-pminterfacepointerinternal)
+    - [2.2.16 PMInterfacePointer](#2216-pminterfacepointer)
+    - [2.2.17 iid_is IDL Attribute](#2217-iidis-idl-attribute)
+    - [2.2.18 OBJREF](#2218-objref)
+      - [2.2.18.1 STDOBJREF](#22181-stdobjref)
+      - [2.2.18.2 STDOBJREF (Packet Version)](#22182-stdobjref-packet-version)
+      - [2.2.18.3 STDOBJREF (IDL Version)](#22183-stdobjref-idl-version)
+      - [2.2.18.4 OBJREF_STANDARD](#22184-objrefstandard)
+      - [2.2.18.5 OBJREF_HANDLER](#22185-objrefhandler)
+      - [2.2.18.6 OBJREF_CUSTOM](#22186-objrefcustom)
+      - [2.2.18.7 OBJREF_EXTENDED](#22187-objrefextended)
+      - [2.2.18.8 DATAELEMENT](#22188-dataelement)
+    - [2.2.19 DUALSTRINGARRAY](#2219-dualstringarray)
+      - [2.2.19.1 DUALSTRINGARRAY (Packet Version)](#22191-dualstringarray-packet-version)
+      - [2.2.19.2 DUALSTRINGARRAY (IDL Version)](#22192-dualstringarray-idl-version)
+      - [2.2.19.3 STRINGBINDING](#22193-stringbinding)
+      - [2.2.19.4 SECURITYBINDING](#22194-securitybinding)
+    - [2.2.20 Context](#2220-context)
+      - [2.2.20.1 PROPMARSHALHEADER](#22201-propmarshalheader)
+    - [2.2.21 ORPC Extensions](#2221-orpc-extensions)
+      - [2.2.21.1 Error Information ORPC Extension](#22211-error-information-orpc-extension)
+      - [2.2.21.2 Custom-Marshaled Error Information Format](#22212-custom-marshaled-error-information-format)
+      - [2.2.21.3 ErrorInfoString](#22213-errorinfostring)
+      - [2.2.21.4 Context ORPC Extension](#22214-context-orpc-extension)
+      - [2.2.21.5 EntryHeader](#22215-entryheader)
+    - [2.2.22 Activation Properties BLOB](#2222-activation-properties-blob)
+      - [2.2.22.1 CustomHeader](#22221-customheader)
+      - [2.2.22.2 Activation Properties](#22222-activation-properties)
+        - [2.2.22.2.1 InstantiationInfoData](#222221-instantiationinfodata)
+        - [2.2.22.2.2 SpecialPropertiesData](#222222-specialpropertiesdata)
+        - [2.2.22.2.3 InstanceInfoData](#222223-instanceinfodata)
+        - [2.2.22.2.4 ScmRequestInfoData](#222224-scmrequestinfodata)
+          - [2.2.22.2.4.1 customREMOTE_REQUEST_SCM_INFO](#2222241-customremoterequestscminfo)
+        - [2.2.22.2.5 ActivationContextInfoData](#222225-activationcontextinfodata)
+        - [2.2.22.2.6 LocationInfoData](#222226-locationinfodata)
+        - [2.2.22.2.7 SecurityInfoData](#222227-securityinfodata)
+          - [2.2.22.2.7.1 COSERVERINFO](#2222271-coserverinfo)
+        - [2.2.22.2.8 ScmReplyInfoData](#222228-scmreplyinfodata)
+          - [2.2.22.2.8.1 customREMOTE_REPLY_SCM_INFO](#2222281-customremotereplyscminfo)
+        - [2.2.22.2.9 PropsOutInfo](#222229-propsoutinfo)
+    - [2.2.23 REMINTERFACEREF](#2223-reminterfaceref)
+    - [2.2.24 REMQIRESULT](#2224-remqiresult)
+    - [2.2.25 PREMQIRESULT](#2225-premqiresult)
+    - [2.2.26 REFIPID](#2226-refipid)
+    - [2.2.27 Local IDL Attribute](#2227-local-idl-attribute)
+    - [2.2.28 Constant Definitions](#2228-constant-definitions)
+      - [2.2.28.1 IDL Range Constants](#22281-idl-range-constants)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Object Exporter Details](#311-object-exporter-details)
+      - [3.1.1.1 Abstract Data Model](#3111-abstract-data-model)
+      - [3.1.1.2 Timers](#3112-timers)
+      - [3.1.1.3 Initialization](#3113-initialization)
+      - [3.1.1.4 Higher-Layer Triggered Events](#3114-higher-layer-triggered-events)
+      - [3.1.1.5 Message Processing Events and Sequencing Rules](#3115-message-processing-events-and-sequencing-rules)
+        - [3.1.1.5.1 Marshaling an Object](#31151-marshaling-an-object)
+        - [3.1.1.5.2 Marshaling an Object Reference](#31152-marshaling-an-object-reference)
+        - [3.1.1.5.3 Unmarshaling an Object Reference](#31153-unmarshaling-an-object-reference)
+        - [3.1.1.5.4 ORPC Invocations](#31154-orpc-invocations)
+        - [3.1.1.5.5 Lazy Protocol Registration](#31155-lazy-protocol-registration)
+        - [3.1.1.5.6 IRemUnknown Interface](#31156-iremunknown-interface)
+          - [3.1.1.5.6.1 IRemUnknown Methods](#311561-iremunknown-methods)
+            - [3.1.1.5.6.1.1 IRemUnknown::RemQueryInterface (Opnum 3)](#3115611-iremunknownremqueryinterface-opnum-3)
+            - [3.1.1.5.6.1.2 IRemUnknown::RemAddRef (Opnum 4 )](#3115612-iremunknownremaddref-opnum-4)
+            - [3.1.1.5.6.1.3 IRemUnknown::RemRelease (Opnum 5)](#3115613-iremunknownremrelease-opnum-5)
+        - [3.1.1.5.7 IRemUnknown2 Interface](#31157-iremunknown2-interface)
+          - [3.1.1.5.7.1 IRemUnknown2 Methods](#311571-iremunknown2-methods)
+            - [3.1.1.5.7.1.1 IRemUnknown2::RemQueryInterface2 (Opnum 6)](#3115711-iremunknown2remqueryinterface2-opnum-6)
+        - [3.1.1.5.8 IUnknown Interface](#31158-iunknown-interface)
+      - [3.1.1.6 Timer Events](#3116-timer-events)
+        - [3.1.1.6.1 Pinging](#31161-pinging)
+        - [3.1.1.6.2 Object Reclamation](#31162-object-reclamation)
+      - [3.1.1.7 Other Local Events](#3117-other-local-events)
+    - [3.1.2 Object Resolver Details](#312-object-resolver-details)
+      - [3.1.2.1 Abstract Data Model](#3121-abstract-data-model)
+      - [3.1.2.2 Timers](#3122-timers)
+      - [3.1.2.3 Initialization](#3123-initialization)
+      - [3.1.2.4 Higher-Layer Triggered Events](#3124-higher-layer-triggered-events)
+      - [3.1.2.5 Message Processing Events and Sequencing Rules](#3125-message-processing-events-and-sequencing-rules)
+        - [3.1.2.5.1 IObjectExporter Methods](#31251-iobjectexporter-methods)
+          - [3.1.2.5.1.1 IObjectExporter::ResolveOxid (Opnum 0)](#312511-iobjectexporterresolveoxid-opnum-0)
+          - [3.1.2.5.1.2 IObjectExporter::SimplePing (Opnum 1)](#312512-iobjectexportersimpleping-opnum-1)
+          - [3.1.2.5.1.3 IObjectExporter::ComplexPing (Opnum 2)](#312513-iobjectexportercomplexping-opnum-2)
+          - [3.1.2.5.1.4 IObjectExporter::ServerAlive (Opnum 3)](#312514-iobjectexporterserveralive-opnum-3)
+          - [3.1.2.5.1.5 IObjectExporter::ResolveOxid2 (Opnum 4)](#312515-iobjectexporterresolveoxid2-opnum-4)
+          - [3.1.2.5.1.6 IObjectExporter::ServerAlive2 (Opnum 5)](#312516-iobjectexporterserveralive2-opnum-5)
+          - [3.1.2.5.1.7 Allocating and Deleting OID Entries](#312517-allocating-and-deleting-oid-entries)
+          - [3.1.2.5.1.8 Allocating OXID Entries](#312518-allocating-oxid-entries)
+        - [3.1.2.5.2 IActivation and IRemoteSCMActivator Methods](#31252-iactivation-and-iremotescmactivator-methods)
+          - [3.1.2.5.2.1 IActivation Methods](#312521-iactivation-methods)
+          - [3.1.2.5.2.2 IRemoteSCMActivator Methods](#312522-iremotescmactivator-methods)
+          - [3.1.2.5.2.3 IActivation::RemoteActivation,](#312523-iactivationremoteactivation)
+            - [3.1.2.5.2.3.1 IActivation:: RemoteActivation (Opnum 0)](#3125231-iactivation-remoteactivation-opnum-0)
+            - [3.1.2.5.2.3.2 IRemoteSCMActivator:: RemoteGetClassObject (Opnum 3)](#3125232-iremotescmactivator-remotegetclassobject-opnum-3)
+            - [3.1.2.5.2.3.3 IRemoteSCMActivator::RemoteCreateInstance (Opnum 4)](#3125233-iremotescmactivatorremotecreateinstance-opnum-4)
+      - [3.1.2.6 Timer Events](#3126-timer-events)
+      - [3.1.2.7 Other Local Events](#3127-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Creating Object References](#3241-creating-object-references)
+        - [3.2.4.1.1 Activation](#32411-activation)
+          - [3.2.4.1.1.1 Determining RPC Binding Information for Activation](#324111-determining-rpc-binding-information-for-activation)
+          - [3.2.4.1.1.2 Issuing the Activation Request](#324112-issuing-the-activation-request)
+          - [3.2.4.1.1.3 Updating the Client OXID Table after Activation](#324113-updating-the-client-oxid-table-after-activation)
+        - [3.2.4.1.2 Unmarshaling an Object Reference](#32412-unmarshaling-an-object-reference)
+          - [3.2.4.1.2.1 Determining RPC Binding Information for OXID Resolution](#324121-determining-rpc-binding-information-for-oxid-resolution)
+          - [3.2.4.1.2.2 Issuing the OXID Resolution Request](#324122-issuing-the-oxid-resolution-request)
+          - [3.2.4.1.2.3 Updating Client Tables After Unmarshaling](#324123-updating-client-tables-after-unmarshaling)
+            - [3.2.4.1.2.3.1 Updating the OXID Table After Unmarshaling](#3241231-updating-the-oxid-table-after-unmarshaling)
+            - [3.2.4.1.2.3.2 Updating the OID/IPID/Resolver Tables After Unmarshaling](#3241232-updating-the-oidipidresolver-tables-after-unmarshaling)
+      - [3.2.4.2 ORPC Invocations](#3242-orpc-invocations)
+      - [3.2.4.3 Marshaling an Object Reference](#3243-marshaling-an-object-reference)
+      - [3.2.4.4 Managing Object Lifetime](#3244-managing-object-lifetime)
+        - [3.2.4.4.1 Requesting Reference Counts on an Interface](#32441-requesting-reference-counts-on-an-interface)
+        - [3.2.4.4.2 Releasing Reference Counts on an Interface](#32442-releasing-reference-counts-on-an-interface)
+        - [3.2.4.4.3 Acquiring Additional Interfaces on the Object](#32443-acquiring-additional-interfaces-on-the-object)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Pinging](#3261-pinging)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Object Activation + ORPC Call + Release Sequence](#41-object-activation-orpc-call-release-sequence)
+  - [4.2 QueryInterface + ORPC Call + Release Sequence](#42-queryinterface-orpc-call-release-sequence)
+  - [4.3 Pinging Sequence](#43-pinging-sequence)
+  - [4.4 OXID Resolution Sequence](#44-oxid-resolution-sequence)
+  - [4.5 IDL Correlation Example for iid_is](#45-idl-correlation-example-for-iidis)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Distributed Component Object Model (DCOM) Remote Protocol is a protocol for exposing
 application objects by way of remote procedure calls (RPCs). The protocol consists of a set of
@@ -1055,7 +810,7 @@ extensions layered on Microsoft Remote Procedure Call Protocol Extensions as spe
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1123,7 +878,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
+
+sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
 ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
 Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
@@ -1198,7 +954,8 @@ Release: September 16, 2024
 
 10 / 119
 
-object exporter identifier (OXID): A 64-bit number that uniquely identifies an object exporter
+
+object exporter identifier (OXID): A 64-bit number that uniquely identifies an object exporter
 
 within an object server.
 
@@ -1277,7 +1034,8 @@ Release: September 16, 2024
 
 11 / 119
 
-destroyed, the reference count is decremented. The object is destroyed when the reference
+
+destroyed, the reference count is decremented. The object is destroyed when the reference
 count reaches zero. All interfaces to that object are then invalid.
 
 remote procedure call (RPC): A communication protocol used primarily between client and
@@ -1351,14 +1109,15 @@ Release: September 16, 2024
 
 12 / 119
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1384,7 +1143,7 @@ October 1989, https://www.rfc-editor.org/info/rfc1123
 [RFC4291] Hinden, R. and Deering, S., "IP Version 6 Addressing Architecture", RFC 4291, February
 2006, https://www.rfc-editor.org/info/rfc4291
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-COM] Microsoft Corporation, "Component Object Model Plus (COM+) Protocol".
 
@@ -1417,7 +1176,8 @@ Release: September 16, 2024
 
 13 / 119
 
-[MSDN-CoGetInstanceFromIStorage] Microsoft Corporation, "CoGetInstanceFromIStorage function",
+
+[MSDN-CoGetInstanceFromIStorage] Microsoft Corporation, "CoGetInstanceFromIStorage function",
 http://msdn.microsoft.com/en-us/library/ms686574.aspx
 
 [MSDN-CoMarshalInterface] Microsoft Corporation, "CoMarshalInterface function",
@@ -1482,7 +1242,8 @@ Release: September 16, 2024
 
 14 / 119
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-DCOM].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1496,7 +1257,7 @@ guide/vulnerability/CVE-2022-37978
 [RFC3493] Gilligan, R., Thomson, S., Bound, J., McCann, J., and Stevens, W., "Basic Socket Interface
 Extensions for IPv6", RFC 3493, February 2003, https://www.rfc-editor.org/info/rfc3493
 
-1.3  Overview
+### 1.3 Overview
 
 The Distributed Component Object Model (DCOM) Remote Protocol extends the Component Object
 Model (COM) over a network by providing facilities for creating and activating objects, and for
@@ -1517,7 +1278,8 @@ Release: September 16, 2024
 
 15 / 119
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-DCOM].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1530,7 +1292,7 @@ object. The DCOM client in turn uses the Remote Procedure Call Protocol Extensio
 The object server constitutes an object resolver service and one or more object exporters. Objects
 are contained in object exporters. Objects are the target of the ORPC calls from the client.
 
-1.3.1  Activation
+#### 1.3.1 Activation
 
 Activation is a generic term used to describe the act of creating (or sometimes finding) an existing
 DCOM object or class factory. Two RPC interfaces in the DCOM Remote Protocol are used to
@@ -1548,7 +1310,8 @@ Release: September 16, 2024
 
 16 / 119
 
-  Optionally, an initialization storage reference
+
+  Optionally, an initialization storage reference
 
 The CLSID identifies the class of the object to be created. The IIDs identify the interfaces on the newly
 created object that the client is asking for and, if specified, the storage reference identifies some
@@ -1557,7 +1320,7 @@ persistent store with which the newly created object is to be initialized after 
 Activation returns object references to the client application. The client application can also send or
 receive object references as part of ORPC calls.
 
-1.3.2  Object References
+#### 1.3.2 Object References
 
 Object References are marshaled as OBJREF types. When an OBJREF type is marshaled in the
 DCOM Remote Protocol, Network Data Representation (NDR) instructs the DCOM runtime to write
@@ -1567,7 +1330,7 @@ binding back to the object. Similarly, when an OBJREF type is unmarshaled in the
 Protocol, NDR instructs the DCOM runtime to construct the object reference using the marshaled data
 contained in the stream. The DCOM Remote Protocol returns the object reference to the application.
 
-1.3.3  Object Exporter
+#### 1.3.3 Object Exporter
 
 An object exporter is a conceptual container where objects are created, called, and released. An
 object is required to be contained within a single object exporter and is required to not span multiple
@@ -1596,7 +1359,7 @@ OXID as part of an object reference, it needs to determine the RPC binding infor
 communicate with the remote unknown object of the object exporter. The client uses the OXID
 resolution (see section 3.2.4.1.2.2) mechanism to achieve this.
 
-1.3.4  ORPC Calls
+#### 1.3.4 ORPC Calls
 
 An ORPC call is equivalent to, and possesses a one-to-one correspondence with, RPC calls. ORPC calls
 are distinguished from RPC calls by the contents of the Object UUID field of the RPC header, as
@@ -1614,7 +1377,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-DCOM].images/page018-img01.png)
 ![Extracted image 2 from page 18]([MS-DCOM].images/page018-img02.png)
 <!-- /Extracted images from page 18 -->
@@ -1630,7 +1394,7 @@ Figure 4: Object RPC calls and the PDU body response
 The ORPCTHIS and ORPCTHAT arguments are used to provide versioning, causality information, and
 the capability to send application-specific out-of-band data.
 
-1.3.5  Causality Identifiers
+#### 1.3.5 Causality Identifiers
 
 Each ORPC call carries with it, within the ORPCTHIS structure, a GUID known as the causality
 identifier (CID). The CID connects a chain of ORPC calls that are causally related. Object exporters
@@ -1655,7 +1419,8 @@ Release: September 16, 2024
 
 18 / 119
 
-1.3.6  Reference Counts
+
+#### 1.3.6 Reference Counts
 
 The DCOM Remote Protocol uses reference counts to manage object lifetimes. Each interface on
 an object has an associated reference count that governs its lifetime. There are two types of reference
@@ -1669,7 +1434,7 @@ keep-alive pinging, which allows a client to maintain the lifetimes of its objec
 object server fails to receive pings for an object, then eventually the object server reclaims the
 object. For details, see sections 3.2.6.1, 3.1.1.6.2, and 3.1.2.6.
 
-1.3.7  Object Resolver Service
+#### 1.3.7 Object Resolver Service
 
 The object resolver service is the part of the DCOM Remote Protocol that performs activation (see
 section 3.2.4.1.1), OXID resolution (see section 3.1.2.5.1.1), garbage collection (see sections
@@ -1683,7 +1448,7 @@ IActivation: Contains a method used to create objects and class factories.
 
 IRemoteSCMActivator: Contains more methods used to create objects and class factories.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DCOM Remote Protocol is built on top of Remote Procedure Call Protocol Extensions, as specified
 in [MS-RPCE]. As described in section 2.1, the DCOM Remote Protocol uses additional buffer space at
@@ -1702,13 +1467,13 @@ The following protocols are layered above the DCOM Remote Protocol:
 
   Windows Management Instrumentation Remote Protocol (as specified in [MS-WMI]).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DCOM Remote Protocol requires that both client and object servers possess implementations of
 Remote Procedure Call Protocol Extensions, as specified in [MS-RPCE]. In addition, on the server, the
 object resolver must be running and reachable, as specified in section 3.1.2.3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DCOM Remote Protocol is useful and appropriate when a distributed object-based architecture is
 required. The DCOM Remote Protocol is supported on Windows-based platforms starting with Windows
@@ -1721,7 +1486,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1794,7 +1560,8 @@ Release: September 16, 2024
 
 20 / 119
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 The DCOM Remote Protocol uses HRESULTs, which are vendor-extensible. Vendors are free to choose
 their own values for this field, as long as the C bit (0x20000000) is set, indicating that it is a customer
@@ -1804,7 +1571,7 @@ The error_status_t return values used by this protocol are Win32 error codes as 
 ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated meanings. If vendors
 choose any other value, they run the risk of a future collision.<1>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The DCOM Remote Protocol object resolver service either needs to use the same well-known
 endpoints as the RPC endpoint mapper (as specified in [MS-RPCE] section 2.1), or it needs to
@@ -1971,7 +1738,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Name
+
+Name
 
 GUID
 
@@ -2089,9 +1857,10 @@ Release: September 16, 2024
 
 22 / 119
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DCOM is based on RPC, and implementations SHOULD support the use of any RPC protocol
 sequence available in the underlying RPC implementation. The client SHOULD discover an initial
@@ -2137,7 +1906,7 @@ DCOM uses security, as described in [MS-RPCE] section 1.7.
 The server SHOULD register one or more security providers specified in [MS-RPCE] section
 2.2.1.1.7; the choice of security provider is implementation-dependent.<3>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 All structures are defined in the Interface Definition Language (IDL) syntax and are marshaled as
 specified in [C706] Part 3. The IDL is documented in section 6.
@@ -2155,14 +1924,15 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Note that LPWSTR or WCHAR* types specified in an IDL structure that are annotated with the [string]
+
+Note that LPWSTR or WCHAR* types specified in an IDL structure that are annotated with the [string]
 attribute MUST be null-terminated, as specified in [C706] section 14.3.4.
 
 This protocol MUST indicate to the remote procedure call (RPC) runtime that it is to support the NDR
 transfer syntax only, as specified in [C706] Part 4. In addition to RPC base types and definitions
 specified in [C706] and [MS-RPCE], additional data types are defined in this section.
 
-2.2.1  OID
+#### 2.2.1 OID
 
 The OID type specifies an object identifier (OID).
 
@@ -2170,7 +1940,7 @@ This type is declared as follows:
 
  typedef unsigned hyper OID;
 
-2.2.2  SETID
+#### 2.2.2 SETID
 
 The SETID type specifies a ping set identifier (SETID).
 
@@ -2178,20 +1948,20 @@ This type is declared as follows:
 
  typedef unsigned hyper SETID;
 
-2.2.3  HRESULT
+#### 2.2.3 HRESULT
 
 This specification uses the HRESULT type, as specified in [MS-DTYP] section 2.2.18.
 
-2.2.4  error_status_t
+#### 2.2.4 error_status_t
 
 This specification uses the error_status_t type, as specified in [C706] section 4.2.26 and in section 1.8
 of this protocol specification.
 
-2.2.5  GUID
+#### 2.2.5 GUID
 
 The GUID type specifies a GUID, as specified in [MS-DTYP] section 2.3.4.
 
-2.2.6  CID
+#### 2.2.6 CID
 
 The CID type specifies a CID.
 
@@ -2199,7 +1969,7 @@ This type is declared as follows:
 
  typedef GUID CID;
 
-2.2.7  CLSID
+#### 2.2.7 CLSID
 
 The CLSID type specifies a CLSID for a GUID that identifies an object class.
 
@@ -2214,7 +1984,8 @@ Release: September 16, 2024
 
 24 / 119
 
-2.2.8  IID
+
+#### 2.2.8 IID
 
 The IID type specifies an IID.
 
@@ -2222,7 +1993,7 @@ This type is declared as follows:
 
  typedef GUID IID;
 
-2.2.9  IPID
+#### 2.2.9 IPID
 
 The IPID type specifies an IPID.
 
@@ -2230,7 +2001,7 @@ This type is declared as follows:
 
  typedef GUID IPID;
 
-2.2.10 OXID
+#### 2.2.10 OXID
 
 The OXID type specifies an OXID.
 
@@ -2238,7 +2009,7 @@ This type is declared as follows:
 
  typedef unsigned hyper OXID;
 
-2.2.11 COMVERSION
+#### 2.2.11 COMVERSION
 
 The COMVERSION structure is used to specify the major and minor version of either the client or the
 server DCOM Remote Protocol implementation.
@@ -2289,7 +2060,8 @@ Release: September 16, 2024
 
 25 / 119
 
-Version   Change
+
+Version   Change
 
 Added IRemoteSCMActivator interface methods (see section 3.1.2.5.2.2).
 
@@ -2301,21 +2073,21 @@ Added IRemUnknown2 interface.
 
 No DCOM changes from 5.6.<5>
 
-2.2.12 object IDL Attribute
+#### 2.2.12 object IDL Attribute
 
 The object IDL Attribute is an IDL extension to the interface attributes specified in [C706] section
 4.2.4.
 
 This IDL extension specifies that calls on methods in the attributed interface MUST be ORPC calls.
 
-2.2.13 ORPCTHIS and ORPCTHAT
+#### 2.2.13 ORPCTHIS and ORPCTHAT
 
 The ORPCTHIS and ORPCTHAT structures MUST be marshaled using the NDR Transfer Syntax whose
 identifier is specified in [MS-RPCE] section 2.2.4.12.
 
-2.2.13.1
+##### 2.2.13.1 ORPC_EXTENT
 
-ORPC_EXTENT
+
 
 ORPC_EXTENT is a binary large object (BLOB) of data whose format is identified by a GUID. It is used
 on DCOM Remote Protocol calls to pass arbitrary out-of-band data that is not part of the explicit
@@ -2338,9 +2110,9 @@ data:  This MUST contain an array of bytes that form the extent data. The array 
 
 multiple of 8 for alignment reasons.
 
-2.2.13.2
+##### 2.2.13.2 ORPC_EXTENT_ARRAY
 
-ORPC_EXTENT_ARRAY
+
 
 ORPC_EXTENT_ARRAY is an array of ORPC_EXTENT structures.
 
@@ -2360,15 +2132,16 @@ Release: September 16, 2024
 
 26 / 119
 
-reserved:  This MUST be set to zero when sent and MUST be ignored on receipt.
+
+reserved:  This MUST be set to zero when sent and MUST be ignored on receipt.
 
 extent:   This MUST be an array of ORPC_EXTENTs. The array size MUST be a multiple of 2 for
 
 alignment reasons.
 
-2.2.13.3
+##### 2.2.13.3 ORPCTHIS
 
-ORPCTHIS
+
 
 The ORPCTHIS structure is the first (implicit) argument sent in an ORPC request PDU and is used to
 send ORPC extension data to the server. The ORPCTHIS structure is also sent as an explicit
@@ -2398,9 +2171,9 @@ cid:  This MUST contain a CID for the ORPC call. For details, see section 1.3.5.
 
 extensions:   If non-NULL, this MUST be a pointer to an ORPC_EXTENT_ARRAY structure.
 
-2.2.13.4
+##### 2.2.13.4 ORPCTHAT
 
-ORPCTHAT
+
 
 The ORPCTHAT structure is the first (implicit) argument returned in an ORPC response PDU, and is
 used to return ORPC extension data to the client. The ORPCTHAT structure is also returned as an
@@ -2415,7 +2188,7 @@ flags:  This can be set to any arbitrary value and MUST be ignored on receipt.
 
 extensions:   If non-NULL, this field MUST contain an ORPC_EXTENT_ARRAY.
 
-2.2.14 MInterfacePointer
+#### 2.2.14 MInterfacePointer
 
 MInterfacePointer is an NDR-marshaled structure that MUST contain a hand-marshaled OBJREF.
 
@@ -2430,13 +2203,14 @@ Release: September 16, 2024
 
 27 / 119
 
- } MInterfacePointer;
+
+ } MInterfacePointer;
 
 ulCntData:  This MUST specify the size, in bytes, of the abData parameter.
 
 abData:   An array of bytes that MUST contain an OBJREF.
 
-2.2.15 PMInterfacePointerInternal
+#### 2.2.15 PMInterfacePointerInternal
 
 The PMInterfacePointerInternal type specifies a pointer to an MInterfacePointer structure.
 
@@ -2446,7 +2220,7 @@ This type is declared as follows:
 
 where disable_consistency_check is as specified in [MS-RPCE] section 2.2.4.17.
 
-2.2.16 PMInterfacePointer
+#### 2.2.16 PMInterfacePointer
 
 The PMInterfacePointer type specifies a pointer to an MInterfacePointer (section 2.2.14) structure.
 Interface pointers specified in DCOM-based protocols are marshaled and unmarshaled as the
@@ -2456,7 +2230,7 @@ This type is declared as follows:
 
  typedef [unique] MInterfacePointer* PMInterfacePointer;
 
-2.2.17 iid_is IDL Attribute
+#### 2.2.17 iid_is IDL Attribute
 
 iid_is IDL Attribute is an IDL extension that specifies the uuid ([C706] section 4.2.4.1) of an interface
 type method parameter.
@@ -2486,7 +2260,8 @@ Release: September 16, 2024
 
 28 / 119
 
-2.2.18 OBJREF
+
+#### 2.2.18 OBJREF
 
 OBJREF is the marshaled format for a DCOM Remote Protocol object reference. There are four
 different formats for an OBJREF, which are specified by different definitions of the u_objref field. This
@@ -2557,9 +2332,9 @@ of the interface type method parameter, or it MUST be specified using the iid_is
 
 u_objref (variable):  A structure specified by the value of the preceding flags.
 
-2.2.18.1
+##### 2.2.18.1 STDOBJREF
 
-STDOBJREF
+
 
 STDOBJREF is a supporting structure for three of the four different OBJREF formats. It is used to
 specify standard information about an object reference: number of reference counts and the
@@ -2572,15 +2347,16 @@ Release: September 16, 2024
 
 29 / 119
 
-The STDOBJREF structure is marshaled by the protocol either as a byte array (for example, when it is
+
+The STDOBJREF structure is marshaled by the protocol either as a byte array (for example, when it is
 marshaled as part of an OBJREF) or in the NDR format (for example, when it is returned as part of a
 REMQIRESULT from IRemUnknown::RemQueryInterface). The field definitions and meanings are
 identical in both cases. When the STDOBJREF structure is marshaled as a byte array, all of its fields
 MUST be marshaled in little-endian order.
 
-2.2.18.2
+##### 2.2.18.2 STDOBJREF (Packet Version)
 
-STDOBJREF (Packet Version)
+
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2641,9 +2417,9 @@ oid (8 bytes):  This MUST be an OID identifying the object.
 
 ipid (16 bytes):  This MUST be an IPID identifying a specific interface on the object.
 
-2.2.18.3
+##### 2.2.18.3 STDOBJREF (IDL Version)
 
-STDOBJREF (IDL Version)
+
 
 The parameter meanings for this structure are identical to those defined in section 2.2.18.2.
 
@@ -2656,16 +2432,17 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-   unsigned long flags;
+
+   unsigned long flags;
    unsigned long cPublicRefs;
    OXID oxid;
    OID oid;
    IPID ipid;
  } STDOBJREF;
 
-2.2.18.4
+##### 2.2.18.4 OBJREF_STANDARD
 
-OBJREF_STANDARD
+
 
 This form of OBJREF is the simplest, combining an STDOBJREF structure with a DUALSTRINGARRAY
 structure. It is used when there is no need to utilize the extra fields offered by the other OBJREF
@@ -2698,9 +2475,9 @@ saResAddr (variable):  A DUALSTRINGARRAY that MUST contain the network and secur
 
 for the object resolver service on the server.
 
-2.2.18.5
+##### 2.2.18.5 OBJREF_HANDLER
 
-OBJREF_HANDLER
+
 
 This form of OBJREF is used by the server object to provide an identifier for a helper object on the
 client, which the client can use as a proxy for the server object.
@@ -2737,7 +2514,8 @@ Release: September 16, 2024
 
 31 / 119
 
-std (40 bytes): This MUST specify an STDOBJREF.
+
+std (40 bytes): This MUST specify an STDOBJREF.
 
 ...
 
@@ -2749,9 +2527,9 @@ saResAddr (variable):  This MUST specify a DUALSTRINGARRAY that MUST contain the
 
 security bindings for the object resolver service on the server.
 
-2.2.18.6
+##### 2.2.18.6 OBJREF_CUSTOM
 
-OBJREF_CUSTOM
+
 
 This form of OBJREF is used by a server object to marshal itself into an opaque BLOB using a custom
 marshaler. The custom marshaler is a COM object that can marshal and unmarshal the data contained
@@ -2800,9 +2578,9 @@ pObjectData (variable): This MUST be an array of bytes containing data supplied 
 
 or higher-layer protocol.
 
-2.2.18.7
+##### 2.2.18.7 OBJREF_EXTENDED
 
-OBJREF_EXTENDED
+
 
 The OBJREF_EXTENDED format is used when the server returns a marshaled envoy context to the
 client.
@@ -2814,7 +2592,8 @@ Release: September 16, 2024
 
 32 / 119
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2862,9 +2641,9 @@ Signature2 (4 bytes): This MUST be set to 0x4E535956.
 
 ElmArray (variable): This MUST be a DATAELEMENT entry.
 
-2.2.18.8
+##### 2.2.18.8 DATAELEMENT
 
-DATAELEMENT
+
 
 The DATAELEMENT structure is used to identify and marshal an envoy context as part of a larger
 OBJREF_EXTENDED structure.
@@ -2895,7 +2674,8 @@ Release: September 16, 2024
 
 33 / 119
 
-cbRounded
+
+cbRounded
 
 Data (variable)
 
@@ -2917,15 +2697,15 @@ Data (variable):  An array of cbRounded bytes that MUST contain a marshaled envo
 
 section 2.2.20.
 
-2.2.19 DUALSTRINGARRAY
+#### 2.2.19 DUALSTRINGARRAY
 
 The DUALSTRINGARRAY structure contains an array of string bindings and an array of security
 bindings. The protocol uses this structure as a fundamental means of specifying RPC addressability
 and security information for either an object resolver or an object exporter.
 
-2.2.19.1
+##### 2.2.19.1 DUALSTRINGARRAY (Packet Version)
 
-DUALSTRINGARRAY (Packet Version)
+
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2977,7 +2757,8 @@ Release: September 16, 2024
 
 34 / 119
 
-SecBinding (variable): An array of one or more SECURITYBINDING structures that SHOULD be
+
+SecBinding (variable): An array of one or more SECURITYBINDING structures that SHOULD be
 
 ordered in decreasing order of preference by the object server.
 
@@ -2989,9 +2770,9 @@ The smallest possible DUALSTRINGARRAY structure consists of wNumEntries=0x0004 a
 wSecurityOffset=0x0002 followed by an array of 4 unsigned shorts. Each array element has a value
 0x0000.
 
-2.2.19.2
+##### 2.2.19.2 DUALSTRINGARRAY (IDL Version)
 
-DUALSTRINGARRAY (IDL Version)
+
 
 In certain cases in the DCOM Remote Protocol, a DUALSTRINGARRAY is passed or returned as a
 parameter in an RPC call. For example, see section 3.1.2.5.2.3.1. In all such cases, the IDL definition
@@ -3014,9 +2795,9 @@ aStringArray:  This MUST be an array of wNumEntries unsigned shorts. This field 
 interpreted to contain a sequence of STRINGBINDING entries followed by a sequence of
 SECURITYBINDING entries, in the same syntax as defined in section 2.2.19.1.
 
-2.2.19.3
+##### 2.2.19.3 STRINGBINDING
 
-STRINGBINDING
+
 
 The STRINGBINDING structure describes an RPC protocol, a network address, and, optionally, an RPC
 endpoint for the RPC protocol that a client can use to communicate with either an object resolver or
@@ -3060,7 +2841,8 @@ Release: September 16, 2024
 
 35 / 119
 
-  A NetBIOS Name.
+
+  A NetBIOS Name.
 
   A fully qualified domain name (FQDN).
 
@@ -3084,9 +2866,9 @@ endpoint is RPC protocol-specific ([C706] section 6.2.2).
 
 An empty STRINGBINDING structure contains a wTowerId whose value is zero.
 
-2.2.19.4
+##### 2.2.19.4 SECURITYBINDING
 
-SECURITYBINDING
+
 
 The SECURITYBINDING structure describes an RPC security provider and a service principal
 name (SPN). A client uses these to communicate with either an object resolver or an object
@@ -3125,7 +2907,7 @@ aPrincName (variable): An optional null-terminated Unicode string that, if prese
 SPN. An empty null-terminated Unicode string in this field indicates that no SPN is specified, and
 the client MUST NOT use an SPN for the ORPC invocations (see section 3.2.4.2).
 
-2.2.20 Context
+#### 2.2.20 Context
 
 This is the marshaled representation of a context (1). It contains an array of marshaled context
 properties, each of which is represented by a PROPMARSHALHEADER.
@@ -3139,7 +2921,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  A client context. This type of context (1) is sent in an activation request in the pIFDClientCtx
+
+  A client context. This type of context (1) is sent in an activation request in the pIFDClientCtx
 
 field of the ActivationContextInfoData structure (section 2.2.22.2.5). The context (1) structure
 MUST be marshaled into an OBJREF_CUSTOM structure (section 2.2.18.6) whose clsid field is set
@@ -3215,7 +2998,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ContextId (16 bytes):  A GUID identifying the marshaled context (1).
+
+ContextId (16 bytes):  A GUID identifying the marshaled context (1).
 
 Flags (4 bytes): This MUST be set to the following value.
 
@@ -3248,9 +3032,9 @@ receipt.
 
 PropMarshalHeader (variable):  This MUST be an array of PROPMARSHALHEADER entries.
 
-2.2.20.1
+##### 2.2.20.1 PROPMARSHALHEADER
 
-PROPMARSHALHEADER
+
 
 PROPMARSHALHEADER is the marshaled representation of a context property. It contains a context
 property identifier and a context property data buffer supplied by an application or higher-layer
@@ -3296,7 +3080,8 @@ Release: September 16, 2024
 
 38 / 119
 
-clsid (16 bytes):  This field MUST be either GUID_NULL or a CLSID supplied by the application or
+
+clsid (16 bytes):  This field MUST be either GUID_NULL or a CLSID supplied by the application or
 
 higher-layer protocol identifying an object class associated with the data in the ctxProperty
 field. If this field is GUID_NULL, ctxProperty MUST contain an OBJREF representing the
@@ -3338,7 +3123,7 @@ This buffer MUST contain an OBJREF representing the marshaled client or prototyp
 property if clsid is GUID_NULL; otherwise, it MUST contain opaque data representing the
 marshaled envoy context property.
 
-2.2.21 ORPC Extensions
+#### 2.2.21 ORPC Extensions
 
 This section defines the format for well-known ORPC extensions used in the DCOM Remote Protocol.
 They are well-known as these extensions are defined by the DCOM Remote Protocol itself and can be
@@ -3347,9 +3132,9 @@ are sent by applications or higher-layer protocols within the data field of ORPC
 part of ORPC calls. Each extension has a well-known identifying GUID that is sent within the id field
 of the ORPC_EXTENT.
 
-2.2.21.1
+##### 2.2.21.1 Error Information ORPC Extension
 
-Error Information ORPC Extension
+
 
 The purpose of this ORPC extension is to provide a means of passing extended error information
 between clients and servers.
@@ -3357,9 +3142,9 @@ between clients and servers.
 CLSID_ERROR_EXTENSION (see section 1.9) is the identifying GUID for this ORPC extension. This
 ORPC extension MUST be marshaled into the data field of an ORPC_EXTENT as an OBJREF.<15>
 
-2.2.21.2
+##### 2.2.21.2 Custom-Marshaled Error Information Format
 
-Custom-Marshaled Error Information Format
+
 
 This section defines the format of an OBJREF_CUSTOM that, depending on the use of the DCOM
 Remote Protocol by an application or a higher-layer protocol, MAY be passed as an error information
@@ -3374,7 +3159,8 @@ Release: September 16, 2024
 
 39 / 119
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3450,14 +3236,15 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-HelpFile (variable): This MUST contain an ErrorInfoString (see ErrorInfoString (section 2.2.21.3)) if
+
+HelpFile (variable): This MUST contain an ErrorInfoString (see ErrorInfoString (section 2.2.21.3)) if
 
 the dwHelpFileSignature field is set to 0xFFFFFFFF and MUST NOT be present if the
 dwHelpFileSignature field is set to 0x00000000.<19>
 
-2.2.21.3
+##### 2.2.21.3 ErrorInfoString
 
-ErrorInfoString
+
 
 This packet specifies the format of the string data that is contained in a Custom-Marshaled Error Info
 Format (section 2.2.21.2) packet.
@@ -3495,9 +3282,9 @@ Name (variable):  This MUST contain an implementation-specific NULL-terminated U
 
 and SHOULD be ignored on receipt.
 
-2.2.21.4
+##### 2.2.21.4 Context ORPC Extension
 
-Context ORPC Extension
+
 
 CLSID_CONTEXT_EXTENSION is the identifying GUID for this ORPC extension, which is marshaled
 into the data field of an ORPC_EXTENT using the structure format that follows.
@@ -3535,7 +3322,8 @@ Release: September 16, 2024
 
 41 / 119
 
-hr
+
+hr
 
 hrServer
 
@@ -3584,9 +3372,9 @@ cbEHBuffer field (see section 2.2.21.5) in the corresponding element in the Entr
 Both the EntryHeader and PolicyData arrays MUST have sizes that are integral multiples of eight, and
 all padding bytes MUST be initialized to zero and MUST be ignored on receipt.
 
-2.2.21.5
+##### 2.2.21.5 EntryHeader
 
-EntryHeader
+
 
 The EntryHeader structure is used to describe an opaque array of bytes associated with a context
 property within the context ORPC extension.
@@ -3613,7 +3401,8 @@ Release: September 16, 2024
 
 42 / 119
 
-cbEHBuffer
+
+cbEHBuffer
 
 cbSize
 
@@ -3640,7 +3429,7 @@ reserved (4 bytes):  This MUST be set to 0x00000000 and MUST be ignored on recei
 
 policyID (16 bytes):  A GUID that MUST contain a context property identifier.
 
-2.2.22 Activation Properties BLOB
+#### 2.2.22 Activation Properties BLOB
 
 Activation properties constitute a BLOB of data that contains information used to specify the
 parameters of activation, or to return the results of activation. Activation properties BLOBs are passed
@@ -3686,16 +3475,17 @@ Release: September 16, 2024
 
 43 / 119
 
-Property (variable):  This MUST contain an array of structures listed in section 2.2.22.2 marshaled
+
+Property (variable):  This MUST contain an array of structures listed in section 2.2.22.2 marshaled
 
 using the NDR Type Serialization 1 engine (as specified in [MS-RPCE] section 2.2.6). The format of
 the Nth element in the array is identified by the CLSID specified in the Nth entry of the pclsid
 array in the CustomHeader field. The number of elements in the array MUST be specified by the
 cIfs field of the CustomHeader and MUST NOT be zero.
 
-2.2.22.1
+##### 2.2.22.1 CustomHeader
 
-CustomHeader
+
 
 The CustomHeader structure is used to identify the format and ordering of the properties in the
 activation properties BLOB.
@@ -3743,16 +3533,16 @@ corresponding property following the CustomHeader in the buffer.
 
 pdwReserved:  This MUST be set to NULL and MUST be ignored on receipt.
 
-2.2.22.2
+##### 2.2.22.2 Activation Properties
 
-Activation Properties
+
 
 This section documents the list of properties that MAY appear in the Property array of the Activation
 Properties BLOB structure.
 
-2.2.22.2.1
+###### 2.2.22.2.1 InstantiationInfoData
 
-InstantiationInfoData
+
 
 The client uses this structure to specify basic details of the object to be activated, including the
 identifying object CLSID and one or more requested object interfaces.
@@ -3764,7 +3554,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-CLSID_InstantiationInfo (section 1.9) is used to identify this property in the CustomHeader.pclsid
+
+CLSID_InstantiationInfo (section 1.9) is used to identify this property in the CustomHeader.pclsid
 array.
 
  typedef struct tagInstantiationInfoData {
@@ -3834,9 +3625,9 @@ thisSize:  The size (in bytes) of this structure, as marshaled by the NDR Type S
 
 clientCOMVersion:   The COMVERSION of the client. This MUST be ignored on receipt.
 
-2.2.22.2.2
+###### 2.2.22.2.2 SpecialPropertiesData
 
-SpecialPropertiesData
+
 
 The SpecialPropertiesData structure contains miscellaneous parameters specified by the client for an
 activation request.
@@ -3854,7 +3645,8 @@ Release: September 16, 2024
 
 45 / 119
 
-   long fRemoteThisSessionId;
+
+   long fRemoteThisSessionId;
    long fClientImpersonating;
    long fPartitionIDPresent;
    DWORD dwDefaultAuthnLvl;
@@ -3936,7 +3728,8 @@ Release: September 16, 2024
 
 46 / 119
 
-   DWORD dwDefaultAuthnLvl;
+
+   DWORD dwDefaultAuthnLvl;
    GUID guidPartition;
    DWORD dwPRTFlags;
    DWORD dwOrigClsctx;
@@ -3948,9 +3741,9 @@ All the fields have the same meaning as the corresponding fields in the first st
 MUST accept as valid both definitions. A DCOM client SHOULD<29> use SpecialPropertiesData in
 activation requests.
 
-2.2.22.2.3
+###### 2.2.22.2.3 InstanceInfoData
 
-InstanceInfoData
+
 
 The InstanceInfoData structure contains data related to persistent activations; that is, object
 activations in which the newly created object is immediately initialized with state from a previously
@@ -3975,9 +3768,9 @@ ifdROT:   The pointer MUST be set to NULL and MUST be ignored on receipt.
 
 ifdStg:  This MAY contain a marshaled OBJREF to be used to initialize the object.<32>
 
-2.2.22.2.4
+###### 2.2.22.2.4 ScmRequestInfoData
 
-ScmRequestInfoData
+
 
 The ScmRequestInfoData structure contains a customREMOTE_REQUEST_SCM_INFO structure.
 
@@ -3995,7 +3788,7 @@ remoteRequest:   This MUST specify a customREMOTE_REQUEST_SCM_INFO structure. Th
 
 MUST NOT be NULL.
 
-2.2.22.2.4.1  customREMOTE_REQUEST_SCM_INFO
+###### 2.2.22.2.4.1 customREMOTE_REQUEST_SCM_INFO
 
 The customREMOTE_REQUEST_SCM_INFO structure specifies the protocol sequence identifiers
 supported by the client.
@@ -4007,7 +3800,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct _customREMOTE_REQUEST_SCM_INFO {
+
+ typedef struct _customREMOTE_REQUEST_SCM_INFO {
    DWORD ClientImpLevel;
    [range(0, MAX_REQUESTED_PROTSEQS)]
      unsigned short cRequestedProtseqs;
@@ -4029,7 +3823,7 @@ pRequestedProtseqs:  This MUST contain an array of RPC protocol sequence identif
 
 by the client.
 
-2.2.22.2.5  ActivationContextInfoData
+###### 2.2.22.2.5 ActivationContextInfoData
 
 The ActivationContextInfoData structure passes a client context and optionally a prototype context
 to the server as part of an activation request.
@@ -4062,9 +3856,9 @@ pIFDPrototypeCtx:  If an application or a higher-layer protocol instructs the cl
 context properties, this MUST contain an OBJREF specifying a marshaled prototype context as
 specified in section 2.2.20. Otherwise, this MUST be set to NULL.
 
-2.2.22.2.6
+###### 2.2.22.2.6 LocationInfoData
 
-LocationInfoData
+
 
 The LocationInfoData structure MUST be present in the Activation Properties BLOB structure. The
 server MUST ignore this structure.
@@ -4079,7 +3873,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct tagLocationInfoData {
+
+ typedef struct tagLocationInfoData {
    [string] wchar_t* machineName;
    DWORD processId;
    DWORD apartmentId;
@@ -4094,9 +3889,9 @@ apartmentId:   This MUST be set to 0 and MUST be ignored on receipt.
 
 contextId:   This MUST be set to 0 and MUST be ignored on receipt.
 
-2.2.22.2.7
+###### 2.2.22.2.7 SecurityInfoData
 
-SecurityInfoData
+
 
 The SecurityInfoData structure SHOULD NOT be sent and MUST be ignored on receipt.<34>
 
@@ -4117,7 +3912,7 @@ pServerInfo:   This SHOULD be NULL and MUST be ignored on receipt. For details, 
 
 pdwReserved:   This MUST be set to NULL and MUST be ignored on receipt.
 
-2.2.22.2.7.1  COSERVERINFO
+###### 2.2.22.2.7.1 COSERVERINFO
 
 The COSERVERINFO structure SHOULD NOT be sent and MUST be ignored on receipt.
 
@@ -4136,9 +3931,9 @@ pdwReserved:   This MUST be set to NULL and MUST be ignored on receipt.
 
 dwReserved2:  This MUST be set to zero and MUST be ignored on receipt.
 
-2.2.22.2.8
+###### 2.2.22.2.8 ScmReplyInfoData
 
-ScmReplyInfoData
+
 
 The ScmReplyInfoData structure contains a customREMOTE_REPLY_SCM_INFO structure.
 
@@ -4149,7 +3944,8 @@ Release: September 16, 2024
 
 49 / 119
 
-CLSID_ScmReplyInfo (see section 1.9) is used to identify this property in the CustomHeader.pclsid
+
+CLSID_ScmReplyInfo (see section 1.9) is used to identify this property in the CustomHeader.pclsid
 array.
 
  typedef struct tagScmReplyInfoData {
@@ -4163,7 +3959,7 @@ remoteReply:  This MUST specify the customREMOTE_REPLY_SCM_INFO for the object e
 
 the server object.
 
-2.2.22.2.8.1  customREMOTE_REPLY_SCM_INFO
+###### 2.2.22.2.8.1 customREMOTE_REPLY_SCM_INFO
 
 The customREMOTE_REPLY_SCM_INFO structure is used to return information about the object
 exporter, specifically the OXID, RPC bindings, COMVERSION, and IPID of the IRemUnknown
@@ -4191,9 +3987,9 @@ ignored by the client.<37>
 
 serverVersion:  This MUST contain the COMVERSION of the server.
 
-2.2.22.2.9
+###### 2.2.22.2.9 PropsOutInfo
 
-PropsOutInfo
+
 
 The PropsOutInfo structure represents a collection of interfaces that the object implements and that
 are returned to the client. If the object does not support a particular interface requested by the client,
@@ -4217,7 +4013,8 @@ Release: September 16, 2024
 
 50 / 119
 
-cIfs:  This MUST contain the number of interfaces being returned by the server. This value MUST be
+
+cIfs:  This MUST contain the number of interfaces being returned by the server. This value MUST be
 
 between 1 and MAX_REQUESTED_INTERFACES (see section 2.2.28.1).
 
@@ -4233,7 +4030,7 @@ ppIntfData:   This MUST be an array of MInterfacePointer pointers containing the
 
 interfaces returned by the server.
 
-2.2.23 REMINTERFACEREF
+#### 2.2.23 REMINTERFACEREF
 
 The REMINTERFACEREF structure is passed as a parameter to either IRemUnknown::RemAddRef
 (Opnum 4) or IRemUnknown::RemRelease (Opnum 5). It specifies the number and type of references
@@ -4255,7 +4052,7 @@ cPrivateRefs:  This MUST be the number of private references (see section 1.3.6)
 
 identified by IPID being requested by the client.
 
-2.2.24 REMQIRESULT
+#### 2.2.24 REMQIRESULT
 
 The REMQIRESULT structure is passed as an output parameter from
 IRemUnknown::RemQueryInterface. It contains the result of the RemQueryInterface and the
@@ -4273,7 +4070,7 @@ MUST contain a negative value to indicate failure; see section 3.1.1.5.6.1.1.
 std:   If hResult is zero, this MUST contain a STDOBJREF instance that the client can unmarshal and
 use to make calls on the interface. If hResult contains an error value, this field MUST be ignored.
 
-2.2.25 PREMQIRESULT
+#### 2.2.25 PREMQIRESULT
 
 The PREMQIRESULT type specifies a pointer to a REMQIRESULT structure.
 
@@ -4286,11 +4083,12 @@ Release: September 16, 2024
 
 51 / 119
 
- typedef [disable_consistency_check] REMQIRESULT* PREMQIRESULT;
+
+ typedef [disable_consistency_check] REMQIRESULT* PREMQIRESULT;
 
 where disable_consistency_check is as specified in [MS-RPCE] section 2.2.4.17
 
-2.2.26 REFIPID
+#### 2.2.26 REFIPID
 
 The REFIPID type specifies a pointer to a const GUID structure.
 
@@ -4298,18 +4096,18 @@ This type is declared as follows:
 
  typedef const GUID* REFIPID;
 
-2.2.27 Local IDL Attribute
+#### 2.2.27 Local IDL Attribute
 
 The local IDL attribute is an IDL extension to the interface attributes specified in [C706] section 4.2.4.
 
 The local IDL attribute specifies that the methods of the interface cannot be invoked from a remote
 machine using the Remote Procedure Call Protocol Extensions as specified in [MS-RPCE].
 
-2.2.28 Constant Definitions
+#### 2.2.28 Constant Definitions
 
-2.2.28.1
+##### 2.2.28.1 IDL Range Constants
 
-IDL Range Constants
+
 
 The following table lists the constants used to specify lower and upper limits for various parameters.
 
@@ -4348,7 +4146,8 @@ Release: September 16, 2024
 
 52 / 119
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section specifies the DCOM Remote Protocol using two roles: the client role and the server role.
 Implementations MUST support the client role and MAY support the server role.<38>
@@ -4357,15 +4156,15 @@ In this section, the term object reference MUST be regarded as one whose marshal
 is an OBJREF that contains a STDOBJREF, unless otherwise specified by an application or a higher-
 layer protocol.
 
-3.1  Server Details
+### 3.1 Server Details
 
 An object server MUST contain exactly one object resolver and zero or more object exporters.
 The object resolver and the object exporters communicate by way of an implementation-specific
 mechanism.
 
-3.1.1  Object Exporter Details
+#### 3.1.1 Object Exporter Details
 
-3.1.1.1  Abstract Data Model
+##### 3.1.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -4433,7 +4232,8 @@ Release: September 16, 2024
 
 53 / 119
 
-  An object pointer to an implementation-specific application state that represents the object.
+
+  An object pointer to an implementation-specific application state that represents the object.
 
   An implementation-defined hash of the STRINGBINDING of the saResAddr field contained in the
 
@@ -4449,12 +4249,12 @@ SETID table: See section 3.2.1.
 
 OXID table: See section 3.2.1.
 
-3.1.1.2  Timers
+##### 3.1.1.2 Timers
 
 Each object exporter instance MUST maintain a global timer for pinging, similar to those maintained
 by clients; see section 3.2.2.
 
-3.1.1.3  Initialization
+##### 3.1.1.3 Initialization
 
 Object exporters MUST listen by way of RPC protocols described in section 3.1.2.3 and as specified
 in [C706] section 3.1.20 (rpc_server_use_protseq). Because listening is potentially expensive, such
@@ -4502,7 +4302,7 @@ resolver.
 
 It MUST add the IPID entry to the IPID table.
 
-3.1.1.4  Higher-Layer Triggered Events
+##### 3.1.1.4 Higher-Layer Triggered Events
 
 When a higher-layer protocol or an application specifies the values of the authentication level and the
 permissions needed to access the object exporter, the object server MUST store them in the
@@ -4514,12 +4314,13 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-corresponding fields specified in section 3.1.1.1. It is the responsibility of the specification of the
+
+corresponding fields specified in section 3.1.1.1. It is the responsibility of the specification of the
 application or the higher-layer protocol to state such requirements, if any.
 
-3.1.1.5  Message Processing Events and Sequencing Rules
+##### 3.1.1.5 Message Processing Events and Sequencing Rules
 
-3.1.1.5.1 Marshaling an Object
+###### 3.1.1.5.1 Marshaling an Object
 
 The object exporter MUST perform the following operations to marshal an object into an OBJREF of
 OBJREF_STANDARD type when returning from an ORPC. In this case, the application or higher-layer
@@ -4620,7 +4421,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -4715,7 +4517,7 @@ protocol.
 It MUST set the ctxPropery field to the buffer supplied by the application or higher-layer
 protocol.
 
-3.1.1.5.2 Marshaling an Object Reference
+###### 3.1.1.5.2 Marshaling an Object Reference
 
 [MS-DCOM] - v20240916
 Distributed Component Object Model (DCOM) Remote Protocol
@@ -4724,7 +4526,8 @@ Release: September 16, 2024
 
 56 / 119
 
-The object exporter MUST perform the following operations to marshal an object reference when
+
+The object exporter MUST perform the following operations to marshal an object reference when
 returning from an ORPC invocation. In this case, the application or higher-layer protocol MUST supply
 the IPID of the object reference:
 
@@ -4733,7 +4536,7 @@ the IPID of the object reference:
 The object exporter MUST proceed as a client to marshal the object reference. Specifically, it
 MUST follow the steps specified in section 3.2.4.3 to marshal the object reference.
 
-3.1.1.5.3 Unmarshaling an Object Reference
+###### 3.1.1.5.3 Unmarshaling an Object Reference
 
 The object exporter MUST perform the following operations to unmarshal an object reference when
 receiving an ORPC invocation. The object exporter MUST use NDR to unmarshal an OBJREF from a
@@ -4781,7 +4584,7 @@ The object exporter MUST return the object pointer in the OID entry to the appli
 
 section 3.2.4.1.2.
 
-3.1.1.5.4 ORPC Invocations
+###### 3.1.1.5.4 ORPC Invocations
 
 Object exporters MUST process ORPC invocations. An ORPC invocation is the receipt of an RPC
 request with an object UUID field set to a non-GUID_NULL value, which is interpreted as an IPID.
@@ -4815,7 +4618,8 @@ Release: September 16, 2024
 
 57 / 119
 
-
+
+
 
 
 
@@ -4897,13 +4701,13 @@ marshal the object reference (see section 3.1.1.5.2).<47>
 
 
 
-3.1.1.5.5 Lazy Protocol Registration
+###### 3.1.1.5.5 Lazy Protocol Registration
 
 If the object exporter delays RPC protocol initialization, the object exporter MUST respond to
 requests from the object resolver to listen on RPC protocols, as specified in [C706] section 3.1.20
 (rpc_server_use_protseq), as part of activation and OXID resolution requests.
 
-3.1.1.5.6 IRemUnknown Interface
+###### 3.1.1.5.6 IRemUnknown Interface
 
 [MS-DCOM] - v20240916
 Distributed Component Object Model (DCOM) Remote Protocol
@@ -4912,7 +4716,8 @@ Release: September 16, 2024
 
 58 / 119
 
-Object exporters MUST implement the IRemUnknown interface. The IRemUnknown interface is used
+
+Object exporters MUST implement the IRemUnknown interface. The IRemUnknown interface is used
 by clients to manage object lifetime and to acquire additional references on the object.
 
 Methods in RPC Opnum Order
@@ -4941,9 +4746,9 @@ Opnum: 5
 
  The methods MUST NOT throw exceptions.
 
-3.1.1.5.6.1
+###### 3.1.1.5.6.1 IRemUnknown Methods
 
-IRemUnknown Methods
+
 
 All object exporters MUST implement a Remote Unknown object that supports the IRemUnknown
 interface. Clients MUST check for the RPC_S_UNKNOWN_IF error (as specified in [MS-ERREF] section
@@ -4951,7 +4756,7 @@ interface. Clients MUST check for the RPC_S_UNKNOWN_IF error (as specified in [M
 
 This is an ORPC interface, not a native RPC interface.
 
-3.1.1.5.6.1.1  IRemUnknown::RemQueryInterface (Opnum 3)
+###### 3.1.1.5.6.1.1 IRemUnknown::RemQueryInterface (Opnum 3)
 
 This RemQueryInterface (Opnum 3) method acquires standard object references (see section
 2.2.18.1) to additional interfaces on the object.
@@ -4994,7 +4799,8 @@ Release: September 16, 2024
 
 59 / 119
 
-
+
+
 
 
 
@@ -5089,7 +4895,7 @@ It MUST set the OXID to the OXID of the object exporter.
 
 The object exporter MUST set the corresponding HRESULT field to a success code of zero.
 
-3.1.1.5.6.1.2  IRemUnknown::RemAddRef (Opnum 4 )
+###### 3.1.1.5.6.1.2 IRemUnknown::RemAddRef (Opnum 4 )
 
 The RemAddRef (Opnum 4) method requests that a specified number of reference counts be
 incremented on a specified number of interfaces on the object.
@@ -5106,7 +4912,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- );
+
+ );
 
 cInterfaceRefs:  This MUST specify the number of elements sent in the InterfaceRefs parameter and
 
@@ -5152,7 +4959,7 @@ REMINTERFACEREF.cPrivateRefs.
 It MUST set the return code in the corresponding pResults array to a success code of
 zero.<48>
 
-3.1.1.5.6.1.3  IRemUnknown::RemRelease (Opnum 5)
+###### 3.1.1.5.6.1.3 IRemUnknown::RemRelease (Opnum 5)
 
 The RemRelease (Opnum 5) method requests that a specified number of reference counts be
 decremented on a specified number of interfaces on an object.
@@ -5190,7 +4997,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 It MUST decrement the private reference count associated with the client in the IPID entry by
 REMINTERFACEREF.cPrivateRefs. If REMINTERFACEREF.cPrivateRefs is greater than
@@ -5232,7 +5040,7 @@ It MUST remove the application-specific state of the object from the OID entry.
 
 It MUST contact the object resolver to release the OID.
 
-3.1.1.5.7 IRemUnknown2 Interface
+###### 3.1.1.5.7 IRemUnknown2 Interface
 
 If the server reports a COM version of 5.6 or greater, the object exporter Remote Unknown object
 MUST support the IRemUnknown2 interface. Clients MUST check for the RPC_S_UNKNOWN_IF error
@@ -5255,11 +5063,11 @@ Opnum: 6
 
 The method listed earlier MUST NOT throw an exception.
 
-3.1.1.5.7.1
+###### 3.1.1.5.7.1 IRemUnknown2 Methods
 
-IRemUnknown2 Methods
 
-3.1.1.5.7.1.1  IRemUnknown2::RemQueryInterface2 (Opnum 6)
+
+###### 3.1.1.5.7.1.1 IRemUnknown2::RemQueryInterface2 (Opnum 6)
 
 The RemQueryInterface2 (Opnum 6) method acquires standard object references (see section
 2.2.18.1) to additional interfaces on the object, marshaled as an MInterfacePointer structure.
@@ -5279,7 +5087,8 @@ Release: September 16, 2024
 
 62 / 119
 
-ripid:  This MUST specify an IPID that identifies the interface on the object in the object exporter
+
+ripid:  This MUST specify an IPID that identifies the interface on the object in the object exporter
 
 that is queried for more interfaces.
 
@@ -5299,7 +5108,7 @@ When processing this ORPC call, the object exporter MUST perform the same operat
 IRemUnknown::RemQueryInterface, except that it MUST return an OBJREF for each object reference
 in the MInterfacePointer array instead of an STDOBJREF.
 
-3.1.1.5.8 IUnknown Interface
+###### 3.1.1.5.8 IUnknown Interface
 
 The IUnknown interface enables clients to retrieve pointers to other interfaces on a given object
 through the QueryInterface method, and to manage the existence of the object through the
@@ -5340,14 +5149,14 @@ opnum, and the server behavior is undefined<50> since it does not affect interop
 
 All methods MUST NOT throw exceptions.
 
-3.1.1.6  Timer Events
+##### 3.1.1.6 Timer Events
 
-3.1.1.6.1 Pinging
+###### 3.1.1.6.1 Pinging
 
 When the global timer expires, the object exporter MUST make ping calls, as specified in section
 3.2.6.1.
 
-3.1.1.6.2 Object Reclamation
+###### 3.1.1.6.2 Object Reclamation
 
 [MS-DCOM] - v20240916
 Distributed Component Object Model (DCOM) Remote Protocol
@@ -5356,7 +5165,8 @@ Release: September 16, 2024
 
 63 / 119
 
-The object exporter MUST respond to object reclamation requests from the object resolver when
+
+The object exporter MUST respond to object reclamation requests from the object resolver when
 the object resolver determines, by the pinging mechanism, that the client of the object is dead or
 unreachable; see section 3.1.2.6. When processing this request, the object exporter MUST do the
 following:
@@ -5412,13 +5222,13 @@ It MUST remove the OID from the OID entry.
 
 It MUST contact the object resolver to release the OID.
 
-3.1.1.7  Other Local Events
+##### 3.1.1.7 Other Local Events
 
 Not applicable to object exporters.
 
-3.1.2  Object Resolver Details
+#### 3.1.2 Object Resolver Details
 
-3.1.2.1  Abstract Data Model
+##### 3.1.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -5453,7 +5263,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-OXID table: A table of entries to object exporters managed by the resolver, keyed by OXID. Each
+
+OXID table: A table of entries to object exporters managed by the resolver, keyed by OXID. Each
 entry MUST contain:
 
 
@@ -5497,7 +5308,7 @@ OID table: A table of OID entries allocated by the resolver, keyed by OID. Each 
 
 The OXID of the object exporter of the OID.
 
-3.1.2.2  Timers
+##### 3.1.2.2 Timers
 
 Object resolvers MUST maintain the following timers:
 
@@ -5507,18 +5318,18 @@ clients. The ping set timer period MUST be at least three times the ping period 
 exactly three times the ping period. The ping period MUST be at most 2 minutes and SHOULD be
 exactly 2 minutes.
 
-3.1.2.3  Initialization
+##### 3.1.2.3 Initialization
 
 The DCOM Remote Protocol assumes that the object resolver is running and reachable (see section
 1.9) before the protocol is used. The object resolver MAY listen on a variety of RPC protocols.<51>
 
-3.1.2.4  Higher-Layer Triggered Events
+##### 3.1.2.4 Higher-Layer Triggered Events
 
 Not applicable to object resolvers.
 
-3.1.2.5  Message Processing Events and Sequencing Rules
+##### 3.1.2.5 Message Processing Events and Sequencing Rules
 
-3.1.2.5.1 IObjectExporter Methods
+###### 3.1.2.5.1 IObjectExporter Methods
 
 IObjectExporter is the interface used for OXID resolution, pinging, and server aliveness tests. All
 object resolvers MUST support the IObjectExporter interface. Clients MUST check for the
@@ -5532,7 +5343,8 @@ Release: September 16, 2024
 
 65 / 119
 
-This is a native RPC interface, not an ORPC interface.
+
+This is a native RPC interface, not an ORPC interface.
 
 Methods in RPC Opnum Order
 
@@ -5581,9 +5393,9 @@ Opnum: 5
 
  The methods MUST NOT throw exceptions.
 
-3.1.2.5.1.1
+###### 3.1.2.5.1.1 IObjectExporter::ResolveOxid (Opnum 0)
 
-IObjectExporter::ResolveOxid (Opnum 0)
+
 
 The ResolveOxid method returns the bindings and Remote Unknown IPID for an object exporter.
 
@@ -5620,7 +5432,8 @@ Release: September 16, 2024
 
 66 / 119
 
-pAuthnHint: This SHOULD contain an RPC authentication level (see [MS-RPCE] section 2.2.1.1.8)
+
+pAuthnHint: This SHOULD contain an RPC authentication level (see [MS-RPCE] section 2.2.1.1.8)
 that indicates the minimum authentication level supported by the object exporter, which MAY be
 ignored by the client.<52>
 
@@ -5661,9 +5474,9 @@ The authentication hint of the object exporter.
 
 The IPID of the IRemUnknown interface of the object exporter.
 
-3.1.2.5.1.2
+###### 3.1.2.5.1.2 IObjectExporter::SimplePing (Opnum 1)
 
-IObjectExporter::SimplePing (Opnum 1)
+
 
 The SimplePing method performs a ping of a previously allocated ping set to maintain the reference
 counts on the objects referred to by the set.
@@ -5696,9 +5509,9 @@ entry is not found, it returns OR_INVALID_SET (as specified in [MS-ERREF] sectio
 
 If the entry is found, the object resolver MUST reset the ping set timer for the SETID entry.
 
-3.1.2.5.1.3
+###### 3.1.2.5.1.3 IObjectExporter::ComplexPing (Opnum 2)
 
-IObjectExporter::ComplexPing (Opnum 2)
+
 
 The ComplexPing (Opnum 2) method is invoked to create or modify a ping set, to ping a ping set, or
 to perform a combination of these operations in one invocation.
@@ -5712,7 +5525,8 @@ Release: September 16, 2024
 
 67 / 119
 
-   [in] handle_t hRpc,
+
+   [in] handle_t hRpc,
    [in, out] SETID* pSetId,
    [in] unsigned short SequenceNum,
    [in] unsigned short cAddToSet,
@@ -5805,7 +5619,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 For each OID in the DelFromSet list:
 
@@ -5877,9 +5692,9 @@ It MUST start the ping set timer. It MUST initialize the timer, as specified in 
 
 It MUST return the SETID to the client.
 
-3.1.2.5.1.4
+###### 3.1.2.5.1.4 IObjectExporter::ServerAlive (Opnum 3)
 
-IObjectExporter::ServerAlive (Opnum 3)
+
 
 The ServerAlive (Opnum 3) method is used by clients to test the aliveness of the server using a given
 RPC protocol. If it returns without an error, the server is assumed to be reachable.
@@ -5900,9 +5715,9 @@ The object resolver MUST NOT check if the client has the permissions to make thi
 
 The object resolver MUST return an RPC success code of 0.
 
-3.1.2.5.1.5
+###### 3.1.2.5.1.5 IObjectExporter::ResolveOxid2 (Opnum 4)
 
-IObjectExporter::ResolveOxid2 (Opnum 4)
+
 
 The ResolveOxid2 method returns the bindings and Remote Unknown IPID for an object exporter,
 and the COMVERSION of the object server. This method was introduced with version 5.2 of the
@@ -5917,7 +5732,8 @@ Release: September 16, 2024
 
 69 / 119
 
-   [in] handle_t hRpc,
+
+   [in] handle_t hRpc,
    [in] OXID* pOxid,
    [in] unsigned short cRequestedProtseqs,
    [in, ref, size_is(cRequestedProtseqs)]
@@ -5955,9 +5771,9 @@ When processing this call, the object resolver MUST perform the same operations 
 IObjectExporter::ResolveOxid method. It MUST also return the object exporter's COMVERSION from
 the OXID entry of the object exporter.
 
-3.1.2.5.1.6
+###### 3.1.2.5.1.6 IObjectExporter::ServerAlive2 (Opnum 5)
 
-IObjectExporter::ServerAlive2 (Opnum 5)
+
 
 The ServerAlive2 (Opnum 5) method was introduced with version 5.6 of the DCOM Remote Protocol.
 This method extends the ServerAlive method. It returns string and security bindings for the object
@@ -5993,12 +5809,13 @@ Release: September 16, 2024
 
 70 / 119
 
-
+
+
 
  The object resolver MUST return the object resolver COMVERSION and the DUALSTRINGARRAY
 containing its RPC bindings to the client.
 
-3.1.2.5.1.7  Allocating and Deleting OID Entries
+###### 3.1.2.5.1.7 Allocating and Deleting OID Entries
 
 When the object exporter contacts the object resolver to allocate an OID (section 3.1.1.5.1), the
 object resolver MUST allocate an OID entry as follows:
@@ -6024,7 +5841,7 @@ When the object exporter contacts the object resolver to remove an OID entry fro
 removal SHOULD occur immediately, but MAY instead be delayed for an implementation-specific<58>
 period of time.
 
-3.1.2.5.1.8  Allocating OXID Entries
+###### 3.1.2.5.1.8 Allocating OXID Entries
 
 When the object exporter contacts the object resolver to allocate an OXID (see section 3.1.1.3),
 the object resolver MUST allocate an OXID entry as follows:
@@ -6045,14 +5862,14 @@ It MUST set the COMVERSION to that of the object exporter.
 
 It MUST set the authentication level hint to that of the object exporter.
 
-3.1.2.5.2 IActivation and IRemoteSCMActivator Methods
+###### 3.1.2.5.2 IActivation and IRemoteSCMActivator Methods
 
 These interfaces MUST use the NDR Transfer Syntax whose identifier is specified in [MS-RPCE] section
 2.2.4.12.
 
-3.1.2.5.2.1
+###### 3.1.2.5.2.1 IActivation Methods
 
-IActivation Methods
+
 
 IActivation is the DCOM Remote Protocol remote activation interface supported on all versions of the
 DCOM Remote Protocol. All object resolvers MUST support the IActivation interface.
@@ -6071,9 +5888,9 @@ Opnum: 0
 
 The preceding method MUST NOT throw an exception.
 
-3.1.2.5.2.2
+###### 3.1.2.5.2.2 IRemoteSCMActivator Methods
 
-IRemoteSCMActivator Methods
+
 
 IRemoteSCMActivator is another remote activation interface of the DCOM Remote Protocol. All object
 exporters that report a COMVERSION of 5.6 or greater MUST support this interface.
@@ -6085,7 +5902,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-This is a native RPC interface, not an ORPC interface.
+
+This is a native RPC interface, not an ORPC interface.
 
 Methods in RPC Opnum Order
 
@@ -6122,9 +5940,9 @@ opnum, and the server behavior is undefined<59> since it does not affect interop
 
 The methods MUST NOT throw exceptions.
 
-3.1.2.5.2.3
+###### 3.1.2.5.2.3 IActivation::RemoteActivation,
 
-IActivation::RemoteActivation,
+
 
 IRemoteSCMActivator::RemoteGetClassObject,
 IRemoteSCMActivator::RemoteCreateInstance
@@ -6180,7 +5998,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-resolver MUST instruct the object exporter to listen on the RPC protocol, as specified in [C706]
+
+resolver MUST instruct the object exporter to listen on the RPC protocol, as specified in [C706]
 section 3.1.20 (rpc_server_use_protseq).
 
 When processing the IRemoteSCMActivator::RemoteGetClassObject or the
@@ -6269,7 +6088,8 @@ Release: September 16, 2024
 
 73 / 119
 
-
+
+
 
 The object resolver MUST supply the prototype context properties contained in the
 PROPMARSHALHEADER array (section 2.2.20.1) contained in the Context structure (section
@@ -6294,7 +6114,7 @@ The COMVERSION of the object exporter.
 
 The RPC bindings of the object exporter.
 
-3.1.2.5.2.3.1  IActivation:: RemoteActivation (Opnum 0)
+###### 3.1.2.5.2.3.1 IActivation:: RemoteActivation (Opnum 0)
 
 The RemoteActivation (Opnum 0) method is used by clients to request the activation of an object. It
 returns the bindings, the IPID for the Remote Unknown, and the COMVERSION of the object
@@ -6350,7 +6170,8 @@ Release: September 16, 2024
 
 74 / 119
 
-ClientImpLevel:  This MUST contain an implementation-specific value that MUST be ignored on
+
+ClientImpLevel:  This MUST contain an implementation-specific value that MUST be ignored on
 
 receipt.<70>
 
@@ -6405,7 +6226,7 @@ this MUST contain an array of 0x00000000 values, one for each interface in pIIDs
 When processing this call, the object resolver MUST perform the operations specified in section
 3.1.2.5.2.3.
 
-3.1.2.5.2.3.2  IRemoteSCMActivator:: RemoteGetClassObject (Opnum 3)
+###### 3.1.2.5.2.3.2 IRemoteSCMActivator:: RemoteGetClassObject (Opnum 3)
 
 The RemoteGetClassObject (Opnum 3) method is used by clients to create an object reference for the
 class factory object.
@@ -6427,7 +6248,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-orpcthis:  This MUST specify an ORPCTHIS. The COMVERSION field SHOULD contain the negotiated
+
+orpcthis:  This MUST specify an ORPCTHIS. The COMVERSION field SHOULD contain the negotiated
 
 version as specified in section 2.2.11. The extensions field MUST be set to NULL.
 
@@ -6502,7 +6324,7 @@ PropsOutInfo
 When processing this call, the object resolver MUST perform the operations specified in section
 3.1.2.5.2.3.
 
-3.1.2.5.2.3.3  IRemoteSCMActivator::RemoteCreateInstance (Opnum 4)
+###### 3.1.2.5.2.3.3 IRemoteSCMActivator::RemoteCreateInstance (Opnum 4)
 
 The RemoteCreateInstance (Opnum 4) method is used by clients to create an object reference for the
 actual object.
@@ -6519,7 +6341,8 @@ Release: September 16, 2024
 
 76 / 119
 
-   [in, unique] MInterfacePointer* pUnkOuter,
+
+   [in, unique] MInterfacePointer* pUnkOuter,
    [in, unique] MInterfacePointer* pActProperties,
    [out] MInterfacePointer** ppActProperties
  );
@@ -6610,7 +6433,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.2.6  Timer Events
+
+##### 3.1.2.6 Timer Events
 
 When the ping set timer expires, the object resolver SHOULD assume that the client is either dead
 or is unreachable and MUST perform the following:
@@ -6643,15 +6467,15 @@ It MUST instruct the object exporter of the OID to reclaim the object.
 
 It MUST remove the ping set entry from the SETID table.
 
-3.1.2.7  Other Local Events
+##### 3.1.2.7 Other Local Events
 
 Not applicable to object resolvers.
 
-3.2  Client Details
+### 3.2 Client Details
 
 Clients SHOULD support version 5.7 of the DCOM Remote Protocol.<79>
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -6712,7 +6536,8 @@ Release: September 16, 2024
 
 78 / 119
 
-
+
+
 
 The COMVERSION of the exporter.
 
@@ -6764,7 +6589,7 @@ The SETID of the ping set.
 
   A sequence number.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Clients MUST maintain the following timers:
 
@@ -6772,12 +6597,12 @@ Clients MUST maintain the following timers:
 
 period MUST be at most 2 minutes and SHOULD be exactly 2 minutes.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 There are no protocol initialization steps required on the client beyond the initialization required for all
 RPC-based protocols, as specified in [MS-RPCE].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The operation of DCOM is initiated and subsequently driven by the following higher-layer triggered
 events:
@@ -6803,11 +6628,12 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The application releases an object reference.
 
-3.2.4.1  Creating Object References
+##### 3.2.4.1 Creating Object References
 
 The DCOM client MUST support the following DCOM mechanisms for creating and resolving object
 references:
@@ -6826,7 +6652,7 @@ protocol to state such requirements, if any.
 supplies to the DCOM client an object reference obtained during unmarshaling parameters during
 an ORPC call, and the IID of the interface for which it requires a reference.
 
-3.2.4.1.1 Activation
+###### 3.2.4.1.1 Activation
 
 The activation mechanism consists of the following sequence of operations:
 
@@ -6843,7 +6669,7 @@ RPC binding information obtained in the first step.
 
 4.  Finally, the client MUST unmarshal the object references returned from the activation request.
 
-3.2.4.1.1.1  Determining RPC Binding Information for Activation
+###### 3.2.4.1.1.1 Determining RPC Binding Information for Activation
 
 The client MUST call the IObjectExporter::ServerAlive2 method using the first RPC protocol
 sequence listed in section 3.1.2.3, unless the client COMVERSION is less than 5.6, in which case the
@@ -6877,7 +6703,8 @@ Release: September 16, 2024
 
 80 / 119
 
-
+
+
 
 
 
@@ -6924,9 +6751,9 @@ IObjectExporter::ServerAlive2 method. If the IObjectExporter::ServerAlive2 metho
 RPC_S_PROCNUM_OUT_OF_RANGE error (as specified in [MS-ERREF] section 2.2), or, if the client
 used the IObjectExporter::ServerAlive method, the client MUST use 5.1 as the server's COM version.
 
-3.2.4.1.1.2
+###### 3.2.4.1.1.2 Issuing the Activation Request
 
-Issuing the Activation Request
+
 
 The client MUST proceed to issue an activation request by:
 
@@ -6959,7 +6786,8 @@ Release: September 16, 2024
 
 81 / 119
 
-The client MUST specify the impersonation level requested by the application, if one was supplied;
+
+The client MUST specify the impersonation level requested by the application, if one was supplied;
 otherwise, it MUST specify a default impersonation level of at least
 RPC_C_IMPL_LEVEL_IMPERSONATE (see [MS-RPCE] section 2.2.1.1.9).<82>
 
@@ -7052,7 +6880,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-a marshaled Context structure (see section 2.2.20). It MUST create the Context structure as
+
+a marshaled Context structure (see section 2.2.20). It MUST create the Context structure as
 follows:
 
 
@@ -7136,7 +6965,7 @@ interface is not obtained.
 
   An array of object references to the interfaces on the object.
 
-3.2.4.1.1.3  Updating the Client OXID Table after Activation
+###### 3.2.4.1.1.3 Updating the Client OXID Table after Activation
 
 The client MUST proceed to update its OXID table as follows:
 
@@ -7153,7 +6982,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The client MUST set the OXID, RPC bindings, IPID, authentication level hint, and the
 COMVERSION of the OXID entry to the corresponding values returned from the activation request.
@@ -7162,7 +6992,7 @@ For each object reference returned from the activation request for which the cor
 code indicates success, the client MUST unmarshal the object reference, as specified in the next
 section.
 
-3.2.4.1.2 Unmarshaling an Object Reference
+###### 3.2.4.1.2 Unmarshaling an Object Reference
 
 The client MUST use NDR to unmarshal an OBJREF from a MInterfacePointer in the RPC PDU body.
 The unmarshaling mechanism consists of the following sequence of operations:
@@ -7246,7 +7076,8 @@ Release: September 16, 2024
 
 84 / 119
 
-  Otherwise, the client MUST supply the context properties contained in the
+
+  Otherwise, the client MUST supply the context properties contained in the
 
 PROPMARSHALHEADER array (section 2.2.20.1) contained in the Context structure (section
 2.2.20) to the application or the higher-layer protocol.
@@ -7256,7 +7087,7 @@ OBJREF structure (section 2.2.18), the client MUST supply the OBJREF to the appl
 higher-layer protocol to unmarshal the OBJREF_HANDLER (section 2.2.18.5) or the
 OBJREF_CUSTOM (section 2.2.18.6) OBJREF types respectively.
 
-3.2.4.1.2.1  Determining RPC Binding Information for OXID Resolution
+###### 3.2.4.1.2.1 Determining RPC Binding Information for OXID Resolution
 
 The client MUST call the IObjectExporter::ServerAlive2 method as follows, unless the client
 COMVERSION is less than 5.6, in which case the client MUST call the IObjectExporter::ServerAlive
@@ -7340,14 +7171,15 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If the client cannot determine the RPC binding information to be used for OXID resolution after using
+
+If the client cannot determine the RPC binding information to be used for OXID resolution after using
 all the RPC protocol sequences available in the STRINGBINDING structure contained in the saResAddr
 field, the client MUST fail the unmarshaling of the object reference and SHOULD return
 OR_INVALID_OXID (as specified in [MS-ERREF] section 2.2) to the DCOM application.
 
-3.2.4.1.2.2
+###### 3.2.4.1.2.2 Issuing the OXID Resolution Request
 
-Issuing the OXID Resolution Request
+
 
 The client MUST proceed to issue an OXID resolution request by:
 
@@ -7411,7 +7243,7 @@ IPID of the IRemUnknown interface of the object exporter.
 
   An authentication hint for use in subsequent ORPCs to the server.
 
-3.2.4.1.2.3  Updating Client Tables After Unmarshaling
+###### 3.2.4.1.2.3 Updating Client Tables After Unmarshaling
 
 [MS-DCOM] - v20240916
 Distributed Component Object Model (DCOM) Remote Protocol
@@ -7420,7 +7252,8 @@ Release: September 16, 2024
 
 86 / 119
 
-3.2.4.1.2.3.1  Updating the OXID Table After Unmarshaling
+
+###### 3.2.4.1.2.3.1 Updating the OXID Table After Unmarshaling
 
 The client MUST proceed to update its tables in the following sequence:
 
@@ -7440,7 +7273,7 @@ The client MUST set the RPC bindings, IPID, authentication-level hint, and the
 COMVERSION of the OXID entry to the corresponding values returned from the activation
 request.
 
-3.2.4.1.2.3.2  Updating the OID/IPID/Resolver Tables After Unmarshaling
+###### 3.2.4.1.2.3.2 Updating the OID/IPID/Resolver Tables After Unmarshaling
 
 
 
@@ -7529,10 +7362,11 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-and the RPC binding information used for the activation request or the OXID resolution
+
+and the RPC binding information used for the activation request or the OXID resolution
 request. The client MUST set the SETID to 0 in the Resolver table entry.
 
-3.2.4.2  ORPC Invocations
+##### 3.2.4.2 ORPC Invocations
 
 To make an ORPC call, a DCOM application supplies to the DCOM client an IPID to reference a
 specific interface on an object, a method number (opnum), and a list of arguments to the method.
@@ -7610,7 +7444,8 @@ Release: September 16, 2024
 
 88 / 119
 
-
+
+
 
 
 
@@ -7665,7 +7500,7 @@ object.<90>
 If an object reference is returned as a parameter from the ORPC, the client MUST unmarshal it;
 see section 3.2.4.1.2.
 
-3.2.4.3  Marshaling an Object Reference
+##### 3.2.4.3 Marshaling an Object Reference
 
 When a DCOM application sends an object reference in an ORPC invocation, it MUST supply the IPID.
 To marshal the object reference, the client MUST do the following:
@@ -7712,7 +7547,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -7759,13 +7595,13 @@ It MUST set the u_objref to the OBJREF_STANDARD created previously.
 It MUST use NDR to marshal the OBJREF into a MInterfacePointer that is placed in the RPC PDU
 body.
 
-3.2.4.4  Managing Object Lifetime
+##### 3.2.4.4 Managing Object Lifetime
 
 If the client unmarshals an STDOBJREF instance that has a public reference count of 0, the client
 MUST request additional reference counts for the object reference, as specified in section 3.2.4.4.1, to
 keep the object alive.
 
-3.2.4.4.1 Requesting Reference Counts on an Interface
+###### 3.2.4.4.1 Requesting Reference Counts on an Interface
 
 To request additional reference counts, the client MUST perform the following sequence of
 operations:
@@ -7816,7 +7652,8 @@ Release: September 16, 2024
 
 90 / 119
 
-3.2.4.4.2 Releasing Reference Counts on an Interface
+
+###### 3.2.4.4.2 Releasing Reference Counts on an Interface
 
 When the DCOM application is finished using the object reference, the client MUST perform the
 following sequence of operations:
@@ -7865,7 +7702,7 @@ It MUST remove the IPID from the IPID list in the OID entry.
 
 If the IPID list of the OID entry is empty, it MUST remove the OID entry from the OID table.
 
-3.2.4.4.3 Acquiring Additional Interfaces on the Object
+###### 3.2.4.4.3 Acquiring Additional Interfaces on the Object
 
 When the DCOM application requests references to additional interfaces on the object, the client MUST
 perform the following sequence of operations:
@@ -7911,15 +7748,16 @@ Release: September 16, 2024
 
 91 / 119
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Not applicable for clients.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 When the global timer expires, the client MUST make ping calls.
 
-3.2.6.1  Pinging
+##### 3.2.6.1 Pinging
 
 For each entry in the Resolver table:
 
@@ -8017,7 +7855,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -8070,7 +7909,7 @@ When using Kerberos and SPNEGO security providers, the client MUST specify an SP
 "RPCSS/<remote server name>", where <remote server name> is the network address used to
 create the RPC binding information stored in the Resolver table (see section 3.2.4.1.2.3.2).
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Not applicable for clients.
 
@@ -8081,13 +7920,14 @@ Release: September 16, 2024
 
 93 / 119
 
-<!-- Extracted images from page 94 -->
+
+<!-- Extracted images from page 94 -->
 ![Extracted image 1 from page 94]([MS-DCOM].images/page094-img01.png)
 <!-- /Extracted images from page 94 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Object Activation + ORPC Call + Release Sequence
+### 4.1 Object Activation + ORPC Call + Release Sequence
 
 Figure 5: Object activation + ORPC call + release sequence
 
@@ -8101,7 +7941,8 @@ Release: September 16, 2024
 
 94 / 119
 
-<!-- Extracted images from page 95 -->
+
+<!-- Extracted images from page 95 -->
 ![Extracted image 1 from page 95]([MS-DCOM].images/page095-img01.png)
 <!-- /Extracted images from page 95 -->
 
@@ -8117,7 +7958,7 @@ ORPC_REQ: An ORPC call to the object exporter on the interface identified by the
 REMREL_REQ: An ORPC call to the IRemUnknown::RemRelease method on the Remote Unknown of
 the object exporter containing the existing object reference.
 
-4.2  QueryInterface + ORPC Call + Release Sequence
+### 4.2 QueryInterface + ORPC Call + Release Sequence
 
 Figure 6: QueryInterface + ORPC call + release sequence
 
@@ -8140,11 +7981,12 @@ Release: September 16, 2024
 
 95 / 119
 
-<!-- Extracted images from page 96 -->
+
+<!-- Extracted images from page 96 -->
 ![Extracted image 1 from page 96]([MS-DCOM].images/page096-img01.png)
 <!-- /Extracted images from page 96 -->
 
-4.3  Pinging Sequence
+### 4.3 Pinging Sequence
 
 Figure 7: Client-to-server pinging sequence
 
@@ -8164,11 +8006,12 @@ Release: September 16, 2024
 
 96 / 119
 
-<!-- Extracted images from page 97 -->
+
+<!-- Extracted images from page 97 -->
 ![Extracted image 1 from page 97]([MS-DCOM].images/page097-img01.png)
 <!-- /Extracted images from page 97 -->
 
-4.4  OXID Resolution Sequence
+### 4.4 OXID Resolution Sequence
 
 Figure 8: OXID resolution sequence
 
@@ -8193,7 +8036,8 @@ Release: September 16, 2024
 
 97 / 119
 
-RESOLVEOXID_REQ: An RPC call to the IObjectExporter::ResolveOxid method or the
+
+RESOLVEOXID_REQ: An RPC call to the IObjectExporter::ResolveOxid method or the
 IObjectExporter::ResolveOxid2 method on the object resolver to retrieve the RPC binding information
 for the object exporter.
 
@@ -8202,7 +8046,7 @@ ORPC_REQ: An ORPC call to the object exporter on the interface identified by the
 REMREL_REQ: An ORPC call to the IRemUnknown::RemRelease method on the Remote Unknown of
 the object exporter containing the existing object reference.
 
-4.5  IDL Correlation Example for iid_is
+### 4.5 IDL Correlation Example for iid_is
 
 iid_is is an IDL language extension that allows clients or servers to specify how an interface passed as
 a parameter is marshaled at run time, as opposed to being statically defined at compile time. See the
@@ -8223,9 +8067,10 @@ Release: September 16, 2024
 
 98 / 119
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementations can decide to enforce security (as specified in [C706] section 2.7) as needed on the
 processes and operations defined in this specification.<95>
@@ -8234,7 +8079,7 @@ It is recommended that implementers review the security considerations as specif
 section 5.1, as these are also valid for the DCOM Remote Protocol and protocols based on the DCOM
 Remote Protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -8245,7 +8090,8 @@ Release: September 16, 2024
 
 99 / 119
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided.
 
@@ -8319,7 +8165,8 @@ Release: September 16, 2024
 
 100 / 119
 
-     CPFLAG_EXPOSE                       = 0x2,
+
+     CPFLAG_EXPOSE                       = 0x2,
      CPFLAG_ENVOY                        = 0x4,
  };
 
@@ -8395,7 +8242,8 @@ Release: September 16, 2024
 
 101 / 119
 
- HRESULT RemoteGetClassObject(
+
+ HRESULT RemoteGetClassObject(
                      [in] handle_t rpc,
                      [in] ORPCTHIS *orpcthis,
                      [out] ORPCTHAT *orpcthat,
@@ -8471,7 +8319,8 @@ Release: September 16, 2024
 
 102 / 119
 
- [out, ref] IPID            *pipidRemUnknown,
+
+ [out, ref] IPID            *pipidRemUnknown,
  [out, ref] DWORD           *pAuthnHint,
  [out, ref] COMVERSION      *pComVersion
      );
@@ -8548,7 +8397,8 @@ Release: September 16, 2024
 
 103 / 119
 
-         [in] unsigned short cInterfaceRefs,
+
+         [in] unsigned short cInterfaceRefs,
          [in, size_is(cInterfaceRefs)] REMINTERFACEREF
                                         InterfaceRefs[],
          [out, size_is(cInterfaceRefs)] HRESULT *pResults
@@ -8625,7 +8475,8 @@ Release: September 16, 2024
 
 104 / 119
 
-     COMVERSION clientCOMVersion;
+
+     COMVERSION clientCOMVersion;
  } InstantiationInfoData;
 
  typedef struct tagLocationInfoData
@@ -8701,7 +8552,8 @@ Release: September 16, 2024
 
 105 / 119
 
- typedef enum
+
+ typedef enum
  {
      SPD_FLAG_USE_CONSOLE_SESSION   = 0x00000001,
      SPD_FLAG_USE_DEFAULT_AUTHN_LVL = 0x00000002,
@@ -8744,7 +8596,8 @@ Release: September 16, 2024
 
 106 / 119
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8814,7 +8667,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.8: Windows only uses the values in [MS-ERREF] section 2.2.
@@ -8894,7 +8748,8 @@ Release: September 16, 2024
 
 108 / 119
 
-<15> Section 2.2.21.1: On Windows, DCOM clients and servers process the OBJREF supplied in the
+
+<15> Section 2.2.21.1: On Windows, DCOM clients and servers process the OBJREF supplied in the
 data field of this ORPC extension as a reference to an object that supports the IErrorInfo interface.
 For more information, see [MSDN-IERRORINFO].
 
@@ -8961,7 +8816,8 @@ Release: September 16, 2024
 
 109 / 119
 
-<34> Section 2.2.22.2.7: On Windows, DCOM clients include this structure; On Windows, DCOM
+
+<34> Section 2.2.22.2.7: On Windows, DCOM clients include this structure; On Windows, DCOM
 servers ignore it.
 
 <35> Section 2.2.22.2.7: On Windows, DCOM clients send a COSERVERINFO structure in this field as
@@ -9033,7 +8889,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<45> Section 3.1.1.5.4: On Windows, DCOM server object exporters supply the well-known ORPC
+
+<45> Section 3.1.1.5.4: On Windows, DCOM server object exporters supply the well-known ORPC
 extensions (see section 2.2.21), if present, to applications and higher-layer protocols.
 
 <46> Section 3.1.1.5.4: On Windows, DCOM server object exporters return the extensions field
@@ -9150,7 +9007,8 @@ Distributed Component Object Model (DCOM) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-MachineAccessRestriction (see [MSDN-MachAccRstr] for more information) as the default value of the
+
+MachineAccessRestriction (see [MSDN-MachAccRstr] for more information) as the default value of the
 permissions.
 
 <54> Section 3.1.2.5.1.2: On Windows NT, Windows 2000, Windows XP, Windows XP SP1, and
@@ -9222,7 +9080,8 @@ Release: September 16, 2024
 
 112 / 119
 
-On Windows NT 4.0, Windows 2000, Windows XP, Windows XP SP1, and Windows Server 2003, DCOM
+
+On Windows NT 4.0, Windows 2000, Windows XP, Windows XP SP1, and Windows Server 2003, DCOM
 servers return E_ACCESSDENIED if the DefaultLaunchPermission or the LaunchPermission that is
 specific to the object exporter does not allow access to the client's credentials.
 
@@ -9299,7 +9158,8 @@ Release: September 16, 2024
 
 113 / 119
 
-Property Name
+
+Property Name
 
 Section
 
@@ -9388,7 +9248,8 @@ Release: September 16, 2024
 
 114 / 119
 
-On Windows Vista and later and Windows Server 2008 and later, DCOM clients specify the higher of
+
+On Windows Vista and later and Windows Server 2008 and later, DCOM clients specify the higher of
 the LegacyAuthenticationLevel value or  RPC_C_AUTHN_LEVEL_PKT_INTEGRITY ([MS-RPCE] section
 2.2.1.1.8) as the default authentication level value for the call.
 
@@ -9451,7 +9312,8 @@ Release: September 16, 2024
 
 115 / 119
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -9463,7 +9325,8 @@ Release: September 16, 2024
 
 116 / 119
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -9600,7 +9463,8 @@ Release: September 16, 2024
 
 117 / 119
 
-Lazy protocol registration 58
+
+Lazy protocol registration 58
 Local events
    client 93
    Object exporter 64
@@ -9745,7 +9609,8 @@ Release: September 16, 2024
 
 118 / 119
 
-S
+
+S
 
 ScmReplyInfoData structure 49
 ScmRequestInfoData structure 47

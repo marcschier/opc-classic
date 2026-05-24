@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 65
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -184,516 +185,216 @@ Release: April 23, 2024
 
 2 / 65
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.2.2.1.1
-2.2.2.1.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-Namespaces .............................................................................................. 10
-HTTP Headers ............................................................................................ 10
-Content-Type ....................................................................................... 10
-Application/octet-stream .................................................................. 11
-Application/json .............................................................................. 11
-Checksum ............................................................................................ 11
-ChecksumAlgorithm .............................................................................. 11
-ConfigurationName ............................................................................... 11
-ProtocolVersion ..................................................................................... 11
-AgentId ............................................................................................... 12
-Authorization ........................................................................................ 12
-DSC-certificateRotation .......................................................................... 12
-Common URI Parameters ............................................................................ 12
-ConfigurationId ..................................................................................... 13
-ModuleName ........................................................................................ 13
-ModuleVersion ...................................................................................... 13
-AgentId ............................................................................................... 13
-
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-
-2.2.3
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 14
-GetConfiguration Versions 1.0 and 1.1 Details ..................................................... 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Action(ConfigurationId={ConfigurationId})/ConfigurationContent ............... 15
-GET ............................................................................................... 15
-Request Body ............................................................................ 16
-Response Body .......................................................................... 16
-Processing Details ...................................................................... 16
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-GetModule Versions 1.0 and 1.1 Details .............................................................. 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2
-
-[MS-DSCPM] - v20240423
-Desired State Configuration Pull Model Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 65
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.3.5.1
-
-3.3.5.1.1
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.3.5.1.1.1
-3.3.5.1.1.2
-3.3.5.1.1.3
-
-Module(ConfigurationId={ConfigurationId},ModuleName={moduleName},Modu
-leVersion={moduleVersion})/ModuleContent ........................................... 18
-GET ............................................................................................... 18
-Request Body ............................................................................ 19
-Response Body .......................................................................... 19
-Processing Details ...................................................................... 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-GetAction Versions 1.0 and 1.1 Details ............................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Action(ConfigurationId={ConfigurationId})/GetAction ............................... 21
-POST ............................................................................................. 21
-Request Body ............................................................................ 22
-Response Body .......................................................................... 22
-Processing Details ...................................................................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-SendStatusReport Versions 1.0 and 1.1 Details .................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 23
-Node(ConfigurationID={ConfigurationId})/SendStatusReport..................... 23
-POST ............................................................................................. 23
-Request Body ............................................................................ 24
-Response Body .......................................................................... 25
-Processing Details ...................................................................... 25
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-GetStatusReport Versions 1.0 and 1.1 Details ...................................................... 25
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-Node(ConfigurationId={ConfigurationId})/StatusReports ........................... 26
-GET ............................................................................................... 26
-Request Body ............................................................................ 27
-Response Body .......................................................................... 27
-Processing Details ...................................................................... 27
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 28
-GetConfiguration Version 2.0 Details .................................................................. 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-
-3.4.5.1.1.1
-3.4.5.1.1.2
-3.4.5.1.1.3
-
-3.5.5.1.1.1
-3.5.5.1.1.2
-3.5.5.1.1.3
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.4
-
-3.3.6
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-
-3.5
-
-3.4.6
-3.4.7
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-
-3.6
-
-3.5.6
-3.5.7
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-3.6.5
-
-3.5.5.1
-
-3.5.5.1.1
-
-3.4.5.1
-
-3.4.5.1.1
-
-3.6.5.1
-
-3.6.5.2
-
-Nodes(AgentId={AgentId})/
-Configurations(ConfigurationName={ConfigurationName})/ConfigurationConten
-t ......................................................................................................... 29
-GET ..................................................................................................... 29
-
-4 / 65
-
-[MS-DSCPM] - v20240423
-Desired State Configuration Pull Model Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.7
-
-3.6.5.2.1
-3.6.5.2.2
-3.6.5.2.3
-
-Request Body.................................................................................. 30
-Response Body ............................................................................... 31
-Processing Details ........................................................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-GetModule Version 2.0 Details ........................................................................... 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-
-3.6.6
-3.6.7
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-3.7.5
-
-3.7.5.1
-
-3.8
-
-3.9
-
-3.8.5.1
-
-3.8.5.1.1
-
-3.7.5.1.1
-
-3.8.6
-3.8.7
-
-3.7.6
-3.7.7
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-3.8.5
-
-3.8.5.1.1.1
-3.8.5.1.1.2
-3.8.5.1.1.3
-
-3.7.5.1.1.1
-3.7.5.1.1.2
-3.7.5.1.1.3
-
- Modules(ModuleName={moduleName},ModuleVersion={moduleVersion})/Mod
-uleContent ........................................................................................... 32
-GET ............................................................................................... 33
-Request Body ............................................................................ 34
-Response Body .......................................................................... 34
-Processing Details ...................................................................... 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-GetDscAction Version 2.0 Details ....................................................................... 34
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 35
-Message Processing Events and Sequencing Rules .......................................... 35
-Nodes(AgentId={AgentId})/GetDscAction ............................................... 35
-POST ............................................................................................. 35
-Request Body ............................................................................ 36
-Response Body .......................................................................... 37
-Processing Details ...................................................................... 37
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-RegisterDscAgent Version 2 Details .................................................................... 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 38
-Nodes(AgentId={AgentId}) ................................................................... 38
-PUT ............................................................................................... 38
-Request Body ............................................................................ 39
-Response Body .......................................................................... 39
-Processing Details ...................................................................... 39
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 40
-SendReport Version 2.0 Details .......................................................................... 40
-Abstract Data Model .................................................................................... 40
-3.10.1
-Timers ...................................................................................................... 40
-3.10.2
-3.10.3
-Initialization ............................................................................................... 40
-3.10.4  Higher-Layer Triggered Events ..................................................................... 40
-3.10.5  Message Processing Events and Sequencing Rules .......................................... 40
-3.10.5.1  Nodes(AgentID={AgentId})/SendReport ................................................. 41
-POST ............................................................................................. 41
-Request Body ............................................................................ 42
-Response Body .......................................................................... 42
-Processing Details ...................................................................... 42
-Timer Events .............................................................................................. 43
-
-3.10.5.1.1.1
-3.10.5.1.1.2
-3.10.5.1.1.3
-
-3.9.5.1.1.1
-3.9.5.1.1.2
-3.9.5.1.1.3
-
-3.9.1
-3.9.2
-3.9.3
-3.9.4
-3.9.5
-
-3.9.6
-3.9.7
-
-3.10.5.1.1
-
-3.9.5.1.1
-
-3.9.5.1
-
-3.10.6
-
-3.10
-
-[MS-DSCPM] - v20240423
-Desired State Configuration Pull Model Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 65
-
-3.11.5.1.1.1
-3.11.5.1.1.2
-3.11.5.1.1.3
-
-3.10.7  Other Local Events ...................................................................................... 43
-3.11  GetReports Version 2.0 Details .......................................................................... 43
-Abstract Data Model .................................................................................... 43
-3.11.1
-Timers ...................................................................................................... 43
-3.11.2
-3.11.3
-Initialization ............................................................................................... 43
-3.11.4  Higher-Layer Triggered Events ..................................................................... 43
-3.11.5  Message Processing Events and Sequencing Rules .......................................... 43
-3.11.5.1  Nodes(AgentId={AgentId})/Reports ....................................................... 43
-3.11.5.1.1  GET ............................................................................................... 44
-Request Body ............................................................................ 45
-Response Body .......................................................................... 45
-Processing Details ...................................................................... 45
-3.11.6
-Timer Events .............................................................................................. 45
-3.11.7  Other Local Events ...................................................................................... 45
-CertificateRotation Details ................................................................................. 45
-Abstract Data Model .................................................................................... 45
-3.12.1
-Timers ...................................................................................................... 45
-3.12.2
-3.12.3
-Initialization ............................................................................................... 45
-3.12.4  Higher-Layer Triggered Events ..................................................................... 45
-3.12.5  Message Processing Events and Sequencing Rules .......................................... 46
-3.12.5.1  Nodes(AgentId={AgentId})/CertificateRotation ........................................ 46
-POST ............................................................................................. 46
-Request Body ............................................................................ 47
-Response Body .......................................................................... 47
-Processing Details ...................................................................... 47
-Timer Events .............................................................................................. 47
-3.12.6
-3.12.7  Other Local Events ...................................................................................... 47
-
-3.12.5.1.1.1
-3.12.5.1.1.2
-3.12.5.1.1.3
-
-3.12.5.1.1
-
-3.12
-
-4  Protocol Examples ................................................................................................. 48
-GetConfiguration Sequence ............................................................................... 48
-GetModule Sequence ........................................................................................ 48
-GetAction Sequence ......................................................................................... 49
-SendStatusReport Sequence .............................................................................. 50
-GetStatusReport Sequence ................................................................................ 51
-RegisterDscAgent Sequence .............................................................................. 52
-SendReport Sequence ....................................................................................... 53
-GetDscAction Sequence .................................................................................... 53
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-
-5  Security ................................................................................................................. 55
-Security Considerations for Implementers ........................................................... 55
-Index of Security Parameters ............................................................................ 55
-
-5.1
-5.2
-
-6  Appendix A: Full JSON Schema .............................................................................. 56
-
-7  Appendix B: Product Behavior ............................................................................... 60
-
-8  Change Tracking .................................................................................................... 62
-
-9  Index ..................................................................................................................... 63
-
-[MS-DSCPM] - v20240423
-Desired State Configuration Pull Model Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 65
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 HTTP Headers](#222-http-headers)
+      - [2.2.2.1 Content-Type](#2221-content-type)
+        - [2.2.2.1.1 Application/octet-stream](#22211-applicationoctet-stream)
+        - [2.2.2.1.2 Application/json](#22212-applicationjson)
+      - [2.2.2.2 Checksum](#2222-checksum)
+      - [2.2.2.3 ChecksumAlgorithm](#2223-checksumalgorithm)
+      - [2.2.2.4 ConfigurationName](#2224-configurationname)
+      - [2.2.2.5 ProtocolVersion](#2225-protocolversion)
+      - [2.2.2.6 AgentId](#2226-agentid)
+      - [2.2.2.7 Authorization](#2227-authorization)
+      - [2.2.2.8 DSC-certificateRotation](#2228-dsc-certificaterotation)
+    - [2.2.3 Common URI Parameters](#223-common-uri-parameters)
+      - [2.2.3.1 ConfigurationId](#2231-configurationid)
+      - [2.2.3.2 ModuleName](#2232-modulename)
+      - [2.2.3.3 ModuleVersion](#2233-moduleversion)
+      - [2.2.3.4 AgentId](#2234-agentid)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 GetConfiguration Versions 1.0 and 1.1 Details](#31-getconfiguration-versions-10-and-11-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Action(ConfigurationId={ConfigurationId})/ConfigurationContent](#3151-actionconfigurationidconfigurationidconfigurationcontent)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 GetModule Versions 1.0 and 1.1 Details](#32-getmodule-versions-10-and-11-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Module(ConfigurationId={ConfigurationId},ModuleName={moduleName},Mo](#3251-moduleconfigurationidconfigurationidmodulenamemodulenamemo)
+        - [3.2.5.1.1 GET](#32511-get)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 GetAction Versions 1.0 and 1.1 Details](#33-getaction-versions-10-and-11-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Action(ConfigurationId={ConfigurationId})/GetAction](#3351-actionconfigurationidconfigurationidgetaction)
+        - [3.3.5.1.1 POST](#33511-post)
+          - [3.3.5.1.1.1 Request Body](#335111-request-body)
+          - [3.3.5.1.1.2 Response Body](#335112-response-body)
+          - [3.3.5.1.1.3 Processing Details](#335113-processing-details)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 SendStatusReport Versions 1.0 and 1.1 Details](#34-sendstatusreport-versions-10-and-11-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Node(ConfigurationID={ConfigurationId})/SendStatusReport](#3451-nodeconfigurationidconfigurationidsendstatusreport)
+        - [3.4.5.1.1 POST](#34511-post)
+          - [3.4.5.1.1.1 Request Body](#345111-request-body)
+          - [3.4.5.1.1.2 Response Body](#345112-response-body)
+          - [3.4.5.1.1.3 Processing Details](#345113-processing-details)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 GetStatusReport Versions 1.0 and 1.1 Details](#35-getstatusreport-versions-10-and-11-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Node(ConfigurationId={ConfigurationId})/StatusReports](#3551-nodeconfigurationidconfigurationidstatusreports)
+        - [3.5.5.1.1 GET](#35511-get)
+          - [3.5.5.1.1.1 Request Body](#355111-request-body)
+          - [3.5.5.1.1.2 Response Body](#355112-response-body)
+          - [3.5.5.1.1.3 Processing Details](#355113-processing-details)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+  - [3.6 GetConfiguration Version 2.0 Details](#36-getconfiguration-version-20-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggered Events](#364-higher-layer-triggered-events)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Nodes(AgentId={AgentId})/](#3651-nodesagentidagentid)
+      - [3.6.5.2 GET](#3652-get)
+        - [3.6.5.2.1 Request Body](#36521-request-body)
+        - [3.6.5.2.2 Response Body](#36522-response-body)
+        - [3.6.5.2.3 Processing Details](#36523-processing-details)
+    - [3.6.6 Timer Events](#366-timer-events)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+  - [3.7 GetModule Version 2.0 Details](#37-getmodule-version-20-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+    - [3.7.5 Message Processing Events and Sequencing Rules](#375-message-processing-events-and-sequencing-rules)
+      - [3.7.5.1 Modules(ModuleName={moduleName},ModuleVersion={moduleVersion})/M](#3751-modulesmodulenamemodulenamemoduleversionmoduleversionm)
+        - [3.7.5.1.1 GET](#37511-get)
+          - [3.7.5.1.1.1 Request Body](#375111-request-body)
+          - [3.7.5.1.1.2 Response Body](#375112-response-body)
+          - [3.7.5.1.1.3 Processing Details](#375113-processing-details)
+    - [3.7.6 Timer Events](#376-timer-events)
+    - [3.7.7 Other Local Events](#377-other-local-events)
+  - [3.8 GetDscAction Version 2.0 Details](#38-getdscaction-version-20-details)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Higher-Layer Triggered Events](#384-higher-layer-triggered-events)
+    - [3.8.5 Message Processing Events and Sequencing Rules](#385-message-processing-events-and-sequencing-rules)
+      - [3.8.5.1 Nodes(AgentId={AgentId})/GetDscAction](#3851-nodesagentidagentidgetdscaction)
+        - [3.8.5.1.1 POST](#38511-post)
+          - [3.8.5.1.1.1 Request Body](#385111-request-body)
+          - [3.8.5.1.1.2 Response Body](#385112-response-body)
+          - [3.8.5.1.1.3 Processing Details](#385113-processing-details)
+    - [3.8.6 Timer Events](#386-timer-events)
+    - [3.8.7 Other Local Events](#387-other-local-events)
+  - [3.9 RegisterDscAgent Version 2 Details](#39-registerdscagent-version-2-details)
+    - [3.9.1 Abstract Data Model](#391-abstract-data-model)
+    - [3.9.2 Timers](#392-timers)
+    - [3.9.3 Initialization](#393-initialization)
+    - [3.9.4 Higher-Layer Triggered Events](#394-higher-layer-triggered-events)
+    - [3.9.5 Message Processing Events and Sequencing Rules](#395-message-processing-events-and-sequencing-rules)
+      - [3.9.5.1 Nodes(AgentId={AgentId})](#3951-nodesagentidagentid)
+        - [3.9.5.1.1 PUT](#39511-put)
+          - [3.9.5.1.1.1 Request Body](#395111-request-body)
+          - [3.9.5.1.1.2 Response Body](#395112-response-body)
+          - [3.9.5.1.1.3 Processing Details](#395113-processing-details)
+    - [3.9.6 Timer Events](#396-timer-events)
+    - [3.9.7 Other Local Events](#397-other-local-events)
+  - [3.10 SendReport Version 2.0 Details](#310-sendreport-version-20-details)
+    - [3.10.1 Abstract Data Model](#3101-abstract-data-model)
+    - [3.10.2 Timers](#3102-timers)
+    - [3.10.3 Initialization](#3103-initialization)
+    - [3.10.4 Higher-Layer Triggered Events](#3104-higher-layer-triggered-events)
+    - [3.10.5 Message Processing Events and Sequencing Rules](#3105-message-processing-events-and-sequencing-rules)
+      - [3.10.5.1 Nodes(AgentID={AgentId})/SendReport](#31051-nodesagentidagentidsendreport)
+        - [3.10.5.1.1 POST](#310511-post)
+          - [3.10.5.1.1.1 Request Body](#3105111-request-body)
+          - [3.10.5.1.1.2 Response Body](#3105112-response-body)
+          - [3.10.5.1.1.3 Processing Details](#3105113-processing-details)
+    - [3.10.6 Timer Events](#3106-timer-events)
+    - [3.10.7 Other Local Events](#3107-other-local-events)
+  - [3.11 GetReports Version 2.0 Details](#311-getreports-version-20-details)
+    - [3.11.1 Abstract Data Model](#3111-abstract-data-model)
+    - [3.11.2 Timers](#3112-timers)
+    - [3.11.3 Initialization](#3113-initialization)
+    - [3.11.4 Higher-Layer Triggered Events](#3114-higher-layer-triggered-events)
+    - [3.11.5 Message Processing Events and Sequencing Rules](#3115-message-processing-events-and-sequencing-rules)
+      - [3.11.5.1 Nodes(AgentId={AgentId})/Reports](#31151-nodesagentidagentidreports)
+        - [3.11.5.1.1 GET](#311511-get)
+          - [3.11.5.1.1.1 Request Body](#3115111-request-body)
+          - [3.11.5.1.1.2 Response Body](#3115112-response-body)
+          - [3.11.5.1.1.3 Processing Details](#3115113-processing-details)
+    - [3.11.6 Timer Events](#3116-timer-events)
+    - [3.11.7 Other Local Events](#3117-other-local-events)
+  - [3.12 CertificateRotation Details](#312-certificaterotation-details)
+    - [3.12.1 Abstract Data Model](#3121-abstract-data-model)
+    - [3.12.2 Timers](#3122-timers)
+    - [3.12.3 Initialization](#3123-initialization)
+    - [3.12.4 Higher-Layer Triggered Events](#3124-higher-layer-triggered-events)
+    - [3.12.5 Message Processing Events and Sequencing Rules](#3125-message-processing-events-and-sequencing-rules)
+      - [3.12.5.1 Nodes(AgentId={AgentId})/CertificateRotation](#31251-nodesagentidagentidcertificaterotation)
+        - [3.12.5.1.1 POST](#312511-post)
+          - [3.12.5.1.1.1 Request Body](#3125111-request-body)
+          - [3.12.5.1.1.2 Response Body](#3125112-response-body)
+          - [3.12.5.1.1.3 Processing Details](#3125113-processing-details)
+    - [3.12.6 Timer Events](#3126-timer-events)
+    - [3.12.7 Other Local Events](#3127-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 GetConfiguration Sequence](#41-getconfiguration-sequence)
+  - [4.2 GetModule Sequence](#42-getmodule-sequence)
+  - [4.3 GetAction Sequence](#43-getaction-sequence)
+  - [4.4 SendStatusReport Sequence](#44-sendstatusreport-sequence)
+  - [4.5 GetStatusReport Sequence](#45-getstatusreport-sequence)
+  - [4.6 RegisterDscAgent Sequence](#46-registerdscagent-sequence)
+  - [4.7 SendReport Sequence](#47-sendreport-sequence)
+  - [4.8 GetDscAction Sequence](#48-getdscaction-sequence)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full JSON Schema](#6-appendix-a-full-json-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Desired State Configuration Pull Model Protocol is based on the Hypertext Transfer Protocol
 (HTTP) (as specified in [RFC2616]). It is used for getting a client's configuration and modules from
@@ -702,7 +403,7 @@ the server and for reporting back the client's status to the server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -766,14 +467,15 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -797,11 +499,11 @@ Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 [RFC4648] Josefsson, S., "The Base16, Base32, and Base64 Data Encodings", RFC 4648, October
 2006, https://www.rfc-editor.org/info/rfc4648
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Desired State Configuration Pull Model Protocol is used to register a client, to get the configuration
 and the module from the server, and to report back some elements to the server.
@@ -811,11 +513,11 @@ binary data. In this specification, the entity that initiates the HTTP connectio
 client, and the entity that responds to the HTTP connection is referred to as the server. With the
 Desired State Configuration Pull Model Protocol, binary data flows from the server to the client.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on HTTP as specified in [RFC2616]. HTTP version 1.1 is used with this protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol does not provide a mechanism for a client to discover the Uniform Resource Locator
 (URL) of the server. Thus, it is a prerequisite that the client obtain the URL of the server before this
@@ -828,7 +530,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Desired State Configuration Pull Model Protocol is capable of downloading the configuration and
 modules from the server.
@@ -845,15 +548,15 @@ specified in [RFC2616] section 11.
 
 Localization: This specification does not specify any localization-dependent protocol behavior.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -864,9 +567,10 @@ Release: April 23, 2024
 
 9 / 65
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Desired State Configuration Pull Model Protocol uses HTTP 1.1, as specified in [RFC2616], as the
 transport layer.
@@ -877,15 +581,15 @@ commonly used because many HTTP proxy servers forward only HTTP traffic that use
 The protocol uses the access authentication functionality of the HTTP layer as specified in [RFC2616]
 section 11.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 None.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 None.
 
-2.2.2  HTTP Headers
+#### 2.2.2 HTTP Headers
 
 The Desired State Configuration Pull Model Protocol uses existing headers as specified in [RFC2616].
 
@@ -911,7 +615,7 @@ Checksum
 
 Section 2.2.2.2
 
-2.2.2.1  Content-Type
+##### 2.2.2.1 Content-Type
 
 The Content-Type header specifies the type of data that is included in the body of the GET or POST
 request.
@@ -928,20 +632,21 @@ Release: April 23, 2024
 
 10 / 65
 
-Example: Content-Type: application/octet-stream
+
+Example: Content-Type: application/octet-stream
 
  Content-Type: application/json;charset=UTF-8
 
-2.2.2.1.1 Application/octet-stream
+###### 2.2.2.1.1 Application/octet-stream
 
 This Content-Type is defined only for use in a request sent to the server and used in a GET response
 to get the module or configuration from a server.
 
-2.2.2.1.2 Application/json
+###### 2.2.2.1.2 Application/json
 
 This Content-Type is defined only for use in a request sent to the server and used in a POST response.
 
-2.2.2.2  Checksum
+##### 2.2.2.2 Checksum
 
 The Checksum header field is defined only for use in a response message sent to a client as part of a
 GET request for the module and configuration.
@@ -954,7 +659,7 @@ Example: "Checksum":"ef52442708671f7af8dc5a1fc444a601fa25d8290d6b91cda945427b26e
 
 "Checksum":""
 
-2.2.2.3  ChecksumAlgorithm
+##### 2.2.2.3 ChecksumAlgorithm
 
 The ChecksumAlgorithm header field specifies the checksum algorithm used to generate the
 checksum.
@@ -964,7 +669,7 @@ checksum.
 
 Example: "ChecksumAlgorithm":"SHA-256"
 
-2.2.2.4  ConfigurationName
+##### 2.2.2.4 ConfigurationName
 
 The ConfigurationName header field SHOULD<1> be used in the request message sent to the server
 as part of a GET request for the configuration.
@@ -975,7 +680,7 @@ as part of a GET request for the configuration.
 
 Example: "ConfigurationName":"SubPart1"
 
-2.2.2.5  ProtocolVersion
+##### 2.2.2.5 ProtocolVersion
 
 The ProtocolVersion header field SHOULD<2> be used in the request message sent to the server as
 part of every request. The current version is hardcoded to 2.0.
@@ -989,12 +694,13 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- ProtocolVersion-Namevalue = Element *(Element)
+
+ ProtocolVersion-Namevalue = Element *(Element)
  Element = DIGIT
 
 Example: "ProtocolVersion":"2.0"
 
-2.2.2.6  AgentId
+##### 2.2.2.6 AgentId
 
 The AgentId header field SHOULD<3> be used in the request message sent to the server as part of
 every request. The AgentId is a unique GUID value generated once and stored in the Registry.
@@ -1005,7 +711,7 @@ every request. The AgentId is a unique GUID value generated once and stored in t
 
 Example: "AgentId":"34C8104D-F7BA-4672-8226-0809B0A3BEC3"
 
-2.2.2.7  Authorization
+##### 2.2.2.7 Authorization
 
 The Authorization header field SHOULD<4> be used in the request message sent to the server as part
 of every request. The Shared authorization key is generated during the registration and serves to
@@ -1017,7 +723,7 @@ verify the payload sent to the server.
 
 Example: "Authorization": "Shared GKtPgocze1AM/pgc3LQzyGpDCRs15KoKx/2eXxlL8+w="
 
-2.2.2.8  DSC-certificateRotation
+##### 2.2.2.8 DSC-certificateRotation
 
 The server MAY<5> send a DSC-certificateRotation response header field for every message sent to
 the client except for CertificateRotation (section 3.12) and RegisterDscAgent (section 3.9)
@@ -1028,7 +734,7 @@ that the client SHOULD attempt the CertificateRotation message.
 DQUOTE CRLF
  DSC-certificateRotation-Namevalue = "True"
 
-2.2.3  Common URI Parameters
+#### 2.2.3 Common URI Parameters
 
 The following table summarizes the set of common URI parameters defined by this protocol.
 
@@ -1053,12 +759,13 @@ Release: April 23, 2024
 
 12 / 65
 
-2.2.3.1  ConfigurationId
+
+##### 2.2.3.1 ConfigurationId
 
 The ConfigurationId parameter is a universally unique identifier (UUID) as specified in [RFC4122]
 section 3.
 
-2.2.3.2  ModuleName
+##### 2.2.3.2 ModuleName
 
 The ModuleName parameter is a string that is used by the server to identify a specific module.
 
@@ -1066,7 +773,7 @@ MODULENAME = Element *(Element)
 
 Element = DIGIT / ALPHA / "_"
 
-2.2.3.3  ModuleVersion
+##### 2.2.3.3 ModuleVersion
 
 The ModuleVersion parameter identifies the version of a module. It can be either an empty string or a
 string containing two to four groups of digits where the groups are separated by a period.
@@ -1077,7 +784,7 @@ string containing two to four groups of digits where the groups are separated by
    / SQUOTE SQUOTE (NULL character)
  MULTIDIGIT = DIGIT *[DIGIT]
 
-2.2.3.4  AgentId
+##### 2.2.3.4 AgentId
 
 The AgentId parameter SHOULD<6> be used in the request message sent to the server as part of
 every request. The AgentId is a unique GUID value generated once and stored in the Registry.
@@ -1097,15 +804,16 @@ Release: April 23, 2024
 
 13 / 65
 
-3  Protocol Details
 
-3.1  GetConfiguration Versions 1.0 and 1.1 Details
+## 3 Protocol Details
+
+### 3.1 GetConfiguration Versions 1.0 and 1.1 Details
 
 The purpose of the GetConfiguration request is to get the configuration from the server. The
 GetConfiguration request maps to an HTTP GET request in which the Content-Type header is an
 application/octet-stream.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1123,19 +831,19 @@ ServerConfigurationData: A binary large object (BLOB). This data is not interpre
 
 this protocol and is passed on to higher layers as is.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The server MUST match the ConfigurationId from the URL and, if specified, the ConfigurationName
 from the headers with the ServerConfigurationId in the ConfigurationTable. The server MUST use
@@ -1166,7 +874,8 @@ Release: April 23, 2024
 
 14 / 65
 
-Status code  Reason phrase  Description
+
+Status code  Reason phrase  Description
 
 200
 
@@ -1198,7 +907,7 @@ Required  As specified in section 2.2.2.2.
 
 checksumalgorithm  Required  As specified in section 2.2.2.3.
 
-3.1.5.1  Action(ConfigurationId={ConfigurationId})/ConfigurationContent
+##### 3.1.5.1 Action(ConfigurationId={ConfigurationId})/ConfigurationContent
 
 The following HTTP method is allowed to be performed on this resource.
 
@@ -1208,7 +917,7 @@ GET
 
 Gets the configuration from the server.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 The URL specified by the client in the HTTP request line of the GET request identifies a "configuration
 point" targeted for the client. The server can have multiple configuration points and different
@@ -1247,7 +956,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The syntax of the GetConfiguration response is defined as follows:
+
+The syntax of the GetConfiguration response is defined as follows:
 
  DSC-GetConfiguration-Response  = Status-Line DSC-GetConfigurationResp-Headers DSC-
 GetConfigurationResp-Body
@@ -1292,15 +1002,15 @@ Bad request.
 
 The resource is not found.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 None.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 In the response body, configuration represents a BLOB.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The client gets the configuration from the server as content-type application/octet-stream in the
 response body for the GetConfiguration request. The server MUST send the checksum in the
@@ -1323,20 +1033,21 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  GetModule Versions 1.0 and 1.1 Details
+### 3.2 GetModule Versions 1.0 and 1.1 Details
 
 The GetModule request gets the module from the server. The GetModule request maps to HTTP GET
 request with content-type as application/octet-stream as part of the request.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1356,19 +1067,19 @@ ServerModuleData: A BLOB of data. This data is not interpreted as part of this p
 
 passed on to higher layers as is.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The server MUST match ConfigurationId from the URL with ServerConfigurationId, ModuleName
 with ServerModuleName, and ModuleVersion with ServerModuleVersion of the ModuleTable. The
@@ -1385,7 +1096,8 @@ Release: April 23, 2024
 
 17 / 65
 
-Resource
+
+Resource
 
 Module(ConfigurationId={ConfigurationId},ModuleName={moduleName},ModuleVersion={moduleV
 ersion})/ModuleContent
@@ -1432,7 +1144,7 @@ Required  As specified in section 2.2.2.2.
 
 ChecksumAlgorithm  Required  As specified in section 2.2.2.3.
 
-3.2.5.1  Module(ConfigurationId={ConfigurationId},ModuleName={moduleName},Mo
+##### 3.2.5.1 Module(ConfigurationId={ConfigurationId},ModuleName={moduleName},Mo
 
 duleVersion={moduleVersion})/ModuleContent
 
@@ -1444,7 +1156,7 @@ GET
 
 Gets the module from the server.
 
-3.2.5.1.1 GET
+###### 3.2.5.1.1 GET
 
 The URL specified by the client in the HTTP request line of the GET request identifies a "module point"
 targeted for the client. The server might have multiple module points and different modules points can
@@ -1471,7 +1183,8 @@ Release: April 23, 2024
 
 18 / 65
 
- DSC-GetModuleSetReq-Header-OPT    = Connection  ; section 14.10 of [RFC2616]
+
+ DSC-GetModuleSetReq-Header-OPT    = Connection  ; section 14.10 of [RFC2616]
  DSC-GetModuleRequest-URI-End = "Module(ConfigurationId=" SQUOTE CONFIGURATIONID SQUOTE
                                 ",ModuleName=" SQUOTE MODULENAME SQUOTE
                                 ",ModuleVersion=" MODULEVERSION
@@ -1529,11 +1242,11 @@ Bad request.
 
 The resource is not found.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 None.
 
-3.2.5.1.1.2  Response Body
+###### 3.2.5.1.1.2 Response Body
 
 ModuleData represents a binary large object (BLOB) .
 
@@ -1544,7 +1257,8 @@ Release: April 23, 2024
 
 19 / 65
 
-3.2.5.1.1.3  Processing Details
+
+###### 3.2.5.1.1.3 Processing Details
 
 The client gets the module from the server as content-type application/octet-stream in the response
 body for GetModule request. The server MUST send the checksum in response headers as specified in
@@ -1559,37 +1273,37 @@ specified in [RFC4634] section 4.1.
 
 Perform base16 encoding of the computed hash as specified in [RFC4648] in section 8.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  GetAction Versions 1.0 and 1.1 Details
+### 3.3 GetAction Versions 1.0 and 1.1 Details
 
 The purpose of the GetAction request is to get the action, as specified in section 3.3.5.1.1.2, from the
 server. GetAction request maps to HTTP POST request with content-type as application/json, as
 specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -1614,7 +1328,8 @@ Release: April 23, 2024
 
 20 / 65
 
-Status code  Reason phrase  Description
+
+Status code  Reason phrase  Description
 
 400
 
@@ -1628,7 +1343,7 @@ NOT FOUND
 
 The resource is not found.
 
-3.3.5.1  Action(ConfigurationId={ConfigurationId})/GetAction
+##### 3.3.5.1 Action(ConfigurationId={ConfigurationId})/GetAction
 
 The following HTTP method can be performed on this resource.
 
@@ -1638,7 +1353,7 @@ POST
 
 POSTs the data to the server and gets action from the server.
 
-3.3.5.1.1 POST
+###### 3.3.5.1.1 POST
 
 The URL specified by the client in the HTTP request line of the POST request identifies the action point
 targeted for the client. The server can have multiple action points and different action points can have
@@ -1684,7 +1399,8 @@ Release: April 23, 2024
 
 21 / 65
 
- DSC-GetAction-Response  = Status-Line DSC-GetActionResp-Headers DSC-GetActionResp-Body
+
+ DSC-GetAction-Response  = Status-Line DSC-GetActionResp-Headers DSC-GetActionResp-Body
 
  DSC-GetActionResp-Headers = *( DSC-GetActionResp-Header-REQ
                             / DSC-GetActionResp-Header-OPT)
@@ -1711,7 +1427,7 @@ Bad request.
 
 The resource is not found.
 
-3.3.5.1.1.1  Request Body
+###### 3.3.5.1.1.1 Request Body
 
 The ActionRequest packet is used by the client to transfer the following data fields:
 
@@ -1725,13 +1441,13 @@ StatusCode: A value indicating a number between –2147483648 and 2147483647.
 
 ConfigurationName: An opaque name as specified in section 2.2.2.4.
 
-3.3.5.1.1.2  Response Body
+###### 3.3.5.1.1.2 Response Body
 
 The ActionContent packet is used by the server to transfer the following data field:
 
 Value: MUST be either GetConfiguration, Retry<7>, or OK.
 
-3.3.5.1.1.3  Processing Details
+###### 3.3.5.1.1.3 Processing Details
 
 The client sends the GetAction request with content-type as application/json to the server with a
 request body as specified in section 3.3.5.1.1.1. The client MUST include Checksum and
@@ -1739,11 +1455,11 @@ ChecksumAlgorithm in the request body. The client SHOULD include StatusCode in t
 body. The server responds back with content-type as application/json with response body as specified
 in section 3.3.5.1.1.2.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1754,29 +1470,30 @@ Release: April 23, 2024
 
 22 / 65
 
-3.4  SendStatusReport Versions 1.0 and 1.1 Details
+
+### 3.4 SendStatusReport Versions 1.0 and 1.1 Details
 
 The SendStatusReport request SHOULD<8> send the status report, as specified in section 3.4.5.1.1.1,
 to the server. The SendStatusReport request maps to the HTTP POST request with content-type as
 application/json, as specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 None.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -1806,7 +1523,7 @@ NOT FOUND
 
 The resource is not found.
 
-3.4.5.1  Node(ConfigurationID={ConfigurationId})/SendStatusReport
+##### 3.4.5.1 Node(ConfigurationID={ConfigurationId})/SendStatusReport
 
 The following HTTP method can be performed on this resource.
 
@@ -1816,7 +1533,7 @@ POST
 
 Posts the data to the server and gets status from the server.
 
-3.4.5.1.1 POST
+###### 3.4.5.1.1 POST
 
 The URL specified by the client in the HTTP request line of the POST request identifies the status point
 targeted for the client. The server can have multiple status points that have different access
@@ -1828,7 +1545,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-permissions associated with them. For example, some status points require HTTP access
+
+permissions associated with them. For example, some status points require HTTP access
 authentication (as specified in [RFC2616] section 11). As another example, status points allow only
 clients that connect from a specific IP address.
 
@@ -1890,7 +1608,7 @@ Bad request.
 
 The resource is not found.
 
-3.4.5.1.1.1  Request Body
+###### 3.4.5.1.1.1 Request Body
 
 The StatusReportRequest packet is used by the client to transfer the following data fields:
 
@@ -1901,7 +1619,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-JobId: The JobId parameter is a universally unique identifier (UUID) as specified in [RFC4122]
+
+JobId: The JobId parameter is a universally unique identifier (UUID) as specified in [RFC4122]
 
 section 3.
 
@@ -1931,35 +1650,35 @@ Errors: A set of string values that represents the errors for an operation on th
 
 StatusData: A set of string values that represents the status of an operation on the client.
 
-3.4.5.1.1.2  Response Body
+###### 3.4.5.1.1.2 Response Body
 
 The StatusReportContent packet does not contain any data.
 
-3.4.5.1.1.3  Processing Details
+###### 3.4.5.1.1.3 Processing Details
 
 The client sends the SendStatusReport request with content-type as application/json to the server
 with a request body as specified in section 3.4.5.1.1.1. The client MUST include JobId in the request
 body. The server responds back with status codes as specified in section 3.4.5.1.1.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
-3.5  GetStatusReport Versions 1.0 and 1.1 Details
+### 3.5 GetStatusReport Versions 1.0 and 1.1 Details
 
 The GetStatusReport request SHOULD<9> get the status report from the server, as specified in
 section 3.5.5.1.1. The GetStatusReport request maps to the HTTP GET request with content-type as
 application/json, as specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 None.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 None.
 
@@ -1970,15 +1689,16 @@ Release: April 23, 2024
 
 25 / 65
 
-3.5.3  Initialization
+
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
 None.
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -2013,7 +1733,7 @@ NOT FOUND
 
 The resource is not found.
 
-3.5.5.1  Node(ConfigurationId={ConfigurationId})/StatusReports
+##### 3.5.5.1 Node(ConfigurationId={ConfigurationId})/StatusReports
 
 The following HTTP method can be performed on this resource.
 
@@ -2025,7 +1745,7 @@ GET
 
 Gets the status report from the server.
 
-3.5.5.1.1 GET
+###### 3.5.5.1.1 GET
 
 The URL specified by the client in the HTTP request line of the GET request identifies the "status point"
 targeted for the client. The server might have multiple status points and different status points might
@@ -2054,7 +1774,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- ConfigurationID = UUID ; as specified in [RFC4122]
+
+ ConfigurationID = UUID ; as specified in [RFC4122]
  JOBID = UUID; as specified in [RFC4122]
 
  DSC-GetStatusReportSetReq-Headers = *( DSC-GetStatusReportSetReq-Header-REQ
@@ -2098,21 +1819,21 @@ Bad request.
 
 The resource is not found.
 
-3.5.5.1.1.1  Request Body
+###### 3.5.5.1.1.1 Request Body
 
 There is no information transferred in the request body.
 
-3.5.5.1.1.2  Response Body
+###### 3.5.5.1.1.2 Response Body
 
 StatusReportContent represents a BLOB.
 
-3.5.5.1.1.3  Processing Details
+###### 3.5.5.1.1.3 Processing Details
 
 The client sends the GetStatusReport request with the content-type as application/json to the server
 with a request body as specified in section 3.5.5.1.1.1. The server responds back with status codes as
 specified in section 3.5.5.1.1.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 None.
 
@@ -2123,17 +1844,18 @@ Release: April 23, 2024
 
 27 / 65
 
-3.5.7  Other Local Events
+
+#### 3.5.7 Other Local Events
 
 None.
 
-3.6  GetConfiguration Version 2.0 Details
+### 3.6 GetConfiguration Version 2.0 Details
 
 The GetConfiguration request SHOULD<10> get the configuration from the server. The
 GetConfiguration request maps to an HTTP GET request in which the Content-Type header is an
 application/octet-stream.
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2151,19 +1873,19 @@ ServerConfigurationData: A BLOB that is not interpreted as part of this protocol
 
 to higher layers as is.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 None.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 None.
 
-3.6.4  Higher-Layer Triggered Events
+#### 3.6.4 Higher-Layer Triggered Events
 
 None.
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
 The server MUST match the AgentId (section 2.2.3.4) from the URL and, if specified, the
 ConfigurationName (section 2.2.2.4) from the headers with the ServerAgentId in the
@@ -2189,7 +1911,8 @@ Release: April 23, 2024
 
 28 / 65
 
-Request header  Usage
+
+Request header  Usage
 
 Value
 
@@ -2241,7 +1964,7 @@ protocolversion
 
 Required  See section 2.2.2.5.
 
-3.6.5.1  Nodes(AgentId={AgentId})/
+##### 3.6.5.1 Nodes(AgentId={AgentId})/
 
 Configurations(ConfigurationName={ConfigurationName})/ConfigurationCon
 tent
@@ -2254,7 +1977,7 @@ GET
 
 Gets the configuration from the server.
 
-3.6.5.2  GET
+##### 3.6.5.2 GET
 
 The URL specified by the client in the HTTP request line of the GET request identifies a "configuration
 point" targeted for the client. The server can have multiple configuration points and different
@@ -2276,7 +1999,8 @@ Release: April 23, 2024
 
 29 / 65
 
- Request-URI = Request-URI-Start DSC-GetConfigurationRequest-URI-End
+
+ Request-URI = Request-URI-Start DSC-GetConfigurationRequest-URI-End
 
  DSC-GetConfigurationSetReq-Headers = *( DSC-GetConfigurationSetReq-Header-REQ
       / DSC-GetConfigurationSetReq-Header-OPT )
@@ -2346,7 +2070,7 @@ Not authorized.
 
 The resource is not found.
 
-3.6.5.2.1 Request Body
+###### 3.6.5.2.1 Request Body
 
 [MS-DSCPM] - v20240423
 Desired State Configuration Pull Model Protocol
@@ -2355,13 +2079,14 @@ Release: April 23, 2024
 
 30 / 65
 
-None.
 
-3.6.5.2.2 Response Body
+None.
+
+###### 3.6.5.2.2 Response Body
 
 In the response body, the configuration represents a BLOB.
 
-3.6.5.2.3 Processing Details
+###### 3.6.5.2.3 Processing Details
 
 The client gets the configuration from the server as content-type application/octet-stream in the
 response body for the GetConfiguration request. The server MUST send the checksum in the response
@@ -2378,20 +2103,20 @@ specified in [RFC4634] section 4.1.
 
 Perform base16 encoding of the computed hash as specified in [RFC4648] section 8.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
 None.
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
 None.
 
-3.7  GetModule Version 2.0 Details
+### 3.7 GetModule Version 2.0 Details
 
 The GetModule request SHOULD<11> get the module from the server. The GetModule request maps
 to the HTTP GET request with the content-type as application/octet-stream as part of the request.
 
-3.7.1  Abstract Data Model
+#### 3.7.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2411,7 +2136,7 @@ ServerModuleData: A BLOB of data. This data is not interpreted as part of this p
 
 passed on to higher layers as is.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 None.
 
@@ -2422,15 +2147,16 @@ Release: April 23, 2024
 
 31 / 65
 
-3.7.3  Initialization
+
+#### 3.7.3 Initialization
 
 None.
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
 None.
 
-3.7.5  Message Processing Events and Sequencing Rules
+#### 3.7.5 Message Processing Events and Sequencing Rules
 
 The server MUST match ModuleName with ServerModuleName, and ModuleVersion with the
 ServerModuleVersion of the ModuleTable. The server MUST use case-insensitive ordinal comparison to
@@ -2499,7 +2225,7 @@ protocolversion
 
 Required  See section 2.2.2.5.
 
-3.7.5.1  Modules(ModuleName={moduleName},ModuleVersion={moduleVersion})/M
+##### 3.7.5.1 Modules(ModuleName={moduleName},ModuleVersion={moduleVersion})/M
 
 oduleContent
 
@@ -2512,13 +2238,14 @@ Release: April 23, 2024
 
 32 / 65
 
-HTTP method  Description
+
+HTTP method  Description
 
 GET
 
 Gets the module from the server.
 
-3.7.5.1.1 GET
+###### 3.7.5.1.1 GET
 
 The URL specified by the client in the HTTP request line of the GET request identifies a "module point"
 targeted for the client. The server might have multiple module points and different module points can
@@ -2586,7 +2313,8 @@ Release: April 23, 2024
 
 33 / 65
 
-Response header  Usage
+
+Response header  Usage
 
 Value
 
@@ -2612,15 +2340,15 @@ Not authorized.
 
 The resource is not found.
 
-3.7.5.1.1.1  Request Body
+###### 3.7.5.1.1.1 Request Body
 
 None.
 
-3.7.5.1.1.2  Response Body
+###### 3.7.5.1.1.2 Response Body
 
 ModuleData represents a BLOB.
 
-3.7.5.1.1.3  Processing Details
+###### 3.7.5.1.1.3 Processing Details
 
 The client gets the module from the server as content-type application/octet-stream in the response
 body for the GetModule request. The server MUST send the checksum in response headers as
@@ -2636,21 +2364,21 @@ specified in [RFC4634] section 4.1.
 
 Perform base16 encoding of the computed hash as specified in [RFC4648] in section 8.
 
-3.7.6  Timer Events
+#### 3.7.6 Timer Events
 
 None.
 
-3.7.7  Other Local Events
+#### 3.7.7 Other Local Events
 
 None.
 
-3.8  GetDscAction Version 2.0 Details
+### 3.8 GetDscAction Version 2.0 Details
 
 The GetDscAction request SHOULD<12> get the action, as specified in section 3.8.5.1.1.2, from the
 server. The GetDscAction request maps to HTTP POST request with content-type as application/json,
 as specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 None.
 
@@ -2661,19 +2389,20 @@ Release: April 23, 2024
 
 34 / 65
 
-3.8.2  Timers
+
+#### 3.8.2 Timers
 
 None.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
 None.
 
-3.8.4  Higher-Layer Triggered Events
+#### 3.8.4 Higher-Layer Triggered Events
 
 None.
 
-3.8.5  Message Processing Events and Sequencing Rules
+#### 3.8.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -2707,7 +2436,7 @@ NOT FOUND
 
 The resource is not found.
 
-3.8.5.1  Nodes(AgentId={AgentId})/GetDscAction
+##### 3.8.5.1 Nodes(AgentId={AgentId})/GetDscAction
 
 The following HTTP method is allowed to be performed on this resource.
 
@@ -2717,7 +2446,7 @@ POST
 
 POSTs the data to the server and gets action from the server.
 
-3.8.5.1.1 POST
+###### 3.8.5.1.1 POST
 
 The URL specified by the client in the HTTP request line of the POST request identifies the action point
 targeted for the client. The server can have multiple action points and different action points can have
@@ -2737,7 +2466,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- DSC-GetDscAction-Req-Line   = "POST" SP Request-URI SP HTTP-Version CRLF
+
+ DSC-GetDscAction-Req-Line   = "POST" SP Request-URI SP HTTP-Version CRLF
  Request-URI = Request-URI-Start DSC-GetDscActionRequest-URI-End
 
  DSC-GetDscActionRequest-URI-End = "Nodes(AgentId=" SQUOTE AGENTID SQUOTE RBRACKET FSLASH
@@ -2793,7 +2523,7 @@ Unauthorized.
 
 The resource is not found.
 
-3.8.5.1.1.1  Request Body
+###### 3.8.5.1.1.1 Request Body
 
 The ActionRequest packet is used by the client to transfer the following data fields:
 
@@ -2808,11 +2538,12 @@ Release: April 23, 2024
 
 36 / 65
 
-ChecksumAlgorithm: The algorithm for the Checksum as specified in section 2.2.2.3.
+
+ChecksumAlgorithm: The algorithm for the Checksum as specified in section 2.2.2.3.
 
 ConfigurationName: An opaque name as specified in section 2.2.2.4.
 
-3.8.5.1.1.2  Response Body
+###### 3.8.5.1.1.2 Response Body
 
 The ActionContent packet is used by the server to transfer the following data fields:
 
@@ -2824,40 +2555,40 @@ ConfigurationName: An opaque name as specified in section 2.2.2.4.
 
 Status: MUST be either GetConfiguration, UpdateMetaConfiguration, Retry, or OK.
 
-3.8.5.1.1.3  Processing Details
+###### 3.8.5.1.1.3 Processing Details
 
 The client sends the GetDscAction request with content-type as application/json to the server with a
 request body as specified in section 3.8.5.1.1.1. The client MAY include ClientStatus in the request
 body. The server responds back with content-type as application/json with response body as specified
 in section 3.8.5.1.1.2.
 
-3.8.6  Timer Events
+#### 3.8.6 Timer Events
 
 None.
 
-3.8.7  Other Local Events
+#### 3.8.7 Other Local Events
 
 None.
 
-3.9  RegisterDscAgent Version 2 Details
+### 3.9 RegisterDscAgent Version 2 Details
 
 The RegisterDscAgent request SHOULD<13> register a client with a server, as specified in section
 3.9.5.1.1.1. The RegisterDscAgent request maps to the HTTP PUT request with content-type as
 application/json, as specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.9.1  Abstract Data Model
+#### 3.9.1 Abstract Data Model
 
 None.
 
-3.9.2  Timers
+#### 3.9.2 Timers
 
 None.
 
-3.9.3  Initialization
+#### 3.9.3 Initialization
 
 None.
 
-3.9.4  Higher-Layer Triggered Events
+#### 3.9.4 Higher-Layer Triggered Events
 
 None.
 
@@ -2868,7 +2599,8 @@ Release: April 23, 2024
 
 37 / 65
 
-3.9.5  Message Processing Events and Sequencing Rules
+
+#### 3.9.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -2905,7 +2637,7 @@ NOT FOUND
 
 The resource is not found.
 
-3.9.5.1  Nodes(AgentId={AgentId})
+##### 3.9.5.1 Nodes(AgentId={AgentId})
 
 The following HTTP method can be performed on this resource:
 
@@ -2917,7 +2649,7 @@ PUT
 
 Sends the registration to the server.
 
-3.9.5.1.1 PUT
+###### 3.9.5.1.1 PUT
 
 The URL specified by the client in the HTTP request line of the PUT request identifies the "registration
 point" targeted for the client. The server might have multiple registration points and different
@@ -2957,7 +2689,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- DSC-RegisterDscAgentReq-Body = RegisterDscAgentRequest ; section 3.9.5.1.1.1
+
+ DSC-RegisterDscAgentReq-Body = RegisterDscAgentRequest ; section 3.9.5.1.1.1
 
 The syntax of the RegisterDscAgent response is defined as follows:
 
@@ -2989,7 +2722,7 @@ Bad request.
 
 The resource is not found.
 
-3.9.5.1.1.1  Request Body
+###### 3.9.5.1.1.1 Request Body
 
 The RegisterDscAgentRequest packet is used by the client to transfer the following data fields:
 
@@ -3016,11 +2749,11 @@ PublicKey: This value describes the certificate generated on the client. The val
 base64 encoded raw bytes of the certificate’s public key followed by ‘;’ followed by the OID of
 the public key’s hash algorithm.<14>
 
-3.9.5.1.1.2  Response Body
+###### 3.9.5.1.1.2 Response Body
 
 RegisterDscAgentContent represents a BLOB.
 
-3.9.5.1.1.3  Processing Details
+###### 3.9.5.1.1.3 Processing Details
 
 [MS-DSCPM] - v20240423
 Desired State Configuration Pull Model Protocol
@@ -3029,41 +2762,42 @@ Release: April 23, 2024
 
 39 / 65
 
-The client sends the RegisterDscAgent request with the content-type as application/json to the server
+
+The client sends the RegisterDscAgent request with the content-type as application/json to the server
 with a request body as specified in section 3.9.5.1.1.1. The server responds back with status codes as
 specified in section 3.9.5.1.1.
 
-3.9.6  Timer Events
+#### 3.9.6 Timer Events
 
 None.
 
-3.9.7  Other Local Events
+#### 3.9.7 Other Local Events
 
 None.
 
-3.10  SendReport Version 2.0 Details
+### 3.10 SendReport Version 2.0 Details
 
 The SendReport request SHOULD<15> send the status report, as specified in section 3.10.5.1.1.1, to
 the server. The SendReport request maps to the HTTP POST request with content-type as
 application/json, as specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.10.1 Abstract Data Model
+#### 3.10.1 Abstract Data Model
 
 None.
 
-3.10.2 Timers
+#### 3.10.2 Timers
 
 None.
 
-3.10.3 Initialization
+#### 3.10.3 Initialization
 
 None.
 
-3.10.4 Higher-Layer Triggered Events
+#### 3.10.4 Higher-Layer Triggered Events
 
 None.
 
-3.10.5 Message Processing Events and Sequencing Rules
+#### 3.10.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -3104,9 +2838,10 @@ Release: April 23, 2024
 
 40 / 65
 
-3.10.5.1
 
-Nodes(AgentID={AgentId})/SendReport
+##### 3.10.5.1 Nodes(AgentID={AgentId})/SendReport
+
+
 
 The following HTTP method can be performed on this resource.
 
@@ -3116,9 +2851,9 @@ POST
 
 Posts the data to the server and gets status from the server.
 
-3.10.5.1.1
+###### 3.10.5.1.1 POST
 
-POST
+
 
 The URL specified by the client in the HTTP request line of the POST request identifies the status point
 targeted for the client. The server can have multiple status points that have different access
@@ -3176,7 +2911,8 @@ Release: April 23, 2024
 
 41 / 65
 
-Status code  Description
+
+Status code  Description
 
 200
 
@@ -3194,7 +2930,7 @@ Unauthorized.
 
 The resource is not found.
 
-3.10.5.1.1.1  Request Body
+###### 3.10.5.1.1.1 Request Body
 
 The ReportRequest packet is used by the client to transfer the following data fields:
 
@@ -3234,11 +2970,11 @@ AdditionalData: An array of key value pairs that represents additional data that
 
 to the report server.
 
-3.10.5.1.1.2  Response Body
+###### 3.10.5.1.1.2 Response Body
 
 The ReportContent packet does not contain any data.
 
-3.10.5.1.1.3  Processing Details
+###### 3.10.5.1.1.3 Processing Details
 
 The client sends the SendReport request with content-type as application/json to the server with a
 request body as specified in section 3.10.5.1.1.1. The client MUST include JobId in the request body.
@@ -3251,37 +2987,38 @@ Release: April 23, 2024
 
 42 / 65
 
-3.10.6 Timer Events
+
+#### 3.10.6 Timer Events
 
 None.
 
-3.10.7 Other Local Events
+#### 3.10.7 Other Local Events
 
 None.
 
-3.11  GetReports Version 2.0 Details
+### 3.11 GetReports Version 2.0 Details
 
 The GetReports request SHOULD<16> get the status report from the server, as specified in section
 3.11.5.1.1.1. The GetReports request maps to the HTTP GET request with content-type as
 application/json, as specified in Appendix A: Full JSON Schema (section 6), as part of the request.
 
-3.11.1 Abstract Data Model
+#### 3.11.1 Abstract Data Model
 
 None.
 
-3.11.2 Timers
+#### 3.11.2 Timers
 
 None.
 
-3.11.3 Initialization
+#### 3.11.3 Initialization
 
 None.
 
-3.11.4 Higher-Layer Triggered Events
+#### 3.11.4 Higher-Layer Triggered Events
 
 None.
 
-3.11.5 Message Processing Events and Sequencing Rules
+#### 3.11.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -3324,9 +3061,9 @@ NOT FOUND
 
 The resource is not found.
 
-3.11.5.1
+##### 3.11.5.1 Nodes(AgentId={AgentId})/Reports
 
-Nodes(AgentId={AgentId})/Reports
+
 
 The following HTTP method can be performed on this resource.
 
@@ -3337,7 +3074,8 @@ Release: April 23, 2024
 
 43 / 65
 
-HTTP Method
+
+HTTP Method
 
 Description
 
@@ -3345,7 +3083,7 @@ GET
 
 Gets the report from the server.
 
-3.11.5.1.1  GET
+###### 3.11.5.1.1 GET
 
 The URL specified by the client in the HTTP request line of the GET request identifies the "reporting
 point" targeted for the client. The server might have multiple reporting points and different reporting
@@ -3414,35 +3152,36 @@ Release: April 23, 2024
 
 44 / 65
 
-Status code  Description
+
+Status code  Description
 
 404
 
 The resource is not found.
 
-3.11.5.1.1.1  Request Body
+###### 3.11.5.1.1.1 Request Body
 
 There is no information transferred in the request body.
 
-3.11.5.1.1.2  Response Body
+###### 3.11.5.1.1.2 Response Body
 
 ReportContent represents a BLOB.
 
-3.11.5.1.1.3  Processing Details
+###### 3.11.5.1.1.3 Processing Details
 
 The client sends the GetReports request with the content-type as application/json to the server with a
 request body as specified in section 3.11.5.1.1.1. The server responds back with status codes as
 specified in section 3.11.5.1.1.2.
 
-3.11.6 Timer Events
+#### 3.11.6 Timer Events
 
 None.
 
-3.11.7 Other Local Events
+#### 3.11.7 Other Local Events
 
 None.
 
-3.12  CertificateRotation Details
+### 3.12 CertificateRotation Details
 
 With the CertificateRotation request, the server MUST rotate the client certificate with the new
 certificate as specified in section 3.12.5.1.1.1.<17> The CertificateRotation request maps to the HTTP
@@ -3452,19 +3191,19 @@ POST request with content-type as application/json, as specified in Appendix A: 
 The server MAY reject the CertificateRotation request if server has not sent a DSC-CertificateRotation
 response header in any of the previous responses (section 2.2.2.8).
 
-3.12.1 Abstract Data Model
+#### 3.12.1 Abstract Data Model
 
 None.
 
-3.12.2 Timers
+#### 3.12.2 Timers
 
 None.
 
-3.12.3 Initialization
+#### 3.12.3 Initialization
 
 None.
 
-3.12.4 Higher-Layer Triggered Events
+#### 3.12.4 Higher-Layer Triggered Events
 
 None.
 
@@ -3475,7 +3214,8 @@ Release: April 23, 2024
 
 45 / 65
 
-3.12.5 Message Processing Events and Sequencing Rules
+
+#### 3.12.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -3512,9 +3252,9 @@ NOT FOUND
 
 The resource is not found.
 
-3.12.5.1
+##### 3.12.5.1 Nodes(AgentId={AgentId})/CertificateRotation
 
-Nodes(AgentId={AgentId})/CertificateRotation
+
 
 The following HTTP method can be performed on this resource:
 
@@ -3526,9 +3266,9 @@ POST
 
 Rotate the client certificate to a new certificate as specified in the request.
 
-3.12.5.1.1
+###### 3.12.5.1.1 POST
 
-POST
+
 
 The URL specified by the client in the HTTP request line of the POST request identifies the "certificate
 rotation point" targeted for the client.
@@ -3566,7 +3306,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- DSC-CertificateRotation-Body = CertificateRotationRequest ; section 3.12.5.1.1.1
+
+ DSC-CertificateRotation-Body = CertificateRotationRequest ; section 3.12.5.1.1.1
 
 The response message for this method can result in the following status codes:
 
@@ -3588,7 +3329,7 @@ The resource is not found.
 
 A conflict occurred.
 
-3.12.5.1.1.1  Request Body
+###### 3.12.5.1.1.1 Request Body
 
 The client transfers the following data fields in the body of the CertificateRotation request:
 
@@ -3602,21 +3343,21 @@ PublicKey: This value describes the certificate generated on the client. The val
 base64 encoded raw bytes of the certificate’s public key followed by ‘;’ followed by OID of the
 public key’s hash algorithm.
 
-3.12.5.1.1.2  Response Body
+###### 3.12.5.1.1.2 Response Body
 
 None.
 
-3.12.5.1.1.3  Processing Details
+###### 3.12.5.1.1.3 Processing Details
 
 The client sends the CertificateRotation request with the content-type as application/json to the server
 with a request body as specified in section 3.12.5.1.1.1. The server responds back with status codes
 as specified in section 3.12.5.1.1.1.
 
-3.12.6 Timer Events
+#### 3.12.6 Timer Events
 
 None.
 
-3.12.7 Other Local Events
+#### 3.12.7 Other Local Events
 
 None.
 
@@ -3627,13 +3368,14 @@ Release: April 23, 2024
 
 47 / 65
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-DSCPM].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  GetConfiguration Sequence
+### 4.1 GetConfiguration Sequence
 
 The following sequence occurs between a client and a server during a GetConfiguration request.
 
@@ -3653,7 +3395,7 @@ The following figure shows a message sequence with a single GetConfiguration req
 
 Figure 1: Message sequence for a single GetConfiguration request
 
-4.2  GetModule Sequence
+### 4.2 GetModule Sequence
 
 The following sequence occurs between a client and a server during a GetModule request.
 
@@ -3678,13 +3420,14 @@ Release: April 23, 2024
 
 48 / 65
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-DSCPM].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
 Figure 2: Message sequence for a single GetModule request
 
-4.3  GetAction Sequence
+### 4.3 GetAction Sequence
 
 The following sequence occurs between a client and a server during a GetAction request.
 
@@ -3709,13 +3452,14 @@ Release: April 23, 2024
 
 49 / 65
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-DSCPM].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
 Figure 3: Message sequence with a single GetAction request
 
-4.4  SendStatusReport Sequence
+### 4.4 SendStatusReport Sequence
 
 The following sequence occurs between a client and a server during a SendStatusReport request.
 
@@ -3740,13 +3484,14 @@ Release: April 23, 2024
 
 50 / 65
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-DSCPM].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
 Figure 4: Message sequence with a single SendStatusReport
 
-4.5  GetStatusReport Sequence
+### 4.5 GetStatusReport Sequence
 
 The following sequence occurs between a client and a server during a GetStatusReport request.
 
@@ -3771,14 +3516,15 @@ Release: April 23, 2024
 
 51 / 65
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-DSCPM].images/page052-img01.png)
 ![Extracted image 2 from page 52]([MS-DSCPM].images/page052-img02.png)
 <!-- /Extracted images from page 52 -->
 
 Figure 5: Message sequence with a single GetStatusReport
 
-4.6  RegisterDscAgent Sequence
+### 4.6 RegisterDscAgent Sequence
 
 The following sequence occurs between a client and a server during a RegisterDscAgent request.
 
@@ -3805,11 +3551,12 @@ Release: April 23, 2024
 
 52 / 65
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-DSCPM].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
-4.7  SendReport Sequence
+### 4.7 SendReport Sequence
 
 The following sequence occurs between a client and a server during a SendReport request.
 
@@ -3829,7 +3576,7 @@ The following figure shows a message sequence with a single SendReport request.
 
 Figure 7: Message sequence with a single SendReport request
 
-4.8  GetDscAction Sequence
+### 4.8 GetDscAction Sequence
 
 The following sequence occurs between a client and a server during a GetDscAction request.
 
@@ -3854,7 +3601,8 @@ Release: April 23, 2024
 
 53 / 65
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-DSCPM].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
@@ -3867,9 +3615,10 @@ Release: April 23, 2024
 
 54 / 65
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The protocol is vulnerable to a hijacking attack in which the attacker guesses the value of the
 ConfigurationId (as specified in section 3.1.5.1), JobId, and/or ModuleName, ModuleVersion (as
@@ -3879,7 +3628,7 @@ the victim's ConfigurationId, JobId, and/or ModuleName, ModuleVersion value. To 
 make ConfigurationId and JobId random values. Also, if HTTP access authentication is used, the server
 ought to authenticate access at least once on each new URL or TCP connection.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -3894,7 +3643,8 @@ Release: April 23, 2024
 
 55 / 65
 
-6  Appendix A: Full JSON Schema
+
+## 6 Appendix A: Full JSON Schema
 
  {
      "title": "GetAction request schema",
@@ -3969,7 +3719,8 @@ Release: April 23, 2024
 
 56 / 65
 
- {
+
+ {
      "title": "GetDscAction response",
      "type": "object",
      "properties": {
@@ -4046,7 +3797,8 @@ Release: April 23, 2024
 
 57 / 65
 
-         },
+
+         },
          "RebootRequested": {
              "enum": [ "True", "False" ]
          },
@@ -4123,7 +3875,8 @@ Release: April 23, 2024
 
 58 / 65
 
-                         "NotBefore": {
+
+                         "NotBefore": {
                              "type": [ "string", "null" ]
                          },
                          "Subject": {
@@ -4195,7 +3948,8 @@ Release: April 23, 2024
 
 59 / 65
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4264,7 +4018,8 @@ Desired State Configuration Pull Model Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<8> Section 3.4: The SendStatusReport request is not available in Windows 7, Windows Server 2008
+
+<8> Section 3.4: The SendStatusReport request is not available in Windows 7, Windows Server 2008
 R2, Windows Server 2012, Windows 8.1, and Windows Server 2012 R2.
 
 <9> Section 3.5:  The GetStatusReport request is not available in Windows 7, Windows Server 2008
@@ -4301,7 +4056,8 @@ Release: April 23, 2024
 
 61 / 65
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4345,7 +4101,8 @@ Release: April 23, 2024
 
 62 / 65
 
-9  Index
+
+## 9 Index
 A
 
 Applicability 9
@@ -4498,7 +4255,8 @@ Getmodule versions 1.0 and 1.1
 
 63 / 65
 
-   Timers 17
+
+   Timers 17
 Getreports version 2.0
    Abstract data model 43
    Higher-layer triggered events 43
@@ -4644,7 +4402,8 @@ Sendstatusreport versions 1.0 and 1.1
 
 64 / 65
 
-   Message processing events and sequencing rules
+
+   Message processing events and sequencing rules
 
 23
 

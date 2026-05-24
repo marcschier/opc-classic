@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 63
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -240,334 +241,126 @@ Release: April 23, 2024
 
 2 / 63
 
-Table of Contents
 
-1.1
-
-1  Introduction ............................................................................................................ 6
-Conceptual Overview .......................................................................................... 6
-Content Identifiers ........................................................................................ 6
-Client-Role Peer ............................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 9
-
-1.1.1
-1.1.2
-
-1.2
-1.3
-
-2.1
-
-2.1.1
-
-2.2
-2.3
-
-2.4
-2.5
-
-2.1.2
-2.1.3
-2.1.4
-
-2.3.1
-2.3.2
-2.3.3
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-2.1.1.4
-
-2  Functional Architecture ......................................................................................... 11
-Overview ........................................................................................................ 11
-System Capabilities ..................................................................................... 12
-HTTP Metadata Retrieval ........................................................................ 12
-BITS Integration ................................................................................... 13
-SMB 2.1 or 3.x Metadata Retrieval .......................................................... 15
-PCCRD and WS-Discovery ...................................................................... 17
-Protocol Relationships ................................................................................. 18
-Applicability ............................................................................................... 19
-Relevant Standards ..................................................................................... 19
-Protocol Summary ............................................................................................ 20
-Environment .................................................................................................... 21
-Dependencies on This System ...................................................................... 21
-Dependencies on Other Systems/Components ................................................ 21
-System Influences ...................................................................................... 22
-Assumptions and Preconditions .......................................................................... 23
-Use Cases ....................................................................................................... 23
-Actors ....................................................................................................... 23
-Supporting Actors and System Interests Summary ......................................... 24
-Use Case Diagrams ..................................................................................... 25
-Summary Use Case Descriptions................................................................... 27
-Configuring Content Caching and Retrieval Components ............................ 27
-Configuring SMB 2.1 or 3.x Content Server Caching ............................. 27
-Main Success Scenario ................................................................ 28
-Configuring HTTP Content Server Caching .......................................... 28
-Main Success Scenario ................................................................ 28
-Configuring Content Client Caching Mode ........................................... 29
-Main Success Scenario ................................................................ 29
-Configuring a Hosted Cache Server .................................................... 29
-Main Success Scenario ................................................................ 30
-Initial Reading and Caching of a File from a Content Server ........................ 30
-Main Success Scenario ..................................................................... 31
-Metadata Retrieval ................................................................................ 31
-Using SMB 2.1 or 3.x Metadata Retrieval ............................................ 31
-Main Success Scenario ................................................................ 31
-System Assumptions and Preconditions ........................................ 31
-HTTP Metadata Retrieval .................................................................. 32
-Main Success Scenario ................................................................ 32
-System Assumptions and Preconditions ........................................ 33
-BITS--HTTP Metadata Retrieval ......................................................... 33
-Main Success Scenario ................................................................ 33
-System Assumptions and Preconditions ........................................ 34
-Content Discovery and Retrieval ............................................................. 34
-
-2.5.4.3.2.1
-2.5.4.3.2.2
-
-2.5.4.3.1.1
-2.5.4.3.1.2
-
-2.5.4.3.3.1
-2.5.4.3.3.2
-
-2.5.4.1.1.1
-
-2.5.4.1.2.1
-
-2.5.4.1.3.1
-
-2.5.4.1.4.1
-
-2.5.4.3.2
-
-2.5.4.3.3
-
-2.5.4.1.1
-
-2.5.4.1.2
-
-2.5.4.1.3
-
-2.5.4.1.4
-
-2.5.4.2.1
-
-2.5.4.3.1
-
-2.5.4.4
-
-2.5.4.1
-
-2.5.4.2
-
-2.5.4.3
-
-2.5.4.4.1
-
-2.5.4.4.1.1
-2.5.4.4.1.2
-2.5.4.4.1.3
-
-Content Discovery and Retrieval with Hosted Cache (Cached Data
-Unavailable) ................................................................................... 34
-Actors ...................................................................................... 34
-Main Success Scenario ................................................................ 35
-System Assumptions and Preconditions ........................................ 35
-
-3 / 63
-
-[MS-CCROD] - v20240423
-Content Caching and Retrieval Protocols Overview
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-2.5.4.4.2
-
-2.5.4.4.2.1
-2.5.4.4.2.2
-2.5.4.4.2.3
-
-2.5.4.4.3
-
-2.5.4.4.3.1
-2.5.4.4.3.2
-2.5.4.4.3.3
-
-2.5.4.4.4
-
-Content Discovery and Retrieval with Hosted Cache (Cached Data Available)
- ..................................................................................................... 36
-Actors ...................................................................................... 36
-Main Success Scenario ................................................................ 36
-System Assumptions and Preconditions ........................................ 37
-
-Content Discovery and Retrieval with Distributed Cache (Cached Data
-Unavailable) ................................................................................... 37
-Actors ...................................................................................... 37
-Main Success Scenario ................................................................ 38
-System Assumptions and Preconditions ........................................ 38
-
-2.6
-2.7
-
-2.7.1
-2.7.2
-2.7.3
-
-2.8.1
-
-2.8
-
-2.8.2
-
-2.8.1.1
-2.8.1.2
-
-2.8.1.2.1
-2.8.1.2.2
-
-Content Discovery and Retrieval with Distributed Cache (Cached Data
-Available) ....................................................................................... 38
-Actors ...................................................................................... 39
-2.5.4.4.4.1
-Main Success Scenario ................................................................ 39
-2.5.4.4.4.2
-2.5.4.4.4.3
-System Assumptions and Preconditions ........................................ 39
-Versioning, Capability Negotiation, and Extensibility ............................................. 40
-Error Handling ................................................................................................. 40
-Connection Disconnected ............................................................................. 40
-Internal Failures ......................................................................................... 41
-System Configuration Corruption or Unavailability .......................................... 41
-Coherency Requirements .................................................................................. 41
-Timers ...................................................................................................... 41
-Member Protocol Timer Summary ........................................................... 41
-Client Framework .................................................................................. 41
-Hosted Cache Mode ......................................................................... 41
-Distributed Cache Mode .................................................................... 42
-Non-Timer Events ....................................................................................... 42
-Member Protocol Non-Timer Events Summary .......................................... 42
-Client Framework - Hosted Cache Mode, Higher-Layer Triggered Events ...... 43
-Content Retrieval Request ................................................................ 43
-Segment Retrieval Session Initiation .................................................. 43
-Client Framework - Distributed Cache Mode, Higher-Layer Triggered Events. 43
-Content Retrieval Request ................................................................ 43
-Segment Retrieval Session Initiation .................................................. 43
-Client Framework - Hosted Cache Mode, Other Local Events ....................... 44
-Download Schedule Session .............................................................. 44
-Retrieval Protocol GetBlockList Succeeds ............................................ 44
-Retrieval Protocol GetBlocks Succeeds ............................................... 45
-Retrieval Protocol Failure (GetBlockList or GetBlocks)........................... 45
-Client Framework - Distributed Cache Mode, Other Local Events ................. 45
-Server Peer Discovered by the Discovery Protocol ............................... 45
-Discovery Protocol Failure - No Server Found ...................................... 45
-Download Schedule Session .............................................................. 46
-Retrieval Protocol GetBlockList Succeeds ............................................ 46
-Retrieval Protocol GetBlocks Succeeds ............................................... 46
-Retrieval Protocol Failure (GetBlockList or GetBlocks)........................... 47
-Initialization and Reinitialization Procedures ................................................... 47
-Client Framework .................................................................................. 47
-Hosted Cache Mode ......................................................................... 47
-Distributed Cache Mode .................................................................... 47
-Server Framework ................................................................................ 47
-Hosted Cache Mode ......................................................................... 47
-Distributed Cache Mode .................................................................... 48
-Security .......................................................................................................... 48
-Client-Side Content Security ........................................................................ 49
-Server-Side Content Security ....................................................................... 49
-Use of Cryptography ................................................................................... 49
-Additional Considerations .................................................................................. 49
-
-2.8.2.1
-2.8.2.2
-
-2.8.2.2.1
-2.8.2.2.2
-
-2.8.2.3
-
-2.8.2.3.1
-2.8.2.3.2
-
-2.8.2.4
-
-2.8.2.4.1
-2.8.2.4.2
-2.8.2.4.3
-2.8.2.4.4
-
-2.8.2.5
-
-2.8.2.5.1
-2.8.2.5.2
-2.8.2.5.3
-2.8.2.5.4
-2.8.2.5.5
-2.8.2.5.6
-
-2.8.3.1.1
-2.8.3.1.2
-
-2.8.3.2
-
-2.8.3.2.1
-2.8.3.2.2
-
-2.8.3
-
-2.8.3.1
-
-2.9
-
-2.9.1
-2.9.2
-2.9.3
-
-2.10
-
-[MS-CCROD] - v20240423
-Content Caching and Retrieval Protocols Overview
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 63
-
-3  Examples ............................................................................................................... 50
-
-3.1
-
-3.2
-
-Example 1: Reading a File Using SMB 2.1or 3.x as Metadata Channel in Distributed
-Cache Mode (Cached Content Available) ............................................................. 50
-Example 2: Reading a File Using HTTP as the Metadata Channel in Hosted Cache Mode
- ..................................................................................................................... 53
-
-4  Microsoft Implementations ................................................................................... 58
-Product Behavior .............................................................................................. 58
-
-4.1
-
-5  Change Tracking .................................................................................................... 60
-
-6  Index ..................................................................................................................... 61
-
-[MS-CCROD] - v20240423
-Content Caching and Retrieval Protocols Overview
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 63
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Content Identifiers](#111-content-identifiers)
+    - [1.1.2 Client-Role Peer](#112-client-role-peer)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Capabilities](#211-system-capabilities)
+      - [2.1.1.1 HTTP Metadata Retrieval](#2111-http-metadata-retrieval)
+      - [2.1.1.2 BITS Integration](#2112-bits-integration)
+      - [2.1.1.3 SMB 2.1 or 3.x Metadata Retrieval](#2113-smb-21-or-3x-metadata-retrieval)
+      - [2.1.1.4 PCCRD and WS-Discovery](#2114-pccrd-and-ws-discovery)
+    - [2.1.2 Protocol Relationships](#212-protocol-relationships)
+    - [2.1.3 Applicability](#213-applicability)
+    - [2.1.4 Relevant Standards](#214-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+    - [2.3.3 System Influences](#233-system-influences)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Actors](#251-actors)
+    - [2.5.2 Supporting Actors and System Interests Summary](#252-supporting-actors-and-system-interests-summary)
+    - [2.5.3 Use Case Diagrams](#253-use-case-diagrams)
+    - [2.5.4 Summary Use Case Descriptions](#254-summary-use-case-descriptions)
+      - [2.5.4.1 Configuring Content Caching and Retrieval Components](#2541-configuring-content-caching-and-retrieval-components)
+        - [2.5.4.1.1 Configuring SMB 2.1 or 3.x Content Server Caching](#25411-configuring-smb-21-or-3x-content-server-caching)
+          - [2.5.4.1.1.1 Main Success Scenario](#254111-main-success-scenario)
+        - [2.5.4.1.2 Configuring HTTP Content Server Caching](#25412-configuring-http-content-server-caching)
+          - [2.5.4.1.2.1 Main Success Scenario](#254121-main-success-scenario)
+        - [2.5.4.1.3 Configuring Content Client Caching Mode](#25413-configuring-content-client-caching-mode)
+          - [2.5.4.1.3.1 Main Success Scenario](#254131-main-success-scenario)
+        - [2.5.4.1.4 Configuring a Hosted Cache Server](#25414-configuring-a-hosted-cache-server)
+          - [2.5.4.1.4.1 Main Success Scenario](#254141-main-success-scenario)
+      - [2.5.4.2 Initial Reading and Caching of a File from a Content Server](#2542-initial-reading-and-caching-of-a-file-from-a-content-server)
+        - [2.5.4.2.1 Main Success Scenario](#25421-main-success-scenario)
+      - [2.5.4.3 Metadata Retrieval](#2543-metadata-retrieval)
+        - [2.5.4.3.1 Using SMB 2.1 or 3.x Metadata Retrieval](#25431-using-smb-21-or-3x-metadata-retrieval)
+          - [2.5.4.3.1.1 Main Success Scenario](#254311-main-success-scenario)
+          - [2.5.4.3.1.2 System Assumptions and Preconditions](#254312-system-assumptions-and-preconditions)
+        - [2.5.4.3.2 HTTP Metadata Retrieval](#25432-http-metadata-retrieval)
+          - [2.5.4.3.2.1 Main Success Scenario](#254321-main-success-scenario)
+          - [2.5.4.3.2.2 System Assumptions and Preconditions](#254322-system-assumptions-and-preconditions)
+        - [2.5.4.3.3 BITS--HTTP Metadata Retrieval](#25433-bits-http-metadata-retrieval)
+          - [2.5.4.3.3.1 Main Success Scenario](#254331-main-success-scenario)
+          - [2.5.4.3.3.2 System Assumptions and Preconditions](#254332-system-assumptions-and-preconditions)
+      - [2.5.4.4 Content Discovery and Retrieval](#2544-content-discovery-and-retrieval)
+        - [2.5.4.4.1 Content Discovery and Retrieval with Hosted Cache (Cached Data](#25441-content-discovery-and-retrieval-with-hosted-cache-cached-data)
+          - [2.5.4.4.1.1 Actors](#254411-actors)
+          - [2.5.4.4.1.2 Main Success Scenario](#254412-main-success-scenario)
+          - [2.5.4.4.1.3 System Assumptions and Preconditions](#254413-system-assumptions-and-preconditions)
+        - [2.5.4.4.2 Content Discovery and Retrieval with Hosted Cache (Cached Data Available)](#25442-content-discovery-and-retrieval-with-hosted-cache-cached-data-available)
+          - [2.5.4.4.2.1 Actors](#254421-actors)
+          - [2.5.4.4.2.2 Main Success Scenario](#254422-main-success-scenario)
+          - [2.5.4.4.2.3 System Assumptions and Preconditions](#254423-system-assumptions-and-preconditions)
+        - [2.5.4.4.3 Content Discovery and Retrieval with Distributed Cache (Cached Data](#25443-content-discovery-and-retrieval-with-distributed-cache-cached-data)
+          - [2.5.4.4.3.1 Actors](#254431-actors)
+          - [2.5.4.4.3.2 Main Success Scenario](#254432-main-success-scenario)
+          - [2.5.4.4.3.3 System Assumptions and Preconditions](#254433-system-assumptions-and-preconditions)
+        - [2.5.4.4.4 Content Discovery and Retrieval with Distributed Cache (Cached Data](#25444-content-discovery-and-retrieval-with-distributed-cache-cached-data)
+          - [2.5.4.4.4.1 Actors](#254441-actors)
+          - [2.5.4.4.4.2 Main Success Scenario](#254442-main-success-scenario)
+          - [2.5.4.4.4.3 System Assumptions and Preconditions](#254443-system-assumptions-and-preconditions)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Connection Disconnected](#271-connection-disconnected)
+    - [2.7.2 Internal Failures](#272-internal-failures)
+    - [2.7.3 System Configuration Corruption or Unavailability](#273-system-configuration-corruption-or-unavailability)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+    - [2.8.1 Timers](#281-timers)
+      - [2.8.1.1 Member Protocol Timer Summary](#2811-member-protocol-timer-summary)
+      - [2.8.1.2 Client Framework](#2812-client-framework)
+        - [2.8.1.2.1 Hosted Cache Mode](#28121-hosted-cache-mode)
+        - [2.8.1.2.2 Distributed Cache Mode](#28122-distributed-cache-mode)
+    - [2.8.2 Non-Timer Events](#282-non-timer-events)
+      - [2.8.2.1 Member Protocol Non-Timer Events Summary](#2821-member-protocol-non-timer-events-summary)
+      - [2.8.2.2 Client Framework - Hosted Cache Mode, Higher-Layer Triggered Events](#2822-client-framework-hosted-cache-mode-higher-layer-triggered-events)
+        - [2.8.2.2.1 Content Retrieval Request](#28221-content-retrieval-request)
+        - [2.8.2.2.2 Segment Retrieval Session Initiation](#28222-segment-retrieval-session-initiation)
+      - [2.8.2.3 Client Framework - Distributed Cache Mode, Higher-Layer Triggered Events](#2823-client-framework-distributed-cache-mode-higher-layer-triggered-events)
+        - [2.8.2.3.1 Content Retrieval Request](#28231-content-retrieval-request)
+        - [2.8.2.3.2 Segment Retrieval Session Initiation](#28232-segment-retrieval-session-initiation)
+      - [2.8.2.4 Client Framework - Hosted Cache Mode, Other Local Events](#2824-client-framework-hosted-cache-mode-other-local-events)
+        - [2.8.2.4.1 Download Schedule Session](#28241-download-schedule-session)
+        - [2.8.2.4.2 Retrieval Protocol GetBlockList Succeeds](#28242-retrieval-protocol-getblocklist-succeeds)
+        - [2.8.2.4.3 Retrieval Protocol GetBlocks Succeeds](#28243-retrieval-protocol-getblocks-succeeds)
+        - [2.8.2.4.4 Retrieval Protocol Failure (GetBlockList or GetBlocks)](#28244-retrieval-protocol-failure-getblocklist-or-getblocks)
+      - [2.8.2.5 Client Framework - Distributed Cache Mode, Other Local Events](#2825-client-framework-distributed-cache-mode-other-local-events)
+        - [2.8.2.5.1 Server Peer Discovered by the Discovery Protocol](#28251-server-peer-discovered-by-the-discovery-protocol)
+        - [2.8.2.5.2 Discovery Protocol Failure - No Server Found](#28252-discovery-protocol-failure-no-server-found)
+        - [2.8.2.5.3 Download Schedule Session](#28253-download-schedule-session)
+        - [2.8.2.5.4 Retrieval Protocol GetBlockList Succeeds](#28254-retrieval-protocol-getblocklist-succeeds)
+        - [2.8.2.5.5 Retrieval Protocol GetBlocks Succeeds](#28255-retrieval-protocol-getblocks-succeeds)
+        - [2.8.2.5.6 Retrieval Protocol Failure (GetBlockList or GetBlocks)](#28256-retrieval-protocol-failure-getblocklist-or-getblocks)
+    - [2.8.3 Initialization and Reinitialization Procedures](#283-initialization-and-reinitialization-procedures)
+      - [2.8.3.1 Client Framework](#2831-client-framework)
+        - [2.8.3.1.1 Hosted Cache Mode](#28311-hosted-cache-mode)
+        - [2.8.3.1.2 Distributed Cache Mode](#28312-distributed-cache-mode)
+      - [2.8.3.2 Server Framework](#2832-server-framework)
+        - [2.8.3.2.1 Hosted Cache Mode](#28321-hosted-cache-mode)
+        - [2.8.3.2.2 Distributed Cache Mode](#28322-distributed-cache-mode)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Client-Side Content Security](#291-client-side-content-security)
+    - [2.9.2 Server-Side Content Security](#292-server-side-content-security)
+    - [2.9.3 Use of Cryptography](#293-use-of-cryptography)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Reading a File Using SMB 2.1or 3.x as Metadata Channel in](#31-example-1-reading-a-file-using-smb-21or-3x-as-metadata-channel-in)
+  - [3.2 Example 2: Reading a File Using HTTP as the Metadata Channel in Hosted Cache](#32-example-2-reading-a-file-using-http-as-the-metadata-channel-in-hosted-cache)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
+
+## 1 Introduction
 
 The Content Caching and Retrieval protocols support content retrieval scenarios such as accessing
 content from a file or web server. For file access scenarios, this document can be used in conjunction
@@ -593,14 +386,14 @@ Content caching and retrieval requires at least three computers:
 
 hold in cache some or all the content that the client computer is requesting
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
-1.1.1  Content Identifiers
+#### 1.1.1 Content Identifiers
 
 For the purposes of the Content Caching and Retrieval protocols, content is divided into one or more
 segments. Segments are the unit of discovery, as described in [MS-PCCRC] section 2.1.
 
-1.1.2  Client-Role Peer
+#### 1.1.2 Client-Role Peer
 
 This section describes how the Content Caching and Retrieval protocols that are running on multiple
 peers use the Discovery Protocol [MS-PCCRD] and the Retrieval Protocol [MS-PCCRR]. The use of
@@ -618,7 +411,7 @@ or all) of a single target segment. This process is referred to as a segment ret
 content spans multiple segments, then multiple segment retrieval sessions are required to retrieve all
 of the content's segments and reassemble them into the complete content item.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -632,7 +425,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-not a multiple of the standard segment sizes. In version 2.0 Content Information, segments are
+
+not a multiple of the standard segment sizes. In version 2.0 Content Information, segments are
 not divided into blocks.
 
 BranchCache: A Windows Content Caching and Retrieval feature that enables content from file
@@ -709,7 +503,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-metadata: A generic term for a hash or hash list.
+
+metadata: A generic term for a hash or hash list.
 
 peer: An instance of the Retrieval Protocol for the Peer Content Caching and Retrieval Framework
 running on a host. A peer can be both a client and a server in the Retrieval Protocol operations.
@@ -778,7 +573,8 @@ Release: April 23, 2024
 
 8 / 63
 
-1.3  References
+
+### 1.3 References
 
 [FIPS180-2] National Institute of Standards and Technology, "Secure Hash Standard", FIPS PUB 180-
 2, August 2002, http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
@@ -844,7 +640,8 @@ Release: April 23, 2024
 
 9 / 63
 
-[RFC2104] Krawczyk, H., Bellare, M., and Canetti, R., "HMAC: Keyed-Hashing for Message
+
+[RFC2104] Krawczyk, H., Bellare, M., and Canetti, R., "HMAC: Keyed-Hashing for Message
 Authentication", RFC 2104, February 1997, https://www.rfc-editor.org/info/rfc2104
 
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
@@ -882,16 +679,17 @@ Release: April 23, 2024
 
 10 / 63
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-CCROD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-2  Functional Architecture
+## 2 Functional Architecture
 
 This section describes the basic structure of the system and the interrelationships among its parts,
 consumers, and dependencies.
 
-2.1  Overview
+### 2.1 Overview
 
 The Content Caching and Retrieval protocols enable the retrieval of content from networked
 computers. These protocols support content discovery, transport, data structures that are used for
@@ -928,13 +726,14 @@ Release: April 23, 2024
 
 11 / 63
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-CCROD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 The member protocols that make up the system are described in section 2.2.
 
-2.1.1  System Capabilities
+#### 2.1.1 System Capabilities
 
 The overall functionality of the Content Caching and Retrieval protocols includes the following:
 
@@ -949,7 +748,7 @@ The overall functionality of the Content Caching and Retrieval protocols include
 Peer Content Caching and Retrieval Discovery Protocol (PCCRD) and Web Services Dynamic
 Discovery (WS-Discovery (section 2.1.1.4))
 
-2.1.1.1  HTTP Metadata Retrieval
+##### 2.1.1.1 HTTP Metadata Retrieval
 
 The sequence of messages for an HTTP request for Content Caching and Retrieval is shown in the
 following figure and consists of the following steps:
@@ -961,7 +760,8 @@ Release: April 23, 2024
 
 12 / 63
 
-Figure 2: HTTP metadata retrieval
+
+Figure 2: HTTP metadata retrieval
 
 1.  The client application opens a URL.
 
@@ -1001,7 +801,7 @@ suitable (HTTP) error is returned to the application.
 
 12. If the data is retrieved, it is returned to the requesting content client.
 
-2.1.1.2  BITS Integration
+##### 2.1.1.2 BITS Integration
 
 In the context of Content Caching and Retrieval, Background Intelligent Transfer Service (BITS) is a
 client of the HTTP service. The figure in this section shows the hosted cache configuration, but the
@@ -1023,7 +823,8 @@ Release: April 23, 2024
 
 13 / 63
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-CCROD].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1056,7 +857,8 @@ Release: April 23, 2024
 
 14 / 63
 
-8.  Metadata (hash list) is returned to the content client by using the Peer Content Caching and
+
+8.  Metadata (hash list) is returned to the content client by using the Peer Content Caching and
 Retrieval Hypertext Transfer Protocol (HTTP) Extensions, as described in [MS-PCCRTP].
 
 9.  BITS receives a response that consists of a hash list. The hash list is passed to the BranchCache
@@ -1082,7 +884,7 @@ Transfer Service (BITS) Peer-Caching: Peer Discovery and Background Intelligent 
 (BITS) Peer-Caching: Content Retrieval protocols cannot coexist with the Content Caching and
 Retrieval protocols.
 
-2.1.1.3  SMB 2.1 or 3.x Metadata Retrieval
+##### 2.1.1.3 SMB 2.1 or 3.x Metadata Retrieval
 
 A Server Message Block (SMB) 2.1 or 3.x request for Content Caching and Retrieval starts with the
 client application opening a remote file. During this stage, an SMB 2.1 or 3.x Tree Connect allows the
@@ -1108,7 +910,8 @@ Release: April 23, 2024
 
 15 / 63
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-CCROD].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1145,7 +948,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-CCROD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1166,7 +970,7 @@ hash list generation is initiated on the content server.
 
 15. The generated hash list is stored to make it available for future client requests.
 
-2.1.1.4  PCCRD and WS-Discovery
+##### 2.1.1.4 PCCRD and WS-Discovery
 
 Figure 5: PCCRD and WS-Discovery
 
@@ -1180,7 +984,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.x, or HTTP. The response with the hashes is returned in the same protocol that makes the request.
+
+3.x, or HTTP. The response with the hashes is returned in the same protocol that makes the request.
 After the content hashes have been received by the content client, the content client can determine
 whether any of the content exists within the local area network (LAN) where it resides. The content
 client does this by checking any local machine cache. Then, if the data is not available locally, it
@@ -1194,7 +999,7 @@ After the content client receives a match for content, it initiates one or more 
 and Retrieval: Retrieval Protocol sessions, as described in [MS-PCCRR], (not shown in the figure) to
 retrieve the content from the server-role peer.
 
-2.1.2  Protocol Relationships
+#### 2.1.2 Protocol Relationships
 
 The following figure shows the protocol layering relationships for the Content Caching and Retrieval
 member protocols. The default relationship, which is indicated by a solid arrow, is "is transported by".
@@ -1222,13 +1027,14 @@ Release: April 23, 2024
 
 18 / 63
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-CCROD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 Figure 6: Protocol relationships for Content Caching and Retrieval
 
-2.1.3  Applicability
+#### 2.1.3 Applicability
 
 Content Caching and Retrieval is supplementary to File Access Services; it is a form of wide area
 network (WAN) link acceleration. The goal is to increase network utilization. The major principle
@@ -1236,7 +1042,7 @@ employed by Content Caching and Retrieval is the reduction of traffic across a W
 enables content from file and web servers on one end of a WAN to be cached on computers at the
 other end of the WAN.
 
-2.1.4  Relevant Standards
+#### 2.1.4 Relevant Standards
 
 Advanced Encryption Standard as specified in [FIPS197].
 
@@ -1260,12 +1066,13 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Web Services Dynamic Discovery as specified in [WS-Discovery].
+
+Web Services Dynamic Discovery as specified in [WS-Discovery].
 
 SPNEGO-based Kerberos and NTLM HTTP Authentication in Windows as specified in
 [RFC4559]. For more information on SPNEGO see [MS-SPNG] and [MS-NEGOEX].
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the member protocols for Content Caching and
 Retrieval.
@@ -1384,7 +1191,8 @@ Release: April 23, 2024
 
 20 / 63
 
-Protocol name
+
+Protocol name
 
 Group description
 
@@ -1468,17 +1276,17 @@ enabled. For more information on SPNEGO see [MS-SPNG] and
 
 [RFC4559]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces provided by this system of protocols, other systems that depend on this system,
 and, as appropriate, how components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 There are no systems that depend on the Content Caching and Retrieval protocols.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 Network Infrastructure: This system requires access to network services that support:
 
@@ -1493,7 +1301,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  UDP/IP (IPv4 or IPv6).
+
+  UDP/IP (IPv4 or IPv6).
 
   Domain Name System (DNS) name resolution.
 
@@ -1553,7 +1362,7 @@ Hosted cache: If a hosted cache is to be used, the location of the hosted cache 
 System (DNS) name or IP address) and the hosted cache Listen and Connections Ports are
 configured on the client computers.
 
-2.3.3  System Influences
+#### 2.3.3 System Influences
 
 The Content Caching and Retrieval protocols can be influenced by the external systems and
 components that are shown in the following table.
@@ -1626,7 +1435,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-External entity
+
+External entity
 
 Content Caching and Retrieval protocols
 depend on an external entity for
@@ -1650,7 +1460,7 @@ client to a server or a server to a client over networks with frequent disconnec
 notifications about the availability of uploaded payloads. This protocol is a client of the Content
 Caching and Retrieval protocols.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions have to be satisfied for the Content Caching and
 Retrieval protocols to operate successfully:
@@ -1691,9 +1501,9 @@ Domain functionality: Domain functionality is not a requirement of the Content C
 
 Retrieval protocols.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
-2.5.1  Actors
+#### 2.5.1 Actors
 
 The actors that participate in the Content Caching and Retrieval protocols are:
 
@@ -1707,7 +1517,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-user instances. The user is external to the File Services and Content Caching and Retrieval
+
+user instances. The user is external to the File Services and Content Caching and Retrieval
 protocols and interacts through the application. The Content Caching and Retrieval protocols only
 apply to the reading of existing files.
 
@@ -1757,7 +1568,7 @@ on an external Object Store for storing files and directories.<7>
 Wire-visible behavior of File Access Services protocols is not specified by the protocols themselves
 and depends on Object Store behavior.
 
-2.5.2  Supporting Actors and System Interests Summary
+#### 2.5.2 Supporting Actors and System Interests Summary
 
 File Access Services [MS-FASOD]: The purpose of File Access Services is to allow a set of actors
 
@@ -1778,7 +1589,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-operating environment. Computers that are participating in Content Caching and Retrieval within a
+
+operating environment. Computers that are participating in Content Caching and Retrieval within a
 domain can be expected to participate in and be influenced by the Group Policy.
 
 Certificate Services [MS-CERSOD]: The Certificate Services components enable an administrator to
@@ -1792,7 +1604,7 @@ a client to a server or from a server to a client over networks with frequent di
 send notifications about the availability of uploaded payloads. "BITS" is a PeerDist-enabled HTTP
 client and can therefore act as a client of the Content Caching and Retrieval System.
 
-2.5.3  Use Case Diagrams
+#### 2.5.3 Use Case Diagrams
 
 The following table groups use cases that span the functionality of the Content Caching and Retrieval
 protocols. For detailed descriptions for these use cases, see section 2.5.4.
@@ -1842,7 +1654,8 @@ Release: April 23, 2024
 
 25 / 63
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-CCROD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1856,23 +1669,24 @@ Release: April 23, 2024
 
 26 / 63
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-CCROD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 8: Use cases included in the Reading Content summary use case
 
-2.5.4  Summary Use Case Descriptions
+#### 2.5.4 Summary Use Case Descriptions
 
 Note that the configuration tools on Windows operating systems are local only and therefore do not
 use protocols.
 
-2.5.4.1  Configuring Content Caching and Retrieval Components
+##### 2.5.4.1 Configuring Content Caching and Retrieval Components
 
 This section summarizes use cases for configuring caching on content servers, content clients, and
 hosted cache servers.
 
-2.5.4.1.1 Configuring SMB 2.1 or 3.x Content Server Caching
+###### 2.5.4.1.1 Configuring SMB 2.1 or 3.x Content Server Caching
 
 Goal: To enable Content Caching and Retrieval on a content server share directory.
 
@@ -1895,7 +1709,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Administrator client: Maintains a consistent access mechanism to the SMB 2.1 File Service and
+
+  Administrator client: Maintains a consistent access mechanism to the SMB 2.1 File Service and
 
 Content Caching and Retrieval configuration.
 
@@ -1916,14 +1731,14 @@ identified on the content server.
 Trigger: The Administrator Tool receives a request from the administrator to configure Content
 Caching and Retrieval.
 
-2.5.4.1.1.1  Main Success Scenario
+###### 2.5.4.1.1.1 Main Success Scenario
 
 1.  The Administrator Tool (Share and Storage Management Console) creates or modifies an SMB 2.1
 or 3.x share with the specified SMB 2.1 or 3.x share name and directory on the content server.
 
 2.  The Administrator Tool enables Content Caching and Retrieval on the SMB 2.1 or 3.x share.
 
-2.5.4.1.2 Configuring HTTP Content Server Caching
+###### 2.5.4.1.2 Configuring HTTP Content Server Caching
 
 Goal: To enable Content Caching and Retrieval on a content server-hosted website.
 
@@ -1957,7 +1772,7 @@ the content server.
 
 Trigger: The Administrator Tool receives a request from the administrator to configure a website.
 
-2.5.4.1.2.1  Main Success Scenario
+###### 2.5.4.1.2.1 Main Success Scenario
 
 [MS-CCROD] - v20240423
 Content Caching and Retrieval Protocols Overview
@@ -1966,9 +1781,10 @@ Release: April 23, 2024
 
 28 / 63
 
-1.  The Administrator Tool creates or modifies a website that is hosted on the content server.
 
-2.5.4.1.3 Configuring Content Client Caching Mode
+1.  The Administrator Tool creates or modifies a website that is hosted on the content server.
+
+###### 2.5.4.1.3 Configuring Content Client Caching Mode
 
 Goal: To configure the content caching mode on a client peer.
 
@@ -2000,7 +1816,7 @@ Success Guarantee: The caching mode is set to DISTRIBUTED or HOSTED CLIENT.
 Trigger: The Administrator Tool receives a request from the administrator to configure the caching
 mode.
 
-2.5.4.1.3.1  Main Success Scenario
+###### 2.5.4.1.3.1 Main Success Scenario
 
 1.  The Administrator Tool establishes a connection to the Content Caching and Retrieval
 
@@ -2012,7 +1828,7 @@ configuration.
 
 4.  The firewall allows HOSTEDCLIENT or DISTRIBUTED mode protocols.
 
-2.5.4.1.4 Configuring a Hosted Cache Server
+###### 2.5.4.1.4 Configuring a Hosted Cache Server
 
 Goal: To configure the content-caching mode on a server.
 
@@ -2035,7 +1851,8 @@ Release: April 23, 2024
 
 29 / 63
 
-  Admin client: Maintains a consistent access mechanism to the hosted cache server and the
+
+  Admin client: Maintains a consistent access mechanism to the hosted cache server and the
 
 Content Caching and Retrieval configuration.
 
@@ -2052,7 +1869,7 @@ to DOMAIN or NONE.
 Trigger: The Administrator Tool receives a request from the administrator to configure the hosted
 cache server.
 
-2.5.4.1.4.1  Main Success Scenario
+###### 2.5.4.1.4.1 Main Success Scenario
 
 1.  The Administrator Tool establishes a connection with the Content Caching and Retrieval
 
@@ -2066,7 +1883,7 @@ set to DOMAIN or NONE.
 
 4.  The firewall allows HOSTEDSERVER protocols.
 
-2.5.4.2  Initial Reading and Caching of a File from a Content Server
+##### 2.5.4.2 Initial Reading and Caching of a File from a Content Server
 
 Goal: To read content from a content server with Caching and Retrieval in effect.
 
@@ -2107,11 +1924,12 @@ Release: April 23, 2024
 
 30 / 63
 
-Success Guarantee: The application obtains a handle to the requested file.
+
+Success Guarantee: The application obtains a handle to the requested file.
 
 Trigger: The application receives a request from the user to read a file.
 
-2.5.4.2.1 Main Success Scenario
+###### 2.5.4.2.1 Main Success Scenario
 
 1.  The application establishes a communication channel to the content server.
 
@@ -2129,9 +1947,9 @@ stream HTTP) to the application.
 
 6.  The client caches the data so that it can be made available to peers.
 
-2.5.4.3  Metadata Retrieval
+##### 2.5.4.3 Metadata Retrieval
 
-2.5.4.3.1 Using SMB 2.1 or 3.x Metadata Retrieval
+###### 2.5.4.3.1 Using SMB 2.1 or 3.x Metadata Retrieval
 
 Goal: Use SMB 2.1 or 3.x for metadata retrieval.
 
@@ -2146,7 +1964,7 @@ channel to retrieve the file.
 
 Trigger: The application receives a request from the user to read a file.
 
-2.5.4.3.1.1  Main Success Scenario
+###### 2.5.4.3.1.1 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2167,7 +1985,7 @@ case, SMB version 2.1, as specified in [MS-SMB2].
 
 PCCRC].
 
-2.5.4.3.1.2  System Assumptions and Preconditions
+###### 2.5.4.3.1.2 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for successful operation:
 
@@ -2178,7 +1996,8 @@ Release: April 23, 2024
 
 31 / 63
 
-Preconditions: The client computers are configured to use Content Caching and Retrieval. A shared
+
+Preconditions: The client computers are configured to use Content Caching and Retrieval. A shared
 folder with the required file has been created on the content server with content caching support
 enabled. The user has located the URL of the file on the content server.
 
@@ -2199,7 +2018,7 @@ all clients and servers.
 Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and configured.
 
-2.5.4.3.2 HTTP Metadata Retrieval
+###### 2.5.4.3.2 HTTP Metadata Retrieval
 
 Goal: Obtain metadata from a content server website with content caching support enabled by using
 HTTP.
@@ -2215,7 +2034,7 @@ channel to retrieve the file.
 
 Trigger: The application receives a request from the user to read a file.
 
-2.5.4.3.2.1  Main Success Scenario
+###### 2.5.4.3.2.1 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2250,7 +2069,8 @@ Release: April 23, 2024
 
 32 / 63
 
-2.5.4.3.2.2  System Assumptions and Preconditions
+
+###### 2.5.4.3.2.2 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for successful operation:
 
@@ -2273,7 +2093,7 @@ all clients and servers.
 Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and configured.
 
-2.5.4.3.3 BITS--HTTP Metadata Retrieval
+###### 2.5.4.3.3 BITS--HTTP Metadata Retrieval
 
 Goal: Retrieve metadata from a content server website with content caching support enabled by using
 the Background Intelligent Transfer Service (BITS).
@@ -2289,7 +2109,7 @@ Success Guarantee: The user opens the channel to access the file.
 
 Trigger: An application performs a read operation on content that is located on a WAN link.
 
-2.5.4.3.3.1  Main Success Scenario
+###### 2.5.4.3.3.1 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2324,7 +2144,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.5.4.3.3.2  System Assumptions and Preconditions
+
+###### 2.5.4.3.3.2 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for Background Intelligent Transfer Service (BITS)
 metadata retrieval to operate successfully:
@@ -2347,9 +2168,9 @@ all clients and servers.
 Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and correctly configured.
 
-2.5.4.4  Content Discovery and Retrieval
+##### 2.5.4.4 Content Discovery and Retrieval
 
-2.5.4.4.1 Content Discovery and Retrieval with Hosted Cache (Cached Data
+###### 2.5.4.4.1 Content Discovery and Retrieval with Hosted Cache (Cached Data
 
 Unavailable)
 
@@ -2367,7 +2188,7 @@ Success Guarantee: The user reads the file.
 
 Trigger: An application performs a read operation on content that is located on a WAN link.
 
-2.5.4.4.1.1  Actors
+###### 2.5.4.4.1.1 Actors
 
 The actors and their associated interests are as follows:
 
@@ -2393,7 +2214,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.5.4.4.1.2  Main Success Scenario
+
+###### 2.5.4.4.1.2 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2437,7 +2259,7 @@ described in [MS-PCCRR].
 
 described in [MS-PCCRR].
 
-2.5.4.4.1.3  System Assumptions and Preconditions
+###### 2.5.4.4.1.3 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for hosted cache mode to operate successfully:
 
@@ -2467,10 +2289,11 @@ Release: April 23, 2024
 
 35 / 63
 
-Network configuration: For system components that are running on different computers to
+
+Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and correctly configured.
 
-2.5.4.4.2 Content Discovery and Retrieval with Hosted Cache (Cached Data Available)
+###### 2.5.4.4.2 Content Discovery and Retrieval with Hosted Cache (Cached Data Available)
 
 Goal: Read a file from a content server with content caching support enabled and in the hosted cache
 mode.
@@ -2486,7 +2309,7 @@ Success Guarantee: The user reads the file.
 
 Trigger: An application performs a read operation on content that is located on a WAN link.
 
-2.5.4.4.2.1  Actors
+###### 2.5.4.4.2.1 Actors
 
 The actors and their associated interests are as follows:
 
@@ -2508,7 +2331,7 @@ Hosted cache server: The hosted cache server's interest is to provide two mechan
 
 query for the availability of certain content and the other to retrieve content from a content client.
 
-2.5.4.4.2.2  Main Success Scenario
+###### 2.5.4.4.2.2 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2542,9 +2365,10 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-9.  The application delivers the file contents to the user.
 
-2.5.4.4.2.3  System Assumptions and Preconditions
+9.  The application delivers the file contents to the user.
+
+###### 2.5.4.4.2.3 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for hosted cache mode to operate successfully:
 
@@ -2571,7 +2395,7 @@ available to all clients and servers. Domain membership is not a requirement for
 Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and correctly configured.
 
-2.5.4.4.3 Content Discovery and Retrieval with Distributed Cache (Cached Data
+###### 2.5.4.4.3 Content Discovery and Retrieval with Distributed Cache (Cached Data
 
 Unavailable)
 
@@ -2589,7 +2413,7 @@ Success Guarantee: The user reads the file.
 
 Trigger: A user action occurs in the application.
 
-2.5.4.4.3.1  Actors
+###### 2.5.4.4.3.1 Actors
 
 The actors and their associated interests are as follows:
 
@@ -2611,11 +2435,12 @@ Release: April 23, 2024
 
 37 / 63
 
-Distributed Cache Peers: A distributed cache peer's interest is to provide two mechanisms: one to
+
+Distributed Cache Peers: A distributed cache peer's interest is to provide two mechanisms: one to
 
 respond to broadcasts for cached content and the other to deliver the cached content.
 
-2.5.4.4.3.2  Main Success Scenario
+###### 2.5.4.4.3.2 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2640,7 +2465,7 @@ Protocol, as described in [MS-PCCRD].
 
 9.  The retrieved data is placed in the distributed cache of the content client computer.
 
-2.5.4.4.3.3  System Assumptions and Preconditions
+###### 2.5.4.4.3.3 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for distributed cache mode to operate successfully:
 
@@ -2665,7 +2490,7 @@ all clients and servers.
 Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and correctly configured.
 
-2.5.4.4.4 Content Discovery and Retrieval with Distributed Cache (Cached Data
+###### 2.5.4.4.4 Content Discovery and Retrieval with Distributed Cache (Cached Data
 
 Available)
 
@@ -2683,14 +2508,15 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Minimal Guarantees: No action is taken that affects other files that are exposed on the content
+
+Minimal Guarantees: No action is taken that affects other files that are exposed on the content
 server as a result of this operation.
 
 Success Guarantee: The user reads the file.
 
 Trigger: A user action occurs in the application.
 
-2.5.4.4.4.1  Actors
+###### 2.5.4.4.4.1 Actors
 
 The actors and their associated interests are as follows:
 
@@ -2711,7 +2537,7 @@ Distributed cache peers: A distributed cache peer's interest is to respond to br
 
 content and to deliver the cached content.
 
-2.5.4.4.4.2  Main Success Scenario
+###### 2.5.4.4.4.2 Main Success Scenario
 
 1.  The user requests the application to read a file.
 
@@ -2741,7 +2567,7 @@ PCCRR].
 
 11. The application delivers the file contents to the user.
 
-2.5.4.4.4.3  System Assumptions and Preconditions
+###### 2.5.4.4.4.3 System Assumptions and Preconditions
 
 The following preconditions have to be satisfied for distributed cache mode to operate successfully:
 
@@ -2756,7 +2582,8 @@ Release: April 23, 2024
 
 39 / 63
 
-Note The specific URLs (that is, \\server\share\file and \\192.168.0.3\share\file) are considered
+
+Note The specific URLs (that is, \\server\share\file and \\192.168.0.3\share\file) are considered
 different for local caching, but not for Content Caching and Retrieval.
 
 A prior client on the LAN has retrieved the data, which enables some or all of the content to be stored
@@ -2776,7 +2603,7 @@ all clients and servers.
 Network configuration: For system components that are running on different computers to
 communicate, the network services and infrastructure are functional and correctly configured.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 Versions 1.0 and 2.0 of the Content Information Data Structure, as described in [MS-PCCRC] section
 2<8> are supported by the Peer Content Caching and Retrieval: Content Identification, as described
@@ -2793,11 +2620,11 @@ The following protocols have version-specific capability: The Background Intelli
 Extensions, as described in [MS-PCCRTP], and the Peer Content Caching and Retrieval: Retrieval
 Protocol, as described in [MS-PCCRR].<9>
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 This section describes common failure scenarios and specifies the system behavior in such conditions.
 
-2.7.1  Connection Disconnected
+#### 2.7.1 Connection Disconnected
 
 A common failure scenario is an unexpected connection breakdown between the system and external
 entities. A disconnection can be caused when the network is not available or when one of the
@@ -2822,7 +2649,8 @@ Release: April 23, 2024
 
 40 / 63
 
-When a connection disconnected event is detected, it causes the protocol to tear down all related
+
+When a connection disconnected event is detected, it causes the protocol to tear down all related
 communications and update any necessary data structures to maintain the system state.
 
 Details about how each protocol detects a connection disconnected event, and how it behaves under
@@ -2833,13 +2661,13 @@ but rather a normal operation. The first time any content client attempts to ret
 hosted cache server, it fails to find the content, and the client simply requests the full content from
 the content server.
 
-2.7.2  Internal Failures
+#### 2.7.2 Internal Failures
 
 The Content Caching and Retrieval protocols depend on the File Access Services, which are not
 defended against internal state failures other than as described in [MS-FASOD] and the specifications
 of its member protocols.
 
-2.7.3  System Configuration Corruption or Unavailability
+#### 2.7.3 System Configuration Corruption or Unavailability
 
 Content Caching and Retrieval relies on the availability and consistency of its configuration data.
 Configuration consists of the data that determines the behavior of the system under specific conditions
@@ -2849,15 +2677,15 @@ and the File Access Services are still functioning, the system operates without 
 During content retrieval, malformed messages that are received by the content client and messages of
 unknown type are quietly discarded. For more information, see [MS-PCCRR] section 3.1.5.5.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
-2.8.1  Timers
+#### 2.8.1 Timers
 
 This section explains the timers that are significant to the state of the entire system. The system is
 dealt with in terms of a client framework that describes the peer-role and server-role peers. It also
 includes a summary of the timers for each member protocol.
 
-2.8.1.1  Member Protocol Timer Summary
+##### 2.8.1.1 Member Protocol Timer Summary
 
 Member protocol
 
@@ -2885,9 +2713,9 @@ Retrieval Protocol [MS-PCCRR]
 Associated with the Request Timer and Upload Timer. See [MS-
 PCCRR] section 3.2.
 
-2.8.1.2  Client Framework
+##### 2.8.1.2 Client Framework
 
-2.8.1.2.1 Hosted Cache Mode
+###### 2.8.1.2.1 Hosted Cache Mode
 
 [MS-CCROD] - v20240423
 Content Caching and Retrieval Protocols Overview
@@ -2896,11 +2724,12 @@ Release: April 23, 2024
 
 41 / 63
 
-The client sets the Upload Timer as described in [MS-PCCRR] section 3.2.
+
+The client sets the Upload Timer as described in [MS-PCCRR] section 3.2.
 
 When the Upload Timer expires, the client aborts the segment retrieval session.
 
-2.8.1.2.2 Distributed Cache Mode
+###### 2.8.1.2.2 Distributed Cache Mode
 
 The following timers are associated with the client framework operations:
 
@@ -2932,13 +2761,13 @@ the list after its timer expires. The default timeout value is set to 15 seconds
 When the Server Entry Timer for an entry in a segment ID's Server Information List
 expires, the entry is deleted from the cache.
 
-2.8.2  Non-Timer Events
+#### 2.8.2 Non-Timer Events
 
 This section explains the non-timer events that are significant to the state of the entire system. The
 system is dealt with in terms of a client framework that describes the peer-role and server-role peers.
 It also includes a summary of the non-timer events for each member protocol.
 
-2.8.2.1  Member Protocol Non-Timer Events Summary
+##### 2.8.2.1 Member Protocol Non-Timer Events Summary
 
 Member protocol
 
@@ -2973,16 +2802,17 @@ Release: April 23, 2024
 
 42 / 63
 
-2.8.2.2  Client Framework - Hosted Cache Mode, Higher-Layer Triggered Events
 
-2.8.2.2.1 Content Retrieval Request
+##### 2.8.2.2 Client Framework - Hosted Cache Mode, Higher-Layer Triggered Events
+
+###### 2.8.2.2.1 Content Retrieval Request
 
 When the client instance of the framework receives a Content Retrieval request from a higher-layer
 application, it adds the list of segments and the corresponding block ranges for each segment to its
 content cache. The framework then initiates a segment retrieval session for each segment in the
 requested content.
 
-2.8.2.2.2 Segment Retrieval Session Initiation
+###### 2.8.2.2.2 Segment Retrieval Session Initiation
 
 A client in hosted cache mode, either a peer that downloads content from a hosted cache or vice
 versa, performs the following actions when a segment retrieval session is initiated:
@@ -3004,15 +2834,15 @@ client:
 
   Otherwise, initiates a Retrieval Protocol GetBlockList request (MSG_GETBLKLIST) to the server.
 
-2.8.2.3  Client Framework - Distributed Cache Mode, Higher-Layer Triggered Events
+##### 2.8.2.3 Client Framework - Distributed Cache Mode, Higher-Layer Triggered Events
 
-2.8.2.3.1 Content Retrieval Request
+###### 2.8.2.3.1 Content Retrieval Request
 
 When the client instance of the framework receives a Content Retrieval request from a higher-layer
 application, it receives a list of segments and block ranges for each segment. The framework
 concurrently initiates a segment retrieval session for each segment in the requested content.
 
-2.8.2.3.2 Segment Retrieval Session Initiation
+###### 2.8.2.3.2 Segment Retrieval Session Initiation
 
 The client performs the following actions in the order that is specified when a segment retrieval
 session is initiated for a segment ID:
@@ -3049,7 +2879,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  Creates a Server Information List for this segment ID.
+
+1.  Creates a Server Information List for this segment ID.
 
 2.  Starts the Server List Timer for the list.
 
@@ -3062,9 +2893,9 @@ deletes the least recently used Server Information List.
 aborts the segment retrieval session. Otherwise, the client starts an instance of the
 Discovery Protocol, as described in [MS-PCCRD], and passes it the segment ID.
 
-2.8.2.4  Client Framework - Hosted Cache Mode, Other Local Events
+##### 2.8.2.4 Client Framework - Hosted Cache Mode, Other Local Events
 
-2.8.2.4.1 Download Schedule Session
+###### 2.8.2.4.1 Download Schedule Session
 
 When a download schedule session is started, the client proceeds according to the following rules:
 
@@ -3123,7 +2954,7 @@ retrieval session and notifies the framework of missing blocks.
 
 download schedule session.
 
-2.8.2.4.2 Retrieval Protocol GetBlockList Succeeds
+###### 2.8.2.4.2 Retrieval Protocol GetBlockList Succeeds
 
 When a Retrieval Protocol GetBlockList exchange returns valid block ranges of the requested
 segment, the client performs the following actions:
@@ -3139,12 +2970,13 @@ Release: April 23, 2024
 
 44 / 63
 
-
+
+
 
 If the Download Initiated Flag is not set, sets the flag and starts the Download Schedule
 Session.
 
-2.8.2.4.3 Retrieval Protocol GetBlocks Succeeds
+###### 2.8.2.4.3 Retrieval Protocol GetBlocks Succeeds
 
 When a Retrieval Protocol GetBlocks exchange returns a valid block of the requested segment block
 ranges, the client performs the following actions:
@@ -3161,7 +2993,7 @@ as "complete". Otherwise, marks the server status as "free" in the Server Inform
 If the Download Initiated Flag is not set, sets the flag and starts the download schedule
 session.
 
-2.8.2.4.4 Retrieval Protocol Failure (GetBlockList or GetBlocks)
+###### 2.8.2.4.4 Retrieval Protocol Failure (GetBlockList or GetBlocks)
 
 When a Retrieval Protocol GetBlockList request (see [MS-PCCRR] section 2.2.4.2) fails, the client
 performs the following actions:
@@ -3183,9 +3015,9 @@ performs the following actions:
 
 If the Download Initiated Flag is not set, sets the flag and starts a Download Schedule Session.
 
-2.8.2.5  Client Framework - Distributed Cache Mode, Other Local Events
+##### 2.8.2.5 Client Framework - Distributed Cache Mode, Other Local Events
 
-2.8.2.5.1 Server Peer Discovered by the Discovery Protocol
+###### 2.8.2.5.1 Server Peer Discovered by the Discovery Protocol
 
 When a discovered peer is passed to the client by the Discovery Protocol, the client performs the
 following actions:
@@ -3212,7 +3044,7 @@ If the requested ranges consist of disjoint blocks or more than three consecutiv
 initiates a Retrieval Protocol GetBlockList request (see [MS-PCCRR] section 2.2.4.2) to the newly
 discovered server.
 
-2.8.2.5.2 Discovery Protocol Failure - No Server Found
+###### 2.8.2.5.2 Discovery Protocol Failure - No Server Found
 
 If the Discovery Protocol instance returns without a server being found, the client aborts the segment
 retrieval session.
@@ -3224,7 +3056,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.8.2.5.3 Download Schedule Session
+
+###### 2.8.2.5.3 Download Schedule Session
 
 When a download schedule session is started, the client proceeds according to the following rules:
 
@@ -3286,7 +3119,7 @@ segment retrieval session and notifies the client framework of missing blocks.
 
 Initiated Flag and exits the download schedule session.
 
-2.8.2.5.4 Retrieval Protocol GetBlockList Succeeds
+###### 2.8.2.5.4 Retrieval Protocol GetBlockList Succeeds
 
 When a Retrieval Protocol GetBlockList exchange, (see [MS-PCCRR] section 2.2.4.2), returns valid
 block ranges of the requested segment, the client:
@@ -3300,7 +3133,7 @@ segment ID and sets the server status as "free".
 If the Download Initiated Flag is not set, sets the flag and starts the download schedule
 session.
 
-2.8.2.5.5 Retrieval Protocol GetBlocks Succeeds
+###### 2.8.2.5.5 Retrieval Protocol GetBlocks Succeeds
 
 When a Retrieval Protocol GetBlocks exchange, as described in [MS-PCCRR] section 2.2.4.3, returns a
 valid block of the requested segment block ranges, the client:
@@ -3314,7 +3147,8 @@ Release: April 23, 2024
 
 46 / 63
 
-
+
+
 
 
 
@@ -3324,7 +3158,7 @@ If all blocks in the available block ranges of the server are completed, marks t
 If the Download Initiated Flag is not set, sets the flag and starts the Download Schedule
 Session.
 
-2.8.2.5.6 Retrieval Protocol Failure (GetBlockList or GetBlocks)
+###### 2.8.2.5.6 Retrieval Protocol Failure (GetBlockList or GetBlocks)
 
 The cause of a Retrieval Protocol failure could be that the exchange is aborted (see [MS-PCCRR]
 section 3.1.5), or that the Request Timer for the Retrieval Protocol expires.<15> This section
@@ -3351,25 +3185,25 @@ When a Retrieval Protocol GetBlocks request fails, the client:
 
 If the Download Initiated Flag is not set, sets the flag and starts a download schedule session.
 
-2.8.3  Initialization and Reinitialization Procedures
+#### 2.8.3 Initialization and Reinitialization Procedures
 
 The HTTP client is initialized as described in [MS-PCCRTP] section 3.1.4.
 
 Probe and Probe-Match messages are initialized as described in [MS-PCCRD] section 3.1.3.
 
-2.8.3.1  Client Framework
+##### 2.8.3.1 Client Framework
 
-2.8.3.1.1 Hosted Cache Mode
+###### 2.8.3.1.1 Hosted Cache Mode
 
 A hosted cache client is configured with the server's address.
 
-2.8.3.1.2 Distributed Cache Mode
+###### 2.8.3.1.2 Distributed Cache Mode
 
 No specific initialization required.
 
-2.8.3.2  Server Framework
+##### 2.8.3.2 Server Framework
 
-2.8.3.2.1 Hosted Cache Mode
+###### 2.8.3.2.1 Hosted Cache Mode
 
 The hosted cache server is initialized as described in [MS-PCHC] section 3.1.3. In addition, the
 server's cache can optionally be preloaded in one of the following ways:
@@ -3389,7 +3223,8 @@ Release: April 23, 2024
 
 47 / 63
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-CCROD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3400,11 +3235,11 @@ Preloading is never necessary because clients automatically retrieve missing con
 server as described in 2.5.4.4.1. However, preloading a server can result in a more immediate
 performance gain when client requests can be planned for.
 
-2.8.3.2.2 Distributed Cache Mode
+###### 2.8.3.2.2 Distributed Cache Mode
 
 The peer role server side is initialized as described in [MS-PCCRR] section 2.1.1.
 
-2.9  Security
+### 2.9 Security
 
 This section documents system-wide security issues that are not otherwise described in the Technical
 Documents (TDs) for the member protocols. It does not duplicate what is already in the member
@@ -3439,7 +3274,8 @@ Release: April 23, 2024
 
 48 / 63
 
-4.  The content server then sends the metadata on the same channel that data normally would have
+
+4.  The content server then sends the metadata on the same channel that data normally would have
 
 been sent. If a secure SSL/TLS connection has been established between the client and the server,
 then the hashes are sent back over this encrypted connection.
@@ -3471,24 +3307,24 @@ discards the data.
 The data in the cache is accessible. The data is stored unencrypted in the distributed cache and the
 hosted cache, which is similar to other caches and data on the system.
 
-2.9.1  Client-Side Content Security
+#### 2.9.1 Client-Side Content Security
 
 In the figure that shows content security in the preceding section, Ke represents an encryption key
 that is derived from the segment secret (Kp). A sending peer encrypts data with Ke, but Ke is never
 disclosed between peers. The receiving client has to already have obtained enough information to
 compute the value of Ke from a content server to decrypt the peer-supplied data. Ke = Kp.
 
-2.9.2  Server-Side Content Security
+#### 2.9.2 Server-Side Content Security
 
 The hash algorithm that is used is the SHA-256 hash as described in [FIPS180-2]. For more details,
 see [MS-PCCRC] section 2.2. The HMAC function is described in [RFC2104].
 
-2.9.3  Use of Cryptography
+#### 2.9.3 Use of Cryptography
 
 Cryptographic algorithms that are used in the Content Caching and Retrieval protocols are AES-128
 and SHA256 ([FIPS197] and [FIPS180-2]).
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 The Content Caching and Retrieval protocols support the SMB 2.1, 3.x, and HTTP 1.1 protocols.
 Applications do not have to directly communicate with the system, although they can do so if
@@ -3507,12 +3343,13 @@ Release: April 23, 2024
 
 49 / 63
 
-3  Examples
+
+## 3 Examples
 
 The following examples describe two different methods of metadata retrieval and file retrieval, along
 with the cases of content that are available and unavailable.
 
-3.1  Example 1: Reading a File Using SMB 2.1or 3.x as Metadata Channel in
+### 3.1 Example 1: Reading a File Using SMB 2.1or 3.x as Metadata Channel in
 
 Distributed Cache Mode (Cached Content Available)
 
@@ -3582,7 +3419,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-CCROD].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -3609,7 +3447,8 @@ Release: April 23, 2024
 
 51 / 63
 
-informs the content client that it can make requests for metadata but does not guarantee that the
+
+informs the content client that it can make requests for metadata but does not guarantee that the
 metadata will be available.
 
 3.  The content client attempts to obtain a lease that allows it to cache the content of read and write
@@ -3686,7 +3525,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2  Example 2: Reading a File Using HTTP as the Metadata Channel in Hosted Cache
+
+### 3.2 Example 2: Reading a File Using HTTP as the Metadata Channel in Hosted Cache
 
 Mode
 
@@ -3768,7 +3608,8 @@ Release: April 23, 2024
 
 53 / 63
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-CCROD].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
@@ -3793,7 +3634,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  In the HTTP 200 (OK) response, the content server indicates that the content is encoded by
+
+2.  In the HTTP 200 (OK) response, the content server indicates that the content is encoded by
 
 using the PeerDist content encoding. It also includes the content length and indicates the length
 of the metadata. The metadata is constructed as described in [MS-PCCRTP] section 3.2.5.1.
@@ -3866,7 +3708,8 @@ Release: April 23, 2024
 
 55 / 63
 
-successful case of client authentication with Kerberos [MS-KILE] as the authentication
+
+successful case of client authentication with Kerberos [MS-KILE] as the authentication
 mechanism is covered.
 
 9.  The content client (Peer1), on receipt of the HTTP 401 (Unauthorized) response, is expected to
@@ -3924,7 +3767,8 @@ Release: April 23, 2024
 
 56 / 63
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-CCROD].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -3974,7 +3818,8 @@ Release: April 23, 2024
 
 57 / 63
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
  The information in this specification is applicable to the following Microsoft products:
 
@@ -4010,7 +3855,7 @@ Release: April 23, 2024
 
 Exceptions, if any, are noted in the following section.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 2.1: Windows Server 2008 R2 is the first server to support the server feature
 BranchCache retrieval - Hosted Cache Mode. The Hyper-V Core and Home Server SKUs are not
@@ -4042,7 +3887,8 @@ Content Caching and Retrieval Protocols Overview
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<6> Section 2.2: HTTP is not supported in Windows Vista, Windows Server 2008, Windows 7, and
+
+<6> Section 2.2: HTTP is not supported in Windows Vista, Windows Server 2008, Windows 7, and
 Windows Server 2008 R2.
 
 <7> Section 2.5.1: In Windows, the Object Store is provided by a local file system, usually NTFS.
@@ -4101,7 +3947,8 @@ Release: April 23, 2024
 
 59 / 63
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4145,7 +3992,8 @@ Release: April 23, 2024
 
 60 / 63
 
-6  Index
+
+## 6 Index
 A
 
 Actors
@@ -4294,7 +4142,8 @@ M
 
 61 / 63
 
-Microsoft implementations 58
+
+Microsoft implementations 58
 
 O
 
@@ -4454,7 +4303,8 @@ V
 
 62 / 63
 
-Versioning
+
+Versioning
    Microsoft implementations 58
    overview 40
 

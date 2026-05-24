@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -270,7 +271,8 @@ Release: April 23, 2024
 
 2 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -345,185 +347,79 @@ Release: April 23, 2024
 
 3 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 LCP Configuration Option: Callback Option](#221-lcp-configuration-option-callback-option)
+    - [2.2.2 Callback Address](#222-callback-address)
+    - [2.2.3 Callback Configuration Option](#223-callback-configuration-option)
+    - [2.2.4 CBCP Messages](#224-cbcp-messages)
+      - [2.2.4.1 Callback Request Message](#2241-callback-request-message)
+      - [2.2.4.2 Callback Response Message](#2242-callback-response-message)
+      - [2.2.4.3 Callback Acknowledgment Message](#2243-callback-acknowledgment-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 userParameters](#231-userparameters)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Caller Details](#31-caller-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 State Machine](#3111-state-machine)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 General Packet Validation](#3151-general-packet-validation)
+      - [3.1.5.2 Packet Processing](#3152-packet-processing)
+      - [3.1.5.3 Receiving a Callback Request Message](#3153-receiving-a-callback-request-message)
+      - [3.1.5.4 Receiving a Callback Acknowledgment Message](#3154-receiving-a-callback-acknowledgment-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 CBCP Packet Receive Event](#3171-cbcp-packet-receive-event)
+      - [3.1.7.2 CBCP Packet Send Event](#3172-cbcp-packet-send-event)
+      - [3.1.7.3 CBCP Done](#3173-cbcp-done)
+      - [3.1.7.4 PPP Termination](#3174-ppp-termination)
+  - [3.2 Answerer Details](#32-answerer-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 State Machine](#3211-state-machine)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 General Packet Validation](#3251-general-packet-validation)
+      - [3.2.5.2 Packet Processing](#3252-packet-processing)
+      - [3.2.5.3 Receiving a Callback Response Message](#3253-receiving-a-callback-response-message)
+        - [3.2.5.3.1 Preparing a Callback Request Message for Retransmission](#32531-preparing-a-callback-request-message-for-retransmission)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 CBCP Packet Receive Event](#3271-cbcp-packet-receive-event)
+      - [3.2.7.2 CBCP Packet Send Event](#3272-cbcp-packet-send-event)
+      - [3.2.7.3 CBCP Done](#3273-cbcp-done)
+      - [3.2.7.4 PPP Termination](#3274-ppp-termination)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 LCP Negotiation of Callback Option for CBCP](#41-lcp-negotiation-of-callback-option-for-cbcp)
+  - [4.2 CBCP Negotiation](#42-cbcp-negotiation)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Protocol Overview (Synopsis) .............................................................................. 7
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-LCP Configuration Option: Callback Option ..................................................... 11
-Callback Address ........................................................................................ 11
-Callback Configuration Option ...................................................................... 12
-CBCP Messages .......................................................................................... 12
-Callback Request Message...................................................................... 13
-Callback Response Message ................................................................... 14
-Callback Acknowledgment Message ......................................................... 15
-Directory Service Schema Elements ................................................................... 15
-userParameters .......................................................................................... 15
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-
-2.3.1
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.6
-3.1.7
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 17
-Caller Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 17
-State Machine....................................................................................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Processing Events and Sequencing Rules ....................................................... 20
-General Packet Validation....................................................................... 20
-Packet Processing ................................................................................. 20
-Receiving a Callback Request Message ..................................................... 20
-Receiving a Callback Acknowledgment Message ........................................ 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 22
-CBCP Packet Receive Event .................................................................... 22
-CBCP Packet Send Event ........................................................................ 22
-CBCP Done ........................................................................................... 22
-PPP Termination .................................................................................... 22
-Answerer Details .............................................................................................. 22
-Abstract Data Model .................................................................................... 22
-State Machine....................................................................................... 23
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 26
-Processing Events and Sequencing Rules ....................................................... 26
-General Packet Validation....................................................................... 26
-Packet Processing ................................................................................. 26
-Receiving a Callback Response Message .................................................. 26
-Preparing a Callback Request Message for Retransmission .................... 27
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-3.1.7.4
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.3.1
-
-3.2.1.1
-
-3.2.1
-
-3.2
-
-[MS-CBCP] - v20240423
-Callback Control Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 37
-
-3.2.6
-3.2.7
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-3.2.7.4
-
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-CBCP Packet Receive Event .................................................................... 28
-CBCP Packet Send Event ........................................................................ 28
-CBCP Done ........................................................................................... 28
-PPP Termination .................................................................................... 28
-
-4  Protocol Examples ................................................................................................. 29
-LCP Negotiation of Callback Option for CBCP ........................................................ 29
-CBCP Negotiation ............................................................................................. 30
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 32
-Security Considerations for Implementers ........................................................... 32
-Index of Security Parameters ............................................................................ 32
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 33
-
-7  Change Tracking .................................................................................................... 35
-
-8  Index ..................................................................................................................... 36
-
-[MS-CBCP] - v20240423
-Callback Control Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 37
-
-1  Introduction
+## 1 Introduction
 
 The Point-to-Point Protocol (PPP), as specified in [RFC1661], provides a standard method for
 transporting multi-protocol datagram over point-to-point links. The point-to-point links mentioned
@@ -538,7 +434,7 @@ specifically useful for saving on toll charges.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -591,14 +487,15 @@ Release: April 23, 2024
 
 6 / 37
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -620,7 +517,7 @@ https://www.rfc-editor.org/info/rfc1661
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC1332] McGregor, G., "The PPP Internet Protocol Control Protocol (IPCP)", RFC 1332, May 1992,
 http://www.ietf.org/rfc/rfc1332.txt
@@ -634,7 +531,7 @@ http://tools.ietf.org/html/rfc2472.txt
 [RFC2759] Zorn, G., "Microsoft PPP CHAP Extensions, Version 2", RFC 2759, January 2000,
 https://www.rfc-editor.org/info/rfc2759
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The Callback Control Protocol (CBCP) enables dial-up peers to negotiate callback settings such as
 callback type, callback number, and delay before callback.
@@ -657,7 +554,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-which the authentication of the peer involved in the PPP session takes place using any of the PPP-
+
+which the authentication of the peer involved in the PPP session takes place using any of the PPP-
 based authentication protocols (like EAP as specified in [RFC2284], MS-CHAPv2 as specified in
 [RFC2759], and so on). The Network Layer protocol phase commences after the authentication phase,
 which negotiates the network layer protocol configurations through the Network Control Protocol
@@ -706,14 +604,15 @@ Release: April 23, 2024
 
 8 / 37
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-CBCP].images/page009-img01.png)
 ![Extracted image 2 from page 9]([MS-CBCP].images/page009-img02.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 1: Callback message exchanges
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The CBCP runs after the authentication phase of the PPP. The CBCP message is designated through
 the protocol field identifier of 0xC029 in the PPP frame, as specified in [IANAPPPNUM]. The CBCP will
@@ -729,7 +628,8 @@ Release: April 23, 2024
 
 9 / 37
 
-As specified in the preceding figure, the PPP is responsible for enabling the transportation of a multi-
+
+As specified in the preceding figure, the PPP is responsible for enabling the transportation of a multi-
 protocol datagram over the data link layer that provides point-to-point connectivity. Each of the PPP-
 based protocols like LCP, CBCP, and IPCP have a designated protocol identifier, as specified in PPP
 Data Link Layer Protocol Numbers [IANAPPPNUM]. Based on the protocol identifier, the PPP will be
@@ -740,7 +640,7 @@ with the negotiation and has the result, the result is used by PPP to determine 
 session; that is, either to continue to the NCP phase or to terminate the session and prepare for
 callback.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following are the preconditions that have to be met in order for the CBCP to be initialized and
 used:
@@ -753,14 +653,14 @@ The caller and answerer have agreed to negotiate callback settings using the CBC
 be done through the negotiation of Callback Option (0x0D) of the LCP Protocol Extension as
 defined in [RFC1570], with the specific operation value of 0x06.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The use of CBCP enables dynamic negotiation of callback settings. The typical usage of callback is
 when the NAS that is acting as an answerer for PPP dial-up sessions has to callback the NAC on a
 specified number to save on toll charges. The CBCP is used when there is a need to securely negotiate
 callback settings past the authentication phase.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -771,11 +671,11 @@ LCP negotiation of callback configuration option (0x0D). If PPP is capable of su
 protocol, it will support the usage of operation 0x06 in the callback configuration option negotiated
 during LCP phase. See section 3.1.3 for more details about this step.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -800,20 +700,21 @@ Release: April 23, 2024
 
 10 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 PPP is responsible for framing and transporting the message over the point-to-point link. The CBCP
 messages are transported using the PPP encapsulation as specified in [RFC1661] section 2. The
 Protocol Field of the PPP encapsulation MUST be set to 0xC029 to specify the CBCP message.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 In addition to the data types in the following sections, this protocol references commonly used data
 types as defined in [MS-DTYP].
 
-2.2.1  LCP Configuration Option: Callback Option
+#### 2.2.1 LCP Configuration Option: Callback Option
 
 The Callback configuration option used in the LCP is specified in [RFC1570] section 2.3. The operation
 field 0x06 is defined for negotiating this protocol. The following is the format of the option.
@@ -851,7 +752,7 @@ Message (variable): This field SHOULD NOT be present. If present, the contents o
 
 be ignored.
 
-2.2.2  Callback Address
+#### 2.2.2 Callback Address
 
 The following is the message syntax for the Callback Address field used as a part of the Callback
 Configuration Options (section 2.2.3).
@@ -890,7 +791,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  Callback Configuration Option
+
+#### 2.2.3 Callback Configuration Option
 
 The following message syntax specifies the format for the Callback configuration options.
 
@@ -962,7 +864,7 @@ Callback Address (variable): This MUST specify the Callback Address for the Call
 
 option, as specified in section 2.2.2.
 
-2.2.4  CBCP Messages
+#### 2.2.4 CBCP Messages
 
 There are three types of messages associated with the CBCP -Callback Request (section 2.2.4.1),
 Callback Response (section 2.2.4.2), and Callback Acknowledgment (section 2.2.4.3). The general
@@ -998,7 +900,8 @@ Release: April 23, 2024
 
 12 / 37
 
-Message type
+
+Message type
 
 Callback Request
 
@@ -1022,7 +925,7 @@ Length, and Data fields.
 
 Data (variable): This MUST specify 0 or more octets of the data specific to the message.
 
-2.2.4.1  Callback Request Message
+##### 2.2.4.1 Callback Request Message
 
 The Callback Request message is sent by an answerer to a caller. This contains a list of
 configuration options available to the caller.
@@ -1090,7 +993,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Callback configuration option  Settings
+
+Callback configuration option  Settings
 
 field MUST be set to an empty null-terminated ASCII string.
 
@@ -1100,7 +1004,7 @@ administrator-specified number
 The Callback Delay field SHOULD be set to 0. The Callback Address
 field MUST not be present.
 
-2.2.4.2  Callback Response Message
+##### 2.2.4.2 Callback Response Message
 
 The Callback Response message is sent by a caller to an answerer. This message contains a
 configuration option selected by the caller.
@@ -1177,7 +1081,8 @@ Release: April 23, 2024
 
 14 / 37
 
-2.2.4.3  Callback Acknowledgment Message
+
+##### 2.2.4.3 Callback Acknowledgment Message
 
 The Callback Acknowledgment message is sent by an answerer to a caller. This contains the
 configuration option selected by the caller and completes the acknowledgment of the Callback
@@ -1224,7 +1129,7 @@ The Callback Configuration Option specified MUST be the Callback Configuration O
 from the caller in the Callback Response message and MUST be specified as defined in section
 2.2.4.2.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Callback Control Protocol accesses the following directory service attributes in the user class.For
 the syntactic specifications of the following attribute, refer to Active Directory Schema Attributes N-Z,
@@ -1241,7 +1146,7 @@ This attribute contains a binary BLOB composed of the callback configuration
 options for the users. For the binary BLOB structure, please see
 userParameters (section 2.3.1).
 
-2.3.1  userParameters
+#### 2.3.1 userParameters
 
 The userParameters attribute is used to retrieve the callback configuration options for the user in
 the following format.
@@ -1253,7 +1158,8 @@ Release: April 23, 2024
 
 15 / 37
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1340,11 +1246,12 @@ Release: April 23, 2024
 
 16 / 37
 
-3  Protocol Details
 
-3.1  Caller Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Caller Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1411,7 +1318,8 @@ Release: April 23, 2024
 
 17 / 37
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-CBCP].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1421,7 +1329,7 @@ Callback type  Description
 
 Callback to a pre-specified or administrator-specified number.
 
-3.1.1.1  State Machine
+##### 3.1.1.1 State Machine
 
 The following figure shows the state machine for a CBCP caller.
 
@@ -1432,7 +1340,8 @@ Release: April 23, 2024
 
 18 / 37
 
-Figure 3: Callback state diagram--caller states
+
+Figure 3: Callback state diagram--caller states
 
 The caller state machine has the following states as represented by the Current State variable.
 
@@ -1463,7 +1372,7 @@ The preceding description covers the state transitions for a successful CBCP neg
 transitions are covered in the state machine diagram earlier in this section and are also covered in
 section 3.1.5.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Retransmission Timer: This timer is initialized or reset whenever a Callback Response message is
 sent to the answerer. This is a periodic timer with the default value of a 2-second interval; that
@@ -1472,7 +1381,7 @@ timer value SHOULD be chosen appropriately, taking the link speed into considera
 <4>. This timer has to be stopped when the Callback Acknowledgment message is received by the
 caller.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The caller MUST initialize the CBCP protocol if either the caller or the answerer has successfully
 negotiated for operation 0x06 of the LCP configuration option 0x0D during the LCP protocol
@@ -1490,7 +1399,7 @@ from the supported callback options provided by the answerer. The Caller-specifi
 will be initialized to a valid delay that the caller wants to report to the answerer as a part of the
 Callback Response message.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
@@ -1501,9 +1410,10 @@ Release: April 23, 2024
 
 19 / 37
 
-3.1.5  Processing Events and Sequencing Rules
 
-3.1.5.1  General Packet Validation
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 General Packet Validation
 
 The CBCP messages MUST comprise the basic fields; namely, Code, Identifier, and Length. If the
 message received is less than 4 bytes in size, which means that not all of these fields are present, the
@@ -1513,12 +1423,12 @@ be dropped silently and ignored.
 
 When messages are dropped silently and ignored, state MUST NOT change.
 
-3.1.5.2  Packet Processing
+##### 3.1.5.2 Packet Processing
 
 The CBCP messages received MUST be at least 4 bytes in length, as specified in section 3.1.5.1. The
 first byte of the CBCP message that specifies the Code MUST be used to designate the message type.
 
-3.1.5.3  Receiving a Callback Request Message
+##### 3.1.5.3 Receiving a Callback Request Message
 
 If the Current State is CBCP_STATE_WAIT_FOR_REQUEST, the following message processing
 
@@ -1571,7 +1481,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The Callback Request message MUST be in the specified format (section 2.2.4.1) with the
+
+2.  The Callback Request message MUST be in the specified format (section 2.2.4.1) with the
 
 Callback Configuration options as specified (section 2.2.3). Also, the Callback Configuration
 options received as a part of the Callback Request message MUST be the same as the options
@@ -1591,7 +1502,7 @@ After successful transmission of the message, the caller MUST remain in the Curr
 
 6.  The caller MUST restart a retransmission timer (section 3.2.2) and decrement the Retry Count.
 
-3.1.5.4  Receiving a Callback Acknowledgment Message
+##### 3.1.5.4 Receiving a Callback Acknowledgment Message
 
 If the Current State is set to any state other than CBCP_STATE_WAIT_FOR_ACK:
 
@@ -1611,7 +1522,7 @@ Identifier, the retransmission timer is started, and there is no change in the C
 
 3.1.7.3) event notifying with the successful result negotiation.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 Retransmission Timer: When this timer expires, it denotes a time period wherein CBCP has sent the
 
@@ -1651,7 +1562,8 @@ Release: April 23, 2024
 
 21 / 37
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 Since the CBCP is a PPP-based protocol and occurs in the context of the PPP negotiation, there are a
 number of interactions that happen with the PPP, such as initialization, termination, or message
@@ -1659,7 +1571,7 @@ processing (including transmitting and receiving messages). Based on this, the f
 various local events that can occur. Some are initiated by the CBCP and the others are received by
 CBCP from the PPP.
 
-3.1.7.1  CBCP Packet Receive Event
+##### 3.1.7.1 CBCP Packet Receive Event
 
 The CBCP Packet Receive Event is an event that the PPP indicates to the CBCP. Since PPP provides
 the method for transporting multi-protocol datagram over point-to-point links, the PPP will be
@@ -1668,14 +1580,14 @@ has the PPP protocol identifier to be 0xC029, the PPP will notify the CBCP messa
 event. When a CBCP message is received, the processing rules to be applied are specified in section
 3.1.5.
 
-3.1.7.2  CBCP Packet Send Event
+##### 3.1.7.2 CBCP Packet Send Event
 
 CBCP Packet Send Event is an event that the CBCP indicates to the PPP. Since PPP provides the
 method for transporting a multi-protocol datagram over point-to-point links, the CBCP will rely on the
 PPP to be able to send out the frame. The CBCP will use this event to indicate the CBCP message to
 PPP to be transmitted over the point-to-point link.
 
-3.1.7.3  CBCP Done
+##### 3.1.7.3 CBCP Done
 
 CBCP Done event is an event that the CBCP indicates to the PPP. This event denotes the completion
 of the CBCP to the PPP along with the completion status. The CBCP might have been successfully
@@ -1689,7 +1601,7 @@ was the Result Callback Type indicated.
 When the CBCP has timed out because it has not received the Callback Acknowledgment message
 from the answerer, it indicates the same to the PPP and the PPP terminates the session.
 
-3.1.7.4  PPP Termination
+##### 3.1.7.4 PPP Termination
 
 The PPP Termination event is indicated from the PPP to the CBCP. This event is used to denote the
 PPP termination. The PPP is being terminated because either a Callback will be received or the
@@ -1699,9 +1611,9 @@ external event such as link termination or link failure occurred. The CBCP will 
 and clear up its state for the session. No active processing of received messages will occur beyond this
 event.
 
-3.2  Answerer Details
+### 3.2 Answerer Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1714,7 +1626,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-adhere to this model as long as their external behavior is consistent with that described in this
+
+adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
 Current State: An enumeration value that represents the current state of the CBCP protocol state
@@ -1774,7 +1687,7 @@ the caller as a part of the Callback Response message in the callback type optio
 the time, in seconds, the answerer waits before the callback can be initiated to the caller. This
 value is valid only when the Callback type 2 or 3 is chosen by the caller.
 
-3.2.1.1  State Machine
+##### 3.2.1.1 State Machine
 
 The following figure shows the state machine for a CBCP answerer.
 
@@ -1785,7 +1698,8 @@ Release: April 23, 2024
 
 23 / 37
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-CBCP].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1811,7 +1725,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-State name
+
+State name
 
 Description
 
@@ -1829,7 +1744,7 @@ The preceding description covers the state transitions for a successful CBCP neg
 transitions are covered in the state machine diagram earlier in this section and are also covered in
 section 3.2.5.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Retransmission Timer: This timer is initialized or reset whenever a Callback Request message is
 sent to the caller. This is a periodic timer with the default value of a 2-second interval; that is,
@@ -1837,7 +1752,7 @@ unless the timer is stopped, it will expire periodically as specified by the tim
 value SHOULD be chosen appropriately, taking the link speed into consideration as well <6>. This
 timer has to be stopped when the Callback Response message is received by the answerer.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The answerer MUST initialize the CBCP if either the caller or the answerer has successfully
 negotiated for operation 0x06 of LCP configuration option 0x0D during the LCP negotiation. The
@@ -1879,13 +1794,14 @@ Release: April 23, 2024
 
 25 / 37
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  General Packet Validation
+##### 3.2.5.1 General Packet Validation
 
 The CBCP messages MUST comprise the basic fields; namely, Code, Identifier, and Length. If the
 message received is less than 4 bytes in size, which means that not all of these fields are present, the
@@ -1894,12 +1810,12 @@ message MUST be dropped silently and ignored. If the Code of the CBCP message re
 
 When messages are dropped silently and ignored, state MUST NOT change.
 
-3.2.5.2  Packet Processing
+##### 3.2.5.2 Packet Processing
 
 The CBCP messages received MUST be at least 4 bytes in length as specified in section 3.2.5.1. The
 first byte of the CBCP message that specifies the Code MUST be used to designate the message type.
 
-3.2.5.3  Receiving a Callback Response Message
+##### 3.2.5.3 Receiving a Callback Response Message
 
 If the Current State is CBCP_STATE_WAIT_FOR_RESPONSE, the message processing is done as
 follows:
@@ -1949,7 +1865,8 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message MUST be retransmitted (section 3.2.5.3.1), and the Current State MUST be changed to
+
+message MUST be retransmitted (section 3.2.5.3.1), and the Current State MUST be changed to
 CBCP_STATE_WAIT_FOR_RESPONSE.
 
 2.  The Identifier received in the Callback Response message MUST match the identifier value stored
@@ -1971,7 +1888,7 @@ Current State was CBCP_STATE_WAIT_FOR_RESPONSE MUST be sent again.
 message. After successful transmission of the Callback Acknowledgment message there MUST be
 no change in the Current State.
 
-3.2.5.3.1 Preparing a Callback Request Message for Retransmission
+###### 3.2.5.3.1 Preparing a Callback Request Message for Retransmission
 
 The Callback Request message MUST be retransmitted as specified:
 
@@ -1992,7 +1909,7 @@ Identifier value.
 
 restarted.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Retransmission Timer: When this timer expires, it denotes a time period in which CBCP has sent the
 Callback Request message but has not received the Callback Response message. The following are
@@ -2016,7 +1933,7 @@ The answerer MAY choose to fail the PPP session after waiting for an administrat
 period of time or retransmissions. The PPP session failure can be triggered by using the CBCP
 Done event with a failure status.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Because the CBCP occurs in the context of the PPP negotiation, there are a number of interactions that
 happen with the PPP, such as initialization, termination, or message process (including transmitting
@@ -2028,10 +1945,11 @@ Callback Control Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and receiving messages). Based on this, the following are the various local events that can occur.
+
+and receiving messages). Based on this, the following are the various local events that can occur.
 Some events are initiated by the CBCP and the others are received by CBCP from the PPP.
 
-3.2.7.1  CBCP Packet Receive Event
+##### 3.2.7.1 CBCP Packet Receive Event
 
 This is an event that the PPP indicates to the CBCP. Since PPP provides the method for transporting a
 multi-protocol datagram over point-to-point links, the PPP is responsible for receiving and delivering
@@ -2039,13 +1957,13 @@ the CBCP messages. If the message received by the PPP has the Protocol Field to 
 will provide the messages to the CBCP through this event. When a CBCP message is received, the
 processing rules to be applied are specified in section 3.2.5.
 
-3.2.7.2  CBCP Packet Send Event
+##### 3.2.7.2 CBCP Packet Send Event
 
 This is an event that the CBCP indicates to the PPP. The CBCP relies on the PPP to be able to send out
 the frame. The CBCP uses this event to indicate the CBCP message to the PPP to be transmitted over
 the point-to-point link.
 
-3.2.7.3  CBCP Done
+##### 3.2.7.3 CBCP Done
 
 This is an event that the CBCP indicates to the PPP. This event denotes the completion of the CBCP to
 the PPP along with the completion status. The CBCP might have been successfully completed, or the
@@ -2061,7 +1979,7 @@ before proceeding for the callback operation.
 If the Callback negotiation did not complete successfully, the PPP MAY choose to terminate the
 session.
 
-3.2.7.4  PPP Termination
+##### 3.2.7.4 PPP Termination
 
 This is an event that is indicated from the PPP to the CBCP. This event is used to denote the PPP
 termination. The PPP is being terminated because either a Termination Request ([RFC1661] section
@@ -2077,9 +1995,10 @@ Release: April 23, 2024
 
 28 / 37
 
-4  Protocol Examples
 
-4.1  LCP Negotiation of Callback Option for CBCP
+## 4 Protocol Examples
+
+### 4.1 LCP Negotiation of Callback Option for CBCP
 
 The following describes the message exchange that happens between the caller and the answerer
 when the caller is requesting the use of CBCP for negotiating callback settings and the answerer
@@ -2147,14 +2066,15 @@ Release: April 23, 2024
 
 29 / 37
 
-     Option Type: 08 (Address-and-Control-Field-Compression)
+
+     Option Type: 08 (Address-and-Control-Field-Compression)
      Length: 02
  Option: Callback
      Option Type: 0D (Callback)
      Length: 03
      Operation: 06
 
-4.2  CBCP Negotiation
+### 4.2 CBCP Negotiation
 
 When the caller receives this Configure-Ack message from the answerer, it knows that CBCP will be
 negotiated at the end of the authentication phase. Similarly, since the answerer was capable of
@@ -2215,7 +2135,8 @@ Release: April 23, 2024
 
 30 / 37
 
- Identifier: 01
+
+ Identifier: 01
  Length: 00 10
  Callback Option:
      Callback Type: 02 (Callback to a caller-specifiable number)
@@ -2231,13 +2152,14 @@ Release: April 23, 2024
 
 31 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2248,7 +2170,8 @@ Release: April 23, 2024
 
 32 / 37
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2316,7 +2239,8 @@ Release: April 23, 2024
 
 33 / 37
 
-Link speed (bps) <=  Retransmission timer (seconds)
+
+Link speed (bps) <=  Retransmission timer (seconds)
 
 1200
 
@@ -2365,7 +2289,8 @@ Release: April 23, 2024
 
 34 / 37
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2409,7 +2334,8 @@ Release: April 23, 2024
 
 35 / 37
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2543,7 +2469,8 @@ L
 
 36 / 37
 
-LCP Configuration Option: Callback Option message
+
+LCP Configuration Option: Callback Option message
 
 Relationship to other protocols 9
 

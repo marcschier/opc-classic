@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -520,162 +522,67 @@ Release: April 23, 2024
 
 3 / 31
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Server Role](#131-server-role)
+    - [1.3.2 Client Role](#132-client-role)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Header](#221-common-header)
+    - [2.2.2 Container Header](#222-container-header)
+      - [2.2.2.1 Call Target Identifier](#2221-call-target-identifier)
+    - [2.2.3 Partition Identifier Header](#223-partition-identifier-header)
+    - [2.2.4 Security Header](#224-security-header)
+    - [2.2.5 Security Reference Header](#225-security-reference-header)
+    - [2.2.6 Method Header](#226-method-header)
+      - [2.2.6.1 Marshaled Data](#2261-marshaled-data)
+        - [2.2.6.1.4 and section 2.2.6.1.5.](#22614-and-section-22615)
+        - [2.2.6.1.5 Object References](#22615-object-references)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Application Requesting Interface](#3241-application-requesting-interface)
+      - [3.2.4.2 Application Making Method Call](#3242-application-making-method-call)
+      - [3.2.4.3 Application Signaling that Method Calls Are Complete](#3243-application-signaling-that-method-calls-are-complete)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Client Creating and Sending a Message](#41-client-creating-and-sending-a-message)
+  - [4.2 Server Retrieving and Processing a Message](#42-server-retrieving-and-processing-a-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Server Role .................................................................................................. 9
-Client Role ................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Common Header......................................................................................... 13
-Container Header ....................................................................................... 14
-Call Target Identifier ............................................................................. 15
-Partition Identifier Header ............................................................................ 16
-Security Header .......................................................................................... 16
-Security Reference Header ........................................................................... 17
-Method Header ........................................................................................... 18
-Marshaled Data..................................................................................... 19
-NDR Marshaling............................................................................... 19
-Dispatch Marshaling ......................................................................... 19
-Supported Types ............................................................................. 20
-Padding of the Marshaled Data .......................................................... 20
-Object References ........................................................................... 20
-
-2.2.6.1.1
-2.2.6.1.2
-2.2.6.1.3
-2.2.6.1.4
-2.2.6.1.5
-
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2.2.6.1
-
-3.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 22
-Server Details .................................................................................................. 22
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-Client Details ................................................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 24
-Application Requesting Interface ............................................................. 24
-Application Making Method Call ............................................................... 24
-Application Signaling that Method Calls Are Complete ................................ 24
-Message Processing Events and Sequencing Rules .......................................... 24
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 25
-Client Creating and Sending a Message ............................................................... 25
-
-4.1
-
-[MC-COMQC] - v20240423
-Component Object Model Plus (COM+) Queued Components Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 31
-
-4.2
-
-Server Retrieving and Processing a Message ........................................................ 25
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-Index of Security Parameters ............................................................................ 27
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 28
-
-7  Change Tracking .................................................................................................... 29
-
-8  Index ..................................................................................................................... 30
-
-[MC-COMQC] - v20240423
-Component Object Model Plus (COM+) Queued Components Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 31
-
-1  Introduction
+## 1 Introduction
 
 The Component Object Model Plus (COM+) Queued Components Protocol (COMQC) is a protocol for
 persisting method calls made on COM+ objects in such a way that they can later be played back and
@@ -685,7 +592,7 @@ that goal.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -747,7 +654,8 @@ Release: April 23, 2024
 
 6 / 31
 
-message: A data structure representing a unit of data transfer between distributed applications. A
+
+message: A data structure representing a unit of data transfer between distributed applications. A
 message has message properties, which can include message header properties, a message
 body property, and message trailer properties.
 
@@ -822,7 +730,8 @@ Component Object Model Plus (COM+) Queued Components Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-UTF-16: A standard for encoding Unicode characters, defined in the Unicode standard, in which the
+
+UTF-16: A standard for encoding Unicode characters, defined in the Unicode standard, in which the
 
 most commonly used characters are defined as double-byte characters. Unless specified
 otherwise, this term refers to the UTF-16 encoding form specified in [UNICODE5.0.0/2007]
@@ -837,14 +746,14 @@ Directory-Integrated mode.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -876,7 +785,7 @@ Processing Rules".
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-IPersistStream] Microsoft Corporation, "IPersistStream interface",
 http://msdn.microsoft.com/en-us/library/ms690091.aspx
@@ -888,11 +797,12 @@ Release: April 23, 2024
 
 8 / 31
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MC-COMQC].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Component Object Model Plus (COM+) Queued Components Protocol enables a client  to
 asynchronously invoke methods on a server in scenarios of limited or intermittent connectivity. It does
@@ -909,7 +819,7 @@ Figure 1: Protocol layering
 COMQC is asynchronous and one-way with information flowing exclusively from the client to the
 server.
 
-1.3.1  Server Role
+#### 1.3.1 Server Role
 
 The server is responsible for receiving COMQC messages and dispatching the recorded method calls.
 
@@ -917,7 +827,7 @@ Each COMQC server is associated with a single COM+ application using COMQC and s
 for all server objects in that COMQC application. Each COMQC server has its own message queue.
 There can be multiple COMQC servers per machine.
 
-1.3.2  Client Role
+#### 1.3.2 Client Role
 
 The client is responsible for recording method calls, packaging them up into a COMQC message, and
 transmitting the message to the message queuing infrastructure.
@@ -929,7 +839,7 @@ unrelated to each other. That is, even if a client application uses COMQC to que
 server objects in the same COM+ application (and hence to the same message queue and the same
 COMQC server), this involves a separate conceptual COMQC client per server object.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 COMQC relies on DCE 1.1: Remote Procedure Call [C706] and the OLE Automation Protocol [MS-
 OAUT] to marshal the parameters of the recorded method calls. It further relies on [MS-MQMP] and
@@ -944,14 +854,15 @@ Component Object Model Plus (COM+) Queued Components Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 COMQC assumes that the message queuing infrastructure is already running and that the client
 application is aware of the name of the message queue.
 
 The server object is installed on the COMQC server before a COMQC client attempts to invoke it.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 COMQC is useful and appropriate for performing asynchronous method calls when the client and the
 server do not have constant connectivity and a message queuing mechanism is available.
@@ -959,15 +870,15 @@ server do not have constant connectivity and a message queuing mechanism is avai
 It is not applicable to use with method calls that have output parameters or return values that the
 client application needs to get.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 COMQC does not perform versioning or capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -995,9 +906,10 @@ Release: April 23, 2024
 
 10 / 31
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 For the remainder of sections 2 and 3, "message" refers to a COMQC message unless otherwise
 specified.
@@ -1034,7 +946,7 @@ name>".
 The entire communication between client and server MUST be contained in a single message. The
 server MUST NOT send a reply message, and the client MUST NOT expect one.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 A message contains the state of one or more method calls to be made on the server as well as the
 general state associated with the request. Messages are self-contained and MUST NOT rely on any
@@ -1052,7 +964,8 @@ Release: April 23, 2024
 
 11 / 31
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MC-COMQC].images/page012-img01.png)
 ![Extracted image 2 from page 12]([MC-COMQC].images/page012-img02.png)
 <!-- /Extracted images from page 12 -->
@@ -1081,7 +994,8 @@ Release: April 23, 2024
 
 12 / 31
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MC-COMQC].images/page013-img01.png)
 ![Extracted image 2 from page 13]([MC-COMQC].images/page013-img02.png)
 ![Extracted image 3 from page 13]([MC-COMQC].images/page013-img03.png)
@@ -1106,7 +1020,7 @@ Unless otherwise specified, all fields MUST be specified in little-endian format
 specified, all headers and all custom data MUST be aligned on 8-byte boundaries, meaning that each
 header MUST be padded at the end so that its length is a multiple of 8.
 
-2.2.1  Common Header
+#### 2.2.1 Common Header
 
 The common header specifies the size and type of a header. Every header MUST begin with the
 common header. The common header MUST NOT appear by itself.
@@ -1131,7 +1045,8 @@ Release: April 23, 2024
 
 13 / 31
 
-Size
+
+Size
 
 Header Signature (4 bytes):  A predefined value that identifies the specific header. (The value is
 
@@ -1147,7 +1062,7 @@ All headers defined in section 2.2.2 to section 2.2.6 contain the common header.
 specified, "Header Signature" refers to the Header Signature field of the common header that is
 embedded in the other headers.
 
-2.2.2  Container Header
+#### 2.2.2 Container Header
 
 The container header contains general information regarding the message. Every message MUST
 have exactly one container header, and it MUST be the first header in the message.
@@ -1200,7 +1115,8 @@ Release: April 23, 2024
 
 14 / 31
 
-...
+
+...
 
 Padding (variable)
 
@@ -1234,7 +1150,7 @@ Padding (variable):  Enough space to pad the message to an 8-byte boundary. MUST
 
 and ignored on receipt.
 
-2.2.2.1  Call Target Identifier
+##### 2.2.2.1 Call Target Identifier
 
 The Call Target Identifier is part of the container header and identifies the target of the call. The
 server MUST use the information stored here to determine where to dispatch the call.
@@ -1273,7 +1189,8 @@ Release: April 23, 2024
 
 15 / 31
 
-...
+
+...
 
 Structure ID (16 bytes): GUID (as specified in [MS-DTYP] section 2.3.4.2) identifying the Call
 Target Identifier structure. MUST be set to {ecabafc6-7f19-11d2-978e-0000f8757e2a}.
@@ -1294,7 +1211,7 @@ Augmented Backus-Naur Form (ABNF) (as specified in [RFC4234]) syntax:
 where UUID is defined by [C706] section 3.1.17. The string MUST be encoded in UTF-16 and
 MUST be NULL-terminated.
 
-2.2.3  Partition Identifier Header
+#### 2.2.3 Partition Identifier Header
 
 The partition identifier header contains the COM+ partition identifier (as defined in [MS-COM]
 section 1.3.6) that the server object resides in.
@@ -1328,7 +1245,7 @@ Identifier (16 bytes): GUID (as specified in [MS-DTYP] section 2.3.4.2)  identif
 
 that the server object resides in.
 
-2.2.4  Security Header
+#### 2.2.4 Security Header
 
 The security header is a wrapper for the Security ORPC Extension defined in [MS-COM] section
 2.2.3.2. It is used to capture the current security context so that it can be recreated on the COMQC
@@ -1345,7 +1262,8 @@ Component Object Model Plus (COM+) Queued Components Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the security properties of a method call are identical to the security properties of the method call
+
+If the security properties of a method call are identical to the security properties of the method call
 stored in the message immediately prior to the current method call, a security header SHOULD NOT
 be included.
 
@@ -1398,7 +1316,7 @@ Data Padding (variable):  Enough space to extend the header to an 8-byte boundar
 
 to 0 and ignored on receipt.
 
-2.2.5  Security Reference Header
+#### 2.2.5 Security Reference Header
 
 A security reference header is used to refer to a previous security header. If the security properties of
 the current call match the security properties of the call stored immediately before it in the message,
@@ -1425,7 +1343,8 @@ Release: April 23, 2024
 
 17 / 31
 
-Size
+
+Size
 
 Security Header Offset
 
@@ -1443,7 +1362,7 @@ Padding (4 bytes):  Aligns the header on an 8-byte boundary. MUST be set to 0 an
 
 receipt.
 
-2.2.6  Method Header
+#### 2.2.6 Method Header
 
 The method header encapsulates a method call. Each method call has exactly one method header.
 Each message MUST contain one or more method headers.
@@ -1494,7 +1413,8 @@ Release: April 23, 2024
 
 18 / 31
 
-...
+
+...
 
 Header Signature (4 bytes):  MUST be set to "METH" in ASCII (0x4854454D) if the Interface ID
 
@@ -1535,12 +1455,12 @@ Padding 2 (variable):  Aligns the marshaled data on an 8-byte boundary. See sect
 
 details.
 
-2.2.6.1  Marshaled Data
+##### 2.2.6.1 Marshaled Data
 
 This field contains the binary representation of the marshaled method parameters. The binary format
 is based on either the Network Data Representation (NDR) format, defined in [C706], or the
 dispatch format (defined in [MS-OAUT] section 3.1.4.4.2) with two exceptions defined in section
-2.2.6.1.4 and section 2.2.6.1.5.
+###### 2.2.6.1.4 and section 2.2.6.1.5.
 
 If the ID in the method header is set to IID_IDispatch (as defined in [MS-OAUT] section 1.9), the
 dispatch marshaling format MUST be used. Otherwise, the NDR format MUST be used.
@@ -1567,7 +1487,8 @@ Component Object Model Plus (COM+) Queued Components Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When using dispatch marshaling, [out] parameters MUST NOT be supported. [in] and [in, out]
+
+When using dispatch marshaling, [out] parameters MUST NOT be supported. [in] and [in, out]
 parameters MUST be supported. However, because COMQC is a one-way protocol, [in, out]
 parameters MUST NOT be filled with data returned from the server.
 
@@ -1587,7 +1508,7 @@ sections 2.2.6.1.1 and 2.2.6.1.2.
 Implementations of this specification MUST ignore that data when unmarshaling the method
 parameters on the server and MUST NOT reject incoming messages that contain such data.
 
-2.2.6.1.5 Object References
+###### 2.2.6.1.5 Object References
 
 Object references as defined in [MS-DCOM] section 1.3.2 MUST NOT be supported unless a well-
 known binary representation of the object exists.<2> It is the responsibility of the implementation of
@@ -1637,7 +1558,8 @@ Release: April 23, 2024
 
 20 / 31
 
-...
+
+...
 
 Reserved 1 (4 bytes):  MUST be set to 0 and ignored on receipt.
 
@@ -1664,13 +1586,14 @@ Release: April 23, 2024
 
 21 / 31
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section specifies the two roles of COMQC: the client role and the server role.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -1687,22 +1610,22 @@ from the message queue.
 
 with the object they refer to.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 During initialization, the COMQC server MUST open a message queue on the already running MSMQ
 infrastructure and store the queue handle for future use. It MUST then initialize the objects on which
 the client makes calls or initialize a client activation mechanism (as specified in [MS-COM] sections
 3.7.4 and 3.10.4) used to create the client upon receipt of a message.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the server MUST verify that the Extension attribute of the MSMQ
 Message ADM element is set to {1664BCFB-1751-11d2-B58E-00E0290E6C31}. Messages that do not
@@ -1729,19 +1652,20 @@ Release: April 23, 2024
 
 22 / 31
 
-Any communication following the receipt of a message MUST be treated as a new exchange
+
+Any communication following the receipt of a message MUST be treated as a new exchange
 independent of the previous one, where the server acts as a client and the client acts as a server with
 no knowledge of the previous exchange.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When stopping, the COMQC server MUST close the queue handle.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client composes a message in accordance with the format defined in section 2.2 and then
 transmits it via MSMQ.
@@ -1751,7 +1675,7 @@ After sending the message to the transport, the client side of the message excha
 COMQC does not specify how to deal with transmission failures. An implementation MAY communicate
 failures to the higher-layer application or protocol.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1780,11 +1704,11 @@ Parameter Values: The parameter values to pass to the method.
 
   Security Context: The current security context data as defined by [MS-COM] section 2.2.3.2.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
@@ -1795,15 +1719,16 @@ Release: April 23, 2024
 
 23 / 31
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  Application Requesting Interface
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 Application Requesting Interface
 
 When a higher-layer protocol or application requests an interface to the server object, the COMQC
 client MUST attempt to create a local proxy object representing the server object and fail the call if
 it cannot. (The server is not notified that a proxy object has been created.)
 
-3.2.4.2  Application Making Method Call
+##### 3.2.4.2 Application Making Method Call
 
 When a higher-layer protocol or application performs a method call on the proxy object, the COMQC
 client MUST attempt to create a new entry in the list of pending calls and store the data describing
@@ -1815,7 +1740,7 @@ conforming to the format defined in section 2.2 and send it to the message queue
 any internal state. (Such an implementation would not implement application signaling as defined in
 section 3.2.4.3.)
 
-3.2.4.3  Application Signaling that Method Calls Are Complete
+##### 3.2.4.3 Application Signaling that Method Calls Are Complete
 
 When the higher-layer protocol or application signals that no more method calls are coming (for
 example, by destroying the proxy object), the COMQC client MUST convert all entries in the list of
@@ -1826,15 +1751,15 @@ the message queue. If the list of pending calls is empty, an MSMQ message MUST N
 An implementation MAY provide feedback to the higher-layer protocol or application when a message
 queue transfer succeeds or fails, but if or how this is done is outside of the scope of this protocol.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1845,17 +1770,18 @@ Release: April 23, 2024
 
 24 / 31
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MC-COMQC].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 This section describes an example of a common use of the COMQC where a client application running
 on a roaming computer with intermittent access to a network wants to send data to a server
 application without regard for the current state of connectivity.
 
-4.1  Client Creating and Sending a Message
+### 4.1 Client Creating and Sending a Message
 
 A typical sequence of events for a COMQC client is as follows.
 
@@ -1877,7 +1803,7 @@ message (as defined in section 2.2) that contains the data that it received from
 The COMQC client asynchronously transmits the COMQC message in the payload of an MSMQ
 message. This concludes the client-side portion of the protocol.
 
-4.2  Server Retrieving and Processing a Message
+### 4.2 Server Retrieving and Processing a Message
 
 A typical sequence of events for a COMQC server is as follows.
 
@@ -1888,7 +1814,8 @@ Release: April 23, 2024
 
 25 / 31
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MC-COMQC].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1913,9 +1840,10 @@ Release: April 23, 2024
 
 26 / 31
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The COMQC does not define any specific means by which the contents of a message have to be
 encrypted. COMQC messages, as defined in this specification, are transmitted in plain text. They are
@@ -1938,7 +1866,7 @@ attempts by the underlying transport can occur. This protocol itself does not de
 mechanisms and relies on MSMQ to retransmit the messages in case of failures and to ensure the
 messages are delivered only once.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -1973,7 +1901,8 @@ Component Object Model Plus (COM+) Queued Components Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2041,7 +1970,8 @@ Release: April 23, 2024
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2085,7 +2015,8 @@ Release: April 23, 2024
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2216,7 +2147,8 @@ Component Object Model Plus (COM+) Queued Components Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Preconditions 10
+
+Preconditions 10
 Prerequisites 10
 Product behavior 28
 Protocol Details

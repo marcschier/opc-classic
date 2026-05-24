@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 42
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -207,232 +208,102 @@ Release: April 23, 2024
 
 2 / 42
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DHCP Failover Option 30 (0x1E) – Scope ID List Option](#221-dhcp-failover-option-30-0x1e-scope-id-list-option)
+    - [2.2.2 DHCP Failover Option 31 (0x1F) – Client Name Option](#222-dhcp-failover-option-31-0x1f-client-name-option)
+    - [2.2.3 DHCP Failover Option 32 (0x20) – Client Description Option](#223-dhcp-failover-option-32-0x20-client-description-option)
+    - [2.2.4 DHCP Failover Option 33 (0x21) – Client Subnet Mask Option](#224-dhcp-failover-option-33-0x21-client-subnet-mask-option)
+    - [2.2.5 DHCP Failover Option 34 (0x22) – Server IP Option](#225-dhcp-failover-option-34-0x22-server-ip-option)
+    - [2.2.6 DHCP Failover Option 35 (0x23) – Server Name Option](#226-dhcp-failover-option-35-0x23-server-name-option)
+    - [2.2.7 DHCP Failover Option 36 (0x24) – Client Type Option](#227-dhcp-failover-option-36-0x24-client-type-option)
+    - [2.2.8 DHCP Failover Option 37 (0x25) – Client NAP Status Option](#228-dhcp-failover-option-37-0x25-client-nap-status-option)
+    - [2.2.9 DHCP Failover Option 38 (0x26) – Client NAP Probation Option](#229-dhcp-failover-option-38-0x26-client-nap-probation-option)
+    - [2.2.10 DHCP Failover Option 39 (0x27) – Client NAP Capable Option](#2210-dhcp-failover-option-39-0x27-client-nap-capable-option)
+    - [2.2.11 DHCP Failover Option 40 (0x28) – Client Matched Policy Option](#2211-dhcp-failover-option-40-0x28-client-matched-policy-option)
+    - [2.2.12 DHCP Failover Option 41 (0x29) - Extended Address State Option](#2212-dhcp-failover-option-41-0x29-extended-address-state-option)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Safe Period Timer](#3121-safe-period-timer)
+      - [3.1.2.2 Connect Retry Timer](#3122-connect-retry-timer)
+      - [3.1.2.3 Startup Timer](#3123-startup-timer)
+      - [3.1.2.4 tReceive Timer](#3124-treceive-timer)
+      - [3.1.2.5 tSend Timer](#3125-tsend-timer)
+      - [3.1.2.6 Synchronization Timer](#3126-synchronization-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Adding and Removing Scopes from Failover Configuration](#3141-adding-and-removing-scopes-from-failover-configuration)
+      - [3.1.4.2 Synchronize Lease Database by Sending DHCP Failover BNDUPD Message](#3142-synchronize-lease-database-by-sending-dhcp-failover-bndupd-message)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a DHCP Failover STATE Message](#3151-receiving-a-dhcp-failover-state-message)
+      - [3.1.5.2 Receiving a DHCP Failover BNDUPD Message](#3152-receiving-a-dhcp-failover-bndupd-message)
+      - [3.1.5.3 Receiving a DHCP Failover BNDACK Message](#3153-receiving-a-dhcp-failover-bndack-message)
+      - [3.1.5.4 Receiving a DHCP Failover UPDREQ Message](#3154-receiving-a-dhcp-failover-updreq-message)
+      - [3.1.5.5 Receiving a DHCP Failover UPDREQALL Message](#3155-receiving-a-dhcp-failover-updreqall-message)
+      - [3.1.5.6 Receiving a DHCP Failover UPDDONE Message](#3156-receiving-a-dhcp-failover-upddone-message)
+      - [3.1.5.7 Receiving a DHCP Failover CONTACT Message](#3157-receiving-a-dhcp-failover-contact-message)
+      - [3.1.5.8 Receiving a DHCP Failover DISCONNECT Message](#3158-receiving-a-dhcp-failover-disconnect-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Safe Period Timer Events](#3161-safe-period-timer-events)
+      - [3.1.6.2 Connect Retry Timer Events](#3162-connect-retry-timer-events)
+      - [3.1.6.3 Startup Timer Events](#3163-startup-timer-events)
+      - [3.1.6.4 tReceive Timer Events](#3164-treceive-timer-events)
+      - [3.1.6.5 tSend Timer Events](#3165-tsend-timer-events)
+      - [3.1.6.6 Synchronization Timer Events](#3166-synchronization-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Sending a DHCP Failover UPDREQ Message](#3171-sending-a-dhcp-failover-updreq-message)
+      - [3.1.7.2 Sending a DHCP Failover UPDREQALL Message](#3172-sending-a-dhcp-failover-updreqall-message)
+      - [3.1.7.3 Sending a DHCP Failover STATE Message](#3173-sending-a-dhcp-failover-state-message)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Address Rebalancing Timer](#3221-address-rebalancing-timer)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a DHCP Failover CONNECTACK Message](#3251-receiving-a-dhcp-failover-connectack-message)
+      - [3.2.5.2 Receiving a DHCP Failover POOLREQ Message](#3252-receiving-a-dhcp-failover-poolreq-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Establishing the Connection between Failover Partner Servers](#3271-establishing-the-connection-between-failover-partner-servers)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a DHCP Failover CONNECT Message](#3351-receiving-a-dhcp-failover-connect-message)
+      - [3.3.5.2 Receiving a DHCPFailover POOLREQ Message](#3352-receiving-a-dhcpfailover-poolreq-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Adding DHCPv4 Scopes to a Failover Relationship](#41-adding-dhcpv4-scopes-to-a-failover-relationship)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-DHCP Failover Option 30 (0x1E) – Scope ID List Option ................................... 15
-2.2.1
-DHCP Failover Option 31 (0x1F) – Client Name Option .................................... 15
-2.2.2
-DHCP Failover Option 32 (0x20) – Client Description Option............................. 16
-2.2.3
-DHCP Failover Option 33 (0x21) – Client Subnet Mask Option .......................... 16
-2.2.4
-DHCP Failover Option 34 (0x22) – Server IP Option ........................................ 17
-2.2.5
-DHCP Failover Option 35 (0x23) – Server Name Option ................................... 17
-2.2.6
-DHCP Failover Option 36 (0x24) – Client Type Option ..................................... 18
-2.2.7
-DHCP Failover Option 37 (0x25) – Client NAP Status Option ............................. 18
-2.2.8
-2.2.9
-DHCP Failover Option 38 (0x26) – Client NAP Probation Option ........................ 19
-2.2.10  DHCP Failover Option 39 (0x27) – Client NAP Capable Option .......................... 19
-2.2.11  DHCP Failover Option 40 (0x28) – Client Matched Policy Option ........................ 20
-2.2.12  DHCP Failover Option 41 (0x29) - Extended Address State Option .................... 20
-
-3.1
-
-3.1.3
-3.1.4
-
-3.1.1
-3.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-3.1.2.5
-3.1.2.6
-
-3  Protocol Details ..................................................................................................... 22
-Common Details .............................................................................................. 22
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 23
-Safe Period Timer ................................................................................. 23
-Connect Retry Timer ............................................................................. 24
-Startup Timer ....................................................................................... 24
-tReceive Timer ..................................................................................... 24
-tSend Timer ......................................................................................... 24
-Synchronization Timer ........................................................................... 24
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Adding and Removing Scopes from Failover Configuration .......................... 25
-Synchronize Lease Database by Sending DHCP Failover BNDUPD Message ... 25
-Processing Events and Sequencing Rules ....................................................... 27
-Receiving a DHCP Failover STATE Message ............................................... 28
-Receiving a DHCP Failover BNDUPD Message ............................................ 28
-Receiving a DHCP Failover BNDACK Message ............................................ 29
-Receiving a DHCP Failover UPDREQ Message ............................................ 29
-Receiving a DHCP Failover UPDREQALL Message ....................................... 29
-Receiving a DHCP Failover UPDDONE Message .......................................... 30
-Receiving a DHCP Failover CONTACT Message .......................................... 30
-Receiving a DHCP Failover DISCONNECT Message ..................................... 30
-Timer Events .............................................................................................. 30
-Safe Period Timer Events ....................................................................... 30
-Connect Retry Timer Events ................................................................... 30
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-
-3.1.6.1
-3.1.6.2
-
-3.1.4.1
-3.1.4.2
-
-3.1.6
-
-3.1.5
-
-[MS-DHCPF] - v20240423
-DHCP Failover Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 42
-
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-
-3.1.7
-
-3.2
-
-3.2.1
-3.2.2
-
-3.2.3
-3.2.4
-3.2.5
-
-3.2.2.1
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-3.2.7.1
-
-3.3
-
-Startup Timer Events ............................................................................. 30
-tReceive Timer Events ........................................................................... 30
-tSend Timer Events ............................................................................... 30
-Synchronization Timer Events ................................................................. 31
-Other Local Events ...................................................................................... 31
-Sending a DHCP Failover UPDREQ Message .............................................. 31
-Sending a DHCP Failover UPDREQALL Message ......................................... 31
-Sending a DHCP Failover STATE Message ................................................. 31
-Server Details .................................................................................................. 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 31
-Address Rebalancing Timer .................................................................... 31
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Processing Events and Sequencing Rules ....................................................... 32
-Receiving a DHCP Failover CONNECTACK Message .................................... 32
-Receiving a DHCP Failover POOLREQ Message .......................................... 32
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-Establishing the Connection between Failover Partner Servers .................... 32
-Client Details ................................................................................................... 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 33
-Processing Events and Sequencing Rules ....................................................... 33
-Receiving a DHCP Failover CONNECT Message .......................................... 33
-Receiving a DHCPFailover POOLREQ Message ........................................... 33
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.6
-3.3.7
-
-3.3.5.1
-3.3.5.2
-
-4  Protocol Examples ................................................................................................. 34
-Adding DHCPv4 Scopes to a Failover Relationship ................................................ 34
-
-4.1
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 38
-
-7  Change Tracking .................................................................................................... 40
-
-8  Index ..................................................................................................................... 41
-
-[MS-DHCPF] - v20240423
-DHCP Failover Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 42
-
-1  Introduction
+## 1 Introduction
 
 The Dynamic Host Configuration Protocol (DHCP) is an Internet Engineering Task Force (IETF)
 standard protocol designed to provide a framework for passing configuration information to hosts on a
@@ -448,7 +319,7 @@ This document specifies a set of extensions to the DHCP Failover Protocol.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -506,7 +377,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-partner server: In a DHCPv4 server failover relationship, the partner server is a peer DHCPv4
+
+partner server: In a DHCPv4 server failover relationship, the partner server is a peer DHCPv4
 server. For a primary server, the partner server is the secondary server configured in the
 failover relationship; for a secondary server, the partner server is the primary server
 configured in the failover relationship.
@@ -533,14 +405,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -572,7 +444,8 @@ Release: April 23, 2024
 
 6 / 42
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-DHCPE] Microsoft Corporation, "Dynamic Host Configuration Protocol (DHCP) Extensions".
 
@@ -588,7 +461,7 @@ https://www.rfc-editor.org/info/rfc2131
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.3  Overview
+### 1.3 Overview
 
 The Dynamic Host Configuration Protocol (DHCP) protocol inherently supports the rebinding
 operation described in [RFC2131] section 4.4.5. In this operation, if a DHCP client fails to renew its
@@ -609,7 +482,8 @@ Release: April 23, 2024
 
 7 / 42
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-DHCPF].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -627,7 +501,8 @@ Release: April 23, 2024
 
 8 / 42
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-DHCPF].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -670,7 +545,8 @@ Release: April 23, 2024
 
 9 / 42
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-DHCPF].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -692,7 +568,8 @@ Release: April 23, 2024
 
 10 / 42
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-DHCPF].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -711,7 +588,7 @@ CONTACT messages, if other protocol messages are not transmitting on the connect
 
 For further details on the DHCP Failover Protocol, see [IETF-DHCPFOP-12].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The extension options and messages defined in this document are transported according to the
 provisions of the DHCP Failover Protocol.
@@ -731,7 +608,8 @@ Release: April 23, 2024
 
 11 / 42
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-DHCPF].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -765,13 +643,14 @@ Release: April 23, 2024
 
 12 / 42
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-DHCPF].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 6: Server-side interaction with related protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the DHCP servers in the failover pair support configuration parameters that
 conform in structure to the Abstract Data Model described in [MS-DHCPM] section 3.1.1.
@@ -786,12 +665,12 @@ are required to correspond to DHCPv4Scope objects ([MS-DHCPM] section 3.1.1.2) c
 either DHCP server. The DHCPv4Scope objects configured on the two DHCP servers, and all
 constituent elements are required to have the same values for all fields.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The use of the DHCP Failover Protocol Extension is applicable in environments where DHCP is
 applicable and where high availability of the DHCP service is required.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -802,7 +681,8 @@ Release: April 23, 2024
 
 13 / 42
 
-  Supported transports: This protocol can be implemented on top of TCP as specified by the DHCP
+
+  Supported transports: This protocol can be implemented on top of TCP as specified by the DHCP
 
 Failover Protocol (see [IETF-DHCPFOP-12] section 8).
 
@@ -816,11 +696,11 @@ specified in [IETF-DHCPFOP-12].
 
 the options or messages that it sends or receives.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -831,9 +711,10 @@ Release: April 23, 2024
 
 14 / 42
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All DHCP Failover attributes are transported within the DHCP Failover Protocol, which is transported
 over the TCP protocol, as specified in [IETF-DHCPFOP-12] section 8.
@@ -841,7 +722,7 @@ over the TCP protocol, as specified in [IETF-DHCPFOP-12] section 8.
 All DHCP servers implementing failover protocol and operating in a secondary role MUST listen on TCP
 Port 647.<1>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following DHCP Failover extensions use the message format for options, as specified in [IETF-
 DHCPFOP-12] section 6.2.
@@ -854,7 +735,7 @@ If the message-digest is configured to be authenticated, it MUST be included in 
 SHOULD<2> be calculated based on HMAC [RFC2104] in combination with the SHA-256 interactive
 cryptographic hash function.
 
-2.2.1  DHCP Failover Option 30 (0x1E) – Scope ID List Option
+#### 2.2.1 DHCP Failover Option 30 (0x1E) – Scope ID List Option
 
 The Scope ID List option is used to convey the list of scope IDs configured on the DHCP server for
 which the binding updates are being requested.
@@ -891,7 +772,7 @@ OptionValue (variable):  This field contains the list of IPv4 addresses containi
 the scopes for which the lease database between the two failover partners has to be synchronized.
 The scope IDs are specified in host byte order.
 
-2.2.2  DHCP Failover Option 31 (0x1F) – Client Name Option
+#### 2.2.2 DHCP Failover Option 31 (0x1F) – Client Name Option
 
 The Client Name option is used to convey the name of the client in the lease update that is being
 synchronized with the partner server.
@@ -903,7 +784,8 @@ Release: April 23, 2024
 
 15 / 42
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -934,7 +816,7 @@ OptionValue (variable):  This field contains the byte stream representing the Un
 
 containing the Internet host name with the terminating NULL character for the DHCPv4 client.
 
-2.2.3  DHCP Failover Option 32 (0x20) – Client Description Option
+#### 2.2.3 DHCP Failover Option 32 (0x20) – Client Description Option
 
 The Client Description option is used to convey the client description given to the DHCPv4 client in
 the lease update that is being synchronized with the partner server.
@@ -970,7 +852,7 @@ OptionValue (variable):  This field contains the byte stream representing the Un
 
 containing the description of the client with the terminating NULL character for the DHCPv4 client.
 
-2.2.4  DHCP Failover Option 33 (0x21) – Client Subnet Mask Option
+#### 2.2.4 DHCP Failover Option 33 (0x21) – Client Subnet Mask Option
 
 The Client Subnet Mask option is used to convey the subnet mask of the DHCPv4 client in the lease
 update that is being synchronized with the partner server.
@@ -997,7 +879,8 @@ Release: April 23, 2024
 
 16 / 42
 
-OptionValue (variable)
+
+OptionValue (variable)
 
 ...
 
@@ -1009,7 +892,7 @@ OptionLength (2 bytes): This field MUST be set to 0x04.
 
 OptionValue (variable):  This field contains the IPv4 addresses in network byte order.
 
-2.2.5  DHCP Failover Option 34 (0x22) – Server IP Option
+#### 2.2.5 DHCP Failover Option 34 (0x22) – Server IP Option
 
 The Server IP option is used to convey the IPv4 address of the server that has leased out the IPv4
 address to the client in the lease update that is being synchronized with the partner server.
@@ -1041,7 +924,7 @@ OptionLength (2 bytes): This field MUST be set to 0x04.
 
 OptionValue (variable):  This field contains the IPv4 addresses in network byte order.
 
-2.2.6  DHCP Failover Option 35 (0x23) – Server Name Option
+#### 2.2.6 DHCP Failover Option 35 (0x23) – Server Name Option
 
 The Server Name option is used to convey the host name of the server that has leased out the IPv4
 address to the client in the lease update that is being synchronized with the partner server.
@@ -1076,7 +959,8 @@ Release: April 23, 2024
 
 17 / 42
 
-OptionLength (2 bytes): The unsigned length, in bytes, of the option, excluding the OptionCode
+
+OptionLength (2 bytes): The unsigned length, in bytes, of the option, excluding the OptionCode
 
 and OptionLength fields.
 
@@ -1084,7 +968,7 @@ OptionValue (variable):  This field contains the byte stream representing the Un
 
 containing the server name with the terminating NULL character.
 
-2.2.7  DHCP Failover Option 36 (0x24) – Client Type Option
+#### 2.2.7 DHCP Failover Option 36 (0x24) – Client Type Option
 
 The Client Type option is used to convey the type of the DHCPv4 client in the lease update that is
 being synchronized with the partner server.
@@ -1146,7 +1030,7 @@ There is an IPv4 reservation created for the DHCPv4 client.
 The DHCPv4 client supports backward compatibility for manual
 addressing.
 
-2.2.8  DHCP Failover Option 37 (0x25) – Client NAP Status Option
+#### 2.2.8 DHCP Failover Option 37 (0x25) – Client NAP Status Option
 
 The Client NAP Status option is used to convey the health status of the DHCPv4 client in the lease
 update, as validated by the NAP server.
@@ -1175,7 +1059,8 @@ Release: April 23, 2024
 
 18 / 42
 
-OptionCode (2 bytes):  This field MUST be set to 37 (0x25).
+
+OptionCode (2 bytes):  This field MUST be set to 37 (0x25).
 
 OptionLength (2 bytes): This field MUST be set to 0x04.
 
@@ -1208,7 +1093,7 @@ PROBATION
 The DHCP client is not compliant with the health policies defined by the administrator
 and is being granted normal access to the network for a limited time.
 
-2.2.9  DHCP Failover Option 38 (0x26) – Client NAP Probation Option
+#### 2.2.9 DHCP Failover Option 38 (0x26) – Client NAP Probation Option
 
 The Client NAP Probation option is used if the client is on probation to convey the probation end
 time for the DHCPv4 client in the lease update that is being synchronized with the partner server.
@@ -1240,7 +1125,7 @@ OptionValue (4 bytes): If the DHCPv4 client is on probation, this field contains
 time. The value is specified as an absolute time and represents the number of 100-nanosecond
 intervals since January 1, 1601 (UTC).
 
-2.2.10 DHCP Failover Option 39 (0x27) – Client NAP Capable Option
+#### 2.2.10 DHCP Failover Option 39 (0x27) – Client NAP Capable Option
 
 The Client NAP Capable option is used to convey the NAP-capable status of the DHCPv4 client in the
 lease update that is being synchronized with the partner server.
@@ -1267,7 +1152,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OptionValue
+
+OptionValue
 
 OptionCode (2 bytes):  This field MUST be set to 39 (0x27).
 
@@ -1285,7 +1171,7 @@ The DHCPv4 client machine is NAP capable.
 
 FALSE (0x0)  The DHCPv4 client machine is NAP non-capable.
 
-2.2.11 DHCP Failover Option 40 (0x28) – Client Matched Policy Option
+#### 2.2.11 DHCP Failover Option 40 (0x28) – Client Matched Policy Option
 
 The Client Matched Policy option is used to convey the policy name of the policy configured on the
 DHCP server that determined the ClientIpAddress in the lease update that is being synchronized
@@ -1321,7 +1207,7 @@ and OptionLength fields.
 OptionValue (variable):  This field contains the binary data representing the Unicode string
 containing the policy name associated with the client with the terminating NULL character.
 
-2.2.12 DHCP Failover Option 41 (0x29) - Extended Address State Option
+#### 2.2.12 DHCP Failover Option 41 (0x29) - Extended Address State Option
 
 The Extended Address State option is used to send additional address state information associated
 with the DHCPv4 client.
@@ -1352,7 +1238,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OptionCode (2 bytes): This field MUST be set to 41 (0x29).
+
+OptionCode (2 bytes): This field MUST be set to 41 (0x29).
 
 OptionLength (2 bytes): This field MUST be set to 0x04.
 
@@ -1369,11 +1256,12 @@ Release: April 23, 2024
 
 21 / 42
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in the DHCPF protocol. The described organization is provided to facilitate the
@@ -1390,7 +1278,8 @@ Release: April 23, 2024
 
 22 / 42
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-DHCPF].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1398,9 +1287,9 @@ Figure 7: Failover state machine
 
 The Failover state machine has the states described in [IETF-DHCPFOP-12] section 9.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Safe Period Timer
+##### 3.1.2.1 Safe Period Timer
 
 The Safe Period timer is a configurable timer that is used to automatically transition from the
 COMMUNICATION-INTERRUPTED to PARTNER-DOWN state. If configured, this timer is initialized
@@ -1412,7 +1301,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-when a new failover relationship is created or when the Safe Period timer is enabled for an
+
+when a new failover relationship is created or when the Safe Period timer is enabled for an
 existing failover relationship by using the R_DhcpV4FailoverCreateRelationship method ([MS-
 DHCPM] section 3.2.4.90) and the R_DhcpV4FailoverSetRelationship method ([MS-DHCPM]
 section 3.2.4.91). This timer is reset whenever the failover relationship transitions to
@@ -1424,7 +1314,7 @@ communication has been restored between the failover partners or when the admini
 manually set the failover relationship state to the PARTNER-DOWN state by calling the
 R_DhcpV4FailoverSetRelationship method ([MS-DHCPM] section 3.2.4.91).
 
-3.1.2.2  Connect Retry Timer
+##### 3.1.2.2 Connect Retry Timer
 
 The Connect Retry timer is used to trigger periodic connection establishment retry attempts while
 communication is down between the failover partners. This timer is reset whenever the
@@ -1433,7 +1323,7 @@ minute<4>; that is, unless the timer is stopped, it will expire after every minu
 SHOULD be set appropriately, factoring in the link speed and round-trip time of the TCP connection.
 This timer has to be stopped when the server establishes connection with its failover partner.
 
-3.1.2.3  Startup Timer
+##### 3.1.2.3 Startup Timer
 
 The Startup timer is used to transition to the last known state of the failover endpoint if
 communication with the failover partner cannot be established. This timer is reset whenever the
@@ -1444,7 +1334,7 @@ failover partners when setting up the relationship for the first time. This time
 the server has transitioned from the STARTUP state to any other failover state as specified in section
 3.1.1.
 
-3.1.2.4  tReceive Timer
+##### 3.1.2.4 tReceive Timer
 
 The tReceive timer helps to maintain the TCP communication between the failover partners by
 ensuring that messages are received at regular intervals. This timer is initialized when a connection is
@@ -1454,7 +1344,7 @@ unless the timer is stopped, it will expire after every three minutes. This time
 appropriately, factoring in the link speed. This timer has to be stopped when the communication
 between the partners is down.
 
-3.1.2.5  tSend Timer
+##### 3.1.2.5 tSend Timer
 
 The tSend timer helps to maintain the heartbeat of the connection between the failover partners by
 triggering the sending of CONTACT messages. This timer is initialized when a connection is set up
@@ -1463,7 +1353,7 @@ partner. This is a periodic timer with a default value of one minute<7>; that is
 stopped, it will expire after every minute. This timer value SHOULD be set appropriately, factoring in
 the link speed. This timer has to be stopped when the communication between the partners is down.
 
-3.1.2.6  Synchronization Timer
+##### 3.1.2.6 Synchronization Timer
 
 The Synchronization timer is used to ensure that any failure during lease synchronization through
 UPDREQ and UPDDONE is detected early. This timer is initialized when a UPDREQ or UPDREQALL
@@ -1476,12 +1366,13 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-whenever a BNDUPD message is received. This is a periodic timer with an implementation-dependent
+
+whenever a BNDUPD message is received. This is a periodic timer with an implementation-dependent
 time interval; that is, unless the timer is stopped it will expire after every X minutes, where X is the
 time interval specified in the timer. This timer value SHOULD be set appropriately, factoring in the link
 speed. This timer has to be stopped when the UPDDONE message is received.<8>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the DHCP server is booting after shutdown, or a new failover relationship has been
 configured between the two failover servers, the state of the failover endpoint MUST be set to
@@ -1496,9 +1387,9 @@ endpoint MUST transition to the communication-failed state indicated by the prev
 the shared DHCPv4FailoverRelationship ADM element ([MS-DHCPM] section 3.1.1.33). The
 communication failed state is depicted in the Failover state machine figure in section 3.1.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Adding and Removing Scopes from Failover Configuration
+##### 3.1.4.1 Adding and Removing Scopes from Failover Configuration
 
 If one or more existing scopes are added or removed from the failover configuration through the
 R_DhcpV4FailoverAddScopeToRelationship method ([MS-DHCPM] section 3.2.4.95) and the
@@ -1507,7 +1398,7 @@ DHCP servers implementing this specification MUST synchronize the lease database
 these DHCPv4 subnets by sending an UPDREQ message to the partner. The list of IPv4 Scope IDs is
 included by using the Scope ID List option (section 2.2.2) in this message.
 
-3.1.4.2  Synchronize Lease Database by Sending DHCP Failover BNDUPD Message
+##### 3.1.4.2 Synchronize Lease Database by Sending DHCP Failover BNDUPD Message
 
 If there is any change in the lease database, the server MUST send the lease update to its failover
 partner. The DHCP servers implementing this specification MUST send a BNDUPD message to its
@@ -1550,7 +1441,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The bits are numbered as follows:
+
+The bits are numbered as follows:
 
 BIT 7  BIT 6  BIT 5  BIT 4  BIT 3  BIT 2  BIT 1  BIT 0
 
@@ -1655,7 +1547,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1737,7 +1630,7 @@ performing DNS registration on behalf of the client.
 
 BITs 1 through BIT 31 are reserved for future use.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 If a shared secret is configured for the failover relationship, then when any DHCP Failover packet is
 received, the message digest option is verified. If the option is not present or if the option value does
@@ -1749,7 +1642,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-not match the hash value obtained from the cryptographic hash function of the text by using the
+
+not match the hash value obtained from the cryptographic hash function of the text by using the
 shared secret configured on the server, the packet MUST be dropped, and the TCP connection between
 the failover partners MUST be closed.
 
@@ -1758,12 +1652,12 @@ with the value of the Time option in the message header. If the value is greater
 allowed delta time<9> difference between the two failover partners, the TCP connection between the
 failover partners MUST be closed.
 
-3.1.5.1  Receiving a DHCP Failover STATE Message
+##### 3.1.5.1 Receiving a DHCP Failover STATE Message
 
 The behavior of the server on receiving a STATE Message (as specified in [IETF-DHCPFOP-12] section
 7.10.2) is unchanged by extensions specified in this document.
 
-3.1.5.2  Receiving a DHCP Failover BNDUPD Message
+##### 3.1.5.2 Receiving a DHCP Failover BNDUPD Message
 
 The BNDUPD message MUST be processed to extract all lease updates. Each lease update SHOULD
 be processed as described in the following table. The table specifies which options are mandatory to
@@ -2004,7 +1898,8 @@ Release: April 23, 2024
 
 28 / 42
 
-Option
+
+Option
 
 ACTIVE  EXPIRED  RELEASED  FREE/BACKUP  ABANDONED
 
@@ -2053,7 +1948,7 @@ as described in [IETF-DHCPFOP-12] section 7.2.1. When multiple lease updates are
 BNDUPD message, the order of the assigned IP address option in the corresponding BNDACK
 message MUST be the same as the order for that same option in the BNDUPD message.
 
-3.1.5.3  Receiving a DHCP Failover BNDACK Message
+##### 3.1.5.3 Receiving a DHCP Failover BNDACK Message
 
 When a DHCP server implementing this specification receives a BNDACK message with multiple lease
 update responses in a single message, the order of the assigned IP Address option in the BNDACK
@@ -2062,7 +1957,7 @@ the order is different, the BNDACK message MUST be dropped.
 
 The BNDACK message MUST be processed as specified in [IETF-DHCPFOP-12] section 7.2.2.
 
-3.1.5.4  Receiving a DHCP Failover UPDREQ Message
+##### 3.1.5.4 Receiving a DHCP Failover UPDREQ Message
 
 When a DHCP server implementing this specification receives an UPDREQ message that contains a
 Scope IDs List Option (section 2.2.2), the server MUST send the lease updates of all DHCPv4 clients
@@ -2074,7 +1969,7 @@ MUST be processed as specified in [IETF-DHCPFOP-12] section 7.3.2.
 When all the pending lease updates have been synchronized with the failover partner server, the
 UPDDONE message MUST be sent as specified in [IETF-DHCPFOP-12] section 7.5.2.
 
-3.1.5.5  Receiving a DHCP Failover UPDREQALL Message
+##### 3.1.5.5 Receiving a DHCP Failover UPDREQALL Message
 
 The behavior of a DHCP server upon receipt of an UPDREQALL message (as specified in [IETF-
 DHCPFOP-12] section 7.4.2) is unchanged by the extensions specified in this document.
@@ -2086,34 +1981,35 @@ Release: April 23, 2024
 
 29 / 42
 
-3.1.5.6  Receiving a DHCP Failover UPDDONE Message
+
+##### 3.1.5.6 Receiving a DHCP Failover UPDDONE Message
 
 The behavior of a DHCP server upon receipt of an UPDDONE message (as specified in [IETF-
 DHCPFOP-12] section 7.5.2) is unchanged by the extensions specified in this document.
 
-3.1.5.7  Receiving a DHCP Failover CONTACT Message
+##### 3.1.5.7 Receiving a DHCP Failover CONTACT Message
 
 The behavior of a DHCP server upon receipt of a CONTACT message (as specified in [IETF-DHCPFOP-
 12] section 7.11.2) is unchanged by the extensions specified in this document.
 
-3.1.5.8  Receiving a DHCP Failover DISCONNECT Message
+##### 3.1.5.8 Receiving a DHCP Failover DISCONNECT Message
 
 When a DHCP server implementing this specification receives a DISCONNECT message, the message
 MUST be dropped.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Safe Period Timer Events
+##### 3.1.6.1 Safe Period Timer Events
 
 When the Safe Period timer expires, the state of the failover endpoint is changed from
 COMMUNICATIONS-INTERRUPTED to PARTNER-DOWN.
 
-3.1.6.2  Connect Retry Timer Events
+##### 3.1.6.2 Connect Retry Timer Events
 
 When the Connect Retry timer expires, TCP connection establishment between the failover partner
 servers is reattempted.
 
-3.1.6.3  Startup Timer Events
+##### 3.1.6.3 Startup Timer Events
 
 When the Startup timer expires, it denotes a time period wherein the failover endpoint is in the
 STARTUP state and has been unable to establish communication with the failover partner server. The
@@ -2133,12 +2029,12 @@ indicated by the prevState member of the shared DHCPv4FailoverRelationship ADM e
 The COMMUNICATION-FAILED state is depicted in the Failover state diagram machine figure in
 section 3.1.1.
 
-3.1.6.4  tReceive Timer Events
+##### 3.1.6.4 tReceive Timer Events
 
 When the tRecieve timer expires, the TCP connection between the failover partner servers is dropped
 as specified in [IETF-DHCPFOP-12] section 8.3.
 
-3.1.6.5  tSend Timer Events
+##### 3.1.6.5 tSend Timer Events
 
 When the tSend timer expires, a CONTACT message is sent to the failover partner server as specified
 in [IETF-DHCPFOP-12] section 7.11.1.
@@ -2150,21 +2046,22 @@ Release: April 23, 2024
 
 30 / 42
 
-3.1.6.6  Synchronization Timer Events
+
+##### 3.1.6.6 Synchronization Timer Events
 
 When the Synchronization timer expires, the TCP connection between the failover partner servers is
 closed.<10>
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Sending a DHCP Failover UPDREQ Message
+##### 3.1.7.1 Sending a DHCP Failover UPDREQ Message
 
 When a failover endpoint transitions to the RECOVER or POTENTIAL-CONFLICT state as shown in
 the Failover state machine figure in section 3.1.1, the failover endpoint MUST send an UPDREQ
 message to its failover partner server. This behavior is as specified in [IETF-DHCPFOP-12] sections
 7.3.1, 9.5, and 9.10 and is unchanged by the extensions specified in this document.
 
-3.1.7.2  Sending a DHCP Failover UPDREQALL Message
+##### 3.1.7.2 Sending a DHCP Failover UPDREQALL Message
 
 When a backed-up DHCP database is restored by using the R_DhcpRestoreDatabase method ([MS-
 DHCPM] section 3.2.4.46), the DHCP server implementing this specification MUST transition to the
@@ -2173,7 +2070,7 @@ RECOVER state (section 3.1.1) and send an UPDREQALL message to its failover part
 The behavior of the UPDREQALL message (as specified in [IETF-DHCPFOP-12] section 7.4.1) is
 unchanged by the extensions specified in this document.
 
-3.1.7.3  Sending a DHCP Failover STATE Message
+##### 3.1.7.3 Sending a DHCP Failover STATE Message
 
 When a CONNECTACK message without a reject reason is sent or received, the DHCP server MUST
 send a STATE message to its failover partner server.
@@ -2185,15 +2082,15 @@ STATE message SHOULD be sent to the failover partner server.
 The behavior of the STATE message ([IETF-DHCPFOP-12] section 7.10.1) is unchanged by the
 extensions specified in this document.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Address Rebalancing Timer
+##### 3.2.2.1 Address Rebalancing Timer
 
 The purpose of the Address Rebalancing timer is to trigger periodic address space redistribution
 between the failover partners. This timer is initialized when a new failover relationship is created by
@@ -2213,54 +2110,55 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 The DHCP server operating in the primary role in a failover configuration initialization (as specified in
 [IETF-DHCPFOP-12]) is unchanged by the extensions specified in this document.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 Message authentication, timer synchronization rules, and server behavior as described in section 3.1.5
 remain the same for the DHCP Failover messages specified in the following sections.
 
-3.2.5.1  Receiving a DHCP Failover CONNECTACK Message
+##### 3.2.5.1 Receiving a DHCP Failover CONNECTACK Message
 
 If the CONNECTACK message contains the TLS-Reply option, the option is ignored. The remainder of
 the message is processed as specified in [IETF-DHCPFOP-12] section 7.9.2.
 
-3.2.5.2  Receiving a DHCP Failover POOLREQ Message
+##### 3.2.5.2 Receiving a DHCP Failover POOLREQ Message
 
 When a DHCP server implementing this specification receives a POOLREQ message, the message
 MUST be dropped.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Address Rebalancing Timer: When this timer expires, the primary server examines the possible
 available IP addresses that can be sent to the partner server and sends them in BNDUPD messages.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Establishing the Connection between Failover Partner Servers
+##### 3.2.7.1 Establishing the Connection between Failover Partner Servers
 
 Whenever a new TCP connection between the failover partner servers is established, each server
 MUST send a CONNECT message to its failover partner. The DHCP server implementing this
 specification MUST NOT include the TLS-Request option in the sent CONNECT message.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
-
-None.
-
-3.3.2  Timers
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.3  Initialization
+#### 3.3.2 Timers
+
+None.
+
+#### 3.3.3 Initialization
 
 All DHCP servers implementing the failover protocol and operating in a secondary role MUST listen on
 TCP Port 647.<12>
@@ -2272,16 +2170,17 @@ Release: April 23, 2024
 
 32 / 42
 
-3.3.4  Higher-Layer Triggered Events
+
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 Message authentication, timer synchronization rules, and server behavior as described in section 3.1.5
 remain the same for the DHCP Failover messages specified in the following sections.
 
-3.3.5.1  Receiving a DHCP Failover CONNECT Message
+##### 3.3.5.1 Receiving a DHCP Failover CONNECT Message
 
 When a DHCP server implementing this specification receives a CONNECT message, it MUST validate
 all of the mandatory options as specified in [IETF-DHCPFOP-12] except for the TLS-Request option.
@@ -2297,16 +2196,16 @@ the message is processed as specified in [IETF-DHCPFOP-12] section 7.9.1.
 In response to the CONNECT message, the DHCP server operating in the secondary role in a failover
 configuration MUST send a CONNECTACK message as specified in [IETF-DHCPFOP-12].
 
-3.3.5.2  Receiving a DHCPFailover POOLREQ Message
+##### 3.3.5.2 Receiving a DHCPFailover POOLREQ Message
 
 When a DHCP server implementing this specification receives a POOLRESP message, the message
 MUST be dropped.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2317,9 +2216,10 @@ Release: April 23, 2024
 
 33 / 42
 
-4  Protocol Examples
 
-4.1  Adding DHCPv4 Scopes to a Failover Relationship
+## 4 Protocol Examples
+
+### 4.1 Adding DHCPv4 Scopes to a Failover Relationship
 
 In the following example, the following assumptions are made:
 
@@ -2419,7 +2319,8 @@ Release: April 23, 2024
 
 34 / 42
 
-3.  Because the primary server now has at least one lease record in its database, it sends a
+
+3.  Because the primary server now has at least one lease record in its database, it sends a
 
 BNDUPD message to the secondary server that includes the following options in addition to the
 one specified by the DHCP Failover Protocol [IETF-DHCPFOP-12]:
@@ -2530,7 +2431,8 @@ Release: April 23, 2024
 
 35 / 42
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2642,9 +2544,10 @@ Release: April 23, 2024
 
 36 / 42
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 DHCP servers implementing this specification can implement TLS security as described in [IETF-
 DHCPFOP-12] section 11.2.
@@ -2657,7 +2560,7 @@ message.
 If any message is received that does not contain the message digest option, it is dropped and the TCP
 connection with the partner is closed.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2668,7 +2571,8 @@ Release: April 23, 2024
 
 37 / 42
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2736,7 +2640,8 @@ DHCP Failover Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<9> Section 3.1.5:  The Windows DHCP server allows a time difference of one minute by default but
+
+<9> Section 3.1.5:  The Windows DHCP server allows a time difference of one minute by default but
 supports configuration of the interval by using the registry key "DhcpMsgSyncDeltaTime" under
 HKLM\SYSTEM\CurrentControlSet\Services\DhcpServer\Parameters.
 
@@ -2762,7 +2667,8 @@ Release: April 23, 2024
 
 39 / 42
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2806,7 +2712,8 @@ Release: April 23, 2024
 
 40 / 42
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3006,7 +2913,8 @@ Address State Option 20
 
 41 / 42
 
-   DHCP Failover Option 41 (0x29) - Extended
+
+   DHCP Failover Option 41 (0x29) - Extended
 
 Address State Option message 20
 

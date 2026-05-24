@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 68
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 68
 
-Date
+
+Date
 
 Revision
 History
@@ -537,7 +539,8 @@ Release: April 23, 2024
 
 3 / 68
 
-Date
+
+Date
 
 Revision
 History
@@ -594,295 +597,126 @@ Release: April 23, 2024
 
 4 / 68
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DHCPv4 Option Code 12 (0xC) - Host Name Option](#221-dhcpv4-option-code-12-0xc-host-name-option)
+    - [2.2.2 DHCPv4 Option Code 43 (0x2B) - Vendor-Specific Information Option](#222-dhcpv4-option-code-43-0x2b-vendor-specific-information-option)
+      - [2.2.2.1 Vendor-Specific Option Code 0x01 - Microsoft Disable NetBIOS Option](#2221-vendor-specific-option-code-0x01-microsoft-disable-netbios-option)
+      - [2.2.2.2 Vendor-Specific Option Code 0x02 - Microsoft Release DHCP Lease on](#2222-vendor-specific-option-code-0x02-microsoft-release-dhcp-lease-on)
+      - [2.2.2.3 Vendor-Specific Option Code 0x03 - Microsoft Default Router Metric Base](#2223-vendor-specific-option-code-0x03-microsoft-default-router-metric-base)
+      - [2.2.2.4 Vendor-Specific Option Code 0x5E - Rogue Detection Request Option](#2224-vendor-specific-option-code-0x5e-rogue-detection-request-option)
+      - [2.2.2.5 Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option](#2225-vendor-specific-option-code-0x5f-rogue-detection-reply-option)
+      - [2.2.2.6 Vendor-Specific ANDROID_METERED Option](#2226-vendor-specific-androidmetered-option)
+    - [2.2.3 DHCPv4 Option Code 60 (0x3C) - Vendor Class Identifier Option](#223-dhcpv4-option-code-60-0x3c-vendor-class-identifier-option)
+    - [2.2.4 DHCPv6 Option Code 15 (0x000F) - User Class Option](#224-dhcpv6-option-code-15-0x000f-user-class-option)
+    - [2.2.5 DHCPv6 Option Code 16 (0x0010) - Vendor Class Option](#225-dhcpv6-option-code-16-0x0010-vendor-class-option)
+    - [2.2.6 DHCPv4 Option Code 77 (0x4D) - User Class Option](#226-dhcpv4-option-code-77-0x4d-user-class-option)
+      - [2.2.6.1 User Class Option Sent by DHCPv4 Client to DHCPv4 Server](#2261-user-class-option-sent-by-dhcpv4-client-to-dhcpv4-server)
+      - [2.2.6.2 User Class Option Sent by DHCPv4 Server to DHCPv4 Client](#2262-user-class-option-sent-by-dhcpv4-server-to-dhcpv4-client)
+    - [2.2.7 DHCPv4 Option Code 81 (0x51) - Client FQDN Option](#227-dhcpv4-option-code-81-0x51-client-fqdn-option)
+    - [2.2.8 DHCPv4 Option Code 249 (0xF9) - Microsoft Classless Static Route Option](#228-dhcpv4-option-code-249-0xf9-microsoft-classless-static-route-option)
+    - [2.2.9 DHCPv4 Option Code 250 (0xFA) - Microsoft Encoding Long Options Packet](#229-dhcpv4-option-code-250-0xfa-microsoft-encoding-long-options-packet)
+    - [2.2.10 DHCPv6 Option Code 17 (0x0011) - Vendor Specific Information Option](#2210-dhcpv6-option-code-17-0x0011-vendor-specific-information-option)
+      - [2.2.10.1 Vendor-Specific Option Code 0x5E – Rogue Detection Request Option](#22101-vendor-specific-option-code-0x5e-rogue-detection-request-option)
+      - [2.2.10.2 Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option](#22102-vendor-specific-option-code-0x5f-rogue-detection-reply-option)
+    - [2.2.11 DHCPv4 Option Code 15 (0x000f) - Domain Name Option](#2211-dhcpv4-option-code-15-0x000f-domain-name-option)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Sending a DHCPDISCOVER, DHCPREQUEST, or DHCPINFORM Message](#3141-sending-a-dhcpdiscover-dhcprequest-or-dhcpinform-message)
+      - [3.1.4.2 Sending a DHCPv6 Solicit, Request, or Information-request Message](#3142-sending-a-dhcpv6-solicit-request-or-information-request-message)
+      - [3.1.4.3 Sending a DHCPv4 Release or DHCPv6 Release Message](#3143-sending-a-dhcpv4-release-or-dhcpv6-release-message)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a DHCPOFFER](#3151-receiving-a-dhcpoffer)
+      - [3.1.5.2 Receiving a DHCPACK](#3152-receiving-a-dhcpack)
+      - [3.1.5.3 Receiving a DHCPv6 Advertise Message](#3153-receiving-a-dhcpv6-advertise-message)
+      - [3.1.5.4 Receiving a DHCPv6 Reply Message](#3154-receiving-a-dhcpv6-reply-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 DhcpAppendVendorSpecificOption](#3171-dhcpappendvendorspecificoption)
+      - [3.1.7.2 DhcpExtractVendorSpecificOption](#3172-dhcpextractvendorspecificoption)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a DHCPDISCOVER Message](#3251-receiving-a-dhcpdiscover-message)
+      - [3.2.5.2 Receiving a DHCPREQUEST Message](#3252-receiving-a-dhcprequest-message)
+      - [3.2.5.3 Receiving a DHCPv6 Message with a Vendor Class Option](#3253-receiving-a-dhcpv6-message-with-a-vendor-class-option)
+      - [3.2.5.4 Receiving a DHCPINFORM Message](#3254-receiving-a-dhcpinform-message)
+      - [3.2.5.5 Receiving an Information-request Message](#3255-receiving-an-information-request-message)
+      - [3.2.5.6 Receiving a DHCP Message with a User Class Option](#3256-receiving-a-dhcp-message-with-a-user-class-option)
+      - [3.2.5.7 Receiving a DHCPv4 RELEASE Message](#3257-receiving-a-dhcpv4-release-message)
+      - [3.2.5.8 Receiving a DHCPv6 Release Message](#3258-receiving-a-dhcpv6-release-message)
+      - [3.2.5.9 Receiving a DHCPDECLINE Message](#3259-receiving-a-dhcpdecline-message)
+      - [3.2.5.10 Receiving a DHCPv6 Solicit Message](#32510-receiving-a-dhcpv6-solicit-message)
+      - [3.2.5.11 Receiving a DHCPv6 Request Message](#32511-receiving-a-dhcpv6-request-message)
+      - [3.2.5.12 Receiving a DHCPv6 Confirm Message](#32512-receiving-a-dhcpv6-confirm-message)
+      - [3.2.5.13 Receiving a DHCPv6 Renew Message](#32513-receiving-a-dhcpv6-renew-message)
+      - [3.2.5.14 Receiving a DHCPv6 Rebind Message](#32514-receiving-a-dhcpv6-rebind-message)
+      - [3.2.5.15 Receiving a DHCPv6 Decline Message](#32515-receiving-a-dhcpv6-decline-message)
+      - [3.2.5.16 Receiving a MADCAP DISCOVER Message](#32516-receiving-a-madcap-discover-message)
+      - [3.2.5.17 Receiving a MADCAP REQUEST Message](#32517-receiving-a-madcap-request-message)
+      - [3.2.5.18 Receiving a MADCAP RENEW Message](#32518-receiving-a-madcap-renew-message)
+      - [3.2.5.19 Receiving a MADCAP RELEASE Message](#32519-receiving-a-madcap-release-message)
+      - [3.2.5.20 Receiving a MADCAP GETINFO Message](#32520-receiving-a-madcap-getinfo-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 DhcpAppendVendorSpecificOption](#3271-dhcpappendvendorspecificoption)
+      - [3.2.7.2 DhcpAppendCSROption](#3272-dhcpappendcsroption)
+      - [3.2.7.3 DhcpExtractVendorSpecificOption](#3273-dhcpextractvendorspecificoption)
+  - [3.3 Validating Server Details](#33-validating-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Sending a DHCPINFORM Message](#3341-sending-a-dhcpinform-message)
+      - [3.3.4.2 Sending a DHCPv6 Information-request Message](#3342-sending-a-dhcpv6-information-request-message)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a DHCPACK Message](#3351-receiving-a-dhcpack-message)
+      - [3.3.5.2 Receiving a DHCPv6 Reply Message](#3352-receiving-a-dhcpv6-reply-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Appendix B: Administrative Authorization of Windows DHCP server](#7-appendix-b-administrative-authorization-of-windows-dhcp-server)
+  - [7.1 Windows DHCP Server Authorization in Domain Joined Scenario](#71-windows-dhcp-server-authorization-in-domain-joined-scenario)
+  - [7.2 DHCP Server AD DS Path and Objects](#72-dhcp-server-ad-ds-path-and-objects)
+  - [7.3 Active Directory Path for dhcpClass Objects](#73-active-directory-path-for-dhcpclass-objects)
+  - [7.4 Mandatory Attribute Values for the DHCPRoot Object](#74-mandatory-attribute-values-for-the-dhcproot-object)
+  - [7.5 Mandatory Attribute Values for the <DHCP server> Object](#75-mandatory-attribute-values-for-the-object)
+  - [7.6 Unauthorization Filter](#76-unauthorization-filter)
+  - [7.7 Validation Filter](#77-validation-filter)
+  - [7.8 Authorizing a DHCP Server in Active Directory Domain Services](#78-authorizing-a-dhcp-server-in-active-directory-domain-services)
+  - [7.9 Unauthorizing a DHCP Server from Active Directory Domain Services](#79-unauthorizing-a-dhcp-server-from-active-directory-domain-services)
+  - [7.10 Validating DHCP Server Authorization in Active Directory Domain Services](#710-validating-dhcp-server-authorization-in-active-directory-domain-services)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 23
-Applicability Statement ..................................................................................... 23
-Versioning and Capability Negotiation ................................................................. 23
-Vendor-Extensible Fields ................................................................................... 23
-Standards Assignments ..................................................................................... 23
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.2.3
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2  Messages ............................................................................................................... 24
-Transport ........................................................................................................ 24
-Message Syntax ............................................................................................... 24
-DHCPv4 Option Code 12 (0xC) - Host Name Option ........................................ 24
-DHCPv4 Option Code 43 (0x2B) - Vendor-Specific Information Option ............... 24
-Vendor-Specific Option Code 0x01 - Microsoft Disable NetBIOS Option ........ 25
-Vendor-Specific Option Code 0x02 - Microsoft Release DHCP Lease on
-Shutdown Option .................................................................................. 26
-Vendor-Specific Option Code 0x03 - Microsoft Default Router Metric Base Option
- .......................................................................................................... 26
-Vendor-Specific Option Code 0x5E - Rogue Detection Request Option .......... 27
-Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option ............. 27
-Vendor-Specific ANDROID_METERED Option ............................................. 28
-DHCPv4 Option Code 60 (0x3C) - Vendor Class Identifier Option ...................... 28
-DHCPv6 Option Code 15 (0x000F) - User Class Option .................................... 29
-DHCPv6 Option Code 16 (0x0010) - Vendor Class Option ................................ 30
-DHCPv4 Option Code 77 (0x4D) - User Class Option ....................................... 30
-User Class Option Sent by DHCPv4 Client to DHCPv4 Server ...................... 31
-User Class Option Sent by DHCPv4 Server to DHCPv4 Client ...................... 31
-DHCPv4 Option Code 81 (0x51) - Client FQDN Option ..................................... 32
-2.2.7
-DHCPv4 Option Code 249 (0xF9) - Microsoft Classless Static Route Option ........ 32
-2.2.8
-2.2.9
-DHCPv4 Option Code 250 (0xFA) - Microsoft Encoding Long Options Packet ....... 33
-2.2.10  DHCPv6 Option Code 17 (0x0011) - Vendor Specific Information Option ............ 34
-Vendor-Specific Option Code 0x5E – Rogue Detection Request Option ......... 35
-Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option ............. 35
-2.2.11  DHCPv4 Option Code 15 (0x000f) - Domain Name Option ................................ 35
-
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2.2.10.1
-2.2.10.2
-
-2.2.6.1
-2.2.6.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 36
-Client Details ................................................................................................... 36
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Sending a DHCPDISCOVER, DHCPREQUEST, or DHCPINFORM Message ........ 36
-Sending a DHCPv6 Solicit, Request, or Information-request Message .......... 37
-Sending a DHCPv4 Release or DHCPv6 Release Message ............................ 37
-Message Processing Events and Sequencing Rules .......................................... 37
-Receiving a DHCPOFFER ........................................................................ 37
-Receiving a DHCPACK ............................................................................ 37
-Receiving a DHCPv6 Advertise Message ................................................... 38
-Receiving a DHCPv6 Reply Message ........................................................ 38
-Timer Events .............................................................................................. 38
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.6
-
-3.1.5
-
-[MS-DHCPE] - v20240423
-Dynamic Host Configuration Protocol (DHCP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 68
-
-3.1.7
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.7.1
-3.1.7.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-3.2.5.12
-3.2.5.13
-3.2.5.14
-3.2.5.15
-3.2.5.16
-3.2.5.17
-3.2.5.18
-3.2.5.19
-3.2.5.20
-
-Other Local Events ...................................................................................... 38
-DhcpAppendVendorSpecificOption ........................................................... 38
-DhcpExtractVendorSpecificOption............................................................ 39
-Server Details .................................................................................................. 39
-Abstract Data Model .................................................................................... 39
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Receiving a DHCPDISCOVER Message ...................................................... 40
-Receiving a DHCPREQUEST Message ....................................................... 41
-Receiving a DHCPv6 Message with a Vendor Class Option .......................... 41
-Receiving a DHCPINFORM Message ......................................................... 41
-Receiving an Information-request Message .............................................. 42
-Receiving a DHCP Message with a User Class Option ................................. 42
-Receiving a DHCPv4 RELEASE Message .................................................... 42
-Receiving a DHCPv6 Release Message ..................................................... 43
-Receiving a DHCPDECLINE Message ........................................................ 43
-Receiving a DHCPv6 Solicit Message ........................................................ 43
-Receiving a DHCPv6 Request Message ..................................................... 43
-Receiving a DHCPv6 Confirm Message ..................................................... 43
-Receiving a DHCPv6 Renew Message ....................................................... 44
-Receiving a DHCPv6 Rebind Message ....................................................... 44
-Receiving a DHCPv6 Decline Message ...................................................... 44
-Receiving a MADCAP DISCOVER Message ................................................. 44
-Receiving a MADCAP REQUEST Message .................................................. 44
-Receiving a MADCAP RENEW Message ..................................................... 45
-Receiving a MADCAP RELEASE Message ................................................... 45
-Receiving a MADCAP GETINFO Message ................................................... 45
-Timer Events .............................................................................................. 45
-Other Local Events ...................................................................................... 45
-DhcpAppendVendorSpecificOption ........................................................... 46
-DhcpAppendCSROption .......................................................................... 46
-DhcpExtractVendorSpecificOption............................................................ 46
-Validating Server Details ................................................................................... 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 46
-Initialization ............................................................................................... 47
-Higher-Layer Triggered Events ..................................................................... 47
-Sending a DHCPINFORM Message ........................................................... 47
-Sending a DHCPv6 Information-request Message ...................................... 47
-Message Processing Events and Sequencing Rules .......................................... 47
-Receiving a DHCPACK Message ............................................................... 47
-Receiving a DHCPv6 Reply Message ........................................................ 48
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.3.5.1
-3.3.5.2
-
-3.3.4.1
-3.3.4.2
-
-3.2.6
-3.2.7
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 49
-
-5  Security ................................................................................................................. 54
-Security Considerations for Implementers ........................................................... 54
-Index of Security Parameters ............................................................................ 54
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 55
-
-7  Appendix B: Administrative Authorization of Windows DHCP server ..................... 61
-Windows DHCP Server Authorization in Domain Joined Scenario ............................ 61
-DHCP Server AD DS Path and Objects................................................................. 61
-Active Directory Path for dhcpClass Objects ......................................................... 61
-Mandatory Attribute Values for the DHCPRoot Object ............................................ 62
-
-7.1
-7.2
-7.3
-7.4
-
-6 / 68
-
-[MS-DHCPE] - v20240423
-Dynamic Host Configuration Protocol (DHCP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7.5
-7.6
-7.7
-7.8
-7.9
-7.10
-
-Mandatory Attribute Values for the <DHCP server> Object .................................... 62
-Unauthorization Filter ....................................................................................... 63
-Validation Filter ................................................................................................ 63
-Authorizing a DHCP Server in Active Directory Domain Services ............................. 63
-Unauthorizing a DHCP Server from Active Directory Domain Services ..................... 64
-Validating DHCP Server Authorization in Active Directory Domain Services .............. 64
-
-8  Change Tracking .................................................................................................... 65
-
-9  Index ..................................................................................................................... 66
-
-[MS-DHCPE] - v20240423
-Dynamic Host Configuration Protocol (DHCP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 68
-
-1  Introduction
+## 1 Introduction
 
 The Dynamic Host Configuration Protocol (DHCP) is an Internet Engineering Task Force (IETF)
 standard protocol designed to provide a framework for passing configuration information to hosts on a
@@ -894,7 +728,7 @@ vendor-specific options, which can be used to authorize a DHCP server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -954,7 +788,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-computers and services by user-friendly names, and it also enables the discovery of other
+
+computers and services by user-friendly names, and it also enables the discovery of other
 information stored in the database.
 
 Dynamic Host Configuration Protocol (DHCP): A protocol that provides a framework for
@@ -1026,7 +861,8 @@ Release: April 23, 2024
 
 9 / 68
 
-Unauthorized Server: A DHCP server that is not authorized either administratively or using
+
+Unauthorized Server: A DHCP server that is not authorized either administratively or using
 Rogue Detection. Unauthorized servers do not respond to either DHCPv4 or DHCPv6
 messages.
 
@@ -1055,14 +891,14 @@ regardless of the message formats or network protocols that are used.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1095,7 +931,8 @@ Release: April 23, 2024
 
 10 / 68
 
-[RFC1534] Droms, R., "Interoperation Between DHCP and BOOTP", RFC 1534, October 1993,
+
+[RFC1534] Droms, R., "Interoperation Between DHCP and BOOTP", RFC 1534, October 1993,
 https://www.rfc-editor.org/info/rfc1534
 
 [RFC1812] Baker, F., Ed., "Requirements for IP Version 4 Routers", RFC 1812, June 1995,
@@ -1139,7 +976,7 @@ https://www.rfc-editor.org/info/rfc951
 [TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
 https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-NAP] Microsoft Corporation, "Network Access Protection", http://msdn.microsoft.com/en-
 us/library/aa369712(VS.85).aspx
@@ -1158,7 +995,8 @@ Release: April 23, 2024
 
 11 / 68
 
-1.3  Overview
+
+### 1.3 Overview
 
 DHCP uses the following basic steps to automatically configure a network address and configuration
 information on a DHCP client. The application of DHCP discussed here is an illustrative example of an
@@ -1213,7 +1051,8 @@ Release: April 23, 2024
 
 12 / 68
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-DHCPE].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1260,7 +1099,8 @@ Release: April 23, 2024
 
 13 / 68
 
-the available DHCPv6 servers. The DHCPv6 client includes a Vendor Class Option that contains
+
+the available DHCPv6 servers. The DHCPv6 client includes a Vendor Class Option that contains
 information about the host, such as the operating system version.
 
 2.  All DHCPv6 servers that receive the DHCPv6 Solicit message from the client and have been
@@ -1305,7 +1145,8 @@ Release: April 23, 2024
 
 14 / 68
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-DHCPE].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1349,7 +1190,8 @@ Release: April 23, 2024
 
 15 / 68
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-DHCPE].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1406,7 +1248,8 @@ Release: April 23, 2024
 
 16 / 68
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-DHCPE].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1447,7 +1290,7 @@ exhausted, the Validating Server will consider itself authorized.
 
 Figure 4: DHCPv6 Server Authorization messages
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 DHCPv4 (as specified in [RFC2131]) is based on the Bootstrap Protocol (BOOTP), as specified in
 [RFC951]. The format of the DHCPv4 messages is based on the format of the BOOTP messages. The
@@ -1462,7 +1305,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-DHCPE].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1493,7 +1337,8 @@ Release: April 23, 2024
 
 18 / 68
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-DHCPE].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1535,7 +1380,8 @@ Release: April 23, 2024
 
 19 / 68
 
-message. If a matching reservation exists, the corresponding IP address will be assigned to the
+
+message. If a matching reservation exists, the corresponding IP address will be assigned to the
 client even if it lies outside of the DHCPv4IpRange or within a DHCPv4ExclusionRange.
 
 5.  The database of allocated addresses and leases ([RFC2131] section 4) is represented by the
@@ -1608,7 +1454,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DHCPv4ClassDef.ClassData and DHCPv4ClassDef.ClassDataLength match the user class
+
+DHCPv4ClassDef.ClassData and DHCPv4ClassDef.ClassDataLength match the user class
 option data then any parameter values configured in DHCPv4Reservation.
 DHCPv4ResvOptValuesList, DHCPv4Scope.DHCPv4ScopeOptValuesList or
 DHCPv4ServerOptValueList with the corresponding DHCPv4ClassDef.ClassName in the
@@ -1684,7 +1531,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DHCPM] section 3.1.1.14), and DHCPv6Reservation.DHCPv6ResvClassedOptValueList, a
+
+DHCPM] section 3.1.1.14), and DHCPv6Reservation.DHCPv6ResvClassedOptValueList, a
 shared ADM element (see [MS-DHCPM] section 3.1.1.16), allow the server to be configured to
 return options to the client as described in ([RFC3315] sections 17.2.2 and 18.2). The order of
 selecting a configured option is:
@@ -1759,15 +1607,16 @@ Release: April 23, 2024
 
 22 / 68
 
-18. The DHCPv4ServerMcastMibInfo element, a shared ADM element (see [MS-DHCPM] section
+
+18. The DHCPv4ServerMcastMibInfo element, a shared ADM element (see [MS-DHCPM] section
 3.1.1.1), is updated by the server with the counts of various MADCAP messages ([RFC2730]
 section 2.2) processed or sent by it.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The use of these DHCP vendor-specific options is applicable in environments where DHCP or DHCPv6
 is used.
@@ -1776,7 +1625,7 @@ The optional internationalization extensions specified in section 2.2.7 are only
 homogenous environments where either all machines use ASCII or have the same implementation-
 specific behavior.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The guidelines noted in section 8.4 of [RFC2132] to identify the vendor for the vendor-specific options
 are applicable to DHCPv4.
@@ -1785,7 +1634,7 @@ The Vendor Class Identifier Option defined in [RFC2132] section 9.13 and the Ven
 defined in [RFC3315] section 22.16 contain values used to negotiate which vendor-specific options
 defined herein are to be sent to the DHCPv6 client.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 DHCPv4 (as specified in [RFC2131]) and DHCPv6 (as specified in [RFC3315]) have a provision for
 vendor-extensible options. These vendor-specific options are used as specified in [RFC2132] and
@@ -1793,7 +1642,7 @@ vendor-extensible options. These vendor-specific options are used as specified i
 defined therein. The vendor-extensible options used by DHCPv4 clients and servers are specified in
 section 2.2.2.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1810,9 +1659,10 @@ Release: April 23, 2024
 
 23 / 68
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All DHCP attributes are transported within DHCP, which is transported over the UDP protocol, as
 specified in [RFC2131] section 4.1 for DHCPv4 and [RFC3315] section 5.2 for DHCPv6.
@@ -1837,7 +1687,7 @@ DHCPv6 clients listen for DHCPv6 messages on UDP port.   0x0222
 
 [RFC3315] section 5.2
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following DHCP extensions use the message format for vendor-specific options, as specified in
 [RFC2132] section 8.4 and in [RFC3925] section 3.
@@ -1845,7 +1695,7 @@ The following DHCP extensions use the message format for vendor-specific options
 All option fields and values described in this document are sent in network byte order unless
 indicated otherwise.
 
-2.2.1  DHCPv4 Option Code 12 (0xC) - Host Name Option
+#### 2.2.1 DHCPv4 Option Code 12 (0xC) - Host Name Option
 
 This option, as defined in [RFC2132] section 3.14, specifies the name of the client that MUST follow
 character set restrictions as specified in [RFC1035]. [RFC1035] section 2.3.1 specifies a "preferred"
@@ -1855,7 +1705,7 @@ name if the client has a non-ASCII name, and hence the contents of this option a
 specific.<1> It was this ambiguity that led to it being rendered obsolete by DHCPv4 Option Code
 81 (section 2.2.7).
 
-2.2.2  DHCPv4 Option Code 43 (0x2B) - Vendor-Specific Information Option
+#### 2.2.2 DHCPv4 Option Code 43 (0x2B) - Vendor-Specific Information Option
 
 DHCPv4 clients request vendor-specific options from the DHCPv4 server by including option code 43
 in the Parameter Request List, as specified in [RFC2132] section 8.4.
@@ -1886,7 +1736,8 @@ Release: April 23, 2024
 
 24 / 68
 
-Value  Meaning
+
+Value  Meaning
 
 0x03
 
@@ -1909,7 +1760,7 @@ NAP-specific information. For an overview of NAP and for more information, see [
 For information about the format of DHCP Vendor Extensions, see [RFC2132] section 2 and [RFC3315]
 section 22.
 
-2.2.2.1  Vendor-Specific Option Code 0x01 - Microsoft Disable NetBIOS Option
+##### 2.2.2.1 Vendor-Specific Option Code 0x01 - Microsoft Disable NetBIOS Option
 
 This option is sent by a DHCPv4 server to a DHCPv4 client in a DHCPOFFER or a DHCPACK
 message.<3> It has no effect on subsequent options in that message or on the DHCPREQUEST
@@ -1976,7 +1827,8 @@ Release: April 23, 2024
 
 25 / 68
 
-2.2.2.2  Vendor-Specific Option Code 0x02 - Microsoft Release DHCP Lease on
+
+##### 2.2.2.2 Vendor-Specific Option Code 0x02 - Microsoft Release DHCP Lease on
 
 Shutdown Option
 
@@ -2034,7 +1886,7 @@ shutdown.
 
 Existing behavior of client is unchanged.
 
-2.2.2.3  Vendor-Specific Option Code 0x03 - Microsoft Default Router Metric Base
+##### 2.2.2.3 Vendor-Specific Option Code 0x03 - Microsoft Default Router Metric Base
 
 Option
 
@@ -2074,7 +1926,8 @@ Release: April 23, 2024
 
 26 / 68
 
-Vendor-specific Option Code (1 byte): This MUST be 0x03.
+
+Vendor-specific Option Code (1 byte): This MUST be 0x03.
 
 Vendor-specific Option Length (1 byte): This MUST be 0x04.
 
@@ -2103,7 +1956,7 @@ Meaning
 
 Less than or equal to 500 Kbps.
 
-2.2.2.4  Vendor-Specific Option Code 0x5E - Rogue Detection Request Option
+##### 2.2.2.4 Vendor-Specific Option Code 0x5E - Rogue Detection Request Option
 
 This option is sent by a Validating Server to DHCPv4 servers on the network in a DHCPINFORM
 message. It is sent as an encapsulated vendor-specific option in option 43 (section 2.2.2).
@@ -2131,7 +1984,7 @@ Vendor-Specific Option Code (1 byte): This MUST be 94 (0x5E).
 
 Vendor-Specific Option Length (1 byte): This MUST be 0x00.
 
-2.2.2.5  Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option
+##### 2.2.2.5 Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option
 
 This option is sent by a Rogue Aware Server to a Validating Server in a DHCPACK message. It is
 sent in response to an authorization message (see section 2.2.2.4) received in a DHCPINFORM
@@ -2165,7 +2018,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Vendor-specific Option Code (1 byte): This MUST be 0x5F.
+
+Vendor-specific Option Code (1 byte): This MUST be 0x5F.
 
 Vendor-specific Option Length (1 byte): The unsigned length, in bytes, of the Vendor-specific
 
@@ -2175,14 +2029,14 @@ Vendor-specific Option Data (variable): This is a null-terminated string of leng
 
 Vendor-specific Option Length.
 
-2.2.2.6  Vendor-Specific ANDROID_METERED Option
+##### 2.2.2.6 Vendor-Specific ANDROID_METERED Option
 
 The vendor-specific option data contains the ANDROID_METERED setting when the vendor-specific
 option data includes the string "ANDROID_METERED".<8> The string is encoded as ASCII octets, does
 not include the surrounding quotes, may or may not be NULL-terminated, and may be in any position
 in the vendor-specific option data.
 
-2.2.3  DHCPv4 Option Code 60 (0x3C) - Vendor Class Identifier Option
+#### 2.2.3 DHCPv4 Option Code 60 (0x3C) - Vendor Class Identifier Option
 
 A DHCPv4 client sends vendor information in all DHCPv4 packets that it sends to the DHCPv4 server
 to indicate the vendor or the version of the operating system running on the client. This information is
@@ -2251,7 +2105,8 @@ Release: April 23, 2024
 
 28 / 68
 
-2.2.4  DHCPv6 Option Code 15 (0x000F) - User Class Option
+
+#### 2.2.4 DHCPv6 Option Code 15 (0x000F) - User Class Option
 
 DHCPv6 clients implementing this specification MUST use the message format and semantics specified
 in [RFC3315] when sending a User Class Option to a DHCPv6 server. The DHCPv6 client MUST send a
@@ -2332,7 +2187,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-User Class Name Length (2 bytes): Size of User Class Name in octets.
+
+User Class Name Length (2 bytes): Size of User Class Name in octets.
 
 User Class Name (variable): Name of a User Class set on the DHCPv6 server.
 
@@ -2340,7 +2196,7 @@ User Class Description Length (2 bytes): Size of User Class Description in octet
 
 User Class Description (variable): Description of a User Class defined on the DHCPv6 server.
 
-2.2.5  DHCPv6 Option Code 16 (0x0010) - Vendor Class Option
+#### 2.2.5 DHCPv6 Option Code 16 (0x0010) - Vendor Class Option
 
 A DHCPv6 client sends vendor information in all DHCPv6 packets to the DHCPv6 server. This
 information is sent in the form of a vendor class option, as specified in [RFC3315] section 22.16. An
@@ -2407,7 +2263,7 @@ options defined herein and the client claims to be a Microsoft Xbox gaming conso
 consoles will use this value, and a client using this value may or may not actually be a Microsoft
 Xbox gaming console.<13>
 
-2.2.6  DHCPv4 Option Code 77 (0x4D) - User Class Option
+#### 2.2.6 DHCPv4 Option Code 77 (0x4D) - User Class Option
 
 This section describes the message format of the User Class Option sent by DHCPv4 clients and
 DHCPv4 servers, and the values for this option that are predefined on DHCPv4 servers that implement
@@ -2420,11 +2276,12 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-that the User Class Data field format is changed. The use of this alternate format is indicated by the
+
+that the User Class Data field format is changed. The use of this alternate format is indicated by the
 presence of a Vendor Class Identifier Option (section 2.2.3), which can occur anywhere in the same
 message.
 
-2.2.6.1  User Class Option Sent by DHCPv4 Client to DHCPv4 Server
+##### 2.2.6.1 User Class Option Sent by DHCPv4 Client to DHCPv4 Server
 
 DHCPv4 clients MAY<14> send a User Class Option in all DHCPv4 messages sent by the client with
 any string configured by the administrator or a string from the User Class Data field. DHCPv4 clients
@@ -2467,7 +2324,7 @@ Meaning
 on a dial-up or VPN network interface. This string is otherwise known as the Default
 Routing and Remote Access Class.
 
-2.2.6.2  User Class Option Sent by DHCPv4 Server to DHCPv4 Client
+##### 2.2.6.2 User Class Option Sent by DHCPv4 Server to DHCPv4 Client
 
 DHCPv4 clients MAY<15> request the user classes configured on the DHCPv4 server by sending a
 DHCPINFORM message containing OPTION_PARAMETER_REQUEST_LIST (Option 55) ([RFC2132]
@@ -2512,7 +2369,8 @@ Release: April 23, 2024
 
 31 / 68
 
-User Class Description Length
+
+User Class Description Length
 
 ...
 
@@ -2540,7 +2398,7 @@ User Class Description Length (2 bytes): Size of the User Class Description in o
 
 User Class Description (variable): Description of a User Class set on the DHCPv4 server.
 
-2.2.7  DHCPv4 Option Code 81 (0x51) - Client FQDN Option
+#### 2.2.7 DHCPv4 Option Code 81 (0x51) - Client FQDN Option
 
 The client FQDN option is specified in [RFC4702] section 2 that states that setting the E bit to 0
 indicates that the name is ASCII-encoded but does not explain how to ASCII encode a name if the
@@ -2554,7 +2412,7 @@ intended to be in other character sets, but that support for other character set
 specification clarifies that a DHCPv4 server MAY<19> accept other implementation-dependent
 character sets when the E bit is set to 0.
 
-2.2.8  DHCPv4 Option Code 249 (0xF9) - Microsoft Classless Static Route Option
+#### 2.2.8 DHCPv4 Option Code 249 (0xF9) - Microsoft Classless Static Route Option
 
 DHCPv4 clients and DHCPv4 servers that implement this specification use some nonstandard options
 in their implementation.
@@ -2577,7 +2435,8 @@ Release: April 23, 2024
 
 32 / 68
 
-This option is sent by the DHCPv4 server to the DHCPv4 client in the DHCPOFFER or the DHCPACK
+
+This option is sent by the DHCPv4 server to the DHCPv4 client in the DHCPOFFER or the DHCPACK
 message. It has no effect on subsequent options in that message or in any of the messages sent by
 the client to the server.
 
@@ -2630,7 +2489,7 @@ CSR-N Router IP address (4 bytes): The IPv4 address of the next-hop router that 
 
 reach the destination.
 
-2.2.9  DHCPv4 Option Code 250 (0xFA) - Microsoft Encoding Long Options Packet
+#### 2.2.9 DHCPv4 Option Code 250 (0xFA) - Microsoft Encoding Long Options Packet
 
 DHCPv4 standard options are constrained to be of maximum size 255 bytes due to the length of the
 option 8-bit length field that the protocol defines in [RFC3396] section 1.
@@ -2654,7 +2513,8 @@ Release: April 23, 2024
 
 33 / 68
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2683,7 +2543,7 @@ Option Data (variable): This field contains the continuation of the data of the 
 
 was too long to be contained in that option.
 
-2.2.10 DHCPv6 Option Code 17 (0x0011) - Vendor Specific Information Option
+#### 2.2.10 DHCPv6 Option Code 17 (0x0011) - Vendor Specific Information Option
 
 A DHCPv6 client and server exchange vendor-specific information between themselves. This
 information is sent in the form of a vendor-specific information option, as specified in [RFC3315]
@@ -2747,9 +2607,10 @@ Release: April 23, 2024
 
 34 / 68
 
-2.2.10.1
 
-Vendor-Specific Option Code 0x5E – Rogue Detection Request Option
+##### 2.2.10.1 Vendor-Specific Option Code 0x5E – Rogue Detection Request Option
+
+
 
 This option is sent by a Validating Server to DHCPv4 servers on the network in a DHCPv6
 Information-request message. It is sent as an encapsulated option in option 17 (section 2.2.10).
@@ -2779,9 +2640,9 @@ Vendor-specific Option Code (2 bytes): This MUST be 94 (0x5E).
 
 Vendor-specific Option Length (2 bytes): This MUST be 0x00.
 
-2.2.10.2
+##### 2.2.10.2 Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option
 
-Vendor-Specific Option Code 0x5F – Rogue Detection Reply Option
+
 
 This option is sent by a Rogue Aware Server to a Validating Server in a DHCPv6 Reply message.
 It is sent in response to option 0x5E (section 2.2.10.1) received in a DHCPv6 Information-request
@@ -2816,7 +2677,7 @@ Vendor-Specific Option Data (variable): This is a null-terminated string of leng
 
 Vendor-Specific Option Length.
 
-2.2.11 DHCPv4 Option Code 15 (0x000f) - Domain Name Option
+#### 2.2.11 DHCPv4 Option Code 15 (0x000f) - Domain Name Option
 
 DHCPv4 Option Code 15 is defined in [RFC2132] section 3.17 which specifies the domain name that
 the client SHOULD use when resolving host names by using the DNS. [RFC1035] provides the
@@ -2830,11 +2691,12 @@ Release: April 23, 2024
 
 35 / 68
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2856,7 +2718,7 @@ DHCPRELEASE when it shuts down.
 Enable NetBIOS Flag: This flag indicates whether the host has NetBIOS enabled or disabled on the
 interface.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None, except the timers in [RFC2131] and [RFC3315].
 
@@ -2873,12 +2735,12 @@ DHCPDISCOVER, the DHCPv4 client MUST wait 5 minutes before repeating the precedi
 
 DHCPv6 clients implementing this specification adhere to [RFC3315].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 DHCPv4 client initialization (as specified in [RFC2131]) and DHCPv6 client initialization (as specified
 in [RFC3315]) are unchanged by the extensions specified in this document.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
@@ -2889,7 +2751,8 @@ Release: April 23, 2024
 
 36 / 68
 
-3.1.4.1  Sending a DHCPDISCOVER, DHCPREQUEST, or DHCPINFORM Message
+
+##### 3.1.4.1 Sending a DHCPDISCOVER, DHCPREQUEST, or DHCPINFORM Message
 
 When sending a DHCPDISCOVER, DHCPREQUEST, or DHCPINFORM message, DHCPv4 clients
 implementing this specification SHOULD<22> include a Vendor Class Identifier Option formatted as in
@@ -2901,7 +2764,7 @@ guidelines for the user class data defined in section 2.2.8.
 include an OPTION_PARAMETER_REQUEST_LIST (Option 55) ([RFC2132] section 9.8) with
 OPTION_USER_CLASS (Option 77) ([RFC3004] section 4) as one of the requested options.
 
-3.1.4.2  Sending a DHCPv6 Solicit, Request, or Information-request Message
+##### 3.1.4.2 Sending a DHCPv6 Solicit, Request, or Information-request Message
 
 When sending a DHCPv6 Solicit, Request, or Information-request message, DHCPv6 clients
 implementing this specification SHOULD<25> include a Vendor Class Option formatted as in section
@@ -2911,12 +2774,12 @@ When sending an Information-request message, DHCPv6 clients implementing this sp
 MAY<26> include an OPTION_ORO (Option 6) with OPTION_USER_CLASS (Option 15) as the only
 requested option.
 
-3.1.4.3  Sending a DHCPv4 Release or DHCPv6 Release Message
+##### 3.1.4.3 Sending a DHCPv4 Release or DHCPv6 Release Message
 
 The behavior is same as specified in [RFC2131] section 3.1 for the DHCPv4 Release message and
 [RFC3315] section 18.1.6 for the DHCPv6 Release message.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 DHCPv4 clients process DHCPv4 messages as specified in [RFC2131] sections 3 and 4, with additional
 behavior as specified in this section.
@@ -2925,7 +2788,7 @@ If the length or the data of the field of any of the options in a DHCPv4 message
 implementing this specification is inconsistent, the DHCPv4 client MUST silently discard the DHCPv4
 message and restart the initialization process.
 
-3.1.5.1  Receiving a DHCPOFFER
+##### 3.1.5.1 Receiving a DHCPOFFER
 
 If the DHCPOFFER contains any of the options defined in this specification, these options SHOULD be
 ignored; the client MAY<27> instead use the options to choose among offers in any implementation-
@@ -2937,7 +2800,7 @@ in section 2.2.6. Because this specification supports only one user class value 
 MUST conform to the guidelines for the User Class Data defined in section 2.2.6. The DHCPv4 client
 SHOULD<30> include both options 121 and 249 in the parameter request list in this message.
 
-3.1.5.2  Receiving a DHCPACK
+##### 3.1.5.2 Receiving a DHCPACK
 
 When a DHCPv4 client implementing this specification receives a DHCPACK that contains a Vendor-
 Specific Information Option, it MUST be processed as follows.
@@ -2952,7 +2815,8 @@ Release: April 23, 2024
 
 37 / 68
 
-If it contains a Microsoft Release DHCP Lease on Shutdown Option, the DHCPv4 client MUST
+
+If it contains a Microsoft Release DHCP Lease on Shutdown Option, the DHCPv4 client MUST
 update its Release DHCP Lease on Shutdown Flag for the interface over which the DHCPACK was
 received, as specified in section 2.2.2.2.
 
@@ -2978,12 +2842,12 @@ stack.
 If it contains an ANDROID_METERED Option specified in section 2.2.2.6, the client SHOULD<32>
 mark the interface as a metered interface in an implementation-specific manner.
 
-3.1.5.3  Receiving a DHCPv6 Advertise Message
+##### 3.1.5.3 Receiving a DHCPv6 Advertise Message
 
 If the DHCPv6 Advertise contains any of the V6 options defined in this specification, the client
 MAY<33> use the options to choose among advertises in any implementation-specific manner.
 
-3.1.5.4  Receiving a DHCPv6 Reply Message
+##### 3.1.5.4 Receiving a DHCPv6 Reply Message
 
 When a DHCPv6 client implementing this specification receives a Reply message that contains one
 or more User Class Options (Option 15), it MUST first check whether the option conforms to the
@@ -2991,7 +2855,7 @@ syntax specified in section 2.2.4. If the option does not conform to the syntax,
 MUST silently discard the option. Otherwise, the DHCPv6 client uses the information in an
 implementation-specific manner.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 DHCPv4 extensions defined in this specification adhere to the RFC standards (as specified in
 [RFC2131] section 4.4 and in [RFC2132]) for timer events.
@@ -2999,12 +2863,12 @@ DHCPv4 extensions defined in this specification adhere to the RFC standards (as 
 The DHCPv6 extensions defined in this specification adhere to the RFC standards (as specified in
 [RFC3315] section 14 and section 18) for timer events.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 On system shutdown, if its Release DHCP Lease on Shutdown Flag is set, the DHCPv4 client MUST
 send a DHCPRELEASE message for all IP addresses obtained through DHCPv4.
 
-3.1.7.1  DhcpAppendVendorSpecificOption
+##### 3.1.7.1 DhcpAppendVendorSpecificOption
 
 The higher-level protocol implementations use this method to append the vendor-specific options in
 the DHCPv4 message packets created in Sending a DHCPDISCOVER, DHCPREQUEST, or
@@ -3017,11 +2881,12 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-sent in a message exceeds 255 bytes, then the Microsoft Encoding Long Options Packet, specified in
+
+sent in a message exceeds 255 bytes, then the Microsoft Encoding Long Options Packet, specified in
 section 2.2.9, MUST be used. The method takes option ID, option data length, and option data as
 input.
 
-3.1.7.2  DhcpExtractVendorSpecificOption
+##### 3.1.7.2 DhcpExtractVendorSpecificOption
 
 The higher-level protocol implementations use this method to extract the vendor-specific options in
 the DHCPv4 message packets received through Receiving a DHCPOFFER (section 3.1.5.1) and
@@ -3029,9 +2894,9 @@ Receiving a DHCPACK (section 3.1.5.2). When the cumulative size of all the vendo
 sent in a message exceeds 255 bytes, then the Microsoft Encoding Long Options Packet, specified in
 section 2.2.9, MUST be used.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3084,7 +2949,8 @@ Release: April 23, 2024
 
 39 / 68
 
-  DHCPv6ClassDef
+
+  DHCPv6ClassDef
 
   DHCPv6ClientInfo
 
@@ -3106,20 +2972,20 @@ Release: April 23, 2024
 
   DHCPv6UserClass
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
  None beyond those in [RFC2131] and [RFC3315].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 DHCPv4/DHCPv6 server initialization (as specified in [RFC2131] and [RFC3315]) is unchanged by
 extensions specified in this document.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 DHCPv4 servers process DHCPv4 messages as specified in [RFC2131] sections 3 and 4. The DHCPv6
 server processes messages as specified in [RFC3315]. Additional behavior of DHCPv4 and DHCPv6
@@ -3130,7 +2996,7 @@ element, a shared element (see [MS-DHCPM] section 3.1.1.26), is set to TRUE. An 
 DHCPv4 or DHCPv6 server does not process or respond to any of the messages documented in this
 section.
 
-3.2.5.1  Receiving a DHCPDISCOVER Message
+##### 3.2.5.1 Receiving a DHCPDISCOVER Message
 
 Increment the DHCPv4ServerMibInfo.Discovers element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 10.
@@ -3150,7 +3016,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the DHCPDISCOVER contains a Client Identifier Option (Option 61) with the field Client-Identifier
+
+If the DHCPDISCOVER contains a Client Identifier Option (Option 61) with the field Client-Identifier
 containing the first four bytes as "RAS", the DHCPv4 server MUST ignore any FQDN Option (Option
 81) in the DHCPv4 message and MUST NOT perform DNS registration of A and PTR records on behalf
 of the DHCPv4 client. For more information, see [RFC4702].
@@ -3159,7 +3026,7 @@ If processing the DHCPDISCOVER message results in the server sending a DHCPOFFER
 the client, then increment the DHCPv4ServerMibInfo.Offers element, a shared ADM element (see
 [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 10.
 
-3.2.5.2  Receiving a DHCPREQUEST Message
+##### 3.2.5.2 Receiving a DHCPREQUEST Message
 
 Evaluate and apply administrative controls as described in section 1.4, point 6.<36>
 
@@ -3203,13 +3070,13 @@ containing the first four bytes as "RAS ", the DHCPv4 server MUST ignore any FQD
 81) in the DHCPv4 message and MUST NOT perform DNS registration of A and PTR records on behalf
 of the DHCPv4 client. For more information, see [RFC4702].
 
-3.2.5.3  Receiving a DHCPv6 Message with a Vendor Class Option
+##### 3.2.5.3 Receiving a DHCPv6 Message with a Vendor Class Option
 
 DHCPv6 servers implementing this specification MAY<39> simply ignore the Vendor Class Option
 sent in the DHCPv6 messages by the client; the server SHOULD instead return the relevant options
 configured for clients with the specified vendor class information as specified by [RFC3315].
 
-3.2.5.4  Receiving a DHCPINFORM Message
+##### 3.2.5.4 Receiving a DHCPINFORM Message
 
 If the DHCPINFORM message does not contain Rogue Detection Request Option (section 2.2.2.4),
 evaluate and apply administrative controls as described in section 1.4, point 6.<40>
@@ -3221,7 +3088,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When a DHCPv4 server implementing this specification receives a DHCPINFORM message containing
+
+When a DHCPv4 server implementing this specification receives a DHCPINFORM message containing
 an OPTION_PARAMETER_REQUEST_LIST (Option 55) ([RFC2132] section 9.8) with
 OPTION_USER_CLASS (Option 77) ([RFC3004] section 4) as one of the requested options, the
 DHCPv4 server SHOULD<41> send a DHCPACK message to the DHCPv4 client containing one or
@@ -3240,7 +3108,7 @@ A Rogue Authorized Server on the network SHOULD<44> reply to the DHCPINFORM mess
 sending a DHCPACK message containing the Rogue Detection Reply Option (section 2.2.2.5) with an
 empty NULL-terminated string in the option data.
 
-3.2.5.5  Receiving an Information-request Message
+##### 3.2.5.5 Receiving an Information-request Message
 
 Increment the DHCPv6ServerMibInfo.Informs element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3271,12 +3139,12 @@ If processing of the Information-request message results in the server sending a
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.6  Receiving a DHCP Message with a User Class Option
+##### 3.2.5.6 Receiving a DHCP Message with a User Class Option
 
 If the option length or any of the values in the User Class option are inconsistent with the data sent,
 the DHCP servers implementing this specification MUST silently discard the DHCP message.
 
-3.2.5.7  Receiving a DHCPv4 RELEASE Message
+##### 3.2.5.7 Receiving a DHCPv4 RELEASE Message
 
 Increment the DHCPv4ServerMibInfo.Releases element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 10.
@@ -3290,7 +3158,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.8  Receiving a DHCPv6 Release Message
+
+##### 3.2.5.8 Receiving a DHCPv6 Release Message
 
 Increment the DHCPv6ServerMibInfo.Releases element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3301,7 +3170,7 @@ If processing of the Information-request message results in the server sending a
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.9  Receiving a DHCPDECLINE Message
+##### 3.2.5.9 Receiving a DHCPDECLINE Message
 
 Increment the DHCPv4ServerMibInfo.Declines element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 10.
@@ -3312,9 +3181,9 @@ If processing of the Information-request message results in the server sending a
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.10
+##### 3.2.5.10 Receiving a DHCPv6 Solicit Message
 
-Receiving a DHCPv6 Solicit Message
+
 
 Increment the DHCPv6ServerMibInfo.Solicits element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3325,9 +3194,9 @@ If processing of the DHCPv6 Solicit message results in the server sending a DHCP
 message to the client, then increment the DHCPv6ServerMibInfo.Offers element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.11
+##### 3.2.5.11 Receiving a DHCPv6 Request Message
 
-Receiving a DHCPv6 Request Message
+
 
 Increment the DHCPv6ServerMibInfo.Requests element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3338,9 +3207,9 @@ If processing of the Information-request message results in the server sending a
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.12
+##### 3.2.5.12 Receiving a DHCPv6 Confirm Message
 
-Receiving a DHCPv6 Confirm Message
+
 
 Increment the DHCPv6ServerMibInfo.Confirms element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3358,9 +3227,10 @@ Release: April 23, 2024
 
 43 / 68
 
-3.2.5.13
 
-Receiving a DHCPv6 Renew Message
+##### 3.2.5.13 Receiving a DHCPv6 Renew Message
+
+
 
 Increment the DHCPv6ServerMibInfo.Renews element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3371,9 +3241,9 @@ If processing of the Information-request message results in the server sending a
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.14
+##### 3.2.5.14 Receiving a DHCPv6 Rebind Message
 
-Receiving a DHCPv6 Rebind Message
+
 
 Increment the DHCPv6ServerMibInfo.Rebinds element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3384,9 +3254,9 @@ If processing of the Information-request message results in the server sending a
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.15
+##### 3.2.5.15 Receiving a DHCPv6 Decline Message
 
-Receiving a DHCPv6 Decline Message
+
 
 Increment the DHCPv6ServerMibInfo.Declines element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, point 17.
@@ -3397,9 +3267,9 @@ If processing the Information-request message results in the server sending a DH
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in section 1.4, point 17.
 
-3.2.5.16
+##### 3.2.5.16 Receiving a MADCAP DISCOVER Message
 
-Receiving a MADCAP DISCOVER Message
+
 
 Increment the DHCPv6ServerMibInfo.Declines element, a shared ADM element (see [MS-DHCPM]
 section 3.1.1.1), as described in section 1.4, item 17.
@@ -3410,9 +3280,9 @@ If processing the Information-request message results in the server sending a DH
 message to the client, then increment the DHCPv6ServerMibInfo.Replies element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.1), as described in 1.4, item 17.
 
-3.2.5.17
+##### 3.2.5.17 Receiving a MADCAP REQUEST Message
 
-Receiving a MADCAP REQUEST Message
+
 
 Increment the DHCPv4ServerMcastMibInfo.Requests element, a shared ADM element (see [MS-
 DHCPM] section 3.1.1.1).
@@ -3430,9 +3300,10 @@ Release: April 23, 2024
 
 44 / 68
 
-3.2.5.18
 
-Receiving a MADCAP RENEW Message
+##### 3.2.5.18 Receiving a MADCAP RENEW Message
+
+
 
 Increment the DHCPv4ServerMcastMibInfo.Renews element, a shared ADM element (see [MS-
 DHCPM] section 3.1.1.1).
@@ -3447,9 +3318,9 @@ If processing the RELEASE message results in the server sending a MADCAP NAK mes
 client, then increment the DHCPv4ServerMcastMibInfo.Naks element, a shared ADM element (see
 [MS-DHCPM] section 3.1.1.1).
 
-3.2.5.19
+##### 3.2.5.19 Receiving a MADCAP RELEASE Message
 
-Receiving a MADCAP RELEASE Message
+
 
 Increment the DHCPv4ServerMcastMibInfo.Releases element, a shared ADM element (see [MS-
 DHCPM] section 3.1.1.1).
@@ -3462,9 +3333,9 @@ If processing the RELEASE message results in the server sending a MADCAP NAK mes
 client, then increment the DHCPv4ServerMcastMibInfo.Naks element, a shared ADM (see [MS-
 DHCPM] section 3.1.1.1).
 
-3.2.5.20
+##### 3.2.5.20 Receiving a MADCAP GETINFO Message
 
-Receiving a MADCAP GETINFO Message
+
 
 Increment the DHCPv4ServerMcastMibInfo.Informs element, a shared ADM element (see [MS-
 DHCPM] section 3.1.1.1).
@@ -3479,14 +3350,14 @@ If processing the GETINFO message results in the server sending a MADCAP NAK mes
 client, then increment the DHCPv4ServerMcastMibInfo.Naks element, a shared ADM element (see
 [MS-DHCPM] section 3.1.1.1).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The DHCPv4 extensions adhere to the RFC standards ([RFC2131] section 4.4 and in [RFC2132]) for
 timer events.
 
 The DHCPv6 extensions adhere to the RFC standard ([RFC3315] section 14 and 18) for timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -3497,7 +3368,8 @@ Release: April 23, 2024
 
 45 / 68
 
-3.2.7.1  DhcpAppendVendorSpecificOption
+
+##### 3.2.7.1 DhcpAppendVendorSpecificOption
 
 The higher-level protocol implementations use this method to append the vendor-specific options in
 the DHCPv4 message packets (DHCPOFFER and DHCPACK) created in Receiving a DHCPDISCOVER
@@ -3507,12 +3379,12 @@ being sent in a message exceeds 255 bytes, the Microsoft Encoding Long Options P
 section 2.2.9, MUST be used. The method takes option ID, option data length, and option data as
 input.
 
-3.2.7.2  DhcpAppendCSROption
+##### 3.2.7.2 DhcpAppendCSROption
 
 The higher-level protocol implementations use this method to append the Classless Static Route
 Option as specified in section 2.2.8. This method takes option length and a list of CSR values as input.
 
-3.2.7.3  DhcpExtractVendorSpecificOption
+##### 3.2.7.3 DhcpExtractVendorSpecificOption
 
 The higher-level protocol implementations use this method to extract the vendor-specific options in
 the DHCPv4 message packets received through Receiving a DHCPDISCOVER
@@ -3521,14 +3393,14 @@ DHCPINFORM Message (section 3.2.5.4). When the cumulative size of all the vendor
 being sent in a message exceeds 255 bytes, the Microsoft Encoding Long Options
 Packet (section 2.2.9) MUST be used.
 
-3.3  Validating Server Details
+### 3.3 Validating Server Details
 
 A DHCP server MAY<50> implement the Rogue Detection mechanism. A Rogue Aware Server
 periodically checks whether it is authorized.<51> This check is done irrespective of the DHCP server
 authorization state. The time interval between checks MAY<52> vary based on the authorization
 state.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3541,7 +3413,7 @@ Dynamic Host Configuration Protocol as specified in [MS-DHCPM] section 3.1.1:
 
   DHCPv4ServerAttributes.IsRogue
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 DHCPv4 Authorization Retransmission Timer: This timer is initialized or reset whenever a
 DHCPINFORM message with the Rogue Detection Request Option (section 2.2.2.4) is broadcast by a
@@ -3560,7 +3432,8 @@ Release: April 23, 2024
 
 46 / 68
 
-the timer is stopped, it will expire periodically as specified by the timer interval. This timer MUST be
+
+the timer is stopped, it will expire periodically as specified by the timer interval. This timer MUST be
 stopped when a DHCPv6 Reply message is received by the Validating Server.
 
 Rogue Authorization Recheck Timer: This timer is initialized or reset whenever a rogue detection
@@ -3568,17 +3441,17 @@ check is completed irrespective of the DHCP server authorization state resulting
 periodic timer with a default value of 1 hour. Unless the timer is stopped, it will expire periodically as
 specified by the timer interval.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 A Validating Server MUST initialize the DHCPv4ServerAttributes.IsRogue element, a shared ADM
 element (see [MS-DHCPM] section 3.1.1.26), to TRUE because it has not yet performed the
 authorization process.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The higher-layer triggered events relating to server validation are specified in the following sections.
 
-3.3.4.1  Sending a DHCPINFORM Message
+##### 3.3.4.1 Sending a DHCPINFORM Message
 
 A Validating Server MUST open UDP port 68 on the interfaces bound to the DHCPv4 server. If the
 server does not contain bound interfaces, the server cannot validate itself.
@@ -3587,7 +3460,7 @@ A Validating Server MUST send a broadcast DHCPINFORM message to address 255.255.
 the Rogue Detection Request Option (section 2.2.2.4) on all the interfaces bound to the DHCPv4
 server.
 
-3.3.4.2  Sending a DHCPv6 Information-request Message
+##### 3.3.4.2 Sending a DHCPv6 Information-request Message
 
 A Validating Server MUST open UDP port 546 on the interfaces bound to the DHCPv6 server. If the
 Validating Server does not contain bound interfaces, it cannot validate itself.
@@ -3595,12 +3468,12 @@ Validating Server does not contain bound interfaces, it cannot validate itself.
 A Validating Server MUST send a DHCPv6 Information-request message with the Rogue Detection
 Request Option (section 2.2.10.1) on all the interfaces bound to the DHCPv6 server.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The message processing events and sequencing rules for the messages relating to server validation
 are specified in the following sections.
 
-3.3.5.1  Receiving a DHCPACK Message
+##### 3.3.5.1 Receiving a DHCPACK Message
 
 If a Validating Server receives a DHCPACK message containing a non-empty Rogue Detection Reply
 option (section 2.2.2.5), it MUST consider itself unauthorized and set the
@@ -3623,7 +3496,8 @@ Release: April 23, 2024
 
 47 / 68
 
-3.3.5.2  Receiving a DHCPv6 Reply Message
+
+##### 3.3.5.2 Receiving a DHCPv6 Reply Message
 
 If a Validating Server receives a DHCPv6 Reply message containing a non-empty Rogue Detection
 Reply option (section 2.2.10.2), it will consider itself unauthorized and set the
@@ -3639,7 +3513,7 @@ exhausted, the Validating Server MUST consider itself authorized and set the
 DHCPv4ServerAttributes.IsRogue element, a shared ADM element (see [MS-DHCPM] section
 3.1.1.26), to FALSE.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 DHCPv4 Authorization Retransmission Timer: The expiration of this timer denotes a period during
 which the Validating Server has broadcast a DHCPINFORM message with the Rogue Detection
@@ -3684,7 +3558,7 @@ performed when this timer expires:
 
 Initiate rogue detection using DHCPINFORM messages as specified in section 3.3.5.1.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3695,7 +3569,8 @@ Release: April 23, 2024
 
 48 / 68
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The message exchanges described for DHCPv4 are specified in [RFC2131] section 3. Message
 exchanges for DHCPv6 are specified in [RFC3315]. The message sequences and the operation of
@@ -3785,7 +3660,8 @@ Release: April 23, 2024
 
 49 / 68
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3881,7 +3757,8 @@ Release: April 23, 2024
 
 50 / 68
 
-1.  The administrator configures the DHCPv6 server to send the desired information to clients if the
+
+1.  The administrator configures the DHCPv6 server to send the desired information to clients if the
 
 vendor-class identifier received from the client is "MSFT 5.0" as described previously.
 
@@ -3974,7 +3851,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In another example, say that an administrator wants to send Vendor-specific Information through
+
+In another example, say that an administrator wants to send Vendor-specific Information through
 DHCPv4 to a DHCPv4 client on the local network as DHCPv4 Vendor-Specific Information Option 43
 (0x2B). However, this information, when encapsulated in Option 43 as per [RFC2132], is 600 bytes,
 exceeding the 255-byte limit of a DHCPv4 option length.
@@ -4063,7 +3941,8 @@ Release: April 23, 2024
 
 52 / 68
 
-2.  When a DHCPv4 client gets connected in this network, the client gets the IP and other
+
+2.  When a DHCPv4 client gets connected in this network, the client gets the IP and other
 
 configuration information from the DHCPv4 server.
 
@@ -4167,14 +4046,15 @@ Release: April 23, 2024
 
 53 / 68
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 All of the security considerations that are applicable to DHCPv4 (as described in [RFC2131] section 7)
 and DHCPv6 (as described in [RFC3315] section 23) apply to the implementation of this specification.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4185,7 +4065,8 @@ Release: April 23, 2024
 
 54 / 68
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4255,7 +4136,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 2.2.1: In Windows 98, Windows 2000 operating system, Windows Millennium Edition,
@@ -4326,7 +4208,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-user tries to set the User Class for the DHCPv6 client by executing "Ipconfig /setclassid6" or whenever
+
+user tries to set the User Class for the DHCPv6 client by executing "Ipconfig /setclassid6" or whenever
 a user tries to see the User Classes defined on the DHCPv6 server by executing "Ipconfig
 /showclassid6".
 
@@ -4394,7 +4277,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<21> Section 2.2.11: In Windows 2000 Server, Windows Server 2003, Windows Server 2008, and in
+
+<21> Section 2.2.11: In Windows 2000 Server, Windows Server 2003, Windows Server 2008, and in
 Windows Server 2008 R2, the DHCP server sends the domain name encoded by using the original
 equipment manufacturer (OEM) code page that was installed as the current system code page at
 system boot time. In Windows 98, Windows 2000, Windows Millennium Edition, Windows Server 2003,
@@ -4462,7 +4346,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<31> Section 3.1.5.2: All versions of Windows Vista and Windows Server 2008 and later will insert
+
+<31> Section 3.1.5.2: All versions of Windows Vista and Windows Server 2008 and later will insert
 the last option in the message.
 
 <32> Section 3.1.5.2: The ANDROID_METERED option is not supported in Windows 10 v1909 or
@@ -4530,7 +4415,8 @@ Release: April 23, 2024
 
 59 / 68
 
-<50> Section 3.3: In applicable Windows Server releases, the DHCP server implements Rogue
+
+<50> Section 3.3: In applicable Windows Server releases, the DHCP server implements Rogue
 Detection.
 
 <51> Section 3.3: In applicable Windows Server releases, an authorization check is performed after
@@ -4577,7 +4463,8 @@ Release: April 23, 2024
 
 60 / 68
 
-7  Appendix B: Administrative Authorization of Windows DHCP server
+
+## 7 Appendix B: Administrative Authorization of Windows DHCP server
 
 The information in this section is applicable to the following Microsoft products:
 
@@ -4597,7 +4484,7 @@ The information in this section is applicable to the following Microsoft product
 
   Windows Server 2019 operating system
 
-7.1  Windows DHCP Server Authorization in Domain Joined Scenario
+### 7.1 Windows DHCP Server Authorization in Domain Joined Scenario
 
 A domain joined Windows server with DHCP server deployed can validate itself. Authorization
 mechanism of a DHCP server in a domain joined scenario is as follows:
@@ -4617,7 +4504,7 @@ authorized to serve IP addresses.
 Once authorized, DHCP servers in a multiple forest environment lease IP addresses to all
 reachable clients.
 
-7.2  DHCP Server AD DS Path and Objects
+### 7.2 DHCP Server AD DS Path and Objects
 
 A domain joined DHCP server is authorized in the Active Directory Domain Services (AD DS). The
 "DhcpRoot" object and <DHCP server name> objects, which are of type "dhcpClass" [MS-ADSC] are
@@ -4625,7 +4512,7 @@ added in the AD DS. The attribute "dhcpServers" and other mandatory attributes o
 "dhcpClass" are also updated in the AD DS. The section below describes the "dHCPClass" objects, their
 attribute values in different conditions, and the containers in AD DS.
 
-7.3  Active Directory Path for dhcpClass Objects
+### 7.3 Active Directory Path for dhcpClass Objects
 
 The ADsPath where the dHCPClass [MS-ADSC] objects are stored is:
 
@@ -4646,7 +4533,8 @@ Dynamic Host Configuration Protocol (DHCP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following table provides the specifics of the string.
+
+The following table provides the specifics of the string.
 
 Field
 
@@ -4708,7 +4596,7 @@ L's'
 
 Precedes a server entry
 
-7.4  Mandatory Attribute Values for the DHCPRoot Object
+### 7.4 Mandatory Attribute Values for the DHCPRoot Object
 
 The mandatory attributes of the "dHCPClass" class need to be updated with values mentioned below
 when creating a "DhcpRoot" object.
@@ -4735,7 +4623,7 @@ instanceType
 
 0x04
 
-7.5  Mandatory Attribute Values for the <DHCP server> Object
+### 7.5 Mandatory Attribute Values for the <DHCP server> Object
 
 The mandatory attributes of the "dHCPClass" class need to be updated with values mentioned below
 when creating a <Dhcp server> object.
@@ -4747,7 +4635,8 @@ Release: April 23, 2024
 
 62 / 68
 
-OBJECT ATTRIBUTES  Value
+
+OBJECT ATTRIBUTES  Value
 
 dhcpUniqueKey
 
@@ -4769,7 +4658,7 @@ instanceType
 
 0x04
 
-7.6  Unauthorization Filter
+### 7.6 Unauthorization Filter
 
 To unauthorize a DHCP server, the server object added in AD DS needs to be removed. The server
 object to be deleted is identified by the "dhcpServers" attribute value. The filter [MS-ADTS] required
@@ -4778,14 +4667,14 @@ to identify the server object corresponding to the specific DHCP server is descr
 "(&(objectCategory=dHCPClass)(&(dhcpServers=i<server ip address>$*)(dhcpServers=*s<server
 name>$*)))"
 
-7.7  Validation Filter
+### 7.7 Validation Filter
 
 The filter [MS-ADTS] required to validate DHCP server authorization in AD DS is described below.
 
 "(&(objectCategory=dHCPClass)(|(dhcpServers=i<server ip address>$*)(dhcpServers=*s<server
 name>$*)))"
 
-7.8  Authorizing a DHCP Server in Active Directory Domain Services
+### 7.8 Authorizing a DHCP Server in Active Directory Domain Services
 
 A DHCP server that is domain joined is authorized by a domain administrator in the AD DS.
 
@@ -4821,7 +4710,8 @@ Release: April 23, 2024
 
 63 / 68
 
-7.9  Unauthorizing a DHCP Server from Active Directory Domain Services
+
+### 7.9 Unauthorizing a DHCP Server from Active Directory Domain Services
 
 A DHCP server is unauthorized from AD DS when the "dHCPClass" object corresponding to the server
 is deleted from the AD DS.
@@ -4833,7 +4723,7 @@ This filter matches a "dHCPClass" object with the "dhcpServers" attribute matchi
 address>$" and "s<server name>$". Only one such object matches the filter. Delete that object from
 the AD DS.
 
-7.10  Validating DHCP Server Authorization in Active Directory Domain Services
+### 7.10 Validating DHCP Server Authorization in Active Directory Domain Services
 
 A domain joined DHCP server verifies if it is authorized to service DHCP clients. It validates itself in
 AD DS.
@@ -4856,7 +4746,8 @@ Release: April 23, 2024
 
 64 / 68
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4900,7 +4791,8 @@ Release: April 23, 2024
 
 65 / 68
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -5055,7 +4947,8 @@ Initialization
 
 66 / 68
 
-   server (section 3.2.3 40, section 3.3.3 47)
+
+   server (section 3.2.3 40, section 3.3.3 47)
 Introduction 8
 
 L
@@ -5230,7 +5123,8 @@ Server
 
 67 / 68
 
-   higher-layer triggered events (section 3.2.4 40,
+
+   higher-layer triggered events (section 3.2.4 40,
 
 section 3.3.4 47)
 

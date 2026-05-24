@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 67
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: September 16, 2024
 
 2 / 67
 
-Date
+
+Date
 
 Revision
 History
@@ -529,7 +531,8 @@ Release: September 16, 2024
 
 3 / 67
 
-Date
+
+Date
 
 Revision
 History
@@ -571,254 +574,108 @@ Release: September 16, 2024
 
 4 / 67
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 NetBIOS Name Notation](#211-netbios-name-notation)
+      - [2.1.1.1 NetBIOS Suffix Definitions](#2111-netbios-suffix-definitions)
+      - [2.1.1.2 Unique Names](#2112-unique-names)
+      - [2.1.1.3 Group Names](#2113-group-names)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 HostAnnouncement Browser Frame](#221-hostannouncement-browser-frame)
+    - [2.2.2 AnnouncementRequest Browser Frame](#222-announcementrequest-browser-frame)
+    - [2.2.3 RequestElection Browser Frame](#223-requestelection-browser-frame)
+    - [2.2.4 GetBackupListRequest Browser Frame](#224-getbackuplistrequest-browser-frame)
+    - [2.2.5 GetBackupListResponse Browser Frame](#225-getbackuplistresponse-browser-frame)
+    - [2.2.6 BecomeBackup Browser Frame](#226-becomebackup-browser-frame)
+    - [2.2.7 DomainAnnouncement Browser Frame](#227-domainannouncement-browser-frame)
+    - [2.2.8 MasterAnnouncement Browser Frame](#228-masterannouncement-browser-frame)
+    - [2.2.9 ResetStateRequest Browser Frame](#229-resetstaterequest-browser-frame)
+    - [2.2.10 LocalMasterAnnouncement Browser Frame](#2210-localmasterannouncement-browser-frame)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Application Requests the Enumeration of Servers in a Machine Group](#3141-application-requests-the-enumeration-of-servers-in-a-machine-group)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Retrieving a List of Backup Browser Servers](#3151-retrieving-a-list-of-backup-browser-servers)
+        - [3.1.5.1.1 Sending a GetBackupListRequest Frame](#31511-sending-a-getbackuplistrequest-frame)
+        - [3.1.5.1.2 Receiving a GetBackupListResponse Frame](#31512-receiving-a-getbackuplistresponse-frame)
+      - [3.1.5.2 Receiving a NetServerEnum2 Response](#3152-receiving-a-netserverenum2-response)
+      - [3.1.5.3 Sending a RequestElection Frame](#3153-sending-a-requestelection-frame)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Nonbrowser Server Details](#32-nonbrowser-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Server Application Requests Updating Server Configuration](#3241-server-application-requests-updating-server-configuration)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an AnnouncementRequest Frame](#3251-receiving-an-announcementrequest-frame)
+      - [3.2.5.2 Sending a HostAnnouncement Frame](#3252-sending-a-hostannouncement-frame)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Browser Server Details](#33-browser-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 PromotedToPrimaryDomainController](#3341-promotedtoprimarydomaincontroller)
+      - [3.3.4.2 LocalRequestForServerList](#3342-localrequestforserverlist)
+      - [3.3.4.3 ShutdownBrowserServer](#3343-shutdownbrowserserver)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a BecomeBackup Frame](#3351-receiving-a-becomebackup-frame)
+      - [3.3.5.2 Receiving a LocalMasterAnnouncement Frame](#3352-receiving-a-localmasterannouncement-frame)
+      - [3.3.5.3 Receiving a HostAnnouncement Frame](#3353-receiving-a-hostannouncement-frame)
+      - [3.3.5.4 Receiving a DomainAnnouncement Frame](#3354-receiving-a-domainannouncement-frame)
+      - [3.3.5.5 Receiving a GetBackupListRequest Frame](#3355-receiving-a-getbackuplistrequest-frame)
+      - [3.3.5.6 Receiving a NetServerEnum2 or NetServerEnum3 Request](#3356-receiving-a-netserverenum2-or-netserverenum3-request)
+      - [3.3.5.7 Sending BecomeBackup Frames](#3357-sending-becomebackup-frames)
+      - [3.3.5.8 Receiving a RequestElection Frame](#3358-receiving-a-requestelection-frame)
+      - [3.3.5.9 Sending a GetBackupListResponse Frame](#3359-sending-a-getbackuplistresponse-frame)
+      - [3.3.5.10 Sending ResetState Frames](#33510-sending-resetstate-frames)
+      - [3.3.5.11 Sending a RequestElection Frame](#33511-sending-a-requestelection-frame)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Domain Master Browser Details](#34-domain-master-browser-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 DemotedToBackupDomainController](#3441-demotedtobackupdomaincontroller)
+    - [3.4.5 Message Processing Events and Sequencing Rule](#345-message-processing-events-and-sequencing-rule)
+      - [3.4.5.1 Receiving a MasterAnnouncement Frame](#3451-receiving-a-masterannouncement-frame)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Mailslot Frame Example](#41-mailslot-frame-example)
+  - [4.2 A Browser Server Wins the First Election Round and the Election](#42-a-browser-server-wins-the-first-election-round-and-the-election)
+  - [4.3 A Browser Server Wins the First Round but Loses the Election](#43-a-browser-server-wins-the-first-round-but-loses-the-election)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-NetBIOS Name Notation .............................................................................. 16
-NetBIOS Suffix Definitions...................................................................... 17
-Unique Names ...................................................................................... 17
-Group Names ....................................................................................... 18
-Message Syntax ............................................................................................... 18
-HostAnnouncement Browser Frame ............................................................... 20
-AnnouncementRequest Browser Frame .......................................................... 21
-RequestElection Browser Frame .................................................................... 22
-GetBackupListRequest Browser Frame ........................................................... 23
-GetBackupListResponse Browser Frame ......................................................... 24
-BecomeBackup Browser Frame ..................................................................... 24
-DomainAnnouncement Browser Frame .......................................................... 25
-MasterAnnouncement Browser Frame ............................................................ 26
-ResetStateRequest Browser Frame ............................................................... 26
-LocalMasterAnnouncement Browser Frame .................................................... 27
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-
-3.1
-
-3.1.5
-
-3.1.4.1
-
-3.1.5.1
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 29
-Client Details ................................................................................................... 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 30
-Application Requests the Enumeration of Servers in a Machine Group .......... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-Retrieving a List of Backup Browser Servers ............................................. 30
-Sending a GetBackupListRequest Frame ............................................. 31
-Receiving a GetBackupListResponse Frame ......................................... 31
-Receiving a NetServerEnum2 Response ................................................... 31
-Sending a RequestElection Frame ........................................................... 31
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-Nonbrowser Server Details ................................................................................ 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-Server Application Requests Updating Server Configuration ........................ 33
-Message Processing Events and Sequencing Rules .......................................... 33
-Receiving an AnnouncementRequest Frame .............................................. 33
-Sending a HostAnnouncement Frame ...................................................... 33
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5.1
-3.2.5.2
-
-3.1.5.2
-3.1.5.3
-
-3.1.6
-3.1.7
-
-3.2.4.1
-
-3.2.5
-
-3.2
-
-[MS-BRWS] - v20240916
-Common Internet File System (CIFS) Browser Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 67
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-3.3.5.9
-3.3.5.10
-3.3.5.11
-
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-Browser Server Details ..................................................................................... 34
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 38
-Higher-Layer Triggered Events ..................................................................... 39
-PromotedToPrimaryDomainController ...................................................... 39
-LocalRequestForServerList ..................................................................... 39
-ShutdownBrowserServer ........................................................................ 39
-Message Processing Events and Sequencing Rules .......................................... 40
-Receiving a BecomeBackup Frame .......................................................... 40
-Receiving a LocalMasterAnnouncement Frame .......................................... 41
-Receiving a HostAnnouncement Frame .................................................... 41
-Receiving a DomainAnnouncement Frame ................................................ 42
-Receiving a GetBackupListRequest Frame ................................................ 43
-Receiving a NetServerEnum2 or NetServerEnum3 Request ......................... 43
-Sending BecomeBackup Frames .............................................................. 44
-Receiving a RequestElection Frame ......................................................... 44
-Sending a GetBackupListResponse Frame ................................................ 46
-Sending ResetState Frames .................................................................... 46
-Sending a RequestElection Frame ........................................................... 47
-Timer Events .............................................................................................. 47
-Other Local Events ...................................................................................... 51
-Domain Master Browser Details ......................................................................... 51
-Abstract Data Model .................................................................................... 51
-Timers ...................................................................................................... 52
-Initialization ............................................................................................... 52
-Higher-Layer Triggered Events ..................................................................... 52
-DemotedToBackupDomainController ........................................................ 52
-Message Processing Events and Sequencing Rule ............................................ 53
-Receiving a MasterAnnouncement Frame ................................................. 53
-Timer Events .............................................................................................. 53
-Other Local Events ...................................................................................... 53
-
-3.4
-
-3.3.6
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-
-3.4.6
-3.4.7
-
-3.4.4.1
-
-3.4.5.1
-
-4  Protocol Examples ................................................................................................. 54
-Mailslot Frame Example .................................................................................... 54
-A Browser Server Wins the First Election Round and the Election............................ 54
-A Browser Server Wins the First Round but Loses the Election ............................... 55
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 57
-Security Considerations for Implementers ........................................................... 57
-Index of Security Parameters ............................................................................ 57
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 58
-
-7  Change Tracking .................................................................................................... 64
-
-8  Index ..................................................................................................................... 65
-
-[MS-BRWS] - v20240916
-Common Internet File System (CIFS) Browser Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 67
-
-1  Introduction
+## 1 Introduction
 
 This document is a specification of the Common Internet File System (CIFS) Browser Protocol (version
 1.10).
@@ -830,7 +687,7 @@ or file sharing available on the network, and clients requesting the details of 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -886,7 +743,8 @@ Release: September 16, 2024
 
 7 / 67
 
-domain controller (DC): The service, running on a server, that implements Active Directory, or
+
+domain controller (DC): The service, running on a server, that implements Active Directory, or
 the server hosting this service. The service hosts the data store for objects and interoperates
 with other DCs to ensure that a local change to an object replicates correctly across all DCs.
 When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
@@ -962,7 +820,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-nonbrowser server: A server that wants to be enumerated to clients of the CIFS Browser Protocol
+
+nonbrowser server: A server that wants to be enumerated to clients of the CIFS Browser Protocol
 
 that does not otherwise implement elements of the CIFS Browser Protocol.
 
@@ -1006,14 +865,14 @@ workgroup allows a convenient means for browser clients to limit the scope of a 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1035,7 +894,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[MS-NBTE] Microsoft Corporation, "NetBIOS over TCP (NBT) Extensions".
+
+[MS-NBTE] Microsoft Corporation, "NetBIOS over TCP (NBT) Extensions".
 
 [MS-RAP] Microsoft Corporation, "Remote Administration Protocol".
 
@@ -1058,13 +918,13 @@ editor.org/info/rfc1002
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-ADOD] Microsoft Corporation, "Active Directory Protocols Overview".
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
-1.3  Overview
+### 1.3 Overview
 
 The Common Internet File System (CIFS) Browser Protocol makes the following possible:
 
@@ -1107,7 +967,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Browser servers, which can behave as clients and query other browser servers.
+
+  Browser servers, which can behave as clients and query other browser servers.
 
 The CIFS Browser Protocol manages groups of computers. This document refers to such a group of
 computers as a machine group. Machine groups provide a convenient means for clients to restrict
@@ -1156,7 +1017,7 @@ the client initiates an election process in which the browser servers participat
 specified in sections 2.2.3 and 3.3.6. When this election process occurs, some browser servers can
 change roles.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The CIFS Browser Protocol depends on the following protocols:
 
@@ -1175,7 +1036,8 @@ Release: September 16, 2024
 
 11 / 67
 
-  Remote Administration Protocol (RAP), as specified in [MS-RAP].
+
+  Remote Administration Protocol (RAP), as specified in [MS-RAP].
 
   Common Internet File System (CIFS) Browser Auxiliary Protocol, as specified in [MS-BRWSA].
 
@@ -1210,7 +1072,8 @@ Release: September 16, 2024
 
 12 / 67
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-BRWS].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1236,7 +1099,7 @@ master browser.
 
 [MS-BRWS] calls [MS-WKST] locally to retrieve OtherDomain.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The CIFS Browser Protocol has the following preconditions:
 
@@ -1247,7 +1110,8 @@ Release: September 16, 2024
 
 13 / 67
 
-  A Remote Mailslot Protocol implementation must be available on all CIFS Browser Protocol end
+
+  A Remote Mailslot Protocol implementation must be available on all CIFS Browser Protocol end
 
 points.
 
@@ -1261,7 +1125,7 @@ not able to retrieve information about servers on subnets other than their own.
 
 Protocol end points.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The CIFS Browser Protocol is used when automatic discovery of services offered within a network is
 expected, NetBIOS is available, and the network is not based exclusively on Active Directory. If all
@@ -1283,14 +1147,14 @@ Finally, the information in the list of servers that can be returned by this pro
 kilobytes of data. This limits the number of systems that can be in a server list in a single machine
 group.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The CIFS Browser Protocol provides for a version field, as specified in section 2.2.3. It also specifies a
 biased election mechanism to nominate some servers as local master browser servers. This
 election mechanism, specified in section 3.3.6, is biased in favor of servers implementing newer
 versions of the CIFS Browser Protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Some frames define OSVersionMajor and OSVersionMinor fields. These fields are returned to
 clients of the CIFS Browser Protocol. As such, implementations can use any values they want.<4>
@@ -1299,7 +1163,7 @@ This protocol uses Win32 error codes. These values are taken from the Windows er
 as specified in [MS-ERREF]. Vendors SHOULD reuse those values with their indicated meaning.
 Choosing any other value runs the risk of a collision in the future.<5>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The CIFS Browser Protocol uses the parameter assignments as shown in the following table.
 
@@ -1322,7 +1186,8 @@ Release: September 16, 2024
 
 14 / 67
 
-Parameter
+
+Parameter
 
 Value
 
@@ -1347,7 +1212,8 @@ Release: September 16, 2024
 
 15 / 67
 
-2  Messages
+
+## 2 Messages
 
 This document contains the following information on CIFS Browser Protocol messages:
 
@@ -1359,7 +1225,7 @@ This document contains the following information on CIFS Browser Protocol messag
 
 and sequencing rules.
 
-2.1  Transport
+### 2.1 Transport
 
 The CIFS Browser Protocol MUST use the Remote Mailslot Protocol transfer service, as specified in
 [MS-MAIL]. The CIFS Browser Protocol uses Mailslot messages to accomplish inter-machine
@@ -1374,7 +1240,7 @@ specifies the destination mailslot name it uses, as specified in section 2.2.<6>
 The CIFS Browser Protocol MUST use the Remote Administration Protocol [MS-RAP] to transport the
 request/response command NetServerEnum2, as specified in [MS-RAP] section 2.5.5.2.
 
-2.1.1  NetBIOS Name Notation
+#### 2.1.1 NetBIOS Name Notation
 
 The CIFS Browser Protocol encapsulates its messages in the Remote Mailslot Protocol, as specified in
 [MS-MAIL]. The Remote Mailslot Protocol requires a NetBIOS name for identification when specifying
@@ -1410,12 +1276,13 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Names that are placeholders and that need to be substituted with actual values are placed inside
+
+Names that are placeholders and that need to be substituted with actual values are placed inside
 angle brackets (< >). Therefore, the string <domain> becomes REDMOND if the domain under
 consideration is named REDMOND. Details of the various NetBIOS names that are used for browsing
 are specified in the following sections.
 
-2.1.1.1  NetBIOS Suffix Definitions
+##### 2.1.1.1 NetBIOS Suffix Definitions
 
 NetBIOS suffix bytes for computer and NetBIOS name of the domains are listed in the following
 table. Only the names related to the browser protocol are listed.
@@ -1490,7 +1357,7 @@ Default name registered by a server computer.
 The Server Service, if enabled, registers this
 default name.
 
-2.1.1.2  Unique Names
+##### 2.1.1.2 Unique Names
 
 Name
 
@@ -1532,7 +1399,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Name
+
+Name
 
 Comment
 
@@ -1546,7 +1414,7 @@ from adding this name. This name is used to identify the domain master browser
 server for <domain>. A PDC responds to the GetBackupListRequest (section 2.2.4)
 request on this name.<8>
 
-2.1.1.3  Group Names
+##### 2.1.1.3 Group Names
 
  Name
 
@@ -1574,7 +1442,7 @@ broadcasts on a subnet. The only requests that use this name are
 RequestElection (section 2.2.3), BecomeBackup (section 2.2.6),
 and LocalMasterAnnouncement (section 2.2.9) frames.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Browser messages are transported via the Mailslot Protocol, as specified in section 2.1. The browser
 message MUST be contained in the data section of the Mailslot message.
@@ -1608,7 +1476,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  RequestElection (sent, received)
+
+  RequestElection (sent, received)
 
   AnnouncementRequest (sent)
 
@@ -1689,7 +1558,8 @@ Release: September 16, 2024
 
 19 / 67
 
-Value
+
+Value
 
 Meaning
 
@@ -1741,7 +1611,7 @@ For more information, see section 2.2.10.
 
 0x0F
 
-2.2.1  HostAnnouncement Browser Frame
+#### 2.2.1 HostAnnouncement Browser Frame
 
 A server (including nonbrowser servers) sends a HostAnnouncement browser frame to advertise its
 presence and to specify the types of resources and services it supports. It MUST be a response to an
@@ -1790,7 +1660,8 @@ Release: September 16, 2024
 
 20 / 67
 
-...
+
+...
 
 OSVersionMajor
 
@@ -1858,7 +1729,7 @@ Comment (variable): A null-terminated ASCII string that MUST be less than or equ
 length including the null terminator. This is a purely informational comment associated with the
 server and has no effect on the operation of the CIFS Browser Protocol.<13>
 
-2.2.2  AnnouncementRequest Browser Frame
+#### 2.2.2 AnnouncementRequest Browser Frame
 
 The AnnouncementRequest frame MUST be sent from the NetBIOS computer name
 <computer>[0x00] to the NetBIOS group name <machine group>[0x00], to force all machines in
@@ -1872,7 +1743,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-browser in the machine group to announce itself to the client. It is sent by a local master browser
+
+browser in the machine group to announce itself to the client. It is sent by a local master browser
 server to <machine group>[0x00] at startup to discover the members of <machine group>, as
 specified in section 3.3.6. Its expected response is a set of HostAnnouncement frames, as specified in
 section 2.2.1.
@@ -1911,7 +1783,7 @@ bytes in length including the null terminator. The receiving computer MUST ignor
 (Note that the name is not needed to generate a HostAnnouncement response because that
 message is sent as specified in section 2.2.1.)
 
-2.2.3  RequestElection Browser Frame
+#### 2.2.3 RequestElection Browser Frame
 
 The RequestElection frame MUST be broadcast by using the NetBIOS group name <machine
 group>[0x1E] and mailslot \MAILSLOT\BROWSE. For more information about browser elections, see
@@ -1969,7 +1841,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-operating system value, the browser version value, and the role value as defined below. The
+
+operating system value, the browser version value, and the role value as defined below. The
 election process is specified in section 3.3.5.8.
 
 Operating System: This value represents an operating system-specific value. It MUST be set to
@@ -2010,7 +1883,7 @@ ServerName (variable): MUST be a null-terminated ASCII server name and MUST be l
 
 equal to 16 bytes in length, including the null terminator.
 
-2.2.4  GetBackupListRequest Browser Frame
+#### 2.2.4 GetBackupListRequest Browser Frame
 
 The GetBackupListRequest frame is sent by a browser client to the local master browser server
 for a machine group to retrieve the identities of backup browser servers. Its response is a
@@ -2053,7 +1926,8 @@ Release: September 16, 2024
 
 23 / 67
 
-0x09 (1 byte): The 8-bit opcode that identifies this structure as a GetBackupListRequest frame. This
+
+0x09 (1 byte): The 8-bit opcode that identifies this structure as a GetBackupListRequest frame. This
 
 opcode MUST have a value of 0x09.
 
@@ -2066,7 +1940,7 @@ browser frame. The local master browser server MUST return this token unmodified
 corresponding GetBackupListResponse response message. The client MUST use this to distinguish
 replies to multiple outstanding GetBackupListRequests.<16>
 
-2.2.5  GetBackupListResponse Browser Frame
+#### 2.2.5 GetBackupListResponse Browser Frame
 
 The GetBackupListResponse frame MUST be sent by a master browser server to the computer
 system that sends a GetBackupListRequest frame. It is a response to a GetBackupListRequest browser
@@ -2119,7 +1993,7 @@ bytes in length including the null terminator, where each string MUST denote a s
 as a backup browser server. The number of such strings present MUST be specified in
 BackupServerCount.
 
-2.2.6  BecomeBackup Browser Frame
+#### 2.2.6 BecomeBackup Browser Frame
 
 When a local master browser server for a machine group wants to promote a potential browser
 server to backup browser server, it MUST send a BecomeBackup frame by using the NetBIOS
@@ -2134,7 +2008,8 @@ Release: September 16, 2024
 
 24 / 67
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2159,7 +2034,7 @@ BrowserToPromote (variable): MUST be a null-terminated ASCII string that is less
 16 bytes in length, including the null terminator, which MUST be the name of the browser server
 to be promoted to backup.
 
-2.2.7  DomainAnnouncement Browser Frame
+#### 2.2.7 DomainAnnouncement Browser Frame
 
 Local master browser servers announce the machine group they serve to any other local master
 browser servers on their subnet by broadcasting a DomainAnnouncement frame using the NetBIOS
@@ -2231,7 +2106,8 @@ Release: September 16, 2024
 
 25 / 67
 
-MachineGroup (16 bytes): MUST be a null-terminated ASCII workgroup or NetBIOS name of the
+
+MachineGroup (16 bytes): MUST be a null-terminated ASCII workgroup or NetBIOS name of the
 
 domain with a length of 16 bytes, including the null terminator. If the name is fewer than 16 bytes
 in length, including the terminator, the remainder of the 16 bytes must be ignored.
@@ -2259,7 +2135,7 @@ LocalMasterBrowserName (variable): A null-terminated ASCII string that MUST cont
 
 of the sender, up to 16 bytes in length including the null terminator.
 
-2.2.8  MasterAnnouncement Browser Frame
+#### 2.2.8 MasterAnnouncement Browser Frame
 
 The MasterAnnouncement frame MUST be sent by a local master browser to the domain master
 browser when the MasterAnnouncement timer expires, as specified in section 3.3.6. The
@@ -2295,7 +2171,7 @@ MasterBrowserServerName (variable): A null-terminated ASCII string that MUST con
 name of the local master browser and MUST be less than or equal to 16 bytes in length, including
 the null terminator.
 
-2.2.9  ResetStateRequest Browser Frame
+#### 2.2.9 ResetStateRequest Browser Frame
 
 The ResetStateRequest frame instructs a browser server to change its operational state.
 
@@ -2312,7 +2188,8 @@ Release: September 16, 2024
 
 26 / 67
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2358,7 +2235,7 @@ Instructs browser server to stop the browser service.
 
 <22>
 
-2.2.10 LocalMasterAnnouncement Browser Frame
+#### 2.2.10 LocalMasterAnnouncement Browser Frame
 
 A local master browser for a machine group MUST announce itself with the periodicity listed in
 section 3.3.2 to all the other browser servers in its machine group that are on its subnet, using the
@@ -2419,7 +2296,8 @@ Release: September 16, 2024
 
 27 / 67
 
-0x0F (1 byte): The 8-bit opcode that identifies this structure as a LocalMasterAnnouncement frame.
+
+0x0F (1 byte): The 8-bit opcode that identifies this structure as a LocalMasterAnnouncement frame.
 
 This opcode MUST have a value of 0x0F.
 
@@ -2472,7 +2350,8 @@ Release: September 16, 2024
 
 28 / 67
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The hosts that are used in the browsing process can be separated into four distinct groups:
 
@@ -2484,9 +2363,9 @@ The hosts that are used in the browsing process can be separated into four disti
 
   Domain master browser servers
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a hypothetical model of browser client data organization that can be
 implemented to support the CIFS Browser Protocol. The purpose of this description is to help explain
@@ -2508,7 +2387,7 @@ TokenValue: A 32-bit value used for GetBackupList requests.
 
 BrowserClientUpTime: Records the time when the browser service was initially started.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The client uses the following timer:
 
@@ -2516,7 +2395,7 @@ GetBackupListRequest timer: This timer is used to govern the retransmission of
 
 GetBackupListRequest frames. Its initial duration MUST be 1 second.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 At startup, to find a backup browser server, the client MUST do the following:
 
@@ -2541,15 +2420,16 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The GetBackupListRequest and GetBackupListResponse sequences are specified in sections 3.1.5.1.1
+
+The GetBackupListRequest and GetBackupListResponse sequences are specified in sections 3.1.5.1.1
 and 3.1.5.1.2, respectively. If this sequence does not produce a backup browser server, as specified in
 section 3.1.6, the initialization MUST fail.<27>
 
 BrowserClientUpTime is set to the time when the browser service was initially started.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Application Requests the Enumeration of Servers in a Machine Group
+##### 3.1.4.1 Application Requests the Enumeration of Servers in a Machine Group
 
 The application MUST provide:
 
@@ -2599,11 +2479,11 @@ If the request fails, the client MUST return the error received in the response 
 request succeeds, the client MUST return the resulting RapOutParams in the
 NetServerEnum2Response (as specified in [MS-RAP] section 2.5.5.2.2) to the caller.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 A browser client MUST ignore all CIFS Browser Protocol messages except GetBackupListResponse.
 
-3.1.5.1  Retrieving a List of Backup Browser Servers
+##### 3.1.5.1 Retrieving a List of Backup Browser Servers
 
 When a browser client needs to determine the set of backup browser servers for a particular
 machine group, the browser client MUST send a GetBackupListRequest frame and check whether it
@@ -2616,7 +2496,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.5.1.1 Sending a GetBackupListRequest Frame
+
+###### 3.1.5.1.1 Sending a GetBackupListRequest Frame
 
 The caller MUST provide the NetBIOS name of the machine group.
 
@@ -2648,7 +2529,7 @@ GetBackupListRequest as specified in 2.2.4.
 The client SHOULD ignore the error even if the send fails. After the browser request has been sent,
 the client MUST start the GetBackupListRequest timer.
 
-3.1.5.1.2 Receiving a GetBackupListResponse Frame
+###### 3.1.5.1.2 Receiving a GetBackupListResponse Frame
 
 After the local master browser server responds with a list of backup browser servers, the client
 SHOULD choose an implementation-defined number of servers from within the response by using an
@@ -2659,7 +2540,7 @@ selected.<29>
 When a GetBackupListResponse frame is received, the corresponding timer MUST be stopped. Because
 a client can only have a single GetBackupListRequest pending, it needs only one timer.
 
-3.1.5.2  Receiving a NetServerEnum2 Response
+##### 3.1.5.2 Receiving a NetServerEnum2 Response
 
 When the client receives a response to a NetServerEnum2 request that was sent to a server as
 specified in section 3.1.4.1, the client MUST continue processing as follows:
@@ -2674,7 +2555,7 @@ the enumeration of servers.
 If the response indicates success, the list of servers or domains received in the response MUST be
 returned to the calling application.
 
-3.1.5.3  Sending a RequestElection Frame
+##### 3.1.5.3 Sending a RequestElection Frame
 
 To force an election, the client MUST send a RequestElection frame as specified in section 2.2.3.  The
 RequestElection Browser Frame MUST be sent by issuing a mailslot write as specified in [MS-MAIL]
@@ -2693,7 +2574,8 @@ Release: September 16, 2024
 
 31 / 67
 
-Parameter name
+
+Parameter name
 
 Value
 
@@ -2707,7 +2589,7 @@ RequestElection as specified in section 2.2.3.
 
 The server SHOULD ignore the error even if the send fails.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 When a GetBackupListRequest timer expires without receiving a GetBackupListResponse, the
 GetBackupListRequest frame MAY be retransmitted. The delay MUST be at least twice the expected
@@ -2724,13 +2606,13 @@ retrieve a list of backup browser servers by sending a GetBackupListRequest fram
 domain master browser for that domain by using the unique name <domain>[0x1B] that is
 registered by the domain master browser. The value of the retry count MUST be 3.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Nonbrowser Server Details
+### 3.2 Nonbrowser Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a hypothetical model of nonbrowser server data organization that can be
 implemented to support the CIFS Browser Protocol. The purpose of this description is to help explain
@@ -2750,7 +2632,7 @@ Server.Comment: A null-terminated ASCII string that MUST be less than or equal t
 
 length including the null terminator.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Nonbrowser servers use the following timers:
 
@@ -2764,11 +2646,12 @@ Release: September 16, 2024
 
 32 / 67
 
-AnnouncementRequest response timer: Used to delay responding to an AnnouncementRequest.
+
+AnnouncementRequest response timer: Used to delay responding to an AnnouncementRequest.
 
 For more information, see section 3.2.5.1.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a nonbrowser server starts up, it MUST start the HostAnnouncementTimer, as specified in
 section 3.2.2. Whenever the HostAnnouncementTimer fires, the nonbrowser server MUST issue a
@@ -2783,27 +2666,27 @@ ignored.
 
 The name <ServerName>[0x00] MUST be registered with NetBIOS by the server offering the service.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Server Application Requests Updating Server Configuration
+##### 3.2.4.1 Server Application Requests Updating Server Configuration
 
 The calling application provides the SERVER_INFO_103 structure ([MS-SRVS] section 2.2.4.43) as
 input parameter to update the server configuration. The following values MUST be set by the server:
 
   Server.Comment MUST be set to sv103_comment.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 A nonbrowser server MUST ignore all CIFS Browser Protocol messages except the
 AnnouncementRequest browser frame.
 
-3.2.5.1  Receiving an AnnouncementRequest Frame
+##### 3.2.5.1 Receiving an AnnouncementRequest Frame
 
 On receiving an AnnouncementRequest frame, a nonbrowser server MUST generate a random
 number in the range of [0, 30] seconds. It MUST then set its AnnouncementRequest response timer to
 that value.
 
-3.2.5.2  Sending a HostAnnouncement Frame
+##### 3.2.5.2 Sending a HostAnnouncement Frame
 
 To advertise its presence on the network, the server MUST send a HostAnnouncement frame (as
 specified in section 2.2.1). The server MUST query the current services as specified in [MS-SRVS]
@@ -2835,7 +2718,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 When either the HostAnnouncement or AnnouncementRequest response timer expires, a nonbrowser
 server MUST send a HostAnnouncement frame, as specified in section 3.2.5.2.
@@ -2865,13 +2749,13 @@ Server.HostAnnouncementCount value   New HostAnnouncement timer value
 
 12 minutes
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 A nonbrowser server MUST send a HostAnnouncement frame (as specified in section 3.2.5.2) that
 specifies a server type of zero, just prior to shutting down, to allow it to be quickly removed from the
 list of available servers.
 
-3.3  Browser Server Details
+### 3.3 Browser Server Details
 
 A browser server MUST follow all the rules for a nonbrowser server, in addition to the rules
 specified in this section. A browser server MUST follow the state machine shown in the following
@@ -2884,7 +2768,8 @@ Release: September 16, 2024
 
 34 / 67
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-BRWS].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2925,7 +2810,8 @@ Release: September 16, 2024
 
 35 / 67
 
-State
+
+State
 
 ServerType flag set
 
@@ -2945,7 +2831,7 @@ group>[0x00]. The frame MUST be sent to the mailslot \MAILSLOT\BROWSE.
 
 For more details regarding ServerType flag values, see [MS-SRVS] section 2.2.3.7.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a sample model of browser server data organization that can be implemented
 to support this protocol. The purpose of this description is simply to help explain how this aspect of
@@ -3002,7 +2888,8 @@ Release: September 16, 2024
 
 36 / 67
 
-IsDomainController: A Boolean that specifies if the machine on which the browser server is running
+
+IsDomainController: A Boolean that specifies if the machine on which the browser server is running
 
 is a domain controller.
 
@@ -3029,7 +2916,7 @@ controller.
 Be aware that the preceding model can be implemented using a variety of techniques. An
 implementation can implement such data in any way.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 DomainAnnouncement Timer: Used by a local master browser to periodically announce itself to
 
@@ -3078,7 +2965,8 @@ Release: September 16, 2024
 
 37 / 67
 
-browser is not a member of a domain, this timer MUST be ignored. The default value for this timer
+
+browser is not a member of a domain, this timer MUST be ignored. The default value for this timer
 MUST be 12 minutes.<43>
 
 NetServerEnum2 Timer: Used to periodically allow the backup browser server to refresh its list of
@@ -3098,7 +2986,7 @@ updated by HostAnnouncements (section 3.3.5.3)), the local master browser server
 Server Expiration Timer. This timer MUST be initialized to the Periodicity field value found in the
 HostAnnouncement.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The browser server MUST register NetBIOS names <Machine Group Name>[0x00] and <Machine
 Group Name>[0x1E]. Information on how to register NetBIOS names is as specified in [RFC1001].
@@ -3145,7 +3033,8 @@ Release: September 16, 2024
 
 38 / 67
 
-Enumeration DOMAIN_SERVER_ROLE value  unsigned long value
+
+Enumeration DOMAIN_SERVER_ROLE value  unsigned long value
 
 DomainServerRoleBackup
 
@@ -3187,9 +3076,9 @@ If both IsDomainController and IsPrimaryDomainController are FALSE, the server S
 enable advertising of the NT service as specified in [MS-SRVS] section 3.1.6.9, passing
 SV_TYPE_SERVER_NT as the input parameter.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  PromotedToPrimaryDomainController
+##### 3.3.4.1 PromotedToPrimaryDomainController
 
 If a browser server gets promoted to primary domain controller (PDC), it MUST force an election
 by Sending a RequestElection Frame as specified in section 3.3.5.11.
@@ -3198,12 +3087,12 @@ The server SHOULD continue processing as described below even if the send fails.
 
 The server MUST assume the duties of a domain master browser, as specified in section 3.4.
 
-3.3.4.2  LocalRequestForServerList
+##### 3.3.4.2 LocalRequestForServerList
 
 If the machine is a backup browser server or a master browser server, it MUST return Servers
 List to the calling application. Otherwise the request MUST be failed with ERROR_REQ_NOT_ACCEP.
 
-3.3.4.3  ShutdownBrowserServer
+##### 3.3.4.3 ShutdownBrowserServer
 
 If a local administrator requests that the browser server shuts down, the browser server MUST take
 the shutdown action as specified in section 3.3.7.
@@ -3215,7 +3104,8 @@ Release: September 16, 2024
 
 39 / 67
 
-3.3.5  Message Processing Events and Sequencing Rules
+
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 After receiving a CIFS Browser Protocol frame, the opcode MUST first be inspected to determine the
 message type. If the opcode is not defined in this specification, the frame MUST be silently ignored. If
@@ -3226,7 +3116,7 @@ messages MUST be silently ignored.<48>
 A browser server MUST ignore the GetBackupListResponse frame. Correctly formed frames MUST then
 be processed as specified in the following subsections.
 
-3.3.5.1  Receiving a BecomeBackup Frame
+##### 3.3.5.1 Receiving a BecomeBackup Frame
 
 The local master browser server MUST send a BecomeBackup frame to a potential browser
 server when it determines that the number of current backup browser servers for the machine
@@ -3286,7 +3176,8 @@ Release: September 16, 2024
 
 40 / 67
 
-Note that after the master browser receives the HostAnnouncement frame, it MUST hand out this
+
+Note that after the master browser receives the HostAnnouncement frame, it MUST hand out this
 browser server name in GetBackupListResponse frames, and clients will contact this browser server as
 if it were a backup browser server.
 
@@ -3294,7 +3185,7 @@ A nonbrowser server that receives a BecomeBackup frame MUST ignore the frame, as
 section 3.2.5. Similarly, a browser server whose Current Role is equal to backup browser server
 receives a BecomeBackup frame MUST ignore the frame.
 
-3.3.5.2  Receiving a LocalMasterAnnouncement Frame
+##### 3.3.5.2 Receiving a LocalMasterAnnouncement Frame
 
 A browser server can discover the master browser server for a machine group by issuing an
 AnnouncementRequest (section 2.2.2) frame to the name <Machine Group Name>[0x1D].
@@ -3332,7 +3223,7 @@ For any other browser server state, if it receives a LocalMasterAnnouncement fra
 SV_TYPE_MASTER_BROWSER (MB) flag set, ignore the frame and continue to be in the same
 state.
 
-3.3.5.3  Receiving a HostAnnouncement Frame
+##### 3.3.5.3 Receiving a HostAnnouncement Frame
 
 Nonbrowser servers and browser servers periodically (see section 3.2.6) send HostAnnouncement
 frames to inform the local master browser for the machine group about the status of the server.
@@ -3363,7 +3254,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 It MUST unregister the NetBIOS unique name <Machine Group Name>[0x1D] so that the
 announcing browser server can successfully register it.
@@ -3416,7 +3308,7 @@ BecomeBackup as specified in section 2.2.6
 
 The server SHOULD ignore the error even if the send fails.
 
-3.3.5.4  Receiving a DomainAnnouncement Frame
+##### 3.3.5.4 Receiving a DomainAnnouncement Frame
 
 Local master browser servers periodically send DomainAnnouncement frames to inform the local
 master browsers for other machine groups on the subnet about the status of the machine group.
@@ -3448,12 +3340,13 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-the request, and the Machine Group Expiration Timer MUST be set with (the Periodicity value
+
+the request, and the Machine Group Expiration Timer MUST be set with (the Periodicity value
 received in the request) x 3.
 
 The local master browser MUST reset the Machine Groups List Machine Group Expiration Timer.
 
-3.3.5.5  Receiving a GetBackupListRequest Frame
+##### 3.3.5.5 Receiving a GetBackupListRequest Frame
 
 A browser server whose Current Role is not equal to local master browser MUST ignore this request.
 
@@ -3476,7 +3369,7 @@ Data
 
 GetBackupListResponse Browser Frame as specified in section 2.2.5.
 
-3.3.5.6  Receiving a NetServerEnum2 or NetServerEnum3 Request
+##### 3.3.5.6 Receiving a NetServerEnum2 or NetServerEnum3 Request
 
 Browser clients issue NetServerEnum2 or NetServerEnum3 Remote Administration Protocol
 requests, as specified in [MS-RAP], to retrieve the list of servers or machine groups.
@@ -3517,7 +3410,8 @@ Release: September 16, 2024
 
 43 / 67
 
-If the request is for a list of servers in a domain that is different from the machine group that it
+
+If the request is for a list of servers in a domain that is different from the machine group that it
 serves, the local master browser SHOULD issue a NetServerEnum2 (or NetServerEnum3) request to
 the domain master browser server for the specified domain (which it can find in its list of machine
 groups and their domain master browser servers). If the domain master browser server returns a
@@ -3534,7 +3428,7 @@ primary domain, logon domain, and other domain, the error code will be mapped to
 NERR_Success (with an empty list) for non-NT clients, or remain
 ERROR_NO_BROWSER_SERVERS_FOUND for NT clients.
 
-3.3.5.7  Sending BecomeBackup Frames
+##### 3.3.5.7 Sending BecomeBackup Frames
 
 A browser server whose Current Role is equal to local master browser MUST choose the number of
 browser servers whose Current Role is equal to backup browser server. The number of backup
@@ -3577,7 +3471,7 @@ The server SHOULD continue processing as described below even if the send fails.
 The action to add one or more backup browser servers is triggered by the Server Expiration Timer
 as specified in Timer Events (section 3.3.6).
 
-3.3.5.8  Receiving a RequestElection Frame
+##### 3.3.5.8 Receiving a RequestElection Frame
 
 The RequestElection frame (as specified in section 2.2.3) MUST be sent whenever a browser client
 or server is unable to retrieve information that is maintained by the local master browser server. It
@@ -3591,7 +3485,8 @@ Release: September 16, 2024
 
 44 / 67
 
-When a browser server receives a RequestElection frame, it MUST calculate its election criteria
+
+When a browser server receives a RequestElection frame, it MUST calculate its election criteria
 and update the Uptime value with the time difference, in seconds, between the current time and the
 BrowserServerUpTime, as specified in section 2.2.3.
 
@@ -3663,7 +3558,8 @@ Release: September 16, 2024
 
 45 / 67
 
-If the master browser server is running on a machine with IsPrimaryDomainController set to TRUE,
+
+If the master browser server is running on a machine with IsPrimaryDomainController set to TRUE,
 it MUST act as a domain master browser server for its subnet, as specified in section 3.4.
 
 This election algorithm continues to execute as specified in section 3.3.6.
@@ -3696,7 +3592,7 @@ potential browser server.
 
 It MUST empty all elements in the Backup Browser List.
 
-3.3.5.9  Sending a GetBackupListResponse Frame
+##### 3.3.5.9 Sending a GetBackupListResponse Frame
 
 The BackupServerCount field in the GetBackupListResponse frame MUST be set to the number of
 entries in the Backup Browser List, by calculating every time a request is made. The
@@ -3722,9 +3618,9 @@ GetBackupListResponse as specified in 2.2.5.
 
 The server SHOULD ignore the error even if the send fails.
 
-3.3.5.10
+##### 3.3.5.10 Sending ResetState Frames
 
-Sending ResetState Frames
+
 
 If the local master browser server receives a HostAnnouncement from a server with the
 SV_TYPE_BACKUP_BROWSER and SV_TYPE_POTENTIAL_BROWSER flags set and that is running a
@@ -3746,7 +3642,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-to potential browser server. The server MUST disable advertising of the backup and master browser
+
+to potential browser server. The server MUST disable advertising of the backup and master browser
 service as specified in [MS-SRVS] section 3.1.6.10, passing SV_TYPE_BACKUP_BROWSER and
 SV_TYPE_MASTER_BROWSER as the input parameters. When a server that is a master browser
 receives either a RESET_STATE_CLEAR_ALL or a RESET_STATE_STOP_MASTER ResetStateRequest
@@ -3754,9 +3651,9 @@ message, it transitions to simply a browser server (that is, no longer a master 
 When a server that is a master browser receives RESET_STATE_STOP ResetStateRequest, the
 message stops the browser services.<56>
 
-3.3.5.11
+##### 3.3.5.11 Sending a RequestElection Frame
 
-Sending a RequestElection Frame
+
 
 To force an election or participate in an election, the server MUST send a RequestElection Browser
 Frame as specified in section 2.2.3 by issuing a mailslot write as specified in [MS-MAIL] section
@@ -3778,7 +3675,7 @@ RequestElection as specified in section 2.2.3.
 
 The server SHOULD ignore the error even if the send fails.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 DomainAnnouncement timer: When the DomainAnnouncement timer expires and the machine is a
 
@@ -3844,7 +3741,8 @@ Release: September 16, 2024
 
 47 / 67
 
-Election Delay Timer: When this timer expires, the browser server MUST send a RequestElection
+
+Election Delay Timer: When this timer expires, the browser server MUST send a RequestElection
 
 frame, as specified in section 3.3.5.11, and increment the election transmission count.
 
@@ -3929,7 +3827,8 @@ Release: September 16, 2024
 
 48 / 67
 
-LocalMasterAnnouncement Timer: When the LocalMasterAnnouncement timer expires, and the
+
+LocalMasterAnnouncement Timer: When the LocalMasterAnnouncement timer expires, and the
 machine is a local master browser server, it MUST announce itself to all browser servers for its
 machine group on its subnet by sending a LocalMasterAnnouncement frame, as specified in
 section 2.2.9. The LocalMasterAnnouncement frame MUST be sent by issuing a mailslot write as
@@ -4021,7 +3920,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If the machine is instead a local master browser server and is a member of the domain, it MUST
+
+If the machine is instead a local master browser server and is a member of the domain, it MUST
 ask the domain master browser server for a domain-wide list of servers by issuing a
 NetServerEnum2 request with a ServerType parameter of 0xFFFFFFFF to retrieve the list of
 servers (as specified in section 3.3.5.6). This request retrieves the complete list of servers within
@@ -4099,7 +3999,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Then the browser server SHOULD set the DomainControllerRoleMonitor Timer to 1 second.<61>
+
+Then the browser server SHOULD set the DomainControllerRoleMonitor Timer to 1 second.<61>
 
 The server MUST disable advertising of the domain-related services as specified in [MS-SRVS] section
 3.1.6.10, passing  SV_TYPE_DOMAIN_CTRL and SV_TYPE_DOMAIN_BAKCTRL as input parameters.
@@ -4111,7 +4012,7 @@ If IsDomainController is TRUE but IsPrimaryDomainController is FALSE, the server
 advertising of the domain controller as specified in [MS-SRVS] section 3.1.6.9, passing
 SV_TYPE_DOMAIN_BAKCTRL as the input parameter.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 If the browser server is shutting down, but the system will continue operating as a nonbrowser
 server, the browser server MUST send a HostAnnouncement frame as specified in section 3.2.5.2,
@@ -4130,7 +4031,7 @@ If the browser server is also a local master browser server, it MUST send a Requ
 with both version and criterion fields set to 0.<62> The server MUST send the RequestElection
 frame as specified in section 3.3.5.11.
 
-3.4  Domain Master Browser Details
+### 3.4 Domain Master Browser Details
 
 A domain master browser server for a domain MUST act as a local master browser server for
 its subnet. Therefore, it acts exactly like a local master browser server (section 3.3) except where
@@ -4153,7 +4054,7 @@ section 6.3.4. The Windows Internet Name Service (WINS) server ensures that the 
 transport address of the machine that registered the <domain>[0x1B] address is always the first
 address returned when the <domain>[0x1C] address is queried.<63>
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a hypothetical model of domain master browser server data organization
 that could be implemented to support this protocol. The purpose of this description is simply to help
@@ -4166,7 +4067,8 @@ Release: September 16, 2024
 
 51 / 67
 
-implementations adhere to this model as long as their external behavior is consistent with what is
+
+implementations adhere to this model as long as their external behavior is consistent with what is
 described throughout this document.
 
 Local Master Browser Servers List: A list of the local master browser servers for the domain
@@ -4182,7 +4084,7 @@ Master List of Machine Groups: Identical to the Machine Groups List element desc
 
 3.3.1, except that it contains a list merged from all subnets in the domain.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 A domain master browser server has the following timers, in addition to those as specified in
 section 3.3.2:
@@ -4192,7 +4094,7 @@ Local Master Browser Server Expiration Timer: For each local master browser serv
 domain master browser servers list, the domain master browser server keeps an expiration timer.
 The default value for this timer SHOULD be 36 minutes.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 A domain master browser server MUST register the NetBIOS unique name <domain>[0x1D], as
 well as the NetBIOS group names <domain>[0x00] and <domain>[0x1E]. If a server is
@@ -4209,9 +4111,9 @@ Local Master Browser Servers List MUST be initialized to an empty list.
 
 Master List of Servers MUST be initialized to an empty list.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
-3.4.4.1  DemotedToBackupDomainController
+##### 3.4.4.1 DemotedToBackupDomainController
 
 If a domain master browser server is demoted from a primary domain controller (PDC) to a
 backup domain controller (BDC), it performs the following actions:
@@ -4245,7 +4147,8 @@ Release: September 16, 2024
 
 52 / 67
 
-
+
+
 
 
 
@@ -4257,9 +4160,9 @@ Upon completion of these actions, the server is no longer a domain master browse
 server MUST then force an election by sending a RequestElection frame as specified in section
 3.3.5.11.
 
-3.4.5  Message Processing Events and Sequencing Rule
+#### 3.4.5 Message Processing Events and Sequencing Rule
 
-3.4.5.1  Receiving a MasterAnnouncement Frame
+##### 3.4.5.1 Receiving a MasterAnnouncement Frame
 
 When a MasterAnnouncement frame is received, the domain master browser server MUST update
 its local master browser servers list to add or update the entry for the sender of the frame. The
@@ -4272,14 +4175,14 @@ ServerType of SV_TYPE_DOMAIN_ENUM | SV_TYPE_LOCAL_LIST_ONLY to enumerate the dom
 maintained by that master browser, and add or update the entries received in the Master List of
 Machine Groups.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 Local Master Browser Server Expiration Timer: When the local master browser server
 
 expiration timer expires, the domain master browser server MUST remove the local master
 browser server that expired from the local master browser servers list.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 If a domain master browser server ceases to be a domain master browser (for example, on
 shutdown, or if its role is locally changed by an administrator), it MUST unregister the NetBIOS
@@ -4297,9 +4200,10 @@ Release: September 16, 2024
 
 53 / 67
 
-4  Protocol Examples
 
-4.1  Mailslot Frame Example
+## 4 Protocol Examples
+
+### 4.1 Mailslot Frame Example
 
 The following is an example of a generic browser SMB ([MS-SMB]) that shows how a browser
 message is encapsulated in a TRANSACT SMB request. Note that the PID, TID, MID, UID, and flags are
@@ -4351,7 +4255,7 @@ all 0 in mailslot  requests.
      BROWSER: BrowserVersionMinor = 1 (0x1)
      BROWSER: Signature = 43605 (0xAA55)
 
-4.2  A Browser Server Wins the First Election Round and the Election
+### 4.2 A Browser Server Wins the First Election Round and the Election
 
 The figure that follows depicts the following election process:
 
@@ -4366,7 +4270,8 @@ Release: September 16, 2024
 
 54 / 67
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-BRWS].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -4388,7 +4293,7 @@ Finally, the browser server declares itself a winner.
 
 Figure 3: A browser server wins the first election round and the election
 
-4.3  A Browser Server Wins the First Round but Loses the Election
+### 4.3 A Browser Server Wins the First Round but Loses the Election
 
 The figure that follows depicts the following election process:
 
@@ -4418,7 +4323,8 @@ Release: September 16, 2024
 
 55 / 67
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-BRWS].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
@@ -4441,9 +4347,10 @@ Release: September 16, 2024
 
 56 / 67
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 In general, the browser service operates without any security. It is possible for applications to spoof
 elections. Additionally, malfunctioning local master browser servers can mount an effective denial-
@@ -4454,7 +4361,7 @@ The browser service uses null sessions to establish a connection to the IPC$ sha
 sessions are simply SMB connections [MS-SMB] that use no password, no domain, and no user ID to
 establish the connection. This implies that the connection is highly insecure.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4465,7 +4372,8 @@ Release: September 16, 2024
 
 57 / 67
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4534,7 +4442,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<2> Section 1.3: The following statement is valid throughout the document. Windows 98, Windows
+
+<2> Section 1.3: The following statement is valid throughout the document. Windows 98, Windows
 2000 Professional operating system, Windows XP, and Windows Vista are not capable of being domain
 master browsers; Windows Server 2008 operating system and later have the browser off by default,
 which can be turned on through the "Services" UI (User Interface) in "Computer Management".
@@ -4667,7 +4576,8 @@ Release: September 16, 2024
 
 59 / 67
 
-<9> Section 2.2.1: Windows-based servers send announcements to \MAILSLOT\LANMAN, but listen
+
+<9> Section 2.2.1: Windows-based servers send announcements to \MAILSLOT\LANMAN, but listen
 for announcements on both \MAILSLOT\LANMAN and \MAILSLOT\BROWSE as specified in section 2.1.
 
 <10> Section 2.2.1: The Windows announcement frequency is as specified in section 3.2.6.
@@ -4736,7 +4646,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<32> Section 3.2.6: Windows 98, Windows 2000, Windows XP, and Windows Server 2003 use the
+
+<32> Section 3.2.6: Windows 98, Windows 2000, Windows XP, and Windows Server 2003 use the
 following time-out values (as specified in 3.2.6).
 
 Server.HostAnnouncementCount value   New HostAnnouncement timer value
@@ -4809,7 +4720,8 @@ Common Internet File System (CIFS) Browser Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<50> Section 3.3.5.1: Windows XP, Windows XP Professional operating system, Windows XP 64-Bit
+
+<50> Section 3.3.5.1: Windows XP, Windows XP Professional operating system, Windows XP 64-Bit
 Edition operating system, Windows Server 2003, Windows XP Professional x64 Edition operating
 system, Windows Vista, and Windows Server 2008 acting as the Local Master Browser for a network
 with fewer than 11 machines on it will return only the local master browser in response to a Get
@@ -4896,7 +4808,8 @@ Release: September 16, 2024
 
 62 / 67
 
-LocalMasterAnnouncement timer count value   New LocalMasterAnnouncement timer value
+
+LocalMasterAnnouncement timer count value   New LocalMasterAnnouncement timer value
 
 4
 
@@ -4929,7 +4842,8 @@ Release: September 16, 2024
 
 63 / 67
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -4941,7 +4855,8 @@ Release: September 16, 2024
 
 64 / 67
 
-8  Index
+
+## 8 Index
 A
 
 A browser server wins the first election round and
@@ -5091,7 +5006,8 @@ Initialization
 
 65 / 67
 
-Interfaces - server
+
+Interfaces - server
    browser 34
 Introduction 7
 
@@ -5245,7 +5161,8 @@ Server
 
 66 / 67
 
-   message processing (section 3.2.5 33, section
+
+   message processing (section 3.2.5 33, section
 
 3.3.5 40)
    overview 34

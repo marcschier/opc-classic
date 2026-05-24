@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 94
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -262,258 +263,104 @@ Release: October 26, 2021
 
 2 / 94
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1.1.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Authentication Concepts](#111-authentication-concepts)
+      - [1.1.1.1 Security Principal](#1111-security-principal)
+      - [1.1.1.2 Accounts](#1112-accounts)
+      - [1.1.1.3 Domain Membership](#1113-domain-membership)
+      - [1.1.1.4 Groups](#1114-groups)
+        - [1.1.1.4.1 Group Scope](#11141-group-scope)
+        - [1.1.1.4.2 Nested Groups](#11142-nested-groups)
+      - [1.1.1.5 Account Domains](#1115-account-domains)
+        - [1.1.1.5.1 Local Domains and Account Database](#11151-local-domains-and-account-database)
+        - [1.1.1.5.2 Network Domains and Domain Controllers](#11152-network-domains-and-domain-controllers)
+        - [1.1.1.5.3 Effect on Accounts](#11153-effect-on-accounts)
+    - [1.1.2 Pre-GSS Authentication](#112-pre-gss-authentication)
+    - [1.1.3 GSS-Style Authentication](#113-gss-style-authentication)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Interactive Logon Authentication](#211-interactive-logon-authentication)
+      - [2.1.1.1 Abstract Components](#2111-abstract-components)
+      - [2.1.1.2 Protocol Interactions](#2112-protocol-interactions)
+    - [2.1.2 Network Logon Authentication](#212-network-logon-authentication)
+      - [2.1.2.1 Abstract Components](#2121-abstract-components)
+      - [2.1.2.2 Protocol Interactions](#2122-protocol-interactions)
+      - [2.1.2.3 Enterprise Environment](#2123-enterprise-environment)
+        - [2.1.2.3.1 File Access Services](#21231-file-access-services)
+        - [2.1.2.3.2 Remote Desktop and Web Services](#21232-remote-desktop-and-web-services)
+      - [2.1.2.4 Intranet Web Environment](#2124-intranet-web-environment)
+        - [2.1.2.4.1 HTTP Access Authentication](#21241-http-access-authentication)
+      - [2.1.2.5 Mixed Web Environment](#2125-mixed-web-environment)
+    - [2.1.3 Relevant Standards](#213-relevant-standards)
+    - [2.1.4 Relationship Between Standards and Microsoft Extensions](#214-relationship-between-standards-and-microsoft-extensions)
+      - [2.1.4.1 Kerberos Protocols](#2141-kerberos-protocols)
+      - [2.1.4.2 Digest Protocols](#2142-digest-protocols)
+      - [2.1.4.3 SSL/TLS Protocols](#2143-ssltls-protocols)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+    - [2.2.1 Enterprise Environment](#221-enterprise-environment)
+    - [2.2.2 Intranet Web Environment](#222-intranet-web-environment)
+    - [2.2.3 Internet Web Environment](#223-internet-web-environment)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Summary of Supporting Actors and System Interests](#251-summary-of-supporting-actors-and-system-interests)
+    - [2.5.2 Actors](#252-actors)
+    - [2.5.3 Interactive Logon](#253-interactive-logon)
+      - [2.5.3.1 Single Domain](#2531-single-domain)
+        - [2.5.3.1.1 Interactive Domain Logon: Service Ticket for Client Computer](#25311-interactive-domain-logon-service-ticket-for-client-computer)
+      - [2.5.3.2 Multiple Domains](#2532-multiple-domains)
+        - [2.5.3.2.1 Interactive Domain Logon: Service Ticket for Client Computer](#25321-interactive-domain-logon-service-ticket-for-client-computer)
+    - [2.5.4 Network Logon](#254-network-logon)
+      - [2.5.4.1 Single Domain](#2541-single-domain)
+        - [2.5.4.1.1 Client Authentication](#25411-client-authentication)
+        - [2.5.4.1.2 Server Authentication](#25412-server-authentication)
+        - [2.5.4.1.3 Mutual Authentication](#25413-mutual-authentication)
+        - [2.5.4.1.4 Delegation of Authentication](#25414-delegation-of-authentication)
+          - [2.5.4.1.4.1 Delegate by Using a Kerberos Forwarded TGT Mechanism](#254141-delegate-by-using-a-kerberos-forwarded-tgt-mechanism)
+          - [2.5.4.1.4.2 Delegate by Using S4U2proxy Mechanism](#254142-delegate-by-using-s4u2proxy-mechanism)
+        - [2.5.4.1.5 Credential Delegation](#25415-credential-delegation)
+      - [2.5.4.2 Multiple Domains](#2542-multiple-domains)
+        - [2.5.4.2.1 Client Authentication](#25421-client-authentication)
+      - [2.5.4.3 Cross-Forest Environment](#2543-cross-forest-environment)
+        - [2.5.4.3.1 Client Authentication](#25431-client-authentication)
+    - [2.5.5 Auxiliary](#255-auxiliary)
+      - [2.5.5.1 Authenticate Client Identity to a Kerberos Authentication Server](#2551-authenticate-client-identity-to-a-kerberos-authentication-server)
+        - [2.5.5.1.1 Authenticate Client Identity by Using a User Name and Password](#25511-authenticate-client-identity-by-using-a-user-name-and-password)
+        - [2.5.5.1.2 Authenticate Client Identity by Using an X.509 Certificate](#25512-authenticate-client-identity-by-using-an-x509-certificate)
+      - [2.5.5.2 Negotiate Authentication Protocol](#2552-negotiate-authentication-protocol)
+      - [2.5.5.3 S4U2self Mechanism: Get a Service Ticket for a Front-End Server](#2553-s4u2self-mechanism-get-a-service-ticket-for-a-front-end-server)
+    - [2.5.6 Security Services](#256-security-services)
+      - [2.5.6.1 Data Origin Authentication (Signing)](#2561-data-origin-authentication-signing)
+      - [2.5.6.2 Data Confidentiality (Sealing)](#2562-data-confidentiality-sealing)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: GSS Authentication Protocol Process - Stock Quote Server](#31-example-1-gss-authentication-protocol-process-stock-quote-server)
+  - [3.2 Example 2: Interactive Domain Logon - Service Ticket for Client Computer](#32-example-2-interactive-domain-logon-service-ticket-for-client-computer)
+    - [3.2.1 Interactive Domain Logon by Using Passwords](#321-interactive-domain-logon-by-using-passwords)
+    - [3.2.2 Interactive Domain Logon by Using an X.509 Certificate](#322-interactive-domain-logon-by-using-an-x509-certificate)
+  - [3.3 Example 3: Connecting to an SMB2 Share](#33-example-3-connecting-to-an-smb2-share)
+    - [3.3.1 Using Kerberos Protocol Extensions [MS-KILE]](#331-using-kerberos-protocol-extensions-ms-kile)
+    - [3.3.2 Using the NTLM Protocol [MS-NLMP]](#332-using-the-ntlm-protocol-ms-nlmp)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1.1.1.1
-1.1.1.2
-1.1.1.3
-1.1.1.4
+## 1 Introduction
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Authentication Concepts ................................................................................ 5
-Security Principal .................................................................................... 5
-Accounts ................................................................................................ 5
-Domain Membership ................................................................................ 7
-Groups .................................................................................................. 8
-Group Scope ..................................................................................... 8
-Nested Groups .................................................................................. 9
-Account Domains .................................................................................. 10
-Local Domains and Account Database ................................................ 10
-Network Domains and Domain Controllers .......................................... 10
-Effect on Accounts ........................................................................... 11
-Pre-GSS Authentication ............................................................................... 11
-GSS-Style Authentication............................................................................. 11
-Glossary ......................................................................................................... 13
-References ...................................................................................................... 19
-
-1.1.1.5.1
-1.1.1.5.2
-1.1.1.5.3
-
-1.1.1.4.1
-1.1.1.4.2
-
-1.1.2
-1.1.3
-
-1.1.1.5
-
-1.2
-1.3
-
-2.1
-
-2.1.2
-
-2.1.1
-
-2.1.2.5
-
-2.1.2.4
-
-2.1.2.4.1
-
-2.1.3
-2.1.4
-
-2.1.1.1
-2.1.1.2
-
-2.1.2.3.1
-2.1.2.3.2
-
-2.1.4.1
-2.1.4.2
-2.1.4.3
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-
-2  Functional Architecture ......................................................................................... 22
-Overview ........................................................................................................ 22
-Interactive Logon Authentication .................................................................. 23
-Abstract Components ............................................................................ 24
-Protocol Interactions ............................................................................. 25
-Network Logon Authentication ...................................................................... 27
-Abstract Components ............................................................................ 27
-Protocol Interactions ............................................................................. 29
-Enterprise Environment ......................................................................... 33
-File Access Services ......................................................................... 33
-Remote Desktop and Web Services .................................................... 34
-Intranet Web Environment ..................................................................... 36
-HTTP Access Authentication .............................................................. 36
-Mixed Web Environment ........................................................................ 38
-Relevant Standards ..................................................................................... 38
-Relationship Between Standards and Microsoft Extensions ............................... 39
-Kerberos Protocols ................................................................................ 40
-Digest Protocols .................................................................................... 41
-SSL/TLS Protocols ................................................................................. 42
-Protocol Summary ............................................................................................ 43
-Enterprise Environment ............................................................................... 43
-Intranet Web Environment ........................................................................... 43
-Internet Web Environment ........................................................................... 44
-Environment .................................................................................................... 44
-Dependencies on This System ...................................................................... 44
-Dependencies on Other Systems/Components ................................................ 45
-Assumptions and Preconditions .......................................................................... 45
-Use Cases ....................................................................................................... 46
-Summary of Supporting Actors and System Interests ...................................... 46
-Actors ....................................................................................................... 47
-Interactive Logon ....................................................................................... 47
-Single Domain ...................................................................................... 47
-Interactive Domain Logon: Service Ticket for Client Computer .............. 47
-Multiple Domains .................................................................................. 49
-Interactive Domain Logon: Service Ticket for Client Computer .............. 49
-Network Logon ........................................................................................... 50
-Single Domain ...................................................................................... 50
-
-2.5.1
-2.5.2
-2.5.3
-
-2.2.1
-2.2.2
-2.2.3
-
-2.3.1
-2.3.2
-
-2.5.3.2.1
-
-2.5.3.1.1
-
-2.5.4.1
-
-2.5.3.1
-
-2.5.3.2
-
-2.4
-2.5
-
-2.5.4
-
-2.3
-
-2.2
-
-[MS-AUTHSOD] - v20211026
-Authentication Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 94
-
-2.5.5
-
-2.5.5.1
-
-2.5.4.1.5
-
-2.5.4.2
-
-2.5.4.2.1
-
-2.5.4.3
-
-2.5.4.3.1
-
-2.5.4.1.1
-2.5.4.1.2
-2.5.4.1.3
-2.5.4.1.4
-
-2.5.4.1.4.1
-2.5.4.1.4.2
-
-Client Authentication ........................................................................ 50
-Server Authentication ...................................................................... 53
-Mutual Authentication ...................................................................... 55
-Delegation of Authentication ............................................................. 56
-Delegate by Using a Kerberos Forwarded TGT Mechanism ............... 58
-Delegate by Using S4U2proxy Mechanism ..................................... 59
-Credential Delegation ....................................................................... 60
-Multiple Domains .................................................................................. 62
-Client Authentication ........................................................................ 62
-Cross-Forest Environment ...................................................................... 64
-Client Authentication ........................................................................ 65
-Auxiliary .................................................................................................... 66
-Authenticate Client Identity to a Kerberos Authentication Server ................. 66
-Authenticate Client Identity by Using a User Name and Password .......... 67
-Authenticate Client Identity by Using an X.509 Certificate .................... 68
-Negotiate Authentication Protocol ........................................................... 69
-S4U2self Mechanism: Get a Service Ticket for a Front-End Server ............... 70
-Security Services ........................................................................................ 72
-Data Origin Authentication (Signing) ....................................................... 72
-Data Confidentiality (Sealing) ................................................................. 73
-Versioning, Capability Negotiation, and Extensibility ............................................. 75
-Error Handling ................................................................................................. 75
-Coherency Requirements .................................................................................. 75
-Security .......................................................................................................... 75
-Additional Considerations .................................................................................. 76
-
-2.5.5.1.1
-2.5.5.1.2
-
-2.5.6
-
-2.5.5.2
-2.5.5.3
-
-2.5.6.1
-2.5.6.2
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-3.1
-3.2
-
-3  Examples ............................................................................................................... 77
-Example 1: GSS Authentication Protocol Process - Stock Quote Server ................... 77
-Example 2: Interactive Domain Logon - Service Ticket for Client Computer ............. 81
-Interactive Domain Logon by Using Passwords ............................................... 81
-Interactive Domain Logon by Using an X.509 Certificate .................................. 83
-Example 3: Connecting to an SMB2 Share ........................................................... 84
-Using Kerberos Protocol Extensions [MS-KILE] ............................................... 84
-Using the NTLM Protocol [MS-NLMP] ............................................................. 87
-
-3.3.1
-3.3.2
-
-3.2.1
-3.2.2
-
-3.3
-
-4  Microsoft Implementations ................................................................................... 90
-Product Behavior .............................................................................................. 90
-
-4.1
-
-5  Change Tracking .................................................................................................... 91
-
-6  Index ..................................................................................................................... 92
-
-[MS-AUTHSOD] - v20211026
-Authentication Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 94
-
-1  Introduction
-
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 Both the client and server versions of Windows implement standard authentication protocols as part of
 an extensible architecture that consists of security support provider (SSP) security packages. These
@@ -537,13 +384,13 @@ is still going on today. Rather than repeat the process when circumstances requi
 additional security protocol, Microsoft chose to insert a protocol, in this case, SPNEGO, to allow
 security protocol selection and extension.
 
-1.1.1  Authentication Concepts
+#### 1.1.1 Authentication Concepts
 
 Authentication is the process of verifying the identity of an entity. Several types of identities exist in
 Windows, and they are managed in several ways. For example, identity can refer to the set of users
 on a single computer or to the identities that are available in a domain.
 
-1.1.1.1  Security Principal
+##### 1.1.1.1 Security Principal
 
 The security principal is an entity with an identity that can be authenticated. A security principal is a
 common concept in security; it is an actor in a security system and can often initiate action. Typically,
@@ -563,7 +410,7 @@ An identity is associated with a key. If a client proves knowledge of the key to
 treats that associated identity as the identity of the client. A security principal is often referred to as
 an account. The identity that Windows uses for an account is called a security identifier (SID).
 
-1.1.1.2  Accounts
+##### 1.1.1.2 Accounts
 
 On a computer that is running Windows, an account represents a security principal. The security
 principal (or account) has at least a name and an identifier.
@@ -575,7 +422,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The name is a simple textual name for the account and can be a personal name, such as Rene Valdes,
+
+The name is a simple textual name for the account and can be a personal name, such as Rene Valdes,
 SYSTEM, or RedmondDc1$. However, the name is merely an attribute of the account and can change
 over time. A common scenario for a name change is when the person to whom the account refers
 changes his or her name.
@@ -643,7 +491,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The client, the server, or both can be authenticated. Client authentication occurs when the client
+
+The client, the server, or both can be authenticated. Client authentication occurs when the client
 proves its identity to the server; server authentication occurs when the server proves its identity to
 the client.
 
@@ -690,7 +539,7 @@ In one such scenario, the Microsoft Terminal Server uses the CredSSP Protocol to
 the user's password or smart card PIN from the client to the server to log on a network user and
 establish a Terminal Services session.
 
-1.1.1.3  Domain Membership
+##### 1.1.1.3 Domain Membership
 
 Domain membership is the state of trusting a third party, the domain controller, for identity and
 authentication information. Any computer can be part of a domain. Windows computers are easily
@@ -710,7 +559,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-In Windows, the Netlogon component manages the relationship with the domain controller. Netlogon
+
+In Windows, the Netlogon component manages the relationship with the domain controller. Netlogon
 maintains the keys that are necessary for ongoing authentication of the member system to the
 domain controller. It also creates a secure channel to the Netlogon instance on the domain controller.
 This channel that Netlogon creates for authentication is not specific to any protocol and is available
@@ -725,7 +575,7 @@ domain controller to authenticate a user, the Netlogon services challenge each o
 whether they both have a valid computer account. This allows a secure communication channel to be
 established for logon purposes.
 
-1.1.1.4  Groups
+##### 1.1.1.4 Groups
 
 A group is a collection of user accounts, computer accounts, and other groups, all of which are called
 group members. A group has a name and an identifier. Group membership can either be specified in
@@ -744,7 +594,7 @@ Distribution groups: These groups are used for nonsecurity functions, such as gr
 together to send email messages. Unlike security groups, these groups cannot be used to control
 access to network resources.
 
-1.1.1.4.1 Group Scope
+###### 1.1.1.4.1 Group Scope
 
 The scope of a group can be local or global depending on the portion of the network in which the
 group is granted rights and permissions. Starting with Windows 2000, Windows provides four levels of
@@ -780,7 +630,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Local groups: A local group can exist only within the local security database of the computer where it
+
+Local groups: A local group can exist only within the local security database of the computer where it
 
 is created. A local group can contain user accounts that are local to the computer and user
 accounts and global groups from their own domain. This allows the member system to manage its
@@ -801,7 +652,7 @@ Beginning with Windows 2000 Server, the scope of a group can be changed. For exa
 groups that are not members of other global groups can be converted to universal groups. Domain
 local groups that do not contain other domain local groups can be converted to universal groups.
 
-1.1.1.4.2 Nested Groups
+###### 1.1.1.4.2 Nested Groups
 
 Windows supports the concept of nested groups, or the addition of groups to other groups. The use of
 nested groups can help reduce the number of permissions that are required to be individually assigned
@@ -870,7 +721,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-1.1.1.5  Account Domains
+
+##### 1.1.1.5 Account Domains
 
 Accounts are always created relative to an issuing authority, which is responsible for allocating and
 assigning the SID. In Windows, the issuing authority is referred to as a domain. A domain is either a
@@ -882,7 +734,7 @@ Windows uses Active Directory as the account database in domain-based environmen
 environments that are not domain-based use the security account manager (SAM) built-in
 database as the account database.
 
-1.1.1.5.1 Local Domains and Account Database
+###### 1.1.1.5.1 Local Domains and Account Database
 
 Every computer that runs Windows has its own local domain; that is, it has an account database for
 accounts that are specific to that computer. Conceptually, this is an account database like any other
@@ -905,7 +757,7 @@ Kerberos [MS-KILE].
 The abstract data model for the SAM Remote Protocol (Client-to-Server) that exposes the account
 database is specified in [MS-SAMR] sections 3.1 and 3.2.
 
-1.1.1.5.2 Network Domains and Domain Controllers
+###### 1.1.1.5.2 Network Domains and Domain Controllers
 
 In a network domain, all applicable Windows Server releases can be configured to be domain
 controllers. A domain controller is a server that has made its account database available to other
@@ -934,10 +786,11 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-When a change is allowed, the servers replicate the change so that all domain controllers have the
+
+When a change is allowed, the servers replicate the change so that all domain controllers have the
 same information.
 
-1.1.1.5.3 Effect on Accounts
+###### 1.1.1.5.3 Effect on Accounts
 
 Windows domains affect the way that accounts and groups work. Some of this is by convention, and
 some is by design.
@@ -950,7 +803,7 @@ administrators group is made a member of the local administrators group.
 globally known (and therefore usable by other domains) or known only within the domain in which
 they are defined.
 
-1.1.2  Pre-GSS Authentication
+#### 1.1.2 Pre-GSS Authentication
 
 For the initial generation of client-server computing, applications and authentication protocols were
 tightly coupled. Authentication was hardwired into each application or into each security module, and
@@ -960,7 +813,7 @@ This application-specific design increased development and maintenance costs and
 interoperability between applications that were running on the same or different communications
 networks.
 
-1.1.3  GSS-Style Authentication
+#### 1.1.3 GSS-Style Authentication
 
 In the 1990s, a new paradigm decoupled application protocols from authentication protocols. This
 approach, which became the Generic Security Service Application Programming Interface (GSS-API),
@@ -985,7 +838,8 @@ Release: October 26, 2021
 
 11 / 94
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-AUTHSOD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1032,7 +886,8 @@ Release: October 26, 2021
 
 12 / 94
 
-1.2  Glossary
+
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -1112,7 +967,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-originated in the 1990's as part of an attempt to create an Internet standard for SMB, based
+
+originated in the 1990's as part of an attempt to create an Internet standard for SMB, based
 upon the then-current Windows NT implementation.
 
 Compound identity TGS-REQ: A FAST TGS-REQ that uses explicit FAST armoring using the
@@ -1185,7 +1041,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-encrypted hash: A cryptographic hash that is computed over both an asymmetric key and data.
+
+encrypted hash: A cryptographic hash that is computed over both an asymmetric key and data.
 
 FAST AS-REQ: A Kerberos AS-REQ ([RFC4120] section 3.1) message that is armored with a
 
@@ -1263,7 +1120,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-keyed hash: A cryptographic hash computed over both a symmetric key and data, as specified in
+
+keyed hash: A cryptographic hash computed over both a symmetric key and data, as specified in
 
 [RFC2617]. For more information, see [RFC2104].
 
@@ -1340,7 +1198,8 @@ Release: October 26, 2021
 
 16 / 94
 
-proxy: An intermediary program that acts as both a server and a client for the purpose of making
+
+proxy: An intermediary program that acts as both a server and a client for the purpose of making
 
 requests on behalf of other clients (see [RFC2616] section 1.3).
 
@@ -1414,7 +1273,8 @@ Release: October 26, 2021
 
 17 / 94
 
-security support provider (SSP): A dynamic-link library (DLL) that implements the Security
+
+security support provider (SSP): A dynamic-link library (DLL) that implements the Security
 Support Provider Interface (SSPI) by making one or more security packages available to
 applications. Each security package provides mappings between an application's SSPI function
 calls and an actual security model's functions. Security packages support security protocols such
@@ -1485,7 +1345,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-symmetric encryption: An encryption method that uses the same cryptographic key to encrypt
+
+symmetric encryption: An encryption method that uses the same cryptographic key to encrypt
 
 and decrypt a given message.
 
@@ -1520,7 +1381,7 @@ X.509: An ITU-T standard for public key infrastructure subsequently adapted by t
 
 specified in [RFC3280].
 
-1.3  References
+### 1.3 References
 
 [IETFDRAFT-NEGOEX-02] Short, M., Zhu, L., Damour, K., and McPherson, D., "The Extended GSS-API
 Negotiation Mechanism (NEGOEX)", draft-zhu-negoex-02, September 2010,
@@ -1557,7 +1418,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-KILE] Microsoft Corporation, "Kerberos Protocol Extensions".
+
+[MS-KILE] Microsoft Corporation, "Kerberos Protocol Extensions".
 
 [MS-KKDCP] Microsoft Corporation, "Kerberos Key Distribution Center (KDC) Proxy Protocol".
 
@@ -1624,7 +1486,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[PKU2U-DRAFT] Zhu, L., Altman, J., and Williams, N., "Public Key Cryptography Based User-to-User
+
+[PKU2U-DRAFT] Zhu, L., Altman, J., and Williams, N., "Public Key Cryptography Based User-to-User
 Authentication (PKU2U)", November 2008, http://tools.ietf.org/id/draft-zhu-pku2u-09.txt
 
 [Referrals] Raeburn, K., Zhu, L., and Jaganathan, K., "Generating KDC Referrals to Locate Kerberos
@@ -1687,11 +1550,12 @@ Release: October 26, 2021
 
 21 / 94
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-AUTHSOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
-2  Functional Architecture
+## 2 Functional Architecture
 
 The Authentication Services protocols provide authentication services through the following methods:
 
@@ -1705,7 +1569,7 @@ The following sections provide an overview of interactive logon authentication a
 authentication, the protocols involved, and the relationships of these protocols with the relevant
 standard protocols.
 
-2.1  Overview
+### 2.1 Overview
 
 The following diagram illustrates the high-level interactions between the internal components of
 Authentication Services and other external systems, including the public key infrastructure (PKI),
@@ -1722,7 +1586,8 @@ Release: October 26, 2021
 
 22 / 94
 
-Applications can be interactive applications, such as Winlogon, or distributed client and server
+
+Applications can be interactive applications, such as Winlogon, or distributed client and server
 applications, such as a web browser, web server, or a file client or a file server, or any other type of
 client and server application.
 
@@ -1763,7 +1628,7 @@ Authorization
 After an identity is authenticated, the next step is to use the identity to authorize access to a
 resource. Authorization provides an interface for applications to make authorization decisions.
 
-2.1.1  Interactive Logon Authentication
+#### 2.1.1 Interactive Logon Authentication
 
 The interactive logons authentication section with its subsections describe the process and the
 methods by which authentication protocols work in conjunction to prove the user's identity. Interactive
@@ -1788,7 +1653,8 @@ Release: October 26, 2021
 
 23 / 94
 
-A user can interactively logon to a computer in one of two ways:
+
+A user can interactively logon to a computer in one of two ways:
 
 
 
@@ -1830,7 +1696,7 @@ required: the PIN and the card.
 For interactive domain logon, the validation process relies on authenticating domain user credentials
 against the domain's directory service.
 
-2.1.1.1  Abstract Components
+##### 2.1.1.1 Abstract Components
 
 The following block diagram illustrates abstract components that are involved in the interactive
 domain logon authentication process. The abstract components on the domain-joined client
@@ -1848,13 +1714,14 @@ Release: October 26, 2021
 
 24 / 94
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-AUTHSOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 3: Abstract view of interactive domain logon authentication
 
-2.1.1.2  Protocol Interactions
+##### 2.1.1.2 Protocol Interactions
 
 The following diagram illustrates the internal system architecture of the interactive domain logon
 authentication task. The authentication protocols that are involved in the interactive domain logon
@@ -1879,7 +1746,8 @@ Release: October 26, 2021
 
 25 / 94
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-AUTHSOD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1918,11 +1786,12 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-AUTHSOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-2.1.2  Network Logon Authentication
+#### 2.1.2 Network Logon Authentication
 
 The network logon authentication section with its subsections describe the process and the methods
 by which authentication protocols work in conjunction to prove the user's identity. Network logon
@@ -1932,7 +1801,7 @@ established credentials or another method to collect credentials is used. This p
 user's identity to any network service that the user attempts to access. This process is typically
 invisible to the user, unless the user is required to provide alternate credentials.
 
-2.1.2.1  Abstract Components
+##### 2.1.2.1 Abstract Components
 
 The following block diagram illustrates abstract components that are involved in the network logon
 process. Network logon authentication is performed when an application uses underlying
@@ -1964,7 +1833,8 @@ Release: October 26, 2021
 
 27 / 94
 
-The primary purpose of GSS-API is to abstract the commonalities of different authentication protocols
+
+The primary purpose of GSS-API is to abstract the commonalities of different authentication protocols
 and to hide their implementation details.
 
 A related purpose is to disentangle application communication protocols from authentication protocols.
@@ -2005,13 +1875,14 @@ Release: October 26, 2021
 
 28 / 94
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-AUTHSOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
 Figure 6: GSS-API authentication process
 
-2.1.2.2  Protocol Interactions
+##### 2.1.2.2 Protocol Interactions
 
 The following diagram illustrates the protocol interactions of the network logon authentication.
 
@@ -2022,7 +1893,8 @@ Release: October 26, 2021
 
 29 / 94
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-AUTHSOD].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2044,7 +1916,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP]
+
+  NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP]
 
   Secure Sockets Layer (SSL)/Transport Layer Security (TLS) Protocols (SSL/TLS) [MS-TLSP]
 
@@ -2119,7 +1992,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Assertion
+
+Assertion
 
 As a precondition for using Assertion to specify a mutually agreed-on authentication protocol when
 calling GSS-API, both the client and the server directly specify a single authentication protocol from
@@ -2202,7 +2076,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 If the server does not support any of the listed protocols, the authentication exchange fails.
 
@@ -2228,14 +2103,14 @@ When the client and server agree on either the Digest or the NTLM protocol, the 
 Protocol Domain Support [MS-APDS] performs the pass-through. Otherwise, if the client and server
 agree on SSL/TLS, Remote Certificate Mapping Protocol [MS-RCMP] is used for pass-through.
 
-2.1.2.3  Enterprise Environment
+##### 2.1.2.3 Enterprise Environment
 
 The protocols commonly used in enterprise environments for authentication and secure transport of
 application data are listed in section 2.2.1. The following section describes how distributed applications
 use the Authentication Services protocols in the enterprise environment, with the file access services
 as an example.
 
-2.1.2.3.1 File Access Services
+###### 2.1.2.3.1 File Access Services
 
 The File Access Services section describes the steps that the file access services protocols ([MS-
 FASOD]) undertake to support authentication.
@@ -2265,7 +2140,8 @@ Release: October 26, 2021
 
 33 / 94
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-AUTHSOD].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2286,7 +2162,7 @@ account information. Otherwise, if the authentication protocol is Kerberos [MS-K
 authenticates the user identity by validating the service ticket to the SMB service submitted by the
 file system client.
 
-2.1.2.3.2 Remote Desktop and Web Services
+###### 2.1.2.3.2 Remote Desktop and Web Services
 
 In Windows, the Remote Desktop Protocol (RDP) [MS-RDPBCGR] and the Web Services
 Management Protocol [MS-WSMV] use the CredSSP Protocol to delegate the user's credentials from
@@ -2299,7 +2175,8 @@ Release: October 26, 2021
 
 34 / 94
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-AUTHSOD].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2338,7 +2215,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-AUTHSOD].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2347,13 +2225,13 @@ the located KDC, and returns the received replies via HTTPS to the client.
 
 Figure 10: KKDCP deployment environment
 
-2.1.2.4  Intranet Web Environment
+##### 2.1.2.4 Intranet Web Environment
 
 The protocols that are commonly used in intranet web environments for authentication and secure
 transportation of application data are listed in section 2.2.2. The following section describes how
 distributed applications use the Authentication Services protocols in the intranet web environment.
 
-2.1.2.4.1 HTTP Access Authentication
+###### 2.1.2.4.1 HTTP Access Authentication
 
 HTTP Access Authentication is described in this section as an HTTP 1.1 [RFC2616] authentication,
 whereas Basic and Digest Access Authentication is addressed in [RFC2617]. HTTP is used
@@ -2372,7 +2250,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-AUTHSOD].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2409,7 +2288,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-AUTHSOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2420,7 +2300,7 @@ Protocol [MS-RCMP] to authenticate the certificate with the DC that contains the
 When a web browser uses Kerberos [MS-KILE] for web authentication, a service ticket to the web
 service is obtained from the DC.
 
-2.1.2.5  Mixed Web Environment
+##### 2.1.2.5 Mixed Web Environment
 
 As listed in section 2.2.3, the authentication protocols that are primarily used in web environments for
 authentication and secure transportation of application data are Digest Protocol Extensions [MS-
@@ -2438,7 +2318,7 @@ then can transition to Kerberos protocol extensions.
 
 Figure 12: Authentication protocol standards in a mixed web environment
 
-2.1.3  Relevant Standards
+#### 2.1.3 Relevant Standards
 
 The Authentication Services protocols use and extend the following standards:
 
@@ -2449,7 +2329,8 @@ Release: October 26, 2021
 
 38 / 94
 
-
+
+
 
 The Kerberos Network Authentication Service (V5) [RFC4120] provides an overview and
 specification of Version 5 of the Kerberos protocol.
@@ -2496,7 +2377,7 @@ removed legacy algorithms, all handshake messages after the Server Hello are now
 added Elliptic curve algorithms in the base spec, among other changes. See [RFC8446] for the
 details.
 
-2.1.4  Relationship Between Standards and Microsoft Extensions
+#### 2.1.4 Relationship Between Standards and Microsoft Extensions
 
 The diagrams in the following subsections illustrate the relationship between protocol standards and
 Microsoft protocol extensions. As indicated in each diagram legend, an arrow is used only when the
@@ -2512,11 +2393,12 @@ Release: October 26, 2021
 
 39 / 94
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-AUTHSOD].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
-2.1.4.1  Kerberos Protocols
+##### 2.1.4.1 Kerberos Protocols
 
 Figure 13: Relationships between Kerberos protocol and Microsoft extensions
 
@@ -2553,7 +2435,8 @@ Release: October 26, 2021
 
 40 / 94
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-AUTHSOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2575,7 +2458,7 @@ The Privilege Attribute Certificate Data Structure [MS-PAC] extends [RFC4120] by
 mechanism to convey authorization information by encapsulating this information within an
 AuthorizationData structure ([RFC4120] section 5.2.6).
 
-2.1.4.2  Digest Protocols
+##### 2.1.4.2 Digest Protocols
 
 Figure 14: Relationships between Digest Authentication protocol standards and Microsoft
 extensions
@@ -2597,11 +2480,12 @@ Release: October 26, 2021
 
 41 / 94
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-AUTHSOD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-2.1.4.3  SSL/TLS Protocols
+##### 2.1.4.3 SSL/TLS Protocols
 
     Figure 15: Relationships between SSL/TLS protocol standards and Microsoft extensions
 
@@ -2617,13 +2501,14 @@ Release: October 26, 2021
 
 42 / 94
 
-2.2  Protocol Summary
+
+### 2.2 Protocol Summary
 
 The tables in the following sections group the Authentication Services protocols according to their
 roles into three distinct environments: the Enterprise Environment (section 2.2.1), the Intranet Web
 Environment (section 2.2.2), and the Internet Web Environment (section 2.2.3).
 
-2.2.1  Enterprise Environment
+#### 2.2.1 Enterprise Environment
 
 Protocol name
 
@@ -2731,7 +2616,7 @@ networks.
 
 [MS-NRPC]
 
-2.2.2  Intranet Web Environment
+#### 2.2.2 Intranet Web Environment
 
 Protocol name
 
@@ -2762,7 +2647,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -2836,7 +2722,7 @@ See section 2.2.1.
 
 [MS-NEGOEX]
 
-2.2.3  Internet Web Environment
+#### 2.2.3 Internet Web Environment
 
 Protocol name
 
@@ -2859,7 +2745,7 @@ Kerberos Key
 Distribution Center
 (KDC) Proxy Protocol
 
-2.3  Environment
+### 2.3 Environment
 
 Short
 name
@@ -2877,7 +2763,7 @@ The following subsections identify the context in which Authentication Services 
 systems that use the interfaces provided by these protocols, other systems that depend on this
 system, and, as appropriate, the methods that the system components use to communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 Because Authentication Services authenticate users, computers, and security services in a domain
 environment, any system or protocol that operates within a domain or has a mode of operation within
@@ -2889,7 +2775,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-a domain is influenced by this system. However, the following groups of related protocols depend
+
+a domain is influenced by this system. However, the following groups of related protocols depend
 more closely on the Authentication Services protocols:
 
 Active Directory [MS-ADOD]: Describes how the directory is structured and how LDAP operations
@@ -2921,7 +2808,7 @@ remote clients and servers, to channel communication between components of remot
 servers, and to manage servers. RDP protocols depend on the services of the Authentication
 Services protocols to authenticate identities and to help ensure secure communications.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The Authentication Services protocols depend on the following systems:
 
@@ -2937,7 +2824,7 @@ The Authentication Services protocols depend on the certificate authority (CA)/P
 certificate validation, signature validation, and asymmetric cryptography security services. Microsoft
 clients use the Crypto API 2.0 library for these features.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions apply to this document.
 
@@ -2963,7 +2850,8 @@ Release: October 26, 2021
 
 45 / 94
 
-  A domain controller has been set up and configured to support the domain infrastructure.
+
+  A domain controller has been set up and configured to support the domain infrastructure.
 
 
 
@@ -2984,7 +2872,7 @@ authenticating client and server systems, such as:
 
   Network Time Protocol (NTP)
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following sections describe a set of use cases that span the functionality of Authentication
 Services.
@@ -3043,7 +2931,7 @@ Use case(s)
 
 Network Logon (section 2.5.4)  Client Authentication (section 2.5.4.3.1)
 
-2.5.1  Summary of Supporting Actors and System Interests
+#### 2.5.1 Summary of Supporting Actors and System Interests
 
 The use cases of the Authentication Services protocols have the following supporting actors:
 
@@ -3061,7 +2949,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Public key infrastructure (PKI): To authenticate the identities of client and server applications
+
+  Public key infrastructure (PKI): To authenticate the identities of client and server applications
 
 that use certificate-based authentication mechanisms, the Authentication Services protocols use
 Windows PKI to verify digital certificates and use the symmetric and asymmetric cryptography
@@ -3069,7 +2958,7 @@ services of Windows PKI to provide security services, such as encryption and sig
 the client and server applications. Windows implements PKI by means of Certificate Services [MS-
 CERSOD].
 
-2.5.2  Actors
+#### 2.5.2 Actors
 
 The actors that participate in the Authentication Services protocols use cases are:
 
@@ -3099,13 +2988,13 @@ authentication token submitted by the server on behalf of the client's identity.
 
 Services by playing the roles of the "Authentication Client" actor.
 
-2.5.3  Interactive Logon
+#### 2.5.3 Interactive Logon
 
-2.5.3.1  Single Domain
+##### 2.5.3.1 Single Domain
 
 The following subsection describes interactive domain logon in a single domain environment use case.
 
-2.5.3.1.1 Interactive Domain Logon: Service Ticket for Client Computer
+###### 2.5.3.1.1 Interactive Domain Logon: Service Ticket for Client Computer
 
 The LSA initiates this use case with the goal of proving the identity of a user to the Authentication
 Authority (AA) and of getting a service ticket that contains user logon information from the AA for
@@ -3119,7 +3008,8 @@ Release: October 26, 2021
 
 47 / 94
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-AUTHSOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3175,7 +3065,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Alternative Scenario: This scenario occurs when Flexible Authentication Secure Tunneling
+
+Alternative Scenario: This scenario occurs when Flexible Authentication Secure Tunneling
 
 (FAST) mode is supported and configured on both the Authentication Client and the AA and
 when the preceding preconditions are met.
@@ -3211,7 +3102,7 @@ section 2.2.1.4.3).
 
 user logon information.
 
-2.5.3.2  Multiple Domains
+##### 2.5.3.2 Multiple Domains
 
 The following subsection describes a use case that pertains to interactive domain logon in a cross-
 domain environment. For example, a user account is provisioned in one domain (domain1), a client
@@ -3221,7 +3112,7 @@ the Authentication Authority (AA) of domain1, AA2 denotes the AA of domain2, and
 #1 and Account DB #2 denote the account databases for domain1 and domain2, respectively. For a
 similar example, see section 2.5.4.2 and use case diagram section 2.5.4.2.1.
 
-2.5.3.2.1 Interactive Domain Logon: Service Ticket for Client Computer
+###### 2.5.3.2.1 Interactive Domain Logon: Service Ticket for Client Computer
 
 The LSA initiates this use case with the goal of proving the identity of a user to the Authentication
 Authority (AA) and of getting a service ticket that contains user logon information from the AA for
@@ -3251,7 +3142,8 @@ Release: October 26, 2021
 
 49 / 94
 
-
+
+
 
 
 
@@ -3298,14 +3190,14 @@ logon information.
 
 Extensions: None.
 
-2.5.4  Network Logon
+#### 2.5.4 Network Logon
 
-2.5.4.1  Single Domain
+##### 2.5.4.1 Single Domain
 
 The following sub-sections describe use cases for single domain authentication of client by server, of
 server by client, of server and client by mutual authentication, as well as delegation of authentication.
 
-2.5.4.1.1 Client Authentication
+###### 2.5.4.1.1 Client Authentication
 
 This use case describes how a server application authenticates the user identity of the client
 application before it allows access to its protected resource or services.
@@ -3317,7 +3209,8 @@ Release: October 26, 2021
 
 50 / 94
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-AUTHSOD].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -3371,7 +3264,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.  The identity of the client application is proven to the AA as described in section 2.5.5.1.
+
+2.  The identity of the client application is proven to the AA as described in section 2.5.5.1.
 
 3.  The client application sends the target server application's identity and the TGT material
 
@@ -3456,7 +3350,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Alternative Scenario: Negotiation leads to the use of NTLM
+
+Alternative Scenario: Negotiation leads to the use of NTLM
 
 1.  The client and server application negotiate authentication protocols, as described in section
 
@@ -3521,7 +3416,7 @@ client application.
 
 Extensions: None.
 
-2.5.4.1.2 Server Authentication
+###### 2.5.4.1.2 Server Authentication
 
 This use case describes how a client application authenticates the identity of the server application
 before it establishes a secure session to the server application.
@@ -3533,7 +3428,8 @@ Release: October 26, 2021
 
 53 / 94
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-AUTHSOD].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
@@ -3588,7 +3484,8 @@ Release: October 26, 2021
 
 54 / 94
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-AUTHSOD].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -3607,7 +3504,7 @@ client and the server application can proceed with secure communications.
 
 Extensions: None.
 
-2.5.4.1.3 Mutual Authentication
+###### 2.5.4.1.3 Mutual Authentication
 
 This use case describes how a client application and a server application authenticate each other
 before they establish secure communication.
@@ -3642,7 +3539,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The user that started the client application is logged on to the client computer.
 
@@ -3702,7 +3600,7 @@ establish a secure session.
 
 Extensions: None.
 
-2.5.4.1.4 Delegation of Authentication
+###### 2.5.4.1.4 Delegation of Authentication
 
 Delegation of authentication is accomplished in one of four ways. In the first, the client gets a
 service ticket for the back-end server and gives it to the front-end server. Tickets obtained in this
@@ -3717,7 +3615,8 @@ Release: October 26, 2021
 
 56 / 94
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-AUTHSOD].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -3758,7 +3657,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Primary Actor: The user that is running the client application.
+
+Primary Actor: The user that is running the client application.
 
 Supporting Actors: The AA, the back-end server, the PKI, and the account DB.
 
@@ -3799,7 +3699,7 @@ Postcondition: The front-end server has successfully proven the identity of the 
 
 running the client application to the back-end server.
 
-2.5.4.1.4.1  Delegate by Using a Kerberos Forwarded TGT Mechanism
+###### 2.5.4.1.4.1 Delegate by Using a Kerberos Forwarded TGT Mechanism
 
 Goal: To delegate authentication of the client identity to the front-end server to access the
 
@@ -3846,7 +3746,8 @@ Release: October 26, 2021
 
 58 / 94
 
-Success Guarantee: The front-end server can prove the identity of the user that is running the
+
+Success Guarantee: The front-end server can prove the identity of the user that is running the
 
 client application to the back-end server application.
 
@@ -3884,7 +3785,7 @@ the client application to the back-end server application.
 
 Extensions: None.
 
-2.5.4.1.4.2  Delegate by Using S4U2proxy Mechanism
+###### 2.5.4.1.4.2 Delegate by Using S4U2proxy Mechanism
 
 Goal: The front-end server has to prove the identity of the user that is running the client
 
@@ -3930,7 +3831,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The front-end server application, the back-end server application, and the AA can
 communicate with each other.
@@ -3985,7 +3887,7 @@ the domain and cannot use the Kerberos protocol, this use case is extended betwe
 and 2 by the S4U2self Mechanism: Get a Service Ticket for a Front-end Server (section 2.5.5.3)
 use case.
 
-2.5.4.1.5 Credential Delegation
+###### 2.5.4.1.5 Credential Delegation
 
 [MS-AUTHSOD] - v20211026
 Authentication Services Protocols Overview
@@ -3994,7 +3896,8 @@ Release: October 26, 2021
 
 60 / 94
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-AUTHSOD].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -4042,7 +3945,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The client application, server application, and DC can communicate with each other.
 
@@ -4099,7 +4003,7 @@ server.
 
 Extensions: None.
 
-2.5.4.2  Multiple Domains
+##### 2.5.4.2 Multiple Domains
 
 The following subsection describes a use case that pertains to a network domain logon in a multiple
 domain environment. For the following use case, it is assumed that a user account is provisioned in
@@ -4108,7 +4012,7 @@ domains are in the same forest. For these use cases, AA1 denotes the Authenticat
 (AA) of domain1, AA2 denotes the AA of domain2, and Account DB #1 and Account DB #2 denote the
 account databases for domain1 and domain2, respectively.
 
-2.5.4.2.1 Client Authentication
+###### 2.5.4.2.1 Client Authentication
 
 This use case describes how a server application authenticates the user identity of the client
 application before it grants access to its protected resources or services.
@@ -4120,7 +4024,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-AUTHSOD].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
@@ -4147,7 +4052,8 @@ Release: October 26, 2021
 
 63 / 94
 
-
+
+
 
 
 
@@ -4200,7 +4106,7 @@ client and the server applications have a shared session key for further secure 
 
 Extensions: None.
 
-2.5.4.3  Cross-Forest Environment
+##### 2.5.4.3 Cross-Forest Environment
 
 The following subsection describes a use case that pertains to network domain logon in a cross-forest
 environment. For the following use case, it is assumed that a user account and a machine account are
@@ -4228,13 +4134,14 @@ Release: October 26, 2021
 
 64 / 94
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-AUTHSOD].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
 DNS: The Domain Name System (DNS).
 
-2.5.4.3.1 Client Authentication
+###### 2.5.4.3.1 Client Authentication
 
 This use case describes how a client application authenticates itself in a cross-forest environment.
 
@@ -4259,7 +4166,8 @@ Release: October 26, 2021
 
 65 / 94
 
-Preconditions:
+
+Preconditions:
 
 
 
@@ -4323,9 +4231,9 @@ client and the server application have a shared session key for further secure c
 
 Extensions: None.
 
-2.5.5  Auxiliary
+#### 2.5.5 Auxiliary
 
-2.5.5.1  Authenticate Client Identity to a Kerberos Authentication Server
+##### 2.5.5.1 Authenticate Client Identity to a Kerberos Authentication Server
 
 The following diagram illustrates protocol interactions to authenticate a client user or computer
 identity to a Kerberos authentication server described in the following subsections. The Kerberos
@@ -4337,7 +4245,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-AUTHSOD].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -4347,7 +4256,7 @@ the Kerberos Authentication Server (AS).
 
 Figure 24: Authentication of a client user identity to a Kerberos Authentication Server
 
-2.5.5.1.1 Authenticate Client Identity by Using a User Name and Password
+###### 2.5.5.1.1 Authenticate Client Identity by Using a User Name and Password
 
 The following describes authentication of a client user or computer by using a user name and
 
@@ -4391,7 +4300,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Minimal Guarantees: If the identity of the user or computer cannot be proven to the AA by using
+
+Minimal Guarantees: If the identity of the user or computer cannot be proven to the AA by using
 the underlying authentication protocol, authentication fails. The client application or the user
 receives an error message that indicates the reason for the failure.
 
@@ -4432,7 +4342,7 @@ Postconditions: The user or computer identity is proven to the AA, and the Authe
 
 receives a TGT and a session key for further authentication processing.
 
-2.5.5.1.2 Authenticate Client Identity by Using an X.509 Certificate
+###### 2.5.5.1.2 Authenticate Client Identity by Using an X.509 Certificate
 
 The following describes authentication of a client user or computer by using an X.509 certificate in
 the Main Success Scenario, otherwise the section is the same as section 2.5.5.1.1.
@@ -4471,7 +4381,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-AUTHSOD].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -4504,7 +4415,7 @@ Postconditions: The user or computer identity is proven to the AA, and the Authe
 
 receives a TGT and a session key for further authentication processing
 
-2.5.5.2  Negotiate Authentication Protocol
+##### 2.5.5.2 Negotiate Authentication Protocol
 
 The Negotiate Authentication Protcol use case describes how a client and a server application can
 negotiate to select an agreed-on common authentication protocol.
@@ -4530,7 +4441,8 @@ Release: October 26, 2021
 
 69 / 94
 
-Supporting Actors: The Authentication Authority (AA), the account DB, and the PKI.
+
+Supporting Actors: The Authentication Authority (AA), the account DB, and the PKI.
 
 Preconditions:
 
@@ -4580,7 +4492,7 @@ protocol for further authentication process.
 
 Extensions: None.
 
-2.5.5.3  S4U2self Mechanism: Get a Service Ticket for a Front-End Server
+##### 2.5.5.3 S4U2self Mechanism: Get a Service Ticket for a Front-End Server
 
 This use case describes how a front-end server obtains a service ticket to itself on behalf of the
 identity of a client application by using the S4U2self mechanism ([MS-SFU] section 1.3.1) when the
@@ -4594,7 +4506,8 @@ Release: October 26, 2021
 
 70 / 94
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-AUTHSOD].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
@@ -4655,7 +4568,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-AUTHSOD].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -4688,9 +4602,9 @@ behalf of the identity of the client application.
 
 Extensions: None.
 
-2.5.6  Security Services
+#### 2.5.6 Security Services
 
-2.5.6.1  Data Origin Authentication (Signing)
+##### 2.5.6.1 Data Origin Authentication (Signing)
 
 The Data Origin Authentication (signing) use case describes how a client application builds signed
 application data, how a server application verifies the signature of the signed application data, and
@@ -4715,7 +4629,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Primary Actor: The client application or the server application.
+
+Primary Actor: The client application or the server application.
 
 Supporting Actors: The server application or the client application.
 
@@ -4777,7 +4692,7 @@ Postconditions: The client application and the server application can exchange t
 application data with each other, and both the client application and the server application
 interpret the application data based on their implementations.
 
-2.5.6.2  Data Confidentiality (Sealing)
+##### 2.5.6.2 Data Confidentiality (Sealing)
 
 The Data Confidentiality (sealing) use case describes how client and server applications securely
 exchange their application data with each other.
@@ -4789,7 +4704,8 @@ Release: October 26, 2021
 
 73 / 94
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-AUTHSOD].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -4855,7 +4771,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  The server application requests the authentication server to build an encrypted message.
+
+3.  The server application requests the authentication server to build an encrypted message.
 The authentication server builds the encrypted application data by using an agreed-on
 encryption method and a secret key and returns the encrypted message to the server
 application. The server application sends the encrypted application data to the client
@@ -4873,7 +4790,7 @@ Post-conditions: The client and the server application can exchange the applicat
 and both the client and the server application interpret the application data in an
 implementation-specific way.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 No capability negotiation is associated with Authentication Services. Any deviations from a specific
 version's implementation of these protocol specifications are documented in the respective protocol
@@ -4882,17 +4799,17 @@ specified in the System Versioning and Capability Negotiation sections in their 
 documents. For more details, see sections 1.7 of the member protocol specifications that are listed in
 section 2.2.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 Authentication Services do not handle errors at the system level for cross-protocol error states. The
 member protocol specifications describe the errors that the protocols return and what they mean. The
 implementer determines how to handle the errors, based on the protocol descriptions.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 None.
 
-2.9  Security
+### 2.9 Security
 
 Implementers have to be aware that Kerberos Protocol Extensions [MS-KILE] and public key-based
 authentication ([MS-PKCA] and [MS-TLSP]) offer stronger security guarantees in terms of initial
@@ -4920,7 +4837,8 @@ Release: October 26, 2021
 
 75 / 94
 
-2.10  Additional Considerations
+
+### 2.10 Additional Considerations
 
 There are no additional considerations.
 
@@ -4931,9 +4849,10 @@ Release: October 26, 2021
 
 76 / 94
 
-3  Examples
 
-3.1  Example 1: GSS Authentication Protocol Process - Stock Quote Server
+## 3 Examples
+
+### 3.1 Example 1: GSS Authentication Protocol Process - Stock Quote Server
 
 This example describes the GSS authentication protocol process. It builds on the use cases for Client
 Authentication (section 2.5.4.1.1), Server Authentication (section 2.5.4.1.2), Mutual
@@ -5014,7 +4933,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Field
+
+Field
 
 Field function
 
@@ -5087,7 +5007,8 @@ Release: October 26, 2021
 
 78 / 94
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-AUTHSOD].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -5112,7 +5033,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Step 3: The Authentication Client generates a new GSS-API token and if more messages are expected,
+
+Step 3: The Authentication Client generates a new GSS-API token and if more messages are expected,
 returns GSS_S_CONTINUE_NEEDED. Otherwise, if this is the final message, returns
 GSS_S_COMPLETE, and the security token to the Stock Quote Client.
 
@@ -5187,7 +5109,8 @@ Release: October 26, 2021
 
 80 / 94
 
-Step 12: The Authentication Client returns a privacy and integrity-protected copy of the application
+
+Step 12: The Authentication Client returns a privacy and integrity-protected copy of the application
 Data Blob field.
 
 Step 13: The Stock Quote Client builds the request message with the protected Data Blob field and
@@ -5219,7 +5142,7 @@ The Stock Quote Client interprets the response and ends the session. When finish
 Quote Client and the Stock Quote Server release the credential handles by calling the GSS-API
 GSS_Release_cred function ([RFC2743] section 2.1.2).
 
-3.2  Example 2: Interactive Domain Logon - Service Ticket for Client Computer
+### 3.2 Example 2: Interactive Domain Logon - Service Ticket for Client Computer
 
 The examples in the following subsections describe interactive domain logons to obtain service tickets.
 They build on the use case for Interactive Domain Logon: Service Ticket for Client
@@ -5230,7 +5153,7 @@ NRPC] with password-based authentication, through Kerberos [MS-KILE] [RFC4120] w
 or through Kerberos PKINIT [MS-PKCA] [RFC4556] by using an X.509 certificate. The examples in the
 following subsections show the password-based and the X.509 certificate-based Kerberos exchanges.
 
-3.2.1  Interactive Domain Logon by Using Passwords
+#### 3.2.1 Interactive Domain Logon by Using Passwords
 
 This example describes interactive logon by using a password to obtain a service ticket. It covers the
 use cases Authenticate User or Computer Identity Using Username and Password (section 2.5.5.1.1)
@@ -5263,7 +5186,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MS-AUTHSOD].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -5318,7 +5242,8 @@ Release: October 26, 2021
 
 82 / 94
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-AUTHSOD].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
@@ -5328,7 +5253,7 @@ ticket for a client computer in a KRB_TGS_REP message with user logon informatio
 The client validates the KRB_TGS_REP message ([MS-KILE] section 3.3.4). If KRB_TGS_REP is
 valid, then the Kerberos runtime interprets the service ticket within the local client computer.
 
-3.2.2  Interactive Domain Logon by Using an X.509 Certificate
+#### 3.2.2 Interactive Domain Logon by Using an X.509 Certificate
 
 This example describes interactive domain logon by using an X.509 certificate to obtain a service
 ticket. It covers the use cases Authenticate User or Computer Identity Using an X.509
@@ -5384,7 +5309,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Step 4: The KDC validates the KRB_AS_REQ message ([RFC4120] section 3.1.2), which includes
+
+Step 4: The KDC validates the KRB_AS_REQ message ([RFC4120] section 3.1.2), which includes
 verifying the user's signature and validating the certificate ([RFC4556] section 3.2.2). If the
 KRB_AS_REQ message is valid, the KDC builds the TGT with a PAC ([MS-KILE] section 3.3.5.6.4)
 that contains group membership information in the authorization_data field of the TGT, generates a
@@ -5401,7 +5327,7 @@ The client validates the KRB_TGS_REP message ([MS-KILE] section 3.3.4). If the K
 message is valid, the service ticket is interpreted by the Kerberos runtime within the local client
 computer.
 
-3.3  Example 3: Connecting to an SMB2 Share
+### 3.3 Example 3: Connecting to an SMB2 Share
 
 The examples in the following subsections describe connecting to an SMB2 share by using Kerberos
 protocol [MS-KILE] or NTLM protocol [MS-NLMP]. They build on the use cases for Network Logon:
@@ -5409,7 +5335,7 @@ Mutual Authentication (section 2.5.4.1.3), Network Logon: Client Authentication 
 Security Services: Data Origin Authentication (Signing) (section 2.5.6.1), and their dependent use
 cases.
 
-3.3.1  Using Kerberos Protocol Extensions [MS-KILE]
+#### 3.3.1 Using Kerberos Protocol Extensions [MS-KILE]
 
 This example describes using Kerberos protocol extensions [MS-KILE] to obtain client
 authentication to connect to an SMB2 share.
@@ -5442,7 +5368,8 @@ Release: October 26, 2021
 
 84 / 94
 
-<!-- Extracted images from page 85 -->
+
+<!-- Extracted images from page 85 -->
 ![Extracted image 1 from page 85]([MS-AUTHSOD].images/page085-img01.png)
 <!-- /Extracted images from page 85 -->
 
@@ -5487,7 +5414,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-the pre-authentication data but does not include the pre-authentication data because its function is
+
+the pre-authentication data but does not include the pre-authentication data because its function is
 to discover the supported encryption types.
 
 Step 4: The KDC checks the user principal name in its account database and the pre-authentication
@@ -5555,14 +5483,15 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The SMB2 client calls the Authentication Client's GSS-API GSS_Init_sec_context function
+
+The SMB2 client calls the Authentication Client's GSS-API GSS_Init_sec_context function
 ([RFC2743] section 2.2.1) to verify the GSS token to prove the identity of the SMB2 server and
 verifies the signature as described in [MS-SMB2] section 3.1.5.1. The Authentication Client verifies the
 signature and the GSS token as described in [MS-SPNG] and [MS-NEGOEX] and then validates the
 KRB_AP_REP message. If the validation succeeds, the identity of the server is proven to the SMB2
 client.
 
-3.3.2  Using the NTLM Protocol [MS-NLMP]
+#### 3.3.2 Using the NTLM Protocol [MS-NLMP]
 
 This example describes using NTLM Protocol [MS-NLMP] to obtain client authentication to connect
 to an Server Message Block (SMB2) share. When Kerberos authentication fails or is not
@@ -5599,7 +5528,8 @@ Release: October 26, 2021
 
 87 / 94
 
-<!-- Extracted images from page 88 -->
+
+<!-- Extracted images from page 88 -->
 ![Extracted image 1 from page 88]([MS-AUTHSOD].images/page088-img01.png)
 <!-- /Extracted images from page 88 -->
 
@@ -5637,7 +5567,8 @@ Authentication Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.2.2). The Authentication Server validates the security token and returns the status code that
+
+2.2.2). The Authentication Server validates the security token and returns the status code that
 indicates that a subsequent round trip is required. It also builds the GSS SPNEGO token with a
 CHALLENGE_MESSAGE ([MS-NLMP] section 2.2.1.2), which is returned to the SMB2 server. The
 SMB2 server creates an SMB2 SESSION_SETUP Response ([MS-SMB2] section 2.2.6) with the
@@ -5671,7 +5602,8 @@ Release: October 26, 2021
 
 89 / 94
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this overview is applicable to the following versions of Windows:
 
@@ -5715,7 +5647,7 @@ The information in this overview is applicable to the following versions of Wind
 
   Windows 11 operating system
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 [MS-AUTHSOD] - v20211026
 Authentication Services Protocols Overview
@@ -5724,7 +5656,8 @@ Release: October 26, 2021
 
 90 / 94
 
-1.3 References
+
+1.3 References
 
 2.1.2.2 Protocol
 Interactions
@@ -5732,7 +5665,7 @@ Interactions
 2.1.2.2 Protocol
 Interactions
 
-5  Change Tracking
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5809,7 +5742,8 @@ Release: October 26, 2021
 
 91 / 94
 
-6  Index
+
+## 6 Index
 A
 
 Actors
@@ -5954,7 +5888,8 @@ Functional requirements - overview 22
 
 92 / 94
 
-G
+
+G
 
 Glossary 13
 GSS authentication protocol process - stock quote
@@ -6099,7 +6034,8 @@ System
 
 93 / 94
 
-   requirements
+
+   requirements
       interactive logon authentication
          internal architecture 25
          overview 24

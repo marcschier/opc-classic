@@ -63,7 +63,8 @@ Release: May 30, 2025
 
 1 / 156
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: May 30, 2025
 
 2 / 156
 
-Date
+
+Date
 
 Revision
 History
@@ -527,408 +529,153 @@ Release: May 30, 2025
 
 3 / 156
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.3
-
-2.2.2.2
-
-2.2.2.1
-
-2.2.2.3.1
-
-2.2.2.2.1
-
-2.2.2.1.1
-
-2.2.2.4
-2.2.2.5
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Basic Data Structures .................................................................................. 12
-Fundamental Data Types ....................................................................... 12
-Datatype Identifiers .............................................................................. 15
-Fixed-Length Types ............................................................................... 16
-Variable-Length Types ........................................................................... 18
-Externally Encoded Data Types - Non-Groupable ....................................... 19
-Database Types - Groupable................................................................... 20
-Array Data Types - Non-Groupable .......................................................... 22
-RDS Transport Method Invocation ................................................................. 26
-rdsMethodRequest ................................................................................ 26
-rdsMethodRequest Defined as an HTTP Request .................................. 26
-rdsMethodResponse .............................................................................. 27
-rdsMethodResponse Defined as an HTTP Response .............................. 27
-rdsMethodInfo ...................................................................................... 28
-rdsMethodNameSpace, rdsMethodName ............................................. 28
-rdsClientVersion .................................................................................... 28
-rdsHeaders........................................................................................... 28
-rdsParamCountValue ....................................................................... 29
-rdsParameters ...................................................................................... 29
-rdsParamHeader ............................................................................. 29
-rdsParamContentLength ................................................................... 30
-rdsParamContentSize ....................................................................... 30
-rdsCloseDelimiter .................................................................................. 30
-RDS Data Factory Namespace ...................................................................... 30
-rdsExecuteRequest Message ................................................................... 31
-rdsExecuteResponse Message ................................................................. 32
-rdsQueryRequest Message ..................................................................... 33
-rdsQueryResponse Message ................................................................... 34
-rdsSynchronizeRequest Message ............................................................. 34
-rdsSynchronizeResponse Message ........................................................... 35
-rdsSubmitChangesRequest Message ........................................................ 37
-rdsSubmitChangesResponse Message ...................................................... 37
-rdsConvertToStringRequest Message ....................................................... 37
-rdsConvertToStringResponse Message ..................................................... 38
-rdsCreateRecordsetRequest Message ....................................................... 38
-rdsCreateRecordsetResponse Message ..................................................... 39
-Common Parameters for RDS Data Factory Methods .................................. 39
-rdsConnectionString ........................................................................ 39
-rdsErrorInformation ......................................................................... 41
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-2.2.3.12
-2.2.3.13
-
-2.2.2.6.1
-2.2.2.6.2
-2.2.2.6.3
-
-2.2.3.13.1
-2.2.3.13.2
-
-2.2.2.5.1
-
-2.2.2.6
-
-2.2.2.7
-
-2.2.3
-
-[MS-ADTG] - v20250530
-Remote Data Services (RDS) Transport Protocol
-Copyright © 2025 Microsoft Corporation
-Release: May 30, 2025
-
-4 / 156
-
-2.2.3.14
-
-2.2.3.14.1
-2.2.3.14.2
-2.2.3.14.3
-
-rdsExecuteOptions ........................................................................... 43
-2.2.3.13.3
-rdsExecuteProperties ....................................................................... 44
-2.2.3.13.4
-rdsHandlerString ............................................................................. 45
-2.2.3.13.5
-rdsFetchOptions .............................................................................. 46
-2.2.3.13.6
-rdsSQLCommandParameters ............................................................. 46
-2.2.3.13.7
-rdsSQLCommandString .................................................................... 49
-2.2.3.13.8
-rdsEncapsulatedData ....................................................................... 50
-2.2.3.13.9
-2.2.3.13.10  rdsStatusArray ................................................................................ 50
-2.2.3.13.11  rdsSynchronizeOptions ..................................................................... 52
-2.2.3.13.12  rdsSynchronizeResult ....................................................................... 52
-2.2.3.13.13  rdsTableName ................................................................................. 53
-2.2.3.13.14  rdsLCID .......................................................................................... 53
-2.2.3.13.15  rdsFieldShapeArray .......................................................................... 53
-adtgTablegram ..................................................................................... 55
-adtgHeader..................................................................................... 55
-adtgHandlerOptions ......................................................................... 57
-adtgAllMetaInformation .................................................................... 59
-adtgResultDescriptor .................................................................. 61
-adtgRecordSetContext ................................................................ 64
-adtgTableDescriptor ................................................................... 65
-adtgColumnDescriptorParent ....................................................... 67
-adtgColumnDescriptorChild ......................................................... 68
-adtgColumnDescriptorCommon .................................................... 69
-Common Fields in adtgAllMetaInformation .................................... 79
-adtgAllRowOperations ...................................................................... 88
-adtgParentChange ..................................................................... 90
-adtgParentDelete ....................................................................... 90
-adtgParentInsert ........................................................................ 91
-adtgParentUnchanged ................................................................ 91
-adtgChildChange ....................................................................... 92
-adtgChildDelete ......................................................................... 92
-adtgChildInsert .......................................................................... 93
-adtgChildUnChanged .................................................................. 93
-Common Fields in adtgAllRowOperations ....................................... 94
-adtgTokenDone ............................................................................... 98
-adtgTablegram Constants ................................................................. 98
-
-2.2.3.14.4.1
-2.2.3.14.4.2
-2.2.3.14.4.3
-2.2.3.14.4.4
-2.2.3.14.4.5
-2.2.3.14.4.6
-2.2.3.14.4.7
-2.2.3.14.4.8
-2.2.3.14.4.9
-
-2.2.3.14.3.1
-2.2.3.14.3.2
-2.2.3.14.3.3
-2.2.3.14.3.4
-2.2.3.14.3.5
-2.2.3.14.3.6
-2.2.3.14.3.7
-
-2.2.3.14.5
-2.2.3.14.6
-
-2.2.3.14.4
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.1.2.1
-3.1.1.2.2
-3.1.1.2.3
-
-3  Protocol Details ................................................................................................... 100
-Common Details ............................................................................................. 100
-Abstract Data Model ................................................................................... 100
-Data Store .......................................................................................... 100
-RecordSet ........................................................................................... 101
-Processing for Maintaining a Hierarchical RecordSet ............................ 101
-Algorithm for Processing Synchronization Results for Concurrency ........ 102
-Algorithm for Producing a TableGram from a RecordSet or a RecordSet from
-a TableGram .................................................................................. 103
-Algorithm (Recursive) for Encoding a RecordSet into a TableGram ........ 104
-Calculating a DiffGram .................................................................... 105
-Timers ..................................................................................................... 106
-Initialization .............................................................................................. 106
-Higher-Layer Triggered Events .................................................................... 106
-Message Processing Events and Sequencing Rules ......................................... 106
-Timer Events ............................................................................................. 106
-Other Local Events ..................................................................................... 106
-Client Details .................................................................................................. 106
-Abstract Data Model ................................................................................... 106
-Timers ..................................................................................................... 106
-Request Execution Timer ...................................................................... 106
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3.1.1.2.4
-3.1.1.2.5
-
-3.2.1
-3.2.2
-
-3.2.2.1
-
-3.2
-
-[MS-ADTG] - v20250530
-Remote Data Services (RDS) Transport Protocol
-Copyright © 2025 Microsoft Corporation
-Release: May 30, 2025
-
-5 / 156
-
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-
-3.3.2.1
-
-3.3.2
-
-3.3.3
-3.3.4
-3.3.5
-
-Initialization .............................................................................................. 107
-Higher-Layer Triggered Events .................................................................... 107
-Establishing a Connection to the RDS Transport Server ............................. 107
-Executing a Complex SQL Command Query ............................................. 107
-Changing Cached Data ......................................................................... 108
-Synchronizing Client RecordSet Changes to the Server ............................. 108
-Creating a New Set of Data and Sending It to the Server .......................... 108
-Message Processing Events and Sequencing Rules ......................................... 109
-Timer Events ............................................................................................. 109
-Other Local Events ..................................................................................... 109
-Server Details ................................................................................................. 109
-Abstract Data Model ................................................................................... 109
-Algorithm for Hooking Up Message Invocation ......................................... 109
-Algorithm for Constructing Method Invocation Parameter Sets ................... 109
-Algorithm for Working with SQL Command Parameters ............................. 110
-Timers ..................................................................................................... 110
-SQL Command Execution Timer ............................................................. 110
-Initialization .............................................................................................. 110
-Higher-Layer Triggered Events .................................................................... 110
-Message Processing Events and Sequencing Rules ......................................... 110
-Common Steps in Request Processing .................................................... 110
-Handler Execution .......................................................................... 111
-Error Handling................................................................................ 111
-Command Processing ........................................................................... 112
-Languages ..................................................................................... 112
-Hierarchical RecordSet .................................................................... 112
-Bound Parameters .......................................................................... 113
-Shape Command Language Details ................................................... 113
-Execute Event Processing ...................................................................... 119
-Query Event Processing ........................................................................ 120
-Synchronize Event Processing ................................................................ 121
-SubmitChanges Event Processing ........................................................... 121
-ConvertToString Event Processing .......................................................... 122
-CreateRecordset Event Processing .......................................................... 122
-Algorithm for Parsing Data in an rdsCreateRecordsetRequest ............... 122
-Algorithm for Creating a RecordSet for rdsCreateRecordsetResponse .... 123
-Method Invocation Processing ................................................................ 125
-Timer Events ............................................................................................. 125
-Other Local Events ..................................................................................... 125
-
-3.3.5.1
-
-3.3.5.1.1
-3.3.5.1.2
-
-3.3.5.2
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-3.3.5.2.4
-
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-
-3.3.5.8.1
-3.3.5.8.2
-
-3.3.5.9
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ............................................................................................... 126
-Constructing a Generic Processing Message ........................................................ 126
-rdsMethodResponse with Error Information ........................................................ 128
-rdsSynchronizeResponse with Error Information ................................................. 129
-rdsExecuteRequest .......................................................................................... 132
-rdsExecuteResponse ........................................................................................ 134
-rdsExecuteResponse with Error Information ....................................................... 136
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-5  Security ............................................................................................................... 140
-Security Considerations for Implementers .......................................................... 140
-Index of Security Parameters ........................................................................... 140
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 141
-
-7  Appendix B: Product Behavior ............................................................................. 144
-
-8  Change Tracking .................................................................................................. 153
-
-9  Index ................................................................................................................... 154
-
-[MS-ADTG] - v20250530
-Remote Data Services (RDS) Transport Protocol
-Copyright © 2025 Microsoft Corporation
-Release: May 30, 2025
-
-6 / 156
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Basic Data Structures](#221-basic-data-structures)
+      - [2.2.1.1 Fundamental Data Types](#2211-fundamental-data-types)
+      - [2.2.1.2 Datatype Identifiers](#2212-datatype-identifiers)
+      - [2.2.1.3 Fixed-Length Types](#2213-fixed-length-types)
+      - [2.2.1.4 Variable-Length Types](#2214-variable-length-types)
+      - [2.2.1.5 Externally Encoded Data Types - Non-Groupable](#2215-externally-encoded-data-types-non-groupable)
+      - [2.2.1.6 Database Types - Groupable](#2216-database-types-groupable)
+      - [2.2.1.7 Array Data Types - Non-Groupable](#2217-array-data-types-non-groupable)
+    - [2.2.2 RDS Transport Method Invocation](#222-rds-transport-method-invocation)
+      - [2.2.2.1 rdsMethodRequest](#2221-rdsmethodrequest)
+        - [2.2.2.1.1 rdsMethodRequest Defined as an HTTP Request](#22211-rdsmethodrequest-defined-as-an-http-request)
+      - [2.2.2.2 rdsMethodResponse](#2222-rdsmethodresponse)
+        - [2.2.2.2.1 rdsMethodResponse Defined as an HTTP Response](#22221-rdsmethodresponse-defined-as-an-http-response)
+      - [2.2.2.3 rdsMethodInfo](#2223-rdsmethodinfo)
+        - [2.2.2.3.1 rdsMethodNameSpace, rdsMethodName](#22231-rdsmethodnamespace-rdsmethodname)
+      - [2.2.2.4 rdsClientVersion](#2224-rdsclientversion)
+      - [2.2.2.5 rdsHeaders](#2225-rdsheaders)
+        - [2.2.2.5.1 rdsParamCountValue](#22251-rdsparamcountvalue)
+      - [2.2.2.6 rdsParameters](#2226-rdsparameters)
+        - [2.2.2.6.1 rdsParamHeader](#22261-rdsparamheader)
+        - [2.2.2.6.2 rdsParamContentLength](#22262-rdsparamcontentlength)
+        - [2.2.2.6.3 rdsParamContentSize](#22263-rdsparamcontentsize)
+      - [2.2.2.7 rdsCloseDelimiter](#2227-rdsclosedelimiter)
+    - [2.2.3 RDS Data Factory Namespace](#223-rds-data-factory-namespace)
+      - [2.2.3.1 rdsExecuteRequest Message](#2231-rdsexecuterequest-message)
+      - [2.2.3.2 rdsExecuteResponse Message](#2232-rdsexecuteresponse-message)
+      - [2.2.3.3 rdsQueryRequest Message](#2233-rdsqueryrequest-message)
+      - [2.2.3.4 rdsQueryResponse Message](#2234-rdsqueryresponse-message)
+      - [2.2.3.5 rdsSynchronizeRequest Message](#2235-rdssynchronizerequest-message)
+      - [2.2.3.6 rdsSynchronizeResponse Message](#2236-rdssynchronizeresponse-message)
+      - [2.2.3.7 rdsSubmitChangesRequest Message](#2237-rdssubmitchangesrequest-message)
+      - [2.2.3.8 rdsSubmitChangesResponse Message](#2238-rdssubmitchangesresponse-message)
+      - [2.2.3.9 rdsConvertToStringRequest Message](#2239-rdsconverttostringrequest-message)
+      - [2.2.3.10 rdsConvertToStringResponse Message](#22310-rdsconverttostringresponse-message)
+      - [2.2.3.11 rdsCreateRecordsetRequest Message](#22311-rdscreaterecordsetrequest-message)
+      - [2.2.3.12 rdsCreateRecordsetResponse Message](#22312-rdscreaterecordsetresponse-message)
+      - [2.2.3.13 Common Parameters for RDS Data Factory Methods](#22313-common-parameters-for-rds-data-factory-methods)
+        - [2.2.3.13.1 rdsConnectionString](#223131-rdsconnectionstring)
+        - [2.2.3.13.2 rdsErrorInformation](#223132-rdserrorinformation)
+        - [2.2.3.13.3 rdsExecuteOptions](#223133-rdsexecuteoptions)
+        - [2.2.3.13.4 rdsExecuteProperties](#223134-rdsexecuteproperties)
+          - [2.2.3.14.3.7 for details. The syntax of ExecPropKeyValue is as follows.](#2231437-for-details-the-syntax-of-execpropkeyvalue-is-as-follows)
+        - [2.2.3.14.4 adtgAllRowOperations](#223144-adtgallrowoperations)
+          - [2.2.3.14.4.1 adtgParentChange](#2231441-adtgparentchange)
+          - [2.2.3.14.4.2 adtgParentDelete](#2231442-adtgparentdelete)
+          - [2.2.3.14.4.3 adtgParentInsert](#2231443-adtgparentinsert)
+          - [2.2.3.14.4.4 adtgParentUnchanged](#2231444-adtgparentunchanged)
+          - [2.2.3.14.4.5 adtgChildChange](#2231445-adtgchildchange)
+          - [2.2.3.14.4.6 adtgChildDelete](#2231446-adtgchilddelete)
+          - [2.2.3.14.4.7 adtgChildInsert](#2231447-adtgchildinsert)
+          - [2.2.3.14.4.8 adtgChildUnChanged](#2231448-adtgchildunchanged)
+          - [2.2.3.14.4.9 Common Fields in adtgAllRowOperations](#2231449-common-fields-in-adtgallrowoperations)
+        - [2.2.3.14.5 adtgTokenDone](#223145-adtgtokendone)
+        - [2.2.3.14.6 adtgTablegram Constants](#223146-adtgtablegram-constants)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Data Store](#3111-data-store)
+      - [3.1.1.2 RecordSet](#3112-recordset)
+        - [3.1.1.2.1 Processing for Maintaining a Hierarchical RecordSet](#31121-processing-for-maintaining-a-hierarchical-recordset)
+        - [3.1.1.2.2 Algorithm for Processing Synchronization Results for Concurrency](#31122-algorithm-for-processing-synchronization-results-for-concurrency)
+        - [3.1.1.2.3 Algorithm for Producing a TableGram from a RecordSet or a RecordSet from](#31123-algorithm-for-producing-a-tablegram-from-a-recordset-or-a-recordset-from)
+        - [3.1.1.2.4 Algorithm (Recursive) for Encoding a RecordSet into a TableGram](#31124-algorithm-recursive-for-encoding-a-recordset-into-a-tablegram)
+        - [3.1.1.2.5 Calculating a DiffGram](#31125-calculating-a-diffgram)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Request Execution Timer](#3221-request-execution-timer)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Establishing a Connection to the RDS Transport Server](#3241-establishing-a-connection-to-the-rds-transport-server)
+      - [3.2.4.2 Executing a Complex SQL Command Query](#3242-executing-a-complex-sql-command-query)
+      - [3.2.4.3 Changing Cached Data](#3243-changing-cached-data)
+      - [3.2.4.4 Synchronizing Client RecordSet Changes to the Server](#3244-synchronizing-client-recordset-changes-to-the-server)
+      - [3.2.4.5 Creating a New Set of Data and Sending It to the Server](#3245-creating-a-new-set-of-data-and-sending-it-to-the-server)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Algorithm for Hooking Up Message Invocation](#3311-algorithm-for-hooking-up-message-invocation)
+      - [3.3.1.2 Algorithm for Constructing Method Invocation Parameter Sets](#3312-algorithm-for-constructing-method-invocation-parameter-sets)
+      - [3.3.1.3 Algorithm for Working with SQL Command Parameters](#3313-algorithm-for-working-with-sql-command-parameters)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 SQL Command Execution Timer](#3321-sql-command-execution-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Common Steps in Request Processing](#3351-common-steps-in-request-processing)
+        - [3.3.5.1.1 Handler Execution](#33511-handler-execution)
+        - [3.3.5.1.2 Error Handling](#33512-error-handling)
+      - [3.3.5.2 Command Processing](#3352-command-processing)
+        - [3.3.5.2.1 Languages](#33521-languages)
+        - [3.3.5.2.2 Hierarchical RecordSet](#33522-hierarchical-recordset)
+        - [3.3.5.2.3 Bound Parameters](#33523-bound-parameters)
+        - [3.3.5.2.4 Shape Command Language Details](#33524-shape-command-language-details)
+      - [3.3.5.3 Execute Event Processing](#3353-execute-event-processing)
+      - [3.3.5.4 Query Event Processing](#3354-query-event-processing)
+      - [3.3.5.5 Synchronize Event Processing](#3355-synchronize-event-processing)
+      - [3.3.5.6 SubmitChanges Event Processing](#3356-submitchanges-event-processing)
+      - [3.3.5.7 ConvertToString Event Processing](#3357-converttostring-event-processing)
+      - [3.3.5.8 CreateRecordset Event Processing](#3358-createrecordset-event-processing)
+        - [3.3.5.8.1 Algorithm for Parsing Data in an rdsCreateRecordsetRequest](#33581-algorithm-for-parsing-data-in-an-rdscreaterecordsetrequest)
+        - [3.3.5.8.2 Algorithm for Creating a RecordSet for rdsCreateRecordsetResponse](#33582-algorithm-for-creating-a-recordset-for-rdscreaterecordsetresponse)
+      - [3.3.5.9 Method Invocation Processing](#3359-method-invocation-processing)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Constructing a Generic Processing Message](#41-constructing-a-generic-processing-message)
+  - [4.2 rdsMethodResponse with Error Information](#42-rdsmethodresponse-with-error-information)
+  - [4.3 rdsSynchronizeResponse with Error Information](#43-rdssynchronizeresponse-with-error-information)
+  - [4.4 rdsExecuteRequest](#44-rdsexecuterequest)
+  - [4.5 rdsExecuteResponse](#45-rdsexecuteresponse)
+  - [4.6 rdsExecuteResponse with Error Information](#46-rdsexecuteresponse-with-error-information)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Remote Data Services (RDS) Transport Protocol<1> is an HTTP request/response protocol that
 facilitates:
@@ -944,7 +691,7 @@ return parameters.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1003,7 +750,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
+
+[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
 groupable: A set of parameters that share a single parameter header.
@@ -1056,14 +804,14 @@ update, replicated update.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1076,7 +824,8 @@ Release: May 30, 2025
 
 8 / 156
 
-[FIPS127] National Institute of Standards and Technology, "Database Language SQL", FIPS PUB 127,
+
+[FIPS127] National Institute of Standards and Technology, "Database Language SQL", FIPS PUB 127,
 June 1993, https://nvlpubs.nist.gov/nistpubs/Legacy/FIPS/fipspub127-1.pdf
 
 [IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
@@ -1113,7 +862,7 @@ editor.org/info/rfc2818
 
 [US-ASCII] Injosoft AB, "ASCII Code - The extended ASCII table", https://www.ascii-code.com/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DCOM] Microsoft Corporation, "Distributed Component Object Model (DCOM) Remote Protocol".
 
@@ -1143,14 +892,15 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-ADTG].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 [SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
 W3C Note, May 2000, https://www.w3.org/TR/2000/NOTE-SOAP-20000508/
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Data Services (RDS) Transport Protocol is an application-level protocol for distributed
 applications. RDS Transport Protocol specifies a protocol allowing for the remote query and
@@ -1197,7 +947,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-  Section 2.2.3: The RDS messages specific to data query and manipulation.
+
+  Section 2.2.3: The RDS messages specific to data query and manipulation.
 
   Section 2.2: The syntax and encoding of the resulting RecordSets.
 
@@ -1208,18 +959,18 @@ SOAP and the Distributed Component Object Model (DCOM), and is no longer used by
 SharePoint Services. Microsoft does not use the RDS Transport Protocol within the Windows
 operating systems.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The RDS Transport Protocol depends on HTTP/1.1, as specified in [RFC2616], and uses HTTP as its
 underlying transport. The functionality supplied by the RDS Transport Protocol has been superseded
 by SOAP and DCOM. For more information, see [SOAP1.1] and [MS-DCOM].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Throughout this document, it is assumed that the client has already discovered the server and
 established an HTTP connection for use with RDS Transport Protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The RDS Transport Protocol specifies a protocol used for method invocation over HTTP. The RDS
 Transport Protocol is fully deprecated and is maintained only for backward-compatibility reasons. The
@@ -1227,12 +978,12 @@ functionality supplied by the RDS Transport Protocol is fully provided by SOAP [
 DCOM [MS-DCOM] (which is layered on RPC [MS-RPCE]) being transported over HTTP [MS-RPCH].
 New implementations of client/server applications use SOAP and DCOM over HTTP.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 RDS Transport Protocol does not exhibit explicit or implicit versioning or capability negotiation
 behavior.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are three areas of vendor extensibility in RDS Transport Protocol, including:
 
@@ -1249,7 +1000,7 @@ data provider and not restricted by the RDS Transport Protocol specification.
 This protocol uses SCODES, which are vendor-extensible. Vendors are free to choose their own values
 for this field, as long as the C bit (0x20000000) is set as specified in [MS-ERREF] section 2.1.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for the RDS Transport Protocol.
 
@@ -1260,7 +1011,8 @@ Release: May 30, 2025
 
 11 / 156
 
-2  Messages
+
+## 2 Messages
 
 The RDS Transport Protocol enables the transport of method invocations and responses over an HTTP
 POST stream. The following key elements are specified in this section:
@@ -1289,7 +1041,7 @@ orders. The ABNF constructs in this specification precisely describe the allowab
 Section 4.1 provides an example of how the ABNF in this specification is used to construct a generic
 processing message.
 
-2.1  Transport
+### 2.1 Transport
 
 The request and response messages of the RDS Transport Protocol are performed as HTTP 1.1 POST
 requests. An RDS message always contains a Request-URI corresponding to the method to be invoked
@@ -1304,16 +1056,16 @@ sections:
 Except where otherwise specified, the RDS Transport Protocol uses a UTF-16LE encoding, as specified
 in [UNICODE], for all string data, including all string constants appearing in syntax definitions.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the RDS Transport Protocol message syntax.
 
-2.2.1  Basic Data Structures
+#### 2.2.1 Basic Data Structures
 
 This section specifies the basic data types that can be encoded within RDS Transport Protocol
 messages.
 
-2.2.1.1  Fundamental Data Types
+##### 2.2.1.1 Fundamental Data Types
 
 The RDS Transport Protocol encodes the fundamental datatype within an RDS Transport Protocol
 message by writing a 2-byte constant that identifies the datatype followed by the data in a format
@@ -1327,7 +1079,8 @@ Release: May 30, 2025
 
 12 / 156
 
-  BIT: A single bit value of either 0 or 1.
+
+  BIT: A single bit value of either 0 or 1.
 
  BIT = %b0 / %b1
 
@@ -1384,7 +1137,8 @@ Release: May 30, 2025
 
 13 / 156
 
-  VARIANT: A variant data type that can be used to hold any single, scalar, fixed-size data type.
+
+  VARIANT: A variant data type that can be used to hold any single, scalar, fixed-size data type.
 
 Sixteen bytes are allocated to support the variant sizes of different data types, from 1 byte (BYTE)
 to 16 bytes (GUID).
@@ -1445,7 +1199,8 @@ Release: May 30, 2025
 
 14 / 156
 
-  StringLength: A 2-byte (16-bit) value that specifies the number of Unicode characters in the
+
+  StringLength: A 2-byte (16-bit) value that specifies the number of Unicode characters in the
 
 string. The maximum length value is 65535.
 
@@ -1487,7 +1242,7 @@ commonly used by the protocol:
  NUMBER        =  "0" / (NONZERODIGIT *(DIGIT))
  ZEROBIT       =  %b0
 
-2.2.1.2  Datatype Identifiers
+##### 2.2.1.2 Datatype Identifiers
 
 Datatype identifiers are 2-byte values that specify the exact type and encoding format of data as
 follows:<11>
@@ -1507,7 +1262,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-  DBTYPE-FILETIME / DBTYPE-GUID / DBTYPE-BYTES /
+
+  DBTYPE-FILETIME / DBTYPE-GUID / DBTYPE-BYTES /
   DBTYPE-STR / DBTYPE-WSTR / DBTYPE-DBDATE / DBTYPE-DBTIME /
   DBTYPE-DBTIMESTAMP / DBTYPE-VARNUMERIC
 
@@ -1564,7 +1320,7 @@ The following constants are used for database communication:
  DBTYPE-DBTIMESTAMP      = %x87.00
  DBTYPE-VARNUMERIC       = %x8B.00
 
-2.2.1.3  Fixed-Length Types
+##### 2.2.1.3 Fixed-Length Types
 
 The following specifies groupable data types of fixed length:
 
@@ -1575,7 +1331,8 @@ Release: May 30, 2025
 
 16 / 156
 
- FIXED-LEN-VTDATA-GROUPABLE =
+
+ FIXED-LEN-VTDATA-GROUPABLE =
          ( VT-EMPTY                    )  /
          ( VT-NULL                     )  /
          ( VT-I2          WORD         )  /
@@ -1642,7 +1399,8 @@ Release: May 30, 2025
 
 17 / 156
 
-  DECIMALSign: Specifies the sign of the decimal value.
+
+  DECIMALSign: Specifies the sign of the decimal value.
 
  DECIMALSign     = DECIMALPositive / DECIMALNegative
  DECIMALPositive = %x00
@@ -1666,7 +1424,7 @@ The range of the mantissa is 0-2^96.
 
  DECIMALMid = ULONG
 
-2.2.1.4  Variable-Length Types
+##### 2.2.1.4 Variable-Length Types
 
 The following specifies groupable data types of variable length. The data length appears in a known
 location in the data.
@@ -1700,7 +1458,8 @@ Release: May 30, 2025
 
 18 / 156
 
- BSTR        = (VT-BSTR BSTRNULLABLE)
+
+ BSTR        = (VT-BSTR BSTRNULLABLE)
  BSTREMPTY   = BSTR / VT-EMPTY
 
  UHEXDIGIT   = HEXDIGIT %x00
@@ -1754,7 +1513,7 @@ more details on the use of SCODEs in RDS Transport Protocol messages, see sectio
 
 one or more properties failed to be set.
 
-2.2.1.5  Externally Encoded Data Types - Non-Groupable
+##### 2.2.1.5 Externally Encoded Data Types - Non-Groupable
 
 The following specifies the data types that are constructed from multiple base types:
 
@@ -1770,7 +1529,8 @@ Release: May 30, 2025
 
 19 / 156
 
- INTERFACEDATA    = INTERFACEID IMPLEMENTATIONID DATASTREAM
+
+ INTERFACEDATA    = INTERFACEID IMPLEMENTATIONID DATASTREAM
  INTERFACEID      = 16BYTE
  IMPLEMENTATIONID = 16BYTE
  DATASTREAM       = *(BYTE)
@@ -1783,7 +1543,7 @@ sequence of bytes is determinable; for example, by using an end-of-stream delimi
 INTERFACEID and IMPLEMENTATIONID are used by the caller to uniquely distinguish the type of the
 bytes that follow it in the DATASTREAM component.<13>
 
-2.2.1.6  Database Types - Groupable
+##### 2.2.1.6 Database Types - Groupable
 
 The following data types specify data for storing into a data store.
 
@@ -1840,7 +1600,8 @@ Release: May 30, 2025
 
 20 / 156
 
-See the description of dbVARNUMERICData for the exact use of dbVARNUMERICScale. For
+
+See the description of dbVARNUMERICData for the exact use of dbVARNUMERICScale. For
 example, "12000" could be stored as "12" with a scale of -3. Also, the scale can be greater
 than precision to represent very small numbers without using exponential notation; for
 example, "0.00012" could be stored as dbVARNUMERICValue = 12 with
@@ -1909,7 +1670,8 @@ Release: May 30, 2025
 
 21 / 156
 
-                  dbDBTIMEMinute
+
+                  dbDBTIMEMinute
                   dbDBTIMESecond
 
  dbDBTIMEHour   = USHORT
@@ -1956,7 +1718,7 @@ Datatype: ULONG
 A 4-byte unsigned integer that specifies the number of nanoseconds (billionths of a second)
 since the beginning of the last second for the time of the event.
 
-2.2.1.7  Array Data Types - Non-Groupable
+##### 2.2.1.7 Array Data Types - Non-Groupable
 
 This section specifies the encoding of array data types. The encoding of all arrays has a common form:
 
@@ -1977,7 +1739,8 @@ Release: May 30, 2025
 
 22 / 156
 
-  An array data element section, which consists of an array of actual data elements of a data type
+
+  An array data element section, which consists of an array of actual data elements of a data type
 specified in the preceding ARRAYMD. The number of data elements in the array is determined in
 ARRAYMD. If the datatype identifier is VT-ARRAY-EMPTY or VT-ARRAY-NULL, the elements section
 MUST be omitted.
@@ -2053,7 +1816,8 @@ Release: May 30, 2025
 
 23 / 156
 
- NUMDIMS         = USHORT
+
+ NUMDIMS         = USHORT
 
  SIZEOFELEMENT          = ULONG
  SIZEOFELEMBSTR         = %x04.00.00.00
@@ -2126,7 +1890,8 @@ Release: May 30, 2025
 
 24 / 156
 
- FADF-BSTR-TYPE         = %x01
+
+ FADF-BSTR-TYPE         = %x01
  FADF-UNKNOWN-TYPE      = %x02
  FADF-DISPATCH-TYPE     = %x04
  FADF-VARIANT-TYPE      = %x08
@@ -2200,7 +1965,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-SAFEARRAYBOUNDELEMS components of all occurrences of SAFEARRAYBOUND in the preceding
+
+SAFEARRAYBOUNDELEMS components of all occurrences of SAFEARRAYBOUND in the preceding
 BOUNDSDATA component.
 
 For example, if an array is two-dimensional and has dimensions two and five, then NUMDIMS will
@@ -2212,7 +1978,7 @@ highest. For this example the array elements would encode as follows:
 
 [0][0], [0][1], [0][2], [0][3], [0][4], [1][0], [1][1], [1][2], [1][3], [1][4], [1][5]
 
-2.2.2  RDS Transport Method Invocation
+#### 2.2.2 RDS Transport Method Invocation
 
 The RDS Transport Protocol specifies syntax and encoding for method calls over HTTP requests. It
 defines how methods can be located and how the parameters are constructed for the HTTP requests.
@@ -2222,7 +1988,7 @@ HTTPS. Implementation-specific authentication such as the user name and password
 specified in the parameters of the request messages of the RDS Transport Protocol. The RDS
 Transport Protocol has no additional security or authentication capabilities.
 
-2.2.2.1  rdsMethodRequest
+##### 2.2.2.1 rdsMethodRequest
 
 This section specifies a message to invoke a method on the server.
 
@@ -2236,7 +2002,7 @@ The syntax of rdsMethodRequest is defined as follows.
                     rdsParameters
                     rdsCloseDelimiter
 
-2.2.2.1.1 rdsMethodRequest Defined as an HTTP Request
+###### 2.2.2.1.1 rdsMethodRequest Defined as an HTTP Request
 
 The rdsMethodRequest is separated into the following HTTP elements:
 
@@ -2266,7 +2032,8 @@ Release: May 30, 2025
 
 26 / 156
 
-  Cache-Control
+
+  Cache-Control
 
 The HTTP headers MUST include:
 
@@ -2281,7 +2048,7 @@ rdsClientVersion, as specified in section 2.2.2.4.
 The HTTP request body contains the rdsParameters and rdsCloseDelimiter of the RDS message. The
 character set encoding for the HTTP Request-line and header is as specified in [RFC2616].<15><16>
 
-2.2.2.2  rdsMethodResponse
+##### 2.2.2.2 rdsMethodResponse
 
 The rdsMethodResponse specifies the response returned from invoking a method with parameters on a
 remote system. This message is used in the definition of all response messages.
@@ -2307,7 +2074,7 @@ The syntax of rdsMethodResponse is defined as follows.
 
 The rdsReturnValue is present if the remote method being invoked is defined to have a return value.
 
-2.2.2.2.1 rdsMethodResponse Defined as an HTTP Response
+###### 2.2.2.2.1 rdsMethodResponse Defined as an HTTP Response
 
 The rdsMethodResponse is separated into the following HTTP elements:
 
@@ -2336,7 +2103,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-2.2.2.3  rdsMethodInfo
+
+##### 2.2.2.3 rdsMethodInfo
 
 The rdsMethodInfo specifies the type of operation the request is instructing the server to perform. The
 rdsMethodInfo method is sent as the HTTP URI in the HTTP request.<18>
@@ -2350,7 +2118,7 @@ ASCII encoding, as specified in [US-ASCII].
 
  rdsQualifiedMethodName = rdsMethodNameSpace "." rdsMethodName
 
-2.2.2.3.1 rdsMethodNameSpace, rdsMethodName
+###### 2.2.2.3.1 rdsMethodNameSpace, rdsMethodName
 
 The rdsMethodNameSpace is the method namespace of the remote method to be invoked.<19>
 rdsMethodName is the name of the remote method to be invoked.
@@ -2364,7 +2132,7 @@ New message sets SHOULD choose rdsMethodNameSpace and rdsMethodName such that th
 length of the rdsMethodInfo component is at most 255 characters. New messages MUST also choose
 rdsMethodNameSpace greater than 0 characters and rdsMethodName greater than 0 characters.
 
-2.2.2.4  rdsClientVersion
+##### 2.2.2.4 rdsClientVersion
 
 The rdsClientVersion contains the RDS Transport Protocol client version as an HTTP header.
 
@@ -2381,7 +2149,7 @@ The syntax of rdsClientVersion is defined as follows.<20>
  rdsVerMinor           = ASCIIDIGIT ASCIIDIGIT
  ASCIIDIGIT            = %x30-39
 
-2.2.2.5  rdsHeaders
+##### 2.2.2.5 rdsHeaders
 
 The rdsHeaders defines the HTTP content type of the RDS message as MIME multipart encoded, as
 specified in [RFC2045], and contains the number of rdsNonGroupableParam and rdsGroupableParam
@@ -2401,7 +2169,8 @@ Release: May 30, 2025
 
 28 / 156
 
- rdsHeaderContentType  = "Content-Type: multipart/mixed"
+
+ rdsHeaderContentType  = "Content-Type: multipart/mixed"
                          "; boundary="
                          BOUNDARY
 
@@ -2414,7 +2183,7 @@ Release: May 30, 2025
 
 BOUNDARY delimits MIME multipart entities, as specified in [RFC2045].
 
-2.2.2.5.1 rdsParamCountValue
+###### 2.2.2.5.1 rdsParamCountValue
 
 The rdsParamCountValue defines the number of parameters to be passed to rdsMethodName in the
 rdsMethodInfo component. rdsParamCountValue defines the number of occurrences of
@@ -2422,7 +2191,7 @@ rdsNonGroupableParam and rdsGroupableParam in the rdsParameters component.<21>
 
  rdsParamCountValue = NUMBER
 
-2.2.2.6  rdsParameters
+##### 2.2.2.6 rdsParameters
 
 The rdsParameters component defines the values of the parameters of the method to be invoked.
 
@@ -2439,7 +2208,7 @@ The syntax of rdsParameters is defined as follows.<22>
                         VAR-LEN-VTDATA-GROUPABLE
  rdsParamGroupData    = 1*rdsGroupableParam
 
-2.2.2.6.1 rdsParamHeader
+###### 2.2.2.6.1 rdsParamHeader
 
 The rdsParamHeader specifies the HTTP Content-Type of a parameter. It delimits a group of
 parameters and precedes a sequence of one or more groupable parameters or exactly one non-
@@ -2465,9 +2234,10 @@ Release: May 30, 2025
 
 29 / 156
 
- rdsParamContentType   = "Content-Type:" SP "application/x-varg"
 
-2.2.2.6.2 rdsParamContentLength
+ rdsParamContentType   = "Content-Type:" SP "application/x-varg"
+
+###### 2.2.2.6.2 rdsParamContentLength
 
 An rdsParamContentLength field MUST be omitted when the rdsParamGroup field contains an
 rdsNonGroupableParam field. Otherwise, the rdsParamContentLength field MUST be present. The
@@ -2477,7 +2247,7 @@ syntax of an rdsParamContentLength field is defined as follows.
                            rdsParamContentSize
                            CRLF
 
-2.2.2.6.3 rdsParamContentSize
+###### 2.2.2.6.3 rdsParamContentSize
 
 The value of the rdsParamContentSize field MUST be the length, in bytes, of the value of the
 rdsParamContentSize field's containing rdsParamGroup field minus the length, in bytes, of the
@@ -2486,7 +2256,7 @@ in the message as a decimal string.
 
  rdsParamContentSize = NUMBER
 
-2.2.2.7  rdsCloseDelimiter
+##### 2.2.2.7 rdsCloseDelimiter
 
 An rdsCloseDelimiter component designates the end of a message.
 
@@ -2497,7 +2267,7 @@ The syntax of rdsCloseDelimiter is defined as follows.
                       DOUBLEDASH
                       CRLF
 
-2.2.3  RDS Data Factory Namespace
+#### 2.2.3 RDS Data Factory Namespace
 
 This section specifies the set of messages that are specific to data query and manipulation. These
 messages conform to the syntax of rdsMethodRequest (section 2.2.2.1) or
@@ -2527,14 +2297,15 @@ Release: May 30, 2025
 
 30 / 156
 
- rdsClientVersionDataFactory = "ADCClientVersion:"
+
+ rdsClientVersionDataFactory = "ADCClientVersion:"
                                rdsDataFactoryVerMajor "."
                                rdsDataFactoryVerMinor
 
  rdsDataFactoryVerMajor      = "01"
  rdsDataFactoryVerMinor      = "06"
 
-2.2.3.1  rdsExecuteRequest Message
+##### 2.2.3.1 rdsExecuteRequest Message
 
 The rdsExecuteRequest message is sent to request the execution of a specified SQL or Shape
 command.<24>
@@ -2600,7 +2371,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-                                 rdsExecuteOptions
+
+                                 rdsExecuteOptions
                                  ExecuteReqTableName
                                  rdsExecuteProperties
                                  rdsFetchOptions
@@ -2634,7 +2406,7 @@ Release: May 30, 2025
  rdsQueryString                = rdsSQLCommandString /
                                  rdsShapeCommandString
 
-2.2.3.2  rdsExecuteResponse Message
+##### 2.2.3.2 rdsExecuteResponse Message
 
 The rdsExecuteResponse message is sent in response to an rdsExecuteRequest message.<25>
 
@@ -2673,7 +2445,8 @@ Release: May 30, 2025
 
 32 / 156
 
- rdsHeadersExecuteRes9Args      = rdsHeaderContentType
+
+ rdsHeadersExecuteRes9Args      = rdsHeaderContentType
                                   rdsParamCountName
                                   rdsParamCountExecuteRes9Args
                                   CRLF
@@ -2727,7 +2500,7 @@ Release: May 30, 2025
  rdsReturnValueExecuteRes       = rdsParamHeader
                                   rdsEncapsulatedData
 
-2.2.3.3  rdsQueryRequest Message
+##### 2.2.3.3 rdsQueryRequest Message
 
 The rdsQueryRequest message is sent to request the execution of a simple parameterless SQL query.
 
@@ -2745,7 +2518,8 @@ Release: May 30, 2025
 
 33 / 156
 
-                           rdsCloseDelimiter
+
+                           rdsCloseDelimiter
 
  rdsMethodInfoQuery      = rdsMethodInfoDataFactory "Query"
 
@@ -2760,7 +2534,7 @@ Release: May 30, 2025
                            rdsSQLCommandString / rdsShapeCommandString
                            rdsConnectionString
 
-2.2.3.4  rdsQueryResponse Message
+##### 2.2.3.4 rdsQueryResponse Message
 
 The rdsQueryResponse message is sent in response to an rdsQueryRequest message.
 
@@ -2785,7 +2559,7 @@ The syntax of rdsQueryResponse is defined as follows.
  rdsReturnValueQueryRes  = rdsParamHeader
                            rdsEncapsulatedData
 
-2.2.3.5  rdsSynchronizeRequest Message
+##### 2.2.3.5 rdsSynchronizeRequest Message
 
 The rdsSynchronizeRequest message is sent to request synchronization of data between the client and
 server.<26>
@@ -2816,7 +2590,8 @@ Release: May 30, 2025
 
 34 / 156
 
- rdsSynchronizeRequest7Args  = rdsMethodInfoSynchronize
+
+ rdsSynchronizeRequest7Args  = rdsMethodInfoSynchronize
                                rdsClientVersionDataFactory
                                rdsHeadersSynchronizeReq7Args
                                rdsParametersSynchronizeReq7Args
@@ -2870,7 +2645,7 @@ Release: May 30, 2025
 
  rdsOptionalLastArgStatusArray = VT-EMPTY / rdsStatusArray
 
-2.2.3.6  rdsSynchronizeResponse Message
+##### 2.2.3.6 rdsSynchronizeResponse Message
 
 The rdsSynchronizeResponse message is sent in response to an rdsSynchronizeRequest
 message.<27>
@@ -2888,7 +2663,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- rdsSynchronizeResponse5Args    = rdsHeadersSynchronizeRes5Args
+
+ rdsSynchronizeResponse5Args    = rdsHeadersSynchronizeRes5Args
                                   rdsParametersSynchronizeRes5Args
                                   rdsReturnValueSynchronizeRes
                                   rdsCloseDelimiter
@@ -2963,10 +2739,11 @@ Release: May 30, 2025
 
 36 / 156
 
- rdsReturnValueSynchronizeRes      = rdsParamHeader
+
+ rdsReturnValueSynchronizeRes      = rdsParamHeader
                                      rdsSynchronizeResult
 
-2.2.3.7  rdsSubmitChangesRequest Message
+##### 2.2.3.7 rdsSubmitChangesRequest Message
 
 The rdsSubmitChangesRequest message is sent to request the propagation of data changes on the
 client to the data store.<28>
@@ -2994,7 +2771,7 @@ The syntax of rdsSubmitChangesRequest is defined as follows.
                                  rdsParamHeader
                                  rdsConnectionString
 
-2.2.3.8  rdsSubmitChangesResponse Message
+##### 2.2.3.8 rdsSubmitChangesResponse Message
 
 The rdsSubmitChangesResponse message is sent in response to an rdsSubmitChangesRequest
 message.<29>
@@ -3011,7 +2788,7 @@ The syntax of rdsSubmitChangesResponse is defined as follows:
 
 where rdsHeadersSubmitChanges is defined in section 2.2.3.7.
 
-2.2.3.9  rdsConvertToStringRequest Message
+##### 2.2.3.9 rdsConvertToStringRequest Message
 
 The rdsConvertToStringRequest message is sent to request the encoding of a RecordSet as a string
 by encoding its binary representation on the wire using BASE64.<30>
@@ -3028,7 +2805,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-                             rdsHeadersConvertToString
+
+                             rdsHeadersConvertToString
                              rdsParametersConvertToStringReq
                              rdsCloseDelimiter
 
@@ -3045,9 +2823,9 @@ Release: May 30, 2025
  rdsParametersConvertToStringReq = rdsParamHeader
                                    rdsEncapsulatedData
 
-2.2.3.10
+##### 2.2.3.10 rdsConvertToStringResponse Message
 
-rdsConvertToStringResponse Message
+
 
 The rdsConvertToStringResponse message is sent in response to an rdsConvertToStringRequest
 message.<31>
@@ -3071,9 +2849,9 @@ The syntax of rdsConvertToStringResponse is defined as follows.
                                     VT-BSTR rdsMIMERecordSet
  rdsMIMERecordSet                 = BSTRNULLABLE
 
-2.2.3.11
+##### 2.2.3.11 rdsCreateRecordsetRequest Message
 
-rdsCreateRecordsetRequest Message
+
 
 The rdsCreateRecordsetRequest message is sent to request the creation of a RecordSet with specific
 columns. An rdsFieldShapeArray parameter describes the order and key attributes of the columns
@@ -3102,13 +2880,14 @@ Release: May 30, 2025
 
 38 / 156
 
- rdsParamCountCreateRecordsetReq = "1"
+
+ rdsParamCountCreateRecordsetReq = "1"
  rdsParametersCreateRecordsetReq = rdsParamHeader
                                    rdsFieldShapeArray
 
-2.2.3.12
+##### 2.2.3.12 rdsCreateRecordsetResponse Message
 
-rdsCreateRecordsetResponse Message
+
 
 The rdsCreateRecordsetResponse message is sent in response to an rdsCreateRecordsetRequest
 message.
@@ -3131,15 +2910,15 @@ The syntax of an rdsCreateRecordsetResponse message is defined as follows.
  rdsReturnValueCreateRecordsetRes  = rdsParamHeader
                                      rdsEncapsulatedData
 
-2.2.3.13
+##### 2.2.3.13 Common Parameters for RDS Data Factory Methods
 
-Common Parameters for RDS Data Factory Methods
+
 
 The following sections contain common parameters for RDS data factory methods.
 
-2.2.3.13.1
+###### 2.2.3.13.1 rdsConnectionString
 
-rdsConnectionString
+
 
 The rdsConnectionString specifies:<32>
 
@@ -3178,7 +2957,8 @@ Release: May 30, 2025
 
 39 / 156
 
- ServerNetworkName = ConnectionStringIdentifier
+
+ ServerNetworkName = ConnectionStringIdentifier
 
  ServerInstance = ConnectionStringIdentifier
 
@@ -3251,7 +3031,8 @@ Release: May 30, 2025
 
 40 / 156
 
-A string identifier that distinguishes between multiple data stores hosted on the same
+
+A string identifier that distinguishes between multiple data stores hosted on the same
 machine.
 
   UserId
@@ -3264,9 +3045,9 @@ of valid values for this field.
 Specifies the user password. The data store may specify and enforce further restrictions on the
 range of valid values for this field.
 
-2.2.3.13.2
+###### 2.2.3.13.2 rdsErrorInformation
 
-rdsErrorInformation
+
 
 The rdsErrorInformation specifies the error information returned in response to a failed request.
 
@@ -3318,7 +3099,8 @@ Release: May 30, 2025
 
 41 / 156
 
-                      1*ErrorSafeArray ; there are rdsNumberOfErrors
+
+                      1*ErrorSafeArray ; there are rdsNumberOfErrors
                                        ; of these
 
 
@@ -3387,7 +3169,8 @@ Release: May 30, 2025
 
 42 / 156
 
-                          esaLowerBound
+
+                          esaLowerBound
                           esaData13
 
   esaElements13 = %x0D.00.00.00
@@ -3438,9 +3221,9 @@ server.
 
  esaSQLState = BSTREMPTY
 
-2.2.3.13.3
+###### 2.2.3.13.3 rdsExecuteOptions
 
-rdsExecuteOptions
+
 
 [MS-ADTG] - v20250530
 Remote Data Services (RDS) Transport Protocol
@@ -3449,7 +3232,8 @@ Release: May 30, 2025
 
 43 / 156
 
-The rdsExecuteOptions specifies a bitmask that selects behavior options for processing an
+
+The rdsExecuteOptions specifies a bitmask that selects behavior options for processing an
 rdsExecuteRequest.<34>
 
 The syntax of an rdsExecuteOptions is as follows.
@@ -3492,9 +3276,9 @@ columns will be included in the RecordSet.
 If multiple options are set, GetHiddenColumns take precedence over all others followed by ReadOnly.
 If no options are specified, the server SHOULD behave as if only NoBatch is set in rdsExecuteOptions.
 
-2.2.3.13.4
+###### 2.2.3.13.4 rdsExecuteProperties
 
-rdsExecuteProperties
+
 
 rdsExecuteProperties specifies a set of properties that the server MUST set on the returned
 RecordSet. The properties appear in section 2.2.3.14.3.1.
@@ -3506,7 +3290,7 @@ The syntax of the property string is defined as follows.
 
 ExecPropKeyValue: Specifies a property of the returned RecordSet and its desired value. The
 properties specified MUST be within the range of properties of the adtgProperty field. See section
-2.2.3.14.3.7 for details. The syntax of ExecPropKeyValue is as follows.
+###### 2.2.3.14.3.7 for details. The syntax of ExecPropKeyValue is as follows.
 
  ExecPropKeyValue = ExecPropKey "=" [PropertyIsOptional]
                     ExecPropValue ";"
@@ -3522,7 +3306,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- ExecPropKey = UNICODESTRING
+
+ ExecPropKey = UNICODESTRING
 
   ExecPropValue: The desired value of the property. The syntax and meaning of the value of
 
@@ -3602,7 +3387,8 @@ Release: May 30, 2025
 
 45 / 156
 
-2.2.3.13.6
+
+2.2.3.13.6
 
 rdsFetchOptions
 
@@ -3681,7 +3467,8 @@ Release: May 30, 2025
 
 46 / 156
 
-
+
+
 
 rdsPVWElementSize: This is an array of variants. It MUST be set to 16.
 
@@ -3758,7 +3545,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- rdsSQLCommandParameter = paramFlags
+
+ rdsSQLCommandParameter = paramFlags
                           (paramName / VT-EMPTY)
                           (paramPrecision / VT-EMPTY)
                           (paramNumericScale / VT-EMPTY)
@@ -3817,7 +3605,8 @@ Release: May 30, 2025
 
 48 / 156
 
-Name and bit value  Meaning
+
+Name and bit value  Meaning
 
 paramReturnValue
 
@@ -3899,7 +3688,8 @@ Release: May 30, 2025
 
 49 / 156
 
- rdsSQLCommandString = VT-BSTR BSTRNULLABLE
+
+ rdsSQLCommandString = VT-BSTR BSTRNULLABLE
 
 2.2.3.13.9
 
@@ -3970,7 +3760,8 @@ Release: May 30, 2025
 
 50 / 156
 
- rdsSALowerBound = %x00.00.00.00
+
+ rdsSALowerBound = %x00.00.00.00
 
 
 
@@ -4067,7 +3858,8 @@ Release: May 30, 2025
 
 51 / 156
 
- Value
+
+ Value
 
 seInvalid
 
@@ -4173,7 +3965,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- rdsSynchronizeSuccess = %x00.00.00.00
+
+ rdsSynchronizeSuccess = %x00.00.00.00
 
 2.2.3.13.13  rdsTableName
 
@@ -4235,7 +4028,8 @@ Release: May 30, 2025
 
 53 / 156
 
-
+
+
 
 rdsFieldShapeArrayElemSize: The size of each element. This value MUST be fixed at 16 for all
 variants.
@@ -4307,7 +4101,8 @@ Release: May 30, 2025
 
 54 / 156
 
-
+
+
 
 rdsFieldShapeSafeArrayData: Specifies four attributes of the RecordSet column: the name,
 datatype identifier, column size, and a "nullable" flag.
@@ -4382,7 +4177,8 @@ Release: May 30, 2025
 
 55 / 156
 
-                    adtgHeaderSize
+
+                    adtgHeaderSize
                     adtgSignature
                     adtgVersion
                     adtgByteOrder
@@ -4453,7 +4249,8 @@ Release: May 30, 2025
 
 56 / 156
 
-Specifies the byte order of any multibyte integer values in the adtgTablegram. Applies to WORD,
+
+Specifies the byte order of any multibyte integer values in the adtgTablegram. Applies to WORD,
 USHORT, LONG, ULONG, WCHAR, and equivalent types.
 
  Value
@@ -4538,7 +4335,8 @@ Release: May 30, 2025
 
 57 / 156
 
- adtgOriginalURL         = LENGTH-PREFIXED-STRING
+
+ adtgOriginalURL         = LENGTH-PREFIXED-STRING
  adtgUpdateURL           = LENGTH-PREFIXED-STRING
  adtgFriendlyName        = LENGTH-PREFIXED-STRING
 
@@ -4619,7 +4417,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- Value
+
+ Value
 
 0x03
 
@@ -4701,7 +4500,8 @@ Release: May 30, 2025
 
 59 / 156
 
-Each chapter column in the parent RecordSet has an associated adtgChildMetaInformation group. A
+
+Each chapter column in the parent RecordSet has an associated adtgChildMetaInformation group. A
 parent row operation element or a child row operation element (such as an adtgParentChange,
 adtgParentDelete, adtgParentInsert, or adtgParentUnchanged element) signifies the end of the
 adtgAllMetaInformation submessage.
@@ -4781,7 +4581,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- Element/Group
+
+ Element/Group
 
  Description
 
@@ -4856,7 +4657,8 @@ Release: May 30, 2025
 
 61 / 156
 
- TableCount                  = USHORT
+
+ TableCount                  = USHORT
 
  OrderByColumnsCount         = USHORT
 
@@ -4938,7 +4740,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- Value
+
+ Value
 
 0x03
 
@@ -5016,7 +4819,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-  OrderByColumnsCount
+
+  OrderByColumnsCount
 
 Length: 2 bytes
 
@@ -5082,7 +4886,8 @@ Release: May 30, 2025
 
 64 / 156
 
-The fields of an adtgRecordSetContext element have the following lengths, types, and meanings:
+
+The fields of an adtgRecordSetContext element have the following lengths, types, and meanings:
 
   adtgTokenResultContext
 
@@ -5153,7 +4958,8 @@ Release: May 30, 2025
 
 65 / 156
 
- KeyColumnCount              = USHORT
+
+ KeyColumnCount              = USHORT
 
  KeyColumnOrdinal            = USHORT
 
@@ -5220,7 +5026,8 @@ Release: May 30, 2025
 
 66 / 156
 
-Length: 2 bytes
+
+Length: 2 bytes
 
 Datatype: USHORT
 
@@ -5288,7 +5095,8 @@ Release: May 30, 2025
 
 67 / 156
 
-The fields of this element have the following lengths, types, and meanings:
+
+The fields of this element have the following lengths, types, and meanings:
 
   adtgColumnDescriptorCommon
 
@@ -5356,7 +5164,8 @@ Release: May 30, 2025
 
 68 / 156
 
-Contains the Id of the child RecordSet where this column resides.
+
+Contains the Id of the child RecordSet where this column resides.
 
   RelationConditions
 
@@ -5428,7 +5237,8 @@ Release: May 30, 2025
 
 69 / 156
 
-                                     fBaseCatalogName
+
+                                     fBaseCatalogName
                                      RESERVEDBIT
                                      RESERVEDBIT
                                      fBaseTableColumnName
@@ -5504,7 +5314,8 @@ Release: May 30, 2025
 
 70 / 156
 
- BaseSchemaName          = LENGTH-PREFIXED-STRING
+
+ BaseSchemaName          = LENGTH-PREFIXED-STRING
 
  CollatingSequence       = LONG
 
@@ -5577,7 +5388,8 @@ Release: May 30, 2025
 
 71 / 156
 
- Field name
+
+ Field name
 
  Bit flag
 
@@ -5695,7 +5507,8 @@ Release: May 30, 2025
 
 72 / 156
 
-Datatype: LENGTH-PREFIXED-STRING
+
+Datatype: LENGTH-PREFIXED-STRING
 
 A string that contains the human-readable name of the column.
 
@@ -5764,7 +5577,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-ColumnData will actually be used for that column. In the following table, the "Type" column
+
+ColumnData will actually be used for that column. In the following table, the "Type" column
 refers to the value in the adtgColumnDBType field for this adtgColumnDescriptorCommon. The
 "<=255" column refers to whether the value in the adtgColumnMaxLength field for this
 adtgColumnDescriptorCommon is to be less than or equal to 255. The "Fixed?" column contains
@@ -6004,7 +5818,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- Type
+
+ Type
 
  <=255
 
@@ -6120,7 +5935,8 @@ Release: May 30, 2025
 
 75 / 156
 
-     and DBCOLUMNFLAGS_WRITEUNKNOWN
+
+     and DBCOLUMNFLAGS_WRITEUNKNOWN
 
  DBCOLUMNFLAGS_SCALEISNEGATIVE
      and DBCOLUMNFLAGS_ISCHAPTER
@@ -6240,7 +6056,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- Name and bit position
+
+ Name and bit position
 
  Meaning
 
@@ -6322,7 +6139,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- Value
+
+ Value
 
  Meaning
 
@@ -6406,7 +6224,8 @@ Release: May 30, 2025
 
 78 / 156
 
-Datatype: VARIANT-BOOL
+
+Datatype: VARIANT-BOOL
 
 0xFFFF if the cells in this column contain more than one value; otherwise, 0x0000.
 
@@ -6480,7 +6299,8 @@ Release: May 30, 2025
 
 79 / 156
 
-A collection of property sets. The properties specified are RecordSet properties. The
+
+A collection of property sets. The properties specified are RecordSet properties. The
 adtgPropertySets field contains exactly one adtgPropSetCount member and one or more
 adtgPropertySet members.
 
@@ -6550,7 +6370,8 @@ Release: May 30, 2025
 
 80 / 156
 
-Value
+
+Value
 
 Meaning
 
@@ -6633,7 +6454,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-PropertyId
+
+PropertyId
 value
 
 Property name
@@ -6747,7 +6569,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-PropertyId
+
+PropertyId
 value
 
 Property
@@ -6859,7 +6682,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-PropertyId
+
+PropertyId
 value
 
 Property
@@ -6966,7 +6790,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-PropertyId
+
+PropertyId
 value
 
 Property
@@ -7063,7 +6888,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-Length: Variable
+
+Length: Variable
 
 Contains a BooleanProperty, an IntegerProperty, or a StringProperty.
 
@@ -7150,7 +6976,8 @@ Release: May 30, 2025
 
 86 / 156
 
-The syntax of RelationConditions is as follows.
+
+The syntax of RelationConditions is as follows.
 
  RelationConditions = RelationConditionsSize
                       RelationConditionsData
@@ -7232,7 +7059,8 @@ Release: May 30, 2025
 
 87 / 156
 
-  CalculationInfo = (CalculationInfoSize CalculationInfoData)\
+
+  CalculationInfo = (CalculationInfoSize CalculationInfoData)\
                     CalculationInfoNull
 
   CalculationInfoSize = ULONG
@@ -7317,9 +7145,9 @@ RecordSet. CalculationExpression MUST be set to a zero-length string and ignored
 receipt unless FunctionType is FunctionType_Expression or
 FunctionType_AggregateExpression.
 
-2.2.3.14.4
+###### 2.2.3.14.4 adtgAllRowOperations
 
-adtgAllRowOperations
+
 
 [MS-ADTG] - v20250530
 Remote Data Services (RDS) Transport Protocol
@@ -7328,7 +7156,8 @@ Release: May 30, 2025
 
 88 / 156
 
-The adtgAllRowOperations submessage specifies the row operations (consisting of unchanged rows,
+
+The adtgAllRowOperations submessage specifies the row operations (consisting of unchanged rows,
 inserts, updates, and deletes) to be performed on the RecordSets in the TableGram. Row operations
 are in a compressed format. For more information about how to decompress the information that is
 contained in an adtgAllRowOperations submessage, see section 3.3.5.
@@ -7408,7 +7237,8 @@ Release: May 30, 2025
 
 89 / 156
 
- Operation
+
+ Operation
 
  Description
 
@@ -7428,7 +7258,7 @@ adtgChildUnchanged  Length: Variable
 
 Specifies unchanged row data of a row in a child RecordSet.
 
-2.2.3.14.4.1  adtgParentChange
+###### 2.2.3.14.4.1 adtgParentChange
 
 An adtgParentChange element is used in the adtgRowOperationParent of a request message to specify
 the row data to be changed.
@@ -7462,7 +7292,7 @@ Length: Variable
 
 For a description of the UpdateRowData field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.2  adtgParentDelete
+###### 2.2.3.14.4.2 adtgParentDelete
 
 The adtgParentDelete element is used in the adtgRowOperationParent of a request message to specify
 the row data to be deleted.
@@ -7480,7 +7310,8 @@ Release: May 30, 2025
 
 90 / 156
 
- adtgTokenDeleteResultRow    = %x0C
+
+ adtgTokenDeleteResultRow    = %x0C
 
 The fields of an adtgParentDelete element have the following lengths, types, and meanings:
 
@@ -7496,7 +7327,7 @@ Length: 1 byte
 
 Identifies this component as an adtgParentDelete element. The value MUST be set to 0x0C.
 
-2.2.3.14.4.3  adtgParentInsert
+###### 2.2.3.14.4.3 adtgParentInsert
 
 The adtgParentInsert element is used in the adtgRowOperationParent of a request message to specify
 the row operation as an insert operation to a parent RecordSet.
@@ -7524,7 +7355,7 @@ Length: Variable
 
 For a description of the UpdateRowData field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.4  adtgParentUnchanged
+###### 2.2.3.14.4.4 adtgParentUnchanged
 
 The adtgParentUnchanged element specifies the row data in a parent RecordSet that is unchanged
 since it was read from its data source. This is used when performing a select operation, and as part of
@@ -7545,11 +7376,12 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-Length: Variable
+
+Length: Variable
 
 For a description of the ParentOriginalResultRow field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.5  adtgChildChange
+###### 2.2.3.14.4.5 adtgChildChange
 
 The adtgChildChange element specifies the row data in a child row to be updated.
 
@@ -7591,7 +7423,7 @@ Length: Variable
 
 For a description of the UpdateRowData field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.6  adtgChildDelete
+###### 2.2.3.14.4.6 adtgChildDelete
 
 The adtgChildDelete element specifies the row operation as a delete operation.
 
@@ -7613,7 +7445,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-  adtgChildUnChanged
+
+  adtgChildUnChanged
 
 Length: Variable
 
@@ -7633,7 +7466,7 @@ Datatype: ULONG
 
 For a description of the adtgChildRecordSetId field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.7  adtgChildInsert
+###### 2.2.3.14.4.7 adtgChildInsert
 
 The adtgChildInsert element specifies the row operation as an insert operation.
 
@@ -7667,7 +7500,7 @@ Length: Variable
 
 For a description of the UpdateRowData field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.8  adtgChildUnChanged
+###### 2.2.3.14.4.8 adtgChildUnChanged
 
 The adtgChildUnChanged element specifies the original row data from a child RecordSet.
 
@@ -7682,7 +7515,8 @@ Release: May 30, 2025
 
 93 / 156
 
-                               adtgChildRecordSetId
+
+                               adtgChildRecordSetId
                                OriginalRowData
 
  adtgTokenChildResultRow     = %x87
@@ -7709,7 +7543,7 @@ Length: Variable
 
 For a description of the OriginalRowData field, see section 2.2.3.14.4.9.
 
-2.2.3.14.4.9  Common Fields in adtgAllRowOperations
+###### 2.2.3.14.4.9 Common Fields in adtgAllRowOperations
 
 The following common fields are used by the adtgParentInsert, adtgParentChange, adtgParentDelete,
 adtgParentUnchanged, adtgChildInsert, adtgChildChange, adtgChildDelete, and adtgChildUnChanged
@@ -7749,7 +7583,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-the key columns. A version column tracks a row's version, and SHOULD be updated whenever the
+
+the key columns. A version column tracks a row's version, and SHOULD be updated whenever the
 row is updated. Version columns are used to identify any changes since the client last accessed
 the data.
 
@@ -7814,7 +7649,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
- FixedLenColumnData    = *BYTE
+
+ FixedLenColumnData    = *BYTE
 
  VarLenColumnData      = (LongColumnDataLen / ShortColumnDataLen)
                          *BYTE
@@ -7879,7 +7715,8 @@ Release: May 30, 2025
 
 96 / 156
 
-For example, if there are 19 columns in the RecordSet, the ForceNullMap field would have a
+
+For example, if there are 19 columns in the RecordSet, the ForceNullMap field would have a
 width of 3 bytes (24 bits). The 5 least significant bits of the last byte would be reserved and
 unused. The sender of an adtgTablegram SHOULD initialize these unused bits to 0, and an
 implementation for receiving an adtgTablegram MUST ignore the value of such bits in the
@@ -7946,7 +7783,8 @@ Release: May 30, 2025
 
 97 / 156
 
-The syntax of the UpdateRowData field is defined as follows.
+
+The syntax of the UpdateRowData field is defined as follows.
 
  UpdateRowData = UpdateMap
                  ForceNullMap
@@ -7963,9 +7801,9 @@ The syntax of the ParentOriginalResultRow field is defined as follows.
 
  adtgTokenOriginalResultRow = %x07
 
-2.2.3.14.5
+###### 2.2.3.14.5 adtgTokenDone
 
-adtgTokenDone
+
 
 The adtgTokenDone submessage designates the end of the TableGram.
 
@@ -7983,9 +7821,9 @@ Datatype: BYTE
 
 Identifies the end of the adtgTableGram. The value MUST be set to 0x0F.
 
-2.2.3.14.6
+###### 2.2.3.14.6 adtgTablegram Constants
 
-adtgTablegram Constants
+
 
 The RDS Transport Protocol constants are provided as BYTE and USHORT values. The constants are
 the specific values of the constant terminals expressed in this documentation as part of the ABNF
@@ -8030,7 +7868,8 @@ Release: May 30, 2025
 
 98 / 156
 
-
+
+
 
 
 
@@ -8153,7 +7992,8 @@ Release: May 30, 2025
 
 99 / 156
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 As described in section 1.3, the RDS Transport Protocol specification defines a protocol that enables a
 customer application on the client to query and process data from a remote server. The client and the
@@ -8170,16 +8010,16 @@ software necessary to support this protocol.
 
 The main object used on the server and on the client is the RecordSet object.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a model of possible data organization that an implementation maintains to
 participate in this protocol. The organization is provided to explain how the protocol behaves. This
 document does not mandate that implementations adhere to this model as long as their external
 behavior is consistent with that described in this document.
 
-3.1.1.1  Data Store
+##### 3.1.1.1 Data Store
 
  DataStore: An organized collection of data accessed by way of an implementation-specific API that
 MUST support the following operations:
@@ -8224,7 +8064,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-
+
+
 
 
 
@@ -8243,7 +8084,7 @@ values (as specified in [FIPS127]), and FALSE otherwise.
 
   Rows: A collection of items corresponding to the table's data elements.
 
-3.1.1.2  RecordSet
+##### 3.1.1.2 RecordSet
 
 RecordSet: A collection of records accessed by way of an implementation-specific API. RecordSet is
 used on both the client and the server.
@@ -8277,7 +8118,7 @@ processed, and thrown away. A RecordSet can also coordinate changes with a backe
 this mode, the dataset is filled from the data store, changes are made, and results are sent back to
 the data store.
 
-3.1.1.2.1 Processing for Maintaining a Hierarchical RecordSet
+###### 3.1.1.2.1 Processing for Maintaining a Hierarchical RecordSet
 
 RecordSets manage multiple tables in the same RecordSet by nesting child RecordSets. This
 enables scenarios where clients can change parent tables and have dependent changes against child
@@ -8301,7 +8142,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-<!-- Extracted images from page 102 -->
+
+<!-- Extracted images from page 102 -->
 ![Extracted image 1 from page 102]([MS-ADTG].images/page102-img01.png)
 <!-- /Extracted images from page 102 -->
 
@@ -8330,7 +8172,7 @@ CalculationInfo fields. Setting the IsChaptered property to TRUE is represented 
 by setting the DBCOLUMNFLAGS_ISCHAPTER bit of the column's ColumnFlags to 1. For more
 information, see section 2.2.3.14.3.6.
 
-3.1.1.2.2 Algorithm for Processing Synchronization Results for Concurrency
+###### 3.1.1.2.2 Algorithm for Processing Synchronization Results for Concurrency
 
 A TableGram, as specified in section 2.2.3.14, can contain new result data or commands for changing
 the database. When the TableGram contains commands for changing a database, these commands are
@@ -8342,7 +8184,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-known as a DiffGram. This section describes how a DiffGram is processed. A DiffGram represents
+
+known as a DiffGram. This section describes how a DiffGram is processed. A DiffGram represents
 changes from the client-side RecordSet that can be applied to the server-side RecordSet, so that the
 client-side and server-side RecordSets are synchronized.
 
@@ -8396,7 +8239,7 @@ the update record, the update request is stale and MUST be rejected.
 If the update is not applied for concurrency reasons, the server MUST append (see Error Handling,
 section 3.3.5.1.2) the entry to the rdsStatusArray (see section 2.2.3.13.10).
 
-3.1.1.2.3 Algorithm for Producing a TableGram from a RecordSet or a RecordSet from
+###### 3.1.1.2.3 Algorithm for Producing a TableGram from a RecordSet or a RecordSet from
 
 a TableGram
 
@@ -8415,7 +8258,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-
+
+
 
 TotalColumns - The count of all the columns in the parent table added with all of the columns in its
 child tables.
@@ -8430,7 +8274,7 @@ TableCount - The number of tables in this TableGram.
 
 Starting at the parent RecordSet, apply the algorithm from section 3.1.1.2.4.
 
-3.1.1.2.4 Algorithm (Recursive) for Encoding a RecordSet into a TableGram
+###### 3.1.1.2.4 Algorithm (Recursive) for Encoding a RecordSet into a TableGram
 
 This algorithm describes how a RecordSet can be encoded into a TableGram. The algorithm is
 recursive.
@@ -8495,10 +8339,11 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-For each IsChaptered column in the table, encode the child RecordSet. The child RecordSet is encoded
+
+For each IsChaptered column in the table, encode the child RecordSet. The child RecordSet is encoded
 by applying the algorithm to the child table.
 
-3.1.1.2.5 Calculating a DiffGram
+###### 3.1.1.2.5 Calculating a DiffGram
 
 A DiffGram is a collection of update, change, and delete commands along with relevant concurrency
 data. For information about how concurrency is managed, see section 3.1.1.2.2.
@@ -8569,38 +8414,39 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-  Writing one adtgParentChange for each update command in the RecordSet change list.
 
-3.1.2  Timers
+  Writing one adtgParentChange for each update command in the RecordSet change list.
+
+#### 3.1.2 Timers
 
 See section 3.2.2.1 for a description of the client timer used and section 3.3.2.1 for a description of
 the server timer used.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no common initialization.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 See section 3.2.4 for information on higher-layer triggered events for an RDS Transport Protocol
 client. The RDS Transport Protocol server has no higher-layer triggered events, as noted in section
 3.3.4.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -8610,9 +8456,9 @@ external behavior is consistent with that described in this document.
 The abstract data model for the client consists of a collection of RecordSets, as specified in section
 3.1.1.2.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Request Execution Timer
+##### 3.2.2.1 Request Execution Timer
 
 This timer optionally regulates the amount of time a client waits for a response from the server before
 failing the request and disconnecting the connection. The client MAY<70> choose to implement the
@@ -8627,11 +8473,12 @@ Release: May 30, 2025
 
 106 / 156
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 None
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The RDS Transport Protocol client is initiated and subsequently driven by a series of higher-layer
 triggered events, in the following categories:
@@ -8654,7 +8501,7 @@ Track those changes.
 
 The following sections provide details on the events listed above.
 
-3.2.4.1  Establishing a Connection to the RDS Transport Server
+##### 3.2.4.1 Establishing a Connection to the RDS Transport Server
 
 The higher-layer triggered events require establishing a connection to the HTTP port on the server.
 This processing event is used in the other events to describe how the connection to the RDS Transport
@@ -8666,7 +8513,7 @@ section 2.2.2.1.1).
 The client SHOULD create an HTTP connection to the target RDS Transport Protocol server using the
 server name. If this fails, the client MUST return the error code back to the calling application.
 
-3.2.4.2  Executing a Complex SQL Command Query
+##### 3.2.4.2 Executing a Complex SQL Command Query
 
 The client uses the RDS Transport Protocol connection sequence described in section 3.2.4.1.
 
@@ -8700,7 +8547,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-3.2.4.3  Changing Cached Data
+
+##### 3.2.4.3 Changing Cached Data
 
 RDS Transport Protocol uses the processing event in section 3.2.4.2 to populate a local RecordSet.
 The RDS Transport Protocol client exposes methods allowing data in a RecordSet to be modified.
@@ -8712,7 +8560,7 @@ specified changes. In this scenario, the changes stored in the local cache are n
 store. They are used for the duration on the client. When the client is finished with the temporary
 results, it releases the RecordSet, and the changes are discarded.<71>
 
-3.2.4.4  Synchronizing Client RecordSet Changes to the Server
+##### 3.2.4.4 Synchronizing Client RecordSet Changes to the Server
 
 The RDS Transport Protocol client uses the processing sequence described in section 3.2.4.2 to
 populate a RecordSet. The RDS Transport Protocol client SHOULD expose a synchronize method (see
@@ -8740,7 +8588,7 @@ higher-level application. The server will respond with an rdsSynchronizeResponse
 2.2.3.6). The client MUST process the rdsStatusArray (see section 2.2.3.13.10) and make appropriate
 changes to the RecordSet (see section 3.1.1.2).
 
-3.2.4.5  Creating a New Set of Data and Sending It to the Server
+##### 3.2.4.5 Creating a New Set of Data and Sending It to the Server
 
 The higher-level application invokes APIs to create a local RecordSet. The client can then perform
 operations on the local cache of data. These operations will result in a series of insert commands that
@@ -8769,7 +8617,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-The client MUST construct a TableGram (see section 3.1.1.2.3 for details). The client MUST send an
+
+The client MUST construct a TableGram (see section 3.1.1.2.3 for details). The client MUST send an
 rdsSynchronizeRequest message passing the TableGram (see section 2.2.3.14). If the RDS Transport
 Protocol server returns an error, the RDS Transport Protocol client MUST surface the error to the
 higher-level application.
@@ -8778,21 +8627,21 @@ The client MUST process rdsStatusArray (see section 2.2.3.13.10) in the rdsSynch
 apply any relevant changes to the RecordSet. If the rdsStatusArray contains errors, the client software
 MUST surface those errors to the higher-level application.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 None
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -8802,7 +8651,7 @@ external behavior is consistent with what is described in this document.
 The abstract data model for the client consists of a collection of RecordSets, as specified in section
 3.1.1.2.
 
-3.3.1.1  Algorithm for Hooking Up Message Invocation
+##### 3.3.1.1 Algorithm for Hooking Up Message Invocation
 
 The server SHOULD<72> maintain an ObjectList that is a list of available Namespaces and their object
 instantiation data. Upon receiving an rdsMethodRequest, the server SHOULD obtain the Namespace.
@@ -8815,7 +8664,7 @@ rdsParameters portion of the message (see section 2.2.2.6). The server creates o
 appropriate type for each parameter in the destination method name. If the server is not able to
 invoke the method for any reason, the server SHOULD return an error to the client.
 
-3.3.1.2  Algorithm for Constructing Method Invocation Parameter Sets
+##### 3.3.1.2 Algorithm for Constructing Method Invocation Parameter Sets
 
 The parameters for a given method call define how the message for that method call is constructed.
 The RDS Transport Protocol uses the right-to-left arrangement for parameters. For a call to the
@@ -8830,24 +8679,25 @@ Release: May 30, 2025
 
 109 / 156
 
-To return the results of the method invocation, the server appends all parameters in right-to-left
+
+To return the results of the method invocation, the server appends all parameters in right-to-left
 order. The return value of the method invocation is included in the
 rdsMethodResponse (section 2.2.2.2).
 
-3.3.1.3  Algorithm for Working with SQL Command Parameters
+##### 3.3.1.3 Algorithm for Working with SQL Command Parameters
 
 The SQL-92, as specified in [FIPS127], CLI specification and Shape command language provide for
 parameterized queries.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  SQL Command Execution Timer
+##### 3.3.2.1 SQL Command Execution Timer
 
 This timer optionally regulates the amount of time the server waits for a response from the data store
 before failing the request and disconnecting the connection. The server MAY<73> choose to
 implement the timer.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The server MUST establish a listening TCP endpoint on port 80, as specified in [RFC2616] section 1.4,
 or port 443 for using HTTPS, as specified in [RFC2818] section 2.3. The server MAY establish
@@ -8857,13 +8707,13 @@ The server MUST successfully initialize the machinery required to listen on the 
 server.<75> The server also MUST successfully initialize channels of communication to a data store in
 order to successfully run queries against that data store.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 There are no high-layer triggered events for the RDS Transport Protocol server component.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Common Steps in Request Processing
+##### 3.3.5.1 Common Steps in Request Processing
 
 The following steps are common to the processing of a request by the server to generate a response.
 
@@ -8897,9 +8747,10 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-All messages processed by the RDS Transport Protocol server are processed in this fashion.
 
-3.3.5.1.1 Handler Execution
+All messages processed by the RDS Transport Protocol server are processed in this fashion.
+
+###### 3.3.5.1.1 Handler Execution
 
 A handler is a software component on the server that examines an incoming request and takes one of
 two possible actions: disallows the request or makes transformations to the request. When the
@@ -8909,7 +8760,7 @@ information in the response can pose a security risk.
 The server can choose to execute the default handler if the rdsHandlerString is VT-EMPTY or is the
 empty string (VT-BSTR BSTRNULL).
 
-3.3.5.1.2 Error Handling
+###### 3.3.5.1.2 Error Handling
 
 There are two types of error mechanisms that exist in the RDS Transport Protocol:
 rdsMethodResponseError and rdsErrorInformation<77>. Every request type has a corresponding
@@ -8984,7 +8835,8 @@ Release: May 30, 2025
 
 111 / 156
 
-If the rdsMethodName is unrecognized, the server MUST use rdsMethodResponseError mechanism and
+
+If the rdsMethodName is unrecognized, the server MUST use rdsMethodResponseError mechanism and
 set the SCODE to %x02.04.00.80.
 
 The rdsQualifiedMethodName uniquely identifies the request type, and therefore the request type's
@@ -9032,9 +8884,9 @@ The RDS Transport Protocol server MUST then construct an rdsExecuteResponse. The
 used to create the TableGram property. The contents of the rdsExecuteResponse are sent back to the
 client in the Reply.
 
-3.3.5.2  Command Processing
+##### 3.3.5.2 Command Processing
 
-3.3.5.2.1 Languages
+###### 3.3.5.2.1 Languages
 
 The RDS Transport Protocol server receives text commands from the client (see section 2.2.3.13.8) in
 the rdsExecuteRequest message and the rdsQueryRequest messages. This command invokes
@@ -9042,7 +8894,7 @@ processing on the RDS Transport Protocol server. The command can also result in 
 data store. The RDS Transport Protocol server MUST implement the Shape Command Language (see
 section 3.3.5.2.4) and the SQL-92 query language, as specified in [FIPS127].<79>
 
-3.3.5.2.2 Hierarchical RecordSet
+###### 3.3.5.2.2 Hierarchical RecordSet
 
 One of the key functions of the shape command language in the RDS Transport Protocol is to enable
 the client application to request multiple tables in a single response. RDS Transport Protocol is
@@ -9057,7 +8909,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-The Shape command language uses the Append and the Relates To commands to build up hierarchical
+
+The Shape command language uses the Append and the Relates To commands to build up hierarchical
 data. This typically would happen in an in-memory data structure on the server. This hierarchical data
 structure would then be serialized out as TableGram data stream.
 
@@ -9087,7 +8940,7 @@ adtgColumnDescriptorCommon element set to 1. The adtgColumnChildRecordSetId fiel
 RecordSet referenced by a given row is used as the value for the row/column combination. A
 RecordSet can contain Any Number of chapter columns greater than or equal to 0.
 
-3.3.5.2.3 Bound Parameters
+###### 3.3.5.2.3 Bound Parameters
 
 RDS Transport Protocol uses two features of the parameter binding extensions: query parameter
 substitution and parameter metadata discovery. In query parameter substitution, the server allows a
@@ -9110,7 +8963,7 @@ the input request, provided that the data store to which the operations are sent
 parameterized queries. In this case, the RDS Transport Protocol server would include the parameter
 metadata in an rdsSQLCommandParameters field in the response to the client.
 
-3.3.5.2.4 Shape Command Language Details
+###### 3.3.5.2.4 Shape Command Language Details
 
 When the client issues commands to the server, those commands can contain the Shape command
 language. The Shape command language is a specialized command language with the primary design
@@ -9124,7 +8977,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-There are two distinct ways to specify the parent-child relationship between RecordSets using Shape.
+
+There are two distinct ways to specify the parent-child relationship between RecordSets using Shape.
 The first is to use a primary key–foreign key relationship, as specified in [FIPS127], in which the
 parent RecordSet contains the primary key, and the child RecordSet contains the foreign key. The
 Shape APPEND command is used to specify this type of relationship. Consider the following example.
@@ -9188,7 +9042,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-     appendCommand / computeCommand
+
+     appendCommand / computeCommand
 
  appendCommand = parentRecordSet [[ sp "AS"] sp ParentAlias]
      appendClause *([sp] "," [sp] appendClause)
@@ -9265,7 +9120,8 @@ Release: May 30, 2025
 
 115 / 156
 
- calcExpression = "CALC(" [sp] expression [sp] ")"
+
+ calcExpression = "CALC(" [sp] expression [sp] ")"
 
  qualifiedFieldName = (alias "." fieldname) / fieldName
  alias = quotedName
@@ -9345,7 +9201,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-
+
+
 
 computeCommand
 
@@ -9433,7 +9290,8 @@ Release: May 30, 2025
 
 117 / 156
 
-
+
+
 
 calcExpression - The aggregate function, which can be any of the above, operates on an
 expression involving the values in each row of the child RecordSet, instead of any one of the
@@ -9511,7 +9369,8 @@ Release: May 30, 2025
 
 118 / 156
 
- opModulus =  "%" ; operator returns remainder of dividing preceding
+
+ opModulus =  "%" ; operator returns remainder of dividing preceding
      ; operand by following operand
 
  binaryBitwiseOperation = sp (opBAnd / opBOr / opBXor) sp
@@ -9570,7 +9429,7 @@ Release: May 30, 2025
  unicodeAlpha = ( %x41-5A %x00 ) / ( %x61-7A %x00 )
  unicodeNum = %x30-39 %x00
 
-3.3.5.3  Execute Event Processing
+##### 3.3.5.3 Execute Event Processing
 
 The server receives an rdsExecuteRequest from the client. The server will process out the parameters
 and fashion a call to the Execute method. The parameters are processed according to the algorithm
@@ -9583,7 +9442,8 @@ Release: May 30, 2025
 
 119 / 156
 
-The RDS Transport Protocol server MUST use the rdsConnectionString (see section 2.2.3.13.1) to
+
+The RDS Transport Protocol server MUST use the rdsConnectionString (see section 2.2.3.13.1) to
 establish a connection to the data store. If a connection is not established, the RDS Transport Protocol
 server MUST return an error to the client indicating why the connection could not be established (see
 section 3.3.5.1.2). The RDS Transport Protocol server SHOULD<82> take caution to not expose
@@ -9625,7 +9485,7 @@ rdsExecuteRequest10Args
 
 rdsExecuteResponse10Args
 
-3.3.5.4  Query Event Processing
+##### 3.3.5.4 Query Event Processing
 
 The server receives an rdsQueryRequest message from the client. The server will process out the
 parameters and fashion a call to the Query method. The parameters are processed according to the
@@ -9657,11 +9517,12 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-The RDS Transport Protocol server MUST then construct an rdsQueryResponse. The RecordSet is used
+
+The RDS Transport Protocol server MUST then construct an rdsQueryResponse. The RecordSet is used
 to create the TableGram property. The contents of the rdsQueryResponse are sent back to the client
 in the reply.
 
-3.3.5.5  Synchronize Event Processing
+##### 3.3.5.5 Synchronize Event Processing
 
 The server receives an rdsSynchronizeRequest message from the client. The server will process out
 the parameters and fashion a call to the Synchronize method. The parameters are processed
@@ -9710,7 +9571,7 @@ client sends the server an rdsOptionalStatusArray or rdsOptionalLastArgStatusArr
 rdsStatusArray, the server MUST respond by populating the rdsStatusArray in the
 rdsSynchronizeResponse according to the rules described above.
 
-3.3.5.6  SubmitChanges Event Processing
+##### 3.3.5.6 SubmitChanges Event Processing
 
 The server receives an rdsSubmitChangesRequest message from the client. The server will process
 out the parameters and fashion a call to the SubmitChanges method. The parameters are processed
@@ -9730,7 +9591,8 @@ Release: May 30, 2025
 
 121 / 156
 
-For each insert message in the TableGram, the RDS Transport Protocol server MUST execute a SQL
+
+For each insert message in the TableGram, the RDS Transport Protocol server MUST execute a SQL
 command on the backend database to insert the new record. If the backend data store returns an
 error, the RDS Transport Protocol server returns rdsMethodResponseError with an SCODE of
 %x09.00.02.80 (DispEException) and an SCODE2 of %x38.0E.04.80 (DBEConcurrencyViolation) in
@@ -9747,7 +9609,7 @@ The RDS Transport Protocol server SHOULD<88> do all of the above in a single tra
 The RDS Transport Protocol server MUST then construct an rdsSubmitChangesResponse. The contents
 of the rdsSubmitChangesResponse are sent back to the client in the reply.
 
-3.3.5.7  ConvertToString Event Processing
+##### 3.3.5.7 ConvertToString Event Processing
 
 The server receives an rdsConvertToStringRequest message from the client. The server will process
 out the parameters and fashion a call to the ConvertToString method. The parameters are processed
@@ -9762,7 +9624,7 @@ The RDS Transport Protocol server MUST then construct an rdsConvertToStringRespo
 MIMERecordSet. The contents of the rdsConvertToStringResponse are sent back to the client in the
 reply.
 
-3.3.5.8  CreateRecordset Event Processing
+##### 3.3.5.8 CreateRecordset Event Processing
 
 The server receives an rdsCreateRecordsetRequest message from the client. The server will process
 out the parameters and fashion a call to the CreateRecordset method. The parameters are processed
@@ -9773,7 +9635,7 @@ construct an rdsCreateRecordsetResponse from this ordered list using the algorit
 section 3.3.5.8.2. The contents of the rdsCreateRecordsetResponse are sent back to the client in the
 reply.
 
-3.3.5.8.1 Algorithm for Parsing Data in an rdsCreateRecordsetRequest
+###### 3.3.5.8.1 Algorithm for Parsing Data in an rdsCreateRecordsetRequest
 
 1.  Create an empty ordered list corresponding to the columns of the requested recordset. Each item
 
@@ -9800,7 +9662,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-4.  The rdsFieldNullable becomes the "nullable" flag of the new column. For more information, see
+
+4.  The rdsFieldNullable becomes the "nullable" flag of the new column. For more information, see
 
 section 3.1.1.2.4.
 
@@ -9808,7 +9671,7 @@ section 3.1.1.2.4.
 
 back of the list.
 
-3.3.5.8.2 Algorithm for Creating a RecordSet for rdsCreateRecordsetResponse
+###### 3.3.5.8.2 Algorithm for Creating a RecordSet for rdsCreateRecordsetResponse
 
 Given an ordered list, where each item contains the following column attributes: name, data type,
 column size, and "nullable" flag, process as follows:
@@ -9877,7 +9740,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-The following table identifies column attributes and data type indicator values for the various data
+
+The following table identifies column attributes and data type indicator values for the various data
 types of interest. The following list provides more precise descriptions of some of the columns in the
 table:
 
@@ -10102,7 +9966,8 @@ Release: May 30, 2025
 
 124 / 156
 
-Data Type
+
+Data Type
 
 Type
 Indicator
@@ -10177,16 +10042,16 @@ Y
 
 0x13.00.00.00  0x10.00.00.00  0x00.00.00.00
 
-3.3.5.9  Method Invocation Processing
+##### 3.3.5.9 Method Invocation Processing
 
 Processing a method invocation is identical to the common message processing outlined in section
 3.3.5.1.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 The only system events that impact the server are failures in communication. Disruptions in
 connectivity prevent the RDS Transport Protocol server from accomplishing necessary tasks, but no
@@ -10205,9 +10070,10 @@ Release: May 30, 2025
 
 125 / 156
 
-4  Protocol Examples
 
-4.1  Constructing a Generic Processing Message
+## 4 Protocol Examples
+
+### 4.1 Constructing a Generic Processing Message
 
 The flexibility of the RDS Transport Protocol message specification allows an implementation to build
 up messages as if they were method calls in a programming language. Using this model, ABNF
@@ -10270,7 +10136,8 @@ Release: May 30, 2025
 
 126 / 156
 
- 0000015  43 6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 Content-Length:
+
+ 0000015  43 6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 Content-Length:
  0000016  35 32 34 0d 0a 0d 0a 08 20 3e 01 20 20 53 20 48 524..... >.  S H
  0000017  20 41 20 50 20 45 20 20 20 7b 20 53 20 45 20 4c  A P E   { S E L
  0000018  20 45 20 43 20 54 20 20 20 43 20 55 20 53 20 54  E C T   C U S T
@@ -10385,7 +10252,8 @@ Release: May 30, 2025
 
 127 / 156
 
-First byte  Last byte  ABNF symbol
+
+First byte  Last byte  ABNF symbol
 
 0x2AB
 
@@ -10399,7 +10267,7 @@ rdsConnetionString
 
 rdsCloseDelimiter
 
-4.2  rdsMethodResponse with Error Information
+### 4.2 rdsMethodResponse with Error Information
 
 This is an example of an rdsMethodResponse for the case when an operation cannot be successfully
 completed on the server. In this particular case, the call was made to a query method with an
@@ -10512,7 +10380,8 @@ Release: May 30, 2025
 
 128 / 156
 
-4.3  rdsSynchronizeResponse with Error Information
+
+### 4.3 rdsSynchronizeResponse with Error Information
 
 This is an example of an rdsSynchronizeResponse message for the case when an operation cannot be
 successfully completed on the server. In this particular case, the row on the server was changed after
@@ -10585,7 +10454,8 @@ Release: May 30, 2025
 
 129 / 156
 
- 00000390  6E 74 65 6E 74 2D 54 79 70 65 3A 20 61 70 70 6C ntent-Type:.appl
+
+ 00000390  6E 74 65 6E 74 2D 54 79 70 65 3A 20 61 70 70 6C ntent-Type:.appl
  000003A0  69 63 61 74 69 6F 6E 2F 78 2D 76 61 72 67 0D 0A ication/x-varg..
  000003B0  43 6F 6E 74 65 6E 74 2D 4C 65 6E 67 74 68 3A 20 Content-Length:.
  000003C0  36 0D 0A 0D 0A 00 00 00 00 00 00 0D 0A 2D 2D 2B 6............--+
@@ -10753,7 +10623,8 @@ Release: May 30, 2025
 
 130 / 156
 
-First byte  Last byte  ABNF symbol
+
+First byte  Last byte  ABNF symbol
 
 0xFD
 
@@ -10954,7 +10825,8 @@ Release: May 30, 2025
 
 131 / 156
 
-First byte  Last byte  ABNF symbol
+
+First byte  Last byte  ABNF symbol
 
 0x3CB
 
@@ -10986,7 +10858,7 @@ VARIANTERROR
 
 rdsCloseDelimiter
 
-4.4  rdsExecuteRequest
+### 4.4 rdsExecuteRequest
 
 This is an example of an rdsExecuteRequest message.
 
@@ -11048,7 +10920,8 @@ Release: May 30, 2025
 
 132 / 156
 
- 000002E0  31 00 3B 00 55 00 70 00 64 00 61 00 74 00 65 00 1.;.U.p.d.a.t.e.
+
+ 000002E0  31 00 3B 00 55 00 70 00 64 00 61 00 74 00 65 00 1.;.U.p.d.a.t.e.
  000002F0  20 00 52 00 65 00 73 00 79 00 6E 00 63 00 3D 00 ..R.e.s.y.n.c.=.
  00000300  7E 00 31 00 03 00 03 00 00 00 08 00 3C 00 00 00 ~.1.........<...
  00000310  53 00 65 00 6C 00 65 00 63 00 74 00 20 00 74 00 S.e.l.e.c.t...t.
@@ -11195,7 +11068,8 @@ Release: May 30, 2025
 
 133 / 156
 
- First byte
+
+ First byte
 
  Last byte
 
@@ -11249,7 +11123,7 @@ rdsCloseDelimiter
 
 rdsDelimiter
 
-4.5  rdsExecuteResponse
+### 4.5 rdsExecuteResponse
 
 This is an example of an rdsExecuteResponse message.
 
@@ -11304,7 +11178,8 @@ Release: May 30, 2025
 
 134 / 156
 
- 00000270  04 00 1E 00 00 00 49 00 00 00 04 00 00 00 00 00 ......I.........
+
+ 00000270  04 00 1E 00 00 00 49 00 00 00 04 00 00 00 00 00 ......I.........
  00000280  C1 3C 8E B6 EB 6D D0 11 8D F6 00 AA 00 5F FE 58 .<...m......._.X
  00000290  05 00 04 00 00 00 04 00 0F 00 00 00 05 00 00 00 ................
  000002A0  04 00 02 00 00 00 03 00 00 00 04 00 0F 00 00 00 ................
@@ -11416,7 +11291,8 @@ Release: May 30, 2025
 
 135 / 156
 
- First byte
+
+ First byte
 
  Last byte
 
@@ -11512,7 +11388,7 @@ rdsCloseDelimiter
 
 rdsDelimiter
 
-4.6  rdsExecuteResponse with Error Information
+### 4.6 rdsExecuteResponse with Error Information
 
 This is an example of an rdsExecuteResponse for the case when an operation cannot be successfully
 completed on the server. In this particular case, the connection string was not specified correctly.
@@ -11553,7 +11429,8 @@ Release: May 30, 2025
 
 136 / 156
 
- 000001C0  00 45 00 41 00 34 00 7D 00 03 00 7C 75 C1 4B 03 .E.A.4.}...|u.K.
+
+ 000001C0  00 45 00 41 00 34 00 7D 00 03 00 7C 75 C1 4B 03 .E.A.4.}...|u.K.
  000001D0  00 09 04 00 00 08 00 76 00 00 00 50 00 72 00 6F .......v...P.r.o
  000001E0  00 76 00 69 00 64 00 65 00 72 00 20 00 63 00 61 .v.i.d.e.r...c.a
  000001F0  00 6E 00 6E 00 6F 00 74 00 20 00 62 00 65 00 20 .n.n.o.t...b.e..
@@ -11681,7 +11558,8 @@ Release: May 30, 2025
 
 137 / 156
 
- First byte
+
+ First byte
 
  Last byte
 
@@ -11886,7 +11764,8 @@ Release: May 30, 2025
 
 138 / 156
 
- First byte
+
+ First byte
 
  Last byte
 
@@ -11989,9 +11868,10 @@ Release: May 30, 2025
 
 139 / 156
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 RDS Transport Protocol has no security (authentication/authorization/encryption) built into the
 protocol itself. However, a typical application of this protocol will work in conjunction with the
@@ -12001,7 +11881,7 @@ over HTTP, Secure Sockets Layer (SSL) can be utilized to provide data encryption
 stores provide different levels of authentication and authorization support that can be taken into
 consideration when adopting RDS Transport Protocol to implement remote RecordSet operations.<89>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 No security parameters are used in RDS Transport Protocol.
 
@@ -12012,7 +11892,8 @@ Release: May 30, 2025
 
 140 / 156
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-oaut.idl" is the IDL specified in
 [MS-OAUT] Appendix A.
@@ -12086,7 +11967,8 @@ Release: May 30, 2025
 
 141 / 156
 
-  , helpstring("Definition of interface IDataFactory2")
+
+  , helpstring("Definition of interface IDataFactory2")
   , odl
   , hidden //hidden from object browser
   , oleautomation
@@ -12163,7 +12045,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-     [out, retval] VARIANT *pResult);
+
+     [out, retval] VARIANT *pResult);
  }
 
 [MS-ADTG] - v20250530
@@ -12173,7 +12056,8 @@ Release: May 30, 2025
 
 143 / 156
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -12241,7 +12125,8 @@ Release: May 30, 2025
 
 144 / 156
 
-<2> Section 1.3: No applications or services in Windows make use of RDS Transport Protocol. In
+
+<2> Section 1.3: No applications or services in Windows make use of RDS Transport Protocol. In
 Windows 2000 Professional, Windows 2000 Server, Windows XP, Windows Server 2003, Windows
 Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2, RDS Transport Protocol
 support is included as an optional component for the primary purpose of maintaining backward
@@ -12309,7 +12194,8 @@ Release: May 30, 2025
 
 145 / 156
 
-version and "m" with the minor version of the Internet Information Services (IIS) server delivering the
+
+version and "m" with the minor version of the Internet Information Services (IIS) server delivering the
 HTTP response.
 
 <18> Section 2.2.2.3: The RDS Transport Protocol client always issues requests to the HTTP endpoint
@@ -12380,7 +12266,8 @@ Release: May 30, 2025
 
 146 / 156
 
- rdsConnectionString = SQLConnectionString /
+
+ rdsConnectionString = SQLConnectionString /
   OracleConnectionString / ShapeConnectionString /
   JetConnectionString
 
@@ -12466,7 +12353,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-Subcontext
+
+Subcontext
 
 Meaning of the Value field
 
@@ -12538,7 +12426,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-Name
+
+Name
 
 Value
 
@@ -12614,7 +12503,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-
+
+
 
 
 
@@ -12715,7 +12605,8 @@ Release: May 30, 2025
 
 150 / 156
 
-<64> Section 2.2.3.14.3.7: In the Windows implementation, the "Initial Fetch Size" PropertyId is
+
+<64> Section 2.2.3.14.3.7: In the Windows implementation, the "Initial Fetch Size" PropertyId is
 also known as DBPROP_ADC_ASYNCHPREFETCHSIZE.
 
 <65> Section 2.2.3.14.3.7: In the Windows implementation, the "Background Thread Priority"
@@ -12794,7 +12685,8 @@ Remote Data Services (RDS) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: May 30, 2025
 
-<76> Section 3.3.5.1.1: The Microsoft RDS Transport Protocol server closes the HTTP connection
+
+<76> Section 3.3.5.1.1: The Microsoft RDS Transport Protocol server closes the HTTP connection
 when it receives a request that violates the handler specifications.
 
 <77> Section 3.3.5.1.2: The RDS Transport Protocol server by default returns very limited error
@@ -12855,7 +12747,8 @@ Release: May 30, 2025
 
 152 / 156
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12899,7 +12792,8 @@ Release: May 30, 2025
 
 153 / 156
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -13043,7 +12937,8 @@ G
 
 154 / 156
 
-Generic processing message example 126
+
+Generic processing message example 126
 Glossary 7
 Groupable database types 20
 
@@ -13182,7 +13077,8 @@ rdsSynchronizeRequest message 34
 
 155 / 156
 
-Triggered events - higher-layer
+
+Triggered events - higher-layer
    client 107
    clients 106
    server 110

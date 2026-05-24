@@ -63,7 +63,8 @@ Release: January 13, 2026
 
 1 / 193
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: January 13, 2026
 
 2 / 193
 
-Date
+
+Date
 
 Revision
 History
@@ -543,7 +545,8 @@ Release: January 13, 2026
 
 3 / 193
 
-Date
+
+Date
 
 Revision
 History
@@ -657,491 +660,204 @@ Release: January 13, 2026
 
 4 / 193
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-1.3.1.3
-1.3.1.4
-1.3.1.5
-1.3.1.6
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 15
-Normative References ................................................................................. 15
-Informative References ............................................................................... 17
-Overview ........................................................................................................ 18
-Concepts ................................................................................................... 19
-Number Annotation ............................................................................... 19
-Object Identifiers .................................................................................. 19
-CA Databases ....................................................................................... 19
-CA Roles and Officer Rights .................................................................... 20
-Certificate Templates ............................................................................. 20
-Sanitizing Common Names ..................................................................... 20
-Relationship to Other Protocols .......................................................................... 20
-Prerequisites/Preconditions ............................................................................... 21
-Certificate Template .................................................................................... 21
-CA Name ................................................................................................... 22
-Signing Certificate ...................................................................................... 22
-Database ................................................................................................... 22
-Configuration ............................................................................................. 22
-Applicability Statement ..................................................................................... 22
-Versioning and Capability Negotiation ................................................................. 22
-Vendor-Extensible Fields ................................................................................... 22
-Standards Assignments ..................................................................................... 23
-
-1.5.1
-1.5.2
-1.5.3
-1.5.4
-1.5.5
-
-1.6
-1.7
-1.8
-1.9
-
-1.4
-1.5
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.8
-
-2.2.1.7.1
-
-2.2.1.8.1
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-
-2  Messages ............................................................................................................... 24
-Transport ........................................................................................................ 24
-Common Data Types ........................................................................................ 25
-Common Structures .................................................................................... 25
-BYTE ................................................................................................... 25
-VARIANT .............................................................................................. 25
-CERTVIEWRESTRICTION ........................................................................ 25
-CERTTRANSBLOB .................................................................................. 26
-CATRANSPROP ..................................................................................... 26
-CAINFO ............................................................................................... 26
-CERTTRANSDBCOLUMN ......................................................................... 27
-CERTTRANSDBCOLUMN Marshaling Format ......................................... 28
-CERTTRANSDBATTRIBUTE ...................................................................... 29
-CERTTRANSDBATTRIBUTE Marshaling Format ..................................... 29
-CERTTRANSDBEXTENSION ..................................................................... 30
-CERTTRANSDBEXTENSION Marshaling Format .................................... 32
-CERTTRANSDBRESULTCOLUMN .............................................................. 33
-CERTTRANSDBRESULTCOLUMN Marshaling Format .............................. 34
-2.2.1.11  Officer and Enrollment Agent Access Rights .............................................. 35
-2.2.1.11.1  Marshaling Format for Officer and Enrollment Agent Rights ................... 36
-CERTTIME ............................................................................................ 38
-Certificate Requirements ............................................................................. 38
-CA Exchange Certificate ......................................................................... 38
-Key Recovery Certificate ........................................................................ 38
-CERTTRANSDBRESULTROW ......................................................................... 39
-CERTTRANSDBRESULTROW Marshaling Format ......................................... 39
-Database File Name Structure ...................................................................... 40
-Common Error Codes .................................................................................. 40
-Directory Service Schema Elements ................................................................... 40
-
-2.2.2.1
-2.2.2.2
-
-2.2.4
-2.2.5
-
-2.2.1.10.1
-
-2.2.1.9.1
-
-2.2.1.10
-
-2.2.1.12
-
-2.2.3.1
-
-2.2.1.9
-
-2.2.2
-
-2.2.3
-
-2.3
-
-[MS-CSRA] - v20260113
-Certificate Services Remote Administration Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-5 / 193
-
-3.1
-
-3.1.1
-
-3.1.2
-
-3.1.4.1
-
-3.1.2.2
-
-3.1.2.1
-
-3.1.1.1
-
-3.1.3
-3.1.4
-
-3.1.1.1.1
-3.1.1.1.2
-
-3.1.2.1.1
-3.1.2.1.2
-
-3.1.1.4.1
-3.1.1.4.2
-
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3.1.1.5
-3.1.1.6
-3.1.1.7
-3.1.1.8
-3.1.1.9
-3.1.1.10
-3.1.1.11
-3.1.1.12
-3.1.1.13
-
-3  Protocol Details ..................................................................................................... 42
-Server Details .................................................................................................. 42
-Abstract Data Model .................................................................................... 42
-Request Table....................................................................................... 42
-Request Table Required Data Elements .............................................. 42
-Request Table Optional Data Elements ............................................... 44
-Attribute Table...................................................................................... 48
-Extension Table .................................................................................... 49
-Certificate Revocation List (CRL) Table .................................................... 49
-CRL Table Required Data Elements .................................................... 49
-CRL Table Recommended Data Elements ............................................ 51
-Schema Table ....................................................................................... 52
-Datum - DB View .................................................................................. 52
-Permissions .......................................................................................... 53
-CRL Publishing Locations ........................................................................ 55
-CRL Validity Period ................................................................................ 56
-Configuration Data ................................................................................ 57
-Signing_Cert Table ................................................................................ 62
-CA Exchange Certificates ....................................................................... 62
-Client User Identity Token ...................................................................... 62
-Timers ...................................................................................................... 62
-CRL Next Publish Timers ........................................................................ 62
-Base CRL Next Publish Timer ............................................................ 62
-Delta CRL Next Publish Timer ............................................................ 63
-CRL Publication Retry Timer ................................................................... 63
-Initialization ............................................................................................... 63
-Message Processing Events and Sequencing Rules .......................................... 64
-Processing Rules for ICertAdminD ........................................................... 65
-ICertAdminD::SetExtension (Opnum 3) .............................................. 67
-ICertAdminD::SetAttributes (Opnum 4) ............................................. 68
-ICertAdminD::ResubmitRequest (Opnum 5) ....................................... 69
-ICertAdminD::DenyRequest (Opnum 6) ............................................. 71
-ICertAdminD::IsValidCertificate (Opnum 7) ........................................ 72
-ICertAdminD::PublishCRL (Opnum 8) ................................................ 73
-ICertAdminD::GetCRL (Opnum 9) ..................................................... 85
-ICertAdminD::RevokeCertificate (Opnum 10) ...................................... 86
-ICertAdminD::EnumViewColumn (Opnum 11) ..................................... 88
-ICertAdminD::GetViewDefaultColumnSet (Opnum 12) ......................... 88
-ICertAdminD::EnumAttributesOrExtensions (Opnum 13) ...................... 89
-ICertAdminD::OpenView (Opnum 14) ................................................ 91
-ICertAdminD::EnumView (Opnum 15) ............................................... 93
-ICertAdminD::CloseView (Opnum 16) ................................................ 94
-ICertAdminD::ServerControl (Opnum 17) ........................................... 94
-ICertAdminD::Ping (Opnum 18) ........................................................ 95
-ICertAdminD::GetServerState (Opnum 19)......................................... 95
-ICertAdminD::BackupPrepare (Opnum 20) ......................................... 95
-ICertAdminD::BackupEnd (Opnum 21) ............................................... 96
-ICertAdminD::BackupGetAttachmentInformation (Opnum 22) .............. 97
-ICertAdminD::BackupGetBackupLogs (Opnum 23) .............................. 97
-ICertAdminD::BackupOpenFile (Opnum 24) ........................................ 98
-ICertAdminD::BackupReadFile (Opnum 25) ........................................ 98
-ICertAdminD::BackupCloseFile (Opnum 26) ........................................ 99
-ICertAdminD::BackupTruncateLogs (Opnum 27) ................................. 99
-ICertAdminD::ImportCertificate (Opnum 28) ...................................... 99
-ICertAdminD::BackupGetDynamicFiles (Opnum 29) ............................ 103
-ICertAdminD::RestoreGetDatabaseLocations (Opnum 30) ................... 104
-Processing Rules for ICertAdminD2 ........................................................ 104
-ICertAdminD2::PublishCRLs (Opnum 31)........................................... 106
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-3.1.4.1.8
-3.1.4.1.9
-3.1.4.1.10
-3.1.4.1.11
-3.1.4.1.12
-3.1.4.1.13
-3.1.4.1.14
-3.1.4.1.15
-3.1.4.1.16
-3.1.4.1.17
-3.1.4.1.18
-3.1.4.1.19
-3.1.4.1.20
-3.1.4.1.21
-3.1.4.1.22
-3.1.4.1.23
-3.1.4.1.24
-3.1.4.1.25
-3.1.4.1.26
-3.1.4.1.27
-3.1.4.1.28
-
-3.1.4.2.1
-
-3.1.4.2
-
-[MS-CSRA] - v20260113
-Certificate Services Remote Administration Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-6 / 193
-
-3.1.5
-
-3.1.5.1
-3.1.5.2
-
-3.2
-
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-3.1.4.2.9
-3.1.4.2.10
-3.1.4.2.11
-3.1.4.2.12
-3.1.4.2.13
-3.1.4.2.14
-3.1.4.2.15
-3.1.4.2.16
-3.1.4.2.17
-3.1.4.2.18
-
-ICertAdminD2::GetCAProperty (Opnum 32) ....................................... 107
-ICertAdminD2::SetCAProperty (Opnum 33) ....................................... 109
-ICertAdminD2::GetCAPropertyInfo (Opnum 34) ................................. 112
-ICertAdminD2::EnumViewColumnTable (Opnum 35) ........................... 112
-ICertAdminD2::GetCASecurity (Opnum 36) ....................................... 113
-ICertAdminD2::SetCASecurity (Opnum 37) ....................................... 113
-ICertAdminD2::Ping2 (Opnum 38) .................................................... 113
-ICertAdminD2::GetArchivedKey (Opnum 39) ..................................... 114
-ICertAdminD2::GetAuditFilter (Opnum 40) ........................................ 115
-ICertAdminD2::SetAuditFilter (Opnum 41) ........................................ 116
-ICertAdminD2::GetOfficerRights (Opnum 42) .................................... 116
-ICertAdminD2::SetOfficerRights (Opnum 43) ..................................... 117
-ICertAdminD2::GetConfigEntry (Opnum 44) ...................................... 118
-ICertAdminD2::SetConfigEntry (Opnum 45) ...................................... 125
-ICertAdminD2::ImportKey (Opnum 46) ............................................ 127
-ICertAdminD2::GetMyRoles (Opnum 47) ........................................... 128
-ICertAdminD2::DeleteRow (Opnum 48) ............................................ 129
-Timer Events ............................................................................................. 131
-CRL Next Publish Timer Events .............................................................. 131
-CRL Publication Retry Timer Events ........................................................ 131
-Other Local Events ..................................................................................... 132
-Client Details .................................................................................................. 132
-Abstract Data Model ................................................................................... 132
-Timers ..................................................................................................... 132
-Initialization .............................................................................................. 132
-Message Processing Events and Sequencing Rules ......................................... 132
-Processing Rules for ICertAdminD .......................................................... 133
-ICertAdminD::SetExtension (Opnum 3) ............................................. 133
-ICertAdminD::SetAttributes (Opnum 4) ............................................ 133
-ICertAdminD::ResubmitRequest (Opnum 5) ...................................... 133
-ICertAdminD::DenyRequest (Opnum 6) ............................................ 133
-ICertAdminD::IsValidCertificate (Opnum 7) ....................................... 133
-ICertAdminD::PublishCRL (Opnum 8) ............................................... 133
-ICertAdminD::GetCRL (Opnum 9) .................................................... 133
-ICertAdminD::RevokeCertificate (Opnum 10) ..................................... 133
-ICertAdminD::EnumViewColumn (Opnum 11) .................................... 134
-ICertAdminD::GetViewDefaultColumnSet (Opnum 12) ........................ 134
-ICertAdminD::EnumAttributesOrExtensions (Opnum 13) ..................... 134
-ICertAdminD::OpenView (Opnum 14) ............................................... 134
-ICertAdminD::EnumView (Opnum 15) .............................................. 134
-ICertAdminD::CloseView (Opnum 16) ............................................... 134
-ICertAdminD::ServerControl (Opnum 17) .......................................... 134
-ICertAdminD::Ping (Opnum 18) ....................................................... 134
-ICertAdminD::GetServerState (Opnum 19)........................................ 134
-ICertAdminD::BackupPrepare (Opnum 20) ........................................ 135
-ICertAdminD::BackupEnd (Opnum 21) .............................................. 135
-ICertAdminD::BackupGetAttachmentInformation (Opnum 22) ............. 135
-ICertAdminD::BackupGetBackupLogs (Opnum 23) ............................. 135
-ICertAdminD::BackupOpenFile (Opnum 24) ....................................... 135
-ICertAdminD::BackupReadFile (Opnum 25) ....................................... 135
-ICertAdminD::BackupCloseFile (Opnum 26) ....................................... 136
-ICertAdminD::BackupTruncateLogs (Opnum 27) ................................ 136
-ICertAdminD::ImportCertificate (Opnum 28) ..................................... 136
-ICertAdminD::BackupGetDynamicFiles (Opnum 29) ............................ 136
-ICertAdminD::RestoreGetDatabaseLocations (Opnum 30) ................... 136
-Processing Rules for ICertAdminD2 ........................................................ 136
-ICertAdminD2:: PublishCRLs (Opnum 31).......................................... 136
-ICertAdminD2::GetCAProperty (Opnum 32) ....................................... 136
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-3.2.4.1.5
-3.2.4.1.6
-3.2.4.1.7
-3.2.4.1.8
-3.2.4.1.9
-3.2.4.1.10
-3.2.4.1.11
-3.2.4.1.12
-3.2.4.1.13
-3.2.4.1.14
-3.2.4.1.15
-3.2.4.1.16
-3.2.4.1.17
-3.2.4.1.18
-3.2.4.1.19
-3.2.4.1.20
-3.2.4.1.21
-3.2.4.1.22
-3.2.4.1.23
-3.2.4.1.24
-3.2.4.1.25
-3.2.4.1.26
-3.2.4.1.27
-3.2.4.1.28
-
-3.2.4.2.1
-3.2.4.2.2
-
-3.2.4.2
-
-[MS-CSRA] - v20260113
-Certificate Services Remote Administration Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-7 / 193
-
-3.2.4.2.3
-3.2.4.2.4
-3.2.4.2.5
-3.2.4.2.6
-3.2.4.2.7
-3.2.4.2.8
-3.2.4.2.9
-3.2.4.2.10
-3.2.4.2.11
-3.2.4.2.12
-3.2.4.2.13
-3.2.4.2.14
-3.2.4.2.15
-3.2.4.2.16
-3.2.4.2.17
-3.2.4.2.18
-
-ICertAdminD2::SetCAProperty (Opnum 33) ....................................... 136
-ICertAdminD2::GetCAPropertyInfo (Opnum 34) ................................. 136
-ICertAdminD2::EnumViewColumnTable (Opnum 35) ........................... 136
-ICertAdminD2::GetCASecurity (Opnum 36) ....................................... 137
-ICertAdminD2::SetCASecurity (Opnum 37) ....................................... 137
-ICertAdminD2::Ping2 (Opnum 38) .................................................... 137
-ICertAdminD2::GetArchivedKey (Opnum 39) ..................................... 137
-ICertAdminD2::GetAuditFilter (Opnum 40) ........................................ 137
-ICertAdminD2::SetAuditFilter (Opnum 41) ........................................ 137
-ICertAdminD2::GetOfficerRights (Opnum 42) .................................... 137
-ICertAdminD2::SetOfficerRights (Opnum 43) ..................................... 137
-ICertAdminD2::GetConfigEntry (Opnum 44) ...................................... 137
-ICertAdminD2::SetConfigEntry (Opnum 45) ...................................... 137
-ICertAdminD2::ImportKey (Opnum 46) ............................................ 137
-ICertAdminD2::GetMyRoles (Opnum 47) ........................................... 137
-ICertAdminD2::DeleteRow (Opnum 48) ............................................ 137
-Timer Events ............................................................................................. 138
-Other Local Events ..................................................................................... 138
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ............................................................................................... 139
-
-5.1
-
-5  Security ............................................................................................................... 141
-Security Considerations for Implementers .......................................................... 141
-Strong Administrator Authentication ............................................................ 141
-KDC Security............................................................................................. 141
-Administrator Console Security .................................................................... 141
-Administrator Credential Issuance ............................................................... 141
-Index of Security Parameters ........................................................................... 142
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 143
-
-7  Appendix B: Product Behavior ............................................................................. 149
-
-8  Change Tracking .................................................................................................. 191
-
-9  Index ................................................................................................................... 192
-
-[MS-CSRA] - v20260113
-Certificate Services Remote Administration Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 13, 2026
-
-8 / 193
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Concepts](#131-concepts)
+      - [1.3.1.1 Number Annotation](#1311-number-annotation)
+      - [1.3.1.2 Object Identifiers](#1312-object-identifiers)
+      - [1.3.1.3 CA Databases](#1313-ca-databases)
+      - [1.3.1.4 CA Roles and Officer Rights](#1314-ca-roles-and-officer-rights)
+      - [1.3.1.5 Certificate Templates](#1315-certificate-templates)
+      - [1.3.1.6 Sanitizing Common Names](#1316-sanitizing-common-names)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 Certificate Template](#151-certificate-template)
+    - [1.5.2 CA Name](#152-ca-name)
+    - [1.5.3 Signing Certificate](#153-signing-certificate)
+    - [1.5.4 Database](#154-database)
+    - [1.5.5 Configuration](#155-configuration)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Common Structures](#221-common-structures)
+      - [2.2.1.1 BYTE](#2211-byte)
+      - [2.2.1.2 VARIANT](#2212-variant)
+      - [2.2.1.3 CERTVIEWRESTRICTION](#2213-certviewrestriction)
+      - [2.2.1.4 CERTTRANSBLOB](#2214-certtransblob)
+      - [2.2.1.5 CATRANSPROP](#2215-catransprop)
+      - [2.2.1.6 CAINFO](#2216-cainfo)
+      - [2.2.1.7 CERTTRANSDBCOLUMN](#2217-certtransdbcolumn)
+        - [2.2.1.7.1 CERTTRANSDBCOLUMN Marshaling Format](#22171-certtransdbcolumn-marshaling-format)
+      - [2.2.1.8 CERTTRANSDBATTRIBUTE](#2218-certtransdbattribute)
+        - [2.2.1.8.1 CERTTRANSDBATTRIBUTE Marshaling Format](#22181-certtransdbattribute-marshaling-format)
+      - [2.2.1.9 CERTTRANSDBEXTENSION](#2219-certtransdbextension)
+        - [2.2.1.9.1 CERTTRANSDBEXTENSION Marshaling Format](#22191-certtransdbextension-marshaling-format)
+      - [2.2.1.10 CERTTRANSDBRESULTCOLUMN](#22110-certtransdbresultcolumn)
+        - [2.2.1.10.1 CERTTRANSDBRESULTCOLUMN Marshaling Format](#221101-certtransdbresultcolumn-marshaling-format)
+      - [2.2.1.11 Officer and Enrollment Agent Access Rights](#22111-officer-and-enrollment-agent-access-rights)
+        - [2.2.1.11.1 Marshaling Format for Officer and Enrollment Agent Rights](#221111-marshaling-format-for-officer-and-enrollment-agent-rights)
+      - [2.2.1.12 CERTTIME](#22112-certtime)
+    - [2.2.2 Certificate Requirements](#222-certificate-requirements)
+      - [2.2.2.1 CA Exchange Certificate](#2221-ca-exchange-certificate)
+      - [2.2.2.2 Key Recovery Certificate](#2222-key-recovery-certificate)
+    - [2.2.3 CERTTRANSDBRESULTROW](#223-certtransdbresultrow)
+      - [2.2.3.1 CERTTRANSDBRESULTROW Marshaling Format](#2231-certtransdbresultrow-marshaling-format)
+    - [2.2.4 Database File Name Structure](#224-database-file-name-structure)
+    - [2.2.5 Common Error Codes](#225-common-error-codes)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Request Table](#3111-request-table)
+        - [3.1.1.1.1 Request Table Required Data Elements](#31111-request-table-required-data-elements)
+        - [3.1.1.1.2 Request Table Optional Data Elements](#31112-request-table-optional-data-elements)
+      - [3.1.1.2 Attribute Table](#3112-attribute-table)
+      - [3.1.1.3 Extension Table](#3113-extension-table)
+      - [3.1.1.4 Certificate Revocation List (CRL) Table](#3114-certificate-revocation-list-crl-table)
+        - [3.1.1.4.1 CRL Table Required Data Elements](#31141-crl-table-required-data-elements)
+        - [3.1.1.4.2 CRL Table Recommended Data Elements](#31142-crl-table-recommended-data-elements)
+      - [3.1.1.5 Schema Table](#3115-schema-table)
+      - [3.1.1.6 Datum - DB View](#3116-datum-db-view)
+      - [3.1.1.7 Permissions](#3117-permissions)
+      - [3.1.1.8 CRL Publishing Locations](#3118-crl-publishing-locations)
+      - [3.1.1.9 CRL Validity Period](#3119-crl-validity-period)
+      - [3.1.1.10 Configuration Data](#31110-configuration-data)
+        - [3.1.2.1.2 that indicates the next time the CA will publish delta CRLs. This element is updated by](#31212-that-indicates-the-next-time-the-ca-will-publish-delta-crls-this-element-is-updated-by)
+      - [3.1.2.2 CRL Publication Retry Timer](#3122-crl-publication-retry-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Processing Rules for ICertAdminD](#3141-processing-rules-for-icertadmind)
+        - [3.1.4.1.1 ICertAdminD::SetExtension (Opnum 3)](#31411-icertadmindsetextension-opnum-3)
+        - [3.1.4.1.2 ICertAdminD::SetAttributes (Opnum 4)](#31412-icertadmindsetattributes-opnum-4)
+        - [3.1.4.1.3 ICertAdminD::ResubmitRequest (Opnum 5)](#31413-icertadmindresubmitrequest-opnum-5)
+        - [3.1.4.1.4 ICertAdminD::DenyRequest (Opnum 6)](#31414-icertadminddenyrequest-opnum-6)
+        - [3.1.4.1.5 ICertAdminD::IsValidCertificate (Opnum 7)](#31415-icertadmindisvalidcertificate-opnum-7)
+        - [3.1.4.1.6 ICertAdminD::PublishCRL (Opnum 8)](#31416-icertadmindpublishcrl-opnum-8)
+        - [3.1.4.1.7 ICertAdminD::GetCRL (Opnum 9)](#31417-icertadmindgetcrl-opnum-9)
+        - [3.1.4.1.8 ICertAdminD::RevokeCertificate (Opnum 10)](#31418-icertadmindrevokecertificate-opnum-10)
+        - [3.1.4.1.9 ICertAdminD::EnumViewColumn (Opnum 11)](#31419-icertadmindenumviewcolumn-opnum-11)
+        - [3.1.4.1.10 ICertAdminD::GetViewDefaultColumnSet (Opnum 12)](#314110-icertadmindgetviewdefaultcolumnset-opnum-12)
+        - [3.1.4.1.11 ICertAdminD::EnumAttributesOrExtensions (Opnum 13)](#314111-icertadmindenumattributesorextensions-opnum-13)
+        - [3.1.4.1.12 ICertAdminD::OpenView (Opnum 14)](#314112-icertadmindopenview-opnum-14)
+        - [3.1.4.1.13 ICertAdminD::EnumView (Opnum 15)](#314113-icertadmindenumview-opnum-15)
+        - [3.1.4.1.14 ICertAdminD::CloseView (Opnum 16)](#314114-icertadmindcloseview-opnum-16)
+        - [3.1.4.1.15 ICertAdminD::ServerControl (Opnum 17)](#314115-icertadmindservercontrol-opnum-17)
+        - [3.1.4.1.16 ICertAdminD::Ping (Opnum 18)](#314116-icertadmindping-opnum-18)
+        - [3.1.4.1.17 ICertAdminD::GetServerState (Opnum 19)](#314117-icertadmindgetserverstate-opnum-19)
+        - [3.1.4.1.18 ICertAdminD::BackupPrepare (Opnum 20)](#314118-icertadmindbackupprepare-opnum-20)
+        - [3.1.4.1.19 ICertAdminD::BackupEnd (Opnum 21)](#314119-icertadmindbackupend-opnum-21)
+        - [3.1.4.1.20 ICertAdminD::BackupGetAttachmentInformation (Opnum 22)](#314120-icertadmindbackupgetattachmentinformation-opnum-22)
+        - [3.1.4.1.21 ICertAdminD::BackupGetBackupLogs (Opnum 23)](#314121-icertadmindbackupgetbackuplogs-opnum-23)
+        - [3.1.4.1.22 ICertAdminD::BackupOpenFile (Opnum 24)](#314122-icertadmindbackupopenfile-opnum-24)
+        - [3.1.4.1.23 ICertAdminD::BackupReadFile (Opnum 25)](#314123-icertadmindbackupreadfile-opnum-25)
+        - [3.1.4.1.24 ICertAdminD::BackupCloseFile (Opnum 26)](#314124-icertadmindbackupclosefile-opnum-26)
+        - [3.1.4.1.25 ICertAdminD::BackupTruncateLogs (Opnum 27)](#314125-icertadmindbackuptruncatelogs-opnum-27)
+        - [3.1.4.1.26 ICertAdminD::ImportCertificate (Opnum 28)](#314126-icertadmindimportcertificate-opnum-28)
+        - [3.1.4.1.27 ICertAdminD::BackupGetDynamicFiles (Opnum 29)](#314127-icertadmindbackupgetdynamicfiles-opnum-29)
+        - [3.1.4.1.28 ICertAdminD::RestoreGetDatabaseLocations (Opnum 30)](#314128-icertadmindrestoregetdatabaselocations-opnum-30)
+      - [3.1.4.2 Processing Rules for ICertAdminD2](#3142-processing-rules-for-icertadmind2)
+        - [3.1.4.2.1 ICertAdminD2::PublishCRLs (Opnum 31)](#31421-icertadmind2publishcrls-opnum-31)
+        - [3.1.4.2.2 ICertAdminD2::GetCAProperty (Opnum 32)](#31422-icertadmind2getcaproperty-opnum-32)
+        - [3.1.4.2.3 ICertAdminD2::SetCAProperty (Opnum 33)](#31423-icertadmind2setcaproperty-opnum-33)
+        - [3.1.4.2.4 ICertAdminD2::GetCAPropertyInfo (Opnum 34)](#31424-icertadmind2getcapropertyinfo-opnum-34)
+        - [3.1.4.2.5 ICertAdminD2::EnumViewColumnTable (Opnum 35)](#31425-icertadmind2enumviewcolumntable-opnum-35)
+        - [3.1.4.2.6 ICertAdminD2::GetCASecurity (Opnum 36)](#31426-icertadmind2getcasecurity-opnum-36)
+        - [3.1.4.2.7 ICertAdminD2::SetCASecurity (Opnum 37)](#31427-icertadmind2setcasecurity-opnum-37)
+        - [3.1.4.2.8 ICertAdminD2::Ping2 (Opnum 38)](#31428-icertadmind2ping2-opnum-38)
+        - [3.1.4.2.9 ICertAdminD2::GetArchivedKey (Opnum 39)](#31429-icertadmind2getarchivedkey-opnum-39)
+        - [3.1.4.2.10 ICertAdminD2::GetAuditFilter (Opnum 40)](#314210-icertadmind2getauditfilter-opnum-40)
+        - [3.1.4.2.11 ICertAdminD2::SetAuditFilter (Opnum 41)](#314211-icertadmind2setauditfilter-opnum-41)
+        - [3.1.4.2.12 ICertAdminD2::GetOfficerRights (Opnum 42)](#314212-icertadmind2getofficerrights-opnum-42)
+        - [3.1.4.2.13 ICertAdminD2::SetOfficerRights (Opnum 43)](#314213-icertadmind2setofficerrights-opnum-43)
+        - [3.1.4.2.14 ICertAdminD2::GetConfigEntry (Opnum 44)](#314214-icertadmind2getconfigentry-opnum-44)
+        - [3.1.4.2.15 ICertAdminD2::SetConfigEntry (Opnum 45)](#314215-icertadmind2setconfigentry-opnum-45)
+        - [3.1.4.2.16 ICertAdminD2::ImportKey (Opnum 46)](#314216-icertadmind2importkey-opnum-46)
+        - [3.1.4.2.17 ICertAdminD2::GetMyRoles (Opnum 47)](#314217-icertadmind2getmyroles-opnum-47)
+        - [3.1.4.2.18 ICertAdminD2::DeleteRow (Opnum 48)](#314218-icertadmind2deleterow-opnum-48)
+    - [3.1.5 Timer Events](#315-timer-events)
+      - [3.1.5.1 CRL Next Publish Timer Events](#3151-crl-next-publish-timer-events)
+      - [3.1.5.2 CRL Publication Retry Timer Events](#3152-crl-publication-retry-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Processing Rules for ICertAdminD](#3241-processing-rules-for-icertadmind)
+        - [3.2.4.1.1 ICertAdminD::SetExtension (Opnum 3)](#32411-icertadmindsetextension-opnum-3)
+        - [3.2.4.1.2 ICertAdminD::SetAttributes (Opnum 4)](#32412-icertadmindsetattributes-opnum-4)
+        - [3.2.4.1.3 ICertAdminD::ResubmitRequest (Opnum 5)](#32413-icertadmindresubmitrequest-opnum-5)
+        - [3.2.4.1.4 ICertAdminD::DenyRequest (Opnum 6)](#32414-icertadminddenyrequest-opnum-6)
+        - [3.2.4.1.5 ICertAdminD::IsValidCertificate (Opnum 7)](#32415-icertadmindisvalidcertificate-opnum-7)
+        - [3.2.4.1.6 ICertAdminD::PublishCRL (Opnum 8)](#32416-icertadmindpublishcrl-opnum-8)
+        - [3.2.4.1.7 ICertAdminD::GetCRL (Opnum 9)](#32417-icertadmindgetcrl-opnum-9)
+        - [3.2.4.1.8 ICertAdminD::RevokeCertificate (Opnum 10)](#32418-icertadmindrevokecertificate-opnum-10)
+        - [3.2.4.1.9 ICertAdminD::EnumViewColumn (Opnum 11)](#32419-icertadmindenumviewcolumn-opnum-11)
+        - [3.2.4.1.10 ICertAdminD::GetViewDefaultColumnSet (Opnum 12)](#324110-icertadmindgetviewdefaultcolumnset-opnum-12)
+        - [3.2.4.1.11 ICertAdminD::EnumAttributesOrExtensions (Opnum 13)](#324111-icertadmindenumattributesorextensions-opnum-13)
+        - [3.2.4.1.12 ICertAdminD::OpenView (Opnum 14)](#324112-icertadmindopenview-opnum-14)
+        - [3.2.4.1.13 ICertAdminD::EnumView (Opnum 15)](#324113-icertadmindenumview-opnum-15)
+        - [3.2.4.1.14 ICertAdminD::CloseView (Opnum 16)](#324114-icertadmindcloseview-opnum-16)
+        - [3.2.4.1.15 ICertAdminD::ServerControl (Opnum 17)](#324115-icertadmindservercontrol-opnum-17)
+        - [3.2.4.1.16 ICertAdminD::Ping (Opnum 18)](#324116-icertadmindping-opnum-18)
+        - [3.2.4.1.17 ICertAdminD::GetServerState (Opnum 19)](#324117-icertadmindgetserverstate-opnum-19)
+        - [3.2.4.1.18 ICertAdminD::BackupPrepare (Opnum 20)](#324118-icertadmindbackupprepare-opnum-20)
+        - [3.2.4.1.19 ICertAdminD::BackupEnd (Opnum 21)](#324119-icertadmindbackupend-opnum-21)
+        - [3.2.4.1.20 ICertAdminD::BackupGetAttachmentInformation (Opnum 22)](#324120-icertadmindbackupgetattachmentinformation-opnum-22)
+        - [3.2.4.1.21 ICertAdminD::BackupGetBackupLogs (Opnum 23)](#324121-icertadmindbackupgetbackuplogs-opnum-23)
+        - [3.2.4.1.22 ICertAdminD::BackupOpenFile (Opnum 24)](#324122-icertadmindbackupopenfile-opnum-24)
+        - [3.2.4.1.23 ICertAdminD::BackupReadFile (Opnum 25)](#324123-icertadmindbackupreadfile-opnum-25)
+        - [3.2.4.1.24 ICertAdminD::BackupCloseFile (Opnum 26)](#324124-icertadmindbackupclosefile-opnum-26)
+        - [3.2.4.1.25 ICertAdminD::BackupTruncateLogs (Opnum 27)](#324125-icertadmindbackuptruncatelogs-opnum-27)
+        - [3.2.4.1.26 ICertAdminD::ImportCertificate (Opnum 28)](#324126-icertadmindimportcertificate-opnum-28)
+        - [3.2.4.1.27 ICertAdminD::BackupGetDynamicFiles (Opnum 29)](#324127-icertadmindbackupgetdynamicfiles-opnum-29)
+        - [3.2.4.1.28 ICertAdminD::RestoreGetDatabaseLocations (Opnum 30)](#324128-icertadmindrestoregetdatabaselocations-opnum-30)
+      - [3.2.4.2 Processing Rules for ICertAdminD2](#3242-processing-rules-for-icertadmind2)
+        - [3.2.4.2.1 ICertAdminD2:: PublishCRLs (Opnum 31)](#32421-icertadmind2-publishcrls-opnum-31)
+        - [3.2.4.2.2 ICertAdminD2::GetCAProperty (Opnum 32)](#32422-icertadmind2getcaproperty-opnum-32)
+        - [3.2.4.2.3 ICertAdminD2::SetCAProperty (Opnum 33)](#32423-icertadmind2setcaproperty-opnum-33)
+        - [3.2.4.2.4 ICertAdminD2::GetCAPropertyInfo (Opnum 34)](#32424-icertadmind2getcapropertyinfo-opnum-34)
+        - [3.2.4.2.5 ICertAdminD2::EnumViewColumnTable (Opnum 35)](#32425-icertadmind2enumviewcolumntable-opnum-35)
+        - [3.2.4.2.6 ICertAdminD2::GetCASecurity (Opnum 36)](#32426-icertadmind2getcasecurity-opnum-36)
+        - [3.2.4.2.7 ICertAdminD2::SetCASecurity (Opnum 37)](#32427-icertadmind2setcasecurity-opnum-37)
+        - [3.2.4.2.8 ICertAdminD2::Ping2 (Opnum 38)](#32428-icertadmind2ping2-opnum-38)
+        - [3.2.4.2.9 ICertAdminD2::GetArchivedKey (Opnum 39)](#32429-icertadmind2getarchivedkey-opnum-39)
+        - [3.2.4.2.10 ICertAdminD2::GetAuditFilter (Opnum 40)](#324210-icertadmind2getauditfilter-opnum-40)
+        - [3.2.4.2.11 ICertAdminD2::SetAuditFilter (Opnum 41)](#324211-icertadmind2setauditfilter-opnum-41)
+        - [3.2.4.2.12 ICertAdminD2::GetOfficerRights (Opnum 42)](#324212-icertadmind2getofficerrights-opnum-42)
+        - [3.2.4.2.13 ICertAdminD2::SetOfficerRights (Opnum 43)](#324213-icertadmind2setofficerrights-opnum-43)
+        - [3.2.4.2.14 ICertAdminD2::GetConfigEntry (Opnum 44)](#324214-icertadmind2getconfigentry-opnum-44)
+        - [3.2.4.2.15 ICertAdminD2::SetConfigEntry (Opnum 45)](#324215-icertadmind2setconfigentry-opnum-45)
+        - [3.2.4.2.16 ICertAdminD2::ImportKey (Opnum 46)](#324216-icertadmind2importkey-opnum-46)
+        - [3.2.4.2.17 ICertAdminD2::GetMyRoles (Opnum 47)](#324217-icertadmind2getmyroles-opnum-47)
+        - [3.2.4.2.18 ICertAdminD2::DeleteRow (Opnum 48)](#324218-icertadmind2deleterow-opnum-48)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Strong Administrator Authentication](#511-strong-administrator-authentication)
+    - [5.1.2 KDC Security](#512-kdc-security)
+    - [5.1.3 Administrator Console Security](#513-administrator-console-security)
+    - [5.1.4 Administrator Credential Issuance](#514-administrator-credential-issuance)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Certificate Services Remote Administration Protocol consists of a set of Distributed Component
 Object Model (DCOM) interfaces, as specified in [MS-DCOM], that allow administrative tools to
@@ -1161,7 +877,7 @@ concepts. For more information, see [MSFT-CRL].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1213,7 +929,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-certificate authority (CA) roles: A list of administrator-defined rights or access control lists
+
+certificate authority (CA) roles: A list of administrator-defined rights or access control lists
 
 (ACLs) that define the capability of a particular principal on a certificate authority (CA). CA
 Roles are specified in [CIMC-PP] section 5.2, and include administrator, operator, officer, and
@@ -1288,7 +1005,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-around the world are expressed as positive and negative offsets from UTC. In this role, it is also
+
+around the world are expressed as positive and negative offsets from UTC. In this role, it is also
 referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
 references to UTC refer to the time at UTC-0 (or GMT).
 
@@ -1362,7 +1080,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Enrollment Agent rights: A list of administrator-defined rights or ACLs that define the capability
+
+Enrollment Agent rights: A list of administrator-defined rights or ACLs that define the capability
 
 of a particular principal to obtain a certificate, with subject information pertaining to a
 different principal, from a CA. Enrollment Agent is not one of the roles defined in [CIMC-PP].
@@ -1440,7 +1159,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Lightweight Directory Access Protocol (LDAP): The primary access protocol for Active
+
+Lightweight Directory Access Protocol (LDAP): The primary access protocol for Active
 
 Directory. Lightweight Directory Access Protocol (LDAP) is an industry-standard protocol,
 established by the Internet Engineering Task Force (IETF), which allows users to query and
@@ -1513,7 +1233,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-release from hold: To change the status of a certificate with Request.Disposition "certificate
+
+release from hold: To change the status of a certificate with Request.Disposition "certificate
 revoked" and Request.Revoked.Reason "certificateHold" to Request.Disposition "certificate
 issued", using the RevokeCertificate method. As detailed in this document in the server
 processing rules for the RevokeCertificate method, only a certificate with Request.Disposition set
@@ -1587,7 +1308,8 @@ Release: January 13, 2026
 
 14 / 193
 
-symmetric encryption: An encryption method that uses the same cryptographic key to encrypt
+
+symmetric encryption: An encryption method that uses the same cryptographic key to encrypt
 
 and decrypt a given message.
 
@@ -1625,14 +1347,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1659,7 +1381,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-[MS-ADSC] Microsoft Corporation, "Active Directory Schema Classes".
+
+[MS-ADSC] Microsoft Corporation, "Active Directory Schema Classes".
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
@@ -1727,7 +1450,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-[RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
+
+[RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
 Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 
 [RFC4523] Zeilenga, K., "Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509
@@ -1758,7 +1482,7 @@ Recommendation X.680, July 2002, http://www.itu.int/rec/T-REC-X.680/en
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CRYPTO] Menezes, A., Vanstone, S., and Oorschot, P., "Handbook of Applied Cryptography", 1997,
 https://cacr.uwaterloo.ca/hac/
@@ -1794,11 +1518,12 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-CSRA].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Certificate Services Remote Administration Protocol consists of a set of DCOM interfaces, as
 specified in [MS-DCOM], that allow administrative tools to configure the state and policy of a CA on a
@@ -1846,7 +1571,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-approval, there are ICertAdminD methods that allow the human's administrative console to
+
+approval, there are ICertAdminD methods that allow the human's administrative console to
 interact with the CA to query and modify pending requests. For additional information on pending
 requests, see section 3.1.1.1.1 and also [MS-WCCE].
 
@@ -1873,24 +1599,24 @@ miscellaneous administrative actions such as determining if the CA is responsive
 what kinds of rights the caller has, telling the CA to go offline, or querying and editing various CA
 state variables. For details, see the descriptions in sections 3.1.4.1 and 3.1.4.2.
 
-1.3.1  Concepts
+#### 1.3.1 Concepts
 
 The sections that follow define concepts and technologies used by the Certificate Services Remote
 Administration Protocol.
 
-1.3.1.1  Number Annotation
+##### 1.3.1.1 Number Annotation
 
 Numbers expressed in the format 0xXXXX are to be interpreted as hexadecimal. Otherwise, all
 numbers are to be interpreted as decimal.
 
-1.3.1.2  Object Identifiers
+##### 1.3.1.2 Object Identifiers
 
 The protocol uses object identifiers (OIDs) (1) as unique identifiers for several classes of objects,
 as specified in [X660] and [RFC3280] Appendix A. OIDs (1) are used to uniquely identify certificate
 templates that are available to the CA. Within a certificate, OIDs (1) are used to identify standard
 extensions, as specified in [RFC3280] section 4.2.1, and some nonstandard extensions.
 
-1.3.1.3  CA Databases
+##### 1.3.1.3 CA Databases
 
 This protocol refers to four databases as tables, each table with rows and columns hosted by the CA.
 There are two main tables: one for requests and one for CRLs. The Request table has two auxiliary
@@ -1919,13 +1645,14 @@ Release: January 13, 2026
 
 19 / 193
 
-  CRL table: The CRL table holds the revocation data and status for the CA. The CA maintains a
+
+  CRL table: The CRL table holds the revocation data and status for the CA. The CA maintains a
 CRL database in the form of a table that holds all CRLs (both base and delta, as defined in
 [RFC3280] section 5) that have been issued.
 
 Methods of this protocol refer to the preceding four tables, which are specified in section 3.1.1.
 
-1.3.1.4  CA Roles and Officer Rights
+##### 1.3.1.4 CA Roles and Officer Rights
 
 The Certificate Services Remote Administration Protocol includes methods to get and set certificate
 authority (CA) roles and Officer rights (as specified in sections 3.1.4.2.6, 3.1.4.2.7, 3.1.4.2.12,
@@ -1934,7 +1661,7 @@ operator, officer, and auditor. In addition, this protocol contains methods to a
 rights on the CA. While "Enrollment Agent" can be considered a role, it is not one of the CA roles
 specified in [CIMC-PP].
 
-1.3.1.5  Certificate Templates
+##### 1.3.1.5 Certificate Templates
 
 An enterprise certificate authority (enterprise CA) has to use certificate templates that are
 configured locally in order to support certificate enrollment requests, as specified in [MS-WCCE].
@@ -1942,7 +1669,7 @@ The complete definition of certificate templates, including the list of attribut
 that have been implemented in applicable Windows Server releases , is specified in [MS-CRTD] and
 [MS-WCCE].
 
-1.3.1.6  Sanitizing Common Names
+##### 1.3.1.6 Sanitizing Common Names
 
 The common names (CNs) of Active Directory objects, as specified in [MS-ADTS], that are used
 by the enrollment protocol are created by sanitizing the names of other objects and shortening the
@@ -1965,7 +1692,7 @@ with !005e.
 
 The algorithm for creating a sanitized name is specified in [MS-WCCE] section 3.1.1.4.1.1.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Certificate Services Remote Administration Protocol depends on the Distributed Component Object
 Model (DCOM) Remote Protocol, as specified in [MS-DCOM]. The DCOM Remote Protocol is built on top
@@ -1982,7 +1709,8 @@ Release: January 13, 2026
 
 20 / 193
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-CSRA].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -2013,9 +1741,9 @@ stack.
 
 Figure 2: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
-1.5.1  Certificate Template
+#### 1.5.1 Certificate Template
 
 The Certificate Services Remote Administration Protocol enables the configuration, setting, and
 retrieval of properties on a CA. A CA can use templates in support of the Windows Certificate Services
@@ -2029,7 +1757,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-1.5.2  CA Name
+
+#### 1.5.2 CA Name
 
 The Certificate Services Remote Administration Protocol assumes that the client knows the name of
 the CA server that implements the DCOM interfaces specified in section 3.2.4. Windows-based clients
@@ -2044,17 +1773,17 @@ section 2.223.
 The cn attribute of pKIEnrollmentService is the CA name. The dNSHostName attribute ([MS-ADA1]
 section 2.185) of pKIEnrollmentService contains the machine name that hosts the CA service.
 
-1.5.3  Signing Certificate
+#### 1.5.3 Signing Certificate
 
 The CA MUST have access to the entire Signing_Cert Table, including each CA signing certificate,
 defined in [MS-WCCE] section 3.2.1.1.2, and to the private key associated with the CA Exchange
 Certificate in the Current_CA_Exchange_Cert element, defined in [MS-WCCE] section 3.2.1.1.4.
 
-1.5.4  Database
+#### 1.5.4 Database
 
 The tables and fields defined in section 3.1.1 are available.
 
-1.5.5  Configuration
+#### 1.5.5 Configuration
 
 The configuration elements defined in section 3.1.1.10 are available. Each element defined in section
 3.1.1.10 as "{Config_Element_Name}" has been initialized from its corresponding data element
@@ -2065,20 +1794,20 @@ Windows Client Certificate Enrollment Protocol or the ICertPassage Remote Protoc
 configuration data elements for those implementations as those defined in sections 3.1.1.6, 3.1.1.7,
 3.1.1.8, 3.1.1.9, and 3.1.1.10.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Certificate Services Remote Administration Protocol provides clients with the capability to interact
 with CA for the purpose of managing X.509 certificates, as specified in [X509], or a CA
 configuration.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Certificate Services Remote Administration Protocol is based on DCOM technology, as specified in
 [MS-DCOM], which provides capabilities to query for interface versions. Clients use the
 IUnknown.QueryInterface method to determine the supported server interface version. If Certificate
 Services supports ICertAdminD2, then ICertAdminD2 is used; otherwise, ICertAdminD is used.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
@@ -2091,7 +1820,8 @@ Release: January 13, 2026
 
 22 / 193
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 No standards assignments have been received for the Certificate Services Remote Administration
 Protocol described in this document.
@@ -2117,9 +1847,10 @@ Release: January 13, 2026
 
 23 / 193
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DCOM, as specified in [MS-DCOM], is used as the transport protocol.
 
@@ -2194,9 +1925,10 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-2.2  Common Data Types
 
-2.2.1  Common Structures
+### 2.2 Common Data Types
+
+#### 2.2.1 Common Structures
 
 This section defines the structures used by the Certificate Services Remote Administration Protocol.
 These structures are used when performing various operations (using interface methods specified in
@@ -2204,7 +1936,7 @@ section 3.1.4) on the server and as part of the server's response. This protocol
 structures with the Windows Client Certificate Enrollment Protocol (as specified in [MS-WCCE]), which
 are specified in the following sections.
 
-2.2.1.1  BYTE
+##### 2.2.1.1 BYTE
 
 The BYTE type specifies an 8-bit data item that corresponds to a single octet in a network protocol.
 
@@ -2212,11 +1944,11 @@ This type is declared as follows:
 
  typedef byte BYTE;
 
-2.2.1.2  VARIANT
+##### 2.2.1.2 VARIANT
 
 The VARIANT type is implemented as specified in [MS-OAUT] section 2.2.29.
 
-2.2.1.3  CERTVIEWRESTRICTION
+##### 2.2.1.3 CERTVIEWRESTRICTION
 
 The CERTVIEWRESTRICTION structure is used to restrict the data set that is returned by the CA
 server during calls to the OpenView method for the ICertAdminD interface.
@@ -2265,7 +1997,8 @@ Release: January 13, 2026
 
 25 / 193
 
-Value
+
+Value
 
 Meaning
 
@@ -2282,7 +2015,7 @@ cbValue:  An unsigned integer value that specifies the length of the byte array 
 
 the pbValue field.
 
-2.2.1.4  CERTTRANSBLOB
+##### 2.2.1.4 CERTTRANSBLOB
 
 The CERTTRANSBLOB structure defines a byte buffer that is used to store and request certificates,
 transmit responses, manipulate Unicode strings, and marshal property values.
@@ -2320,13 +2053,13 @@ defined in [MS-WCCE] section 2.2.2.
 All instances of CERTTRANSBLOB that are used by this protocol MUST use the marshaling rules that
 are described in the following sections or in [MS-WCCE] section 2.2.2.
 
-2.2.1.5  CATRANSPROP
+##### 2.2.1.5 CATRANSPROP
 
 The CATRANSPROP structure encapsulates information about a CA property. The CATRANSPROP
 structure and the marshaling of one or more CATRANSPROP structures into a CERTTRANSBLOB
 structure is specified in [MS-WCCE] section 2.2.2.3.
 
-2.2.1.6  CAINFO
+##### 2.2.1.6 CAINFO
 
 Defines a basic informational block describing a CA. The structure of CAINFO is specified in [MS-
 WCCE] section 2.2.2.4. The marshaling of CAINFO into a CERTTRANSBLOB structure is specified in
@@ -2339,7 +2072,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-2.2.1.7  CERTTRANSDBCOLUMN
+
+##### 2.2.1.7 CERTTRANSDBCOLUMN
 
 The CERTTRANSDBCOLUMN structure is encoded within a CERTTRANSBLOB structure. The
 CERTTRANSDBCOLUMN structure contains schema information about a particular database column
@@ -2522,7 +2256,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-that contains the name of this column can be found. The string format is a null-terminated
+
+that contains the name of this column can be found. The string format is a null-terminated
 UNICODE string. The offset MUST be divisible by 4.
 
 obwszDisplayName:  An integer that contains the offset from the beginning of the byte array buffer
@@ -2530,7 +2265,7 @@ that is pointed to by the pb member in the containing CERTTRANSBLOB structure, t
 string that contains the display name of this column can be found. The string format is a null-
 terminated UNICODE string. The offset MUST be divisible by 4.
 
-2.2.1.7.1 CERTTRANSDBCOLUMN Marshaling Format
+###### 2.2.1.7.1 CERTTRANSDBCOLUMN Marshaling Format
 
 The CERTTRANSDBCOLUMN structure (section 2.2.1.7) is encoded within the byte array that is
 referenced by the pb member of a CERTTRANSBLOB structure (section 2.2.1.4).
@@ -2599,7 +2334,8 @@ Release: January 13, 2026
 
 28 / 193
 
-Column_Type_Value (4 bytes): The value indicating the type for the column. The value MUST
+
+Column_Type_Value (4 bytes): The value indicating the type for the column. The value MUST
 
 be little-endian encoded.
 
@@ -2630,7 +2366,7 @@ data for an individual column MUST NOT overlap with any other data. Arbitrary pa
 inserted between data values. Schema data MUST be little-endian encoded for each character of
 the null-terminated UNICODE string.
 
-2.2.1.8  CERTTRANSDBATTRIBUTE
+##### 2.2.1.8 CERTTRANSDBATTRIBUTE
 
 The CERTTRANSDBATTRIBUTE structure is encoded within a CERTTRANSBLOB structure. The
 CERTTRANSDBATTRIBUTE structure is used by the server to return attribute information that is
@@ -2653,7 +2389,7 @@ pointed to by the pb member in the containing CERTTRANSBLOB structure to where t
 that contains the value of this attribute can be found. The format is a null-terminated UNICODE
 string. The offset MUST be divisible by 4.
 
-2.2.1.8.1 CERTTRANSDBATTRIBUTE Marshaling Format
+###### 2.2.1.8.1 CERTTRANSDBATTRIBUTE Marshaling Format
 
 The packet containing an array of some number, "N", of CERTTRANSDBATTRIBUTE structures (section
 2.2.1.8) is specified in the following packet diagrams. The actual value of "N" is a separate return
@@ -2666,7 +2402,8 @@ Release: January 13, 2026
 
 29 / 193
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2730,7 +2467,7 @@ Attribute_Data (variable): Contains the data for all attributes. Data for indivi
 NOT overlap with any other attribute data. Attribute name and value are string type. The data
 MUST use little-endian encoding format for a null-terminated UNICODE string.
 
-2.2.1.9  CERTTRANSDBEXTENSION
+##### 2.2.1.9 CERTTRANSDBEXTENSION
 
 The CERTTRANSDBEXTENSION structure is encoded within a CERTTRANSBLOB structure. The
 CERTTRANSDBEXTENSION structure is used by the server to return certificate extension information,
@@ -2747,7 +2484,8 @@ Release: January 13, 2026
 
 30 / 193
 
-   ULONG obwszName;
+
+   ULONG obwszName;
    LONG ExtFlags;
    DWORD cbValue;
    ULONG obValue;
@@ -2852,7 +2590,8 @@ Release: January 13, 2026
 
 31 / 193
 
-2.2.1.9.1 CERTTRANSDBEXTENSION Marshaling Format
+
+###### 2.2.1.9.1 CERTTRANSDBEXTENSION Marshaling Format
 
 The packet containing an array of some number, "N", of CERTTRANSDBEXTENSION structures (section
 2.2.1.9) is specified in the following packet diagrams. The actual value of "N" is a separate return
@@ -2934,7 +2673,8 @@ Release: January 13, 2026
 
 32 / 193
 
-for this extension can be found. The offset MUST be divisible by 4. The offset value MUST be
+
+for this extension can be found. The offset MUST be divisible by 4. The offset value MUST be
 little-endian encoded.
 
 Extension_Data (variable): Contains the data for all extensions. Data for individual extensions
@@ -2942,9 +2682,9 @@ Extension_Data (variable): Contains the data for all extensions. Data for indivi
 MUST NOT overlap with any other extension data. An extension name data MUST use little-endian
 encoding format for a null-terminated UNICODE string. An extension value data is a byte array.
 
-2.2.1.10
+##### 2.2.1.10 CERTTRANSDBRESULTCOLUMN
 
-CERTTRANSDBRESULTCOLUMN
+
 
 The CERTTRANSDBRESULTCOLUMN structure is encoded within a CERTTRANSBLOB structure. The
 CERTTRANSDBRESULTCOLUMN structure is used by the server to return the result of a CA database
@@ -3109,7 +2849,8 @@ Release: January 13, 2026
 
 33 / 193
 
-Value  Meaning
+
+Value  Meaning
 
 0x02
 
@@ -3134,9 +2875,9 @@ cbValue:  An unsigned integer value that specifies the length, in bytes, of the 
 
 column.
 
-2.2.1.10.1
+###### 2.2.1.10.1 CERTTRANSDBRESULTCOLUMN Marshaling Format
 
-CERTTRANSDBRESULTCOLUMN Marshaling Format
+
 
 The CERTTRANSDBRESULTCOLUMN structure (section 2.2.1.10) is encoded within a CERTTRANSBLOB
 structure (section 2.2.1.4) such that the pb member of the CERTTRANSBLOB points to the beginning
@@ -3201,7 +2942,8 @@ Release: January 13, 2026
 
 34 / 193
 
-Result_Column_cbValue
+
+Result_Column_cbValue
 
 Result_Column_Type (4 bytes): The value indicating the type for the column. The value MUST
 
@@ -3257,9 +2999,9 @@ MUST use little-endian encoding format.
 MUST use little-endian encoding format for each character of the null-
 terminated UNICODE string.
 
-2.2.1.11
+##### 2.2.1.11 Officer and Enrollment Agent Access Rights
 
-Officer and Enrollment Agent Access Rights
+
 
 Officer and Enrollment Agent access rights structures are used by the server to return the results of a
 client query; for example, the client's invocation of the GetOfficerRights method (section 3.1.4.2.12)
@@ -3304,7 +3046,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Array of SIDs (variable)
+
+Array of SIDs (variable)
 
 ...
 
@@ -3327,7 +3070,7 @@ TemplateName (variable): A little-endian encoded Unicode and null-terminated str
 the common name (CN) of the template (as defined in [MS-CRTD]) for which the officer is
 authorized to approve requests.
 
-2.2.1.11.1  Marshaling Format for Officer and Enrollment Agent Rights
+###### 2.2.1.11.1 Marshaling Format for Officer and Enrollment Agent Rights
 
 The marshaling of Officer rights and Enrollment Agent rights into a CERTTRANSBLOB structure
 depends on whether the server supports Enrollment Agent rights. CA implementers can determine
@@ -3376,7 +3119,8 @@ Release: January 13, 2026
 
 36 / 193
 
- struct {
+
+ struct {
  DWORD bEARightDisabled;
  };
 
@@ -3450,23 +3194,24 @@ Release: January 13, 2026
 
 37 / 193
 
-2.2.1.12
 
-CERTTIME
+##### 2.2.1.12 CERTTIME
+
+
 
 The CERTTIME type consists of a 64-bit value that represents the number of 100-nanosecond intervals
 since January 1, 1601 (the start of the Gregorian calendar), according to Coordinated Universal
 Time (UTC).
 
-2.2.2  Certificate Requirements
+#### 2.2.2 Certificate Requirements
 
-2.2.2.1  CA Exchange Certificate
+##### 2.2.2.1 CA Exchange Certificate
 
 The Certificate Services Enrollment Protocol requires that the CA provide a CA exchange certificate
 for the purpose of client private key archival during the certificate enrollment process. A CA
 exchange certificate must be provided in the form of an X.509 digital certificate.
 
-2.2.2.2  Key Recovery Certificate
+##### 2.2.2.2 Key Recovery Certificate
 
 A key recovery certificate is a prerequisite for certificate enrollment that encapsulates a private
 key for the purposes of key escrow (also referred to as key archival) to a CA.<3> A CA MAY use one
@@ -3521,7 +3266,8 @@ Release: January 13, 2026
 
 38 / 193
 
-2.2.3  CERTTRANSDBRESULTROW
+
+#### 2.2.3 CERTTRANSDBRESULTROW
 
 The CERTTRANSDBRESULTROW structure is encoded within a CERTTRANSBLOB structure. The
 CERTTRANSDBRESULTROW structure is used by the server to return the result of the database query
@@ -3545,7 +3291,7 @@ the size of CERTTRANSDBRESULTROW structure, size of each CERTTRANSDBRESULTCOLUMN
 structure for the row (the count of which is specified by ccol), and the DWORD-rounded-up size of
 each column value.
 
-2.2.3.1  CERTTRANSDBRESULTROW Marshaling Format
+##### 2.2.3.1 CERTTRANSDBRESULTROW Marshaling Format
 
 The CERTTRANSDBRESULTROW packet is specified as follows.
 
@@ -3595,11 +3341,12 @@ Release: January 13, 2026
 
 39 / 193
 
-Array_of_CERTTRANSDBRESULTCOLUMN (variable): An array of
+
+Array_of_CERTTRANSDBRESULTCOLUMN (variable): An array of
 
 CERTTRANSDBRESULTCOLUMN structures, as specified in section 2.2.1.10.
 
-2.2.4  Database File Name Structure
+#### 2.2.4 Database File Name Structure
 
 A specific format is used for representing the names of the database files with this protocol. The string
 is defined as follows.
@@ -3629,7 +3376,7 @@ Database log files
 
 "!\\server\sharepoint\...path..."
 
-2.2.5  Common Error Codes
+#### 2.2.5 Common Error Codes
 
 The following error codes are used by this protocol to indicate specific error conditions. Other error
 values are possible and are implementation-specific.
@@ -3671,7 +3418,7 @@ ERROR_OUT_OF_MEMORY
 
 Out of memory.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the directory service schema classes and attributes that are listed in the
 following table. For the syntactic specifications of the following class or class/attribute pairs, refer to
@@ -3693,7 +3440,8 @@ Release: January 13, 2026
 
 40 / 193
 
-Class
+
+Class
 
 Attribute
 
@@ -3708,16 +3456,17 @@ Release: January 13, 2026
 
 41 / 193
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Certificate Services Remote Administration Protocol is a request-response protocol. The client
 performs a server method invocation and the server responds with the requested data or a detailed
 disposition value. The primary usage of this protocol is CA management. Except where specified in the
 following section the protocol is a single message followed by a single reply.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section details the data that is maintained by the CA. The Request table, Attribute table,
 Extension table, and CRL table data elements are implemented in the form of tables with columns.
@@ -3725,12 +3474,12 @@ Each column has a numerical column identifier that is unique across all the data
 as an unsigned integer. Each column has a column name that is identified in the following
 sections.<4>
 
-3.1.1.1  Request Table
+##### 3.1.1.1 Request Table
 
 The Request table holds the history of all CA requests, both completed and pending, with one row per
 request.
 
-3.1.1.1.1 Request Table Required Data Elements
+###### 3.1.1.1.1 Request Table Required Data Elements
 
 Values for the following elements are required in the Request table:
 
@@ -3799,7 +3548,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Request_Raw_Archived_Key: Column name "Request.RawArchivedKey". Any private key that is
+
+Request_Raw_Archived_Key: Column name "Request.RawArchivedKey". Any private key that is
 
 archived as part of a certificate request. Archived keys are generally encrypted with a key
 recovery agent (KRA) key. The format for the encrypted private key is specified in [MS-WCCE]
@@ -3892,7 +3642,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-This Request table column is a Boolean value, as shown in the following table.
+
+This Request table column is a Boolean value, as shown in the following table.
 
 Value  Description
 
@@ -3905,7 +3656,7 @@ revoked, even after the certificate has expired.
 
 The revoked certificate must not be included in CRLs after it has expired.
 
-3.1.1.1.2 Request Table Optional Data Elements
+###### 3.1.1.1.2 Request Table Optional Data Elements
 
 Values for the following elements of the Request table SHOULD be maintained by the CA:
 
@@ -3996,7 +3747,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Name
+
+Name
 
 Value
 
@@ -4095,7 +3847,8 @@ Release: January 13, 2026
 
 45 / 193
 
-Request_Signer_Policies: Column name "Request.SignerPolicies". The list of valid certificate policy
+
+Request_Signer_Policies: Column name "Request.SignerPolicies". The list of valid certificate policy
 
 OIDs (1) for each signer certificate from the certificate request.
 
@@ -4181,7 +3934,8 @@ Release: January 13, 2026
 
 46 / 193
 
-Request_Device_Serial_Number: Column name "Request.DeviceSerialNumber". The device serial
+
+Request_Device_Serial_Number: Column name "Request.DeviceSerialNumber". The device serial
 
 number attribute of the DN from the Subject of the certificate request.
 
@@ -4266,7 +4020,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Raw_Public_Key_Algorithm_Parameters: Column name "RawPublicKeyAlgorithmParameters". The
+
+Raw_Public_Key_Algorithm_Parameters: Column name "RawPublicKeyAlgorithmParameters". The
 
 SubjectPublicKeyInfo->algorithm->parameters field of the issued certificate.
 
@@ -4328,7 +4083,7 @@ Device_Serial_Number: Column name "DeviceSerialNumber". The serial number attrib
 
 certificate Subject.
 
-3.1.1.2  Attribute Table
+##### 3.1.1.2 Attribute Table
 
 A request includes an arbitrary number of attributes, as specified in [MS-WCCE] section 2.2.2.7, that
 are parsed and listed in the Attribute table.
@@ -4347,14 +4102,15 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Attribute_Name: Column name "AttributeName". Contains the name of the attribute.
+
+Attribute_Name: Column name "AttributeName". Contains the name of the attribute.
 
 For any rows that have the same Attribute_Request_ID, the Attribute_Name MUST be unique for
 those rows within the table.
 
 Attribute_Value: Column name "AttributeValue". Contains the value of the attribute.
 
-3.1.1.3  Extension Table
+##### 3.1.1.3 Extension Table
 
 A request includes an arbitrary number of X.509v3 extensions, as specified in [X509]. These
 extensions are parsed and listed in the Extension table.
@@ -4384,7 +4140,7 @@ Extension_Flags: Column name "ExtensionFlags". A flag that indicates the followi
 
   Whether this extension is enabled.
 
-3.1.1.4  Certificate Revocation List (CRL) Table
+##### 3.1.1.4 Certificate Revocation List (CRL) Table
 
 CRL_Local: A multi-valued element that contains one or more CRLs.
 
@@ -4397,7 +4153,7 @@ Config_CA_CDP_Publish_To_Delta.<11>
 Each entry in the table represents a CRL and has associated properties, which are described in the
 following sections.
 
-3.1.1.4.1 CRL Table Required Data Elements
+###### 3.1.1.4.1 CRL Table Required Data Elements
 
 If the CA maintains a CRL table, values for the following elements of the CRL table MUST be
 maintained:
@@ -4416,7 +4172,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-CRL_Raw_CRL: Column name "CRLRawCRL". The CRL that was issued.
+
+CRL_Raw_CRL: Column name "CRLRawCRL". The CRL that was issued.
 
 CRL_Min_Base: Column name "CRLMinBase". The CRL_Number of the CRL, complete for a given
 
@@ -4511,7 +4268,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Flag
+
+Flag
 
 Value
 
@@ -4568,7 +4326,7 @@ generated CRL prior to attempting to publish the CRL.
 0x10 – An error occurred when publishing the generated CRL to the
 default local registry location.
 
-3.1.1.4.2 CRL Table Recommended Data Elements
+###### 3.1.1.4.2 CRL Table Recommended Data Elements
 
 If the CA maintains a CRL table, values for the following elements of the CRL table SHOULD be
 maintained by the CA:
@@ -4594,7 +4352,7 @@ CRL_Partition_Index: Column name "CRLPartitionIndex". The CRL partition index fo
 
 entry was created as specified in section 3.1.4.1.6.<12>
 
-3.1.1.5  Schema Table
+##### 3.1.1.5 Schema Table
 
 The Schema table contains information about the data elements and their properties, which were
 defined in the preceding sections, and information about any vendor-defined elements.
@@ -4606,7 +4364,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-The Schema table has the following required elements:
+
+The Schema table has the following required elements:
 
 Schema_Column_Name:  The internal name of the column. An abstract data model (ADM) element
 
@@ -4676,7 +4435,7 @@ Issued certificates
 
   Revoked certificates
 
-3.1.1.6  Datum - DB View
+##### 3.1.1.6 Datum - DB View
 
 Every CA that conforms to this specification MUST maintain a datum called
 Config_Database_View_Open, which is shared from the Config_Database_View_Open Boolean
@@ -4693,7 +4452,8 @@ Release: January 13, 2026
 
 52 / 193
 
-The Config_Database_View_Open datum indicates whether a caller has opened a view to the
+
+The Config_Database_View_Open datum indicates whether a caller has opened a view to the
 database. This datum has two possible values:
 
   False
@@ -4703,7 +4463,7 @@ database. This datum has two possible values:
 Every CA that conforms to this specification MUST initialize the value of Config_Database_View_Open
 to the default value of False.
 
-3.1.1.7  Permissions
+##### 3.1.1.7 Permissions
 
 The CA SHOULD store the following sets of permissions. Certificate Services Remote Administration
 Protocol server implementations that also implement the Windows Client Certificate Enrollment
@@ -4785,7 +4545,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Method name
+
+Method name
 
 ICertRequestD:GetCACert
 
@@ -4980,7 +4741,8 @@ Release: January 13, 2026
 
 54 / 193
 
-Method name
+
+Method name
 
 Permissions required
 
@@ -5016,7 +4778,7 @@ ICertAdminD::RevokeCertificate
 
 The CA SHOULD enforce the Enrollment Agent rights for ICertRequestD::Request
 
-3.1.1.8  CRL Publishing Locations
+##### 3.1.1.8 CRL Publishing Locations
 
 These data elements each contain a list of one or more CRL publishing locations, as defined in [MS-
 WCCE] section 3.2.1.1.4.
@@ -5066,7 +4828,8 @@ Release: January 13, 2026
 
 55 / 193
 
-file:///\\{HostName}\{Path}\{Filename}
+
+file:///\\{HostName}\{Path}\{Filename}
 
 where
 
@@ -5104,7 +4867,7 @@ specify a file name or attribute name in addition to a directory path or schema 
 This element is used each time the CA establishes an Active Directory connection to publish a
 CRL to an ldap: location.
 
-3.1.1.9  CRL Validity Period
+##### 3.1.1.9 CRL Validity Period
 
 If the CA implements revocation via a CRL, the CA SHOULD maintain a list of the following data
 elements to describe validity periods for CRLs.
@@ -5137,9 +4900,9 @@ Config_CA_Clock_Skew_Minutes: A period of time, shared from the
 
 Config_CA_Clock_Skew_Minutes defined in [MS-WCCE] section 3.2.1.1.4.
 
-3.1.1.10
+##### 3.1.1.10 Configuration Data
 
-Configuration Data
+
 
 The CA MUST maintain the following ADM elements.<15> Certificate Services Remote Administration
 Protocol server implementations that also implement the Windows Client Certificate Enrollment
@@ -5151,7 +4914,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Protocol or the ICertPassage Remote Protocol use the same configuration data elements, defined here,
+
+Protocol or the ICertPassage Remote Protocol use the same configuration data elements, defined here,
 for those implementations. If either Windows Client Certificate Enrollment Protocol or ICertPassage
 Remote Protocol or both are also implemented, access to the configuration data elements from either
 or both of these protocols SHOULD be serialized.
@@ -5230,7 +4994,8 @@ Release: January 13, 2026
 
 57 / 193
 
-Config_CA_Exit_Algorithm_Implementation_List: A list of names of the exit algorithms, shared
+
+Config_CA_Exit_Algorithm_Implementation_List: A list of names of the exit algorithms, shared
 from the list Config_CA_Exit_Algorithm_Implementation_List defined in [MS-WCCE] section
 3.2.1.1.4.
 
@@ -5311,7 +5076,8 @@ Release: January 13, 2026
 
 58 / 193
 
-Config_Setup_Status: A numeral that indicates the current status of the CA installation, for example
+
+Config_Setup_Status: A numeral that indicates the current status of the CA installation, for example
 
 whether it is complete.
 
@@ -5325,7 +5091,7 @@ and PublishCRLs methods.
 
 Config_CA_CRL_Delta_Next_Publish: The CERTTIME value of the timer specified in section
 
-3.1.2.1.2 that indicates the next time the CA will publish delta CRLs. This element is updated by
+###### 3.1.2.1.2 that indicates the next time the CA will publish delta CRLs. This element is updated by
 the PublishCRL and PublishCRLs methods.
 
 Config_CA_CRL_Attempt_Republish: This data element is a non-negative integer that, by its
@@ -5388,7 +5154,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Config_Max_Number_Of_AD_Connections: A 4-byte integer that indicates the maximum number
+
+Config_Max_Number_Of_AD_Connections: A 4-byte integer that indicates the maximum number
 
 of cached ADConnection handles.
 
@@ -5473,7 +5240,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-OnNextRestart_Config_CA_Interface_Flags: The value the Config_CA_Interface_Flags data
+
+OnNextRestart_Config_CA_Interface_Flags: The value the Config_CA_Interface_Flags data
 
 element will attain on next CA restart.
 
@@ -5558,7 +5326,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-OnNextRestart_Config_CA_LDAP_Flags: The value that the Config_CA_LDAP_Flags data element
+
+OnNextRestart_Config_CA_LDAP_Flags: The value that the Config_CA_LDAP_Flags data element
 
 will attain on next CA restart.
 
@@ -5637,7 +5406,8 @@ Release: January 13, 2026
 
 62 / 193
 
-For details about how the CA computes the Config_CA_CRL_Next_Publish value upon base CRL
+
+For details about how the CA computes the Config_CA_CRL_Next_Publish value upon base CRL
 creation, see the server processing rules for the PublishCRL method (section 3.1.4.1.6) or the
 PublishCRLs method (section 3.1.4.2.1).
 
@@ -5651,7 +5421,7 @@ For details about how the CA computes the Config_CA_CRL_Delta_Next_Publish value
 creation, see the server processing rules for the PublishCRL method (section 3.1.4.1.6) or the
 PublishCRLs method (section 3.1.4.2.1).
 
-3.1.2.2  CRL Publication Retry Timer
+##### 3.1.2.2 CRL Publication Retry Timer
 
 If a CRL publishing attempt, either by invocation of ICertAdminD::PublishCRL or
 ICertAdminD2::PublishCRLs, or as a result of automatic invocation via another timer, does not return
@@ -5664,7 +5434,7 @@ next timeout value.
 
 The logic that is executed when the timer reaches its next timeout value is specified in section 3.1.5.2.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Interface Initialization: On startup, the CA MUST ensure that remote clients have permissions to
 activate and call DCOM objects on the CA. Subsequently, DCOM object and interface initialization is
@@ -5707,7 +5477,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-4.2.1.1) with the Subject Key Identifier (as specified in [RFC3280] section 4.2.1.2) of the
+
+4.2.1.1) with the Subject Key Identifier (as specified in [RFC3280] section 4.2.1.2) of the
 issuer certificate, or by matching its issuer field (as specified in [RFC3280] section 4.1.2.4)
 with the subject field (as specified in [RFC3280] section 4.1.2.6) of the issuer certificate.
 
@@ -5764,7 +5535,7 @@ be used to initialize the corresponding data element "{Config_Element_Name}" upo
 
 If the CA fails to complete any of the initialization steps, the CA MUST NOT start.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The Certificate Services Remote Administration Protocol defines the following interfaces.
 
@@ -5778,7 +5549,7 @@ Defines methods that enable a client to manage a CA.
 
 ICertAdminD2  Extends the ICertAdminD interface.
 
-3.1.4.1  Processing Rules for ICertAdminD
+##### 3.1.4.1 Processing Rules for ICertAdminD
 
 The ICertAdminD interface provides an application programming interface for a client<25> to manage
 a certificate authority.
@@ -5792,7 +5563,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-The version number for IUnknown is 1.0. The universally unique identifier (UUID) for the
+
+The version number for IUnknown is 1.0. The universally unique identifier (UUID) for the
 ICertAdminD interface is "d99e6e71-fc88-11d0-b498-00a0c90312f3". Method opnum field values start
 with 3; opnum values 0 through 2 represent the IUnknown methods: QueryInterface, AddRef, and
 Release methods, respectively, as specified in [MS-DCOM].
@@ -5914,7 +5686,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Method
+
+Method
 
 BackupEnd
 
@@ -5999,7 +5772,7 @@ establish a connection with the client by returning an error.<27><28>
 If Config_CA_Interface_Flags contains the value IF_NOREMOTEICERTADMIN, the CA SHOULD return
 an error for any of the methods listed in this section.<29>
 
-3.1.4.1.1 ICertAdminD::SetExtension (Opnum 3)
+###### 3.1.4.1.1 ICertAdminD::SetExtension (Opnum 3)
 
 The SetExtension method allows adding, modifying, or disabling of extensions, as specified in
 [RFC3280]. A CA can include an extension in an issued certificate for a particular pending request.
@@ -6011,7 +5784,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
- HRESULT SetExtension(
+
+ HRESULT SetExtension(
    [in, string, unique] wchar_t const* pwszAuthority,
    [in] DWORD dwRequestId,
    [in, string, unique] wchar_t const* pwszExtensionName,
@@ -6107,7 +5881,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-pwszExtensionName, then the extension is added to the certificate request. If the request already
+
+pwszExtensionName, then the extension is added to the certificate request. If the request already
 contains an extension of that name, then the extension specified in the SetExtension call will replace
 the old one, hence modifying the contents. To disable an extension, a value of 2 can be specified in
 dwFlags parameter, described above, when calling SetExtension.
@@ -6156,7 +5931,7 @@ IA5String, as specified in [X660], and save the encoded value as the extension v
 If dwType is any other value, the CA MUST fail the request. The error code SHOULD be
 ERROR_INVALID_PARAMETER (0x80070057).
 
-3.1.4.1.2 ICertAdminD::SetAttributes (Opnum 4)
+###### 3.1.4.1.2 ICertAdminD::SetAttributes (Opnum 4)
 
 The SetAttributes method sets attributes in the specified pending certificate request.
 
@@ -6189,7 +5964,8 @@ Release: January 13, 2026
 
 68 / 193
 
-1.  The CA MUST look up the request based on the provided dwRequestId parameter in the Request
+
+1.  The CA MUST look up the request based on the provided dwRequestId parameter in the Request
 
 table. If the request is not found, the CA MUST fail the request.
 
@@ -6208,7 +5984,7 @@ ICertRequestD2::Request2 methods as specified in [MS-WCCE] section 3.2.1.4.3.
 
 later impact on the issued certificate, by adding the entries in the Attribute table.
 
-3.1.4.1.3 ICertAdminD::ResubmitRequest (Opnum 5)
+###### 3.1.4.1.3 ICertAdminD::ResubmitRequest (Opnum 5)
 
 The ResubmitRequest method resubmits a specific pending or denied certificate request to the CA.
 
@@ -6271,7 +6047,8 @@ Release: January 13, 2026
 
 69 / 193
 
-
+
+
 
 If the value of the Request_Disposition column in the identified row is "request denied" and
 the invoker of the method is not the CA administrator, the CA MUST place 0x80094003 in the
@@ -6355,7 +6132,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Error archiving private key. - This occurs if the CA encountered an error or was otherwise
+
+Error archiving private key. - This occurs if the CA encountered an error or was otherwise
 unable to archive a private key sent with the request.
 
 Error parsing request. - This occurs if the request is malformed.
@@ -6413,7 +6191,7 @@ Taken under submission. - This occurs if the CA or the certificate template is c
 require manager approval for certificate issuance. Prior to manager approval, the certificate
 will be in a pending or "taken under submission" disposition.
 
-3.1.4.1.4 ICertAdminD::DenyRequest (Opnum 6)
+###### 3.1.4.1.4 ICertAdminD::DenyRequest (Opnum 6)
 
 The DenyRequest method denies a specific certificate request that is pending.
 
@@ -6431,7 +6209,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-dwRequestId: A 32-bit nonzero unsigned integer value that specifies the ID of the certificate
+
+dwRequestId: A 32-bit nonzero unsigned integer value that specifies the ID of the certificate
 
 request.
 
@@ -6457,7 +6236,7 @@ row to any value that the implementer considers human-readable. The Microsoft CA
 Request_Disposition_Message in this case to "Denied by {username}" where "{username}" is
 replaced with the user name of the caller.
 
-3.1.4.1.5 ICertAdminD::IsValidCertificate (Opnum 7)
+###### 3.1.4.1.5 ICertAdminD::IsValidCertificate (Opnum 7)
 
 The IsValidCertificate method verifies the certificate against the CA key and verifies that the
 certificate has not been revoked.
@@ -6523,7 +6302,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -6571,7 +6351,7 @@ value that is less than or equal to the current time, the CA MUST return 2 in th
 parameter, read the Request_Revoked_Reason property from the Request table, and return
 the value as the pRevocationReason argument.
 
-3.1.4.1.6 ICertAdminD::PublishCRL (Opnum 8)
+###### 3.1.4.1.6 ICertAdminD::PublishCRL (Opnum 8)
 
 The PublishCRL method sends a request to the CA server to publish a new CRL.
 
@@ -6609,7 +6389,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-The CA SHOULD create a new base CRL for each CA key and partition.
+
+The CA SHOULD create a new base CRL for each CA key and partition.
 
 If the CA has enabled delta CRLs, as indicated by a nonzero Config_Delta_CRL_Validity_Period
 value, the CA MUST create a new delta CRL in addition to a new base CRL for each CA key and
@@ -6692,7 +6473,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-  Delta CRLs are disabled (Config_Delta_CRL_Validity_Period is 0).
+
+  Delta CRLs are disabled (Config_Delta_CRL_Validity_Period is 0).
 
   Delta CRLs were enabled previously (Previous_Delta_CRL_Validity_Period is not equal to
 
@@ -6773,7 +6555,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-For a delta CRL:
+
+For a delta CRL:
 
 1.  Interim_Delta_CRL_Overlap_Period =
 
@@ -6862,7 +6645,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-
+
+
 
 
 
@@ -6956,7 +6740,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-"_PartitionXXXXX" where "XXXXX" is the zero padded, 5-digit decimal representation of the
+
+"_PartitionXXXXX" where "XXXXX" is the zero padded, 5-digit decimal representation of the
 CRL partition for which the CRL is being generated. If the value of CRL partition is zero, the
 substring <CRLPartitionIndex> MUST be removed completely. This CRL extension has the
 syntax that is defined in [RFC3280] section 5.2.6.
@@ -7038,7 +6823,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-
+
+
 
 The signature algorithm, as identified in the signatureAlgorithm field of the CRL.
 
@@ -7113,7 +6899,8 @@ Release: January 13, 2026
 
 79 / 193
 
-  Use the handle to a subkey returned from BaseRegCreateKey to write values under the
+
+  Use the handle to a subkey returned from BaseRegCreateKey to write values under the
 
 subkey by using the BaseRegSetValue ([MS-RRP] section 3.1.5.22) method.
 
@@ -7189,7 +6976,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-step 9 (where the CA will set the CPF_FILE_ERROR publishing flag). For more information on
+
+step 9 (where the CA will set the CPF_FILE_ERROR publishing flag). For more information on
 writing remote files, see [MS-FASOD].<41>
 
 
@@ -7272,7 +7060,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-
+
+
 
 The modification sequence has one list entry whose operation field has the value
 "replace" and whose modification field contains the following:
@@ -7354,7 +7143,8 @@ Release: January 13, 2026
 
 82 / 193
 
-
+
+
 
 If each of the first 8 bytes is 0, use ERROR_DS_GENERIC_ERROR (defined in [MS-
 ERREF] section 2.2, "Win32 Error Codes") as the Win32 error that will be input to the
@@ -7434,7 +7224,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-that is written to the same data element) of the location to which publishing failed. If more
+
+that is written to the same data element) of the location to which publishing failed. If more
 than one location fails for one CRL table entry, then the index of each failed location is
 appended to this line, separated by spaces. This is followed by two line feed characters,
 followed by the path of each CRL publishing location to which the CRL could not successfully
@@ -7511,7 +7302,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-  CRL_Publish_Flags:
+
+  CRL_Publish_Flags:
 
   CPF_COMPLETE: The CA MUST set this value if the CRL published successfully to all
 
@@ -7553,7 +7345,7 @@ Config_Delta_CRL_Validity_Period.
 Return value: The method returns the first error code returned from the first CRL write attempt that
 failed or that was aborted. If none of the CRL write attempts failed, the method returns 0.
 
-3.1.4.1.7 ICertAdminD::GetCRL (Opnum 9)
+###### 3.1.4.1.7 ICertAdminD::GetCRL (Opnum 9)
 
 The GetCRL method instructs the CA to return the current base CRL for the current CA key.
 
@@ -7576,7 +7368,7 @@ specified in [MS-ERREF].<45>
 If both Config_CRLPartition_Enabled and Config_CRLPartition_PartitionZero_Exclusive are
 set to TRUE, the CA MUST return E_INVALIDARG, as specified in [MS-ERREF].
 
-3.1.4.1.8 ICertAdminD::RevokeCertificate (Opnum 10)
+###### 3.1.4.1.8 ICertAdminD::RevokeCertificate (Opnum 10)
 
 85 / 193
 
@@ -7585,7 +7377,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-The RevokeCertificate method revokes a certificate either immediately or on a specified date. It
+
+The RevokeCertificate method revokes a certificate either immediately or on a specified date. It
 instructs the CA to revoke a certificate based on the certificate's serial number and reason code.
 
  HRESULT RevokeCertificate(
@@ -7681,7 +7474,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-4.  If the value for the Reason parameter is 0xffffffff and the value of the Request_Revoked_Reason
+
+4.  If the value for the Reason parameter is 0xffffffff and the value of the Request_Revoked_Reason
 column in the identified row is not "certificateHold", the CA MUST fail the request, and the error
 code SHOULD be ERROR_INVALID_DATA.
 
@@ -7760,7 +7554,8 @@ Release: January 13, 2026
 
 87 / 193
 
-3.1.4.1.9 ICertAdminD::EnumViewColumn (Opnum 11)
+
+###### 3.1.4.1.9 ICertAdminD::EnumViewColumn (Opnum 11)
 
 The EnumViewColumn method returns an array of column information.
 
@@ -7796,9 +7591,9 @@ The EnumViewColumn method returns information about the columns that are associa
 Request table to the client. The processing rules for this method are the same as for the
 EnumViewColumnTable method with the iTable parameter set to 0x00000000.
 
-3.1.4.1.10
+###### 3.1.4.1.10 ICertAdminD::GetViewDefaultColumnSet (Opnum 12)
 
-ICertAdminD::GetViewDefaultColumnSet (Opnum 12)
+
 
 The GetViewDefaultColumnSet method returns an array of column identifiers that are associated with
 a specific view.
@@ -7843,7 +7638,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -7913,9 +7709,9 @@ CRL table.<54>
 The CA MUST return a subset of column identifiers for a revoked certificate
 view from the Request table.<55>
 
-3.1.4.1.11
+###### 3.1.4.1.11 ICertAdminD::EnumAttributesOrExtensions (Opnum 13)
 
-ICertAdminD::EnumAttributesOrExtensions (Opnum 13)
+
 
 The EnumAttributesOrExtensions method is used to access sets of attributes or extensions for a
 particular row ID.
@@ -7941,7 +7737,8 @@ Release: January 13, 2026
 
 89 / 193
 
-RowId: An unsigned integer that specifies the RequestID value of the row to retrieve attributes or
+
+RowId: An unsigned integer that specifies the RequestID value of the row to retrieve attributes or
 
 extensions.
 
@@ -8019,7 +7816,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Note  The computed set of rows from this step is referred to as the resultant set in steps 5 and 7.
+
+Note  The computed set of rows from this step is referred to as the resultant set in steps 5 and 7.
 
 5.  The value of the celt parameter is referred to as RequestedRows. If RequestedRows is smaller
 
@@ -8034,9 +7832,9 @@ rows set returned in step 7.
 7.  The CA MUST return the resultant set in the pctbOut parameter. The format and marshaling for
 the value of pctbOut is described in CERTTRANSDBATTRIBUTE and CERTTRANSDBEXTENSION.
 
-3.1.4.1.12
+###### 3.1.4.1.12 ICertAdminD::OpenView (Opnum 14)
 
-ICertAdminD::OpenView (Opnum 14)
+
 
 The OpenView method opens a view into the database and returns a set of resultant row data.
 
@@ -8100,7 +7898,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-1.  If the OpenView method is called when the value of Config_Database_View_Open is False, the
+
+1.  If the OpenView method is called when the value of Config_Database_View_Open is False, the
 server MUST set Config_Database_View_Open to True and continue processing by using the
 following rules.
 
@@ -8153,9 +7952,9 @@ the row MUST be removed from the resultant set. For column type 3 (BINARY), the 
 operator MUST be 0x00000001; otherwise, the call MUST fail with error
 ERROR_INVALID_PARAMETER.
 
-3.1.4.1.13
+###### 3.1.4.1.13 ICertAdminD::EnumView (Opnum 15)
 
-ICertAdminD::EnumView (Opnum 15)
+
 
 The EnumView method returns a set of resultant row data for the opened view.
 
@@ -8176,7 +7975,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-ielt: An unsigned integer value that specifies the identifier of the first row to return from the resultant
+
+ielt: An unsigned integer value that specifies the identifier of the first row to return from the resultant
 
 set of rows.
 
@@ -8231,9 +8031,9 @@ the total row count, and the ccol field MUST be set to its bitwise inverse.
 section 2.2.3.1. The rules for marshaling a CERTTRANSDBRESULTCOLUMN into a CERTTRANSBLOB
 are described in section 2.2.1.10.1.
 
-3.1.4.1.14
+###### 3.1.4.1.14 ICertAdminD::CloseView (Opnum 16)
 
-ICertAdminD::CloseView (Opnum 16)
+
 
 The CloseView method closes a view that was previously opened by using the OpenView method call.
 
@@ -8255,7 +8055,8 @@ Release: January 13, 2026
 
 93 / 193
 
-The CA server MUST enforce the following sequencing rules:
+
+The CA server MUST enforce the following sequencing rules:
 
 1.  If the CloseView method is called when the value of Config_Database_View_Open is False, the
 
@@ -8265,9 +8066,9 @@ server MUST return an error. The error code SHOULD be ERROR_INVALID_HANDLE.
 
 server MUST set the value of Config_Database_View_Open to False.
 
-3.1.4.1.15
+###### 3.1.4.1.15 ICertAdminD::ServerControl (Opnum 17)
 
-ICertAdminD::ServerControl (Opnum 17)
+
 
 The ServerControl method is used to force the CA server to unregister the ICertAdminD and
 ICertAdminD2 interfaces.
@@ -8310,9 +8111,9 @@ ICertAdminD2 interfaces.
 
 error code SHOULD be "0x80070057".
 
-3.1.4.1.16
+###### 3.1.4.1.16 ICertAdminD::Ping (Opnum 18)
 
-ICertAdminD::Ping (Opnum 18)
+
 
 The Ping method is used to test whether the certificate server is alive.
 
@@ -8334,9 +8135,10 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-3.1.4.1.17
 
-ICertAdminD::GetServerState (Opnum 19)
+###### 3.1.4.1.17 ICertAdminD::GetServerState (Opnum 19)
+
+
 
 The GetServerState method is used to validate that the caller has permission to read the CA
 database.
@@ -8355,9 +8157,9 @@ read from the CA database.
 The CA MUST return 1 for pdwState if the caller has permission to read from the CA database.
 Otherwise, the CA MUST return 0.
 
-3.1.4.1.18
+###### 3.1.4.1.18 ICertAdminD::BackupPrepare (Opnum 20)
 
-ICertAdminD::BackupPrepare (Opnum 20)
+
 
 The BackupPrepare method is used to prepare the database for performing further backup operations,
 such as BackupEnd, BackupGetAttachmentInformation, BackupGetBackupLogs, BackupOpenFile,
@@ -8409,7 +8211,8 @@ Release: January 13, 2026
 
 95 / 193
 
-
+
+
 
 
 
@@ -8455,9 +8258,9 @@ The CA server MUST take into account the grbitJet value to account for an increm
 a full backup. If a full backup has not taken place, the CA MUST return failure if the method is invoked
 for an incremental backup (grbitJet parameter value 1).
 
-3.1.4.1.19
+###### 3.1.4.1.19 ICertAdminD::BackupEnd (Opnum 21)
 
-ICertAdminD::BackupEnd (Opnum 21)
+
 
 The BackupEnd method completes the backup process that is started via a call to
 ICertAdminD::BackupPrepare.
@@ -8472,9 +8275,9 @@ SHOULD return an error.<58>
 The CA server MUST enforce the sequencing rules for BackupEnd as specified in section
 3.1.4.1.18.<59>
 
-3.1.4.1.20
+###### 3.1.4.1.20 ICertAdminD::BackupGetAttachmentInformation (Opnum 22)
 
-ICertAdminD::BackupGetAttachmentInformation (Opnum 22)
+
 
 The BackupGetAttachmentInformation method is used to query the CA for the names of database files
 that should become part of the backup file set.
@@ -8491,7 +8294,8 @@ Release: January 13, 2026
 
 96 / 193
 
-ppwszzDBFiles: A pointer to a WCHAR pointer that will receive the list of null-terminated database
+
+ppwszzDBFiles: A pointer to a WCHAR pointer that will receive the list of null-terminated database
 
 file names. Detailed information on database file name structure formatting is specified in section
 2.2.4.
@@ -8518,9 +8322,9 @@ Each file name MUST be in UNC format and MUST be prefixed with the "D" character
 no database files, the CA MUST set the value of the pcwcDBFiles parameter to 0 and return
 successfully.
 
-3.1.4.1.21
+###### 3.1.4.1.21 ICertAdminD::BackupGetBackupLogs (Opnum 23)
 
-ICertAdminD::BackupGetBackupLogs (Opnum 23)
+
 
 The BackupGetBackupLogs method queries the CA for the names of database transaction log files
 that should become part of the backup file set.
@@ -8557,9 +8361,9 @@ backup. The list of files MUST be accessible to the CA. Each file name MUST be i
 MUST be prefixed with an exclamation point "!". If there are no database log files, the CA MUST
 set 0 as the value of the *pcwcLogFiles parameter and return successfully.
 
-3.1.4.1.22
+###### 3.1.4.1.22 ICertAdminD::BackupOpenFile (Opnum 24)
 
-ICertAdminD::BackupOpenFile (Opnum 24)
+
 
 The BackupOpenFile method opens a file for backup.
 
@@ -8574,7 +8378,8 @@ Release: January 13, 2026
 
 97 / 193
 
- );
+
+ );
 
 pwszPath: A null-terminated UNICODE string that specifies the path to the targeted file. The file
 
@@ -8605,9 +8410,9 @@ The CA server MUST enforce that the file corresponding to FileName is accessible
 
 parameter.
 
-3.1.4.1.23
+###### 3.1.4.1.23 ICertAdminD::BackupReadFile (Opnum 25)
 
-ICertAdminD::BackupReadFile (Opnum 25)
+
 
 The BackupReadFile method reads the database file and loads the contents into the buffer that is
 provided. The file MUST be initialized by a prior call to BackupOpenFile.
@@ -8658,9 +8463,10 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-3.1.4.1.24
 
-ICertAdminD::BackupCloseFile (Opnum 26)
+###### 3.1.4.1.24 ICertAdminD::BackupCloseFile (Opnum 26)
+
+
 
 The BackupCloseFile method closes the database file that was initialized by a prior call to the
 BackupOpenFile.
@@ -8675,9 +8481,9 @@ SHOULD return an error.<68>
 The CA server MUST enforce the sequencing rules for the BackupCloseFile, as specified in section
 3.1.4.1.18.
 
-3.1.4.1.25
+###### 3.1.4.1.25 ICertAdminD::BackupTruncateLogs (Opnum 27)
 
-ICertAdminD::BackupTruncateLogs (Opnum 27)
+
 
 The BackupTruncateLogs method function eliminates redundant records from the log files and
 reduces the disk storage space that is used by log files.
@@ -8696,9 +8502,9 @@ The CA server MUST remove the redundant records in the log files (records that a
 database also are defined as redundant), thereby decreasing the disk space used to store the log
 files.<70>
 
-3.1.4.1.26
+###### 3.1.4.1.26 ICertAdminD::ImportCertificate (Opnum 28)
 
-ICertAdminD::ImportCertificate (Opnum 28)
+
 
 The ImportCertificate method imports a certificate into the CA database.
 
@@ -8735,7 +8541,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Value
+
+Value
 
 0x00010000
 
@@ -8818,7 +8625,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Request_Request_ID to the client. For processing rules for each data element in the Request
+
+Request_Request_ID to the client. For processing rules for each data element in the Request
 table, see the ImportCertificate data element in the following table.<72>
 
 The certificate fields and extensions SHOULD be processed and stored in individual Request table
@@ -9036,7 +8844,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Maximum
+
+Maximum
 size of
 data
 
@@ -9274,7 +9083,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Data
+
+Data
 type
 
 0x4
@@ -9408,9 +9218,9 @@ Alternative Name.
 The serial number attribute of the
 certificate Subject.
 
-3.1.4.1.27
+###### 3.1.4.1.27 ICertAdminD::BackupGetDynamicFiles (Opnum 29)
 
-ICertAdminD::BackupGetDynamicFiles (Opnum 29)
+
 
 The BackupGetDynamicFiles method retrieves the list of CA dynamic file names that need to be
 backed up. The dynamic files are those that are not included in the CA database backup and are
@@ -9450,9 +9260,10 @@ Release: January 13, 2026
 
 103 / 193
 
-3.1.4.1.28
 
-ICertAdminD::RestoreGetDatabaseLocations (Opnum 30)
+###### 3.1.4.1.28 ICertAdminD::RestoreGetDatabaseLocations (Opnum 30)
+
+
 
 The RestoreGetDatabaseLocation method retrieves the list of CA server database location names for
 all the database files being restored.
@@ -9486,7 +9297,7 @@ The database file name MUST be in UNC format and MUST be prefixed with "D". The 
 location MUST be in UNC format and prefixed with a character whose value is 130. The system file
 location MUST be in UNC format and prefixed with a character whose value is 131.
 
-3.1.4.2  Processing Rules for ICertAdminD2
+##### 3.1.4.2 Processing Rules for ICertAdminD2
 
 The ICertAdminD2 interface extends the ICertAdminD interface described in the preceding
 section.<75>
@@ -9546,7 +9357,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Method
+
+Method
 
 Ping2
 
@@ -9633,7 +9445,7 @@ establish a connection with the client by returning an error. In Windows the err
 If Config_CA_Interface_Flags contains the value IF_NOREMOTEICERTADMIN, the CA SHOULD return
 an error for any of the methods listed in this section.<78>
 
-3.1.4.2.1 ICertAdminD2::PublishCRLs (Opnum 31)
+###### 3.1.4.2.1 ICertAdminD2::PublishCRLs (Opnum 31)
 
 The PublishCRLs method instructs a CA to publish CRLs and delta CRLs. This call can either cause the
 republishing of the current CRLs or cause the CA to create and publish new CRLs.
@@ -9647,7 +9459,8 @@ Release: January 13, 2026
 
 105 / 193
 
-   [in, string, unique] wchar_t const* pwszAuthority,
+
+   [in, string, unique] wchar_t const* pwszAuthority,
    [in] FILETIME FileTime,
    [in] DWORD Flags
  );
@@ -9735,7 +9548,8 @@ Release: January 13, 2026
 
 106 / 193
 
-
+
+
 
 If neither the B bit nor the D bit is set in Flags, the CA MUST return an error. The error
 SHOULD be ERROR_INVALID_PARAMETER.
@@ -9745,7 +9559,7 @@ SHOULD be ERROR_INVALID_PARAMETER.
 Return value: The method returns the first error code returned from the first CRL write operation that
 failed or was aborted. If none of the CRL write operations failed, the method returns 0.
 
-3.1.4.2.2 ICertAdminD2::GetCAProperty (Opnum 32)
+###### 3.1.4.2.2 ICertAdminD2::GetCAProperty (Opnum 32)
 
 The GetCAProperty method is used to retrieve the value of a specific property from the CA.
 
@@ -9820,7 +9634,8 @@ Release: January 13, 2026
 
 107 / 193
 
-
+
+
 
 If the value passed in PropId maps to one of the following properties, pctbPropertyValue is
 a pointer to a CERTTRANSBLOB structure, and the pb member of that structure MUST
@@ -9896,7 +9711,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-  CR_PROP_BASECRL: MUST be a X.509 CRL encoded using DER, as specified in [X660].
+
+  CR_PROP_BASECRL: MUST be a X.509 CRL encoded using DER, as specified in [X660].
 
   CR_PROP_PARTITIONED_BASECRL: MUST be a X.509 CRL encoded using DER, as
 
@@ -9954,7 +9770,7 @@ The marshaling rules for each of the preceding properties into a CERTTRANSBLOB a
 [MS-WCCE] sections 2.2.2.2.2 (for X.509 certificate), 2.2.2.2.3 (X.509 CRL), and 2.2.2.2.4 (CMS
 message).
 
-3.1.4.2.3 ICertAdminD2::SetCAProperty (Opnum 33)
+###### 3.1.4.2.3 ICertAdminD2::SetCAProperty (Opnum 33)
 
 The SetCAProperty method is used to set CA properties.
 
@@ -9973,7 +9789,8 @@ Release: January 13, 2026
 
 109 / 193
 
-pwszAuthority:  See pwszAuthority definition in section 3.1.4.1.1.
+
+pwszAuthority:  See pwszAuthority definition in section 3.1.4.1.1.
 
 PropId: A LONG value that specifies one and exactly one of the following property identifiers. The use
 of PropIds, is as specified in [MS-WCCE] section 3.2.1.4.3.2. If a value other than one of the listed
@@ -10097,7 +9914,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-
+
+
 
 
 
@@ -10163,7 +9981,7 @@ with the following attribute:
 certificateTemplates attribute: The CA MUST set this attribute with the list of template
 names specified in step 4.2 above.
 
-3.1.4.2.4 ICertAdminD2::GetCAPropertyInfo (Opnum 34)
+###### 3.1.4.2.4 ICertAdminD2::GetCAPropertyInfo (Opnum 34)
 
 The GetCAPropertyInfo method is used to retrieve information about a property on the CA, such as its
 type and length.
@@ -10181,7 +9999,8 @@ Release: January 13, 2026
 
 111 / 193
 
-pwszAuthority:  See the pwszAuthority definition in ICertAdminD::SetExtension.
+
+pwszAuthority:  See the pwszAuthority definition in ICertAdminD::SetExtension.
 
 pcProperty: An integer value containing the number of property structures returned.
 
@@ -10192,7 +10011,7 @@ more information on CERTTRANSBLOB and CATRANSPROP structures, see section 2.2.1.
 The processing of the ICertAdminD2::GetCAPropertyInfo method is the same as that specified in [MS-
 WCCE] section 3.2.1.4.3.3.
 
-3.1.4.2.5 ICertAdminD2::EnumViewColumnTable (Opnum 35)
+###### 3.1.4.2.5 ICertAdminD2::EnumViewColumnTable (Opnum 35)
 
 The EnumViewColumnTable method retrieves information about one or more columns from the
 specified CA database table.
@@ -10264,7 +10083,8 @@ Release: January 13, 2026
 
 112 / 193
 
-
+
+
 
 
 
@@ -10275,7 +10095,7 @@ The number of column information returned MUST be a minimum of the cColumn value
 remaining number of columns in the table (starting from iColumn). The value of *pcColumn
 MUST be set to the number of the column information returned.
 
-3.1.4.2.6 ICertAdminD2::GetCASecurity (Opnum 36)
+###### 3.1.4.2.6 ICertAdminD2::GetCASecurity (Opnum 36)
 
 The GetCASecurity method is used to retrieve CA security, as defined in Abstract Data
 Model (section 3.1.1).
@@ -10291,7 +10111,7 @@ pctbSD: A pointer to a CERTTRANSBLOB data structure that contains the CA's secur
 
 Security descriptors are specified in [MS-DTYP] section 2.4.6.
 
-3.1.4.2.7 ICertAdminD2::SetCASecurity (Opnum 37)
+###### 3.1.4.2.7 ICertAdminD2::SetCASecurity (Opnum 37)
 
 The SetCASecurity method is used to set the CA security, as defined in the Abstract Data
 Model (section 3.1.1).
@@ -10310,7 +10130,7 @@ descriptors are specified in [MS-DTYP] section 2.4.6.
 The CA SHOULD use the permissions set in pctbSD to deny and allow permissions to CA functionality.
 Microsoft CA permissions are defined in section 3.1.1.7.
 
-3.1.4.2.8 ICertAdminD2::Ping2 (Opnum 38)
+###### 3.1.4.2.8 ICertAdminD2::Ping2 (Opnum 38)
 
 The Ping2 method is used to determine if the CA service is started and responding.
 
@@ -10322,7 +10142,7 @@ pwszAuthority:  See the pwszAuthority definition in section 3.1.4.1.1.
 
 ICertAdminD2::Ping2 is as specified in [MS-WCCE] section 3.2.1.4.3.4.
 
-3.1.4.2.9 ICertAdminD2::GetArchivedKey (Opnum 39)
+###### 3.1.4.2.9 ICertAdminD2::GetArchivedKey (Opnum 39)
 
 The GetArchivedKey method is used to retrieve an archived private key and the associated
 certificate.
@@ -10334,7 +10154,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
- HRESULT GetArchivedKey(
+
+ HRESULT GetArchivedKey(
    [in, string, unique] wchar_t const* pwszAuthority,
    [in] DWORD dwRequestId,
    [out, ref] CERTTRANSBLOB* pctbArchivedKey
@@ -10420,9 +10241,10 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-3.1.4.2.10
 
-ICertAdminD2::GetAuditFilter (Opnum 40)
+###### 3.1.4.2.10 ICertAdminD2::GetAuditFilter (Opnum 40)
+
+
 
 The GetAuditFilter method retrieves the list of events for which the CA server is currently set to create
 security audit events, as specified in [CIMC-PP].
@@ -10511,9 +10333,9 @@ SetConfigEntry
 The GetAuditFilter method is used to retrieve the audit filter currently in use (initialize to 0 during the
 registration of the interfaces and can be modified by a call to the SetAuditFilter method).
 
-3.1.4.2.11
+###### 3.1.4.2.11 ICertAdminD2::SetAuditFilter (Opnum 41)
 
-ICertAdminD2::SetAuditFilter (Opnum 41)
+
 
 The SetAuditFilter method sets the list of events for which the CA server MUST create security audit
 events, as specified in [CIMC-PP].
@@ -10530,7 +10352,8 @@ Release: January 13, 2026
 
 115 / 193
 
-pwszAuthority: See the pwszAuthority definition in section 3.1.4.1.1.
+
+pwszAuthority: See the pwszAuthority definition in section 3.1.4.1.1.
 
 dwFilter: An unsigned integer that specifies the events to be audited by the CA. For possible values,
 
@@ -10548,9 +10371,9 @@ If Config_CA_Interface_Flags contains the value IF_ENABLEADMINASAUDITOR and the 
 have administrator permissions (as defined in section 3.1.1.7), the server MUST return an error. In
 Windows, the error is E_ACCESSDENIED (0x80070005).
 
-3.1.4.2.12
+###### 3.1.4.2.12 ICertAdminD2::GetOfficerRights (Opnum 42)
 
-ICertAdminD2::GetOfficerRights (Opnum 42)
+
 
 The GetOfficerRights method is used to retrieve the Officer rights, as specified in [CIMC-PP].
 
@@ -10605,13 +10428,14 @@ Release: January 13, 2026
 
 116 / 193
 
-4.  If Officer rights are configured and Enrollment Agent rights are configured on the CA server,
+
+4.  If Officer rights are configured and Enrollment Agent rights are configured on the CA server,
 then the server MUST set the value of *pfEnabled to nonzero and pctbSD MUST contain the
 marshaled data specified in section 2.2.1.11.1.
 
-3.1.4.2.13
+###### 3.1.4.2.13 ICertAdminD2::SetOfficerRights (Opnum 43)
 
-ICertAdminD2::SetOfficerRights (Opnum 43)
+
 
 The SetOfficerRights method is used to set Officer rights or Enrollment Agent rights. Information
 on role separation is specified in [CIMC-PP].
@@ -10672,9 +10496,9 @@ specified in pctbSD as officer access rights.
 
 specified in pctbSD as enrollment agent access rights.
 
-3.1.4.2.14
+###### 3.1.4.2.14 ICertAdminD2::GetConfigEntry (Opnum 44)
 
-ICertAdminD2::GetConfigEntry (Opnum 44)
+
 
 The GetConfigEntry method retrieves the CAs that persisted the configuration data listed in section
 3.1.1.10. Configuration data is represented as a hierarchical data structure with the following format:
@@ -10687,7 +10511,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
- HRESULT GetConfigEntry(
+
+ HRESULT GetConfigEntry(
    [in, string, unique] wchar_t const* pwszAuthority,
    [in, string, unique] wchar_t const* pwszNodePath,
    [in, string, ref] wchar_t const* pwszEntry,
@@ -10759,7 +10584,8 @@ Release: January 13, 2026
 
 118 / 193
 
-6.  If pwszAuthority parameter is not EMPTY and pwszNodePath is not EMPTY and pwszEntry is
+
+6.  If pwszAuthority parameter is not EMPTY and pwszNodePath is not EMPTY and pwszEntry is
 
 EMPTY, the CA MUST return all available leaf properties' names that exist under the pwszNodePath
 node as a VARIANT array.
@@ -10861,7 +10687,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input Parameters
+
+Input Parameters
 
 Processing rule for pVariant
 
@@ -10966,7 +10793,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input Parameters
+
+Input Parameters
 
 Processing rule for pVariant
 
@@ -11069,7 +10897,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input Parameters
+
+Input Parameters
 
 Processing rule for pVariant
 
@@ -11172,7 +11001,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input Parameters
+
+Input Parameters
 
 Processing rule for pVariant
 
@@ -11270,7 +11100,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input Parameters
+
+Input Parameters
 
 "CRLPublicationURLs"
 
@@ -11365,7 +11196,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input Parameters
+
+Input Parameters
 
 Processing rule for pVariant
 
@@ -11389,9 +11221,9 @@ element. The value of this ADM element determines whether the
 CA sets all requests to pending, accepts all requests, or denies
 all requests.
 
-3.1.4.2.15
+###### 3.1.4.2.15 ICertAdminD2::SetConfigEntry (Opnum 45)
 
-ICertAdminD2::SetConfigEntry (Opnum 45)
+
 
 The SetConfigEntry method is used to set the CA's persisted configuration data that is listed in section
 3.1.1.10.
@@ -11458,7 +11290,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input
+
+Input
 
 Store information as ADM element
 
@@ -11579,7 +11412,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Input
+
+Input
 
 pwszNodePath is EMPTY and pwszEntry is
 "CACertPublicationURLs"
@@ -11609,9 +11443,9 @@ blish
 OnNextRestart_Config_CA_Requests_Dispositi
 on
 
-3.1.4.2.16
+###### 3.1.4.2.16 ICertAdminD2::ImportKey (Opnum 46)
 
-ICertAdminD2::ImportKey (Opnum 46)
+
 
 The ImportKey method adds an encrypted key set to an item in the CA database.
 
@@ -11668,7 +11502,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-issued certificate in the Request table and comparing the hexadecimal string form of it with the
+
+issued certificate in the Request table and comparing the hexadecimal string form of it with the
 value that is specified in pwszCertHash.
 
 1.  If the request is not found, the CA server MUST fail the request with the error
@@ -11705,9 +11540,9 @@ Request table) with the encrypted private key that is specified in the pctbKey p
 CA MUST replace the encrypted private key (in the request that is stored in the Request table)
 with the encrypted private key that is specified in the pctbKey parameter.
 
-3.1.4.2.17
+###### 3.1.4.2.17 ICertAdminD2::GetMyRoles (Opnum 47)
 
-ICertAdminD2::GetMyRoles (Opnum 47)
+
 
 The GetMyRoles method retrieves the CA roles, as specified in [CIMC-PP], assigned to the user who
 calls the method.
@@ -11726,9 +11561,9 @@ implementation. Microsoft CA permissions are defined in section 3.1.1.7.
 For pdwRoles, the server MUST return a signed integer that represents the CA roles assigned to the
 caller.
 
-3.1.4.2.18
+###### 3.1.4.2.18 ICertAdminD2::DeleteRow (Opnum 48)
 
-ICertAdminD2::DeleteRow (Opnum 48)
+
 
 The DeleteRow method deletes a row or set of rows from a database table.
 
@@ -11747,7 +11582,8 @@ Release: January 13, 2026
 
 128 / 193
 
- );
+
+ );
 
 pwszAuthority:  See the definition of the pwszAuthority parameter in section 3.1.4.1.1.
 
@@ -11833,7 +11669,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-1.
+
+1.
 
  If the dwFlags parameter is set to 0x00000001:
 
@@ -11891,9 +11728,9 @@ to delete all rows that match a date restriction as previously specified, it ret
 value of ERROR_OUT_OF_MEMORY to indicate to the client that more rows matching the criteria
 might remain.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
-3.1.5.1  CRL Next Publish Timer Events
+##### 3.1.5.1 CRL Next Publish Timer Events
 
 When either the Base or Delta CRL Next Publish Timer reaches its next timeout value, the CA SHOULD
 stop all republishing attempts that might be in progress as a result of the CRL Publication Retry Timer
@@ -11911,13 +11748,14 @@ Release: January 13, 2026
 
 130 / 193
 
-
+
+
 
 Flags: In this parameter, the F bit is not set. If the Base CRL Next Publish
 Timer (section 3.1.2.1.1) has been reached, the B bit is set. If the Delta CRL Next Publish
 Timer (section 3.1.2.1.2) has been reached, the D bit is set.
 
-3.1.5.2  CRL Publication Retry Timer Events
+##### 3.1.5.2 CRL Publication Retry Timer Events
 
 When the CRL Publication Retry Timer reaches its timeout value, the CA MUST attempt to republish
 CRLs using the following steps.
@@ -11985,7 +11823,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-  CRL_Last_Published: If this element is present, update its value to the current time.
+
+  CRL_Last_Published: If this element is present, update its value to the current time.
 
 4.  If all CRL publishing retry attempts are successful, the CA resets the data elements
 
@@ -11996,26 +11835,26 @@ CRL_Next_Publish of the base CRL that was just published, and set the Delta CRL 
 Timer to the value of the CRL_Next_Publish of the delta CRL that was just published. Otherwise,
 reset the value of the CRL Publication Retry Timer specified in section 3.1.2.2.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No other local events.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The Certificate Services Remote Administration Protocol client contains no timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Certificate Services Remote Administration Protocol depends on DCOM for authentication, as
 specified in [MS-DCOM].
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The Certificate Services Remote Administration Protocol client invokes DCOM methods based on
 operator requests for the different methods available. The Certificate Services Remote Administration
@@ -12031,13 +11870,13 @@ success (0), the client can assume that any output parameters are present and va
 return code (HRESULT is nonzero), the client MUST assume the method call failed. Unless redefined
 locally within this document, return codes are as specified in [MS-ERREF].
 
-3.2.4.1  Processing Rules for ICertAdminD
+##### 3.2.4.1 Processing Rules for ICertAdminD
 
-3.2.4.1.1 ICertAdminD::SetExtension (Opnum 3)
+###### 3.2.4.1.1 ICertAdminD::SetExtension (Opnum 3)
 
 No specific processing rules.
 
-3.2.4.1.2 ICertAdminD::SetAttributes (Opnum 4)
+###### 3.2.4.1.2 ICertAdminD::SetAttributes (Opnum 4)
 
 No specific processing rules.
 
@@ -12048,7 +11887,8 @@ Release: January 13, 2026
 
 132 / 193
 
-3.2.4.1.3 ICertAdminD::ResubmitRequest (Opnum 5)
+
+###### 3.2.4.1.3 ICertAdminD::ResubmitRequest (Opnum 5)
 
 Upon successful return from the ICertAdminD::ResubmitRequest method invocation, the client
 receives the pdwDisposition parameter as an output value.
@@ -12066,45 +11906,45 @@ If the value is any other nonzero value, the server has encountered an error.
 
 The client SHOULD NOT rely on any specific value for its processing rules.
 
-3.2.4.1.4 ICertAdminD::DenyRequest (Opnum 6)
+###### 3.2.4.1.4 ICertAdminD::DenyRequest (Opnum 6)
 
 No specific processing rules.
 
-3.2.4.1.5 ICertAdminD::IsValidCertificate (Opnum 7)
+###### 3.2.4.1.5 ICertAdminD::IsValidCertificate (Opnum 7)
 
 No specific processing rules.
 
-3.2.4.1.6 ICertAdminD::PublishCRL (Opnum 8)
+###### 3.2.4.1.6 ICertAdminD::PublishCRL (Opnum 8)
 
 No specific processing rules.
 
-3.2.4.1.7 ICertAdminD::GetCRL (Opnum 9)
+###### 3.2.4.1.7 ICertAdminD::GetCRL (Opnum 9)
 
 No specific processing rules.
 
-3.2.4.1.8 ICertAdminD::RevokeCertificate (Opnum 10)
+###### 3.2.4.1.8 ICertAdminD::RevokeCertificate (Opnum 10)
 
 No specific processing rules.
 
-3.2.4.1.9 ICertAdminD::EnumViewColumn (Opnum 11)
+###### 3.2.4.1.9 ICertAdminD::EnumViewColumn (Opnum 11)
 
 See ICertAdminD2::EnumViewColumnTable.
 
-3.2.4.1.10
+###### 3.2.4.1.10 ICertAdminD::GetViewDefaultColumnSet (Opnum 12)
 
-ICertAdminD::GetViewDefaultColumnSet (Opnum 12)
 
-No specific processing rules.
-
-3.2.4.1.11
-
-ICertAdminD::EnumAttributesOrExtensions (Opnum 13)
 
 No specific processing rules.
 
-3.2.4.1.12
+###### 3.2.4.1.11 ICertAdminD::EnumAttributesOrExtensions (Opnum 13)
 
-ICertAdminD::OpenView (Opnum 14)
+
+
+No specific processing rules.
+
+###### 3.2.4.1.12 ICertAdminD::OpenView (Opnum 14)
+
+
 
 The OpenView method obtains the column values for rows associated with a particular resultant set of
 rows from a table:
@@ -12120,7 +11960,8 @@ Release: January 13, 2026
 
 133 / 193
 
-
+
+
 
 
 
@@ -12144,41 +11985,41 @@ defined as the sequence enforced by the server and documented in sequencing rule
 If the sequence is not followed, the server responds as documented in the server processing rules in
 section 3.1.4.1.12, 3.1.4.1.13, and 3.1.4.1.14.
 
-3.2.4.1.13
+###### 3.2.4.1.13 ICertAdminD::EnumView (Opnum 15)
 
-ICertAdminD::EnumView (Opnum 15)
+
 
 See section 3.1.4.1.12 for sequencing rules.
 
 See ICertAdminD::OpenView for client processing rules.
 
-3.2.4.1.14
+###### 3.2.4.1.14 ICertAdminD::CloseView (Opnum 16)
 
-ICertAdminD::CloseView (Opnum 16)
+
 
 See section 3.1.4.1.12 for sequencing rules.
 
-3.2.4.1.15
+###### 3.2.4.1.15 ICertAdminD::ServerControl (Opnum 17)
 
-ICertAdminD::ServerControl (Opnum 17)
+
 
 No specific processing rules.
 
-3.2.4.1.16
+###### 3.2.4.1.16 ICertAdminD::Ping (Opnum 18)
 
-ICertAdminD::Ping (Opnum 18)
+
 
 The ICertAdminD::Ping method is as specified in [MS-WCCE] section 3.1.1.4.5.
 
-3.2.4.1.17
+###### 3.2.4.1.17 ICertAdminD::GetServerState (Opnum 19)
 
-ICertAdminD::GetServerState (Opnum 19)
+
 
 No specific processing rules.
 
-3.2.4.1.18
+###### 3.2.4.1.18 ICertAdminD::BackupPrepare (Opnum 20)
 
-ICertAdminD::BackupPrepare (Opnum 20)
+
 
 Sequencing rules are as follows:
 
@@ -12207,7 +12048,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-5.  Before reading another file, BackupCloseFile MUST be called to close the already read file.
+
+5.  Before reading another file, BackupCloseFile MUST be called to close the already read file.
 
 6.  When the backup session is completed, BackupEnd MUST be invoked.
 
@@ -12218,31 +12060,31 @@ server returns ERROR_UNEXPECTED_ERROR.
 The client application MUST ensure that a full backup (grbit parameter with value 0) has already
 happened before calling the server for incremental backup (grbit parameter with value 1).
 
-3.2.4.1.19
+###### 3.2.4.1.19 ICertAdminD::BackupEnd (Opnum 21)
 
-ICertAdminD::BackupEnd (Opnum 21)
+
 
 The client MUST enforce the sequencing rules as specified in BackupPrepare (section 3.2.4.1.18).
 
-3.2.4.1.20
+###### 3.2.4.1.20 ICertAdminD::BackupGetAttachmentInformation (Opnum 22)
 
-ICertAdminD::BackupGetAttachmentInformation (Opnum 22)
+
 
 The client MUST enforce the sequencing rules as described in BackupPrepare (section 3.2.4.1.18).
 After a call to BackupPrepare, the client MUST call BackupGetAttachmentInformation to obtain the list
 of database file names.
 
-3.2.4.1.21
+###### 3.2.4.1.21 ICertAdminD::BackupGetBackupLogs (Opnum 23)
 
-ICertAdminD::BackupGetBackupLogs (Opnum 23)
+
 
 The client MUST enforce the sequencing rules as described in BackupPrepare (section 3.2.4.1.18).
 After a call to BackupPrepare, the client MUST call BackupGetBackupLogs to obtain the list of database
 log file names.
 
-3.2.4.1.22
+###### 3.2.4.1.22 ICertAdminD::BackupOpenFile (Opnum 24)
 
-ICertAdminD::BackupOpenFile (Opnum 24)
+
 
 The client MUST enforce the sequencing rules as described in BackupPrepare (section 3.2.4.1.18). The
 client MUST call this with the file names obtained from one of the following methods:
@@ -12251,9 +12093,9 @@ BackupGetAttachmentInformation, BackupGetBackupLogs, or BackupGetDynamicFiles.
 The client MUST remove the prefix "D" and "!" from the file names obtained through the method calls
 to BackupGetAttachmentInformation or BackupGetBackupLogs.
 
-3.2.4.1.23
+###### 3.2.4.1.23 ICertAdminD::BackupReadFile (Opnum 25)
 
-ICertAdminD::BackupReadFile (Opnum 25)
+
 
 The client MUST enforce the sequencing rules as described in BackupPrepare (section 3.2.4.1.18).
 After opening the file for backup purposes (by using BackupOpenFile), the client MUST call
@@ -12262,17 +12104,17 @@ contents to a backup medium. The client can call this API multiple times to read
 the file. Upon successful return, if the value of *pcbRead is less than cbRead or is 0, the client MUST
 assume that the entire contents of the file has been read and MUST call BackupCloseFile.
 
-3.2.4.1.24
+###### 3.2.4.1.24 ICertAdminD::BackupCloseFile (Opnum 26)
 
-ICertAdminD::BackupCloseFile (Opnum 26)
+
 
 The client MUST enforce the sequencing rules as described in BackupPrepare (section 3.2.4.1.18). The
 client MUST call BackupCloseFile for each corresponding BackupOpenFile (and after BackupReadFile is
 done).
 
-3.2.4.1.25
+###### 3.2.4.1.25 ICertAdminD::BackupTruncateLogs (Opnum 27)
 
-ICertAdminD::BackupTruncateLogs (Opnum 27)
+
 
 The client MUST enforce the sequencing rules as described in BackupPrepare (section 3.2.4.1.18). The
 client can call BackupTruncateLogs to truncate the log files and reduce the disk space occupied by
@@ -12286,70 +12128,71 @@ Release: January 13, 2026
 
 135 / 193
 
-3.2.4.1.26
 
-ICertAdminD::ImportCertificate (Opnum 28)
+###### 3.2.4.1.26 ICertAdminD::ImportCertificate (Opnum 28)
+
+
 
 No specific processing rules.
 
-3.2.4.1.27
+###### 3.2.4.1.27 ICertAdminD::BackupGetDynamicFiles (Opnum 29)
 
-ICertAdminD::BackupGetDynamicFiles (Opnum 29)
+
 
 The client MUST retrieve a list of file names that are not part of the database but are deemed
 necessary as part of the backup by the CA. An example of a CA dynamic file is the certificate
 revocation list (CRL).
 
-3.2.4.1.28
+###### 3.2.4.1.28 ICertAdminD::RestoreGetDatabaseLocations (Opnum 30)
 
-ICertAdminD::RestoreGetDatabaseLocations (Opnum 30)
+
 
 Before performing restoration of the database, the client MUST retrieve the location where the
 database files have to be placed. To do so, the client MUST call RestoreGetDatabaseLocations. The
 location names prefixed with "D" MUST be used to restore the database files. The location names
 prefixed with "!" MUST be used to restore the database log files.
 
-3.2.4.2  Processing Rules for ICertAdminD2
+##### 3.2.4.2 Processing Rules for ICertAdminD2
 
-3.2.4.2.1 ICertAdminD2:: PublishCRLs (Opnum 31)
+###### 3.2.4.2.1 ICertAdminD2:: PublishCRLs (Opnum 31)
 
 No specific processing rules.
 
-3.2.4.2.2 ICertAdminD2::GetCAProperty (Opnum 32)
+###### 3.2.4.2.2 ICertAdminD2::GetCAProperty (Opnum 32)
 
 The ICertAdminD2::GetCAProperty method is as specified in [MS-WCCE] section 3.1.1.4.6.
 
-3.2.4.2.3 ICertAdminD2::SetCAProperty (Opnum 33)
+###### 3.2.4.2.3 ICertAdminD2::SetCAProperty (Opnum 33)
 
 No specific processing rules.
 
-3.2.4.2.4 ICertAdminD2::GetCAPropertyInfo (Opnum 34)
+###### 3.2.4.2.4 ICertAdminD2::GetCAPropertyInfo (Opnum 34)
 
 The ICertAdminD2::GetCAPropertyInfo method is as specified in [MS-WCCE] section 3.1.1.4.7.
 
-3.2.4.2.5 ICertAdminD2::EnumViewColumnTable (Opnum 35)
+###### 3.2.4.2.5 ICertAdminD2::EnumViewColumnTable (Opnum 35)
 
 No specific processing rules.
 
-3.2.4.2.6 ICertAdminD2::GetCASecurity (Opnum 36)
+###### 3.2.4.2.6 ICertAdminD2::GetCASecurity (Opnum 36)
 
 No specific processing rules.
 
-3.2.4.2.7 ICertAdminD2::SetCASecurity (Opnum 37)
+###### 3.2.4.2.7 ICertAdminD2::SetCASecurity (Opnum 37)
 
 No specific processing rules.
 
-3.2.4.2.8 ICertAdminD2::Ping2 (Opnum 38)
+###### 3.2.4.2.8 ICertAdminD2::Ping2 (Opnum 38)
 
 The ICertAdminD2::Ping2 method is as specified in [MS-WCCE] section 3.1.1.4.5.
 
-3.2.4.2.9 ICertAdminD2::GetArchivedKey (Opnum 39)
+###### 3.2.4.2.9 ICertAdminD2::GetArchivedKey (Opnum 39)
 
 No specific processing rules.
 
-3.2.4.2.10
+###### 3.2.4.2.10 ICertAdminD2::GetAuditFilter (Opnum 40)
 
-ICertAdminD2::GetAuditFilter (Opnum 40)
+
 
 [MS-CSRA] - v20260113
 Certificate Services Remote Administration Protocol
@@ -12358,62 +12201,63 @@ Release: January 13, 2026
 
 136 / 193
 
-No specific processing rules.
-
-3.2.4.2.11
-
-ICertAdminD2::SetAuditFilter (Opnum 41)
 
 No specific processing rules.
 
-3.2.4.2.12
+###### 3.2.4.2.11 ICertAdminD2::SetAuditFilter (Opnum 41)
 
-ICertAdminD2::GetOfficerRights (Opnum 42)
 
-No specific processing rules.
-
-3.2.4.2.13
-
-ICertAdminD2::SetOfficerRights (Opnum 43)
 
 No specific processing rules.
 
-3.2.4.2.14
+###### 3.2.4.2.12 ICertAdminD2::GetOfficerRights (Opnum 42)
 
-ICertAdminD2::GetConfigEntry (Opnum 44)
 
-No specific processing rules.
-
-3.2.4.2.15
-
-ICertAdminD2::SetConfigEntry (Opnum 45)
 
 No specific processing rules.
 
-3.2.4.2.16
+###### 3.2.4.2.13 ICertAdminD2::SetOfficerRights (Opnum 43)
 
-ICertAdminD2::ImportKey (Opnum 46)
+
+
+No specific processing rules.
+
+###### 3.2.4.2.14 ICertAdminD2::GetConfigEntry (Opnum 44)
+
+
+
+No specific processing rules.
+
+###### 3.2.4.2.15 ICertAdminD2::SetConfigEntry (Opnum 45)
+
+
+
+No specific processing rules.
+
+###### 3.2.4.2.16 ICertAdminD2::ImportKey (Opnum 46)
+
+
 
 For the pctbKey parameter, the client MUST create the encrypted private key as specified in [MS-
 WCCE] section 3.1.1.4.3.6.
 
-3.2.4.2.17
+###### 3.2.4.2.17 ICertAdminD2::GetMyRoles (Opnum 47)
 
-ICertAdminD2::GetMyRoles (Opnum 47)
 
-No specific processing rules.
-
-3.2.4.2.18
-
-ICertAdminD2::DeleteRow (Opnum 48)
 
 No specific processing rules.
 
-3.2.5  Timer Events
+###### 3.2.4.2.18 ICertAdminD2::DeleteRow (Opnum 48)
+
+
+
+No specific processing rules.
+
+#### 3.2.5 Timer Events
 
 No client timers.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -12424,11 +12268,12 @@ Release: January 13, 2026
 
 137 / 193
 
-<!-- Extracted images from page 138 -->
+
+<!-- Extracted images from page 138 -->
 ![Extracted image 1 from page 138]([MS-CSRA].images/page138-img01.png)
 <!-- /Extracted images from page 138 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Figure 3: Backing up a CA database
 
@@ -12460,7 +12305,8 @@ Release: January 13, 2026
 
 138 / 193
 
-The client verifies that the return value from this method is S_OK (0).
+
+The client verifies that the return value from this method is S_OK (0).
 
 3.  The client retrieves the database file names. The client calls the BackupGetAttachmentInformation
 
@@ -12508,7 +12354,8 @@ Release: January 13, 2026
 
 139 / 193
 
-5  Security
+
+## 5 Security
 
 The Certificate Services Remote Administration Protocol allows an administrator to manipulate the CA
 in various ways.
@@ -12524,9 +12371,9 @@ cryptographic keys secret, as specified in [MS-WCCE] section 5. All those requir
 implementation of the CA. In addition, this protocol exposes a risk if the administrator is not
 authenticated properly, and this section lists only additional requirements about that function.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
-5.1.1  Strong Administrator Authentication
+#### 5.1.1 Strong Administrator Authentication
 
 An administrator of the CA must authenticate strongly. This task can be accomplished by using a
 high-entropy password or some multiple-factor authentication method (such as a smart card). It is
@@ -12534,19 +12381,19 @@ recommended that the CA administrator use a login account that functions only fo
 and not for any other purpose. The use of the same credentials on a vulnerable computer while
 performing some other task exposes them to capture and misuse.
 
-5.1.2  KDC Security
+#### 5.1.2 KDC Security
 
 Because authentication of the administrator is by Kerberos, in this protocol, the KDC must itself be
 kept secure; that is, free from tampering and free from vulnerabilities that would allow privilege-
 elevation penetrations.
 
-5.1.3  Administrator Console Security
+#### 5.1.3 Administrator Console Security
 
 The administrator console includes the applications that the administrator uses to run the client side of
 this protocol and the operating system in which that functionality runs. The administrator console
 must be kept secure from penetrations that would allow an attacker to act as the administrator.
 
-5.1.4  Administrator Credential Issuance
+#### 5.1.4 Administrator Credential Issuance
 
 The procedures used by a human CA administrator to control access must be kept free from
 penetration and human error. These procedures include the following:
@@ -12576,7 +12423,8 @@ Release: January 13, 2026
 
 140 / 193
 
-5.2  Index of Security Parameters
+
+### 5.2 Index of Security Parameters
 
 Security settings for this protocol are described in section 2.1.
 
@@ -12587,7 +12435,8 @@ Release: January 13, 2026
 
 141 / 193
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided, where "ms-dtyp.idl" refers to the IDL found in
 [MS-DTYP] Appendix A, and "ms-oaut.idl" is the IDL found in [MS-OAUT] Appendix A.
@@ -12661,7 +12510,8 @@ Release: January 13, 2026
 
 142 / 193
 
-     DWORD                            ColumnIndex;
+
+     DWORD                            ColumnIndex;
 
      LONG                             SeekOperator;
 
@@ -12738,7 +12588,8 @@ Release: January 13, 2026
 
 143 / 193
 
-         [in, string, unique] wchar_t const *pwszAuthority,
+
+         [in, string, unique] wchar_t const *pwszAuthority,
          [in]                 DWORD          iColumn,
          [in]                 DWORD          cColumn,
          [out]                DWORD         *pcColumn,
@@ -12811,7 +12662,8 @@ Release: January 13, 2026
 
 144 / 193
 
-     HRESULT BackupPrepare(
+
+     HRESULT BackupPrepare(
          [in, string, unique] wchar_t const *pwszAuthority,
          [in]                 unsigned long  grbitJet,
          [in]                 unsigned long  dwBackupFlags,
@@ -12887,7 +12739,8 @@ Release: January 13, 2026
 
 145 / 193
 
-         [in, string, unique] wchar_t const *pwszAuthority,
+
+         [in, string, unique] wchar_t const *pwszAuthority,
          [in]                 FILETIME       FileTime,
          [in]                 DWORD            Flags
      );
@@ -12962,7 +12815,8 @@ Release: January 13, 2026
 
 146 / 193
 
-     HRESULT GetOfficerRights(
+
+     HRESULT GetOfficerRights(
          [in, string, unique] wchar_t const *pwszAuthority,
          [out]                     BOOL           *pfEnabled,
          [out, ref]             CERTTRANSBLOB *pctbSD
@@ -13019,7 +12873,8 @@ Release: January 13, 2026
 
 147 / 193
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -13163,7 +13018,8 @@ Release: January 13, 2026
 
 148 / 193
 
-Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
+
+Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
 using the terms "SHOULD" or "SHOULD NOT" implies product behavior in accordance with the
 SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
@@ -13334,7 +13190,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Column
+
+Column
 identifier
 
 Data
@@ -13669,7 +13526,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Column
+
+Column
 identifier
 
 0x2001
@@ -13997,7 +13855,8 @@ Name"
 
 151 / 193
 
-Column
+
+Column
 identifier
 
 0x201c
@@ -14307,7 +14166,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Column name (ADM element)
+
+Column name (ADM element)
 
 (Request_Officer)
 
@@ -14630,7 +14490,8 @@ Flags"
 
 153 / 193
 
-Column
+
+Column
 identifier
 
 0x2008
@@ -14951,7 +14812,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-The following table details the Request table for Windows Server 2008 and Windows Server 2008 R2.
+
+The following table details the Request table for Windows Server 2008 and Windows Server 2008 R2.
 
 Column
 identifier
@@ -15269,7 +15131,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Column
+
+Column
 identifier
 
 Data
@@ -15592,7 +15455,8 @@ Identifier"
 
 156 / 193
 
-Column
+
+Column
 identifier
 
 0x200d
@@ -15914,7 +15778,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Column
+
+Column
 identifier
 
 Data
@@ -16235,7 +16100,8 @@ Name"
 
 158 / 193
 
-Column
+
+Column
 identifier
 
 0x101d
@@ -16563,7 +16429,8 @@ Date"
 
 159 / 193
 
-Column
+
+Column
 identifier
 
 Data
@@ -16878,7 +16745,8 @@ Number"
 
 160 / 193
 
-** These database columns are available in Windows Server 2016 and later.
+
+** These database columns are available in Windows Server 2016 and later.
 
 *** These database columns are available in Windows Server 2019 and later.
 
@@ -17102,7 +16970,8 @@ Column display name
 
 161 / 193
 
-Column
+
+Column
 identifier
 
 0x5009
@@ -17277,7 +17146,8 @@ Release: January 13, 2026
 
 162 / 193
 
-<12> Section 3.1.1.4.2:  This configuration and the associated functionality are available in Windows
+
+<12> Section 3.1.1.4.2:  This configuration and the associated functionality are available in Windows
 Server 2019 and later versions of the Windows OS after installing the September (9B) Windows
 update.
 
@@ -17345,7 +17215,8 @@ Release: January 13, 2026
 
 163 / 193
 
- ldap: ///CN={CATruncatedName}{CRLNameSuffix},CN={CAServerShortName},
+
+ ldap: ///CN={CATruncatedName}{CRLNameSuffix},CN={CAServerShortName},
  CN=CDP,CN=Public Key
  Services,CN=Services,CN=Configuration,DC={contoso},DC=com{CDPObjectClass}
 
@@ -17431,7 +17302,8 @@ Release: January 13, 2026
 
 164 / 193
 
-DBSessionCount
+
+DBSessionCount
 
 ADM Datum: Config_Max_Number_Of_AD_Connections and
 OnNextRestart_Config_Max_Number_Of_AD_Connections.
@@ -17501,7 +17373,8 @@ Release: January 13, 2026
 
 165 / 193
 
-ADM Datum: Config_Configuration_Directory (defined in [MS-WCCE]).
+
+ADM Datum: Config_Configuration_Directory (defined in [MS-WCCE]).
 
 Registry Value Type: REG_SZ
 
@@ -17575,7 +17448,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-0:file://%1/CertEnroll/%1_%3%4.crt
+
+0:file://%1/CertEnroll/%1_%3%4.crt
 
    Registry Value Mapping to ADM: The string format for each string in the list is
 
@@ -17665,7 +17539,8 @@ Release: January 13, 2026
 
 167 / 193
 
-Where the <Numeric Prefix Value> is a binary OR of the values in the following table and is
+
+Where the <Numeric Prefix Value> is a binary OR of the values in the following table and is
 represented as a decimal value. And <Some Path> is a string that is composed of literal
 strings and wild cards, that is defined in the following tables, and that represents an HTTP,
 FILE, or LDAP URL, or a UNC path.
@@ -17767,7 +17642,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-   Registry Value Type: REG_BINARY
+
+   Registry Value Type: REG_BINARY
 
    Default Value: None.
 
@@ -17858,7 +17734,8 @@ Release: January 13, 2026
 
 169 / 193
 
-CAType
+
+CAType
 
 ADM Datum: Config_CA_Type and OnNextRestart_Config_CA_Type
 
@@ -17938,7 +17815,8 @@ Release: January 13, 2026
 
 170 / 193
 
-ADM Datum: Config_Delta_CRL_Validity_Period
+
+ADM Datum: Config_Delta_CRL_Validity_Period
 
 Registry Value Type: CRLDeltaPeriod is REG_SZ, and CRLDeltaPeriodUnits is REG_DWORD
 
@@ -18010,7 +17888,8 @@ Release: January 13, 2026
 
 171 / 193
 
-No Value Semantics: No KRA flags in effect.
+
+No Value Semantics: No KRA flags in effect.
 
 SetupStatus
 
@@ -18083,7 +17962,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Registry Value Mapping to ADM: CRLOverlapPeriod contains the string representation of the
+
+Registry Value Mapping to ADM: CRLOverlapPeriod contains the string representation of the
 
 "periods of time" in which the Config_Base_CRL_Overlap_Period is expressed. Valid values are
 Seconds, Minutes, Hours, Days, Weeks, or Months. CRLOverlapUnits contains the number of
@@ -18156,7 +18036,8 @@ Release: January 13, 2026
 
 173 / 193
 
-ADM Datum: Config_CSP_CNG_Hash_Algorithm and
+
+ADM Datum: Config_CSP_CNG_Hash_Algorithm and
 OnNextRestart_Config_CSP_CNG_Hash_Algorithm
 
 Registry Value Type: REG_SZ
@@ -18229,7 +18110,8 @@ Release: January 13, 2026
 
 174 / 193
 
-Registry Value Mapping to ADM: The value in the registry equals the ADM datum value.
+
+Registry Value Mapping to ADM: The value in the registry equals the ADM datum value.
 
 No Value Semantics: Element always exists.
 
@@ -18299,7 +18181,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-0x00008000 – If this bit is set, Config_CA_Accept_Request_Attributes_Extensions (defined in
+
+0x00008000 – If this bit is set, Config_CA_Accept_Request_Attributes_Extensions (defined in
 [MS-WCCE]) is set to true. Otherwise, it is set to false.
 
 0x00040000 – If this bit is set, Config_CA_Accept_Request_Attributes_SAN (defined in [MS-
@@ -18365,7 +18248,8 @@ Release: January 13, 2026
 
 176 / 193
 
-where <CA_CN> is replaced with the CN of the CA. The values are as follows:
+
+where <CA_CN> is replaced with the CN of the CA. The values are as follows:
 
 PublishCertFlags
 
@@ -18436,7 +18320,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<16> Section 3.1.1.10: Config_CA_Allow_RenewOnBehalfOf_Requests is supported by
+
+<16> Section 3.1.1.10: Config_CA_Allow_RenewOnBehalfOf_Requests is supported by
 applicable Windows Server releases except Windows 2000 Server, Windows Server 2003, and
 Windows Server 2008.
 
@@ -18507,7 +18392,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<25> Section 3.1.4.1: The supported clients are Windows 2000 Professional, Windows XP, Windows
+
+<25> Section 3.1.4.1: The supported clients are Windows 2000 Professional, Windows XP, Windows
 Vista with Admin Pack, and Windows 7 and later. The supported servers are Windows 2000 Server and
 later.
 
@@ -18571,7 +18457,8 @@ Release: January 13, 2026
 
 179 / 193
 
-<37> Section 3.1.4.1.6: The Windows CA for uses a default clock skew
+
+<37> Section 3.1.4.1.6: The Windows CA for uses a default clock skew
 (Config_CA_Clock_Skew_Minutes) of 10 minutes. The Windows CA defines this value in the registry as
 follows:
 
@@ -18636,7 +18523,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-rights to perform the operation". This will then be converted to an HRESULT (4 byte) error code (as
+
+rights to perform the operation". This will then be converted to an HRESULT (4 byte) error code (as
 specified in [MS-ERREF] section 2.1), such as 0x80072098. Note that the first 2 bytes, the "0x8007"
 portion of the HRESULT value, have nothing to do with the error condition and are determined by the
 Severity and Facility bits, as defined in [MS-ERREF] section 2.1.
@@ -18702,7 +18590,8 @@ Release: January 13, 2026
 
 181 / 193
 
-<44> Section 3.1.4.1.6: The Windows 2000 CA does not have a CRL table. Therefore, it does not
+
+<44> Section 3.1.4.1.6: The Windows 2000 CA does not have a CRL table. Therefore, it does not
 create or update data elements for a CRL table.
 
 <45> Section 3.1.4.1.7: The Windows 2000 CA retrieves the most recent base CRL from the registry
@@ -18763,7 +18652,8 @@ Release: January 13, 2026
 
 182 / 193
 
-"Request.RequestID", "Request.RequesterName", "SerialNumber", "NotBefore", "NotAfter",
+
+"Request.RequestID", "Request.RequesterName", "SerialNumber", "NotBefore", "NotAfter",
 "CertificateTemplate", "CommonName", "EMail", "OrgUnit","Organization", "Locality", "State",
 "Country", "RawCertificate"
 
@@ -18823,7 +18713,8 @@ Release: January 13, 2026
 
 183 / 193
 
-<53> Section 3.1.4.1.10: All applicable Windows Server releases, with the exception of Windows 2000
+
+<53> Section 3.1.4.1.10: All applicable Windows Server releases, with the exception of Windows 2000
 Server, send the column identifiers as the following DWORD array.
 
  {0x00003000, 0x00003001, 0x00003002}
@@ -18886,7 +18777,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -18956,7 +18848,8 @@ Release: January 13, 2026
 
 185 / 193
 
-<63> Section 3.1.4.1.21: In Windows Server 2003, the error is ERROR_UNEXPECTED_ERROR
+
+<63> Section 3.1.4.1.21: In Windows Server 2003, the error is ERROR_UNEXPECTED_ERROR
 (0x8000FFFF). In Windows Server 2008 and later, the error is E_ACCESSDENIED (0x80070005).
 Windows 2000 does not return an error.
 
@@ -19022,7 +18915,8 @@ Release: January 13, 2026
 
 186 / 193
 
-Value
+
+Value
 
 Meaning
 
@@ -19085,7 +18979,8 @@ Release: January 13, 2026
 
 187 / 193
 
-The default values that are used by the Microsoft CA are a local path on the CA machine,
+
+The default values that are used by the Microsoft CA are a local path on the CA machine,
 
  {SYSTEM}\CertSrv\CertEnroll\
 
@@ -19149,7 +19044,8 @@ Certificate Services Remote Administration Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 13, 2026
 
-<85> Section 3.1.4.2.14: On Windows, the CA uses subkeys that use the following key as a node
+
+<85> Section 3.1.4.2.14: On Windows, the CA uses subkeys that use the following key as a node
 path:
 
  HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\CertSvc\Configuration\<CA_
@@ -19175,7 +19071,8 @@ Release: January 13, 2026
 
 189 / 193
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -19212,7 +19109,8 @@ Release: January 13, 2026
 
 190 / 193
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -19350,7 +19248,8 @@ Informative references 17
 
 191 / 193
 
-Initialization
+
+Initialization
    client 132
    server 63
 Introduction 9
@@ -19489,7 +19388,8 @@ Vendor-extensible fields 22
 
 192 / 193
 
-Versioning 22
+
+Versioning 22
 
 [MS-CSRA] - v20260113
 Certificate Services Remote Administration Protocol

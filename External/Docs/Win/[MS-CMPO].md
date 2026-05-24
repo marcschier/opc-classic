@@ -63,7 +63,8 @@ Release: July 29, 2024
 
 1 / 75
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: July 29, 2024
 
 3 / 75
 
-Date
+
+Date
 
 Revision
 History
@@ -579,279 +582,117 @@ Release: July 29, 2024
 
 4 / 75
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Identifiers and Partner Roles](#131-identifiers-and-partner-roles)
+    - [1.3.2 Finding the RPC Endpoint and Constructing a Binding Handle](#132-finding-the-rpc-endpoint-and-constructing-a-binding-handle)
+    - [1.3.3 Session Lifecycle](#133-session-lifecycle)
+      - [1.3.3.1 Establishing a Session](#1331-establishing-a-session)
+      - [1.3.3.2 Negotiating Resources](#1332-negotiating-resources)
+      - [1.3.3.3 Sending and Receiving Messages](#1333-sending-and-receiving-messages)
+      - [1.3.3.4 Terminating a Session](#1334-terminating-a-session)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Protocol Sequences](#211-protocol-sequences)
+    - [2.1.2 Endpoints](#212-endpoints)
+    - [2.1.3 Security](#213-security)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 BIND_INFO_BLOB](#221-bindinfoblob)
+    - [2.2.2 BIND_VERSION_SET](#222-bindversionset)
+    - [2.2.3 BOUND_VERSION_SET](#223-boundversionset)
+    - [2.2.4 COM_PROTOCOL](#224-comprotocol)
+    - [2.2.5 HRESULT](#225-hresult)
+    - [2.2.6 GUID/UUID](#226-guiduuid)
+    - [2.2.7 RESOURCE_TYPE](#227-resourcetype)
+    - [2.2.8 SESSION_RANK](#228-sessionrank)
+    - [2.2.9 TEARDOWN_TYPE](#229-teardowntype)
+    - [2.2.10 Constants Used in Method Definitions](#2210-constants-used-in-method-definitions)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Protocol Versioning](#31-protocol-versioning)
+  - [3.2 Common Details](#32-common-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Partner State](#3211-partner-state)
+      - [3.2.1.2 Session State](#3212-session-state)
+      - [3.2.1.3 Cleaning Up a Session Object](#3213-cleaning-up-a-session-object)
+      - [3.2.1.4 Name Object](#3214-name-object)
+        - [3.2.1.4.1 Name Object Comparison](#32141-name-object-comparison)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Session Setup Timer](#3221-session-setup-timer)
+      - [3.2.2.2 Session Teardown Timer](#3222-session-teardown-timer)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 Initialization By a Higher-Level Protocol](#3231-initialization-by-a-higher-level-protocol)
+      - [3.2.3.2 Initialization By the Protocol](#3232-initialization-by-the-protocol)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+      - [3.2.5.1 Session Setup Timer](#3251-session-setup-timer)
+      - [3.2.5.2 Session Teardown Timer](#3252-session-teardown-timer)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 IXnRemote Server Details](#33-ixnremote-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Poke (Opnum 0)](#3341-poke-opnum-0)
+      - [3.3.4.2 BuildContext (Opnum 1)](#3342-buildcontext-opnum-1)
+        - [3.3.4.2.1 Primary](#33421-primary)
+        - [3.3.4.2.2 Secondary](#33422-secondary)
+      - [3.3.4.3 NegotiateResources (Opnum 2)](#3343-negotiateresources-opnum-2)
+      - [3.3.4.4 SendReceive (Opnum 3)](#3344-sendreceive-opnum-3)
+      - [3.3.4.5 TearDownContext (Opnum 4)](#3345-teardowncontext-opnum-4)
+        - [3.3.4.5.1 Problem](#33451-problem)
+        - [3.3.4.5.2 Primary](#33452-primary)
+        - [3.3.4.5.3 Secondary](#33453-secondary)
+      - [3.3.4.6 BeginTearDown (Opnum 5)](#3346-beginteardown-opnum-5)
+      - [3.3.4.7 PokeW (Opnum 6)](#3347-pokew-opnum-6)
+      - [3.3.4.8 BuildContextW (Opnum 7)](#3348-buildcontextw-opnum-7)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+      - [3.3.6.1 Context Handle Rundown](#3361-context-handle-rundown)
+  - [3.4 IXnRemote Client Details](#34-ixnremote-client-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+      - [3.4.2.1 RPC Call Timer](#3421-rpc-call-timer)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+    - [3.4.5 Timer Events](#345-timer-events)
+      - [3.4.5.1 RPC Call Timer](#3451-rpc-call-timer)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+      - [3.4.6.1 New Session Requested](#3461-new-session-requested)
+        - [3.4.6.1.1 Primary](#34611-primary)
+        - [3.4.6.1.2 Secondary](#34612-secondary)
+      - [3.4.6.2 Forced Session Teardown Requested](#3462-forced-session-teardown-requested)
+      - [3.4.6.3 Problem Session Teardown Requested](#3463-problem-session-teardown-requested)
+      - [3.4.6.4 Resource Allocation Requested](#3464-resource-allocation-requested)
+      - [3.4.6.5 Message Send Requested](#3465-message-send-requested)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Initiating a Session as Primary Partner](#41-initiating-a-session-as-primary-partner)
+  - [4.2 Initiating a Session as Secondary Partner](#42-initiating-a-session-as-secondary-partner)
+  - [4.3 Negotiating Connection Resources](#43-negotiating-connection-resources)
+  - [4.4 Terminating a Session](#44-terminating-a-session)
+    - [4.4.1 Terminating a Session by a Primary Partner](#441-terminating-a-session-by-a-primary-partner)
+    - [4.4.2 Terminating a Session by a Secondary Partner](#442-terminating-a-session-by-a-secondary-partner)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Identifiers and Partner Roles ........................................................................ 10
-Finding the RPC Endpoint and Constructing a Binding Handle ........................... 10
-Session Lifecycle ........................................................................................ 11
-Establishing a Session ........................................................................... 11
-Negotiating Resources ........................................................................... 13
-Sending and Receiving Messages ............................................................ 13
-Terminating a Session ........................................................................... 14
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 16
-
-1.3.3.1
-1.3.3.2
-1.3.3.3
-1.3.3.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-2.1.3
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Protocol Sequences ..................................................................................... 17
-Endpoints .................................................................................................. 17
-Security..................................................................................................... 17
-Common Data Types ........................................................................................ 17
-BIND_INFO_BLOB ....................................................................................... 18
-BIND_VERSION_SET ................................................................................... 18
-BOUND_VERSION_SET ................................................................................ 19
-COM_PROTOCOL ........................................................................................ 20
-HRESULT ................................................................................................... 20
-GUID/UUID ................................................................................................ 20
-RESOURCE_TYPE ........................................................................................ 21
-SESSION_RANK ......................................................................................... 21
-TEARDOWN_TYPE ....................................................................................... 21
-Constants Used in Method Definitions ............................................................ 21
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-
-3.2.1
-
-3.1
-3.2
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-
-3  Protocol Details ..................................................................................................... 22
-Protocol Versioning ........................................................................................... 22
-Common Details .............................................................................................. 22
-Abstract Data Model .................................................................................... 22
-Partner State ........................................................................................ 23
-Session State ....................................................................................... 24
-Cleaning Up a Session Object ................................................................. 26
-Name Object ........................................................................................ 27
-Name Object Comparison ................................................................. 27
-Timers ...................................................................................................... 27
-Session Setup Timer.............................................................................. 27
-Session Teardown Timer ........................................................................ 27
-Initialization ............................................................................................... 27
-Initialization By a Higher-Level Protocol ................................................... 28
-Initialization By the Protocol ................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Timer Events .............................................................................................. 28
-Session Setup Timer.............................................................................. 28
-
-3.2.2.1
-3.2.2.2
-
-3.2.3.1
-3.2.3.2
-
-3.2.4
-3.2.5
-
-3.2.1.4.1
-
-3.2.5.1
-
-3.2.2
-
-3.2.3
-
-[MS-CMPO] - v20240729
-MSDTC Connection Manager: OleTx Transports Protocol
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-5 / 75
-
-3.2.5.2
-
-3.3
-
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-
-3.3.4.2.1
-3.3.4.2.2
-
-3.3.4.3
-3.3.4.4
-3.3.4.5
-
-3.3.4.5.1
-3.3.4.5.2
-3.3.4.5.3
-
-Session Teardown Timer ........................................................................ 29
-Other Local Events ...................................................................................... 29
-IXnRemote Server Details ................................................................................. 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 31
-Poke (Opnum 0) ................................................................................... 31
-BuildContext (Opnum 1) ........................................................................ 34
-Primary .......................................................................................... 36
-Secondary ...................................................................................... 38
-NegotiateResources (Opnum 2) .............................................................. 39
-SendReceive (Opnum 3) ........................................................................ 40
-TearDownContext (Opnum 4) ................................................................. 41
-Problem ......................................................................................... 42
-Primary .......................................................................................... 42
-Secondary ...................................................................................... 43
-BeginTearDown (Opnum 5) .................................................................... 43
-PokeW (Opnum 6)................................................................................. 44
-BuildContextW (Opnum 7) ..................................................................... 45
-Timer Events .............................................................................................. 47
-Other Local Events ...................................................................................... 48
-Context Handle Rundown ....................................................................... 48
-IXnRemote Client Details .................................................................................. 48
-Abstract Data Model .................................................................................... 48
-Timers ...................................................................................................... 49
-RPC Call Timer ...................................................................................... 49
-Initialization ............................................................................................... 49
-Message Processing Events and Sequencing Rules .......................................... 49
-Timer Events .............................................................................................. 49
-RPC Call Timer ...................................................................................... 49
-Other Local Events ...................................................................................... 49
-New Session Requested ......................................................................... 49
-Primary .......................................................................................... 49
-Secondary ...................................................................................... 50
-Forced Session Teardown Requested ....................................................... 51
-Problem Session Teardown Requested ..................................................... 51
-Resource Allocation Requested ............................................................... 52
-Message Send Requested ....................................................................... 52
-
-3.4.5.1
-
-3.4.6.1
-
-3.4.6.1.1
-3.4.6.1.2
-
-3.4.6.2
-3.4.6.3
-3.4.6.4
-3.4.6.5
-
-3.3.4.6
-3.3.4.7
-3.3.4.8
-
-3.3.5
-3.3.6
-
-3.3.6.1
-
-3.4.2.1
-
-3.4
-
-3.4.1
-3.4.2
-
-3.4.3
-3.4.4
-3.4.5
-
-3.4.6
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ................................................................................................. 53
-Initiating a Session as Primary Partner ............................................................... 53
-Initiating a Session as Secondary Partner ............................................................ 56
-Negotiating Connection Resources ...................................................................... 59
-Terminating a Session ...................................................................................... 60
-Terminating a Session by a Primary Partner ................................................... 60
-Terminating a Session by a Secondary Partner ............................................... 61
-
-4.4.1
-4.4.2
-
-5  Security ................................................................................................................. 63
-Security Considerations for Implementers ........................................................... 63
-Index of Security Parameters ............................................................................ 63
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 64
-
-7  Appendix B: Product Behavior ............................................................................... 67
-
-8  Change Tracking .................................................................................................... 72
-
-9  Index ..................................................................................................................... 73
-
-[MS-CMPO] - v20240729
-MSDTC Connection Manager: OleTx Transports Protocol
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-6 / 75
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the MSDTC Connection Manager: OleTx Transports Protocol. The MSDTC
 Connection Manager: OleTx Transports Protocol is a remote procedure call (RPC) interface for
@@ -863,7 +704,7 @@ and security services that it provides.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -924,7 +765,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-level-two protocol: The MSDTC Connection Manager: OleTx Transports Protocol is designed to be
+
+level-two protocol: The MSDTC Connection Manager: OleTx Transports Protocol is designed to be
 a transport protocol over which two other protocols are layered. When used in this document,
 level-two protocol refers to the protocol that is layered immediately on top of MSDTC
 Connection Manager: OleTx Transports Protocol, as described in section 2.2.2. [MS-CMP] is an
@@ -1001,7 +843,8 @@ Release: July 29, 2024
 
 8 / 75
 
-security level: An implementation-specific enumeration value that specifies the security behavior
+
+security level: An implementation-specific enumeration value that specifies the security behavior
 
 of a protocol partner. The generic values of this enumeration are described in [MS-CMPO]
 section 3.2.1.1.
@@ -1044,14 +887,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1073,7 +916,8 @@ Release: July 29, 2024
 
 9 / 75
 
-[MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
+
+[MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
 
 [NETBEUI] IBM Corporation, "LAN Technical Reference: 802.2 and NetBIOS APIs", 1986,
 https://www.ardent-tool.com/docs/boo/bk8p7001.boo
@@ -1090,7 +934,7 @@ editor.org/info/rfc1002
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-CMOM] Microsoft Corporation, "MSDTC Connection Manager: OleTx Management Protocol".
 
@@ -1101,7 +945,7 @@ editor.org/info/rfc1002
 [MS-SPNG] Microsoft Corporation, "Simple and Protected GSS-API Negotiation Mechanism (SPNEGO)
 Extension".
 
-1.3  Overview
+### 1.3 Overview
 
 The MSDTC Connection Manager: OleTx Transports Protocol is a peer-to-peer messaging protocol
 layered over a bidirectional pair of RPC connections. Although there is asymmetry in the setup and
@@ -1110,7 +954,7 @@ messages to each other.
 
 Together, the pair of RPC connections between the partners is called a session.
 
-1.3.1  Identifiers and Partner Roles
+#### 1.3.1 Identifiers and Partner Roles
 
 Each of the partners involved in an MSDTC Connection Manager: OleTx Transports Protocol session
 has a distinct UUID called its contact identifier (CID). Each partner is identified by the combination
@@ -1126,7 +970,7 @@ of the other partner. For comparing UUIDs, see [C706]. The partner that has the 
 identifier (CID) is the primary partner, and the other partner is the secondary partner (larger means
 that the CID of the primary partner follows the CID of the other secondary partner).
 
-1.3.2  Finding the RPC Endpoint and Constructing a Binding Handle
+#### 1.3.2 Finding the RPC Endpoint and Constructing a Binding Handle
 
 When a partner is initialized, it creates a dynamic endpoint on each of its supported RPC protocols
 and registers the interface (IXnRemote) with the RPC endpoint mapper. When a partner performs
@@ -1138,7 +982,8 @@ Release: July 29, 2024
 
 10 / 75
 
-this registration, it specifies its contact identifier (CID) as the object identifier. See specification
+
+this registration, it specifies its contact identifier (CID) as the object identifier. See specification
 [C706].
 
 A partner initiating communication with another partner begins with a name object that contains
@@ -1188,12 +1033,12 @@ an implementation-specific error code is returned.
 This partial binding is resolved into a full binding by using the RPC endpoint mapper service at the
 host network address and the full binding handle is used for every call to the remote partner.
 
-1.3.3  Session Lifecycle
+#### 1.3.3 Session Lifecycle
 
 The following sections specify supported MSDTC Connection Manager: OleTx Transports Protocol
 sequences for implementers.
 
-1.3.3.1  Establishing a Session
+##### 1.3.3.1 Establishing a Session
 
 A session is established by making a nested series of synchronous remote procedure call (RPC)
 between the IXnRemote interfaces of the two partners. These calls are made in order; furthermore,
@@ -1210,7 +1055,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-CMPO].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1236,20 +1082,21 @@ Release: July 29, 2024
 
 12 / 75
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-CMPO].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 2: Session initiation by secondary partner
 
-1.3.3.2  Negotiating Resources
+##### 1.3.3.2 Negotiating Resources
 
 Once a session has been established, a partner has the option to call the NegotiateResources
 method to request that the other partner allocate resources to be associated with the session. The
 level-two protocol specifies the allocated resource type. This type is defined by the
 RESOURCE_TYPE (section 2.2.7) enumeration.
 
-1.3.3.3  Sending and Receiving Messages
+##### 1.3.3.3 Sending and Receiving Messages
 
 Once a session has been established, a partner calls the SendReceive method to send messages to
 the other partner. As with resources, the MSDTC Connection Manager: OleTx Transports Protocol does
@@ -1263,11 +1110,12 @@ Release: July 29, 2024
 
 13 / 75
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-CMPO].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-1.3.3.4  Terminating a Session
+##### 1.3.3.4 Terminating a Session
 
 Termination requires a nested series of RPCs between the IXnRemote interfaces of the two partners.
 Either partner has the option to terminate the session. If the primary partner decides to terminate
@@ -1286,7 +1134,7 @@ scope of the MSDTC Connection Manager: OleTx Transports Protocol; it is the resp
 protocol being layered above the MSDTC Connection Manager: OleTx Transports Protocol to provide
 mechanisms for determining the lifetime of a session.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is dependent on RPC, which is its transport. The RPC protocol provides extensibility
 elements that are used by this protocol to provide sessions and peer-to-peer message exchange
@@ -1302,7 +1150,7 @@ Ultimately, the MSDTC Connection Manager suite of protocols is used as the commu
 mechanism for the Microsoft Distributed Transaction Coordinator, which is used to coordinate atomic
 transactions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The MSDTC Connection Manager: OleTx Transports Protocol is an RPC interface, and therefore has the
 prerequisites identified in [MS-RPCE] as being common to RPC interfaces.
@@ -1318,12 +1166,13 @@ Release: July 29, 2024
 
 14 / 75
 
-It is assumed that an MSDTC Connection Manager: OleTx Transports Protocol partner has obtained a
+
+It is assumed that an MSDTC Connection Manager: OleTx Transports Protocol partner has obtained a
 name object containing the contact information for another partner that supports the MSDTC
 Connection Manager: OleTx Transports Protocol before establishing a session. How a partner obtains
 this name object is not addressed in this specification.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is primarily designed to provide a peer-to-peer system for exchanging messages over
 reliable connections. Its use of bidirectional RPC connections to RPC dynamic endpoints means
@@ -1333,7 +1182,7 @@ name service. Also, the use of Mutual Authentication in conjunction with the pro
 NetBIOS means that the participants are required to be either in the same domain or in domains that
 have a trust relationship.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1375,7 +1224,7 @@ specified in [MS-SPNG]. Windows implementations of MSDTC Connection Manager: Ole
 Transports Protocol use by default the SPNEGO security provider described in [MS-SPNG], which
 allows for in-band negotiation of a security provider package.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF]. Vendors can choose their own HRESULT
 values, provided they set the C bit (0x20000000) for each vendor-defined value, indicating the value
@@ -1388,7 +1237,8 @@ Release: July 29, 2024
 
 15 / 75
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1405,13 +1255,14 @@ Release: July 29, 2024
 
 16 / 75
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
-2.1.1  Protocol Sequences
+#### 2.1.1 Protocol Sequences
 
 The MSDTC Connection Manager: OleTx Transports Protocol uses several different RPC protocol
 sequences; it SHOULD use the "ncacn_ip_tcp" RPC protocol sequence.
@@ -1420,14 +1271,14 @@ Also, the MSDTC Connection Manager: OleTx Transports Protocol MAY use either or 
 "ncacn_nb_nb" and "ncacn_spx" RPC protocol sequences. Very few implementations use these
 protocols, and so they SHOULD NOT be the only protocols supported by a partner.<3>
 
-2.1.2  Endpoints
+#### 2.1.2 Endpoints
 
 The MSDTC Connection Manager: OleTx Transports Protocol MUST use the endpoint mapper to
 allocate the endpoint that will be used during the exchange of messages. This endpoint MUST be
 allocated dynamically on a port that MUST be defined by the endpoint mapper, as specified in [C706])
 part 2, or by the local data element Server TCP Port if the RPC protocol is TCP/IP.<4>
 
-2.1.3  Security
+#### 2.1.3 Security
 
 The MSDTC Connection Manager: OleTx Transports Protocol partners SHOULD use a security
 provider, as specified in [MS-RPCE] section 2.2.1.1.7, and an authentication level as specified in [MS-
@@ -1462,7 +1313,7 @@ Protocol partner SHOULD first attempt to establish an RPC connection using authe
 calls to another protocol partner. If this fails, the MSDTC Connection Manager: OleTx Transports
 Protocol partner MUST attempt to establish an RPC connection using unauthenticated RPC calls.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The MSDTC Connection Manager: OleTx Transports Protocol MUST indicate (to the RPC runtime) that
 it is only to support the Network Data Representation (NDR) transfer syntax as the RPC transfer
@@ -1474,10 +1325,11 @@ Release: July 29, 2024
 
 17 / 75
 
-syntax, as specified in [C706] part 4. In addition to RPC base types and definitions specified in
+
+syntax, as specified in [C706] part 4. In addition to RPC base types and definitions specified in
 [C706] and [MS-DTYP], more data types are defined in the following sections.
 
-2.2.1  BIND_INFO_BLOB
+#### 2.2.1 BIND_INFO_BLOB
 
 The BIND_INFO_BLOB packet is a structure containing details on how to bind to a partner.
 
@@ -1504,7 +1356,7 @@ grbitComProtocols (4 bytes): A COM_PROTOCOL bit field specifying the RPC protoco
 
 that the partner supports.
 
-2.2.2  BIND_VERSION_SET
+#### 2.2.2 BIND_VERSION_SET
 
 The BIND_VERSION_SET structure holds three sets of version range values that specify the version
 ranges supported by a partner for three protocols: this protocol, MSDTC Connection Manager: OleTx
@@ -1553,7 +1405,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-This field indicates whether the unsigned_char_t version of the Session creation API calls
+
+This field indicates whether the unsigned_char_t version of the Session creation API calls
 (Poke/BuildContext) or the wchar_t version of the Session creation API calls
 (PokeW/BuildContextW) are used. This field MUST be one of the following values:
 
@@ -1584,7 +1437,7 @@ dwMaxLevelThree:  A 4-byte unsigned integer value containing the maximum version
 the level-three protocol session. dwMaxLevelThree MUST be greater than or equal to
 dwMinLevelThree.
 
-2.2.3  BOUND_VERSION_SET
+#### 2.2.3 BOUND_VERSION_SET
 
 The BOUND_VERSION_SET is a structure containing the MSDTC Connection Manager: OleTx
 Transports Protocol version numbers that were successfully negotiated during a BuildContext call or a
@@ -1629,7 +1482,8 @@ Release: July 29, 2024
 
 19 / 75
 
-2.2.4  COM_PROTOCOL
+
+#### 2.2.4 COM_PROTOCOL
 
 The COM_PROTOCOL is a bit field defining the set of RPC protocol sequences supported by an
 MSDTC Connection Manager: OleTx Transports Protocol partner.
@@ -1714,11 +1568,11 @@ otherwise, the protocol sequence is not supported.
 If none of the bits are set, then bitFieldEncoding is assumed to be set to PROT_IP_TCP by
 default.
 
-2.2.5  HRESULT
+#### 2.2.5 HRESULT
 
 This specification uses the HRESULT type. See [MS-ERREF].
 
-2.2.6  GUID/UUID
+#### 2.2.6 GUID/UUID
 
 This specification uses the GUID type. See [MS-DTYP]. GUID (globally unique identifier) is also known
 as a UUID (universally unique identifier) and is a 16-byte structure, intended to serve as a unique
@@ -1732,7 +1586,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-2.2.7  RESOURCE_TYPE
+
+#### 2.2.7 RESOURCE_TYPE
 
 The RESOURCE_TYPE enumeration provides 4-byte signed integer values that describe the resource to
 be negotiated.
@@ -1744,7 +1599,7 @@ be negotiated.
 
 RT_CONNECTIONS:  Indicates that the resource is a connection.
 
-2.2.8  SESSION_RANK
+#### 2.2.8 SESSION_RANK
 
 The SESSION_RANK enumeration provides 4-byte signed integer values that describe whether the
 machine is a primary partner or a secondary partner.
@@ -1759,7 +1614,7 @@ SRANK_PRIMARY:  Primary partner.
 
 SRANK_SECONDARY:  Secondary partner.
 
-2.2.9  TEARDOWN_TYPE
+#### 2.2.9 TEARDOWN_TYPE
 
 The TEARDOWN_TYPE enumeration provides a set of 4-byte signed integer values indicating the
 reason for starting the teardown phase of session management.
@@ -1774,7 +1629,7 @@ TT_FORCE:  Force a teardown.
 
 TT_PROBLEM:  Severe session error detected; start a teardown.
 
-2.2.10 Constants Used in Method Definitions
+#### 2.2.10 Constants Used in Method Definitions
 
 The following constants are used in various methods.
 
@@ -1803,14 +1658,15 @@ Release: July 29, 2024
 
 21 / 75
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The RPC interface specified by this protocol is called IXnRemote (see section 6 for the Interface
 Definition Language (IDL) specification). Every IXnRemote client is also an IXnRemote server, and
 every IXnRemote server is also an IXnRemote client. Therefore, the information in section 3.2 applies
 equally to both IXnRemote server and IXnRemote client.
 
-3.1  Protocol Versioning
+### 3.1 Protocol Versioning
 
 This protocol currently has two versions: MS-CMPO 1.0 and MS-CMPO 1.1. The only differences
 between the two versions are related to the methods supported by the RPC interface, as shown in the
@@ -1866,9 +1722,9 @@ Not supported
 
 Supported
 
-3.2  Common Details
+### 3.2 Common Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1898,12 +1754,13 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-The MSDTC Connection Manager: OleTx Transports Protocol uses the registry to retrieve the values for
+
+The MSDTC Connection Manager: OleTx Transports Protocol uses the registry to retrieve the values for
 the Server TCP Port and Service Network Protocols data elements described in this section, and the
 persistent store is shared with the MSDTC Connection Manager: OleTx Transaction Protocol [MS-
 DTCO] and the MSDTC Connection Manager: OleTx Management Protocol [MS-CMOM].
 
-3.2.1.1  Partner State
+##### 3.2.1.1 Partner State
 
 An MSDTC Connection Manager: OleTx Transports Protocol partner MUST allocate and maintain the
 following local data elements:
@@ -1980,7 +1837,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Security Level
+
+Security Level
 value
 
 Meaning
@@ -1993,7 +1851,7 @@ See section 3.3.3.
 Note  It is possible to implement the abstract data model by using a variety of techniques. The
 protocol does not prescribe or advocate any specific implementation technique.
 
-3.2.1.2  Session State
+##### 3.2.1.2 Session State
 
 An MSDTC Connection Manager: OleTx Transports Protocol partner MUST maintain a session table (a
 table of session objects) keyed by the contact identifier (CID) field of the Name field referenced by
@@ -2038,7 +1896,8 @@ Release: July 29, 2024
 
 24 / 75
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-CMPO].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -2051,7 +1910,8 @@ Release: July 29, 2024
 
 25 / 75
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-CMPO].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -2060,7 +1920,7 @@ Figure 5: Secondary session state
 Note  It is possible to implement the conceptual data defined in this section using a variety of
 techniques. An implementation is at liberty to implement such data in any way it pleases.
 
-3.2.1.3  Cleaning Up a Session Object
+##### 3.2.1.3 Cleaning Up a Session Object
 
 When a session object is removed from the session table, it MUST be cleaned up as follows:
 
@@ -2076,7 +1936,8 @@ Release: July 29, 2024
 
 26 / 75
 
-  All active timers associated with the session object MUST be canceled.
+
+  All active timers associated with the session object MUST be canceled.
 
 
 
@@ -2088,7 +1949,7 @@ RPC binding handles, see [C706].
 The RPC context handle stored in the session object MUST be released if it has been allocated. For
 RPC context handles, see [C706].
 
-3.2.1.4  Name Object
+##### 3.2.1.4 Name Object
 
 A name object contains the contact information of a partner. This information is composed of the
 following data elements that MUST be present on a Name object implementation:
@@ -2106,19 +1967,19 @@ by the partner.
 Note  It is possible to implement the conceptual data defined in this section using a variety of
 techniques. An implementation is at liberty to implement such data in any way it pleases.
 
-3.2.1.4.1 Name Object Comparison
+###### 3.2.1.4.1 Name Object Comparison
 
 Two name objects are considered equal if (and only if) their contact identifier (CID) are identical
 GUIDs, and the Hostname fields are identical NetBIOS host names. For NetBIOS, see [NETBEUI] and
 [RFC1001].
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 An implementation of the MSDTC Connection Manager: OleTx Transports Protocol MUST provide
 Session Setup timers and Session Teardown timers. Each session object is associated with a pair of
 these timers.
 
-3.2.2.1  Session Setup Timer
+##### 3.2.2.1 Session Setup Timer
 
 There is an instance of this timer corresponding to each session object. This timer MUST be set when
 the associated session enters the Connecting state or the Confirming Connection state, and is
@@ -2126,7 +1987,7 @@ canceled when the session enters the Active state.
 
 The default value of the timer is specific to the implementation.<8>
 
-3.2.2.2  Session Teardown Timer
+##### 3.2.2.2 Session Teardown Timer
 
 There is an instance of this timer corresponding to each session object. This timer MUST be set when
 the associated session enters the Teardown state, and is canceled when the session leaves that state.
@@ -2134,7 +1995,7 @@ the associated session enters the Teardown state, and is canceled when the sessi
 The default value of the timer is specific to the implementation. The local partner SHOULD set the
 default value of this timer to 10 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Each MSDTC Connection Manager: OleTx Transports Protocol partner is explicitly initialized with the
 data elements identified in section 3.2.1.1, and described in sections Initialization By a Higher-Level
@@ -2147,7 +2008,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-3.2.3.1  Initialization By a Higher-Level Protocol
+
+##### 3.2.3.1 Initialization By a Higher-Level Protocol
 
 A MSDTC Connection Manager: OleTx Transports Protocol partner is explicitly initialized with the
 following data elements identified in section 3.2.1.1.
@@ -2169,7 +2031,7 @@ protocol that is initializing this partner.
 As those elements are supplied to the MSDTC Connection Manager: OleTx Transport Protocol partner,
 their initialization MUST be done by the higher-level protocol.
 
-3.2.3.2  Initialization By the Protocol
+##### 3.2.3.2 Initialization By the Protocol
 
 The MSDTC Connection Manager OleTx Transports Protocol partner MUST perform the following
 actions.
@@ -2197,17 +2059,17 @@ and section 3.4.3 for initialization steps specific to the IXnRemote Client role
 If any of the initialization of the above elements fails, an implementation-specific failure result MUST
 be returned to the higher-layer protocol.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 None.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 Note that the events that follow are described as asynchronous with respect to the normal operation
 of the MSDTC Connection Manager: OleTx Transports Protocol. If events are implemented this way, it
 is the responsibility of the implementation to ensure that its state remains consistent.
 
-3.2.5.1  Session Setup Timer
+##### 3.2.5.1 Session Setup Timer
 
 When the Session Setup timer expires, the local partner SHOULD:
 
@@ -2220,7 +2082,8 @@ Release: July 29, 2024
 
 28 / 75
 
-When the Session Setup timer expires, the local partner MUST:
+
+When the Session Setup timer expires, the local partner MUST:
 
 1.  Remove the associated session object from the session table, and close any context handle or
 
@@ -2235,7 +2098,7 @@ any.
 
 partner identified by the name object stored in the timer's corresponding session object, if any.
 
-3.2.5.2  Session Teardown Timer
+##### 3.2.5.2 Session Teardown Timer
 
 When the Session Teardown timer expires, the local partner SHOULD:
 
@@ -2254,13 +2117,13 @@ SHOULD return 0x80004005 (E_FAIL).
 3.  Report success to any level-two protocol that is requesting a new session to the partner
 identified by the name object stored in the timer's session corresponding object, if any.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.3  IXnRemote Server Details
+### 3.3 IXnRemote Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 In addition to the abstract data model described in section 3.2.1, when implementing an IXnRemote
 server role an MSDTC Connection Manager: OleTx Transports Protocol partner MUST allocate and
@@ -2292,7 +2155,8 @@ Release: July 29, 2024
 
 29 / 75
 
-
+
+
 
 They SHOULD be established during installation, and the MSDTC Connection Manager: OleTx
 Transports Protocol does not modify the settings. It only reads them during protocol instance
@@ -2307,11 +2171,11 @@ The following settings are the Server Security Settings that MUST be specified:
   RPC Security Provider: A 4-byte unsigned integer element that identifies the security provider
 being used. The possible values for this element are defined in [MS-RPCE] section 2.2.1.1.7.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The timers for an IXnRemote server are described in section 3.2.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The MSDTC Connection Manager: OleTx Transports Protocol partner when initiating the IXnRemote
 Server role, MUST perform the following actions.
@@ -2377,7 +2241,8 @@ Release: July 29, 2024
 
 30 / 75
 
-3.3.4  Message Processing Events and Sequencing Rules
+
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 The MSDTC Connection Manager: OleTx Transports Protocol SHOULD indicate to the RPC runtime that
 it is to perform a strict NDR data consistency check at target level 5.0, as specified in [MS-RPCE]
@@ -2426,7 +2291,7 @@ Opnum: 7
 All methods MUST NOT throw exceptions beyond those thrown by the underlying RPC protocol, as
 specified in [MS-RPCE].
 
-3.3.4.1  Poke (Opnum 0)
+##### 3.3.4.1 Poke (Opnum 0)
 
 The Poke method is used by a secondary partner to request the primary partner session
 initiation. The parameter values specified in the call identify both participants.
@@ -2460,7 +2325,8 @@ Release: July 29, 2024
 
 31 / 75
 
-Value
+
+Value
 
 Meaning
 
@@ -2557,7 +2423,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-partner's local name object. The secondary partner MAY return from the Poke method before this call
+
+partner's local name object. The secondary partner MAY return from the Poke method before this call
 has completed.
 
 When Poke is invoked on a primary partner, the primary partner MUST construct a name object using
@@ -2629,7 +2496,8 @@ Release: July 29, 2024
 
 33 / 75
 
-3.3.4.2  BuildContext (Opnum 1)
+
+##### 3.3.4.2 BuildContext (Opnum 1)
 
 The BuildContext method is invoked by either a primary partner or a secondary partner. When
 invoked by a primary partner, the BuildContext method requests that the secondary partner begin the
@@ -2706,7 +2574,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-MUST match the contact identifier (CID) in the caller's local name object and MUST be formatted
+
+MUST match the contact identifier (CID) in the caller's local name object and MUST be formatted
 into a string.
 
 If this is the primary participant's call, this value is used by the called secondary participant to
@@ -2799,7 +2668,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2842,7 +2712,7 @@ This method has different effects depending on the value of the sRank parameter.
 For the structure and sequence of data on the wire, see [C706] Transfer Syntax Network Data
 Representation (NDR) topics.
 
-3.3.4.2.1 Primary
+###### 3.3.4.2.1 Primary
 
 If the sRank parameter is SRANK_PRIMARY, the caller MUST be a primary partner, and the callee
 MUST be a secondary partner. The session object has already been created on the primary partner,
@@ -2893,7 +2763,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 The local Minimum Level 1 Version Number ADM element
 
@@ -2999,7 +2870,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-been started. The Session Setup timer will not have been started if the session establishment began
+
+been started. The Session Setup timer will not have been started if the session establishment began
 with the primary partner. In this case, this method call is the first time that the secondary partner has
 considered this session.
 
@@ -3053,7 +2925,7 @@ If the error code is 0x80000123 (E_CM_SERVER_NOT_READY) or 0x000006BB
 partner SHOULD retry the nested call for the number of times specified in the Session Setup
 Retry Count ADM element.
 
-3.3.4.2.2 Secondary
+###### 3.3.4.2.2 Secondary
 
 If the sRank parameter is SRANK_SECONDARY, the caller MUST be a secondary partner, and the
 callee MUST be a primary partner. The primary partner MUST construct a name object using the
@@ -3072,7 +2944,8 @@ Release: July 29, 2024
 
 38 / 75
 
-unsuccessful.<26> Note that for this case, the state of the session object does not influence the
+
+unsuccessful.<26> Note that for this case, the state of the session object does not influence the
 behavior of BuildContext.
 
 Next, the primary partner MUST compute the pBoundVersionSet parameter, as specified in section
@@ -3081,7 +2954,7 @@ Next, the primary partner MUST compute the pBoundVersionSet parameter, as specif
 the primary partner MUST set the State ADM element of the session object to Confirming Connection
 and then return from the method with the S_OK code.
 
-3.3.4.3  NegotiateResources (Opnum 2)
+##### 3.3.4.3 NegotiateResources (Opnum 2)
 
 The NegotiateResources method is invoked by one partner to request that the other partner allocate
 resources for future use.
@@ -3152,7 +3025,8 @@ Release: July 29, 2024
 
 39 / 75
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3197,7 +3071,7 @@ level-two protocol cannot reserve any resources at all, the partner MUST return 
 (E_CM_OUTOFRESOURCES). Otherwise, if at least one resource is allocated, the partner MUST set the
 pdwcAccepted parameter to the number of resources allocated by this request, and then return S_OK.
 
-3.3.4.4  SendReceive (Opnum 3)
+##### 3.3.4.4 SendReceive (Opnum 3)
 
 The SendReceive method is invoked by one partner to transmit messages to the other partner. Both
 the primary and the secondary participants have the option to call this method multiple times after a
@@ -3232,7 +3106,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-For more information about how the client SHOULD behave based on the possible return values,
+
+For more information about how the client SHOULD behave based on the possible return values,
 see section 3.4.6.4. Standard errors are defined in [MS-ERREF] section 2.2.
 
 Return value/code  Description
@@ -3277,7 +3152,7 @@ defines the format of the rguchBoxCar buffer and the messages contained therein.
 correlation between the dwcMessages parameter and the contents of the rguchBoxCar buffer lies
 strictly in the domain of the level-two protocol.
 
-3.3.4.5  TearDownContext (Opnum 4)
+##### 3.3.4.5 TearDownContext (Opnum 4)
 
 The TearDownContext method is invoked by either a primary partner or a secondary partner.
 When invoked by a primary partner, the TearDownContext method requests that the secondary
@@ -3309,7 +3184,8 @@ Release: July 29, 2024
 
 41 / 75
 
-Value
+
+Value
 
 Meaning
 
@@ -3381,7 +3257,7 @@ specified by the Session Teardown Timer (section 3.2.2.2).
 Thereafter, the method has a different effect depending on the value of the sRank parameter and the
 value of the teardownType parameter.
 
-3.3.4.5.1 Problem
+###### 3.3.4.5.1 Problem
 
 If the teardownType parameter is TT_PROBLEM, the receiving partner MUST invalidate the context
 handle, remove the associated session object from the session table, and close the binding handle
@@ -3389,7 +3265,7 @@ associated with the session object. (See [C706].) Once this has been done, the l
 MUST be notified that a problem teardown has occurred, and provide the level-two protocol with the
 session object.
 
-3.3.4.5.2 Primary
+###### 3.3.4.5.2 Primary
 
 If the teardownType parameter is not TT_PROBLEM, and the sRank parameter is SRANK_PRIMARY,
 the caller MUST be a primary partner, and the callee MUST be a secondary partner.
@@ -3405,7 +3281,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 Free the context handle associated with the session by setting the contextHandle parameter to
 NULL.
@@ -3422,7 +3299,7 @@ and provide the level-two protocol with the session object.
 
 The secondary partner SHOULD choose to perform these actions asynchronously.
 
-3.3.4.5.3 Secondary
+###### 3.3.4.5.3 Secondary
 
 If the teardownType parameter is not TT_PROBLEM, and the sRank parameter is
 SRANK_SECONDARY, the caller MUST be a secondary partner, and the callee MUST be a primary
@@ -3434,7 +3311,7 @@ partner MUST then free the context handle associated with that session and retur
 method. (See [C706].) Once this has been done, the level-two protocol MUST be notified that a
 forced teardown has occurred, and provide the level-two protocol with the session object.
 
-3.3.4.6  BeginTearDown (Opnum 5)
+##### 3.3.4.6 BeginTearDown (Opnum 5)
 
 The BeginTearDown method is invoked by a secondary partner to request that a primary partner
 begin session teardown.
@@ -3478,7 +3355,8 @@ Release: July 29, 2024
 
 43 / 75
 
-BeginTearDown MUST NOT be invoked on a secondary partner.
+
+BeginTearDown MUST NOT be invoked on a secondary partner.
 
 If the session object is in the Teardown state, the primary partner MUST immediately return from the
 method with S_OK. Otherwise, the primary partner MUST set the state of the session object
@@ -3487,7 +3365,7 @@ the Session Teardown timer associated with that session object and attempt to ca
 TearDownContext method on the secondary partner. The secondary partner SHOULD choose to
 perform these actions asynchronously.
 
-3.3.4.7  PokeW (Opnum 6)
+##### 3.3.4.7 PokeW (Opnum 6)
 
 The PokeW method is equivalent in all ways to the Poke method except that its string parameters are
 encoded in UTF-16.
@@ -3554,7 +3432,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-failure HRESULT values. From an over-the-wire communication point of view, the client MUST
+
+failure HRESULT values. From an over-the-wire communication point of view, the client MUST
 implement only a behavior for the case when the call succeeds and another behavior for the case
 when the call does not succeed, (see section 3.4.6.1.2). Standard errors are defined in [MS-
 ERREF] section 2.2.
@@ -3606,7 +3485,7 @@ the rguchBlob parameter is supported by the partner.
 When a partner calls PokeW on another partner, an error code of RPC_S_PROCNUM_OUT_OF_RANGE
 means that the callee does not support PokeW.
 
-3.3.4.8  BuildContextW (Opnum 7)
+##### 3.3.4.8 BuildContextW (Opnum 7)
 
 The BuildContextW method is equivalent in all ways to the BuildContext method, except that its string
 parameters are encoded in UTF-16. The MIDL syntax of the method is as follows.
@@ -3643,7 +3522,8 @@ Release: July 29, 2024
 
 45 / 75
 
-Value
+
+Value
 
 Meaning
 
@@ -3729,7 +3609,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3806,13 +3687,13 @@ E_CM_SERVER_NOT_READY
 When a partner calls BuildContextW on another partner, an error code of
 RPC_S_PROCNUM_OUT_OF_RANGE means that the callee does not support BuildContextW.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 The handling of timer events for the IXnRemote server role is described in section 3.2.5.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
-3.3.6.1  Context Handle Rundown
+##### 3.3.6.1 Context Handle Rundown
 
 When the RPC runtime indicates that a context handle associated with a session is being run down,
 the participant MUST remove the associated session object from the session table, and close any
@@ -3828,13 +3709,14 @@ Release: July 29, 2024
 
 47 / 75
 
-Note  Context handle rundown SHOULD be asynchronous with respect to the normal operation of the
+
+Note  Context handle rundown SHOULD be asynchronous with respect to the normal operation of the
 protocol. It is the responsibility of the implementation to ensure that session's state remains
 consistent.
 
-3.4  IXnRemote Client Details
+### 3.4 IXnRemote Client Details
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 In addition to the abstract data model described in section 3.2.1, when implementing an IXnRemote
 client role, an MSDTC Connection Manager: OleTx Transports Protocol partner MUST implement the
@@ -3882,12 +3764,12 @@ server. The possible values for these settings are defined in [MS-RPCE] section
 case of unauthenticated RPC calls, the partner SHOULD ignore the value of this element and
 use the value RPC_C_AUTHN_LEVEL_NONE.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 In addition to the timers described in section 3.2.2, an IXnremote client also implements the RPC Call
 Timer (section 3.4.2.1).
 
-3.4.2.1  RPC Call Timer
+##### 3.4.2.1 RPC Call Timer
 
 Each RPC method call, including BuildContext, BuildContextW, Poke, PokeW, BeginTearDown,
 and TearDownContext, that is made by a client is associated with an RPC Call Timer. This timer
@@ -3900,10 +3782,11 @@ Release: July 29, 2024
 
 48 / 75
 
-This timer is used in a request/reply scenario to cancel RPC calls that fail to return within the interval
+
+This timer is used in a request/reply scenario to cancel RPC calls that fail to return within the interval
 specified by this timer. The default value of the timer is specific to the implementation.<35>
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The MSDTC Connection Manager: OleTx Transports Protocol partner, when initiating the IXnRemote
 Client role, MUST perform the following actions.
@@ -3916,24 +3799,24 @@ Initialize the Client Security Settings data element by:
 
   Retrieving the RPC Authentication Level from an implementation-specific source.<37>
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 This protocol SHOULD indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 5.0, as specified in [MS-RPCE] section 3.<38>
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 In addition to handling timer events described in section 3.2.5, the IXnRemote client role also
 handles events associated with the RPC Call Timer (section 3.4.5.1).
 
-3.4.5.1  RPC Call Timer
+##### 3.4.5.1 RPC Call Timer
 
 When the RPC Call Timer expires, the local partner SHOULD cancel the RPC call associated with the
 timer. For more information about canceling RPC calls, see [C706] section 6.1.8.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
-3.4.6.1  New Session Requested
+##### 3.4.6.1 New Session Requested
 
 When the level-two protocol requests a new session, it provides the name object of the remote
 partner being requested to the local partner.
@@ -3944,7 +3827,7 @@ partner's RPC endpoint. The RPC binding handle is instantiated as specified in s
 After creating the RPC binding handle, the local partner then determines the session rank for the
 new session.
 
-3.4.6.1.1 Primary
+###### 3.4.6.1.1 Primary
 
 When the local partner is the primary partner, it MUST use the provided name object to check
 whether or not an existing session with a matching name object already exists in the session table.
@@ -3969,7 +3852,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-(For making calls to a partner, see section 3.4.) The binding handle used to make the call MUST be
+
+(For making calls to a partner, see section 3.4.) The binding handle used to make the call MUST be
 stored in the session object. (For binding handles, see [C706].)
 
 To determine whether the secondary partner supports BuildContextW, the primary partner calls
@@ -4003,7 +3887,7 @@ Retry Count ADM element.
 If an error is reported to the level-two protocol, the session object MUST be removed from the session
 table and cleaned up. For how to clean up a session object, see section 3.2.1.3.
 
-3.4.6.1.2 Secondary
+###### 3.4.6.1.2 Secondary
 
 When the local partner is the secondary partner, it MUST use the provided name object to check
 whether or not an existing session with a matching name object already exists in the session table.
@@ -4042,7 +3926,8 @@ Release: July 29, 2024
 
 50 / 75
 
-
+
+
 
 
 
@@ -4061,7 +3946,7 @@ Count ADM element.
 If an error is reported to the level-two protocol, the session object MUST be removed from the session
 table and cleaned up. For instructions regarding how to clean up a session object, see section 3.2.1.3.
 
-3.4.6.2  Forced Session Teardown Requested
+##### 3.4.6.2 Forced Session Teardown Requested
 
 When the level-two protocol requests a forced session teardown, it indicates what session object it
 issues the teardown on. The session object MUST be in the Active state.
@@ -4078,7 +3963,7 @@ parameter as 0x00 (TT_FORCE).
 
 Any error that occurs while processing this request MUST be ignored.
 
-3.4.6.3  Problem Session Teardown Requested
+##### 3.4.6.3 Problem Session Teardown Requested
 
 When the level-two protocol requests a problem session teardown, it indicates what session object
 it wants to issue the teardown on.
@@ -4096,7 +3981,7 @@ clean up the session object. For how to clean up a session object, see section 3
 
 Any error that occurs while processing this request MUST be ignored.
 
-3.4.6.4  Resource Allocation Requested
+##### 3.4.6.4 Resource Allocation Requested
 
 When the level-two protocol requests resource allocation, it indicates what session object it wants
 to allocate resources from. It also provides the type of resource to be allocated, and the number of
@@ -4111,12 +3996,13 @@ Release: July 29, 2024
 
 51 / 75
 
-as the number of resources being requested. If the request succeeds, the value of the pdwcAccepted
+
+as the number of resources being requested. If the request succeeds, the value of the pdwcAccepted
 parameter MUST be provided back to the level-two protocol.
 
 Any error that occurs while processing this request MUST be reported to the level-two protocol.
 
-3.4.6.5  Message Send Requested
+##### 3.4.6.5 Message Send Requested
 
 When the level-two protocol requests a message send, it indicates what session object it wants to
 send the messages on. It also provides an integer count of messages (between 1 and 4,095 inclusive)
@@ -4135,7 +4021,8 @@ Release: July 29, 2024
 
 52 / 75
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 To participate in an MSDTC Connection Manager: OleTx Transports Protocol session, a partner
 exposes an endpoint to its implementation of the IXnRemote interface. Each partner's endpoint is
@@ -4160,7 +4047,7 @@ handshake originates from the primary partner, the secondary partner is required
 with the primary partner by calling Poke (or PokeW), which instructs the primary partner to send a
 BuildContext call to the secondary partner.
 
-4.1  Initiating a Session as Primary Partner
+### 4.1 Initiating a Session as Primary Partner
 
 In this example, the first partner is on Machine_1 with contact identifier (CID) b51996ef-c434-
 4f79-a288-56efd302fc8e, and the second partner is on Machine_2 with contact identifier (CID)
@@ -4199,7 +4086,8 @@ Release: July 29, 2024
 
 53 / 75
 
-Field
+
+Field
 
 hRPC
 
@@ -4292,7 +4180,8 @@ Release: July 29, 2024
 
 54 / 75
 
-Field
+
+Field
 
 hRPC
 
@@ -4393,7 +4282,8 @@ MSDTC Connection Manager: OleTx Transports Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-BoundVersionSet. The secondary partner will also pass a reference pointer (0x0053b710) to the RPC
+
+BoundVersionSet. The secondary partner will also pass a reference pointer (0x0053b710) to the RPC
 context handle associated with its session object via the PPCONTEXT_HANDLE and will reply S_OK.
 Once the session is established, all future communication from the primary partner will need to
 reference this PCONTEXT_HANDLE.
@@ -4419,7 +4309,7 @@ ppHandle [out]
 At this point, a session has been established between the primary partner and the secondary partner.
 Either partner is now free to call NegotiateResources and initiate connections.
 
-4.2  Initiating a Session as Secondary Partner
+### 4.2 Initiating a Session as Secondary Partner
 
 In this example, the first partner is on Machine_1 with contact identifier (CID) (474cf518-d7ae-
 451f-a31f-caad29fa5e9f), and the second partner is on Machine_2 with contact identifier (CID)
@@ -4481,7 +4371,8 @@ Release: July 29, 2024
 
 56 / 75
 
-When the primary partner receives the Poke call from the secondary partner, the primary partner will
+
+When the primary partner receives the Poke call from the secondary partner, the primary partner will
 attempt to locate an existing session object associated with the secondary partner. If an existing
 session object is found, the primary partner returns E_CM_SERVER_NOT_READY (0x80000123), which
 will occur if a previous session has not been completely torn down before a new session is begun.
@@ -4573,7 +4464,8 @@ Release: July 29, 2024
 
 57 / 75
 
-Field
+
+Field
 
 Value description
 
@@ -4669,7 +4561,8 @@ Release: July 29, 2024
 
 58 / 75
 
-When the BuildContextW call is received by the primary partner, the primary partner fills in the
+
+When the BuildContextW call is received by the primary partner, the primary partner fills in the
 pwszGuidOut with the session GUID from pwszGuidIn, and will fill in the BoundVersionSet with its
 accepted values. The primary partner will also pass a reference pointer (0x0012af48) to the RPC
 context handle associated with its session object via the PPCONTEXT_HANDLE, and replies S_OK.
@@ -4722,7 +4615,7 @@ ppHandle [out]
 At this point, a session has been established between the primary partner and the secondary partner.
 Either partner is now free to call NegotiateResources and initiate connections.
 
-4.3  Negotiating Connection Resources
+### 4.3 Negotiating Connection Resources
 
 After a session is established, each partner needs to respond to requests from MSDTC Connection
 Manager: OleTx Multiplexing Protocol to negotiate resources with its partner.
@@ -4757,7 +4650,8 @@ Release: July 29, 2024
 
 59 / 75
 
-When the second partner receives the NegotiateResources call, it will attempt to allocate sufficient
+
+When the second partner receives the NegotiateResources call, it will attempt to allocate sufficient
 resources to support the 100 concurrent connections requested. If successful, the second partner will
 return S_OK and indicate that all 100 concurrent connection resources have been allocated.
 
@@ -4770,7 +4664,7 @@ pdwcAccepted [in_out]  100
 When the first partner receives the S_OK from the second partner, the first partner is now ready to
 begin establishing connections with the second partner.
 
-4.4  Terminating a Session
+### 4.4 Terminating a Session
 
 Terminating a session follows a similar protocol handshake as that of establishing a session (see
 section 4.1).
@@ -4783,7 +4677,7 @@ first TearDownContext call in the sequence originates from the primary partner, 
 is only allowed to initiate teardown of a session with the primary partner by calling BeginTearDown,
 which instructs the primary partner to send a TearDownContext call to the secondary partner.
 
-4.4.1  Terminating a Session by a Primary Partner
+#### 4.4.1 Terminating a Session by a Primary Partner
 
 A primary partner terminates a session by sending a TearDownContext call to the secondary
 partner, passing a pointer to the PCONTEXT_HANDLE given to it from the secondary partner, its
@@ -4833,7 +4727,8 @@ Release: July 29, 2024
 
 60 / 75
 
-Field
+
+Field
 
 Value description
 
@@ -4851,7 +4746,7 @@ pphContext [in_out]  *PPCONTEXT_HANDLE=0x00000000
 
 The session has now been terminated, and no further messages will be sent.
 
-4.4.2  Terminating a Session by a Secondary Partner
+#### 4.4.2 Terminating a Session by a Secondary Partner
 
 In this example, the secondary partner initiates the session termination process by sending a
 BeginTearDown call to the primary partner, passing the primary partner's PCONTEXT_HANDLE and
@@ -4915,7 +4810,8 @@ Release: July 29, 2024
 
 61 / 75
 
-Field
+
+Field
 
 Value description
 
@@ -4940,9 +4836,10 @@ Release: July 29, 2024
 
 62 / 75
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 For security considerations for both authenticated RPC and unauthenticated RPC calls used in this
 protocol, see section 2.1.3 and [MS-RPCE].
@@ -4979,7 +4876,7 @@ impersonation level ([MS-RPCE] section 2.2.1.1.9) when making the RPC call. Use 
 RPC_C_IMPL_LEVEL_IMPERSONATE or RPC_C_IMPL_LEVEL_DELEGATE levels can represent a security
 risk and are to be avoided unless necessary.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -4994,7 +4891,8 @@ Release: July 29, 2024
 
 63 / 75
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below.
 
@@ -5068,7 +4966,8 @@ Release: July 29, 2024
 
 64 / 75
 
-           unsigned char pszHostName[],
+
+           unsigned char pszHostName[],
       [in, string, range(GUID_LENGTH, GUID_LENGTH)]
            unsigned char pszUuidString[],
       [in, range(sizeof(BIND_INFO_BLOB),sizeof(BIND_INFO_BLOB))]
@@ -5142,7 +5041,8 @@ Release: July 29, 2024
 
 65 / 75
 
-      [in, string, range(GUID_LENGTH, GUID_LENGTH)]
+
+      [in, string, range(GUID_LENGTH, GUID_LENGTH)]
            wchar_t  pwszCalleeUuid[],
       [in, string, range(1, MAX_COMPUTERNAME_LENGTH+1)]
            wchar_t pwszHostName[],
@@ -5167,7 +5067,8 @@ Release: July 29, 2024
 
 66 / 75
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5234,7 +5135,8 @@ Release: July 29, 2024
 
 67 / 75
 
-<3> Section 2.1.1: Windows by default supports "ncacn_ip_tcp" but can be configured to support
+
+<3> Section 2.1.1: Windows by default supports "ncacn_ip_tcp" but can be configured to support
 either or both of the "ncacn_spx" and "ncacn_nb_nb" protocols. However, "ncacn_spx" is only
 supported by Windows NT 4.0 Option Pack, Windows 2000, Windows XP, and Windows Server 2003.
 The ncacn_ protocols are described in [MS-RPCE] section 2.
@@ -5300,7 +5202,8 @@ Release: July 29, 2024
 
 68 / 75
 
-Registry path
+
+Registry path
 
 Key value
 
@@ -5367,7 +5270,8 @@ Release: July 29, 2024
 
 69 / 75
 
-<25> Section 3.3.4.2.1: Windows NT 4.0 Option Pack, Windows 2000, and Windows XP do not
+
+<25> Section 3.3.4.2.1: Windows NT 4.0 Option Pack, Windows 2000, and Windows XP do not
 support Mutual Authentication.
 
 <26> Section 3.3.4.2.2: The expected error code 0x80000120 (E_CM_SESSION_DOWN) is returned
@@ -5438,7 +5342,8 @@ Release: July 29, 2024
 
 70 / 75
 
-<36> Section 3.4.3: Windows retrieves this value from the registry. The following table specifies the
+
+<36> Section 3.4.3: Windows retrieves this value from the registry. The following table specifies the
 registry path, the key name, and the default value that Windows uses if the key is not present in the
 registry.
 
@@ -5483,7 +5388,8 @@ Release: July 29, 2024
 
 71 / 75
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5571,7 +5477,8 @@ Release: July 29, 2024
 
 72 / 75
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -5707,7 +5614,8 @@ Message processing
 
 73 / 75
 
-   common 28
+
+   common 28
    server 31
 Messages
    common data types 17
@@ -5853,7 +5761,8 @@ Terminating session by primary partner example 60
 
 74 / 75
 
-Terminating session by secondary partner example
+
+Terminating session by secondary partner example
 
 61
 

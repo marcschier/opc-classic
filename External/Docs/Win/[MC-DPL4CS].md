@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 103
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 103
 
-Date
+
+Date
 
 Revision
 History
@@ -522,340 +524,183 @@ Release: April 23, 2024
 
 3 / 103
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SOCKADDR_IN](#221-sockaddrin)
+    - [2.2.2 DPLAYI_PACKEDPLAYER](#222-dplayipackedplayer)
+    - [2.2.3 DPLAYI_SUPERPACKEDPLAYER](#223-dplayisuperpackedplayer)
+    - [2.2.4 DPSECURITYDESC](#224-dpsecuritydesc)
+    - [2.2.5 DPSESSIONDESC2](#225-dpsessiondesc2)
+    - [2.2.6 DPSP_MSG_HEADER](#226-dpspmsgheader)
+    - [2.2.7 DPSP_MSG_ACCESSGRANTED](#227-dpspmsgaccessgranted)
+    - [2.2.8 DPSP_MSG_ADDFORWARD](#228-dpspmsgaddforward)
+    - [2.2.9 DPSP_MSG_ADDFORWARDACK](#229-dpspmsgaddforwardack)
+    - [2.2.10 DPSP_MSG_ADDFORWARDREPLY](#2210-dpspmsgaddforwardreply)
+    - [2.2.11 DPSP_MSG_ADDFORWARDREQUEST](#2211-dpspmsgaddforwardrequest)
+    - [2.2.12 DPSP_MSG_ADDPLAYERTOGROUP](#2212-dpspmsgaddplayertogroup)
+    - [2.2.13 DPSP_MSG_ADDSHORTCUTTOGROUP](#2213-dpspmsgaddshortcuttogroup)
+    - [2.2.14 DPSP_MSG_ASK4MULTICAST](#2214-dpspmsgask4multicast)
+    - [2.2.15 DPSP_MSG_ASK4MULTICASTGUARANTEED](#2215-dpspmsgask4multicastguaranteed)
+    - [2.2.16 DPSP_MSG_AUTHERROR](#2216-dpspmsgautherror)
+    - [2.2.17 DPSP_MSG_CHALLENGE](#2217-dpspmsgchallenge)
+    - [2.2.18 DPSP_MSG_CHALLENGERESPONSE](#2218-dpspmsgchallengeresponse)
+    - [2.2.19 DPSP_MSG_CHAT](#2219-dpspmsgchat)
+    - [2.2.20 DPSP_MSG_CREATEGROUP](#2220-dpspmsgcreategroup)
+    - [2.2.21 DPSP_MSG_CREATEPLAYER](#2221-dpspmsgcreateplayer)
+    - [2.2.22 DPSP_MSG_CREATEPLAYERVERIFY](#2222-dpspmsgcreateplayerverify)
+    - [2.2.23 DPSP_MSG_DELETEGROUP](#2223-dpspmsgdeletegroup)
+    - [2.2.24 DPSP_MSG_DELETEGROUPFROMGROUP](#2224-dpspmsgdeletegroupfromgroup)
+    - [2.2.25 DPSP_MSG_DELETEPLAYER](#2225-dpspmsgdeleteplayer)
+    - [2.2.26 DPSP_MSG_DELETEPLAYERFROMGROUP](#2226-dpspmsgdeleteplayerfromgroup)
+    - [2.2.27 DPSP_MSG_ENUMPLAYER](#2227-dpspmsgenumplayer)
+    - [2.2.28 DPSP_MSG_ENUMPLAYERSREPLY](#2228-dpspmsgenumplayersreply)
+    - [2.2.29 DPSP_MSG_ENUMSESSIONS](#2229-dpspmsgenumsessions)
+    - [2.2.30 DPSP_MSG_ENUMSESSIONSREPLY](#2230-dpspmsgenumsessionsreply)
+    - [2.2.31 DPSP_MSG_GROUPDATACHANGED](#2231-dpspmsggroupdatachanged)
+    - [2.2.32 DPSP_MSG_GROUPNAMECHANGED](#2232-dpspmsggroupnamechanged)
+    - [2.2.33 DPSP_MSG_IAMNAMESERVER](#2233-dpspmsgiamnameserver)
+    - [2.2.34 DPSP_MSG_KEYEXCHANGE](#2234-dpspmsgkeyexchange)
+    - [2.2.35 DPSP_MSG_KEYEXCHANGEREPLY](#2235-dpspmsgkeyexchangereply)
+    - [2.2.36 DPSP_MSG_LOGONDENIED](#2236-dpspmsglogondenied)
+    - [2.2.37 DPSP_MSG_MULTICASTDELIVERY](#2237-dpspmsgmulticastdelivery)
+    - [2.2.38 DPSP_MSG_NEGOTIATE](#2238-dpspmsgnegotiate)
+    - [2.2.39 DPSP_MSG_PACKET](#2239-dpspmsgpacket)
+    - [2.2.40 DPSP_MSG_PACKET2_ACK](#2240-dpspmsgpacket2ack)
+    - [2.2.41 DPSP_MSG_PACKET2_DATA](#2241-dpspmsgpacket2data)
+    - [2.2.42 DPSP_MSG_PING](#2242-dpspmsgping)
+    - [2.2.43 DPSP_MSG_PINGREPLY](#2243-dpspmsgpingreply)
+    - [2.2.44 DPSP_MSG_PLAYERDATACHANGED](#2244-dpspmsgplayerdatachanged)
+    - [2.2.45 DPSP_MSG_PLAYERMESSAGE](#2245-dpspmsgplayermessage)
+    - [2.2.46 DPSP_MSG_PLAYERNAMECHANGED](#2246-dpspmsgplayernamechanged)
+    - [2.2.47 DPSP_MSG_PLAYERWRAPPER](#2247-dpspmsgplayerwrapper)
+    - [2.2.48 DPSP_MSG_REQUESTGROUPID](#2248-dpspmsgrequestgroupid)
+    - [2.2.49 DPSP_MSG_REQUESTPLAYERID](#2249-dpspmsgrequestplayerid)
+    - [2.2.50 DPSP_MSG_REQUESTPLAYERREPLY](#2250-dpspmsgrequestplayerreply)
+    - [2.2.51 DPSP_MSG_SESSIONDESCCHANGED](#2251-dpspmsgsessiondescchanged)
+    - [2.2.52 DPSP_MSG_SIGNED](#2252-dpspmsgsigned)
+    - [2.2.53 DPSP_MSG_SUPERENUMPLAYERSREPLY](#2253-dpspmsgsuperenumplayersreply)
+    - [2.2.54 DPSP_MSG_VOICE](#2254-dpspmsgvoice)
+    - [2.2.55 DPSP_MSG_YOUAREDEAD](#2255-dpspmsgyouaredead)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 DirectPlay Client Details](#31-directplay-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Session Enumeration Timer](#3121-session-enumeration-timer)
+      - [3.1.2.2 Reliable API Timer](#3122-reliable-api-timer)
+      - [3.1.2.3 Logon Timer](#3123-logon-timer)
+      - [3.1.2.4 Packetize Timer](#3124-packetize-timer)
+      - [3.1.2.5 Ping Timer](#3125-ping-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Enumerate Sessions](#3141-enumerate-sessions)
+      - [3.1.4.2 Join Session](#3142-join-session)
+      - [3.1.4.3 Enumerate Players or Groups](#3143-enumerate-players-or-groups)
+      - [3.1.4.4 Create Player](#3144-create-player)
+      - [3.1.4.5 Delete Player](#3145-delete-player)
+      - [3.1.4.6 Create Group](#3146-create-group)
+      - [3.1.4.7 Remove Group](#3147-remove-group)
+      - [3.1.4.8 Set Group Data](#3148-set-group-data)
+      - [3.1.4.9 Set Group Name](#3149-set-group-name)
+      - [3.1.4.10 Set Player Data](#31410-set-player-data)
+      - [3.1.4.11 Set Player Name](#31411-set-player-name)
+      - [3.1.4.12 Add Player to Group](#31412-add-player-to-group)
+      - [3.1.4.13 Remove Player from Group](#31413-remove-player-from-group)
+      - [3.1.4.14 Add Group to Group](#31414-add-group-to-group)
+      - [3.1.4.15 Remove Group from Group](#31415-remove-group-from-group)
+      - [3.1.4.16 Send Application Data](#31416-send-application-data)
+        - [3.1.4.16.1 Sending Encrypted/Signed Data](#314161-sending-encryptedsigned-data)
+        - [3.1.4.16.2 Sending Unencrypted/Unsigned Data](#314162-sending-unencryptedunsigned-data)
+      - [3.1.4.17 Send Chat](#31417-send-chat)
+      - [3.1.4.18 Large Messages](#31418-large-messages)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 DPSP_MSG_REQUESTPLAYERREPLY](#3151-dpspmsgrequestplayerreply)
+      - [3.1.5.2 DPSP_MSG_CHALLENGE](#3152-dpspmsgchallenge)
+      - [3.1.5.3 DPSP_MSG_ACCESSGRANTED](#3153-dpspmsgaccessgranted)
+      - [3.1.5.4 DPSP_MSG_AUTHERROR](#3154-dpspmsgautherror)
+      - [3.1.5.5 DPSP_MSG_LOGONDENIED](#3155-dpspmsglogondenied)
+      - [3.1.5.6 DPSP_MSG_KEYEXCHANGEREPLY](#3156-dpspmsgkeyexchangereply)
+      - [3.1.5.7 DPSP_MSG_SUPERENUMPLAYERSREPLY](#3157-dpspmsgsuperenumplayersreply)
+      - [3.1.5.8 DPSP_MSG_ADDFORWARDREPLY](#3158-dpspmsgaddforwardreply)
+      - [3.1.5.9 DPSP_MSG_SIGNED](#3159-dpspmsgsigned)
+      - [3.1.5.10 DPSP_MSG_ADDFORWARD](#31510-dpspmsgaddforward)
+      - [3.1.5.11 DPSP_MSG_CREATEGROUP](#31511-dpspmsgcreategroup)
+      - [3.1.5.12 DPSP_MSG_CREATEPLAYER](#31512-dpspmsgcreateplayer)
+      - [3.1.5.13 DPSP_MSG_CREATEPLAYERVERIFY](#31513-dpspmsgcreateplayerverify)
+      - [3.1.5.14 DPSP_MSG_DELETEPLAYER](#31514-dpspmsgdeleteplayer)
+      - [3.1.5.15 DPSP_MSG_DELETEGROUP](#31515-dpspmsgdeletegroup)
+      - [3.1.5.16 DPSP_MSG_GROUPDATACHANGED](#31516-dpspmsggroupdatachanged)
+      - [3.1.5.17 DPSP_MSG_GROUPNAMECHANGED](#31517-dpspmsggroupnamechanged)
+      - [3.1.5.18 DPSP_MSG_PLAYERNAMECHANGED](#31518-dpspmsgplayernamechanged)
+      - [3.1.5.19 DPSP_MSG_PLAYERDATACHANGED](#31519-dpspmsgplayerdatachanged)
+      - [3.1.5.20 DPSP_MSG_ADDPLAYERTOGROUP](#31520-dpspmsgaddplayertogroup)
+      - [3.1.5.21 DPSP_MSG_DELETEPLAYERFROMGROUP](#31521-dpspmsgdeleteplayerfromgroup)
+      - [3.1.5.22 DPSP_MSG_SESSIONDESCCHANGED](#31522-dpspmsgsessiondescchanged)
+      - [3.1.5.23 DPSP_MSG_ADDSHORTCUTTOGROUP](#31523-dpspmsgaddshortcuttogroup)
+      - [3.1.5.24 DPSP_MSG_DELETEGROUPFROMGROUP](#31524-dpspmsgdeletegroupfromgroup)
+      - [3.1.5.25 DPSP_MSG_VOICE](#31525-dpspmsgvoice)
+      - [3.1.5.26 DPSP_MSG_CHAT](#31526-dpspmsgchat)
+      - [3.1.5.27 DPSP_MSG_PACKET](#31527-dpspmsgpacket)
+      - [3.1.5.28 DPSP_MSG_PACKET2_DATA](#31528-dpspmsgpacket2data)
+      - [3.1.5.29 DPSP_MSG_PACKET2_ACK](#31529-dpspmsgpacket2ack)
+      - [3.1.5.30 DPSP_MSG_PING](#31530-dpspmsgping)
+      - [3.1.5.31 DPSP_MSG_PINGREPLY](#31531-dpspmsgpingreply)
+      - [3.1.5.32 DPSP_MSG_YOUAREDEAD](#31532-dpspmsgyouaredead)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Packetize Timer](#3161-packetize-timer)
+      - [3.1.6.2 Ping Timer](#3162-ping-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Host Migration](#3171-host-migration)
+  - [3.2 Game Host Details](#32-game-host-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Name Table Population Timer](#3221-name-table-population-timer)
+      - [3.2.2.2 Ping Timer](#3222-ping-timer)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 DPSP_MSG_ASK4MULTICAST](#3251-dpspmsgask4multicast)
+      - [3.2.5.2 DPSP_MSG_ASK4MULTICASTGUARANTEED](#3252-dpspmsgask4multicastguaranteed)
+      - [3.2.5.3 DPSP_MSG_ENUMSESSIONS](#3253-dpspmsgenumsessions)
+      - [3.2.5.4 DPSP_MSG_REQUESTPLAYERID](#3254-dpspmsgrequestplayerid)
+      - [3.2.5.5 DPSP_MSG_ADDFORWARDREQUEST](#3255-dpspmsgaddforwardrequest)
+      - [3.2.5.6 DPSP_MSG_ADDFORWARDACK](#3256-dpspmsgaddforwardack)
+      - [3.2.5.7 DPSP_MSG_NEGOTIATE](#3257-dpspmsgnegotiate)
+      - [3.2.5.8 DPSP_MSG_CHALLENGERESPONSE](#3258-dpspmsgchallengeresponse)
+      - [3.2.5.9 DPSP_MSG_KEYEXCHANGE](#3259-dpspmsgkeyexchange)
+      - [3.2.5.10 DPSP_MSG_PING](#32510-dpspmsgping)
+      - [3.2.5.11 DPSP_MSG_PINGREPLY](#32511-dpspmsgpingreply)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Name Table Population Timer](#3261-name-table-population-timer)
+      - [3.2.6.2 Ping Timer](#3262-ping-timer)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 DirectPlay4EnumSessionsRequest](#41-directplay4enumsessionsrequest)
+  - [4.2 DirectPlay4 EnumSessionsReply](#42-directplay4-enumsessionsreply)
+  - [4.3 Joining a Game](#43-joining-a-game)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-SOCKADDR_IN ........................................................................................... 16
-2.2.1
-DPLAYI_PACKEDPLAYER .............................................................................. 16
-2.2.2
-DPLAYI_SUPERPACKEDPLAYER ..................................................................... 19
-2.2.3
-DPSECURITYDESC ...................................................................................... 23
-2.2.4
-DPSESSIONDESC2 ...................................................................................... 24
-2.2.5
-DPSP_MSG_HEADER ................................................................................... 27
-2.2.6
-DPSP_MSG_ACCESSGRANTED ...................................................................... 29
-2.2.7
-DPSP_MSG_ADDFORWARD .......................................................................... 30
-2.2.8
-2.2.9
-DPSP_MSG_ADDFORWARDACK .................................................................... 31
-2.2.10  DPSP_MSG_ADDFORWARDREPLY ................................................................. 31
-2.2.11  DPSP_MSG_ADDFORWARDREQUEST ............................................................. 31
-2.2.12  DPSP_MSG_ADDPLAYERTOGROUP ................................................................ 33
-2.2.13  DPSP_MSG_ADDSHORTCUTTOGROUP ........................................................... 33
-2.2.14  DPSP_MSG_ASK4MULTICAST ....................................................................... 34
-2.2.15  DPSP_MSG_ASK4MULTICASTGUARANTEED .................................................... 35
-2.2.16  DPSP_MSG_AUTHERROR ............................................................................. 35
-2.2.17  DPSP_MSG_CHALLENGE .............................................................................. 36
-2.2.18  DPSP_MSG_CHALLENGERESPONSE ............................................................... 37
-2.2.19  DPSP_MSG_CHAT ....................................................................................... 37
-2.2.20  DPSP_MSG_CREATEGROUP .......................................................................... 38
-2.2.21  DPSP_MSG_CREATEPLAYER ......................................................................... 39
-2.2.22  DPSP_MSG_CREATEPLAYERVERIFY ............................................................... 40
-2.2.23  DPSP_MSG_DELETEGROUP .......................................................................... 42
-2.2.24  DPSP_MSG_DELETEGROUPFROMGROUP ........................................................ 42
-2.2.25  DPSP_MSG_DELETEPLAYER ......................................................................... 43
-2.2.26  DPSP_MSG_DELETEPLAYERFROMGROUP ....................................................... 44
-2.2.27  DPSP_MSG_ENUMPLAYER ............................................................................ 44
-2.2.28  DPSP_MSG_ENUMPLAYERSREPLY ................................................................. 45
-2.2.29  DPSP_MSG_ENUMSESSIONS ........................................................................ 46
-2.2.30  DPSP_MSG_ENUMSESSIONSREPLY ............................................................... 47
-2.2.31  DPSP_MSG_GROUPDATACHANGED ............................................................... 48
-2.2.32  DPSP_MSG_GROUPNAMECHANGED ............................................................... 49
-2.2.33  DPSP_MSG_IAMNAMESERVER ...................................................................... 50
-2.2.34  DPSP_MSG_KEYEXCHANGE .......................................................................... 51
-2.2.35  DPSP_MSG_KEYEXCHANGEREPLY ................................................................. 52
-2.2.36  DPSP_MSG_LOGONDENIED ......................................................................... 53
-2.2.37  DPSP_MSG_MULTICASTDELIVERY ................................................................ 53
-2.2.38  DPSP_MSG_NEGOTIATE .............................................................................. 54
-2.2.39  DPSP_MSG_PACKET .................................................................................... 54
-
-[MC-DPL4CS] - v20240423
-DirectPlay 4 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 103
-
-2.2.40  DPSP_MSG_PACKET2_ACK .......................................................................... 55
-2.2.41  DPSP_MSG_PACKET2_DATA ......................................................................... 56
-2.2.42  DPSP_MSG_PING ........................................................................................ 57
-2.2.43  DPSP_MSG_PINGREPLY ............................................................................... 58
-2.2.44  DPSP_MSG_PLAYERDATACHANGED .............................................................. 58
-2.2.45  DPSP_MSG_PLAYERMESSAGE ...................................................................... 59
-2.2.46  DPSP_MSG_PLAYERNAMECHANGED .............................................................. 60
-2.2.47  DPSP_MSG_PLAYERWRAPPER ...................................................................... 61
-2.2.48  DPSP_MSG_REQUESTGROUPID .................................................................... 61
-2.2.49  DPSP_MSG_REQUESTPLAYERID .................................................................... 62
-2.2.50  DPSP_MSG_REQUESTPLAYERREPLY .............................................................. 63
-2.2.51  DPSP_MSG_SESSIONDESCCHANGED ............................................................ 64
-2.2.52  DPSP_MSG_SIGNED ................................................................................... 65
-2.2.53  DPSP_MSG_SUPERENUMPLAYERSREPLY ........................................................ 66
-2.2.54  DPSP_MSG_VOICE ...................................................................................... 68
-2.2.55  DPSP_MSG_YOUAREDEAD ........................................................................... 68
-
-3.1
-
-3.1.1
-3.1.2
-
-3.1.3
-3.1.4
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-3.1.2.5
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-
-3  Protocol Details ..................................................................................................... 70
-DirectPlay Client Details .................................................................................... 70
-Abstract Data Model .................................................................................... 70
-Timers ...................................................................................................... 72
-Session Enumeration Timer .................................................................... 72
-Reliable API Timer ................................................................................. 72
-Logon Timer ......................................................................................... 73
-Packetize Timer .................................................................................... 73
-Ping Timer ........................................................................................... 73
-Initialization ............................................................................................... 73
-Higher-Layer Triggered Events ..................................................................... 73
-Enumerate Sessions .............................................................................. 73
-Join Session ......................................................................................... 74
-Enumerate Players or Groups ................................................................. 74
-Create Player........................................................................................ 74
-Delete Player ........................................................................................ 74
-Create Group ........................................................................................ 74
-Remove Group...................................................................................... 74
-Set Group Data ..................................................................................... 75
-Set Group Name ................................................................................... 75
-Set Player Data..................................................................................... 75
-Set Player Name ................................................................................... 75
-Add Player to Group .............................................................................. 75
-Remove Player from Group .................................................................... 76
-Add Group to Group .............................................................................. 76
-Remove Group from Group..................................................................... 76
-Send Application Data ........................................................................... 76
-Sending Encrypted/Signed Data ........................................................ 77
-Sending Unencrypted/Unsigned Data ................................................. 77
-Send Chat ............................................................................................ 77
-Large Messages .................................................................................... 78
-Processing Events and Sequencing Rules ....................................................... 78
-DPSP_MSG_REQUESTPLAYERREPLY ......................................................... 78
-DPSP_MSG_CHALLENGE ........................................................................ 79
-DPSP_MSG_ACCESSGRANTED ................................................................ 79
-DPSP_MSG_AUTHERROR........................................................................ 79
-DPSP_MSG_LOGONDENIED .................................................................... 79
-DPSP_MSG_KEYEXCHANGEREPLY ........................................................... 79
-DPSP_MSG_SUPERENUMPLAYERSREPLY .................................................. 80
-DPSP_MSG_ADDFORWARDREPLY ............................................................ 80
-DPSP_MSG_SIGNED .............................................................................. 80
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3.1.4.16.1
-3.1.4.16.2
-
-3.1.4.17
-3.1.4.18
-
-3.1.5
-
-[MC-DPL4CS] - v20240423
-DirectPlay 4 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 103
-
-3.1.6.1
-3.1.6.2
-
-3.1.5.10  DPSP_MSG_ADDFORWARD .................................................................... 80
-3.1.5.11  DPSP_MSG_CREATEGROUP .................................................................... 80
-3.1.5.12  DPSP_MSG_CREATEPLAYER ................................................................... 81
-3.1.5.13  DPSP_MSG_CREATEPLAYERVERIFY ......................................................... 81
-3.1.5.14  DPSP_MSG_DELETEPLAYER .................................................................... 81
-3.1.5.15  DPSP_MSG_DELETEGROUP .................................................................... 81
-3.1.5.16  DPSP_MSG_GROUPDATACHANGED ......................................................... 81
-3.1.5.17  DPSP_MSG_GROUPNAMECHANGED ......................................................... 81
-3.1.5.18  DPSP_MSG_PLAYERNAMECHANGED ........................................................ 82
-3.1.5.19  DPSP_MSG_PLAYERDATACHANGED ......................................................... 82
-3.1.5.20  DPSP_MSG_ADDPLAYERTOGROUP .......................................................... 82
-3.1.5.21  DPSP_MSG_DELETEPLAYERFROMGROUP .................................................. 82
-3.1.5.22  DPSP_MSG_SESSIONDESCCHANGED ...................................................... 82
-3.1.5.23  DPSP_MSG_ADDSHORTCUTTOGROUP ..................................................... 82
-3.1.5.24  DPSP_MSG_DELETEGROUPFROMGROUP .................................................. 82
-3.1.5.25  DPSP_MSG_VOICE ................................................................................ 83
-3.1.5.26  DPSP_MSG_CHAT ................................................................................. 83
-3.1.5.27  DPSP_MSG_PACKET .............................................................................. 83
-3.1.5.28  DPSP_MSG_PACKET2_DATA ................................................................... 83
-3.1.5.29  DPSP_MSG_PACKET2_ACK ..................................................................... 83
-3.1.5.30  DPSP_MSG_PING .................................................................................. 83
-3.1.5.31  DPSP_MSG_PINGREPLY ......................................................................... 84
-3.1.5.32  DPSP_MSG_YOUAREDEAD...................................................................... 84
-Timer Events .............................................................................................. 84
-Packetize Timer .................................................................................... 84
-Ping Timer ........................................................................................... 84
-Other Local Events ...................................................................................... 84
-Host Migration ...................................................................................... 84
-Game Host Details ........................................................................................... 85
-Abstract Data Model .................................................................................... 86
-Timers ...................................................................................................... 86
-Name Table Population Timer ................................................................. 86
-Ping Timer ........................................................................................... 86
-Initialization ............................................................................................... 86
-Higher-Layer Triggered Events ..................................................................... 86
-Processing Events and Sequencing Rules ....................................................... 86
-DPSP_MSG_ASK4MULTICAST ................................................................. 86
-3.2.5.1
-DPSP_MSG_ASK4MULTICASTGUARANTEED .............................................. 87
-3.2.5.2
-DPSP_MSG_ENUMSESSIONS .................................................................. 87
-3.2.5.3
-DPSP_MSG_REQUESTPLAYERID .............................................................. 87
-3.2.5.4
-DPSP_MSG_ADDFORWARDREQUEST ....................................................... 88
-3.2.5.5
-DPSP_MSG_ADDFORWARDACK ............................................................... 88
-3.2.5.6
-DPSP_MSG_NEGOTIATE ......................................................................... 89
-3.2.5.7
-DPSP_MSG_CHALLENGERESPONSE ......................................................... 89
-3.2.5.8
-3.2.5.9
-DPSP_MSG_KEYEXCHANGE .................................................................... 89
-3.2.5.10  DPSP_MSG_PING .................................................................................. 89
-3.2.5.11  DPSP_MSG_PINGREPLY ......................................................................... 89
-Timer Events .............................................................................................. 90
-Name Table Population Timer ................................................................. 90
-Ping Timer ........................................................................................... 90
-Other Local Events ...................................................................................... 90
-
-3.2.6.1
-3.2.6.2
-
-3.2.2.1
-3.2.2.2
-
-3.1.7.1
-
-3.2.6
-
-3.2.7
-
-3.1.6
-
-3.1.7
-
-3.2
-
-3.2.1
-3.2.2
-
-3.2.3
-3.2.4
-3.2.5
-
-4  Protocol Examples ................................................................................................. 91
-DirectPlay4EnumSessionsRequest ...................................................................... 91
-DirectPlay4 EnumSessionsReply ......................................................................... 91
-Joining a Game ................................................................................................ 92
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 94
-Security Considerations for Implementers ........................................................... 94
-
-5.1
-
-6 / 103
-
-[MC-DPL4CS] - v20240423
-DirectPlay 4 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.2
-
-Index of Security Parameters ............................................................................ 94
-
-6  Appendix A: Product Behavior ............................................................................... 95
-
-7  Change Tracking .................................................................................................... 99
-
-8  Index ................................................................................................................... 100
-
-[MC-DPL4CS] - v20240423
-DirectPlay 4 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 103
-
-1  Introduction
+## 1 Introduction
 
 This specification describes the core protocol services of the DirectPlay 4 Protocol. The DirectPlay 4
 Protocol facilitates communication between computer games for which a host computer manages the
@@ -866,7 +711,7 @@ game players, and to interchange data between game instances.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -928,7 +773,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-game: An application that uses a DirectPlay protocol to communicate between computers.
+
+game: An application that uses a DirectPlay protocol to communicate between computers.
 
 game session: The metadata associated with the collection of computers participating in a single
 
@@ -1010,7 +856,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Security Support Provider Interface (SSPI): An API that allows connected applications to call
+
+Security Support Provider Interface (SSPI): An API that allows connected applications to call
 one of several security providers to establish authenticated connections and to exchange data
 securely over those connections. It is equivalent to Generic Security Services (GSS)-API, and
 the two are on-the-wire compatible.
@@ -1055,14 +902,14 @@ network library as a transport.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1081,7 +928,8 @@ Release: April 23, 2024
 
 10 / 103
 
-[FIPS46-3] FIPS PUBS, "Data Encryption Standard (DES)", FIPS PUB 46-3, October 1999,
+
+[FIPS46-3] FIPS PUBS, "Data Encryption Standard (DES)", FIPS PUB 46-3, October 1999,
 https://csrc.nist.gov/csrc/media/publications/fips/46/3/archive/1999-10-25/documents/fips46-3.pdf
 
 [IANAPORT] IANA, "Service Name and Transport Protocol Port Number Registry",
@@ -1119,7 +967,7 @@ Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 Encryption Algorithm (TDEA) Block Cipher", Special Publication 800-67, May 2004,
 https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-67ver1.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-ALG_ID] Microsoft Corporation, "ALG_ID Data Type", http://msdn.microsoft.com/en-
 us/library/aa375549.aspx
@@ -1133,7 +981,7 @@ us/library/aa380256.aspx
 [SOCKADDR] Microsoft Corporation, "Sockaddr", http://msdn.microsoft.com/en-
 us/library/ms740496.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The DirectPlay 4 Protocol is a peer-to-peer protocol intended to allow computer games to manage
 metadata associated with many multiplayer computer games. It provides functionality that allows the
@@ -1150,7 +998,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Connect to a game hosted on another computer.
+
+  Connect to a game hosted on another computer.
 
 
 
@@ -1261,7 +1110,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MC-DPL4CS].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1352,7 +1202,8 @@ Release: April 23, 2024
 
 13 / 103
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MC-DPL4CS].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MC-DPL4CS].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
@@ -1378,25 +1229,26 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The DirectPlay 4 Core and Service Providers Protocol is transmitted via both the Transmission
 Control Protocol (TCP) [RFC793] and the User Datagram Protocol (UDP) [RFC768] protocols, as
 specified in [RFC791]. In addition, at the discretion of the game, all of the messages listed in this
 protocol might be transmitted via the DirectPlay 4 Reliable Protocol, as specified in [MC-DPL4R].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DirectPlay 4 Protocol requires the DirectX 6 runtime.<1>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DirectPlay 4 Protocol is used when a game requires communication with other games. All of the
 functionality present in the DirectPlay 4 Protocol has been superseded by the DirectPlay 8
 Protocol and, as such, the DirectPlay 4 Protocol is only to be used when the game has a
 requirement to interoperate with other DirectPlay 4 games.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1411,7 +1263,7 @@ compatible.<2>
 and reports the DirectPlay dialect supported by that client. The host cannot allow the connection
 of a client that does not have the capabilities of interoperating with the existing game session.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol can be transmitted over network protocols other than the IP networking stack. The
 protocol includes a Service Provider Data field in the DPLAYI_PACKEDPLAYER structure (section
@@ -1428,7 +1280,7 @@ This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors 
 own HRESULT values provided that they set the C bit (0x20000000) for each vendor-defined value to
 indicate that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1451,11 +1303,12 @@ Release: April 23, 2024
 
 15 / 103
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 DirectPlay messages are transmitted either by UDP or TCP depending on whether the destination of
 the protocol message is broadcast or unicast. Clients of the DirectPlay 4 protocol MUST use TCP and
@@ -1463,14 +1316,14 @@ UDP port numbers in the range from 2300 to 2400. Enumeration messages transmitte
 DirectPlay host computer MUST be transmitted to port 47624. Broadcast messages MUST be sent to
 the UDP broadcast address of 255.255.255.255.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All multibyte values transmitted by the DirectPlay 4 Protocol are transmitted in little-endian
 format unless otherwise specified.
 
 This protocol specification uses curly braced GUID strings as specified in [MS-DTYP] section 2.3.4.3.
 
-2.2.1  SOCKADDR_IN
+#### 2.2.1 SOCKADDR_IN
 
 The SOCKADDR_IN structure is built as if it were on a little-endian machine and is treated as a
 byte array. For more information, see [SOCKADDR].
@@ -1504,7 +1357,7 @@ Address (4 bytes): IP address, as specified in [RFC791].
 
 Padding (8 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2  DPLAYI_PACKEDPLAYER
+#### 2.2.2 DPLAYI_PACKEDPLAYER
 
 The DPLAYI_PACKEDPLAYER structure contains data related to players or groups.
 
@@ -1530,7 +1383,8 @@ Release: April 23, 2024
 
 16 / 103
 
-PlayerID
+
+PlayerID
 
 ShortNameLength
 
@@ -1612,7 +1466,8 @@ Release: April 23, 2024
 
 17 / 103
 
-SP (1 bit): The player is the system player.
+
+SP (1 bit): The player is the system player.
 
 NS (1 bit): The player is the name server (host). It MUST be combined with SP.
 
@@ -1693,7 +1548,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1733,7 +1589,7 @@ PlayerIDs (variable): MUST contain an array of PlayerIDs where the array size is
 
 NumberOfPlayers. If NumberOfPlayers is 0, this field MUST NOT be present.
 
-2.2.3  DPLAYI_SUPERPACKEDPLAYER
+#### 2.2.3 DPLAYI_SUPERPACKEDPLAYER
 
 The DPLAYI_SUPERPACKEDPLAYER structure is used to transmit player or group-related data.
 
@@ -1771,7 +1627,8 @@ Release: April 23, 2024
 
 19 / 103
 
-...
+
+...
 
 PlayerDataLength (variable)
 
@@ -1852,7 +1709,8 @@ Release: April 23, 2024
 
 20 / 103
 
-PG (1 bit): The player belongs to a group. This flag MUST be set for system players, for other
+
+PG (1 bit): The player belongs to a group. This flag MUST be set for system players, for other
 players that have been added to a group using DPSP_MSG_ADDPLAYERTOGROUP (section
 2.2.12), or for groups that have been added to a group using
 DPSP_MSG_ADDSHORTCUTTOGROUP (section 2.2.13).
@@ -1977,7 +1835,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SC (2 bits): MUST be set if the ShortcutCount field is present in the structure. SC MUST be set
+
+SC (2 bits): MUST be set if the ShortcutCount field is present in the structure. SC MUST be set
 
 to one of the following values.
 
@@ -2075,7 +1934,8 @@ Release: April 23, 2024
 
 22 / 103
 
-If provided, the Windows Winsock DirectPlay Service Provider stores the following data in the
+
+If provided, the Windows Winsock DirectPlay Service Provider stores the following data in the
 ServiceProviderData field.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2131,7 +1991,7 @@ ShortcutIDs (variable): If the ShortcutIDCount field is nonzero, this MUST be se
 shortcut IDs. The length of this field is equivalent to the value of ShortcutIDCount multiplied by
 four.
 
-2.2.4  DPSECURITYDESC
+#### 2.2.4 DPSECURITYDESC
 
 The DPSECURITYDESC structure describes the security properties of a game session instance.
 
@@ -2159,7 +2019,8 @@ Release: April 23, 2024
 
 23 / 103
 
-CAPIProvider
+
+CAPIProvider
 
 CAPIProviderType
 
@@ -2183,7 +2044,7 @@ EncryptionAlgorithm (4 bytes): Encryption algorithm type. If the application doe
 
 value, the default value of CALG_RC4 is used.<5>
 
-2.2.5  DPSESSIONDESC2
+#### 2.2.5 DPSESSIONDESC2
 
 The DPSESSIONDESC2 structure contains game session-related information. A game session is an
 instance of a game.
@@ -2228,7 +2089,8 @@ Release: April 23, 2024
 
 24 / 103
 
-Password
+
+Password
 
 Reserved1
 
@@ -2365,7 +2227,8 @@ Release: April 23, 2024
 
 25 / 103
 
-MS (1 bit): DirectPlay will route all messages through the game host, as specified in section
+
+MS (1 bit): DirectPlay will route all messages through the game host, as specified in section
 
 3.1.5.1.
 
@@ -2438,9 +2301,10 @@ Release: April 23, 2024
 
 26 / 103
 
-ApplicationDefined4 (4 bytes): For use by the DirectPlay game.
 
-2.2.6  DPSP_MSG_HEADER
+ApplicationDefined4 (4 bytes): For use by the DirectPlay game.
+
+#### 2.2.6 DPSP_MSG_HEADER
 
 The DPSP_MSG_HEADER is prepended to all DirectPlay 4 Protocol messages and contains an
 identifier that describes each message structure.
@@ -2519,7 +2383,8 @@ Release: April 23, 2024
 
 27 / 103
 
-Name
+
+Name
 
 Value
 
@@ -2658,7 +2523,8 @@ Release: April 23, 2024
 
 28 / 103
 
-Name
+
+Name
 
 DPSP_MSG_ADDFORWARDREPLY
 
@@ -2728,7 +2594,7 @@ DPSP_MSG_CREATEPLAYERVERIFY
 
 0x0038
 
-2.2.7  DPSP_MSG_ACCESSGRANTED
+#### 2.2.7 DPSP_MSG_ACCESSGRANTED
 
 The DPSP_MSG_ACCESSGRANTED packet is sent to a DirectPlay client after the client has
 successfully been authenticated as a member of the game session.
@@ -2763,7 +2629,8 @@ Release: April 23, 2024
 
 29 / 103
 
-...
+
+...
 
 DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
@@ -2779,7 +2646,7 @@ the PublicKey field.
 
 PublicKey (variable): Array of bytes that contains the sender's signed public key.
 
-2.2.8  DPSP_MSG_ADDFORWARD
+#### 2.2.8 DPSP_MSG_ADDFORWARD
 
 The DPSP_MSG_ADDFORWARD packet is sent to inform a game instance of the existence of other
 game instances.
@@ -2838,11 +2705,12 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PlayerInfo (variable): MUST be set to a DPLAYI_PACKEDPLAYER structure (section 2.2.2) that
+
+PlayerInfo (variable): MUST be set to a DPLAYI_PACKEDPLAYER structure (section 2.2.2) that
 
 contains information about the system player on the newly added machine.
 
-2.2.9  DPSP_MSG_ADDFORWARDACK
+#### 2.2.9 DPSP_MSG_ADDFORWARDACK
 
 The DPSP_MSG_ADDFORWARDACK packet is sent in response to a DPSP_MSG_ADDFORWARD
 message.
@@ -2872,7 +2740,7 @@ this field MUST be set to 47 (0x2F).
 
 ID (4 bytes): Identifier of the player for whom a DPSP_MSG_ADDFORWARD message was sent.
 
-2.2.10 DPSP_MSG_ADDFORWARDREPLY
+#### 2.2.10 DPSP_MSG_ADDFORWARDREPLY
 
 The DPSP_MSG_ADDFORWARDREPLY packet is sent in response to a
 DPSP_MSG_ADDFORWARDREQUEST message when there is an error.
@@ -2904,7 +2772,7 @@ Error (4 bytes): Indicates the reason that the DPSP_MSG_ADDFORWARD (section 2.2.
 
 failed. For a complete list of DirectPlay 4 HRESULT codes, see [MS-ERREF].
 
-2.2.11 DPSP_MSG_ADDFORWARDREQUEST
+#### 2.2.11 DPSP_MSG_ADDFORWARDREQUEST
 
 The DPSP_MSG_ADDFORWARDREQUEST packet is sent to forward a message to a downstream
 player.
@@ -2916,7 +2784,8 @@ Release: April 23, 2024
 
 31 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2989,7 +2858,8 @@ Release: April 23, 2024
 
 32 / 103
 
-2.2.12 DPSP_MSG_ADDPLAYERTOGROUP
+
+#### 2.2.12 DPSP_MSG_ADDPLAYERTOGROUP
 
 The DPSP_MSG_ADDPLAYERTOGROUP packet is sent from one game participant to other game
 participants when a player is added to a group.
@@ -3041,7 +2911,7 @@ PasswordOffset (4 bytes): Not used. It SHOULD be set to zero when sent and MUST 
 
 receipt.
 
-2.2.13 DPSP_MSG_ADDSHORTCUTTOGROUP
+#### 2.2.13 DPSP_MSG_ADDSHORTCUTTOGROUP
 
 The DPSP_MSG_ADDSHORTCUTTOGROUP packet is sent to add a shortcut to a group.
 
@@ -3071,7 +2941,8 @@ Release: April 23, 2024
 
 33 / 103
 
-ChildGroupID
+
+ChildGroupID
 
 ParentGroupID
 
@@ -3097,7 +2968,7 @@ PasswordOffset (4 bytes): Not used. It SHOULD be set to zero when sent and MUST 
 
 receipt.
 
-2.2.14 DPSP_MSG_ASK4MULTICAST
+#### 2.2.14 DPSP_MSG_ASK4MULTICAST
 
 The DPSP_MSG_ASK4MULTICAST packet is sent to request that the server forward a message to
 players in a specified group.
@@ -3144,7 +3015,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MessageOffset (4 bytes): Offset, in octets, from the beginning of the message to the
+
+MessageOffset (4 bytes): Offset, in octets, from the beginning of the message to the
 
 MulticastMessage field.
 
@@ -3153,7 +3025,7 @@ MUST contain a complete DirectPlay 4 Protocol message. However, the message MUST
 with the Signature field of the DPSP_MSG_HEADER (section 2.2.6) rather than the entire
 DPSP_MSG_HEADER structure.
 
-2.2.15 DPSP_MSG_ASK4MULTICASTGUARANTEED
+#### 2.2.15 DPSP_MSG_ASK4MULTICASTGUARANTEED
 
 The DPSP_MSG_ASK4MULTICASTGUARANTEED packet is used to request that the server forward
 a message to players in a specified group using the guaranteed messaging mechanism.
@@ -3202,7 +3074,7 @@ MUST contain a complete DirectPlay 4 Protocol message. However, the message MUST
 with the Signature field of the DPSP_MSG_HEADER (section 2.2.6) rather than the entire
 DPSP_MSG_HEADER structure.
 
-2.2.16 DPSP_MSG_AUTHERROR
+#### 2.2.16 DPSP_MSG_AUTHERROR
 
 The DPSP_MSG_AUTHERROR packet is sent to indicate the reason that authentication failed.
 
@@ -3213,7 +3085,8 @@ Release: April 23, 2024
 
 35 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3268,7 +3141,7 @@ No authority could be contacted for authentication.
 
 0x80090311
 
-2.2.17 DPSP_MSG_CHALLENGE
+#### 2.2.17 DPSP_MSG_CHALLENGE
 
 The DPSP_MSG_CHALLENGE packet is used to request a security token.
 
@@ -3304,7 +3177,8 @@ Release: April 23, 2024
 
 36 / 103
 
-...
+
+...
 
 DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
@@ -3320,7 +3194,7 @@ SecurityToken field.
 
 SecurityToken (variable): Opaque security token whose size is specified by the DataSize field.
 
-2.2.18 DPSP_MSG_CHALLENGERESPONSE
+#### 2.2.18 DPSP_MSG_CHALLENGERESPONSE
 
 The DPSP_MSG_CHALLENGERESPONSE packet is sent in response to a DPSP_MSG_CHALLENGE
 (section 2.2.17) message.
@@ -3366,7 +3240,7 @@ SecurityToken field.
 
 SecurityToken (variable): Opaque security token whose size is specified by the DataSize field.
 
-2.2.19 DPSP_MSG_CHAT
+#### 2.2.19 DPSP_MSG_CHAT
 
 The DPSP_MSG_CHAT packet is used to exchange text between players.
 
@@ -3377,7 +3251,8 @@ Release: April 23, 2024
 
 37 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3447,7 +3322,7 @@ ChatMessage (variable): Null-terminated Unicode string that contains the content
 
 message.
 
-2.2.20 DPSP_MSG_CREATEGROUP
+#### 2.2.20 DPSP_MSG_CREATEGROUP
 
 The DPSP_MSG_CREATEGROUP packet is sent to indicate that a new group has been created.
 
@@ -3458,7 +3333,8 @@ Release: April 23, 2024
 
 38 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3511,7 +3387,7 @@ GroupInfo (variable): MUST contain a DPLAYI_PACKEDPLAYER (section 2.2.2) structu
 
 contains information about the group to be created.
 
-2.2.21 DPSP_MSG_CREATEPLAYER
+#### 2.2.21 DPSP_MSG_CREATEPLAYER
 
 The DPSP_MSG_CREATEPLAYER packet is sent to indicate that a new player has been created.
 
@@ -3539,7 +3415,8 @@ Release: April 23, 2024
 
 39 / 103
 
-IDTo
+
+IDTo
 
 PlayerID
 
@@ -3585,7 +3462,7 @@ Reserved1 (2 bytes): SHOULD be set to zero when sent and MUST be ignored on rece
 
 Reserved2 (4 bytes): SHOULD be set to zero when sent and MUST be ignored on receipt.
 
-2.2.22 DPSP_MSG_CREATEPLAYERVERIFY
+#### 2.2.22 DPSP_MSG_CREATEPLAYERVERIFY
 
 A DPSP_MSG_CREATEPLAYERVERIFY message is sent as verification that a player was previously
 created. When all of the following conditions are met, one or more
@@ -3613,7 +3490,8 @@ Release: April 23, 2024
 
 40 / 103
 
-
+
+
 
 
 
@@ -3694,7 +3572,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.23 DPSP_MSG_DELETEGROUP
+
+#### 2.2.23 DPSP_MSG_DELETEGROUP
 
 The DPSP_MSG_DELETEGROUP packet is sent when a group is deleted.
 
@@ -3741,7 +3620,7 @@ PasswordOffset (4 bytes): Ignored. SHOULD be set to zero when sent and MUST be i
 
 receipt.
 
-2.2.24 DPSP_MSG_DELETEGROUPFROMGROUP
+#### 2.2.24 DPSP_MSG_DELETEGROUPFROMGROUP
 
 The DPSP_MSG_DELETEGROUPFROMGROUP packet is sent to delete a group from a group.
 
@@ -3773,7 +3652,8 @@ Release: April 23, 2024
 
 42 / 103
 
-ParentGroupID
+
+ParentGroupID
 
 CreateOffset
 
@@ -3797,7 +3677,7 @@ PasswordOffset (4 bytes): Ignored. SHOULD be set to zero when sent and MUST be i
 
 receipt.
 
-2.2.25 DPSP_MSG_DELETEPLAYER
+#### 2.2.25 DPSP_MSG_DELETEPLAYER
 
 The DPSP_MSG_DELETEPLAYER packet is sent to indicate that a player has been deleted.
 
@@ -3847,11 +3727,12 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PasswordOffset (4 bytes): Ignored. SHOULD be set to zero when sent and MUST be ignored on
+
+PasswordOffset (4 bytes): Ignored. SHOULD be set to zero when sent and MUST be ignored on
 
 receipt.
 
-2.2.26 DPSP_MSG_DELETEPLAYERFROMGROUP
+#### 2.2.26 DPSP_MSG_DELETEPLAYERFROMGROUP
 
 The DPSP_MSG_DELETEPLAYERFROMGROUP packet is sent to indicate that a player has been
 deleted from a group.
@@ -3899,7 +3780,7 @@ PasswordOffset (4 bytes): Ignored. SHOULD be set to zero when sent and MUST be i
 
 receipt.
 
-2.2.27 DPSP_MSG_ENUMPLAYER
+#### 2.2.27 DPSP_MSG_ENUMPLAYER
 
 The DPSP_MSG_ENUMPLAYER packet is sent to the server to request an enumeration of
 DirectPlay 4 players.
@@ -3928,11 +3809,12 @@ Release: April 23, 2024
 
 44 / 103
 
-DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
+
+DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
 this field MUST be set to 4 (0x04).
 
-2.2.28 DPSP_MSG_ENUMPLAYERSREPLY
+#### 2.2.28 DPSP_MSG_ENUMPLAYERSREPLY
 
 The DPSP_MSG_ENUMPLAYERSREPLY packet can be sent in response to a
 DPSP_MSG_ENUMPLAYER (section 2.2.27) message or a
@@ -3997,7 +3879,8 @@ Release: April 23, 2024
 
 45 / 103
 
-DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
+
+DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
 this field MUST be set to 3 (0x03).
 
@@ -4038,7 +3921,7 @@ structures. Each entry can hold either group information or player information. 
 is used for groups and players. Player entries are followed by group entries. The number of entries
 in the array can be found by adding the PlayerCount and GroupCount fields.
 
-2.2.29 DPSP_MSG_ENUMSESSIONS
+#### 2.2.29 DPSP_MSG_ENUMSESSIONS
 
 The DPSP_MSG_ENUMSESSIONS packet is sent by the client to request an enumeration of
 DirectPlay 4 game sessions.
@@ -4075,7 +3958,8 @@ Release: April 23, 2024
 
 46 / 103
 
-Flags
+
+Flags
 
 Password (variable)
 
@@ -4128,7 +4012,7 @@ Password (variable): MUST be set to a null-terminated Unicode string that contai
 
 This value is present only if the PasswordOffset field is nonzero.
 
-2.2.30 DPSP_MSG_ENUMSESSIONSREPLY
+#### 2.2.30 DPSP_MSG_ENUMSESSIONSREPLY
 
 The DPSP_MSG_ENUMSESSIONSREPLY packet is sent by the server in response to a
 DPSP_MSG_ENUMSESSIONS (section 2.2.29) request. One packet is sent for each active game
@@ -4162,7 +4046,8 @@ Release: April 23, 2024
 
 47 / 103
 
-NameOffset
+
+NameOffset
 
 SessionName (variable)
 
@@ -4184,7 +4069,7 @@ SessionName (variable): MUST be set to the null-terminated Unicode string that c
 
 game session name. This value is present only if the NameOffset field is nonzero.
 
-2.2.31 DPSP_MSG_GROUPDATACHANGED
+#### 2.2.31 DPSP_MSG_GROUPDATACHANGED
 
 The DPSP_MSG_GROUPDATACHANGED packet is sent to inform all participants that group data
 has changed.
@@ -4235,13 +4120,14 @@ Release: April 23, 2024
 
 48 / 103
 
-dwDataOffset (4 bytes): MUST be set to the offset, in octets, of GroupData from the beginning of
+
+dwDataOffset (4 bytes): MUST be set to the offset, in octets, of GroupData from the beginning of
 
 the message.
 
 GroupData (variable): Byte array that contains application data associated with the groups.
 
-2.2.32 DPSP_MSG_GROUPNAMECHANGED
+#### 2.2.32 DPSP_MSG_GROUPNAMECHANGED
 
 The DPSP_MSG_GROUPNAMECHANGED packet is sent to inform all participants that a group name
 has changed.
@@ -4310,7 +4196,8 @@ Release: April 23, 2024
 
 49 / 103
 
-2.2.33 DPSP_MSG_IAMNAMESERVER
+
+#### 2.2.33 DPSP_MSG_IAMNAMESERVER
 
 The DPSP_MSG_IAMNAMESERVER packet is sent to inform participants of the identity of the name
 server (host).
@@ -4395,7 +4282,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If provided, the Windows Winsock DirectPlay Service Provider stores the following data in the
+
+If provided, the Windows Winsock DirectPlay Service Provider stores the following data in the
 SPData field.
 
 0  1  2  3  4  5  6  7  8  9
@@ -4430,7 +4318,7 @@ Datagram Socket Address (16 bytes): A SOCKADDR_IN structure that contains the ad
 information to be used when contacting this player over UDP. The Address field of this
 SOCKADDR_IN must be set to 0.0.0.0.
 
-2.2.34 DPSP_MSG_KEYEXCHANGE
+#### 2.2.34 DPSP_MSG_KEYEXCHANGE
 
 The DPSP_MSG_KEYEXCHANGE packet is used to send the client's public key to the server.
 
@@ -4472,7 +4360,8 @@ Release: April 23, 2024
 
 51 / 103
 
-...
+
+...
 
 DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
@@ -4494,7 +4383,7 @@ SessionKey (variable): Array of bytes that contains the key used to encrypt data
 
 PublicKey (variable): Array of bytes that contains the client's public key.
 
-2.2.35 DPSP_MSG_KEYEXCHANGEREPLY
+#### 2.2.35 DPSP_MSG_KEYEXCHANGEREPLY
 
 The DPSP_MSG_KEYEXCHANGEREPLY packet is sent in response to a
 DPSP_MSG_KEYEXCHANGE (section 2.2.34) message that contains the server's public key.
@@ -4549,13 +4438,14 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PublicKeyOffset (4 bytes): Not used. SHOULD be set to zero when sent and MUST be ignored on
+
+PublicKeyOffset (4 bytes): Not used. SHOULD be set to zero when sent and MUST be ignored on
 
 receipt.
 
 SessionKey (variable): Array of bytes that contains the key used to encrypt data.
 
-2.2.36 DPSP_MSG_LOGONDENIED
+#### 2.2.36 DPSP_MSG_LOGONDENIED
 
 The DPSP_MSG_LOGONDENIED packet is sent to indicate that a logon failed.
 
@@ -4580,7 +4470,7 @@ DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value me
 
 this field MUST be set to 30 (0x1E).
 
-2.2.37 DPSP_MSG_MULTICASTDELIVERY
+#### 2.2.37 DPSP_MSG_MULTICASTDELIVERY
 
 The DPSP_MSG_MULTICASTDELIVERY packet is used to perform a message broadcast.
 
@@ -4628,12 +4518,13 @@ Release: April 23, 2024
 
 53 / 103
 
-BroadcastMessage (variable): An array of octets that contains the message to broadcast. This field
+
+BroadcastMessage (variable): An array of octets that contains the message to broadcast. This field
 MUST contain a complete DirectPlay 4 Protocol message. However, the message MUST begin
 with the Signature field of the DPSP_MSG_HEADER (section 2.2.6) rather than the entire
 DPSP_MSG_HEADER structure.
 
-2.2.38 DPSP_MSG_NEGOTIATE
+#### 2.2.38 DPSP_MSG_NEGOTIATE
 
 The DPSP_MSG_NEGOTIATE packet is sent to indicate to the server that the client is seeking to
 initiate a secure connection.
@@ -4679,7 +4570,7 @@ SecurityToken field.
 
 SecurityToken (variable): Opaque security token whose size is specified by the DataSize field.
 
-2.2.39 DPSP_MSG_PACKET
+#### 2.2.39 DPSP_MSG_PACKET
 
 The DPSP_MSG_PACKET packet contains player-to-player data that is part of a larger message that
 does not fit within the maximum transmission unit (MTU) size of the transport.
@@ -4708,7 +4599,8 @@ Release: April 23, 2024
 
 54 / 103
 
-GuidMessage (16 bytes)
+
+GuidMessage (16 bytes)
 
 ...
 
@@ -4764,7 +4656,7 @@ fragment of a large message that spans multiple packets because it exceeded the 
 network. When all fragments have been reassembled, the large message must contain a complete
 DirectPlay 4 packet.
 
-2.2.40 DPSP_MSG_PACKET2_ACK
+#### 2.2.40 DPSP_MSG_PACKET2_ACK
 
 The DPSP_MSG_PACKET2_ACK packet is sent in response to a DPSP_MSG_PACKET2_DATA
 (section 2.2.41) message.
@@ -4776,7 +4668,8 @@ Release: April 23, 2024
 
 55 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4809,7 +4702,7 @@ GuidMessage (16 bytes): Identifier of the message to which this packet belongs.
 
 PacketID (4 bytes): Acknowledgment (ACK) packet identifier.
 
-2.2.41 DPSP_MSG_PACKET2_DATA
+#### 2.2.41 DPSP_MSG_PACKET2_DATA
 
 The DPSP_MSG_PACKET2_DATA packet contains player-to-player data that is part of a larger
 message that does not fit within the maximum transmission unit (MTU) size of the transport. It
@@ -4855,7 +4748,8 @@ Release: April 23, 2024
 
 56 / 103
 
-...
+
+...
 
 PacketIndex
 
@@ -4903,7 +4797,7 @@ data.
 
 PacketData (variable): Array of DataSize bytes that contains the packet data.
 
-2.2.42 DPSP_MSG_PING
+#### 2.2.42 DPSP_MSG_PING
 
 The DPSP_MSG_PING packet is used to keep the UDP session active and to optimize the protocol.
 
@@ -4931,7 +4825,8 @@ Release: April 23, 2024
 
 57 / 103
 
-TickCount
+
+TickCount
 
 DPSP_MSG_HEADER (variable): Message header for this packet. The Command Value member of
 this field MUST be set to 22 (0x16). If the DirectPlay 4 Reliable Protocol is used, the header does
@@ -4943,7 +4838,7 @@ TickCount (4 bytes): MUST be set to the number of milliseconds that have elapsed
 
 computer system was started.
 
-2.2.43 DPSP_MSG_PINGREPLY
+#### 2.2.43 DPSP_MSG_PINGREPLY
 
 The DPSP_MSG_PINGREPLY packet is sent in response to a DPSP_MSG_PING (section 2.2.42)
 message.
@@ -4979,7 +4874,7 @@ TickCount (4 bytes): MUST be set to the value in the DPSP_MSG_PING (section 2.2.
 
 this is the reply.
 
-2.2.44 DPSP_MSG_PLAYERDATACHANGED
+#### 2.2.44 DPSP_MSG_PLAYERDATACHANGED
 
 The DPSP_MSG_PLAYERDATACHANGED packet is sent to inform all participants that the data of a
 player has changed.
@@ -5010,7 +4905,8 @@ Release: April 23, 2024
 
 58 / 103
 
-PlayerID
+
+PlayerID
 
 DataSize
 
@@ -5038,7 +4934,7 @@ PlayerData (variable): Game data that contains DataSize octets of changed data a
 
 the player.
 
-2.2.45 DPSP_MSG_PLAYERMESSAGE
+#### 2.2.45 DPSP_MSG_PLAYERMESSAGE
 
 The DPSP_MSG_PLAYERMESSAGE is used to send a player-to-player message.
 
@@ -5082,7 +4978,8 @@ Release: April 23, 2024
 
 59 / 103
 
-...
+
+...
 
 DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
@@ -5129,7 +5026,7 @@ between DirectPlay applications. They are distinguished from other DirectPlay me
 format of their header and the lack of the presence of the "play" signature in the header. The
 PlayerMessage portion of the message contains an application-specific payload.
 
-2.2.46 DPSP_MSG_PLAYERNAMECHANGED
+#### 2.2.46 DPSP_MSG_PLAYERNAMECHANGED
 
 The DPSP_MSG_PLAYERNAMECHANGED packet is sent to inform all participants that the name of a
 player has changed.
@@ -5164,7 +5061,8 @@ Release: April 23, 2024
 
 60 / 103
 
-LongOffset
+
+LongOffset
 
 ShortName (variable)
 
@@ -5194,7 +5092,7 @@ ShortName (variable): Null-terminated Unicode string that contains the new short
 
 LongName (variable): Null-terminated Unicode string that contains the new long name.
 
-2.2.47 DPSP_MSG_PLAYERWRAPPER
+#### 2.2.47 DPSP_MSG_PLAYERWRAPPER
 
 The DPSP_MSG_PLAYERWRAPPER packet provides a wrapper message for a
 DPSP_MSG_PLAYERMESSAGE (section 2.2.45) packet.
@@ -5226,7 +5124,7 @@ this field MUST be set to 25 (0x19).
 
 PlayerMessage (variable): Enclosed player message.
 
-2.2.48 DPSP_MSG_REQUESTGROUPID
+#### 2.2.48 DPSP_MSG_REQUESTGROUPID
 
 The DPSP_MSG_REQUESTGROUPID packet is sent to the game host to request a new group
 identifier.
@@ -5238,7 +5136,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5294,7 +5193,7 @@ X (28 bits): All bits with this label SHOULD be set to zero when sent and MUST b
 
 receipt.<10>
 
-2.2.49 DPSP_MSG_REQUESTPLAYERID
+#### 2.2.49 DPSP_MSG_REQUESTPLAYERID
 
 The DPSP_MSG_REQUESTPLAYERID packet is sent to the game host to request a new player ID.
 
@@ -5353,7 +5252,8 @@ Release: April 23, 2024
 
 62 / 103
 
-SP (1 bit): The player is the system player.
+
+SP (1 bit): The player is the system player.
 
 X (2 bits): All bits with this label SHOULD be set to zero when sent and MUST be ignored on
 
@@ -5367,7 +5267,7 @@ Y (28 bits): All bits with this label SHOULD be set to zero when sent and MUST b
 
 receipt.
 
-2.2.50 DPSP_MSG_REQUESTPLAYERREPLY
+#### 2.2.50 DPSP_MSG_REQUESTPLAYERREPLY
 
 The DPSP_MSG_REQUESTPLAYERREPLY packet is sent in response to a
 DPSP_MSG_REQUESTPLAYERID (section 2.2.49) or DPSP_MSG_REQUESTGROUPID (section
@@ -5425,7 +5325,8 @@ Release: April 23, 2024
 
 63 / 103
 
-SecDesc (24 bytes):  MUST be set to a DPSECURITYDESC (section 2.2.4) structure that contains
+
+SecDesc (24 bytes):  MUST be set to a DPSECURITYDESC (section 2.2.4) structure that contains
 
 the security properties of the DirectPlay game session instance.
 
@@ -5450,7 +5351,7 @@ CAPIProvider (variable): Null-terminated Unicode string that contains the Crypto
 
 name. For a list of provider names, see Cryptographic Provider Names.
 
-2.2.51 DPSP_MSG_SESSIONDESCCHANGED
+#### 2.2.51 DPSP_MSG_SESSIONDESCCHANGED
 
 The DPSP_MSG_SESSIONDESCCHANGED packet is sent to notify players that a game session
 description changed.
@@ -5497,7 +5398,8 @@ Release: April 23, 2024
 
 64 / 103
 
-DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
+
+DPSP_MSG_HEADER (28 bytes): Message header for this packet. The Command Value member of
 
 this field MUST be set to 26 (0x1A).
 
@@ -5522,7 +5424,7 @@ Password (variable): If present, MUST be set to a null-terminated Unicode string
 
 game session password.
 
-2.2.52 DPSP_MSG_SIGNED
+#### 2.2.52 DPSP_MSG_SIGNED
 
 The DPSP_MSG_SIGNED packet is used to send a signed message along with its signature.
 
@@ -5574,7 +5476,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DataOffset (4 bytes): MUST be set to the offset, in octets, of the DirectPlay message.
+
+DataOffset (4 bytes): MUST be set to the offset, in octets, of the DirectPlay message.
 
 DataSize (4 bytes): MUST be set to the size of the Message field, in octets.
 
@@ -5636,7 +5539,7 @@ are not signed or encrypted.
 
 Signature (variable): Array of bytes that contains the message signature.
 
-2.2.53 DPSP_MSG_SUPERENUMPLAYERSREPLY
+#### 2.2.53 DPSP_MSG_SUPERENUMPLAYERSREPLY
 
 The DPSP_MSG_SUPERENUMPLAYERSREPLY packet can be sent in response to a
 DPSP_MSG_ENUMPLAYER (section 2.2.27) message or a
@@ -5667,7 +5570,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -5730,7 +5634,8 @@ Release: April 23, 2024
 
 67 / 103
 
-PasswordOffset (4 bytes): MUST be set to the offset, in octets, of the Password field from the
+
+PasswordOffset (4 bytes): MUST be set to the offset, in octets, of the Password field from the
 
 beginning of the message. A value of zero means there is no password.
 
@@ -5752,7 +5657,7 @@ structures. The number of elements in the array is determined by finding the sum
 PlayerCount, GroupCount, and ShortcutCount fields. The order of items in the array is fixed,
 and is as follows: players, groups, and shortcuts.
 
-2.2.54 DPSP_MSG_VOICE
+#### 2.2.54 DPSP_MSG_VOICE
 
 The DPSP_MSG_VOICE packet is used to send voice message data.
 
@@ -5793,7 +5698,7 @@ voiceData (variable): Variable-sized voice data payload to be delivered to the v
 
 DPLVP].
 
-2.2.55 DPSP_MSG_YOUAREDEAD
+#### 2.2.55 DPSP_MSG_YOUAREDEAD
 
 The DPSP_MSG_YOUAREDEAD packet is sent in response to a DPSP_MSG_PING (section 2.2.42)
 message when the sender of the ping is not recognized as a player who belongs to the active game
@@ -5806,7 +5711,8 @@ Release: April 23, 2024
 
 68 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5834,16 +5740,17 @@ Release: April 23, 2024
 
 69 / 103
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 All computers that implement the DirectPlay 4 protocol are considered peers of each other;
 however, the game host has special responsibilities beyond those of other game clients.
 
 Implementations MUST ignore malformed packets and packets with unknown message types.
 
-3.1  DirectPlay Client Details
+### 3.1 DirectPlay Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5905,7 +5812,8 @@ Release: April 23, 2024
 
 70 / 103
 
-Session.Password: The password for the game session.
+
+Session.Password: The password for the game session.
 
 Session.NewPlayersDisabled: If true, the game host does not accept new players to the game
 
@@ -5981,7 +5889,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DPSP_MSG_SESSIONDESCCHANGED messages (section 2.2.51). This field corresponds to the
+
+DPSP_MSG_SESSIONDESCCHANGED messages (section 2.2.51). This field corresponds to the
 NS flag in the DPSESSIONDESC2 structure (section 2.2.5).
 
 Session.SessionKey: Encryption key used to encrypt messages when the game requests that an
@@ -6039,9 +5948,9 @@ game host.
 
 Client.ClientPublicKey: Public key transmitted to game host.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Session Enumeration Timer
+##### 3.1.2.1 Session Enumeration Timer
 
 The Session Enumeration Timer is set by a DirectPlay client when it sends a
 DPSP_MSG_ENUMSESSIONS (section 2.2.29) request. The timeout value for this timer is
@@ -6054,19 +5963,20 @@ Release: April 23, 2024
 
 72 / 103
 
-3.1.2.2  Reliable API Timer
+
+##### 3.1.2.2 Reliable API Timer
 
 The Reliable API Timer is set by a DirectPlay client when it sends a request that requires a response.
 The timeout value for this timer is 5 seconds.
 
-3.1.2.3  Logon Timer
+##### 3.1.2.3 Logon Timer
 
 The Logon Timer is set by a DirectPlay client when it is exchanging the DPSP_MSG_NEGOTIATE
 (section 2.2.38), DPSP_MSG_CHALLENGE (section 2.2.17), and
 DPSP_MSG_CHALLENGERESPONSE (section 2.2.18) messages. The timeout value for this timer is
 25 seconds.
 
-3.1.2.4  Packetize Timer
+##### 3.1.2.4 Packetize Timer
 
 The Packetize Timer is set by a DirectPlay client when it is sending DPSP_MSG_PACKET2_DATA
 (section 2.2.41) messages. The initial timeout value for this timer is 900 milliseconds. This value
@@ -6074,7 +5984,7 @@ SHOULD continue to be used until a packet is acknowledged. At that time, 1.5 tim
 latency of the packet and acknowledgment SHOULD be used instead. If the measured latency is less
 than 25 milliseconds, the timer SHOULD be set to 1.5 times 25, or 37.5 milliseconds.
 
-3.1.2.5  Ping Timer
+##### 3.1.2.5 Ping Timer
 
 The Ping Timer is set by a DirectPlay client when either the joined game session has the
 Session.KeepAlive flag set, or the game session has the Session.MigrateHost flag set and the
@@ -6085,11 +5995,11 @@ Ping Timer expiration). If not waiting for the DPSP_MSG_IAMNAMESERVER message,
 DPSP_MSG_PING messages are sent only to the host; otherwise they are sent to all connected
 computing systems. The period for this timer is 35 seconds.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Most client actions in the DirectPlay 4 Protocol are triggered by game actions. In the following
 sections, each of the game actions supported are enumerated and the protocol actions associated with
@@ -6098,7 +6008,7 @@ those actions are described.
 In addition to those actions explicitly enumerated in the following sections, a game can choose to
 query information contained in the abstract data model from the DirectPlay client on the machine.
 
-3.1.4.1  Enumerate Sessions
+##### 3.1.4.1 Enumerate Sessions
 
 When a higher-level entity chooses to enumerate the established game sessions, the DirectPlay
 client MUST format a DPSP_MSG_ENUMSESSIONS message (see section 2.2.29) with the
@@ -6117,10 +6027,11 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-return that collected information to the higher level. If no DPSP_MSG_ENUMSESSIONSREPLY
+
+return that collected information to the higher level. If no DPSP_MSG_ENUMSESSIONSREPLY
 messages are received, it MUST return that information to the higher level.
 
-3.1.4.2  Join Session
+##### 3.1.4.2 Join Session
 
 When a higher-level entity chooses to join an existing session (determined from received
 DPSP_MSG_ENUMSESSIONSREPLY (section 2.2.30) packets), the DirectPlay client MUST create a
@@ -6131,7 +6042,7 @@ Reliable API timer and wait for a DPSP_MSG_REQUESTPLAYERREPLY response (section 
 from the host server. If no reply is received before the Reliable API timer fires, it MUST communicate
 this information to the higher-level entity.
 
-3.1.4.3  Enumerate Players or Groups
+##### 3.1.4.3 Enumerate Players or Groups
 
 If the DirectPlay client is joined to a game session, then the DirectPlay client SHOULD return the
 list of players from the Player List contained in the abstract data model. If the DirectPlay client is
@@ -6144,7 +6055,7 @@ Once the DirectPlay client receives the DPSP_MSG_SUPERENUMPLAYERSREPLY message o
 DPSP_MSG_ENUMPLAYERSREPLY message, it MUST return that information to the higher-level
 entity.
 
-3.1.4.4  Create Player
+##### 3.1.4.4 Create Player
 
 When a higher-level entity indicates that the DirectPlay client SHOULD create a player and the
 DirectPlay client has joined a game session, the DirectPlay client MUST create a new player in the
@@ -6155,14 +6066,14 @@ Reliable API timer and wait for a DPSP_MSG_REQUESTPLAYERREPLY response (section 
 from the host server. If no reply is received before the Reliable API timer fires, it MUST communicate
 this information to the higher-level entity.
 
-3.1.4.5  Delete Player
+##### 3.1.4.5 Delete Player
 
 When a higher-level entity indicates that the DirectPlay client SHOULD remove a player and the
 DirectPlay client has joined a game session, the DirectPlay client MUST format and transmit a
 DPSP_MSG_DELETEPLAYER (section 2.2.25) packet to each of the computers that are currently
 joined to the game session. There is no response expected to this message.
 
-3.1.4.6  Create Group
+##### 3.1.4.6 Create Group
 
 When a higher-level entity indicates that the DirectPlay client SHOULD create a group and the
 DirectPlay client has joined a game session, the DirectPlay client MUST format a
@@ -6179,7 +6090,8 @@ Release: April 23, 2024
 
 74 / 103
 
-3.1.4.7  Remove Group
+
+##### 3.1.4.7 Remove Group
 
 When a higher-level entity indicates that the DirectPlay client SHOULD remove a group and the
 DirectPlay client has joined a game session, the DirectPlay client MUST format a
@@ -6190,7 +6102,7 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_DELETEGROUP message to each of the computers that are currently
 joined to the game session. There is no response expected to this message.
 
-3.1.4.8  Set Group Data
+##### 3.1.4.8 Set Group Data
 
 When a higher-level entity indicates that the DirectPlay client SHOULD change the data associated
 with a group and the DirectPlay client has joined a game session, the DirectPlay client MUST format
@@ -6201,7 +6113,7 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_GROUPDATACHANGED message to each of the computers that are
 currently joined to the game session. There is no response expected to this message.
 
-3.1.4.9  Set Group Name
+##### 3.1.4.9 Set Group Name
 
 When a higher-level entity indicates that the DirectPlay client SHOULD change the name of a group
 and the DirectPlay client has joined a game session, the DirectPlay client MUST format a
@@ -6212,9 +6124,9 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_GROUPNAMECHANGED message to each of the computers that are
 currently joined to the game session. There is no response expected to this message.
 
-3.1.4.10
+##### 3.1.4.10 Set Player Data
 
-Set Player Data
+
 
 When a higher-level entity indicates that the DirectPlay client SHOULD change the data associated
 with a player and the DirectPlay client has joined a game session, the DirectPlay client MUST format
@@ -6225,9 +6137,9 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_PLAYERDATACHANGED message to each of the computers that are
 currently joined to the game session. There is no response expected to this message.
 
-3.1.4.11
+##### 3.1.4.11 Set Player Name
 
-Set Player Name
+
 
 When a higher-level entity indicates that the DirectPlay client SHOULD change the name associated
 with a player and the DirectPlay client has joined a game session, the DirectPlay client MUST format
@@ -6245,9 +6157,10 @@ Release: April 23, 2024
 
 75 / 103
 
-3.1.4.12
 
-Add Player to Group
+##### 3.1.4.12 Add Player to Group
+
+
 
 When a higher-level entity indicates that the DirectPlay client SHOULD add a player to a group and
 the DirectPlay client has joined a game session, the DirectPlay client MUST format a
@@ -6259,9 +6172,9 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_ADDPLAYERTOGROUP message to each of the computers currently joined
 to the game session. There is no response expected to this message.
 
-3.1.4.13
+##### 3.1.4.13 Remove Player from Group
 
-Remove Player from Group
+
 
 When a higher-level entity indicates that the DirectPlay client SHOULD remove a player previously
 added to a group and the DirectPlay client has joined a game session, the DirectPlay client MUST
@@ -6273,9 +6186,9 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_DELETEPLAYERFROMGROUP message to each of the computers currently
 joined to the game session. There is no response expected to this message.
 
-3.1.4.14
+##### 3.1.4.14 Add Group to Group
 
-Add Group to Group
+
 
 When a higher-level entity indicates that the DirectPlay client SHOULD add a group to another
 group and the DirectPlay client has joined a game session, the DirectPlay client MUST format a
@@ -6288,9 +6201,9 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_ADDSHORTCUTTOGROUP message to each of the computers that are
 currently joined to the game session. There is no response expected to this message.
 
-3.1.4.15
+##### 3.1.4.15 Remove Group from Group
 
-Remove Group from Group
+
 
 When a higher-level entity indicates that the DirectPlay client SHOULD remove a group from
 another group and the DirectPlay client has joined a game session, the DirectPlay client MUST format
@@ -6303,9 +6216,9 @@ message to the game host. If the Session.MulticastServer flag is not set, the Di
 transmit the DPSP_MSG_DELETEGROUPFROMGROUP message to each of the computers currently
 joined to the game session. There is no response expected to this message.
 
-3.1.4.16
+##### 3.1.4.16 Send Application Data
 
-Send Application Data
+
 
 There are three options available to the higher-level entity (game) when requesting that the
 DirectPlay client send a message to another client. The game can request guaranteed delivery of the
@@ -6319,7 +6232,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When a higher-level entity indicates that the DirectPlay client SHOULD send a message to another
+
+When a higher-level entity indicates that the DirectPlay client SHOULD send a message to another
 player or group, if the DirectPlay client has not joined a game session, then the DirectPlay client
 MUST return an error to the application.
 
@@ -6349,9 +6263,9 @@ management. It is used to casually restrict access to a particular instance of a
 If the game session has the DPSESSION_DIRECTPLAYPROTOCOL flag set, then the DirectPlay
 client MUST transmit the message using the DirectPlay4 Reliable Protocol [MC-DPL4R].
 
-3.1.4.16.1
+###### 3.1.4.16.1 Sending Encrypted/Signed Data
 
-Sending Encrypted/Signed Data
+
 
 When a higher-level entity requires to send encrypted or signed data, then the DirectPlay client
 MUST encrypt or sign the data using the encryption algorithm specified by Game.CAPIProviderType
@@ -6360,9 +6274,9 @@ DPSP_MSG_SIGNED packet (section 2.2.52). If the higher-level entity requested th
 be signed, the DirectPlay client MUST append the encryption signature to the DPSP_MSG_SIGNED
 packet and transmit the resulting packet to the designated recipient.
 
-3.1.4.16.2
+###### 3.1.4.16.2 Sending Unencrypted/Unsigned Data
 
-Sending Unencrypted/Unsigned Data
+
 
 When a higher-level entity requires to send unencrypted/unsigned data, then the DirectPlay client
 MUST check the outgoing message.
@@ -6378,9 +6292,9 @@ via a streaming protocol.
 In either case, when the higher-level entity does not specify guaranteed delivery for the data, the
 DirectPlay client MUST send the data to the socket address associated with the target player.<17>
 
-3.1.4.17
+##### 3.1.4.17 Send Chat
 
-Send Chat
+
 
 When a higher-level entity (game) requests that the DirectPlay client send a text chat message to
 another client or a group, the sending client MUST construct a DPSP_MSG_CHAT (section 2.2.19)
@@ -6392,16 +6306,17 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message. If the target is a group, it MUST send a copy of the DPSP_MSG_CHAT message to each
+
+message. If the target is a group, it MUST send a copy of the DPSP_MSG_CHAT message to each
 player in the group. Otherwise, the client MUST send the message only to the desired player.
 
 If the game session specified by the game has the Session.MulticastServer flag set and the higher-
 layer entity requires to send a chat message to a group and the local client is not the DirectPlay host,
 then the client MUST route the message through the host as described in section 3.1.4.16.
 
-3.1.4.18
+##### 3.1.4.18 Large Messages
 
-Large Messages
+
 
 When a higher-level entity (game) requests that the DirectPlay client send a message that is larger
 than the maximum transmission unit (MTU) size supported by the transport, the sending client
@@ -6414,7 +6329,7 @@ DPSP_MSG_PACKET2_DATA message and MUST start the Packetize Timer to retry the fr
 necessary. Future reliable fragments MUST NOT be sent until this fragment is acknowledged as
 specified in sections 3.1.5.28 and 3.1.5.29.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 When a DirectPlay client receives a packet on the DirectPlay port, it MUST inspect the four bytes of
 data at offset 8 into the packet. If the value at that location is not the sequence: 0x70, 0x6c, 0x61,
@@ -6430,7 +6345,7 @@ Note  The DirectPlay 4 Protocol does not perform validation on the sender of a m
 implementation MAY choose to validate the sender of a message, but it is not a requirement for
 compatibility with DirectPlay. For more information, see section 5.1.
 
-3.1.5.1  DPSP_MSG_REQUESTPLAYERREPLY
+##### 3.1.5.1 DPSP_MSG_REQUESTPLAYERREPLY
 
 When a DirectPlay 4 client receives a DPSP_MSG_REQUESTPLAYERREPLY message (section
 2.2.50), if the DirectPlay client does not have a DPSP_MSG_REQUESTPLAYERID (section 2.2.49)
@@ -6460,7 +6375,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-start the Login Timer and wait for the game host to reply with a DPSP_MSG_CHALLENGE (section
+
+start the Login Timer and wait for the game host to reply with a DPSP_MSG_CHALLENGE (section
 2.2.17) message. If the Login timer expires before a DPSP_MSG_CHALLENGE (section 2.2.17)
 response is received, the DirectPlay client MUST indicate that the logon operation failed to the higher
 level.
@@ -6474,7 +6390,7 @@ If the Session.MulticastServer flag is not set, the DirectPlay client MUST trans
 DPSP_MSG_CREATEPLAYER message to each of the computers currently joined to the game
 session. There is no response expected to this message.
 
-3.1.5.2  DPSP_MSG_CHALLENGE
+##### 3.1.5.2 DPSP_MSG_CHALLENGE
 
 When a DirectPlay 4 client receives a DPSP_MSG_CHALLENGE (section 2.2.17), it MUST ignore the
 message if it is not in the process of joining a game session. If the client is in the process of joining a
@@ -6482,7 +6398,7 @@ game session, it MUST stop the logon timer and it MUST format an NTLM RESPONSE p
 specified in [MS-NLMP]. It then MUST format and send a DPSP_MSG_CHALLENGERESPONSE
 (section 2.2.18) message to the game host. It MUST then start the logon timer.
 
-3.1.5.3  DPSP_MSG_ACCESSGRANTED
+##### 3.1.5.3 DPSP_MSG_ACCESSGRANTED
 
 When a DirectPlay 4 client receives a DPSP_MSG_ACCESSGRANTED (section 2.2.7) message, the
 DirectPlay 4 client MUST ignore the message if it is not in the process of joining a game session. If
@@ -6497,21 +6413,21 @@ with the PublicKey field set to the public key received in the DPSP_MSG_ACCESSGR
 the SessionKey field set to the game session's public key, and it MUST then transmit it to the game
 host. It MUST then start the logon timer.
 
-3.1.5.4  DPSP_MSG_AUTHERROR
+##### 3.1.5.4 DPSP_MSG_AUTHERROR
 
 When a DirectPlay 4 client receives a DPSP_MSG_AUTHERROR (section 2.2.16) message, the
 DirectPlay 4 client MUST ignore the message if it is not in the process of joining a game session. If
 the DirectPlay 4 client is in the process of joining a game session, it MUST fail the game session join
 operation by returning the Error field in the DPSP_MSG_AUTHERROR to the higher-level entity.
 
-3.1.5.5  DPSP_MSG_LOGONDENIED
+##### 3.1.5.5 DPSP_MSG_LOGONDENIED
 
 When a DirectPlay 4 client receives a DPSP_MSG_LOGONDENIED (section 2.2.36) message, the
 DirectPlay 4 client MUST ignore the message if it is not in the process of joining a game session. If
 the DirectPlay 4 client is in the process of joining a game session, it MUST fail the game session join
 operation by returning an access denied error to the higher-level entity.<19>
 
-3.1.5.6  DPSP_MSG_KEYEXCHANGEREPLY
+##### 3.1.5.6 DPSP_MSG_KEYEXCHANGEREPLY
 
 When a DirectPlay 4 client receives a DPSP_MSG_KEYEXCHANGEREPLY message (section
 2.2.35), the DirectPlay 4 client MUST remember the SessionKey contained in the message as
@@ -6524,12 +6440,13 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(section 2.2.11) with the PlayerID field set to the system player ID. The client MUST then start the
+
+(section 2.2.11) with the PlayerID field set to the system player ID. The client MUST then start the
 reliable API timer and wait for a DPSP_MSG_SUPERENUMPLAYERSREPLY message (section
 2.2.53). If no reply is received before the reliable API timer fires, then the client MUST return this
 information to the higher-level entity.
 
-3.1.5.7  DPSP_MSG_SUPERENUMPLAYERSREPLY
+##### 3.1.5.7 DPSP_MSG_SUPERENUMPLAYERSREPLY
 
 When a DirectPlay 4 client receives a DPSP_MSG_SUPERENUMPLAYERSREPLY (section 2.2.53)
 message, if the DirectPlay client is in the process of joining a game session, the DirectPlay client
@@ -6542,14 +6459,14 @@ Enumerate Players or Groups higher-level event (section 3.1.4.3), the DirectPlay
 the information contained in the DPSP_MSG_SUPERENUMPLAYERSREPLY to the higher-level
 entity. Otherwise, the DirectPlay client MUST ignore the message.
 
-3.1.5.8  DPSP_MSG_ADDFORWARDREPLY
+##### 3.1.5.8 DPSP_MSG_ADDFORWARDREPLY
 
 When a DirectPlay 4 client receives a DPSP_MSG_ADDFORWARDREPLY message (section 2.2.10),
 if the DirectPlay client is in the process of joining a game session, it MUST indicate that the join
 failed and return the Error field to the higher-level entity. Otherwise, the DirectPlay client MUST
 ignore this message.
 
-3.1.5.9  DPSP_MSG_SIGNED
+##### 3.1.5.9 DPSP_MSG_SIGNED
 
 When a DirectPlay 4 client receives a DPSP_MSG_SIGNED message (section 2.2.52), it MUST
 verify that the signature of the Message field matches the Signature field.
@@ -6567,18 +6484,18 @@ signature block created by the signature algorithm, as specified in section 3.1.
 Once the Message field has been validated, then the DirectPlay client MUST reinterpret the
 Message field as if it were received from the sender.
 
-3.1.5.10
+##### 3.1.5.10 DPSP_MSG_ADDFORWARD
 
-DPSP_MSG_ADDFORWARD
+
 
 When a DirectPlay client receives a DPSP_MSG_ADDFORWARD message (section 2.2.8), it MUST
 add a new entry in the Player List using the information contained in the message. The DirectPlay
 client MUST then format and transmit a DPSP_MSG_ADDFORWARDACK message (section 2.2.9) to
 the game host. There is no response expected to this message.<20>
 
-3.1.5.11
+##### 3.1.5.11 DPSP_MSG_CREATEGROUP
 
-DPSP_MSG_CREATEGROUP
+
 
 When a DirectPlay client receives a DPSP_MSG_CREATEGROUP (section 2.2.20) message, it
 MUST create a new entry in the Group List using the information contained in the message. The
@@ -6591,17 +6508,18 @@ Release: April 23, 2024
 
 80 / 103
 
-3.1.5.12
 
-DPSP_MSG_CREATEPLAYER
+##### 3.1.5.12 DPSP_MSG_CREATEPLAYER
+
+
 
 When a DirectPlay client receives a DPSP_MSG_CREATEPLAYER (section 2.2.21) message, it MUST
 create a new entry in the Player List using the information contained in the message. The DirectPlay
 client SHOULD inform any higher-level entity of the arrival of this message.
 
-3.1.5.13
+##### 3.1.5.13 DPSP_MSG_CREATEPLAYERVERIFY
 
-DPSP_MSG_CREATEPLAYERVERIFY
+
 
 When a DirectPlay client receives a DPSP_MSG_CREATEPLAYERVERIFY message (section 2.2.22),
 the recipient SHOULD respond as though it had received a DPSP_MSG_CREATEPLAYER
@@ -6611,9 +6529,9 @@ However, in contrast to the usual response to a DPSP_MSG_CREATEPLAYER message, t
 MUST NOT send any DPSP_MSG_CREATEPLAYERVERIFY messages. By not sending any
 DPSP_MSG_CREATEPLAYERVERIFY messages in response, a feedback loop is avoided.
 
-3.1.5.14
+##### 3.1.5.14 DPSP_MSG_DELETEPLAYER
 
-DPSP_MSG_DELETEPLAYER
+
 
 Each DirectPlay client has a system player allocated to it by the computing system. In addition, a
 client can create as many non-system players as it desires, where each player has a unique identity.
@@ -6630,18 +6548,18 @@ locate the specified PlayerID in the Player List using the information contained
 remove the player associated with the PlayerID. The DirectPlay client SHOULD inform any higher-
 level entity of the arrival of this message.
 
-3.1.5.15
+##### 3.1.5.15 DPSP_MSG_DELETEGROUP
 
-DPSP_MSG_DELETEGROUP
+
 
 When a DirectPlay client receives a DPSP_MSG_DELETEGROUP (section 2.2.23) message, it
 MUST look up the specified PlayerID in the Player List using the information contained in the
 message and remove it. The DirectPlay client SHOULD inform any higher-level entity of the arrival of
 this message.
 
-3.1.5.16
+##### 3.1.5.16 DPSP_MSG_GROUPDATACHANGED
 
-DPSP_MSG_GROUPDATACHANGED
+
 
 Only the owner of a group is allowed to change the group's data, and it does so by sending the
 DPSP_MSG_GROUPDATACHANGED (section 2.2.31) message. The owner of the group is the
@@ -6653,9 +6571,9 @@ the specified GroupID in the Group List using the information contained in the m
 the per-game data associated with the group. The DirectPlay client SHOULD inform any higher-level
 entity of the arrival of this message.
 
-3.1.5.17
+##### 3.1.5.17 DPSP_MSG_GROUPNAMECHANGED
 
-DPSP_MSG_GROUPNAMECHANGED
+
 
 When a DirectPlay client receives a DPSP_MSG_GROUPNAMECHANGED (section 2.2.32)
 message, it MUST look up the specified GroupID in the Group List using the information contained in
@@ -6667,39 +6585,40 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the message and update the name associated with the group. The DirectPlay client SHOULD inform
+
+the message and update the name associated with the group. The DirectPlay client SHOULD inform
 any higher-level entity of the arrival of this message.
 
-3.1.5.18
+##### 3.1.5.18 DPSP_MSG_PLAYERNAMECHANGED
 
-DPSP_MSG_PLAYERNAMECHANGED
+
 
 When a DirectPlay client receives a DPSP_MSG_PLAYERNAMECHANGED (section 2.2.46)
 message, it MUST look up the specified PlayerID in the Player List using the information contained
 in the message and update the name associated with the player. The DirectPlay client SHOULD
 inform any higher-level entity of the arrival of this message.
 
-3.1.5.19
+##### 3.1.5.19 DPSP_MSG_PLAYERDATACHANGED
 
-DPSP_MSG_PLAYERDATACHANGED
+
 
 When a DirectPlay client receives a DPSP_MSG_PLAYERDATACHANGED (section 2.2.44)
 message, it MUST look up the specified PlayerID in the Player List using the information contained
 in the message and update the per-game data associated with the player. The DirectPlay client
 SHOULD inform any higher-level entity of the arrival of this message.
 
-3.1.5.20
+##### 3.1.5.20 DPSP_MSG_ADDPLAYERTOGROUP
 
-DPSP_MSG_ADDPLAYERTOGROUP
+
 
 When a DirectPlay client receives a DPSP_MSG_ADDPLAYERTOGROUP (section 2.2.12) message,
 it MUST look up the specified GroupID in the Group List and the specified PlayerID in the Player
 List. It MUST then add the player associated with the PlayerID to the group specified by the
 GroupID. The DirectPlay client SHOULD inform any higher-level entity of the arrival of this message.
 
-3.1.5.21
+##### 3.1.5.21 DPSP_MSG_DELETEPLAYERFROMGROUP
 
-DPSP_MSG_DELETEPLAYERFROMGROUP
+
 
 When a DirectPlay client receives a DPSP_MSG_DELETEPLAYERFROMGROUP (section 2.2.26)
 message, it MUST locate the specified Group.ID in the Group List and the specified Player.ID in the
@@ -6707,16 +6626,16 @@ Player List. It MUST then remove the player associated with the player ID from t
 by the group ID. The DirectPlay client SHOULD inform any higher-level entity of the arrival of this
 message.
 
-3.1.5.22
+##### 3.1.5.22 DPSP_MSG_SESSIONDESCCHANGED
 
-DPSP_MSG_SESSIONDESCCHANGED
+
 
 When a DirectPlay client receives a DPSP_MSG_SESSIONDESCCHANGED (section 2.2.51)
 message, it MUST update any cached local representation of the DPSESSIONDESC2 structure.
 
-3.1.5.23
+##### 3.1.5.23 DPSP_MSG_ADDSHORTCUTTOGROUP
 
-DPSP_MSG_ADDSHORTCUTTOGROUP
+
 
 When a DirectPlay client receives a DPSP_MSG_ADDSHORTCUTTOGROUP (section 2.2.13)
 message, it MUST look up the specified ChildGroupID and ParentGroupID values in the Group
@@ -6724,9 +6643,9 @@ List. It MUST then add the group specified by ChildGroupID to the group specifie
 ParentGroupID. The DirectPlay client SHOULD inform any higher-level entity of the arrival of this
 message.
 
-3.1.5.24
+##### 3.1.5.24 DPSP_MSG_DELETEGROUPFROMGROUP
 
-DPSP_MSG_DELETEGROUPFROMGROUP
+
 
 When a DirectPlay client receives a DPSP_MSG_DELETEGROUPFROMGROUP (section 2.2.24)
 message, it MUST look up the specified ChildGroupID and ParentGroupID values in the Group
@@ -6741,9 +6660,10 @@ Release: April 23, 2024
 
 82 / 103
 
-3.1.5.25
 
-DPSP_MSG_VOICE
+##### 3.1.5.25 DPSP_MSG_VOICE
+
+
 
 When a DirectPlay client or server receives a DPSP_MSG_VOICE (section 2.2.54) message, it
 MUST pass the contents of the voiceData, dwIDFrom, and dwIDTo to the DirectPlay Protocol:
@@ -6751,17 +6671,17 @@ DirectPlay Voice Extension if it is active. If the DirectPlay Voice Protocol is 
 game session, then this message MUST be ignored. For details on how the contents of the message
 are processed, see the DirectPlay Voice Protocol document [MC-DPLVP].
 
-3.1.5.26
+##### 3.1.5.26 DPSP_MSG_CHAT
 
-DPSP_MSG_CHAT
+
 
 When a DirectPlay client receives a DPSP_MSG_CHAT (section 2.2.19) message, it MUST inform
 any higher-level entity of the arrival of the chat string from the specified player to the specified
 player or group. The client MUST also increment the Player.ChatterCount.
 
-3.1.5.27
+##### 3.1.5.27 DPSP_MSG_PACKET
 
-DPSP_MSG_PACKET
+
 
 When a DirectPlay 4 client receives a DPSP_MSG_PACKET message (section 2.2.39), it MUST
 determine if previous fragments of the packets identified by MessageGuid have already been
@@ -6771,9 +6691,9 @@ the packet if not. It MUST then include the additional fragment payload in its c
 total message. When all fragments have been received, the completed message MUST be delivered to
 the higher-layer entity.
 
-3.1.5.28
+##### 3.1.5.28 DPSP_MSG_PACKET2_DATA
 
-DPSP_MSG_PACKET2_DATA
+
 
 When a DirectPlay 4 client receives a DPSP_MSG_PACKET2_DATA message (section 2.2.41), it
 MUST send a DPSP_MSG_PACKET2_ACK (section 2.2.40) message to the sender to acknowledge
@@ -6784,9 +6704,9 @@ sequence and ignore the packet if not. It MUST then include the additional fragm
 correct location in the total message. When all fragments have been received, the completed message
 MUST be delivered to the higher-layer entity.
 
-3.1.5.29
+##### 3.1.5.29 DPSP_MSG_PACKET2_ACK
 
-DPSP_MSG_PACKET2_ACK
+
 
 When a DirectPlay 4 client receives a DPSP_MSG_PACKET2_ACK message (section 2.2.40), it
 MUST determine if the packet identified by MessageGuid and PacketID has not already been
@@ -6795,9 +6715,9 @@ the client MUST reset the Packetize Timer and send the next PacketID in the frag
 there are no more packets, then the entire message has completed and the Packetize Timer MUST be
 canceled.
 
-3.1.5.30
+##### 3.1.5.30 DPSP_MSG_PING
 
-DPSP_MSG_PING
+
 
 When a DirectPlay 4 client receives a DPSP_MSG_PING message (section 2.2.42), it MUST look up
 the player specified by the IDFrom field in the Player List. If the ID does not represent a valid
@@ -6812,18 +6732,19 @@ Release: April 23, 2024
 
 83 / 103
 
-3.1.5.31
 
-DPSP_MSG_PINGREPLY
+##### 3.1.5.31 DPSP_MSG_PINGREPLY
+
+
 
 When a DirectPlay 4 client receives a DPSP_MSG_PINGREPLY message (section 2.2.43), it MUST
 look up the player specified by IDFrom in the Player List. If the ID does not represent a valid
 player, the client MUST ignore this message. Otherwise, the client MUST also increment the
 Player.ChatterCount counter.
 
-3.1.5.32
+##### 3.1.5.32 DPSP_MSG_YOUAREDEAD
 
-DPSP_MSG_YOUAREDEAD
+
 
 Only a DirectPlay 4 client that determines itself to be the game session host can send a
 DPSP_MSG_YOUAREDEAD message (section 2.2.55) to another peer in the game session.
@@ -6839,25 +6760,25 @@ to tell that client to disconnect from the game session.
 When a DirectPlay 4 client receives a DPSP_MSG_YOUAREDEAD message, it MUST terminate all
 connections to all computer systems and communicate this event to a higher-level entity.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Packetize Timer
+##### 3.1.6.1 Packetize Timer
 
 When the Packetize Timer expires, the DirectPlay 4 client MUST resend the current
 DPSP_MSG_PACKET2_DATA message (section 2.2.41), unless it has already sent the same packet
 16 times and 60 seconds have elapsed since the first packet was sent, in which case the client MUST
 abort sending the entire message.
 
-3.1.6.2  Ping Timer
+##### 3.1.6.2 Ping Timer
 
 When the Ping Timer expires, the DirectPlay 4 client SHOULD send a DPSP_MSG_PING message
 (section 2.2.42) to the host if no messages have been received since the last Ping Timer expiration. If
 8 DPSP_MSG_PING messages have been sent without a reply, the connection to the host SHOULD
 be terminated.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Host Migration
+##### 3.1.7.1 Host Migration
 
 The host migration process is initiated when the game session host leaves the game session for
 any reason, such as failing to reply to 8 DPSP_MSG_PING (section 2.2.42) messages. When this
@@ -6880,7 +6801,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  Because player IDs are assigned by the host, a new player has no way to "force" itself to
+
+Note  Because player IDs are assigned by the host, a new player has no way to "force" itself to
 become the new host. In addition, although player IDs are allocated sequentially (and starting from a
 random value), the random value is XOR'd with a secret value to generate the player ID. As a result,
 there is no guarantee that the distributed player ID values will be sequential. For more information,
@@ -6923,7 +6845,7 @@ migration situations. Recovery from the simultaneous failure of multiple clients
 succeed in leaving an accurate image of the clients in the game session. This problem is addressed by
 DirectPlay 8.
 
-3.2  Game Host Details
+### 3.2 Game Host Details
 
 Under the DirectPlay 4 Protocol, the first computer that creates a DirectPlay 4 game session is
 designated as the game host. This server functions the same as any other game client, but it has
@@ -6944,7 +6866,8 @@ Release: April 23, 2024
 
 85 / 103
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6961,29 +6884,29 @@ Each client contains the following information:
 
 Client.SessionKey: An encryption key used to protect data transmitted to the client.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Name Table Population Timer
+##### 3.2.2.1 Name Table Population Timer
 
 The Name Table Population timer is set by a DirectPlay host when it receives a
 DPSP_MSG_ADDFORWARDREQUEST message (see section 2.2.11). The timeout for this timer is
 15 seconds.
 
-3.2.2.2  Ping Timer
+##### 3.2.2.2 Ping Timer
 
 The Ping timer is set by a DirectPlay server when the Session.KeepAlive flag is set in the abstract
 data model. It elapses periodically so that DPSP_MSG_PING (section 2.2.42) messages are sent to
 any connected player with a Player.ChatterCount of 0 (that is, for which no messages have been
 received since the last Ping timer expiration). The period for this timer is 35 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a DirectPlay 4 host computer starts, it MUST open a UDP datagram socket on port 47624 and
 listen for broadcast datagrams sent to that port. It MUST also open a TCP and UDP port within the
 defined DirectPlay 4 port range of 2300 to 2400. The game host MUST also assign a new GUID value
 to the Session.InstanceID identifier.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 A DirectPlay 4 game host functions as a DirectPlay client and, as such, MUST handle all of the
 higher-layer triggered events as specified in section 3.1.4.
@@ -6994,9 +6917,9 @@ these local message transport paths specifically for optimization or for other p
 resulting protocol state or behavior remains the same as would be expected for and by external
 clients.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  DPSP_MSG_ASK4MULTICAST
+##### 3.2.5.1 DPSP_MSG_ASK4MULTICAST
 
 When a DirectPlay 4 host receives a DPSP_MSG_ASK4MULTICAST (section 2.2.14) message, it
 MUST validate that the PlayerFrom and GroupTo fields refer to a valid player and group,
@@ -7008,13 +6931,14 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-respectively, or else ignore the message. If valid, the host MUST then extract the wrapped message
+
+respectively, or else ignore the message. If valid, the host MUST then extract the wrapped message
 payload at MessageOffset and resend the message to all members of the specified group. If the
 game session has the Session.ReliableProtocol flag set, then the forwarded message MUST be
 rewrapped, but with a DPSP_MSG_MULTICASTDELIVERY (section 2.2.37) header instead. The host
 MUST also increment the Player.ChatterCount counter.
 
-3.2.5.2  DPSP_MSG_ASK4MULTICASTGUARANTEED
+##### 3.2.5.2 DPSP_MSG_ASK4MULTICASTGUARANTEED
 
 When a DirectPlay host receives a DPSP_MSG_ASK4MULTICASTGUARANTEED (section 2.2.15)
 message, it MUST validate that the PlayerFrom and GroupTo fields refer to a valid player and
@@ -7025,7 +6949,7 @@ Session.ReliableProtocol flag set, then the forwarded message MUST be re-wrapped
 DPSP_MSG_MULTICASTDELIVERY (section 2.2.37) header instead. The host MUST also increment
 the Player.ChatterCount counter.
 
-3.2.5.3  DPSP_MSG_ENUMSESSIONS
+##### 3.2.5.3 DPSP_MSG_ENUMSESSIONS
 
 When a DirectPlay 4 host receives a DPSP_MSG_ ENUMSESSIONS (section 2.2.29) message, it
 MUST format and transmit one DPSP_MSG_ENUMSESSIONSREPLY (section 2.2.30) for each game
@@ -7057,7 +6981,7 @@ information stored in the abstract data model. The host MUST send the response v
 to the port specified in the SockAddr field of the DPSP_MSG_HEADER portion (section 2.2.6) of the
 request and to the IP address that sent the request.
 
-3.2.5.4  DPSP_MSG_REQUESTPLAYERID
+##### 3.2.5.4 DPSP_MSG_REQUESTPLAYERID
 
 When a DirectPlay host receives a DPSP_MSG_REQUESTPLAYERID (section 2.2.49) message, it
 MUST inspect the Flags field of the DPSP_MSG_REQUESTPLAYERID request. If the
@@ -7081,7 +7005,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DPSP_MSG_REQUESTPLAYERREPLY structure MUST be filled with 0s, and the Result field MUST
+
+DPSP_MSG_REQUESTPLAYERREPLY structure MUST be filled with 0s, and the Result field MUST
 be set to S_OK (0x00000000).
 
 Note  The 32-bit player and group identifiers are constructed as follows:
@@ -7119,7 +7044,7 @@ the CAPIProviderType field MUST be set to the cryptographic provider capabilitie
 Game.CAPIProviderType, and the Encryption Algorithm MUST be set to the algorithm indicated in
 Game.EncryptionAlgorithm.
 
-3.2.5.5  DPSP_MSG_ADDFORWARDREQUEST
+##### 3.2.5.5 DPSP_MSG_ADDFORWARDREQUEST
 
 When the game host receives a DPSP_MSG_ADDFORWARDREQUEST message (section 2.2.11),
 the game host MUST format a DPSP_MSG_ADDFORWARD message (section 2.2.8) containing the
@@ -7130,7 +7055,7 @@ players in the game to allow them to update their name tables. It MUST then star
 Population timer and wait for each of the players to respond with a
 DPSP_MSG_ADDFORWARDACK (section 2.2.9) message.
 
-3.2.5.6  DPSP_MSG_ADDFORWARDACK
+##### 3.2.5.6 DPSP_MSG_ADDFORWARDACK
 
 When a DirectPlay host computer receives a DPSP_MSG_ADDFORWARDACK message (section
 2.2.9), if the host has an outstanding DPSP_MSG_ADDFORWARDACK from the client which sent
@@ -7148,7 +7073,8 @@ Release: April 23, 2024
 
 88 / 103
 
-3.2.5.7  DPSP_MSG_NEGOTIATE
+
+##### 3.2.5.7 DPSP_MSG_NEGOTIATE
 
 When a DirectPlay host receives a DPSP_MSG_NEGOTIATE message (section 2.2.38), it MUST
 ignore the message if the sending client is not in the process of joining a game; otherwise, it MUST
@@ -7161,7 +7087,7 @@ CHALLENGE_MESSAGE, as specified in [MS-NLMP] section 2.2.1.2.
 If the negotiate message is unsuccessful, then the host MUST format and transmit a
 DPSP_MSG_AUTHERROR message (section 2.2.16) to the client.
 
-3.2.5.8  DPSP_MSG_CHALLENGERESPONSE
+##### 3.2.5.8 DPSP_MSG_CHALLENGERESPONSE
 
 When a DirectPlay host receives a DPSP_MSG_CHALLENGERESPONSE message (section 2.2.18),
 it MUST ignore the message if the sending client is not in the process of joining a game; otherwise, it
@@ -7176,7 +7102,7 @@ If the authenticate message is unsuccessful, then the host MUST format and trans
 DPSP_MSG_LOGONDENIED message (section 2.2.36) or a DPSP_MSG_AUTHERROR message
 (section 2.2.16) to the client.
 
-3.2.5.9  DPSP_MSG_KEYEXCHANGE
+##### 3.2.5.9 DPSP_MSG_KEYEXCHANGE
 
 When a DirectPlay server receives a DPSP_MSG_KEYEXCHANGE message (section 2.2.34), it
 MUST remember the PublicKey and SessionKey fields in the message as Client.PublicKey and
@@ -7188,18 +7114,18 @@ client and save it as Client.HostPublicKey. It MUST then format and transmit a
 DPSP_MSG_KEYEXCHANGEREPLY message (section 2.2.35) with the SessionKey set to
 Client.HostPublicKey.
 
-3.2.5.10
+##### 3.2.5.10 DPSP_MSG_PING
 
-DPSP_MSG_PING
+
 
 When a DirectPlay 4 server receives a DPSP_MSG_PING message (section 2.2.42) it MUST be
 handled as specified in section 3.1.5.30, except that if IDFrom does not represent a valid player,
 then the server MUST send a DPSP_MSG_YOUAREDEAD message (section 2.2.55) rather than
 ignoring the packet.
 
-3.2.5.11
+##### 3.2.5.11 DPSP_MSG_PINGREPLY
 
-DPSP_MSG_PINGREPLY
+
 
 When a DirectPlay 4 server receives a DPSP_MSG_PINGREPLY message (section 2.2.43), it MUST
 be handled as specified in section 3.1.5.31, except that if IDFrom does not represent a valid player,
@@ -7213,22 +7139,23 @@ Release: April 23, 2024
 
 89 / 103
 
-3.2.6  Timer Events
 
-3.2.6.1  Name Table Population Timer
+#### 3.2.6 Timer Events
+
+##### 3.2.6.1 Name Table Population Timer
 
 When the Name Table Population timer expires, the game host MUST format and transmit a
 DPSP_MSG_SUPERENUMPLAYERSREPLY message (section 2.2.53) to the client that sent the
 DPSP_MSG_ADDFORWARDREQUEST (section 3.2.5.5).
 
-3.2.6.2  Ping Timer
+##### 3.2.6.2 Ping Timer
 
 When the Ping timer expires, the DirectPlay 4 server SHOULD send a DPSP_MSG_PING (section
 2.2.42) message to all connected computer systems if no messages have been received since the last
 Ping timer expiration. If eight DPSP_MSG_PING messages have been sent without a reply, the
 connection to the computer system SHOULD be terminated.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -7239,9 +7166,10 @@ Release: April 23, 2024
 
 90 / 103
 
-4  Protocol Examples
 
-4.1  DirectPlay4EnumSessionsRequest
+## 4 Protocol Examples
+
+### 4.1 DirectPlay4EnumSessionsRequest
 
 The following is a sample DPSP_MSG_ENUMSESSIONS (section 2.2.29) message, indicating its
 parsed fields and example values.
@@ -7294,7 +7222,7 @@ parsed fields and example values.
    Unused:  (000000000000000000000000........)
    Password: Password
 
-4.2  DirectPlay4 EnumSessionsReply
+### 4.2 DirectPlay4 EnumSessionsReply
 
 The following is a sample DPSP_MSG_ENUMSESSIONSREPLY (section 2.2.30) message, indicating
 its parsed fields and example values.
@@ -7309,7 +7237,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   Message Size: 128,
+
+   Message Size: 128,
    Token: 0xfab
   - MessageSize: Message Size: 128,
    Token: 0xfab
@@ -7346,7 +7275,7 @@ Release: April 23, 2024
    NameOffset: 92 (0x5C)
    SessionName: LOTHAIR
 
-4.3  Joining a Game
+### 4.3 Joining a Game
 
 The following figure shows a nascent game instance joining a game host and a third, established
 game instance.
@@ -7358,7 +7287,8 @@ Release: April 23, 2024
 
 92 / 103
 
-<!-- Extracted images from page 93 -->
+
+<!-- Extracted images from page 93 -->
 ![Extracted image 1 from page 93]([MC-DPL4CS].images/page093-img01.png)
 <!-- /Extracted images from page 93 -->
 
@@ -7389,9 +7319,10 @@ Release: April 23, 2024
 
 93 / 103
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The following security considerations pertain to the DirectPlay 4 Protocol:
 
@@ -7429,7 +7360,7 @@ implementation were to attempt to spoof a game and join the game session by accu
 guessing a player ID value, the implementation would also have to recognize the secret value in
 order to be able to guess the next player ID.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -7440,7 +7371,8 @@ Release: April 23, 2024
 
 94 / 103
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7508,7 +7440,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An operating system service pack or out-of-band DirectX redistributable can upgrade the native
+
+An operating system service pack or out-of-band DirectX redistributable can upgrade the native
 dialect to a later version. The maximum version to which a dialect can be upgraded is DX9VERSION.
 
 The DirectX Software Development Kit (DirectX SDK) provided multiple programming interfaces with
@@ -7631,7 +7564,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<12> Section 3.1.1: In Windows, the Game.CAPIProvider is one of the following cryptographic
+
+<12> Section 3.1.1: In Windows, the Game.CAPIProvider is one of the following cryptographic
 provider names.
 
   Microsoft Base Cryptographic Provider v1.0
@@ -7754,7 +7688,8 @@ DirectPlay 4 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Algorithm
+
+Algorithm
 
 Description
 
@@ -7821,7 +7756,8 @@ Release: April 23, 2024
 
 98 / 103
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7865,7 +7801,8 @@ Release: April 23, 2024
 
 99 / 103
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -8007,7 +7944,8 @@ DPSP_MSG_ADDPLAYERTOGROUP packet 33
 
 100 / 103
 
-DPSP_MSG_ADDSHORTCUTTOGROUP message
+
+DPSP_MSG_ADDSHORTCUTTOGROUP message
 (section 2.2.13 33, section 3.1.5.23 82)
 DPSP_MSG_ADDSHORTCUTTOGROUP packet 33
 DPSP_MSG_ASK4MULTICAST message (section
@@ -8203,7 +8141,8 @@ Examples
 
 101 / 103
 
-   EnumSessionsReply 91
+
+   EnumSessionsReply 91
    EnumSessionsRequest 91
    joining game 92
 
@@ -8342,7 +8281,8 @@ Messages
 
 102 / 103
 
-SOCKADDR_IN packet 16
+
+SOCKADDR_IN packet 16
 Standards assignments 15
 Syntax 16
 

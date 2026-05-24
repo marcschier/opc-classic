@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 74
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -303,7 +304,8 @@ Release: June 25, 2021
 
 2 / 74
 
-Date
+
+Date
 
 Revision
 History
@@ -426,347 +428,137 @@ Release: June 25, 2021
 
 3 / 74
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Identifiers .................................................................................................... 9
-Security..................................................................................................... 10
-Authenticated Key Security Mode ............................................................ 10
-Membership Security Mode..................................................................... 10
-Confidential Security Mode ..................................................................... 10
-Modularity ................................................................................................. 10
-Clouds ....................................................................................................... 11
-Cloud Discovery .................................................................................... 11
-Joining a Cloud ..................................................................................... 11
-Active Participation in the Cloud .............................................................. 11
-Leaving a Cloud .................................................................................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 13
-
-1.3.4.1
-1.3.4.2
-1.3.4.3
-1.3.4.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3
-1.3.4
-
-2.2.3
-
-2.1
-2.2
-
-2.2.2.6.1
-
-2.2.1
-2.2.2
-
-2.2.2.7
-2.2.2.8
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-DRT Header ............................................................................................... 16
-DRT Messages ............................................................................................ 17
-SOLICIT ............................................................................................... 17
-ADVERTISE .......................................................................................... 18
-REQUEST ............................................................................................. 19
-FLOOD ................................................................................................. 21
-INQUIRE .............................................................................................. 23
-AUTHORITY .......................................................................................... 26
-AUTHORITY_BUFFER ........................................................................ 26
-ACK..................................................................................................... 30
-LOOKUP ............................................................................................... 30
-Data Structures .......................................................................................... 34
-Security Profile Data Structures .............................................................. 34
-Encoded CPA .................................................................................. 34
-Encoded CPA Structure ............................................................... 34
-Keytoken ........................................................................................ 35
-Keytoken Structure .................................................................... 35
-Signature ....................................................................................... 36
-Signature Structure .................................................................... 36
-Credential....................................................................................... 37
-Credential Structure ................................................................... 37
-Key Identifier .................................................................................. 37
-Key Identifier Structure .............................................................. 37
-PUBLIC_KEY ........................................................................ 38
-PAYLOAD ........................................................................................ 38
-PAYLOAD Structure .................................................................... 38
-Encrypted Endpoint Array ................................................................. 39
-Encrypted Endpoint Array Structure ............................................. 39
-
-2.2.3.1.5.1.1
-
-2.2.3.1.6.1
-
-2.2.3.1.7.1
-
-2.2.3.1.1.1
-
-2.2.3.1.2.1
-
-2.2.3.1.3.1
-
-2.2.3.1.4.1
-
-2.2.3.1.5.1
-
-2.2.3.1.7
-
-2.2.3.1.2
-
-2.2.3.1.3
-
-2.2.3.1.4
-
-2.2.3.1.5
-
-2.2.3.1.6
-
-2.2.3.1.1
-
-2.2.3.1
-
-[MC-DRT] - v20210625
-Distributed Routing Table (DRT) Version 1.0
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-4 / 74
-
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-DRT Data Structures ............................................................................. 39
-ROUTE_ENTRY ...................................................................................... 39
-IPV6_ENDPOINT ................................................................................... 40
-IPV6_ENDPOINT_ARRAY ........................................................................ 40
-FIELD_ARRAY ....................................................................................... 41
-
-3.1
-
-3.1.7
-
-3.1.6
-
-3.1.5
-
-3.1.7.1
-
-3.1.5.6
-
-3.1.5.5.1
-
-3.1.6.1
-3.1.6.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.5.1.1
-3.1.5.5.1.2
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3  Protocol Details ..................................................................................................... 42
-Resolver Details ............................................................................................... 42
-Abstract Data Model .................................................................................... 42
-Timers ...................................................................................................... 44
-Initialization ............................................................................................... 44
-Higher-Layer Triggered Events ..................................................................... 44
-Opening a Cloud ................................................................................... 44
-Discovering Other Nodes in a Cloud ......................................................... 45
-Initiating a DRT Synchronization Conversation .......................................... 45
-Resolving a Key .................................................................................... 45
-Closing a Cloud ..................................................................................... 47
-Message Processing Events and Sequencing Rules .......................................... 47
-Receiving a DRT Message ....................................................................... 47
-Receiving an ADVERTISE Message .......................................................... 47
-Receiving an ACK Message ..................................................................... 48
-Receiving a FLOOD Message ................................................................... 48
-Receiving an AUTHORITY Message .......................................................... 48
-Receiving an AUTHORITY_BUFFER ..................................................... 49
-Receiving a Response to an INQUIRE ........................................... 50
-Completing a Route Entry Cache Addition ..................................... 50
-Receiving a New ROUTE_ENTRY .............................................................. 50
-Timer Events .............................................................................................. 51
-Maintenance Timer Expiry ...................................................................... 51
-Message Retransmission Timer Expiry ..................................................... 51
-Other Local Events ...................................................................................... 52
-Processing Address Change Notifications .................................................. 52
-Publisher Details .............................................................................................. 52
-Abstract Data Model .................................................................................... 52
-Cache .................................................................................................. 52
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Higher-Layer Triggered Events ..................................................................... 53
-Registering a Key .................................................................................. 53
-Unregistering a Key ............................................................................... 54
-Message Processing Events and Sequencing Rules .......................................... 54
-Receiving a New ROUTE_ENTRY .............................................................. 54
-Receiving a LOOKUP Message ................................................................. 54
-Receiving a SOLICIT Message ................................................................. 55
-Receiving a REQUEST Message ............................................................... 55
-Receiving a FLOOD Message ................................................................... 56
-Receiving an INQUIRE Message .............................................................. 56
-Sending an AUTHORITY_BUFFER ............................................................. 57
-Receiving an AUTHORITY Message .......................................................... 57
-Receiving an AUTHORITY_BUFFER ..................................................... 57
-Timer Events .............................................................................................. 58
-Conversation Timer Expiry ..................................................................... 58
-Maintenance Timer Expiry ...................................................................... 58
-Detection of Cloud Splits .................................................................. 58
-Cloud Size Estimation ................................................................. 59
-Message Retransmission Timer Expiry ..................................................... 59
-Other Local Events ...................................................................................... 59
-Resolving a Key .................................................................................... 59
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6.1
-3.2.6.2
-
-3.2.4.1
-3.2.4.2
-
-3.2.6.2.1.1
-
-3.2.5.8.1
-
-3.2.6.2.1
-
-3.2.7.1
-
-3.2.6.3
-
-3.2.1.1
-
-3.2.7
-
-3.2.6
-
-3.2.1
-
-3.2.5
-
-3.2
-
-[MC-DRT] - v20210625
-Distributed Routing Table (DRT) Version 1.0
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 74
-
-3.2.7.2
-
-Processing Address Change Notifications .................................................. 60
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 61
-Resolving a Key ............................................................................................... 61
-Opening a Cloud ......................................................................................... 61
-Cache Synchronization ................................................................................ 61
-Key Resolution ........................................................................................... 63
-Registering a Key ............................................................................................. 65
-Unregistering a Key .......................................................................................... 65
-Flooding a New Leaf Set Member ....................................................................... 66
-
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 69
-Security Considerations for Implementers ........................................................... 69
-Index of Security Parameters ............................................................................ 69
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 70
-
-7  Change Tracking .................................................................................................... 71
-
-8  Index ..................................................................................................................... 72
-
-[MC-DRT] - v20210625
-Distributed Routing Table (DRT) Version 1.0
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-6 / 74
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Identifiers](#131-identifiers)
+    - [1.3.2 Security](#132-security)
+      - [1.3.2.1 Authenticated Key Security Mode](#1321-authenticated-key-security-mode)
+      - [1.3.2.2 Membership Security Mode](#1322-membership-security-mode)
+      - [1.3.2.3 Confidential Security Mode](#1323-confidential-security-mode)
+    - [1.3.3 Modularity](#133-modularity)
+    - [1.3.4 Clouds](#134-clouds)
+      - [1.3.4.1 Cloud Discovery](#1341-cloud-discovery)
+      - [1.3.4.2 Joining a Cloud](#1342-joining-a-cloud)
+      - [1.3.4.3 Active Participation in the Cloud](#1343-active-participation-in-the-cloud)
+      - [1.3.4.4 Leaving a Cloud](#1344-leaving-a-cloud)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DRT Header](#221-drt-header)
+    - [2.2.2 DRT Messages](#222-drt-messages)
+      - [2.2.2.1 SOLICIT](#2221-solicit)
+      - [2.2.2.2 ADVERTISE](#2222-advertise)
+      - [2.2.2.3 REQUEST](#2223-request)
+      - [2.2.2.4 FLOOD](#2224-flood)
+      - [2.2.2.5 INQUIRE](#2225-inquire)
+      - [2.2.2.6 AUTHORITY](#2226-authority)
+        - [2.2.2.6.1 AUTHORITY_BUFFER](#22261-authoritybuffer)
+      - [2.2.2.7 ACK](#2227-ack)
+      - [2.2.2.8 LOOKUP](#2228-lookup)
+    - [2.2.3 Data Structures](#223-data-structures)
+      - [2.2.3.1 Security Profile Data Structures](#2231-security-profile-data-structures)
+        - [2.2.3.1.1 Encoded CPA](#22311-encoded-cpa)
+          - [2.2.3.1.1.1 Encoded CPA Structure](#223111-encoded-cpa-structure)
+        - [2.2.3.1.2 Keytoken](#22312-keytoken)
+          - [2.2.3.1.2.1 Keytoken Structure](#223121-keytoken-structure)
+        - [2.2.3.1.3 Signature](#22313-signature)
+          - [2.2.3.1.3.1 Signature Structure](#223131-signature-structure)
+        - [2.2.3.1.4 Credential](#22314-credential)
+          - [2.2.3.1.4.1 Credential Structure](#223141-credential-structure)
+        - [2.2.3.1.5 Key Identifier](#22315-key-identifier)
+          - [2.2.3.1.5.1 Key Identifier Structure](#223151-key-identifier-structure)
+            - [2.2.3.1.5.1.1 PUBLIC_KEY](#2231511-publickey)
+        - [2.2.3.1.6 PAYLOAD](#22316-payload)
+          - [2.2.3.1.6.1 PAYLOAD Structure](#223161-payload-structure)
+        - [2.2.3.1.7 Encrypted Endpoint Array](#22317-encrypted-endpoint-array)
+          - [2.2.3.1.7.1 Encrypted Endpoint Array Structure](#223171-encrypted-endpoint-array-structure)
+      - [2.2.3.2 DRT Data Structures](#2232-drt-data-structures)
+      - [2.2.3.3 ROUTE_ENTRY](#2233-routeentry)
+      - [2.2.3.4 IPV6_ENDPOINT](#2234-ipv6endpoint)
+      - [2.2.3.5 IPV6_ENDPOINT_ARRAY](#2235-ipv6endpointarray)
+      - [2.2.3.6 FIELD_ARRAY](#2236-fieldarray)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Resolver Details](#31-resolver-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Opening a Cloud](#3141-opening-a-cloud)
+      - [3.1.4.2 Discovering Other Nodes in a Cloud](#3142-discovering-other-nodes-in-a-cloud)
+      - [3.1.4.3 Initiating a DRT Synchronization Conversation](#3143-initiating-a-drt-synchronization-conversation)
+      - [3.1.4.4 Resolving a Key](#3144-resolving-a-key)
+      - [3.1.4.5 Closing a Cloud](#3145-closing-a-cloud)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a DRT Message](#3151-receiving-a-drt-message)
+      - [3.1.5.2 Receiving an ADVERTISE Message](#3152-receiving-an-advertise-message)
+      - [3.1.5.3 Receiving an ACK Message](#3153-receiving-an-ack-message)
+      - [3.1.5.4 Receiving a FLOOD Message](#3154-receiving-a-flood-message)
+      - [3.1.5.5 Receiving an AUTHORITY Message](#3155-receiving-an-authority-message)
+        - [3.1.5.5.1 Receiving an AUTHORITY_BUFFER](#31551-receiving-an-authoritybuffer)
+          - [3.1.5.5.1.1 Receiving a Response to an INQUIRE](#315511-receiving-a-response-to-an-inquire)
+          - [3.1.5.5.1.2 Completing a Route Entry Cache Addition](#315512-completing-a-route-entry-cache-addition)
+      - [3.1.5.6 Receiving a New ROUTE_ENTRY](#3156-receiving-a-new-routeentry)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Maintenance Timer Expiry](#3161-maintenance-timer-expiry)
+      - [3.1.6.2 Message Retransmission Timer Expiry](#3162-message-retransmission-timer-expiry)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Processing Address Change Notifications](#3171-processing-address-change-notifications)
+  - [3.2 Publisher Details](#32-publisher-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Cache](#3211-cache)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Registering a Key](#3241-registering-a-key)
+      - [3.2.4.2 Unregistering a Key](#3242-unregistering-a-key)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a New ROUTE_ENTRY](#3251-receiving-a-new-routeentry)
+      - [3.2.5.2 Receiving a LOOKUP Message](#3252-receiving-a-lookup-message)
+      - [3.2.5.3 Receiving a SOLICIT Message](#3253-receiving-a-solicit-message)
+      - [3.2.5.4 Receiving a REQUEST Message](#3254-receiving-a-request-message)
+      - [3.2.5.5 Receiving a FLOOD Message](#3255-receiving-a-flood-message)
+      - [3.2.5.6 Receiving an INQUIRE Message](#3256-receiving-an-inquire-message)
+      - [3.2.5.7 Sending an AUTHORITY_BUFFER](#3257-sending-an-authoritybuffer)
+      - [3.2.5.8 Receiving an AUTHORITY Message](#3258-receiving-an-authority-message)
+        - [3.2.5.8.1 Receiving an AUTHORITY_BUFFER](#32581-receiving-an-authoritybuffer)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Conversation Timer Expiry](#3261-conversation-timer-expiry)
+      - [3.2.6.2 Maintenance Timer Expiry](#3262-maintenance-timer-expiry)
+        - [3.2.6.2.1 Detection of Cloud Splits](#32621-detection-of-cloud-splits)
+          - [3.2.6.2.1.1 Cloud Size Estimation](#326211-cloud-size-estimation)
+      - [3.2.6.3 Message Retransmission Timer Expiry](#3263-message-retransmission-timer-expiry)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Resolving a Key](#3271-resolving-a-key)
+      - [3.2.7.2 Processing Address Change Notifications](#3272-processing-address-change-notifications)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Resolving a Key](#41-resolving-a-key)
+    - [4.1.1 Opening a Cloud](#411-opening-a-cloud)
+    - [4.1.2 Cache Synchronization](#412-cache-synchronization)
+    - [4.1.3 Key Resolution](#413-key-resolution)
+  - [4.2 Registering a Key](#42-registering-a-key)
+  - [4.3 Unregistering a Key](#43-unregistering-a-key)
+  - [4.4 Flooding a New Leaf Set Member](#44-flooding-a-new-leaf-set-member)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Distributed Routing Table (DRT) protocol is used for resolving a key to a set of information, such
 as IP addresses. This protocol is used to maintain a network of nodes (referred to as a cloud) and to
@@ -775,7 +567,7 @@ resolve keys to their endpoint information when requested by a node within the c
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -836,7 +628,8 @@ Release: June 25, 2021
 
 7 / 74
 
-nonce: A number that is used only once. This is typically implemented as a random number large
+
+nonce: A number that is used only once. This is typically implemented as a random number large
 
 enough that the probability of number reuse is extremely small. A nonce is used in
 authentication protocols to prevent replay attacks. For more information, see [RFC2617].
@@ -881,14 +674,14 @@ encoding scheme with no Byte Order Mark (BOM).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -909,7 +702,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2315] Kaliski, B., "PKCS #7: Cryptographic Message Syntax Version 1.5", RFC 2315, March 1998,
@@ -937,7 +731,7 @@ Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FIPS197] FIPS PUBS, "Advanced Encryption Standard (AES)", FIPS PUB 197, November 2001,
 https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf
@@ -946,7 +740,7 @@ https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf
 based Structured Peer-to-Peer Overlays", 2003, http://research.microsoft.com/~antr/PAST/location-
 msrtr-2003-52.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The Distributed Routing Table (DRT) Protocol uses messages to maintain a cloud of peer nodes, to
 maintain a distributed cache of network endpoint information, and to transfer requests for key
@@ -974,12 +768,13 @@ Release: June 25, 2021
 
 9 / 74
 
-1.3.1  Identifiers
+
+#### 1.3.1 Identifiers
 
 The DRT Protocol defines a 256-bit numberspace for DRT keys and uses DRT keys to refer to
 resources within the cloud.
 
-1.3.2  Security
+#### 1.3.2 Security
 
 The DRT protocol can execute in three security modes:
 
@@ -989,7 +784,7 @@ The DRT protocol can execute in three security modes:
 
   Confidential Security Mode
 
-1.3.2.1  Authenticated Key Security Mode
+##### 1.3.2.1 Authenticated Key Security Mode
 
 Nodes are required to authenticate keys by providing Certified Peer Addresses to peers.
 
@@ -997,19 +792,19 @@ A Certified Peer Address (CPA) is a binary large object (BLOB) that provides aut
 protection for a DRT key, and contains application endpoint information such as addresses, protocol
 numbers, and port numbers, as specified in [IANAPORT] and [IANA-PROTO-NUM].
 
-1.3.2.2  Membership Security Mode
+##### 1.3.2.2 Membership Security Mode
 
 In membership security mode, nodes are required to authenticate themselves when searching for
 keys. Unauthorized nodes cannot search for keys or retrieve the endpoint information associated
 with a key.
 
-1.3.2.3  Confidential Security Mode
+##### 1.3.2.3 Confidential Security Mode
 
 In confidential security mode, endpoint information is encrypted when transmitted between peers.
 Unauthorized nodes cannot obtain endpoint information published in the DRT by intercepting network
 communication between authorized DRT participants.
 
-1.3.3  Modularity
+#### 1.3.3 Modularity
 
 The Distributed Routing Table Protocol is a generalization of the Peer Name Resolution Protocol
 described in [MS-PNRP]. The PNRP is a distributed name resolution protocol, where names optionally
@@ -1038,12 +833,13 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-[MS-PNRP] defines a fixed procedure by which nodes discover peers and bootstrap into the system.
+
+[MS-PNRP] defines a fixed procedure by which nodes discover peers and bootstrap into the system.
 The DRT protocol relies on the upper-layer application to select for it a mechanism for discovering
 peers when bootstrapping and providing endpoint information about these peers to the protocol. A
 mechanism by which nodes discover peers and bootstrap is known as a bootstrap profile.
 
-1.3.4  Clouds
+#### 1.3.4 Clouds
 
 A cloud is a group of nodes that can communicate with each other to resolve DRT keys into
 addresses. Each node participates in one and only one cloud; it maintains a cache of DRT key-to-
@@ -1070,13 +866,13 @@ Leaving a cloud
 
 Each step is discussed in the following sections.
 
-1.3.4.1  Cloud Discovery
+##### 1.3.4.1 Cloud Discovery
 
 Cloud discovery is the process by which a node outside the cloud finds an existing node within the
 cloud. It is the responsibility of the upper-layer application to discover existing nodes in a DRT cloud
 and provide the endpoints of these nodes to the DRT protocol.
 
-1.3.4.2  Joining a Cloud
+##### 1.3.4.2 Joining a Cloud
 
 The joining node then engages in a "synchronization conversation" with the existing node to obtain an
 initial set of DRT cache entries. The existing node provides the joining node with a selection of entries
@@ -1085,7 +881,7 @@ can access the cloud, and it has enough information to publish and resolve of DR
 
 The act of cloud discovery and joining a cloud is known as bootstrapping.
 
-1.3.4.3  Active Participation in the Cloud
+##### 1.3.4.3 Active Participation in the Cloud
 
 After a DRT node is fully initialized, it has the ability to initiate searches for keys. Messages are sent
 towards the target key to locate nodes that satisfy the search criteria.
@@ -1107,7 +903,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-After a publisher is reached, its CPA and an authentication token are returned to the original Resolver.
+
+After a publisher is reached, its CPA and an authentication token are returned to the original Resolver.
 The CPA signature and authentication token are then validated.
 
 In addition, a DRT node can optionally participate in the following set of activities. Nodes that do not
@@ -1139,24 +936,24 @@ nodes joining the cloud, as described in section 1.3.4.2.
 Test for cloud splits. Each node occasionally tests for splits in the cloud to ensure that it has not
 become isolated from the cloud.
 
-1.3.4.4  Leaving a Cloud
+##### 1.3.4.4 Leaving a Cloud
 
 To leave the cloud, the node unregisters all registered keys and terminates.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DRT Protocol uses UDP [RFC768] over IPv6 as a transport.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DRT Protocol is only suitable for publishing a limited amount of information about a resource and
 only when the information to be published is independent of which node requests the information.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The DRT Protocol has no version-negotiation or capability-negotiation behavior. All nodes that
 participate in a cloud are expected to be configured to use the same security mode and to use
@@ -1170,12 +967,13 @@ Release: June 25, 2021
 
 12 / 74
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 Application developers can define the structures and encryption schemes defined in the security
 profile, and they can define their own bootstrap profiles.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1186,15 +984,16 @@ Release: June 25, 2021
 
 13 / 74
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DRT messages MUST be transported over the User Datagram Protocol (UDP), as specified in [RFC768].
 A node MUST use a UDP port greater than or equal to 1024 [RFC768]. There is no requirement that
 two DRT nodes use the same port number because the port number is dynamically discovered.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 DRT messages are designed for future extensibility such that each message element (for example, a
 field or set of fields) of each message is self-describing. As a result, the messages defined in this
@@ -1288,7 +1087,8 @@ Release: June 25, 2021
 
 14 / 74
 
-Value
+
+Value
 
 0x0045
 
@@ -1413,7 +1213,8 @@ Release: June 25, 2021
 
 15 / 74
 
-Value
+
+Value
 
 0x00A4
 
@@ -1442,7 +1243,7 @@ beginning of the DRT message. Padding fields will be included in a message to en
 
 Unless otherwise specified, all 2-byte and 4-byte integer fields are defined in network byte order.
 
-2.2.1  DRT Header
+#### 2.2.1 DRT Header
 
 All DRT Messages use the following common header.
 
@@ -1514,7 +1315,8 @@ Release: June 25, 2021
 
 16 / 74
 
-Value  Meaning
+
+Value  Meaning
 
 0x07
 
@@ -1538,9 +1340,9 @@ number is generated by the protocol; the algorithm used to generate the MessageI
 minimize the probability of duplicate MessageIDs within a window of time at least as large as the
 round-trip latency of a protocol message.
 
-2.2.2  DRT Messages
+#### 2.2.2 DRT Messages
 
-2.2.2.1  SOLICIT
+##### 2.2.2.1 SOLICIT
 
 The SOLICIT message is sent by a Resolver to a Publisher so that it can request a list of keys in a
 cloud.
@@ -1597,7 +1399,8 @@ Release: June 25, 2021
 
 17 / 74
 
-Padding1 (variable): Optional. A number of bytes between 0 and 3, such that the offset from the
+
+Padding1 (variable): Optional. A number of bytes between 0 and 3, such that the offset from the
 start of the message to the end of this field is a multiple of 4. It MUST be present if and only if
 FieldID1 is present. This field MUST be set to zero and ignored on receipt.
 
@@ -1607,7 +1410,7 @@ Length2 (2 bytes): MUST be set to 0x0018.
 
 HashedNonce (20 bytes): A 20-byte hash of the nonce value for the conversation.
 
-2.2.2.2  ADVERTISE
+##### 2.2.2.2 ADVERTISE
 
 The ADVERTISE message is sent by a Publisher to a Resolver in response to a SOLICIT message so
 that it can provide a list of keys in the cloud.
@@ -1678,7 +1481,8 @@ Release: June 25, 2021
 
 18 / 74
 
-ArrayLength (2 bytes): The length of the entries in the array. This field MUST be set to
+
+ArrayLength (2 bytes): The length of the entries in the array. This field MUST be set to
 
 8+(NumEntries*EntryLength).
 
@@ -1700,7 +1504,7 @@ HashedNonce (20 bytes): The value of the HashedNonce field in the SOLICIT messag
 
 this is a response.
 
-2.2.2.3  REQUEST
+##### 2.2.2.3 REQUEST
 
 The REQUEST message is sent by a Resolver to a Publisher so that it can request a route entry for a
 given key in the Publisher's cache, as seen in an ADVERTISE message.
@@ -1767,7 +1571,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Credential (variable)
+
+Credential (variable)
 
 ...
 
@@ -1844,7 +1649,8 @@ Release: June 25, 2021
 
 20 / 74
 
-EntryLength (2 bytes): The length, in bytes, of each array element. This field MUST be set to 0x20
+
+EntryLength (2 bytes): The length, in bytes, of each array element. This field MUST be set to 0x20
 
 (32 bytes).
 
@@ -1889,7 +1695,7 @@ Key Identifier structure defined in the security profile and provided by the upp
 This field is used to indicate which portion of the Credential field is used to generate the
 Signature field.
 
-2.2.2.4  FLOOD
+##### 2.2.2.4 FLOOD
 
 The FLOOD message is sent by a Publisher to a Resolver in response to a REQUEST message so that it
 can provide a route entry or to revoke a CPA.
@@ -1938,7 +1744,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Keytoken (variable)
+
+Keytoken (variable)
 
 ...
 
@@ -2003,7 +1810,8 @@ Release: June 25, 2021
 
 22 / 74
 
-Validate Key (32 bytes): MUST contain a key that the searching node recognizes as published by
+
+Validate Key (32 bytes): MUST contain a key that the searching node recognizes as published by
 
 the destination node.
 
@@ -2084,7 +1892,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-2.2.2.5  INQUIRE
+
+##### 2.2.2.5 INQUIRE
 
 The INQUIRE message is sent by a Resolver to a Publisher so that it can obtain a CPA. Or, it can be
 sent from one Publisher to another so that it can verify that it is still in the cloud.
@@ -2168,7 +1977,8 @@ Release: June 25, 2021
 
 24 / 74
 
-A (1 bit): If set, the sender is requesting that a CPA appear in the AUTHORITY message response. If
+
+A (1 bit): If set, the sender is requesting that a CPA appear in the AUTHORITY message response. If
 unset, the sender is requesting that a CPA not appear in the AUTHORITY message response.
 SHOULD always be set.
 
@@ -2251,7 +2061,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-2.2.2.6  AUTHORITY
+
+##### 2.2.2.6 AUTHORITY
 
 The AUTHORITY message is sent by a Publisher to a Resolver in response to an INQUIRE or LOOKUP
 message.
@@ -2308,7 +2119,7 @@ message. It MUST be a multiple of 1188.
 
 Buffer (variable): The portion of an AUTHORITY_BUFFER starting at a byte offset specified in Offset.
 
-2.2.2.6.1 AUTHORITY_BUFFER
+###### 2.2.2.6.1 AUTHORITY_BUFFER
 
 The AUTHORITY_BUFFER structure is contained within a logical message containing the CPA and
 extended payload information associated with a Key. Parts of this logical message appear in
@@ -2350,7 +2161,8 @@ Release: June 25, 2021
 
 26 / 74
 
-Certificate Chain (variable)
+
+Certificate Chain (variable)
 
 ...
 
@@ -2417,7 +2229,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-CPA (variable)
+
+CPA (variable)
 
 ...
 
@@ -2495,7 +2308,8 @@ Release: June 25, 2021
 
 28 / 74
 
-Length4 (2 bytes): MUST be present if and only if FieldID4 is present. If present, MUST be set to 4
+
+Length4 (2 bytes): MUST be present if and only if FieldID4 is present. If present, MUST be set to 4
 
 plus the length, in bytes, of the Classifier field.
 
@@ -2571,7 +2385,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-2.2.2.7  ACK
+
+##### 2.2.2.7 ACK
 
 The ACK message is sent from one node to another to acknowledge receipt of a REQUEST or FLOOD
 message.
@@ -2629,7 +2444,7 @@ N (1 bit): Not Found. MUST be present in response to a FLOOD message if and only
 registered on the sender that corresponds to the Validate Key field in the FLOOD message to
 which this ACK message is a response.
 
-2.2.2.8  LOOKUP
+##### 2.2.2.8 LOOKUP
 
 The LOOKUP message is sent by a Resolver to a Publisher to resolve a key.
 
@@ -2675,7 +2490,8 @@ Release: June 25, 2021
 
 30 / 74
 
-...
+
+...
 
 FieldID3
 
@@ -2748,7 +2564,8 @@ Release: June 25, 2021
 
 31 / 74
 
-Length1 (2 bytes): MUST be set to 0x000C.
+
+Length1 (2 bytes): MUST be set to 0x000C.
 
 Reserved1 (14 bits): Reserved. This field MUST be set to zero and ignored on receipt.
 
@@ -2851,7 +2668,8 @@ Release: June 25, 2021
 
 32 / 74
 
-Length3 (2 bytes): MUST be set to 0x0024 (36 bytes).
+
+Length3 (2 bytes): MUST be set to 0x0024 (36 bytes).
 
 Validate Key (32 bytes): A key of the destination machine.
 
@@ -2930,7 +2748,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-FieldID8 (2 bytes): MUST be set to 0x00A6 (KEY_IDENTIFIER). MUST be present if and only if the
+
+FieldID8 (2 bytes): MUST be set to 0x00A6 (KEY_IDENTIFIER). MUST be present if and only if the
 
 protocol is executing in membership or confidential security mode.
 
@@ -2950,18 +2769,18 @@ encrypted into an Encrypted Endpoint Array Blob before being sent out on the wir
 fields are not present in confidential security mode. The size of this blob is variable because the
 security provider is pluggable.
 
-2.2.3  Data Structures
+#### 2.2.3 Data Structures
 
-2.2.3.1  Security Profile Data Structures
+##### 2.2.3.1 Security Profile Data Structures
 
 The upper-layer application is responsible for completing the data structures in this section.
 
-2.2.3.1.1 Encoded CPA
+###### 2.2.3.1.1 Encoded CPA
 
 The encoded CPA structure contains information that links a DRT service endpoint to a key. It is
 specified in section 2.2.3.1.1.1.
 
-2.2.3.1.1.1  Encoded CPA Structure
+###### 2.2.3.1.1.1 Encoded CPA Structure
 
 The encoded CPA structure contains information that links a service endpoint to a key.
 
@@ -3017,7 +2836,8 @@ Release: June 25, 2021
 
 34 / 74
 
-Public Key (variable)
+
+Public Key (variable)
 
 ...
 
@@ -3066,12 +2886,12 @@ Public Key (variable): A PUBLIC_KEY data structure defined in section 2.2.3.1.5.
 
 Service Address List (variable): A Service Address List structure.
 
-2.2.3.1.2 Keytoken
+###### 2.2.3.1.2 Keytoken
 
 The keytoken structure is used to decrypt encrypted structures in a DRT message. It is specified in
 section 2.2.3.1.2.1.
 
-2.2.3.1.2.1  Keytoken Structure
+###### 2.2.3.1.2.1 Keytoken Structure
 
 The keytoken structure is used to decrypt encrypted structures in a message.
 
@@ -3087,7 +2907,8 @@ Release: June 25, 2021
 
 35 / 74
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3133,12 +2954,12 @@ AES 256 KEY (32 bytes): This is the encryption key used to perform AES-256 encry
 
 input buffers. AES encryption is described in [FIPS197].
 
-2.2.3.1.3 Signature
+###### 2.2.3.1.3 Signature
 
 The signature structure is used to protect the integrity of one or more fields or structures in a DRT
 message. It is specified in section 2.2.3.1.3.1.
 
-2.2.3.1.3.1  Signature Structure
+###### 2.2.3.1.3.1 Signature Structure
 
 The signature structure carries the encoding of a signature calculated over fields in a message.
 
@@ -3168,7 +2989,8 @@ Release: June 25, 2021
 
 36 / 74
 
-...
+
+...
 
 Length (2 bytes): The number of bytes, in little-endian byte order, of the structure. MUST be set to
 
@@ -3178,12 +3000,12 @@ Signature Data (128 bytes): Signature data calculated by using the RSASSA- [PKCS
 
 algorithm ([RFC8017] section 8.2).
 
-2.2.3.1.4 Credential
+###### 2.2.3.1.4 Credential
 
 The credential structure is used to authenticate a node or authenticate a key. It is specified in
 section 2.2.3.1.4.1.
 
-2.2.3.1.4.1  Credential Structure
+###### 2.2.3.1.4.1 Credential Structure
 
 A certificate chain is a Public Key Cryptography Standards (PKCS) 7 version 1.5 message of
 type SignedData as specified in [RFC2315] section 9.1. The chain consists of a list of [X509] version 3
@@ -3214,13 +3036,13 @@ NOT be longer than 255 characters.
 The issuer field ([RFC2459] section 4.1.2.4) MUST be a null-terminated Unicode string that MUST
 NOT be longer than 255 characters.
 
-2.2.3.1.5 Key Identifier
+###### 2.2.3.1.5 Key Identifier
 
 A credential structure MAY contain multiple tokens suitable for authenticating a key or a node. The
 key identifier structure acts as a differentiator and includes an index into a credential structure. It
 is specified in section 2.2.3.1.5.1.
 
-2.2.3.1.5.1  Key Identifier Structure
+###### 2.2.3.1.5.1 Key Identifier Structure
 
 The credential structure contains multiple certificates forming a chain. The Distributed Routing Table
 Derived Key Security Profile Specification uses the key identifier structure to identify the certificate
@@ -3235,7 +3057,8 @@ Release: June 25, 2021
 
 37 / 74
 
-2.2.3.1.5.1.1  PUBLIC_KEY
+
+###### 2.2.3.1.5.1.1 PUBLIC_KEY
 
 The PUBLIC_KEY structure contains an encoding of a public key.
 
@@ -3297,12 +3120,12 @@ PublicKey Data (variable): An ASN.1-encoded 1024-bit RSA public key, as specifie
 
 section A.1.1.
 
-2.2.3.1.6 PAYLOAD
+###### 2.2.3.1.6 PAYLOAD
 
 The PAYLOAD structure carries application data associated with a key. It is specified in section
 2.2.3.1.6.1.
 
-2.2.3.1.6.1  PAYLOAD Structure
+###### 2.2.3.1.6.1 PAYLOAD Structure
 
 The PAYLOAD structure holds arbitrary binary data supplied by the application associated with a key.
 This data is carried by the distributed routing table in the EXTENDED_PAYLOAD field.
@@ -3327,16 +3150,17 @@ Release: June 25, 2021
 
 38 / 74
 
-...
+
+...
 
 Payload (variable): Data supplied by the upper-layer application associated with the published key.
 
-2.2.3.1.7 Encrypted Endpoint Array
+###### 2.2.3.1.7 Encrypted Endpoint Array
 
 An Endpoint Array structure containing one or more IPv6 addresses and ports, as specified in
 2.2.3.1.7.1.
 
-2.2.3.1.7.1  Encrypted Endpoint Array Structure
+###### 2.2.3.1.7.1 Encrypted Endpoint Array Structure
 
 The encrypted endpoint array is an encoding of IPv6 addresses and ports. This structure is used in
 the LOOKUP (section 2.2.2.8) message. This structure is encrypted using the keytoken documented in
@@ -3381,12 +3205,12 @@ Flagged Path (variable): A list of IPV6_ENDPOINT structures for DRT nodes that h
 
 this LOOKUP message so far.
 
-2.2.3.2  DRT Data Structures
+##### 2.2.3.2 DRT Data Structures
 
 The data structures defined in this section are core DRT protocol data structures and are not defined
 by the upper-layer application.
 
-2.2.3.3  ROUTE_ENTRY
+##### 2.2.3.3 ROUTE_ENTRY
 
 The ROUTE_ENTRY represents the basic critical information about a node to the other members of the
 cloud. The key elements are a 32-byte key and an array of IPv6 Addresses on which the DRT
@@ -3412,7 +3236,8 @@ Release: June 25, 2021
 
 39 / 74
 
-...
+
+...
 
 ...
 
@@ -3454,7 +3279,7 @@ IPv6 Addresses (variable): An array of IPv6 Addresses on which the DRT node repr
 
 this route entry is listening.
 
-2.2.3.4  IPV6_ENDPOINT
+##### 2.2.3.4 IPV6_ENDPOINT
 
 The IPV6_ENDPOINT structure contains information about an IPV6_ENDPOINT of a DRT node.
 
@@ -3483,7 +3308,7 @@ Port (2 bytes): IPv6 port. This MUST be greater than or equal to 1024.
 
 Address (16 bytes): IPv6 address.
 
-2.2.3.5  IPV6_ENDPOINT_ARRAY
+##### 2.2.3.5 IPV6_ENDPOINT_ARRAY
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -3507,7 +3332,8 @@ Release: June 25, 2021
 
 40 / 74
 
-NumEntries
+
+NumEntries
 
 ElementFieldType
 
@@ -3535,7 +3361,7 @@ EntryLength (2 bytes): MUST be set to 0x12 (18 bytes).
 
 Already Flooded List (variable): A list of IPV6_ENDPOINT structures.
 
-2.2.3.6  FIELD_ARRAY
+##### 2.2.3.6 FIELD_ARRAY
 
 The FIELD_ARRAY structure is used to describe an array of elements.
 
@@ -3579,7 +3405,8 @@ Release: June 25, 2021
 
 41 / 74
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 DRT nodes use eight specific message types. These messages can be split into two distinctive classes:
 request messages (SOLICIT, REQUEST, FLOOD, LOOKUP, and INQUIRE) and acknowledge messages
@@ -3618,9 +3445,9 @@ FLOOD with D flag clear
 
 ACK
 
-3.1  Resolver Details
+### 3.1 Resolver Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section specifies a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3661,7 +3488,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  ResolvePath: A list of network endpoints of DRT nodes that have already been asked
+
+  ResolvePath: A list of network endpoints of DRT nodes that have already been asked
 
 about this request.
 
@@ -3748,7 +3576,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-
+
+
 
 InquireMessageId:MessageID of the INQUIRE message sent to validate this route
 entry.
@@ -3776,7 +3605,7 @@ list of network endpoints.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementer is at liberty to implement such data in any way.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 A DRT Cloud has the following timers:
 
@@ -3788,18 +3617,18 @@ SHOULD<1> be 15 seconds to keep the cache functional.
 
 and is used for retransmission. The period SHOULD be 1 second.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The higher-layer application MUST select a security mode, provide minor and major version numbers
 to be included in the protocol messages, and MUST provide the protocol with security and bootstrap
 modules.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 A Resolver MUST provide to higher-layer applications and protocols the three logical operations that
 can be invoked: Opening a Cloud, Resolving a Key, and Closing a Cloud.
 
-3.1.4.1  Opening a Cloud
+##### 3.1.4.1 Opening a Cloud
 
 When a higher-layer application or protocol asks DRT to open a cloud, the node MUST first check
 whether it already has an opened cloud. If so, it MUST return a failure to the application or higher-
@@ -3823,17 +3652,18 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-3.  Initiate the cloud discovery process as specified in section 3.1.4.2.
+
+3.  Initiate the cloud discovery process as specified in section 3.1.4.2.
 
 4.  Start the Maintenance Timer for the cloud.
 
-3.1.4.2  Discovering Other Nodes in a Cloud
+##### 3.1.4.2 Discovering Other Nodes in a Cloud
 
 The upper-layer application is responsible for discovering other nodes in the cloud and supplying the
 DRT service endpoints of these nodes to the DRT protocol. The DRT protocol MAY call upon the
 upper-layer application to obtain the DRT service endpoints of other nodes after initialization.<2>
 
-3.1.4.3  Initiating a DRT Synchronization Conversation
+##### 3.1.4.3 Initiating a DRT Synchronization Conversation
 
 A synchronization conversation allows a node to exchange resource information in the form of
 ROUTE_ENTRY structures with another given node in a given cloud.
@@ -3847,7 +3677,7 @@ The node MUST save the MessageID of the SOLICIT message in the entry in the conv
 The node MUST also put the SOLICIT message in the Pending List, set its Retry Count to 2, and start
 its Message Retransmission Timer.
 
-3.1.4.4  Resolving a Key
+##### 3.1.4.4 Resolving a Key
 
 In a resolution operation, three inputs are provided by the application or higher-layer protocol:
 
@@ -3895,7 +3725,8 @@ Release: June 25, 2021
 
 45 / 74
 
-and optionally
+
+and optionally
 
 
 
@@ -3974,7 +3805,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-is found. The Resolve operation is now complete. Otherwise, send an INQUIRE message as in step
+
+is found. The Resolve operation is now complete. Otherwise, send an INQUIRE message as in step
 7 above.
 
 If the NextHopStack element is not empty, SuspiciousCount element is less than or equal to 6,
@@ -3995,15 +3827,15 @@ and increment the UseCount in the CurrentNextHop element state. Set LastSentMess
 the MessageID of the LOOKUP message. Put the LOOKUP message in the Pending List element,
 set its Retry Count to 2, and start its Message Retransmission Timer.
 
-3.1.4.5  Closing a Cloud
+##### 3.1.4.5 Closing a Cloud
 
 When an application or higher-layer protocol closes a cloud, the DRT node MUST verify that it has a
 cloud state for the cloud, and fail the request if not. The DRT node MUST delete all state information
 for the cloud.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a DRT Message
+##### 3.1.5.1 Receiving a DRT Message
 
 When a node receives a DRT Message, it MUST first check whether the message starts with a DRT
 Header that conforms to the syntax as specified in section 2.2.1, and silently drop the message if not.
@@ -4017,7 +3849,7 @@ The node MUST then check the Message Type field and handle additional type-speci
 accordance with its message type. Messages with types other than those specified in this document
 MUST be dropped.
 
-3.1.5.2  Receiving an ADVERTISE Message
+##### 3.1.5.2 Receiving an ADVERTISE Message
 
 When a Resolver receives an ADVERTISE message, it MUST perform the following steps:
 
@@ -4044,11 +3876,12 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Retransmission Timer. If the protocol is executing in membership or confidential security mode, call
+
+Retransmission Timer. If the protocol is executing in membership or confidential security mode, call
 upon the SecurityModule to provide the Credential, Signature, and KeyIdentifier fields of the
 message.
 
-3.1.5.3  Receiving an ACK Message
+##### 3.1.5.3 Receiving an ACK Message
 
 When an ACK message is received, the receiving node MUST attempt to match the Acked
 MessageID field with the MessageID of an entry in the Pending List. If a match is not found, the
@@ -4056,7 +3889,7 @@ message MUST be silently discarded with no further action.
 
 If, alternatively, a match is found, the entry in the Pending List MUST be removed.
 
-3.1.5.4  Receiving a FLOOD Message
+##### 3.1.5.4 Receiving a FLOOD Message
 
 Upon receiving a FLOOD message, a DRT node MUST perform the following steps:
 
@@ -4080,7 +3913,7 @@ not valid, discard.
 
 Remove the ROUTE_ENTRY (if any) for the key of the Revoke CPA from the cache.
 
-3.1.5.5  Receiving an AUTHORITY Message
+##### 3.1.5.5 Receiving an AUTHORITY Message
 
 On receipt of an AUTHORITY message, the DRT node MUST first check whether the AUTHORITY
 message conforms to the syntax as specified in section 2.2.2.6, and drop the message if not.
@@ -4113,14 +3946,15 @@ Release: June 25, 2021
 
 48 / 74
 
-For all fragments, a DRT node MUST copy the AUTHORITY_BUFFER message at the offset as specified
+
+For all fragments, a DRT node MUST copy the AUTHORITY_BUFFER message at the offset as specified
 in the AUTHORITY message.
 
 If the AUTHORITY_BUFFER message is still not completely reassembled, no further processing is
 necessary. After the last fragment is received, processing MUST be done on the reassembled
 AUTHORITY_BUFFER message.
 
-3.1.5.5.1 Receiving an AUTHORITY_BUFFER
+###### 3.1.5.5.1 Receiving an AUTHORITY_BUFFER
 
 When a DRT node has a fully formed AUTHORITY_BUFFER message, the DRT node MUST first check
 whether the AUTHORITY_BUFFER message conforms to the syntax as specified in section 2.2.2.6, and
@@ -4188,9 +4022,10 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-11. Resume at step 7 in section 3.1.4.4.
 
-3.1.5.5.1.1  Receiving a Response to an INQUIRE
+11. Resume at step 7 in section 3.1.4.4.
+
+###### 3.1.5.5.1.1 Receiving a Response to an INQUIRE
 
 The Outstanding Resolve table MUST be checked to find an entry that MAY have sent an INQUIRE
 message during a resolution. If one is not found, see section 3.1.5.5.1.2. Otherwise, continue
@@ -4208,7 +4043,7 @@ otherwise, the node MUST repeat the LOOKUP message procedure starting at step 7 
 If the resolve entry's ResolveReasonCode is equal to REASON_APP_REQUEST, the node MUST then
 return the endpoints information to the higher-layer application or protocol.
 
-3.1.5.5.1.2  Completing a Route Entry Cache Addition
+###### 3.1.5.5.1.2 Completing a Route Entry Cache Addition
 
 The following processing MUST be done when the AUTHORITY_BUFFER message is acknowledging an
 INQUIRE message sent while adding a route entry to the cache:
@@ -4240,7 +4075,7 @@ match, the Route Entry MUST be silently discarded.
 
 7.  Add the Route Entry to the Route Entry Cache.
 
-3.1.5.6  Receiving a New ROUTE_ENTRY
+##### 3.1.5.6 Receiving a New ROUTE_ENTRY
 
 After a ROUTE_ENTRY message has been extracted from a received message, the receiving node
 MUST follow these steps to submit it to the cache for inclusion. If the PortNumber field of the
@@ -4257,7 +4092,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-The ROUTE_ENTRY message MUST then be tested for return routability by composing an INQUIRE
+
+The ROUTE_ENTRY message MUST then be tested for return routability by composing an INQUIRE
 message with the Validate Key field set to the key in the ROUTE_ENTRY message and FieldId3 set
 to 0x0093 (NONCE). The node MUST then select one of the addresses included in the ROUTE_ENTRY
 message, using the algorithm in [RFC3484] section 6, and send the INQUIRE message to the selected
@@ -4266,9 +4102,9 @@ address, using the port indicated in the ROUTE_ENTRY message.
 The node MUST then set InquireMessageId to the MessageID of the INQUIRE message sent, in the
 entry added to the Pending Route Entry Add List element.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Maintenance Timer Expiry
+##### 3.1.6.1 Maintenance Timer Expiry
 
 The node MUST check to see if it knows of any other members of the cloud. If it does not, it MUST
 invoke the process as specified in section 3.1.4.2 to attempt to discover the cloud.
@@ -4306,7 +4142,7 @@ space, so as to reduce the time it takes to do a resolve on behalf of an applica
 protocol). If it does so, then the ResolveReasonCode element MUST be set to
 REASON_CACHE_MAINTENANCE.
 
-3.1.6.2  Message Retransmission Timer Expiry
+##### 3.1.6.2 Message Retransmission Timer Expiry
 
 When the Message Retransmission Timer expires for an entry in the Pending List, the DRT node
 MUST decrement the entry's Retry Count. If it is still nonzero, it MUST send the message again and
@@ -4322,26 +4158,27 @@ Release: June 25, 2021
 
 51 / 74
 
-Upon timer expiry, if the message stored is a LOOKUP message or an INQUIRE message, the DRT
+
+Upon timer expiry, if the message stored is a LOOKUP message or an INQUIRE message, the DRT
 node MUST clean up any outstanding reassembly context that matches the MessageID. This is done
 regardless of the entry's Retry Count. This will ensure that any reassembly context will not remain
 longer than 1 second.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Processing Address Change Notifications
+##### 3.1.7.1 Processing Address Change Notifications
 
 The DRT node MUST monitor changes in IPv6 addresses available on the host machine. If a change
 in the set of addresses is detected, then the node MUST construct a new list of addresses following the
 restrictions as specified in step 1 of section 3.1.4.1. If this is different than the current list in the Local
 Endpoint List, then the node MUST replace the old list with the new one.
 
-3.2  Publisher Details
+### 3.2 Publisher Details
 
 All Publishers MUST follow the rules for Resolvers as well as the rules for Publishers. This section
 specifies additional rules beyond those in section 3.1.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4374,7 +4211,7 @@ registered key.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementer is at liberty to implement such data in any way.
 
-3.2.1.1  Cache
+##### 3.2.1.1 Cache
 
 To respond to LOOKUP messages when a neighbor is searching for a particular key, a DRT node is
 required to maintain a Route Entry Cache. A DRT cloud has no scale limitation, and could consist of
@@ -4388,7 +4225,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-cache is of critical importance to ensure a reasonable trade-off between search time, bandwidth, and
+
+cache is of critical importance to ensure a reasonable trade-off between search time, bandwidth, and
 memory consumption.
 
 The specific cache organization is an implementation detail,<4> but the following are requirements
@@ -4412,19 +4250,19 @@ This constraint ensures that when a neighbor is performing a bootstrap operation
 SOLICIT messages for entries for this node's cache, it is possible to ADVERTISE an even
 distribution of candidates.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Conversation Timer: A one-shot timer per Conversation Table entry, it is used to expire the
 
 conversation entry. The timeout value SHOULD be 15 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Publisher performs no initialization beyond that specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Registering a Key
+##### 3.2.4.1 Registering a Key
 
 To register a key, the application or higher-layer protocol MUST provide:
 
@@ -4459,10 +4297,11 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-(Note that because the above route entry is in each LOOKUP message sent, the nodes receiving
+
+(Note that because the above route entry is in each LOOKUP message sent, the nodes receiving
 the LOOKUP will have the opportunity to learn of the existence of the new node.)
 
-3.2.4.2  Unregistering a Key
+##### 3.2.4.2 Unregistering a Key
 
 To unregister a Key, a node MUST perform the following steps:
 
@@ -4489,9 +4328,9 @@ existing neighbors.
 Whenever a FLOOD message with the D flag clear is sent, the node MUST also put the FLOOD
 message in the Pending List, set its Retry Count to 2, and start its Message Retransmission Timer.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a New ROUTE_ENTRY
+##### 3.2.5.1 Receiving a New ROUTE_ENTRY
 
 SOLICIT, LOOKUP, FLOOD, and AUTHORITY messages contain route entries. The processing required
 when receiving a new ROUTE_ENTRY structure is specified in section 3.1.5.6. Publishers MUST follow
@@ -4501,7 +4340,7 @@ If the key of the ROUTE_ENTRY message falls within one of the node's key leaf se
 A and C flags in the INQUIRE message to request a CPA and Certificate Chain, and NeedCpa MUST
 be set to true for the entry added to the Pending Route Entry Add List.
 
-3.2.5.2  Receiving a LOOKUP Message
+##### 3.2.5.2 Receiving a LOOKUP Message
 
 When a LOOKUP message is received, a node MUST perform the following steps:
 
@@ -4531,7 +4370,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-be broken in any implementation-specific manner). This is referred to as the ClosestLocalMatch. If
+
+be broken in any implementation-specific manner). This is referred to as the ClosestLocalMatch. If
 the ValidateNotLocal flag is not set, the returned key MUST be closer to the Target Key than the
 Validate Key field.
 
@@ -4563,7 +4403,7 @@ MUST be set.
 
 section 3.2.5.7.
 
-3.2.5.3  Receiving a SOLICIT Message
+##### 3.2.5.3 Receiving a SOLICIT Message
 
 Upon receiving a SOLICIT message for a given cloud, a DRT node MUST perform the following steps:
 
@@ -4590,7 +4430,7 @@ source of the SOLICIT message.
 
 in section 3.2.5.1.
 
-3.2.5.4  Receiving a REQUEST Message
+##### 3.2.5.4 Receiving a REQUEST Message
 
 When the REQUEST message is received for a given cloud, the receiving node MUST perform the
 following steps:
@@ -4602,7 +4442,8 @@ Release: June 25, 2021
 
 55 / 74
 
-1.  Check whether the REQUEST message conforms to the syntax as specified in section 2.2.2.3, and
+
+1.  Check whether the REQUEST message conforms to the syntax as specified in section 2.2.2.3, and
 drop the message if not. If the protocol is executing in membership or confidential security mode,
 pass the REQUEST message to the SecurityModule for verification of the Credential and Signature
 fields. If verification fails, drop the message. Otherwise, continue processing as follows.
@@ -4624,14 +4465,14 @@ avoid retransmission of the REQUEST message.
 
 REQUEST message and delete the entry from the Conversation Table.
 
-3.2.5.5  Receiving a FLOOD Message
+##### 3.2.5.5 Receiving a FLOOD Message
 
 Section 3.1.5.4 specifies the rules for handling received FLOOD messages. In addition to those rules,
 when sending an ACK message in response to a FLOOD message with a nonzero Validate Key field, a
 Publisher MUST check its Locally Registered Key List. If the Validate Key is not in the list, the
 Publisher MUST set the N flag in the ACK message.
 
-3.2.5.6  Receiving an INQUIRE Message
+##### 3.2.5.6 Receiving an INQUIRE Message
 
 When a DRT node receives an INQUIRE message, it MUST perform the following steps:
 
@@ -4674,7 +4515,8 @@ Release: June 25, 2021
 
 56 / 74
 
-3.2.5.7  Sending an AUTHORITY_BUFFER
+
+##### 3.2.5.7 Sending an AUTHORITY_BUFFER
 
 To send an AUTHORITY_BUFFER message to a given node, a DRT node MUST construct AUTHORITY
 messages as follows:
@@ -4690,7 +4532,7 @@ message MUST contain the same DRT Header values.
 
 The DRT node MUST then send the AUTHORITY message(s) to the specified node.
 
-3.2.5.8  Receiving an AUTHORITY Message
+##### 3.2.5.8 Receiving an AUTHORITY Message
 
 Section 3.1.5.5.1.1 specifies the rules for handling received AUTHORITY messages. In addition to
 those rules, when a ROUTE_ENTRY completes validation and is added to the Route Entry Cache (as
@@ -4724,7 +4566,7 @@ the leaf set.
 Whenever a FLOOD message with the D flag clear is sent, the node MUST also put the FLOOD
 message in the Pending List, set its Retry Count to 2, and start its Message Retransmission Timer.
 
-3.2.5.8.1 Receiving an AUTHORITY_BUFFER
+###### 3.2.5.8.1 Receiving an AUTHORITY_BUFFER
 
 The rules of processing an AUTHORITY_BUFFER message are as specified in section 3.1.5.5.1.1, with
 the following addition at the end. If the ResolveReasonCode is REASON_SPLIT_DETECTION, and this
@@ -4743,7 +4585,8 @@ Release: June 25, 2021
 
 57 / 74
 
-1.  The best match key exists in the local cache of this node and there are no cache entries with key
+
+1.  The best match key exists in the local cache of this node and there are no cache entries with key
 between the best match key and the Target Key. This means there is no evidence of a cloud split.
 
 2.  The best match key exists in the local cache of this node and there is at least one Route Entry with
@@ -4763,14 +4606,14 @@ detection process, as specified in section 3.2.6.2.1, for each locally published
 Key (which it just completed). This will help to get as many parts of the number space merged as
 possible.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Conversation Timer Expiry
+##### 3.2.6.1 Conversation Timer Expiry
 
 When a Conversation Timer expires for a given Conversation Table entry, the DRT node MUST delete
 the entry.
 
-3.2.6.2  Maintenance Timer Expiry
+##### 3.2.6.2 Maintenance Timer Expiry
 
 When the Maintenance Timer expires, the DRT node MUST attempt to detect cloud splits (as specified
 in section 3.2.6.2.1).
@@ -4783,7 +4626,7 @@ The DRT node MAY<5> also resolve any keys to ensure that the cache requirements 
 met, as specified in section 3.2.1.1. If it does so, then the ResolveReasonCode MUST be set to
 REASON_CACHE_MAINTENANCE.
 
-3.2.6.2.1 Detection of Cloud Splits
+###### 3.2.6.2.1 Detection of Cloud Splits
 
 A DRT node MUST periodically test to determine whether they have become isolated or split off from
 the main cloud. For performance reasons, the frequency of split detections SHOULD be roughly
@@ -4815,7 +4658,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-Parameter
+
+Parameter
 
 Value
 
@@ -4832,7 +4676,7 @@ InitialNextHopRouteEntry
 A Route Entry with the key set to zero and the first address set to an address
 returned by the BootstrapModule.
 
-3.2.6.2.1.1  Cloud Size Estimation
+###### 3.2.6.2.1.1 Cloud Size Estimation
 
 To calculate the estimated cloud size, a DRT node SHOULD repeat the following process for every
 locally registered key.
@@ -4847,7 +4691,7 @@ terms of the number of keys in the cloud. To find the estimated cloud size in te
 DRT nodes, a DRT node SHOULD divide the preceding estimated cloud size by the number of locally
 registered keys.
 
-3.2.6.3  Message Retransmission Timer Expiry
+##### 3.2.6.3 Message Retransmission Timer Expiry
 
 When the Message Retransmission Timer expires, the DRT node MUST follow the rules as specified in
 section 3.1.6.2. In addition to those rules, a Publisher MUST also take additional actions for specific
@@ -4871,9 +4715,9 @@ If the message stored is a FLOOD message, and the Retry Count is decremented to 
 Route Entry for the key in the Validate Key field of the FLOOD message is in the route cache, the
 route MUST be removed to prevent future attempts to send messages to the unresponsive node.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Resolving a Key
+##### 3.2.7.1 Resolving a Key
 
 The rules for resolving a key are specified in section 3.1.4.4. In addition, whenever a Publisher
 resolves a key and its Locally Registered Key List is not empty, it MUST do the following.
@@ -4889,10 +4733,11 @@ Release: June 25, 2021
 
 59 / 74
 
-The first entry in the ResolvePath MUST be (any) one of the network endpoints in the Publisher's
+
+The first entry in the ResolvePath MUST be (any) one of the network endpoints in the Publisher's
 Local Endpoint List. This prevents other nodes from referring this node back to itself.
 
-3.2.7.2  Processing Address Change Notifications
+##### 3.2.7.2 Processing Address Change Notifications
 
 A publisher MUST follow the same procedure as specified in section 3.1.7.1 for processing address
 changes. In addition, for every entry in its Locally Registered Key List, it MUST advertise a
@@ -4905,14 +4750,15 @@ Release: June 25, 2021
 
 60 / 74
 
-4  Protocol Examples
 
-4.1  Resolving a Key
+## 4 Protocol Examples
+
+### 4.1 Resolving a Key
 
 An application asks a DRT node (hereafter, the Resolver) to resolve a key. The Resolver then
 performs the steps discussed in the following topics.
 
-4.1.1  Opening a Cloud
+#### 4.1.1 Opening a Cloud
 
 The Resolver, not yet a member of the clouds first joins the cloud by performing the following steps:
 
@@ -4927,7 +4773,7 @@ communication.
 The Resolver begins listening for incoming UDP messages on the chosen port, looking for
 messages sent to the chosen IPv6 Addresses.
 
-4.1.2  Cache Synchronization
+#### 4.1.2 Cache Synchronization
 
 Having successfully opened a cloud, the DRT node first synchronizes its cache before initiating key
 resolution.
@@ -4947,7 +4793,8 @@ Release: June 25, 2021
 
 61 / 74
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MC-DRT].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -4986,7 +4833,8 @@ Release: June 25, 2021
 
 62 / 74
 
-The Resolver then goes through the array of keys in the ADVERTISE message and selects the ones
+
+The Resolver then goes through the array of keys in the ADVERTISE message and selects the ones
 to include in its own cache. If it selects all of them, for example, it returns a REQUEST message to
 specify which keys it would like to obtain.
 
@@ -5006,7 +4854,7 @@ FLOOD message for each key that is listed in the REQUEST message.
 section 2.2.2.4) the Resolver returns an ACK message to indicate that it has received the FLOOD
 message. The Resolver then adds to its cache the ROUTE_ENTRY in the message.
 
-4.1.3  Key Resolution
+#### 4.1.3 Key Resolution
 
 The Resolver now attempts key resolution via the following steps:
 
@@ -5017,7 +4865,8 @@ Release: June 25, 2021
 
 63 / 74
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MC-DRT].images/page064-img01.png)
 <!-- /Extracted images from page 64 -->
 
@@ -5049,7 +4898,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-4.  Upon receiving the LOOKUP message, Node 2 first searches its cache and determines if it contains
+
+4.  Upon receiving the LOOKUP message, Node 2 first searches its cache and determines if it contains
 the key found in the Validate Key field. It does not, and also has no keys in its cache that are
 closer to the Target Key than the Validate Key. It returns an AUTHORITY message with the
 RouteEntry field set to NULL.
@@ -5093,7 +4943,7 @@ AUTHORITY messages, reassembling the AUTHORITY_BUFFER message, and validating th
 CPA corresponds to the Key of interest, the Resolver reports the endpoint information back to the
 application.
 
-4.2  Registering a Key
+### 4.2 Registering a Key
 
 To register a Key, a node performs the resolve operation as specified in section 4.1.3, with the Target
 ID set to the key to be registered + 1. For example, if key 6 is being registered, it would perform a
@@ -5103,7 +4953,7 @@ As other nodes receive LOOKUP messages from the registering node, they add the r
 key to their leaf sets when appropriate. Likewise, the registering node will populate its own leaf set
 with the keys it finds in the received AUTHORITY messages.
 
-4.3  Unregistering a Key
+### 4.3 Unregistering a Key
 
 When a key is unregistered, a Revoke CPA is sent to two entries from the leaf set of the ID being
 unregistered. One entry is the numerically closest ID greater than the local ID and the other entry is
@@ -5119,7 +4969,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MC-DRT].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -5151,7 +5002,7 @@ the Node 6 key used to reside.
 11) of the node with the next lower key than the unregistering node (for example, Node 5),
 allowing Node 11 to repair its leaf set as well.
 
-4.4  Flooding a New Leaf Set Member
+### 4.4 Flooding a New Leaf Set Member
 
 Assume there is a registered node with a Local ID of Y, and that its leaf set consists of {B, C, D, E,
 F} on one side and {G, H, I, J, K} on the other. Assume that Node Y learns about a new
@@ -5164,7 +5015,8 @@ Release: June 25, 2021
 
 66 / 74
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MC-DRT].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -5223,7 +5075,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-12. G will now send the FLOOD message of X to E and H.
+
+12. G will now send the FLOOD message of X to E and H.
 
 13. This begins the second wave of flooding for Node X.
 
@@ -5291,9 +5144,10 @@ Release: June 25, 2021
 
 68 / 74
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Many Denial-of-Service (DoS) attack mechanisms exist (for example, duplicate address detection or
 switch port map poisoning) beyond DRT. This makes Dos attacks from on-link nodes less important.
@@ -5307,7 +5161,7 @@ by doing a return routability check to ensure that the DRT node with the address
 ROUTE_ENTRY actually claims to be publishing the key in each new route entry, before adding it to
 the cache.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5318,7 +5172,8 @@ Release: June 25, 2021
 
 69 / 74
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5386,7 +5241,8 @@ Distributed Routing Table (DRT) Version 1.0
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5433,7 +5289,8 @@ Release: June 25, 2021
 
 71 / 74
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5567,7 +5424,8 @@ Messages
 
 72 / 74
 
-   DRT data structures 39
+
+   DRT data structures 39
    DRT Header 16
    security profile data structures 34
    transport 14
@@ -5708,7 +5566,8 @@ Sequencing rules
 
 73 / 74
 
-   publisher
+
+   publisher
       receiving
          AUTHORITY message 57
          FLOOD message 56

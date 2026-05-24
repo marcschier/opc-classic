@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 41
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 41
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: April 23, 2024
 
 3 / 41
 
-Date
+
+Date
 
 Revision
 History
@@ -542,180 +545,78 @@ Release: April 23, 2024
 
 4 / 41
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Instantiation Concepts](#132-instantiation-concepts)
+    - [1.3.3 Pooling](#133-pooling)
+    - [1.3.4 Recycling and Pausing](#134-recycling-and-pausing)
+    - [1.3.5 Activity Statistics](#135-activity-statistics)
+    - [1.3.6 Polling and Tracker Events](#136-polling-and-tracker-events)
+    - [1.3.7 Process Dump](#137-process-dump)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 CurlyBraceGuidString](#221-curlybraceguidstring)
+    - [2.2.2 ContainerStatistics](#222-containerstatistics)
+    - [2.2.3 ContainerData](#223-containerdata)
+    - [2.2.4 ComponentData](#224-componentdata)
+    - [2.2.5 TrackingInfo Formats](#225-trackinginfo-formats)
+      - [2.2.5.1 LengthPrefixedName](#2251-lengthprefixedname)
+      - [2.2.5.2 TrackingInfoPropertyValue](#2252-trackinginfopropertyvalue)
+      - [2.2.5.3 TrackingInfoProperty](#2253-trackinginfoproperty)
+      - [2.2.5.4 TrackingInfoObject OBJREF_CUSTOM](#2254-trackinginfoobject-objrefcustom)
+      - [2.2.5.5 TrackingInfoCollection OBJREF_CUSTOM](#2255-trackinginfocollection-objrefcustom)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 IGetTrackingData](#3141-igettrackingdata)
+        - [3.1.4.1.1 GetContainerData (Opnum 4)](#31411-getcontainerdata-opnum-4)
+        - [3.1.4.1.2 GetComponentDataByContainer (Opnum 5)](#31412-getcomponentdatabycontainer-opnum-5)
+        - [3.1.4.1.3 GetComponentDataByContainerAndCLSID (Opnum 6)](#31413-getcomponentdatabycontainerandclsid-opnum-6)
+      - [3.1.4.2 IProcessDump](#3142-iprocessdump)
+        - [3.1.4.2.1 IsSupported (Opnum 7)](#31421-issupported-opnum-7)
+        - [3.1.4.2.2 DumpProcess (Opnum 8)](#31422-dumpprocess-opnum-8)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 IComTrackingInfoEvents](#3251-icomtrackinginfoevents)
+        - [3.2.5.1.1 OnNewTrackingInfo (Opnum 3)](#32511-onnewtrackinginfo-opnum-3)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Polling for Tracking Data](#41-polling-for-tracking-data)
+  - [4.2 Receiving a Tracker Event](#42-receiving-a-tracker-event)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Background ............................................................................................... 10
-Instantiation Concepts................................................................................. 10
-Pooling ...................................................................................................... 11
-Recycling and Pausing ................................................................................. 12
-Activity Statistics ........................................................................................ 12
-Polling and Tracker Events ........................................................................... 12
-Process Dump ............................................................................................ 13
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 14
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-1.3.7
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Data Types ........................................................................................ 15
-CurlyBraceGuidString .................................................................................. 15
-ContainerStatistics ...................................................................................... 15
-ContainerData ............................................................................................ 16
-ComponentData ......................................................................................... 16
-TrackingInfo Formats .................................................................................. 17
-LengthPrefixedName ............................................................................. 17
-TrackingInfoPropertyValue ..................................................................... 18
-TrackingInfoProperty ............................................................................. 18
-TrackingInfoObject OBJREF_CUSTOM ...................................................... 19
-TrackingInfoCollection OBJREF_CUSTOM .................................................. 19
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-
-3  Protocol Details ..................................................................................................... 21
-Server Details .................................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-IGetTrackingData .................................................................................. 22
-GetContainerData (Opnum 4) ........................................................... 23
-GetComponentDataByContainer (Opnum 5) ........................................ 23
-GetComponentDataByContainerAndCLSID (Opnum 6) .......................... 23
-IProcessDump ...................................................................................... 24
-IsSupported (Opnum 7) ................................................................... 24
-DumpProcess (Opnum 8) ................................................................. 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Client Details ................................................................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.4.2.1
-3.1.4.2.2
-
-3.1.5
-3.1.6
-
-3.1.4.2
-
-3.2
-
-[MS-COMT] - v20240423
-Component Object Model Plus (COM+) Tracker Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 41
-
-3.2.5.1
-
-3.2.5.1.1
-
-IComTrackingInfoEvents ........................................................................ 26
-OnNewTrackingInfo (Opnum 3) ......................................................... 27
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 29
-Polling for Tracking Data ................................................................................... 29
-Receiving a Tracker Event ................................................................................. 30
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 32
-
-7  Appendix B: Product Behavior ............................................................................... 34
-
-8  Change Tracking .................................................................................................... 39
-
-9  Index ..................................................................................................................... 40
-
-[MS-COMT] - v20240423
-Component Object Model Plus (COM+) Tracker Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 41
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Component Object Model Plus (COM+) Tracker Service Protocol (COMT),
 which allows clients to monitor running instances of components.
@@ -723,7 +624,7 @@ which allows clients to monitor running instances of components.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -790,7 +691,8 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-interface: A specification in a Component Object Model (COM) server that describes how to access
+
+interface: A specification in a Component Object Model (COM) server that describes how to access
 
 the methods of a class. For more information, see [MS-DCOM].
 
@@ -869,14 +771,15 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -909,7 +812,7 @@ Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-COMA] Microsoft Corporation, "Component Object Model Plus (COM+) Remote Administration
 Protocol".
@@ -935,12 +838,13 @@ Release: April 23, 2024
 
 9 / 41
 
-[MSDN-Partitions] Microsoft Corporation, "Partitions", http://msdn.microsoft.com/en-
+
+[MSDN-Partitions] Microsoft Corporation, "Partitions", http://msdn.microsoft.com/en-
 us/library/ms679480.aspx
 
 [UML] Object Management Group, "Unified Modeling Language", http://www.omg.org/spec/UML/
 
-1.3  Overview
+### 1.3 Overview
 
 The COM+ Tracker Service Protocol enables remote clients to monitor instances of components
 running on a server. The server end of the protocol tracks the status of component instances and
@@ -950,7 +854,7 @@ status. It also optionally includes an event-driven notification system in which
 client's callback interface whenever new tracking data is available, for example, as a result of local
 events on the server.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 A component is an indivisible unit of software functionality. Examples of components include
 Distributed Component Object Model (DCOM) Remote Protocol object classes, as specified in [MS-
@@ -968,7 +872,7 @@ A conglomeration is a set of related component configurations and is identified 
 the conglomeration identifier. A component that has a component configuration in a conglomeration is
 said to be configured in that conglomeration.
 
-1.3.2  Instantiation Concepts
+#### 1.3.2 Instantiation Concepts
 
 A server typically provides local or remote mechanisms by which components can be instantiated. An
 example of a remote instantiation mechanism is DCOM activation (as specified in [MS-DCOM] section
@@ -1001,7 +905,8 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-COMT].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1015,7 +920,7 @@ containers, and processes. For more information about UML, see [UML].
 
 Figure 1: Relationships between static and run-time objects
 
-1.3.3  Pooling
+#### 1.3.3 Pooling
 
 A server might provide, a single instance container, at most, for a conglomeration at any given
 time, or it might have the capability to provide  multiple instance containers. Enabling a
@@ -1033,7 +938,8 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-enable information about individual instance containers to be exchanged in cases where container
+
+enable information about individual instance containers to be exchanged in cases where container
 pooling is in use.
 
 Instance pooling refers to enabling component instances that are no longer active to return to a
@@ -1042,7 +948,7 @@ and destruction of short-lived component instances. A COMT server that enables i
 might track pooling behavior and expose separate statistics for pooled and active component
 instances.
 
-1.3.4  Recycling and Pausing
+#### 1.3.4 Recycling and Pausing
 
 Recycling refers to permanently disabling the creation of new component instances in an instance
 container. An instance container that is recycled shuts down as soon as the existing component
@@ -1053,7 +959,7 @@ enables clients to determine whether an instance container is being recycled.
 Pausing refers to temporarily disabling the creation of new component instances in an instance
 container. COMT enables clients to determine whether an instance container is paused.
 
-1.3.5  Activity Statistics
+#### 1.3.5 Activity Statistics
 
 A COMT server optionally collects run-time activity statistics about component instances and
 instance containers.
@@ -1070,7 +976,7 @@ on the number of references to a component instance. The meaning of a reference 
 specific, but this information could be useful to administrators. The COMT enables a client to obtain
 reference statistics for the components that are instantiated in an instance container.
 
-1.3.6  Polling and Tracker Events
+#### 1.3.6 Polling and Tracker Events
 
 The COMT enables two mechanisms by which clients can obtain tracking data: a push model and a pull
 model.
@@ -1098,7 +1004,8 @@ Release: April 23, 2024
 
 12 / 41
 
-1.3.7  Process Dump
+
+#### 1.3.7 Process Dump
 
 If tracking data received by an administrator or administration client application indicates that there
 might be a problem with the instance containers in a particular process, the administrator or
@@ -1112,7 +1019,7 @@ the debugging data collected, are implementation-specific. However, typical data
 dump might be full or partial contents of the process's address space, information on the process's
 usage of system resources, and history of exceptional events that have occurred.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 COMT is built on top of DCOM [MS-DCOM].
 
@@ -1124,7 +1031,7 @@ Client applications that want to receive notifications via the push model also n
 protocol, such as the Component Object Model Plus (COM+) Event System Protocol [MS-COMEV], to
 first register the COMT callback interface.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 COMT assumes that a client application that wants to receive tracker events by using the push
 model has previously registered a callback interface to the server by using some other mechanism; for
@@ -1138,17 +1045,17 @@ in the COMT server's file system.
 COMT assumes that a client application or administrator that wants to interpret debugging data from a
 process dump recognizes the file format in which this data will be written.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The COM+ Tracker Service Protocol is most appropriate for monitoring running instances of
 components when the tracking information is used for informational purposes. It is not appropriate
 when this information is required for correct behavior of a client application.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The COM+ Tracker Service Protocol has no versioning and capability negotiation functionality.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The COM+ Tracker Service Protocol uses HRESULT values, as specified in [MS-ERREF] section 2.1.
 Vendors can define their own HRESULT values, provided that they set the C bit (0x20000000) for each
@@ -1161,7 +1068,8 @@ Release: April 23, 2024
 
 13 / 41
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 The following table lists well-known GUIDs in the COMT Protocol. These GUIDs were generated using
 the mechanism specified in [C706] section A.2.5.
@@ -1214,17 +1122,18 @@ Release: April 23, 2024
 
 14 / 41
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how COM+ Tracker Service Protocol messages are transported as well
 as COMT Protocol message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 All COM+ Tracker Service Protocol messages are transported via DCOM, as specified in [MS-DCOM].
 COMT uses the dynamic endpoints allocated and managed by the DCOM infrastructure.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to remote procedure call (RPC) base types and definitions specified in [C706] and [MS-
 RPCE], the following table defines additional data types.
@@ -1258,7 +1167,7 @@ BSTR
 
 As specified in [MS-OAUT] section 2.2.23
 
-2.2.1  CurlyBraceGuidString
+#### 2.2.1 CurlyBraceGuidString
 
 The CurlyBraceGuidString type is a string representation of the GUID type, as specified in [MS-DTYP]
 section 2.3.4.3. The following is the Augmented Backus-Naur Form (ABNF) syntax, as referenced in
@@ -1268,7 +1177,7 @@ section 2.3.4.3. The following is the Augmented Backus-Naur Form (ABNF) syntax, 
 
 UUID represents the string form of a UUID, as specified in [RFC4122] section 3.
 
-2.2.2  ContainerStatistics
+#### 2.2.2 ContainerStatistics
 
 The ContainerStatistics type represents activity statistics for an instance container.
 
@@ -1285,7 +1194,8 @@ Release: April 23, 2024
 
 15 / 41
 
- } ContainerStatistics;
+
+ } ContainerStatistics;
 
 cCalls:  The number of method calls that the component instances perform in an instance
 
@@ -1300,7 +1210,7 @@ cCallsPerSecond:  This SHOULD be set to a running average, over an implementatio
 period,<1> of the number of method calls per second received by an instance container.
 Alternatively, an implementation MAY instead simply set this field to zero.
 
-2.2.3  ContainerData
+#### 2.2.3 ContainerData
 
 The ContainerData type represents run-time information for a conglomeration that has one or more
 instance containers on the server. The meanings of the fields in this structure depend on the
@@ -1333,7 +1243,7 @@ statistics:  A ContainerStatistics (section 2.2.2) structure with fields that co
 
 across all instance containers that exist for the conglomeration represented.
 
-2.2.4  ComponentData
+#### 2.2.4 ComponentData
 
 This type represents activity statistics for a component that has one or more component instances
 
@@ -1357,7 +1267,8 @@ Release: April 23, 2024
 
 16 / 41
 
-clsid:  The CLSID of the component.
+
+clsid:  The CLSID of the component.
 
 cTotalReferences:  An implementation-specific<2> count of the number of references to all
 
@@ -1393,12 +1304,12 @@ implementation-specific<12> time period. Whether a server considers a method cal
 is implementation-specific.<13> This MUST be set to 0xffffffff if the server does not track this
 information.<14>
 
-2.2.5  TrackingInfo Formats
+#### 2.2.5 TrackingInfo Formats
 
 The following sections specify the formats of structures related to the
 IComTrackingInfoCollection::OnNewTrackingInfo method (as specified in section 3.2.5.1.1).
 
-2.2.5.1  LengthPrefixedName
+##### 2.2.5.1 LengthPrefixedName
 
 The LengthPrefixedName type specifies an array of Unicode characters prefixed by the array length in
 characters.
@@ -1435,7 +1346,8 @@ Release: April 23, 2024
 
 17 / 41
 
-2.2.5.2  TrackingInfoPropertyValue
+
+##### 2.2.5.2 TrackingInfoPropertyValue
 
 The TrackingInfoPropertyValue structure defines a single name/value pair.
 
@@ -1486,7 +1398,7 @@ LengthPrefixedName (section 2.2.5.1)
 
 Value (variable): The data for this name/value pair. The type of this field is specified by the vt field.
 
-2.2.5.3  TrackingInfoProperty
+##### 2.2.5.3 TrackingInfoProperty
 
 The TrackingInfoProperty defines a structure for representing a property name/value pair.
 
@@ -1522,7 +1434,8 @@ Release: April 23, 2024
 
 18 / 41
 
-MinVersion (2 bytes): The minor version of this marshaled format; this MUST be set to 0x0001.
+
+MinVersion (2 bytes): The minor version of this marshaled format; this MUST be set to 0x0001.
 
 PropertyName (variable): A LengthPrefixedName (section 2.2.5.1) that contains the name of this
 
@@ -1532,7 +1445,7 @@ PropertyValue (variable): A TrackingInfoPropertyValue (section 2.2.5.2) that con
 
 this property.
 
-2.2.5.4  TrackingInfoObject OBJREF_CUSTOM
+##### 2.2.5.4 TrackingInfoObject OBJREF_CUSTOM
 
 The TrackingInfoObject MUST be marshaled using the OBJREF_CUSTOM format (as specified in [MS-
 DCOM] section 2.2.18.6). The CLSID field of the OBJREF_CUSTOM instance MUST be set to
@@ -1568,7 +1481,7 @@ PropCount (4 bytes): The (unsigned) number of elements in the Properties field.
 
 Properties (variable): An array of TrackingInfoProperty (section 2.2.5.3) structures.
 
-2.2.5.5  TrackingInfoCollection OBJREF_CUSTOM
+##### 2.2.5.5 TrackingInfoCollection OBJREF_CUSTOM
 
 The TrackingInfoCollection MUST be marshaled using the OBJREF_CUSTOM format (as specified in
 [MS-DCOM] section 2.2.18.6). The CLSID field of the OBJREF_CUSTOM instance MUST be set to
@@ -1605,7 +1518,8 @@ Release: April 23, 2024
 
 19 / 41
 
-...
+
+...
 
 ChildObjects (variable)
 
@@ -1656,7 +1570,8 @@ Release: April 23, 2024
 
 20 / 41
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
@@ -1702,9 +1617,9 @@ the client's IComTrackingInfoEvents interface.
 When the server no longer has to send tracker events, it performs a release on the interface pointer to
 IComTrackingInfoEvents.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1727,7 +1642,8 @@ Release: April 23, 2024
 
 21 / 41
 
-
+
+
 
 Instance Container Table: A table of instance containers that exist for the conglomeration.
 Each entry has the following fields.
@@ -1746,17 +1662,17 @@ component entry has the following field.
 
   Component Data: The component data, as specified in section 2.2.4.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  IGetTrackingData
+##### 3.1.4.1 IGetTrackingData
 
 The IGetTrackingData interface provides methods for a client to poll for tracking information. This
 interface inherits from IUnknown, as specified in [MS-DCOM] section 3.1.1.5.8. The version for this
@@ -1811,12 +1727,13 @@ Release: April 23, 2024
 
 22 / 41
 
-In the preceding table, the phrase "Reserved for local use" means that the client MUST NOT send the
+
+In the preceding table, the phrase "Reserved for local use" means that the client MUST NOT send the
 opnum and that the server behavior is undefined<19> because it does not affect interoperability.
 
 All methods MUST NOT throw exceptions.
 
-3.1.4.1.1 GetContainerData (Opnum 4)
+###### 3.1.4.1.1 GetContainerData (Opnum 4)
 
 A client calls this method to obtain tracking information for instance containers across all
 conglomerations.
@@ -1842,7 +1759,7 @@ specified in [MS-ERREF] section 2.1) on failure.
 When this method is invoked, the server MUST attempt to return an array of ContainerData
 structures, one for each instance container tracked by the server, or fail the call if it cannot.
 
-3.1.4.1.2 GetComponentDataByContainer (Opnum 5)
+###### 3.1.4.1.2 GetComponentDataByContainer (Opnum 5)
 
 A client calls this method to obtain tracking information for components that have one or more
 component instances in a given instance container.
@@ -1873,7 +1790,7 @@ tracked instance container and fail the call if not. The server then MUST attemp
 zero or more ComponentData structures, one for each distinct component instance instantiated in the
 instance container, and fail the call if it cannot.
 
-3.1.4.1.3 GetComponentDataByContainerAndCLSID (Opnum 6)
+###### 3.1.4.1.3 GetComponentDataByContainerAndCLSID (Opnum 6)
 
 23 / 41
 
@@ -1882,7 +1799,8 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A client calls this method to obtain tracking information for a single component that has component
+
+A client calls this method to obtain tracking information for a single component that has component
 instances in an instance container.
 
  HRESULT GetComponentDataByContainerAndCLSID(
@@ -1909,7 +1827,7 @@ that is instantiated in that instance container. If not, the server MUST fail th
 server MUST return a single ComponentData structure that represents the component instantiated in
 the instance container and return success.
 
-3.1.4.2  IProcessDump
+##### 3.1.4.2 IProcessDump
 
 The IProcessDump interface provides methods for a client to request a process dump of a process
 containing an instance container on the COMT server. This interface inherits from IDispatch, as
@@ -1939,7 +1857,7 @@ Opnum: 8
 
 All methods MUST NOT throw exceptions.
 
-3.1.4.2.1 IsSupported (Opnum 7)
+###### 3.1.4.2.1 IsSupported (Opnum 7)
 
 This method is called by a client to determine whether or not the COMT server supports process
 dump.
@@ -1955,11 +1873,12 @@ Release: April 23, 2024
 
 24 / 41
 
-Return Values: This method returns S_OK (0x00000000) if the COMT server supports process dump,
+
+Return Values: This method returns S_OK (0x00000000) if the COMT server supports process dump,
 
 and MUST return S_FALSE (0x00000001) if not.
 
-3.1.4.2.2 DumpProcess (Opnum 8)
+###### 3.1.4.2.2 DumpProcess (Opnum 8)
 
 This method is called by a client to request a process dump for the process containing a particular
 instance container.
@@ -2028,21 +1947,22 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server then MUST attempt to perform an implementation-specific <24> process dump procedure
+
+The server then MUST attempt to perform an implementation-specific <24> process dump procedure
 by writing a file to the dump file location, and fail the call if it cannot.
 
 The server then MUST set the pbstrDumpFile parameter to the fully qualified path to the file written,
 and return success.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 A client that uses only the polling capabilities that IGetTrackingData (section 3.1.4.1) provides is
 simply a pass-through.
@@ -2050,27 +1970,27 @@ simply a pass-through.
 A client that is to receive tracker events MUST implement the
 IComTrackingInfoEvents (section 3.2.5.1) interface.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Calls that the higher-layer protocol or application make MUST be passed directly to the transport, and
 the results that the transport returns MUST be passed directly back to the higher-layer protocol or
 application.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  IComTrackingInfoEvents
+##### 3.2.5.1 IComTrackingInfoEvents
 
 The IComTrackingInfoEvents interface provides a method for a server to send the client tracker
 events. This interface inherits from IUnknown, as specified in [MS-DCOM] section 3.1.1.5.8. The
@@ -2087,7 +2007,8 @@ Release: April 23, 2024
 
 26 / 41
 
-Method
+
+Method
 
 Description
 
@@ -2097,7 +2018,7 @@ Opnum: 3
 
 This method MUST NOT throw exceptions.
 
-3.2.5.1.1 OnNewTrackingInfo (Opnum 3)
+###### 3.2.5.1.1 OnNewTrackingInfo (Opnum 3)
 
 The OnNewTrackingInfo method handles a tracker event from the server.
 
@@ -2194,7 +2115,8 @@ Release: April 23, 2024
 
 27 / 41
 
- Property
+
+ Property
 name
 
  vt value
@@ -2275,11 +2197,11 @@ TrackingInfoCollection OBJREF_CUSTOM received in pToplevelCollection and fail th
 The client SHOULD then return before performing any further actions. Any further implementation-
 specific processing SHOULD be done asynchronously.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2290,15 +2212,16 @@ Release: April 23, 2024
 
 28 / 41
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-COMT].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following examples build on the examples in [MS-DCOM] section 4.1.
 
-4.1  Polling for Tracking Data
+### 4.1 Polling for Tracking Data
 
 Figure 2: Polling for tracking data
 
@@ -2339,7 +2262,8 @@ Release: April 23, 2024
 
 29 / 41
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-COMT].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2349,7 +2273,7 @@ Release: April 23, 2024
 
 returns S_OK.
 
-4.2  Receiving a Tracker Event
+### 4.2 Receiving a Tracker Event
 
 Figure 3: Receiving a tracker event
 
@@ -2374,14 +2298,15 @@ Release: April 23, 2024
 
 30 / 41
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers are advised to review the security considerations described in [MS-DCOM] section 5.1
 because these are also valid for the COM+ Tracker Service Protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2392,7 +2317,8 @@ Release: April 23, 2024
 
 31 / 41
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided as follows, where "ms-dcom.idl" refers to the IDL
 found in [MS-DCOM] Appendix A, "ms-dtyp.idl" refers to the IDL found in [MS-DTYP] Appendix A, and
@@ -2466,7 +2392,8 @@ Release: April 23, 2024
 
 32 / 41
 
-     );
+
+     );
 
      HRESULT Opnum7NotUsedOnWire();
  };
@@ -2509,7 +2436,8 @@ Release: April 23, 2024
 
 33 / 41
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2577,7 +2505,8 @@ Release: April 23, 2024
 
 34 / 41
 
-<1> Section 2.2.2: Windows collects method call statistics in 1-second intervals and calculates the
+
+<1> Section 2.2.2: Windows collects method call statistics in 1-second intervals and calculates the
 statistics over the four most recent intervals.
 
 <2> Section 2.2.4: On Windows, the COM+ Tracker Service Protocol server tracks out-of-process
@@ -2643,7 +2572,8 @@ Release: April 23, 2024
 
 35 / 41
 
-<14> Section 2.2.4: On Windows, method call statistics are collected for tracked conglomerations.
+
+<14> Section 2.2.4: On Windows, method call statistics are collected for tracked conglomerations.
 Windows determines whether or not to track a conglomeration based on its per-conglomeration
 configuration, which can be modified by using the EventsEnabled property described in [MS-COMA].
 For more information about this property, see the Conglomerations Table in [MS-COMA] section
@@ -2715,7 +2645,8 @@ Component Object Model Plus (COM+) Tracker Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<19> Section 3.1.4.1: Opnums reserved for local use apply to Windows as follows:
+
+<19> Section 3.1.4.1: Opnums reserved for local use apply to Windows as follows:
 
 opnum  Description
 
@@ -2788,7 +2719,8 @@ Release: April 23, 2024
 
 37 / 41
 
-calculated as the slowest average response time over all component instances in the instance
+
+calculated as the slowest average response time over all component instances in the instance
 container.
 
 <30> Section 3.2.5.1.1: On Windows, the Name property is the ProgId of the component (for more
@@ -2801,7 +2733,8 @@ Release: April 23, 2024
 
 38 / 41
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2845,7 +2778,8 @@ Release: April 23, 2024
 
 39 / 41
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2976,7 +2910,8 @@ Release: April 23, 2024
 
 40 / 41
 
-Receiving a tracker event example 30
+
+Receiving a tracker event example 30
 References 9
    informative 9
    normative 9

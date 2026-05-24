@@ -64,7 +64,8 @@ Release: September 16, 2024
 
 1 / 537
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -318,7 +319,8 @@ Release: September 16, 2024
 
 2 / 537
 
-Date
+
+Date
 
 Revision
 History
@@ -501,811 +503,280 @@ Release: September 16, 2024
 
 3 / 537
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server Security Settings](#211-server-security-settings)
+    - [2.1.2 DHCPM Client Security Settings](#212-dhcpm-client-security-settings)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 DHCP RPC Common Messages](#221-dhcp-rpc-common-messages)
+      - [2.2.1.1 Datatypes, Enumerations, and Constants](#2211-datatypes-enumerations-and-constants)
+        - [2.2.1.1.1 DHCP_ATTRIB_ID](#22111-dhcpattribid)
+        - [2.2.1.1.2 DHCP_SUBNET_STATE](#22112-dhcpsubnetstate)
+        - [2.2.1.1.3 DHCP_SEARCH_INFO_TYPE](#22113-dhcpsearchinfotype)
+        - [2.2.1.1.4 DHCP_OPTION_SCOPE_TYPE](#22114-dhcpoptionscopetype)
+        - [2.2.1.1.5 DHCP_OPTION_SCOPE_TYPE6](#22115-dhcpoptionscopetype6)
+        - [2.2.1.1.6 DHCP_OPTION_TYPE](#22116-dhcpoptiontype)
+        - [2.2.1.1.7 DHCP_SUBNET_ELEMENT_TYPE](#22117-dhcpsubnetelementtype)
+        - [2.2.1.1.8 DHCP_SUBNET_ELEMENT_TYPE_V6](#22118-dhcpsubnetelementtypev6)
+        - [2.2.1.1.9 DHCP_FORCE_FLAG](#22119-dhcpforceflag)
+        - [2.2.1.1.10 DHCP_OPTION_DATA_TYPE](#221110-dhcpoptiondatatype)
+        - [2.2.1.1.11 QuarantineStatus](#221111-quarantinestatus)
+        - [2.2.1.1.12 DHCP_SEARCH_INFO_TYPE_V6](#221112-dhcpsearchinfotypev6)
+        - [2.2.1.1.13 DHCP_SCAN_FLAG](#221113-dhcpscanflag)
+        - [2.2.1.1.14 DHCP_RESUME_IPV6_HANDLE](#221114-dhcpresumeipv6handle)
+        - [2.2.1.1.15 LPWSTR](#221115-lpwstr)
+        - [2.2.1.1.16 LPWSTR_RPC_STRING](#221116-lpwstrrpcstring)
+        - [2.2.1.1.17 DHCP_FILTER_LIST_TYPE](#221117-dhcpfilterlisttype)
+        - [2.2.1.1.18 DHCP_FAILOVER_MODE](#221118-dhcpfailovermode)
+        - [2.2.1.1.19 DHCP_FAILOVER_SERVER](#221119-dhcpfailoverserver)
+        - [2.2.1.1.20 FSM_STATE](#221120-fsmstate)
+        - [2.2.1.1.21 DHCP_POLICY_FIELDS_TO_UPDATE](#221121-dhcppolicyfieldstoupdate)
+        - [2.2.1.1.22 DHCP_POL_COMPARATOR](#221122-dhcppolcomparator)
+        - [2.2.1.1.23 DHCP_POL_ATTR_TYPE](#221123-dhcppolattrtype)
+        - [2.2.1.1.24 DHCP_POL_LOGIC_OPER](#221124-dhcppollogicoper)
+        - [2.2.1.1.25 DHCP_MAX_FREE_ADDRESSES_REQUESTED](#221125-dhcpmaxfreeaddressesrequested)
+        - [2.2.1.1.26 DHCP_PROPERTY_TYPE](#221126-dhcppropertytype)
+        - [2.2.1.1.27 DHCP_PROPERTY_ID](#221127-dhcppropertyid)
+        - [2.2.1.1.28 Constants Used in Method Definitions](#221128-constants-used-in-method-definitions)
+      - [2.2.1.2 Structures](#2212-structures)
+        - [2.2.1.2.1 DHCP_IP_ADDRESS](#22121-dhcpipaddress)
+        - [2.2.1.2.2 DHCP_IP_MASK](#22122-dhcpipmask)
+        - [2.2.1.2.3 DHCP_OPTION_ID](#22123-dhcpoptionid)
+        - [2.2.1.2.4 DHCP_SRV_HANDLE](#22124-dhcpsrvhandle)
+        - [2.2.1.2.5 DHCP_CLIENT_UID](#22125-dhcpclientuid)
+          - [2.2.1.2.5.1 Representing a DHCPv4 Client-Identifier](#221251-representing-a-dhcpv4-client-identifier)
+          - [2.2.1.2.5.2 Representing a DHCPv4 Client Unique ID](#221252-representing-a-dhcpv4-client-unique-id)
+          - [2.2.1.2.5.3 Representing a DHCPv6 Client-Identifier](#221253-representing-a-dhcpv6-client-identifier)
+          - [2.2.1.2.5.4 Representing a MADCAP Lease Identifier](#221254-representing-a-madcap-lease-identifier)
+        - [2.2.1.2.6 DHCP_RESUME_HANDLE](#22126-dhcpresumehandle)
+        - [2.2.1.2.7 DHCP_HOST_INFO](#22127-dhcphostinfo)
+        - [2.2.1.2.8 DHCP_SUBNET_INFO](#22128-dhcpsubnetinfo)
+        - [2.2.1.2.9 DHCP_BINARY_DATA](#22129-dhcpbinarydata)
+        - [2.2.1.2.10 DHCP_IP_RESERVATION](#221210-dhcpipreservation)
+        - [2.2.1.2.11 DATE_TIME](#221211-datetime)
+        - [2.2.1.2.12 DHCP_CLIENT_INFO](#221212-dhcpclientinfo)
+        - [2.2.1.2.13 DHCP_CLIENT_INFO_ARRAY](#221213-dhcpclientinfoarray)
+        - [2.2.1.2.14 DHCP_CLIENT_INFO_V4](#221214-dhcpclientinfov4)
+        - [2.2.1.2.15 DHCP_CLIENT_INFO_ARRAY_V4](#221215-dhcpclientinfoarrayv4)
+        - [2.2.1.2.16 DHCP_CLIENT_INFO_V5](#221216-dhcpclientinfov5)
+        - [2.2.1.2.17 DHCP_CLIENT_INFO_ARRAY_V5](#221217-dhcpclientinfoarrayv5)
+        - [2.2.1.2.18 DHCP_SEARCH_INFO](#221218-dhcpsearchinfo)
+        - [2.2.1.2.19 DHCP_CLIENT_INFO_VQ](#221219-dhcpclientinfovq)
+        - [2.2.1.2.20 DHCP_CLIENT_INFO_ARRAY_VQ](#221220-dhcpclientinfoarrayvq)
+        - [2.2.1.2.21 DHCP_MCLIENT_INFO](#221221-dhcpmclientinfo)
+        - [2.2.1.2.22 DWORD_DWORD](#221222-dworddword)
+        - [2.2.1.2.23 DHCP_OPTION_DATA_ELEMENT](#221223-dhcpoptiondataelement)
+        - [2.2.1.2.24 DHCP_OPTION_DATA](#221224-dhcpoptiondata)
+        - [2.2.1.2.25 DHCP_OPTION](#221225-dhcpoption)
+        - [2.2.1.2.26 DHCP_OPTION_ARRAY](#221226-dhcpoptionarray)
+        - [2.2.1.2.27 DHCP_ALL_OPTIONS](#221227-dhcpalloptions)
+        - [2.2.1.2.28 DHCP_IPV6_ADDRESS](#221228-dhcpipv6address)
+        - [2.2.1.2.29 DHCP_RESERVED_SCOPE6](#221229-dhcpreservedscope6)
+        - [2.2.1.2.30 DHCP_OPTION_SCOPE_INFO6](#221230-dhcpoptionscopeinfo6)
+        - [2.2.1.2.31 DHCP_IP_RANGE](#221231-dhcpiprange)
+        - [2.2.1.2.32 DHCP_IP_RESERVATION_V4](#221232-dhcpipreservationv4)
+        - [2.2.1.2.33 DHCP_SUBNET_ELEMENT_DATA](#221233-dhcpsubnetelementdata)
+        - [2.2.1.2.34 DHCP_SUBNET_ELEMENT_INFO_ARRAY](#221234-dhcpsubnetelementinfoarray)
+        - [2.2.1.2.35 DHCP_SUBNET_ELEMENT_DATA_V4](#221235-dhcpsubnetelementdatav4)
+        - [2.2.1.2.36 DHCP_SUBNET_ELEMENT_INFO_ARRAY_V4](#221236-dhcpsubnetelementinfoarrayv4)
+        - [2.2.1.2.37 DHCP_BOOTP_IP_RANGE](#221237-dhcpbootpiprange)
+        - [2.2.1.2.38 DHCP_SUBNET_ELEMENT_DATA_V5](#221238-dhcpsubnetelementdatav5)
+        - [2.2.1.2.39 DHCP_SUBNET_ELEMENT_INFO_ARRAY_V5](#221239-dhcpsubnetelementinfoarrayv5)
+        - [2.2.1.2.40 DHCP_RESERVED_SCOPE](#221240-dhcpreservedscope)
+        - [2.2.1.2.41 DHCP_OPTION_SCOPE_INFO](#221241-dhcpoptionscopeinfo)
+        - [2.2.1.2.42 DHCP_OPTION_VALUE](#221242-dhcpoptionvalue)
+        - [2.2.1.2.43 DHCP_OPTION_VALUE_ARRAY](#221243-dhcpoptionvaluearray)
+        - [2.2.1.2.44 DHCP_ALL_OPTION_VALUES](#221244-dhcpalloptionvalues)
+        - [2.2.1.2.45 DHCP_SUBNET_INFO_VQ](#221245-dhcpsubnetinfovq)
+        - [2.2.1.2.46 DHCP_IP_ARRAY](#221246-dhcpiparray)
+        - [2.2.1.2.47 SCOPE_MIB_INFO](#221247-scopemibinfo)
+        - [2.2.1.2.48 DHCP_MIB_INFO](#221248-dhcpmibinfo)
+        - [2.2.1.2.49 SCOPE_MIB_INFO_VQ](#221249-scopemibinfovq)
+        - [2.2.1.2.50 DHCP_MIB_INFO_VQ](#221250-dhcpmibinfovq)
+        - [2.2.1.2.51 MSCOPE_MIB_INFO](#221251-mscopemibinfo)
+        - [2.2.1.2.52 DHCP_MCAST_MIB_INFO](#221252-dhcpmcastmibinfo)
+        - [2.2.1.2.53 DHCP_SERVER_CONFIG_INFO](#221253-dhcpserverconfiginfo)
+        - [2.2.1.2.54 DHCP_SERVER_CONFIG_INFO_V4](#221254-dhcpserverconfiginfov4)
+        - [2.2.1.2.55 DHCP_SERVER_CONFIG_INFO_VQ](#221255-dhcpserverconfiginfovq)
+        - [2.2.1.2.56 DHCP_SUBNET_INFO_V6](#221256-dhcpsubnetinfov6)
+        - [2.2.1.2.57 DHCPV6_IP_ARRAY](#221257-dhcpv6iparray)
+        - [2.2.1.2.58 DHCP_IP_RESERVATION_V6](#221258-dhcpipreservationv6)
+        - [2.2.1.2.59 DHCP_IP_RANGE_V6](#221259-dhcpiprangev6)
+        - [2.2.1.2.60 DHCP_SUBNET_ELEMENT_DATA_V6](#221260-dhcpsubnetelementdatav6)
+        - [2.2.1.2.61 DHCP_SUBNET_ELEMENT_INFO_ARRAY_V6](#221261-dhcpsubnetelementinfoarrayv6)
+        - [2.2.1.2.62 DHCP_SERVER_CONFIG_INFO_V6](#221262-dhcpserverconfiginfov6)
+        - [2.2.1.2.63 DHCP_HOST_INFO_V6](#221263-dhcphostinfov6)
+        - [2.2.1.2.64 DHCP_CLIENT_INFO_V6](#221264-dhcpclientinfov6)
+        - [2.2.1.2.65 DHCP_CLIENT_INFO_ARRAY_V6](#221265-dhcpclientinfoarrayv6)
+        - [2.2.1.2.66 DHCP_OPTION_LIST](#221266-dhcpoptionlist)
+        - [2.2.1.2.67 SCOPE_MIB_INFO_V6](#221267-scopemibinfov6)
+        - [2.2.1.2.68 DHCP_MIB_INFO_V6](#221268-dhcpmibinfov6)
+        - [2.2.1.2.69 DHCP_SEARCH_INFO_V6](#221269-dhcpsearchinfov6)
+        - [2.2.1.2.70 DHCP_CLASS_INFO_V6](#221270-dhcpclassinfov6)
+        - [2.2.1.2.71 DHCP_MSCOPE_INFO](#221271-dhcpmscopeinfo)
+        - [2.2.1.2.72 DHCP_MSCOPE_TABLE](#221272-dhcpmscopetable)
+        - [2.2.1.2.73 DHCP_SCAN_ITEM](#221273-dhcpscanitem)
+        - [2.2.1.2.74 DHCP_SCAN_LIST](#221274-dhcpscanlist)
+        - [2.2.1.2.75 DHCP_CLASS_INFO](#221275-dhcpclassinfo)
+        - [2.2.1.2.76 DHCP_CLASS_INFO_ARRAY](#221276-dhcpclassinfoarray)
+        - [2.2.1.2.77 DHCP_SERVER_SPECIFIC_STRINGS](#221277-dhcpserverspecificstrings)
+        - [2.2.1.2.78 DHCP_ATTRIB](#221278-dhcpattrib)
+        - [2.2.1.2.79 DHCP_ATTRIB_ARRAY](#221279-dhcpattribarray)
+        - [2.2.1.2.80 DHCP_BIND_ELEMENT](#221280-dhcpbindelement)
+        - [2.2.1.2.81 DHCP_BIND_ELEMENT_ARRAY](#221281-dhcpbindelementarray)
+        - [2.2.1.2.82 DHCPV6_BIND_ELEMENT](#221282-dhcpv6bindelement)
+        - [2.2.1.2.83 DHCPV6_BIND_ELEMENT_ARRAY](#221283-dhcpv6bindelementarray)
+        - [2.2.1.2.84 DHCP_MCLIENT_INFO_ARRAY](#221284-dhcpmclientinfoarray)
+        - [2.2.1.2.85 DHCP_SUPER_SCOPE_TABLE_ENTRY](#221285-dhcpsuperscopetableentry)
+        - [2.2.1.2.86 DHCP_SUPER_SCOPE_TABLE](#221286-dhcpsuperscopetable)
+        - [2.2.1.2.87 DHCP_CLASS_INFO_ARRAY_V6](#221287-dhcpclassinfoarrayv6)
+        - [2.2.1.2.88 DHCP_IP_CLUSTER](#221288-dhcpipcluster)
+        - [2.2.1.2.89 DHCP_ADDR_PATTERN](#221289-dhcpaddrpattern)
+        - [2.2.1.2.90 DHCP_FILTER_ADD_INFO](#221290-dhcpfilteraddinfo)
+        - [2.2.1.2.91 DHCP_FILTER_GLOBAL_INFO](#221291-dhcpfilterglobalinfo)
+        - [2.2.1.2.92 DHCP_FILTER_RECORD](#221292-dhcpfilterrecord)
+        - [2.2.1.2.93 DHCP_FILTER_ENUM_INFO](#221293-dhcpfilterenuminfo)
+        - [2.2.1.2.94 SCOPE_MIB_INFO_V5](#221294-scopemibinfov5)
+        - [2.2.1.2.95 DHCP_MIB_INFO_V5](#221295-dhcpmibinfov5)
+        - [2.2.1.2.96 DHCP_CLIENT_FILTER_STATUS_INFO](#221296-dhcpclientfilterstatusinfo)
+        - [2.2.1.2.97 DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY](#221297-dhcpclientfilterstatusinfoarray)
+        - [2.2.1.2.98 DHCP_FAILOVER_RELATIONSHIP](#221298-dhcpfailoverrelationship)
+        - [2.2.1.2.99 DHCP_FAILOVER_RELATIONSHIP_ARRAY](#221299-dhcpfailoverrelationshiparray)
+        - [2.2.1.2.100 DHCP_FAILOVER_STATISTICS](#2212100-dhcpfailoverstatistics)
+        - [2.2.1.2.101 DHCPV4_FAILOVER_CLIENT_INFO](#2212101-dhcpv4failoverclientinfo)
+        - [2.2.1.2.102 DHCP_IP_RESERVATION_INFO](#2212102-dhcpipreservationinfo)
+        - [2.2.1.2.103 DHCP_RESERVATION_INFO_ARRAY](#2212103-dhcpreservationinfoarray)
+        - [2.2.1.2.104 DHCP_IP_RANGE_ARRAY](#2212104-dhcpiprangearray)
+        - [2.2.1.2.105 DHCP_POL_COND](#2212105-dhcppolcond)
+        - [2.2.1.2.106 DHCP_POL_COND_ARRAY](#2212106-dhcppolcondarray)
+        - [2.2.1.2.107 DHCP_POL_EXPR](#2212107-dhcppolexpr)
+        - [2.2.1.2.108 DHCP_POL_EXPR_ARRAY](#2212108-dhcppolexprarray)
+        - [2.2.1.2.109 DHCP_ALL_OPTION_VALUES_PB](#2212109-dhcpalloptionvaluespb)
+        - [2.2.1.2.110 DHCP_POLICY](#2212110-dhcppolicy)
+        - [2.2.1.2.111 DHCP_POLICY_ARRAY](#2212111-dhcppolicyarray)
+        - [2.2.1.2.112 DHCPV6_STATELESS_PARAMS](#2212112-dhcpv6statelessparams)
+        - [2.2.1.2.113 DHCPV6_STATELESS_SCOPE_STATS](#2212113-dhcpv6statelessscopestats)
+        - [2.2.1.2.114 DHCPV6_STATELESS_STATS](#2212114-dhcpv6statelessstats)
+        - [2.2.1.2.115 DHCP_CLIENT_INFO_PB](#2212115-dhcpclientinfopb)
+        - [2.2.1.2.116 DHCP_CLIENT_INFO_PB_ARRAY](#2212116-dhcpclientinfopbarray)
+        - [2.2.1.2.117 DHCP_PROPERTY](#2212117-dhcpproperty)
+        - [2.2.1.2.118 DHCP_PROPERTY_ARRAY](#2212118-dhcppropertyarray)
+        - [2.2.1.2.119 DHCP_CLIENT_INFO_EX](#2212119-dhcpclientinfoex)
+        - [2.2.1.2.120 DHCP_CLIENT_INFO_EX_ARRAY](#2212120-dhcpclientinfoexarray)
+        - [2.2.1.2.121 DHCP_POLICY_EX](#2212121-dhcppolicyex)
+        - [2.2.1.2.122 DHCP_POLICY_EX_ARRAY](#2212122-dhcppolicyexarray)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 dhcpsrv Server Details](#31-dhcpsrv-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global Variables](#3111-global-variables)
+      - [3.1.1.2 Per DHCPv4Scope (Public)](#3112-per-dhcpv4scope-public)
+      - [3.1.1.3 Per DHCPv4SuperScope (Public)](#3113-per-dhcpv4superscope-public)
+      - [3.1.1.4 DHCPv4IpRange (Public)](#3114-dhcpv4iprange-public)
+      - [3.1.1.5 DHCPv4ExclusionRange (Public)](#3115-dhcpv4exclusionrange-public)
+      - [3.1.1.6 DHCPv4Reservation (Public)](#3116-dhcpv4reservation-public)
+      - [3.1.1.7 DHCPv4Client (Public)](#3117-dhcpv4client-public)
+      - [3.1.1.8 DHCPv4ClassDef (Public)](#3118-dhcpv4classdef-public)
+      - [3.1.1.9 Per DHCPv4OptionDef](#3119-per-dhcpv4optiondef)
+      - [3.1.1.10 DHCPv4ClassedOptDef](#31110-dhcpv4classedoptdef)
+      - [3.1.1.11 Per DHCPv4OptionValue (Public)](#31111-per-dhcpv4optionvalue-public)
+      - [3.1.1.12 DHCPv4ClassedOptValue (Public)](#31112-dhcpv4classedoptvalue-public)
+      - [3.1.1.13 Per DHCPv4MScope](#31113-per-dhcpv4mscope)
+      - [3.1.1.14 Per DHCPv6Scope (Public)](#31114-per-dhcpv6scope-public)
+      - [3.1.1.15 DHCPv6ExclusionRange (Public)](#31115-dhcpv6exclusionrange-public)
+      - [3.1.1.16 Per DHCPv6Reservation (Public)](#31116-per-dhcpv6reservation-public)
+      - [3.1.1.17 Per DHCPv6ClassedOptValue (Public)](#31117-per-dhcpv6classedoptvalue-public)
+      - [3.1.1.18 DHCPv6ClientInfo (Public)](#31118-dhcpv6clientinfo-public)
+      - [3.1.1.19 DHCPv6ClassDef (Public)](#31119-dhcpv6classdef-public)
+      - [3.1.1.20 Per DHCPv6ClassedOptionDef](#31120-per-dhcpv6classedoptiondef)
+      - [3.1.1.21 Per DHCPv6OptionValue (Public)](#31121-per-dhcpv6optionvalue-public)
+      - [3.1.1.22 DHCPv6OptionDef](#31122-dhcpv6optiondef)
+      - [3.1.1.23 DHCPv6UserClass (Public)](#31123-dhcpv6userclass-public)
+      - [3.1.1.24 DHCPv6VendorClass (Public)](#31124-dhcpv6vendorclass-public)
+      - [3.1.1.25 Per DHCPv4AuditLogParams](#31125-per-dhcpv4auditlogparams)
+      - [3.1.1.26 Per DHCPv4ServerAttributes](#31126-per-dhcpv4serverattributes)
+      - [3.1.1.27 Per DHCPServerDnsRegCredentials](#31127-per-dhcpserverdnsregcredentials)
+      - [3.1.1.28 DHCPv4ServerBindingInfo](#31128-dhcpv4serverbindinginfo)
+      - [3.1.1.29 DHCPv6ServerBindingInfo](#31129-dhcpv6serverbindinginfo)
+      - [3.1.1.30 DHCPv4Filter (Public)](#31130-dhcpv4filter-public)
+      - [3.1.1.31 DHCPv4MClient](#31131-dhcpv4mclient)
+      - [3.1.1.32 DHCPv6ClientInfoAddressState](#31132-dhcpv6clientinfoaddressstate)
+      - [3.1.1.33 DHCPv4FailoverRelationship](#31133-dhcpv4failoverrelationship)
+      - [3.1.1.34 DHCPv4FailoverStatistics](#31134-dhcpv4failoverstatistics)
+      - [3.1.1.35 DHCPv4Policy](#31135-dhcpv4policy)
+      - [3.1.1.36 Per DHCPv4PolicyOptionValue](#31136-per-dhcpv4policyoptionvalue)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 R_DhcpCreateSubnet (Opnum 0)](#3141-rdhcpcreatesubnet-opnum-0)
+      - [3.1.4.2 R_DhcpSetSubnetInfo (Opnum 1)](#3142-rdhcpsetsubnetinfo-opnum-1)
+      - [3.1.4.3 R_DhcpGetSubnetInfo (Opnum 2)](#3143-rdhcpgetsubnetinfo-opnum-2)
+      - [3.1.4.4 R_DhcpEnumSubnets (Opnum 3)](#3144-rdhcpenumsubnets-opnum-3)
+      - [3.1.4.5 R_DhcpAddSubnetElement (Opnum 4)](#3145-rdhcpaddsubnetelement-opnum-4)
+      - [3.1.4.6 R_DhcpEnumSubnetElements (Opnum 5)](#3146-rdhcpenumsubnetelements-opnum-5)
+      - [3.1.4.7 R_DhcpRemoveSubnetElement (Opnum 6)](#3147-rdhcpremovesubnetelement-opnum-6)
+      - [3.1.4.8 R_DhcpDeleteSubnet (Opnum 7)](#3148-rdhcpdeletesubnet-opnum-7)
+      - [3.1.4.9 R_DhcpCreateOption (Opnum 8)](#3149-rdhcpcreateoption-opnum-8)
+      - [3.1.4.10 R_DhcpSetOptionInfo (Opnum 9)](#31410-rdhcpsetoptioninfo-opnum-9)
+      - [3.1.4.11 R_DhcpGetOptionInfo (Opnum 10)](#31411-rdhcpgetoptioninfo-opnum-10)
+      - [3.1.4.12 R_DhcpRemoveOption (Opnum 11)](#31412-rdhcpremoveoption-opnum-11)
+      - [3.1.4.13 R_DhcpSetOptionValue (Opnum 12)](#31413-rdhcpsetoptionvalue-opnum-12)
+      - [3.1.4.14 R_DhcpGetOptionValue (Opnum 13)](#31414-rdhcpgetoptionvalue-opnum-13)
+      - [3.1.4.15 R_DhcpEnumOptionValues (Opnum 14)](#31415-rdhcpenumoptionvalues-opnum-14)
+      - [3.1.4.16 R_DhcpRemoveOptionValue (Opnum 15)](#31416-rdhcpremoveoptionvalue-opnum-15)
+      - [3.1.4.17 R_DhcpCreateClientInfo (Opnum 16)](#31417-rdhcpcreateclientinfo-opnum-16)
+      - [3.1.4.18 R_DhcpSetClientInfo (Opnum 17)](#31418-rdhcpsetclientinfo-opnum-17)
+      - [3.1.4.19 R_DhcpGetClientInfo (Opnum 18)](#31419-rdhcpgetclientinfo-opnum-18)
+      - [3.1.4.20 R_DhcpDeleteClientInfo (Opnum 19)](#31420-rdhcpdeleteclientinfo-opnum-19)
+  - [3.3 and 4.1, and [RFC2136]](#33-and-41-and-rfc2136)
+    - [3.3.1 DHCPv4 Server](#331-dhcpv4-server)
+    - [3.3.2 DHCPv6 Server](#332-dhcpv6-server)
+    - [3.3.3 Name Protection](#333-name-protection)
+  - [3.4 DHCP Superscopes](#34-dhcp-superscopes)
+  - [3.5 Access Check Processing](#35-access-check-processing)
+    - [3.5.1 Retrieve Client SID](#351-retrieve-client-sid)
+    - [3.5.2 Retrieve DHCP User Group SID](#352-retrieve-dhcp-user-group-sid)
+    - [3.5.3 Retrieve DHCP Administrators Group SID](#353-retrieve-dhcp-administrators-group-sid)
+    - [3.5.4 Checks for Read Authorization](#354-checks-for-read-authorization)
+    - [3.5.5 Checks for Read/Write Authorization](#355-checks-for-readwrite-authorization)
+    - [3.5.6 Read/Write Authorization Exception](#356-readwrite-authorization-exception)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Querying the List of Subnets from the DHCP Server](#41-querying-the-list-of-subnets-from-the-dhcp-server)
+  - [4.2 Adding an IP Range to a Scope](#42-adding-an-ip-range-to-a-scope)
+  - [4.3 Querying the Binding Information of the DHCP Service](#43-querying-the-binding-information-of-the-dhcp-service)
+  - [4.4 Enumerating the DHCP Client in a Subnet](#44-enumerating-the-dhcp-client-in-a-subnet)
+  - [4.5 Querying the List of IPv4 Multicast Subnets from the DHCP Server](#45-querying-the-list-of-ipv4-multicast-subnets-from-the-dhcp-server)
+  - [4.6 Adding an IPv4 Multicast Range to a Multicast Scope](#46-adding-an-ipv4-multicast-range-to-a-multicast-scope)
+  - [4.7 Deleting a Multicast Scope from a DHCP Server](#47-deleting-a-multicast-scope-from-a-dhcp-server)
+  - [4.8 Enumerating the MADCAP Client in a Multicast Scope](#48-enumerating-the-madcap-client-in-a-multicast-scope)
+  - [4.9 Querying the List of IPv6 Subnets from the DHCP Server](#49-querying-the-list-of-ipv6-subnets-from-the-dhcp-server)
+  - [4.10 Adding an IPv6 Exclusion Range to a Scope](#410-adding-an-ipv6-exclusion-range-to-a-scope)
+  - [4.11 Querying the IPv6 Binding Information of the DHCP Service](#411-querying-the-ipv6-binding-information-of-the-dhcp-service)
+  - [4.12 Enumerating the DHCPv6 Client in a Subnet](#412-enumerating-the-dhcpv6-client-in-a-subnet)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Security Considerations Specific to the DHCP Server Management Protocol](#511-security-considerations-specific-to-the-dhcp-server-management-protocol)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction .......................................................................................................... 12
-Glossary ......................................................................................................... 12
-References ...................................................................................................... 17
-Normative References ................................................................................. 17
-Informative References ............................................................................... 19
-Overview ........................................................................................................ 19
-Relationship to Other Protocols .......................................................................... 20
-Prerequisites/Preconditions ............................................................................... 26
-Applicability Statement ..................................................................................... 26
-Versioning and Capability Negotiation ................................................................. 26
-Vendor-Extensible Fields ................................................................................... 27
-Standards Assignments ..................................................................................... 27
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.1
-
-2.2.1.1
-
-2.1.1
-2.1.2
-
-2  Messages ............................................................................................................... 28
-Transport ........................................................................................................ 28
-Server Security Settings .............................................................................. 28
-DHCPM Client Security Settings .................................................................... 28
-Common Data Types ........................................................................................ 28
-DHCP RPC Common Messages ...................................................................... 29
-Datatypes, Enumerations, and Constants ................................................. 29
-DHCP_ATTRIB_ID ............................................................................ 29
-2.2.1.1.1
-DHCP_SUBNET_STATE ..................................................................... 29
-2.2.1.1.2
-DHCP_SEARCH_INFO_TYPE .............................................................. 30
-2.2.1.1.3
-DHCP_OPTION_SCOPE_TYPE ............................................................ 30
-2.2.1.1.4
-DHCP_OPTION_SCOPE_TYPE6........................................................... 31
-2.2.1.1.5
-DHCP_OPTION_TYPE........................................................................ 31
-2.2.1.1.6
-DHCP_SUBNET_ELEMENT_TYPE ........................................................ 32
-2.2.1.1.7
-DHCP_SUBNET_ELEMENT_TYPE_V6 ................................................... 32
-2.2.1.1.8
-2.2.1.1.9
-DHCP_FORCE_FLAG ......................................................................... 33
-2.2.1.1.10  DHCP_OPTION_DATA_TYPE .............................................................. 33
-2.2.1.1.11  QuarantineStatus ............................................................................ 34
-2.2.1.1.12  DHCP_SEARCH_INFO_TYPE_V6 ......................................................... 35
-2.2.1.1.13  DHCP_SCAN_FLAG .......................................................................... 35
-2.2.1.1.14  DHCP_RESUME_IPV6_HANDLE .......................................................... 35
-LPWSTR ......................................................................................... 36
-2.2.1.1.15
-LPWSTR_RPC_STRING ..................................................................... 36
-2.2.1.1.16
-2.2.1.1.17  DHCP_FILTER_LIST_TYPE ................................................................. 36
-2.2.1.1.18  DHCP_FAILOVER_MODE ................................................................... 36
-2.2.1.1.19  DHCP_FAILOVER_SERVER ................................................................ 37
-2.2.1.1.20
-FSM_STATE .................................................................................... 37
-2.2.1.1.21  DHCP_POLICY_FIELDS_TO_UPDATE .................................................. 38
-2.2.1.1.22  DHCP_POL_COMPARATOR ................................................................ 38
-2.2.1.1.23  DHCP_POL_ATTR_TYPE .................................................................... 39
-2.2.1.1.24  DHCP_POL_LOGIC_OPER .................................................................. 39
-2.2.1.1.25  DHCP_MAX_FREE_ADDRESSES_REQUESTED ...................................... 39
-2.2.1.1.26  DHCP_PROPERTY_TYPE .................................................................... 40
-2.2.1.1.27  DHCP_PROPERTY_ID ....................................................................... 40
-Constants Used in Method Definitions ................................................ 40
-2.2.1.1.28
-Structures ............................................................................................ 41
-DHCP_IP_ADDRESS ......................................................................... 41
-DHCP_IP_MASK .............................................................................. 41
-DHCP_OPTION_ID ........................................................................... 42
-DHCP_SRV_HANDLE ........................................................................ 42
-DHCP_CLIENT_UID .......................................................................... 42
-Representing a DHCPv4 Client-Identifier ....................................... 43
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-
-2.2.1.2.5.1
-
-2.2.1.2
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4 / 537
-
-2.2.1.2.5.2
-2.2.1.2.5.3
-2.2.1.2.5.4
-
-Representing a DHCPv4 Client Unique ID ...................................... 43
-Representing a DHCPv6 Client-Identifier ....................................... 43
-Representing a MADCAP Lease Identifier ....................................... 44
-DHCP_RESUME_HANDLE .................................................................. 44
-2.2.1.2.6
-DHCP_HOST_INFO .......................................................................... 44
-2.2.1.2.7
-DHCP_SUBNET_INFO ....................................................................... 45
-2.2.1.2.8
-DHCP_BINARY_DATA ....................................................................... 45
-2.2.1.2.9
-2.2.1.2.10  DHCP_IP_RESERVATION .................................................................. 46
-2.2.1.2.11  DATE_TIME .................................................................................... 46
-2.2.1.2.12  DHCP_CLIENT_INFO ........................................................................ 46
-2.2.1.2.13  DHCP_CLIENT_INFO_ARRAY ............................................................. 47
-2.2.1.2.14  DHCP_CLIENT_INFO_V4 ................................................................... 47
-2.2.1.2.15  DHCP_CLIENT_INFO_ARRAY_V4 ........................................................ 48
-2.2.1.2.16  DHCP_CLIENT_INFO_V5 ................................................................... 49
-2.2.1.2.17  DHCP_CLIENT_INFO_ARRAY_V5 ........................................................ 51
-2.2.1.2.18  DHCP_SEARCH_INFO ....................................................................... 51
-2.2.1.2.19  DHCP_CLIENT_INFO_VQ .................................................................. 52
-2.2.1.2.20  DHCP_CLIENT_INFO_ARRAY_VQ ....................................................... 55
-2.2.1.2.21  DHCP_MCLIENT_INFO ...................................................................... 55
-2.2.1.2.22  DWORD_DWORD ............................................................................. 56
-2.2.1.2.23  DHCP_OPTION_DATA_ELEMENT ........................................................ 56
-2.2.1.2.24  DHCP_OPTION_DATA ....................................................................... 57
-2.2.1.2.25  DHCP_OPTION ................................................................................ 58
-2.2.1.2.26  DHCP_OPTION_ARRAY ..................................................................... 58
-2.2.1.2.27  DHCP_ALL_OPTIONS ....................................................................... 59
-2.2.1.2.28  DHCP_IPV6_ADDRESS ..................................................................... 59
-2.2.1.2.29  DHCP_RESERVED_SCOPE6 ............................................................... 59
-2.2.1.2.30  DHCP_OPTION_SCOPE_INFO6 .......................................................... 60
-2.2.1.2.31  DHCP_IP_RANGE ............................................................................. 60
-2.2.1.2.32  DHCP_IP_RESERVATION_V4 ............................................................. 61
-2.2.1.2.33  DHCP_SUBNET_ELEMENT_DATA ........................................................ 61
-2.2.1.2.34  DHCP_SUBNET_ELEMENT_INFO_ARRAY ............................................. 62
-2.2.1.2.35  DHCP_SUBNET_ELEMENT_DATA_V4 .................................................. 63
-2.2.1.2.36  DHCP_SUBNET_ELEMENT_INFO_ARRAY_V4 ........................................ 64
-2.2.1.2.37  DHCP_BOOTP_IP_RANGE ................................................................. 64
-2.2.1.2.38  DHCP_SUBNET_ELEMENT_DATA_V5 .................................................. 65
-2.2.1.2.39  DHCP_SUBNET_ELEMENT_INFO_ARRAY_V5 ........................................ 66
-2.2.1.2.40  DHCP_RESERVED_SCOPE ................................................................. 66
-2.2.1.2.41  DHCP_OPTION_SCOPE_INFO ............................................................ 66
-2.2.1.2.42  DHCP_OPTION_VALUE ..................................................................... 67
-2.2.1.2.43  DHCP_OPTION_VALUE_ARRAY .......................................................... 67
-2.2.1.2.44  DHCP_ALL_OPTION_VALUES ............................................................. 68
-2.2.1.2.45  DHCP_SUBNET_INFO_VQ ................................................................. 68
-2.2.1.2.46  DHCP_IP_ARRAY ............................................................................. 69
-2.2.1.2.47
-SCOPE_MIB_INFO ........................................................................... 70
-2.2.1.2.48  DHCP_MIB_INFO ............................................................................. 70
-2.2.1.2.49
-SCOPE_MIB_INFO_VQ ..................................................................... 71
-2.2.1.2.50  DHCP_MIB_INFO_VQ ....................................................................... 72
-2.2.1.2.51  MSCOPE_MIB_INFO ......................................................................... 73
-2.2.1.2.52  DHCP_MCAST_MIB_INFO ................................................................. 74
-2.2.1.2.53  DHCP_SERVER_CONFIG_INFO .......................................................... 75
-2.2.1.2.54  DHCP_SERVER_CONFIG_INFO_V4 ..................................................... 78
-2.2.1.2.55  DHCP_SERVER_CONFIG_INFO_VQ .................................................... 81
-2.2.1.2.56  DHCP_SUBNET_INFO_V6.................................................................. 85
-2.2.1.2.57  DHCPV6_IP_ARRAY ......................................................................... 85
-2.2.1.2.58  DHCP_IP_RESERVATION_V6 ............................................................. 86
-2.2.1.2.59  DHCP_IP_RANGE_V6 ....................................................................... 86
-2.2.1.2.60  DHCP_SUBNET_ELEMENT_DATA_V6 .................................................. 86
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 537
-
-2.2.1.2.61  DHCP_SUBNET_ELEMENT_INFO_ARRAY_V6 ........................................ 87
-2.2.1.2.62  DHCP_SERVER_CONFIG_INFO_V6 ..................................................... 87
-2.2.1.2.63  DHCP_HOST_INFO_V6 ..................................................................... 88
-2.2.1.2.64  DHCP_CLIENT_INFO_V6 ................................................................... 88
-2.2.1.2.65  DHCP_CLIENT_INFO_ARRAY_V6 ........................................................ 89
-2.2.1.2.66  DHCP_OPTION_LIST ........................................................................ 90
-SCOPE_MIB_INFO_V6 ...................................................................... 90
-2.2.1.2.67
-2.2.1.2.68  DHCP_MIB_INFO_V6 ....................................................................... 90
-2.2.1.2.69  DHCP_SEARCH_INFO_V6 ................................................................. 92
-2.2.1.2.70  DHCP_CLASS_INFO_V6 .................................................................... 92
-2.2.1.2.71  DHCP_MSCOPE_INFO....................................................................... 93
-2.2.1.2.72  DHCP_MSCOPE_TABLE ..................................................................... 94
-2.2.1.2.73  DHCP_SCAN_ITEM ........................................................................... 94
-2.2.1.2.74  DHCP_SCAN_LIST ........................................................................... 95
-2.2.1.2.75  DHCP_CLASS_INFO ......................................................................... 95
-2.2.1.2.76  DHCP_CLASS_INFO_ARRAY .............................................................. 95
-2.2.1.2.77  DHCP_SERVER_SPECIFIC_STRINGS .................................................. 96
-2.2.1.2.78  DHCP_ATTRIB ................................................................................. 96
-2.2.1.2.79  DHCP_ATTRIB_ARRAY ...................................................................... 97
-2.2.1.2.80  DHCP_BIND_ELEMENT ..................................................................... 97
-2.2.1.2.81  DHCP_BIND_ELEMENT_ARRAY .......................................................... 98
-2.2.1.2.82  DHCPV6_BIND_ELEMENT ................................................................. 98
-2.2.1.2.83  DHCPV6_BIND_ELEMENT_ARRAY ...................................................... 99
-2.2.1.2.84  DHCP_MCLIENT_INFO_ARRAY .......................................................... 100
-2.2.1.2.85  DHCP_SUPER_SCOPE_TABLE_ENTRY ................................................ 100
-2.2.1.2.86  DHCP_SUPER_SCOPE_TABLE ........................................................... 101
-2.2.1.2.87  DHCP_CLASS_INFO_ARRAY_V6 ........................................................ 101
-2.2.1.2.88  DHCP_IP_CLUSTER ......................................................................... 101
-2.2.1.2.89  DHCP_ADDR_PATTERN ................................................................... 101
-2.2.1.2.90  DHCP_FILTER_ADD_INFO ................................................................ 102
-2.2.1.2.91  DHCP_FILTER_GLOBAL_INFO ........................................................... 102
-2.2.1.2.92  DHCP_FILTER_RECORD ................................................................... 103
-2.2.1.2.93  DHCP_FILTER_ENUM_INFO .............................................................. 103
-2.2.1.2.94
-SCOPE_MIB_INFO_V5 ..................................................................... 104
-2.2.1.2.95  DHCP_MIB_INFO_V5 ...................................................................... 104
-2.2.1.2.96  DHCP_CLIENT_FILTER_STATUS_INFO ............................................... 106
-2.2.1.2.97  DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY .................................... 108
-2.2.1.2.98  DHCP_FAILOVER_RELATIONSHIP ..................................................... 109
-2.2.1.2.99  DHCP_FAILOVER_RELATIONSHIP_ARRAY .......................................... 110
-2.2.1.2.100  DHCP_FAILOVER_STATISTICS ......................................................... 110
-2.2.1.2.101  DHCPV4_FAILOVER_CLIENT_INFO .................................................... 111
-2.2.1.2.102  DHCP_IP_RESERVATION_INFO......................................................... 114
-2.2.1.2.103  DHCP_RESERVATION_INFO_ARRAY .................................................. 115
-2.2.1.2.104  DHCP_IP_RANGE_ARRAY ................................................................. 115
-2.2.1.2.105  DHCP_POL_COND ........................................................................... 115
-2.2.1.2.106  DHCP_POL_COND_ARRAY ............................................................... 116
-2.2.1.2.107  DHCP_POL_EXPR ............................................................................ 116
-2.2.1.2.108  DHCP_POL_EXPR_ARRAY ................................................................. 117
-2.2.1.2.109  DHCP_ALL_OPTION_VALUES_PB ...................................................... 117
-2.2.1.2.110  DHCP_POLICY ................................................................................ 118
-2.2.1.2.111  DHCP_POLICY_ARRAY ..................................................................... 118
-2.2.1.2.112  DHCPV6_STATELESS_PARAMS ......................................................... 119
-2.2.1.2.113  DHCPV6_STATELESS_SCOPE_STATS ................................................ 119
-2.2.1.2.114  DHCPV6_STATELESS_STATS............................................................ 119
-2.2.1.2.115  DHCP_CLIENT_INFO_PB .................................................................. 120
-2.2.1.2.116  DHCP_CLIENT_INFO_PB_ARRAY ....................................................... 122
-2.2.1.2.117  DHCP_PROPERTY ............................................................................ 122
-2.2.1.2.118  DHCP_PROPERTY_ARRAY ................................................................ 123
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 537
-
-2.2.1.2.119  DHCP_CLIENT_INFO_EX .................................................................. 123
-2.2.1.2.120  DHCP_CLIENT_INFO_EX_ARRAY ....................................................... 125
-2.2.1.2.121  DHCP_POLICY_EX .......................................................................... 125
-2.2.1.2.122  DHCP_POLICY_EX_ARRAY ............................................................... 126
-
-3.1
-
-3.1.1
-
-3  Protocol Details ................................................................................................... 128
-dhcpsrv Server Details ..................................................................................... 128
-Abstract Data Model ................................................................................... 128
-Global Variables ................................................................................... 128
-3.1.1.1
-Per DHCPv4Scope (Public) .................................................................... 132
-3.1.1.2
-Per DHCPv4SuperScope (Public) ............................................................ 133
-3.1.1.3
-DHCPv4IpRange (Public) ....................................................................... 133
-3.1.1.4
-DHCPv4ExclusionRange (Public) ............................................................. 134
-3.1.1.5
-DHCPv4Reservation (Public) .................................................................. 134
-3.1.1.6
-DHCPv4Client (Public) .......................................................................... 134
-3.1.1.7
-DHCPv4ClassDef (Public) ...................................................................... 134
-3.1.1.8
-Per DHCPv4OptionDef ........................................................................... 135
-3.1.1.9
-3.1.1.10  DHCPv4ClassedOptDef .......................................................................... 135
-3.1.1.11
-Per DHCPv4OptionValue (Public) ............................................................ 135
-3.1.1.12  DHCPv4ClassedOptValue (Public) ........................................................... 136
-3.1.1.13
-Per DHCPv4MScope .............................................................................. 136
-Per DHCPv6Scope (Public) .................................................................... 137
-3.1.1.14
-3.1.1.15  DHCPv6ExclusionRange (Public) ............................................................. 137
-Per DHCPv6Reservation (Public) ............................................................ 137
-3.1.1.16
-3.1.1.17
-Per DHCPv6ClassedOptValue (Public)...................................................... 138
-3.1.1.18  DHCPv6ClientInfo (Public) ..................................................................... 138
-3.1.1.19  DHCPv6ClassDef (Public) ...................................................................... 138
-Per DHCPv6ClassedOptionDef ................................................................ 138
-3.1.1.20
-3.1.1.21
-Per DHCPv6OptionValue (Public) ............................................................ 139
-3.1.1.22  DHCPv6OptionDef ................................................................................ 139
-3.1.1.23  DHCPv6UserClass (Public) ..................................................................... 139
-3.1.1.24  DHCPv6VendorClass (Public) ................................................................. 139
-Per DHCPv4AuditLogParams .................................................................. 139
-3.1.1.25
-Per DHCPv4ServerAttributes .................................................................. 140
-3.1.1.26
-Per DHCPServerDnsRegCredentials ........................................................ 140
-3.1.1.27
-3.1.1.28  DHCPv4ServerBindingInfo ..................................................................... 141
-3.1.1.29  DHCPv6ServerBindingInfo ..................................................................... 141
-3.1.1.30  DHCPv4Filter (Public) ........................................................................... 141
-3.1.1.31  DHCPv4MClient .................................................................................... 141
-3.1.1.32  DHCPv6ClientInfoAddressState .............................................................. 141
-3.1.1.33  DHCPv4FailoverRelationship .................................................................. 142
-3.1.1.34  DHCPv4FailoverStatistics ...................................................................... 142
-3.1.1.35  DHCPv4Policy ...................................................................................... 142
-Per DHCPv4PolicyOptionValue ................................................................ 143
-3.1.1.36
-Timers ..................................................................................................... 143
-Initialization .............................................................................................. 143
-Message Processing Events and Sequencing Rules ......................................... 143
-R_DhcpCreateSubnet (Opnum 0) ........................................................... 147
-R_DhcpSetSubnetInfo (Opnum 1) .......................................................... 149
-R_DhcpGetSubnetInfo (Opnum 2) .......................................................... 150
-R_DhcpEnumSubnets (Opnum 3) ........................................................... 151
-R_DhcpAddSubnetElement (Opnum 4).................................................... 152
-R_DhcpEnumSubnetElements (Opnum 5) ............................................... 156
-R_DhcpRemoveSubnetElement (Opnum 6) .............................................. 159
-R_DhcpDeleteSubnet (Opnum 7) ........................................................... 162
-R_DhcpCreateOption (Opnum 8) ............................................................ 163
-R_DhcpSetOptionInfo (Opnum 9) ........................................................... 165
-R_DhcpGetOptionInfo (Opnum 10) ......................................................... 166
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-
-3.1.2
-3.1.3
-3.1.4
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 537
-
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-3.1.4.24
-3.1.4.25
-3.1.4.26
-3.1.4.27
-3.1.4.28
-3.1.4.29
-3.1.4.30
-3.1.4.31
-3.1.4.32
-3.1.4.33
-3.1.4.34
-3.1.4.35
-3.1.4.36
-3.1.4.37
-3.1.4.38
-3.1.4.39
-3.1.4.40
-3.1.4.41
-3.1.4.42
-3.1.4.43
-3.1.4.44
-3.1.4.45
-3.1.4.46
-3.1.4.47
-3.1.4.48
-3.1.4.49
-3.1.4.50
-3.1.4.51
-
-R_DhcpRemoveOption (Opnum 11) ........................................................ 167
-R_DhcpSetOptionValue (Opnum 12) ....................................................... 168
-R_DhcpGetOptionValue (Opnum 13)....................................................... 170
-R_DhcpEnumOptionValues (Opnum 14) .................................................. 172
-R_DhcpRemoveOptionValue (Opnum 15) ................................................ 177
-R_DhcpCreateClientInfo (Opnum 16) ...................................................... 179
-R_DhcpSetClientInfo (Opnum 17) .......................................................... 181
-R_DhcpGetClientInfo (Opnum 18) .......................................................... 182
-R_DhcpDeleteClientInfo (Opnum 19) ...................................................... 183
-R_DhcpEnumSubnetClients (Opnum 20) ................................................. 185
-R_DhcpGetClientOptions (Opnum 21) ..................................................... 187
-R_DhcpGetMibInfo (Opnum 22) ............................................................. 188
-R_DhcpEnumOptions (Opnum 23) .......................................................... 189
-R_DhcpSetOptionValues (Opnum 24) ..................................................... 191
-R_DhcpServerSetConfig (Opnum 25) ...................................................... 193
-R_DhcpServerGetConfig (Opnum 26) ..................................................... 196
-R_DhcpScanDatabase (Opnum 27)......................................................... 196
-R_DhcpGetVersion (Opnum 28) ............................................................. 199
-R_DhcpAddSubnetElementV4 (Opnum 29) .............................................. 200
-R_DhcpEnumSubnetElementsV4 (Opnum 30) .......................................... 204
-R_DhcpRemoveSubnetElementV4 (Opnum 31) ........................................ 207
-R_DhcpCreateClientInfoV4 (Opnum 32) .................................................. 210
-R_DhcpSetClientInfoV4 (Opnum 33)....................................................... 211
-R_DhcpGetClientInfoV4 (Opnum 34) ...................................................... 213
-R_DhcpEnumSubnetClientsV4 (Opnum 35) ............................................. 214
-R_DhcpSetSuperScopeV4 (Opnum 36) ................................................... 216
-R_DhcpGetSuperScopeInfoV4 (Opnum 37) .............................................. 217
-R_DhcpDeleteSuperScopeV4 (Opnum 38) ............................................... 218
-R_DhcpServerSetConfigV4 (Opnum 39) .................................................. 219
-R_DhcpServerGetConfigV4 (Opnum 40) .................................................. 222
-R_DhcpServerSetConfigVQ (Opnum 41) .................................................. 223
-R_DhcpServerGetConfigVQ (Opnum 42) ................................................. 225
-R_DhcpGetMibInfoVQ (Opnum 43) ......................................................... 226
-R_DhcpCreateClientInfoVQ (Opnum 44).................................................. 227
-R_DhcpSetClientInfoVQ (Opnum 45) ...................................................... 228
-R_DhcpGetClientInfoVQ (Opnum 46) ...................................................... 230
-R_DhcpEnumSubnetClientsVQ (Opnum 47) ............................................. 231
-R_DhcpCreateSubnetVQ (Opnum 48) ..................................................... 233
-R_DhcpGetSubnetInfoVQ (Opnum 49) .................................................... 235
-R_DhcpSetSubnetInfoVQ (Opnum 50) .................................................... 236
-Timer Events ............................................................................................. 237
-Other Local Events ..................................................................................... 237
-dhcpsrv2 Server Details ................................................................................... 237
-Abstract Data Model ................................................................................... 237
-Timers ..................................................................................................... 237
-Initialization .............................................................................................. 237
-Message Processing Events and Sequencing Rules ......................................... 238
-R_DhcpEnumSubnetClientsV5 (Opnum 0) ............................................... 247
-R_DhcpSetMScopeInfo (Opnum 1) ......................................................... 249
-R_DhcpGetMScopeInfo (Opnum 2) ......................................................... 251
-R_DhcpEnumMScopes (Opnum 3) .......................................................... 252
-R_DhcpAddMScopeElement (Opnum 4) ................................................... 254
-R_DhcpEnumMScopeElements (Opnum 5) ............................................... 256
-R_DhcpRemoveMScopeElement (Opnum 6) ............................................. 259
-R_DhcpDeleteMScope (Opnum 7) .......................................................... 261
-R_DhcpScanMDatabase (Opnum 8) ........................................................ 262
-R_DhcpCreateMClientInfo (Opnum 9) ..................................................... 264
-R_DhcpSetMClientInfo (Opnum 10) ........................................................ 264
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-3.2.4.7
-3.2.4.8
-3.2.4.9
-3.2.4.10
-3.2.4.11
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 537
-
-3.2.4.12
-3.2.4.13
-3.2.4.14
-3.2.4.15
-3.2.4.16
-3.2.4.17
-3.2.4.18
-3.2.4.19
-3.2.4.20
-3.2.4.21
-3.2.4.22
-3.2.4.23
-3.2.4.24
-3.2.4.25
-3.2.4.26
-3.2.4.27
-3.2.4.28
-3.2.4.29
-3.2.4.30
-3.2.4.31
-3.2.4.32
-3.2.4.33
-3.2.4.34
-3.2.4.35
-3.2.4.36
-3.2.4.37
-3.2.4.38
-3.2.4.39
-3.2.4.40
-3.2.4.41
-3.2.4.42
-3.2.4.43
-3.2.4.44
-3.2.4.45
-3.2.4.46
-3.2.4.47
-3.2.4.48
-3.2.4.49
-3.2.4.50
-3.2.4.51
-3.2.4.52
-3.2.4.53
-3.2.4.54
-3.2.4.55
-3.2.4.56
-3.2.4.57
-3.2.4.58
-3.2.4.59
-3.2.4.60
-3.2.4.61
-3.2.4.62
-3.2.4.63
-3.2.4.64
-3.2.4.65
-3.2.4.66
-3.2.4.67
-3.2.4.68
-3.2.4.69
-
-R_DhcpGetMClientInfo (Opnum 11) ........................................................ 265
-R_DhcpDeleteMClientInfo (Opnum 12).................................................... 266
-R_DhcpEnumMScopeClients (Opnum 13) ................................................ 267
-R_DhcpCreateOptionV5 (Opnum 14) ...................................................... 269
-R_DhcpSetOptionInfoV5 (Opnum 15) ..................................................... 271
-R_DhcpGetOptionInfoV5 (Opnum 16) ..................................................... 273
-R_DhcpEnumOptionsV5 (Opnum 17) ...................................................... 274
-R_DhcpRemoveOptionV5 (Opnum 18) .................................................... 277
-R_DhcpSetOptionValueV5 (Opnum 19) ................................................... 278
-R_DhcpSetOptionValuesV5 (Opnum 20) .................................................. 281
-R_DhcpGetOptionValueV5 (Opnum 21) ................................................... 284
-R_DhcpEnumOptionValuesV5 (Opnum 22) .............................................. 287
-R_DhcpRemoveOptionValueV5 (Opnum 23) ............................................ 293
-R_DhcpCreateClass (Opnum 24) ............................................................ 295
-R_DhcpModifyClass (Opnum 25) ............................................................ 296
-R_DhcpDeleteClass (Opnum 26) ............................................................ 297
-R_DhcpGetClassInfo (Opnum 27) ........................................................... 298
-R_DhcpEnumClasses (Opnum 28) .......................................................... 299
-R_DhcpGetAllOptions (Opnum 29) ......................................................... 301
-R_DhcpGetAllOptionValues (Opnum 30) .................................................. 302
-R_DhcpGetMCastMibInfo (Opnum 31) ..................................................... 304
-R_DhcpAuditLogSetParams (Opnum 32) ................................................. 305
-R_DhcpAuditLogGetParams (Opnum 33) ................................................. 306
-R_DhcpServerQueryAttribute (Opnum 34) .............................................. 307
-R_DhcpServerQueryAttributes (Opnum 35) ............................................. 308
-R_DhcpServerRedoAuthorization (Opnum 36) .......................................... 310
-R_DhcpAddSubnetElementV5 (Opnum 37) .............................................. 310
-R_DhcpEnumSubnetElementsV5 (Opnum 38) .......................................... 314
-R_DhcpRemoveSubnetElementV5 (Opnum 39) ........................................ 318
-R_DhcpGetServerBindingInfo (Opnum 40) .............................................. 321
-R_DhcpSetServerBindingInfo (Opnum 41)............................................... 322
-R_DhcpQueryDnsRegCredentials (Opnum 42) .......................................... 323
-R_DhcpSetDnsRegCredentials (Opnum 43) ............................................. 324
-R_DhcpBackupDatabase (Opnum 44) ..................................................... 325
-R_DhcpRestoreDatabase (Opnum 45) ..................................................... 325
-R_DhcpGetServerSpecificStrings (Opnum 46) .......................................... 326
-R_DhcpCreateOptionV6 (Opnum 47) ...................................................... 327
-R_DhcpSetOptionInfoV6 (Opnum 48) ..................................................... 329
-R_DhcpGetOptionInfoV6 (Opnum 49) ..................................................... 330
-R_DhcpEnumOptionsV6 (Opnum 50) ...................................................... 332
-R_DhcpRemoveOptionV6 (Opnum 51) .................................................... 334
-R_DhcpSetOptionValueV6 (Opnum 52) ................................................... 336
-R_DhcpEnumOptionValuesV6 (Opnum 53) .............................................. 338
-R_DhcpRemoveOptionValueV6 (Opnum 54) ............................................ 343
-R_DhcpGetAllOptionsV6 (Opnum 55) ...................................................... 345
-R_DhcpGetAllOptionValuesV6 (Opnum 56) .............................................. 346
-R_DhcpCreateSubnetV6 (Opnum 57) ...................................................... 347
-R_DhcpEnumSubnetsV6 (Opnum 58) ..................................................... 348
-R_DhcpAddSubnetElementV6 (Opnum 59) .............................................. 350
-R_DhcpEnumSubnetElementsV6 (Opnum 60) .......................................... 352
-R_DhcpRemoveSubnetElementV6 (Opnum 61) ........................................ 355
-R_DhcpDeleteSubnetV6 (Opnum 62) ...................................................... 356
-R_DhcpGetSubnetInfoV6 (Opnum 63) .................................................... 357
-R_DhcpEnumSubnetClientsV6 (Opnum 64) ............................................. 358
-R_DhcpServerSetConfigV6 (Opnum 65) .................................................. 360
-R_DhcpServerGetConfigV6 (Opnum 66) .................................................. 362
-R_DhcpSetSubnetInfoV6 (Opnum 67) ..................................................... 363
-R_DhcpGetMibInfoV6 (Opnum 68) ......................................................... 364
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-9 / 537
-
-R_DhcpGetServerBindingInfoV6 (Opnum 69) ........................................... 365
-3.2.4.70
-R_DhcpSetServerBindingInfoV6 (Opnum 70) ........................................... 366
-3.2.4.71
-R_DhcpSetClientInfoV6 (Opnum 71)....................................................... 367
-3.2.4.72
-R_DhcpGetClientInfoV6 (Opnum 72) ...................................................... 368
-3.2.4.73
-R_DhcpDeleteClientInfoV6 (Opnum 73) .................................................. 369
-3.2.4.74
-R_DhcpCreateClassV6 (Opnum 74) ........................................................ 370
-3.2.4.75
-R_DhcpModifyClassV6 (Opnum 75) ........................................................ 372
-3.2.4.76
-R_DhcpDeleteClassV6 (Opnum 76) ........................................................ 373
-3.2.4.77
-R_DhcpEnumClassesV6 (Opnum 77) ...................................................... 374
-3.2.4.78
-R_DhcpGetOptionValueV6 (Opnum 78) ................................................... 376
-3.2.4.79
-R_DhcpSetSubnetDelayOffer (Opnum 79) ............................................... 378
-3.2.4.80
-R_DhcpGetSubnetDelayOffer (Opnum 80) ............................................... 379
-3.2.4.81
-R_DhcpGetMibInfoV5 (Opnum 81) ......................................................... 380
-3.2.4.82
-R_DhcpAddFilterV4 (Opnum 82) ............................................................ 381
-3.2.4.83
-R_DhcpDeleteFilterV4 (Opnum 83) ......................................................... 383
-3.2.4.84
-R_DhcpSetFilterV4 (Opnum 84) ............................................................. 384
-3.2.4.85
-R_DhcpGetFilterV4 (Opnum 85) ............................................................. 385
-3.2.4.86
-R_DhcpEnumFilterV4 (Opnum 86) .......................................................... 386
-3.2.4.87
-R_DhcpSetDnsRegCredentialsV5 (Opnum 87) .......................................... 387
-3.2.4.88
-R_DhcpEnumSubnetClientsFilterStatusInfo (Opnum 88) ........................... 388
-3.2.4.89
-R_DhcpV4FailoverCreateRelationship (Opnum 89) .................................... 391
-3.2.4.90
-R_DhcpV4FailoverSetRelationship (Opnum 90) ........................................ 393
-3.2.4.91
-R_DhcpV4FailoverDeleteRelationship (Opnum 91) .................................... 394
-3.2.4.92
-R_DhcpV4FailoverGetRelationship (Opnum 92) ........................................ 395
-3.2.4.93
-R_DhcpV4FailoverEnumRelationship (Opnum 93) ..................................... 396
-3.2.4.94
-R_DhcpV4FailoverAddScopeToRelationship (Opnum 94) ............................ 398
-3.2.4.95
-R_DhcpV4FailoverDeleteScopeFromRelationship (Opnum 95) .................... 400
-3.2.4.96
-R_DhcpV4FailoverGetScopeRelationship (Opnum 96) ............................... 401
-3.2.4.97
-R_DhcpV4FailoverGetScopeStatistics (Opnum 97) .................................... 402
-3.2.4.98
-R_DhcpV4FailoverGetClientInfo (Opnum 98) ........................................... 403
-3.2.4.99
-3.2.4.100  R_DhcpV4FailoverGetSystemTime (Opnum 99) ........................................ 404
-3.2.4.101  R_DhcpV4FailoverTriggerAddrAllocation (Opnum 100) .............................. 405
-3.2.4.102  R_DhcpV4SetOptionValue (Opnum 101) ................................................. 406
-3.2.4.103  R_DhcpV4SetOptionValues (Opnum 102) ................................................ 409
-3.2.4.104  R_DhcpV4GetOptionValue (Opnum 103) ................................................. 413
-3.2.4.105  R_DhcpV4RemoveOptionValue (Opnum 104) ........................................... 416
-3.2.4.106  R_DhcpV4GetAllOptionValues (Opnum 105) ............................................ 418
-3.2.4.107  R_DhcpV4QueryPolicyEnforcement (Opnum 106) ..................................... 420
-3.2.4.108  R_DhcpV4SetPolicyEnforcement (Opnum 107) ......................................... 421
-3.2.4.109  R_DhcpV4CreatePolicy (Opnum 108) ...................................................... 422
-3.2.4.110  R_DhcpV4GetPolicy (Opnum 109) .......................................................... 427
-3.2.4.111  R_DhcpV4SetPolicy (Opnum 110) .......................................................... 428
-3.2.4.112  R_DhcpV4DeletePolicy (Opnum 111) ...................................................... 433
-3.2.4.113  R_DhcpV4EnumPolicies (Opnum 112) ..................................................... 434
-3.2.4.114  R_DhcpV4AddPolicyRange (Opnum 113) ................................................. 437
-3.2.4.115  R_DhcpV4RemovePolicyRange (Opnum 114) ........................................... 438
-3.2.4.116  R_DhcpV4EnumSubnetClients (Opnum 115) ............................................ 440
-3.2.4.117  R_DhcpV6SetStatelessStoreParams (Opnum 116) .................................... 442
-3.2.4.118  R_DhcpV6GetStatelessStoreParams (Opnum 117) ................................... 444
-3.2.4.119  R_DhcpV6GetStatelessStatistics (Opnum 118) ......................................... 445
-3.2.4.120  R_DhcpV4EnumSubnetReservations (Opnum 119) ................................... 446
-3.2.4.121  R_DhcpV4GetFreeIPAddress (Opnum 120) .............................................. 448
-3.2.4.122  R_DhcpV6GetFreeIPAddress (Opnum 121) .............................................. 450
-3.2.4.123  R_DhcpV4CreateClientInfo (Opnum 122) ................................................ 452
-3.2.4.124  R_DhcpV4GetClientInfo (Opnum 123) .................................................... 454
-3.2.4.125  R_DhcpV6CreateClientInfo (Opnum 124) ................................................ 455
-3.2.4.126  R_DhcpV4FailoverGetAddressStatus (Opnum 125) ................................... 456
-3.2.4.127  R_DhcpV4CreatePolicyEx (Opnum 126) .................................................. 457
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-10 / 537
-
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-
-3.2.4.128  R_DhcpV4GetPolicyEx (Opnum 127) ....................................................... 458
-3.2.4.129  R_DhcpV4SetPolicyEx (Opnum 128) ....................................................... 458
-3.2.4.130  R_DhcpV4EnumPoliciesEx (Opnum 129) ................................................. 459
-3.2.4.131  R_DhcpV4EnumSubnetClientsEx (Opnum 130) ........................................ 460
-3.2.4.132  R_DhcpV4CreateClientInfoEx (Opnum 131) ............................................. 461
-3.2.4.133  R_DhcpV4GetClientInfoEx (Opnum 132) ................................................. 462
-Timer Events ............................................................................................. 463
-Other Local Events ..................................................................................... 463
-Server Details for Dynamic DNS Configuration .................................................... 463
-DHCPv4 Server.......................................................................................... 463
-DHCPv6 Server.......................................................................................... 463
-Name Protection ........................................................................................ 464
-DHCP Superscopes .......................................................................................... 464
-Access Check Processing .................................................................................. 465
-Retrieve Client SID .................................................................................... 465
-Retrieve DHCP User Group SID .................................................................... 465
-Retrieve DHCP Administrators Group SID ..................................................... 465
-Checks for Read Authorization ..................................................................... 466
-Checks for Read/Write Authorization ............................................................ 466
-Read/Write Authorization Exception ............................................................. 466
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-3.5.6
-
-3.3
-
-3.4
-3.5
-
-4  Protocol Examples ............................................................................................... 467
-Querying the List of Subnets from the DHCP Server ............................................ 467
-4.1
-Adding an IP Range to a Scope ......................................................................... 468
-4.2
-Querying the Binding Information of the DHCP Service ........................................ 468
-4.3
-Enumerating the DHCP Client in a Subnet .......................................................... 469
-4.4
-Querying the List of IPv4 Multicast Subnets from the DHCP Server ........................ 470
-4.5
-Adding an IPv4 Multicast Range to a Multicast Scope ........................................... 471
-4.6
-Deleting a Multicast Scope from a DHCP Server .................................................. 471
-4.7
-Enumerating the MADCAP Client in a Multicast Scope .......................................... 472
-4.8
-Querying the List of IPv6 Subnets from the DHCP Server ..................................... 473
-4.9
-4.10
-Adding an IPv6 Exclusion Range to a Scope ........................................................ 474
-4.11  Querying the IPv6 Binding Information of the DHCP Service ................................. 475
-Enumerating the DHCPv6 Client in a Subnet ....................................................... 475
-4.12
-
-5.1
-
-5  Security ............................................................................................................... 477
-Security Considerations for Implementers .......................................................... 477
-Security Considerations Specific to the DHCP Server Management Protocol ....... 477
-Index of Security Parameters ........................................................................... 477
-
-5.1.1
-
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 478
-
-7  Appendix B: Product Behavior ............................................................................. 520
-
-8  Change Tracking .................................................................................................. 530
-
-9  Index ................................................................................................................... 531
-
-[MS-DHCPM] - v20240916
-Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-11 / 537
-
-1  Introduction
+## 1 Introduction
 
 The Dynamic Host Configuration Protocol (DHCP) Server Management Protocol (DHCPM) defines
 remote procedure call (RPC) interfaces that provide methods for remotely accessing and administering
@@ -1320,7 +791,7 @@ client lease records.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1377,7 +848,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-around the world are expressed as positive and negative offsets from UTC. In this role, it is also
+
+around the world are expressed as positive and negative offsets from UTC. In this role, it is also
 referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
 references to UTC refer to the time at UTC-0 (or GMT).
 
@@ -1456,7 +928,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-expression: A construct that serves two purposes: specifies the logical operator (AND/OR) to be
+
+expression: A construct that serves two purposes: specifies the logical operator (AND/OR) to be
 used between 2 conditions of a policy; and specifies the index of the expressions that are
 parent to it. Taken together, conditions and expressions specify policy classification criteria.
 
@@ -1528,7 +1001,8 @@ Release: September 16, 2024
 
 14 / 537
 
-multicast address: A recipient that subscribes to the network address to receive packets sent
+
+multicast address: A recipient that subscribes to the network address to receive packets sent
 
 using Multicast UDP. In a multicast address scenario, a packet is sent once by the sender and is
 delivered to all subscribers.
@@ -1604,7 +1078,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-policy IP range: An IP address range associated with a policy. Only DHCP Clients that match
+
+policy IP range: An IP address range associated with a policy. Only DHCP Clients that match
 policy classification criteria will be leased an IP address from the policy IP range of the
 matched policy.
 
@@ -1680,7 +1155,8 @@ Release: September 16, 2024
 
 16 / 537
 
-subnet ID: An ID generated by the Dynamic Host Configuration Protocol (DHCP) server. The IPv4
+
+subnet ID: An ID generated by the Dynamic Host Configuration Protocol (DHCP) server. The IPv4
 subnet ID is generated by the DHCP server by performing the binary AND operation on the
 subnet IPv4 address and the IPv4 subnet mask. The IPv6 prefix ID is generated by the DHCP
 server by converting the least significant 64 bits of the IPv6 address to 0.
@@ -1734,14 +1210,14 @@ class is implementation defined.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1754,7 +1230,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
+
+[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
 https://publications.opengroup.org/c706
 
 Note Registration is required to download the document.
@@ -1822,7 +1299,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[RFC3596] Thomson, S., Huitema, C., Ksinant, V., and Souissi, M., "DNS Extensions to Support IP
+
+[RFC3596] Thomson, S., Huitema, C., Ksinant, V., and Souissi, M., "DNS Extensions to Support IP
 version 6", RFC 3596, October 2003, https://www.rfc-editor.org/info/rfc3596
 
 [RFC3646] Droms, R., Ed., "DNS Configuration options for Dynamic Host Configuration Protocol for
@@ -1840,7 +1318,7 @@ https://www.rfc-editor.org/info/rfc4701
 among Dynamic Host Configuration Protocol (DHCP) Clients", RFC 4703, October 2006,
 https://www.rfc-editor.org/info/rfc4703
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IETF-DHCPFOP-12] Droms, R., Kinnear, K., Stapp, M., et al., "DHCP Failover Protocol", INTERNET
 DRAFT, draft-ietf-dhc-failover-12.txt, March 2003, https://tools.ietf.org/html/draft-ietf-dhc-failover-12
@@ -1860,7 +1338,7 @@ us/library/ms724451(VS.85).aspx
 [MSDN-RPCF] Microsoft Corporation, "RPC Functions", http://msdn.microsoft.com/en-
 us/library/aa378623(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Dynamic Host Configuration Protocol (DHCP) Server Management Protocol is a client/server
 protocol that is used to remotely configure, manage, and monitor the DHCP server. This protocol
@@ -1884,7 +1362,8 @@ Release: September 16, 2024
 
 19 / 537
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-DHCPM].images/page020-img01.png)
 ![Extracted image 2 from page 20]([MS-DHCPM].images/page020-img02.png)
 <!-- /Extracted images from page 20 -->
@@ -1924,7 +1403,7 @@ For more information on what opnums are supported in each interface see Protocol
 
 Figure 2: Client/server message exchange
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 DHCPM relies on RPC [MS-RPCE] as a transport. It is used to manage servers that implement DHCP
 [MS-DHCPE]. DHCPM affects the content of Dynamic Host Configuration Protocol Extensions (DHCPE)
@@ -1936,7 +1415,8 @@ Release: September 16, 2024
 
 20 / 537
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-DHCPM].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1960,7 +1440,8 @@ Release: September 16, 2024
 
 21 / 537
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-DHCPM].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1998,7 +1479,8 @@ Release: September 16, 2024
 
 22 / 537
 
-4.  Manual allocation ([RFC2131] section 1) is achieved by the DHCPv4Reservation element, a
+
+4.  Manual allocation ([RFC2131] section 1) is achieved by the DHCPv4Reservation element, a
 
 shared ADM element (see section 3.1.1.6). The DHCP server also checks for the existence of a
 DHCPv4Reservation object that corresponds to the hardware address in the client message. If a
@@ -2074,7 +1556,8 @@ Release: September 16, 2024
 
 23 / 537
 
-9.  Wherever the client message contains a user class option ([RFC3004]) and there exists a
+
+9.  Wherever the client message contains a user class option ([RFC3004]) and there exists a
 
 DHCPv4ClassDef object, a shared ADM element (section 3.1.1.8), whose
 DHCPv4ClassDef.ClassData and DHCPv4ClassDef.ClassDataLength match the user class
@@ -2152,7 +1635,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-and DHCPv6Reservation.DHCPv6ResvClassedOptValueList, a shared ADM element (section
+
+and DHCPv6Reservation.DHCPv6ResvClassedOptValueList, a shared ADM element (section
 3.1.1.16), allow the server to be configured to return options to the client specified in [RFC3315]
 sections 17.2.2 and 18.2. The order of selecting a configured option is:
 
@@ -2229,7 +1713,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.  DHCP NAP enforcement can be disabled or enabled for a NAP-capable DHCP server by modifying
+
+1.  DHCP NAP enforcement can be disabled or enabled for a NAP-capable DHCP server by modifying
 
 the DHCPv4ServerConfigInfo.QuarantineOn element (section 3.1.1.1).
 
@@ -2248,7 +1733,7 @@ section 3.2.
 3.1.1.7), with information about the client's NAP capability, current NAP status, and the end time
 of probation if the client is on probation.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented on top of RPC and, as a result, has the prerequisites identified in [MS-
 RPCE].
@@ -2256,7 +1741,7 @@ RPCE].
 DHCPM assumes that a client has obtained the name or the IP address of the DHCP server that
 implements this protocol suite before the protocol is called.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when an application needs to remotely configure, manage, or monitor a
 DHCP server.
@@ -2264,7 +1749,7 @@ DHCP server.
 See [MSDN-DHCP] for additional information about DHCP, including design, deployment, operations,
 and technical reference data.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers DHCP server versioning issues in the following areas:
 
@@ -2304,16 +1789,17 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-the Interface Definition Language (IDL) of the DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY
+
+the Interface Definition Language (IDL) of the DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY
 structure in Appendix A: Full IDL, for versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendors SHOULD reuse
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following parameters are private assignments.
 
@@ -2342,9 +1828,10 @@ Release: September 16, 2024
 
 27 / 537
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The DHCP server SHOULD support the following RPC transport:
 
@@ -2362,7 +1849,7 @@ DhcpServer:
 
 5b821720-f63b-11d0-aad2-00c04fc324db refers to dhcpsrv2. The interface version is 1.0.
 
-2.1.1  Server Security Settings
+#### 2.1.1 Server Security Settings
 
 DHCPM uses Security Service Provider (SSP) security provided by RPC as specified in [MS-RPCE] for
 sessions using TCP, LPC, or named pipes as the transport protocol. The DHCP RPC server SHOULD
@@ -2382,7 +1869,7 @@ authorization checks to ensure that the client is authorized to perform a specif
 DHCPM uses the RPC protocol to retrieve the identity of the caller, as specified in [MS-RPCE] section
 3.3.3.4.3.
 
-2.1.2  DHCPM Client Security Settings
+#### 2.1.2 DHCPM Client Security Settings
 
 The DHCP client SHOULD use SSP security provided by RPC as specified in [MS-RPCE] for sessions
 using TCP, LPC, or named pipes as the transport protocol. The DHCP client SHOULD authenticate
@@ -2393,7 +1880,7 @@ using the following:
 A DHCP client using TCP, LPC, or named pipes as the transport SHOULD request
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY authentication with the DHCP server.<5>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-RPCE], the following
 additional data types are defined.
@@ -2405,13 +1892,14 @@ Release: September 16, 2024
 
 28 / 537
 
-All multibyte integer values in the messages declared in this section use little-endian byte order.
 
-2.2.1  DHCP RPC Common Messages
+All multibyte integer values in the messages declared in this section use little-endian byte order.
 
-2.2.1.1  Datatypes, Enumerations, and Constants
+#### 2.2.1 DHCP RPC Common Messages
 
-2.2.1.1.1 DHCP_ATTRIB_ID
+##### 2.2.1.1 Datatypes, Enumerations, and Constants
+
+###### 2.2.1.1.1 DHCP_ATTRIB_ID
 
 The DHCP_ATTRIB_ID is a ULONG value. This is used as an IN parameter for querying the server
 attribute. For any value specified for DHCP_ATTRIB_ID other than the range from 0x00000001 to
@@ -2470,7 +1958,7 @@ DHCP_ATTRIB_ULONG_RESTORE_STATUS
 This attribute is a ULONG, which indicates the status of the last
 DHCP server restore operation.
 
-2.2.1.1.2 DHCP_SUBNET_STATE
+###### 2.2.1.1.2 DHCP_SUBNET_STATE
 
 The DHCP_SUBNET_STATE enumeration is a DWORD value that specifies the set of possible states
 for a subnet configured on a DHCPv4 server.
@@ -2489,7 +1977,8 @@ Release: September 16, 2024
 
 29 / 537
 
-  } DHCP_SUBNET_STATE, *LPDHCP_SUBNET_STATE;
+
+  } DHCP_SUBNET_STATE, *LPDHCP_SUBNET_STATE;
 
 DhcpSubnetEnabled: The subnet is enabled; the DHCP server assigns IP addresses, extends IP
 
@@ -2517,7 +2006,7 @@ DhcpSubnetInvalidState: The subnet is not valid, and hence no address will be di
 
 extended.
 
-2.2.1.1.3 DHCP_SEARCH_INFO_TYPE
+###### 2.2.1.1.3 DHCP_SEARCH_INFO_TYPE
 
 The DHCP_SEARCH_INFO_TYPE enumeration defines the type of search that can be performed on
 the DHCPv4 server to query specific DHCP client records. DHCPM uses this value in conjunction
@@ -2544,7 +2033,7 @@ DhcpClientName: The null-terminated Unicode string containing the name of the DH
 MUST be used for querying the DHCPv4 client lease records on the DHCPv4 server. There is no
 restriction on the length of this UNICODE string.
 
-2.2.1.1.4 DHCP_OPTION_SCOPE_TYPE
+###### 2.2.1.1.4 DHCP_OPTION_SCOPE_TYPE
 
 The DHCP_OPTION_SCOPE_TYPE enumeration defines the type of DHCPv4 options being referred
 to by an RPC method in the DHCPM. The DHCP server allows for configuration of standard and
@@ -2562,7 +2051,8 @@ Release: September 16, 2024
 
 30 / 537
 
- {
+
+ {
    DhcpDefaultOptions,
    DhcpGlobalOptions,
    DhcpSubnetOptions,
@@ -2591,7 +2081,7 @@ DhcpMScopeOptions: Option is defined for a multicast scope. The option value is 
 
 modified for a multicast scope.
 
-2.2.1.1.5 DHCP_OPTION_SCOPE_TYPE6
+###### 2.2.1.1.5 DHCP_OPTION_SCOPE_TYPE6
 
 The DHCP_OPTION_SCOPE_TYPE6 enumeration defines the type of DHCPv6 options being referred
 to by an RPC method in the DHCPM. The DHCP server allows for configuration of standard and
@@ -2625,7 +2115,7 @@ DhcpGlobalOptions6: Option is defined at the global level. The option value is a
 
 the DHCPv6 server, which is valid for all scopes in that server.
 
-2.2.1.1.6 DHCP_OPTION_TYPE
+###### 2.2.1.1.6 DHCP_OPTION_TYPE
 
 The DHCP_OPTION_TYPE enumeration specifies whether the option value for a specific standard or
 vendor-specific option is single-valued or multivalued. The following structure specifies the values
@@ -2638,7 +2128,8 @@ Release: September 16, 2024
 
 31 / 537
 
- typedef  enum _DHCP_OPTION_TYPE
+
+ typedef  enum _DHCP_OPTION_TYPE
  {
    DhcpUnaryElementTypeOption,
    DhcpArrayTypeOption
@@ -2649,7 +2140,7 @@ DhcpUnaryElementTypeOption: The option value is single-valued.
 
 DhcpArrayTypeOption: The option value is multivalued.
 
-2.2.1.1.7 DHCP_SUBNET_ELEMENT_TYPE
+###### 2.2.1.1.7 DHCP_SUBNET_ELEMENT_TYPE
 
 The DHCP_SUBNET_ELEMENT_TYPE enumeration defines the type of a configuration parameter for
 a DHCPv4 scope configured on the DHCP server. This value is used in conjunction with other data
@@ -2713,7 +2204,8 @@ Release: September 16, 2024
 
 32 / 537
 
-2.2.1.1.8 DHCP_SUBNET_ELEMENT_TYPE_V6
+
+###### 2.2.1.1.8 DHCP_SUBNET_ELEMENT_TYPE_V6
 
 The DHCP_SUBNET_ELEMENT_TYPE_V6 enumeration defines the type of a configuration
 parameter for a DHCPv6 scope configured on the DHCP server. This value is used in conjunction with
@@ -2741,7 +2233,7 @@ Dhcpv6ExcludedIpRanges: The configuration parameter is the exclusion range of a 
 
 subnet configured on the DHCPv6 server.
 
-2.2.1.1.9 DHCP_FORCE_FLAG
+###### 2.2.1.1.9 DHCP_FORCE_FLAG
 
 The DHCP_FORCE_FLAG enumeration defines the type of deletion operation being requested by an
 RPC method specified by this protocol. This value is used with the RPC method
@@ -2766,7 +2258,7 @@ active DHCP client lease records for the specified subnet, then nothing is delet
 DhcpFailoverForce:  The DHCP server deletes all the active DHCP client lease records for the
 specified subnet but does not delete the Dynamic DNS updates.<6>
 
-2.2.1.1.10  DHCP_OPTION_DATA_TYPE
+###### 2.2.1.1.10 DHCP_OPTION_DATA_TYPE
 
 The DHCP_OPTION_DATA_TYPE enumeration defines the format types for DHCP option values and
 is used in the DHCP_OPTION_DATA_ELEMENT (section 2.2.1.2.23) structure. The DHCPM RPC
@@ -2782,7 +2274,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- {
+
+ {
    DhcpByteOption,
    DhcpWordOption,
    DhcpDWordOption,
@@ -2817,7 +2310,7 @@ DhcpIpv6AddressOption: The option value is an IPv6 address represented as a poin
 
 LPWSTR, to a null-terminated Unicode string.
 
-2.2.1.1.11  QuarantineStatus
+###### 2.2.1.1.11 QuarantineStatus
 
 The QuarantineStatus enumeration defines the Network Access Protection (NAP) state of the
 DHCP client.<7>
@@ -2855,7 +2348,8 @@ Release: September 16, 2024
 
 34 / 537
 
-EXEMPT: The DHCP client is exempt from compliance with the health policies defined by the
+
+EXEMPT: The DHCP client is exempt from compliance with the health policies defined by the
 
 administrator and is granted normal access to the network.
 
@@ -2866,7 +2360,7 @@ default setting on the DHCP NAP server.
 
 NOQUARINFO: No quarantine.
 
-2.2.1.1.12  DHCP_SEARCH_INFO_TYPE_V6
+###### 2.2.1.1.12 DHCP_SEARCH_INFO_TYPE_V6
 
 The DHCP_SEARCH_INFO_TYPE_V6 enumeration defines the field over which the search can be
 performed for a specific IPv6 DHCPv6 client lease record in the DHCPv6 server database. This
@@ -2891,7 +2385,7 @@ IPv6 client lease record in the DHCPv6 server.
 Dhcpv6ClientName: Use a null-terminated Unicode string that contains the name of the DHCPv6
 IPv6 client for searching for the DHCPv6 client lease record in the DHCPv6 server database.
 
-2.2.1.1.13  DHCP_SCAN_FLAG
+###### 2.2.1.1.13 DHCP_SCAN_FLAG
 
 The DHCP_SCAN_FLAG enumeration defines whether an inconsistent IP address needs to be fixed in
 the DHCPv4 client Lease records or the bitmask representation in memory (section 3.1.1.4). This
@@ -2912,7 +2406,7 @@ DhcpDatabaseFix: The DHCPv4 server sets this value in DHCP_SCAN_ITEM when the DH
 IPv4 address is found in the bitmask representation in memory (section 3.1.1.4) but not in the
 DHCPv4 client Lease records.
 
-2.2.1.1.14  DHCP_RESUME_IPV6_HANDLE
+###### 2.2.1.1.14 DHCP_RESUME_IPV6_HANDLE
 
 The DHCP_RESUME_IPV6_HANDLE is of type DHCP_IPV6_ADDRESS (section 2.2.1.2.28),
 containing an index from which the DHCPv6 information is enumerated.
@@ -2924,16 +2418,17 @@ Release: September 16, 2024
 
 35 / 537
 
-Initially this value MUST be set to zero in any RPC enumeration method, with a successful call
+
+Initially this value MUST be set to zero in any RPC enumeration method, with a successful call
 returning the handle value, which is to be used for subsequent enumeration method calls.
 
 This type is declared as follows:
 
  typedef DHCP_IPV6_ADDRESS DHCP_RESUME_IPV6_HANDLE;
 
-2.2.1.1.15
+###### 2.2.1.1.15 LPWSTR
 
-LPWSTR
+
 
 The LPWSTR type definition specifies a pointer to a buffer containing a null-terminated Unicode
 string.
@@ -2942,9 +2437,9 @@ This type is declared as follows:
 
  #define LPWSTR [string] wchar_t*
 
-2.2.1.1.16
+###### 2.2.1.1.16 LPWSTR_RPC_STRING
 
-LPWSTR_RPC_STRING
+
 
 The LPWSTR_RPC_STRING type definition specifies a pointer to a buffer containing a null-
 terminated Unicode string representation of the DHCP server's audit log director path.
@@ -2953,7 +2448,7 @@ This type is declared as follows:
 
  typedef [string] LPWSTR LPWSTR_RPC_STRING;
 
-2.2.1.1.17  DHCP_FILTER_LIST_TYPE
+###### 2.2.1.1.17 DHCP_FILTER_LIST_TYPE
 
 The DHCP_FILTER_LIST_TYPE enumeration defines the type of filter list to which the link-layer
 filter is to be added.
@@ -2969,7 +2464,7 @@ Deny: Add the link-layer filter to the deny list.
 
 Allow: Add the link-layer filter to the allow list.
 
-2.2.1.1.18  DHCP_FAILOVER_MODE
+###### 2.2.1.1.18 DHCP_FAILOVER_MODE
 
 The DHCP_FAILOVER_MODE enumeration defines a set of possible modes of operation for a
 failover relationship configured on a DHCPv4 server.
@@ -2990,9 +2485,10 @@ Release: September 16, 2024
 
 36 / 537
 
-HotStandby:  Configures a DHCPv4 server failover relationship in a hotstandby mode.
 
-2.2.1.1.19  DHCP_FAILOVER_SERVER
+HotStandby:  Configures a DHCPv4 server failover relationship in a hotstandby mode.
+
+###### 2.2.1.1.19 DHCP_FAILOVER_SERVER
 
 The DHCP_FAILOVER_SERVER enumeration defines a set of possible values for a DHCPv4 server in
 a failover relationship.
@@ -3008,9 +2504,9 @@ PrimaryServer:  The server is a primary server in the failover relationship.
 
 SecondaryServer:  The server is a secondary server in the failover relationship.
 
-2.2.1.1.20
+###### 2.2.1.1.20 FSM_STATE
 
-FSM_STATE
+
 
 The FSM_STATE enumeration defines a set of possible values representing various failover
 relationship states on a DHCPv4 server. For additional information about server state transitions, see
@@ -3062,7 +2558,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-POTENTIAL_CONFLICT: This value indicates that the failover relationship between two DHCP
+
+POTENTIAL_CONFLICT: This value indicates that the failover relationship between two DHCP
 
 servers is attempting to re-establish itself.
 
@@ -3088,7 +2585,7 @@ RECOVER_DONE: This value enables an interlocked transition of one server from th
 and another server from the PARTNER_DOWN or COMMUNICATION-INT state to the NORMAL
 state.
 
-2.2.1.1.21  DHCP_POLICY_FIELDS_TO_UPDATE
+###### 2.2.1.1.21 DHCP_POLICY_FIELDS_TO_UPDATE
 
 The DHCP_POLICY_FIELDS_TO_UPDATE enumeration defines the policy fields to be updated
 during a set operation using the R_Dhcpv4SetPolicy method specified in section 3.2.4.111.
@@ -3117,7 +2614,7 @@ DhcpUpdatePolicyStatus: Updates the state (enabled/disabled) of the policy.
 
 DhcpUpdatePolicyDnsSuffix: Updates the DNS suffix for the policy.<8>
 
-2.2.1.1.22  DHCP_POL_COMPARATOR
+###### 2.2.1.1.22 DHCP_POL_COMPARATOR
 
 The DHCP_POL_COMPARATOR enumeration defines the different comparison operators used within
 a condition of a policy.<9>
@@ -3134,7 +2631,8 @@ Release: September 16, 2024
 
 38 / 537
 
-     DhcpCompNotBeginWith,
+
+     DhcpCompNotBeginWith,
      DhcpCompEndsWith,
      DhcpCompNotEndWith
  } DHCP_POL_COMPARATOR;
@@ -3151,7 +2649,7 @@ DhcpCompEndsWith: Specifies the ends-with operator for a condition.
 
 DhcpCompNotEndWith: Specifies the does-not-end-with operator for a condition.
 
-2.2.1.1.23  DHCP_POL_ATTR_TYPE
+###### 2.2.1.1.23 DHCP_POL_ATTR_TYPE
 
 The DHCP_POL_ATTR_TYPE enumeration specifies the attribute type for a condition of a
 policy.<10>
@@ -3176,7 +2674,7 @@ DhcpAttrFqdnSingleLabel: Specifies whether the condition is based on the DHCP cl
 
 single-label machine.
 
-2.2.1.1.24  DHCP_POL_LOGIC_OPER
+###### 2.2.1.1.24 DHCP_POL_LOGIC_OPER
 
 The DHCP_POL_LOGIC_OPER enumeration contains the logical operator used to combine the
 conditions of a policy.
@@ -3190,7 +2688,7 @@ DhcpLogicalOr: Specifies the OR logical operator.
 
 DhcpLogicalAnd: Specifies the AND logical operator.
 
-2.2.1.1.25  DHCP_MAX_FREE_ADDRESSES_REQUESTED
+###### 2.2.1.1.25 DHCP_MAX_FREE_ADDRESSES_REQUESTED
 
 [MS-DHCPM] - v20240916
 Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
@@ -3199,7 +2697,8 @@ Release: September 16, 2024
 
 39 / 537
 
-The DHCP_MAX_FREE_ADDRESSES_REQUESTED constant defines the maximum number of free IPv4
+
+The DHCP_MAX_FREE_ADDRESSES_REQUESTED constant defines the maximum number of free IPv4
 or IPv6 addresses that can be retrieved from the DHCP server in one call to
 R_DhcpV4GetFreeIpAddress (section 3.2.4.121) or R_DhcpV6GetFreeIpAddress (section 3.2.4.122)
 methods.
@@ -3208,7 +2707,7 @@ This constant is declared as follows:
 
  #define DHCP_MAX_FREE_ADDRESSES_REQUESTED 1024
 
-2.2.1.1.26  DHCP_PROPERTY_TYPE
+###### 2.2.1.1.26 DHCP_PROPERTY_TYPE
 
 The DHCP_PROPERTY_TYPE enumeration defines the data types for DHCP property values and is
 used in the DHCP_PROPERTY (section 2.2.1.2.117) structure.
@@ -3233,7 +2732,7 @@ string that includes the terminating null character.
 
 DhcpPropTypeBinary: The property value is of type DHCP_BINARY_DATA (section 2.2.1.2.9).
 
-2.2.1.1.27  DHCP_PROPERTY_ID
+###### 2.2.1.1.27 DHCP_PROPERTY_ID
 
 The DHCP_PROPERTY_ID enumeration defines the property identifier for a
 DHCP_PROPERTY (section 2.2.1.2.117) structure. It is used to uniquely identify a specified DHCP
@@ -3252,9 +2751,9 @@ DhcpPropIdClientAddressStateEx: Identifies the extended address state flags of a
 entry. It is of property type DhcpPropTypeDword, as specified in
 DHCP_PROPERTY_TYPE (section 2.2.1.1.26).
 
-2.2.1.1.28
+###### 2.2.1.1.28 Constants Used in Method Definitions
 
-Constants Used in Method Definitions
+
 
 The following constants are used in various methods.
 
@@ -3265,7 +2764,8 @@ Release: September 16, 2024
 
 40 / 537
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3338,9 +2838,9 @@ MIN_DETECT_CONFLICT_RETRIES
 
 0
 
-2.2.1.2  Structures
+##### 2.2.1.2 Structures
 
-2.2.1.2.1 DHCP_IP_ADDRESS
+###### 2.2.1.2.1 DHCP_IP_ADDRESS
 
 The DHCP_IP_ADDRESS structure specifies an IPv4 address. This structure MUST be set as follows.
 
@@ -3361,7 +2861,7 @@ IPv4
 
  typedef DWORD DHCP_IP_ADDRESS, *PDHCP_IP_ADDRESS, *LPDHCP_IP_ADDRESS;
 
-2.2.1.2.2 DHCP_IP_MASK
+###### 2.2.1.2.2 DHCP_IP_MASK
 
 [MS-DHCPM] - v20240916
 Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
@@ -3370,7 +2870,8 @@ Release: September 16, 2024
 
 41 / 537
 
-The DHCP_IP_MASK structure specifies an IPv4 address mask. This structure MUST be set as
+
+The DHCP_IP_MASK structure specifies an IPv4 address mask. This structure MUST be set as
 follows.
 
 0  1  2  3  4  5  6  7  8  9
@@ -3390,7 +2891,7 @@ This type is declared as follows:
 
  typedef DWORD DHCP_IP_MASK;
 
-2.2.1.2.3 DHCP_OPTION_ID
+###### 2.2.1.2.3 DHCP_OPTION_ID
 
 The DHCP_OPTION_ID structure specifies the DHCP option identifier for an option configured on
 the DHCP server. The identifier is a unique integer that identifies the option defined for a user class
@@ -3401,7 +2902,7 @@ This type is declared as follows:
 
  typedef DWORD DHCP_OPTION_ID;
 
-2.2.1.2.4 DHCP_SRV_HANDLE
+###### 2.2.1.2.4 DHCP_SRV_HANDLE
 
 The DHCP_SRV_HANDLE structure specifies a pointer to a buffer containing a null-terminated
 Unicode string representation of the DHCP server's IP address.
@@ -3410,7 +2911,7 @@ This type is declared as follows:
 
  typedef [handle] LPWSTR DHCP_SRV_HANDLE;
 
-2.2.1.2.5 DHCP_CLIENT_UID
+###### 2.2.1.2.5 DHCP_CLIENT_UID
 
 The DHCP_CLIENT_UID type defines a structure that contains binary data uniquely identifying a
 DHCPv4/DHCPv6 client or a MADCAP lease record.
@@ -3440,12 +2941,13 @@ Release: September 16, 2024
 
 42 / 537
 
-  MADCAP lease identifier
+
+  MADCAP lease identifier
 
 The remainder of this section explains how the preceding identifiers can be represented within the
 DHCP_CLIENT_UID structure.
 
-2.2.1.2.5.1  Representing a DHCPv4 Client-Identifier
+###### 2.2.1.2.5.1 Representing a DHCPv4 Client-Identifier
 
 The DHCPv4 client-identifier is specified in [RFC2132] section 9.14 and MAY contain either a
 hardware address or another identifier (for example, a fully qualified domain name).
@@ -3462,7 +2964,7 @@ Bytes  Values
 
 0x68, 0x6f, 0x73, 0x74, 0x31, 0x2e, 0x63, 0x6f, 0x6e, 0x74, 0x6f, 0x73, 0x6f, 0x2e, 0x63, 0x6f, 0x6d
 
-2.2.1.2.5.2  Representing a DHCPv4 Client Unique ID
+###### 2.2.1.2.5.2 Representing a DHCPv4 Client Unique ID
 
 When the DHCP_CLIENT_UID (section 2.2.1.2.5) structure is used to represent a DHCPv4 client
 unique ID, the latter is stored in the Data field of the structure in the following format:
@@ -3506,7 +3008,7 @@ Bytes  Values
 
 0x00, 0x1c, 0x25, 0x80, 0xa0, 0x43
 
-2.2.1.2.5.3  Representing a DHCPv6 Client-Identifier
+###### 2.2.1.2.5.3 Representing a DHCPv6 Client-Identifier
 
 The DHCPv6 client-identifier is the DUID. The size and contents of the DUID can vary as specified
 in [RFC3315] section 9. The DHCPv6 server treats the DHCPv6 client-identifier as an opaque
@@ -3519,7 +3021,8 @@ Release: September 16, 2024
 
 43 / 537
 
-Consider a DHCP_CLIENT_UID (section 2.2.1.2.5) structure that represents a DHCPv6 client-
+
+Consider a DHCP_CLIENT_UID (section 2.2.1.2.5) structure that represents a DHCPv6 client-
 identifier of "0x000874317fe1". The contents of the DHCP_CLIENT_UID will be as follows.
 
 Bytes  Values
@@ -3528,7 +3031,7 @@ Bytes  Values
 
 0x00, 0x08, 0x74, 0x31, 0x7f, 0xe1
 
-2.2.1.2.5.4  Representing a MADCAP Lease Identifier
+###### 2.2.1.2.5.4 Representing a MADCAP Lease Identifier
 
 The MADCAP lease identifier is specified in [RFC2730] section 2.4. It is required to be unique across
 all multicast address leases requested by all clients in a multicast address allocation domain.
@@ -3547,7 +3050,7 @@ Bytes  Values
 0x00, 0x6B, 0x66, 0x33, 0x1A, 0x92, 0x2D, 0x60, 0x48, 0xBC, 0xD4, 0x50, 0x45, 0x82, 0xD3, 0x00,
 0xEA
 
-2.2.1.2.6 DHCP_RESUME_HANDLE
+###### 2.2.1.2.6 DHCP_RESUME_HANDLE
 
 The DHCP_RESUME_HANDLE is a DWORD that defines a structure that contains a handle to the
 location within the DHCP server's data set from which an enumeration method returns the data.
@@ -3565,7 +3068,7 @@ This type is declared as follows:
 
  typedef DWORD DHCP_RESUME_HANDLE;
 
-2.2.1.2.7 DHCP_HOST_INFO
+###### 2.2.1.2.7 DHCP_HOST_INFO
 
 The DHCP_HOST_INFO structure provides information on the DHCPv4 server. This structure is
 used in DHCP_CLIENT_INFO_V4 (section 2.2.1.2.14) and
@@ -3584,7 +3087,8 @@ Release: September 16, 2024
 
 44 / 537
 
-  *LPDHCP_HOST_INFO;
+
+  *LPDHCP_HOST_INFO;
 
 IpAddress:  This is of type DHCP_IP_ADDRESS (section 2.2.1.2.1), containing the IPv4 address of
 
@@ -3598,7 +3102,7 @@ HostName:  A pointer to a null-terminated Unicode string that points to the name
 
 server. Currently not used in any set method. If used in a get method, the value returned is NULL.
 
-2.2.1.2.8 DHCP_SUBNET_INFO
+###### 2.2.1.2.8 DHCP_SUBNET_INFO
 
 The DHCP_SUBNET_INFO structure defines the information about an IPv4 subnet. This structure is
 used in the R_DhcpCreateSubnet (section 3.1.4.1) method.
@@ -3635,7 +3139,7 @@ SubnetState:  This is an enumeration of type DHCP_SUBNET_STATE (section 2.2.1.1.
 
 the current state of this IPv4 subnet.
 
-2.2.1.2.9 DHCP_BINARY_DATA
+###### 2.2.1.2.9 DHCP_BINARY_DATA
 
 The DHCP_BINARY_DATA structure defines a buffer containing binary data. This data structure is
 generally used by other data structures, such as DHCP_OPTION_DATA_ELEMENT (section 2.2.1.2.23).
@@ -3657,11 +3161,12 @@ Release: September 16, 2024
 
 45 / 537
 
-Data:   This is a pointer to BYTE, pointing to an array of bytes of length specified by the DataLength
+
+Data:   This is a pointer to BYTE, pointing to an array of bytes of length specified by the DataLength
 
 member.
 
-2.2.1.2.10  DHCP_IP_RESERVATION
+###### 2.2.1.2.10 DHCP_IP_RESERVATION
 
  The DHCP_IP_RESERVATION structure defines an IPv4 reservation for a DHCPv4 client. This is
 used in structure DHCP_SUBNET_ELEMENT_DATA (section 2.2.1.2.33).
@@ -3680,7 +3185,7 @@ ReservedForClient:  This is a pointer of type DHCP_CLIENT_UID (section 2.2.1.2.5
 
 the DHCPv4 client identifier (section 2.2.1.2.5.1).
 
-2.2.1.2.11  DATE_TIME
+###### 2.2.1.2.11 DATE_TIME
 
 The DATE_TIME structure contains a 64-bit value interpreted as an unsigned number that represents
 the number of 100-nanosecond intervals since January 1, 1601 (UTC).
@@ -3695,7 +3200,7 @@ dwLowDateTime:  This is of type DWORD, containing the lower 32 bits of the time 
 
 dwHighDateTime:  This is of type DWORD, containing the upper 32 bits of the time value.
 
-2.2.1.2.12  DHCP_CLIENT_INFO
+###### 2.2.1.2.12 DHCP_CLIENT_INFO
 
 The DHCP_CLIENT_INFO structure defines information about the DHCPv4 client that is used by the
 R_DhcpGetClientInfo (section 3.1.4.19) method.
@@ -3726,7 +3231,8 @@ Release: September 16, 2024
 
 46 / 537
 
-ClientHardwareAddress:  This is of type DHCP_CLIENT_UID (section 2.2.1.2.5) that represents a
+
+ClientHardwareAddress:  This is of type DHCP_CLIENT_UID (section 2.2.1.2.5) that represents a
 
 DHCPv4 client-identifier (section 2.2.1.2.5.1) or a DHCPv4 client unique ID (section
 2.2.1.2.5.2). Methods that accept DHCP_CLIENT_INFO as a parameter specify which
@@ -3748,7 +3254,7 @@ OwnerHost:  This is of type DHCP_HOST_INFO (section 2.2.1.2.7) that contains inf
 
 the DHCPv4 server machine that has provided a lease to the DHCPv4 client.
 
-2.2.1.2.13  DHCP_CLIENT_INFO_ARRAY
+###### 2.2.1.2.13 DHCP_CLIENT_INFO_ARRAY
 
 The DHCP_CLIENT_INFO_ARRAY structure defines an array of
 DHCP_CLIENT_INFO (section 2.2.1.2.12) structures.
@@ -3774,7 +3280,7 @@ Clients:  This is a pointer of type LPDHCP_CLIENT_INFO (section 2.2.1.2.12) that
 
 of length NumElements containing the DHCPv4 client's information.
 
-2.2.1.2.14  DHCP_CLIENT_INFO_V4
+###### 2.2.1.2.14 DHCP_CLIENT_INFO_V4
 
 The DHCP_CLIENT_INFO_V4 structure defines information about the DHCPv4 client that is used
 by the R_DhcpGetClientInfoV4 (section 3.1.4.35) method.
@@ -3800,7 +3306,8 @@ Release: September 16, 2024
 
 47 / 537
 
-  *LPDHCP_CLIENT_INFO_V4;
+
+  *LPDHCP_CLIENT_INFO_V4;
 
 ClientIpAddress:  This is of type DHCP_IP_ADDRESS (section 2.2.1.2.1), a DWORD that contains the
 
@@ -3876,7 +3383,7 @@ Backward compatibility for manual addressing.
 
 0x64
 
-2.2.1.2.15  DHCP_CLIENT_INFO_ARRAY_V4
+###### 2.2.1.2.15 DHCP_CLIENT_INFO_ARRAY_V4
 
 The DHCP_CLIENT_INFO_ARRAY_V4 structure defines an array of
 DHCP_CLIENT_INFO_V4 (section 2.2.1.2.14) structures.
@@ -3891,7 +3398,8 @@ Release: September 16, 2024
 
 48 / 537
 
- typedef struct _DHCP_CLIENT_INFO_ARRAY_V4 {
+
+ typedef struct _DHCP_CLIENT_INFO_ARRAY_V4 {
    DWORD NumElements;
    [size_is(NumElements)] LPDHCP_CLIENT_INFO_V4* Clients;
  } DHCP_CLIENT_INFO_ARRAY_V4,
@@ -3909,7 +3417,7 @@ Clients:  This is a pointer of type LPDHCP_CLIENT_INFO_V4 that points to the arr
 
 NumElements containing the DHCPv4 client information.
 
-2.2.1.2.16  DHCP_CLIENT_INFO_V5
+###### 2.2.1.2.16 DHCP_CLIENT_INFO_V5
 
 The DHCP_CLIENT_INFO_V5 structure defines information about the DHCPv4 client. It augments
 the DHCP_CLIENT_INFO_V4 (section 2.2.1.2.14) structure by including the additional element
@@ -3964,7 +3472,8 @@ Release: September 16, 2024
 
 49 / 537
 
-bClientType:  This is of type BYTE that identifies the type of the DHCPv4 client. Possible values for
+
+bClientType:  This is of type BYTE that identifies the type of the DHCPv4 client. Possible values for
 
 this field are provided in the following table.
 
@@ -4074,7 +3583,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 0x1
 
@@ -4127,7 +3637,7 @@ ADDRESS_BIT_DELETED
 The address lease is expired, but the DNS updates for the lease record
 have not been deleted from the DNS server.
 
-2.2.1.2.17  DHCP_CLIENT_INFO_ARRAY_V5
+###### 2.2.1.2.17 DHCP_CLIENT_INFO_ARRAY_V5
 
 The DHCP_CLIENT_INFO_ARRAY_V5 structure defines the array of
 DHCP_CLIENT_INFO_V5 (section 2.2.1.2.16) structures.
@@ -4154,7 +3664,7 @@ Clients:  This is a pointer of type DHCP_CLIENT_INFO_V5 that points to the array
 
 NumElements containing the DHCPv4 client's information.
 
-2.2.1.2.18  DHCP_SEARCH_INFO
+###### 2.2.1.2.18 DHCP_SEARCH_INFO
 
 The DHCP_SEARCH_INFO structure defines the DHCPv4 client information search type defined by
 SearchType, along with the data used within that search. This structure, used in the
@@ -4167,7 +3677,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct _DHCP_SEARCH_INFO {
+
+ typedef struct _DHCP_SEARCH_INFO {
      DHCP_SEARCH_INFO_TYPE SearchType;
      [switch_is(SearchType), switch_type(DHCP_SEARCH_INFO_TYPE)]
      union _DHCP_CLIENT_SEARCH_UNION {
@@ -4227,7 +3738,7 @@ ClientName:  A pointer to a null-terminated Unicode string, of type LPWSTR, that
 of the DHCPv4 client. It is used to search for the DHCPv4 client lease record in the DHCPv4 server
 database. There is no restriction on the length of this Unicode string.
 
-2.2.1.2.19  DHCP_CLIENT_INFO_VQ
+###### 2.2.1.2.19 DHCP_CLIENT_INFO_VQ
 
 The DHCP_CLIENT_INFO_VQ structure defines information about the DHCPv4 client. This
 structure is used in the R_DhcpGetClientInfoVQ (section 3.1.4.47) method.
@@ -4254,7 +3765,8 @@ Release: September 16, 2024
 
 52 / 537
 
-   DATE_TIME ProbationEnds;
+
+   DATE_TIME ProbationEnds;
    BOOL QuarantineCapable;
  } DHCP_CLIENT_INFO_VQ,
   *LPDHCP_CLIENT_INFO_VQ;
@@ -4347,7 +3859,8 @@ Release: September 16, 2024
 
 53 / 537
 
-BIT 0 and BIT 1 signify the state of the leased IPv4 address, as shown in the table that follows.
+
+BIT 0 and BIT 1 signify the state of the leased IPv4 address, as shown in the table that follows.
 
 Value
 
@@ -4464,7 +3977,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 TRUE
 
@@ -4478,7 +3992,7 @@ The DHCPv4 client machine is not quarantine-enabled.
 
 0
 
-2.2.1.2.20  DHCP_CLIENT_INFO_ARRAY_VQ
+###### 2.2.1.2.20 DHCP_CLIENT_INFO_ARRAY_VQ
 
 The DHCP_CLIENT_INFO_ARRAY_VQ structure defines an array of
 DHCP_CLIENT_INFO_VQ (section 2.2.1.2.19) structures. This structure is used by methods, such as
@@ -4499,7 +4013,7 @@ Clients:  This is a pointer of type DHCP_CLIENT_INFO_VQ that points to the array
 
 NumElements containing the DHCP client information.
 
-2.2.1.2.21  DHCP_MCLIENT_INFO
+###### 2.2.1.2.21 DHCP_MCLIENT_INFO
 
 The DHCP_MCLIENT_INFO structure defines information about the MADCAP client that is used by
 the method R_DhcpGetMClientInfo (section 3.2.4.12).
@@ -4540,7 +4054,8 @@ Release: September 16, 2024
 
 55 / 537
 
-ClientLeaseStarts:  This is of type DATE_TIME (section 2.2.1.2.11) that contains the lease start date
+
+ClientLeaseStarts:  This is of type DATE_TIME (section 2.2.1.2.11) that contains the lease start date
 
 and time for the MADCAP client. This is UTC time.
 
@@ -4590,7 +4105,7 @@ The IPv4 address is in DOOMED state and is due to be deleted.
 
 0x00000003
 
-2.2.1.2.22  DWORD_DWORD
+###### 2.2.1.2.22 DWORD_DWORD
 
 The DWORD_DWORD structure defines a 64-bit integer value. This is used in
 DHCP_OPTION_DATA_ELEMENT (section 2.2.1.2.23).
@@ -4605,7 +4120,7 @@ DWord1:  This is of type DWORD, specifying the upper 32 bits of the value.
 
 DWord2:  This is of type DWORD, specifying the lower 32 bits of the value.
 
-2.2.1.2.23  DHCP_OPTION_DATA_ELEMENT
+###### 2.2.1.2.23 DHCP_OPTION_DATA_ELEMENT
 
 The DHCP_OPTION_DATA_ELEMENT structure contains the type of the option and its data value.
 This is used within a DHCP_OPTION_DATA (section 2.2.1.2.24) structure.
@@ -4624,7 +4139,8 @@ Release: September 16, 2024
 
 56 / 537
 
-     [case(DhcpWordOption)]
+
+     [case(DhcpWordOption)]
        WORD WordOption;
      [case(DhcpDWordOption)]
        DWORD DWordOption;
@@ -4690,7 +4206,7 @@ Ipv6AddressDataOption:  Specifies the data as LPWSTR, a pointer to a Unicode str
 
 field is present if the OptionType is DhcpIpv6AddressOption.
 
-2.2.1.2.24  DHCP_OPTION_DATA
+###### 2.2.1.2.24 DHCP_OPTION_DATA
 
 The DHCP_OPTION_DATA structure defines an array of
 DHCP_OPTION_DATA_ELEMENT (section 2.2.1.2.23) structures. This structure is a data container for
@@ -4704,7 +4220,8 @@ Release: September 16, 2024
 
 57 / 537
 
- typedef struct _DHCP_OPTION_DATA {
+
+ typedef struct _DHCP_OPTION_DATA {
    DWORD NumElements;
    [size_is(NumElements)] LPDHCP_OPTION_DATA_ELEMENT Elements;
  } DHCP_OPTION_DATA,
@@ -4717,7 +4234,7 @@ Elements:  This is a pointer of type DHCP_OPTION_DATA_ELEMENT structure that poi
 
 of length NumElements containing the data elements associated with a specific option.
 
-2.2.1.2.25  DHCP_OPTION
+###### 2.2.1.2.25 DHCP_OPTION
 
 The DHCP_OPTION structure contains the information for an option definition created on the DHCP
 server. This structure is used in the LPDHCP_OPTION_ARRAY (section 2.2.1.2.26) structure.
@@ -4751,7 +4268,7 @@ OptionType:  This is of type DHCP_OPTION_TYPE (section 2.2.1.1.6), indicating wh
 
 value is a unary item or an array of elements.
 
-2.2.1.2.26  DHCP_OPTION_ARRAY
+###### 2.2.1.2.26 DHCP_OPTION_ARRAY
 
 The DHCP_OPTION_ARRAY structure contains an array of the DHCP server option definition. This
 structure is used in the DHCP_ALL_OPTIONS (section 2.2.1.2.27) structure.
@@ -4777,7 +4294,8 @@ Release: September 16, 2024
 
 58 / 537
 
-2.2.1.2.27  DHCP_ALL_OPTIONS
+
+###### 2.2.1.2.27 DHCP_ALL_OPTIONS
 
 The DHCP_ALL_OPTIONS structure contains all the option definitions created on the DHCP server.
 This includes the vendor-specific option definition as well as the default vendor option definition. This
@@ -4819,7 +4337,7 @@ ClassName:  A pointer to a null-terminated Unicode string that specifies the nam
 
 a specific user class. There is no restriction on the length of this Unicode string.
 
-2.2.1.2.28  DHCP_IPV6_ADDRESS
+###### 2.2.1.2.28 DHCP_IPV6_ADDRESS
 
 The DHCP_IPV6_ADDRESS structure contains the IPv6 address. This is used in the
 DHCP_OPTION_SCOPE_INFO6 (section 2.2.1.2.30) structure.
@@ -4835,7 +4353,7 @@ HighOrderBits:  This is of type ULONGLONG, containing the higher 64 bits of the 
 
 LowOrderBits:  This is of type ULONGLONG, containing the lower 64 bits of the IPv6 address.
 
-2.2.1.2.29  DHCP_RESERVED_SCOPE6
+###### 2.2.1.2.29 DHCP_RESERVED_SCOPE6
 
 The DHCP_RESERVED_SCOPE6 structure defines an IPv6 reservation. This is used in
 DHCP_OPTION_SCOPE_INFO6 (section 2.2.1.2.30) structure.
@@ -4847,7 +4365,8 @@ Release: September 16, 2024
 
 59 / 537
 
- typedef struct _DHCP_RESERVED_SCOPE6 {
+
+ typedef struct _DHCP_RESERVED_SCOPE6 {
    DHCP_IPV6_ADDRESS ReservedIpAddress;
    DHCP_IPV6_ADDRESS ReservedIpSubnetAddress;
  } DHCP_RESERVED_SCOPE6,
@@ -4861,7 +4380,7 @@ ReservedIpSubnetAddress:   This is of type DHCP_IPV6_ADDRESS, containing the IPv
 
 the subnet.
 
-2.2.1.2.30  DHCP_OPTION_SCOPE_INFO6
+###### 2.2.1.2.30 DHCP_OPTION_SCOPE_INFO6
 
 The DHCP_OPTION_SCOPE_INFO6 structure contains information about the option. The
 information includes the type of the option and the level of the option (server level, scope level, or
@@ -4896,7 +4415,7 @@ ReservedScopeInfo:  This is of type DHCP_RESERVED_SCOPE6 (section 2.2.1.2.29) st
 containing the IPv6 address of the reservation and the IPv6 prefix ID for which the option value is
 to be set.
 
-2.2.1.2.31  DHCP_IP_RANGE
+###### 2.2.1.2.31 DHCP_IP_RANGE
 
 The DHCP_IP_RANGE structure defines the IPv4 range for an IPv4 scope. This is used in structure
 DHCP_SUBNET_ELEMENT_DATA (section 2.2.1.2.33).
@@ -4920,7 +4439,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.1.2.32  DHCP_IP_RESERVATION_V4
+
+###### 2.2.1.2.32 DHCP_IP_RESERVATION_V4
 
 The DHCP_IP_RESERVATION_V4 structure defines an IPv4 reservation for a DHCP client. This
 structure is an extension of DHCP_IP_RESERVATION (section 2.2.1.2.10) structure by including the
@@ -4966,7 +4486,7 @@ The IPv4 reservation is for both kinds of clients.
 
 0x03
 
-2.2.1.2.33  DHCP_SUBNET_ELEMENT_DATA
+###### 2.2.1.2.33 DHCP_SUBNET_ELEMENT_DATA
 
 The DHCP_SUBNET_ELEMENT_DATA structure defines the elements of an IPv4 reservation, IPv4
 exclusion range, or IPv4 range for the subnet. This structure is used in methods
@@ -4999,7 +4519,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Element:  Element is a union of subnet elements. The value of the union is dependent on the
+
+Element:  Element is a union of subnet elements. The value of the union is dependent on the
 
 previous field the ElementType member.
 
@@ -5064,7 +4585,7 @@ IpUsedCluster:  This is of type DHCP_IP_CLUSTER (section 2.2.1.2.88) and is not 
 ElementType member mandates this element to be used in any method, the method will return
 ERROR_INVALID_PARAMETER.
 
-2.2.1.2.34  DHCP_SUBNET_ELEMENT_INFO_ARRAY
+###### 2.2.1.2.34 DHCP_SUBNET_ELEMENT_INFO_ARRAY
 
 The DHCP_SUBNET_ELEMENT_INFO_ARRAY structure defines an array of
 DHCP_SUBNET_ELEMENT_DATA (section 2.2.1.2.33) structures. The first parameter contains the
@@ -5089,11 +4610,12 @@ Release: September 16, 2024
 
 62 / 537
 
-Elements:  This is a pointer to an array of DHCP_SUBNET_ELEMENT_DATA structures of length
+
+Elements:  This is a pointer to an array of DHCP_SUBNET_ELEMENT_DATA structures of length
 
 NumElements containing IPv4 subnet elements.
 
-2.2.1.2.35  DHCP_SUBNET_ELEMENT_DATA_V4
+###### 2.2.1.2.35 DHCP_SUBNET_ELEMENT_DATA_V4
 
 The DHCP_SUBNET_ELEMENT_DATA_V4 structure defines the IPv4 reservation, IPv4 exclusion
 range, or IPv4 range elements for the subnet. This structure is an extension of the
@@ -5179,7 +4701,8 @@ Release: September 16, 2024
 
 63 / 537
 
-specified in the processing rules of methods that use the DHCP_SUBNET_ELEMENT_DATA_V4
+
+specified in the processing rules of methods that use the DHCP_SUBNET_ELEMENT_DATA_V4
 structure.
 
 ReservedIp:  This is of type DHCP_IP_RESERVATION_V4 (section 2.2.1.2.32) structure, containing
@@ -5192,7 +4715,7 @@ IpUsedCluster:  This is of type DHCP_IP_CLUSTER (section 2.2.1.2.88) structure a
 the ElementType member mandates this element to be used in any method, the method will
 return ERROR_INVALID_PARAMETER.
 
-2.2.1.2.36  DHCP_SUBNET_ELEMENT_INFO_ARRAY_V4
+###### 2.2.1.2.36 DHCP_SUBNET_ELEMENT_INFO_ARRAY_V4
 
 The DHCP_SUBNET_ELEMENT_INFO_ARRAY_V4 structure defines an array of
 DHCP_SUBNET_ELEMENT_DATA_V4 (section 2.2.1.2.35) structures.
@@ -5216,7 +4739,7 @@ Elements:  This is a pointer to an array of DHCP_SUBNET_ELEMENT_DATA_V4 structur
 
 NumElements, containing subnet elements.
 
-2.2.1.2.37  DHCP_BOOTP_IP_RANGE
+###### 2.2.1.2.37 DHCP_BOOTP_IP_RANGE
 
 The DHCP_BOOTP_IP_RANGE structure defines a suite of IPv4 addresses that can be leased to
 BOOTP-specific clients ([RFC2132]). This structure is an extension of the
@@ -5250,11 +4773,12 @@ Release: September 16, 2024
 
 64 / 537
 
-MaxBootpAllowed:  This is of type ULONG, specifying the maximum count of BOOTP clients in this
+
+MaxBootpAllowed:  This is of type ULONG, specifying the maximum count of BOOTP clients in this
 
 IPv4 range that the DHCPv4 server is allowed to serve.
 
-2.2.1.2.38  DHCP_SUBNET_ELEMENT_DATA_V5
+###### 2.2.1.2.38 DHCP_SUBNET_ELEMENT_DATA_V5
 
 The DHCP_SUBNET_ELEMENT_DATA_V5 structure defines the element IPv4 reservation, IPv4
 exclusion range, or IPv4 range for the subnet. This structure is an extension of the
@@ -5339,7 +4863,8 @@ Release: September 16, 2024
 
 65 / 537
 
-specified in the processing rules of methods that use the DHCP_SUBNET_ELEMENT_DATA_V5
+
+specified in the processing rules of methods that use the DHCP_SUBNET_ELEMENT_DATA_V5
 structure.
 
 ReservedIp:  This is of type DHCP_IP_RESERVATION_V4 (section 2.2.1.2.32) structure, containing
@@ -5352,7 +4877,7 @@ IpUsedCluster:  This is of type DHCP_IP_CLUSTER (section 2.2.1.2.88) structure a
 the ElementType member mandates this element to be used in any method, the method will
 return ERROR_INVALID_PARAMETER.
 
-2.2.1.2.39  DHCP_SUBNET_ELEMENT_INFO_ARRAY_V5
+###### 2.2.1.2.39 DHCP_SUBNET_ELEMENT_INFO_ARRAY_V5
 
 The DHCP_SUBNET_ELEMENT_INFO_ARRAY_V5 structure defines an array of
 DHCP_SUBNET_ELEMENT_DATA_V5 (section 2.2.1.2.38) structures. The first member contains the
@@ -5375,7 +4900,7 @@ Elements:  This is a pointer to an array of DHCP_SUBNET_ELEMENT_DATA_V5 structur
 
 length NumElements containing IPv4 subnet elements.
 
-2.2.1.2.40  DHCP_RESERVED_SCOPE
+###### 2.2.1.2.40 DHCP_RESERVED_SCOPE
 
 The DHCP_RESERVED_SCOPE structure defines an IPv4 reservation. This structure is used in the
 DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure.
@@ -5394,7 +4919,7 @@ ReservedIpSubnetAddress:  This is of type DHCP_IP_ADDRESS, containing the IPv4 a
 
 the subnet ID.
 
-2.2.1.2.41  DHCP_OPTION_SCOPE_INFO
+###### 2.2.1.2.41 DHCP_OPTION_SCOPE_INFO
 
 The DHCP_OPTION_SCOPE_INFO structure defines the information about the option. The
 information consists of the option type and the level of the option (server level, scope level, or
@@ -5410,7 +4935,8 @@ Release: September 16, 2024
 
 66 / 537
 
-   [switch_is(ScopeType), switch_type(DHCP_OPTION_SCOPE_TYPE)]
+
+   [switch_is(ScopeType), switch_type(DHCP_OPTION_SCOPE_TYPE)]
      union _DHCP_OPTION_SCOPE_UNION {
      [case(DhcpDefaultOptions)]
              ;
@@ -5444,7 +4970,7 @@ MScopeInfo:  This is a pointer to a null-terminated Unicode string that contains
 
 scope name.
 
-2.2.1.2.42  DHCP_OPTION_VALUE
+###### 2.2.1.2.42 DHCP_OPTION_VALUE
 
 The DHCP_OPTION_VALUE structure contains the option identifier and its option value. This
 structure is used in the DHCP_OPTION_VALUE_ARRAY (section 2.2.1.2.43) structure.
@@ -5463,7 +4989,7 @@ Value:  This is of type DHCP_OPTION_DATA (section 2.2.1.2.24), containing the op
 
 option.
 
-2.2.1.2.43  DHCP_OPTION_VALUE_ARRAY
+###### 2.2.1.2.43 DHCP_OPTION_VALUE_ARRAY
 
 The DHCP_OPTION_VALUE_ARRAY structure defines an array of
 DHCP_OPTION_VALUE (section 2.2.1.2.42) structures. This structure is used in the
@@ -5483,7 +5009,8 @@ Release: September 16, 2024
 
 67 / 537
 
-  *LPDHCP_OPTION_VALUE_ARRAY;
+
+  *LPDHCP_OPTION_VALUE_ARRAY;
 
 NumElements:  This is a DWORD that specifies the number of option values in the subsequent field
 
@@ -5493,7 +5020,7 @@ Values:  This is a pointer to an array of DHCP_OPTION_VALUE structures of length
 
 that contains values.
 
-2.2.1.2.44  DHCP_ALL_OPTION_VALUES
+###### 2.2.1.2.44 DHCP_ALL_OPTION_VALUES
 
 The DHCP_ALL_OPTION_VALUES structure contains all option values for a specified user class and
 vendor class. This structure is used in the R_DhcpGetAllOptionValuesV6 (section 3.2.4.57) method.
@@ -5534,7 +5061,7 @@ default vendor class.
 OptionsArray:  This is a pointer to an array of DHCP_OPTION_VALUE_ARRAY (section 2.2.1.2.43)
 structures that points to an array of all the options for a specified user class and vendor class.
 
-2.2.1.2.45  DHCP_SUBNET_INFO_VQ
+###### 2.2.1.2.45 DHCP_SUBNET_INFO_VQ
 
 The DHCP_SUBNET_INFO_VQ structure contains the information about an IPv4 subnet. This
 structure is an extension of the DHCP_SUBNET_INFO (section 2.2.1.2.8) structure, adding information
@@ -5556,7 +5083,8 @@ Release: September 16, 2024
 
 68 / 537
 
-   DWORD QuarantineOn;
+
+   DWORD QuarantineOn;
    DWORD Reserved1;
    DWORD Reserved2;
    INT64 Reserved3;
@@ -5609,7 +5137,7 @@ Reserved4:  This is of type INT64. Currently it is not used, and any value set t
 affect the behavior of the method that uses this structure. The value returned in this parameter
 from the server is ignored.
 
-2.2.1.2.46  DHCP_IP_ARRAY
+###### 2.2.1.2.46 DHCP_IP_ARRAY
 
 The DHCP_IP_ARRAY structure defines the array of type DHCP_IP_ADDRESS (section 2.2.1.2.1),
 typed as a DWORD. This structure is used in the R_DhcpEnumSubnets (section 3.1.4.4) method.
@@ -5631,13 +5159,14 @@ Release: September 16, 2024
 
 69 / 537
 
-Elements:  This is a pointer to an array of DHCP_IP_ADDRESS DWORD types of length
+
+Elements:  This is a pointer to an array of DHCP_IP_ADDRESS DWORD types of length
 
 NumElements containing the IPv4 addresses of the subnets.
 
-2.2.1.2.47
+###### 2.2.1.2.47 SCOPE_MIB_INFO
 
-SCOPE_MIB_INFO
+
 
 The SCOPE_MIB_INFO structure defines a structure that contains the address counters for a specific
 IPv4 subnet. The numbers of free, used, and offered IPv4 addresses are stored in this structure. This
@@ -5668,7 +5197,7 @@ NumPendingOffers:  This is of type DWORD, containing the number of IPv4 addresse
 been offered to DHCPv4 clients in a specific IPv4 subnet but that the DHCP client has not yet
 confirmed.
 
-2.2.1.2.48  DHCP_MIB_INFO
+###### 2.2.1.2.48 DHCP_MIB_INFO
 
 The DHCP_MIB_INFO structure contains counter values for the DHCPv4 server. This structure is
 used by RPC methods like R_DhcpGetMibInfo (section 3.1.4.23) to find the DHCPv4 server
@@ -5704,7 +5233,8 @@ Release: September 16, 2024
 
 70 / 537
 
-Requests:  This is of type DWORD, containing the number of DHCPREQUEST messages received by
+
+Requests:  This is of type DWORD, containing the number of DHCPREQUEST messages received by
 
 the DHCPv4 server from the DHCPv4 clients since the DHCP server was last started. This is used
 for statistical analysis by the DHCPv4 server.
@@ -5741,9 +5271,9 @@ ScopeInfo:  This is a pointer to an array of SCOPE_MIB_INFO (section 2.2.1.2.47)
 length Scopes that contains the information about the IPv4 scopes configured on the DHCPv4
 server.
 
-2.2.1.2.49
+###### 2.2.1.2.49 SCOPE_MIB_INFO_VQ
 
-SCOPE_MIB_INFO_VQ
+
 
 The SCOPE_MIB_INFO_VQ structure contains the address counters for a specific IPv4 subnet. The
 numbers of free, used, and offered IPv4 address are stored in this structure. This structure is an
@@ -5783,7 +5313,8 @@ Release: September 16, 2024
 
 71 / 537
 
-NumPendingOffers:  This is of type DWORD, containing the number of IPv4 addresses that are
+
+NumPendingOffers:  This is of type DWORD, containing the number of IPv4 addresses that are
 
 offered to DHCPv4 clients on a given IPv4 subnet but which the DHCPv4 client has not confirmed.
 
@@ -5811,7 +5342,7 @@ QtnCapableClients:  This field MUST be set to zero when sent and ignored on rece
 
 as an error if it is nonzero in an RPC method that queries DHCPv4 server configuration.
 
-2.2.1.2.50  DHCP_MIB_INFO_VQ
+###### 2.2.1.2.50 DHCP_MIB_INFO_VQ
 
 The DHCP_MIB_INFO_VQ structure contains the counter values for the DHCP server. This structure
 is an extension of the DHCP_MIB_INFO (section 2.2.1.2.48) structure. This structure is used by an
@@ -5859,7 +5390,8 @@ Release: September 16, 2024
 
 72 / 537
 
-Acks:  This is of type DWORD, containing the number of DHCPACK messages sent by the DHCPv4
+
+Acks:  This is of type DWORD, containing the number of DHCPACK messages sent by the DHCPv4
 
 server to the DHCPv4 client since the DHCP server was last started. This is used for statistical
 analysis by the DHCPv4 server.
@@ -5917,7 +5449,7 @@ ScopeInfo:  This is a pointer to an array SCOPE_MIB_INFO_VQ (section 2.2.1.2.49)
 
 that contains the information about the IPv4 scopes configured on DHCPv4 server.
 
-2.2.1.2.51  MSCOPE_MIB_INFO
+###### 2.2.1.2.51 MSCOPE_MIB_INFO
 
 The MSCOPE_MIB_INFO structure defines the address counters for a specific multicast scope. The
 number of free, used, and offered addresses are stored in this structure. This structure is used in the
@@ -5930,7 +5462,8 @@ Release: September 16, 2024
 
 73 / 537
 
- typedef struct _MSCOPE_MIB_INFO {
+
+ typedef struct _MSCOPE_MIB_INFO {
    DWORD MScopeId;
    LPWSTR MScopeName;
    DWORD NumAddressesInuse;
@@ -5960,7 +5493,7 @@ NumPendingOffers:  This is of type DWORD, containing the number of IPv4 multicas
 are offered to MADCAP clients in a specific IPv4 subnet but that the MADCAP client has not
 confirmed.
 
-2.2.1.2.52  DHCP_MCAST_MIB_INFO
+###### 2.2.1.2.52 DHCP_MCAST_MIB_INFO
 
 The DHCP_MCAST_MIB_INFO structure contains counter values for all multicast scopes defined
 on the MADCAP server. This structure is used in R_DhcpGetMCastMibInfo (section 3.2.4.32) method
@@ -6008,7 +5541,8 @@ Release: September 16, 2024
 
 74 / 537
 
-Naks:  This is of type DWORD, containing the number of DHCPNAK messages sent by the MADCAP
+
+Naks:  This is of type DWORD, containing the number of DHCPNAK messages sent by the MADCAP
 
 server to MADCAP clients.
 
@@ -6033,7 +5567,7 @@ ScopeInfo:  This is a pointer to an array of MSCOPE_MIB_INFO (section 2.2.1.2.51
 length Scopes that contains information about the IPv4 scopes configured on the MADCAP
 server.
 
-2.2.1.2.53  DHCP_SERVER_CONFIG_INFO
+###### 2.2.1.2.53 DHCP_SERVER_CONFIG_INFO
 
 The DHCP_SERVER_CONFIG_INFO structure contains settings for the DHCP server. This structure
 is used in the R_DhcpServerSetConfig (section 3.1.4.26) method.
@@ -6098,7 +5632,8 @@ Release: September 16, 2024
 
 75 / 537
 
-DatabaseName:  A pointer of type LPWSTR to a null-terminated Unicode string that represents the
+
+DatabaseName:  A pointer of type LPWSTR to a null-terminated Unicode string that represents the
 
 DHCP server database name which is used by the DHCP server for persistent storage. There is
 no restriction on the length of this Unicode string. This field MUST be convertible to an OEM or
@@ -6193,7 +5728,8 @@ Release: September 16, 2024
 
 76 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -6316,7 +5852,8 @@ Release: September 16, 2024
 
 77 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -6358,7 +5895,7 @@ Enable the logging of debug output in a file.
 
 0x80000000
 
-2.2.1.2.54  DHCP_SERVER_CONFIG_INFO_V4
+###### 2.2.1.2.54 DHCP_SERVER_CONFIG_INFO_V4
 
 The DHCP_SERVER_CONFIG_INFO_V4 structure defines DHCP server settings. This structure is an
 extension of DHCP_SERVER_CONFIG_INFO (section 2.2.1.2.53) structure and used in the
@@ -6404,7 +5941,8 @@ Release: September 16, 2024
 
 78 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -6501,7 +6039,8 @@ Release: September 16, 2024
 
 79 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -6624,7 +6163,8 @@ Release: September 16, 2024
 
 80 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -6702,7 +6242,7 @@ fAuditLog:  This is a BOOL that represents whether an audit log needs to be writ
 server. The value of this member defaults to TRUE, which indicates that the server writes an audit
 log.
 
-2.2.1.2.55  DHCP_SERVER_CONFIG_INFO_VQ
+###### 2.2.1.2.55 DHCP_SERVER_CONFIG_INFO_VQ
 
 The DHCP_SERVER_CONFIG_INFO_VQ structure defines settings for the DHCP server. This
 structure is an extension of the DHCP_SERVER_CONFIG_INFO_V4 (section 2.2.1.2.54) structure and
@@ -6724,7 +6264,8 @@ Release: September 16, 2024
 
 81 / 537
 
-   DWORD DatabaseCleanupInterval;
+
+   DWORD DatabaseCleanupInterval;
    DWORD DebugFlag;
    DWORD dwPingRetries;
    DWORD cbBootTableString;
@@ -6814,7 +6355,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DatabaseCleanupInterval: This is of type DWORD, and it specifies the time interval in minutes over
+
+DatabaseCleanupInterval: This is of type DWORD, and it specifies the time interval in minutes over
 which the scavenger deletes the DOOMED IPv4 DHCP client lease records from the DHCP server
 database.
 
@@ -6930,7 +6472,8 @@ Release: September 16, 2024
 
 83 / 537
 
-HIGH WORD bitmask (0xFFFF0000) for high-frequency debug output, that is, more verbose.
+
+HIGH WORD bitmask (0xFFFF0000) for high-frequency debug output, that is, more verbose.
 
 Value
 
@@ -7046,7 +6589,8 @@ Release: September 16, 2024
 
 84 / 537
 
-fAuditLog: This is of type BOOL, representing whether an audit log needs to be written by the DHCP
+
+fAuditLog: This is of type BOOL, representing whether an audit log needs to be written by the DHCP
 server. This member defaults to a value of TRUE, which indicates that the DHCP server writes an
 audit log.
 
@@ -7062,7 +6606,7 @@ and DROPPACKET. This member defaults to a value of NOQUARANTINE.
 
 QuarRuntimeStatus: This flag determines whether NAP is enabled on the DHCP server (Scope).
 
-2.2.1.2.56  DHCP_SUBNET_INFO_V6
+###### 2.2.1.2.56 DHCP_SUBNET_INFO_V6
 
 The DHCP_SUBNET_INFO_V6 structure contains information about an IPv6 subnet. This structure is
 used in the R_DhcpCreateSubnetV6 (section 3.2.4.58) method.
@@ -7104,7 +6648,7 @@ ScopeId:  This is of type DWORD and is the unique identifier for that IPv6 prefi
 
 generated by the DHCPv6 server.
 
-2.2.1.2.57  DHCPV6_IP_ARRAY
+###### 2.2.1.2.57 DHCPV6_IP_ARRAY
 
 The DHCPV6_IP_ARRAY structure defines an array of type
 DHCP_IPV6_ADDRESS (section 2.2.1.2.28) structure that contains IPv6 prefixes. This is used in the
@@ -7120,7 +6664,8 @@ Release: September 16, 2024
 
 85 / 537
 
-   [size_is(NumElements)] LPDHCP_IPV6_ADDRESS Elements;
+
+   [size_is(NumElements)] LPDHCP_IPV6_ADDRESS Elements;
  } DHCPV6_IP_ARRAY,
   *LPDHCPV6_IP_ARRAY;
 
@@ -7132,7 +6677,7 @@ Elements:  This is a pointer to an array of DHCP_IPV6_ADDRESS structures of leng
 
 containing IPv6 addresses of the prefixes.
 
-2.2.1.2.58  DHCP_IP_RESERVATION_V6
+###### 2.2.1.2.58 DHCP_IP_RESERVATION_V6
 
 The DHCP_IP_RESERVATION_V6 structure defines an IPv6 reservation for a DHCPv6 client in a
 specific IPv6 prefix. This structure is used in the
@@ -7156,7 +6701,7 @@ InterfaceId:   This is of type DWORD that specifies the interface identifier for
 
 reservation is created.
 
-2.2.1.2.59  DHCP_IP_RANGE_V6
+###### 2.2.1.2.59 DHCP_IP_RANGE_V6
 
 The DHCP_IP_RANGE_V6 structure defines the IPv6 range for an IPv6 subnet. This is used in the
 DHCP_SUBNET_ELEMENT_DATA_V6 (section 2.2.1.2.60) structure.
@@ -7175,7 +6720,7 @@ EndAddress:  This is of type DHCP_IPV6_ADDRESS (section 2.2.1.2.28) structure, c
 
 IPv6 address in the IPv6 range.
 
-2.2.1.2.60  DHCP_SUBNET_ELEMENT_DATA_V6
+###### 2.2.1.2.60 DHCP_SUBNET_ELEMENT_DATA_V6
 
 The DHCP_SUBNET_ELEMENT_DATA_V6 structure defines the elements of the IPv6 prefix, such as
 IPv6 reservation, IPv6 exclusion range, or IPv6 range. This is used in the
@@ -7191,7 +6736,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-     [switch_is(ELEMENT_MASK(ElementType)), switch_type(DHCP_SUBNET_ELEMENT_TYPE_V6)]
+
+     [switch_is(ELEMENT_MASK(ElementType)), switch_type(DHCP_SUBNET_ELEMENT_TYPE_V6)]
      union _DHCP_SUBNET_ELEMENT_UNION_V6 {
          [case(Dhcpv6IpRanges)] DHCP_IP_RANGE_V6      *IpRange;
          [case(Dhcpv6ReservedIps)] DHCP_IP_RESERVATION_V6 *ReservedIp;
@@ -7220,7 +6766,7 @@ ExcludeIpRange:  This is a pointer to a DHCP_IP_RANGE_V6 (section 2.2.1.2.59) st
 
 contains information about IPv6 exclusion ranges.
 
-2.2.1.2.61  DHCP_SUBNET_ELEMENT_INFO_ARRAY_V6
+###### 2.2.1.2.61 DHCP_SUBNET_ELEMENT_INFO_ARRAY_V6
 
 The DHCP_SUBNET_ELEMENT_INFO_ARRAY_V6 structure defines an array of
 DHCP_SUBNET_ELEMENT_DATA_V6 (section 2.2.1.2.60) structures of IPv6 prefix elements. The first
@@ -7243,7 +6789,7 @@ Elements:  This is a pointer to an array of DHCP_SUBNET_ELEMENT_DATA_V6 (section
 
 structures of length NumElements containing IPv6 prefix elements.
 
-2.2.1.2.62  DHCP_SERVER_CONFIG_INFO_V6
+###### 2.2.1.2.62 DHCP_SERVER_CONFIG_INFO_V6
 
 The DHCP_SERVER_CONFIG_INFO_V6 structure defines the settings for the DHCPv6 server. This
 structure is used in the R_DhcpServerSetConfigV6 (section 3.2.4.66) method.
@@ -7265,7 +6811,8 @@ Release: September 16, 2024
 
 87 / 537
 
-   BOOL fAuditLog;
+
+   BOOL fAuditLog;
  } DHCP_SERVER_CONFIG_INFO_V6,
   *LPDHCP_SERVER_CONFIG_INFO_V6;
 
@@ -7301,7 +6848,7 @@ fAuditLog:  This is of type BOOL, specifying whether audit logs are enabled or d
 
 defaults to true to indicate that the audit logs are enabled.
 
-2.2.1.2.63  DHCP_HOST_INFO_V6
+###### 2.2.1.2.63 DHCP_HOST_INFO_V6
 
 The DHCP_HOST_INFO_V6 structure contains information on the DHCPv6 server. This structure is
 used in the DHCP_CLIENT_INFO_V6 (section 2.2.1.2.64) structure.
@@ -7325,7 +6872,7 @@ HostName:  A pointer to a null-terminated Unicode string. Currently not used in 
 
 and if used in get method, the value returned is NULL.
 
-2.2.1.2.64  DHCP_CLIENT_INFO_V6
+###### 2.2.1.2.64 DHCP_CLIENT_INFO_V6
 
 The DHCP_CLIENT_INFO_V6 structure contains information on DHCPv6 client. This structure is
 used in the R_DhcpGetClientInfoV6 (section 3.2.4.73) method.
@@ -7339,7 +6886,8 @@ Release: September 16, 2024
 
 88 / 537
 
-   DHCP_IPV6_ADDRESS ClientIpAddress;
+
+   DHCP_IPV6_ADDRESS ClientIpAddress;
    DHCP_CLIENT_UID ClientDUID;
    DWORD AddressType;
    DWORD IAID;
@@ -7399,7 +6947,7 @@ OwnerHost:  This is of type DHCP_HOST_INFO_V6 (section 2.2.1.2.63), a structure 
 information about the DHCPv6 server machine that has given this IPv6 lease to this DHCPv6
 client.
 
-2.2.1.2.65  DHCP_CLIENT_INFO_ARRAY_V6
+###### 2.2.1.2.65 DHCP_CLIENT_INFO_ARRAY_V6
 
 The DHCP_CLIENT_INFO_ARRAY_V6 structure defines an array of
 DHCP_CLIENT_INFO_V6 (section 2.2.1.2.64) structures. The first member contains the number of
@@ -7420,7 +6968,8 @@ Release: September 16, 2024
 
 89 / 537
 
-NumElements:  This is of type DWORD, containing the number of DHCPv6 clients in the subsequent
+
+NumElements:  This is of type DWORD, containing the number of DHCPv6 clients in the subsequent
 
 field the Clients member.
 
@@ -7428,7 +6977,7 @@ Clients:  This is a pointer of type DHCP_CLIENT_INFO_V6 (section 2.2.1.2.64) str
 
 the array of length NumElements containing the DHCPv6 client's information.
 
-2.2.1.2.66  DHCP_OPTION_LIST
+###### 2.2.1.2.66 DHCP_OPTION_LIST
 
 The DHCP_OPTION_LIST structure defines an array of option values. The first member contains the
 number of options present, and the second member contains a pointer to the array of length
@@ -7449,9 +6998,9 @@ Options:  This is a pointer to an array of DHCP_OPTION_VALUE (section 2.2.1.2.42
 
 length NumOptions containing DHCPv6 option values.
 
-2.2.1.2.67
+###### 2.2.1.2.67 SCOPE_MIB_INFO_V6
 
-SCOPE_MIB_INFO_V6
+
 
 The SCOPE_MIB_INFO_V6 structure defines a structure that contains the address counters for a
 specific IPv6 prefix. The numbers of free, used, and offered IPv6 addresses are stored in this
@@ -7482,7 +7031,7 @@ NumPendingAdvertises:  This is of type ULONGLONG, containing the number of IPv6 
 are advertised to the DHCPv6 clients from the prefix but that have not yet been confirmed by the
 DHCPv6 client.
 
-2.2.1.2.68  DHCP_MIB_INFO_V6
+###### 2.2.1.2.68 DHCP_MIB_INFO_V6
 
 The DHCP_MIB_INFO_V6 structure contains the DHCPv6 server counter values for the DHCPv6
 server. This structure is used in the R_DhcpGetMibInfoV6 (section 3.2.4.69) method to find DHCPv6
@@ -7495,7 +7044,8 @@ Release: September 16, 2024
 
 90 / 537
 
- typedef struct _DHCP_MIB_INFO_V6 {
+
+ typedef struct _DHCP_MIB_INFO_V6 {
    DWORD Solicits;
    DWORD Advertises;
    DWORD Requests;
@@ -7567,7 +7117,8 @@ Release: September 16, 2024
 
 91 / 537
 
-Scopes:  This is of type DWORD, containing the number of IPv6 scopes configured on the current
+
+Scopes:  This is of type DWORD, containing the number of IPv6 scopes configured on the current
 DHCPv6 server. This is used for statistical analysis by the DHCPv6 server. This field defines the
 number of DHCPv6 scopes in the subsequent field the ScopeInfo member.
 
@@ -7576,7 +7127,7 @@ ScopeInfo:  This is a pointer to an array of SCOPE_MIB_INFO_V6 (section 2.2.1.2.
 points to an array of length Scopes, containing the information about the IPv6 scopes configured
 on the DHCPv6 server.
 
-2.2.1.2.69  DHCP_SEARCH_INFO_V6
+###### 2.2.1.2.69 DHCP_SEARCH_INFO_V6
 
 The DHCP_SEARCH_INFO_V6 structure contains the DHCPv6 client information search type
 defined by the SearchType member, along with the data supporting that search. With this structure,
@@ -7620,7 +7171,7 @@ ClientName:  A pointer to a null-terminated Unicode string that contains the nam
 client. It is used to search for the DHCPv6 client lease record in the DHCPv6 server database.
 There is no restriction on the length of this Unicode string.
 
-2.2.1.2.70  DHCP_CLASS_INFO_V6
+###### 2.2.1.2.70 DHCP_CLASS_INFO_V6
 
 The DHCP_CLASS_INFO_V6 structure contains the information for a specific user class or vendor
 class. This structure is used in the R_DhcpCreateClassV6 (section 3.2.4.75) method.
@@ -7639,7 +7190,8 @@ Release: September 16, 2024
 
 92 / 537
 
-   DWORD Flags;
+
+   DWORD Flags;
    [size_is(ClassDataLength)] LPBYTE ClassData;
  } DHCP_CLASS_INFO_V6,
   *LPDHCP_CLASS_INFO_V6;
@@ -7678,7 +7230,7 @@ ClassData:  This is a pointer of type BYTE that points to an array of bytes of l
 
 ClassDataLength member. This contains data regarding a user class or a vendor class.
 
-2.2.1.2.71  DHCP_MSCOPE_INFO
+###### 2.2.1.2.71 DHCP_MSCOPE_INFO
 
 The DHCP_MSCOPE_INFO structure defines the multicast scope information for a specific
 multicast subnet. This structure is used in the R_DhcpSetMScopeInfo (section 3.2.4.2) method.
@@ -7717,7 +7269,8 @@ Release: September 16, 2024
 
 93 / 537
 
-MScopeAddressPolicy:  This is of type DWORD. This MUST be set to zero when sent and ignored on
+
+MScopeAddressPolicy:  This is of type DWORD. This MUST be set to zero when sent and ignored on
 
 receipt.
 
@@ -7745,7 +7298,7 @@ TTL:  This is of type BYTE, containing the Time-to-Live (TTL) value for the mult
 
 range for this field is between 1 and 255, with a default of 32.
 
-2.2.1.2.72  DHCP_MSCOPE_TABLE
+###### 2.2.1.2.72 DHCP_MSCOPE_TABLE
 
 The DHCP_MSCOPE_TABLE structure contains an array of multicast scope names managed by the
 MADCAP server. This structure is used in the R_DhcpEnumMScopes (section 3.2.4.4) method.
@@ -7765,7 +7318,7 @@ pMScopeNames:  This is a pointer of type LPWSTR that points to an array of null-
 Unicode strings that refers to the multicast scope names. There is no restriction on the size of
 this field.
 
-2.2.1.2.73  DHCP_SCAN_ITEM
+###### 2.2.1.2.73 DHCP_SCAN_ITEM
 
 The DHCP_SCAN_ITEM structure defines the type of fix that is required for DHCPv4 client lease
 records that are missing in the bitmask representation in memory (section 3.1.1.4) or vice versa.
@@ -7792,7 +7345,8 @@ Release: September 16, 2024
 
 94 / 537
 
-2.2.1.2.74  DHCP_SCAN_LIST
+
+###### 2.2.1.2.74 DHCP_SCAN_LIST
 
 The DHCP_SCAN_LIST structure defines an array of DHCP_SCAN_ITEM (section 2.2.1.2.73)
 structures that contains all the entries on the DHCP server that require a fix. This structure is used in
@@ -7812,7 +7366,7 @@ subsequent field in the ScanItems member.
 ScanItems:  This is a pointer to an array of DHCP_SCAN_ITEM (section 2.2.1.2.73) structures of
 length NumScanItems that contains the DHCPv4 client IPv4 addresses that require a fix.
 
-2.2.1.2.75  DHCP_CLASS_INFO
+###### 2.2.1.2.75 DHCP_CLASS_INFO
 
 The DHCP_CLASS_INFO structure contains the information for a specific user class or vendor
 class. This structure is used in the R_DhcpCreateClass (section 3.2.4.25) method.
@@ -7857,7 +7411,7 @@ ClassData:  This is a pointer of type BYTE that points to an array of bytes of l
 
 ClassDataLength member. This contains data regarding a user class or a vendor class.
 
-2.2.1.2.76  DHCP_CLASS_INFO_ARRAY
+###### 2.2.1.2.76 DHCP_CLASS_INFO_ARRAY
 
 [MS-DHCPM] - v20240916
 Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
@@ -7866,7 +7420,8 @@ Release: September 16, 2024
 
 95 / 537
 
-The DHCP_CLASS_INFO_ARRAY structure defines an array of
+
+The DHCP_CLASS_INFO_ARRAY structure defines an array of
 DHCP_CLASS_INFO (section 2.2.1.2.75) structures. This structure is used by the methods that
 retrieve more than one class of information, such as the R_DhcpEnumClasses (section 3.2.4.29)
 method. The first member contains the number of classes present for the DHCPv4 server, and the
@@ -7886,7 +7441,7 @@ Classes:  This is a pointer of type DHCP_CLASS_INFO (section 2.2.1.2.75) structu
 
 array of length NumElements containing class information.
 
-2.2.1.2.77  DHCP_SERVER_SPECIFIC_STRINGS
+###### 2.2.1.2.77 DHCP_SERVER_SPECIFIC_STRINGS
 
 The DHCP_SERVER_SPECIFIC_STRINGS structure defines the names of the default user class
 and vendor class.
@@ -7907,7 +7462,7 @@ DefaultUserClassName:  A pointer, of type LPWSTR, to a null-terminated Unicode s
 contains the name of the default user class.  The maximum number of characters allowed in this
 string is 255, which includes the terminating null character.
 
-2.2.1.2.78  DHCP_ATTRIB
+###### 2.2.1.2.78 DHCP_ATTRIB
 
 The DHCP_ATTRIB structure contains the attribute and its values for the DHCPv4 server. This
 structure is used in the R_DhcpServerQueryAttribute (section 3.2.4.35) method.
@@ -7937,7 +7492,8 @@ Release: September 16, 2024
 
 96 / 537
 
-DhcpAttribType:  This is of type ULONG. The value specifies the type of the attribute's data and
+
+DhcpAttribType:  This is of type ULONG. The value specifies the type of the attribute's data and
 
 which one of the values is chosen from the subsequent union.
 
@@ -7967,7 +7523,7 @@ DhcpAttribUlong:  This is of type ULONG and contains the value of the attribute.
 
 the union if DhcpAttribType  contains DHCP_ATTRIB_TYPE_ULONG.
 
-2.2.1.2.79  DHCP_ATTRIB_ARRAY
+###### 2.2.1.2.79 DHCP_ATTRIB_ARRAY
 
 The DHCP_ATTRIB_ARRAY structure defines an array of DHCP_ATTRIB (section 2.2.1.2.78)
 structures. This structure is used by methods that retrieve more than one attribute, such as the
@@ -7989,7 +7545,7 @@ DhcpAttribs:  This is a pointer to an array of type DHCP_ATTRIB (section 2.2.1.2
 
 length NumElements that contains the attributes and its values.
 
-2.2.1.2.80  DHCP_BIND_ELEMENT
+###### 2.2.1.2.80 DHCP_BIND_ELEMENT
 
 The DHCP_BIND_ELEMENT structure defines an IPv4 interface binding for the DHCP server over
 which it receives DHCP packets. This structure is used in the
@@ -8017,7 +7573,8 @@ Release: September 16, 2024
 
 97 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -8068,7 +7625,7 @@ IfId:  This is a pointer to a BYTE that contains the interface GUID ([MS-DTYP] s
 
 to this interface.
 
-2.2.1.2.81  DHCP_BIND_ELEMENT_ARRAY
+###### 2.2.1.2.81 DHCP_BIND_ELEMENT_ARRAY
 
 The DHCP_BIND_ELEMENT_ARRAY structure defines an array of
 DHCP_BIND_ELEMENT (section 2.2.1.2.80) structures. This contains an array of IPv4 interface
@@ -8090,7 +7647,7 @@ Elements:  This is a pointer to an array of type DHCP_BIND_ELEMENT (section 2.2.
 and of length NumElements that contains information about the interface bindings of a DHCP
 server.
 
-2.2.1.2.82  DHCPV6_BIND_ELEMENT
+###### 2.2.1.2.82 DHCPV6_BIND_ELEMENT
 
 [MS-DHCPM] - v20240916
 Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
@@ -8099,7 +7656,8 @@ Release: September 16, 2024
 
 98 / 537
 
-The DHCPV6_BIND_ELEMENT structure defines an IPv6 interface binding for the DHCP server over
+
+The DHCPV6_BIND_ELEMENT structure defines an IPv6 interface binding for the DHCP server over
 which it receives DHCPv6 packets. This structure is used in
 DHCPV6_BIND_ELEMENT_ARRAY (section 2.2.1.2.83) structure.
 
@@ -8170,7 +7728,7 @@ member.
 
 IfId:  This is a pointer to a BYTE, containing the interface GUID assigned to this interface.
 
-2.2.1.2.83  DHCPV6_BIND_ELEMENT_ARRAY
+###### 2.2.1.2.83 DHCPV6_BIND_ELEMENT_ARRAY
 
 The DHCPV6_BIND_ELEMENT_ARRAY structure defines an array of
 DHCPV6_BIND_ELEMENT (section 2.2.1.2.82) structures. This contains an array of IPv6 interface
@@ -8183,7 +7741,8 @@ Release: September 16, 2024
 
 99 / 537
 
-number of IPv6 interface bindings present in the specific subnet, and the second member points to the
+
+number of IPv6 interface bindings present in the specific subnet, and the second member points to the
 array of interface bindings over which the DHCPv6 server is receiving DHCPv6 packets.
 
  typedef struct _DHCPV6_BIND_ELEMENT_ARRAY {
@@ -8201,7 +7760,7 @@ Elements:  This is a pointer to an array of type DHCPV6_BIND_ELEMENT (section 2.
 structure and length NumElements that contains information for interface bindings for a DHCPv6
 server.
 
-2.2.1.2.84  DHCP_MCLIENT_INFO_ARRAY
+###### 2.2.1.2.84 DHCP_MCLIENT_INFO_ARRAY
 
 The DHCP_MCLIENT_INFO_ARRAY structure defines an array of
 DHCP_MCLIENT_INFO (section 2.2.1.2.21) structures. This structure is used by the methods that
@@ -8223,7 +7782,7 @@ Clients:  This is pointer of type DHCP_MCLIENT_INFO (section 2.2.1.2.21), a stru
 
 an array of length NumElements containing MADCAP client information.
 
-2.2.1.2.85  DHCP_SUPER_SCOPE_TABLE_ENTRY
+###### 2.2.1.2.85 DHCP_SUPER_SCOPE_TABLE_ENTRY
 
 The DHCP_SUPER_SCOPE_TABLE_ENTRY structure defines the superscope-specific subnet
 information. This structure is used in the DHCP_SUPER_SCOPE_TABLE (section 2.2.1.2.86) structure.
@@ -8254,7 +7813,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.1.2.86  DHCP_SUPER_SCOPE_TABLE
+
+###### 2.2.1.2.86 DHCP_SUPER_SCOPE_TABLE
 
 The DHCP_SUPER_SCOPE_TABLE structure defines an array of
 DHCP_SUPER_SCOPE_TABLE_ENTRY (section 2.2.1.2.85) structures. This contains information about
@@ -8275,7 +7835,7 @@ field the pEntries member.
 pEntries:  This is a pointer of type DHCP_SUPER_SCOPE_TABLE_ENTRY (section 2.2.1.2.85) structure
 that points to an array of length cEntries containing superscope-specific subnet information.
 
-2.2.1.2.87  DHCP_CLASS_INFO_ARRAY_V6
+###### 2.2.1.2.87 DHCP_CLASS_INFO_ARRAY_V6
 
 The DHCP_CLASS_INFO_ARRAY_V6 structure contains a list of information regarding a user class
 or a vendor class.
@@ -8294,7 +7854,7 @@ Classes:  A pointer to an array of DHCP_CLASS_INFO_V6 (section 2.2.1.2.70) struc
 
 contains information regarding the various user classes and vendor classes.
 
-2.2.1.2.88  DHCP_IP_CLUSTER
+###### 2.2.1.2.88 DHCP_IP_CLUSTER
 
 The DHCP_IP_CLUSTER structure is not used.
 
@@ -8308,7 +7868,7 @@ ClusterAddress:  This is of type DHCP_IP_ADDRESS, a DWORD.
 
 ClusterMask:  This is of type DWORD.
 
-2.2.1.2.89  DHCP_ADDR_PATTERN
+###### 2.2.1.2.89 DHCP_ADDR_PATTERN
 
 The DHCP_ADDR_PATTERN structure contains the information regarding the link-layer
 address/pattern.
@@ -8322,7 +7882,8 @@ Release: September 16, 2024
 
 101 / 537
 
-     BOOL MatchHWType;
+
+     BOOL MatchHWType;
      BYTE HWType;
      BOOL IsWildcard;
      BYTE Length;
@@ -8359,7 +7920,7 @@ Length:  This is of type BYTE and specifies the length of the pattern.
 
 Pattern:  This is a pointer to a type BYTE and contains the address/pattern.
 
-2.2.1.2.90  DHCP_FILTER_ADD_INFO
+###### 2.2.1.2.90 DHCP_FILTER_ADD_INFO
 
 The DHCP_FILTER_ADD_INFO structure contains information regarding the link-layer filter to be
 added to the allow and deny filter list.
@@ -8383,7 +7944,7 @@ ListType:  This is of type DHCP_FILTER_LIST_TYPE (section 2.2.1.1.17) enumeratio
 
 the list type to which the filter is to be added.
 
-2.2.1.2.91  DHCP_FILTER_GLOBAL_INFO
+###### 2.2.1.2.91 DHCP_FILTER_GLOBAL_INFO
 
 The DHCP_FILTER_GLOBAL_INFO structure contains information regarding enabling/disabling the
 allow and deny filter lists.
@@ -8399,7 +7960,8 @@ Release: September 16, 2024
 
 102 / 537
 
- } DHCP_FILTER_GLOBAL_INFO,
+
+ } DHCP_FILTER_GLOBAL_INFO,
   *LPDHCP_FILTER_GLOBAL_INFO;
 
 EnforceAllowList:  This is of type BOOL and specifies whether the allow list is enabled or disabled.
@@ -8434,7 +7996,7 @@ The deny list is disabled.
 
 0
 
-2.2.1.2.92  DHCP_FILTER_RECORD
+###### 2.2.1.2.92 DHCP_FILTER_RECORD
 
 The DHCP_FILTER_RECORD structure contains information regarding a link-layer filter record.
 
@@ -8452,7 +8014,7 @@ Comment:  This is a pointer, of type LPWSTR, to a null-terminated Unicode string
 comment associated with the address/pattern. The maximum number of characters allowed in this
 string is 128, which includes the terminating null character.
 
-2.2.1.2.93  DHCP_FILTER_ENUM_INFO
+###### 2.2.1.2.93 DHCP_FILTER_ENUM_INFO
 
 The DHCP_FILTER_ENUM_INFO structure contains information regarding the number of link-layer
 filter records.
@@ -8474,13 +8036,14 @@ Release: September 16, 2024
 
 103 / 537
 
-pEnumRecords:  This is a pointer to an array of DHCP_FILTER_RECORD (section 2.2.1.2.92)
+
+pEnumRecords:  This is a pointer to an array of DHCP_FILTER_RECORD (section 2.2.1.2.92)
 
 structures that contains link-layer filter records.
 
-2.2.1.2.94
+###### 2.2.1.2.94 SCOPE_MIB_INFO_V5
 
-SCOPE_MIB_INFO_V5
+
 
 The SCOPE_MIB_INFO_V5 structure defines a structure that contains the address counters for a
 specific IPv4 subnet. The numbers of free, used, and offered IPv4 addresses are stored in this
@@ -8510,7 +8073,7 @@ NumPendingOffers:  This is of type DWORD, containing the number of IPv4 addresse
 been offered to DHCPv4 clients in a given IPv4 subnet but that the DHCP client has not yet
 confirmed.
 
-2.2.1.2.95  DHCP_MIB_INFO_V5
+###### 2.2.1.2.95 DHCP_MIB_INFO_V5
 
 The DHCP_MIB_INFO_V5 structure contains the counter values for the DHCP Server service.
 
@@ -8549,7 +8112,8 @@ Release: September 16, 2024
 
 104 / 537
 
-Offers:  This member is a type DWORD that contains the number of DHCPOFFER messages sent by
+
+Offers:  This member is a type DWORD that contains the number of DHCPOFFER messages sent by
 the DHCP server to the DHCP clients for which the DHCP server has not confirmed since the DHCP
 server was last started. This is used for statistical analysis by the DHCP server.
 
@@ -8628,7 +8192,8 @@ Release: September 16, 2024
 
 105 / 537
 
-QtnExemptLeases:   This member is a type DWORD that MUST be set to zero when sent and ignored
+
+QtnExemptLeases:   This member is a type DWORD that MUST be set to zero when sent and ignored
 on receipt. This is treated as an error if it is nonzero in an RPC method which queries DHCP server
 configuration.
 
@@ -8677,7 +8242,7 @@ ScopeInfo:  This member is a pointer to an array of SCOPE_MIB_INFO (section 2.2.
 structures of length Scopes that contains the information about the IPv4 scopes configured on the
 DHCP server.
 
-2.2.1.2.96  DHCP_CLIENT_FILTER_STATUS_INFO
+###### 2.2.1.2.96 DHCP_CLIENT_FILTER_STATUS_INFO
 
 The DHCP_CLIENT_FILTER_STATUS_INFO structure defines information about the DHCPv4
 client, including filter status information. The DHCP_CLIENT_FILTER_STATUS_INFO structure
@@ -8706,7 +8271,8 @@ Release: September 16, 2024
 
 106 / 537
 
- } DHCP_CLIENT_FILTER_STATUS_INFO,
+
+ } DHCP_CLIENT_FILTER_STATUS_INFO,
   *LPDHCP_CLIENT_FILTER_STATUS_INFO;
 
 ClientIpAddress:  This is of type DHCP_IP_ADDRESS (section 2.2.1.2.1), a DWORD that contains the
@@ -8806,7 +8372,8 @@ Release: September 16, 2024
 
 107 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -8888,7 +8455,7 @@ FILTER_STATUS_WILDCARD_MATCH_IN_DENY_LIST
 The DHCPv4 client MAC address has a wildcard
 match in the deny list.
 
-2.2.1.2.97  DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY
+###### 2.2.1.2.97 DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY
 
 The DHCP_CLIENT_FILTER_STATUS_INFO_ARRAY structure defines an array of
 DHCP_CLIENT_FILTER_STATUS_INFO (section 2.2.1.2.96) structures that contains a list of DHCPv4
@@ -8908,7 +8475,8 @@ Release: September 16, 2024
 
 108 / 537
 
-  *LPDHCP_CLIENT_FILTER_STATUS_INFO_ARRAY;
+
+  *LPDHCP_CLIENT_FILTER_STATUS_INFO_ARRAY;
 
 NumElements:  This member is of type DWORD that contains the number of DHCPv4 clients in the
 
@@ -8919,7 +8487,7 @@ Clients:  This member is a pointer of type DHCP_CLIENT_FILTER_STATUS_INFO (secti
 structure that points to the array of length NumElements containing the DHCPv4 client's
 information.
 
-2.2.1.2.98  DHCP_FAILOVER_RELATIONSHIP
+###### 2.2.1.2.98 DHCP_FAILOVER_RELATIONSHIP
 
 The DHCP_FAILOVER_RELATIONSHIP structure defines the information about a DHCPv4 server
 failover relationship.
@@ -8987,7 +8555,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-primaryServerName:  This member is a pointer of type LPWSTR that points to a null-terminated
+
+primaryServerName:  This member is a pointer of type LPWSTR that points to a null-terminated
 
 Unicode string containing the host name of the primary server in the failover relationship. There is
 no restriction on the length of this Unicode string.
@@ -9009,7 +8578,7 @@ pSharedSecret:  This member is a pointer of type LPWSTR that points to a null-te
 string containing the shared secret key associated with this failover relationship. There is no
 restriction on the length of this string.
 
-2.2.1.2.99  DHCP_FAILOVER_RELATIONSHIP_ARRAY
+###### 2.2.1.2.99 DHCP_FAILOVER_RELATIONSHIP_ARRAY
 
 The DHCP_FAILOVER_RELATIONSHIP_ARRAY structure defines an array of
 DHCP_FAILOVER_RELATIONSHIP (section 2.2.1.2.98) structures. This structure is used in the
@@ -9028,7 +8597,7 @@ pRelationships:  This member is a pointer to an array of DHCP_FAILOVER_RELATIONS
 
 structures of length numElements and contains failover relationship information.
 
-2.2.1.2.100  DHCP_FAILOVER_STATISTICS
+###### 2.2.1.2.100 DHCP_FAILOVER_STATISTICS
 
 The DHCP_FAILOVER_STATISTICS structure defines the statistical information for an IPv4 subnet
 configured for a failover relationship.
@@ -9062,7 +8631,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-partnerAddrFree:  This member is of type DWORD and contains the total number of IPv4 addresses
+
+partnerAddrFree:  This member is of type DWORD and contains the total number of IPv4 addresses
 that are free and can be leased to DHCPv4 clients on an IPv4 subnet that is part of a failover
 relationship on the partner server.
 
@@ -9081,7 +8651,7 @@ thisAddrInUse:  This member is of type DWORD and contains the total number of IP
 leased to DHCPv4 clients on an IPv4 subnet that is part of a failover relationship on the local DHCP
 server.
 
-2.2.1.2.101  DHCPV4_FAILOVER_CLIENT_INFO
+###### 2.2.1.2.101 DHCPV4_FAILOVER_CLIENT_INFO
 
 The DHCPV4_FAILOVER_CLIENT_INFO structure defines information about a DHCPv4 client leased
 out by an IPv4 subnet that is a part of failover relationship. This structure augments the
@@ -9139,7 +8709,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ClientComment:  This member is a pointer to a null-terminated Unicode string that represents the
+
+ClientComment:  This member is a pointer to a null-terminated Unicode string that represents the
 
 description given to the DHCPv4 client. There is no restriction on the length of this Unicode string.
 
@@ -9244,7 +8815,8 @@ Release: September 16, 2024
 
 112 / 537
 
-BIT 2 and BIT 3 signify information related to Name Protection (section 3.3.3) for the leased IPv4
+
+BIT 2 and BIT 3 signify information related to Name Protection (section 3.3.3) for the leased IPv4
 address, as shown in the following table.
 
 Value
@@ -9350,7 +8922,8 @@ Release: September 16, 2024
 
 113 / 537
 
-AckPotExpTime:  This member is of type DWORD and contains the time that the partner server has
+
+AckPotExpTime:  This member is of type DWORD and contains the time that the partner server has
 
 acknowledged as potential-expiration-time. The time is specified in seconds elapsed since
 midnight, January 1, 1970, UTC.
@@ -9381,7 +8954,7 @@ restricted to 64 characters.
 
 flags:  This member is of type BYTE and MUST be ignored.
 
-2.2.1.2.102  DHCP_IP_RESERVATION_INFO
+###### 2.2.1.2.102 DHCP_IP_RESERVATION_INFO
 
 The DHCP_IP_RESERVATION_INFO structure defines an IPv4 reservation for a DHCPv4 client. This
 structure is an extension of the DHCP_IP_RESERVATION_V4 structure (section 2.2.1.2.32), which
@@ -9426,7 +8999,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -9460,7 +9034,7 @@ Meaning
 
 0x00000001  Option values are configured on the reservation.
 
-2.2.1.2.103  DHCP_RESERVATION_INFO_ARRAY
+###### 2.2.1.2.103 DHCP_RESERVATION_INFO_ARRAY
 
 The DHCP_RESERVATION_INFO_ARRAY structure defines an array of DHCP_IP
 RESERVATION_INFO (section 2.2.1.2.102) structures. This structure is used by the method
@@ -9480,7 +9054,7 @@ Elements:  This member is a pointer to an array of DHCP_IP_RESERVATION_INFO stru
 
 length NumElements, and contains DHCPv4 reservation information.
 
-2.2.1.2.104  DHCP_IP_RANGE_ARRAY
+###### 2.2.1.2.104 DHCP_IP_RANGE_ARRAY
 
 The DHCP_IP_RANGE_ARRAY structure specifies an array of IP address ranges.
 
@@ -9497,7 +9071,7 @@ Elements:  This member is a pointer to an array of type DHCP_IP_RANGE structure 
 
 2.2.1.2.31) elements.
 
-2.2.1.2.105  DHCP_POL_COND
+###### 2.2.1.2.105 DHCP_POL_COND
 
 [MS-DHCPM] - v20240916
 Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
@@ -9506,7 +9080,8 @@ Release: September 16, 2024
 
 115 / 537
 
-The DHCP_POL_COND structure specifies an individual condition of a policy.
+
+The DHCP_POL_COND structure specifies an individual condition of a policy.
 
  typedef struct _DHCP_POL_COND {
    DWORD ParentExpr;
@@ -9552,7 +9127,7 @@ used for the comparison.
 
 ValueLength:  This member is of type DWORD and specifies the length of the Value member.
 
-2.2.1.2.106  DHCP_POL_COND_ARRAY
+###### 2.2.1.2.106 DHCP_POL_COND_ARRAY
 
 The DHCP_POL_COND_ARRAY structure specifies an array of conditions of a policy.
 
@@ -9569,7 +9144,7 @@ Elements:  This member is a pointer of type LPDHCP_POL_COND (section 2.2.1.2.105
 
 an array of DHCP_POL_COND structure (section 2.2.1.2.105) elements.
 
-2.2.1.2.107  DHCP_POL_EXPR
+###### 2.2.1.2.107 DHCP_POL_EXPR
 
 The DHCP_POL_EXPR structure specifies an individual expression of a policy.
 
@@ -9580,7 +9155,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct _DHCP_POL_EXPR {
+
+ typedef struct _DHCP_POL_EXPR {
    DWORD ParentExpr;
    DHCP_POL_LOGIC_OPER Operator;
  } DHCP_POL_EXPR,
@@ -9595,7 +9171,7 @@ Operator:  This member is of type DHCP_POL_LOGIC_OPER enumeration (section 2.2.1
 
 specifies the logical operator of this expression.
 
-2.2.1.2.108  DHCP_POL_EXPR_ARRAY
+###### 2.2.1.2.108 DHCP_POL_EXPR_ARRAY
 
 The DHCP_POL_EXPR_ARRAY structure specifies the array of expressions of a policy.
 
@@ -9614,7 +9190,7 @@ Elements:  This member is a pointer of type LPDHCP_POL_EXPR (section 2.2.1.2.107
 
 an array of DHCP_POL_EXPR (section 2.2.1.2.107) elements.
 
-2.2.1.2.109  DHCP_ALL_OPTION_VALUES_PB
+###### 2.2.1.2.109 DHCP_ALL_OPTION_VALUES_PB
 
 The DHCP_ALL_OPTION_VALUES_PB structure contains all the option values set for a specific
 policy.
@@ -9649,7 +9225,8 @@ Release: September 16, 2024
 
 117 / 537
 
-VendorName:  This member is a pointer of type LPWSTR and contains the vendor class name. This
+
+VendorName:  This member is a pointer of type LPWSTR and contains the vendor class name. This
 
 field is unused.
 
@@ -9659,7 +9236,7 @@ OptionsArray:  This member is a pointer to the DHCP_OPTION_VALUE_ARRAY structure
 
 2.2.1.2.43) and contains the option values set for the policy.
 
-2.2.1.2.110  DHCP_POLICY
+###### 2.2.1.2.110 DHCP_POLICY
 
 The DHCP_POLICY structure contains information for a policy used to filter client requests.
 
@@ -9710,7 +9287,7 @@ Enabled:  This member is a flag of type BOOL that indicates whether the policy i
 
 disabled state.
 
-2.2.1.2.111  DHCP_POLICY_ARRAY
+###### 2.2.1.2.111 DHCP_POLICY_ARRAY
 
 The DHCP_POLICY_ARRAY structure contains a list of policy elements.
 
@@ -9724,7 +9301,8 @@ Release: September 16, 2024
 
 118 / 537
 
-   [size_is(NumElements)] LPDHCP_POLICY Elements;
+
+   [size_is(NumElements)] LPDHCP_POLICY Elements;
  } DHCP_POLICY_ARRAY,
   *PDHCP_POLICY_ARRAY,
   *LPDHCP_POLICY_ARRAY;
@@ -9735,7 +9313,7 @@ Elements:  This member is a pointer of type DHCP_POLICY (section 2.2.1.2.110) th
 
 array of length NumElements.
 
-2.2.1.2.112  DHCPV6_STATELESS_PARAMS
+###### 2.2.1.2.112 DHCPV6_STATELESS_PARAMS
 
 The DHCPV6_STATELESS_PARAMS structure contains stateless settings for a DHCPv6 server. This
 structure is used with the R_DhcpV6SetStatelessStoreParams (section 3.2.4.117) and
@@ -9754,7 +9332,7 @@ need to maintain a stateless client inventory.
 PurgeInterval:  This member specifies the maximum time interval, in hours, that stateless IPv6
 DHCP client lease records will persist before being deleted from the DHCP server database.
 
-2.2.1.2.113  DHCPV6_STATELESS_SCOPE_STATS
+###### 2.2.1.2.113 DHCPV6_STATELESS_SCOPE_STATS
 
 The DHCPV6_STATELESS_SCOPE_STATS structure contains the address counters for a specific
 IPv6 stateless subnet. The number of stateless IPv6 clients added and removed from the stateless
@@ -9778,7 +9356,7 @@ NumStatelessClientsRemoved:  The number of IPv6 stateless clients that have been
 
 the DHCPv6 stateless client inventory for the IPv6 prefix stored in SubnetAddress.
 
-2.2.1.2.114  DHCPV6_STATELESS_STATS
+###### 2.2.1.2.114 DHCPV6_STATELESS_STATS
 
 The DHCPV6_STATELESS_STATS structure represents an array of
 DHCPV6_STATELESS_SCOPE_STATS (section 2.2.1.2.113) structures. This structure is used with the
@@ -9792,7 +9370,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct _DHCPV6_STATELESS_STATS {
+
+ typedef struct _DHCPV6_STATELESS_STATS {
      DWORD NumScopes;
      [size_is(NumScopes)] LPDHCPV6_STATELESS_SCOPE_STATS ScopeStats;
  } DHCPV6_STATELESS_STATS, *PDHCPV6_STATELESS_STATS, *LPDHCPV6_STATELESS_STATS;
@@ -9803,7 +9382,7 @@ ScopeStats:  A pointer to an array of DHCPV6_STATELESS_SCOPE_STATS (section 2.2.
 
 structures, each one representing an IPv6 stateless prefix serviced by the current DHCPv6 server.
 
-2.2.1.2.115  DHCP_CLIENT_INFO_PB
+###### 2.2.1.2.115 DHCP_CLIENT_INFO_PB
 
 The DHCP_CLIENT_INFO_PB structure encapsulates information about a DHCPv4 client, including
 filter status information and the policy, if any, that resulted in the client's specific IPv4 address
@@ -9873,7 +9452,8 @@ Release: September 16, 2024
 
 120 / 537
 
-Value
+
+Value
 
 0x01
 
@@ -9993,7 +9573,8 @@ Release: September 16, 2024
 
 121 / 537
 
-Value
+
+Value
 
 Description
 
@@ -10009,7 +9590,7 @@ PolicyName:  A pointer to a null-terminated Unicode string containing the name o
 policy, if any, that resulted in the current IPv4 address being assigned to the client. This string is
 limited to 64 characters, including the terminating null character.
 
-2.2.1.2.116  DHCP_CLIENT_INFO_PB_ARRAY
+###### 2.2.1.2.116 DHCP_CLIENT_INFO_PB_ARRAY
 
 The DHCP_CLIENT_INFO_PB_ARRAY structure encapsulates an array of
 DHCP_CLIENT_INFO_PB (section 2.2.1.2.115) structures.
@@ -10023,7 +9604,7 @@ NumElements:  The number of elements in the Clients member.
 
 Clients:  An array of pointers to DHCP_CLIENT_INFO_PB structures.
 
-2.2.1.2.117  DHCP_PROPERTY
+###### 2.2.1.2.117 DHCP_PROPERTY
 
 The DHCP_PROPERTY structure contains the type of the property, the property identifier, and the
 property data value. The DHCP_PROPERTY identifies a DHCP property and is used by the
@@ -10070,7 +9651,8 @@ Release: September 16, 2024
 
 122 / 537
 
-DWordValue:  Specifies the data as a DWORD value. This field is present if the Type field is set to
+
+DWordValue:  Specifies the data as a DWORD value. This field is present if the Type field is set to
 
 DhcpPropertyTypeDWord.
 
@@ -10082,7 +9664,7 @@ BinaryValue:  Specifies the data as a DHCP_BINARY_DATA (section 2.2.1.2.9) struc
 
 present if the Type field is set to DhcpPropertyTypeBinary.
 
-2.2.1.2.118  DHCP_PROPERTY_ARRAY
+###### 2.2.1.2.118 DHCP_PROPERTY_ARRAY
 
 The DHCP_PROPERTY_ARRAY structure defines an array of DHCP_PROPERTY (section 2.2.1.2.117)
 structures. This structure is a data container for one or more data elements associated with a DHCP
@@ -10097,7 +9679,7 @@ NumElements:  Specifies the number of DHCP Property elements.
 
 Elements:  Contains the DHCP Property elements.
 
-2.2.1.2.119  DHCP_CLIENT_INFO_EX
+###### 2.2.1.2.119 DHCP_CLIENT_INFO_EX
 
 The DHCP_CLIENT_INFO_EX structure encapsulates information about a DHCPv4 client, including
 filter status information and the policy, if any, that resulted in the client's specific IPv4 address
@@ -10141,7 +9723,8 @@ Release: September 16, 2024
 
 123 / 537
 
-ClientComment:  A pointer to a null-terminated Unicode string representing the client's DHCPv4
+
+ClientComment:  A pointer to a null-terminated Unicode string representing the client's DHCPv4
 
 internet host name. There is no restriction on the string length.
 
@@ -10252,7 +9835,8 @@ Release: September 16, 2024
 
 124 / 537
 
-Value
+
+Value
 
 FILTER_STATUS_NONE
 
@@ -10319,7 +9903,7 @@ DNS registration for this entry.
 
 Values not listed are reserved for future use and MUST be set to zero.
 
-2.2.1.2.120  DHCP_CLIENT_INFO_EX_ARRAY
+###### 2.2.1.2.120 DHCP_CLIENT_INFO_EX_ARRAY
 
 The DHCP_CLIENT_INFO_EX_ARRAY structure encapsulates an array of
 DHCP_CLIENT_INFO_EX (section 2.2.1.2.119) structures.
@@ -10333,7 +9917,7 @@ NumElements:  The number of elements in the Clients member.
 
 Clients:  An array of pointers to DHCP_CLIENT_INFO_EX (section 2.2.1.2.119) structures.
 
-2.2.1.2.121  DHCP_POLICY_EX
+###### 2.2.1.2.121 DHCP_POLICY_EX
 
 The DHCP_POLICY_EX structure contains information for a policy that is used to filter client
 requests. This structure augments the DHCP_POLICY (section 2.2.1.2.110) structure by including a list
@@ -10346,7 +9930,8 @@ Release: September 16, 2024
 
 125 / 537
 
- typedef struct _DHCP_POLICY_EX {
+
+ typedef struct _DHCP_POLICY_EX {
      LPWSTR PolicyName;
      BOOL IsGlobalPolicy;
      DHCP_IP_ADDRESS Subnet;
@@ -10400,7 +9985,7 @@ DhcpPropTypeString. When the Value member of the DHCP_PROPERTY (section 2.2.1.2.
 structure is set to StringValue, this property points to a Unicode string representing the DNS suffix
 to be used when performing DNS registration on behalf of the client.
 
-2.2.1.2.122  DHCP_POLICY_EX_ARRAY
+###### 2.2.1.2.122 DHCP_POLICY_EX_ARRAY
 
 The DHCP_POLICY_EX_ARRAY structure contains a list of policy elements.
 
@@ -10420,7 +10005,8 @@ Release: September 16, 2024
 
 126 / 537
 
-Elements:  A pointer of type DHCP_POLICY_EX (section 2.2.1.2.121) that points to an array with
+
+Elements:  A pointer of type DHCP_POLICY_EX (section 2.2.1.2.121) that points to an array with
 
 length as specified in the NumElements member.
 
@@ -10431,7 +10017,8 @@ Release: September 16, 2024
 
 127 / 537
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 No additional timers or other state is required on the client side of this protocol. Calls made by the
 higher-layer protocol or application are passed directly to the transport, and the results returned by
@@ -10462,11 +10049,11 @@ When a method listed in any of these interfaces is called and the DHCP server is
 state, then RPC throws an exception ranging between 1700 and1999. [MS-ERREF] lists these Win32
 error codes (section 2.2).<19>
 
-3.1  dhcpsrv Server Details
+### 3.1 dhcpsrv Server Details
 
 For the list of methods supported by this interface, refer to Appendix A: Full IDL (section 6).
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model that an implementation can maintain to participate in this
 protocol. The described organization is provided to facilitate the explanation of how the protocol
@@ -10485,7 +10072,7 @@ returning.
 Note that the abstract interface notation (Public) indicates that the abstract data model element can
 be directly accessed from outside this protocol.
 
-3.1.1.1  Global Variables
+##### 3.1.1.1 Global Variables
 
 The following list describes top-level ADM data elements. Each of these elements is a complex data
 entity, which is further described in a subsequent subsection.
@@ -10497,7 +10084,8 @@ Release: September 16, 2024
 
 128 / 537
 
-DHCPv4ScopesList (Public): Represents the list of scopes hosted by the DHCP server for IPv4
+
+DHCPv4ScopesList (Public): Represents the list of scopes hosted by the DHCP server for IPv4
 subnets. Each list entry is an instance of the abstract data type DHCPv4Scope specified in
 section 3.1.1.2. As a part of protocol initialization, DHCPv4ScopesList ADM element is initialized
 to an empty list when there are no DHCPv4 scopes defined. Each scope is uniquely identified using
@@ -10570,7 +10158,8 @@ Release: September 16, 2024
 
 129 / 537
 
-3.1.1.20. Option definitions are used to enable options and assign values to them. This variable is
+
+3.1.1.20. Option definitions are used to enable options and assign values to them. This variable is
 stored in memory as well as in persistent store.
 
 DHCPv6ServerClassedOptValueList (Public): Represents the set of all option values configured at
@@ -10647,7 +10236,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The DHCPServerRestorePath ADM element corresponds to the LPWSTR data type. ADM
+
+The DHCPServerRestorePath ADM element corresponds to the LPWSTR data type. ADM
 elements can be restored from a specific location by using the API R_DhcpRestoreDatabase
 method. This variable is stored in memory as well as in persistent store.
 
@@ -10724,7 +10314,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-R_DhcpV4QueryPolicyEnforcement (section 3.2.4.107)). This variable is stored in memory and in
+
+R_DhcpV4QueryPolicyEnforcement (section 3.2.4.107)). This variable is stored in memory and in
 persistent storage.
 
 DHCPv4ServerPolicyOptionValuesList: Stores the list of DHCPv4PolicyOptionValue ADM
@@ -10747,7 +10338,7 @@ corresponds to the data type DHCPV6_STATELESS_STATS (section 2.2.1.2.114). It ca
 retrieved using the R_DhcpV6GetStatelessStatistics (section 3.2.4.119) method. This variable is
 stored only in memory.
 
-3.1.1.2  Per DHCPv4Scope (Public)
+##### 3.1.1.2 Per DHCPv4Scope (Public)
 
 The DHCPv4Scope ADM element represents information and associated properties for an IPv4 scope.
 This element is initialized when a scope is created using the APIs R_DhcpCreateSubnet and
@@ -10797,7 +10388,8 @@ Release: September 16, 2024
 
 132 / 537
 
-DHCPv4Scope.DHCPv4ScopeOptValuesList: This field is a list of option values configured for the
+
+DHCPv4Scope.DHCPv4ScopeOptValuesList: This field is a list of option values configured for the
 
 DHCPv4 scope. Each list entry is an instance of the abstract data type DHCPv4OptionValue. This
 variable is stored in memory as well as in persistent store.
@@ -10827,7 +10419,7 @@ DHCPv4Scope.DHCPv4ScopePolicyOptionValuesList: Stores the set of
 DHCPv4PolicyOptionValue ADM elements specified in section 3.1.1.36 that are configured at
 the scope. This variable is stored in memory and in persistent storage.
 
-3.1.1.3  Per DHCPv4SuperScope (Public)
+##### 3.1.1.3 Per DHCPv4SuperScope (Public)
 
 The DHCPv4SuperScope ADM element represents information and associated properties for an IPv4
 superscope. This element is initialized when a superscope is created using the API
@@ -10844,7 +10436,7 @@ DHCPv4SuperScope.SuperScopeId: This field is of type DWORD and contains the uniq
 
 of the superscope. This variable is stored in memory as well as in persistent store.
 
-3.1.1.4  DHCPv4IpRange (Public)
+##### 3.1.1.4 DHCPv4IpRange (Public)
 
 The DHCPv4IpRange ADM element represents a range of addresses available for allocation. This
 element is initialized when an IPv4 Address Range is added to a scope by using the API methods
@@ -10872,19 +10464,20 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DHCPv4IpRange.PersistedBitMask: This is a copy of the DHCPv4IpRange.BitMask ADM element
+
+DHCPv4IpRange.PersistedBitMask: This is a copy of the DHCPv4IpRange.BitMask ADM element
 that is stored in persistent store. The DHCPv4IpRange.BitMask ADM element is read from the
 DHCPv4IpRange.PersistedBitMask ADM element at service startup and written back to it
 during service shutdown.
 
-3.1.1.5  DHCPv4ExclusionRange (Public)
+##### 3.1.1.5 DHCPv4ExclusionRange (Public)
 
 The DHCPv4ExclusionRange ADM element is of type DHCP_IP_RANGE structure, specified in section
 2.2.1.2.31. This element is initialized when an IPv4 exclusion range is added to a scope using the
 API methods R_DhcpAddSubnetElement, R_DhcpAddSubnetElementV4, and
 R_DhcpAddSubnetElementV5. This variable is stored in memory as well as in persistent store.
 
-3.1.1.6  DHCPv4Reservation (Public)
+##### 3.1.1.6 DHCPv4Reservation (Public)
 
 The DHCPv4Reservation ADM element is of type DHCP_IP_RESERVATION_V4 structure, as specified
 in section 2.2.1.2.32. This element is initialized when an IPv4 Reservation is added to a scope, using
@@ -10899,7 +10492,7 @@ the DHCPv4 reservation. Each list entry is an instance of the abstract data type
 DHCPv4OptionValue, as specified in section 3.1.1.11. This variable is stored in memory as well
 as in persistent store.
 
-3.1.1.7  DHCPv4Client (Public)
+##### 3.1.1.7 DHCPv4Client (Public)
 
 The DHCPv4Client ADM element contains all of the properties defined for the
 DHCPV4_FAILOVER_CLIENT_INFO structure (section 2.2.1.2.101). In addition to these properties,
@@ -10914,7 +10507,7 @@ R_DhcpV4CreateClientInfo (Opnum 122) (section 3.2.4.123)), or R_DhcpV4CreateClie
 (Opnum 131) (section 3.2.4.132). To limit memory use, this variable is stored only in persistent
 storage, not in memory.
 
-3.1.1.8  DHCPv4ClassDef (Public)
+##### 3.1.1.8 DHCPv4ClassDef (Public)
 
 The DHCPv4ClassDef ADM element contains the definition of a user class or vendor class
 configured on the DHCPv4 Server. It is of type DHCP_CLASS_INFO (section 2.2.1.2.75) structure.
@@ -10961,7 +10554,8 @@ Release: September 16, 2024
 
 134 / 537
 
-ClassData
+
+ClassData
 
 ClassDataLength  IsVendor  Flags  ClassName*
 
@@ -11039,7 +10633,7 @@ clients"
 
 **ClassComment strings are build dependent.<21>
 
-3.1.1.9  Per DHCPv4OptionDef
+##### 3.1.1.9 Per DHCPv4OptionDef
 
 The DHCPv4OptionDef ADM element represents the set of option definitions for a specific user
 class and vendor class pair. The following are the elements of DHCPv4OptionDef.
@@ -11059,9 +10653,9 @@ ADM element fields. Each list entry is an instance of the abstract data type
 DHCPv4ClassedOptDef, as specified in section 3.1.1.10. This variable is stored in memory as
 well as in persistent store.
 
-3.1.1.10
+##### 3.1.1.10 DHCPv4ClassedOptDef
 
-DHCPv4ClassedOptDef
+
 
 The DHCPv4ClassedOptDef ADM element contains the definition of an option configured on the
 DHCPv4 Server, and is of type DHCP_OPTION structure, as specified in section 2.2.1.2.25. It is
@@ -11069,9 +10663,9 @@ initialized when a new option definition is created on the DHCP Server, using th
 R_DhcpCreateOption and R_DhcpCreateOptionV5. This variable is stored in memory as well as in
 persistent store.
 
-3.1.1.11
+##### 3.1.1.11 Per DHCPv4OptionValue (Public)
 
-Per DHCPv4OptionValue (Public)
+
 
 The DHCPv4OptionValue ADM element represents the set of option values configured for a defined
 option, for a specific user class and vendor class pair. The following are the elements of
@@ -11084,7 +10678,8 @@ Release: September 16, 2024
 
 135 / 537
 
-DHCPv4OptionValue.UserClass: This ADM element field is a UNICODE string containing the user
+
+DHCPv4OptionValue.UserClass: This ADM element field is a UNICODE string containing the user
 
 class for which the option definitions are configured. A NULL value indicates the default user class.
 This variable is stored in memory as well as in persistent store.
@@ -11100,9 +10695,9 @@ UserClass ADM element and VendorClass ADM element fields. Each list element is a
 the abstract data type DHCPv4ClassedOptValue, as specified in section 3.1.1.12. This variable
 is stored in memory as well as in persistent store.
 
-3.1.1.12
+##### 3.1.1.12 DHCPv4ClassedOptValue (Public)
 
-DHCPv4ClassedOptValue (Public)
+
 
 The DHCPv4ClassedOptValue ADM element contains the option values defined on the DHCPv4
 Server at several levels, and is of type DHCP_OPTION_VALUE structure (section 2.2.1.2.42). The
@@ -11110,9 +10705,9 @@ DHCPv4ClassedOptValue ADM element is initialized when a new option definition is
 the DHCP Server, using the API methods R_DhcpSetOptionValue and R_DhcpSetOptionValueV5. This
 variable is stored in memory as well as in persistent store.
 
-3.1.1.13
+##### 3.1.1.13 Per DHCPv4MScope
 
-Per DHCPv4MScope
+
 
 The DHCPv4MScope ADM element represents IPv4 multicast scope information and associated
 properties. The DHCPv4MScope ADM element is initialized when a multicast scope is created by
@@ -11159,9 +10754,10 @@ Release: September 16, 2024
 
 136 / 537
 
-3.1.1.14
 
-Per DHCPv6Scope (Public)
+##### 3.1.1.14 Per DHCPv6Scope (Public)
+
+
 
 The DHCPv6Scope ADM element represents a DHCPv6 scope configured on a DHCPv6 server. This
 
@@ -11206,18 +10802,18 @@ element can be stored and retrieved using the R_DhcpV6SetStatelessParams (sectio
 and R_DhcpV6GetStatelessParams (section 3.2.4.118) methods. This variable is stored in memory
 and in the persistent store.
 
-3.1.1.15
+##### 3.1.1.15 DHCPv6ExclusionRange (Public)
 
-DHCPv6ExclusionRange (Public)
+
 
 The DHCPv6ExclusionRange ADM element corresponds to the data type DHCP_IP_RANGE_V6
 structure, as specified in section 2.2.1.2.59. The DHCPv6ExclusionRange ADM element is initialized
 by the API method R_DhcpAddSubnetElementV6 when a new exclusion range is added to a DHCPv6
 subnet. This variable is stored in memory as well as in persistent store.
 
-3.1.1.16
+##### 3.1.1.16 Per DHCPv6Reservation (Public)
 
-Per DHCPv6Reservation (Public)
+
 
 The DHCPv6Reservation ADM element corresponds to the data type DHCP_IP_RESERVATION_V6
 structure, as specified in section 2.2.1.2.58. The DHCPv6Reservation ADM element is initialized by
@@ -11237,9 +10833,10 @@ Release: September 16, 2024
 
 137 / 537
 
-3.1.1.17
 
-Per DHCPv6ClassedOptValue (Public)
+##### 3.1.1.17 Per DHCPv6ClassedOptValue (Public)
+
+
 
 The DHCPv6ClassedOptValue ADM element represents the set of option values for a specific user
 class and vendor class pair. For all such pairs in which at least one option is given a value other
@@ -11260,9 +10857,9 @@ option values stored for each user class and vendor class pair. The DHCPv6Option
 ADM element is a list of DHCPv6OptionValue ADM elements, specified in section 3.1.1.21. This
 variable is stored in memory as well as in persistent store.
 
-3.1.1.18
+##### 3.1.1.18 DHCPv6ClientInfo (Public)
 
-DHCPv6ClientInfo (Public)
+
 
 The DHCPv6ClientInfo ADM element contains information for the clients served by the DHCPv6
 server. The DHCPv6ClientInfo ADM element corresponds to the data type
@@ -11271,9 +10868,9 @@ DHCPv6ClientInfoAddressState ADM element object, as specified in section 3.1.1.3
 initialized when the DHCPv6 server leases a fresh IPv6 address to the client. To limit memory use, this
 variable is stored only in persistent storage, not in memory.
 
-3.1.1.19
+##### 3.1.1.19 DHCPv6ClassDef (Public)
 
-DHCPv6ClassDef (Public)
+
 
 The DHCPv6ClassDef ADM element represents a user class or a vendor class configured on the
 DHCPv6 server, and it corresponds to the data type the DHCP_CLASS_INFO_V6 (section 2.2.1.2.70)
@@ -11327,9 +10924,9 @@ Windows Clients"
 
 **ClassComment strings are build dependent.<23>
 
-3.1.1.20
+##### 3.1.1.20 Per DHCPv6ClassedOptionDef
 
-Per DHCPv6ClassedOptionDef
+
 
 The DHCPv6ClassedOptionDef ADM element represents the set of option definitions for a user
 class and vendor class pair. For all such pairs in which at least one option is defined, an instance of
@@ -11347,7 +10944,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DHCPv6ClassedOptionDef.DHCPv6VendorClass: This ADM element field is described in section
+
+DHCPv6ClassedOptionDef.DHCPv6VendorClass: This ADM element field is described in section
 3.1.1.24. A NULL value indicates the default vendor class. This variable is stored in memory as
 well as in persistent store.
 
@@ -11357,9 +10955,9 @@ information about option definitions for each user class and vendor class pair. 
 DHCPv6OptionDefList ADM element is a list of DHCPv6OptionDef ADM element objects. This
 variable is stored in memory as well as in persistent store.
 
-3.1.1.21
+##### 3.1.1.21 Per DHCPv6OptionValue (Public)
 
-Per DHCPv6OptionValue (Public)
+
 
 The DHCPv6OptionValue ADM element represents a value for an option configured for a user class
 and vendor class pair. It is initialized when an option is assigned a value by using the API
@@ -11376,9 +10974,9 @@ with its length. The OptionData ADM element field corresponds to the data type
 DHCP_OPTION_DATA structure, as specified in section 2.2.1.2.24. This variable is stored in
 memory as well as in persistent store.
 
-3.1.1.22
+##### 3.1.1.22 DHCPv6OptionDef
 
-DHCPv6OptionDef
+
 
 The DHCPv6OptionDef ADM element represents the option definition of an option configured for a
 user class and vendor class pair. It corresponds to the data type DHCP_OPTION structure, as
@@ -11386,25 +10984,25 @@ specified in section 2.2.1.2.25. The DHCPv6OptionDef ADM element is initialized 
 definition is created by using the API method R_DhcpCreateClassV6. This variable is stored in memory
 as well as in persistent store.
 
-3.1.1.23
+##### 3.1.1.23 DHCPv6UserClass (Public)
 
-DHCPv6UserClass (Public)
+
 
 The DHCPv6UserClass ADM element represents the user class type, which corresponds to data type
 LPWSTR. The maximum data length allowed for this element is 256. This variable is stored in memory
 as well as in persistent store.
 
-3.1.1.24
+##### 3.1.1.24 DHCPv6VendorClass (Public)
 
-DHCPv6VendorClass (Public)
+
 
 The DHCPv6VendorClass ADM element represents the vendor class type, which corresponds to
 data type LPWSTR. The maximum data length allowed for this element is 256. This variable is stored
 in memory as well as in persistent store.
 
-3.1.1.25
+##### 3.1.1.25 Per DHCPv4AuditLogParams
 
-Per DHCPv4AuditLogParams
+
 
 The DHCPv4AuditLogParams ADM element contains the following fields.
 
@@ -11424,7 +11022,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-corresponds to the data type DWORD. This variable is stored in memory as well as in persistent
+
+corresponds to the data type DWORD. This variable is stored in memory as well as in persistent
 store.
 
 DHCPv4AuditLogParams.MaxLogFilesSize: This ADM element field stores the maximum size
@@ -11439,9 +11038,9 @@ determine whether sufficient space exists for the server to continue audit loggi
 MinSpaceOnDisk ADM element corresponds to the data type DWORD. This variable is stored in
 memory as well as in persistent store.
 
-3.1.1.26
+##### 3.1.1.26 Per DHCPv4ServerAttributes
 
-Per DHCPv4ServerAttributes
+
 
 The DHCPv4ServerAttributes ADM element contains the following fields.
 
@@ -11467,9 +11066,9 @@ DHCPv4ServerAttributes.LastRestoreStatus: This ADM element field stores the erro
 last restore operation, and it corresponds to the data type ULONG. This variable is only stored in
 memory and not in persistent store.
 
-3.1.1.27
+##### 3.1.1.27 Per DHCPServerDnsRegCredentials
 
-Per DHCPServerDnsRegCredentials
+
 
 The DHCPServerDnsRegCredentials ADM element consists of the following fields.
 
@@ -11496,42 +11095,43 @@ Release: September 16, 2024
 
 140 / 537
 
-3.1.1.28
 
-DHCPv4ServerBindingInfo
+##### 3.1.1.28 DHCPv4ServerBindingInfo
+
+
 
 The DHCPv4ServerBindingInfo ADM element contains the binding information for an interface
 plumbed with a static IPv4 address. It corresponds to the data type DHCP_BIND_ELEMENT structure,
 as specified in section 2.2.1.2.80. This variable is stored in memory as well as in persistent store.
 
-3.1.1.29
+##### 3.1.1.29 DHCPv6ServerBindingInfo
 
-DHCPv6ServerBindingInfo
+
 
 The DHCPv6ServerBindingInfo ADM element contains the binding information for an interface
 plumbed with a static IPv6 address. It corresponds to the data type DHCPV6_BIND_ELEMENT
 structure, as specified in section 2.2.1.2.82. This variable is stored in memory as well as in persistent
 store.
 
-3.1.1.30
+##### 3.1.1.30 DHCPv4Filter (Public)
 
-DHCPv4Filter (Public)
+
 
 The DHCPv4Filter ADM element is of type DHCP_FILTER_ADD_INFO structure, specified in section
 2.2.1.2.90. DHCPv4Filter ADM element is initialized when a new link layer address/pattern is added
 to the allow or deny filter list by using the API method R_DhcpAddFilterV4. This variable is stored in
 memory as well as in persistent store.
 
-3.1.1.31
+##### 3.1.1.31 DHCPv4MClient
 
-DHCPv4MClient
+
 
 The DHCPv4MClient ADM element is of type DHCP_MCLIENT_INFO structure, specified in section
 2.2.1.2.21. To limit memory use, this variable is stored only in persistent storage, not in memory.
 
-3.1.1.32
+##### 3.1.1.32 DHCPv6ClientInfoAddressState
 
-DHCPv6ClientInfoAddressState
+
 
 The DHCPv6ClientInfoAddressState ADM element is of type DWORD as represented by the
 following set of bits.
@@ -11654,7 +11254,8 @@ Release: September 16, 2024
 
 141 / 537
 
-BIT 3 signifies the Name Protection (section 3.3.3) related information of the leased IPv6 address, as
+
+BIT 3 signifies the Name Protection (section 3.3.3) related information of the leased IPv6 address, as
 shown in the table that follows.
 
 Value
@@ -11711,9 +11312,9 @@ The DNS update needs to be sent only for PTR resource records
 
 To limit memory use, this variable is stored only in persistent storage, not in memory.
 
-3.1.1.33
+##### 3.1.1.33 DHCPv4FailoverRelationship
 
-DHCPv4FailoverRelationship
+
 
 The DHCPv4FailoverRelationship ADM element represents information for a DHCPv4 failover
 relationship. It is of type DHCP_FAILOVER_RELATIONSHIP structure, as specified in section
@@ -11721,9 +11322,9 @@ relationship. It is of type DHCP_FAILOVER_RELATIONSHIP structure, as specified i
 is created by using the R_DhcpV4FailoverCreateRelationship method specified in section 3.2.4.90.
 This variable is stored in memory and in persistent storage.
 
-3.1.1.34
+##### 3.1.1.34 DHCPv4FailoverStatistics
 
-DHCPv4FailoverStatistics
+
 
 The DHCPv4FailoverStatistics ADM element represents the DHCPv4 Server failover statistics for a
 given IPv4 subnet. It corresponds to the data type DHCP_FAILOVER_STATISTICS structure, as
@@ -11732,9 +11333,9 @@ identifies the IPv4 subnet. The DHCPv4FailoverStatistics ADM element can be read
 R_DhcpV4FailoverGetScopeStatistics method specified in section 3.2.4.98. This variable is stored
 in memory but not in persistent storage.
 
-3.1.1.35
+##### 3.1.1.35 DHCPv4Policy
 
-DHCPv4Policy
+
 
 The DHCPv4Policy ADM element stores the policy configured for a specific DHCPv4Scope (section
 3.1.1.2) or for the server. The DHCPv4Policy ADM element is stored in memory and in persistent
@@ -11751,7 +11352,8 @@ Release: September 16, 2024
 
 142 / 537
 
-The DHCPv4Policy.ClassName field is a pointer to a Unicode string containing the name of a
+
+The DHCPv4Policy.ClassName field is a pointer to a Unicode string containing the name of a
 predefined user class configured on the DHCPv4 server that the policy matches. If the
 DHCPv4Policy.Policy element contains only one condition with the Operator member set to
 DhcpCompEqual, and a DHCPv4ClassDef ADM object exists in the global DHCPv4ClassDefList ADM
@@ -11762,9 +11364,9 @@ The DHCPv4Policy.DNSSuffix field is a pointer to a Unicode string containing the
 DHCPv4 server MUST use to override the domain name of the client that the policy matches, while
 performing DNS registration on behalf of the client.
 
-3.1.1.36
+##### 3.1.1.36 Per DHCPv4PolicyOptionValue
 
-Per DHCPv4PolicyOptionValue
+
 
 The DHCPv4PolicyOptionValue ADM element stores the set of option values configured for a defined
 option that are associated with a policy.
@@ -11782,18 +11384,18 @@ any option defined for the vendor class that is identified by the vendor name an
 the identified policy. Each element in the list is represented by the DHCPv4ClassedOptValue
 ADM element defined in section 3.1.1.12.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required beyond those used internally by RPC to implement resiliency to network
 outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The DHCP dhcpsrv Remote Protocol server MUST be initialized by registering the RPC interface and
 listening on the dynamic allocated port assigned by RPC, as specified in section 2.1. The client MUST
 contact the well-known RPC port on the DHCP server to find the endpoint of dhcpsrv.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The dhcpsrv interface provides methods that remotely configure, manage and monitor the DHCP
 server. The version for this interface is 1.0.
@@ -11827,7 +11429,8 @@ Release: September 16, 2024
 
 143 / 537
 
-Method
+
+Method
 
 Description
 
@@ -11942,7 +11545,8 @@ Release: September 16, 2024
 
 144 / 537
 
-Method
+
+Method
 
 Description
 
@@ -12055,7 +11659,8 @@ Release: September 16, 2024
 
 145 / 537
 
-Method
+
+Method
 
 Description
 
@@ -12167,7 +11772,8 @@ Release: September 16, 2024
 
 146 / 537
 
-Method
+
+Method
 
 Description
 
@@ -12212,7 +11818,7 @@ method in which NAP state is not set.
 
 Opnum: 50
 
-3.1.4.1  R_DhcpCreateSubnet (Opnum 0)
+##### 3.1.4.1 R_DhcpCreateSubnet (Opnum 0)
 
 The R_DhcpCreateSubnet method is used to create a new IPv4 subnet on the DHCPv4 server.
 
@@ -12250,7 +11856,8 @@ Release: September 16, 2024
 
 147 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12345,10 +11952,11 @@ Release: September 16, 2024
 
 148 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 specified in [MS-RPCE].
 
-3.1.4.2  R_DhcpSetSubnetInfo (Opnum 1)
+##### 3.1.4.2 R_DhcpSetSubnetInfo (Opnum 1)
 
 The R_DhcpSetSubnetInfo method sets/modifies the information about an IPv4 subnet defined on
 the DHCPv4 server.
@@ -12427,7 +12035,8 @@ Release: September 16, 2024
 
 149 / 537
 
-
+
+
 
 If the bitwise AND operation of the SubnetAddress input field with the SubnetMask member of
 the SubnetInfo input field is not the same as SubnetAddress input field, return
@@ -12449,7 +12058,7 @@ ERROR_DHCP_SUBNET_NOT_PRESENT.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 specified in [MS-RPCE].
 
-3.1.4.3  R_DhcpGetSubnetInfo (Opnum 2)
+##### 3.1.4.3 R_DhcpGetSubnetInfo (Opnum 2)
 
 The R_DhcpGetSubnetInfo method retrieves the information about a specific IPv4 subnet defined
 on the DHCPv4 server. The caller of this function is responsible for freeing the memory pointed to by
@@ -12512,7 +12121,8 @@ Release: September 16, 2024
 
 150 / 537
 
-  Retrieve the server ADM element DHCPv4Scope entry whose subnet ID is equal to the
+
+  Retrieve the server ADM element DHCPv4Scope entry whose subnet ID is equal to the
 
 SubnetAddress parameter from the DHCPv4ScopesList server ADM element. For the
 DHCP_HOST_INFO structure, the IpAddress field is populated as "127.0.0.1" and the other fields
@@ -12530,7 +12140,7 @@ and return it to the caller.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.4  R_DhcpEnumSubnets (Opnum 3)
+##### 3.1.4.4 R_DhcpEnumSubnets (Opnum 3)
 
 The R_DhcpEnumSubnets method enumerates IPv4 subnets configured on the DHCPv4 server. The
 caller of this function can free the memory pointed to by the EnumInfo parameter and its member the
@@ -12588,7 +12198,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12657,7 +12268,7 @@ to the index of the last DHCPv4Scope ADM element entry read plus one.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.5  R_DhcpAddSubnetElement (Opnum 4)
+##### 3.1.4.5 R_DhcpAddSubnetElement (Opnum 4)
 
 The R_DhcpAddSubnetElement method adds an IPv4 subnet element (IPv4 reservation, IPv4
 exclusion range, or IPv4 range) to the IPv4 subnet in the DHCPv4 server. There is an extension of
@@ -12676,7 +12287,8 @@ Release: September 16, 2024
 
 152 / 537
 
-ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
+
+ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
 SubnetAddress: This is of type DHCP_IP_ADDRESS, containing the IPv4 subnet ID in which the IPv4
 
@@ -12788,7 +12400,8 @@ Release: September 16, 2024
 
 153 / 537
 
-
+
+
 
 
 
@@ -12882,7 +12495,8 @@ Release: September 16, 2024
 
 154 / 537
 
-DHCPv4IpRange.RangeInfo.BootPAllocated to 0, and set
+
+DHCPv4IpRange.RangeInfo.BootPAllocated to 0, and set
 DHCPv4IpRange.RangeInfo.MaxBootpAllowed to 0xFFFFFFFF. The
 DHCPv4IpRange.BitMask ADM element needs to be expanded or contracted according to the
 new IpRange.StartAddress and IpRange.EndAddress. Accordingly, add or remove bits from
@@ -12980,7 +12594,8 @@ Release: September 16, 2024
 
 155 / 537
 
-
+
+
 
 
 
@@ -13035,7 +12650,7 @@ DHCPv4 clients.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.6  R_DhcpEnumSubnetElements (Opnum 5)
+##### 3.1.4.6 R_DhcpEnumSubnetElements (Opnum 5)
 
 The R_DhcpEnumSubnetElements method enumerates the list of a specific type of IPv4 subnet
 elements from a specific DHCPv4 IPv4 subnet. The caller of this function can free the memory pointed
@@ -13074,7 +12689,8 @@ Release: September 16, 2024
 
 156 / 537
 
-PreferredMaximum parameter is set to 1,000 bytes, and 2,000 bytes worth of IPv4 subnet
+
+PreferredMaximum parameter is set to 1,000 bytes, and 2,000 bytes worth of IPv4 subnet
 elements are stored on the DHCPv4 server, the resume handle can be used after the first 1,000
 bytes are retrieved to obtain the next 1,000 on a subsequent call, and so forth.
 
@@ -13164,7 +12780,8 @@ Release: September 16, 2024
 
 157 / 537
 
-
+
+
 
 
 
@@ -13258,7 +12875,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -13329,7 +12947,7 @@ the last DHCPv4ExclusionRange ADM element entry read.
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
-3.1.4.7  R_DhcpRemoveSubnetElement (Opnum 6)
+##### 3.1.4.7 R_DhcpRemoveSubnetElement (Opnum 6)
 
 The R_DhcpRemoveSubnetElement method removes an IPv4 subnet element from an IPv4 subnet
 defined on the DHCPv4 server.
@@ -13341,7 +12959,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- DWORD R_DhcpRemoveSubnetElement(
+
+ DWORD R_DhcpRemoveSubnetElement(
    [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
    [in] DHCP_IP_ADDRESS SubnetAddress,
    [in, ref] LPDHCP_SUBNET_ELEMENT_DATA RemoveElementInfo,
@@ -13440,7 +13059,8 @@ Release: September 16, 2024
 
 160 / 537
 
-  Validate if this method is authorized for read/write access per section 3.5.5. If not, return
+
+  Validate if this method is authorized for read/write access per section 3.5.5. If not, return
 
 ERROR_ACCESS_DENIED.
 
@@ -13529,7 +13149,8 @@ Release: September 16, 2024
 
 161 / 537
 
-
+
+
 
 
 
@@ -13564,7 +13185,7 @@ the DHCPv4IpRangesList ADM element. Return ERROR_SUCCESS.
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
-3.1.4.8  R_DhcpDeleteSubnet (Opnum 7)
+##### 3.1.4.8 R_DhcpDeleteSubnet (Opnum 7)
 
 The R_DhcpDeleteSubnet method deletes an IPv4 subnet from the DHCPv4 server. The ForceFlag
 defines the behavior of the operation when an IP address from the subnet has been allocated to some
@@ -13604,7 +13225,8 @@ Release: September 16, 2024
 
 162 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13690,7 +13312,7 @@ in the DHCP server database.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.9  R_DhcpCreateOption (Opnum 8)
+##### 3.1.4.9 R_DhcpCreateOption (Opnum 8)
 
 The R_DhcpCreateOption method creates an option definition of the specified option for the default
 user class and vendor class pair at the default option level. The OptionID parameter specifies the
@@ -13703,7 +13325,8 @@ Release: September 16, 2024
 
 163 / 537
 
- DWORD R_DhcpCreateOption(
+
+ DWORD R_DhcpCreateOption(
    [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
    [in] DHCP_OPTION_ID OptionID,
    [in, ref] LPDHCP_OPTION OptionInfo
@@ -13791,9 +13414,10 @@ Release: September 16, 2024
 
 164 / 537
 
-3.1.4.10
 
-R_DhcpSetOptionInfo (Opnum 9)
+##### 3.1.4.10 R_DhcpSetOptionInfo (Opnum 9)
+
+
 
 The R_DhcpSetOptionInfo method modifies the option definition of the specified option for the
 default user class and vendor class pair at the default option level. There is an extension method
@@ -13882,12 +13506,13 @@ Release: September 16, 2024
 
 165 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.11
+##### 3.1.4.11 R_DhcpGetOptionInfo (Opnum 10)
 
-R_DhcpGetOptionInfo (Opnum 10)
+
 
 The R_DhcpGetOptionInfo method retrieves the option definition of the specified option for the
 default user class and vendor class pair at the default option level. There is an extension method
@@ -13966,12 +13591,13 @@ Release: September 16, 2024
 
 166 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.12
+##### 3.1.4.12 R_DhcpRemoveOption (Opnum 11)
 
-R_DhcpRemoveOption (Opnum 11)
+
 
 The R_DhcpRemoveOption method removes the option definition of a specific option for the default
 user class and vendor class pair at the default option level. The OptionID parameter specifies the
@@ -14047,9 +13673,10 @@ Release: September 16, 2024
 
 167 / 537
 
-3.1.4.13
 
-R_DhcpSetOptionValue (Opnum 12)
+##### 3.1.4.13 R_DhcpSetOptionValue (Opnum 12)
+
+
 
 The R_DhcpSetOptionValue method creates the option value when called for the first time.
 Otherwise, it modifies the option value for a specific option associated with the default user class and
@@ -14139,7 +13766,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -14218,7 +13846,8 @@ Release: September 16, 2024
 
 169 / 537
 
-element fields are NULL. If the DHCPv4OptionValue ADM element entry is not found, return
+
+element fields are NULL. If the DHCPv4OptionValue ADM element entry is not found, return
 ERROR_DHCP_CLASS_NOT_FOUND. Retrieve the DHCPv4ClassedOptValue ADM element entry
 corresponding to the OptionID parameter from the
 DHCPv4OptionValue.DHCPv4ClassedOptValueList ADM element. If the
@@ -14251,9 +13880,9 @@ processing rules, return ERROR_INVALID_PARAMETER.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 specified in [MS-RPCE].
 
-3.1.4.14
+##### 3.1.4.14 R_DhcpGetOptionValue (Opnum 13)
 
-R_DhcpGetOptionValue (Opnum 13)
+
 
 The R_DhcpGetOptionValue method retrieves the option value for a specific option associated with
 the default user class and vendor class pair. The values can be retrieved from the default, server,
@@ -14294,7 +13923,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
+
+contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
 a DHCP-specific failure, which takes a value between 20000 and 20099, or any generic failure.
 
 Return value/code
@@ -14383,7 +14013,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -14424,9 +14055,9 @@ caller.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.15
+##### 3.1.4.15 R_DhcpEnumOptionValues (Opnum 14)
 
-R_DhcpEnumOptionValues (Opnum 14)
+
 
 The R_DhcpEnumOptionValues method enumerates all the option values for the default user class
 and vendor class pair. The values can be enumerated at a specified level (that is, default, server,
@@ -14455,7 +14086,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ScopeInfo: This is a pointer to a DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure that
+
+ScopeInfo: This is a pointer to a DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure that
 
 contains information describing the level (that is, default, server, scope, multicast scope, or IPv4
 reservation level) at which the option values are enumerated on.
@@ -14544,7 +14176,8 @@ Release: September 16, 2024
 
 173 / 537
 
-
+
+
 
 
 
@@ -14617,7 +14250,8 @@ Release: September 16, 2024
 
 174 / 537
 
-Otherwise, if the PreferredMaximum parameter is unable to hold all the entries being retrieved,
+
+Otherwise, if the PreferredMaximum parameter is unable to hold all the entries being retrieved,
 then the server must allocate PreferredMaximum number of bytes for the OptionValues parameter
 and store as many DHCPv4ClassedOptDef ADM element entries as will fit into the OptionValues
 parameter; else, allocate the memory for the DHCP_OPTION_VALUE_ARRAY for the total number
@@ -14688,7 +14322,8 @@ Release: September 16, 2024
 
 175 / 537
 
-found, return ERROR_DHCP_SUBNET_NOT_PRESENT; otherwise, iterate through
+
+found, return ERROR_DHCP_SUBNET_NOT_PRESENT; otherwise, iterate through
 DHCPv4MScope.DHCPv4MScopeOptValueList ADM element and retrieve the
 DHCPv4OptionValue.DHCPv4ClassedOptValueList ADM element corresponding to the
 DHCPv4OptionValue ADM element entry if the UserClass and VendorClass ADM element fields
@@ -14755,7 +14390,8 @@ Release: September 16, 2024
 
 176 / 537
 
-If the ResumeHandle parameter points to 0x00000000, the enumeration MUST start from the first
+
+If the ResumeHandle parameter points to 0x00000000, the enumeration MUST start from the first
 entry of the DHCPv4OptionValue.DHCPv4ClassedOptValueList ADM element. Otherwise, if
 the ResumeHandle parameter points to a nonzero value, the server MUST continue enumeration
 based on the value of ResumeHandle. If ResumeHandle is greater than or equal to the number of
@@ -14786,9 +14422,9 @@ ERROR_NO_MORE_ITEMS, else return ERROR_MORE_DATA.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.16
+##### 3.1.4.16 R_DhcpRemoveOptionValue (Opnum 15)
 
-R_DhcpRemoveOptionValue (Opnum 15)
+
 
 The R_DhcpRemoveOptionValue method removes the option value for a specific option on the
 DHCPv4 server for the default user class and vendor class. ScopeInfo defines the level (that is,
@@ -14823,7 +14459,8 @@ Release: September 16, 2024
 
 177 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14916,7 +14553,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ReservedIpSubnetAddress member, return ERROR_DHCP_SUBNET_NOT_PRESENT, else
+
+ReservedIpSubnetAddress member, return ERROR_DHCP_SUBNET_NOT_PRESENT, else
 retrieve the DHCPv4Reservation ADM element entry from the
 DHCPv4Scope.DHCPv4ReservationsList ADM element corresponding to the
 ReservedIpAddress member. If the ReservedIpAddress member is not part of the
@@ -14939,9 +14577,9 @@ DHCPv4ClassedOptValueList ADM element, and return ERROR_SUCCESS.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 specified in [MS-RPCE].
 
-3.1.4.17
+##### 3.1.4.17 R_DhcpCreateClientInfo (Opnum 16)
 
-R_DhcpCreateClientInfo (Opnum 16)
+
 
 The R_DhcpCreateClientInfo method creates DHCPv4 client lease records on the DHCPv4 server
 database.
@@ -14994,7 +14632,8 @@ Release: September 16, 2024
 
 179 / 537
 
-  Validate whether this method is authorized for read/write access per section 3.5.5. If the method
+
+  Validate whether this method is authorized for read/write access per section 3.5.5. If the method
 
 is not authorized, return the error ERROR_ACCESS_DENIED.
 
@@ -15103,15 +14742,16 @@ Release: September 16, 2024
 
 180 / 537
 
-Insert the object into the Dhcpv4Scope.DHCPv4ClientsList ADM element, and return the
+
+Insert the object into the Dhcpv4Scope.DHCPv4ClientsList ADM element, and return the
 ERROR_SUCCESS (0x00000000) return value.
 
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
-3.1.4.18
+##### 3.1.4.18 R_DhcpSetClientInfo (Opnum 17)
 
-R_DhcpSetClientInfo (Opnum 17)
+
 
 The R_DhcpSetClientInfo method modifies existing DHCPv4 client lease records on the DHCPv4
 server database.
@@ -15186,7 +14826,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-the DHCPv4 client-identifier, which is the ClientHardwareAddress member specified in the
+
+the DHCPv4 client-identifier, which is the ClientHardwareAddress member specified in the
 ClientInfo input parameter.
 
   Retrieve the DHCPv4Client ADM element entry corresponding to the ClientIpAddress member
@@ -15223,9 +14864,9 @@ DHCPv4Client.ClientComment ADM element.
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
-3.1.4.19
+##### 3.1.4.19 R_DhcpGetClientInfo (Opnum 18)
 
-R_DhcpGetClientInfo (Opnum 18)
+
 
 The R_DhcpGetClientInfo method retrieves DHCPv4 client lease record information from the
 DHCPv4 server database. The caller of this function can free the memory pointed to by the
@@ -15262,7 +14903,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
+
+contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
 a DHCP-specific failure, which takes a value between 20000 and 20099, or any generic failure.
 
 Return value/code
@@ -15306,9 +14948,9 @@ HostName member in DHCP_HOST_INFO (section 2.2.1.2.7) is unused.
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
-3.1.4.20
+##### 3.1.4.20 R_DhcpDeleteClientInfo (Opnum 19)
 
-R_DhcpDeleteClientInfo (Opnum 19)
+
 
 The R_DhcpDeleteClientInfo method deletes the specified DHCPv4 client lease record from the
 DHCPv4 server database. It also frees up the DHCPv4 client IPv4 address for redistribution.
@@ -15339,7 +14981,8 @@ Release: September 16, 2024
 
 183 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15430,7 +15073,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DNS Fields
+
+DNS Fields
 
 Values
 
@@ -15446,7 +15090,7 @@ DNS Fields
 Values
 
 NAME ([RFC1035] sections
-3.3 and 4.1, and [RFC2136]
+### 3.3 and 4.1, and [RFC2136]
 section 2.5)
 
 The IP address in the ClientIpAddress member of the SearchInfo parameter, or
@@ -15510,7 +15154,8 @@ Release: September 16, 2024
 
 185 / 537
 
-ClientsRead: This is a pointer to a DWORD that specifies the number of DHCPv4 client lease records
+
+ClientsRead: This is a pointer to a DWORD that specifies the number of DHCPv4 client lease records
 
 read in the ClientInfo parameter. The caller MUST allocate memory for this parameter equal to the
 size of data type DWORD.
@@ -15602,7 +15247,8 @@ Release: September 16, 2024
 
 186 / 537
 
-
+
+
 
 
 
@@ -15683,7 +15329,8 @@ Release: September 16, 2024
 
 187 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value contains a
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value contains a
 Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to a DHCP-
 specific failure, which takes a value between 20000 and 20099, or any generic failure.
 
@@ -15764,7 +15411,8 @@ Release: September 16, 2024
 
 188 / 537
 
-  Return ERROR_SUCCESS.
+
+  Return ERROR_SUCCESS.
 
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol specified in [MS-RPCE].
@@ -15838,7 +15486,8 @@ Release: September 16, 2024
 
 189 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15933,7 +15582,8 @@ Release: September 16, 2024
 
 190 / 537
 
-
+
+
 
 If all DHCPv4ClassedOptDef ADM element entries from DHCPv4ClassedOptDefList ADM
 element were copied to the OptionsRead parameter, return ERROR_SUCCESS; else, if the number
@@ -16021,7 +15671,8 @@ Release: September 16, 2024
 
 191 / 537
 
-  Validate whether this method is authorized for read/write access per section 3.5.5. If not, return
+
+  Validate whether this method is authorized for read/write access per section 3.5.5. If not, return
 
 ERROR_ACCESS_DENIED.
 
@@ -16109,7 +15760,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -16185,7 +15837,8 @@ Release: September 16, 2024
 
 193 / 537
 
-FieldsToSet: A DWORD that contains the bitmask of the fields in the ConfigInfo structure to set. This
+
+FieldsToSet: A DWORD that contains the bitmask of the fields in the ConfigInfo structure to set. This
 
 method can be called with a value for FieldsToSet.
 
@@ -16279,7 +15932,8 @@ Release: September 16, 2024
 
 194 / 537
 
-  Validate the FieldsToSet parameter for nonzero. If it is zero, return ERROR_SUCCESS.
+
+  Validate the FieldsToSet parameter for nonzero. If it is zero, return ERROR_SUCCESS.
 
 
 
@@ -16363,7 +16017,8 @@ Release: September 16, 2024
 
 195 / 537
 
-Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
 3.1.4.27
@@ -16438,7 +16093,8 @@ Release: September 16, 2024
 
 196 / 537
 
-   [out] LPDHCP_SCAN_LIST* ScanList
+
+   [out] LPDHCP_SCAN_LIST* ScanList
  );
 
 ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
@@ -16523,7 +16179,8 @@ Release: September 16, 2024
 
 197 / 537
 
-
+
+
 
 
 
@@ -16617,7 +16274,8 @@ Release: September 16, 2024
 
 198 / 537
 
-
+
+
 
 
 
@@ -16699,7 +16357,8 @@ Release: September 16, 2024
 
 199 / 537
 
-Return value/code  Description
+
+Return value/code  Description
 
 0x00000000
 
@@ -16792,7 +16451,8 @@ Release: September 16, 2024
 
 200 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -16898,7 +16558,8 @@ Release: September 16, 2024
 
 201 / 537
 
-
+
+
 
 
 
@@ -16979,7 +16640,8 @@ Release: September 16, 2024
 
 202 / 537
 
-
+
+
 
 If the ElementType member is set to DhcpReservedIps and the previous steps resulted in a
 DHCPv4Reservation ADM element object being inserted into the
@@ -17073,7 +16735,8 @@ Release: September 16, 2024
 
 203 / 537
 
-1 to indicate the unavailability of the address when selecting a fresh address for allocation to
+
+1 to indicate the unavailability of the address when selecting a fresh address for allocation to
 DHCPv4 clients.
 
   Return ERROR_SUCCESS.
@@ -17147,7 +16810,8 @@ Release: September 16, 2024
 
 204 / 537
 
-to the resume handle that is returned. The caller MUST allocate memory for this parameter equal
+
+to the resume handle that is returned. The caller MUST allocate memory for this parameter equal
 to the size of DWORD data type.
 
 Return Values: A 32-bit unsigned integer value that indicates return status. A return value
@@ -17245,7 +16909,8 @@ Release: September 16, 2024
 
 205 / 537
 
-
+
+
 
 
 
@@ -17332,7 +16997,8 @@ Release: September 16, 2024
 
 206 / 537
 
-
+
+
 
 
 
@@ -17412,7 +17078,8 @@ Release: September 16, 2024
 
 207 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value
 
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully, else it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -17516,7 +17183,8 @@ Release: September 16, 2024
 
 208 / 537
 
-
+
+
 
 
 
@@ -17606,7 +17274,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-the DHCPv4IpRange ADM element entry from the DHCPv4IpRangesList ADM element, and
+
+the DHCPv4IpRange ADM element entry from the DHCPv4IpRangesList ADM element, and
 return ERROR_SUCCESS.
 
 
@@ -17687,7 +17356,8 @@ Release: September 16, 2024
 
 210 / 537
 
-  Create the DHCPv4 client unique ID (section 2.2.1.2.5.2) for the DHCPv4 client from the
+
+  Create the DHCPv4 client unique ID (section 2.2.1.2.5.2) for the DHCPv4 client from the
 
 ScopeInfo.SubnetAddress ADM element of the specified DHCPv4Scope ADM element, and the
 DHCPv4 client-identifier that is the ClientHardwareAddress member, as specified in the
@@ -17794,7 +17464,8 @@ Release: September 16, 2024
 
 211 / 537
 
- DWORD R_DhcpSetClientInfoV4(
+
+ DWORD R_DhcpSetClientInfoV4(
    [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
    [in, ref] LPDHCP_CLIENT_INFO_V4 ClientInfo
  );
@@ -17877,7 +17548,8 @@ Release: September 16, 2024
 
 212 / 537
 
-equal to NULL, then the client name and client description of the existing record are not modified;
+
+equal to NULL, then the client name and client description of the existing record are not modified;
 otherwise, if they contain string values, then these members update the client name and client
 description of the DHCPv4 client lease record.
 
@@ -17959,7 +17631,8 @@ Release: September 16, 2024
 
 213 / 537
 
-member as specified by the SearchType member in the SearchInfo parameter (section
+
+member as specified by the SearchType member in the SearchInfo parameter (section
 2.2.1.2.18). If the DHCPv4Client ADM element entry is not found, return
 ERROR_DHCP_JET_ERROR.
 
@@ -18031,7 +17704,8 @@ Release: September 16, 2024
 
 214 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value
 
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully, else it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -18127,7 +17801,8 @@ Release: September 16, 2024
 
 215 / 537
 
-
+
+
 
 The actual number of records that correspond to a given PreferredMaximum value can be
 determined only at runtime.
@@ -18206,7 +17881,8 @@ Release: September 16, 2024
 
 216 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18303,7 +17979,8 @@ Release: September 16, 2024
 
 217 / 537
 
-   [out] LPDHCP_SUPER_SCOPE_TABLE* SuperScopeTable
+
+   [out] LPDHCP_SUPER_SCOPE_TABLE* SuperScopeTable
  );
 
 ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
@@ -18385,7 +18062,8 @@ Release: September 16, 2024
 
 218 / 537
 
-ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
+
+ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
 SuperScopeName: This is a pointer to WCHAR that points to the name of the superscope that needs
 
@@ -18471,7 +18149,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-FieldsToSet
+
+FieldsToSet
 
 Bit
 
@@ -18570,7 +18249,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Validate the FieldsToSet parameter for nonzero. If it is zero, return ERROR_SUCCESS.
+
+  Validate the FieldsToSet parameter for nonzero. If it is zero, return ERROR_SUCCESS.
 
 
 
@@ -18654,7 +18334,8 @@ Release: September 16, 2024
 
 221 / 537
 
-
+
+
 
 
 
@@ -18735,7 +18416,8 @@ Release: September 16, 2024
 
 222 / 537
 
-Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
 3.1.4.42
@@ -18835,7 +18517,8 @@ Release: September 16, 2024
 
 223 / 537
 
-  Set_RestoreFlag
+
+  Set_RestoreFlag
 
 ConfigInfo: A pointer of type DHCP_SERVER_CONFIG_INFO_VQ (section 2.2.1.2.55) structure that
 contains the settings for the DHCPv4 server. The value that is passed here depends on the
@@ -18922,7 +18605,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-parameter and the DatabasePath member cannot be converted into OEM or ANSI character
+
+parameter and the DatabasePath member cannot be converted into OEM or ANSI character
 string, then return ERROR_INVALID_NAME. Else if the Set_DatabasePath bit is set in the
 FieldsToSet parameter, then create the directory with the specified path and set/modify the
 DatabasePath member from the ConfigInfo parameter to the DHCPv4ServerConfigInfo ADM
@@ -19007,7 +18691,8 @@ Release: September 16, 2024
 
 225 / 537
 
-   [out] LPDHCP_SERVER_CONFIG_INFO_VQ* ConfigInfo
+
+   [out] LPDHCP_SERVER_CONFIG_INFO_VQ* ConfigInfo
  );
 
 ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
@@ -19084,7 +18769,8 @@ Release: September 16, 2024
 
 226 / 537
 
-Return value/code  Description
+
+Return value/code  Description
 
 ERROR_SUCCESS
 
@@ -19162,7 +18848,8 @@ Release: September 16, 2024
 
 227 / 537
 
-
+
+
 
 Iterate through the server ADM element DHCPv4ScopesList, and retrieve the DHCPv4Scope
 ADM element entry whose IPv4 range contains the IPv4 address specified by the
@@ -19266,7 +18953,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- DWORD R_DhcpSetClientInfoVQ(
+
+ DWORD R_DhcpSetClientInfoVQ(
    [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
    [in, ref] LPDHCP_CLIENT_INFO_VQ ClientInfo
  );
@@ -19346,7 +19034,8 @@ Release: September 16, 2024
 
 229 / 537
 
-Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
 3.1.4.47
@@ -19428,7 +19117,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
 
 3.1.4.48
@@ -19505,7 +19195,8 @@ Release: September 16, 2024
 
 231 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -19598,7 +19289,8 @@ Release: September 16, 2024
 
 232 / 537
 
-  Copy the DHCPv4Client ADM element entry from the DHCPv4ClientsList ADM element entries
+
+  Copy the DHCPv4Client ADM element entry from the DHCPv4ClientsList ADM element entries
 
 corresponding to the SubnetAddress parameter in the allocated memory, and then proceed to the
 next record. If the SubnetAddress parameter is zero, copy the DHCPv4Client ADM element entry
@@ -19680,7 +19372,8 @@ Release: September 16, 2024
 
 233 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -19783,7 +19476,8 @@ Release: September 16, 2024
 
 234 / 537
 
-3.1.4.50
+
+3.1.4.50
 
 R_DhcpGetSubnetInfoVQ (Opnum 49)
 
@@ -19863,7 +19557,8 @@ Release: September 16, 2024
 
 235 / 537
 
-3.1.4.51
+
+3.1.4.51
 
 R_DhcpSetSubnetInfoVQ (Opnum 50)
 
@@ -19951,7 +19646,8 @@ Release: September 16, 2024
 
 236 / 537
 
-
+
+
 
 If the DHCPv4Scope ADM element entry corresponding to the SubnetAddress parameter is not
 found, return ERROR_DHCP_SUBNET_NOT_PRESENT.
@@ -20016,7 +19712,8 @@ Release: September 16, 2024
 
 237 / 537
 
-3.2.4  Message Processing Events and Sequencing Rules
+
+3.2.4  Message Processing Events and Sequencing Rules
 
 The dhcpsrv2 interface provides methods that remotely configure, manage, and monitor the DHCP
 server. The version for this interface is 1.0.
@@ -20122,7 +19819,8 @@ Release: September 16, 2024
 
 238 / 537
 
-Method
+
+Method
 
 Description
 
@@ -20237,7 +19935,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 R_DhcpGetClassInfo
 
@@ -20348,7 +20047,8 @@ Release: September 16, 2024
 
 240 / 537
 
-Method
+
+Method
 
 R_DhcpSetServerBindingInfo
 
@@ -20460,7 +20160,8 @@ Release: September 16, 2024
 
 241 / 537
 
-Method
+
+Method
 
 R_DhcpGetAllOptionsV6
 
@@ -20575,7 +20276,8 @@ Release: September 16, 2024
 
 242 / 537
 
-Method
+
+Method
 
 Description
 
@@ -20690,7 +20392,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 R_DhcpGetFilterV4
 
@@ -20803,7 +20506,8 @@ Release: September 16, 2024
 
 244 / 537
 
-Method
+
+Method
 
 Description
 
@@ -20918,7 +20622,8 @@ Release: September 16, 2024
 
 245 / 537
 
-Method
+
+Method
 
 Description
 
@@ -21033,7 +20738,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 Description
 
@@ -21113,7 +20819,8 @@ Release: September 16, 2024
 
 247 / 537
 
-would have a value of 90.<45> The caller MUST allocate memory for this parameter equal to the
+
+would have a value of 90.<45> The caller MUST allocate memory for this parameter equal to the
 size of data type DWORD.
 
 Return Values: A 32-bit unsigned integer value that indicates return status. A return value of
@@ -21207,7 +20914,8 @@ Release: September 16, 2024
 
 248 / 537
 
-
+
+
 
 The actual number of records that corresponds to a given PreferredMaximum value can be
 determined only at runtime.
@@ -21285,7 +20993,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -21384,7 +21093,8 @@ Release: September 16, 2024
 
 250 / 537
 
-  Retrieve the DHCPv4MScope entry corresponding to the MScopeName from the server ADM
+
+  Retrieve the DHCPv4MScope entry corresponding to the MScopeName from the server ADM
 
 element DHCPv4MScopesList. If the DHCPv4MScope entry is not found, return
 ERROR_DHCP_SUBNET_NOT_PRESENT.
@@ -21460,7 +21170,8 @@ Release: September 16, 2024
 
 251 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -21542,7 +21253,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-MScopeTable: This is a pointer of type LPDHCP_MSCOPE_TABLE (section 2.2.1.2.72) that points to
+
+MScopeTable: This is a pointer of type LPDHCP_MSCOPE_TABLE (section 2.2.1.2.72) that points to
 the location in which the IPv4 multicast subnet names configured on the MADCAP server are
 retrieved.
 
@@ -21632,7 +21344,8 @@ Release: September 16, 2024
 
 253 / 537
 
-
+
+
 
 If PreferredMaximum is less than the number of remaining entries in DHCPv4MScopesList,
 allocate memory for that number of multicast subnets to MScopeTable.pMScopeNames, else
@@ -21723,7 +21436,8 @@ Release: September 16, 2024
 
 254 / 537
 
-The opnum field value for this method is 4.
+
+The opnum field value for this method is 4.
 
 When processing this call, the MADCAP server MUST do the following:
 
@@ -21815,7 +21529,8 @@ Release: September 16, 2024
 
 255 / 537
 
-
+
+
 
 
 
@@ -21892,7 +21607,8 @@ Release: September 16, 2024
 
 256 / 537
 
-subnet elements are stored on the MADCAP server, the resume handle can be used after the first
+
+subnet elements are stored on the MADCAP server, the resume handle can be used after the first
 1,000 bytes are retrieved to obtain the next 1,000 on a subsequent call, and so forth.
 
 PreferredMaximum: This is of type DWORD, specifying the preferred maximum number of bytes to
@@ -21987,7 +21703,8 @@ Release: September 16, 2024
 
 257 / 537
 
-
+
+
 
 
 
@@ -22081,7 +21798,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DHCPv4ExclusionRange entries in the DHCPv4MScope.DHCPv4ExclusionRangesList that
+
+DHCPv4ExclusionRange entries in the DHCPv4MScope.DHCPv4ExclusionRangesList that
 are not yet enumerated in ElementsTotal. Update the ResumeHandle to the index of the last
 DHCPv4ExclusionRange entry read plus one, and return ERROR_SUCCESS.
 
@@ -22167,7 +21885,8 @@ Release: September 16, 2024
 
 259 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -22263,7 +21982,8 @@ Release: September 16, 2024
 
 260 / 537
 
-  Return ERROR_SUCCESS.
+
+  Return ERROR_SUCCESS.
 
 Exceptions Thrown: No exceptions SHOULD be thrown beyond those thrown by the underlying RPC
 protocol [MS-RPCE].
@@ -22349,7 +22069,8 @@ Release: September 16, 2024
 
 261 / 537
 
-
+
+
 
 If the DHCPv4MClientsList ADM element of the retrieved DHCPv4MScope entry is not an empty
 list and ForceFlag is set to DhcpNoForce, return the error
@@ -22433,7 +22154,8 @@ Release: September 16, 2024
 
 262 / 537
 
-When processing this call, the MADCAP server MUST do the following:
+
+When processing this call, the MADCAP server MUST do the following:
 
   Validate if this method is authorized for read/write access per section 3.5.5. If not, return
 
@@ -22515,7 +22237,8 @@ Release: September 16, 2024
 
 263 / 537
 
-
+
+
 
 For each entry that contains ScanFlag equal to DhcpRegistryFix, set the bit corresponding to that
 IP address in the DHCPv4IpRange.BitMask to 1.
@@ -22597,7 +22320,8 @@ Release: September 16, 2024
 
 264 / 537
 
- );
+
+ );
 
 ServerIpAddress: The IP address/host name of the MADCAP server. This parameter is unused.
 
@@ -22674,7 +22398,8 @@ Release: September 16, 2024
 
 265 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -22763,7 +22488,8 @@ Release: September 16, 2024
 
 266 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -22845,7 +22571,8 @@ Release: September 16, 2024
 
 267 / 537
 
-or minimum value, respectively. To retrieve all the MADCAP clients serviced by a specific multicast
+
+or minimum value, respectively. To retrieve all the MADCAP clients serviced by a specific multicast
 scope, 0xFFFFFFFF is specified.
 
 ClientInfo: This is a pointer of type LPDHCP_MCLIENT_INFO_ARRAY that points to the location that
@@ -22937,7 +22664,8 @@ Release: September 16, 2024
 
 268 / 537
 
-DHCPv4MClient entries in DHCPv4MClientsList of other DHCPv4MScope entries configured on
+
+DHCPv4MClient entries in DHCPv4MClientsList of other DHCPv4MScope entries configured on
 the server, then return ERROR_SUCCESS.
 
 If the ResumeHandle parameter points to a nonzero value, the server MUST continue enumeration
@@ -23019,7 +22747,8 @@ Release: September 16, 2024
 
 269 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -23120,7 +22849,8 @@ Release: September 16, 2024
 
 270 / 537
 
-is not found, return ERROR_DHCP_CLASS_NOT_FOUND. If VendorName is NULL, it refers to the
+
+is not found, return ERROR_DHCP_CLASS_NOT_FOUND. If VendorName is NULL, it refers to the
 default vendor class (see section 3.1.1.9).
 
   Validate the DefaultValue data structure, pointed to by the OptionInfo parameter, by checking
@@ -23205,7 +22935,8 @@ Release: September 16, 2024
 
 271 / 537
 
-ClassName: A pointer to a null-terminated Unicode string that contains the name of the user class to
+
+ClassName: A pointer to a null-terminated Unicode string that contains the name of the user class to
 which the option definition is modified. This parameter is optional. If the ClassName parameter is
 not specified, the option definition is set for the default user class.
 
@@ -23297,7 +23028,8 @@ Release: September 16, 2024
 
 272 / 537
 
-  Modify the retrieved DHCPv4ClassedOptDef entry with information in OptionInfo, and return
+
+  Modify the retrieved DHCPv4ClassedOptDef entry with information in OptionInfo, and return
 
 ERROR_SUCCESS.
 
@@ -23379,7 +23111,8 @@ Release: September 16, 2024
 
 273 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23470,7 +23203,8 @@ Release: September 16, 2024
 
 274 / 537
 
-   [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
+
+   [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
    [in] DWORD Flags,
    [in, string, unique] WCHAR* ClassName,
    [in, string, unique] WCHAR* VendorName,
@@ -23552,7 +23286,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23653,7 +23388,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-have been copied that PreferredMaximum memory can accommodate, or until the end of the
+
+have been copied that PreferredMaximum memory can accommodate, or until the end of the
 DHCPv4ClassedOptDefList contents, whichever comes first.
 
   Copy the number of DHCPv4ClassedOptDef entries read from that list in OptionsRead. Copy the
@@ -23739,7 +23475,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23828,7 +23565,8 @@ Release: September 16, 2024
 
 278 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -23927,7 +23665,8 @@ Release: September 16, 2024
 
 279 / 537
 
-  Validate if this method is authorized for read/write access per section 3.5.5. If not, return
+
+  Validate if this method is authorized for read/write access per section 3.5.5. If not, return
 
 ERROR_ACCESS_DENIED.
 
@@ -24012,7 +23751,8 @@ Release: September 16, 2024
 
 280 / 537
 
-
+
+
 
 
 
@@ -24092,7 +23832,8 @@ Release: September 16, 2024
 
 281 / 537
 
-ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
+
+ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
 Flags:  This is of type DWORD that specifies that the option values are set for a specific or default
 
@@ -24188,7 +23929,8 @@ Release: September 16, 2024
 
 282 / 537
 
-  Validate the data pointed to by the input parameter OptionValues. If the Values member of the
+
+  Validate the data pointed to by the input parameter OptionValues. If the Values member of the
 
 DHCP_OPTION_VALUE_ARRAY structure is NULL and the NumElements member is greater than
 0, return ERROR_INVALID_PARAMETER.
@@ -24275,7 +24017,8 @@ Release: September 16, 2024
 
 283 / 537
 
-
+
+
 
 
 
@@ -24356,7 +24099,8 @@ Release: September 16, 2024
 
 284 / 537
 
- );
+
+ );
 
 ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
@@ -24451,7 +24195,8 @@ Release: September 16, 2024
 
 285 / 537
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
   Validate if this method is authorized for read access per section 3.5.4. If not, return the error
 
@@ -24528,7 +24273,8 @@ Release: September 16, 2024
 
 286 / 537
 
-
+
+
 
 If ScopeInfo contains DhcpMScopeOptions, retrieve the DHCPv4MScope entry corresponding to
 the ScopeInfo parameter from the server ADM element DHCPv4MScopesList. If the
@@ -24609,7 +24355,8 @@ Release: September 16, 2024
 
 287 / 537
 
-ScopeInfo: This is a pointer to a DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure that
+
+ScopeInfo: This is a pointer to a DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure that
 contains information describing the DHCPv4 scope the option value is enumerated on. This value
 defines the option values that are being retrieved from the default, server, multicast scope, scope,
 or IPv4 reservation level.
@@ -24698,7 +24445,8 @@ Release: September 16, 2024
 
 288 / 537
 
-  Validate if this method is authorized for read access per section 3.5.4. If not, return the error
+
+  Validate if this method is authorized for read access per section 3.5.4. If not, return the error
 
 ERROR_ACCESS_DENIED.
 
@@ -24790,7 +24538,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DHCPv4OptionValue.DHCPv4ClassedOptValueList is not found, return
+
+DHCPv4OptionValue.DHCPv4ClassedOptValueList is not found, return
 ERROR_NO_MORE_ITEMS.
 
 
@@ -24881,7 +24630,8 @@ Release: September 16, 2024
 
 290 / 537
 
-
+
+
 
 
 
@@ -24970,7 +24720,8 @@ Release: September 16, 2024
 
 291 / 537
 
-  Read the DHCPv4ClassedOptValue entries starting from the index specified by
+
+  Read the DHCPv4ClassedOptValue entries starting from the index specified by
 
 ResumeHandle to the end of the list or to as many as can be saved in PreferredMaximum.
 Copy the information in retrieved DHCPv4ClassedOptValue entries in OptionValues, copy
@@ -25060,7 +24811,8 @@ Release: September 16, 2024
 
 292 / 537
 
-
+
+
 
 If all entries in the list were copied to OptionValues, return ERROR_NO_MORE_ITEMS, else
 return ERROR_MORE_DATA.
@@ -25148,7 +24900,8 @@ Release: September 16, 2024
 
 293 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -25243,7 +24996,8 @@ Release: September 16, 2024
 
 294 / 537
 
-ERROR_DHCP_NOT_RESERVED_CLIENT, else if the ScopeInfo.SubnetAddress does not match
+
+ERROR_DHCP_NOT_RESERVED_CLIENT, else if the ScopeInfo.SubnetAddress does not match
 ScopeInfo's ReservedIpSubnetAddress field, return ERROR_DHCP_SUBNET_NOT_PRESENT,
 else retrieve the DHCPv4Reservation entry from DHCPv4Scope.DHCPv4ReservationsList
 corresponding to ReservedIpAddress. If ReservedIpAddress is not part of any of
@@ -25324,7 +25078,8 @@ Release: September 16, 2024
 
 295 / 537
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
   Validate the fields ClassName, ClassData, and ClassDataLength in the ClassInfo structure. If
 any one of them is NULL, or if the ClassDataLength value is not in the range 1–255, return
@@ -25408,7 +25163,8 @@ Release: September 16, 2024
 
 296 / 537
 
-The opnum field value for this method is 25.
+
+The opnum field value for this method is 25.
 
 When processing this call, the DHCP server MUST do the following:
 
@@ -25494,7 +25250,8 @@ Release: September 16, 2024
 
 297 / 537
 
-The opnum field value for this method is 26.
+
+The opnum field value for this method is 26.
 
 When processing this call, the DHCP server MUST do the following:
 
@@ -25577,7 +25334,8 @@ Release: September 16, 2024
 
 298 / 537
 
-ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
+
+ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
 ReservedMustBeZero: This is of type DWORDand is reserved for future use. Currently it is not used,
 
@@ -25666,7 +25424,8 @@ Release: September 16, 2024
 
 299 / 537
 
-   [in] DWORD ReservedMustBeZero,
+
+   [in] DWORD ReservedMustBeZero,
    [in, out] DHCP_RESUME_HANDLE* ResumeHandle,
    [in] DWORD PreferredMaximum,
    [out] LPDHCP_CLASS_INFO_ARRAY* ClassInfoArray,
@@ -25751,7 +25510,8 @@ Release: September 16, 2024
 
 300 / 537
 
-  Validate if this method is authorized for read access per section 3.5.4. If not, return the error
+
+  Validate if this method is authorized for read access per section 3.5.4. If not, return the error
 
 ERROR_ACCESS_DENIED.
 
@@ -25833,7 +25593,8 @@ Release: September 16, 2024
 
 301 / 537
 
-OptionStruct: This is a pointer of type LPDHCP_ALL_OPTIONS (section 2.2.1.2.27) that points to a
+
+OptionStruct: This is a pointer of type LPDHCP_ALL_OPTIONS (section 2.2.1.2.27) that points to a
 
 location that contains all the option definitions defined for a vendor class or default class.
 
@@ -25910,7 +25671,8 @@ Release: September 16, 2024
 
 302 / 537
 
-ScopeInfo: This is a pointer to a DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure that
+
+ScopeInfo: This is a pointer to a DHCP_OPTION_SCOPE_INFO (section 2.2.1.2.41) structure that
 
 contains information describing the DHCPv4 scope the option values are retrieved on. This value
 defines that option values are being retrieved from the default, server, multicast scope, or scope
@@ -26004,7 +25766,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If the DHCPv4Scope entry is found and if ScopeInfo.SubnetAddress does not match with
+
+If the DHCPv4Scope entry is found and if ScopeInfo.SubnetAddress does not match with
 ScopeInfo's ReservedIpSubnetAddress field, free the memory allocated to the address pointed
 to by Values and then return ERROR_DHCP_SUBNET_NOT_PRESENT.
 
@@ -26078,7 +25841,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code  Description
+
+Return value/code  Description
 
 0x00000000
 
@@ -26156,7 +25920,8 @@ Release: September 16, 2024
 
 305 / 537
 
-contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
+
+contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
 a DHCP-specific failure, which takes a value between 20000 and 20099, or any generic failure.
 
 Return value/code  Description
@@ -26235,7 +26000,8 @@ Release: September 16, 2024
 
 306 / 537
 
-the DHCP server. The caller must allocate memory for this parameter equal to the size of data
+
+the DHCP server. The caller must allocate memory for this parameter equal to the size of data
 type DWORD.
 
 MinSpaceOnDisk: This is of type DWORD and will contain the minimum size requirement (in
@@ -26314,7 +26080,8 @@ Release: September 16, 2024
 
 307 / 537
 
-DhcpAttribId: This is of type DHCP_ATTRIB_ID (section 2.2.1.1.1), specifying the attribute to be
+
+DhcpAttribId: This is of type DHCP_ATTRIB_ID (section 2.2.1.1.1), specifying the attribute to be
 
 queried.
 
@@ -26405,7 +26172,8 @@ Release: September 16, 2024
 
 308 / 537
 
-   [in] ULONG dwReserved,
+
+   [in] ULONG dwReserved,
    [in, range(0,6)] ULONG dwAttribCount,
    [in, size_is(dwAttribCount)] LPDHCP_ATTRIB_ID pDhcpAttribs,
    [out]    LPDHCP_ATTRIB_ARRAY *pDhcpAttribArr
@@ -26493,7 +26261,8 @@ Release: September 16, 2024
 
 309 / 537
 
-DHCP_ATTRIB_BOOL_IS_PART_OF_DSDC. Check if the DHCP server belongs to a domain. If
+
+DHCP_ATTRIB_BOOL_IS_PART_OF_DSDC. Check if the DHCP server belongs to a domain. If
 positive, set DhcpAttribBool to TRUE, otherwise set it to FALSE.
 
 
@@ -26569,7 +26338,8 @@ Release: September 16, 2024
 
 310 / 537
 
-ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
+
+ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
 SubnetAddress: This is of type DHCP_IP_ADDRESS (section 2.2.1.2.1) that contains the IPv4 subnet
 
@@ -26680,7 +26450,8 @@ Release: September 16, 2024
 
 311 / 537
 
-  Retrieve the DHCPv4Scope ADM element entry corresponding to SubnetAddress from the
+
+  Retrieve the DHCPv4Scope ADM element entry corresponding to SubnetAddress from the
 
 DHCPv4ScopesList server ADM element.
 
@@ -26775,7 +26546,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -26853,7 +26625,8 @@ Release: September 16, 2024
 
 313 / 537
 
-  DHCPv4Client.OwnerHost.NetBiosName ADM element is set to the NetBIOS name of
+
+  DHCPv4Client.OwnerHost.NetBiosName ADM element is set to the NetBIOS name of
 
 the DHCPv4 server.
 
@@ -26945,7 +26718,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SubnetAddress: This is of type DHCP_IP_ADDRESS (section 2.2.1.2.1) that contains the IPv4 subnet
+
+SubnetAddress: This is of type DHCP_IP_ADDRESS (section 2.2.1.2.1) that contains the IPv4 subnet
 
 ID from which subnet elements are enumerated.
 
@@ -27032,7 +26806,8 @@ Release: September 16, 2024
 
 315 / 537
 
-
+
+
 
 
 
@@ -27125,7 +26900,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -27215,7 +26991,8 @@ Release: September 16, 2024
 
 317 / 537
 
-
+
+
 
 
 
@@ -27295,7 +27072,8 @@ Release: September 16, 2024
 
 318 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value of
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value of
 
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully, else it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -27402,7 +27180,8 @@ Release: September 16, 2024
 
 319 / 537
 
-DHCPv4ReservationsList ADM element, then also locate a DHCPv4Client ADM element in the
+
+DHCPv4ReservationsList ADM element, then also locate a DHCPv4Client ADM element in the
 DHCPv4ClientsList ADM element that matches the ReservedIp input field. If the
 DHCPv4Client.ClientLeaseExpires ADM element is set to 0, then delete the DHCPv4Client
 ADM element object, or else set the DHCPv4Client.ClientLeaseExpires ADM element to the
@@ -27492,7 +27271,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-and ForceFlag (section 2.2.1.1.9) is set to DhcpFullForce, delete the DHCPv4IpRange element
+
+and ForceFlag (section 2.2.1.1.9) is set to DhcpFullForce, delete the DHCPv4IpRange element
 entry from the DHCPv4IpRangesList ADM element.
 
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
@@ -27572,7 +27352,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.2.4.42
+
+3.2.4.42
 
 R_DhcpSetServerBindingInfo (Opnum 41)
 
@@ -27664,7 +27445,8 @@ Release: September 16, 2024
 
 322 / 537
 
-  Modify the matching DHCPv4ServerBindingInfo object with the value of
+
+  Modify the matching DHCPv4ServerBindingInfo object with the value of
 
 fBoundToDHCPServer specified in BindElementsInfo.
 
@@ -27744,7 +27526,8 @@ Release: September 16, 2024
 
 323 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 3.2.4.44
@@ -27819,7 +27602,8 @@ Release: September 16, 2024
 
 324 / 537
 
-3.2.4.45
+
+3.2.4.45
 
 R_DhcpBackupDatabase (Opnum 44)
 
@@ -27903,7 +27687,8 @@ Release: September 16, 2024
 
 325 / 537
 
-Path: A pointer to a null-terminated Unicode string that contains the name of the new restore path
+
+Path: A pointer to a null-terminated Unicode string that contains the name of the new restore path
 
 where the registry configuration and the DHCP database are restored.
 
@@ -27984,7 +27769,8 @@ Release: September 16, 2024
 
 326 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -28073,7 +27859,8 @@ Release: September 16, 2024
 
 327 / 537
 
-VendorName: A pointer to a null-terminated Unicode string that contains the name of the vendor
+
+VendorName: A pointer to a null-terminated Unicode string that contains the name of the vendor
 
 class for which the option definition is created. This parameter is optional. If vendor class name is
 not specified, then the option definition is created for the default vendor class.
@@ -28173,7 +27960,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Add a DHCPv6OptionDef object initiated from the information in OptionInfo to
+
+  Add a DHCPv6OptionDef object initiated from the information in OptionInfo to
 
 DHCPv6ClassedOptionDef.DHCPv6OptionDefList.
 
@@ -28265,7 +28053,8 @@ Release: September 16, 2024
 
 329 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -28356,7 +28145,8 @@ Release: September 16, 2024
 
 330 / 537
 
- DWORD R_DhcpGetOptionInfoV6(
+
+ DWORD R_DhcpGetOptionInfoV6(
    [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
    [in] DWORD Flags,
    [in] DHCP_OPTION_ID OptionID,
@@ -28447,7 +28237,8 @@ Release: September 16, 2024
 
 331 / 537
 
-
+
+
 
 
 
@@ -28533,7 +28324,8 @@ Release: September 16, 2024
 
 332 / 537
 
-VendorName: A pointer to a null-terminated Unicode string that contains the name of the vendor
+
+VendorName: A pointer to a null-terminated Unicode string that contains the name of the vendor
 
 class for which the option definition is enumerated. This parameter is optional. If the vendor class
 name is not specified, the option definition is enumerated for the default vendor class.
@@ -28622,7 +28414,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-is not found, return ERROR_FILE_NOT_FOUND. If VendorName is NULL, use the default vendor
+
+is not found, return ERROR_FILE_NOT_FOUND. If VendorName is NULL, use the default vendor
 class (section 3.1.1.20) for the retrieval of DHCPv6ClassedOptionDef.
 
   Retrieve the DHCPv6ClassedOptionDef object from DHCPv6ClassedOptionDefList for a
@@ -28709,7 +28502,8 @@ Release: September 16, 2024
 
 334 / 537
 
- );
+
+ );
 
 ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
@@ -28804,7 +28598,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Retrieve the DHCPv6ClassedOptionDef object from DHCPv6ClassedOptionDefList for the
+
+  Retrieve the DHCPv6ClassedOptionDef object from DHCPv6ClassedOptionDefList for the
 user class and vendor class. If the object is not found, return ERROR_FILE_NOT_FOUND.
 
   Validate that there is a DHCPv6OptionDef object in
@@ -28884,7 +28679,8 @@ Release: September 16, 2024
 
 336 / 537
 
-OptionValue: A pointer to DHCP_OPTION_DATA (section 2.2.1.2.24) structure that contains the
+
+OptionValue: A pointer to DHCP_OPTION_DATA (section 2.2.1.2.24) structure that contains the
 option value that is set for an option corresponding to the OptionID. For Dynamic DNS update
 settings, see section 3.3.2.
 
@@ -28981,7 +28777,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Retrieve the DHCPv6OptionValue object corresponding to the OptionID parameter from
+
+  Retrieve the DHCPv6OptionValue object corresponding to the OptionID parameter from
 
 DHCPv6ClassedOptValue.DHCPv6OptionValueList. If found, remove it from
 DHCPv6OptionValueList.
@@ -29064,7 +28861,8 @@ Release: September 16, 2024
 
 338 / 537
 
-   [in] LPDHCP_OPTION_SCOPE_INFO6 ScopeInfo,
+
+   [in] LPDHCP_OPTION_SCOPE_INFO6 ScopeInfo,
    [in, out] DHCP_RESUME_HANDLE* ResumeHandle,
    [in] DWORD PreferredMaximum,
    [out] LPDHCP_OPTION_VALUE_ARRAY* OptionValues,
@@ -29144,7 +28942,8 @@ Release: September 16, 2024
 
 339 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value
 
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully, else it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -29245,7 +29044,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-equal to the number of entries in DHCPv6OptionValueList, free the memory allocated to
+
+equal to the number of entries in DHCPv6OptionValueList, free the memory allocated to
 OptionValues and return ERROR_NO_MORE_ITEMS.
 
 
@@ -29332,7 +29132,8 @@ Release: September 16, 2024
 
 341 / 537
 
-  Copy as many DHCPv6OptionValue objects to OptionValues as can be accommodated in the
+
+  Copy as many DHCPv6OptionValue objects to OptionValues as can be accommodated in the
 allocated memory. Copy the number of read DHCPv6OptionValue objects in OptionsRead,
 and copy the number of DHCPv6OptionValue objects not yet enumerated in OptionsTotal.
 Update the ResumeHandle to the index of the last entry read plus 1.
@@ -29421,7 +29222,8 @@ Release: September 16, 2024
 
 342 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 3.2.4.55
@@ -29511,7 +29313,8 @@ Release: September 16, 2024
 
 343 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -29599,7 +29402,8 @@ Release: September 16, 2024
 
 344 / 537
 
-  Retrieve the DHCPv6Scope object and then retrieve the
+
+  Retrieve the DHCPv6Scope object and then retrieve the
 
 DHCPv6Scope.DHCPv6ReservationList.DHCPv6Reservation object corresponding to
 ScopeInfo. If the corresponding DHCPv6Scope object is not present, return
@@ -29675,7 +29479,8 @@ Release: September 16, 2024
 
 345 / 537
 
-  Retrieve the DHCPv6ClassedOptionDef object from DHCPv6ClassedOptionDefList for the
+
+  Retrieve the DHCPv6ClassedOptionDef object from DHCPv6ClassedOptionDefList for the
 default vendor class, allocate the memory for the number of DHCPv6OptionDef objects in
 DHCPv6ClassedOptionDef.DHCPv6OptionDefList, and copy the information in the
 DHCPv6OptionDef objects to the allocated memory.
@@ -29755,7 +29560,8 @@ Release: September 16, 2024
 
 346 / 537
 
-When processing this call the DHCP server MUST do the following:
+
+When processing this call the DHCP server MUST do the following:
 
 
 
@@ -29841,7 +29647,8 @@ Release: September 16, 2024
 
 347 / 537
 
-SubnetInfo: A pointer to a structure of type DHCP_SUBNET_INFO_V6 (section 2.2.1.2.56) that
+
+SubnetInfo: A pointer to a structure of type DHCP_SUBNET_INFO_V6 (section 2.2.1.2.56) that
 
 contains information about the IPv6 prefix to be added to the DHCPv6 server. The Prefix field is
 not stored in the database; any value specified for this field does not alter the behavior of this
@@ -29929,7 +29736,8 @@ Release: September 16, 2024
 
 348 / 537
 
-   [out] DWORD* ElementsRead,
+
+   [out] DWORD* ElementsRead,
    [out] DWORD* ElementsTotal
  );
 
@@ -30011,7 +29819,8 @@ Release: September 16, 2024
 
 349 / 537
 
-
+
+
 
 
 
@@ -30101,7 +29910,8 @@ Release: September 16, 2024
 
 350 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30200,7 +30010,8 @@ Release: September 16, 2024
 
 351 / 537
 
-DHCPv6ClientInfoList as above. If there is an existing entry in DHCPv6ClientInfoList (which is
+
+DHCPv6ClientInfoList as above. If there is an existing entry in DHCPv6ClientInfoList (which is
 of type DHCPv6ClientInfo) for the DHCPv6 client identifier and the interface, but with a different
 IPv6 address, and a corresponding entry in DHCPv6ReservationList (which is of type
 DHCPv6Reservation) also exists for the client, then return ERROR_DHCP_RESERVEDIP_EXITS.
@@ -30277,7 +30088,8 @@ Release: September 16, 2024
 
 352 / 537
 
-stored on the DHCPv6 server, the resume handle can be used after the first 1,000 bytes are
+
+stored on the DHCPv6 server, the resume handle can be used after the first 1,000 bytes are
 retrieved to obtain the next 1,000 on a subsequent call, and so forth.
 
 PreferredMaximum: This is of type DWORD, specifying the preferred maximum number of bytes to
@@ -30362,7 +30174,8 @@ Release: September 16, 2024
 
 353 / 537
 
-
+
+
 
 
 
@@ -30450,7 +30263,8 @@ Release: September 16, 2024
 
 354 / 537
 
-
+
+
 
 If EnumElementType is set to Dhcpv6ExcludedIpRanges, copy the retrieved
 DHCPv6Scope.DHCPv6ExclusionRangeList.DHCPv6ExclusionRange objects in
@@ -30533,7 +30347,8 @@ Release: September 16, 2024
 
 355 / 537
 
-  Retrieve the DHCPv6Scope object corresponding to SubnetAddress from DHCPv6ScopeList. If
+
+  Retrieve the DHCPv6Scope object corresponding to SubnetAddress from DHCPv6ScopeList. If
 
 the DHCPv6Scope object corresponding to SubnetAddress does not exist, return
 ERROR_FILE_NOT_FOUND.
@@ -30620,7 +30435,8 @@ Release: September 16, 2024
 
 356 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30709,7 +30525,8 @@ Release: September 16, 2024
 
 357 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30788,7 +30605,8 @@ Release: September 16, 2024
 
 358 / 537
 
-ClientInfo: This is a pointer of type LPDHCP_CLIENT_INFO_ARRAY_V6 that points to the location that
+
+ClientInfo: This is a pointer of type LPDHCP_CLIENT_INFO_ARRAY_V6 that points to the location that
 
 contains the DHCPv6 client lease record array.
 
@@ -30882,7 +30700,8 @@ Release: September 16, 2024
 
 359 / 537
 
-  Allocate memory for the PreferredMaximum parameter number of bytes.
+
+  Allocate memory for the PreferredMaximum parameter number of bytes.
 
 
 
@@ -30972,7 +30791,8 @@ Release: September 16, 2024
 
 360 / 537
 
-Value
+
+Value
 
 Set_T1
 
@@ -31076,7 +30896,8 @@ Release: September 16, 2024
 
 361 / 537
 
-ConfigInfo PreferredLifetime, create/update the option with ID 0x20003 with the value from
+
+ConfigInfo PreferredLifetime, create/update the option with ID 0x20003 with the value from
 ConfigInfo ValidLifetime. Otherwise, return ERROR_INVALID_PARAMETER.
 
 If FieldsToSet is Set_PreferredLifetime and the preferred lifetime value in ConfigInfo is less than
@@ -31158,7 +30979,8 @@ Release: September 16, 2024
 
 362 / 537
 
-  Validate if this method is authorized for read access per section 3.5.4. If not, return the error
+
+  Validate if this method is authorized for read access per section 3.5.4. If not, return the error
 
 ERROR_ACCESS_DENIED.
 
@@ -31260,7 +31082,8 @@ Release: September 16, 2024
 
 363 / 537
 
-SubnetInfo: This is a pointer to structure DHCP_SUBNET_INFO_V6 (section 2.2.1.2.56) that contains
+
+SubnetInfo: This is a pointer to structure DHCP_SUBNET_INFO_V6 (section 2.2.1.2.56) that contains
 
 information of the IPv6 prefix that is modified in the existing IPv6 prefix identified by
 SubnetAddress.
@@ -31348,7 +31171,8 @@ Release: September 16, 2024
 
 364 / 537
 
-contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
+
+contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
 a DHCP-specific failure, which takes a value between 20000 and 20099, or any generic failure.
 
 Return value/code  Description
@@ -31428,7 +31252,8 @@ Release: September 16, 2024
 
 365 / 537
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
   Validate if this API is authorized for read access per section 3.5.4. If not, return the error
 
@@ -31515,7 +31340,8 @@ Release: September 16, 2024
 
 366 / 537
 
-  Validate if this method is authorized for read/write access per section 3.5.5. If not, return the
+
+  Validate if this method is authorized for read/write access per section 3.5.5. If not, return the
 
 error ERROR_ACCESS_DENIED.
 
@@ -31598,7 +31424,8 @@ Release: September 16, 2024
 
 367 / 537
 
-  Retrieve the DHCPv6Scope object and the DHCPv6Scope.DHCPv6ClientInfo object
+
+  Retrieve the DHCPv6Scope object and the DHCPv6Scope.DHCPv6ClientInfo object
 
 corresponding to ClientInfo. This DHCPv6ClientInfo object can correspond to an entry in
 DHCPv6Scope.DHCPv6ReservationList.
@@ -31683,7 +31510,8 @@ Release: September 16, 2024
 
 368 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -31773,7 +31601,8 @@ Release: September 16, 2024
 
 369 / 537
 
-  Validate if this method is authorized for read/write access per section 3.5.5. If not, return the
+
+  Validate if this method is authorized for read/write access per section 3.5.5. If not, return the
 
 error ERROR_ACCESS_DENIED.
 
@@ -31859,7 +31688,8 @@ Release: September 16, 2024
 
 370 / 537
 
-   [in] DWORD ReservedMustBeZero,
+
+   [in] DWORD ReservedMustBeZero,
    [in] LPDHCP_CLASS_INFO_V6 ClassInfo
  );
 
@@ -31951,7 +31781,8 @@ Release: September 16, 2024
 
 371 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 3.2.4.76
@@ -32032,7 +31863,8 @@ Release: September 16, 2024
 
 372 / 537
 
-3.2.4.77
+
+3.2.4.77
 
 R_DhcpDeleteClassV6 (Opnum 76)
 
@@ -32120,7 +31952,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-that have ClassName as either their DHCPv6UserClass or DHCPv6VendorClass. Delete the
+
+that have ClassName as either their DHCPv6UserClass or DHCPv6VendorClass. Delete the
 DHCPv6OptionValue objects from
 DHCPv6Reservation.DHCPv6ResvClassedOptValueList.DHCPv6ClassedOptValue.DHCPv6
 OptionValueList, for all DHCPv6Reservation objects and for all the
@@ -32194,7 +32027,8 @@ Release: September 16, 2024
 
 374 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -32288,7 +32122,8 @@ Release: September 16, 2024
 
 375 / 537
 
-3.2.4.79
+
+3.2.4.79
 
 R_DhcpGetOptionValueV6 (Opnum 78)
 
@@ -32380,7 +32215,8 @@ Release: September 16, 2024
 
 376 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -32476,7 +32312,8 @@ Release: September 16, 2024
 
 377 / 537
 
-corresponding to the specific user class and vendor class. If it is not found, free the memory
+
+corresponding to the specific user class and vendor class. If it is not found, free the memory
 allocated to OptionValue, and return ERROR_FILE_NOT_FOUND.
 
 If the enumeration value in the ScopeInfo parameter is DhcpScopeOptions6, retrieve the
@@ -32559,7 +32396,8 @@ Release: September 16, 2024
 
 378 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value
 
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully, else it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -32647,7 +32485,8 @@ Release: September 16, 2024
 
 379 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value
 
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully; else it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -32733,7 +32572,8 @@ Release: September 16, 2024
 
 380 / 537
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
   Validate whether this method is authorized for read access per section 3.5.4. If not, then return
 
@@ -32816,7 +32656,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 ERROR_DHCP_JET_ERROR
 
@@ -32909,7 +32750,8 @@ Release: September 16, 2024
 
 382 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 3.2.4.84
@@ -33001,7 +32843,8 @@ Release: September 16, 2024
 
 383 / 537
 
-by ListType is allowed, and the value of the Length member is 0. For any other value of
+
+by ListType is allowed, and the value of the Length member is 0. For any other value of
 IsWildCard or Length, return ERROR_INVALID_PARAMETER.
 
 
@@ -33087,7 +32930,8 @@ Release: September 16, 2024
 
 384 / 537
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
   Validate whether this method is authorized for read/write access per section 3.5.5. If not, return
 
@@ -33170,7 +33014,8 @@ Release: September 16, 2024
 
 385 / 537
 
-3.2.4.87
+
+3.2.4.87
 
 R_DhcpEnumFilterV4 (Opnum 86)
 
@@ -33255,7 +33100,8 @@ Release: September 16, 2024
 
 386 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -33336,7 +33182,8 @@ Release: September 16, 2024
 
 387 / 537
 
-Domain: A pointer to a null-terminated Unicode string that contains the domain name for the DNS
+
+Domain: A pointer to a null-terminated Unicode string that contains the domain name for the DNS
 
 credentials.
 
@@ -33415,7 +33262,8 @@ Release: September 16, 2024
 
 388 / 537
 
-ResumeHandle: This is a pointer of type DHCP_RESUME_HANDLE (section 2.2.1.2.6) which identifies
+
+ResumeHandle: This is a pointer of type DHCP_RESUME_HANDLE (section 2.2.1.2.6) which identifies
 
 the enumeration operation. Initially, this value MUST be set to zero, with a successful call
 returning the handle value used for subsequent enumeration requests. This field contains the last
@@ -33503,7 +33351,8 @@ Release: September 16, 2024
 
 389 / 537
 
-
+
+
 
 
 
@@ -33612,7 +33461,8 @@ Release: September 16, 2024
 
 390 / 537
 
-
+
+
 
 If the number of bytes specified by PreferredMaximum is more than the total memory occupied by
 DHCPv4Client entries, set ClientsTotal to the total number of DHCPv4Client entries enumerated
@@ -33707,7 +33557,8 @@ Release: September 16, 2024
 
 391 / 537
 
-  Return ERROR_INVALID_PARAMETER if any of the following are true:
+
+  Return ERROR_INVALID_PARAMETER if any of the following are true:
 
 
 
@@ -33809,7 +33660,8 @@ Release: September 16, 2024
 
 392 / 537
 
-
+
+
 
 If the safePeriod member is given as 0, set the DHCPv4FailoverRelationship.safePeriod ADM
 element to 0xFFFFFFFF. For each of the input IPv4 subnet addresses passed in the pScopes
@@ -33906,7 +33758,8 @@ Release: September 16, 2024
 
 393 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -33997,7 +33850,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return Values: A 32-bit unsigned integer value that indicates return status. The return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. The return value
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully.
 Otherwise, it contains a Win32 error code, as specified in [MS-ERREF]. This error code value can
 correspond to a DHCP-specific failure, which takes a value between 20000 and 20123, or any
@@ -34079,7 +33933,8 @@ Release: September 16, 2024
 
 395 / 537
 
-pRelationship: This is a pointer of type LPDHCP_FAILOVER_RELATIONSHIP (section 2.2.1.2.98)
+
+pRelationship: This is a pointer of type LPDHCP_FAILOVER_RELATIONSHIP (section 2.2.1.2.98)
 
 in which the information about the failover relationship is retrieved based on the
 pRelationshipName parameter.
@@ -34164,7 +34019,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ResumeHandle: This is a pointer of type DHCP_RESUME_HANDLE (section 2.2.1.2.6) that
+
+ResumeHandle: This is a pointer of type DHCP_RESUME_HANDLE (section 2.2.1.2.6) that
 
 identifies the enumeration operation. Initially, this value MUST be set to zero, with a successful
 call returning the handle value used for subsequent enumeration requests.
@@ -34253,7 +34109,8 @@ Release: September 16, 2024
 
 397 / 537
 
-
+
+
 
 The PreferredMaximum parameter specifies the maximum number of bytes that the server can
 allocate and return to the caller containing the data related to the DHCPv4FailoverRelationship
@@ -34340,7 +34197,8 @@ Release: September 16, 2024
 
 398 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -34438,7 +34296,8 @@ Release: September 16, 2024
 
 399 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 3.2.4.96
@@ -34529,7 +34388,8 @@ Release: September 16, 2024
 
 400 / 537
 
-
+
+
 
 
 
@@ -34613,7 +34473,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-correspond to a DHCP-specific failure, which takes a value between 20000 and 20123, or any
+
+correspond to a DHCP-specific failure, which takes a value between 20000 and 20123, or any
 generic failure.
 
 Return value/code
@@ -34697,7 +34558,8 @@ Release: September 16, 2024
 
 402 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value of
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value of
 ERROR_SUCCESS (0x00000000) indicates that the operation was completed successfully.
 Otherwise, it contains a Win32 error code, as specified in [MS-ERREF]. This error code value can
 correspond to a DHCP-specific failure, which takes a value between 20000 and 20123, or any
@@ -34778,7 +34640,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The caller SHOULD free up this buffer after using this. The ClientHardwareAddress member
+
+The caller SHOULD free up this buffer after using this. The ClientHardwareAddress member
 represents a DHCPv4 client unique ID (section 2.2.1.2.5.2).
 
 Return Values: A 32-bit unsigned integer value that indicates return status. A return value of
@@ -34861,7 +34724,8 @@ Release: September 16, 2024
 
 404 / 537
 
-pTime: This is a pointer to type DWORD and returns the current time, in seconds elapsed since
+
+pTime: This is a pointer to type DWORD and returns the current time, in seconds elapsed since
 
 midnight, January 1, 1970, Coordinated Universal Time (UTC), on the DHCP server. The caller
 of the API must allocate the memory for this parameter.
@@ -34941,7 +34805,8 @@ Release: September 16, 2024
 
 405 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -35027,7 +34892,8 @@ Release: September 16, 2024
 
 406 / 537
 
-Value
+
+Value
 
 Meaning
 
@@ -35126,7 +34992,8 @@ Release: September 16, 2024
 
 407 / 537
 
-
+
+
 
 
 
@@ -35214,7 +35081,8 @@ Release: September 16, 2024
 
 408 / 537
 
-  Create a DHCPv4ClassedOptValue ADM element with the OptionID ADM element set to the
+
+  Create a DHCPv4ClassedOptValue ADM element with the OptionID ADM element set to the
 
 OptionId parameter passed to the method and the data member of the
 DHCPv4ClassedOptValue ADM element set to the OptionValue parameter passed to the
@@ -35292,7 +35160,8 @@ Release: September 16, 2024
 
 409 / 537
 
-ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
+
+ServerIpAddress: The IP address/host name of the DHCP server. This parameter is unused.
 
 Flags: This is of type DWORD that specifies that the option value is set for a specific or default vendor
 
@@ -35398,7 +35267,8 @@ Release: September 16, 2024
 
 410 / 537
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
 
 
@@ -35492,7 +35362,8 @@ Release: September 16, 2024
 
 411 / 537
 
-the PolicyName parameter. If there is no policy with the specified name, return
+
+the PolicyName parameter. If there is no policy with the specified name, return
 ERROR_DHCP_POLICY_NOT_FOUND.
 
   Retrieve each DHCPv4PolicyOptionValue ADM element from the server ADM element
@@ -35573,7 +35444,8 @@ Release: September 16, 2024
 
 412 / 537
 
-the DHCPv4ClassedOptValue ADM element set to the Value member in the
+
+the DHCPv4ClassedOptValue ADM element set to the Value member in the
 DHCP_OPTION_VALUE structure. Add the created DHCPv4ClassedOptValue ADM
 element to the DHCPv4PolicyOptionValue.DHCPv4ClassedOptionValues ADM
 element list, and return ERROR_SUCCESS.
@@ -35655,7 +35527,8 @@ Release: September 16, 2024
 
 413 / 537
 
-The method does not perform any checks to ensure that the OptionValue parameter passed in is
+
+The method does not perform any checks to ensure that the OptionValue parameter passed in is
 of the same OptionType member value as that of the option corresponding to the OptionId
 parameter passed in. It is the responsibility of the caller to ensure that the correct OptionType
 member value is used for the OptionValue parameter passed in. In case the OptionType member
@@ -35752,7 +35625,8 @@ Release: September 16, 2024
 
 414 / 537
 
-
+
+
 
 
 
@@ -35840,7 +35714,8 @@ Release: September 16, 2024
 
 415 / 537
 
-DHCP_OPTION_VALUE structure and populate the structure with the OptionID ADM
+
+DHCP_OPTION_VALUE structure and populate the structure with the OptionID ADM
 element and the Value ADM element in the DHCPv4ClassedOptValue ADM element.
 
   Return ERROR_SUCCESS.
@@ -35925,7 +35800,8 @@ Release: September 16, 2024
 
 416 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -36024,7 +35900,8 @@ Release: September 16, 2024
 
 417 / 537
 
-  Retrieve each DHCPv4PolicyOptionValue ADM element from the server ADM element
+
+  Retrieve each DHCPv4PolicyOptionValue ADM element from the server ADM element
 
 DHCPv4ServerPolicyOptionValuesList. Get the DHCPv4PolicyOptionValue ADM element
 for which the DHCPv4PolicyOptionValue.PolicyName ADM element and the
@@ -36105,7 +35982,8 @@ Release: September 16, 2024
 
 418 / 537
 
-Flags: This is of type DWORD and specifies that the option value is set for a specific or default vendor
+
+Flags: This is of type DWORD and specifies that the option value is set for a specific or default vendor
 
 class.
 
@@ -36199,7 +36077,8 @@ Release: September 16, 2024
 
 419 / 537
 
-
+
+
 
 For each DHCPv4PolicyOptionValue ADM element object in the retrieved list do the following:
 
@@ -36274,7 +36153,8 @@ Release: September 16, 2024
 
 420 / 537
 
-Return Values: A 32-bit unsigned integer value that indicates return status. A return value
+
+Return Values: A 32-bit unsigned integer value that indicates return status. A return value
 
 ERROR_SUCCESS (0x00000000) indicates operation was completed successfully. Otherwise, it
 contains a Win32 error code, as specified in [MS-ERREF]. This error code value can correspond to
@@ -36357,7 +36237,8 @@ Release: September 16, 2024
 
 421 / 537
 
-SubnetAddress: This is of type DHCP_IP_ADDRESS structure (section 2.2.1.2.1), which contains
+
+SubnetAddress: This is of type DHCP_IP_ADDRESS structure (section 2.2.1.2.1), which contains
 the IPv4 subnet ID for which the policy enforcement state can be returned. This parameter is
 ignored if the ServerPolicy parameter is TRUE.
 
@@ -36441,7 +36322,8 @@ Release: September 16, 2024
 
 422 / 537
 
-pPolicy: This is a pointer to a type DHCP_POLICY (section 2.2.1.2.110) and contains the members of
+
+pPolicy: This is a pointer to a type DHCP_POLICY (section 2.2.1.2.110) and contains the members of
 
 the policy to be created.
 
@@ -36552,7 +36434,8 @@ Release: September 16, 2024
 
 423 / 537
 
-  Validate the Conditions member and the Expressions member in the pPolicy parameter data
+
+  Validate the Conditions member and the Expressions member in the pPolicy parameter data
 structure by returning ERROR_DHCP_INVALID_POLICY_EXPRESSION if any of the following are
 true:
 
@@ -36647,7 +36530,8 @@ Release: September 16, 2024
 
 424 / 537
 
-
+
+
 
 
 
@@ -36740,7 +36624,8 @@ Release: September 16, 2024
 
 425 / 537
 
-PolicyName member in the pPolicy parameter. Return ERROR_DHCP_POLICY_EXISTS if there
+
+PolicyName member in the pPolicy parameter. Return ERROR_DHCP_POLICY_EXISTS if there
 is a policy by the same name.
 
   Validate the Ranges member of the pPolicy parameter according to the following:
@@ -36821,7 +36706,8 @@ Release: September 16, 2024
 
 426 / 537
 
-
+
+
 
 
 
@@ -36905,7 +36791,8 @@ Release: September 16, 2024
 
 427 / 537
 
-The opnum field value for this method is 109.
+
+The opnum field value for this method is 109.
 
 When processing this call, the DHCP server MUST do the following:
 
@@ -36985,7 +36872,8 @@ Release: September 16, 2024
 
 428 / 537
 
-SubnetAddress: This is of type DHCP_IP_ADDRESS data type (section 2.2.1.2.1) and identifies the
+
+SubnetAddress: This is of type DHCP_IP_ADDRESS data type (section 2.2.1.2.1) and identifies the
 
 IPv4 subnet from which the policy is being modified.
 
@@ -37099,7 +36987,8 @@ Release: September 16, 2024
 
 429 / 537
 
-
+
+
 
 If the PolicyName parameter is NULL or if the Policy parameter is NULL, return
 ERROR_INVALID_PARAMETER.
@@ -37190,7 +37079,8 @@ Release: September 16, 2024
 
 430 / 537
 
-
+
+
 
 If the Conditions member includes a condition where the Type is set to the value
 DhcpAttrFqdn or DhcpAttrFqdnSingleLabel as defined in the DHCP_POL_ATTR_TYPE
@@ -37286,7 +37176,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DhcpCompNotEqual, DhcpCompNotBeginWith, or DhcpCompNotEndWith value of
+
+DhcpCompNotEqual, DhcpCompNotBeginWith, or DhcpCompNotEndWith value of
 the DHCP_POL_COMPARATOR enumeration<85>
 
 For each expression element in the Expressions member:
@@ -37380,7 +37271,8 @@ Release: September 16, 2024
 
 432 / 537
 
-DHCP_POLICY_FIELDS_TO_UPDATE (section 2.2.1.1.21) enumeration, return
+
+DHCP_POLICY_FIELDS_TO_UPDATE (section 2.2.1.1.21) enumeration, return
 ERROR_INVALID_PARAMETER.
 
   Return ERROR_SUCCESS.
@@ -37468,7 +37360,8 @@ Release: September 16, 2024
 
 433 / 537
 
-
+
+
 
 If the ServerPolicy parameter is TRUE:
 
@@ -37551,7 +37444,8 @@ Release: September 16, 2024
 
 434 / 537
 
-ResumeHandle: This is a pointer of type DWORD (see DHCP_RESUME_HANDLE data type, section
+
+ResumeHandle: This is a pointer of type DWORD (see DHCP_RESUME_HANDLE data type, section
 2.2.1.2.6) that identifies the enumeration operation. Initially, this value MUST be set to zero, with
 a successful call returning the handle value used for subsequent enumeration requests.
 
@@ -37641,7 +37535,8 @@ Release: September 16, 2024
 
 435 / 537
 
-
+
+
 
 
 
@@ -37731,7 +37626,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-index of the DHCPv4Policy ADM element objects read plus one (+1). If there are more policies in
+
+index of the DHCPv4Policy ADM element objects read plus one (+1). If there are more policies in
 the retrieved list of policies which are yet to be enumerated, return ERROR_MORE_DATA, else
 return ERROR_NO_MORE_ITEMS.
 
@@ -37825,7 +37721,8 @@ Release: September 16, 2024
 
 437 / 537
 
-
+
+
 
 
 
@@ -37901,7 +37798,8 @@ Release: September 16, 2024
 
 438 / 537
 
-PolicyName: A pointer to a null-terminated Unicode string that contains the name of the policy inside
+
+PolicyName: A pointer to a null-terminated Unicode string that contains the name of the policy inside
 the subnet identified by the SubnetAddress parameter from which the IP address range is being
 deleted.
 
@@ -37991,7 +37889,8 @@ Release: September 16, 2024
 
 439 / 537
 
-3.2.4.116
+
+3.2.4.116
 
 R_DhcpV4EnumSubnetClients (Opnum 115)
 
@@ -38071,7 +37970,8 @@ Release: September 16, 2024
 
 440 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -38181,7 +38081,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DHCPv4FilterListTy
+
+DHCPv4FilterListTy
 pe
 
 DHCPv4Filter.AddPatt.IsWild
@@ -38272,7 +38173,8 @@ Release: September 16, 2024
 
 442 / 537
 
-Params: A pointer to the configuration settings for the DHCPv6 stateless client inventory for a
+
+Params: A pointer to the configuration settings for the DHCPv6 stateless client inventory for a
 
 DHCPv6 server.
 
@@ -38369,7 +38271,8 @@ Release: September 16, 2024
 
 443 / 537
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 3.2.4.118
@@ -38456,7 +38359,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 If the pServerLevel parameter is FALSE, retrieve the DHCPv6ScopesList server ADM element.
 Retrieve the DHCPv6Scope ADM element entry of the DHCPv6ScopesList ADM element
@@ -38533,7 +38437,8 @@ Release: September 16, 2024
 
 445 / 537
 
-  Copy the contents of the DHCPv6ServerStatelessStatistics ADM element to the corresponding
+
+  Copy the contents of the DHCPv6ServerStatelessStatistics ADM element to the corresponding
 
 fields of the DHCPV6_STATELESS_STATS structure.
 
@@ -38609,7 +38514,8 @@ Release: September 16, 2024
 
 446 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -38706,7 +38612,8 @@ Release: September 16, 2024
 
 447 / 537
 
-DHCP_IP_RESERVATION_INFO.bAllowedClientTypes ADM element. For each ADM element
+
+DHCP_IP_RESERVATION_INFO.bAllowedClientTypes ADM element. For each ADM element
 DHCPv4Client in DHCPv4ClientsList ADM element for which DHCPv4Client.ClientIpAddress
 ADM element is equal to DHCPv4Reservation.ReservedIpAddress ADM element, copy
 DHCPv4Client.ClientName ADM element to
@@ -38781,7 +38688,8 @@ Release: September 16, 2024
 
 448 / 537
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -38885,7 +38793,8 @@ Release: September 16, 2024
 
 449 / 537
 
-
+
+
 
 
 
@@ -38964,7 +38873,8 @@ Release: September 16, 2024
 
 450 / 537
 
-correspond to a DHCP-specific failure, which takes a value between 20000 and 20123, or to any
+
+correspond to a DHCP-specific failure, which takes a value between 20000 and 20123, or to any
 generic failure.
 
 Return value/code
@@ -39067,7 +38977,8 @@ Release: September 16, 2024
 
 451 / 537
 
-
+
+
 
 If the endIP parameter is nonzero and all the available IPv6 addresses up to the IPv6 address
 specified by the endIP parameter have been retrieved or if the endIP parameter is 0, and all the
@@ -39154,7 +39065,8 @@ Release: September 16, 2024
 
 452 / 537
 
-
+
+
 
 Iterate through the server ADM element DHCPv4ScopesList, and retrieve the DHCPv4Scope
 ADM element entry such that the ClientIpAddress member of the ClientInfo parameter falls
@@ -39248,7 +39160,8 @@ Release: September 16, 2024
 
 453 / 537
 
-3.2.4.124
+
+3.2.4.124
 
 R_DhcpV4GetClientInfo (Opnum 123)
 
@@ -39331,7 +39244,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Copy the information from the DHCPv4Client entry to the ClientInfo parameter. The HostName
+
+  Copy the information from the DHCPv4Client entry to the ClientInfo parameter. The HostName
 
 member in the DHCP_HOST_INFO structure is unused.
 
@@ -39416,7 +39330,8 @@ Release: September 16, 2024
 
 455 / 537
 
-
+
+
 
 If there is a DHCPv6ClientInfo ADM element entry corresponding to this DHCPv4 ClientDUID
 value or IAID value, and/or to the client IP address already in the DHCPv6ClientInfoList ADM
@@ -39509,7 +39424,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-When processing this call, the DHCP server MUST do the following:
+
+When processing this call, the DHCP server MUST do the following:
 
   Validate that this method is authorized for read access as specified in section 3.5.5. If not, return
 
@@ -39591,7 +39507,8 @@ Release: September 16, 2024
 
 457 / 537
 
-3.2.4.128
+
+3.2.4.128
 
 R_DhcpV4GetPolicyEx (Opnum 127)
 
@@ -39662,7 +39579,8 @@ Release: September 16, 2024
 
 458 / 537
 
-ServerIpAddress: As specified in R_DhcpV4SetPolicy (Opnum 110).
+
+ServerIpAddress: As specified in R_DhcpV4SetPolicy (Opnum 110).
 
 FieldsModified: As specified in R_DhcpV4SetPolicy (Opnum 110).
 
@@ -39743,7 +39661,8 @@ Release: September 16, 2024
 
 459 / 537
 
-The R_DhcpV4EnumPoliciesEx method is an extension of the R_DhcpV4EnumPolicies (Opnum
+
+The R_DhcpV4EnumPoliciesEx method is an extension of the R_DhcpV4EnumPolicies (Opnum
 112) (section 3.2.4.130) method, where an array of DHCP_POLICY_EX (section 2.2.1.2.121)
 structures is enumerated, rather than an array of DHCP_POLICY (section 2.2.1.2.110) structures.
 Each DHCP_POLICY_EX structure contains a list of DHCP_PROPERTY (section 2.2.1.2.117) elements
@@ -39814,7 +39733,8 @@ Release: September 16, 2024
 
 460 / 537
 
-contains a list of DHCP_PROPERTY (section 2.2.1.2.117) elements that are associated with the given
+
+contains a list of DHCP_PROPERTY (section 2.2.1.2.117) elements that are associated with the given
 subnet client.
 
  DWORD R_DhcpV4EnumSubnetClientsEx (
@@ -39881,7 +39801,8 @@ Release: September 16, 2024
 
 461 / 537
 
-ClientInfo: A pointer to a DHCP_CLIENT_INFO_EX structure that contains the DHCPv4 client lease
+
+ClientInfo: A pointer to a DHCP_CLIENT_INFO_EX structure that contains the DHCPv4 client lease
 record information to be set on the DHCPv4 server. The caller MUST pass the ClientIPAddress
 and ClientHardwareAddress members when adding a DHCPv4 client lease record to the DHCPv4
 server. The ClientHardwareAddress member represents a DHCPv4 client-identifier as specified
@@ -39951,7 +39872,8 @@ Release: September 16, 2024
 
 462 / 537
 
-The remainder of the processing behavior for this method is as defined for the
+
+The remainder of the processing behavior for this method is as defined for the
 R_DhcpV4GetClientInfo method.
 
 3.2.5  Timer Events
@@ -39967,7 +39889,7 @@ None.
 This section provides the details on how to configure the DHCP Server to control the behavior of the
 Dynamic DNS updates.
 
-3.3.1  DHCPv4 Server
+#### 3.3.1 DHCPv4 Server
 
 Dynamic DNS updates are governed by the following DNS settings on the DHCPv4 server. The
 DHCP_OPTION_DATA_TYPE (section 2.2.1.1.10) for this option is the DhcpDWordOption, that is the
@@ -40008,7 +39930,7 @@ This flag enables the DHCPv4 server to dynamically update both A and PTR records
 
 This flag enables Name Protection by the DHCPv4 Server.<90>
 
-3.3.2  DHCPv6 Server
+#### 3.3.2 DHCPv6 Server
 
 Dynamic DNS updates are governed by the following DNS settings on the DHCPv6 server.<91> The
 DHCP_OPTION_DATA_TYPE (section 2.2.1.1.10) for this option is DhcpDWordOption, that is the option
@@ -40029,7 +39951,8 @@ Release: September 16, 2024
 
 463 / 537
 
-BITMASK
+
+BITMASK
 VALUE
 
 MEANING
@@ -40051,7 +39974,7 @@ This flag enables the DHCPv6 server to dynamically update both AAAA and PTR reco
 
 This flag enables Name Protection by the DHCPv6 Server.<92>
 
-3.3.3  Name Protection
+#### 3.3.3 Name Protection
 
 Name Protection [RFC4701] and [RFC4703] provides the following capability:
 
@@ -40066,7 +39989,7 @@ Secure Dynamic DNS updates must be enabled for Name Protection to work.
 
 Enforcing Name Protection will result in behavioral changes.<93>
 
-3.4  DHCP Superscopes
+### 3.4 DHCP Superscopes
 
 Superscope is an administrative feature of a DHCP server that can be used to group multiple scopes
 as a single administrative entity. Superscope allows a DHCP server to provide leases from more than
@@ -40107,7 +40030,8 @@ Release: September 16, 2024
 
 464 / 537
 
-  Clients must be migrated over time to a new scope (such as to renumber the current IP network
+
+  Clients must be migrated over time to a new scope (such as to renumber the current IP network
 from an address range used in an existing active scope to a new scope that contains another IP
 network range of addresses).
 
@@ -40116,19 +40040,19 @@ network range of addresses).
 Two DHCP servers are wanted on the same physical network segment to manage separate logical
 IP networks.
 
-3.5  Access Check Processing
+### 3.5 Access Check Processing
 
 This section contains details about retrieving SIDs for DHCP clients, users, and administrators, and
 about using these security identifiers in access authorization checks for the methods specified in the
 dhcpsrv and dhcpsrv2 server interfaces of this specification.
 
-3.5.1  Retrieve Client SID
+#### 3.5.1 Retrieve Client SID
 
 DHCP client SIDs are obtained from the client access token that is retrieved from the RPC
 transport, as specified in [MS-RPCE] section 3.3.3.4.3. Client SIDs are copied from the RPC server
 variable RpcImpersonationAccessToken.Sids[] to the ADM data element ClientIdentitySids[].
 
-3.5.2  Retrieve DHCP User Group SID
+#### 3.5.2 Retrieve DHCP User Group SID
 
 The DHCP Users group SID is retrieved by using the Local Security Authority method
 LsarLookupNames2. This method requires an initial call to LsarOpenPolicy to obtain a PolicyHandle, as
@@ -40166,7 +40090,7 @@ sections 4.1, 3.1.5.1.1, 3.1.5.1.5, 3.1.5.2.1, 3.1.5.4.3, and 3.1.5.11.1.
 
 The returned DHCP users SID is copied to the ADM data element DHCPUsersSid.
 
-3.5.3  Retrieve DHCP Administrators Group SID
+#### 3.5.3 Retrieve DHCP Administrators Group SID
 
 The DHCP Administrators group SID is retrieved by using the Local Security Authority method
 LsarLookupNames2. This method requires an initial call to the LsarOpenPolicy method to obtain a
@@ -40180,7 +40104,8 @@ Release: September 16, 2024
 
 465 / 537
 
-Parameter
+
+Parameter
 
 Value
 
@@ -40210,20 +40135,20 @@ DHCP Administrators are created in the account database for the local domain as 
 SAMR] sections 4.1, 3.1.5.1.1, 3.1.5.1.5, 3.1.5.2.1, 3.1.5.4.3, and 3.1.5.11.1.The returned DHCP
 Administrators SID is copied to the ADM data element DHCPAdministratorsSid.
 
-3.5.4  Checks for Read Authorization
+#### 3.5.4 Checks for Read Authorization
 
 If the DHCP Users SID from the DHCPUsersSid ADM element or the DHCP Administrators SID
 from the DHCPAdministratorsSid ADM element is found within the ClientIdentitySids[] ADM
 element array, then read access is granted. If a match is not found, access is denied and
 ERROR_ACCESS_DENIED is returned.
 
-3.5.5  Checks for Read/Write Authorization
+#### 3.5.5 Checks for Read/Write Authorization
 
 If the DHCP Administrators SID from the DHCPAdministratorsSid ADM element is found in the
 ClientIdentitySids[] ADM element array, then read/write access is granted. If a match is not found,
 then access is denied and ERROR_ACCESS_DENIED is returned.
 
-3.5.6  Read/Write Authorization Exception
+#### 3.5.6 Read/Write Authorization Exception
 
 The method R_DhcpGetVersion (section 3.1.4.29) has an exception to read/write authorization
 requirements. When calling this method, the DHCP client is not required to be a member of the
@@ -40239,9 +40164,10 @@ Release: September 16, 2024
 
 466 / 537
 
-4  Protocol Examples
 
-4.1  Querying the List of Subnets from the DHCP Server
+## 4 Protocol Examples
+
+### 4.1 Querying the List of Subnets from the DHCP Server
 
 In this example, the DHCP server is configured with 150 DHCPv4 scopes. The example illustrates the
 use of the RPC methods defined in this specification to enumerate the list of IPv4 scopes configured on
@@ -40319,7 +40245,8 @@ Release: September 16, 2024
 
 467 / 537
 
-  A pointer to a DWORD, the ElementsTotal parameter pointing to valid memory, specifying the total
+
+  A pointer to a DWORD, the ElementsTotal parameter pointing to valid memory, specifying the total
 
 number of IPv4 scopes configured on the DHCP server and that have not been enumerated when
 the call is made.
@@ -40347,7 +40274,7 @@ scope addresses returned by the API; will be set to 50.
 IPv4 scopes configured on the DHCP server and that have not been enumerated when the call is
 made; is set to 50.
 
-4.2  Adding an IP Range to a Scope
+### 4.2 Adding an IP Range to a Scope
 
 This example illustrates how an IP range is added to a DHCPv4 scope on the DHCP server.
 
@@ -40374,7 +40301,7 @@ IpRange member are set to the IPv4 addresses 192.168.1.1 and 192.168.1.30 to add
 The call to this RPC method will return either ERROR_SUCCESS or an error code between 20000 and
 20099.
 
-4.3  Querying the Binding Information of the DHCP Service
+### 4.3 Querying the Binding Information of the DHCP Service
 
 In this example, the DHCP server is configured with three endpoints. This example illustrates how to
 query the list of endpoints from the DHCP server.
@@ -40399,7 +40326,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The pointer of type LPDHCP_BIND_ELEMENT_ARRAY to a structure will be updated with three
 as the number of elements in the array and a pointer to a buffer containing the addresses of the
@@ -40408,7 +40336,7 @@ three endpoints of the DHCP server.
 When the client no longer needs the server binding information, it frees the memory pointed to by
 LPDHCP_BIND_ELEMENT_ARRAY by calling the function midl_user_free (see section 3).
 
-4.4  Enumerating the DHCP Client in a Subnet
+### 4.4 Enumerating the DHCP Client in a Subnet
 
 In this example, the DHCP server has assigned 120 IP address leases to clients from a specific
 DHCPv4 scope. This example illustrates how to enumerate the list of DHCP clients that have been
@@ -40484,10 +40412,11 @@ Release: September 16, 2024
 
 469 / 537
 
-After the client no longer needs the list of enumerated DHCP clients, it frees the memory pointed to by
+
+After the client no longer needs the list of enumerated DHCP clients, it frees the memory pointed to by
 LPDHCP_CLIENT_INFO_ARRAY by calling the function midl_user_free (see section 3).
 
-4.5  Querying the List of IPv4 Multicast Subnets from the DHCP Server
+### 4.5 Querying the List of IPv4 Multicast Subnets from the DHCP Server
 
 In this example, the DHCP server is configured with 150 IPv4 multicast scopes. The example
 illustrates the use of the RPC methods defined in this specification to enumerate the list of IPv4
@@ -40566,7 +40495,8 @@ Release: September 16, 2024
 
 470 / 537
 
-  A pointer to a DWORD, the ElementsRead parameter, in which the number of scope addresses
+
+  A pointer to a DWORD, the ElementsRead parameter, in which the number of scope addresses
 
 returned by the API is returned.
 
@@ -40601,7 +40531,7 @@ cases, after the client no longer needs the list of enumerated IPv4 multicast sc
 the memory pointed to by the pointer of type LPDHCP_MSCOPE_TABLE by calling the function
 midl_user_free (section 3).
 
-4.6  Adding an IPv4 Multicast Range to a Multicast Scope
+### 4.6 Adding an IPv4 Multicast Range to a Multicast Scope
 
 This example illustrates how an IPv4 multicast range is added to a DHCPv4 multicast scope on the
 DHCP server.
@@ -40627,7 +40557,7 @@ that multicast scope.
 The call to this RPC method will return either ERROR_SUCCESS or an error code between 20000 and
 20099.
 
-4.7  Deleting a Multicast Scope from a DHCP Server
+### 4.7 Deleting a Multicast Scope from a DHCP Server
 
 In this example a DHCP server has a multicast scope defined. This example illustrates how to delete a
 multicast scope from a DHCP server.
@@ -40645,7 +40575,8 @@ Release: September 16, 2024
 
 471 / 537
 
-
+
+
 
 The name of multicast scope is set as the subnet preference. An example of an MScopeName
 parameter is a pointer to a WCHAR initialized with "IPv4 Multicast Scope Example".
@@ -40657,7 +40588,7 @@ multicast subnet is deleted along with the MADCAP client's record on the MADCAP 
 The call to this RPC method will return either ERROR_SUCCESS or an error code between 20000 and
 20099.
 
-4.8  Enumerating the MADCAP Client in a Multicast Scope
+### 4.8 Enumerating the MADCAP Client in a Multicast Scope
 
 In this example, the DHCP server has assigned 120 IPv4 multicast address leases to MADCAP clients
 from a specific DHCPv4 multicast scope. This example illustrates how to enumerate the list of MADCAP
@@ -40731,7 +40662,8 @@ Release: September 16, 2024
 
 472 / 537
 
-The client again invokes the RPC method R_DhcpEnumMScopeClients with the same parameters as
+
+The client again invokes the RPC method R_DhcpEnumMScopeClients with the same parameters as
 before except for the following:
 
 
@@ -40746,7 +40678,7 @@ Upon a successful call, after the client no longer needs the list of enumerated 
 client frees the memory pointed to by the pointer ClientInfo of type
 LPDHCP_MCLIENT_INFO_ARRAY by calling the function midl_user_free (section 3).
 
-4.9  Querying the List of IPv6 Subnets from the DHCP Server
+### 4.9 Querying the List of IPv6 Subnets from the DHCP Server
 
 In this example, the DHCP server is configured with 100 DHCPv6 scopes. The example illustrates the
 use of the RPC methods defined in this specification to enumerate the list of IPv6 scopes configured on
@@ -40809,7 +40741,8 @@ Release: September 16, 2024
 
 473 / 537
 
-The client frees the memory pointed to by the pointer EnumInfo of type LPDHCPV6_IP_ARRAY by
+
+The client frees the memory pointed to by the pointer EnumInfo of type LPDHCPV6_IP_ARRAY by
 calling the function midl_user_free (section 3).
 
 The client then calls the RPC method R_DhcpEnumSubnetsV6 again with the following parameters:
@@ -40866,7 +40799,7 @@ Upon a successful call, as soon as the client no longer needs the list of enumer
 the client frees the memory pointed to by the pointer EnumInfo of type LPDHCPV6_IP_ARRAY by
 calling the function midl_user_free (section 3).
 
-4.10  Adding an IPv6 Exclusion Range to a Scope
+### 4.10 Adding an IPv6 Exclusion Range to a Scope
 
 This example illustrates how an IPv6 exclusion range is added to a DHCPv6 scope on the DHCP server.
 
@@ -40895,7 +40828,8 @@ Release: September 16, 2024
 
 474 / 537
 
-determines as the IPv6 exclusion range for that scope. For illustration, the StartAddress and
+
+determines as the IPv6 exclusion range for that scope. For illustration, the StartAddress and
 EndAddress fields of the ExcludeIpRange member are set to the IPv6 addresses
 2001:db8:1234:abcd::1 and 2001:db8:1234:abcd::10 as an excluded address range on the
 subnet prefix 2001:db8:1234:abcd::/64.
@@ -40903,7 +40837,7 @@ subnet prefix 2001:db8:1234:abcd::/64.
 The call to this RPC method will return either ERROR_SUCCESS or an error code between 20000 and
 20099.
 
-4.11  Querying the IPv6 Binding Information of the DHCP Service
+### 4.11 Querying the IPv6 Binding Information of the DHCP Service
 
 In this example, the DHCPv6 server is configured with three endpoints. This example illustrates how to
 query the list of endpoints from the DHCP server.
@@ -40933,7 +40867,7 @@ Upon a successful call, after the client no longer needs the list of endpoints, 
 memory pointed to by the pointer BindElementsInfo of type LPDHCPV6_BIND_ELEMENT_ARRAY
 by calling the function midl_user_free (section 3).
 
-4.12  Enumerating the DHCPv6 Client in a Subnet
+### 4.12 Enumerating the DHCPv6 Client in a Subnet
 
 In this example, the DHCP server has assigned 120 IPv6 address leases to clients from a specific
 DHCPv6 scope. This example illustrates how to enumerate the list of DHCP clients that have been
@@ -40974,7 +40908,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  An allocated pointer, ClientsTotal, to a DWORD that will contain the number of DHCP clients
+
+  An allocated pointer, ClientsTotal, to a DWORD that will contain the number of DHCP clients
 remaining that have an active IP address lease obtained from the specified scope whose
 information is still to be returned.
 
@@ -41027,16 +40962,17 @@ Release: September 16, 2024
 
 476 / 537
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol allows any user to establish a connection to the RPC server. The protocol uses the
 underlying RPC protocol to retrieve the identity of the caller that made the method call as specified in
 [MS-RPCE]. Clients might need to create an authenticated RPC connection. Servers can use this
 identity to perform specific access checks.
 
-5.1.1  Security Considerations Specific to the DHCP Server Management Protocol
+#### 5.1.1 Security Considerations Specific to the DHCP Server Management Protocol
 
 DHCP server data and DHCP server operations specified by this implementation can be protected by
 access checks based on the identity of the RPC client.
@@ -41053,7 +40989,7 @@ Servers implementing this protocol need to require that clients request
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY, and the servers need to enforce this in order to protect the
 privacy of the communication between the client and the server.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -41068,7 +41004,8 @@ Release: September 16, 2024
 
 477 / 537
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the following full Interface Definition Language (IDL) is provided,
 where "ms-dtyp.idl" refers to the IDL found in [MS-DTYP] Appendix A.  The syntax uses the IDL
@@ -41142,7 +41079,8 @@ Release: September 16, 2024
 
 478 / 537
 
-      typedef enum _DHCP_OPTION_SCOPE_TYPE {
+
+      typedef enum _DHCP_OPTION_SCOPE_TYPE {
           DhcpDefaultOptions,
           DhcpGlobalOptions,
           DhcpSubnetOptions,
@@ -41219,7 +41157,8 @@ Release: September 16, 2024
 
 479 / 537
 
-      } DHCP_BOOTP_IP_RANGE, *LPDHCP_BOOT_IP_RANGE;
+
+      } DHCP_BOOTP_IP_RANGE, *LPDHCP_BOOT_IP_RANGE;
 
       typedef struct _DHCP_SUBNET_ELEMENT_DATA {
           DHCP_SUBNET_ELEMENT_TYPE ElementType;
@@ -41296,7 +41235,8 @@ Release: September 16, 2024
 
 480 / 537
 
-      typedef struct _DHCP_OPTION_VALUE {
+
+      typedef struct _DHCP_OPTION_VALUE {
           DHCP_OPTION_ID OptionID;
           DHCP_OPTION_DATA Value;
       } DHCP_OPTION_VALUE, *LPDHCP_OPTION_VALUE;
@@ -41372,7 +41312,8 @@ Release: September 16, 2024
 
 481 / 537
 
-          [size_is(Scopes)] LPSCOPE_MIB_INFO ScopeInfo;
+
+          [size_is(Scopes)] LPSCOPE_MIB_INFO ScopeInfo;
       } DHCP_MIB_INFO, *LPDHCP_MIB_INFO;
 
       typedef struct _DHCP_OPTION_ARRAY {
@@ -41448,7 +41389,8 @@ Release: September 16, 2024
 
 482 / 537
 
-      //
+
+      //
 
       int const Set_APIProtocolSupport          = 0x00000001;
       int const Set_DatabaseName                = 0x00000002;
@@ -41525,7 +41467,8 @@ Release: September 16, 2024
 
 483 / 537
 
-          DHCP_IP_ADDRESS ClientIpAddress;
+
+          DHCP_IP_ADDRESS ClientIpAddress;
           DHCP_IP_MASK SubnetMask;
           DHCP_CLIENT_UID ClientHardwareAddress;
           LPWSTR ClientName;
@@ -41602,7 +41545,8 @@ Release: September 16, 2024
 
 484 / 537
 
-          DWORD NumPendingOffers;
+
+          DWORD NumPendingOffers;
           DWORD QtnNumLeases;
           DWORD QtnPctQtnLeases;
           DWORD QtnProbationLeases;
@@ -41679,7 +41623,8 @@ Release: September 16, 2024
 
 485 / 537
 
-          DhcpReservedOptions6,
+
+          DhcpReservedOptions6,
           DhcpGlobalOptions6
       } DHCP_OPTION_SCOPE_TYPE6, *LPDHCP_OPTION_SCOPE_TYPE6;
 
@@ -41756,7 +41701,8 @@ Release: September 16, 2024
 
 486 / 537
 
-          DHCP_IP_ADDRESS ClientIpAddress;
+
+          DHCP_IP_ADDRESS ClientIpAddress;
           DWORD   MScopeId;
           DHCP_CLIENT_UID ClientId;
           LPWSTR ClientName;
@@ -41833,7 +41779,8 @@ Release: September 16, 2024
 
 487 / 537
 
-         DWORD MScopeId;
+
+         DWORD MScopeId;
          LPWSTR MScopeName;
          DWORD NumAddressesInuse;
          DWORD NumAddressesFree;
@@ -41910,7 +41857,8 @@ Release: September 16, 2024
 
 488 / 537
 
-      typedef struct _DHCP_SERVER_SPECIFIC_STRINGS {
+
+      typedef struct _DHCP_SERVER_SPECIFIC_STRINGS {
           LPWSTR DefaultVendorClassName;
           LPWSTR DefaultUserClassName;
       } DHCP_SERVER_SPECIFIC_STRINGS, *LPDHCP_SERVER_SPECIFIC_STRINGS;
@@ -41986,7 +41934,8 @@ Release: September 16, 2024
 
 489 / 537
 
-          DWORD NumElements;
+
+          DWORD NumElements;
           [size_is( NumElements)] LPDHCP_FILTER_RECORD pEnumRecords;
       } DHCP_FILTER_ENUM_INFO, *LPDHCP_FILTER_ENUM_INFO;
 
@@ -42063,7 +42012,8 @@ Release: September 16, 2024
 
 490 / 537
 
-      typedef struct _DHCP_SERVER_CONFIG_INFO_V6 {
+
+      typedef struct _DHCP_SERVER_CONFIG_INFO_V6 {
           BOOL UnicastFlag;
           BOOL RapidCommitFlag;
           DWORD PreferredLifetime;
@@ -42139,7 +42089,8 @@ Release: September 16, 2024
 
 491 / 537
 
-          DWORD Flags;
+
+          DWORD Flags;
           [size_is(ClassDataLength)] LPBYTE ClassData;
       } DHCP_CLASS_INFO_V6, *LPDHCP_CLASS_INFO_V6;
 
@@ -42216,7 +42167,8 @@ Release: September 16, 2024
 
 492 / 537
 
-          LPWSTR                     pSharedSecret;
+
+          LPWSTR                     pSharedSecret;
       } DHCP_FAILOVER_RELATIONSHIP, *LPDHCP_FAILOVER_RELATIONSHIP;
 
       typedef struct _DHCP_FAILOVER_RELATIONSHIP_ARRAY {
@@ -42291,7 +42243,8 @@ Release: September 16, 2024
 
 493 / 537
 
-      typedef enum {
+
+      typedef enum {
           DhcpAttrHWAddr,
           DhcpAttrOption,
           DhcpAttrSubOption,
@@ -42367,7 +42320,8 @@ Release: September 16, 2024
 
 494 / 537
 
-          BOOL                    IsGlobalPolicy;
+
+          BOOL                    IsGlobalPolicy;
           DHCP_IP_ADDRESS         Subnet;
           DWORD                   ProcessingOrder;
           LPDHCP_POL_COND_ARRAY   Conditions;
@@ -42444,7 +42398,8 @@ Release: September 16, 2024
 
 495 / 537
 
-          DhcpPropIdClientAddressStateEx,
+
+          DhcpPropIdClientAddressStateEx,
       } DHCP_PROPERTY_ID;
 
       typedef struct _DHCP_PROPERTY {
@@ -42521,7 +42476,8 @@ Release: September 16, 2024
 
 496 / 537
 
-      interface dhcpsrv
+
+      interface dhcpsrv
       {
 
       DWORD
@@ -42596,7 +42552,8 @@ Release: September 16, 2024
 
 497 / 537
 
-      DWORD
+
+      DWORD
       R_DhcpCreateOption(
           [in, unique, string]  DHCP_SRV_HANDLE  ServerIpAddress,
           [in]    DHCP_OPTION_ID OptionID,
@@ -42673,7 +42630,8 @@ Release: September 16, 2024
 
 498 / 537
 
-          [in, unique, string]  DHCP_SRV_HANDLE  ServerIpAddress,
+
+          [in, unique, string]  DHCP_SRV_HANDLE  ServerIpAddress,
           [in, ref]    LPDHCP_CLIENT_INFO ClientInfo
           );
 
@@ -42750,7 +42708,8 @@ Release: September 16, 2024
 
 499 / 537
 
-          [out]    LPDHCP_SERVER_CONFIG_INFO *ConfigInfo
+
+          [out]    LPDHCP_SERVER_CONFIG_INFO *ConfigInfo
           );
 
       DWORD
@@ -42827,7 +42786,8 @@ Release: September 16, 2024
 
 500 / 537
 
-          [in]    DWORD PreferredMaximum,
+
+          [in]    DWORD PreferredMaximum,
           [out]  LPDHCP_CLIENT_INFO_ARRAY_V4  *ClientInfo,
           [out]    DWORD *ClientsRead,
           [out]    DWORD *ClientsTotal
@@ -42904,7 +42864,8 @@ Release: September 16, 2024
 
 501 / 537
 
-      DWORD
+
+      DWORD
       R_DhcpGetClientInfoVQ(
           [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
           [in, ref]    LPDHCP_SEARCH_INFO SearchInfo,
@@ -42980,7 +42941,8 @@ Release: September 16, 2024
 
 502 / 537
 
-          );
+
+          );
 
       DWORD
       R_DhcpGetMScopeInfo(
@@ -43057,7 +43019,8 @@ Release: September 16, 2024
 
 503 / 537
 
-          [in, ref]    LPDHCP_MCLIENT_INFO ClientInfo
+
+          [in, ref]    LPDHCP_MCLIENT_INFO ClientInfo
           );
 
      // Opnum 10
@@ -43134,7 +43097,8 @@ Release: September 16, 2024
 
 504 / 537
 
-          [in, string, unique]   WCHAR *VendorName,
+
+          [in, string, unique]   WCHAR *VendorName,
           [in, out]    DHCP_RESUME_HANDLE *ResumeHandle,
           [in]    DWORD PreferredMaximum,
           [out]    LPDHCP_OPTION_ARRAY *Options,
@@ -43211,7 +43175,8 @@ Release: September 16, 2024
 
 505 / 537
 
-          [in, string, unique]   WCHAR *ClassName,
+
+          [in, string, unique]   WCHAR *ClassName,
           [in, string, unique]   WCHAR *VendorName,
           [in]    LPDHCP_OPTION_SCOPE_INFO ScopeInfo
       );
@@ -43288,7 +43253,8 @@ Release: September 16, 2024
 
 506 / 537
 
-          [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
+
+          [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
           [in]    DWORD Flags,
           [in, string]    LPWSTR AuditLogDir,
           [in]    DWORD DiskCheckInterval,
@@ -43365,7 +43331,8 @@ Release: September 16, 2024
 
 507 / 537
 
-      DWORD
+
+      DWORD
       R_DhcpGetServerBindingInfo(
           [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
           [in]    ULONG Flags,
@@ -43441,7 +43408,8 @@ Release: September 16, 2024
 
 508 / 537
 
-      DWORD
+
+      DWORD
       R_DhcpGetOptionInfoV6(
           [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
           [in]    DWORD Flags,
@@ -43518,7 +43486,8 @@ Release: September 16, 2024
 
 509 / 537
 
-      R_DhcpGetAllOptionsV6(
+
+      R_DhcpGetAllOptionsV6(
           [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
           [in]    DWORD Flags,
           [out]   LPDHCP_ALL_OPTIONS *OptionStruct
@@ -43595,7 +43564,8 @@ Release: September 16, 2024
 
 510 / 537
 
-          [in]    DHCP_IPV6_ADDRESS SubnetAddress,
+
+          [in]    DHCP_IPV6_ADDRESS SubnetAddress,
           [out]    LPDHCP_SUBNET_INFO_V6 *SubnetInfo
       );
 
@@ -43672,7 +43642,8 @@ Release: September 16, 2024
 
 511 / 537
 
-      );
+
+      );
 
       DWORD
       R_DhcpDeleteClientInfoV6(
@@ -43749,7 +43720,8 @@ Release: September 16, 2024
 
 512 / 537
 
-          [out]    LPDHCP_MIB_INFO_V5 *MibInfo
+
+          [out]    LPDHCP_MIB_INFO_V5 *MibInfo
       );
 
       DWORD
@@ -43826,7 +43798,8 @@ Release: September 16, 2024
 
 513 / 537
 
-          [in]                 DWORD             Flags,
+
+          [in]                 DWORD             Flags,
           [in]   LPDHCP_FAILOVER_RELATIONSHIP   pRelationship
       );
 
@@ -43902,7 +43875,8 @@ Release: September 16, 2024
 
 514 / 537
 
-      DWORD
+
+      DWORD
       R_DhcpV4FailoverGetSystemTime(
           [in, unique, string]  DHCP_SRV_HANDLE   ServerIpAddress,
           [out]   LPDWORD   pTime
@@ -43979,7 +43953,8 @@ Release: September 16, 2024
 
 515 / 537
 
-      DWORD
+
+      DWORD
       R_DhcpV4QueryPolicyEnforcement (
           [in, unique, string]  DHCP_SRV_HANDLE ServerIpAddress,
           [in]                    BOOL            ServerPolicy,
@@ -44058,7 +44033,8 @@ Release: September 16, 2024
 
 516 / 537
 
-      R_DhcpV4AddPolicyRange (
+
+      R_DhcpV4AddPolicyRange (
           [in, unique, string] DHCP_SRV_HANDLE ServerIpAddress,
           [in] DHCP_IP_ADDRESS SubnetAddress,
           [in, unique, string] LPWSTR PolicyName,
@@ -44135,7 +44111,8 @@ Release: September 16, 2024
 
 517 / 537
 
-        [in] DWORD numFreeAddr,
+
+        [in] DWORD numFreeAddr,
         [out] LPDHCP_IP_ARRAY *IPAddrList
       );
 
@@ -44212,7 +44189,8 @@ Release: September 16, 2024
 
 518 / 537
 
-          [in] LPDHCP_POLICY_EX Policy
+
+          [in] LPDHCP_POLICY_EX Policy
       );
 
       // Opnum 129
@@ -44263,7 +44241,8 @@ Release: September 16, 2024
 
 519 / 537
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -44331,7 +44310,8 @@ Release: September 16, 2024
 
 520 / 537
 
-Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
+
+Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
 (KB) number appears with a product name, the behavior changed in that update. The new behavior
 also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
@@ -44397,7 +44377,8 @@ Release: September 16, 2024
 
 521 / 537
 
-<15> Section 2.2.1.2.62: In Windows Server 2008, the PreferredLifetimeIATA field of this
+
+<15> Section 2.2.1.2.62: In Windows Server 2008, the PreferredLifetimeIATA field of this
 structure is stored on the DHCPv6 server and will contain the stored value when called from a method
 to retrieve.
 
@@ -44467,7 +44448,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Windows NT 4.0 through Windows Server 2003 supports opnums 0 through 40.
+
+  Windows NT 4.0 through Windows Server 2003 supports opnums 0 through 40.
 
   Windows Server 2008 and Windows Server 2008 R2 supports opnums 0 through 50.
 
@@ -44608,7 +44590,8 @@ Release: September 16, 2024
 
 523 / 537
 
-Windows Server release  Major version  Minor version  dhcpsrv opnums  dhcpsrv2 opnums
+
+Windows Server release  Major version  Minor version  dhcpsrv opnums  dhcpsrv2 opnums
 
 Windows Server 2016
 and later
@@ -44684,7 +44667,8 @@ Release: September 16, 2024
 
 524 / 537
 
-parameters. In calls where the API does not return all parameters and returns error code
+
+parameters. In calls where the API does not return all parameters and returns error code
 ERROR_MORE_DATA, the API sets this value as 0x7FFFFFFF.
 
 <43> Section 3.1.4.51: In Windows Server 2016 and later if the QuarantineON field in the
@@ -44752,7 +44736,8 @@ Release: September 16, 2024
 
 525 / 537
 
-<51> Section 3.2.4.38: In Windows NT Server 4.0 SP2, Windows 2000 Server, Windows Server 2003,
+
+<51> Section 3.2.4.38: In Windows NT Server 4.0 SP2, Windows 2000 Server, Windows Server 2003,
 and Windows Server 2008, if the ElementType member is set to DhcpReservedIps, and
 ReservedIpAddress specified in the ReservedIp field in Element does not fall within the range of
 the IPv4 subnet and it is not an existing reserved address, then add the IPv4 reservation and return
@@ -44825,7 +44810,8 @@ Release: September 16, 2024
 
 526 / 537
 
-<61> Section 3.2.4.60: Windows Server 2008 adds a reservation and deletes the lease when the
+
+<61> Section 3.2.4.60: Windows Server 2008 adds a reservation and deletes the lease when the
 method is called to add a reservation for which the lease already exists in the database. In case the
 method is called to add a reservation when there is no lease entry in the database, Windows Server
 2008 only adds the reservation and not the corresponding lease record.
@@ -44891,7 +44877,8 @@ Release: September 16, 2024
 
 527 / 537
 
-<75> Section 3.2.4.109: In Windows Server 2012 additional validation is performed for each
+
+<75> Section 3.2.4.109: In Windows Server 2012 additional validation is performed for each
 condition element in the Conditions member in the pPolicy structure. The value of the Operator
 member is validated for equality with either the DhcpCompBeginsWith or DhcpCompNotBeginsWith
 enumeration value, and the value of the OptionID member is validated for equality with the relay
@@ -44959,7 +44946,8 @@ Release: September 16, 2024
 
 528 / 537
 
-  DHCPv4Client.Status ADM element is set to NOQUARANTINE.
+
+  DHCPv4Client.Status ADM element is set to NOQUARANTINE.
 
   DHCPv4Client.QuarantineCapable ADM element is set to FALSE.
 
@@ -45003,7 +44991,8 @@ Release: September 16, 2024
 
 529 / 537
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -45015,7 +45004,8 @@ Release: September 16, 2024
 
 530 / 537
 
-9  Index
+
+## 9 Index
 _
 
 _DHCP_POLICY_EX structure 125
@@ -45154,7 +45144,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DHCP_CLIENT_INFO_ARRAY structure 47
+
+DHCP_CLIENT_INFO_ARRAY structure 47
 DHCP_CLIENT_INFO_ARRAY_V4 structure 48
 DHCP_CLIENT_INFO_ARRAY_V5 structure 51
 DHCP_CLIENT_INFO_ARRAY_V6 structure 89
@@ -45301,7 +45292,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-      DHCPv4ServerAttributes 140
+
+      DHCPv4ServerAttributes 140
       DHCPv4ServerBindingInfo 141
       DHCPv4SuperScope 133
       DHCPv6ClassDef 138
@@ -45448,7 +45440,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-LPDHCP_CLIENT_INFO_ARRAY_V4 48
+
+LPDHCP_CLIENT_INFO_ARRAY_V4 48
 LPDHCP_CLIENT_INFO_ARRAY_V5 51
 LPDHCP_CLIENT_INFO_ARRAY_V6 89
 LPDHCP_CLIENT_INFO_ARRAY_VQ 55
@@ -45587,7 +45580,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-PDHCP_POL_COND_ARRAY 116
+
+PDHCP_POL_COND_ARRAY 116
 PDHCP_POL_EXPR 116
 PDHCP_POL_EXPR_ARRAY 117
 PDHCP_POLICY 118
@@ -45737,7 +45731,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-R_DhcpRemoveOptionV6 method 334
+
+R_DhcpRemoveOptionV6 method 334
 R_DhcpRemoveOptionValue method 177
 R_DhcpRemoveOptionValueV5 method 293
 R_DhcpRemoveOptionValueV6 method 343
@@ -45882,7 +45877,8 @@ Microsoft Dynamic Host Configuration Protocol (DHCP) Server Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-   dhcpsrv2 server 463
+
+   dhcpsrv2 server 463
    server (section 3.1.5 237, section 3.2.5 463)
 Timers
    dhcpsrv server 143

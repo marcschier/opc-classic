@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 15
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -297,7 +298,8 @@ Entity Data Model for Data Services Packaging Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Date
+
+Date
 
 Revision
 History
@@ -397,60 +399,31 @@ Release: March 13, 2019
 
 3 / 15
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 edmx:Edmx](#21-edmxedmx)
+  - [2.2 edmx:DataServices](#22-edmxdataservices)
+  - [2.3 edmx:Reference](#23-edmxreference)
+  - [2.4 edmx:AnnotationsReference](#24-edmxannotationsreference)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Structures ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Versioning and Localization ................................................................................. 6
-Vendor-Extensible Fields ..................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 8
-edmx:Edmx ....................................................................................................... 8
-edmx:DataServices ............................................................................................ 8
-edmx:Reference ................................................................................................ 8
-edmx:AnnotationsReference ................................................................................ 9
-
-2.1
-2.2
-2.3
-2.4
-
-3  Structure Examples ............................................................................................... 11
-
-4  Security ................................................................................................................. 12
-
-5  Appendix A: Product Behavior ............................................................................... 13
-
-6  Change Tracking .................................................................................................... 14
-
-7  Index ..................................................................................................................... 15
-
-[MC-EDMX] - v20190313
-Entity Data Model for Data Services Packaging Format
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 15
-
-1  Introduction
+## 1 Introduction
 
 The Entity Data Model for Data Services Packaging Format (EDMX) is an XML-based file format that
 serves as the packaging format for the service metadata of a data service.
@@ -461,7 +434,7 @@ schemas are specified in [MC-CSDL].
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -486,14 +459,14 @@ Generic Syntax [RFC3986].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -515,13 +488,14 @@ Release: March 13, 2019
 
 5 / 15
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
 [MS-ODATA] Microsoft Corporation, "Open Data Protocol (OData)".
 
-1.3  Overview
+### 1.3 Overview
 
 An Entity Data Model for Data Services Packaging Format (EDMX) document is an XML-based file
 format that serves as the packaging format for the service metadata of a data service.
@@ -556,17 +530,17 @@ The structure of an EDMX document resembles the following example.
 The contents of an EDMX document are determined by the data service in question and vary
 depending on the data service, as specified in [MS-ODATA].
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 EDMX serves as the packaging format of the metadata of a data service (as specified in [MS-
 ODATA]).
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 An EDMX document is used when clients of a data service (as specified in [MS-ODATA]) require the
 metadata of the data service.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This document specifies version 1.0 of EDMX.
 
@@ -577,7 +551,8 @@ Release: March 13, 2019
 
 6 / 15
 
-1.7  Vendor-Extensible Fields
+
+### 1.7 Vendor-Extensible Fields
 
 An EDMX document does not contain any vendor-extensible fields, nor does it support extensibility.
 However, the Entity Data Model (EDM) conceptual schemas that are packaged in an EDMX
@@ -593,9 +568,10 @@ Release: March 13, 2019
 
 7 / 15
 
-2  Structures
 
-2.1  edmx:Edmx
+## 2 Structures
+
+### 2.1 edmx:Edmx
 
 The edmx:Edmx element defines the XML namespace for the EDMX document and contains the
 edmx:DataServices subelement.
@@ -630,7 +606,7 @@ The edmx:Edmx element specifies exactly one edmx:DataServices subelement. This
 subelement MUST appear after the edmx:Reference and edmx:AnnotationReference
 subelements, if present.
 
-2.2  edmx:DataServices
+### 2.2 edmx:DataServices
 
 The edmx:DataServices element contains the service metadata of a data service. This service
 metadata contains zero or more Entity Data Model (EDM) conceptual schemas (as specified in
@@ -646,7 +622,7 @@ The following rule applies to the edmx:DataServices element:
 
 The edmx:DataServices element can contain any number of Schema sublements.<1>
 
-2.3  edmx:Reference
+### 2.3 edmx:Reference
 
 The edmx:Reference element is used to reference another EDMX document or an Entity Data
 Model (EDM) conceptual schema.
@@ -663,7 +639,8 @@ Release: March 13, 2019
 
 8 / 15
 
-The following rules apply to the edmx:Reference element:
+
+The following rules apply to the edmx:Reference element:
 
 
 
@@ -676,7 +653,7 @@ referenced EDMX document or to the EDM conceptual schema. Url MUST be an absolut
 If edmx:Reference is defined in an EDMX document, processors incorporate the referenced
 EDMX document or the EDM conceptual schema.
 
-2.4  edmx:AnnotationsReference
+### 2.4 edmx:AnnotationsReference
 
 The edmx:AnnotationsReference element is used to reference annotations (as specified in [MC-
 CSDL]) specified in another EDMX document or in an Entity Data Model (EDM) conceptual schema.
@@ -751,7 +728,8 @@ Entity Data Model for Data Services Packaging Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -775,7 +753,8 @@ Release: March 13, 2019
 
 10 / 15
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following is an example of the service metadata returned by a data service. The edmx:Edmx
 and edmx:DataServices elements are specified in sections 2.1 and 2.2 of this document. All other
@@ -846,7 +825,8 @@ Release: March 13, 2019
 
 11 / 15
 
-4  Security
+
+## 4 Security
 
 None.
 
@@ -857,7 +837,8 @@ Release: March 13, 2019
 
 12 / 15
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -897,7 +878,8 @@ Release: March 13, 2019
 
 13 / 15
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -941,7 +923,8 @@ Release: March 13, 2019
 
 14 / 15
 
-References 5
+
+References 5
    informative 6
    normative 5
 Relationship to protocols and other structures 6
@@ -963,7 +946,7 @@ V
 Vendor-extensible fields 7
 Versioning 6
 
-7  Index
+## 7 Index
 A
 
 Applicability 6

@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 63
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -239,199 +240,84 @@ Release: October 26, 2021
 
 2 / 63
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Public Key Cryptography ................................................................................ 5
-Certificates .................................................................................................. 5
-Certificate Authority ...................................................................................... 5
-Certificate Revocation Lists ............................................................................ 6
-Basic Certificate Enrollment ........................................................................... 6
-Certificate Transparency ................................................................................ 7
-Key Attestation............................................................................................. 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 12
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Public Key Cryptography](#111-public-key-cryptography)
+    - [1.1.2 Certificates](#112-certificates)
+    - [1.1.3 Certificate Authority](#113-certificate-authority)
+    - [1.1.4 Certificate Revocation Lists](#114-certificate-revocation-lists)
+    - [1.1.5 Basic Certificate Enrollment](#115-basic-certificate-enrollment)
+    - [1.1.6 Certificate Transparency](#116-certificate-transparency)
+    - [1.1.7 Key Attestation](#117-key-attestation)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Purpose](#211-purpose)
+    - [2.1.2 Components](#212-components)
+      - [2.1.2.1 Certificate Authority](#2121-certificate-authority)
+        - [2.1.2.1.1 Certificate Authority Interfaces](#21211-certificate-authority-interfaces)
+        - [2.1.2.1.2 Certificate Authority (CA) Modes](#21212-certificate-authority-ca-modes)
+      - [2.1.2.2 Enrollment Client](#2122-enrollment-client)
+        - [2.1.2.2.1 Certificate Enrollment Methods](#21221-certificate-enrollment-methods)
+        - [2.1.2.2.2 Autoenrollment in a Domain Environment](#21222-autoenrollment-in-a-domain-environment)
+    - [2.1.3 Applicability](#213-applicability)
+    - [2.1.4 Relevant Standards](#214-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Actors](#251-actors)
+    - [2.5.2 Use Case Summary](#252-use-case-summary)
+    - [2.5.3 Use Case Descriptions](#253-use-case-descriptions)
+      - [2.5.3.1 Enroll for a Certificate](#2531-enroll-for-a-certificate)
+      - [2.5.3.2 CA Administration](#2532-ca-administration)
+        - [2.5.3.2.1 Edit CA Configuration Settings - CA Administrator](#25321-edit-ca-configuration-settings-ca-administrator)
+        - [2.5.3.2.2 Recover an Archived Certificate and Key](#25322-recover-an-archived-certificate-and-key)
+        - [2.5.3.2.3 Revoke a Certificate](#25323-revoke-a-certificate)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+    - [2.6.1 Interface Versions](#261-interface-versions)
+    - [2.6.2 Client and Server Modes](#262-client-and-server-modes)
+    - [2.6.3 Certificate Template Versions](#263-certificate-template-versions)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Internal Security](#291-internal-security)
+      - [2.9.1.1 CA Signing Key](#2911-ca-signing-key)
+      - [2.9.1.2 CA Data](#2912-ca-data)
+      - [2.9.1.3 Certificate Templates](#2913-certificate-templates)
+      - [2.9.1.4 Certificates for Special Roles](#2914-certificates-for-special-roles)
+      - [2.9.1.5 Caller Authentication](#2915-caller-authentication)
+    - [2.9.2 External Security](#292-external-security)
+      - [2.9.2.1 Private Key Archival](#2921-private-key-archival)
+      - [2.9.2.2 CA Exchange Certificate](#2922-ca-exchange-certificate)
+      - [2.9.2.3 Archived Key Storage](#2923-archived-key-storage)
+      - [2.9.2.4 Key Recovery Agent Certificates](#2924-key-recovery-agent-certificates)
+      - [2.9.2.5 Transport Security](#2925-transport-security)
+      - [2.9.2.6 Privacy](#2926-privacy)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Enrollment from a Standalone CA (Basic Enrollment)](#31-example-1-enrollment-from-a-standalone-ca-basic-enrollment)
+  - [3.2 Example 2: Enrollment from a Standalone CA (Basic Enrollment) with Certificate](#32-example-2-enrollment-from-a-standalone-ca-basic-enrollment-with-certificate)
+  - [3.3 Example 3: Enrollment from an Enterprise CA (Template-based Enrollment)](#33-example-3-enrollment-from-an-enterprise-ca-template-based-enrollment)
+  - [3.4 Example 4: Enrollment in the Domain Environment with the XCEP/WSTEP](#34-example-4-enrollment-in-the-domain-environment-with-the-xcepwstep)
+  - [3.5 Example 5: Enrollment with CA Administrator Approval](#35-example-5-enrollment-with-ca-administrator-approval)
+  - [3.6 Example 6: Enroll on Behalf of Request and Renewal](#36-example-6-enroll-on-behalf-of-request-and-renewal)
+  - [3.7 Example 7: Private Key Archival and Recovery](#37-example-7-private-key-archival-and-recovery)
+  - [3.8 Example 8: Certificate Revocation](#38-example-8-certificate-revocation)
+  - [3.9 Example 9: Certificate Denied by the Policy Algorithm](#39-example-9-certificate-denied-by-the-policy-algorithm)
+  - [3.10 Example 10: Certificate Denied Due to Out-of-Sync Certificate Templates](#310-example-10-certificate-denied-due-to-out-of-sync-certificate-templates)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1.1.1
-1.1.2
-1.1.3
-1.1.4
-1.1.5
-1.1.6
-1.1.7
-
-1.2
-1.3
-
-2.1
-
-2.2
-2.3
-
-2.4
-2.5
-
-2.1.2.2
-
-2.1.2.1
-
-2.1.1
-2.1.2
-
-2.1.3
-2.1.4
-
-2.3.1
-2.3.2
-
-2.5.1
-2.5.2
-2.5.3
-
-2.1.2.1.1
-2.1.2.1.2
-
-2.1.2.2.1
-2.1.2.2.2
-
-2  Functional Architecture ......................................................................................... 14
-Overview ........................................................................................................ 14
-Purpose ..................................................................................................... 15
-Components............................................................................................... 16
-Certificate Authority .............................................................................. 16
-Certificate Authority Interfaces .......................................................... 16
-Certificate Authority (CA) Modes ....................................................... 16
-Enrollment Client .................................................................................. 18
-Certificate Enrollment Methods .......................................................... 19
-Autoenrollment in a Domain Environment ........................................... 21
-Applicability ............................................................................................... 23
-Relevant Standards ..................................................................................... 23
-Protocol Summary ............................................................................................ 23
-Environment .................................................................................................... 24
-Dependencies on This System ...................................................................... 24
-Dependencies on Other Systems/Components ................................................ 24
-Assumptions and Preconditions .......................................................................... 25
-Use Cases ....................................................................................................... 25
-Actors ....................................................................................................... 25
-Use Case Summary ..................................................................................... 25
-Use Case Descriptions ................................................................................. 26
-Enroll for a Certificate ............................................................................ 26
-CA Administration ................................................................................. 28
-Edit CA Configuration Settings - CA Administrator ............................... 28
-Recover an Archived Certificate and Key............................................. 29
-Revoke a Certificate ......................................................................... 30
-Versioning, Capability Negotiation, and Extensibility ............................................. 31
-Interface Versions....................................................................................... 31
-Client and Server Modes .............................................................................. 31
-Certificate Template Versions ....................................................................... 31
-Error Handling ................................................................................................. 32
-Coherency Requirements .................................................................................. 32
-Security .......................................................................................................... 32
-Internal Security ........................................................................................ 32
-CA Signing Key ..................................................................................... 32
-CA Data ............................................................................................... 33
-Certificate Templates ............................................................................. 33
-Certificates for Special Roles .................................................................. 33
-Caller Authentication ............................................................................. 33
-External Security ........................................................................................ 33
-Private Key Archival .............................................................................. 34
-CA Exchange Certificate ......................................................................... 34
-Archived Key Storage ............................................................................ 34
-
-2.9.1.1
-2.9.1.2
-2.9.1.3
-2.9.1.4
-2.9.1.5
-
-2.5.3.2.1
-2.5.3.2.2
-2.5.3.2.3
-
-2.9.2.1
-2.9.2.2
-2.9.2.3
-
-2.6.1
-2.6.2
-2.6.3
-
-2.5.3.1
-2.5.3.2
-
-2.7
-2.8
-2.9
-
-2.9.1
-
-2.9.2
-
-2.6
-
-[MS-CERSOD] - v20211026
-Certificate Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 63
-
-2.9.2.4
-2.9.2.5
-2.9.2.6
-
-Key Recovery Agent Certificates ............................................................. 34
-Transport Security ................................................................................ 34
-Privacy ................................................................................................ 35
-Additional Considerations .................................................................................. 35
-
-2.10
-
-3.1
-3.2
-
-3  Examples ............................................................................................................... 36
-Example 1: Enrollment from a Standalone CA (Basic Enrollment) ........................... 36
-Example 2: Enrollment from a Standalone CA (Basic Enrollment) with Certificate
-Transparency Enabled ...................................................................................... 37
-Example 3: Enrollment from an Enterprise CA (Template-based Enrollment) ........... 39
-Example 4: Enrollment in the Domain Environment with the XCEP/WSTEP Protocols . 41
-Example 5: Enrollment with CA Administrator Approval ........................................ 42
-Example 6: Enroll on Behalf of Request and Renewal ............................................ 46
-Example 7: Private Key Archival and Recovery ..................................................... 48
-Example 8: Certificate Revocation ...................................................................... 51
-Example 9: Certificate Denied by the Policy Algorithm .......................................... 54
-Example 10: Certificate Denied Due to Out-of-Sync Certificate Templates ............... 55
-
-3.3
-3.4
-3.5
-3.6
-3.7
-3.8
-3.9
-3.10
-
-4  Microsoft Implementations ................................................................................... 59
-Product Behavior .............................................................................................. 59
-
-4.1
-
-5  Change Tracking .................................................................................................... 60
-
-6  Index ..................................................................................................................... 61
-
-[MS-CERSOD] - v20211026
-Certificate Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 63
-
-1  Introduction
+## 1 Introduction
 
 Certificate Services protocols provide a set of customizable services for issuing and managing
 certificates used in software security systems that are employing public key technologies.
@@ -449,13 +335,13 @@ identity of the certificate requestor, and issuing certificates.
 
   Revoking certificates and verifying revocation status.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 A public key infrastructure (PKI) supports public key cryptography within and between
 organizations. A PKI consists of digital certificates, key pairs, a certificate authority (CA), and
 other registration authorities.
 
-1.1.1  Public Key Cryptography
+#### 1.1.1 Public Key Cryptography
 
 Public key cryptography allows one entity to prove its identity to another and exchange encrypted
 information without having to exchange private encryption keys. In this form of cryptography, an
@@ -465,7 +351,7 @@ key pair, and the key-pair owner can use the private key to decrypt the informat
 key pair can also use the private key to digitally sign documents. Anyone else can use the public key
 to verify that the signature is authentic.
 
-1.1.2  Certificates
+#### 1.1.2 Certificates
 
 A certificate is a digital statement that is issues by a certificate authority (CA) that vouches for
 the identity of the certificate holder; a certificate binds a public key and a collection of attributes to
@@ -474,7 +360,7 @@ the certificate holder. The certificate can be freely shared with other entities
 Certificates are electronic representations of users, computers, network devices, or services that a CA
 issues. The certificates are associated with a public and private key pair.
 
-1.1.3  Certificate Authority
+#### 1.1.3 Certificate Authority
 
 A certificate authority (CA) is an entity that issues digital certificates. A CA verifies the identity
 of a certificate requestor before a certificate can be issued. After validating the identity of a
@@ -497,7 +383,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-CERSOD].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -519,7 +406,7 @@ implementation of the system that is specified in this document. In some cases, 
 systems or components that attempt to interact directly with this system, if available, to obtain
 certificates.
 
-1.1.4  Certificate Revocation Lists
+#### 1.1.4 Certificate Revocation Lists
 
 End entities normally evaluate certificates for validity when they make trust decisions and no longer
 trust the certificate if it is presented after the expiration date. To invalidate a previously issued
@@ -530,7 +417,7 @@ all of the certificates it issues. This list is known as the certificate revocat
 that are required to verify the validity of a certificate can download the CRL and determine if the
 certificate is in it.
 
-1.1.5  Basic Certificate Enrollment
+#### 1.1.5 Basic Certificate Enrollment
 
 The certificate enrollment is the process by which an end entity obtains the certificate from the
 certificate issuer. The following diagram shows the basic certificate enrollment process.
@@ -556,11 +443,12 @@ Release: October 26, 2021
 
 6 / 63
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-CERSOD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
-1.1.6  Certificate Transparency
+#### 1.1.6 Certificate Transparency
 
 Certificate Transparency processing enabled on a certificate authority (CA) server allows digital
 certificates to be issued by the server to clients while also allowing a compliant operator to monitor
@@ -608,7 +496,8 @@ Release: October 26, 2021
 
 7 / 63
 
-5.  The WCCE client calls the ICertRequestD2::Request2 method again, but in this case with the
+
+5.  The WCCE client calls the ICertRequestD2::Request2 method again, but in this case with the
 
 SCTList structure and the RequestId attribute included; the request is then sent to the CA server.
 
@@ -619,7 +508,7 @@ CA server.
 
 7.  The CA server issues a digital certificate to the WCCE client.
 
-1.1.7  Key Attestation
+#### 1.1.7 Key Attestation
 
 Many modern computers have built-in hardware to help secure data. This is typically the Trusted
 Computing Group's trusted platform module (TPM) [TCG-Architect]. A TPM can be used to create
@@ -634,7 +523,7 @@ all cryptographic operations using the private portion of the key occur inside t
 For details about key attestation see [MS-CSRA] section 3.1.1.1.2, [MS-CRTD] section 2.27, and
 [MS-WCCE] sections 1.3.2.2, 2.2.2.5, 3.1.1.4.3.4, and 3.2.2.6.2.1.2.5 (among others).
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -682,7 +571,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-the certificate. A certificate securely binds a public key to the entity that holds the corresponding
+
+the certificate. A certificate securely binds a public key to the entity that holds the corresponding
 private key. A certificate is commonly used for authentication and secure exchange of
 information on open networks, such as the Internet, extranets, and intranets. Certificates are
 digitally signed by the issuing certification authority (CA) and can be issued for a user, a
@@ -757,7 +647,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
+
+When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
 contains full NC replicas of the configuration naming context (config NC), schema naming
 context (schema NC), and one of the domain NCs in its forest. If the AD DS DC is a global
 catalog server (GC server), it contains partial NC replicas of the remaining domain NCs in its
@@ -831,7 +722,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-exchange. For more information, see [CRYPTO] section 1.11, [SP800-56A] section 3.1, and
+
+exchange. For more information, see [CRYPTO] section 1.11, [SP800-56A] section 3.1, and
 [IEEE1363] section 3.
 
 key length: A value specified by a cryptographic module that indicates the length of the public-
@@ -904,7 +796,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-band steps. This term is not meant to imply that a root CA is necessarily at the top of any
+
+band steps. This term is not meant to imply that a root CA is necessarily at the top of any
 hierarchy, simply that the CA in question is trusted directly (as specified in [RFC2510]). A root
 CA is implemented in software and in Windows, is the topmost CA in a CA hierarchy, and is the
 trust point for all certificates that are issued by the CAs in the CA hierarchy. If a user, computer,
@@ -931,7 +824,7 @@ WSTEP: WS-Trust Enrollment Extensions
 
 XCEP: X.509 Certificate Enrollment Policy Protocol Specification
 
-1.3  References
+### 1.3 References
 
 [MS-ADOD] Microsoft Corporation, "Active Directory Protocols Overview".
 
@@ -972,7 +865,8 @@ Release: October 26, 2021
 
 12 / 63
 
-[TCG-Architect] Trusted Computing Group, "TCG Specification Architecture Overview", Specification
+
+[TCG-Architect] Trusted Computing Group, "TCG Specification Architecture Overview", Specification
 Revision 1.4, August 2007, http://www.trustedcomputinggroup.org/wp-
 content/uploads/TCG_1_4_Architecture_Overview.pdf
 
@@ -983,9 +877,10 @@ Release: October 26, 2021
 
 13 / 63
 
-2  Functional Architecture
 
-2.1  Overview
+## 2 Functional Architecture
+
+### 2.1 Overview
 
 The following abstract components provide the main functionality for certificate services. The
 Certificate Services protocols enable communication among these components, as shown in the
@@ -1056,13 +951,14 @@ Release: October 26, 2021
 
 14 / 63
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-CERSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 3: Certificate Services protocols functional architecture in enterprise mode
 
-2.1.1  Purpose
+#### 2.1.1 Purpose
 
 The purpose of the Certificate Services protocols is to issue and manage certificates. The Certificate
 Services protocols include the protocols that are used for submitting certificate requests to the CA, for
@@ -1079,11 +975,12 @@ Release: October 26, 2021
 
 15 / 63
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-CERSOD].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
-2.1.2  Components
+#### 2.1.2 Components
 
 The Certificate Services system has two main components:
 
@@ -1095,7 +992,7 @@ Enrollment client
 
 The following sections provide an overview of these components.
 
-2.1.2.1  Certificate Authority
+##### 2.1.2.1 Certificate Authority
 
 The certificate authority is the core component of the Certificate Services System. The CA
 implements the Windows Client Certificate Enrollment Protocol (WCCE), the ICertPassage Remote
@@ -1105,7 +1002,7 @@ facilitate the more complex enrollment processes.
 
 This section describes the interfaces and modes of the CA.
 
-2.1.2.1.1 Certificate Authority Interfaces
+###### 2.1.2.1.1 Certificate Authority Interfaces
 
 The following diagram shows the components that interact with the certificate authority.
 
@@ -1115,7 +1012,7 @@ End users use their computers to obtain new certificates, to renew existing cert
 information about the CA. Administrators use their client computers to connect to external interfaces
 to manage the CA remotely.
 
-2.1.2.1.2 Certificate Authority (CA) Modes
+###### 2.1.2.1.2 Certificate Authority (CA) Modes
 
 16 / 63
 
@@ -1124,7 +1021,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-CERSOD].images/page017-img01.png)
 ![Extracted image 2 from page 17]([MS-CERSOD].images/page017-img02.png)
 <!-- /Extracted images from page 17 -->
@@ -1148,7 +1046,8 @@ Release: October 26, 2021
 
 17 / 63
 
-The CA policy algorithm is a required component of the system. Requests for new and renewed
+
+The CA policy algorithm is a required component of the system. Requests for new and renewed
 certificates are subject to the policy algorithm. It determines whether a certificate request is to be
 fulfilled, denied, or set to pending administrator approval. For example, a system implementing the
 enterprise CA functionality that is specified in [MS-WCCE] section 3.2.2 verifies that the requestor
@@ -1169,7 +1068,7 @@ described in this document. The implementer can use a general-purpose database, 
 operating system's native file system, or whatever is preferred. The data that has to be stored is
 described in [MS-WCCE] section 3 and [MS-CSRA] section 3.
 
-2.1.2.2  Enrollment Client
+##### 2.1.2.2 Enrollment Client
 
 There are a variety of enrollment client types, and their behavior in the handling of the certificate
 requests and the resulting issued certificate can differ.
@@ -1215,7 +1114,8 @@ Release: October 26, 2021
 
 18 / 63
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-CERSOD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1231,7 +1131,7 @@ Certificate Transparency
 The enrollment client has the option to initiate certificate transparency processing on the certificate
 authority (CA) server, as described in sections 1.1.6 and 3.2.
 
-2.1.2.2.1 Certificate Enrollment Methods
+###### 2.1.2.2.1 Certificate Enrollment Methods
 
 There are two methods for certificate enrollment: DCOM-based certificate enrollment (Direct
 enrollment) and Web services-based certificate enrollment (WSTEP enrollment).
@@ -1260,7 +1160,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-CERSOD].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1284,7 +1185,8 @@ Release: October 26, 2021
 
 20 / 63
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-CERSOD].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1302,7 +1204,7 @@ server endpoints, can define multiple certificate templates, and are used by mul
 that enrolling for certificates manually can be a difficult task. The job of autoenrollment is to traverse
 all of the CEPs and enroll them for certificates as required.
 
-2.1.2.2.2 Autoenrollment in a Domain Environment
+###### 2.1.2.2.2 Autoenrollment in a Domain Environment
 
 This section describes the components of the autoenrollment client that is joined to a domain and how
 external entities influence the behavior of the autoenrollment process.
@@ -1318,7 +1220,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-CERSOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1358,19 +1261,20 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The local certificate/key storage can be read or modified by other systems in an implementation-
+
+The local certificate/key storage can be read or modified by other systems in an implementation-
 specific way, but the autoenrollment process makes no assumptions about how or even if this
 happens. Local configuration is modified by the computer administrator through the use of an
 administration tool, such as a Group Policy client.
 
-2.1.3  Applicability
+#### 2.1.3 Applicability
 
 The Certificate Services protocols are applicable to an environment in which clients benefit from the
 capability to interact with the CA to enroll or manage X.509 certificates. In particular, the
 autoenrollment client is applicable in environments where the workload of provisioning certificates is
 large enough to warrant automation.
 
-2.1.4  Relevant Standards
+#### 2.1.4 Relevant Standards
 
 Relevant standards are the Internet X.509 Public Key Infrastructure Certificate and Certificate
 Revocation List (CRL) Profile, as specified in [RFC5280]. This specification is one part of a family of
@@ -1378,7 +1282,7 @@ standards for the X.509 public key infrastructure (PKI) for the Internet. This s
 the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet
 PKI.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the Certificate Services protocols.
 
@@ -1463,7 +1367,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1552,17 +1457,17 @@ XCEP]
 [MS-
 CRTD]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces provided by this system of protocols, other systems that depend on this system,
 and, as appropriate, how components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 None.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 This system depends on the following systems and components in the enterprise CA mode:
 
@@ -1577,12 +1482,13 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The Group Policy server for the policy server endpoints information through the Group Policy:
 Registry Extension Encoding (GPREG) protocol [MS-GPOD].
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The Certificate Services protocols have the following assumptions, regardless of the mode:
 
@@ -1603,9 +1509,9 @@ These additional assumptions apply when running in enterprise CA mode:
 
 The Kerberos authentication protocol is available for the authentication and message security.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
-2.5.1  Actors
+#### 2.5.1 Actors
 
 The actors that participate in certificate services are:
 
@@ -1623,7 +1529,7 @@ CA administrator: A person who is responsible for management of the CA system, s
 
 configuration, and managing pending requests for certificates.
 
-2.5.2  Use Case Summary
+#### 2.5.2 Use Case Summary
 
 There are two main use cases for the CA system:
 
@@ -1660,7 +1566,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-CERSOD].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1683,9 +1590,9 @@ Edit CA configuration settings
 
   Recover an archived certificate and key
 
-2.5.3  Use Case Descriptions
+#### 2.5.3 Use Case Descriptions
 
-2.5.3.1  Enroll for a Certificate
+##### 2.5.3.1 Enroll for a Certificate
 
 [MS-CERSOD] - v20211026
 Certificate Services Protocols Overview
@@ -1694,7 +1601,8 @@ Release: October 26, 2021
 
 26 / 63
 
-Figure 11: Enroll for a certificate
+
+Figure 11: Enroll for a certificate
 
 This use case allows a caller, either an end entity, enrollment agent, or autoenrollment client, to
 request a certificate from a CA. Upon successful completion of the use case, the end entity receives
@@ -1778,7 +1686,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-CERSOD].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1788,7 +1697,7 @@ until a CA administrator approves the request. After it is approved, the certifi
 
 Post-conditions: The end entity received the required certificate from CA.
 
-2.5.3.2  CA Administration
+##### 2.5.3.2 CA Administration
 
 The CA Administration use cases include generic functions such as editing the CA configuration, as
 well as more specific functions such as revoking certificates or recovering escrowed private keys
@@ -1804,7 +1713,7 @@ Edit CA Configuration Settings
 
 Figure 12: CA Administration use cases
 
-2.5.3.2.1 Edit CA Configuration Settings - CA Administrator
+###### 2.5.3.2.1 Edit CA Configuration Settings - CA Administrator
 
 Goal: To edit configuration settings on the CA. The goal of this use case is for the CA administrator
 to be able to define and edit various configuration settings on the CA that affect behavior and
@@ -1825,7 +1734,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Primary Actor: The primary actor is the same as the direct actor.
+
+Primary Actor: The primary actor is the same as the direct actor.
 
 Supporting Actors: None.
 
@@ -1871,7 +1781,7 @@ Extensions: None.
 
 Post-conditions: The configuration settings or CA properties are updated on the CA as required.
 
-2.5.3.2.2 Recover an Archived Certificate and Key
+###### 2.5.3.2.2 Recover an Archived Certificate and Key
 
 Goal: To recover a certificate and its private key that have been archived within the CA database.
 
@@ -1908,7 +1818,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The primary interest of the end entity is the ability to decrypt previously encrypted data by
 using the retrieved private key.
@@ -1963,7 +1874,7 @@ Extensions: None.
 
 Post-conditions: The end entity recovered the archived certificate and its private key.
 
-2.5.3.2.3 Revoke a Certificate
+###### 2.5.3.2.3 Revoke a Certificate
 
 Goal: To revoke a previously issued certificate and to publish a list of revoked certificates.
 
@@ -1998,7 +1909,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Other applications and system administrators might rely upon or use the end entity's
+
+Other applications and system administrators might rely upon or use the end entity's
 certificate for a variety of purposes, for assurance that certificates are valid for their intended
 purpose.
 
@@ -2034,7 +1946,7 @@ Post-conditions: Upon successful completion of the use case, the certificate is 
 
 CRL is published with the latest information about the status of the certificate.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 There is no capability negotiation that is associated with this system. Any deviations from a specific
 version's implementation of these protocol specifications are documented in the respective protocol
@@ -2044,12 +1956,12 @@ documents (TDs).
 
 Three aspects of the system have multiple versions.
 
-2.6.1  Interface Versions
+#### 2.6.1 Interface Versions
 
 There are multiple versions of the interfaces specified in [MS-WCCE] and [MS-CSRA]. The versioning
 rules for those interfaces are defined in section 1.7 of [MS-WCCE] and [MS-CSRA].
 
-2.6.2  Client and Server Modes
+#### 2.6.2 Client and Server Modes
 
 The CA can operate in one of two modes: as a stand-alone CA or as an enterprise CA. The stand-
 alone CA is specified in [MS-WCCE] section 3.2.1 and the enterprise CA in [MS-WCCE] section 3.2.2.
@@ -2057,7 +1969,7 @@ On client computers, these two modes correspond to the basic enrollment mode, as
 WCCE] section 3.1.1, and the enrollment that is based on certificate templates mode, as specified
 in [MS-WCCE] section 3.1.2.
 
-2.6.3  Certificate Template Versions
+#### 2.6.3 Certificate Template Versions
 
 Certificate templates have four different versions, as specified in [MS-CRTD] section 2.16. The
 processing rules for the client and server for each version of the certificate templates are specified in
@@ -2070,14 +1982,15 @@ Release: October 26, 2021
 
 31 / 63
 
-2.7  Error Handling
+
+### 2.7 Error Handling
 
 The system does not define any errors beyond those described in the specifications of the member
 protocols, as listed in section 2.2.
 
 Section 3 of the member protocol specifications describes the errors relevant to each protocol.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 There are several areas where coherency is important for the CA system:
 
@@ -2095,7 +2008,7 @@ table.
 Autoenrollment should have a timer that allows it to periodically execute to keep the local certificate
 storage current. It is recommended that autoenrollment executes at least twice a day.<2>
 
-2.9  Security
+### 2.9 Security
 
 This section describes system-wide security issues that are not otherwise described in the Technical
 Documents (TDs) for the Member Protocols. It does not duplicate what is already in the Member
@@ -2116,12 +2029,12 @@ good implementation of this system includes robust protection of data that is st
 transmitted to remote clients. [MS-CSRA] section 5 and [MS-WCCE] section 5 discuss security issues
 specific to the individual protocols.
 
-2.9.1  Internal Security
+#### 2.9.1 Internal Security
 
 There are several internal areas of the CA that have notable security considerations. This section
 discusses these in greater detail.
 
-2.9.1.1  CA Signing Key
+##### 2.9.1.1 CA Signing Key
 
 The CA uses its signing key to sign all certificates that it issues and all the CRLs that it publishes.
 This key is bound to the CA signing certificate. Therefore, there are several important properties to
@@ -2138,7 +2051,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Lifetime of the key
+
+Lifetime of the key
 
 The CA signing keys are long-lived keys that exceed the lifetime of the certificates that they sign
 because, when that key expires, all certificates signed with that key are no longer considered valid by
@@ -2157,7 +2071,7 @@ certificate on the parent CA and publish a new CRL. An even more severe situatio
 signing key of a root CA is compromised. In this situation, the only way to stop it from being trusted
 is to reconfigure all of the client computers to no longer trust it.
 
-2.9.1.2  CA Data
+##### 2.9.1.2 CA Data
 
 Attackers could interfere with CA operations or tamper with certificate revocation information if
 they were able to access the CA. Therefore, it is a good idea to implement strong controls to protect
@@ -2169,7 +2083,7 @@ before it is processed by the system. That is, a CA might inspect each incoming 
 each field within the request is formatted correctly and that it does not exceed a reasonable size
 [HOWARD].
 
-2.9.1.3  Certificate Templates
+##### 2.9.1.3 Certificate Templates
 
 [MS-WCCE] section 5.1.11 describes data consistency considerations for the certificate templates.
 Additionally, it is reasonable to restrict write access to a certificate template to the administrators.
@@ -2177,20 +2091,20 @@ Certificate templates define a policy by which certificates are issued. Therefor
 modify certificate templates could potentially obtain certificates that would otherwise have been
 unobtainable.
 
-2.9.1.4  Certificates for Special Roles
+##### 2.9.1.4 Certificates for Special Roles
 
 Although not required by the protocol, it is a best practice to restrict the use of certificates that are
 issued for KRAs and enrollment agents by requiring explicit CA administrator approval. These
 certificates have special purposes in some of the scenarios for this system, as described in the
 Examples (section 3).
 
-2.9.1.5  Caller Authentication
+##### 2.9.1.5 Caller Authentication
 
 As specified in [MS-CSRA] section 1.4 and in [MS-WCCE] section 2.1, the CA depends on a component
 that implements the server role of DCOM authentication to identify the caller of the DCOM interfaces
 that it implements.
 
-2.9.2  External Security
+#### 2.9.2 External Security
 
 There are several external areas of the CA that have notable security considerations. These external
 areas are discussed in this section.
@@ -2202,7 +2116,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.9.2.1  Private Key Archival
+
+##### 2.9.2.1 Private Key Archival
 
 There are several considerations for key archival. These considerations include transporting the
 private key from the client to the CA, storing the private key on the server, and recovering lost keys.
@@ -2210,7 +2125,7 @@ Note that, while message formats and specific processing rules are described in 
 WCCE], only security considerations are discussed here. [MS-WCCE] section 5.1.10 also addresses
 security considerations for the key archival.
 
-2.9.2.2  CA Exchange Certificate
+##### 2.9.2.2 CA Exchange Certificate
 
 The public key in the CA exchange certificate can be used to encrypt end entities' private keys
 when requests for new certificates are sent to the CA (see [MS-WCCE] section 3.1.1.4.3.6). The
@@ -2230,7 +2145,7 @@ its own key pair and if it could substitute its public key for a CA's Exchange p
 might be induced to encrypt a private key by using that key for which the attacker has the private
 key.
 
-2.9.2.3  Archived Key Storage
+##### 2.9.2.3 Archived Key Storage
 
 Neither the protocols nor the CA mandates any particular protection mechanism for the private keys
 archived by a CA. When choosing an algorithm and key sizes for the key protection, it is
@@ -2238,7 +2153,7 @@ recommended that an implementer consider the lifetime of the key that is being p
 document its strength to set expectations for the clients of the system. For more information about
 the key archival and recovery process on the Windows platform, see [MSFT-ARCHIVE].
 
-2.9.2.4  Key Recovery Agent Certificates
+##### 2.9.2.4 Key Recovery Agent Certificates
 
 Key recovery agent (KRA) certificates and the private keys associated with them can be used to
 protect and recover end entities' private keys. The CA does not have to possess the KRA's private key
@@ -2250,7 +2165,7 @@ The KRA public key has to be protected from tampering and especially replacement
 attacker that could substitute its own public key for the KRA public key would potentially have access
 to all private keys that are encrypted under the KRA public key.
 
-2.9.2.5  Transport Security
+##### 2.9.2.5 Transport Security
 
 The CA uses the DCOM and RPC protocols for transport. Both DCOM and RPC provide authentication,
 data integrity, and encryption capabilities. Although those modes are not required by the CA
@@ -2264,13 +2179,14 @@ Release: October 26, 2021
 
 34 / 63
 
-2.9.2.6  Privacy
+
+##### 2.9.2.6 Privacy
 
 The CA stores data that was submitted by the client when the certificate was requested. Some of
 these data can be considered private by law in many jurisdictions, so it is important to provide access
 protection to the CA database for compliance.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -2281,7 +2197,8 @@ Release: October 26, 2021
 
 35 / 63
 
-3  Examples
+
+## 3 Examples
 
 This section provides the following examples to describe the use of the Certificate Services protocols:
 
@@ -2305,7 +2222,7 @@ This section provides the following examples to describe the use of the Certific
 
 10. Certificate Denied Due to Out-of-Sync Certificate Templates
 
-3.1  Example 1: Enrollment from a Standalone CA (Basic Enrollment)
+### 3.1 Example 1: Enrollment from a Standalone CA (Basic Enrollment)
 
 This example demonstrates the Enroll for a certificate use case described in section 2.5.3.1.
 
@@ -2339,7 +2256,8 @@ Release: October 26, 2021
 
 36 / 63
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-CERSOD].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2365,7 +2283,7 @@ The CA-WCCE server stores the request fields in the Request table, as specified 
 sections 3.2.1.4.2.1.4.4 and 3.2.1.4.2.1.4.5, along with the status of the certificate request and
 the end entity details.
 
-3.2  Example 2: Enrollment from a Standalone CA (Basic Enrollment) with Certificate
+### 3.2 Example 2: Enrollment from a Standalone CA (Basic Enrollment) with Certificate
 
 Transparency Enabled
 
@@ -2399,7 +2317,8 @@ Release: October 26, 2021
 
 37 / 63
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-CERSOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2443,7 +2362,8 @@ Release: October 26, 2021
 
 38 / 63
 
-  A RequestId attribute ([MS-WCCE] section 2.2.2.7.10) constructed from the
+
+  A RequestId attribute ([MS-WCCE] section 2.2.2.7.10) constructed from the
 
 Returned_Request_ID ADM element and added to the pwszAttributes parameter of the
 ICertRequestD2::Request2 method.
@@ -2466,7 +2386,7 @@ entity details.
 
 The certificate transparency log has an accessible copy of the issued precertificate.
 
-3.3  Example 3: Enrollment from an Enterprise CA (Template-based Enrollment)
+### 3.3 Example 3: Enrollment from an Enterprise CA (Template-based Enrollment)
 
 This example demonstrates the Enroll for a certificate use case described in section 2.5.3.1.
 
@@ -2512,7 +2432,8 @@ Release: October 26, 2021
 
 39 / 63
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-CERSOD].images/page040-img01.png)
 ![Extracted image 2 from page 40]([MS-CERSOD].images/page040-img02.png)
 <!-- /Extracted images from page 40 -->
@@ -2554,7 +2475,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-CERSOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2576,7 +2498,7 @@ The CA-WCCE Server stores the request fields in the Request table as specified i
 sections 3.2.1.4.2.1.4.4 and 3.2.1.4.2.1.4.5 with the status of the certificate request and also the
 end entity details.
 
-3.4  Example 4: Enrollment in the Domain Environment with the XCEP/WSTEP
+### 3.4 Example 4: Enrollment in the Domain Environment with the XCEP/WSTEP
 
 Protocols
 
@@ -2628,7 +2550,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-CERSOD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -2665,7 +2588,7 @@ The CA-WCCE Server stores the request fields in the Request table as specified i
 sections 3.2.1.4.2.1.4.4 and 3.2.1.4.2.1.4.5, along with the status of the certificate request and
 the end entity details.
 
-3.5  Example 5: Enrollment with CA Administrator Approval
+### 3.5 Example 5: Enrollment with CA Administrator Approval
 
 This example demonstrates the Enroll for a Certificate and Approve Pending Request use cases
 described in section 2.5.3.1.
@@ -2692,7 +2615,8 @@ Release: October 26, 2021
 
 42 / 63
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-CERSOD].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2740,7 +2664,8 @@ Release: October 26, 2021
 
 43 / 63
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-CERSOD].images/page044-img01.png)
 ![Extracted image 2 from page 44]([MS-CERSOD].images/page044-img02.png)
 <!-- /Extracted images from page 44 -->
@@ -2769,7 +2694,8 @@ Release: October 26, 2021
 
 44 / 63
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-CERSOD].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -2835,7 +2761,8 @@ Release: October 26, 2021
 
 45 / 63
 
-3.6  Example 6: Enroll on Behalf of Request and Renewal
+
+### 3.6 Example 6: Enroll on Behalf of Request and Renewal
 
 This example demonstrates the Enroll for a certificate, Enroll Certificate on Behalf of User and Renew
 Certificate use cases described in section 2.5.3.1.
@@ -2895,7 +2822,8 @@ Release: October 26, 2021
 
 46 / 63
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-CERSOD].images/page047-img01.png)
 ![Extracted image 2 from page 47]([MS-CERSOD].images/page047-img02.png)
 <!-- /Extracted images from page 47 -->
@@ -2939,7 +2867,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-CERSOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -2983,7 +2912,7 @@ The CA-WCCE Server stores the request fields in the Request table, as specified 
 sections 3.2.1.4.2.1.4.4 and 3.2.1.4.2.1.4.5, along with certificate status and the requested end
 entity details.
 
-3.7  Example 7: Private Key Archival and Recovery
+### 3.7 Example 7: Private Key Archival and Recovery
 
 This example is the combination of two separate use cases. The first is the Enroll for a Certificate -
 End Entity use case, section 2.5.3.1, and the second is the Recover Archived Certificate and Key - CA
@@ -3000,7 +2929,8 @@ Release: October 26, 2021
 
 48 / 63
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-CERSOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3055,7 +2985,8 @@ Release: October 26, 2021
 
 49 / 63
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-CERSOD].images/page050-img01.png)
 ![Extracted image 2 from page 50]([MS-CERSOD].images/page050-img02.png)
 <!-- /Extracted images from page 50 -->
@@ -3098,7 +3029,8 @@ Release: October 26, 2021
 
 50 / 63
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-CERSOD].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -3134,7 +3066,7 @@ The private key of the requested certificate is archived on the CA.
 
 The CSRA administrator has the private key of the archived certificate.
 
-3.8  Example 8: Certificate Revocation
+### 3.8 Example 8: Certificate Revocation
 
 The goal of this example is as detailed in the Revoke a Certificate - CA administrator use case. This
 example builds on the example in section 3.3 by adding the process of revoking a previously issued
@@ -3166,7 +3098,8 @@ Release: October 26, 2021
 
 51 / 63
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-CERSOD].images/page052-img01.png)
 ![Extracted image 2 from page 52]([MS-CERSOD].images/page052-img02.png)
 <!-- /Extracted images from page 52 -->
@@ -3209,7 +3142,8 @@ Release: October 26, 2021
 
 52 / 63
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-CERSOD].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -3256,7 +3190,8 @@ Release: October 26, 2021
 
 53 / 63
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-CERSOD].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
@@ -3278,7 +3213,7 @@ the end entity details.
 
 The CA-CSRA server has updated the CRL table.
 
-3.9  Example 9: Certificate Denied by the Policy Algorithm
+### 3.9 Example 9: Certificate Denied by the Policy Algorithm
 
 This example represents a failure scenario for the Enroll for a Certificate - End Entity use case
 described in section 2.5.3.1.
@@ -3317,7 +3252,8 @@ Release: October 26, 2021
 
 54 / 63
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-CERSOD].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -3361,7 +3297,7 @@ The CA-WCCE Server stores the request fields in the Request table, as specified 
 sections 3.2.1.4.2.1.4.4 and 3.2.1.4.2.1.4.5, with the status of the certificate (1) request and also
 the end entity details.
 
-3.10  Example 10: Certificate Denied Due to Out-of-Sync Certificate Templates
+### 3.10 Example 10: Certificate Denied Due to Out-of-Sync Certificate Templates
 
 This example represents another failure scenario for the Enroll for a Certificate - End Entity use case
 described in section 2.5.3.1. This example builds on the example in section 3.3 and describes a
@@ -3375,7 +3311,8 @@ Release: October 26, 2021
 
 55 / 63
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-CERSOD].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
@@ -3434,7 +3371,8 @@ Release: October 26, 2021
 
 56 / 63
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-CERSOD].images/page057-img01.png)
 ![Extracted image 2 from page 57]([MS-CERSOD].images/page057-img02.png)
 <!-- /Extracted images from page 57 -->
@@ -3480,7 +3418,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-CERSOD].images/page058-img01.png)
 ![Extracted image 2 from page 58]([MS-CERSOD].images/page058-img02.png)
 <!-- /Extracted images from page 58 -->
@@ -3526,7 +3465,8 @@ Release: October 26, 2021
 
 58 / 63
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this overview is applicable to the following versions of Windows:
 
@@ -3580,7 +3520,7 @@ Windows Server Releases
 
 Exceptions, if any, are noted in the following section.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 1.1.6: Windows Server v1809 and later support Certificate Transparency processing.
 
@@ -3594,7 +3534,8 @@ Certificate Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3638,7 +3579,8 @@ Release: October 26, 2021
 
 60 / 63
 
-6  Index
+
+## 6 Index
 A
 
 Actors
@@ -3773,7 +3715,8 @@ Glossary 8
 
 61 / 63
 
-H
+
+H
 
 Handling requirements 32
 
@@ -3910,7 +3853,8 @@ System
 
 62 / 63
 
-      certificate enrollment 26
+
+      certificate enrollment 26
 System dependencies 24
    with other systems 24
    within the system 24

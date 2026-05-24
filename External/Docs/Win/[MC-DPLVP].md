@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 55
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: June 1, 2017
 
 2 / 55
 
-Date
+
+Date
 
 Revision
 History
@@ -485,367 +487,151 @@ Release: June 1, 2017
 
 3 / 55
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.3.1
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-How DirectPlay Handles Voice Bursts ............................................................. 11
-Connection Subprotocol ............................................................................... 12
-Peer Voice Session Subprotocol .................................................................... 12
-Host Migration ...................................................................................... 13
-Mixing Voice Session Subprotocol ................................................................. 14
-Forwarding Voice Session Subprotocol ........................................................... 15
-Echo Voice Session Subprotocol .................................................................... 15
-Required Codecs ......................................................................................... 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 18
-
-1.3.4
-1.3.5
-1.3.6
-1.3.7
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Message Syntax ............................................................................................... 19
-The Common Message Header...................................................................... 20
-Common Messages ..................................................................................... 21
-Session Lost Message ............................................................................ 21
-Client Disconnect Request Message ......................................................... 22
-Client Disconnect Confirmation Message .................................................. 22
-Add Voice Client Message ....................................................................... 22
-Set Client Voice Target Message ............................................................. 23
-Speech with Target Message .................................................................. 24
-Speech with Bounce Message ................................................................. 24
-Client Capability Confirmation Message .................................................... 25
-Connection Subprotocol Messages ................................................................ 25
-Connect Request Message ...................................................................... 26
-Connect Accept Message ........................................................................ 26
-Connect Refuse Message ........................................................................ 28
-Peer Voice Session Subprotocol Messages ...................................................... 28
-Voice Client List Entry Structure .............................................................. 28
-Voice Client List Message ....................................................................... 29
-Remove Voice Client Message ................................................................. 30
-Speech Message ................................................................................... 30
-Host Migration Messages ........................................................................ 30
-Voice Server Exited with Host Migration Message ................................ 30
-Host Migration Complete Message ..................................................... 31
-Forwarding Voice Session Subprotocol Messages ............................................ 31
-Speech with From Message .................................................................... 31
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.4.5.1
-2.2.4.5.2
-
-2.2.5.1
-
-2.2.5
-
-2.2.4
-
-2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 33
-Voice Client Details........................................................................................... 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 33
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-[MC-DPLVP] - v20170601
-DirectPlay Voice Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 55
-
-3.1.5
-
-3.1.5.1
-
-3.1.5.2
-
-3.1.5.3
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-
-3.1.5.4
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-
-3.1.5.5
-
-3.1.5.5.1
-3.1.5.5.2
-3.1.5.5.3
-
-3.1.5.6
-
-3.1.5.6.1
-3.1.5.6.2
-3.1.5.6.3
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-
-3.1.5.3.1
-3.1.5.3.2
-3.1.5.3.3
-3.1.5.3.4
-3.1.5.3.5
-3.1.5.3.6
-
-3.1.5.3.6.1
-3.1.5.3.6.2
-3.1.5.3.6.3
-
-Processing Events and Sequencing Rules ....................................................... 34
-Connection Subprotocol ......................................................................... 34
-Handling Unrecognized Messages ...................................................... 34
-Sending Connect Request Message .................................................... 34
-Receiving Connect Accept Message .................................................... 35
-Receiving Connect Refuse Message .................................................... 35
-Sending a Client Capability Confirmation Message ............................... 35
-Common Messages for All Voice Session Subprotocols ............................... 35
-Receiving a Session Lost Message ..................................................... 35
-Receiving a Set Client Voice Target Message ....................................... 35
-Sending a Client Disconnect Request Message..................................... 36
-Receiving a Client Disconnect Confirmation Message ............................ 36
-Receiving an Add Voice Client Message .............................................. 36
-Peer Voice Session Subprotocol .............................................................. 36
-Handling Unrecognized Message ........................................................ 36
-Receiving a Voice Client List Message ................................................. 36
-Receiving a Remove Voice Client Message .......................................... 37
-Sending a Speech Message ............................................................... 37
-Receiving a Speech Message ............................................................. 37
-Host Migration ................................................................................ 37
-Receiving a Voice Server Exited with Host Migration Message .......... 37
-Receiving a Host Migration Complete Message ............................... 37
-Sending a Client Capability Confirmation Message .......................... 37
-Mixing Voice Session Subprotocol ............................................................ 38
-Handling Unrecognized Messages ...................................................... 38
-Receiving a Speech with Bounce Message ........................................... 38
-Sending a Speech with Target Message .............................................. 38
-Forwarding Voice Session Subprotocol ..................................................... 38
-Handling Unrecognized Messages ...................................................... 38
-Receiving a Speech with From Message .............................................. 38
-Sending a Speech with Target Message .............................................. 38
-Echo Voice Session Subprotocol .............................................................. 39
-Handling Unrecognized Messages ...................................................... 39
-Sending a Speech Message ............................................................... 39
-Receiving a Speech with Bounce Message ........................................... 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-Voice Server Details ......................................................................................... 39
-Abstract Data Model .................................................................................... 39
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Initialization with Host Migration ............................................................. 41
-Higher-Layer Triggered Events ..................................................................... 41
-Processing Events and Sequencing Rules ....................................................... 41
-Connection Subprotocol ......................................................................... 41
-Handling Unrecognized Messages ...................................................... 41
-Receiving Connect Request Message .................................................. 41
-Sending Connect Accept Message ...................................................... 41
-Sending Connect Refuse Message ...................................................... 41
-Receiving a Client Capability Confirmation Message ............................. 42
-Common Message for All Voice Session Subprotocols ................................. 42
-Sending a Session Lost Message ....................................................... 42
-Sending a Set Client Voice Target Message ......................................... 42
-Receiving a Client Disconnect Request Message .................................. 42
-Sending a Client Disconnect Confirmation Message .............................. 42
-Peer Voice Session Subprotocol .............................................................. 43
-Handling Unrecognized Messages ...................................................... 43
-Sending a Voice Client List Message ................................................... 43
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-3.2.5.3
-
-3.2.5.3.1
-3.2.5.3.2
-
-3.2.3.1
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-
-3.2.4
-3.2.5
-
-[MC-DPLVP] - v20170601
-DirectPlay Voice Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 55
-
-3.2.5.3.3
-3.2.5.3.4
-3.2.5.3.5
-
-3.2.5.3.5.1
-3.2.5.3.5.2
-3.2.5.3.5.3
-
-Sending an Add Voice Client Message ................................................ 43
-Sending a Remove Voice Client Message ............................................ 43
-Host Migration ................................................................................ 43
-Sending a Voice Server Exited with Host Migration Message ............ 43
-Sending a Host Migration Complete Message ................................. 43
-Receiving a Client Capability Confirmation Message ........................ 44
-Mixing Voice Session Subprotocol ............................................................ 44
-Handling Unrecognized Messages ...................................................... 44
-Sending an Add Voice Client Message ................................................ 44
-Sending a Speech with Bounce Message ............................................. 44
-Receiving a Speech with Target Message ............................................ 44
-Forwarding Voice Session Subprotocol ..................................................... 44
-Handling Unrecognized Messages ...................................................... 44
-Receiving a Speech with Target Message ............................................ 44
-Sending a Speech with From Message ................................................ 45
-Echo Voice Session Subprotocol .............................................................. 45
-Handling Unrecognized Messages ...................................................... 45
-Receiving a Speech Message ............................................................. 45
-Sending a Speech with Bounce Message ............................................. 45
-Timer Events .............................................................................................. 45
-Other Local Events ...................................................................................... 45
-
-3.2.5.4
-
-3.2.5.4.1
-3.2.5.4.2
-3.2.5.4.3
-3.2.5.4.4
-
-3.2.5.5
-
-3.2.5.5.1
-3.2.5.5.2
-3.2.5.5.3
-
-3.2.5.6
-
-3.2.5.6.1
-3.2.5.6.2
-3.2.5.6.3
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 46
-Successful Connect Sequence ............................................................................ 46
-
-4.1
-
-5  Security ................................................................................................................. 48
-Security Considerations for Implementers ........................................................... 48
-Index of Security Parameters ............................................................................ 48
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 49
-
-7  Change Tracking .................................................................................................... 50
-
-8  Index ..................................................................................................................... 51
-
-[MC-DPLVP] - v20170601
-DirectPlay Voice Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 55
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 How DirectPlay Handles Voice Bursts](#131-how-directplay-handles-voice-bursts)
+    - [1.3.2 Connection Subprotocol](#132-connection-subprotocol)
+    - [1.3.3 Peer Voice Session Subprotocol](#133-peer-voice-session-subprotocol)
+      - [1.3.3.1 Host Migration](#1331-host-migration)
+    - [1.3.4 Mixing Voice Session Subprotocol](#134-mixing-voice-session-subprotocol)
+    - [1.3.5 Forwarding Voice Session Subprotocol](#135-forwarding-voice-session-subprotocol)
+    - [1.3.6 Echo Voice Session Subprotocol](#136-echo-voice-session-subprotocol)
+    - [1.3.7 Required Codecs](#137-required-codecs)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 The Common Message Header](#221-the-common-message-header)
+    - [2.2.2 Common Messages](#222-common-messages)
+      - [2.2.2.1 Session Lost Message](#2221-session-lost-message)
+      - [2.2.2.2 Client Disconnect Request Message](#2222-client-disconnect-request-message)
+      - [2.2.2.3 Client Disconnect Confirmation Message](#2223-client-disconnect-confirmation-message)
+      - [2.2.2.4 Add Voice Client Message](#2224-add-voice-client-message)
+      - [2.2.2.5 Set Client Voice Target Message](#2225-set-client-voice-target-message)
+      - [2.2.2.6 Speech with Target Message](#2226-speech-with-target-message)
+      - [2.2.2.7 Speech with Bounce Message](#2227-speech-with-bounce-message)
+      - [2.2.2.8 Client Capability Confirmation Message](#2228-client-capability-confirmation-message)
+    - [2.2.3 Connection Subprotocol Messages](#223-connection-subprotocol-messages)
+      - [2.2.3.1 Connect Request Message](#2231-connect-request-message)
+      - [2.2.3.2 Connect Accept Message](#2232-connect-accept-message)
+      - [2.2.3.3 Connect Refuse Message](#2233-connect-refuse-message)
+    - [2.2.4 Peer Voice Session Subprotocol Messages](#224-peer-voice-session-subprotocol-messages)
+      - [2.2.4.1 Voice Client List Entry Structure](#2241-voice-client-list-entry-structure)
+      - [2.2.4.2 Voice Client List Message](#2242-voice-client-list-message)
+      - [2.2.4.3 Remove Voice Client Message](#2243-remove-voice-client-message)
+      - [2.2.4.4 Speech Message](#2244-speech-message)
+      - [2.2.4.5 Host Migration Messages](#2245-host-migration-messages)
+        - [2.2.4.5.1 Voice Server Exited with Host Migration Message](#22451-voice-server-exited-with-host-migration-message)
+        - [2.2.4.5.2 Host Migration Complete Message](#22452-host-migration-complete-message)
+    - [2.2.5 Forwarding Voice Session Subprotocol Messages](#225-forwarding-voice-session-subprotocol-messages)
+      - [2.2.5.1 Speech with From Message](#2251-speech-with-from-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Voice Client Details](#31-voice-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Connection Subprotocol](#3151-connection-subprotocol)
+        - [3.1.5.1.1 Handling Unrecognized Messages](#31511-handling-unrecognized-messages)
+        - [3.1.5.1.2 Sending Connect Request Message](#31512-sending-connect-request-message)
+        - [3.1.5.1.3 Receiving Connect Accept Message](#31513-receiving-connect-accept-message)
+        - [3.1.5.1.4 Receiving Connect Refuse Message](#31514-receiving-connect-refuse-message)
+        - [3.1.5.1.5 Sending a Client Capability Confirmation Message](#31515-sending-a-client-capability-confirmation-message)
+      - [3.1.5.2 Common Messages for All Voice Session Subprotocols](#3152-common-messages-for-all-voice-session-subprotocols)
+        - [3.1.5.2.1 Receiving a Session Lost Message](#31521-receiving-a-session-lost-message)
+        - [3.1.5.2.2 Receiving a Set Client Voice Target Message](#31522-receiving-a-set-client-voice-target-message)
+        - [3.1.5.2.3 Sending a Client Disconnect Request Message](#31523-sending-a-client-disconnect-request-message)
+        - [3.1.5.2.4 Receiving a Client Disconnect Confirmation Message](#31524-receiving-a-client-disconnect-confirmation-message)
+        - [3.1.5.2.5 Receiving an Add Voice Client Message](#31525-receiving-an-add-voice-client-message)
+      - [3.1.5.3 Peer Voice Session Subprotocol](#3153-peer-voice-session-subprotocol)
+        - [3.1.5.3.1 Handling Unrecognized Message](#31531-handling-unrecognized-message)
+        - [3.1.5.3.2 Receiving a Voice Client List Message](#31532-receiving-a-voice-client-list-message)
+        - [3.1.5.3.3 Receiving a Remove Voice Client Message](#31533-receiving-a-remove-voice-client-message)
+        - [3.1.5.3.4 Sending a Speech Message](#31534-sending-a-speech-message)
+        - [3.1.5.3.5 Receiving a Speech Message](#31535-receiving-a-speech-message)
+        - [3.1.5.3.6 Host Migration](#31536-host-migration)
+          - [3.1.5.3.6.1 Receiving a Voice Server Exited with Host Migration Message](#315361-receiving-a-voice-server-exited-with-host-migration-message)
+          - [3.1.5.3.6.2 Receiving a Host Migration Complete Message](#315362-receiving-a-host-migration-complete-message)
+          - [3.1.5.3.6.3 Sending a Client Capability Confirmation Message](#315363-sending-a-client-capability-confirmation-message)
+      - [3.1.5.4 Mixing Voice Session Subprotocol](#3154-mixing-voice-session-subprotocol)
+        - [3.1.5.4.1 Handling Unrecognized Messages](#31541-handling-unrecognized-messages)
+        - [3.1.5.4.2 Receiving a Speech with Bounce Message](#31542-receiving-a-speech-with-bounce-message)
+        - [3.1.5.4.3 Sending a Speech with Target Message](#31543-sending-a-speech-with-target-message)
+      - [3.1.5.5 Forwarding Voice Session Subprotocol](#3155-forwarding-voice-session-subprotocol)
+        - [3.1.5.5.1 Handling Unrecognized Messages](#31551-handling-unrecognized-messages)
+        - [3.1.5.5.2 Receiving a Speech with From Message](#31552-receiving-a-speech-with-from-message)
+        - [3.1.5.5.3 Sending a Speech with Target Message](#31553-sending-a-speech-with-target-message)
+      - [3.1.5.6 Echo Voice Session Subprotocol](#3156-echo-voice-session-subprotocol)
+        - [3.1.5.6.1 Handling Unrecognized Messages](#31561-handling-unrecognized-messages)
+        - [3.1.5.6.2 Sending a Speech Message](#31562-sending-a-speech-message)
+        - [3.1.5.6.3 Receiving a Speech with Bounce Message](#31563-receiving-a-speech-with-bounce-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Voice Server Details](#32-voice-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 Initialization with Host Migration](#3231-initialization-with-host-migration)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Connection Subprotocol](#3251-connection-subprotocol)
+        - [3.2.5.1.1 Handling Unrecognized Messages](#32511-handling-unrecognized-messages)
+        - [3.2.5.1.2 Receiving Connect Request Message](#32512-receiving-connect-request-message)
+        - [3.2.5.1.3 Sending Connect Accept Message](#32513-sending-connect-accept-message)
+        - [3.2.5.1.4 Sending Connect Refuse Message](#32514-sending-connect-refuse-message)
+        - [3.2.5.1.5 Receiving a Client Capability Confirmation Message](#32515-receiving-a-client-capability-confirmation-message)
+      - [3.2.5.2 Common Message for All Voice Session Subprotocols](#3252-common-message-for-all-voice-session-subprotocols)
+        - [3.2.5.2.1 Sending a Session Lost Message](#32521-sending-a-session-lost-message)
+        - [3.2.5.2.2 Sending a Set Client Voice Target Message](#32522-sending-a-set-client-voice-target-message)
+        - [3.2.5.2.3 Receiving a Client Disconnect Request Message](#32523-receiving-a-client-disconnect-request-message)
+        - [3.2.5.2.4 Sending a Client Disconnect Confirmation Message](#32524-sending-a-client-disconnect-confirmation-message)
+      - [3.2.5.3 Peer Voice Session Subprotocol](#3253-peer-voice-session-subprotocol)
+        - [3.2.5.3.1 Handling Unrecognized Messages](#32531-handling-unrecognized-messages)
+        - [3.2.5.3.2 Sending a Voice Client List Message](#32532-sending-a-voice-client-list-message)
+        - [3.2.5.3.3 Sending an Add Voice Client Message](#32533-sending-an-add-voice-client-message)
+        - [3.2.5.3.4 Sending a Remove Voice Client Message](#32534-sending-a-remove-voice-client-message)
+        - [3.2.5.3.5 Host Migration](#32535-host-migration)
+          - [3.2.5.3.5.1 Sending a Voice Server Exited with Host Migration Message](#325351-sending-a-voice-server-exited-with-host-migration-message)
+          - [3.2.5.3.5.2 Sending a Host Migration Complete Message](#325352-sending-a-host-migration-complete-message)
+          - [3.2.5.3.5.3 Receiving a Client Capability Confirmation Message](#325353-receiving-a-client-capability-confirmation-message)
+      - [3.2.5.4 Mixing Voice Session Subprotocol](#3254-mixing-voice-session-subprotocol)
+        - [3.2.5.4.1 Handling Unrecognized Messages](#32541-handling-unrecognized-messages)
+        - [3.2.5.4.2 Sending an Add Voice Client Message](#32542-sending-an-add-voice-client-message)
+        - [3.2.5.4.3 Sending a Speech with Bounce Message](#32543-sending-a-speech-with-bounce-message)
+        - [3.2.5.4.4 Receiving a Speech with Target Message](#32544-receiving-a-speech-with-target-message)
+      - [3.2.5.5 Forwarding Voice Session Subprotocol](#3255-forwarding-voice-session-subprotocol)
+        - [3.2.5.5.1 Handling Unrecognized Messages](#32551-handling-unrecognized-messages)
+        - [3.2.5.5.2 Receiving a Speech with Target Message](#32552-receiving-a-speech-with-target-message)
+        - [3.2.5.5.3 Sending a Speech with From Message](#32553-sending-a-speech-with-from-message)
+      - [3.2.5.6 Echo Voice Session Subprotocol](#3256-echo-voice-session-subprotocol)
+        - [3.2.5.6.1 Handling Unrecognized Messages](#32561-handling-unrecognized-messages)
+        - [3.2.5.6.2 Receiving a Speech Message](#32562-receiving-a-speech-message)
+        - [3.2.5.6.3 Sending a Speech with Bounce Message](#32563-sending-a-speech-with-bounce-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Successful Connect Sequence](#41-successful-connect-sequence)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This specification describes the DirectPlay Voice Protocol. This protocol is used to provide voice
 communications for applications that use the DirectPlay Protocol to communicate.
@@ -853,7 +639,7 @@ communications for applications that use the DirectPlay Protocol to communicate.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -918,7 +704,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-DPSESSIONDESC2 field as specified in [MC-DPL4CS]. When the underlying transport is
+
+DPSESSIONDESC2 field as specified in [MC-DPL4CS]. When the underlying transport is
 DirectPlay 8, this is equivalent to a client/server game session as specified in [MC-
 DPL8CS].
 
@@ -996,7 +783,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-nonguaranteed in order to provide the lowest possible latency. As a result, speech messages
+
+nonguaranteed in order to provide the lowest possible latency. As a result, speech messages
 are not guaranteed to arrive, can be duplicated, and are not guaranteed to arrive in order. When
 two packets are received out of order and there are three packets of jitter buffer, the packets
 can easily be correctly reordered before they are required for playback. If the packets are not
@@ -1071,7 +859,8 @@ Release: June 1, 2017
 
 9 / 55
 
-voice client: A DirectPlay client or DirectPlay host that understands the DirectPlay Voice
+
+voice client: A DirectPlay client or DirectPlay host that understands the DirectPlay Voice
 
 Protocol and acts in a voice client role as specified in section 3.1.
 
@@ -1101,14 +890,14 @@ the speech messages from a voice client are intended.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1123,12 +912,12 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-AUDIOFORMAT] Microsoft Corporation, "WAVEFORMATEX", http://msdn.microsoft.com/en-
 us/library/ms713497.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The DirectPlay Voice Protocol enables DirectPlay clients within a game session to communicate
 voice. The exchange is coordinated by a voice server and works independently of the version of
@@ -1140,7 +929,8 @@ Release: June 1, 2017
 
 10 / 55
 
-DirectPlay in use. The protocol depends on the underlying game session to handle connectivity and
+
+DirectPlay in use. The protocol depends on the underlying game session to handle connectivity and
 transport between the voice clients and the voice server.
 
 The DirectPlay Voice Protocol provides a virtual game session that exists within the game session. It
@@ -1190,7 +980,7 @@ For a list of codecs required by the DirectPlay Voice Protocol, see Required Cod
 implementation information regarding when the voice client does not support the codec chosen by the
 voice server, see Receiving Connect Accept Message (section 3.1.5.1.3).
 
-1.3.1  How DirectPlay Handles Voice Bursts
+#### 1.3.1 How DirectPlay Handles Voice Bursts
 
 A voice burst occurs when DirectPlay detects voice. Essentially, a single voice burst translates to a
 "segment of voice recorded sequentially". Multiple voice bursts simply mean that after a burst there is
@@ -1219,7 +1009,8 @@ Release: June 1, 2017
 
 11 / 55
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MC-DPLVP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1251,7 +1042,7 @@ A voice burst can be arbitrarily long, even indefinite, as determined by the imp
 the longer the voice burst, the more likely that audio data will be lost, resulting in "pops" or "skips" in
 the playback.
 
-1.3.2  Connection Subprotocol
+#### 1.3.2 Connection Subprotocol
 
 The voice client and voice server use the connection subprotocol to establish connectivity and to
 communicate which voice session subprotocol and codec to use for further communications.
@@ -1261,7 +1052,7 @@ attempt.
 
 Figure 1: Connection protocol successful connect sequence
 
-1.3.3  Peer Voice Session Subprotocol
+#### 1.3.3 Peer Voice Session Subprotocol
 
 The peer voice session subprotocol specifies the communication between a voice server and voice
 clients and between individual voice clients when a peer voice session type is used. The peer voice
@@ -1274,7 +1065,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-voice session subprotocol is indicated when the SessionType field of the Connect Accept
+
+voice session subprotocol is indicated when the SessionType field of the Connect Accept
 Message (section 2.2.3.2) is set to DVSESSIONTYPE_PEER (0x00000001).
 
 The roles in this subprotocol are as follows:
@@ -1300,7 +1092,7 @@ Electing and creating a new voice server for voice sessions that enable host mig
 
 Note  The voice clients maintain a list of voice clients.
 
-1.3.3.1  Host Migration
+##### 1.3.3.1 Host Migration
 
 Host migration enables a set of voice clients to elect and create a new voice server to replace a
 voice server that has become unavailable.
@@ -1333,7 +1125,8 @@ Release: June 1, 2017
 
 13 / 55
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MC-DPLVP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1344,7 +1137,7 @@ migration is in use if the peer voice session subprotocol is being used and the 
 the Connect Accept Message (section 2.2.3.2) does not contain the DVSESSION_NOHOSTMIGRATION
 (0x00000001) flag.
 
-1.3.4  Mixing Voice Session Subprotocol
+#### 1.3.4 Mixing Voice Session Subprotocol
 
 The mixing voice session subprotocol specifies the communication between a voice server and voice
 clients when a mixing game session type is used. The mixing voice session subprotocol requires a
@@ -1388,7 +1181,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.3.5  Forwarding Voice Session Subprotocol
+
+#### 1.3.5 Forwarding Voice Session Subprotocol
 
 The forwarding voice session subprotocol specifies the communication between a voice server and
 voice clients when a forwarding game session type is used. The forwarding voice session
@@ -1421,7 +1215,7 @@ client in the voice client list.
 
 Note  The voice clients maintain a list of voice clients.
 
-1.3.6  Echo Voice Session Subprotocol
+#### 1.3.6 Echo Voice Session Subprotocol
 
 The echo voice session subprotocol specifies the communication between a voice server and voice
 clients when an echo game session type is used. The echo voice session subprotocol requires a
@@ -1449,7 +1243,7 @@ speech messages from the voice server.
 
 Note  The voice clients do not maintain a list of voice clients.
 
-1.3.7  Required Codecs
+#### 1.3.7 Required Codecs
 
 The DirectPlay Voice Protocol requires communication using one of the codecs listed in the following
 table. The codecs are opaque to the DirectPlay Voice Protocol, with the exception that in a voice
@@ -1464,7 +1258,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Required codec
+
+Required codec
 
 Voxware VR12 (*)
 
@@ -1542,13 +1337,13 @@ Variable (max 1822)
 Windows Development Kit (WDK). For more information about the MS ADPCM codec, see [MSDN-
 AUDIOFORMAT].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DirectPlay Voice Protocol is embedded in either the DirectPlay 4 Protocol or the DirectPlay 8
 Protocol. The DirectPlay Protocol Voice Message Type is used for all voice extensions to
 DirectPlay Protocols.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DirectPlay Voice Protocol operates only after a game session is established. If the game session
 is terminated, then the DirectPlay Voice Protocol Specification is also terminated.
@@ -1600,7 +1395,8 @@ Release: June 1, 2017
 
 16 / 55
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The DirectPlay Voice Protocol is designed to provide voice communications between voice clients
 within a game session.
@@ -1706,7 +1502,7 @@ Scales with the
 number of
 people talking.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1728,7 +1524,7 @@ Message (section 2.2.3.2).
 The DirectPlay Voice Protocol provides version fields in the connection subprotocol, but they are not
 used.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as specified in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
@@ -1741,7 +1537,8 @@ Release: June 1, 2017
 
 17 / 55
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -1752,16 +1549,17 @@ Release: June 1, 2017
 
 18 / 55
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol is designed to operate over the DirectPlay 4 or DirectPlay 8 protocols using the voice
 message type.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain DirectPlay Voice Protocol message syntax. All numeric values are
 transported in little-endian format.
@@ -1968,7 +1766,8 @@ Release: June 1, 2017
 
 19 / 55
 
-Message type
+
+Message type
 
 Voice Client List
 Message (section 2.2.4.2)
@@ -2052,7 +1851,7 @@ Connect Accept Message (section 2.2.3.2).
 Note  This protocol specification uses curly braced GUID strings as specified in [MS-DTYP] section
 2.3.4.3.
 
-2.2.1  The Common Message Header
+#### 2.2.1 The Common Message Header
 
 All messages in the DirectPlay Voice Protocol share a common header, which is followed by a
 message-specific payload, as specified in the following sections. Some message types do not have
@@ -2118,7 +1917,8 @@ Release: June 1, 2017
 
 20 / 55
 
-Value
+
+Value
 
 0x0D
 
@@ -2201,12 +2001,12 @@ Message-specific payload (variable): A variable-length field the size of which d
 
 of packet designated in the MessageType field.
 
-2.2.2  Common Messages
+#### 2.2.2 Common Messages
 
 The following are messages that are applicable to more than one session type subprotocol or the
 connection subprotocol.
 
-2.2.2.1  Session Lost Message
+##### 2.2.2.1 Session Lost Message
 
 The voice server sends this message to the voice client in all voice session subprotocols to
 indicate that the game session has ended. This message can also be sent when the new voice server
@@ -2220,7 +2020,8 @@ Release: June 1, 2017
 
 21 / 55
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2243,7 +2044,7 @@ field MUST be set to DVMSGID_SESSIONLOST (0x03).
 
 ReasonCode (4 bytes): This MUST be DVERR_SESSIONLOST (0x8015012C).
 
-2.2.2.2  Client Disconnect Request Message
+##### 2.2.2.2 Client Disconnect Request Message
 
 This message is sent by the voice client in all voice session subprotocols when they are exiting
 the voice session gracefully. These messages are transmitted as ordered and guaranteed with the
@@ -2266,7 +2067,7 @@ Header (1 byte): The common message header (as specified in section 2.2.1). The 
 
 field MUST be set to DVMSGID_DISCONNECT (0x54).
 
-2.2.2.3  Client Disconnect Confirmation Message
+##### 2.2.2.3 Client Disconnect Confirmation Message
 
 This message is sent from the voice server to the voice client in all voice session subprotocols
 when the voice server has successfully removed a voice client from the voice session. These
@@ -2290,7 +2091,7 @@ Header (1 byte): The common message header (as specified in section 2.2.1). The 
 
 field MUST be set to DVMSGID_DISCONNECTCONFIRM (0x5A).
 
-2.2.2.4  Add Voice Client Message
+##### 2.2.2.4 Add Voice Client Message
 
 In the Peer Voice Session Subprotocol (section 1.3.3) this message is sent from the host to all voice
 clients in the game session to instruct them to add a voice client to their list of voice clients. In the
@@ -2320,7 +2121,8 @@ Release: June 1, 2017
 
 22 / 55
 
-...
+
+...
 
 ...
 
@@ -2360,7 +2162,7 @@ client. When host migration is enabled as described in section 1.3.3.1, this fie
 the host order ID of the voice client to be added. Otherwise, HostOrderID SHOULD be set to
 0xFFFFFFFF.
 
-2.2.2.5  Set Client Voice Target Message
+##### 2.2.2.5 Set Client Voice Target Message
 
 This message is sent from the voice server to a voice client in all voice session subprotocols to
 update the voice client's voice target list, and is used only when server-controlled targeting is
@@ -2409,7 +2211,8 @@ Release: June 1, 2017
 
 23 / 55
 
-2.2.2.6  Speech with Target Message
+
+##### 2.2.2.6 Speech with Target Message
 
 When using the Mixing Voice Session Subprotocol (section 1.3.4) or the Forwarding Voice Session
 Subprotocol (section 1.3.5) this speech message is sent from the voice client to the voice server.
@@ -2471,7 +2274,7 @@ SpeechData (variable): An array of bytes containing a speech frame encoded in th
 
 selected codec.
 
-2.2.2.7  Speech with Bounce Message
+##### 2.2.2.7 Speech with Bounce Message
 
 This message is used in both the Echo Voice Session Subprotocol (section 1.3.6) and the Mixing Voice
 Session Subprotocol (section 1.3.4). When used in the echo voice session subprotocol it is used to
@@ -2506,7 +2309,8 @@ Release: June 1, 2017
 
 24 / 55
 
-...
+
+...
 
 Header (1 byte): The common message header (as specified in section 2.2.1). The MessageType
 
@@ -2524,7 +2328,7 @@ SpeechData (variable): An array of bytes containing a speech frame encoded in th
 
 selected codec.
 
-2.2.2.8  Client Capability Confirmation Message
+##### 2.2.2.8 Client Capability Confirmation Message
 
 This message is used by the Connection Subprotocol (section 1.3.2), and for host migration of the
 Peer Voice Session Subprotocol (section 1.3.3). For the connection subprotocol, it is sent by the voice
@@ -2581,7 +2385,7 @@ Confirmation Message is used during host migration, the HostOrderID field MUST b
 Current Host Order ID of the voice client. Otherwise, HostOrderID MUST be set to 0xFFFFFFFF.
 For more information about the Current Host Order ID, see sections 3.1.1 and 3.1.3.
 
-2.2.3  Connection Subprotocol Messages
+#### 2.2.3 Connection Subprotocol Messages
 
 The following messages are used only in the connection subprotocol.
 
@@ -2592,7 +2396,8 @@ Release: June 1, 2017
 
 25 / 55
 
-2.2.3.1  Connect Request Message
+
+##### 2.2.3.1 Connect Request Message
 
 When the underlying game session is peer-to-peer, this message is sent to all DirectPlay clients.
 When the underlying game session is client/server, this message is sent to the DirectPlay host.
@@ -2630,7 +2435,7 @@ VersionMinor (1 byte): An 8-bit unsigned integer. This value MUST be 0x00.
 
 VersionBuild (4 bytes): A 32-bit unsigned integer. This value MUST be 0x00000003.
 
-2.2.3.2  Connect Accept Message
+##### 2.2.3.2 Connect Accept Message
 
 This message is sent by the voice server to inform the voice client of configuration of the game
 session. This message is sent as an ordered and guaranteed message by using the DirectPlay
@@ -2690,7 +2495,8 @@ Release: June 1, 2017
 
 26 / 55
 
-Value
+
+Value
 
 Meaning
 
@@ -2798,7 +2604,8 @@ Release: June 1, 2017
 
 27 / 55
 
-Value
+
+Value
 
 DPVCTGUID_SC06
 
@@ -2820,7 +2627,7 @@ Voxware VR12
 
 FE44A9FE-8ED4-48bf-9D66-1B1ADFF9FF6D
 
-2.2.3.3  Connect Refuse Message
+##### 2.2.3.3 Connect Refuse Message
 
 This message is sent by the voice server if a voice client requests to connect and the voice server is
 either shutting down or not yet initialized. This message is sent as an ordered and guaranteed
@@ -2865,11 +2672,11 @@ VersionMinor (1 byte): An 8-bit unsigned integer. This value MUST be 0x00.
 
 VersionBuild (4 bytes): A 32-bit unsigned integer. This value MUST be 0x00000003.
 
-2.2.4  Peer Voice Session Subprotocol Messages
+#### 2.2.4 Peer Voice Session Subprotocol Messages
 
 The following are messages that are specific to the Peer Voice Session Subprotocol (section 1.3.3).
 
-2.2.4.1  Voice Client List Entry Structure
+##### 2.2.4.1 Voice Client List Entry Structure
 
 This structure is used to describe a single voice client.
 
@@ -2895,7 +2702,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-HostOrderID
+
+HostOrderID
 
 DVID (4 bytes): A 32-bit unsigned integer representing the DVID of the voice client.
 
@@ -2921,7 +2729,7 @@ client. When host migration is enabled as described in section 1.3.3.1, this fie
 the host order ID of the voice client that is being described. Otherwise, HostOrderID SHOULD be
 set to 0xFFFFFFFF.
 
-2.2.4.2  Voice Client List Message
+##### 2.2.4.2 Voice Client List Message
 
 This message is sent from the voice server to a voice client to provide that client with a list of all
 voice clients that are currently part of the voice session. If the game session is large, then the
@@ -2979,7 +2787,8 @@ Release: June 1, 2017
 
 29 / 55
 
-2.2.4.3  Remove Voice Client Message
+
+##### 2.2.4.3 Remove Voice Client Message
 
 This message is sent from the voice server to a voice client to instruct it to remove a specific voice
 client from its list of voice clients. This message is sent ordered and guaranteed by using the
@@ -3008,7 +2817,7 @@ field MUST be set to DVMSGID_DELETEVOICEPLAYER (0x02).
 
 DVID (4 bytes): A 32-bit unsigned integer representing the DVID of the voice client to remove.
 
-2.2.4.4  Speech Message
+##### 2.2.4.4 Speech Message
 
 This message is sent from one voice client to another to send a single speech frame. It contains the
 minimum fields needed for a speech message. This message is sent unordered and nonguaranteed
@@ -3051,12 +2860,12 @@ SpeechData (variable): An array of bytes containing a speech frame encoded in th
 
 selected codec.
 
-2.2.4.5  Host Migration Messages
+##### 2.2.4.5 Host Migration Messages
 
 The following are messages that are specific to the Peer Voice Session Subprotocol (section 1.3.3)
 when host migration is enabled as described in section 1.3.3.1.
 
-2.2.4.5.1 Voice Server Exited with Host Migration Message
+###### 2.2.4.5.1 Voice Server Exited with Host Migration Message
 
 This message is sent by the voice server when it is exiting the voice session and host migration is
 enabled. The message is sent ordered and guaranteed by using the DirectPlay protocol voice
@@ -3069,7 +2878,8 @@ Release: June 1, 2017
 
 30 / 55
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3086,7 +2896,7 @@ Header (1 byte): The common message header (as specified in section 2.2.1). The 
 
 field MUST be set to DVMSGID_HOSTMIGRATELEAVE (0x62).
 
-2.2.4.5.2 Host Migration Complete Message
+###### 2.2.4.5.2 Host Migration Complete Message
 
 When a host migration occurs, this message is sent when a new voice server has been successfully
 created and initialized. This message is sent by the new voice server to all of the voice clients in the
@@ -3110,12 +2920,12 @@ Header (1 byte): The common message header (as specified in section 2.2.1). The 
 
 field MUST be set to DVMSGID_HOSTMIGRATED (0x0C).
 
-2.2.5  Forwarding Voice Session Subprotocol Messages
+#### 2.2.5 Forwarding Voice Session Subprotocol Messages
 
 The following are messages that are specific to the Forwarding Voice Session
 Subprotocol (section 1.3.5).
 
-2.2.5.1  Speech with From Message
+##### 2.2.5.1 Speech with From Message
 
 This message is sent from the voice server to a voice client to relay a speech message on behalf
 of the voice client. It contains the minimum fields needed for a speech message as well as a DVID
@@ -3170,7 +2980,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SpeechData (variable): An array of bytes containing a speech frame encoded in the currently
+
+SpeechData (variable): An array of bytes containing a speech frame encoded in the currently
 
 selected codec.
 
@@ -3181,11 +2992,12 @@ Release: June 1, 2017
 
 32 / 55
 
-3  Protocol Details
 
-3.1  Voice Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Voice Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3237,7 +3049,7 @@ Current Sequence Number: The sequence number of the next speech message being se
 
 the current voice burst. When a new voice burst is started, this value is reset to 0.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Connection Retry Timer is created when the voice client begins its connect sequence. It
 expires every 1,250 ms or when the voice client completes a successful connection with the
@@ -3250,7 +3062,8 @@ Release: June 1, 2017
 
 33 / 55
 
-The Connection Request Timer is created when the voice client begins its connect sequence. It
+
+The Connection Request Timer is created when the voice client begins its connect sequence. It
 expires after 30,000 ms or when the voice client completes a successful connection with the
 Connection Subprotocol.
 
@@ -3258,7 +3071,7 @@ The Speech Data Transmission Timer expires on the period indicated by the curren
 codec as described by the Frame Size (milliseconds of data) column in the list of codecs specified in
 section 1.3.7.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The underlying game session MUST be established before the voice client can begin operation. In
 addition, the following MUST occur:
@@ -3283,7 +3096,7 @@ Jitter Buffers are initialized.
 
   Current Sequence Number is set to 0.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The following are events that can be triggered by a higher level:
 
@@ -3303,15 +3116,15 @@ Change Voice Client List: The higher level can modify the Current Voice Target L
 target list is emptied by the higher level and a voice burst is being transmitted, the voice burst will
 stop transmitting.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Connection Subprotocol
+##### 3.1.5.1 Connection Subprotocol
 
-3.1.5.1.1 Handling Unrecognized Messages
+###### 3.1.5.1.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.1.5.1.2 Sending Connect Request Message
+###### 3.1.5.1.2 Sending Connect Request Message
 
 [MC-DPLVP] - v20170601
 DirectPlay Voice Protocol
@@ -3320,7 +3133,8 @@ Release: June 1, 2017
 
 34 / 55
 
-The structure and fields of the Connect Request Message are specified in section 2.2.3.1. This
+
+The structure and fields of the Connect Request Message are specified in section 2.2.3.1. This
 message is handled differently depending on the underlying game session type:
 
 Peer-to-peer: The message is sent to all DirectPlay clients.
@@ -3329,7 +3143,7 @@ Client/server: The message is sent to the DirectPlay session host.
 
 The client MUST send this message before any other messages.
 
-3.1.5.1.3 Receiving Connect Accept Message
+###### 3.1.5.1.3 Receiving Connect Accept Message
 
 The structure and fields of the Connect Accept Message are specified in section 2.2.3.2.
 
@@ -3347,7 +3161,7 @@ The voice client SHOULD update the value of its Current Voice Server DVID to mat
 the sender of the Connect Accept Message. The DVID value is determined differently depending on the
 DirectPlay Protocol version.<1>
 
-3.1.5.1.4 Receiving Connect Refuse Message
+###### 3.1.5.1.4 Receiving Connect Refuse Message
 
 The structure and fields of the Connect Refuse Message are specified in section 2.2.3.3.
 
@@ -3360,7 +3174,7 @@ When the client receives this message, it SHOULD stop communicating. The ReasonC
 the Connect Refuse Message can optionally be passed up to higher layers to indicate the cause of the
 failure.
 
-3.1.5.1.5 Sending a Client Capability Confirmation Message
+###### 3.1.5.1.5 Sending a Client Capability Confirmation Message
 
 The structure and fields of the Client Capability Confirmation Message are specified in section 2.2.2.8.
 
@@ -3369,9 +3183,9 @@ this message, the voice client starts using the voice session subprotocol specif
 SessionType field of the Connect Accept Message. In the Client Capability Confirmation Message, the
 HostOrderID field MUST be set to 0xFFFFFFFF.
 
-3.1.5.2  Common Messages for All Voice Session Subprotocols
+##### 3.1.5.2 Common Messages for All Voice Session Subprotocols
 
-3.1.5.2.1 Receiving a Session Lost Message
+###### 3.1.5.2.1 Receiving a Session Lost Message
 
 The structure and fields of the Session Lost Message are specified in section 2.2.2.1. This message
 MUST come from the current voice server that is identified by the Current Voice Server DVID.
@@ -3387,7 +3201,8 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.5.2.2 Receiving a Set Client Voice Target Message
+
+###### 3.1.5.2.2 Receiving a Set Client Voice Target Message
 
 The structure and fields of the Set Client Voice Target Message are specified in section 2.2.2.5. This
 message MUST come from the current voice server that is identified by the current voice server
@@ -3401,7 +3216,7 @@ When the message is processed the voice client SHOULD replace its Current Voice 
 the list of voice targets in this message. All speech messages transmitted after this point SHOULD use
 the new set of targets.
 
-3.1.5.2.3 Sending a Client Disconnect Request Message
+###### 3.1.5.2.3 Sending a Client Disconnect Request Message
 
 The structure and fields of the Client Disconnect Request Message are specified in section 2.2.2.2.
 
@@ -3413,7 +3228,7 @@ voice client stops waiting. If a Host Migration Complete Message is received whi
 migration is enabled as described in section 1.3.3.1, then the voice client retransmits the Client
 Disconnect Request Message.
 
-3.1.5.2.4 Receiving a Client Disconnect Confirmation Message
+###### 3.1.5.2.4 Receiving a Client Disconnect Confirmation Message
 
 The structure and fields of the Client Disconnect Confirmation Message are specified in section 2.2.2.3.
 This message MUST come from the current voice server that is identified by the Current Voice
@@ -3422,7 +3237,7 @@ Server DVID.
 This message indicates that the current voice server has received the client's request to disconnect.
 When this message is received, the voice client SHOULD cease all communications.
 
-3.1.5.2.5 Receiving an Add Voice Client Message
+###### 3.1.5.2.5 Receiving an Add Voice Client Message
 
 The structure and fields of the Add Voice Client Message are specified in section 2.2.2.4. This message
 MUST come from the current voice server that is identified by the Current Voice Server DVID.
@@ -3434,14 +3249,14 @@ If the voice session is running the Mixing Voice Session Subprotocol (section 1.
 also used to signal the voice client that they can start transmitting speech messages if a voice burst
 is active and there is a nonempty Current Voice Target List.
 
-3.1.5.3  Peer Voice Session Subprotocol
+##### 3.1.5.3 Peer Voice Session Subprotocol
 
 The Peer Voice Session Subprotocol (section 1.3.3) is used by the voice client only after it has
 received a Connect Accept Message and responded with a Client Capability Confirmation Message. The
 peer voice session subprotocol is used when the SessionType field of the Connect Accept Message is
 set to DVSESSIONTYPE_PEER (0x00000001).
 
-3.1.5.3.1 Handling Unrecognized Message
+###### 3.1.5.3.1 Handling Unrecognized Message
 
 If an unrecognized or malformed message is received, it is ignored.
 
@@ -3452,7 +3267,8 @@ Release: June 1, 2017
 
 36 / 55
 
-3.1.5.3.2 Receiving a Voice Client List Message
+
+###### 3.1.5.3.2 Receiving a Voice Client List Message
 
 The structure and fields of the Voice Client List Message are specified in section 2.2.4.2. This message
 MUST come from the current voice server that is identified by the Current Voice Server DVID.
@@ -3460,7 +3276,7 @@ MUST come from the current voice server that is identified by the Current Voice 
 The client SHOULD iterate through the list of voice clients in the Voice Client List Message and add
 each of them to the Voice Client List. Duplicate entries in the Voice Client List SHOULD be ignored.
 
-3.1.5.3.3 Receiving a Remove Voice Client Message
+###### 3.1.5.3.3 Receiving a Remove Voice Client Message
 
 The structure and fields of the Remove Voice Client Message are specified in section 2.2.4.3. This
 message MUST come from the current voice server that is identified by the Current Voice Server
@@ -3470,7 +3286,7 @@ The voice client SHOULD remove the voice client identified by the Remove Voice C
 its Voice Client List. If the specified voice client is already removed, this message will be safely
 ignored.
 
-3.1.5.3.4 Sending a Speech Message
+###### 3.1.5.3.4 Sending a Speech Message
 
 The structure and fields of the Speech Message are specified in section 2.2.4.4.
 
@@ -3480,7 +3296,7 @@ Current Voice Target List. Speech Message SHOULD NOT be sent before the Voice Cl
 Message is received. Speech messages SHOULD NOT be sent after the Client Disconnect Request
 Message is sent to the voice server.
 
-3.1.5.3.5 Receiving a Speech Message
+###### 3.1.5.3.5 Receiving a Speech Message
 
 The structure and fields of the Speech Message are specified in section 2.2.4.4.
 
@@ -3488,9 +3304,9 @@ A Speech Message is directly received from other voice clients. The speech messa
 placed in the Jitter Buffer of the voice client it came from. The voice client SHOULD ignore Speech
 messages from Voice Clients that are not yet present in the Voice Client List.
 
-3.1.5.3.6 Host Migration
+###### 3.1.5.3.6 Host Migration
 
-3.1.5.3.6.1  Receiving a Voice Server Exited with Host Migration Message
+###### 3.1.5.3.6.1 Receiving a Voice Server Exited with Host Migration Message
 
 The structure and fields of the Voice Server Exited with Host Migration Message are specified in
 section 2.2.4.5.1.
@@ -3499,7 +3315,7 @@ This message indicates that the voice server is exiting the game session and tha
 is enabled in the voice session. See section 1.3.3.1 for information about what the voice client
 SHOULD do in response to the message.
 
-3.1.5.3.6.2  Receiving a Host Migration Complete Message
+###### 3.1.5.3.6.2 Receiving a Host Migration Complete Message
 
 The structure and fields of the Host Migration Complete Message are specified in section 2.2.4.5.2.
 This message MUST come from the current voice server that is identified by the Current Voice
@@ -3517,7 +3333,8 @@ Release: June 1, 2017
 
 37 / 55
 
-3.1.5.3.6.3  Sending a Client Capability Confirmation Message
+
+###### 3.1.5.3.6.3 Sending a Client Capability Confirmation Message
 
 The structure and fields of the Client Capability Confirmation Message are specified in section 2.2.2.8.
 This message MUST be sent to the current voice server that is identified by the Current Voice
@@ -3528,19 +3345,19 @@ either a Host Migration Complete Message (section 2.2.4.5.2) or a Voice Server E
 Migration Message (section 2.2.4.5.1) is received. The Client Capability Confirmation Message MUST
 have the HostOrderID field set to the Current Host Order ID of the voice client.
 
-3.1.5.4  Mixing Voice Session Subprotocol
+##### 3.1.5.4 Mixing Voice Session Subprotocol
 
-3.1.5.4.1 Handling Unrecognized Messages
+###### 3.1.5.4.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.1.5.4.2 Receiving a Speech with Bounce Message
+###### 3.1.5.4.2 Receiving a Speech with Bounce Message
 
 The structure and fields of the Speech with Bounce Message are specified in section 2.2.2.7. This
 message MUST come from the current voice server, which is identified by the Current Voice Server
 DVID. The voice client MUST pass the message to the jitter buffer.
 
-3.1.5.4.3 Sending a Speech with Target Message
+###### 3.1.5.4.3 Sending a Speech with Target Message
 
 The structure and fields of the Speech with Target Message are specified in section 2.2.2.6. This
 message MUST be sent to the current voice server that is identified by the Current Voice Server
@@ -3553,13 +3370,13 @@ SHOULD NOT be sent before the Client Capability Confirmation Message is sent. Sp
 Messages SHOULD NOT be sent after the Client Disconnect Request Message is sent to the voice
 server.
 
-3.1.5.5  Forwarding Voice Session Subprotocol
+##### 3.1.5.5 Forwarding Voice Session Subprotocol
 
-3.1.5.5.1 Handling Unrecognized Messages
+###### 3.1.5.5.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.1.5.5.2 Receiving a Speech with From Message
+###### 3.1.5.5.2 Receiving a Speech with From Message
 
 The structure and fields of the Speech with From Message are specified in section 2.2.5.1. This
 message MUST come from the current voice server that is identified by the Current Voice Server
@@ -3570,7 +3387,7 @@ voice client identified in the SourceDVID field. However, if a voice client with
 specified in SourceDVID does not exist, the voice client SHOULD add a new voice client entry in the
 Voice Client List.
 
-3.1.5.5.3 Sending a Speech with Target Message
+###### 3.1.5.5.3 Sending a Speech with Target Message
 
 [MC-DPLVP] - v20170601
 DirectPlay Voice Protocol
@@ -3579,7 +3396,8 @@ Release: June 1, 2017
 
 38 / 55
 
-The structure and fields of the Speech with Target Message are specified in section 2.2.2.6. This
+
+The structure and fields of the Speech with Target Message are specified in section 2.2.2.6. This
 message MUST be sent to the current voice server that is identified by the Current Voice Server
 DVID.
 
@@ -3590,13 +3408,13 @@ SHOULD NOT be sent before the Client Capability Confirmation Message is sent. Sp
 Messages SHOULD NOT be sent after the Client Disconnect Request Message is sent to the voice
 server.
 
-3.1.5.6  Echo Voice Session Subprotocol
+##### 3.1.5.6 Echo Voice Session Subprotocol
 
-3.1.5.6.1 Handling Unrecognized Messages
+###### 3.1.5.6.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.1.5.6.2 Sending a Speech Message
+###### 3.1.5.6.2 Sending a Speech Message
 
 The structure and fields of the Speech Message are specified in section 2.2.4.4.
 
@@ -3604,13 +3422,13 @@ When the Speech Data Transmission Timer expires, if a voice burst is active, the
 message is sent. The speech message is sent directly to the voice server. Speech messages
 SHOULD NOT be sent after the Client Disconnect Request Message is sent to the voice server.
 
-3.1.5.6.3 Receiving a Speech with Bounce Message
+###### 3.1.5.6.3 Receiving a Speech with Bounce Message
 
 The structure and fields of the Speech with Bounce Message are specified in section 2.2.2.7. This
 message MUST come from the current voice server, which is identified by the Current Voice Server
 DVID. The voice client MUST pass the message to the jitter buffer.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 When the Connection Retry Timer expires, the voice client will resend the Connection Request
 Message (section 2.2.3.1). If the Connection Request Timer expires, the voice client will fail its
@@ -3620,7 +3438,7 @@ When the Speech Data Transmission Timer expires, the voice client checks to see 
 burst is active and if it is, it sends the next speech message. The exact type of message sent to
 transmit the speech message depends on the voice session subprotocol.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When the DirectPlay protocol indicates that a DirectPlay client has left the voice session for any
 reason, the voice clients check to see whether the DirectPlay client that left was the voice session
@@ -3639,9 +3457,10 @@ Release: June 1, 2017
 
 39 / 55
 
-3.2  Voice Server Details
 
-3.2.1  Abstract Data Model
+### 3.2 Voice Server Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3685,13 +3504,13 @@ Subprotocol (section 1.3.4), this contains the sequence number of the next speec
 sent within the current voice burst. This value is stored per voice client. When a new voice burst is
 started, this value is reset to 0.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 When the voice server is using the Mixing Voice Session Subprotocol (section 1.3.4), a Speech Data
 Transmission Timer is created. It expires on the period indicated by the currently selected codec as
 specified by the Frame Size (ms of data) column in the list of codecs in section 1.3.7.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The underlying game session MUST be established before the voice client can begin operation. In
 addition, the following MUST occur:
@@ -3705,7 +3524,8 @@ Release: June 1, 2017
 
 40 / 55
 
-  Next Host Order ID is set to 0 if host migration is enabled as described in section 1.3.3.1.
+
+  Next Host Order ID is set to 0 if host migration is enabled as described in section 1.3.3.1.
 
   Current Voice Target List is set to empty for each voice client if server-controlled targeting
 
@@ -3724,14 +3544,14 @@ Voice Session Subprotocol (section 1.3.4).
 
 Voice Session Subprotocol (section 1.3.4).
 
-3.2.3.1  Initialization with Host Migration
+##### 3.2.3.1 Initialization with Host Migration
 
 When host migration is enabled as described in section 1.3.3.1, a voice server will be created by a
 voice client when host migration occurs. The voice server SHOULD start with the Voice Client List
 containing the list of clients for the voice client. The voice server SHOULD also initialize the Next
 Host Order ID to the highest host order ID in the Voice Client List plus 255.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The following are events that can be triggered by a higher level:
 
@@ -3746,15 +3566,15 @@ Change Voice Client List: The higher level can modify the Current Voice Target L
 voice client if Server Controlled Targeting is enabled. This will trigger a Set Client Voice Target
 Message (section 2.2.2.5) to be sent to the voice client.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Connection Subprotocol
+##### 3.2.5.1 Connection Subprotocol
 
-3.2.5.1.1 Handling Unrecognized Messages
+###### 3.2.5.1.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.2.5.1.2 Receiving Connect Request Message
+###### 3.2.5.1.2 Receiving Connect Request Message
 
 The structure and fields of the Connect Request Message are specified in section 2.2.3.1.
 
@@ -3775,21 +3595,22 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.5.1.3 Sending Connect Accept Message
+
+###### 3.2.5.1.3 Sending Connect Accept Message
 
 The structure and fields of the Connect Accept Message are specified in section 2.2.3.2.
 
 The voice server responds directly to a voice client with this message after receiving a Connect
 Request Message (section 2.2.3.1) if the voice server is ready to accept connections.
 
-3.2.5.1.4 Sending Connect Refuse Message
+###### 3.2.5.1.4 Sending Connect Refuse Message
 
 The structure and fields of the Connect Refuse Message are specified in section 2.2.3.3.
 
 The voice server responds directly to a voice client with this message after receiving a Connect
 Request Message (section 2.2.3.1) if the voice server is not ready to accept connections.
 
-3.2.5.1.5 Receiving a Client Capability Confirmation Message
+###### 3.2.5.1.5 Receiving a Client Capability Confirmation Message
 
 The structure and fields of the Client Capability Confirmation Message are specified in section 2.2.2.8.
 
@@ -3821,9 +3642,9 @@ current value of Next Host Order ID, the Next Host Order ID is incremented by 25
 If the voice server is running in Mixing Voice Session Subprotocol (section 1.3.4) it SHOULD
 initialize the jitter buffer for the individual voice client.
 
-3.2.5.2  Common Message for All Voice Session Subprotocols
+##### 3.2.5.2 Common Message for All Voice Session Subprotocols
 
-3.2.5.2.1 Sending a Session Lost Message
+###### 3.2.5.2.1 Sending a Session Lost Message
 
 The structure and fields of the Session Lost Message are specified in section 2.2.2.1.
 
@@ -3831,14 +3652,14 @@ The voice server sends this message to all voice clients in the voice session wh
 is shutting down and host migration (section 1.3.3.1) is not enabled. Once this message is sent, the
 voice server SHOULD no longer respond to messages from voice clients.
 
-3.2.5.2.2 Sending a Set Client Voice Target Message
+###### 3.2.5.2.2 Sending a Set Client Voice Target Message
 
 The structure and fields of the Set Client Voice Target Message are specified in section 2.2.2.5.
 
 The voice server sends a Set Client Voice Target Message when the higher level triggers a Change
 Voice Client List event.
 
-3.2.5.2.3 Receiving a Client Disconnect Request Message
+###### 3.2.5.2.3 Receiving a Client Disconnect Request Message
 
 The structure and fields of the Client Disconnect Request Message are specified in section 2.2.2.2.
 
@@ -3849,27 +3670,28 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The voice client sends this message to the voice server when it wants to disconnect gracefully from
+
+The voice client sends this message to the voice server when it wants to disconnect gracefully from
 the voice session. The voice server SHOULD remove the voice client from the Voice Client List. If
 the voice server is running the Peer Voice Session Subprotocol (section 1.3.3), the voice server will
 also send a Remove Voice Client Message (section 2.2.4.3) to all the voice clients. The voice server
 will then respond to the sender of this message with a Client Disconnect
 Confirmation (section 2.2.2.3) message.
 
-3.2.5.2.4 Sending a Client Disconnect Confirmation Message
+###### 3.2.5.2.4 Sending a Client Disconnect Confirmation Message
 
 The structure and fields of the Client Disconnect Confirmation Message are specified in section 2.2.2.3.
 
 The voice server sends this message to the voice client in response to a Client Disconnect Request
 Message (section 2.2.2.2).
 
-3.2.5.3  Peer Voice Session Subprotocol
+##### 3.2.5.3 Peer Voice Session Subprotocol
 
-3.2.5.3.1 Handling Unrecognized Messages
+###### 3.2.5.3.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.2.5.3.2 Sending a Voice Client List Message
+###### 3.2.5.3.2 Sending a Voice Client List Message
 
 The structure and fields of the Voice Client List Message are specified in section 2.2.4.2.
 
@@ -3881,7 +3703,7 @@ each of the 0x52 voice clients and one for any remaining voice clients. After th
 the last Voice Client List Message to the voice client needed to provide the full voice client list, an Add
 Voice Client Message (section 2.2.2.4) is sent to all voice clients in the voice session.
 
-3.2.5.3.3 Sending an Add Voice Client Message
+###### 3.2.5.3.3 Sending an Add Voice Client Message
 
 The structure and fields of the Add Voice Client Message are specified in section 2.2.2.4.
 
@@ -3889,7 +3711,7 @@ The voice server sends the Add Voice Client Message to all voice clients in the 
 indicate that a new voice client has joined the voice session. This message is sent after the Voice
 Client List Messages are sent to the individual voice client.
 
-3.2.5.3.4 Sending a Remove Voice Client Message
+###### 3.2.5.3.4 Sending a Remove Voice Client Message
 
 The structure and fields of the Remove Voice Client Message are specified in section 2.2.4.3.
 
@@ -3900,9 +3722,9 @@ Client Disconnect Confirmation Message (section 2.2.2.3) is sent to the voice cl
 is removed from the game session through a notification from the DirectPlay layer, then this
 message is sent after the notification is received.
 
-3.2.5.3.5 Host Migration
+###### 3.2.5.3.5 Host Migration
 
-3.2.5.3.5.1  Sending a Voice Server Exited with Host Migration Message
+###### 3.2.5.3.5.1 Sending a Voice Server Exited with Host Migration Message
 
 The structure and fields of the Voice Server Exited with Host Migration Message are specified in
 section 2.2.4.5.1.
@@ -3914,17 +3736,18 @@ DirectPlay Voice Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The voice server sends this message to all voice clients when the voice server shuts down. The
+
+The voice server sends this message to all voice clients when the voice server shuts down. The
 voice server can ignore all messages after this message is sent.
 
-3.2.5.3.5.2  Sending a Host Migration Complete Message
+###### 3.2.5.3.5.2 Sending a Host Migration Complete Message
 
 The structure and fields of the Host Migration Complete Message are specified in section 2.2.4.5.2.
 
 When a new voice server is created by a voice client and is ready to receive traffic, it sends this
 message to all voice clients in the game session.
 
-3.2.5.3.5.3  Receiving a Client Capability Confirmation Message
+###### 3.2.5.3.5.3 Receiving a Client Capability Confirmation Message
 
 The structure and fields of the Client Capability Confirmation Message are specified in section 2.2.2.8.
 
@@ -3933,20 +3756,20 @@ Confirmation Message to the new voice server. If the new voice server does not r
 client, the voice server processes the message as if it were receiving a Client Capability Confirmation
 Message from the Connection Subprotocol (section 1.3.2).
 
-3.2.5.4  Mixing Voice Session Subprotocol
+##### 3.2.5.4 Mixing Voice Session Subprotocol
 
-3.2.5.4.1 Handling Unrecognized Messages
+###### 3.2.5.4.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.2.5.4.2 Sending an Add Voice Client Message
+###### 3.2.5.4.2 Sending an Add Voice Client Message
 
 The structure and fields of the Add Voice Client Message are specified in section 2.2.2.4.
 
 The voice server sends an Add Voice Client Message after they have received the Client Capability
 Confirmation Message (section 2.2.2.8) during the Connection Subprotocol (section 1.3.2).
 
-3.2.5.4.3 Sending a Speech with Bounce Message
+###### 3.2.5.4.3 Sending a Speech with Bounce Message
 
 The structure and fields of the Speech with Bounce Message are specified in section 2.2.2.7.
 
@@ -3971,7 +3794,7 @@ in use by this game session.
 Transmits the combined voice message by using a Speech with Bounce Message to the voice
 client.
 
-3.2.5.4.4 Receiving a Speech with Target Message
+###### 3.2.5.4.4 Receiving a Speech with Target Message
 
 The structure and fields of the Speech with Target Message are specified in section 2.2.2.6.
 
@@ -3982,17 +3805,18 @@ Release: June 1, 2017
 
 44 / 55
 
-When the voice server receives a Speech with Target Message from a voice client, it places the
+
+When the voice server receives a Speech with Target Message from a voice client, it places the
 enclosed speech message and the list of targets into the jitter buffer for the originating voice
 client.
 
-3.2.5.5  Forwarding Voice Session Subprotocol
+##### 3.2.5.5 Forwarding Voice Session Subprotocol
 
-3.2.5.5.1 Handling Unrecognized Messages
+###### 3.2.5.5.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.2.5.5.2 Receiving a Speech with Target Message
+###### 3.2.5.5.2 Receiving a Speech with Target Message
 
 The structure and fields of the Speech with Target Message are specified in section 2.2.2.6.
 
@@ -4003,18 +3827,18 @@ DVID of the voice client that sent the message into the SourceDVID field of the 
 From Message. The Speech with From Message is then sent to the list of DVIDs from the
 TargetDVIDs field of the Speech with Target Message.
 
-3.2.5.5.3 Sending a Speech with From Message
+###### 3.2.5.5.3 Sending a Speech with From Message
 
 The structure and fields of the Speech with From Message are specified in section 2.2.5.1. See
 Receiving a Speech with Target Message (section 3.2.5.5.2) for information about this message.
 
-3.2.5.6  Echo Voice Session Subprotocol
+##### 3.2.5.6 Echo Voice Session Subprotocol
 
-3.2.5.6.1 Handling Unrecognized Messages
+###### 3.2.5.6.1 Handling Unrecognized Messages
 
 If an unrecognized or malformed message is received, it is ignored.
 
-3.2.5.6.2 Receiving a Speech Message
+###### 3.2.5.6.2 Receiving a Speech Message
 
 The structure and fields of the Speech Message are specified in section 2.2.4.4.
 
@@ -4022,12 +3846,12 @@ When the voice server receives a Speech Message it immediately sends a Speech wi
 Message (section 2.2.2.7) back to the originating voice client. The MessageNumber,
 SequenceNumber, and SpeechData fields are copied from the contents of the Speech Message.
 
-3.2.5.6.3 Sending a Speech with Bounce Message
+###### 3.2.5.6.3 Sending a Speech with Bounce Message
 
 The structure and fields of the Speech with Bounce Message are specified in section 2.2.2.7. See
 Receiving a Speech Message (section 3.2.5.6.2) for information about this message.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 When the voice server is using the Mixing Voice Session Subprotocol (section 1.3.4) a Speech Data
 Transmission Timer is created. It expires on the period indicated by the currently selected codec as
@@ -4044,7 +3868,8 @@ Release: June 1, 2017
 
 45 / 55
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 When the DirectPlay protocol indicates that a DirectPlay client has left the game session for any
 reason, the voice server will check to see whether the DirectPlay client was one of the voice clients.
@@ -4062,9 +3887,10 @@ Release: June 1, 2017
 
 46 / 55
 
-4  Protocol Examples
 
-4.1  Successful Connect Sequence
+## 4 Protocol Examples
+
+### 4.1 Successful Connect Sequence
 
 The following examples demonstrate successful connect sequences.
 
@@ -4128,7 +3954,8 @@ Release: June 1, 2017
 
 47 / 55
 
- 00 00 00 00 -> Voice Client[0] PlayerFlags = 0x00000000
+
+ 00 00 00 00 -> Voice Client[0] PlayerFlags = 0x00000000
  01 00 00 00 -> Voice Client[0] Host Order ID = 0x00000001
  AE F4 52 59 -> Voice Client[1] DVID = 0x5952F4AE
  00 00 00 00 -> Voice Client[1] PlayerFlags = 0x00000000
@@ -4152,9 +3979,10 @@ Release: June 1, 2017
 
 48 / 55
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The DirectPlay Voice Protocol does not provide any specific security features. Following are some
 considerations implementers need to be aware of:
@@ -4165,7 +3993,7 @@ considerations implementers need to be aware of:
 
 Message (section 2.2.2.8) has been received.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4176,7 +4004,8 @@ Release: June 1, 2017
 
 49 / 55
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4212,7 +4041,8 @@ Release: June 1, 2017
 
 50 / 55
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -4224,7 +4054,8 @@ Release: June 1, 2017
 
 51 / 55
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4368,7 +4199,8 @@ Host migration
 
 52 / 55
 
-      sending Client Capability Confirmation 37
+
+      sending Client Capability Confirmation 37
       sending Host Migration Complete 43
       sending Voice Server Exited with Host Migration
 
@@ -4527,7 +4359,8 @@ Peer voice session subprotocol
 
 53 / 55
 
-      Speech 30
+
+      Speech 30
       Voice Client List Entry structure 28
    overview 12
    voice client
@@ -4684,7 +4517,8 @@ Voice client
 
 54 / 55
 
-   message processing
+
+   message processing
       common messages for all voice session
 
 subprotocols 35

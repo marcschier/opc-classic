@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 162
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 162
 
-Date
+
+Date
 
 Revision
 History
@@ -518,459 +520,194 @@ Release: April 23, 2024
 
 3 / 162
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 14
-Normative References ................................................................................. 14
-Informative References ............................................................................... 15
-Overview ........................................................................................................ 15
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Common Data Types ........................................................................................ 20
-Common Conventions ................................................................................. 20
-Host Name ........................................................................................... 20
-Share Name ......................................................................................... 20
-Domain Name ...................................................................................... 20
-UNC Path ............................................................................................. 21
-DFS Root ............................................................................................. 21
-DFS Link .............................................................................................. 21
-DFS Root Target ................................................................................... 21
-DFS Link Target .................................................................................... 22
-DFS Target ........................................................................................... 22
-Common Data Types ................................................................................... 22
-NET_API_STATUS ................................................................................. 22
-2.2.2.1
-NETDFS_SERVER_OR_DOMAIN_HANDLE ................................................. 22
-2.2.2.2
-DFS_INFO_STRUCT ............................................................................... 22
-2.2.2.3
-DFS_INFO_ENUM_STRUCT ..................................................................... 24
-2.2.2.4
-DFS_STORAGE_INFO ............................................................................. 25
-2.2.2.5
-DFS_STORAGE_INFO_1 ......................................................................... 26
-2.2.2.6
-DFS_TARGET_PRIORITY ........................................................................ 26
-2.2.2.7
-DFS_TARGET_PRIORITY_CLASS.............................................................. 27
-2.2.2.8
-DFSM_ROOT_LIST ................................................................................ 28
-2.2.2.9
-2.2.2.10  DFSM_ROOT_LIST_ENTRY ..................................................................... 28
-2.2.2.11  DFS_NAMESPACE_VERSION_ORIGIN....................................................... 28
-2.2.2.12  DFS_SUPPORTED_NAMESPACE_VERSION_INFO ....................................... 29
-2.2.2.13  DFS Volume State ................................................................................. 29
-Get Info Data Types .................................................................................... 30
-2.2.3.1
-DFS_INFO_1 ........................................................................................ 30
-2.2.3.2
-DFS_INFO_2 ........................................................................................ 30
-2.2.3.3
-DFS_INFO_3 ........................................................................................ 31
-2.2.3.4
-DFS_INFO_4 ........................................................................................ 32
-2.2.3.5
-DFS_INFO_5 ........................................................................................ 32
-2.2.3.6
-DFS_INFO_6 ........................................................................................ 33
-2.2.3.7
-DFS_INFO_7 ........................................................................................ 34
-2.2.3.8
-DFS_INFO_8 ........................................................................................ 34
-DFS_INFO_9 ........................................................................................ 35
-2.2.3.9
-2.2.3.10  DFS_INFO_50 ....................................................................................... 36
-Set Info Data Types .................................................................................... 37
-DFS_INFO_101 ..................................................................................... 37
-DFS_INFO_102 ..................................................................................... 38
-DFS_INFO_103 ..................................................................................... 38
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-
-2.2.4
-
-2.2.3
-
-[MS-DFSNM] - v20240423
-Distributed File System (DFS): Namespace Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 162
-
-2.2.5
-
-2.2.6
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-
-DFS_INFO_104 ..................................................................................... 39
-DFS_INFO_105 ..................................................................................... 40
-DFS_INFO_106 ..................................................................................... 40
-DFS_INFO_107 ..................................................................................... 41
-Special Info Data Types ............................................................................... 42
-DFS_INFO_100 ..................................................................................... 42
-DFS_INFO_150 ..................................................................................... 42
-DFS_INFO_200 ..................................................................................... 42
-DFS_INFO_300 ..................................................................................... 43
-Enum Info Data Types ................................................................................. 43
-DFS_INFO_1_CONTAINER ...................................................................... 43
-2.2.6.1
-DFS_INFO_2_CONTAINER ...................................................................... 43
-2.2.6.2
-DFS_INFO_3_CONTAINER ...................................................................... 44
-2.2.6.3
-DFS_INFO_4_CONTAINER ...................................................................... 44
-2.2.6.4
-DFS_INFO_5_CONTAINER ...................................................................... 44
-2.2.6.5
-DFS_INFO_6_CONTAINER ...................................................................... 45
-2.2.6.6
-DFS_INFO_8_CONTAINER ...................................................................... 45
-2.2.6.7
-DFS_INFO_9_CONTAINER ...................................................................... 45
-2.2.6.8
-2.2.6.9
-DFS_INFO_200_CONTAINER .................................................................. 45
-2.2.6.10  DFS_INFO_300_CONTAINER .................................................................. 46
-Directory Service Schema Elements ................................................................... 46
-DFS Configuration Container ........................................................................ 46
-LDAP Entries for Domain-Based DFS Namespaces ........................................... 47
-DFS Namespace Object for Domainv1-Based DFS Namespace .......................... 49
-pKT Attribute Contents (Metadata for Domainv1-Based Namespace) ........... 49
-DFSNamespaceElementBLOB ............................................................ 50
-DFSNamespaceRootBLOB or DFSNamespaceLinkBLOB .................... 51
-DFSRootOrLinkIDBLOB ............................................................... 52
-DFSTargetListBLOB .................................................................... 54
-TargetEntryBLOB .................................................................. 55
-SiteInformationBLOB .................................................................. 56
-SiteEntryBLOB ..................................................................... 57
-2.3.3.1.1.4.1.1
-SiteNameInfoBLOB ......................................................... 57
-Schema for Domainv2-Based DFS Namespace ................................................ 58
-LDAP Entry for Domainv2-Based DFS Namespace Anchor ........................... 58
-LDAP Entry for Domainv2-Based DFS Namespace ..................................... 58
-LDAP Entry for Domainv2-Based DFS Link ................................................ 60
-LDAP Entry for Domainv2-Based Deleted Link ........................................... 61
-
-2.3.3.1.1.1
-2.3.3.1.1.2
-2.3.3.1.1.3
-
-2.3.4.1
-2.3.4.2
-2.3.4.3
-2.3.4.4
-
-2.3.3.1.1.3.1
-
-2.3.3.1.1.4.1
-
-2.3.3.1.1.4
-
-2.3.3.1.1
-
-2.3.3.1
-
-2.3.4
-
-2.3
-
-2.3.1
-2.3.2
-2.3.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3  Protocol Details ..................................................................................................... 63
-Server Details .................................................................................................. 63
-Abstract Data Model .................................................................................... 63
-Global.................................................................................................. 63
-Per Namespace ..................................................................................... 63
-Per NamespaceElement ......................................................................... 63
-Per TargetsList ..................................................................................... 64
-Per Target ............................................................................................ 64
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 64
-Message Processing Events and Sequencing Rules .......................................... 65
-Basic Methods ...................................................................................... 67
-NetrDfsManagerInitialize (Opnum 14) ................................................ 67
-NetrDfsManagerGetVersion (Opnum 0) .............................................. 68
-NetrDfsAdd (Opnum 1) .................................................................... 68
-NetrDfsRemove (Opnum 2)............................................................... 71
-NetrDfsSetInfo (Opnum 3) ................................................................ 73
-NetrDfsGetInfo (Opnum 4) ............................................................... 77
-NetrDfsEnum (Opnum 5) .................................................................. 81
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-
-[MS-DFSNM] - v20240423
-Distributed File System (DFS): Namespace Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 162
-
-3.1.4.2
-
-3.1.4.3
-
-3.1.4.4
-
-3.1.4.5
-
-3.1.4.5.1
-3.1.4.5.2
-
-3.1.4.4.1
-3.1.4.4.2
-3.1.4.4.3
-
-3.1.4.3.1
-3.1.4.3.2
-3.1.4.3.3
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-
-NetrDfsMove (Opnum 6) .................................................................. 83
-3.1.4.1.8
-3.1.4.1.9
-NetrDfsAddRootTarget (Opnum 23) ................................................... 86
-3.1.4.1.10  NetrDfsRemoveRootTarget (Opnum 24) ............................................. 89
-3.1.4.1.11  NetrDfsGetSupportedNamespaceVersion (Opnum 25) .......................... 90
-Extended Methods ................................................................................. 91
-NetrDfsAdd2 (Opnum 19) ................................................................. 91
-NetrDfsRemove2 (Opnum 20) ........................................................... 94
-NetrDfsEnumEx (Opnum 21) ............................................................. 95
-NetrDfsSetInfo2 (Opnum 22) ............................................................ 98
-Root Target Methods ............................................................................ 101
-NetrDfsAddFtRoot (Opnum 10) ......................................................... 101
-NetrDfsRemoveFtRoot (Opnum 11) ................................................... 103
-NetrDfsFlushFtTable (Opnum 18) ..................................................... 105
-Stand-Alone Namespace Methods .......................................................... 105
-NetrDfsAddStdRoot (Opnum 12)....................................................... 105
-NetrDfsRemoveStdRoot (Opnum 13) ................................................. 107
-NetrDfsAddStdRootForced (Opnum 15) ............................................. 107
-Domain-Based Namespace Methods ....................................................... 109
-NetrDfsGetDcAddress (Opnum 16) ................................................... 109
-NetrDfsSetDcAddress (Opnum 17) .................................................... 109
-Timer Events ............................................................................................. 111
-Other Local Events ..................................................................................... 111
-Client Details .................................................................................................. 111
-Abstract Data Model ................................................................................... 111
-Timers ..................................................................................................... 111
-Initialization .............................................................................................. 111
-Message Processing Events and Sequencing Rules ......................................... 111
-Basic Methods ..................................................................................... 112
-NetrDfsAdd (Opnum 1) ................................................................... 112
-NetrDfsRemove (Opnum 2).............................................................. 112
-NetrDfsSetInfo (Opnum 3) ............................................................... 112
-NetrDfsEnum (Opnum 5) and NetrDfsEnumEx (Opnum 21) .................. 112
-Extended Methods ................................................................................ 112
-NetrDfsAdd2 (Opnum 19) ................................................................ 112
-NetrDfsRemove2 (Opnum 20) .......................................................... 112
-NetrDfsSetInfo2 (Opnum 22) ........................................................... 112
-Root Target Methods ............................................................................ 112
-NetrDfsAddFtRoot (Opnum 10) ......................................................... 112
-NetrDfsRemoveFtRoot (Opnum 11) ................................................... 113
-Timer Events ............................................................................................. 113
-Other Local Events ..................................................................................... 113
-Domain Controller Details ................................................................................ 113
-Abstract Data Model ................................................................................... 114
-Timers ..................................................................................................... 114
-Initialization .............................................................................................. 114
-Message Processing Events and Sequencing Rules ......................................... 114
-Basic Methods ..................................................................................... 114
-NetrDfsRemoveRootTarget (Opnum 24) ............................................ 114
-Extended Methods ................................................................................ 114
-NetrDfsEnumEx (Opnum 21) ............................................................ 114
-Root Target Methods ............................................................................ 115
-NetrDfsRemoveFtRoot (Opnum 11) ................................................... 115
-NetrDfsFlushFtTable (Opnum 18) ..................................................... 115
-Timer Events ............................................................................................. 115
-Other Local Events ..................................................................................... 115
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-
-3.2.4.2.1
-3.2.4.2.2
-3.2.4.2.3
-
-3.3.4.3.1
-3.3.4.3.2
-
-3.2.4.3.1
-3.2.4.3.2
-
-3.3.4.1.1
-
-3.3.4.2.1
-
-3.3.4.1
-
-3.3.4.2
-
-3.3.4.3
-
-3.2.4.2
-
-3.2.4.3
-
-3.2.4.1
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.3
-
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-3.3.6
-
-4  Protocol Examples ............................................................................................... 116
-Creating a New Domainv1-Based DFS Namespace ............................................... 116
-
-4.1
-
-6 / 162
-
-[MS-DFSNM] - v20240423
-Distributed File System (DFS): Namespace Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-
-Adding a Root Target to an Existing Domainv1-Based DFS Namespace .................. 117
-Adding a New Link to a Domain-Based DFS Namespace ....................................... 119
-Creating a New Domainv2-Based DFS Namespace ............................................... 120
-Adding a Root Target to an Existing Domainv2-Based DFS Namespace .................. 122
-Adding a New Link to a Domainv2-Based DFS Namespace .................................... 124
-Enumerating DFS Links in a Domain-Based DFS Namespace ................................. 125
-DFS Metadata of a Domainv1-Based DFS Namespace .......................................... 127
-
-5  Security ............................................................................................................... 133
-Security Considerations for Implementers .......................................................... 133
-Index of Security Parameters ........................................................................... 133
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 134
-
-7  Appendix B: Product Behavior ............................................................................. 142
-
-8  Appendix C: XML Schema of XML Document Stored in msDFS-TargetListv2 Attribute
- ............................................................................................................................ 156
-
-9  Change Tracking .................................................................................................. 159
-
-10  Index ................................................................................................................... 160
-
-[MS-DFSNM] - v20240423
-Distributed File System (DFS): Namespace Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 162
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Common Conventions](#221-common-conventions)
+      - [2.2.1.1 Host Name](#2211-host-name)
+      - [2.2.1.2 Share Name](#2212-share-name)
+      - [2.2.1.3 Domain Name](#2213-domain-name)
+      - [2.2.1.4 UNC Path](#2214-unc-path)
+      - [2.2.1.5 DFS Root](#2215-dfs-root)
+      - [2.2.1.6 DFS Link](#2216-dfs-link)
+      - [2.2.1.7 DFS Root Target](#2217-dfs-root-target)
+      - [2.2.1.8 DFS Link Target](#2218-dfs-link-target)
+      - [2.2.1.9 DFS Target](#2219-dfs-target)
+    - [2.2.2 Common Data Types](#222-common-data-types)
+      - [2.2.2.1 NET_API_STATUS](#2221-netapistatus)
+      - [2.2.2.2 NETDFS_SERVER_OR_DOMAIN_HANDLE](#2222-netdfsserverordomainhandle)
+      - [2.2.2.3 DFS_INFO_STRUCT](#2223-dfsinfostruct)
+      - [2.2.2.4 DFS_INFO_ENUM_STRUCT](#2224-dfsinfoenumstruct)
+      - [2.2.2.5 DFS_STORAGE_INFO](#2225-dfsstorageinfo)
+      - [2.2.2.6 DFS_STORAGE_INFO_1](#2226-dfsstorageinfo1)
+      - [2.2.2.7 DFS_TARGET_PRIORITY](#2227-dfstargetpriority)
+      - [2.2.2.8 DFS_TARGET_PRIORITY_CLASS](#2228-dfstargetpriorityclass)
+      - [2.2.2.9 DFSM_ROOT_LIST](#2229-dfsmrootlist)
+      - [2.2.2.10 DFSM_ROOT_LIST_ENTRY](#22210-dfsmrootlistentry)
+      - [2.2.2.11 DFS_NAMESPACE_VERSION_ORIGIN](#22211-dfsnamespaceversionorigin)
+      - [2.2.2.12 DFS_SUPPORTED_NAMESPACE_VERSION_INFO](#22212-dfssupportednamespaceversioninfo)
+      - [2.2.2.13 DFS Volume State](#22213-dfs-volume-state)
+    - [2.2.3 Get Info Data Types](#223-get-info-data-types)
+      - [2.2.3.1 DFS_INFO_1](#2231-dfsinfo1)
+      - [2.2.3.2 DFS_INFO_2](#2232-dfsinfo2)
+      - [2.2.3.3 DFS_INFO_3](#2233-dfsinfo3)
+      - [2.2.3.4 DFS_INFO_4](#2234-dfsinfo4)
+      - [2.2.3.5 DFS_INFO_5](#2235-dfsinfo5)
+      - [2.2.3.6 DFS_INFO_6](#2236-dfsinfo6)
+      - [2.2.3.7 DFS_INFO_7](#2237-dfsinfo7)
+      - [2.2.3.8 DFS_INFO_8](#2238-dfsinfo8)
+      - [2.2.3.9 DFS_INFO_9](#2239-dfsinfo9)
+      - [2.2.3.10 DFS_INFO_50](#22310-dfsinfo50)
+    - [2.2.4 Set Info Data Types](#224-set-info-data-types)
+      - [2.2.4.1 DFS_INFO_101](#2241-dfsinfo101)
+      - [2.2.4.2 DFS_INFO_102](#2242-dfsinfo102)
+      - [2.2.4.3 DFS_INFO_103](#2243-dfsinfo103)
+      - [2.2.4.4 DFS_INFO_104](#2244-dfsinfo104)
+      - [2.2.4.5 DFS_INFO_105](#2245-dfsinfo105)
+      - [2.2.4.6 DFS_INFO_106](#2246-dfsinfo106)
+      - [2.2.4.7 DFS_INFO_107](#2247-dfsinfo107)
+    - [2.2.5 Special Info Data Types](#225-special-info-data-types)
+      - [2.2.5.1 DFS_INFO_100](#2251-dfsinfo100)
+      - [2.2.5.2 DFS_INFO_150](#2252-dfsinfo150)
+      - [2.2.5.3 DFS_INFO_200](#2253-dfsinfo200)
+      - [2.2.5.4 DFS_INFO_300](#2254-dfsinfo300)
+    - [2.2.6 Enum Info Data Types](#226-enum-info-data-types)
+      - [2.2.6.1 DFS_INFO_1_CONTAINER](#2261-dfsinfo1container)
+      - [2.2.6.2 DFS_INFO_2_CONTAINER](#2262-dfsinfo2container)
+      - [2.2.6.3 DFS_INFO_3_CONTAINER](#2263-dfsinfo3container)
+      - [2.2.6.4 DFS_INFO_4_CONTAINER](#2264-dfsinfo4container)
+      - [2.2.6.5 DFS_INFO_5_CONTAINER](#2265-dfsinfo5container)
+      - [2.2.6.6 DFS_INFO_6_CONTAINER](#2266-dfsinfo6container)
+      - [2.2.6.7 DFS_INFO_8_CONTAINER](#2267-dfsinfo8container)
+      - [2.2.6.8 DFS_INFO_9_CONTAINER](#2268-dfsinfo9container)
+      - [2.2.6.9 DFS_INFO_200_CONTAINER](#2269-dfsinfo200container)
+      - [2.2.6.10 DFS_INFO_300_CONTAINER](#22610-dfsinfo300container)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 DFS Configuration Container](#231-dfs-configuration-container)
+    - [2.3.2 LDAP Entries for Domain-Based DFS Namespaces](#232-ldap-entries-for-domain-based-dfs-namespaces)
+    - [2.3.3 DFS Namespace Object for Domainv1-Based DFS Namespace](#233-dfs-namespace-object-for-domainv1-based-dfs-namespace)
+      - [2.3.3.1 pKT Attribute Contents (Metadata for Domainv1-Based Namespace)](#2331-pkt-attribute-contents-metadata-for-domainv1-based-namespace)
+        - [2.3.3.1.1 DFSNamespaceElementBLOB](#23311-dfsnamespaceelementblob)
+          - [2.3.3.1.1.1 DFSNamespaceRootBLOB or DFSNamespaceLinkBLOB](#233111-dfsnamespacerootblob-or-dfsnamespacelinkblob)
+          - [2.3.3.1.1.2 DFSRootOrLinkIDBLOB](#233112-dfsrootorlinkidblob)
+          - [2.3.3.1.1.3 DFSTargetListBLOB](#233113-dfstargetlistblob)
+            - [2.3.3.1.1.3.1 TargetEntryBLOB](#2331131-targetentryblob)
+          - [2.3.3.1.1.4 SiteInformationBLOB](#233114-siteinformationblob)
+            - [2.3.3.1.1.4.1 SiteEntryBLOB](#2331141-siteentryblob)
+              - [2.3.3.1.1.4.1.1 SiteNameInfoBLOB](#23311411-sitenameinfoblob)
+    - [2.3.4 Schema for Domainv2-Based DFS Namespace](#234-schema-for-domainv2-based-dfs-namespace)
+      - [2.3.4.1 LDAP Entry for Domainv2-Based DFS Namespace Anchor](#2341-ldap-entry-for-domainv2-based-dfs-namespace-anchor)
+      - [2.3.4.2 LDAP Entry for Domainv2-Based DFS Namespace](#2342-ldap-entry-for-domainv2-based-dfs-namespace)
+      - [2.3.4.3 LDAP Entry for Domainv2-Based DFS Link](#2343-ldap-entry-for-domainv2-based-dfs-link)
+      - [2.3.4.4 LDAP Entry for Domainv2-Based Deleted Link](#2344-ldap-entry-for-domainv2-based-deleted-link)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+      - [3.1.1.2 Per Namespace](#3112-per-namespace)
+      - [3.1.1.3 Per NamespaceElement](#3113-per-namespaceelement)
+      - [3.1.1.4 Per TargetsList](#3114-per-targetslist)
+      - [3.1.1.5 Per Target](#3115-per-target)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Basic Methods](#3141-basic-methods)
+        - [3.1.4.1.1 NetrDfsManagerInitialize (Opnum 14)](#31411-netrdfsmanagerinitialize-opnum-14)
+        - [3.1.4.1.2 NetrDfsManagerGetVersion (Opnum 0)](#31412-netrdfsmanagergetversion-opnum-0)
+        - [3.1.4.1.3 NetrDfsAdd (Opnum 1)](#31413-netrdfsadd-opnum-1)
+        - [3.1.4.1.4 NetrDfsRemove (Opnum 2)](#31414-netrdfsremove-opnum-2)
+        - [3.1.4.1.5 NetrDfsSetInfo (Opnum 3)](#31415-netrdfssetinfo-opnum-3)
+        - [3.1.4.1.6 NetrDfsGetInfo (Opnum 4)](#31416-netrdfsgetinfo-opnum-4)
+        - [3.1.4.1.7 NetrDfsEnum (Opnum 5)](#31417-netrdfsenum-opnum-5)
+        - [3.1.4.1.8 NetrDfsMove (Opnum 6)](#31418-netrdfsmove-opnum-6)
+        - [3.1.4.1.9 NetrDfsAddRootTarget (Opnum 23)](#31419-netrdfsaddroottarget-opnum-23)
+        - [3.1.4.1.10 NetrDfsRemoveRootTarget (Opnum 24)](#314110-netrdfsremoveroottarget-opnum-24)
+        - [3.1.4.1.11 NetrDfsGetSupportedNamespaceVersion (Opnum 25)](#314111-netrdfsgetsupportednamespaceversion-opnum-25)
+      - [3.1.4.2 Extended Methods](#3142-extended-methods)
+        - [3.1.4.2.1 NetrDfsAdd2 (Opnum 19)](#31421-netrdfsadd2-opnum-19)
+        - [3.1.4.2.2 NetrDfsRemove2 (Opnum 20)](#31422-netrdfsremove2-opnum-20)
+        - [3.1.4.2.3 NetrDfsEnumEx (Opnum 21)](#31423-netrdfsenumex-opnum-21)
+        - [3.1.4.2.4 NetrDfsSetInfo2 (Opnum 22)](#31424-netrdfssetinfo2-opnum-22)
+      - [3.1.4.3 Root Target Methods](#3143-root-target-methods)
+        - [3.1.4.3.1 NetrDfsAddFtRoot (Opnum 10)](#31431-netrdfsaddftroot-opnum-10)
+        - [3.1.4.3.2 NetrDfsRemoveFtRoot (Opnum 11)](#31432-netrdfsremoveftroot-opnum-11)
+        - [3.1.4.3.3 NetrDfsFlushFtTable (Opnum 18)](#31433-netrdfsflushfttable-opnum-18)
+      - [3.1.4.4 Stand-Alone Namespace Methods](#3144-stand-alone-namespace-methods)
+        - [3.1.4.4.1 NetrDfsAddStdRoot (Opnum 12)](#31441-netrdfsaddstdroot-opnum-12)
+        - [3.1.4.4.2 NetrDfsRemoveStdRoot (Opnum 13)](#31442-netrdfsremovestdroot-opnum-13)
+        - [3.1.4.4.3 NetrDfsAddStdRootForced (Opnum 15)](#31443-netrdfsaddstdrootforced-opnum-15)
+      - [3.1.4.5 Domain-Based Namespace Methods](#3145-domain-based-namespace-methods)
+        - [3.1.4.5.1 NetrDfsGetDcAddress (Opnum 16)](#31451-netrdfsgetdcaddress-opnum-16)
+        - [3.1.4.5.2 NetrDfsSetDcAddress (Opnum 17)](#31452-netrdfssetdcaddress-opnum-17)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Basic Methods](#3241-basic-methods)
+        - [3.2.4.1.1 NetrDfsAdd (Opnum 1)](#32411-netrdfsadd-opnum-1)
+        - [3.2.4.1.2 NetrDfsRemove (Opnum 2)](#32412-netrdfsremove-opnum-2)
+        - [3.2.4.1.3 NetrDfsSetInfo (Opnum 3)](#32413-netrdfssetinfo-opnum-3)
+        - [3.2.4.1.4 NetrDfsEnum (Opnum 5) and NetrDfsEnumEx (Opnum 21)](#32414-netrdfsenum-opnum-5-and-netrdfsenumex-opnum-21)
+      - [3.2.4.2 Extended Methods](#3242-extended-methods)
+        - [3.2.4.2.1 NetrDfsAdd2 (Opnum 19)](#32421-netrdfsadd2-opnum-19)
+        - [3.2.4.2.2 NetrDfsRemove2 (Opnum 20)](#32422-netrdfsremove2-opnum-20)
+        - [3.2.4.2.3 NetrDfsSetInfo2 (Opnum 22)](#32423-netrdfssetinfo2-opnum-22)
+      - [3.2.4.3 Root Target Methods](#3243-root-target-methods)
+        - [3.2.4.3.1 NetrDfsAddFtRoot (Opnum 10)](#32431-netrdfsaddftroot-opnum-10)
+        - [3.2.4.3.2 NetrDfsRemoveFtRoot (Opnum 11)](#32432-netrdfsremoveftroot-opnum-11)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 Domain Controller Details](#33-domain-controller-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Basic Methods](#3341-basic-methods)
+        - [3.3.4.1.1 NetrDfsRemoveRootTarget (Opnum 24)](#33411-netrdfsremoveroottarget-opnum-24)
+      - [3.3.4.2 Extended Methods](#3342-extended-methods)
+        - [3.3.4.2.1 NetrDfsEnumEx (Opnum 21)](#33421-netrdfsenumex-opnum-21)
+      - [3.3.4.3 Root Target Methods](#3343-root-target-methods)
+        - [3.3.4.3.1 NetrDfsRemoveFtRoot (Opnum 11)](#33431-netrdfsremoveftroot-opnum-11)
+        - [3.3.4.3.2 NetrDfsFlushFtTable (Opnum 18)](#33432-netrdfsflushfttable-opnum-18)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Creating a New Domainv1-Based DFS Namespace](#41-creating-a-new-domainv1-based-dfs-namespace)
+  - [4.2 Adding a Root Target to an Existing Domainv1-Based DFS Namespace](#42-adding-a-root-target-to-an-existing-domainv1-based-dfs-namespace)
+  - [4.3 Adding a New Link to a Domain-Based DFS Namespace](#43-adding-a-new-link-to-a-domain-based-dfs-namespace)
+  - [4.4 Creating a New Domainv2-Based DFS Namespace](#44-creating-a-new-domainv2-based-dfs-namespace)
+  - [4.5 Adding a Root Target to an Existing Domainv2-Based DFS Namespace](#45-adding-a-root-target-to-an-existing-domainv2-based-dfs-namespace)
+  - [4.6 Adding a New Link to a Domainv2-Based DFS Namespace](#46-adding-a-new-link-to-a-domainv2-based-dfs-namespace)
+  - [4.7 Enumerating DFS Links in a Domain-Based DFS Namespace](#47-enumerating-dfs-links-in-a-domain-based-dfs-namespace)
+  - [4.8 DFS Metadata of a Domainv1-Based DFS Namespace](#48-dfs-metadata-of-a-domainv1-based-dfs-namespace)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Appendix C: XML Schema of XML Document Stored in msDFS-](#8-appendix-c-xml-schema-of-xml-document-stored-in-msdfs-)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
+
+## 1 Introduction
 
 The Distributed File System (DFS): Namespace Management Protocol provides a remote procedure
 call (RPC) interface for administering DFS configurations. The client is an application that issues
@@ -980,7 +717,7 @@ support for this RPC interface for administering DFS.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1045,7 +782,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DFS server: A server computer that runs the DFS service required to respond to DFS referral
+
+DFS server: A server computer that runs the DFS service required to respond to DFS referral
 
 requests. Also interchangeably used to refer to the DFS service itself.
 
@@ -1120,7 +858,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-can span over a distributed system that is organized hierarchically into logical domains, each
+
+can span over a distributed system that is organized hierarchically into logical domains, each
 with a domain controller (DC). The path to access the root or a link starts with the host
 domain name. A domain-based DFS root can have multiple root targets, which offers fault
 tolerance and load sharing at the root level.
@@ -1193,7 +932,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-with other DCs to ensure that a local change to an object replicates correctly across all DCs.
+
+with other DCs to ensure that a local change to an object replicates correctly across all DCs.
 When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
 contains full NC replicas of the configuration naming context (config NC), schema naming
 context (schema NC), and one of the domain NCs in its forest. If the AD DS DC is a global
@@ -1263,7 +1003,8 @@ Release: April 23, 2024
 
 11 / 162
 
-[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
+
+[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
 host name: The name of a host on a network that is used for identification and access purposes
@@ -1338,7 +1079,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-changes directly, and is specialized so as to ensure consistency and to eliminate the potential for
+
+changes directly, and is specialized so as to ensure consistency and to eliminate the potential for
 conflicting entries in the Active Directory database. A domain has only one PDC.
 
 relative distinguished name (RDN): An attribute-value pair used in the distinguished name of
@@ -1409,7 +1151,8 @@ Release: April 23, 2024
 
 13 / 162
 
-system access control list (SACL): An access control list (ACL) that controls the generation
+
+system access control list (SACL): An access control list (ACL) that controls the generation
 
 of audit messages for attempts to access a securable object. The ability to get or set an object's
 SACL is controlled by a privilege typically held only by system administrators.
@@ -1442,14 +1185,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1481,7 +1224,8 @@ Release: April 23, 2024
 
 14 / 162
 
-[MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
+
+[MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
 
 [MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
 
@@ -1510,7 +1254,7 @@ http://www.w3.org/2001/XMLSchema
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDFS] Microsoft Corporation, "How DFS Works", March 2003, http://technet.microsoft.com/en-
 us/library/cc782417%28WS.10%29.aspx
@@ -1527,7 +1271,7 @@ WebDAV", RFC 2518, February 1999, http://www.ietf.org/rfc/rfc2518.txt
 [RFC3530] Shepler, S., et al., "Network File System (NFS) version 4 Protocol", RFC 3530, April 2003,
 http://www.ietf.org/rfc/rfc3530.txt
 
-1.3  Overview
+### 1.3 Overview
 
 The DFS: Namespace Management Protocol is one of a collection of protocols that group shares that
 are located on different servers by combining various storage media into a single logical namespace.
@@ -1547,7 +1291,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-navigates through the DFS namespace by appropriately issuing referral requests to a domain
+
+navigates through the DFS namespace by appropriately issuing referral requests to a domain
 controller (DC) or to a DFS root target server to resolve the original path to a share on a server
 that contains the data being accessed. For more information on DFS and the DFS client, see [MSDFS].
 For more information on how the DFS Referral Protocol operates within the context of the Server
@@ -1626,7 +1371,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-unions. Levels 7, 50, 100, 101, 102, 103, 104, 105, 106, 107, and 150 are unique to the
+
+unions. Levels 7, 50, 100, 101, 102, 103, 104, 105, 106, 107, and 150 are unique to the
 DFS_INFO_STRUCT union, and Levels 200 and 300 are unique to the DFS_INFO_ENUM_STRUCT
 union.
 
@@ -1874,7 +1620,8 @@ Release: April 23, 2024
 
 17 / 162
 
-Level   Structure
+
+Level   Structure
 
 Array
 structure
@@ -1904,7 +1651,7 @@ X
 
 CONTAINER
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DFS: Namespace Management Protocol is used to configure and administer DFS namespaces. It
 depends on RPC for its transport.
@@ -1944,7 +1691,7 @@ server uses the Lightweight Directory Access Protocol (LDAP), as specified in [R
 access the DFS metadata from the DS for use with both the DFS: Namespace Management Protocol
 and the DFS Referral Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DFS: Namespace Management Protocol is an RPC interface and, as a result, has prerequisites
 common to RPC interfaces. These prerequisites are specified in [MS-RPCE].
@@ -1963,16 +1710,17 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  A domain-based DFS server performs all DFS metadata updates to the primary domain
+
+  A domain-based DFS server performs all DFS metadata updates to the primary domain
 controller (PDC) independently of the DFS root scalability mode setting of the DFS
 namespace.<2>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DFS: Namespace Management Protocol is appropriate for managing a domain-based DFS
 namespace or a stand-alone DFS namespace.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1994,11 +1742,11 @@ and capacity negotiation in this situation is specified in [C706] and [MS-RPCE].
 
   Capability negotiation: None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards assignments have been received for the RPC interface UUID or for the well-known pipe
 name described in this document. All values used in these extensions are in private ranges, as
@@ -2011,9 +1759,10 @@ Release: April 23, 2024
 
 19 / 162
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The DFS root target MUST reside on a server that is accessible through SMB (as specified in [MS-
 SMB]) or SMB2 (as specified in [MS-SMB2]). A link target can reside on a server that is accessible
@@ -2037,9 +1786,9 @@ This protocol allows any user to establish a connection to a DFS server. It uses
 protocol to retrieve the identity of the caller that made the request, as specified in [MS-RPCE] section
 3.3.3.4.3. The RPC server SHOULD use this identity to verify method-specific access.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  Common Conventions
+#### 2.2.1 Common Conventions
 
 Unless otherwise specified, all strings in this protocol are null-terminated strings of UTF-16, as
 specified in [UNICODE] characters. Backslashes (\) in string descriptions are literal characters.
@@ -2052,12 +1801,12 @@ placeholder and "myshare" for the <share> placeholder.
 A number of string formats are common to many of the data types and methods in this protocol. To
 avoid repetition, this section describes the specific formats.
 
-2.2.1.1  Host Name
+##### 2.2.1.1 Host Name
 
 A host name represents the host name of a server or the domain name of a domain hosting resource
 as specified in [MS-DTYP] section 2.2.57.
 
-2.2.1.2  Share Name
+##### 2.2.1.2 Share Name
 
 Unless specified otherwise, a share name is a null-terminated Unicode character string whose
 format depends on the actual file server protocol used to access the share as specified in [MS-DTYP]
@@ -2070,17 +1819,18 @@ Release: April 23, 2024
 
 20 / 162
 
-2.2.1.3  Domain Name
+
+##### 2.2.1.3 Domain Name
 
 Unless specified otherwise, a domain name is a null-terminated Unicode character string consisting of
 the name of a Directory Service domain. For more details, see [MS-DTYP] section 2.2.57.
 
-2.2.1.4  UNC Path
+##### 2.2.1.4 UNC Path
 
 A Universal Naming Convention (UNC) path, as specified in [MS-DTYP] section 2.2.57, can be used to
 access network resources.
 
-2.2.1.5  DFS Root
+##### 2.2.1.5 DFS Root
 
 A DFS root has one of the following UNC path formats.
 
@@ -2101,7 +1851,7 @@ domain-based DFS namespace.
 only by the first format. A domain-based DFS namespace can be referred to in either format, with
 the second format preferred.
 
-2.2.1.6  DFS Link
+##### 2.2.1.6 DFS Link
 
 A DFS link has one of the following UNC path formats.
 
@@ -2121,7 +1871,7 @@ where:
 namespace can be referred to only by the first format. A domain-based DFS namespace can be
 referred to in either format, with the second format preferred.
 
-2.2.1.7  DFS Root Target
+##### 2.2.1.7 DFS Root Target
 
 A DFS root target is a UNC path with the following format.
 
@@ -2134,7 +1884,8 @@ Release: April 23, 2024
 
 21 / 162
 
-where:
+
+where:
 
   <servername> is the host name of a DFS root target server.
 
@@ -2142,15 +1893,15 @@ Release: April 23, 2024
 
 server.
 
-2.2.1.8  DFS Link Target
+##### 2.2.1.8 DFS Link Target
 
 A DFS link target is any UNC path that resolves to a directory.
 
-2.2.1.9  DFS Target
+##### 2.2.1.9 DFS Target
 
 A DFS target is either a DFS root target or a DFS link target.
 
-2.2.2  Common Data Types
+#### 2.2.2 Common Data Types
 
 In addition to RPC base types and definitions, as specified in [C706] and [MS-RPCE], the following
 sections use the definitions of DWORD, GUID, and WCHAR, as specified in [MS-DTYP] DWORD section
@@ -2159,7 +1910,7 @@ defined in the Interface Definition Language (IDL) specification for this RPC in
 
 This protocol MUST enable the ms_union extension as specified in [MS-RPCE], section 2.2.4.
 
-2.2.2.1  NET_API_STATUS
+##### 2.2.2.1 NET_API_STATUS
 
 The NET_API_STATUS type is an unsigned, 32-bit integer value representing the return code from an
 RPC method.
@@ -2172,7 +1923,7 @@ This protocol uses Microsoft Win32 error codes. The values are taken from the Wi
 space, as specified in [MS-ERREF]. Vendors SHOULD reuse those values with their indicated meanings.
 Choosing any other value creates the risk of collisions in the future.
 
-2.2.2.2  NETDFS_SERVER_OR_DOMAIN_HANDLE
+##### 2.2.2.2 NETDFS_SERVER_OR_DOMAIN_HANDLE
 
 The NETDFS_SERVER_OR_DOMAIN_HANDLE is a pointer to a Unicode string representing a host
 name for an RPC method.
@@ -2181,7 +1932,7 @@ This type is declared as follows:
 
  typedef WCHAR* NETDFS_SERVER_OR_DOMAIN_HANDLE;
 
-2.2.2.3  DFS_INFO_STRUCT
+##### 2.2.2.3 DFS_INFO_STRUCT
 
 The DFS_INFO_STRUCT union relates to the NetrDfsGetInfo, NetrDfsSetInfo, and NetrDfsSetInfo2
 methods when used to retrieve or set the configuration of the DFS server. The usage model of this
@@ -2197,7 +1948,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef
+
+ typedef
  [switch_type(unsigned long)]
  union _DFS_INFO_STRUCT {
    [case(1)]
@@ -2276,7 +2028,8 @@ Release: April 23, 2024
 
 23 / 162
 
-DfsInfo8:  The DFS_INFO_8 structure contains information about a DFS root or DFS link. For more
+
+DfsInfo8:  The DFS_INFO_8 structure contains information about a DFS root or DFS link. For more
 
 information on specifications, see section 2.2.3.8.
 
@@ -2324,7 +2077,7 @@ DfsInfo150:  The DFS_INFO_150 structure contains the self-relative security desc
 
 with the DFS link. For more information on specifications, see section 2.2.5.2.
 
-2.2.2.4  DFS_INFO_ENUM_STRUCT
+##### 2.2.2.4 DFS_INFO_ENUM_STRUCT
 
 The DFS_INFO_ENUM_STRUCT union relates to the NetrDfsEnum and NetrDfsEnumEx methods when
 used to enumerate the configuration of the DFS server.
@@ -2357,7 +2110,8 @@ Release: April 23, 2024
 
 24 / 162
 
-       DFS_INFO_9_CONTAINER* DfsInfo9Container;
+
+       DFS_INFO_9_CONTAINER* DfsInfo9Container;
      [case(200)]
        DFS_INFO_200_CONTAINER* DfsInfo200Container;
      [case(300)]
@@ -2409,7 +2163,7 @@ DfsInfo300Container:  The DFS_INFO_300_CONTAINER structure contains an array of 
 
 roots hosted on a server. For more information, see section 2.2.6.10.
 
-2.2.2.5  DFS_STORAGE_INFO
+##### 2.2.2.5 DFS_STORAGE_INFO
 
 The DFS_STORAGE_INFO structure relates to the NetrDfsEnum, NetrDfsEnumEx, and NetrDfsGetInfo
 methods when used to enumerate DFS links and DFS targets in a namespace or to get information
@@ -2432,7 +2186,8 @@ Release: April 23, 2024
 
 25 / 162
 
-ServerName:  The pointer to a null-terminated Unicode string containing the DFS target host
+
+ServerName:  The pointer to a null-terminated Unicode string containing the DFS target host
 
 name.
 
@@ -2441,7 +2196,7 @@ ShareName:  The pointer to a null-terminated Unicode string containing the DFS t
 DFS_INFO_3 and DFS_INFO_4 structures contain one or more DFS_STORAGE_INFO structures, one
 for each DFS target.
 
-2.2.2.6  DFS_STORAGE_INFO_1
+##### 2.2.2.6 DFS_STORAGE_INFO_1
 
 The DFS_STORAGE_INFO_1 structure relates to the NetrDfsEnum, NetrDfsEnumEx, and
 NetrDfsGetInfo methods when used to enumerate DFS links and targets in a namespace or to get
@@ -2468,7 +2223,7 @@ ShareName:  A pointer to a null-terminated Unicode string containing the DFS tar
 
 TargetPriority:  A DFS_TARGET_PRIORITY structure containing the priority class and priority rank.
 
-2.2.2.7  DFS_TARGET_PRIORITY
+##### 2.2.2.7 DFS_TARGET_PRIORITY
 
 The DFS_TARGET_PRIORITY structure relates to the NetrDfsSetInfo and NetrDfsSetInfo2 methods
 when used to set the priority of a DFS target in referrals from a server. It also relates to the
@@ -2500,9 +2255,10 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved:  MUST be set to 0 by the sender and ignored by the receiver.
 
-2.2.2.8  DFS_TARGET_PRIORITY_CLASS
+Reserved:  MUST be set to 0 by the sender and ignored by the receiver.
+
+##### 2.2.2.8 DFS_TARGET_PRIORITY_CLASS
 
 The DFS_TARGET_PRIORITY_CLASS enumeration relates to the NetrDfsSetInfo and NetrDfsSetInfo2
 methods when used to set the priority of DFS targets in referrals from a server. For more information
@@ -2571,11 +2327,12 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Be aware that the value for a "normal-priority class" is set to 0 even though it is lower in priority than
+
+Be aware that the value for a "normal-priority class" is set to 0 even though it is lower in priority than
 DfsGlobalHighPriorityClass and DfsSiteCostHighPriorityClass. This is the default priority class setting.
 For added granularity, priority rank can be used to discriminate within a priority class.
 
-2.2.2.9  DFSM_ROOT_LIST
+##### 2.2.2.9 DFSM_ROOT_LIST
 
 The DFSM_ROOT_LIST structure relates to the NetrDfsAdd2, NetrDfsAddFtRoot, and NetrDfsSetInfo2
 methods when used to add a DFS link or a DFS root target, or to modify the configuration of a
@@ -2597,9 +2354,9 @@ Entry:  An array of DFSM_ROOT_LIST_ENTRY structures. Each structure provides inf
 
 one DFS target. For more information, see section 2.2.2.10.
 
-2.2.2.10
+##### 2.2.2.10 DFSM_ROOT_LIST_ENTRY
 
-DFSM_ROOT_LIST_ENTRY
+
 
 The DFSM_ROOT_LIST_ENTRY structure relates to the NetrDfsAdd2, NetrDfsAddFtRoot, and
 NetrDfsSetInfo2 methods when used to add a DFS link or a DFS root target, or to modify the
@@ -2614,9 +2371,9 @@ The DFSM_ROOT_LIST_ENTRY structure has the following format.
 
 ServerShare:  Specifies a DFS root target.
 
-2.2.2.11
+##### 2.2.2.11 DFS_NAMESPACE_VERSION_ORIGIN
 
-DFS_NAMESPACE_VERSION_ORIGIN
+
 
 The DFS_NAMESPACE_VERSION_ORIGIN is an enumeration that relates to the
 NetrDfsGetSupportedNamespaceVersion method when used to determine the supported DFS
@@ -2640,15 +2397,16 @@ Release: April 23, 2024
 
 28 / 162
 
-DFS_NAMESPACE_VERSION_ORIGIN_SERVER:  The maximum version that a server can support.
+
+DFS_NAMESPACE_VERSION_ORIGIN_SERVER:  The maximum version that a server can support.
 
 DFS_NAMESPACE_VERSION_ORIGIN_DOMAIN:  The maximum version that the domain can
 
 support.
 
-2.2.2.12
+##### 2.2.2.12 DFS_SUPPORTED_NAMESPACE_VERSION_INFO
 
-DFS_SUPPORTED_NAMESPACE_VERSION_INFO
+
 
 The DFS_SUPPORTED_NAMESPACE_VERSION_INFO structure relates to the
 NetrDfsGetSupportedNamespaceVersion method when used to determine the domain-based or
@@ -2708,9 +2466,9 @@ This specifies support for Access Based Directory Enumeration
 When this structure is used for communication, all undefined bit fields MUST be set to zero. A client
 SHOULD ignore all bit fields it does not understand.
 
-2.2.2.13
+##### 2.2.2.13 DFS Volume State
 
-DFS Volume State
+
 
 The following table lists the valid states for a DFS root or a DFS link, and it relates to the State field of
 the DFS_INFO_2, DFS_INFO_4, DFS_INFO_5, DFS_INFO_6, and DFS_INFO_8 structures. The
@@ -2724,7 +2482,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2762,14 +2521,14 @@ for a DFS link and cannot be set on a DFS root.
 
 This state is persisted to the DFS metadata.
 
-2.2.3  Get Info Data Types
+#### 2.2.3 Get Info Data Types
 
 The structures in this section relate to the NetrDfsGetInfo, NetrDfsEnum, and NetrDfsEnumEx
 methods when used to retrieve information about the DFS server configuration. The usage model of
 these structures is for the client to specify a Level parameter to indicate which case of the
 DFS_INFO_STRUCT to use.
 
-2.2.3.1  DFS_INFO_1
+##### 2.2.3.1 DFS_INFO_1
 
 The DFS_INFO_1 structure contains the name of a DFS root or DFS link.
 
@@ -2781,7 +2540,7 @@ The DFS_INFO_1 structure has the following format.
 
 EntryPath:  The pointer to a DFS root or a DFS link path.
 
-2.2.3.2  DFS_INFO_2
+##### 2.2.3.2 DFS_INFO_2
 
 The DFS_INFO_2 structure contains information for a DFS root or DFS link.
 
@@ -2806,7 +2565,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-protocol-specified restrictions on length or content. The comment is meant for human
+
+protocol-specified restrictions on length or content. The comment is meant for human
 consumption and does not affect server functionality.
 
 State:   This field has the state of the DFS root or DFS link. For a DFS root, this field also specifies
@@ -2873,7 +2633,7 @@ domainv1-based or domainv2-based DFS namespace.
 
 NumberOfStorages:  Number of DFS targets for the root or link.
 
-2.2.3.3  DFS_INFO_3
+##### 2.2.3.3 DFS_INFO_3
 
 The DFS_INFO_3 structure contains information for a DFS root or a DFS link.
 
@@ -2899,7 +2659,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-restrictions on length or content. The comment is meant for human consumption and does not
+
+restrictions on length or content. The comment is meant for human consumption and does not
 affect server functionality.
 
 State:  Refers to the State field of DFS_INFO_2. For more information, see section 2.2.3.2.
@@ -2910,7 +2671,7 @@ Storage:  A pointer to an array of DFS_STORAGE_INFO structures containing inform
 target. (For more information, see section 2.2.2.5). The NumberOfStorages member specifies the
 number of structures within this storage array.
 
-2.2.3.4  DFS_INFO_4
+##### 2.2.3.4 DFS_INFO_4
 
 The DFS_INFO_4 structure contains information for a DFS root or a DFS link.
 
@@ -2949,7 +2710,7 @@ Storage:  A pointer to an array of DFS_STORAGE_INFO structures containing inform
 target. (For more information, see section 2.2.2.5). The NumberOfStorages member specifies the
 number of structures within this storage array.
 
-2.2.3.5  DFS_INFO_5
+##### 2.2.3.5 DFS_INFO_5
 
 The DFS_INFO_5 structure contains information for a DFS root or a DFS link.
 
@@ -2969,7 +2730,8 @@ Release: April 23, 2024
 
 32 / 162
 
-   unsigned long PropertyFlags;
+
+   unsigned long PropertyFlags;
    unsigned long MetadataSize;
    DWORD NumberOfStorages;
  } DFS_INFO_5;
@@ -3049,7 +2811,7 @@ MUST be 0.
 
 NumberOfStorages:  The number of DFS targets for this root or link.
 
-2.2.3.6  DFS_INFO_6
+##### 2.2.3.6 DFS_INFO_6
 
 The DFS_INFO_6 structure contains information for a DFS root or a DFS link.
 
@@ -3062,7 +2824,8 @@ Release: April 23, 2024
 
 33 / 162
 
- typedef struct _DFS_INFO_6 {
+
+ typedef struct _DFS_INFO_6 {
    [string] WCHAR* EntryPath;
    [string] WCHAR* Comment;
    DWORD State;
@@ -3106,7 +2869,7 @@ Storage:  A pointer to an array of DFS_STORAGE_INFO_1 structures containing info
 each target. The NumberOfStorages member specifies the number of structures within this
 storage array.
 
-2.2.3.7  DFS_INFO_7
+##### 2.2.3.7 DFS_INFO_7
 
 The DFS_INFO_7 structure contains information about a DFS root.
 
@@ -3122,7 +2885,7 @@ This data type is used to detect when the metadata of a DFS namespace has change
 supported for domain-based DFS namespaces. It MAY be supported for stand-alone DFS
 namespaces; a null GUID (all 128-bits are 0) MUST be returned if this is not supported.<6>
 
-2.2.3.8  DFS_INFO_8
+##### 2.2.3.8 DFS_INFO_8
 
 The DFS_INFO_8 structure contains information for a DFS root or a DFS link.
 
@@ -3133,7 +2896,8 @@ Release: April 23, 2024
 
 34 / 162
 
-The DFS_INFO_8 structure has the following format.
+
+The DFS_INFO_8 structure has the following format.
 
  typedef struct _DFS_INFO_8 {
    [string] WCHAR* EntryPath;
@@ -3185,7 +2949,7 @@ NumberOfStorages:  The number of DFS targets for this root or link. The protocol
 
 restrictions on the number of roots or links.
 
-2.2.3.9  DFS_INFO_9
+##### 2.2.3.9 DFS_INFO_9
 
 The DFS_INFO_9 structure contains information for a DFS root or a DFS link.
 
@@ -3208,7 +2972,8 @@ Release: April 23, 2024
 
 35 / 162
 
-   [size_is(SecurityDescriptorLength)]
+
+   [size_is(SecurityDescriptorLength)]
      PUCHAR pSecurityDescriptor;
    DWORD NumberOfStorages;
    [size_is(NumberOfStorages)] LPDFS_STORAGE_INFO_1 Storage;
@@ -3257,9 +3022,9 @@ storage array.
 
 For information on target priority rank and class information, see section 2.2.2.6.
 
-2.2.3.10
+##### 2.2.3.10 DFS_INFO_50
 
-DFS_INFO_50
+
 
 The DFS_INFO_50 structure is used to get the DFS metadata version and the capability information
 of an existing DFS namespace.
@@ -3284,7 +3049,8 @@ Release: April 23, 2024
 
 36 / 162
 
-NamespaceMinorVersion:  A value containing the minor version number used to determine the DFS
+
+NamespaceMinorVersion:  A value containing the minor version number used to determine the DFS
 
 metadata format supported in a domain-based DFS namespace or stand-alone DFS
 namespace.<8>
@@ -3302,13 +3068,13 @@ DFS__NAMESPACE_CAPABILITY_ABDE
 The specified DFS root supports using Access Based Directory
 Enumeration (ABDE) mode.<9>
 
-2.2.4  Set Info Data Types
+#### 2.2.4 Set Info Data Types
 
 The structures in this section relate to the NetrDfsSetInfo and NetrDfsSetInfo2 methods when used to
 retrieve or set the configuration of the DFS server. The usage model of these structures is for the
 client to specify a Level parameter to indicate which DFS_INFO_STRUCT case to use.
 
-2.2.4.1  DFS_INFO_101
+##### 2.2.4.1 DFS_INFO_101
 
 The DFS_INFO_101 structure describes the storage state on a root, link, root target, or link target.
 
@@ -3378,7 +3144,8 @@ Release: April 23, 2024
 
 37 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -3419,7 +3186,7 @@ This target is online and available for use.
 
 0x00000002
 
-2.2.4.2  DFS_INFO_102
+##### 2.2.4.2 DFS_INFO_102
 
 The DFS_INFO_102 structure contains a time-out value for a DFS root or a DFS link.
 
@@ -3433,7 +3200,7 @@ Timeout:   The time-out, in seconds, associated with the root or link and used i
 
 response to a DFS client.
 
-2.2.4.3  DFS_INFO_103
+##### 2.2.4.3 DFS_INFO_103
 
 The DFS_INFO_103 structure contains properties that set specific behaviors for a DFS root or a DFS
 link.
@@ -3456,7 +3223,8 @@ Release: April 23, 2024
 
 38 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -3541,7 +3309,7 @@ namespace or stand-alone DFS namespace. When not
 set, disables ABDE mode on a domainv2-based DFS
 namespace or stand-alone DFS namespace.
 
-2.2.4.4  DFS_INFO_104
+##### 2.2.4.4 DFS_INFO_104
 
 The DFS_INFO_104 structure contains the priority of a DFS root target or a DFS link target.
 
@@ -3558,11 +3326,12 @@ Release: April 23, 2024
 
 39 / 162
 
-TargetPriority:  A DFS_TARGET_PRIORITY structure that indicates the priority rank and priority class
+
+TargetPriority:  A DFS_TARGET_PRIORITY structure that indicates the priority rank and priority class
 
 of a target. For more information on prioritization, see section 2.2.2.7.
 
-2.2.4.5  DFS_INFO_105
+##### 2.2.4.5 DFS_INFO_105
 
 The DFS_INFO_105 structure contains information about a DFS root or DFS link, including comment,
 state, time-out, and DFS behaviors specified by property flags.
@@ -3616,7 +3385,7 @@ PropertyFlagMask:   Indicates which bits in the PropertyFlags field are valid.
 
 PropertyFlags:  Refers to the PropertyFlags field of DFS_INFO_103, as specified in section 2.2.4.3.
 
-2.2.4.6  DFS_INFO_106
+##### 2.2.4.6 DFS_INFO_106
 
 The DFS_INFO_106 structure contains the storage state and priority of a DFS root target or a DFS
 link target. For more information on prioritization, see section 2.2.2.7.
@@ -3637,7 +3406,8 @@ Release: April 23, 2024
 
 40 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -3657,7 +3427,7 @@ TargetPriority:  A DFS_TARGET_PRIORITY structure that indicates the priority cla
 
 DFS target.
 
-2.2.4.7  DFS_INFO_107
+##### 2.2.4.7 DFS_INFO_107
 
 The DFS_INFO_107 structure contains information about a DFS root or DFS link, including comment,
 state, time-out, security descriptor, and DFS behaviors specified by property flags.
@@ -3724,18 +3494,19 @@ Release: April 23, 2024
 
 41 / 162
 
-pSecurityDescriptor:  A self-relative security descriptor to be associated with a DFS link. For more
+
+pSecurityDescriptor:  A self-relative security descriptor to be associated with a DFS link. For more
 
 information on security descriptors, see [MS-DTYP] section 2.4.6.
 
-2.2.5  Special Info Data Types
+#### 2.2.5 Special Info Data Types
 
 The structures in this section relate to the NetrDfsEnum, NetrDfsEnumEx, NetrDfsGetInfo,
 NetrDfsSetInfo, and NetrDfsSetInfo2 methods when used to retrieve or set the DFS server
 configuration. The usage model of these structures is for the client to specify a Level parameter to
 indicate which case of the DFS_INFO_STRUCT to use.
 
-2.2.5.1  DFS_INFO_100
+##### 2.2.5.1 DFS_INFO_100
 
 The DFS_INFO_100 structure relates to the NetrDfsGetInfo, NetrDfsSetInfo, and NetrDfsSetInfo2
 methods when used to retrieve or set comment text about a DFS root or a DFS link. The structure
@@ -3753,7 +3524,7 @@ DFS root or DFS link that is for informational purposes. This string has no prot
 restrictions on length or content. The comment is meant for human readability and does not affect
 server functionality.
 
-2.2.5.2  DFS_INFO_150
+##### 2.2.5.2 DFS_INFO_150
 
 The DFS_INFO_150 structure relates to the NetrDfsGetInfo, NetrDfsSetInfo, and NetrDfsSetInfo2
 methods when used to retrieve or set security descriptors associated with a DFS link. The structure
@@ -3775,7 +3546,7 @@ pSecurityDescriptor:  A self-relative security descriptor associated with DFS. F
 
 on security descriptors, see [MS-DTYP] section 2.4.6.
 
-2.2.5.3  DFS_INFO_200
+##### 2.2.5.3 DFS_INFO_200
 
 The DFS_INFO_200 structure relates to the NetrDfsEnumEx method when used to enumerate all of
 the domain-based DFS namespace in a domain. The structure contains the name of a domain-
@@ -3791,11 +3562,12 @@ Release: April 23, 2024
 
 42 / 162
 
- } DFS_INFO_200;
+
+ } DFS_INFO_200;
 
 FtDfsName:  A pointer to a DFS root path.
 
-2.2.5.4  DFS_INFO_300
+##### 2.2.5.4 DFS_INFO_300
 
 The DFS_INFO_300 structure relates to the NetrDfsEnum and NetrDfsEnumEx methods when used to
 enumerate DFS roots hosted on a server. The structure contains the name and type (domain-based
@@ -3828,14 +3600,14 @@ Domain-based DFS namespace.
 
 DfsName:  A pointer to a DFS root path.
 
-2.2.6  Enum Info Data Types
+#### 2.2.6 Enum Info Data Types
 
 The structures in this section relate to the NetrDfsEnum and NetrDfsEnumEx methods when used to
 enumerate and retrieve the configuration of the DFS server. The usage model of these structures is
 for the client to specify a Level parameter to indicate which case of the DFS_INFO_ENUM_STRUCT to
 use.
 
-2.2.6.1  DFS_INFO_1_CONTAINER
+##### 2.2.6.1 DFS_INFO_1_CONTAINER
 
 The DFS_INFO_1_CONTAINER structure contains an array of DFS_INFO_1 structures. The
 DFS_INFO_1_CONTAINER structure has the following format.
@@ -3849,7 +3621,7 @@ EntriesRead:  The number of elements in the array.
 
 Buffer:  The array of DFS_INFO_1 structures.
 
-2.2.6.2  DFS_INFO_2_CONTAINER
+##### 2.2.6.2 DFS_INFO_2_CONTAINER
 
 The DFS_INFO_2_CONTAINER structure contains an array of DFS_INFO_2 structures. The
 DFS_INFO_2_CONTAINER structure has the following format.
@@ -3861,7 +3633,8 @@ Release: April 23, 2024
 
 43 / 162
 
- typedef struct _DFS_INFO_2_CONTAINER {
+
+ typedef struct _DFS_INFO_2_CONTAINER {
    DWORD EntriesRead;
    [size_is(EntriesRead)] DFS_INFO_2* Buffer;
  } DFS_INFO_2_CONTAINER;
@@ -3870,7 +3643,7 @@ EntriesRead:  The number of elements in the array.
 
 Buffer:  The array of DFS_INFO_2 structures.
 
-2.2.6.3  DFS_INFO_3_CONTAINER
+##### 2.2.6.3 DFS_INFO_3_CONTAINER
 
 The DFS_INFO_3_CONTAINER structure contains an array of DFS_INFO_3 structures. The
 DFS_INFO_3_CONTAINER structure has the following format.
@@ -3884,7 +3657,7 @@ EntriesRead:  The number of elements in the array.
 
 Buffer:  The array of DFS_INFO_3 structures.
 
-2.2.6.4  DFS_INFO_4_CONTAINER
+##### 2.2.6.4 DFS_INFO_4_CONTAINER
 
 The DFS_INFO_4_CONTAINER structure contains an array of DFS_INFO_4 structures. The
 DFS_INFO_4_CONTAINER structure has the following format.
@@ -3898,7 +3671,7 @@ EntriesRead:  The number of elements in the array.
 
 Buffer:  The array of DFS_INFO_4 structures.
 
-2.2.6.5  DFS_INFO_5_CONTAINER
+##### 2.2.6.5 DFS_INFO_5_CONTAINER
 
 The DFS_INFO_5_CONTAINER structure contains an array of DFS_INFO_5 structures. The
 DFS_INFO_5_CONTAINER structure has the following format.
@@ -3919,7 +3692,8 @@ Release: April 23, 2024
 
 44 / 162
 
-2.2.6.6  DFS_INFO_6_CONTAINER
+
+##### 2.2.6.6 DFS_INFO_6_CONTAINER
 
 The DFS_INFO_6_CONTAINER structure contains an array of DFS_INFO_6 structures. The
 DFS_INFO_6_CONTAINER structure has the following format.
@@ -3933,7 +3707,7 @@ EntriesRead:  The number of elements in the array.
 
 Buffer:  The array of DFS_INFO_6 structures.
 
-2.2.6.7  DFS_INFO_8_CONTAINER
+##### 2.2.6.7 DFS_INFO_8_CONTAINER
 
 The DFS_INFO_8_CONTAINER structure contains an array of DFS_INFO_8 structures. The
 DFS_INFO_8_CONTAINER structure has the following format.
@@ -3948,7 +3722,7 @@ EntriesRead:  The number of DFS_INFO_8 elements in the array.
 
 Buffer:  The array of DFS_INFO_8 structures.
 
-2.2.6.8  DFS_INFO_9_CONTAINER
+##### 2.2.6.8 DFS_INFO_9_CONTAINER
 
 The DFS_INFO_9_CONTAINER structure contains an array of DFS_INFO_9 structures. The
 DFS_INFO_9_CONTAINER structure has the following format.
@@ -3963,7 +3737,7 @@ EntriesRead:  The number of DFS_INFO_9 elements in the array.
 
 Buffer:  The array of DFS_INFO_9 structures.
 
-2.2.6.9  DFS_INFO_200_CONTAINER
+##### 2.2.6.9 DFS_INFO_200_CONTAINER
 
 The DFS_INFO_200_CONTAINER structure contains an array of DFS_INFO_200 structures. The
 DFS_INFO_200_CONTAINER structure has the following format.
@@ -3982,11 +3756,12 @@ Release: April 23, 2024
 
 45 / 162
 
-Buffer:  The array of DFS_INFO_200 structures.
 
-2.2.6.10
+Buffer:  The array of DFS_INFO_200 structures.
 
-DFS_INFO_300_CONTAINER
+##### 2.2.6.10 DFS_INFO_300_CONTAINER
+
+
 
 The DFS_INFO_300_CONTAINER structure contains an array of DFS_INFO_300 structures. The
 DFS_INFO_300_CONTAINER structure has the following format.
@@ -4000,7 +3775,7 @@ EntriesRead:  The number of elements in the array.
 
 Buffer:  The array of DFS_INFO_300 structures.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The protocol accesses the following Directory Service (DS) schema classes and attributes listed in
 the following table.
@@ -4058,7 +3833,7 @@ domainFunctionality
 This section contains specifications for the DFS configuration container, DFS namespace object, and
 pKT attribute.
 
-2.3.1  DFS Configuration Container
+#### 2.3.1 DFS Configuration Container
 
 The DFS configuration container is a well-known container in the domain directory that is used to hold
 the DFS metadata for a domain-based DFS namespace. The container has the following
@@ -4071,7 +3846,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- CN=Dfs-Configuration,CN=System,<domain>
+
+ CN=Dfs-Configuration,CN=System,<domain>
 
 where <domain> is the DN of the domain.
 
@@ -4081,7 +3857,7 @@ For example, the DFS configuration container for the contoso.com domain would be
 
 The object class of this object is dfsConfiguration, and its schema is as specified in [MS-ADSC].
 
-2.3.2  LDAP Entries for Domain-Based DFS Namespaces
+#### 2.3.2 LDAP Entries for Domain-Based DFS Namespaces
 
 LDAP entries exist in both domainv1-based DFS namespace and domainv2-based DFS
 namespace. This relationship is shown in the following figure.
@@ -4093,7 +3869,8 @@ Release: April 23, 2024
 
 47 / 162
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-DFSNM].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -4121,7 +3898,8 @@ Release: April 23, 2024
 
 48 / 162
 
-2.3.3  DFS Namespace Object for Domainv1-Based DFS Namespace
+
+#### 2.3.3 DFS Namespace Object for Domainv1-Based DFS Namespace
 
 An object exists for each domainv1-based DFS namespace in the DFS configuration container.
 The following is a DN of the object of a domain-based DFS namespace.
@@ -4160,7 +3938,7 @@ The BLOB containing the DFS metadata.
 The objectClass of this object is fTDfs, and its schema is specified in [MS-ADSC]. The schema of the
 attributes name, remoteServerName, pKTGuid, and pKT are specified in [MS-ADA3].
 
-2.3.3.1  pKT Attribute Contents (Metadata for Domainv1-Based Namespace)
+##### 2.3.3.1 pKT Attribute Contents (Metadata for Domainv1-Based Namespace)
 
 The pKT attribute contains the DFS metadata of the domain-based DFS namespace that the
 object represents.
@@ -4205,10 +3983,11 @@ Release: April 23, 2024
 
 49 / 162
 
-information about a DFS site, root, or link. The format and size of each
+
+information about a DFS site, root, or link. The format and size of each
 DFSNamespaceElementBLOB depend on the information contained in it.
 
-2.3.3.1.1 DFSNamespaceElementBLOB
+###### 2.3.3.1.1 DFSNamespaceElementBLOB
 
 A DFSNamespaceElementBLOB contains information about a DFS root or a DFS link, or for mapping
 a server to its site name.
@@ -4292,13 +4071,14 @@ Release: April 23, 2024
 
 50 / 162
 
-BLOBData (variable): Data specific to the type of BLOB described, in the form of a
+
+BLOBData (variable): Data specific to the type of BLOB described, in the form of a
 DFSNamespaceRootBLOB, DFSNamespaceLinkBLOB, or SiteInformationBLOB.
 
 The following sections specify the format of the DFSNamespaceRootBLOB, DFSNamespaceLinkBLOB,
 and SiteInformationBLOB.
 
-2.3.3.1.1.1  DFSNamespaceRootBLOB or DFSNamespaceLinkBLOB
+###### 2.3.3.1.1.1 DFSNamespaceRootBLOB or DFSNamespaceLinkBLOB
 
 At most, only one DFSNamespaceRootBLOB can contain information about the DFS namespace root.
 One DFSNamespaceLinkBLOB exists for each DFS link in the namespace.
@@ -4369,11 +4149,12 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ReferralTTL (4 bytes): The referral time-out value, in seconds, for the DFS root or DFS link. The
+
+ReferralTTL (4 bytes): The referral time-out value, in seconds, for the DFS root or DFS link. The
 
 ReferralTTL is stored as an unsigned, 32-bit, little-endian integer.
 
-2.3.3.1.1.2  DFSRootOrLinkIDBLOB
+###### 2.3.3.1.1.2 DFSRootOrLinkIDBLOB
 
 This BLOB contains name and other information about the DFS namespace root or the DFS link.
 
@@ -4447,7 +4228,8 @@ Release: April 23, 2024
 
 52 / 162
 
-RootOrLinkGuid (16 bytes): A GUID that identifies the DFS root or the DFS link. It is used to
+
+RootOrLinkGuid (16 bytes): A GUID that identifies the DFS root or the DFS link. It is used to
 
 generate the name "\<domainroot>\<GUIDString>" in the BLOBName field of the
 DFSNamespaceLinkBLOB, where <GUIDString> represents the string form of the GUID, as
@@ -4549,7 +4331,8 @@ Release: April 23, 2024
 
 53 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -4609,7 +4392,7 @@ little-endian integer. When creating a new DFSRootOrLinkIDBLOB, this MUST be set
 0x00000003. When updating an existing DFSRootOrLinkIDBLOB, the existing value MUST be
 preserved.
 
-2.3.3.1.1.3  DFSTargetListBLOB
+###### 2.3.3.1.1.3 DFSTargetListBLOB
 
 The DFSTargetListBLOB contains information about all of the targets of the DFS root or DFS link.
 
@@ -4643,7 +4426,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.3.1.1.3.1  TargetEntryBLOB
+
+###### 2.3.3.1.1.3.1 TargetEntryBLOB
 
 The TargetEntryBLOB holds metadata for the DFS target of a root or a link.
 
@@ -4739,7 +4523,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x1
 
@@ -4813,7 +4598,7 @@ little-endian integer.
 
 ShareName (variable): An array of Unicode characters that contains the DFS target share name.
 
-2.3.3.1.1.4  SiteInformationBLOB
+###### 2.3.3.1.1.4 SiteInformationBLOB
 
 The SiteInformationBLOB contains the mapping from a DFS target host name to its site name. There
 MUST be no more than one BLOB of this type. This BLOB contains zero or more SiteEntryBLOBs.
@@ -4842,7 +4627,8 @@ Release: April 23, 2024
 
 56 / 162
 
-SiteEntryCount
+
+SiteEntryCount
 
 SiteEntryBLOB (variable)
 
@@ -4858,7 +4644,7 @@ SiteEntryBLOB (variable): Zero or more BLOBs. Each BLOB contains the site of a r
 
 target server in the DFS namespace.
 
-2.3.3.1.1.4.1  SiteEntryBLOB
+###### 2.3.3.1.1.4.1 SiteEntryBLOB
 
 This BLOB contains a host name whose site information is specified by the SiteNameInfoBLOB (for
 more information, see section 2.3.3.1.1.4.1.1).
@@ -4900,9 +4686,9 @@ SiteNameInfoBLOB (variable): The BLOB containing the site name of the server in 
 
 SiteEntryBLOB.
 
-2.3.3.1.1.4.1.1
+###### 2.3.3.1.1.4.1.1 SiteNameInfoBLOB
 
-SiteNameInfoBLOB
+
 
 The SiteNameInfoBLOB contains the name of a site to which a server belongs.
 
@@ -4930,7 +4716,8 @@ Release: April 23, 2024
 
 57 / 162
 
-...
+
+...
 
 Flags (4 bytes): This MUST be set to 0 on write. MUST be ignored on read.
 
@@ -4943,14 +4730,14 @@ SiteName (variable): A string of Unicode characters representing the directory s
 of the server. The case of the site name, as provided by directory services, MUST be preserved
 when storing in this field.
 
-2.3.4  Schema for Domainv2-Based DFS Namespace
+#### 2.3.4 Schema for Domainv2-Based DFS Namespace
 
 Each domainv2-based DFS namespace has one DFS namespace anchor LDAP entry, one DFS
 namespace LDAP entry below it, and one LDAP entry per DFS link in the namespace under the DFS
 namespace LDAP entry. The following sections specify the mandatory and optional attributes of the
 object classes.
 
-2.3.4.1  LDAP Entry for Domainv2-Based DFS Namespace Anchor
+##### 2.3.4.1 LDAP Entry for Domainv2-Based DFS Namespace Anchor
 
 Each domainv2-based DFS namespace under the DFS configuration container has a DFS
 namespace anchor LDAP entry.
@@ -4963,7 +4750,7 @@ ms-DFS-Namespace-Anchor, and its schema is specified in [MS-ADSC]. The schema of
 SchemaMajorVersion attribute is specified in [MS-ADA2]. Future revisions of the DFS namespace will
 retain this LDAP entry to provide the DFS metadata version information of the DFS namespace.
 
-2.3.4.2  LDAP Entry for Domainv2-Based DFS Namespace
+##### 2.3.4.2 LDAP Entry for Domainv2-Based DFS Namespace
 
 A DFS namespace LDAP entry exists for each domainv2-based DFS namespace under the DFS
 namespace anchor LDAP entry.
@@ -5009,7 +4796,8 @@ Release: April 23, 2024
 
 58 / 162
 
-Attribute
+
+Attribute
 
 Description
 
@@ -5102,7 +4890,8 @@ Release: April 23, 2024
 
 59 / 162
 
-2.3.4.3  LDAP Entry for Domainv2-Based DFS Link
+
+##### 2.3.4.3 LDAP Entry for Domainv2-Based DFS Link
 
 One LDAP entry exists for each DFS link in the namespace under the DFS namespace LDAP entry.
 
@@ -5201,7 +4990,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For domainv2-based DFS links, the msDFS-Propertiesv2 attribute parallels the functionality of the
+
+For domainv2-based DFS links, the msDFS-Propertiesv2 attribute parallels the functionality of the
 DFSRootOrLinkIDBLOB (section 2.3.3.1.1.2) Type field used for domainv1-based DFS links.
 
 Attribute Value
@@ -5256,7 +5046,7 @@ LinkSecurityDescriptorv2, and msDFS-Commentv2.
 The object class of the LDAP entry corresponding to a DFS link in a domainV2-based DFS
 namespace is msDFS-Linkv2, and its schema is specified in [MS-ADSC].
 
-2.3.4.4  LDAP Entry for Domainv2-Based Deleted Link
+##### 2.3.4.4 LDAP Entry for Domainv2-Based Deleted Link
 
 Only one LDAP entry corresponds to a deleted link in a domainv2-based DFS namespace. This is a
 dynamic object.
@@ -5303,7 +5093,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Description
 
@@ -5336,11 +5127,12 @@ Release: April 23, 2024
 
 62 / 162
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 could maintain in order to participate in this protocol. This organization is provided to facilitate the
@@ -5360,7 +5152,7 @@ MAY<26> be cached as an optimization.
 Note  The preceding conceptual data can be implemented using a variety of techniques. There are no
 limitations on data implementation.
 
-3.1.1.1  Global
+##### 3.1.1.1 Global
 
 The following element is global.
 
@@ -5369,7 +5161,7 @@ NamespaceList: A list of namespaces hosted by the server. Each entry is a tuple 
 <NamespaceName, Namespace>, indexed by the NamespaceName, as specified in section
 3.1.1.2.
 
-3.1.1.2  Per Namespace
+##### 3.1.1.2 Per Namespace
 
 The following are the elements of a Namespace element:
 
@@ -5386,7 +5178,7 @@ Namespace.NamespaceElementsList: List of the DFS namespace elements as described
 
 3.1.1.3.
 
-3.1.1.3  Per NamespaceElement
+##### 3.1.1.3 Per NamespaceElement
 
 The NamespaceElement represents a DFS root or a DFS link and has the following parameters:
 
@@ -5405,7 +5197,8 @@ Release: April 23, 2024
 
 63 / 162
 
-NamespaceElement.State: State of the DFS namespace element, as specified for State in section
+
+NamespaceElement.State: State of the DFS namespace element, as specified for State in section
 
 2.2.3.2.
 
@@ -5424,7 +5217,7 @@ NamespaceElement.TargetsList: List of targets for the DFS namespace element. Eac
 
 the list is as described in section 3.1.1.4.
 
-3.1.1.4  Per TargetsList
+##### 3.1.1.4 Per TargetsList
 
 The following are the elements of a TargetsList.
 
@@ -5432,7 +5225,7 @@ TargetsList.TargetCount: Number of targets for the DFS namespace element.
 
 TargetsList.Target: Metadata of the target. This is as described in the section 3.1.1.5.
 
-3.1.1.5  Per Target
+##### 3.1.1.5 Per Target
 
 The following are the elements of a Target element.
 
@@ -5448,12 +5241,12 @@ Target.ServerName: The DFS target host name.
 
 Target.ShareName: The DFS target share name.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST listen on the well-known endpoint defined for this RPC interface, as specified in
 section 2.1.
@@ -5474,7 +5267,8 @@ Release: April 23, 2024
 
 64 / 162
 
-3.1.4  Message Processing Events and Sequencing Rules
+
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 When any RPC method is received for a domain-based DFS namespace that is hosted by the server,
 the server MUST first check whether the DFS namespace is up-to-date with any changes that have
@@ -5564,7 +5358,8 @@ Release: April 23, 2024
 
 65 / 162
 
-Method
+
+Method
 
 Description
 
@@ -5675,7 +5470,8 @@ Release: April 23, 2024
 
 66 / 162
 
-Method
+
+Method
 
 NetrDfsEnumEx
 
@@ -5719,9 +5515,9 @@ Opnum: 25
 In the preceding table, the term "Reserved for local use" means that the client MUST NOT send the
 opnum, and the server behavior is undefined<34> because it does not affect interoperability.
 
-3.1.4.1  Basic Methods
+##### 3.1.4.1 Basic Methods
 
-3.1.4.1.1 NetrDfsManagerInitialize (Opnum 14)
+###### 3.1.4.1.1 NetrDfsManagerInitialize (Opnum 14)
 
 The NetrDfsManagerInitialize method instructs the DFS server to discard its current state and
 reinitialize itself from its stored configuration settings. The server SHOULD<35> choose to implement
@@ -5761,7 +5557,8 @@ Release: April 23, 2024
 
 67 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5782,7 +5579,7 @@ ERROR_NOT_SUPPORTED
 If this method is implemented, the DFS server SHOULD<36> discard its current state and reinitialize
 itself from its stored configuration settings.
 
-3.1.4.1.2 NetrDfsManagerGetVersion (Opnum 0)
+###### 3.1.4.1.2 NetrDfsManagerGetVersion (Opnum 0)
 
 The NetrDfsManagerGetVersion method returns the version number of the DFS server in use on the
 server.
@@ -5822,7 +5619,7 @@ namespace and opnums 23 through 25, inclusive.
 The clients MAY use the version information to determine the RPC methods that the DFS server
 supports.<37><38><39><40><41>
 
-3.1.4.1.3 NetrDfsAdd (Opnum 1)
+###### 3.1.4.1.3 NetrDfsAdd (Opnum 1)
 
 The NetrDfsAdd method creates a new DFS link or adds a new target to an existing link of a DFS
 namespace.
@@ -5843,7 +5640,8 @@ Release: April 23, 2024
 
 68 / 162
 
- );
+
+ );
 
 DfsEntryPath: The pointer to a DFS link path that contains the name of an existing link when
 
@@ -5946,7 +5744,8 @@ Release: April 23, 2024
 
 69 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6024,7 +5823,8 @@ Release: April 23, 2024
 
 70 / 162
 
-The server MUST update the following fields in the DFS metadata for a domainv1-based DFS
+
+The server MUST update the following fields in the DFS metadata for a domainv1-based DFS
 namespace.
 
 Operation
@@ -6070,7 +5870,7 @@ notify other DFS root targets of the change in DFS metadata by asynchronously is
 NetrDfsSetInfo (Opnum 3) method with the Level parameter 101, and with the State field of
 DFS_INFO_101 set to DFS_VOLUME_STATE_RESYNCHRONIZE.<47><48>
 
-3.1.4.1.4 NetrDfsRemove (Opnum 2)
+###### 3.1.4.1.4 NetrDfsRemove (Opnum 2)
 
 The NetrDfsRemove method removes a link or a link target from a DFS namespace. A link can be
 removed regardless of the number of targets associated with it.
@@ -6107,7 +5907,8 @@ Release: April 23, 2024
 
 71 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6208,7 +6009,8 @@ Release: April 23, 2024
 
 72 / 162
 
-The server MUST update the following fields in the DFS metadata for a domainv2-based DFS
+
+The server MUST update the following fields in the DFS metadata for a domainv2-based DFS
 namespace.
 
 Operation
@@ -6247,7 +6049,7 @@ notify other DFS root targets of the change in DFS metadata by asynchronously is
 NetrDfsSetInfo method with the Level parameter 101, and with the State field of DFS_INFO_101 set
 to DFS_VOLUME_STATE_RESYNCHRONIZE.<50><51>
 
-3.1.4.1.5 NetrDfsSetInfo (Opnum 3)
+###### 3.1.4.1.5 NetrDfsSetInfo (Opnum 3)
 
 The NetrDfsSetInfo method sets or modifies information relevant to a specific DFS root, DFS root
 target, DFS link, or DFS link target.
@@ -6284,7 +6086,8 @@ Release: April 23, 2024
 
 73 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -6405,7 +6208,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6493,7 +6297,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 DFS metadata changes required
 
@@ -6603,7 +6408,8 @@ Release: April 23, 2024
 
 76 / 162
 
-The server MUST update the following fields in the DFS metadata for a domainv2-based DFS
+
+The server MUST update the following fields in the DFS metadata for a domainv2-based DFS
 namespace, depending on the value of the Level parameter. For information about these fields, see
 section 2.3.4.
 
@@ -6672,7 +6478,7 @@ notify other DFS root targets of the change in DFS metadata by asynchronously is
 NetrDfsSetInfo method with the Level parameter 101, and with the State field of DFS_INFO_101 set
 to DFS_VOLUME_STATE_RESYNCHRONIZE.<57>
 
-3.1.4.1.6 NetrDfsGetInfo (Opnum 4)
+###### 3.1.4.1.6 NetrDfsGetInfo (Opnum 4)
 
 The NetrDfsGetInfo method returns information about a DFS root or a DFS link of the specified DFS
 namespace.
@@ -6694,7 +6500,8 @@ Release: April 23, 2024
 
 77 / 162
 
-DfsEntryPath: The pointer to a DFS root or a DFS link path.
+
+DfsEntryPath: The pointer to a DFS root or a DFS link path.
 
 ServerName: This parameter MUST be a NULL pointer for Level_50 and MUST be ignored for other
 
@@ -6818,7 +6625,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The method MUST return 0 on success and a nonzero error code on failure. The
+
+Return Values: The method MUST return 0 on success and a nonzero error code on failure. The
 
 method can return any specific error code value, as specified in [MS-ERREF] section 2.2. The most
 common error codes are listed in the following table.
@@ -6933,7 +6741,8 @@ Release: April 23, 2024
 
 79 / 162
 
-100
+
+100
 
 Comment in NamespaceElement.
 
@@ -7044,7 +6853,8 @@ Release: April 23, 2024
 
 80 / 162
 
-Value
+
+Value
 
 DFS metadata field
 
@@ -7116,7 +6926,7 @@ The msDFS-LinkSecurityDescriptorv2 attribute.
 
 (0x00000096)
 
-3.1.4.1.7 NetrDfsEnum (Opnum 5)
+###### 3.1.4.1.7 NetrDfsEnum (Opnum 5)
 
 The NetrDfsEnum method enumerates the DFS root hosted on a server or the DFS links of the
 namespace hosted by a server. Depending on the information level, the targets of the root and links
@@ -7143,7 +6953,8 @@ Release: April 23, 2024
 
 81 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -7254,7 +7065,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-previous enumeration, but MAY produce incomplete or inconsistent results due to the
+
+previous enumeration, but MAY produce incomplete or inconsistent results due to the
 possibility of concurrent updates to the DFS namespace.<65>
 
 Return Values: The method MUST return 0 on success and a nonzero error code on failure. The
@@ -7316,7 +7128,7 @@ If the requested Level is 1 through 9 and ResumeHandle does not indicate initial
 server MUST NOT return the DFS root entry and all the entries of the DFS_INFO_ENUM_STRUCT
 return buffer MUST be DFS links in implementation-specific order.
 
-3.1.4.1.8 NetrDfsMove (Opnum 6)
+###### 3.1.4.1.8 NetrDfsMove (Opnum 6)
 
 The NetrDfsMove (Opnum 6) method renames or moves a DFS link. This method has the following
 MIDL syntax.
@@ -7337,7 +7149,8 @@ Release: April 23, 2024
 
 83 / 162
 
-NewDfsEntryPath: The pointer to a DFS path, this parameter specifies the destination DFS path for
+
+NewDfsEntryPath: The pointer to a DFS path, this parameter specifies the destination DFS path for
 
 the move operation. This MUST be a path or a DFS link in the same DFS namespace.
 
@@ -7431,7 +7244,8 @@ Release: April 23, 2024
 
 84 / 162
 
-When the source and destination are both paths in the DFS namespace and not links themselves, all
+
+When the source and destination are both paths in the DFS namespace and not links themselves, all
 DFS links in the DFS namespace that have the source path as their prefix MUST be converted to DFS
 links with the destination path as the prefix. In effect, each DFS link that has the prefix specified by
 the source path is removed, and new DFS links that have exactly the same targets and target
@@ -7502,7 +7316,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-required local state changes (on-disk, in-memory) are performed on the DFS root target server
+
+required local state changes (on-disk, in-memory) are performed on the DFS root target server
 performing the move operation as well.
 
 The server MUST update the following fields in the DFS metadata for a domainv2-based DFS
@@ -7527,7 +7342,7 @@ The move operation on a stand-alone DFS namespace or a domainv2-based DFS namesp
 correctly applies to any security descriptor that is associated with the DFS link, to the new reparse
 point created after the move operation.
 
-3.1.4.1.9 NetrDfsAddRootTarget (Opnum 23)
+###### 3.1.4.1.9 NetrDfsAddRootTarget (Opnum 23)
 
 The NetrDfsAddRootTarget method is used to create a stand-alone DFS namespace, a domainv1-
 based DFS namespace, or a domainv2-based DFS namespace.<73>
@@ -7574,7 +7389,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NewNamespace: A Boolean value that, if TRUE, indicates a request to create a new root. If FALSE,
+
+NewNamespace: A Boolean value that, if TRUE, indicates a request to create a new root. If FALSE,
 
 this value indicates a request to add a new root target to an existing root.
 
@@ -7683,7 +7499,8 @@ Release: April 23, 2024
 
 87 / 162
 
-  NetrDfsGetSupportedNamespaceVersion is called to determine an appropriate version number to
+
+  NetrDfsGetSupportedNamespaceVersion is called to determine an appropriate version number to
 
 pass to the NetrDfsAddRootTarget() method.
 
@@ -7780,7 +7597,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.10  NetrDfsRemoveRootTarget (Opnum 24)
+
+###### 3.1.4.1.10 NetrDfsRemoveRootTarget (Opnum 24)
 
 The NetrDfsRemoveRootTarget (Opnum 24) method is the unified DFS namespace deletion method.
 It deletes stand-alone DFS namespaces, domainv1-based DFS namespaces, or domainv2-
@@ -7870,7 +7688,8 @@ Release: April 23, 2024
 
 89 / 162
 
-The server MUST verify the existence of the DFS root target of the DFS namespace that the
+
+The server MUST verify the existence of the DFS root target of the DFS namespace that the
 pTargetPath parameter specifies. If that existence check fails, the server MUST return
 ERROR_FILE_NOT_FOUND.
 
@@ -7930,7 +7749,7 @@ NULL
 
 Deletes a stand-alone DFS namespace.
 
-3.1.4.1.11  NetrDfsGetSupportedNamespaceVersion (Opnum 25)
+###### 3.1.4.1.11 NetrDfsGetSupportedNamespaceVersion (Opnum 25)
 
 The NetrDfsGetSupportedNamespaceVersion (Opnum 25) method is used to determine the supported
 DFS metadata version number.<78>
@@ -7947,7 +7766,8 @@ Release: April 23, 2024
 
 90 / 162
 
-   [in, unique, string] NETDFS_SERVER_OR_DOMAIN_HANDLE pName,
+
+   [in, unique, string] NETDFS_SERVER_OR_DOMAIN_HANDLE pName,
    [out] PDFS_SUPPORTED_NAMESPACE_VERSION_INFO pVersionInfo
  );
 
@@ -8022,9 +7842,9 @@ domain and the server support.
 This method is useful in determining an appropriate version number to pass to the
 NetrDfsAddRootTarget method.
 
-3.1.4.2  Extended Methods
+##### 3.1.4.2 Extended Methods
 
-3.1.4.2.1 NetrDfsAdd2 (Opnum 19)
+###### 3.1.4.2.1 NetrDfsAdd2 (Opnum 19)
 
 [MS-DFSNM] - v20240423
 Distributed File System (DFS): Namespace Management Protocol
@@ -8033,7 +7853,8 @@ Release: April 23, 2024
 
 91 / 162
 
-The NetrDfsAdd2 (Opnum 19) method creates a new DFS link or adds a new target to an existing link
+
+The NetrDfsAdd2 (Opnum 19) method creates a new DFS link or adds a new target to an existing link
 of a DFS namespace.
 
 The NetrDfsAdd2 method has the following MIDL syntax.
@@ -8113,7 +7934,8 @@ Release: April 23, 2024
 
 92 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8203,7 +8025,8 @@ Release: April 23, 2024
 
 93 / 162
 
-The server SHOULD<86> create a new link without requiring the DFS_ADD_VOLUME Flags parameter.
+
+The server SHOULD<86> create a new link without requiring the DFS_ADD_VOLUME Flags parameter.
 
 The server MUST update the same fields in the DFS metadata for a domain-based DFS namespace as
 in the NetrDfsAdd method, as specified in section 3.1.4.1.3.
@@ -8224,7 +8047,7 @@ empty.
 Perform no notification of the other root targets, returning a list of DFS root targets to the client in
 the ppRootList parameter.
 
-3.1.4.2.2 NetrDfsRemove2 (Opnum 20)
+###### 3.1.4.2.2 NetrDfsRemove2 (Opnum 20)
 
 The NetrDfsRemove2 (Opnum 20) method removes the specified link or link target.
 
@@ -8284,7 +8107,8 @@ Release: April 23, 2024
 
 94 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8351,7 +8175,7 @@ empty.
 Perform no notification of the other root targets, returning a list of DFS root targets to the client in
 the ppRootList  parameter.
 
-3.1.4.2.3 NetrDfsEnumEx (Opnum 21)
+###### 3.1.4.2.3 NetrDfsEnumEx (Opnum 21)
 
 The NetrDfsEnumEx (Opnum 21) method enumerates the DFS roots hosted on a server, or DFS links
 of a namespace hosted by the server.<92><93> Depending on the information level, the targets
@@ -8368,7 +8192,8 @@ Release: April 23, 2024
 
 95 / 162
 
-   [in, string] WCHAR* DfsEntryPath,
+
+   [in, string] WCHAR* DfsEntryPath,
    [in] DWORD Level,
    [in] DWORD PrefMaxLen,
    [in, out, unique] DFS_INFO_ENUM_STRUCT* DfsEnum,
@@ -8458,7 +8283,8 @@ Release: April 23, 2024
 
 96 / 162
 
-Value
+
+Value
 
 Meaning
 
@@ -8561,7 +8387,8 @@ Release: April 23, 2024
 
 97 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8596,7 +8423,7 @@ If the requested Level is 1 through 9 and ResumeHandle does not indicate initial
 server MUST NOT return the DFS root entry and all the entries of the DFS_INFO_ENUM_STRUCT
 return buffer MUST be DFS links in implementation-specific order.
 
-3.1.4.2.4 NetrDfsSetInfo2 (Opnum 22)
+###### 3.1.4.2.4 NetrDfsSetInfo2 (Opnum 22)
 
 The NetrDfsSetInfo2 (Opnum 22) method sets or modifies the information associated with a DFS
 root, a DFS root target, a DFS link, or a DFS link target.
@@ -8636,7 +8463,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ShareName: The pointer to a null-terminated Unicode DFS root target or a DFS link target share
+
+ShareName: The pointer to a null-terminated Unicode DFS root target or a DFS link target share
 
 name string. This parameter MUST be a NULL pointer if the operation is intended for a DFS root
 or a DFS link and not for targets.
@@ -8740,7 +8568,8 @@ Release: April 23, 2024
 
 99 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8827,7 +8656,8 @@ Release: April 23, 2024
 
 100 / 162
 
-those objects. In these cases, if pSecurityDescriptor is not NULL, the server MUST fail with
+
+those objects. In these cases, if pSecurityDescriptor is not NULL, the server MUST fail with
 ERROR_NOT_SUPPORTED.
 
 The server MUST update the same fields in the DFS metadata for a domain-basedv1 DFS
@@ -8849,9 +8679,9 @@ MUST be empty.
 Perform no notification of the other root targets, returning a list of DFS root targets to the client in
 the ppRootList parameter.
 
-3.1.4.3  Root Target Methods
+##### 3.1.4.3 Root Target Methods
 
-3.1.4.3.1 NetrDfsAddFtRoot (Opnum 10)
+###### 3.1.4.3.1 NetrDfsAddFtRoot (Opnum 10)
 
 The NetrDfsAddFtRoot (Opnum 10) method creates a new domainv1-based DFS namespace or
 adds a root target to an existing namespace.
@@ -8899,7 +8729,8 @@ Release: April 23, 2024
 
 101 / 162
 
-ConfigDN: The pointer to a null-terminated Unicode string. This string MUST be the path of the DFS
+
+ConfigDN: The pointer to a null-terminated Unicode string. This string MUST be the path of the DFS
 
 namespace object entry in the DFS Configuration Container (see section 2.3.3).<109>
 
@@ -8994,7 +8825,8 @@ Release: April 23, 2024
 
 102 / 162
 
-3.1.4.3.2 NetrDfsRemoveFtRoot (Opnum 11)
+
+###### 3.1.4.3.2 NetrDfsRemoveFtRoot (Opnum 11)
 
 The NetrDfsRemoveFtRoot (Opnum 11) method removes the specified root target from a domainv1-
 based DFS namespace.<112> If the target is the last one associated with the DFS namespace,
@@ -9076,7 +8908,8 @@ Release: April 23, 2024
 
 103 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9165,7 +8998,8 @@ Release: April 23, 2024
 
 104 / 162
 
-The server MUST synchronously update the DFS metadata of the namespace.
+
+The server MUST synchronously update the DFS metadata of the namespace.
 
 If DFS root scalability mode is not enabled, then the server MUST do one of the following:
 
@@ -9180,13 +9014,13 @@ MUST be empty.
 Perform no notification of the other root targets, returning a list of DFS root targets to the client in
 the ppRootList parameter.
 
-3.1.4.3.3 NetrDfsFlushFtTable (Opnum 18)
+###### 3.1.4.3.3 NetrDfsFlushFtTable (Opnum 18)
 
 For information about this method, see 3.3.4.3.2.
 
-3.1.4.4  Stand-Alone Namespace Methods
+##### 3.1.4.4 Stand-Alone Namespace Methods
 
-3.1.4.4.1 NetrDfsAddStdRoot (Opnum 12)
+###### 3.1.4.4.1 NetrDfsAddStdRoot (Opnum 12)
 
 The NetrDfsAddStdRoot (Opnum 12) method creates a new stand-alone DFS
 namespace.<118><119>
@@ -9247,7 +9081,8 @@ Release: April 23, 2024
 
 105 / 162
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9327,7 +9162,7 @@ TargetsList.TargetCount to 1.
 
 The server MUST synchronously insert the Namespace object into the local information store.
 
-3.1.4.4.2 NetrDfsRemoveStdRoot (Opnum 13)
+###### 3.1.4.4.2 NetrDfsRemoveStdRoot (Opnum 13)
 
 [MS-DFSNM] - v20240423
 Distributed File System (DFS): Namespace Management Protocol
@@ -9336,7 +9171,8 @@ Release: April 23, 2024
 
 106 / 162
 
-The NetrDfsRemoveStdRoot (Opnum 13) method deletes the specified stand-alone DFS
+
+The NetrDfsRemoveStdRoot (Opnum 13) method deletes the specified stand-alone DFS
 namespace.<122> The DFS namespace can be removed without first removing all of the links in it.
 
 The NetrDfsRemoveStdRoot method uses the following MIDL syntax.
@@ -9403,7 +9239,7 @@ the RPC method MUST fail with ERROR_NOT_FOUND (0x00000490).
 The server SHOULD remove any intermediate directories and reparse points that were part of the
 namespace.
 
-3.1.4.4.3 NetrDfsAddStdRootForced (Opnum 15)
+###### 3.1.4.4.3 NetrDfsAddStdRootForced (Opnum 15)
 
 The NetrDfsAddStdRootForced (Opnum 15) method creates a new stand-alone DFS namespace
 without checking for the availability and accessibility of the specified share.<123><124><125>
@@ -9420,7 +9256,8 @@ Release: April 23, 2024
 
 107 / 162
 
-   [in, string] WCHAR* RootShare,
+
+   [in, string] WCHAR* RootShare,
    [in, string] WCHAR* Comment,
    [in, string] WCHAR* Share
  );
@@ -9502,9 +9339,10 @@ Release: April 23, 2024
 
 108 / 162
 
-3.1.4.5  Domain-Based Namespace Methods
 
-3.1.4.5.1 NetrDfsGetDcAddress (Opnum 16)
+##### 3.1.4.5 Domain-Based Namespace Methods
+
+###### 3.1.4.5.1 NetrDfsGetDcAddress (Opnum 16)
 
 The NetrDfsGetDcAddress (Opnum 16) method returns the DC host name that is used by the DFS
 server to which the RPC method is issued.<126> The client MUST use this DC to create a domain-
@@ -9566,7 +9404,7 @@ IsRoot parameter, regardless of whether it is actually hosting a DFS namespace. 
 support the ability to host more than one DFS namespace, and if it currently hosts a DFS namespace,
 it SHOULD return a value of TRUE in the IsRoot parameter; otherwise, it SHOULD return FALSE.
 
-3.1.4.5.2 NetrDfsSetDcAddress (Opnum 17)
+###### 3.1.4.5.2 NetrDfsSetDcAddress (Opnum 17)
 
 [MS-DFSNM] - v20240423
 Distributed File System (DFS): Namespace Management Protocol
@@ -9575,7 +9413,8 @@ Release: April 23, 2024
 
 109 / 162
 
-The NetrDfsSetDcAddress (Opnum 17) method instructs the server receiving the RPC method to use
+
+The NetrDfsSetDcAddress (Opnum 17) method instructs the server receiving the RPC method to use
 the specified DC for DFS metadata accesses for domain-based DFS namespaces.<132>
 
 The NetrDfsSetDcAddress method uses the following MIDL syntax.
@@ -9661,41 +9500,42 @@ Release: April 23, 2024
 
 110 / 162
 
-When NET_DFS_SETDC_INIT_PKT is set in the Flags parameter, the server SHOULD initiate a
+
+When NET_DFS_SETDC_INIT_PKT is set in the Flags parameter, the server SHOULD initiate a
 background synchronization of the domain-based DFS namespace it is hosting with either the DC
 specified by this method or the default DC the server is using. This MUST be treated as functionally
 equivalent to receiving a NetrDfsSetInfo (Opnum 3) method with the Level parameter value 101 and
 the State field of DFS_INFO_101 set to DFS_VOLUME_STATE_RESYNCHRONIZE.<135>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 transport.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying RPC
 transport.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required beyond those used internally by the RPC method to implement
 resiliency to network outages, as specified in [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client creates an RPC binding handle to the server RPC method endpoint when an RPC method is
 called. For more information on binding handles, see [C706]. The client MAY create a separate binding
 handle for each method invocation, or it MAY reuse a binding handle for multiple invocations. The
 client MUST create an authenticated RPC binding handle.<136>
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The client MUST pass any error received from the invocation of an RPC method to the application that
 issued the RPC call.
@@ -9722,24 +9562,25 @@ Release: April 23, 2024
 
 111 / 162
 
-3.2.4.1  Basic Methods
 
-3.2.4.1.1 NetrDfsAdd (Opnum 1)
+##### 3.2.4.1 Basic Methods
+
+###### 3.2.4.1.1 NetrDfsAdd (Opnum 1)
 
 If a NetrDfsAdd call to the DFS root target fails with ERROR_NOT_SUPPORTED (0x00000032), an
 application can use this as an indication to issue the NetrDfsAdd2 method instead.<137>
 
-3.2.4.1.2 NetrDfsRemove (Opnum 2)
+###### 3.2.4.1.2 NetrDfsRemove (Opnum 2)
 
 If a NetrDfsRemove call fails with ERROR_NOT_SUPPORTED (0x00000032), an application can use this
 as an indication to issue the NetrDfsRemove2 method.<138>
 
-3.2.4.1.3 NetrDfsSetInfo (Opnum 3)
+###### 3.2.4.1.3 NetrDfsSetInfo (Opnum 3)
 
 If a NetrDfsSetInfo call fails with ERROR_NOT_SUPPORTED (0x00000032), an application can use this
 as an indication to issue the NetrDfsSetInfo2 method instead.<139>
 
-3.2.4.1.4 NetrDfsEnum (Opnum 5) and NetrDfsEnumEx (Opnum 21)
+###### 3.2.4.1.4 NetrDfsEnum (Opnum 5) and NetrDfsEnumEx (Opnum 21)
 
 An application can use either the NetrDfsEnum or the NetrDfsEnumEx method to enumerate roots and
 links. The application can use the value that NetrDfsManagerGetVersion returns, to determine the
@@ -9749,9 +9590,9 @@ Due to the possibility of concurrent updates to the DFS namespace, an applicatio
 assume completeness or uniqueness of the results returned when resuming an enumeration (for more
 information on NetrDfsEnum, see section 3.1.4.1.7).<142>
 
-3.2.4.2  Extended Methods
+##### 3.2.4.2 Extended Methods
 
-3.2.4.2.1 NetrDfsAdd2 (Opnum 19)
+###### 3.2.4.2.1 NetrDfsAdd2 (Opnum 19)
 
 An application MUST determine the PDC of a DFS root target server of the DFS namespace
 specified by the DfsEntryPath parameter and invoke the NetrDfsAdd2 method specifying the PDC.
@@ -9759,7 +9600,7 @@ specified by the DfsEntryPath parameter and invoke the NetrDfsAdd2 method specif
 If successful, the application SHOULD issue notifications to each server returned in the ppRootList
 parameter, as specified in section 3.2.4.
 
-3.2.4.2.2 NetrDfsRemove2 (Opnum 20)
+###### 3.2.4.2.2 NetrDfsRemove2 (Opnum 20)
 
 An application MUST determine the PDC of a DFS root target server of the DFS namespace
 specified by the DfsEntryPath parameter and invoke the NetrDfsRemove2 method specifying the PDC.
@@ -9767,7 +9608,7 @@ specified by the DfsEntryPath parameter and invoke the NetrDfsRemove2 method spe
 If successful, the application SHOULD issue notifications to each server returned in the ppRootList
 parameter, as specified in section 3.2.4.
 
-3.2.4.2.3 NetrDfsSetInfo2 (Opnum 22)
+###### 3.2.4.2.3 NetrDfsSetInfo2 (Opnum 22)
 
 An application MUST determine the PDC of a DFS root target server of the DFS namespace
 specified by the DfsEntryPath parameter and invoke the NetrDfsSetInfo2 method specifying the PDC.
@@ -9775,9 +9616,9 @@ specified by the DfsEntryPath parameter and invoke the NetrDfsSetInfo2 method sp
 If successful, the application SHOULD issue notifications to each server returned in the ppRootList
 parameter, as specified in section 3.2.4.
 
-3.2.4.3  Root Target Methods
+##### 3.2.4.3 Root Target Methods
 
-3.2.4.3.1 NetrDfsAddFtRoot (Opnum 10)
+###### 3.2.4.3.1 NetrDfsAddFtRoot (Opnum 10)
 
 [MS-DFSNM] - v20240423
 Distributed File System (DFS): Namespace Management Protocol
@@ -9786,7 +9627,8 @@ Release: April 23, 2024
 
 112 / 162
 
-The NetrDfsAddFtRoot method is supported only for a domainv1-based DFS namespace scenario.
+
+The NetrDfsAddFtRoot method is supported only for a domainv1-based DFS namespace scenario.
 
 An application MUST perform the following steps before invoking the NetrDfsAddFtRoot method:
 
@@ -9808,7 +9650,7 @@ root target server.
 5.  If all prior steps succeeded without error, then the client MUST issue the NetrDfsSetDcAddress
 (Opnum 17) method to each server that the ppRootList parameter returns.<143><144>
 
-3.2.4.3.2 NetrDfsRemoveFtRoot (Opnum 11)
+###### 3.2.4.3.2 NetrDfsRemoveFtRoot (Opnum 11)
 
 An application MUST determine the PDC of the domain of the DFS root target server that the
 ServerName parameter specifies.<145> If the ApiFlags parameter is not DFS_FORCE_REMOVE, the
@@ -9835,17 +9677,17 @@ specified in section 2.3.3) has exactly one value in it.
 
 4.  Call the NetrDfsFlushFtTable method on the PDC, specifying the DFS namespace name.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client beyond those required in the underlying RPC call
 transport.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 No additional local events are used on the client beyond those maintained in the underlying RPC
 transport.
 
-3.3  Domain Controller Details
+### 3.3 Domain Controller Details
 
 A DC hosting a DFS root target MUST conform to the specification in section 3.1.
 
@@ -9858,13 +9700,14 @@ Release: April 23, 2024
 
 113 / 162
 
-  Receive and respond to DFS root and DFS link referral requests for any domain-based DFS
+
+  Receive and respond to DFS root and DFS link referral requests for any domain-based DFS
 namespace in the domain. The DC need not be a DFS root target for the domain-based DFS
 namespace identified in the referral request.
 
   Receive and respond to the RPC methods, as specified in section 3.3.4.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 A DFS server on a DC MAY maintain the following data item:
 
@@ -9872,33 +9715,33 @@ A DFS server on a DC MAY maintain the following data item:
 
 namespaces. This is for use by the DFS Referral Protocol, as specified in [MS-DFSC].
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 No initialization is required beyond that used internally by RPC, as specified in [MS-RPCE].
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 A DC MAY<147> itself be a DFS root target. In such cases, it MUST process RPC methods, as
 specified in section 3.1. In addition, some methods SHOULD be specially supported, as specified in the
 following topics.
 
-3.3.4.1  Basic Methods
+##### 3.3.4.1 Basic Methods
 
-3.3.4.1.1 NetrDfsRemoveRootTarget (Opnum 24)
+###### 3.3.4.1.1 NetrDfsRemoveRootTarget (Opnum 24)
 
 A DFS server on a DC MUST support the DFS_FORCE_REMOVE value (0x80000000) for the ApiFlags
 parameter. DFS_FORCE_REMOVE value is used to delete a domain-based DFS namespace when
 the root target servers of the namespace are no longer available (for example, they have been
 decommissioned).
 
-3.3.4.2  Extended Methods
+##### 3.3.4.2 Extended Methods
 
-3.3.4.2.1 NetrDfsEnumEx (Opnum 21)
+###### 3.3.4.2.1 NetrDfsEnumEx (Opnum 21)
 
 A DFS server on a DC SHOULD support the Level parameter 200. The DFS server MUST validate the
 DfsEntryPath parameter against the name of the domain to which the DC is joined, and fail with
@@ -9917,16 +9760,17 @@ Release: April 23, 2024
 
 114 / 162
 
-3.3.4.3  Root Target Methods
 
-3.3.4.3.1 NetrDfsRemoveFtRoot (Opnum 11)
+##### 3.3.4.3 Root Target Methods
+
+###### 3.3.4.3.1 NetrDfsRemoveFtRoot (Opnum 11)
 
 A DFS server on a DC MUST support the DFS_FORCE_REMOVE value (0x80000000) for the ApiFlags
 parameter. The DFS_FORCE_REMOVE value is used to delete a domain-based DFS namespace
 when the root target servers of the namespace are no longer available (for example,
 decommissioned).
 
-3.3.4.3.2 NetrDfsFlushFtTable (Opnum 18)
+###### 3.3.4.3.2 NetrDfsFlushFtTable (Opnum 18)
 
 The NetrDfsFlushFtTable method instructs the DFS server on a DC to purge the specified domainv1-
 based DFS entry from any DFS root referral cache it might have.
@@ -9974,12 +9818,12 @@ implement the method.
 The server MAY choose not to implement this method.<149> If it does, ERROR_NOT_SUPPORTED
 MUST be returned.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 transport.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying RPC
 transport.
@@ -9991,7 +9835,8 @@ Release: April 23, 2024
 
 115 / 162
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following examples for domainv1 are in a Windows Server 2003 operating system domain; the
 client used is Windows XP operating system Service Pack 2 (SP2). The member servers and domain
@@ -10001,7 +9846,7 @@ controllers used in the example are all Windows Server 2003 operating system wit
 For domainv2, the client is Windows Vista operating system. The member servers and domain
 controllers in this scenario are all Windows Server 2008 operating system.
 
-4.1  Creating a New Domainv1-Based DFS Namespace
+### 4.1 Creating a New Domainv1-Based DFS Namespace
 
 The following example describes the steps used to create a new domainv1-based DFS namespace.
 The namespace name is testroot1, to be created on a server named CFS-41X-2C02 within the dfsn-
@@ -10045,13 +9890,14 @@ Release: April 23, 2024
 
 116 / 162
 
-<!-- Extracted images from page 117 -->
+
+<!-- Extracted images from page 117 -->
 ![Extracted image 1 from page 117]([MS-DFSNM].images/page117-img01.png)
 <!-- /Extracted images from page 117 -->
 
 Figure 2: Creating a new domainv1-based DFS namespace
 
-4.2  Adding a Root Target to an Existing Domainv1-Based DFS Namespace
+### 4.2 Adding a Root Target to an Existing Domainv1-Based DFS Namespace
 
 The following example describes the steps used to create a new root target in an existing domainv1-
 based DFS namespace.
@@ -10070,7 +9916,8 @@ Release: April 23, 2024
 
 117 / 162
 
-<!-- Extracted images from page 118 -->
+
+<!-- Extracted images from page 118 -->
 ![Extracted image 1 from page 118]([MS-DFSNM].images/page118-img01.png)
 <!-- /Extracted images from page 118 -->
 
@@ -10099,9 +9946,10 @@ Release: April 23, 2024
 
 118 / 162
 
-Figure 3: Adding a root target to an existing domainv1-based DFS namespace
 
-4.3  Adding a New Link to a Domain-Based DFS Namespace
+Figure 3: Adding a root target to an existing domainv1-based DFS namespace
+
+### 4.3 Adding a New Link to a Domain-Based DFS Namespace
 
 The following example describes the steps for adding a new DFS link to an existing domainv1-based
 DFS namespace that has two root targets. The illustration in this example also shows how the DFS
@@ -10170,13 +10018,14 @@ Release: April 23, 2024
 
 119 / 162
 
-<!-- Extracted images from page 120 -->
+
+<!-- Extracted images from page 120 -->
 ![Extracted image 1 from page 120]([MS-DFSNM].images/page120-img01.png)
 <!-- /Extracted images from page 120 -->
 
 Figure 4: Adding a new link to a domainv1-based DFS namespace
 
-4.4  Creating a New Domainv2-Based DFS Namespace
+### 4.4 Creating a New Domainv2-Based DFS Namespace
 
 The following example describes the steps used to create a new domainv2-based DFS namespace.
 
@@ -10192,7 +10041,8 @@ Release: April 23, 2024
 
 120 / 162
 
-2.  Because the domainv2-based DFS namespace does not already exist, the DC fails the LDAP search
+
+2.  Because the domainv2-based DFS namespace does not already exist, the DC fails the LDAP search
 
 with LDAP_NO_SUCH_OBJECT.
 
@@ -10227,13 +10077,14 @@ Release: April 23, 2024
 
 121 / 162
 
-<!-- Extracted images from page 122 -->
+
+<!-- Extracted images from page 122 -->
 ![Extracted image 1 from page 122]([MS-DFSNM].images/page122-img01.png)
 <!-- /Extracted images from page 122 -->
 
 Figure 5: Creating a new domainv2-based DFS namespace
 
-4.5  Adding a Root Target to an Existing Domainv2-Based DFS Namespace
+### 4.5 Adding a Root Target to an Existing Domainv2-Based DFS Namespace
 
 The following example describes the steps used to create a new root target in an existing domainv2-
 based DFS namespace.
@@ -10257,7 +10108,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-DFSNM].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
@@ -10284,7 +10136,8 @@ Release: April 23, 2024
 
 123 / 162
 
-4.6  Adding a New Link to a Domainv2-Based DFS Namespace
+
+### 4.6 Adding a New Link to a Domainv2-Based DFS Namespace
 
 The following example describes the steps used to add a new DFS link to an existing domainv2-
 based DFS namespace with two root targets. The illustration in this example also shows how the
@@ -10358,13 +10211,14 @@ Release: April 23, 2024
 
 124 / 162
 
-<!-- Extracted images from page 125 -->
+
+<!-- Extracted images from page 125 -->
 ![Extracted image 1 from page 125]([MS-DFSNM].images/page125-img01.png)
 <!-- /Extracted images from page 125 -->
 
 Figure 7: Adding a new link to a domainv2-based DFS namespace
 
-4.7  Enumerating DFS Links in a Domain-Based DFS Namespace
+### 4.7 Enumerating DFS Links in a Domain-Based DFS Namespace
 
 The following example describes the sequence of an interactive administration application that
 enumerates all domain-based DFS namespaces in a domain and all DFS links of a domain-
@@ -10382,7 +10236,8 @@ Release: April 23, 2024
 
 125 / 162
 
-<!-- Extracted images from page 126 -->
+
+<!-- Extracted images from page 126 -->
 ![Extracted image 1 from page 126]([MS-DFSNM].images/page126-img01.png)
 <!-- /Extracted images from page 126 -->
 
@@ -10416,7 +10271,8 @@ Release: April 23, 2024
 
 126 / 162
 
-4.8  DFS Metadata of a Domainv1-Based DFS Namespace
+
+### 4.8 DFS Metadata of a Domainv1-Based DFS Namespace
 
 This example uses the following domainv1-based DFS namespaces:
 
@@ -10438,7 +10294,8 @@ Release: April 23, 2024
 
 127 / 162
 
-<!-- Extracted images from page 128 -->
+
+<!-- Extracted images from page 128 -->
 ![Extracted image 1 from page 128]([MS-DFSNM].images/page128-img01.png)
 <!-- /Extracted images from page 128 -->
 
@@ -10481,7 +10338,8 @@ Release: April 23, 2024
 
 128 / 162
 
-Offset   Raw hex values
+
+Offset   Raw hex values
 
 DFS metadata field
 
@@ -10640,7 +10498,8 @@ Release: April 23, 2024
 
 129 / 162
 
-Offset   Raw hex values
+
+Offset   Raw hex values
 
 DFS metadata field
 
@@ -10813,7 +10672,8 @@ Release: April 23, 2024
 
 130 / 162
 
-Offset   Raw hex values
+
+Offset   Raw hex values
 
 DFS metadata field
 
@@ -10958,7 +10818,8 @@ Release: April 23, 2024
 
 131 / 162
 
-Offset   Raw hex values
+
+Offset   Raw hex values
 
 DFS metadata field
 
@@ -11125,16 +10986,17 @@ Release: April 23, 2024
 
 132 / 162
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The DFS: Namespace Management Protocol allows any user to establish a connection to the RPC
 server. The protocol uses the underlying RPC Protocol to retrieve the identity of the caller that made
 the method call, as specified in [MS-RPCE] section 3.3.3.4.3. Clients SHOULD create an authenticated
 RPC connection. Servers SHOULD use this identity to perform method-specific access checks.<150>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The only security parameter is Authentication Protocol, section 2.1.
 
@@ -11145,7 +11007,8 @@ Release: April 23, 2024
 
 133 / 162
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 The DFS: Namespace Management Protocol contains one interface, whose IDL definition is listed in
 this section.
@@ -11220,7 +11083,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     ULONGLONG  DomainDfsCapabilities;
+
+     ULONGLONG  DomainDfsCapabilities;
      unsigned long     StandaloneDfsMajorVersion;
      unsigned long     StandaloneDfsMinorVersion;
      ULONGLONG  StandaloneDfsCapabilities;
@@ -11297,7 +11161,8 @@ Release: April 23, 2024
 
 135 / 162
 
-              unsigned long PropertyFlags;
+
+              unsigned long PropertyFlags;
               unsigned long MetadataSize;
               ULONG   SecurityDescriptorLength;
               [size_is(SecurityDescriptorLength)] PUCHAR  pSecurityDescriptor;
@@ -11374,7 +11239,8 @@ Release: April 23, 2024
 
 136 / 162
 
-             unsigned long PropertyFlagMask;
+
+             unsigned long PropertyFlagMask;
              unsigned long PropertyFlags;
              ULONG   SecurityDescriptorLength;
              [size_is(SecurityDescriptorLength)] PUCHAR  pSecurityDescriptor;
@@ -11449,7 +11315,8 @@ Release: April 23, 2024
 
 137 / 162
 
- typedef struct _DFS_INFO_2_CONTAINER {
+
+ typedef struct _DFS_INFO_2_CONTAINER {
      DWORD   EntriesRead;
      [size_is(EntriesRead)] DFS_INFO_2 * Buffer;
  } DFS_INFO_2_CONTAINER;
@@ -11526,7 +11393,8 @@ Release: April 23, 2024
 
 138 / 162
 
-             DFS_INFO_300_CONTAINER * DfsInfo300Container;
+
+             DFS_INFO_300_CONTAINER * DfsInfo300Container;
      } DfsInfoContainer;
  } DFS_INFO_ENUM_STRUCT;
 
@@ -11601,7 +11469,8 @@ Release: April 23, 2024
 
 139 / 162
 
- NET_API_STATUS NetrDfsAddStdRoot(
+
+ NET_API_STATUS NetrDfsAddStdRoot(
      [in,string]             WCHAR           * ServerName,
      [in,string]             WCHAR           * RootShare,
      [in,string]             WCHAR           * Comment,
@@ -11677,7 +11546,8 @@ Release: April 23, 2024
 
 140 / 162
 
- NET_API_STATUS NetrDfsAddRootTarget(
+
+ NET_API_STATUS NetrDfsAddRootTarget(
      [in,unique,string]  LPWSTR  pDfsPath,
      [in,unique,string]  LPWSTR  pTargetPath,
      [in]                ULONG   MajorVersion,
@@ -11703,7 +11573,8 @@ Release: April 23, 2024
 
 141 / 162
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11769,7 +11640,8 @@ Release: April 23, 2024
 
 142 / 162
 
-<2> Section 1.5: Windows relies on manual coordination between human operators to ensure that
+
+<2> Section 1.5: Windows relies on manual coordination between human operators to ensure that
 only one DFS metadata modification is in progress at any time.
 
 <3> Section 1.7: The Windows RPC Protocol returns RPC_S_PROCNUM_OUT_OF_RANGE to notify the
@@ -11840,7 +11712,8 @@ Release: April 23, 2024
 
 143 / 162
 
-The NamespaceMajorVersion and NamespaceMinorVersion determine the format of the DFS metadata
+
+The NamespaceMajorVersion and NamespaceMinorVersion determine the format of the DFS metadata
 supported in the forest. The following table applies only to Windows Server 2008 operating system
 and later.
 
@@ -11915,7 +11788,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<26> Section 3.1.1: Windows 2000 Server operating system and later cache the DFS metadata as an
+
+<26> Section 3.1.1: Windows 2000 Server operating system and later cache the DFS metadata as an
 optimization.
 
 <27> Section 3.1.3: Windows 2000 Server operating system and later determine the PDC for the
@@ -12006,7 +11880,8 @@ Release: April 23, 2024
 
 145 / 162
 
-<38> Section 3.1.4.1.2: The RPC interface version has remained constant since Windows NT Server
+
+<38> Section 3.1.4.1.2: The RPC interface version has remained constant since Windows NT Server
 4.0. Windows 2000 Server adds new methods to the same RPC interface. Also, Windows 2000 Server
 supports hosting of at most one DFS namespace. Hence, applications could potentially handle version
 differences by using the returned version information.
@@ -12078,7 +11953,8 @@ Release: April 23, 2024
 
 146 / 162
 
-<50> Section 3.1.4.1.4: This method does not support domain-based DFS namespaces in Windows
+
+<50> Section 3.1.4.1.4: This method does not support domain-based DFS namespaces in Windows
 2000 Server; NetrDfsRemove2 is used instead. Windows 2000 Server will return
 ERROR_NOT_SUPPORTED (0x00000032) if NetrDfsRemove is called on a domain-based DFS
 namespace.
@@ -12147,7 +12023,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Size of the values under each key
+
+  Size of the values under each key
 
   Size of the data of each value
 
@@ -12218,7 +12095,8 @@ Release: April 23, 2024
 
 148 / 162
 
-<71> Section 3.1.4.1.8: Windows-based servers remove intermediate directories in the pathname of
+
+<71> Section 3.1.4.1.8: Windows-based servers remove intermediate directories in the pathname of
 a source DFS link if they are empty.
 
 <72> Section 3.1.4.1.8: This method is supported only on Windows Server 2003 with SP1, Windows
@@ -12284,7 +12162,8 @@ Release: April 23, 2024
 
 149 / 162
 
-<86> Section 3.1.4.2.1: Windows 2000 Server requires that the DFS_ADD_VOLUME Flags parameter
+
+<86> Section 3.1.4.2.1: Windows 2000 Server requires that the DFS_ADD_VOLUME Flags parameter
 be specified when creating a new link; Windows Server 2003, Windows Server 2008, and Windows
 Server 2008 R2 do not.
 
@@ -12360,7 +12239,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Levels 8 and 9 are not supported in Windows NT Server 4.0, Windows 2000 Server, or Windows
+
+Levels 8 and 9 are not supported in Windows NT Server 4.0, Windows 2000 Server, or Windows
 Server 2003.
 
 Level 200 is not supported in Windows NT Server 4.0, and it is only valid on a domain controller (DC).
@@ -12427,7 +12307,8 @@ Release: April 23, 2024
 
 151 / 162
 
-<103> Section 3.1.4.2.4: On Windows NT Server 4.0 and Windows 2000 Server, the server returns
+
+<103> Section 3.1.4.2.4: On Windows NT Server 4.0 and Windows 2000 Server, the server returns
 error code ERROR_INVALID_LEVEL.
 
 <104> Section 3.1.4.2.4: The ppRootList parameter is not referenced in Windows Server 2003,
@@ -12496,7 +12377,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<116> Section 3.1.4.3.2: Windows does remove local information related to the root.
+
+<116> Section 3.1.4.3.2: Windows does remove local information related to the root.
 
 <117> Section 3.1.4.3.2: Windows-based servers do not remove the object of a domain-based DFS
 namespace if the last DFS root target is being removed. Windows clients remove the object of the DFS
@@ -12562,7 +12444,8 @@ Release: April 23, 2024
 
 153 / 162
 
-<134> Section 3.1.4.5.2: Windows Server 2003, Windows Server 2008, and Windows Server 2008 R2
+
+<134> Section 3.1.4.5.2: Windows Server 2003, Windows Server 2008, and Windows Server 2008 R2
 implement it as a method with no effect that returns ERROR_SUCCESS. Windows Server 2012
 operating system and later do not implement this method.
 
@@ -12628,7 +12511,8 @@ Release: April 23, 2024
 
 154 / 162
 
-<148> Section 3.3.4.2.1: Level parameter value 200 is not supported in Windows NT 4.0 and only
+
+<148> Section 3.3.4.2.1: Level parameter value 200 is not supported in Windows NT 4.0 and only
 valid on a domain controller (DC).
 
 <149> Section 3.3.4.3.2: Windows Server 2003 operating system and later do not support this
@@ -12653,7 +12537,8 @@ Release: April 23, 2024
 
 155 / 162
 
-8  Appendix C: XML Schema of XML Document Stored in msDFS-
+
+## 8 Appendix C: XML Schema of XML Document Stored in msDFS-
 
 TargetListv2 Attribute
 
@@ -12729,7 +12614,8 @@ Release: April 23, 2024
 
 156 / 162
 
-     <xsd:restriction base="xsd:token">
+
+     <xsd:restriction base="xsd:token">
        <xsd:enumeration value="siteCostNormal"/>
        <xsd:enumeration value="globalHigh"/>
        <xsd:enumeration value="siteCostHigh"/>
@@ -12806,7 +12692,8 @@ Release: April 23, 2024
 
 157 / 162
 
-       <xsd:attribute name="targetCount" use="required">
+
+       <xsd:attribute name="targetCount" use="required">
          <xsd:simpleType>
            <xsd:restriction base="xsd:unsignedInt">
              <xsd:minInclusive value="1"/>
@@ -12841,7 +12728,8 @@ Release: April 23, 2024
 
 158 / 162
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12885,7 +12773,8 @@ Release: April 23, 2024
 
 159 / 162
 
-10  Index
+
+## 10 Index
 A
 
 Abstract data model
@@ -13039,7 +12928,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Domainv2-Based DFS namespace example - adding
+
+Domainv2-Based DFS namespace example - adding
 
 a new link to 124
 
@@ -13208,7 +13098,8 @@ Distributed File System (DFS): Namespace Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NetrDfsRemove2 112
+
+NetrDfsRemove2 112
 NetrDfsRemove2 method 94
 NetrDfsRemoveFtRoot (section 3.2.4.3.2 113, section
 

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 17
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -227,95 +228,45 @@ Release: April 23, 2024
 
 2 / 17
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 LSAPR_WRAPPED_CAPID_SET](#2211-lsaprwrappedcapidset)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 lsacap Server Details](#31-lsacap-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 LsarGetAvailableCAPIDs (Opnum 0)](#3141-lsargetavailablecapids-opnum-0)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 5
-Vendor Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Common Data Types .......................................................................................... 7
-Structures ................................................................................................... 7
-LSAPR_WRAPPED_CAPID_SET .................................................................. 7
-
-2.2.1.1
-
-2.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ....................................................................................................... 8
-lsacap Server Details .......................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Message Processing Events and Sequencing Rules ............................................ 8
-LsarGetAvailableCAPIDs (Opnum 0) .......................................................... 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-
-3.1.5
-3.1.6
-
-3.1.4.1
-
-4  Protocol Examples ................................................................................................. 10
-
-5  Security ................................................................................................................. 11
-Security Considerations for Implementers ........................................................... 11
-Index of Security Parameters ............................................................................ 11
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 12
-
-7  Appendix B: Product Behavior ............................................................................... 13
-
-8  Change Tracking .................................................................................................... 14
-
-9  Index ..................................................................................................................... 15
-
-[MS-CAPR] - v20240423
-Central Access Policy Identifier (ID) Retrieval Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 17
-
-1  Introduction
+## 1 Introduction
 
 The Central Access Policy Identifier (ID) Retrieval Protocol enables an administrative tool to query the
 Central Access Policies (CAPs) configured on a remote computer.
@@ -323,7 +274,7 @@ Central Access Policies (CAPs) configured on a remote computer.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -342,14 +293,14 @@ routing through the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -380,12 +331,13 @@ Release: April 23, 2024
 
 4 / 17
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [RFC4511] Sermersheim, J., "Lightweight Directory Access Protocol (LDAP): The Protocol", RFC 4511,
 June 2006, https://www.rfc-editor.org/info/rfc4511
 
-1.3  Overview
+### 1.3 Overview
 
 The Central Access Policy ID Retrieval (CAPR) Protocol is designed to allow an administrative tool
 running on one computer to remotely query the set of central access control policies configured on
@@ -409,7 +361,7 @@ tasks.
 This protocol defines one RPC call, LsarGetAvailableCAPIDs, for client applications to use. See section
 3.1.4.1 for details of this call's use.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The CAPR Protocol is dependent upon RPC and TCP for its transport. CAPR is dependent on CAPE for
 the abstract data model elements which store CAPIDs. Although CAPR is not itself dependent on LDAP,
@@ -418,7 +370,7 @@ CAPIDs have been obtained.
 
 No other protocol currently depends on the CAPR Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The CAPR Protocol is an RPC interface, and as such has the prerequisites specified in [MS-RPCE]
 section 1.5 that are common to RPC interfaces.
@@ -426,12 +378,12 @@ section 1.5 that are common to RPC interfaces.
 The CAPR Protocol client obtains the name of a remote computer that supports the Remote
 Authorization API Protocol before invoking this protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is appropriate only for implementing tools to query the central access policies configured
 on a remote machine.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -446,7 +398,8 @@ Central Access Policy Identifier (ID) Retrieval Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Security and Authentication Methods: This protocol uses the security and authentication
+
+  Security and Authentication Methods: This protocol uses the security and authentication
 
 methods specified in [MS-RPCE] section 3.2.1.4.1.
 
@@ -454,7 +407,7 @@ methods specified in [MS-RPCE] section 3.2.1.4.1.
 
 use.
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 This protocol has no vendor-extensible fields and cannot be extended by any party other than
 Microsoft.
@@ -463,7 +416,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendo
 those values with their indicated meaning. Implementations that use any other values run the risk of
 having those values collide with future modifications to the Win32 error code set.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments.
 
@@ -484,9 +437,10 @@ Release: April 23, 2024
 
 6 / 17
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the following RPC Protocol sequences:
 
@@ -506,7 +460,7 @@ lsacap interface: afc07e2e-311c-4435-808c-c483ffeec7c9
 
 This protocol MUST use "\PIPE\lsarpc" as the RPC endpoint when using RPC over SMB.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The following data types are specified in [MS-DTYP]:
 
@@ -523,7 +477,7 @@ A ULONG is a 32-bit unsigned integer (range: 0 through 4294967295 decimal).
 Because a ULONG is unsigned, its first bit (Most Significant Bit (MSB)) is not
 reserved for signing.
 
-2.2.1  Structures
+#### 2.2.1 Structures
 
 The CAPR Protocol defines the following structure:
 
@@ -535,7 +489,7 @@ LSAPR_WRAPPED_CAPID_SET  2.2.1.1
 
 A container for an array of LSAPR_SID_INFORMATION structures.
 
-2.2.1.1  LSAPR_WRAPPED_CAPID_SET
+##### 2.2.1.1 LSAPR_WRAPPED_CAPID_SET
 
 The LSAPR_WRAPPED_CAPID_SET structure is a container for an array of LSAPR_SID_INFORMATION
 structures.
@@ -554,7 +508,8 @@ Release: April 23, 2024
 
 7 / 17
 
-SidInfo: A pointer to an array of LSAPR_SID_INFORMATION structures, as defined in [MS-LSAT]
+
+SidInfo: A pointer to an array of LSAPR_SID_INFORMATION structures, as defined in [MS-LSAT]
 
 section 2.2.17.
 
@@ -565,7 +520,8 @@ Release: April 23, 2024
 
 8 / 17
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Central Access Policy ID Retrieval Protocol is used to retrieve the set of central access policies that
 have been configured on a remote machine. This protocol is intended to be used in the
@@ -589,9 +545,9 @@ The CAPR protocol does not support version number negotiation. Client and server
 this protocol MUST be configured with a version number of 1.0. See section 6 for an example of
 configuring the version number.
 
-3.1
+### 3.1 lsacap Server Details
 
-lsacap Server Details
+
 
 The following sections specify the data and state maintained by the lsacap RPC server, including
 details about receiving lsacap RPC methods on the server. The information in the following sections is
@@ -599,24 +555,24 @@ intended to be illustrative of the protocol's specified behavior, without mandat
 implementation. Implementations are not required to adhere to this model as long as their external
 behavior is consistent with the behavior specified in this document.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This protocol uses the following ADM element, which is directly accessed from the Group Policy Central
 Access Policies Protocol Extension protocol, as described in [MS-GPCAP] section 3.1.1:
 
 CentralAccessPoliciesList:  The list of Group Policy central access policies on the remote computer.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The CAPR server implementation registers an endpoint with RPC over TCP/IP. The server MUST
 register the SPNEGO security support provider authentication_type constant [0x09] as the security
 provider used by the RPC interface, as specified in [MS-RPCE] section 3.3.3.3.1.3.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol defines the following RPC method.
 
@@ -627,13 +583,14 @@ Release: April 23, 2024
 
 9 / 17
 
-Method
+
+Method
 
 Description
 
 LsarGetAvailableCAPIDs  Opnum: 0
 
-3.1.4.1  LsarGetAvailableCAPIDs (Opnum 0)
+##### 3.1.4.1 LsarGetAvailableCAPIDs (Opnum 0)
 
 This method returns a list of the CAPIDs of all the central access policies available on the specified
 remote machine. These identifiers are equivalent to the SIDs of the central access policy objects as
@@ -671,11 +628,11 @@ structure in the array for each CentralAccessPolicy object in the CentralAccessP
 ADM element. Each LSAPR_SID_INFORMATION structure MUST be set to the CAPID field of the
 corresponding CentralAccessPolicy object.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -686,7 +643,8 @@ Release: April 23, 2024
 
 10 / 17
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -697,9 +655,10 @@ Release: April 23, 2024
 
 11 / 17
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Central access policies embody authorization policies used to control access to resources. Write
 permission on central access policies gives users the ability to modify authorization policies. Central
@@ -709,7 +668,7 @@ Where possible, avoid storing central access policies on client computers in imp
 protocol. If an implementation is required to store central access policies on client computers, do so in
 secure locations that only system processes can access.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol has no security parameters.
 
@@ -720,7 +679,8 @@ Release: April 23, 2024
 
 12 / 17
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full Central Access Policy ID Retrieval Protocol IDL interface is
 provided, where "ms-dtyp.idl" is the IDL found in [MS-DTYP] Appendix A. The syntax uses the IDL
@@ -753,7 +713,8 @@ Release: April 23, 2024
 
 13 / 17
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -839,7 +800,8 @@ Release: April 23, 2024
 
 14 / 17
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -883,7 +845,8 @@ Release: April 23, 2024
 
 15 / 17
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1014,7 +977,8 @@ Release: April 23, 2024
 
 16 / 17
 
-   lsacap
+
+   lsacap
       abstract data model 8
       initialization 8
       interface 8

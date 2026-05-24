@@ -64,7 +64,8 @@ Release: October 26, 2021
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -167,86 +168,44 @@ Release: October 26, 2021
 
 2 / 30
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 6
-Overview .......................................................................................................... 8
-Prerequisites/Preconditions ................................................................................. 8
+## Table of Contents
 
-1.1
-1.2
-1.3
-1.4
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Prerequisites/Preconditions](#14-prerequisitespreconditions)
+- [2 Functional Description](#2-functional-description)
+  - [2.1 Summary of Protocols](#21-summary-of-protocols)
+  - [2.2 Components and Capabilities](#22-components-and-capabilities)
+    - [2.2.1 STS Token Generation](#221-sts-token-generation)
+      - [2.2.1.1 WS-Federation](#2211-ws-federation)
+      - [2.2.1.2 WS-Trust](#2212-ws-trust)
+      - [2.2.1.3 OAuth and OpenID Connect](#2213-oauth-and-openid-connect)
+      - [2.2.1.4 SAML](#2214-saml)
+    - [2.2.2 STS Deployed on the Edge](#222-sts-deployed-on-the-edge)
+    - [2.2.3 Device Registration](#223-device-registration)
+    - [2.2.4 Authentication Using JSON Web Tokens](#224-authentication-using-json-web-tokens)
+  - [2.3 Protocol Relationships](#23-protocol-relationships)
+  - [2.4 Coherency Requirements](#24-coherency-requirements)
+  - [2.5 Security](#25-security)
+  - [2.6 Additional Considerations](#26-additional-considerations)
+- [3 Use Cases](#3-use-cases)
+  - [3.1 Single Sign-on Using a Security Token Service and WS-Federation](#31-single-sign-on-using-a-security-token-service-and-ws-federation)
+    - [3.1.1 Success Cases](#311-success-cases)
+      - [3.1.1.1 User and Relying Party in Different Realms Example](#3111-user-and-relying-party-in-different-realms-example)
+      - [3.1.1.2 User and Relying Party in Same Realm Example](#3112-user-and-relying-party-in-same-realm-example)
+- [4 Appendix A: Product Behavior](#4-appendix-a-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2  Functional Description ........................................................................................... 10
-Summary of Protocols ....................................................................................... 11
-Components and Capabilities ............................................................................. 13
-STS Token Generation ................................................................................. 13
-WS-Federation ...................................................................................... 13
-WS-Trust ............................................................................................. 14
-OAuth and OpenID Connect.................................................................... 14
-SAML ................................................................................................... 16
-STS Deployed on the Edge ........................................................................... 16
-Device Registration ..................................................................................... 17
-Authentication Using JSON Web Tokens ......................................................... 18
-Protocol Relationships ....................................................................................... 18
-Coherency Requirements .................................................................................. 18
-Security .......................................................................................................... 18
-Additional Considerations .................................................................................. 18
-
-2.2.2
-2.2.3
-2.2.4
-
-2.3
-2.4
-2.5
-2.6
-
-3.1
-
-3  Use Cases .............................................................................................................. 19
-Single Sign-on Using a Security Token Service and WS-Federation ......................... 19
-Success Cases ............................................................................................ 21
-User and Relying Party in Different Realms Example .................................. 21
-User and Relying Party in Same Realm Example ....................................... 24
-
-3.1.1.1
-3.1.1.2
-
-3.1.1
-
-4  Appendix A: Product Behavior ............................................................................... 27
-
-5  Change Tracking .................................................................................................... 29
-
-6  Index ..................................................................................................................... 30
-
-[MS-ADFSOD] - v20211026
-Active Directory Federation Services (AD FS) Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 30
-
-1  Introduction
+## 1 Introduction
 
 This document provides an overview of the protocols that support Active Directory Federation
 Services (AD FS).
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -314,7 +273,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-as described in [RFC7159]. The JSON format is based on the structure of ECMAScript (Jscript,
+
+as described in [RFC7159]. The JSON format is based on the structure of ECMAScript (Jscript,
 JavaScript) objects.
 
 JSON Web Token (JWT): A string representing a set of claims as a JSON object that is encoded
@@ -392,7 +352,8 @@ Release: October 26, 2021
 
 5 / 30
 
-SOAP: A lightweight protocol for exchanging structured information in a decentralized, distributed
+
+SOAP: A lightweight protocol for exchanging structured information in a decentralized, distributed
 
 environment. SOAP uses XML technologies to define an extensible messaging framework, which
 provides a message construct that can be exchanged over a variety of underlying protocols. The
@@ -428,7 +389,7 @@ X.509: An ITU-T standard for public key infrastructure subsequently adapted by t
 
 specified in [RFC3280].
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -461,7 +422,8 @@ Release: October 26, 2021
 
 6 / 30
 
-[MS-MWBE] Microsoft Corporation, "Microsoft Web Browser Federated Sign-On Protocol Extensions".
+
+[MS-MWBE] Microsoft Corporation, "Microsoft Web Browser Federated Sign-On Protocol Extensions".
 
 [MS-MWBF] Microsoft Corporation, "Microsoft Web Browser Federated Sign-On Protocol".
 
@@ -526,7 +488,8 @@ Release: October 26, 2021
 
 7 / 30
 
-[WSFederation1.2] Kaler, C., McIntosh, M., "Web Services Federation Language (WS-Federation)",
+
+[WSFederation1.2] Kaler, C., McIntosh, M., "Web Services Federation Language (WS-Federation)",
 Version 1.2, May 2009, http://docs.oasis-open.org/wsfed/federation/v1.2/os/ws-federation-1.2-spec-
 os.html
 
@@ -541,7 +504,7 @@ http://specs.xmlsoap.org/ws/2005/02/trust/WS-Trust.pdf
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.3  Overview
+### 1.3 Overview
 
 Active Directory Federation Services (AD FS) provides a means for distributed identification,
 authentication, and authorization across organizational and platform boundaries. Put another way, AD
@@ -580,7 +543,7 @@ variety of areas. These areas include obtaining security tokens for users from a
 authorization code among groups of AD FS servers, and integrating AD FS with pre-authentication
 proxies. For more details on the AD FS protocols and how they support AD FS, see section 2.
 
-1.4  Prerequisites/Preconditions
+### 1.4 Prerequisites/Preconditions
 
 The protocols described in this document are relevant only if AD FS (or an equivalent implementation)
 is installed on the servers and the servers are configured to hold a federation role.
@@ -592,7 +555,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-For authentication, AD FS requires the use of Active Directory Domain Services (hereafter called
+
+For authentication, AD FS requires the use of Active Directory Domain Services (hereafter called
 simply "Active Directory").
 
 [MS-ADFSOD] - v20211026
@@ -602,11 +566,12 @@ Release: October 26, 2021
 
 9 / 30
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-ADFSOD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-2  Functional Description
+## 2 Functional Description
 
 The AD FS protocols that are described in this document provide the following functionality to support
 AD FS:
@@ -640,7 +605,8 @@ Release: October 26, 2021
 
 10 / 30
 
-The following blocks from the diagram are peripheral to AD FS. Note that the entities represented by
+
+The following blocks from the diagram are peripheral to AD FS. Note that the entities represented by
 these blocks are not necessarily even aware that they are interacting specifically with AD FS, but only
 that they are interacting with a standards compliant identity provider or resource provider.
 
@@ -681,7 +647,7 @@ Note  The STS is at the heart of AD FS and, as such, is the component that is us
 focus of the descriptions and explanations in this document. See section 2.2 for the details of the
 protocols described in this document in terms of the STS.
 
-2.1  Summary of Protocols
+### 2.1 Summary of Protocols
 
 The following table provides a list of protocols, algorithms, and structures,<1> grouped according to
 their primary purpose.
@@ -744,7 +710,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Applicability
+
+Applicability
 
 Name
 
@@ -944,7 +911,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Applicability
+
+Applicability
 
 Name
 
@@ -969,7 +937,7 @@ underlying platform.
 
 [MS-PKAP]
 
-2.2  Components and Capabilities
+### 2.2 Components and Capabilities
 
 The primary purpose of this overview document is to describe the protocols that support AD FS. These
 protocols are useful only within an AD FS environment. The environment is primarily (either directly or
@@ -979,7 +947,7 @@ in some of the sections that follow. The AD FS environment might also be called 
 Web Tokens (JWTs) for public-key authentication. This scenario is described in the sections that
 follow in terms of authentication using JWTs.
 
-2.2.1  STS Token Generation
+#### 2.2.1 STS Token Generation
 
 The primary purpose of the security token service (STS) is to generate and issue security tokens.
 Because there are multiple ideas of federation and of what a security token is and how it is
@@ -987,7 +955,7 @@ consumed, AD FS (and its core STS) has to be aware of the most prevalent of thos
 can handle the greatest number of request types that it encounters. As such, AD FS implements
 several federation frameworks and protocols, all of which are described in the sections that follow.
 
-2.2.1.1  WS-Federation
+##### 2.2.1.1 WS-Federation
 
 A user will often need to use several resources or services that are available through the Internet,
 potentially in different security realms, in the course of a task or a day. One method to obtain access
@@ -1021,7 +989,8 @@ Release: October 26, 2021
 
 13 / 30
 
-The STS is described in [WSFederation] and [WSFederation1.2], but considerations to make the
+
+The STS is described in [WSFederation] and [WSFederation1.2], but considerations to make the
 STS more interoperable are implemented in the Microsoft Web Browser Federated Sign-On
 Protocol, which is described in [MS-MWBF] and its companion documents: [MS-MWBE] and [MS-
 ADFSWAP]. This increased interoperability is gained by restricting the protocol options and the
@@ -1051,7 +1020,7 @@ realms that an STS operates in, and the types of claims that an STS can emit. Th
 Directory Federation Service (AD FS) Web Agent Protocol defined in [MS-ADFSWAP] allows relying
 parties to obtain this information.
 
-2.2.1.2  WS-Trust
+##### 2.2.1.2 WS-Trust
 
 WS-Federation (section 2.2.1.1) operates directly on top of the HTTP protocol [RFC2616] and,
 specifically for AD FS, only with passive requesters, that is, web browsers. There is a class of
@@ -1062,7 +1031,7 @@ security tokens for purposes that are similar to those for WS-Federation.
 The Web Services Trust Language [WSTrust] is available in AD FS to accommodate SOAP-based
 applications.
 
-2.2.1.3  OAuth and OpenID Connect
+##### 2.2.1.3 OAuth and OpenID Connect
 
 Note  When this overview document references OAuth, it is referring to the OAuth 2.0 Authorization
 Framework (as opposed to the OAuth 1.0 protocol, which has been deprecated and is not implemented
@@ -1088,7 +1057,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-credentials and would need to take certain steps to ensure the integrity and secrecy of those
+
+credentials and would need to take certain steps to ensure the integrity and secrecy of those
 credentials. From the resource owner's perspective, this is a chancy situation. If the resource owner
 uses only a few clients, the problem of securing credentials and keeping them up-to-date can
 potentially be managed manually. This solution does not scale, however, in a more realistic scenario
@@ -1155,7 +1125,8 @@ Release: October 26, 2021
 
 15 / 30
 
-The primary participants in this protocol are the AD FS servers that are part of an AD FS farm.
+
+The primary participants in this protocol are the AD FS servers that are part of an AD FS farm.
 
   OIDCE (OpenID Connect 1.0 Protocol Extensions)
 
@@ -1167,7 +1138,7 @@ unique identifier, a time for password expiration, and a URL for password change
 extensions also define additional provider metadata that enable the discovery of the issuer of
 access tokens and give additional information about provider capabilities.
 
-2.2.1.4  SAML
+##### 2.2.1.4 SAML
 
 Security Assertion Markup Language (SAML) is an XML-based language that provides a means for
 security entities to communicate security information about a client that is requesting access to
@@ -1191,7 +1162,7 @@ document, but not the SAML protocol.
 SAML2 is supported more fully in AD FS than SAML1. AD FS supports both the SAML assertions
 and the SAML protocol of SAML2 ([SAMLCore2] sections 2 and 3).
 
-2.2.2  STS Deployed on the Edge
+#### 2.2.2 STS Deployed on the Edge
 
 For security and privacy reasons, a security token service (STS), which is a core part of AD FS, is
 often deployed behind a firewall. In this scenario, some type of proxy is placed between the STS and
@@ -1221,7 +1192,8 @@ Release: October 26, 2021
 
 16 / 30
 
-The Security Assertion Markup Language (SAML) Proxy Request Signing Protocol provides a means
+
+The Security Assertion Markup Language (SAML) Proxy Request Signing Protocol provides a means
 for proxy servers to contact an STS server to request SAML signature operations upon messages
 that are being sent as well as related tasks. This protocol is used when the proxy server needs to
 perform operations that require knowledge of configured keys and other state information about
@@ -1241,7 +1213,7 @@ access.
 The primary participants in this protocol are the Web Application Proxy (WAP) that is outside the
 firewall and the AD FS server or servers that are behind the firewall.
 
-2.2.3  Device Registration
+#### 2.2.3 Device Registration
 
 Mobile devices such as smart phones and tablets have become a platform that people use to perform
 some or much of their day-to-day work. In order to take on this role, these devices often need to be
@@ -1276,7 +1248,7 @@ The Key Provisioning Protocol [MS-KPP] defines a mechanism for a client to regis
 cryptographic keys on a user and device pair. It provides a single REST-based endpoint that
 returns JSON–formatted data in the response message.
 
-2.2.4  Authentication Using JSON Web Tokens
+#### 2.2.4 Authentication Using JSON Web Tokens
 
 The most common method to validate proof of possession of a secret, Secure Sockets Layer
 (SSL)/Transport Layer Security (TLS) client authentication, is not supported on many HTTP client
@@ -1288,7 +1260,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-ADFSOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1299,23 +1272,23 @@ message-based protocol. A client application uses this protocol at the applicati
 JSON Web Tokens (JWTs) to prove that its possession of private keys of X.509 certificates [X509]
 fits the criteria configured on the server.
 
-2.3  Protocol Relationships
+### 2.3 Protocol Relationships
 
 The following diagram shows the dependencies and relationships of the AD FS protocols to each other
 and to industry standards.
 
 Figure 2: Protocol relationships
 
-2.4  Coherency Requirements
+### 2.4 Coherency Requirements
 
 This group of protocols has no special coherency requirements.
 
-2.5  Security
+### 2.5 Security
 
 This group of protocols has no security considerations outside the security considerations of the
 individual protocols and extensions.
 
-2.6  Additional Considerations
+### 2.6 Additional Considerations
 
 There are no additional considerations.
 
@@ -1326,13 +1299,14 @@ Release: October 26, 2021
 
 18 / 30
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-ADFSOD].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-3  Use Cases
+## 3 Use Cases
 
-3.1  Single Sign-on Using a Security Token Service and WS-Federation
+### 3.1 Single Sign-on Using a Security Token Service and WS-Federation
 
 Figure 3: Use case diagram for single sign-on with WS-Federation
 
@@ -1362,7 +1336,8 @@ Release: October 26, 2021
 
 19 / 30
 
-  Client: The network entity that the user uses to request the web resource. In the case of WS-
+
+  Client: The network entity that the user uses to request the web resource. In the case of WS-
 
 Federation, specifically [MS-MWBF], this is a web browser.
 
@@ -1442,7 +1417,8 @@ Release: October 26, 2021
 
 20 / 30
 
-1-3. Same as the main success scenario except that the user and RP are in the same security realm;
+
+1-3. Same as the main success scenario except that the user and RP are in the same security realm;
 
 the STS that authenticates for the RP is also the AD FS server.
 
@@ -1459,9 +1435,9 @@ token, and sends the information to the client.
 
 by the AD FS server.
 
-3.1.1  Success Cases
+#### 3.1.1 Success Cases
 
-3.1.1.1  User and Relying Party in Different Realms Example
+##### 3.1.1.1 User and Relying Party in Different Realms Example
 
 For this example of single sign-on (SSO) using a security token service (STS) and WS-
 Federation, the environment is configured as for the main success scenario in section 3.1 and the
@@ -1475,7 +1451,8 @@ Release: October 26, 2021
 
 21 / 30
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-ADFSOD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1504,7 +1481,8 @@ Active Directory Federation Services (AD FS) Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-for this stage in this example, the client does not have any cookies from this particular STS. The
+
+for this stage in this example, the client does not have any cookies from this particular STS. The
 client then sends the GET to the STS given by the RP.
 
 4.  The STS that authenticates for the RP responds to the client with another HTTP 302 response
@@ -1576,7 +1554,8 @@ Release: October 26, 2021
 
 23 / 30
 
-13. As in step 2 above, a redirect is sent from this new RP to the client with the address of the STS
+
+13. As in step 2 above, a redirect is sent from this new RP to the client with the address of the STS
 
 that it relies on for authentication.
 
@@ -1599,7 +1578,7 @@ previously.
 but with the appropriate data for the new STS and RP. At this time, the user is able to access the
 second web resource without having to log on a second time.
 
-3.1.1.2  User and Relying Party in Same Realm Example
+##### 3.1.1.2 User and Relying Party in Same Realm Example
 
 For this example of single sign-on (SSO) using a security token service (STS) and WS-
 Federation, the environment is configured as for the variation scenario in section 3.1 and the user
@@ -1613,7 +1592,8 @@ Release: October 26, 2021
 
 24 / 30
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-ADFSOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1652,7 +1632,8 @@ Release: October 26, 2021
 
 25 / 30
 
-Note The details of this interaction between the server and client are outside the scope of this
+
+Note The details of this interaction between the server and client are outside the scope of this
 document, but typically involve standard GET and POST HTTP communication [RFC2616] and
 HTTP over Secure Sockets Layer (SSL) and Transport Layer Security (TLS) [RFC2818], as well as
 others. In addition, there are other types of interaction that might occur between the AD FS server
@@ -1706,7 +1687,8 @@ Release: October 26, 2021
 
 26 / 30
 
-4  Appendix A: Product Behavior
+
+## 4 Appendix A: Product Behavior
 
 The information in this document is applicable to the following Microsoft products or supplemental
 software. References to product versions include released service packs.
@@ -1806,7 +1788,8 @@ Release: October 26, 2021
 
 27 / 30
 
-Protocol
+
+Protocol
 
 MWBE
 
@@ -1892,7 +1875,8 @@ Release: October 26, 2021
 
 28 / 30
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1936,7 +1920,8 @@ Release: October 26, 2021
 
 29 / 30
 
-Table of protocols 11
+
+Table of protocols 11
 Tracking changes 29
 
 U
@@ -1959,7 +1944,7 @@ W
 WS-Federation 13
 WS-Trust 14
 
-6  Index
+## 6 Index
 A
 
 Additional considerations 18

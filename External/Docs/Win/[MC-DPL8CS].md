@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 91
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -523,342 +525,146 @@ Release: April 23, 2024
 
 3 / 91
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.3.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 DirectPlay 8 Protocol: Core and Service Providers Session Management](#131-directplay-8-protocol-core-and-service-providers-session-management)
+    - [1.3.2 Session Modes](#132-session-modes)
+      - [1.3.2.1 Client/Server](#1321-clientserver)
+      - [1.3.2.2 Peer-to-Peer (Peer/Host)](#1322-peer-to-peer-peerhost)
+    - [1.3.3 Connecting to a Session](#133-connecting-to-a-session)
+      - [1.3.3.1 Client/Server Connect](#1331-clientserver-connect)
+      - [1.3.3.2 Peer-to-Peer Connect](#1332-peer-to-peer-connect)
+    - [1.3.4 Disconnecting from a Session](#134-disconnecting-from-a-session)
+      - [1.3.4.1 Client/Server Disconnect](#1341-clientserver-disconnect)
+      - [1.3.4.2 Peer-to-Peer Disconnect](#1342-peer-to-peer-disconnect)
+    - [1.3.5 Integrity Check (Peer-to-Peer)](#135-integrity-check-peer-to-peer)
+    - [1.3.6 Host Migration (Peer-to-Peer)](#136-host-migration-peer-to-peer)
+    - [1.3.7 Groups](#137-groups)
+      - [1.3.7.1 Client/Server Groups](#1371-clientserver-groups)
+      - [1.3.7.2 Peer-to-Peer Groups](#1372-peer-to-peer-groups)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Packet Structure](#211-packet-structure)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Connect Messages](#221-connect-messages)
+      - [2.2.1.1 DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO](#2211-dninternalmessageplayerconnectinfo)
+      - [2.2.1.2 DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO_EX](#2212-dninternalmessageplayerconnectinfoex)
+      - [2.2.1.3 DN_CONNECT_FAILED](#2213-dnconnectfailed)
+      - [2.2.1.4 DN_SEND_CONNECT_INFO](#2214-dnsendconnectinfo)
+      - [2.2.1.5 DN_NAMETABLE_ENTRY_INFO](#2215-dnnametableentryinfo)
+      - [2.2.1.6 DN_NAMETABLE_MEMBERSHIP_INFO](#2216-dnnametablemembershipinfo)
+      - [2.2.1.7 DN_ADD_PLAYER (Peer-to-Peer Mode Only)](#2217-dnaddplayer-peer-to-peer-mode-only)
+      - [2.2.1.8 DN_ACK_CONNECT_INFO](#2218-dnackconnectinfo)
+      - [2.2.1.9 DN_INSTRUCT_CONNECT](#2219-dninstructconnect)
+      - [2.2.1.10 DN_SEND_PLAYER_DPNID](#22110-dnsendplayerdpnid)
+      - [2.2.1.11 DN_INSTRUCTED_CONNECT_FAILED](#22111-dninstructedconnectfailed)
+      - [2.2.1.12 DN_CONNECT_ATTEMPT_FAILED](#22112-dnconnectattemptfailed)
+    - [2.2.2 Disconnect Messages](#222-disconnect-messages)
+      - [2.2.2.1 DN_TERMINATE_SESSION](#2221-dnterminatesession)
+      - [2.2.2.2 DN_DESTROY_PLAYER](#2222-dndestroyplayer)
+      - [2.2.2.3 DN_HOST_MIGRATE](#2223-dnhostmigrate)
+      - [2.2.2.4 DN_NAMETABLE_VERSION](#2224-dnnametableversion)
+      - [2.2.2.5 DN_RESYNC_VERSION](#2225-dnresyncversion)
+      - [2.2.2.6 DN_REQ_INTEGRITY_CHECK](#2226-dnreqintegritycheck)
+      - [2.2.2.7 DN_INTEGRITY_CHECK](#2227-dnintegritycheck)
+      - [2.2.2.8 DN_INTEGRITY_CHECK_RESPONSE](#2228-dnintegritycheckresponse)
+      - [2.2.2.9 DN_REQ_NAMETABLE_OP](#2229-dnreqnametableop)
+      - [2.2.2.10 DN_ACK_NAMETABLE_OP](#22210-dnacknametableop)
+      - [2.2.2.11 DN_HOST_MIGRATE_COMPLETE](#22211-dnhostmigratecomplete)
+    - [2.2.3 Send/Receive Messages](#223-sendreceive-messages)
+      - [2.2.3.1 DN_SEND_DATA](#2231-dnsenddata)
+      - [2.2.3.2 DN_REQ_PROCESS_COMPLETION](#2232-dnreqprocesscompletion)
+      - [2.2.3.3 DN_PROCESS_COMPLETION](#2233-dnprocesscompletion)
+    - [2.2.4 Group Messages (Peer-to-Peer Mode Only)](#224-group-messages-peer-to-peer-mode-only)
+      - [2.2.4.1 DN_REQ_CREATE_GROUP](#2241-dnreqcreategroup)
+      - [2.2.4.2 DN_CREATE_GROUP](#2242-dncreategroup)
+      - [2.2.4.3 DN_REQ_ADD_PLAYER_TO_GROUP](#2243-dnreqaddplayertogroup)
+      - [2.2.4.4 DN_ADD_PLAYER_TO_GROUP](#2244-dnaddplayertogroup)
+      - [2.2.4.5 DN_REQ_DELETE_PLAYER_FROM_GROUP](#2245-dnreqdeleteplayerfromgroup)
+      - [2.2.4.6 DN_DELETE_PLAYER_FROM_GROUP](#2246-dndeleteplayerfromgroup)
+      - [2.2.4.7 DN_REQ_DESTROY_GROUP](#2247-dnreqdestroygroup)
+      - [2.2.4.8 DN_DESTROY_GROUP](#2248-dndestroygroup)
+    - [2.2.5 Update Information](#225-update-information)
+      - [2.2.5.1 DN_REQ_UPDATE_INFO](#2251-dnrequpdateinfo)
+      - [2.2.5.2 DN_UPDATE_INFO](#2252-dnupdateinfo)
+    - [2.2.6 DN_NAMETABLE](#226-dnnametable)
+    - [2.2.7 DN_DPNID](#227-dndpnid)
+    - [2.2.8 DN_ADDRESSING_URL](#228-dnaddressingurl)
+    - [2.2.9 DN_ALTERNATE_ADDRESS (IPv4)](#229-dnalternateaddress-ipv4)
+    - [2.2.10 DN_ALTERNATE_ADDRESS (IPv6)](#2210-dnalternateaddress-ipv6)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Connect Role Details](#31-connect-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Client/Server Connect Sequence](#3151-clientserver-connect-sequence)
+      - [3.1.5.2 Peer-to-Peer Connect Sequence](#3152-peer-to-peer-connect-sequence)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Disconnect Role Details](#32-disconnect-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Client/Server Disconnect Sequence](#3251-clientserver-disconnect-sequence)
+      - [3.2.5.2 Peer-to-Peer Host Disconnect Sequence](#3252-peer-to-peer-host-disconnect-sequence)
+      - [3.2.5.3 Peer-to-Peer Integrity Check Sequence](#3253-peer-to-peer-integrity-check-sequence)
+      - [3.2.5.4 Peer-to-Peer Host Disconnect (Possible Host Migration)](#3254-peer-to-peer-host-disconnect-possible-host-migration)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Send/Receive Communications Role Details](#33-sendreceive-communications-role-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Client/Server and Peer-to-Peer Send/Receive Communications Sequence](#3351-clientserver-and-peer-to-peer-sendreceive-communications-sequence)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Groups Role Details](#34-groups-role-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Processing Events and Sequencing Rules](#345-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Client/Server Group Role](#3451-clientserver-group-role)
+      - [3.4.5.2 Peer-to-Peer Group Sequence](#3452-peer-to-peer-group-sequence)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 Update Information Role Details](#35-update-information-role-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Processing Events and Sequencing Rules](#355-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Update Information Sequence](#3551-update-information-sequence)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.3.1
-1.3.3.2
-
-1.3.2.1
-1.3.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-DirectPlay 8 Protocol: Core and Service Providers Session Management ............ 10
-Session Modes ........................................................................................... 10
-Client/Server ........................................................................................ 10
-Peer-to-Peer (Peer/Host) ....................................................................... 10
-Connecting to a Session .............................................................................. 10
-Client/Server Connect............................................................................ 10
-Peer-to-Peer Connect ............................................................................ 10
-Disconnecting from a Session ....................................................................... 11
-Client/Server Disconnect ........................................................................ 11
-Peer-to-Peer Disconnect ........................................................................ 11
-Integrity Check (Peer-to-Peer) ..................................................................... 11
-Host Migration (Peer-to-Peer)....................................................................... 12
-Groups ...................................................................................................... 12
-Client/Server Groups ............................................................................. 12
-Peer-to-Peer Groups .............................................................................. 13
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.5
-1.3.6
-1.3.7
-
-1.3.4.1
-1.3.4.2
-
-1.3.7.1
-1.3.7.2
-
-1.3.4
-
-2.2
-
-2.1
-
-2.2.1
-
-2.1.1
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Packet Structure ......................................................................................... 14
-Message Syntax ............................................................................................... 14
-Connect Messages ...................................................................................... 14
-DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO .................................. 14
-2.2.1.1
-DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO_EX ............................. 17
-2.2.1.2
-DN_CONNECT_FAILED ........................................................................... 21
-2.2.1.3
-DN_SEND_CONNECT_INFO .................................................................... 22
-2.2.1.4
-DN_NAMETABLE_ENTRY_INFO ................................................................ 27
-2.2.1.5
-DN_NAMETABLE_MEMBERSHIP_INFO ...................................................... 29
-2.2.1.6
-DN_ADD_PLAYER (Peer-to-Peer Mode Only) ............................................. 30
-2.2.1.7
-DN_ACK_CONNECT_INFO ...................................................................... 33
-2.2.1.8
-2.2.1.9
-DN_INSTRUCT_CONNECT ...................................................................... 33
-2.2.1.10  DN_SEND_PLAYER_DPNID ..................................................................... 33
-2.2.1.11  DN_INSTRUCTED_CONNECT_FAILED ....................................................... 34
-2.2.1.12  DN_CONNECT_ATTEMPT_FAILED ............................................................ 34
-Disconnect Messages .................................................................................. 35
-DN_TERMINATE_SESSION ..................................................................... 35
-DN_DESTROY_PLAYER ........................................................................... 35
-DN_HOST_MIGRATE .............................................................................. 36
-DN_NAMETABLE_VERSION ..................................................................... 37
-DN_RESYNC_VERSION .......................................................................... 37
-DN_REQ_INTEGRITY_CHECK .................................................................. 38
-DN_INTEGRITY_CHECK.......................................................................... 38
-DN_INTEGRITY_CHECK_RESPONSE ......................................................... 39
-DN_REQ_NAMETABLE_OP ...................................................................... 39
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-2.2.2
-
-[MC-DPL8CS] - v20240423
-DirectPlay 8 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 91
-
-2.2.4
-
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-
-2.2.2.10  DN_ACK_NAMETABLE_OP ...................................................................... 40
-2.2.2.11  DN_HOST_MIGRATE_COMPLETE ............................................................. 41
-Send/Receive Messages ............................................................................... 41
-DN_SEND_DATA ................................................................................... 41
-DN_REQ_PROCESS_COMPLETION ........................................................... 42
-DN_PROCESS_COMPLETION ................................................................... 42
-Group Messages (Peer-to-Peer Mode Only) .................................................... 43
-DN_REQ_CREATE_GROUP ...................................................................... 43
-DN_CREATE_GROUP .............................................................................. 44
-DN_REQ_ADD_PLAYER_TO_GROUP ......................................................... 45
-DN_ADD_PLAYER_TO_GROUP ................................................................ 45
-DN_REQ_DELETE_PLAYER_FROM_GROUP ................................................ 46
-DN_DELETE_PLAYER_FROM_GROUP ........................................................ 47
-DN_REQ_DESTROY_GROUP .................................................................... 48
-DN_DESTROY_GROUP ........................................................................... 48
-Update Information ..................................................................................... 49
-DN_REQ_UPDATE_INFO ......................................................................... 49
-DN_UPDATE_INFO ................................................................................ 50
-DN_NAMETABLE ......................................................................................... 52
-2.2.6
-DN_DPNID ................................................................................................. 53
-2.2.7
-DN_ADDRESSING_URL ................................................................................ 53
-2.2.8
-2.2.9
-DN_ALTERNATE_ADDRESS (IPv4)................................................................. 55
-2.2.10  DN_ALTERNATE_ADDRESS (IPv6)................................................................. 56
-
-2.2.5.1
-2.2.5.2
-
-2.2.5
-
-3.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3  Protocol Details ..................................................................................................... 57
-Connect Role Details ......................................................................................... 57
-Abstract Data Model .................................................................................... 61
-Timers ...................................................................................................... 61
-Initialization ............................................................................................... 61
-Higher-Layer Triggered Events ..................................................................... 61
-Processing Events and Sequencing Rules ....................................................... 62
-Client/Server Connect Sequence ............................................................. 62
-Peer-to-Peer Connect Sequence .............................................................. 63
-Timer Events .............................................................................................. 65
-Other Local Events ...................................................................................... 65
-Disconnect Role Details ..................................................................................... 65
-Abstract Data Model .................................................................................... 70
-Timers ...................................................................................................... 70
-Initialization ............................................................................................... 71
-Higher-Layer Triggered Events ..................................................................... 71
-Processing Events and Sequencing Rules ....................................................... 71
-Client/Server Disconnect Sequence ......................................................... 71
-Peer-to-Peer Host Disconnect Sequence ................................................... 71
-Peer-to-Peer Integrity Check Sequence .................................................... 72
-Peer-to-Peer Host Disconnect (Possible Host Migration) ............................. 73
-Timer Events .............................................................................................. 74
-Other Local Events ...................................................................................... 74
-Send/Receive Communications Role Details ......................................................... 74
-Abstract Data Model .................................................................................... 75
-Timers ...................................................................................................... 75
-Initialization ............................................................................................... 75
-Higher-Layer Triggered Events ..................................................................... 75
-Processing Events and Sequencing Rules ....................................................... 76
-Client/Server and Peer-to-Peer Send/Receive Communications Sequence .... 76
-Timer Events .............................................................................................. 76
-Other Local Events ...................................................................................... 76
-Groups Role Details .......................................................................................... 77
-Abstract Data Model .................................................................................... 78
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.6
-3.3.7
-
-3.2.6
-3.2.7
-
-3.3.5.1
-
-3.4.1
-
-3.4
-
-3.3
-
-[MC-DPL8CS] - v20240423
-DirectPlay 8 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 91
-
-3.5
-
-3.4.5.1
-3.4.5.2
-
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-
-3.4.6
-3.4.7
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-
-3.5.6
-3.5.7
-
-Timers ...................................................................................................... 78
-Initialization ............................................................................................... 78
-Higher-Layer Triggered Events ..................................................................... 79
-Processing Events and Sequencing Rules ....................................................... 79
-Client/Server Group Role ....................................................................... 79
-Peer-to-Peer Group Sequence ................................................................. 79
-Timer Events .............................................................................................. 80
-Other Local Events ...................................................................................... 80
-Update Information Role Details......................................................................... 81
-Abstract Data Model .................................................................................... 82
-Timers ...................................................................................................... 82
-Initialization ............................................................................................... 82
-Higher-Layer Triggered Events ..................................................................... 82
-Processing Events and Sequencing Rules ....................................................... 82
-Update Information Sequence ................................................................ 82
-Timer Events .............................................................................................. 83
-Other Local Events ...................................................................................... 83
-
-3.5.5.1
-
-4  Protocol Examples ................................................................................................. 84
-
-5  Security ................................................................................................................. 86
-Security Considerations for Implementers ........................................................... 86
-Index of Security Parameters ............................................................................ 86
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 87
-
-7  Change Tracking .................................................................................................... 88
-
-8  Index ..................................................................................................................... 89
-
-[MC-DPL8CS] - v20240423
-DirectPlay 8 Protocol: Core and Service Providers
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 91
-
-1  Introduction
+## 1 Introduction
 
 This specification describes the core protocol services of the DirectPlay 8 Protocol. The protocol
 provides functionality necessary for multiplayer game communication, including the ability to create
@@ -870,7 +676,7 @@ and to perform reliable communication.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -932,7 +738,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
+
+[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
 group: A collection of players within a game session. Typically, players are placed in a group
@@ -1013,7 +820,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-player: A person who is playing a computer game. There can be multiple players on a computer
+
+player: A person who is playing a computer game. There can be multiple players on a computer
 
 participating in any given game session. See also name table.
 
@@ -1038,14 +846,14 @@ wide characters: Characters represented by a 2-byte value that are encoded using
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1062,13 +870,13 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-DPLHP] Microsoft Corporation, "DirectPlay 8 Protocol: Host and Port Enumeration".
 
 [MC-DPLVP] Microsoft Corporation, "DirectPlay Voice Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The DirectPlay 8 Protocol: Core and Service Providers enables two or more participants to collectively
 communicate multiplayer game session information. The exchange is coordinated by either the
@@ -1083,22 +891,23 @@ Release: April 23, 2024
 
 9 / 91
 
-1.3.1  DirectPlay 8 Protocol: Core and Service Providers Session Management
+
+#### 1.3.1 DirectPlay 8 Protocol: Core and Service Providers Session Management
 
 The DirectPlay 8 Protocol: Core and Service Providers is used to manage the list of clients participating
 in a DirectPlay game session. A designated server or host peer owns all changes to that list and
 coordinates the distribution of information and associated commands to the other clients or peers.
 
-1.3.2  Session Modes
+#### 1.3.2 Session Modes
 
 DirectPlay game sessions are created in one of two modes: client/server or peer-to-peer.
 
-1.3.2.1  Client/Server
+##### 1.3.2.1 Client/Server
 
 Client/server mode consists of one server with many client connections (one-to-many). From the
 perspective of each client, there is only one connection: the connection to the server.
 
-1.3.2.2  Peer-to-Peer (Peer/Host)
+##### 1.3.2.2 Peer-to-Peer (Peer/Host)
 
 Peer-to-peer mode consists of multiple peers. Each peer has a connection to all other peers in the
 game session. If there are N peers in the game session, each peer has N-1 connections.
@@ -1106,14 +915,14 @@ game session. If there are N peers in the game session, each peer has N-1 connec
 During a peer-to-peer game session, one peer in the game session is considered the host. The host
 is responsible for the synchronization of all other peers in the game session.
 
-1.3.3  Connecting to a Session
+#### 1.3.3 Connecting to a Session
 
 The DirectPlay 8 Protocol: Core and Service Providers requires that clients first be connected through
 the DirectPlay 8 Protocol: Reliable (as specified in [MC-DPL8R]). After clients are connected through
 the DirectPlay 8 Protocol: Reliable, they can then connect to a DirectPlay 8 Protocol: Core and Service
 Providers multiplayer game session as described in section 3.1.
 
-1.3.3.1  Client/Server Connect
+##### 1.3.3.1 Client/Server Connect
 
 Clients attempt to connect to a multiplayer game session server by sending a connection request
 message to the server.
@@ -1125,7 +934,7 @@ validate the connection request message, the server sends a connection failed me
 Upon receiving an acknowledgment (ACK) from the server, the client acknowledges the connection
 by sending a connection ACK message confirming the connection.
 
-1.3.3.2  Peer-to-Peer Connect
+##### 1.3.3.2 Peer-to-Peer Connect
 
 The first peer in a DirectPlay game session is considered the host of the multiplayer game session.
 This host peer waits for additional peers to connect to the DirectPlay game session.
@@ -1146,7 +955,8 @@ Release: April 23, 2024
 
 10 / 91
 
-If the host has successfully validated the connection package, then at the same time it is responding
+
+If the host has successfully validated the connection package, then at the same time it is responding
 to the connecting peer, the host will also send a message to the other connected players indicating
 that a new player is joining. This informs each existing client that a new peer has joined the game
 session.
@@ -1164,9 +974,9 @@ unable to connect to the newly connecting peer issue a failure notification back
 receives a failure message from any existing peers, the host sends a connection failure message to
 the peer that is requesting a connection.
 
-1.3.4  Disconnecting from a Session
+#### 1.3.4 Disconnecting from a Session
 
-1.3.4.1  Client/Server Disconnect
+##### 1.3.4.1 Client/Server Disconnect
 
 If the server wants to remove a client from the multiplayer game session, it will send a disconnect
 message to the client. In response, the client is required to disconnect itself from the DirectPlay 8
@@ -1178,7 +988,7 @@ Protocol: Reliable game session.
 There are no messages specific to the DirectPlay 8 Protocol: Core and Service Providers that a client
 uses to disconnect itself from a multiplayer game session.
 
-1.3.4.2  Peer-to-Peer Disconnect
+##### 1.3.4.2 Peer-to-Peer Disconnect
 
 If the host peer wants to remove a peer from the multiplayer game session, the host sends a
 disconnect message to the peer. In response, the peer disconnects itself from each peer in the
@@ -1194,7 +1004,7 @@ already disconnected from the game session).
 If the disconnecting peer is the game session host, host migration is performed (as specified in
 section 1.3.6).
 
-1.3.5  Integrity Check (Peer-to-Peer)
+#### 1.3.5 Integrity Check (Peer-to-Peer)
 
 If a client peer detects a connection loss to another peer and has not been notified by the host that
 the peer has left, the detecting client peer sends a disconnect notification message to the host to
@@ -1211,7 +1021,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Whenever a client peer receives an integrity check message from the host, it responds to the host by
+
+Whenever a client peer receives an integrity check message from the host, it responds to the host by
 sending an integrity check response message.
 
 The integrity check that was sent from the host is sent via a reliable message through the protocol. If
@@ -1223,7 +1034,7 @@ terminate the requesting peer (the peer that detected a connection loss and ques
 of the other peer) by sending a disconnect message to the requesting peer, removing it from the
 multiplayer game session.
 
-1.3.6  Host Migration (Peer-to-Peer)
+#### 1.3.6 Host Migration (Peer-to-Peer)
 
 Host migration enables a set of peer-to-peer clients to elect a new host peer to replace an
 existing host peer that either drops from the game session, cannot be reached, or is otherwise
@@ -1257,12 +1068,12 @@ Once all name table operations have been executed, the host candidate then sends
 peers informing them that host migration is complete and that the host candidate is now the game
 session host.
 
-1.3.7  Groups
+#### 1.3.7 Groups
 
 When working with groups, be aware of considerations related to DirectX Diagnostic (DXDiag).
 The DXDiag tool (DxDiag.exe) implementation of this specification does not support groups.
 
-1.3.7.1  Client/Server Groups
+##### 1.3.7.1 Client/Server Groups
 
 Although the concept of groups exists in a DirectPlay 8 client/server game session, all activity
 related to groups is handled by the DirectPlay 8 server. There is no network traffic between the client
@@ -1275,7 +1086,8 @@ Release: April 23, 2024
 
 12 / 91
 
-1.3.7.2  Peer-to-Peer Groups
+
+##### 1.3.7.2 Peer-to-Peer Groups
 
 Only the game session host can create or modify groups. These capabilities include creating and
 destroying groups along with adding and removing players from groups.
@@ -1298,37 +1110,37 @@ If a non-host peer wants to destroy an existing group, it will issue a request t
 has received the request and has destroyed the group (via a peer or locally), the host will respond to
 all connected peers letting them know that a group has been destroyed from the game session.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 DirectPlay 8 Protocol: Core and Service Providers packets are embedded within DirectPlay 8 Protocol:
 Reliable [MC-DPL8R] packets.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DirectPlay 8 Protocol: Core and Service Providers functions only after a DirectPlay 8 Protocol:
 Reliable [MC-DPL8R] game session is established. If the DirectPlay 8 Protocol: Reliable game session
 is terminated, the DirectPlay 8 Protocol: Core and Service Providers game session is also terminated.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DirectPlay 8 Protocol: Core and Service Providers is designed to provide a mechanism for
 managing multiplayer game sessions within a DirectPlay 8 Protocol: Reliable [MC-DPL8R] game
 session.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
 Supported Transports: This protocol can be implemented on top of the DirectPlay 8 Protocol:
 Reliable [MC-DPL8R].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as specified in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
 indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1339,11 +1151,12 @@ Release: April 23, 2024
 
 13 / 91
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The DirectPlay 8 Protocol: Core and Service Providers creates and manages game sessions by using
 the DirectPlay 8 Protocol: Reliable [MC-DPL8R]. The DirectPlay 8 Protocol: Reliable is responsible for
@@ -1357,7 +1170,7 @@ connections via the DN_ADDRESSING_URL structure (as specified in section 2.2.8).
 The data that is passed from the DirectPlay 8 Protocol: Core and Service Providers is passed in the
 clear to the DirectPlay 8 Protocol: Reliable.
 
-2.1.1  Packet Structure
+#### 2.1.1 Packet Structure
 
 In regard to a DirectPlay 8 game session, all packets are actually embedded within the data frame
 (DFRAME) from the protocol. If the bCommand field within the DFRAME has the
@@ -1367,13 +1180,13 @@ this is data that SHOULD be passed directly to the application.
 
 Note  PACKET_COMMAND_USER_2 is used specifically for DirectPlay Voice Protocol [MC-DPLVP].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This protocol specification uses curly braced GUID strings as specified in [MS-DTYP] section 2.3.4.3.
 
-2.2.1  Connect Messages
+#### 2.2.1 Connect Messages
 
-2.2.1.1  DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO
+##### 2.2.1.1 DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO
 
 This is the first message passed into a host/server to initiate the connect sequence.
 
@@ -1409,7 +1222,8 @@ Release: April 23, 2024
 
 14 / 91
 
-dwNameSize
+
+dwNameSize
 
 dwDataOffset
 
@@ -1466,7 +1280,8 @@ Release: April 23, 2024
 
 15 / 91
 
-dwPacketType (4 bytes): A 32-bit field that contains the packet type.
+
+dwPacketType (4 bytes): A 32-bit field that contains the packet type.
 
 Value
 
@@ -1551,7 +1366,8 @@ Release: April 23, 2024
 
 16 / 91
 
-dwConnectDataSize (4 bytes): A 32-bit field that specifies the size, in bytes, of the connectData
+
+dwConnectDataSize (4 bytes): A 32-bit field that specifies the size, in bytes, of the connectData
 
 field. If dwConnectDataOffset is 0, dwConnectDataSize SHOULD also be 0. If
 dwConnectDataOffset is not 0, dwConnectDataSize SHOULD also not be 0.
@@ -1608,7 +1424,7 @@ name (variable): A variable-length field that contains a 0-terminated wide chara
 specifies the client/peer name. This field's position is determined by dwNameOffset and the size
 stated in dwNameSize.
 
-2.2.1.2  DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO_EX
+##### 2.2.1.2 DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO_EX
 
 This is the first message passed into a host/server to initiate the connect sequence.
 
@@ -1627,7 +1443,8 @@ Release: April 23, 2024
 
 17 / 91
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1693,7 +1510,8 @@ Release: April 23, 2024
 
 18 / 91
 
-...
+
+...
 
 connectData (variable)
 
@@ -1772,7 +1590,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwDataSize (4 bytes): A 32-bit field that specifies the size, in bytes, of the data field. If
+
+dwDataSize (4 bytes): A 32-bit field that specifies the size, in bytes, of the data field. If
 dwDataOffset is set to 0, dwDataSize SHOULD also be 0. If dwDataOffset is not 0,
 dwDataSize SHOULD also not be 0.
 
@@ -1848,7 +1667,8 @@ Release: April 23, 2024
 
 20 / 91
 
-url (variable): A variable-length field that contains a 0-terminated byte character array that specifies
+
+url (variable): A variable-length field that contains a 0-terminated byte character array that specifies
 
 the client URL. This field's position is determined by dwURLOffset and the size stated in
 dwURLSize. It is defined in DN_ADDRESSING_URL.
@@ -1873,7 +1693,7 @@ name (variable): A variable-length field that contains a 0-terminated wide chara
 specifies the client/peer name. This field's position is determined by dwNameOffset and the size
 stated in dwNameSize.
 
-2.2.1.3  DN_CONNECT_FAILED
+##### 2.2.1.3 DN_CONNECT_FAILED
 
 The DN_CONNECT_FAILED packet indicates that a connection attempt failed.
 
@@ -1938,7 +1758,8 @@ Release: April 23, 2024
 
 21 / 91
 
-Value
+
+Value
 
 Meaning
 
@@ -2000,7 +1821,7 @@ reply (variable): A variable-length field that contains an array of bytes that p
 message from the application identifying the connection failure. Reply data is only expected when
 the failure type is DPNERR_HOSTREJECTEDCONNECTION.
 
-2.2.1.4  DN_SEND_CONNECT_INFO
+##### 2.2.1.4 DN_SEND_CONNECT_INFO
 
 The DN_SEND_CONNECT_INFO packet is sent from the host/server indicating to the connecting
 peer/client that it has joined the game session.
@@ -2037,7 +1858,8 @@ Release: April 23, 2024
 
 22 / 91
 
-dwSessionNameOffset
+
+dwSessionNameOffset
 
 dwSessionNameSize
 
@@ -2094,7 +1916,8 @@ Release: April 23, 2024
 
 23 / 91
 
-Data (variable)
+
+Data (variable)
 
 ...
 
@@ -2171,7 +1994,8 @@ Release: April 23, 2024
 
 24 / 91
 
-Value
+
+Value
 
 0x00000004
 
@@ -2269,7 +2093,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-guidInstance (16 bytes): A 128-bit field that contains the GUID that identifies the particular
+
+guidInstance (16 bytes): A 128-bit field that contains the GUID that identifies the particular
 
 instance of the server/host application. The value of this field implicitly SHOULD match the value
 of the guidInstance field specified in the DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO or
@@ -2345,7 +2170,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Password (variable): A variable-length field that contains a 0-terminated wide character array that
+
+Password (variable): A variable-length field that contains a 0-terminated wide character array that
 
 specifies the application password data. This field's position is determined by dwPasswordOffset
 and the size stated in dwPasswordSize. This data is passed in clear text to the protocol layer.
@@ -2359,7 +2185,7 @@ Reply (variable): A variable-length field that contains a byte array that provid
 
 field's position is determined by dwReplyOffset and the size stated in dwReplySize.
 
-2.2.1.5  DN_NAMETABLE_ENTRY_INFO
+##### 2.2.1.5 DN_NAMETABLE_ENTRY_INFO
 
 The DN_NAMETABLE_ENTRY_INFO contains a player or group that exists in a DirectPlay 8 name
 table. This includes all the information that the DirectPlay 8 Protocol: Core and Service Providers
@@ -2419,7 +2245,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwFlags (4 bytes): A 32-bit integer that specifies the name table entry flags. Entries are OR'd
+
+dwFlags (4 bytes): A 32-bit integer that specifies the name table entry flags. Entries are OR'd
 
 together.
 
@@ -2537,7 +2364,8 @@ Release: April 23, 2024
 
 28 / 91
 
-Value
+
+Value
 
 Meaning
 
@@ -2580,7 +2408,7 @@ Specified in section 2.2.8).
 
 dwURLSize (4 bytes): The size, in bytes, of the url field.
 
-2.2.1.6  DN_NAMETABLE_MEMBERSHIP_INFO
+##### 2.2.1.6 DN_NAMETABLE_MEMBERSHIP_INFO
 
 The DN_NAMETABLE_MEMBERSHIP_INFO structure contains information about a name table's group
 and player memberships. The number of DN_NAMETABLE_MEMBERSHIP_INFO structures in this
@@ -2620,11 +2448,12 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwVersion (4 bytes): A 32-bit integer that specifies the name table version.
+
+dwVersion (4 bytes): A 32-bit integer that specifies the name table version.
 
 dwVersionNotUsed (4 bytes): Not used.
 
-2.2.1.7  DN_ADD_PLAYER (Peer-to-Peer Mode Only)
+##### 2.2.1.7 DN_ADD_PLAYER (Peer-to-Peer Mode Only)
 
 The DN_ADD_PLAYER packet is sent from the host and instructs peers to add a specified peer to the
 game session.
@@ -2687,7 +2516,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2810,7 +2640,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00080000
 
@@ -2886,7 +2717,8 @@ Release: April 23, 2024
 
 32 / 91
 
-2.2.1.8  DN_ACK_CONNECT_INFO
+
+##### 2.2.1.8 DN_ACK_CONNECT_INFO
 
 The DN_ACK_CONNECT_INFO packet is sent from the client/peer to the server/host to acknowledge
 the receipt of connection information. This packet contains no user data beyond the packet type field.
@@ -2916,7 +2748,7 @@ Acknowledges (ACK) the receipt of game session information.
 
 0x000000C3
 
-2.2.1.9  DN_INSTRUCT_CONNECT
+##### 2.2.1.9 DN_INSTRUCT_CONNECT
 
 The DN_INSTRUCT_CONNECT packet instructs a peer to connect to a designated peer. This packet
 uses the CONNECT and CONNECTED packets defined in [MC-DPL8R] sections 2.2.1.1 and 2.2.1.2. For
@@ -2961,9 +2793,9 @@ dwVersion (4 bytes): A 32-bit field that contains the current version of the nam
 
 dwVersionNotUsed (4 bytes): Not used.
 
-2.2.1.10
+##### 2.2.1.10 DN_SEND_PLAYER_DPNID
 
-DN_SEND_PLAYER_DPNID
+
 
 The DN_SEND_PLAYER_DPNID packet is used to send a user identification number to another client.
 
@@ -2974,7 +2806,8 @@ Release: April 23, 2024
 
 33 / 91
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3005,9 +2838,9 @@ dpnID (4 bytes): A 32-bit field that contains the identifier of the client/peer.
 
 see section 2.2.7.
 
-2.2.1.11
+##### 2.2.1.11 DN_INSTRUCTED_CONNECT_FAILED
 
-DN_INSTRUCTED_CONNECT_FAILED
+
 
 The DN_INSTRUCTED_CONNECT_FAILED packet is sent from a peer to indicate that it was unable to
 carry out a host instruction to connect to a new peer.
@@ -3044,9 +2877,9 @@ dpnID (4 bytes): A 32-bit field that contains the identifier for the peer to whi
 
 connection failed. For more information, see section 2.2.7.
 
-2.2.1.12
+##### 2.2.1.12 DN_CONNECT_ATTEMPT_FAILED
 
-DN_CONNECT_ATTEMPT_FAILED
+
 
 The DN_CONNECT_ATTEMPT_FAILED packet is sent from the host to a connecting peer to indicate
 that an existing peer in the game session was unable to carry out the host's instruction to connect to
@@ -3076,7 +2909,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -3092,9 +2926,9 @@ dpnID (4 bytes): A 32-bit field that contains the identifier for the existing pe
 
 that was unable to connect to the new peer. For more information, see section 2.2.7.
 
-2.2.2  Disconnect Messages
+#### 2.2.2 Disconnect Messages
 
-2.2.2.1  DN_TERMINATE_SESSION
+##### 2.2.2.1 DN_TERMINATE_SESSION
 
 The DN_TERMINATE_SESSION packet instructs the client or the peer to disconnect from the game
 session.
@@ -3147,7 +2981,7 @@ TerminateData (variable): A variable-length field that contains a byte array fro
 
 that describes why the client or the peer is being terminated from the game session.
 
-2.2.2.2  DN_DESTROY_PLAYER
+##### 2.2.2.2 DN_DESTROY_PLAYER
 
 The DN_DESTROY_PLAYER packet instructs the peer to remove a specified user from its name table.
 
@@ -3158,7 +2992,8 @@ Release: April 23, 2024
 
 35 / 91
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3232,7 +3067,7 @@ Host removed the peer.
 
 0x0004
 
-2.2.2.3  DN_HOST_MIGRATE
+##### 2.2.2.3 DN_HOST_MIGRATE
 
 The DN_HOST_MIGRATE packet is sent from the new host to all remaining peers in the game
 session to notify them that a migration is taking place.
@@ -3257,7 +3092,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dpnidOldHost
+
+dpnidOldHost
 
 dpnidNewHost
 
@@ -3281,7 +3117,7 @@ dpnidNewHost (4 bytes): A 32-bit field that contains the identifier for the newl
 
 is in the process of migrating. For more information, see section 2.2.7.
 
-2.2.2.4  DN_NAMETABLE_VERSION
+##### 2.2.2.4 DN_NAMETABLE_VERSION
 
 The DN_NAMETABLE_VERSION packet specifies the version number of the name table.
 
@@ -3318,7 +3154,7 @@ dwVersion (4 bytes): A 32-bit field that contains the current name table version
 
 dwVersionNotUsed (4 bytes): Not used.
 
-2.2.2.5  DN_RESYNC_VERSION
+##### 2.2.2.5 DN_RESYNC_VERSION
 
 The DN_RESYNC_VERSION packet is used to request that the name table version number be
 resynchronized to the current version number.
@@ -3345,7 +3181,8 @@ Release: April 23, 2024
 
 37 / 91
 
-dwVersionNotUsed
+
+dwVersionNotUsed
 
 dwPacketType (4 bytes): A 32-bit field that contains the packet type.
 
@@ -3364,7 +3201,7 @@ dwVersion (4 bytes): A 32-bit field that contains the current name table version
 
 dwVersionNotUsed (4 bytes): Not used.
 
-2.2.2.6  DN_REQ_INTEGRITY_CHECK
+##### 2.2.2.6 DN_REQ_INTEGRITY_CHECK
 
 The DN_REQ_INTEGRITY_CHECK packet requests that a host determine whether a target client is still
 in the game session.
@@ -3407,7 +3244,7 @@ dpnidTarget (4 bytes): A 32-bit field that contains the identifier of the select
 
 host to validate. For more information, see section 2.2.7.
 
-2.2.2.7  DN_INTEGRITY_CHECK
+##### 2.2.2.7 DN_INTEGRITY_CHECK
 
 The DN_INTEGRITY_CHECK packet is a request from a host to a peer inquiring whether the peer is
 still in the game session.
@@ -3436,7 +3273,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -3451,7 +3289,7 @@ dpnidRequesting (4 bytes): A 32-bit field that contains the identifier of the pe
 
 validation. For more information, see section 2.2.7.
 
-2.2.2.8  DN_INTEGRITY_CHECK_RESPONSE
+##### 2.2.2.8 DN_INTEGRITY_CHECK_RESPONSE
 
 The DN_INTEGRITY_CHECK_RESPONSE packet is a response from a peer to the host confirming that it
 is still in the game session.
@@ -3488,7 +3326,7 @@ dpnidRequesting (4 bytes): Identifier of the peer that requested the validation.
 
 information, see section 2.2.7.
 
-2.2.2.9  DN_REQ_NAMETABLE_OP
+##### 2.2.2.9 DN_REQ_NAMETABLE_OP
 
 The DN_REQ_NAMETABLE_OP packet is sent from the new host to a peer with a newer name table
 to request that the peer send back name table operations that have not yet been performed on the
@@ -3533,11 +3371,12 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwVersionNotUsed (4 bytes): Not used.
 
-2.2.2.10
+dwVersionNotUsed (4 bytes): Not used.
 
-DN_ACK_NAMETABLE_OP
+##### 2.2.2.10 DN_ACK_NAMETABLE_OP
+
+
 
 The DN_ACK_NAMETABLE_OP packet is sent from the peer that is being queried for name table
 information back to the new host. It will include all entries missing from the new host's name table.
@@ -3618,7 +3457,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwOpSize (4 bytes): A 32-bit field that contains the size for the given operation buffer.
+
+dwOpSize (4 bytes): A 32-bit field that contains the size for the given operation buffer.
 
 op (4 bytes): A variable length field that contains the portion of the packet originally associated with
 the name table operation, except for the dwPacketType field, as indicated by the dwMsgId
@@ -3627,9 +3467,9 @@ dwMsgId field value of 0x000000D1 would contain the dpnidLeaving, dwVersion,
 dwVersionNotUsed, and dwDestroyReason field information from an original
 DN_DESTROY_PLAYER packet.
 
-2.2.2.11
+##### 2.2.2.11 DN_HOST_MIGRATE_COMPLETE
 
-DN_HOST_MIGRATE_COMPLETE
+
 
 The DN_HOST_MIGRATE_COMPLETE packet informs peers that the session-hosting responsibilities
 have successfully migrated from the departing old host.
@@ -3660,7 +3500,7 @@ DN_MSG_INTERNAL_HOST_MIGRATE_COMPLETE
 Informs peers that the session-hosting responsibilities
 have successfully migrated from the departing old host.
 
-2.2.3  Send/Receive Messages
+#### 2.2.3 Send/Receive Messages
 
 There are two different types of user sends:
 
@@ -3676,7 +3516,7 @@ Note  "Delivered to the receiving application" means that the message has been d
 application layer, not simply obtained by the receiver's machine. In this case, the
 DN_REQ_PROCESS_COMPLETION message is used.
 
-2.2.3.1  DN_SEND_DATA
+##### 2.2.3.1 DN_SEND_DATA
 
 The DN_SEND_DATA message is sent from one player to another player when the sending player's
 application does not require confirmation from the receiving player's application that the sent data has
@@ -3704,11 +3544,12 @@ Release: April 23, 2024
 
 41 / 91
 
-payload (variable): A variable-length field that contains the application data that is passed from one
+
+payload (variable): A variable-length field that contains the application data that is passed from one
 
 application to another.
 
-2.2.3.2  DN_REQ_PROCESS_COMPLETION
+##### 2.2.3.2 DN_REQ_PROCESS_COMPLETION
 
 The DN_REQ_PROCESS_COMPLETION message is sent from one player to another player when the
 sending player's application wants confirmation regarding when the sent data has been consumed by
@@ -3755,7 +3596,7 @@ payload (variable): A variable-length field that contains the application data p
 
 to another.
 
-2.2.3.3  DN_PROCESS_COMPLETION
+##### 2.2.3.3 DN_PROCESS_COMPLETION
 
 The DN_PROCESS_COMPLETION message is returned to the peer that sent the data after the sent
 payload has been consumed.
@@ -3794,17 +3635,18 @@ Release: April 23, 2024
 
 42 / 91
 
-dwPacketContext (4 bytes): A 32-bit field that contains the system identifier for this action. The
+
+dwPacketContext (4 bytes): A 32-bit field that contains the system identifier for this action. The
 
 response to this message SHOULD include this context in the identical manner as it was sent.
 
-2.2.4  Group Messages (Peer-to-Peer Mode Only)
+#### 2.2.4 Group Messages (Peer-to-Peer Mode Only)
 
 Note  When working with groups, be aware of considerations related to DirectX Diagnostic
 (DXDiag). The DXDiag tool (DxDiag.exe) implementation of this specification does not support
 groups.
 
-2.2.4.1  DN_REQ_CREATE_GROUP
+##### 2.2.4.1 DN_REQ_CREATE_GROUP
 
 The DN_REQ_CREATE_GROUP packet informs the host that a peer is requesting that a new group be
 created for the game session.
@@ -3868,7 +3710,8 @@ Release: April 23, 2024
 
 43 / 91
 
-dwGroupFlags (4 bytes): A 32-bit field that contains the flags passed in on creation of a group,
+
+dwGroupFlags (4 bytes): A 32-bit field that contains the flags passed in on creation of a group,
 
 indicating certain behavior.
 
@@ -3926,7 +3769,7 @@ name (variable): A variable-length field that contains the zero-terminated wide 
 that provides the group name. This field's position is determined by dwNameOffset and the size
 stated in dwNameSize.
 
-2.2.4.2  DN_CREATE_GROUP
+##### 2.2.4.2 DN_CREATE_GROUP
 
 The DN_CREATE_GROUP packet informs all of the connected peers that the new group has been
 successfully created for the game session.
@@ -3957,7 +3800,8 @@ Release: April 23, 2024
 
 44 / 91
 
-Value
+
+Value
 
 Meaning
 
@@ -3976,7 +3820,7 @@ dwPacketContext (4 bytes): A 32-bit field that contains the value sent in with t
 DN_REQ_CREATE_GROUP from the requesting peer. The value passed MUST be identical to that
 which was passed in.
 
-2.2.4.3  DN_REQ_ADD_PLAYER_TO_GROUP
+##### 2.2.4.3 DN_REQ_ADD_PLAYER_TO_GROUP
 
 The DN_REQ_ADD_PLAYER_TO_GROUP packet informs the host that a peer is requesting that a new
 player be added to an existing group.
@@ -4025,7 +3869,7 @@ dpnidPlayer (4 bytes): A 32-bit field that contains the identifier of the player
 
 the existing group. For more information, see section 2.2.7.
 
-2.2.4.4  DN_ADD_PLAYER_TO_GROUP
+##### 2.2.4.4 DN_ADD_PLAYER_TO_GROUP
 
 The DN_ADD_PLAYER_TO_GROUP packet informs the peers that a player has been added to an
 existing group.
@@ -4050,7 +3894,8 @@ Release: April 23, 2024
 
 45 / 91
 
-dpnidGroup
+
+dpnidGroup
 
 dpnidPlayer
 
@@ -4096,7 +3941,7 @@ dwPacketContext (4 bytes): A 32-bit field that contains the context value passed
 operation. The value MUST be passed in exactly as it was received in
 DN_REQ_ADD_PLAYER_TO_GROUP.
 
-2.2.4.5  DN_REQ_DELETE_PLAYER_FROM_GROUP
+##### 2.2.4.5 DN_REQ_DELETE_PLAYER_FROM_GROUP
 
 The DN_REQ_DELETE_PLAYER_FROM_GROUP packet informs the host that a peer is requesting a
 player be removed from an existing group.
@@ -4129,7 +3974,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -4151,7 +3997,7 @@ dpnidPlayer (4 bytes): A 32-bit field that contains the identifier of the player
 
 from the group. For more information, see section 2.2.7.
 
-2.2.4.6  DN_DELETE_PLAYER_FROM_GROUP
+##### 2.2.4.6 DN_DELETE_PLAYER_FROM_GROUP
 
 The DN_DELETE_PLAYER_FROM_GROUP packet informs the peers that a player has been removed
 from a group.
@@ -4217,12 +4063,13 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwPacketContext (4 bytes): A 32-bit field that contains the context value passed in for this
+
+dwPacketContext (4 bytes): A 32-bit field that contains the context value passed in for this
 
 operation. The value MUST be passed in exactly as it was received in
 DN_REQ_DELETE_PLAYER_FROM_GROUP.
 
-2.2.4.7  DN_REQ_DESTROY_GROUP
+##### 2.2.4.7 DN_REQ_DESTROY_GROUP
 
 The DN_REQ_DESTROY_GROUP packet informs the host that a peer is requesting that a group be
 deleted from the game session.
@@ -4271,7 +4118,7 @@ dpnidPlayer (4 bytes): A 32-bit field that contains the identifier of the player
 
 from the group. For more information, see section 2.2.7.
 
-2.2.4.8  DN_DESTROY_GROUP
+##### 2.2.4.8 DN_DESTROY_GROUP
 
 The DN_DESTROY_GROUP packet informs the peers that a group has been removed from a game
 session.
@@ -4304,7 +4151,8 @@ Release: April 23, 2024
 
 48 / 91
 
-dwPacketContext
+
+dwPacketContext
 
 dwPacketType (4 bytes): A 32-bit field that contains the packet type.
 
@@ -4335,9 +4183,9 @@ dwPacketContext (4 bytes): A 32-bit field that contains the context value passed
 
 operation. The value MUST be passed in exactly as it was received in DN_REQ_DESTROY_GROUP.
 
-2.2.5  Update Information
+#### 2.2.5 Update Information
 
-2.2.5.1  DN_REQ_UPDATE_INFO
+##### 2.2.5.1 DN_REQ_UPDATE_INFO
 
 The DN_REQ_UPDATE_INFO message is sent from a peer/client to the host/server to update
 information about a specified peer/client in the game session.
@@ -4380,7 +4228,8 @@ Release: April 23, 2024
 
 49 / 91
 
-name (variable)
+
+name (variable)
 
 ...
 
@@ -4448,7 +4297,7 @@ name (variable): A variable-length field that contains a zero-terminated wide ch
 specifies the player's name. This field's position is determined by dwNameOffset and the size
 stated in dwNameSize.
 
-2.2.5.2  DN_UPDATE_INFO
+##### 2.2.5.2 DN_UPDATE_INFO
 
 Response from the host/server to a DN_REQ_UPDATE_INFO packet. This packet is sent to all players
 with the updated information.
@@ -4460,7 +4309,8 @@ Release: April 23, 2024
 
 50 / 91
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4535,7 +4385,8 @@ Release: April 23, 2024
 
 51 / 91
 
-Value
+
+Value
 
 Meaning
 
@@ -4578,7 +4429,7 @@ name (variable): A variable-length field that contains a zero-terminated wide ch
 specifies the player's name. This field's position is determined by dwNameOffset and the size
 stated in dwNameSize.
 
-2.2.6  DN_NAMETABLE
+#### 2.2.6 DN_NAMETABLE
 
 The name table is a concept used by DirectPlay to keep all participants in a game session in sync
 with the different actions that are being performed.
@@ -4615,7 +4466,8 @@ Release: April 23, 2024
 
 52 / 91
 
- Action
+
+ Action
 
  Meaning
 
@@ -4635,7 +4487,7 @@ version number advances, the host SHOULD send a DN_RESYNC_VERSION message to all
 indicating the new oldest value. All participants SHOULD then release their records of all name table
 operations with versions older than this value, as they will no longer be needed during host migration.
 
-2.2.7  DN_DPNID
+#### 2.2.7 DN_DPNID
 
 The DPNID is a unique identifier created by a DirectPlay host and server for each player and group
 included in a game session. A DPNID value is created for a player or group at the time when that
@@ -4668,7 +4520,7 @@ be XOR'd with 0xA1B2C3D4 to obfuscate as follows:
 It is important to point out that the DirectPlay host will use the DPNID of a player or group to
 determine the location for this entry in the name table.
 
-2.2.8  DN_ADDRESSING_URL
+#### 2.2.8 DN_ADDRESSING_URL
 
 DirectPlay represents addresses for an application in the form of a URL. The structure of the URL is
 as follows:
@@ -4685,7 +4537,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  This is the opaque representation of a URL, where a single slash mark "/" is used as a scheme
+
+Note  This is the opaque representation of a URL, where a single slash mark "/" is used as a scheme
 terminator, not double slash mark "//".The responsibility of data interpretation is placed on the
 consumer of the URL and nothing else can be assumed.
 
@@ -4776,7 +4629,8 @@ Release: April 23, 2024
 
 54 / 91
 
-  provider=%7BEBFE7BA0-628D-11D2-AE0F-006097B01411%7D;
+
+  provider=%7BEBFE7BA0-628D-11D2-AE0F-006097B01411%7D;
   device=%7BIP ADAPTER GUID%7D;port=0000230034#IPUserData
 
 IPX Address
@@ -4799,7 +4653,7 @@ Modem Address
   device=%7BMODEM DEVICE GUID%7D;
   phonenumber=555-1212#ModemUserData
 
-2.2.9  DN_ALTERNATE_ADDRESS (IPv4)
+#### 2.2.9 DN_ALTERNATE_ADDRESS (IPv4)
 
 In DirectPlay 9, the DN_ALTERNATE_ADDRESS structure provides additional options for Internet
 Protocol (IP) connectivity. The alternative addresses included in DN_ALTERNATE_ADDRESS are
@@ -4853,12 +4707,13 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwAddrIn (4 bytes): The address of the corresponding IN_ADDR (IPv4) structure for this
+
+dwAddrIn (4 bytes): The address of the corresponding IN_ADDR (IPv4) structure for this
 
 DN_ALTERNATE_ADDRESS (IPv4) structure, as described in [MS-DPDX]  section 2.2.35.1. This
 field is treated as a single buffer and is not specified in network byte order.
 
-2.2.10 DN_ALTERNATE_ADDRESS (IPv6)
+#### 2.2.10 DN_ALTERNATE_ADDRESS (IPv6)
 
 The DN_ALTERNATE_ADDRESS structure is described in detail in section 2.2.9.
 
@@ -4913,13 +4768,14 @@ Release: April 23, 2024
 
 56 / 91
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MC-DPL8CS].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Connect Role Details
+### 3.1 Connect Role Details
 
 Figure 1: Role of a client when joining the client to the session
 
@@ -4955,7 +4811,8 @@ Release: April 23, 2024
 
 57 / 91
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MC-DPL8CS].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
@@ -4984,7 +4841,8 @@ Release: April 23, 2024
 
 58 / 91
 
-<!-- Extracted images from page 59 -->
+
+<!-- Extracted images from page 59 -->
 ![Extracted image 1 from page 59]([MC-DPL8CS].images/page059-img01.png)
 <!-- /Extracted images from page 59 -->
 
@@ -5018,7 +4876,8 @@ Release: April 23, 2024
 
 59 / 91
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MC-DPL8CS].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
@@ -5071,7 +4930,8 @@ Release: April 23, 2024
 
 60 / 91
 
-instructing them to attempt a connection to the nascent peer. If an established peer is unable to
+
+instructing them to attempt a connection to the nascent peer. If an established peer is unable to
 connect to the nascent peer:
 
 
@@ -5093,7 +4953,7 @@ peer, and the nascent peer is added to the game session.
 When the nascent peer receives a DN_INSTRUCT_CONNECT message from the host, the message
 is used only to synchronize its name table with the established peers.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The connect sequence is initiated by the client or the peer. If there happens to be an error or
 disconnect on the server/host, cleanup and disconnect happens with only the client/peer with the
@@ -5123,16 +4983,16 @@ In client/server mode, each client only keeps name table entries that represent 
 server player. Therefore, only this subset of the name table is synchronized with the server during
 connection.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The connection sequence is event driven via packets sent and received via the Peer, Client, Host, or
 Server.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
@@ -5143,13 +5003,14 @@ Release: April 23, 2024
 
 61 / 91
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MC-DPL8CS].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Client/Server Connect Sequence
+##### 3.1.5.1 Client/Server Connect Sequence
 
 Figure 5: Client/server connect sequence
 
@@ -5198,7 +5059,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MC-DPL8CS].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
@@ -5208,7 +5070,7 @@ the connection by returning:
 
 DN_ACK_CONNECT_INFO
 
-3.1.5.2  Peer-to-Peer Connect Sequence
+##### 3.1.5.2 Peer-to-Peer Connect Sequence
 
 Figure 6: Peer-to-peer connect sequence
 
@@ -5241,7 +5103,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DN_CONNECT_FAILED
+
+DN_CONNECT_FAILED
 
 4.  If the host successfully validates DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO, the host
 
@@ -5315,7 +5178,8 @@ Release: April 23, 2024
 
 64 / 91
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MC-DPL8CS].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
@@ -5327,15 +5191,15 @@ DN_CONNECT_ATTEMPT_FAILED
 
 11. Host "removes player from the game session".
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Disconnect Role Details
+### 3.2 Disconnect Role Details
 
 Figure 7: Role of a client and the server when disconnecting the client from the session
 
@@ -5353,7 +5217,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MC-DPL8CS].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -5394,7 +5259,8 @@ Release: April 23, 2024
 
 66 / 91
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MC-DPL8CS].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -5435,7 +5301,8 @@ Release: April 23, 2024
 
 67 / 91
 
-<!-- Extracted images from page 68 -->
+
+<!-- Extracted images from page 68 -->
 ![Extracted image 1 from page 68]([MC-DPL8CS].images/page068-img01.png)
 <!-- /Extracted images from page 68 -->
 
@@ -5463,7 +5330,8 @@ Release: April 23, 2024
 
 68 / 91
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MC-DPL8CS].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -5500,7 +5368,8 @@ Release: April 23, 2024
 
 69 / 91
 
-1.  The host sends a DN_HOST_MIGRATE message to all connected peers in the game session and
+
+1.  The host sends a DN_HOST_MIGRATE message to all connected peers in the game session and
 
 waits to receive a DN_NAMETABLE_VERSION message from each peer. If a peer does not respond
 in time, the protocol times out and terminates the connection for that peer.
@@ -5530,7 +5399,7 @@ DN_RESYNC_VERSION message containing the new name table version to all connected
 the game session. Finally, the host sends a DN_HOST_MIGRATE_COMPLETE message to all
 connected peers in the game session.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 If there is an error with the protocol or message on the server/host, cleanup and disconnect happen
 with only the client/peer with the failure. (Remaining clients/peers in the session remain connected.)
@@ -5566,7 +5435,7 @@ not informed of other clients leaving.
 
 If the server disconnects, the game session is terminated.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The disconnect sequence is event driven via messages sent and received via the Peer, Client, Host, or
 Server.
@@ -5578,22 +5447,23 @@ Release: April 23, 2024
 
 70 / 91
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MC-DPL8CS].images/page071-img01.png)
 ![Extracted image 2 from page 71]([MC-DPL8CS].images/page071-img02.png)
 <!-- /Extracted images from page 71 -->
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Client/Server Disconnect Sequence
+##### 3.2.5.1 Client/Server Disconnect Sequence
 
 Figure 12: Client/server disconnect sequence
 
@@ -5611,7 +5481,7 @@ from the game session.
 
 server. (No core specific messages.)
 
-3.2.5.2  Peer-to-Peer Host Disconnect Sequence
+##### 3.2.5.2 Peer-to-Peer Host Disconnect Sequence
 
 Figure 13: Peer-to-peer host disconnect sequence
 
@@ -5628,7 +5498,8 @@ Release: April 23, 2024
 
 71 / 91
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MC-DPL8CS].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -5641,7 +5512,7 @@ disconnecting peer:
 
 DN_DESTROY_PLAYER
 
-3.2.5.3  Peer-to-Peer Integrity Check Sequence
+##### 3.2.5.3 Peer-to-Peer Integrity Check Sequence
 
 Figure 14: Peer-to-peer integrity check sequence
 
@@ -5679,11 +5550,12 @@ Release: April 23, 2024
 
 72 / 91
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MC-DPL8CS].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
-3.2.5.4  Peer-to-Peer Host Disconnect (Possible Host Migration)
+##### 3.2.5.4 Peer-to-Peer Host Disconnect (Possible Host Migration)
 
 Figure 15: Peer-to-peer host disconnect (possible host migration)
 
@@ -5728,7 +5600,8 @@ Release: April 23, 2024
 
 73 / 91
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MC-DPL8CS].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -5738,15 +5611,15 @@ peers:
 
 DN_HOST_MIGRATE_COMPLETE
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Send/Receive Communications Role Details
+### 3.3 Send/Receive Communications Role Details
 
 Figure 16: Role of the peer, host, client, and server when sending and receiving messages
 
@@ -5759,7 +5632,8 @@ Release: April 23, 2024
 
 74 / 91
 
-1.  When any message is sent, if the sender specifies DN_REQ_PROCESS_COMPLETION (section
+
+1.  When any message is sent, if the sender specifies DN_REQ_PROCESS_COMPLETION (section
 
 2.2.3.2) to indicate that the receiving application MUST confirm delivery of the sent message, the
 sender waits to either receive a DN_PROCESS_COMPLETION response message (section 2.2.3.3),
@@ -5780,12 +5654,12 @@ message is valid and it contains a DN_REQ_PROCESS_COMPLETION request, a
 DN_PROCESS_COMPLETION response message is sent back to the sender. If the message does
 not contain a request for process completion, the message is consumed.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 Illustrated in this model is a send where the process completion request has been sent. In the non-
 process completion case, the messages are just consumed with no retained state.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The send/receive sequence is event driven via messages sent and received via the Peer, Client, Host,
 or Server. The DirectPlay 8 Protocol: Core and Service Providers does not directly implement timing-
@@ -5794,11 +5668,11 @@ provide feedback regarding the state of individual connections. When a connectio
 DirectPlay 8 Protocol [MC-DPL8R] reports this to its consumers. The DirectPlay 8 Protocol: Core and
 Service Providers MUST then handle the disconnect as described in section 3.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
@@ -5809,13 +5683,14 @@ Release: April 23, 2024
 
 75 / 91
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MC-DPL8CS].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Client/Server and Peer-to-Peer Send/Receive Communications Sequence
+##### 3.3.5.1 Client/Server and Peer-to-Peer Send/Receive Communications Sequence
 
 Figure 17: Communications Exchange diagram
 
@@ -5846,11 +5721,11 @@ the payload is data that SHOULD be passed directly to the application with no fu
 Note  If Packet_Command_User_1 is set in the DFRAME, this indicates that it is a core message with
 the first four bytes indicating the PacketType and is always sent reliably.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -5861,11 +5736,12 @@ Release: April 23, 2024
 
 76 / 91
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MC-DPL8CS].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
-3.4  Groups Role Details
+### 3.4 Groups Role Details
 
 Figure 18: Role of a peer and the host when sending and receiving Group messages
 
@@ -5888,7 +5764,8 @@ Release: April 23, 2024
 
 77 / 91
 
-2.  Otherwise, when the peer receives any of the following messages in response from the host, the
+
+2.  Otherwise, when the peer receives any of the following messages in response from the host, the
 
 peer processes the message.
 
@@ -5926,7 +5803,7 @@ Note  When working with groups, be aware of considerations related to DirectX Di
 (DXDiag). The DXDiag tool (DxDiag.exe) implementation of this specification does not support
 groups.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 A DirectPlay 8 Protocol: Core and Service Providers Protocol implementation MUST maintain the
 following data element:
@@ -5941,11 +5818,11 @@ the name table.
 In client/server mode, only the server has information pertaining to all players and groups. Therefore,
 the server does generate name table operations associated with group management.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 The group sequences are driven via messages sent and received via the Peer, Client, Host, or Server.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
@@ -5956,22 +5833,23 @@ Release: April 23, 2024
 
 78 / 91
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MC-DPL8CS].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
-3.4.5  Processing Events and Sequencing Rules
+#### 3.4.5 Processing Events and Sequencing Rules
 
-3.4.5.1  Client/Server Group Role
+##### 3.4.5.1 Client/Server Group Role
 
 There are no transactions on the wire for game session groups in client/server mode. Game
 session groups are used only in peer-to-peer mode.
 
-3.4.5.2  Peer-to-Peer Group Sequence
+##### 3.4.5.2 Peer-to-Peer Group Sequence
 
 Figure 19: Peer-to-peer group sequence diagram
 
@@ -5993,7 +5871,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DN_CREATE_GROUP
+
+DN_CREATE_GROUP
 
 3.  If a non-host peer wants to add a new player to an existing group, it MUST issue a message to the
 
@@ -6029,11 +5908,11 @@ with:
 
 DN_DESTROY_GROUP
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
@@ -6044,11 +5923,12 @@ Release: April 23, 2024
 
 80 / 91
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MC-DPL8CS].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
-3.5  Update Information Role Details
+### 3.5 Update Information Role Details
 
 Figure 20: Role of a peer/client and the host/server when sending and receiving Update
 Information messages
@@ -6073,7 +5953,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MC-DPL8CS].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -6083,7 +5964,7 @@ message is processed by the host/server. If the message is invalid, the host/ser
 cleanup and the message is ignored. Otherwise, the host/server responds by sending a
 DN_UPDATE_INFO message back to the peer/client.
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 An update is requested by a peer or client to a host or server. The host/server will respond to all
 players with the appropriate response.
@@ -6099,22 +5980,22 @@ player information.
 In client/server mode, each client only keeps name table entries that represent its player and the
 server player, and is not informed of information changes pertaining to other players.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 The update information sequence is event driven via messages sent and received via the Peer, Client,
 Host, or Server.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
 None.
 
-3.5.5  Processing Events and Sequencing Rules
+#### 3.5.5 Processing Events and Sequencing Rules
 
-3.5.5.1  Update Information Sequence
+##### 3.5.5.1 Update Information Sequence
 
 Figure 21: Update Information Sequence Diagram
 
@@ -6131,17 +6012,18 @@ Release: April 23, 2024
 
 82 / 91
 
-DN_REQ_UPDATE_INFO
+
+DN_REQ_UPDATE_INFO
 
 2.  The host SHOULD respond appropriately to all players with the updated information:
 
 DN_UPDATE_INFO
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 None.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
 None.
 
@@ -6152,7 +6034,8 @@ Release: April 23, 2024
 
 83 / 91
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 A standard DN_INTERNAL_MESSAGE_PLAYER_CONNECT_INFO_EX (section 2.2.1.2) for a DirectPlay 8
 Protocol: Core and Service Providers game session. This example includes the full Ethernet frame for
@@ -6222,7 +6105,8 @@ DirectPlay 8 Protocol: Core and Service Providers
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 0050   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+
+ 0050   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
  0060   00 00 00 00 00 00 00 00 00 00 23 81 BE 94 AB A1   ..........#□¾"«¡
  0070   FB 48 A2 E7 23 85 9E 65 89 36 DA 80 EF 61 1B 69   ûH¢ç#…□e‰6Ú€ïa.i
  0080   47 42 9A DD 1C 7B ED 2B C1 3E 20 81 8E 94 03 00   GBšÝ.{í+Á> □□"..
@@ -6286,9 +6170,10 @@ Release: April 23, 2024
 
 85 / 91
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The DirectPlay 8 Protocol: Core and Service Providers provides no security features beyond those
 included in the underlying DirectPlay 8 Protocol: Reliable ([MC-DPL8R]). The following are some
@@ -6301,7 +6186,7 @@ security features that implementers might consider including in their implementa
 Ignore malformed messages and messages from unknown clients, unless otherwise specified by
 the protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 It is up to the application that is using the DirectPlay 8 Protocol: Core and Service Providers to
 implement security. The following table allows only for simple passwords to be passed across game
@@ -6337,7 +6222,8 @@ Release: April 23, 2024
 
 86 / 91
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6391,7 +6277,8 @@ Release: April 23, 2024
 
 87 / 91
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6435,7 +6322,8 @@ Release: April 23, 2024
 
 88 / 91
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6577,7 +6465,8 @@ E
 
 89 / 91
 
-Examples - overview 84
+
+Examples - overview 84
 
 F
 
@@ -6724,7 +6613,8 @@ section 3.2.5.4 73)
 
 90 / 91
 
-Timer events
+
+Timer events
    connect role 65
    disconnect role 74
    groups role 80

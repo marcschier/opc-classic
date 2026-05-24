@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 25
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 25
 
-Date
+
+Date
 
 Revision
 History
@@ -522,142 +524,64 @@ Significantly changed the technical content.
 
 3 / 25
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 PATHTESTKEYDATA](#221-pathtestkeydata)
+    - [2.2.2 PATH_TEST](#222-pathtest)
+    - [2.2.3 NAT_RESOLVER_QUERY](#223-natresolverquery)
+    - [2.2.4 NAT_RESOLVER_RESPONSE](#224-natresolverresponse)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Path Test Details](#31-path-test-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 NAT Resolver Response Server Details](#32-nat-resolver-response-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 NAT Resolver Query Client Details](#33-nat-resolver-query-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example NAT Resolver Query and Response](#41-example-nat-resolver-query-and-response)
+  - [4.2 Example PATH_TEST Message](#42-example-pathtest-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-PATHTESTKEYDATA .................................................................................... 10
-PATH_TEST ................................................................................................ 10
-NAT_RESOLVER_QUERY .............................................................................. 11
-NAT_RESOLVER_RESPONSE ......................................................................... 12
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-3.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 13
-Path Test Details .............................................................................................. 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 14
-Processing Events and Sequencing Rules ....................................................... 14
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 16
-NAT Resolver Response Server Details ................................................................ 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-NAT Resolver Query Client Details ...................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Processing Events and Sequencing Rules ....................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.3
-
-4  Protocol Examples ................................................................................................. 18
-Example NAT Resolver Query and Response ........................................................ 18
-Example PATH_TEST Message ........................................................................... 18
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 21
-Security Considerations for Implementers ........................................................... 21
-Index of Security Parameters ............................................................................ 21
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 22
-
-4 / 25
-
-[MC-DPLNAT] - v20240423
-DirectPlay 8 Protocol: NAT Locator
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7  Change Tracking .................................................................................................... 23
-
-8  Index ..................................................................................................................... 24
-
-[MC-DPLNAT] - v20240423
-DirectPlay 8 Protocol: NAT Locator
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 25
-
-1  Introduction
+## 1 Introduction
 
 This specification pertains to the DirectPlay 8 Protocol and describes technology available for the
 support of network environments that involve Network Address Translation (NAT). The NAT location
@@ -667,7 +591,7 @@ DPL8CS] to improve NAT [RFC3022] support.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -733,7 +657,8 @@ DirectPlay 8 Protocol: NAT Locator
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-peer: In DirectPlay, a player within a DirectPlay game session that has an established connection
+
+peer: In DirectPlay, a player within a DirectPlay game session that has an established connection
 
 with every other peer in the game session, and which is not performing game session
 management duties. The participant that is managing the game session is called the host.
@@ -755,14 +680,14 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -780,7 +705,7 @@ https://www.niatec.iri.isu.edu/GetFile.aspx?pid=63
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC3022] Srisuresh, P., and Egevang, K., "Traditional IP Network Address Translator (Traditional
 NAT)", RFC 3022, January 2001, https://www.rfc-editor.org/info/rfc3022
@@ -801,7 +726,8 @@ Release: April 23, 2024
 
 7 / 25
 
-1.3  Overview
+
+### 1.3 Overview
 
 The DirectPlay 8 Protocol: NAT Locator consists of three separate packet types: path tests, Network
 Address Translation (NAT) resolver queries, and NAT resolver responses. These optional messages
@@ -825,7 +751,7 @@ hosts to create port mappings in NAT or firewall devices and identify the result
 port. This public address and port can then be advertised instead of the local, private address and
 port that hosts normally would advertise.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DirectPlay 8 Protocol: NAT Locator depends on the User Datagram Protocol (UDP) [RFC768]
 and Internet Protocol version 4 (IPv4). The extensions provided in the DirectPlay 8 Protocol: NAT
@@ -839,7 +765,7 @@ It is not recommended that NAT resolver queries be performed when a Universal Pl
 (UPnP) Internet Gateway Device (IGD) is configured with a port mapping; instead, the UPnP port
 mapping takes precedence [UPNPWANIP].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DirectPlay 8 Protocol: NAT Locator extensions assume that a DirectPlay 8 Protocol: Core and
 Service Providers game session has been established, and that a peer is attempting to join a game
@@ -851,7 +777,7 @@ respond properly to queries from clients that are behind any devices that perfor
 resolver query/response exchange can be performed at any time, but typically occurs when a
 DirectPlay 8 Protocol: Core and Service Providers host has started.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 DirectPlay is designed for multiplayer gaming scenarios. These extensions can be used when
 additional NAT traversal support is desired for a DirectPlay 8 Protocol: Core and Service Providers
@@ -864,19 +790,20 @@ Release: April 23, 2024
 
 8 / 25
 
-These extensions are used when running over IPv4. They are not to be implemented using IPv6.
+
+These extensions are used when running over IPv4. They are not to be implemented using IPv6.
 Instead, mechanisms such as the Teredo tunneling specification [RFC4380] address NAT traversal
 more generically under that protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -887,23 +814,24 @@ Release: April 23, 2024
 
 9 / 25
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 DirectPlay 8 Protocol: NAT Locator messages MUST be transported by using UDP. The source and
 destination port numbers are application specific and can be any value.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section describes the format of messages and pseudo-structures used in the DirectPlay 8
 Protocol: NAT Locator.
 
 This protocol specification uses curly braced GUID strings as specified in [MS-DTYP] section 2.3.4.3.
 
-2.2.1  PATHTESTKEYDATA
+#### 2.2.1 PATHTESTKEYDATA
 
 The PATHTESTKEYDATA is a pseudo-structure that is hashed to generate 64-bit key values.
 
@@ -957,7 +885,8 @@ Release: April 23, 2024
 
 10 / 25
 
-2.2.2  PATH_TEST
+
+#### 2.2.2 PATH_TEST
 
 The PATH_TEST messages are sent to trigger outbound NAT and firewall mappings.
 
@@ -999,7 +928,7 @@ ullKey (8 bytes): A 64-bit digest value used to validate the PATH_TEST message. 
 generated by using the procedure outlined in section 3.1.3 and MUST be validated by the receiver
 prior to acting on it.
 
-2.2.3  NAT_RESOLVER_QUERY
+#### 2.2.3 NAT_RESOLVER_QUERY
 
 The NAT_RESOLVER_QUERY is sent to retrieve translated address information.
 
@@ -1052,13 +981,14 @@ DirectPlay 8 Protocol: NAT Locator
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-UserData (variable): An optional, variable length field containing an application-specific query
+
+UserData (variable): An optional, variable length field containing an application-specific query
 
 payload. The size of the UserData field is determined by the remaining size of the UDP packet. If
 a receiver determines that there are no more bytes after the complete NAT_RESOLVER_QUERY
 message header, then the UserData field was omitted by the sender.
 
-2.2.4  NAT_RESOLVER_RESPONSE
+#### 2.2.4 NAT_RESOLVER_RESPONSE
 
 The NAT_RESOLVER_RESPONSE is sent to report translated address information to the sender of a
 previous query.
@@ -1123,11 +1053,12 @@ Release: April 23, 2024
 
 12 / 25
 
-3  Protocol Details
 
-3.1  Path Test Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Path Test Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1153,13 +1084,13 @@ ullKey: The 64-bit identification value used to correlate PATH_TEST messages and
 
 Protocol: Core and Service Providers connect attempts.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Retry Timer is used to periodically resend PATH_TEST messages to compensate for potential
 packet loss. It SHOULD retry at intervals of 375 milliseconds with a maximum of 7 attempts, but can
 use any settings required for the particular application and network circumstances.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The DirectPlay 8 Protocol: NAT Locator extensions SHOULD be initialized whenever the DirectPlay 8
 Protocol: Core and Service Providers begins connecting an existing peer to a new peer that is
@@ -1193,7 +1124,8 @@ DirectPlay 8 Protocol: NAT Locator
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For the existing peer, the value of the calculated ullKey ADM element MUST remain associated with
+
+For the existing peer, the value of the calculated ullKey ADM element MUST remain associated with
 the connection attempt that the peer is performing until either the attempt fails, the attempt
 completes successfully, or the peer receives a valid PATH_TEST message as described in section 3.1.5.
 Also at this time, the existing peer MUST prepare to accept PATH_TEST messages in response to its
@@ -1205,14 +1137,14 @@ described in section 3.1.6. Also at this time, the Path Test Retry Timer MUST be
 process SHOULD be repeated for each existing peer as described in the DN_SEND_CONNECT_INFO
 message ([MC-DPL8CS] section 2.2.1.4).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The DirectPlay 8 Protocol: Core and Service Providers SHOULD inform the DirectPlay 8 Protocol: NAT
 Locator when the connection attempt has completed, whether it was successful or not. The existing
 peer MUST stop listening for PATH_TEST messages, and the new peer MUST stop transmitting
 PATH_TEST messages at that time.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 When the existing peer receives a valid PATH_TEST message, it MUST search all its outstanding [MC-
 DPL8CS] and corresponding [MC-DPL8R] instructed peer connections (described in [MC-DPL8CS]
@@ -1234,7 +1166,8 @@ Release: April 23, 2024
 
 14 / 25
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MC-DPLNAT].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1267,7 +1200,7 @@ response and the rest of the standard connection process.
 
 If the new peer or host receives a PATH_TEST message, it MUST be silently ignored.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 When the Retry Timer elapses, the new peer MUST send a new PATH_TEST message to the IPv4
 address and port of the existing peer for which it is expecting a connection. This message MUST be
@@ -1281,33 +1214,34 @@ DirectPlay 8 Protocol: NAT Locator
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-elapse again. Otherwise, the retries have been exhausted and the Path Test operation SHOULD be
+
+elapse again. Otherwise, the retries have been exhausted and the Path Test operation SHOULD be
 canceled.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  NAT Resolver Response Server Details
+### 3.2 NAT Resolver Response Server Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.3 Initialization
+
+None.
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 NAT Resolver Response Servers are not required to interact with higher-layers beyond initializing and
 shutting down.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 When a NAT Resolver Response server receives a NAT_RESOLVER_QUERY message, it can validate
 the optional UserData field by using application-specific logic. If the query is properly formed as
@@ -1326,11 +1260,11 @@ the message.
 
 If the server receives a NAT_RESOLVER_RESPONSE message, it MUST be silently ignored.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1341,24 +1275,25 @@ Release: April 23, 2024
 
 16 / 25
 
-3.3  NAT Resolver Query Client Details
 
-3.3.1  Abstract Data Model
+### 3.3 NAT Resolver Query Client Details
+
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The Retry Timer is used to periodically resend NAT_RESOLVER_QUERY messages to compensate for
 potential packet loss. It SHOULD retry at intervals of 1 second with a maximum of four attempts, but
 can use any settings required for the particular application and network circumstances.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The NAT Resolver Query client can be initialized whenever the DirectPlay 8 Protocol: Core and Service
 Providers begins hosting a new game session. Initialization consists of scheduling the Retry Timer.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The DirectPlay 8 Protocol: Core and Service Providers SHOULD inform the NAT Resolver Query client
 when it is no longer the host of a game session. The manner in which the provider notifies the client
@@ -1368,7 +1303,7 @@ is implementation-specific and is not influenced by the configuration of this pr
 When a client is notified that it is no longer the host in the game session, the client MUST abort any
 query attempts currently in progress.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 When a client receives a NAT_RESOLVER_RESPONSE message, it SHOULD validate that
 wMessageIDEcho and dwSourceIDEcho correspond to values that it sent in a previous
@@ -1383,7 +1318,7 @@ client MUST ignore the message.
 
 If a client receives a NAT_RESOLVER_QUERY message, it MUST be silently ignored.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 When the Retry Timer elapses, the client MUST send a new NAT_RESOLVER_QUERY message to the
 server. This message MUST be sent from the same UDP port number on which it is the host of the
@@ -1392,7 +1327,7 @@ of attempts have been made, the timer MUST then be rescheduled so that it can el
 Otherwise, the retries have been exhausted and the NAT Resolver Query operation SHOULD be
 canceled.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1403,9 +1338,10 @@ Release: April 23, 2024
 
 17 / 25
 
-4  Protocol Examples
 
-4.1  Example NAT Resolver Query and Response
+## 4 Protocol Examples
+
+### 4.1 Example NAT Resolver Query and Response
 
 The following example has two participants:
 
@@ -1444,7 +1380,7 @@ The client validates the reply and then de-obfuscates the public address and por
 message. The client can display, advertise, or otherwise use its newly learned public address as
 appropriate.
 
-4.2  Example PATH_TEST Message
+### 4.2 Example PATH_TEST Message
 
 The following example has three participants:
 
@@ -1481,7 +1417,8 @@ DirectPlay 8 Protocol: NAT Locator
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 PlayerC is in the process of joining the game session and previously exchanged the following
 messages with PlayerA as described in [MC-DPL8R] and [MC-DPL8CS]:
@@ -1547,7 +1484,8 @@ DirectPlay 8 Protocol: NAT Locator
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 0010  00 2C 12 D9 00 00 7C 11 00 00 0A C2 48 44 C0 A8   .P.Ù..|....ÂHDÀ¨
+
+ 0010  00 2C 12 D9 00 00 7C 11 00 00 0A C2 48 44 C0 A8   .P.Ù..|....ÂHDÀ¨
  0020  01 02 08 FE 08 FE 00 18 21 EF 88 01 01 00 06 00   ...þ.þ..!ï .....
  0030  01 00 E4 1C B0 50 E4 CA 32 00                     ..ä.°PäÊ2.
 
@@ -1569,16 +1507,17 @@ Release: April 23, 2024
 
 20 / 25
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol uses the SHA-1 hashing algorithm, which has been shown to have weaknesses
 [FIPS180]. However, the protocol is not intended for use in applications that demand robust security
 without Internet Protocol security (IPsec) or other lower-level security mechanisms already in
 place.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter  Section
 
@@ -1593,7 +1532,8 @@ Release: April 23, 2024
 
 21 / 25
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1643,7 +1583,8 @@ Release: April 23, 2024
 
 22 / 25
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1687,7 +1628,8 @@ Release: April 23, 2024
 
 23 / 25
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1819,7 +1761,8 @@ Path test
 
 24 / 25
 
-   message processing 14
+
+   message processing 14
    sequencing rules 14
    timer events 15
    timers 13

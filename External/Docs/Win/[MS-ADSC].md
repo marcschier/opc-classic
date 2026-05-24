@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 125
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 125
 
-Date
+
+Date
 
 Revision
 History
@@ -540,429 +542,286 @@ Release: April 23, 2024
 
 3 / 125
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 9
-References ........................................................................................................ 9
+## Table of Contents
 
-1.1
+- [1 Introduction](#1-introduction)
+  - [1.1 References](#11-references)
+- [2 Classes](#2-classes)
+  - [2.1 Class account](#21-class-account)
+  - [2.2 Class aCSPolicy](#22-class-acspolicy)
+  - [2.3 Class aCSResourceLimits](#23-class-acsresourcelimits)
+  - [2.4 Class aCSSubnet](#24-class-acssubnet)
+  - [2.5 Class addressBookContainer](#25-class-addressbookcontainer)
+  - [2.6 Class addressTemplate](#26-class-addresstemplate)
+  - [2.7 Class applicationEntity](#27-class-applicationentity)
+  - [2.8 Class applicationProcess](#28-class-applicationprocess)
+  - [2.9 Class applicationSettings](#29-class-applicationsettings)
+  - [2.10 Class applicationSiteSettings](#210-class-applicationsitesettings)
+  - [2.11 Class applicationVersion](#211-class-applicationversion)
+  - [2.12 Class attributeSchema](#212-class-attributeschema)
+  - [2.13 Class bootableDevice](#213-class-bootabledevice)
+  - [2.14 Class builtinDomain](#214-class-builtindomain)
+  - [2.15 Class categoryRegistration](#215-class-categoryregistration)
+  - [2.16 Class certificationAuthority](#216-class-certificationauthority)
+  - [2.17 Class classRegistration](#217-class-classregistration)
+  - [2.18 Class classSchema](#218-class-classschema)
+  - [2.19 Class classStore](#219-class-classstore)
+  - [2.20 Class comConnectionPoint](#220-class-comconnectionpoint)
+  - [2.21 Class computer](#221-class-computer)
+  - [2.22 Class configuration](#222-class-configuration)
+  - [2.23 Class connectionPoint](#223-class-connectionpoint)
+  - [2.24 Class contact](#224-class-contact)
+  - [2.25 Class container](#225-class-container)
+  - [2.26 Class controlAccessRight](#226-class-controlaccessright)
+  - [2.27 Class country](#227-class-country)
+  - [2.28 Class cRLDistributionPoint](#228-class-crldistributionpoint)
+  - [2.29 Class crossRef](#229-class-crossref)
+  - [2.30 Class crossRefContainer](#230-class-crossrefcontainer)
+  - [2.31 Class device](#231-class-device)
+  - [2.32 Class dfsConfiguration](#232-class-dfsconfiguration)
+  - [2.33 Class dHCPClass](#233-class-dhcpclass)
+  - [2.34 Class displaySpecifier](#234-class-displayspecifier)
+  - [2.35 Class displayTemplate](#235-class-displaytemplate)
+  - [2.36 Class dMD](#236-class-dmd)
+  - [2.37 Class dnsNode](#237-class-dnsnode)
+  - [2.38 Class dnsZone](#238-class-dnszone)
+  - [2.39 Class dnsZoneScope](#239-class-dnszonescope)
+  - [2.40 Class dnsZoneScopeContainer](#240-class-dnszonescopecontainer)
+  - [2.41 Class document](#241-class-document)
+  - [2.42 Class documentSeries](#242-class-documentseries)
+  - [2.43 Class domain](#243-class-domain)
+  - [2.44 Class domainDNS](#244-class-domaindns)
+  - [2.45 Class domainPolicy](#245-class-domainpolicy)
+  - [2.46 Class domainRelatedObject](#246-class-domainrelatedobject)
+  - [2.47 Class dSA](#247-class-dsa)
+  - [2.48 Class dSUISettings](#248-class-dsuisettings)
+  - [2.49 Class dynamicObject](#249-class-dynamicobject)
+  - [2.50 Class fileLinkTracking](#250-class-filelinktracking)
+  - [2.51 Class fileLinkTrackingEntry](#251-class-filelinktrackingentry)
+  - [2.52 Class foreignSecurityPrincipal](#252-class-foreignsecurityprincipal)
+  - [2.53 Class friendlyCountry](#253-class-friendlycountry)
+  - [2.54 Class fTDfs](#254-class-ftdfs)
+  - [2.55 Class group](#255-class-group)
+  - [2.56 Class groupOfNames](#256-class-groupofnames)
+  - [2.57 Class groupOfUniqueNames](#257-class-groupofuniquenames)
+  - [2.58 Class groupPolicyContainer](#258-class-grouppolicycontainer)
+  - [2.59 Class ieee802Device](#259-class-ieee802device)
+  - [2.60 Class indexServerCatalog](#260-class-indexservercatalog)
+  - [2.61 Class inetOrgPerson](#261-class-inetorgperson)
+  - [2.62 Class infrastructureUpdate](#262-class-infrastructureupdate)
+  - [2.63 Class intellimirrorGroup](#263-class-intellimirrorgroup)
+  - [2.64 Class intellimirrorSCP](#264-class-intellimirrorscp)
+  - [2.65 Class interSiteTransport](#265-class-intersitetransport)
+  - [2.66 Class interSiteTransportContainer](#266-class-intersitetransportcontainer)
+  - [2.67 Class ipHost](#267-class-iphost)
+  - [2.68 Class ipNetwork](#268-class-ipnetwork)
+  - [2.69 Class ipProtocol](#269-class-ipprotocol)
+  - [2.70 Class ipsecBase](#270-class-ipsecbase)
+  - [2.71 Class ipsecFilter](#271-class-ipsecfilter)
+  - [2.72 Class ipsecISAKMPPolicy](#272-class-ipsecisakmppolicy)
+  - [2.73 Class ipsecNegotiationPolicy](#273-class-ipsecnegotiationpolicy)
+  - [2.74 Class ipsecNFA](#274-class-ipsecnfa)
+  - [2.75 Class ipsecPolicy](#275-class-ipsecpolicy)
+  - [2.76 Class ipService](#276-class-ipservice)
+  - [2.77 Class leaf](#277-class-leaf)
+  - [2.78 Class licensingSiteSettings](#278-class-licensingsitesettings)
+  - [2.79 Class linkTrackObjectMoveTable](#279-class-linktrackobjectmovetable)
+  - [2.80 Class linkTrackOMTEntry](#280-class-linktrackomtentry)
+  - [2.81 Class linkTrackVolEntry](#281-class-linktrackvolentry)
+  - [2.82 Class linkTrackVolumeTable](#282-class-linktrackvolumetable)
+  - [2.83 Class locality](#283-class-locality)
+  - [2.84 Class lostAndFound](#284-class-lostandfound)
+  - [2.85 Class mailRecipient](#285-class-mailrecipient)
+  - [2.86 Class meeting](#286-class-meeting)
+  - [2.87 Class ms-net-ieee-80211-GroupPolicy](#287-class-ms-net-ieee-80211-grouppolicy)
+  - [2.88 Class ms-net-ieee-8023-GroupPolicy](#288-class-ms-net-ieee-8023-grouppolicy)
+  - [2.89 Class mS-SQL-OLAPCube](#289-class-ms-sql-olapcube)
+  - [2.90 Class mS-SQL-OLAPDatabase](#290-class-ms-sql-olapdatabase)
+  - [2.91 Class mS-SQL-OLAPServer](#291-class-ms-sql-olapserver)
+  - [2.92 Class mS-SQL-SQLDatabase](#292-class-ms-sql-sqldatabase)
+  - [2.93 Class mS-SQL-SQLPublication](#293-class-ms-sql-sqlpublication)
+  - [2.94 Class mS-SQL-SQLRepository](#294-class-ms-sql-sqlrepository)
+  - [2.95 Class mS-SQL-SQLServer](#295-class-ms-sql-sqlserver)
+  - [2.96 Class msAuthz-CentralAccessPolicies](#296-class-msauthz-centralaccesspolicies)
+  - [2.97 Class msAuthz-CentralAccessPolicy](#297-class-msauthz-centralaccesspolicy)
+  - [2.98 Class msAuthz-CentralAccessRule](#298-class-msauthz-centralaccessrule)
+  - [2.99 Class msAuthz-CentralAccessRules](#299-class-msauthz-centralaccessrules)
+  - [2.100 Class msCOM-Partition](#2100-class-mscom-partition)
+  - [2.101 Class msCOM-PartitionSet](#2101-class-mscom-partitionset)
+  - [2.102 Class msDFS-DeletedLinkv2](#2102-class-msdfs-deletedlinkv2)
+  - [2.103 Class msDFS-Linkv2](#2103-class-msdfs-linkv2)
+  - [2.104 Class msDFS-NamespaceAnchor](#2104-class-msdfs-namespaceanchor)
+  - [2.105 Class msDFS-Namespacev2](#2105-class-msdfs-namespacev2)
+  - [2.106 Class msDFSR-Connection](#2106-class-msdfsr-connection)
+  - [2.107 Class msDFSR-Content](#2107-class-msdfsr-content)
+  - [2.108 Class msDFSR-ContentSet](#2108-class-msdfsr-contentset)
+  - [2.109 Class msDFSR-GlobalSettings](#2109-class-msdfsr-globalsettings)
+  - [2.110 Class msDFSR-LocalSettings](#2110-class-msdfsr-localsettings)
+  - [2.111 Class msDFSR-Member](#2111-class-msdfsr-member)
+  - [2.112 Class msDFSR-ReplicationGroup](#2112-class-msdfsr-replicationgroup)
+  - [2.113 Class msDFSR-Subscriber](#2113-class-msdfsr-subscriber)
+  - [2.114 Class msDFSR-Subscription](#2114-class-msdfsr-subscription)
+  - [2.115 Class msDFSR-Topology](#2115-class-msdfsr-topology)
+  - [2.116 Class msDNS-ServerSettings](#2116-class-msdns-serversettings)
+  - [2.117 Class msDS-App-Configuration](#2117-class-msds-app-configuration)
+  - [2.118 Class msDS-AppData](#2118-class-msds-appdata)
+  - [2.119 Class msDS-AuthNPolicies](#2119-class-msds-authnpolicies)
+  - [2.120 Class msDS-AuthNPolicy](#2120-class-msds-authnpolicy)
+  - [2.121 Class msDS-AuthNPolicySilo](#2121-class-msds-authnpolicysilo)
+  - [2.122 Class msDS-AuthNPolicySilos](#2122-class-msds-authnpolicysilos)
+  - [2.123 Class msDS-AzAdminManager](#2123-class-msds-azadminmanager)
+  - [2.124 Class msDS-AzApplication](#2124-class-msds-azapplication)
+  - [2.125 Class msDS-AzOperation](#2125-class-msds-azoperation)
+  - [2.126 Class msDS-AzRole](#2126-class-msds-azrole)
+  - [2.127 Class msDS-AzScope](#2127-class-msds-azscope)
+  - [2.128 Class msDS-AzTask](#2128-class-msds-aztask)
+  - [2.129 Class msDS-ClaimsTransformationPolicies](#2129-class-msds-claimstransformationpolicies)
+  - [2.130 Class msDS-ClaimsTransformationPolicyType](#2130-class-msds-claimstransformationpolicytype)
+  - [2.131 Class msDS-ClaimType](#2131-class-msds-claimtype)
+  - [2.132 Class msDS-ClaimTypePropertyBase](#2132-class-msds-claimtypepropertybase)
+  - [2.133 Class msDS-ClaimTypes](#2133-class-msds-claimtypes)
+  - [2.134 Class msDS-CloudExtensions](#2134-class-msds-cloudextensions)
+  - [2.135 Class msDS-DelegatedManagedServiceAccount](#2135-class-msds-delegatedmanagedserviceaccount)
+  - [2.136 Class msDS-Device](#2136-class-msds-device)
+  - [2.137 Class msDS-DeviceContainer](#2137-class-msds-devicecontainer)
+  - [2.138 Class msDS-DeviceRegistrationService](#2138-class-msds-deviceregistrationservice)
+  - [2.139 Class msDS-DeviceRegistrationServiceContainer](#2139-class-msds-deviceregistrationservicecontainer)
+  - [2.140 Class msDS-GroupManagedServiceAccount](#2140-class-msds-groupmanagedserviceaccount)
+  - [2.141 Class msDS-KeyCredential](#2141-class-msds-keycredential)
+  - [2.142 Class msDS-ManagedServiceAccount](#2142-class-msds-managedserviceaccount)
+  - [2.143 Class msDS-OptionalFeature](#2143-class-msds-optionalfeature)
+  - [2.144 Class msDS-PasswordSettings](#2144-class-msds-passwordsettings)
+  - [2.145 Class msDS-PasswordSettingsContainer](#2145-class-msds-passwordsettingscontainer)
+  - [2.146 Class msDS-QuotaContainer](#2146-class-msds-quotacontainer)
+  - [2.147 Class msDS-QuotaControl](#2147-class-msds-quotacontrol)
+  - [2.148 Class msDS-ResourceProperties](#2148-class-msds-resourceproperties)
+  - [2.149 Class msDS-ResourceProperty](#2149-class-msds-resourceproperty)
+  - [2.150 Class msDS-ResourcePropertyList](#2150-class-msds-resourcepropertylist)
+  - [2.151 Class msDS-ShadowPrincipal](#2151-class-msds-shadowprincipal)
+  - [2.152 Class msDS-ShadowPrincipalContainer](#2152-class-msds-shadowprincipalcontainer)
+  - [2.153 Class msDS-ValueType](#2153-class-msds-valuetype)
+  - [2.154 Class msExchConfigurationContainer](#2154-class-msexchconfigurationcontainer)
+  - [2.155 Class msFVE-RecoveryInformation](#2155-class-msfve-recoveryinformation)
+  - [2.156 Class msieee80211-Policy](#2156-class-msieee80211-policy)
+  - [2.157 Class msImaging-PostScanProcess](#2157-class-msimaging-postscanprocess)
+  - [2.158 Class msImaging-PSPs](#2158-class-msimaging-psps)
+  - [2.159 Class msKds-ProvRootKey](#2159-class-mskds-provrootkey)
+  - [2.160 Class msKds-ProvServerConfiguration](#2160-class-mskds-provserverconfiguration)
+  - [2.161 Class msMQ-Custom-Recipient](#2161-class-msmq-custom-recipient)
+  - [2.162 Class msMQ-Group](#2162-class-msmq-group)
+  - [2.163 Class mSMQConfiguration](#2163-class-msmqconfiguration)
+  - [2.164 Class mSMQEnterpriseSettings](#2164-class-msmqenterprisesettings)
+  - [2.165 Class mSMQMigratedUser](#2165-class-msmqmigrateduser)
+  - [2.166 Class mSMQQueue](#2166-class-msmqqueue)
+  - [2.167 Class mSMQSettings](#2167-class-msmqsettings)
+  - [2.168 Class mSMQSiteLink](#2168-class-msmqsitelink)
+  - [2.169 Class msPKI-Enterprise-Oid](#2169-class-mspki-enterprise-oid)
+  - [2.170 Class msPKI-Key-Recovery-Agent](#2170-class-mspki-key-recovery-agent)
+  - [2.171 Class msPKI-PrivateKeyRecoveryAgent](#2171-class-mspki-privatekeyrecoveryagent)
+  - [2.172 Class msPrint-ConnectionPolicy](#2172-class-msprint-connectionpolicy)
+  - [2.173 Class msSFU30DomainInfo](#2173-class-mssfu30domaininfo)
+  - [2.174 Class msSFU30MailAliases](#2174-class-mssfu30mailaliases)
+  - [2.175 Class msSFU30NetId](#2175-class-mssfu30netid)
+  - [2.176 Class msSFU30NetworkUser](#2176-class-mssfu30networkuser)
+  - [2.177 Class msSFU30NISMapConfig](#2177-class-mssfu30nismapconfig)
+  - [2.178 Class msSPP-ActivationObject](#2178-class-msspp-activationobject)
+  - [2.179 Class msSPP-ActivationObjectsContainer](#2179-class-msspp-activationobjectscontainer)
+  - [2.180 Class msTAPI-RtConference](#2180-class-mstapi-rtconference)
+  - [2.181 Class msTAPI-RtPerson](#2181-class-mstapi-rtperson)
+  - [2.182 Class msTPM-InformationObject](#2182-class-mstpm-informationobject)
+  - [2.183 Class msTPM-InformationObjectsContainer](#2183-class-mstpm-informationobjectscontainer)
+  - [2.184 Class msWMI-IntRangeParam](#2184-class-mswmi-intrangeparam)
+  - [2.185 Class msWMI-IntSetParam](#2185-class-mswmi-intsetparam)
+  - [2.186 Class msWMI-MergeablePolicyTemplate](#2186-class-mswmi-mergeablepolicytemplate)
+  - [2.187 Class msWMI-ObjectEncoding](#2187-class-mswmi-objectencoding)
+  - [2.188 Class msWMI-PolicyTemplate](#2188-class-mswmi-policytemplate)
+  - [2.189 Class msWMI-PolicyType](#2189-class-mswmi-policytype)
+  - [2.190 Class msWMI-RangeParam](#2190-class-mswmi-rangeparam)
+  - [2.191 Class msWMI-RealRangeParam](#2191-class-mswmi-realrangeparam)
+  - [2.192 Class msWMI-Rule](#2192-class-mswmi-rule)
+  - [2.193 Class msWMI-ShadowObject](#2193-class-mswmi-shadowobject)
+  - [2.194 Class msWMI-SimplePolicyTemplate](#2194-class-mswmi-simplepolicytemplate)
+  - [2.195 Class msWMI-Som](#2195-class-mswmi-som)
+  - [2.196 Class msWMI-StringSetParam](#2196-class-mswmi-stringsetparam)
+  - [2.197 Class msWMI-UintRangeParam](#2197-class-mswmi-uintrangeparam)
+  - [2.198 Class msWMI-UintSetParam](#2198-class-mswmi-uintsetparam)
+  - [2.199 Class msWMI-UnknownRangeParam](#2199-class-mswmi-unknownrangeparam)
+  - [2.200 Class msWMI-WMIGPO](#2200-class-mswmi-wmigpo)
+  - [2.201 Class nisMap](#2201-class-nismap)
+  - [2.202 Class nisNetgroup](#2202-class-nisnetgroup)
+  - [2.203 Class nisObject](#2203-class-nisobject)
+  - [2.204 Class nTDSConnection](#2204-class-ntdsconnection)
+  - [2.205 Class nTDSDSA](#2205-class-ntdsdsa)
+  - [2.206 Class nTDSDSARO](#2206-class-ntdsdsaro)
+  - [2.207 Class nTDSService](#2207-class-ntdsservice)
+  - [2.208 Class nTDSSiteSettings](#2208-class-ntdssitesettings)
+  - [2.209 Class nTFRSMember](#2209-class-ntfrsmember)
+  - [2.210 Class nTFRSReplicaSet](#2210-class-ntfrsreplicaset)
+  - [2.211 Class nTFRSSettings](#2211-class-ntfrssettings)
+  - [2.212 Class nTFRSSubscriber](#2212-class-ntfrssubscriber)
+  - [2.213 Class nTFRSSubscriptions](#2213-class-ntfrssubscriptions)
+  - [2.214 Class oncRpc](#2214-class-oncrpc)
+  - [2.215 Class organization](#2215-class-organization)
+  - [2.216 Class organizationalPerson](#2216-class-organizationalperson)
+  - [2.217 Class organizationalRole](#2217-class-organizationalrole)
+  - [2.218 Class organizationalUnit](#2218-class-organizationalunit)
+  - [2.219 Class packageRegistration](#2219-class-packageregistration)
+  - [2.220 Class person](#2220-class-person)
+  - [2.221 Class physicalLocation](#2221-class-physicallocation)
+  - [2.222 Class pKICertificateTemplate](#2222-class-pkicertificatetemplate)
+  - [2.223 Class pKIEnrollmentService](#2223-class-pkienrollmentservice)
+  - [2.224 Class posixAccount](#2224-class-posixaccount)
+  - [2.225 Class posixGroup](#2225-class-posixgroup)
+  - [2.226 Class printQueue](#2226-class-printqueue)
+  - [2.227 Class queryPolicy](#2227-class-querypolicy)
+  - [2.228 Class remoteMailRecipient](#2228-class-remotemailrecipient)
+  - [2.229 Class remoteStorageServicePoint](#2229-class-remotestorageservicepoint)
+  - [2.230 Class residentialPerson](#2230-class-residentialperson)
+  - [2.231 Class rFC822LocalPart](#2231-class-rfc822localpart)
+  - [2.232 Class rIDManager](#2232-class-ridmanager)
+  - [2.233 Class rIDSet](#2233-class-ridset)
+  - [2.234 Class room](#2234-class-room)
+  - [2.235 Class rpcContainer](#2235-class-rpccontainer)
+  - [2.236 Class rpcEntry](#2236-class-rpcentry)
+  - [2.237 Class rpcGroup](#2237-class-rpcgroup)
+  - [2.238 Class rpcProfile](#2238-class-rpcprofile)
+  - [2.239 Class rpcProfileElement](#2239-class-rpcprofileelement)
+  - [2.240 Class rpcServer](#2240-class-rpcserver)
+  - [2.241 Class rpcServerElement](#2241-class-rpcserverelement)
+  - [2.242 Class rRASAdministrationConnectionPoint](#2242-class-rrasadministrationconnectionpoint)
+  - [2.243 Class rRASAdministrationDictionary](#2243-class-rrasadministrationdictionary)
+  - [2.244 Class samDomain](#2244-class-samdomain)
+  - [2.245 Class samDomainBase](#2245-class-samdomainbase)
+  - [2.246 Class samServer](#2246-class-samserver)
+  - [2.247 Class secret](#2247-class-secret)
+  - [2.248 Class securityObject](#2248-class-securityobject)
+  - [2.249 Class securityPrincipal](#2249-class-securityprincipal)
+  - [2.250 Class server](#2250-class-server)
+  - [2.251 Class serversContainer](#2251-class-serverscontainer)
+  - [2.252 Class serviceAdministrationPoint](#2252-class-serviceadministrationpoint)
+  - [2.253 Class serviceClass](#2253-class-serviceclass)
+  - [2.254 Class serviceConnectionPoint](#2254-class-serviceconnectionpoint)
+  - [2.255 Class serviceInstance](#2255-class-serviceinstance)
+  - [2.256 Class shadowAccount](#2256-class-shadowaccount)
+  - [2.257 Class simpleSecurityObject](#2257-class-simplesecurityobject)
+  - [2.258 Class site](#2258-class-site)
+  - [2.259 Class siteLink](#2259-class-sitelink)
+  - [2.260 Class siteLinkBridge](#2260-class-sitelinkbridge)
+  - [2.261 Class sitesContainer](#2261-class-sitescontainer)
+  - [2.262 Class storage](#2262-class-storage)
+  - [2.263 Class subnet](#2263-class-subnet)
+  - [2.264 Class subnetContainer](#2264-class-subnetcontainer)
+  - [2.265 Class subSchema](#2265-class-subschema)
+  - [2.266 Class top](#2266-class-top)
+  - [2.267 Class trustedDomain](#2267-class-trusteddomain)
+  - [2.268 Class typeLibrary](#2268-class-typelibrary)
+  - [2.269 Class user](#2269-class-user)
+  - [2.270 Class volume](#2270-class-volume)
+- [3 Change Tracking](#3-change-tracking)
+- [4 Index](#4-index)
 
-2  Classes .................................................................................................................. 10
-Class account .................................................................................................. 10
-Class aCSPolicy ................................................................................................ 10
-Class aCSResourceLimits ................................................................................... 11
-Class aCSSubnet .............................................................................................. 11
-Class addressBookContainer .............................................................................. 12
-Class addressTemplate ..................................................................................... 12
-Class applicationEntity ...................................................................................... 12
-Class applicationProcess .................................................................................... 13
-Class applicationSettings ................................................................................... 13
-Class applicationSiteSettings ............................................................................. 13
-Class applicationVersion .................................................................................... 14
-Class attributeSchema ...................................................................................... 14
-Class bootableDevice ........................................................................................ 15
-Class builtinDomain .......................................................................................... 15
-Class categoryRegistration ................................................................................ 15
-Class certificationAuthority ................................................................................ 16
-Class classRegistration ...................................................................................... 16
-Class classSchema ........................................................................................... 17
-Class classStore ............................................................................................... 17
-Class comConnectionPoint ................................................................................. 18
-Class computer ................................................................................................ 18
-Class configuration ........................................................................................... 19
-Class connectionPoint ....................................................................................... 19
-Class contact ................................................................................................... 20
-Class container ................................................................................................ 20
-Class controlAccessRight ................................................................................... 20
-Class country ................................................................................................... 21
-Class cRLDistributionPoint ................................................................................. 21
-Class crossRef ................................................................................................. 22
-Class crossRefContainer .................................................................................... 22
-Class device .................................................................................................... 22
-Class dfsConfiguration ...................................................................................... 23
-Class dHCPClass .............................................................................................. 23
-Class displaySpecifier ....................................................................................... 24
-Class displayTemplate ...................................................................................... 24
-Class dMD ....................................................................................................... 25
-Class dnsNode ................................................................................................. 25
-Class dnsZone ................................................................................................. 25
-Class dnsZoneScope ......................................................................................... 26
-Class dnsZoneScopeContainer ........................................................................... 26
-Class document ............................................................................................... 27
-Class documentSeries ....................................................................................... 27
-Class domain ................................................................................................... 27
-Class domainDNS ............................................................................................. 28
-Class domainPolicy ........................................................................................... 29
-Class domainRelatedObject ............................................................................... 30
-Class dSA ........................................................................................................ 30
-Class dSUISettings ........................................................................................... 30
-Class dynamicObject ........................................................................................ 31
-Class fileLinkTracking ....................................................................................... 31
-Class fileLinkTrackingEntry ................................................................................ 31
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-2.10
-2.11
-2.12
-2.13
-2.14
-2.15
-2.16
-2.17
-2.18
-2.19
-2.20
-2.21
-2.22
-2.23
-2.24
-2.25
-2.26
-2.27
-2.28
-2.29
-2.30
-2.31
-2.32
-2.33
-2.34
-2.35
-2.36
-2.37
-2.38
-2.39
-2.40
-2.41
-2.42
-2.43
-2.44
-2.45
-2.46
-2.47
-2.48
-2.49
-2.50
-2.51
-
-[MS-ADSC] - v20240423
-Active Directory Schema Classes
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 125
-
-Class foreignSecurityPrincipal ............................................................................ 32
-2.52
-Class friendlyCountry ........................................................................................ 32
-2.53
-Class fTDfs ...................................................................................................... 33
-2.54
-Class group ..................................................................................................... 33
-2.55
-Class groupOfNames ........................................................................................ 34
-2.56
-Class groupOfUniqueNames ............................................................................... 34
-2.57
-Class groupPolicyContainer ................................................................................ 34
-2.58
-Class ieee802Device ......................................................................................... 35
-2.59
-Class indexServerCatalog .................................................................................. 35
-2.60
-Class inetOrgPerson ......................................................................................... 36
-2.61
-Class infrastructureUpdate ................................................................................ 36
-2.62
-Class intellimirrorGroup .................................................................................... 37
-2.63
-Class intellimirrorSCP ....................................................................................... 37
-2.64
-Class interSiteTransport .................................................................................... 38
-2.65
-Class interSiteTransportContainer ...................................................................... 38
-2.66
-Class ipHost .................................................................................................... 38
-2.67
-Class ipNetwork ............................................................................................... 39
-2.68
-Class ipProtocol ............................................................................................... 39
-2.69
-Class ipsecBase ............................................................................................... 39
-2.70
-Class ipsecFilter ............................................................................................... 40
-2.71
-Class ipsecISAKMPPolicy ................................................................................... 40
-2.72
-Class ipsecNegotiationPolicy .............................................................................. 40
-2.73
-Class ipsecNFA ................................................................................................. 41
-2.74
-Class ipsecPolicy .............................................................................................. 41
-2.75
-Class ipService ................................................................................................ 42
-2.76
-Class leaf ........................................................................................................ 42
-2.77
-Class licensingSiteSettings ................................................................................ 42
-2.78
-Class linkTrackObjectMoveTable ......................................................................... 43
-2.79
-Class linkTrackOMTEntry ................................................................................... 43
-2.80
-Class linkTrackVolEntry ..................................................................................... 43
-2.81
-Class linkTrackVolumeTable ............................................................................... 44
-2.82
-Class locality ................................................................................................... 44
-2.83
-Class lostAndFound .......................................................................................... 45
-2.84
-Class mailRecipient .......................................................................................... 45
-2.85
-Class meeting .................................................................................................. 45
-2.86
-Class ms-net-ieee-80211-GroupPolicy ................................................................ 46
-2.87
-Class ms-net-ieee-8023-GroupPolicy .................................................................. 46
-2.88
-Class mS-SQL-OLAPCube .................................................................................. 47
-2.89
-Class mS-SQL-OLAPDatabase ............................................................................ 47
-2.90
-Class mS-SQL-OLAPServer ................................................................................ 47
-2.91
-Class mS-SQL-SQLDatabase .............................................................................. 48
-2.92
-Class mS-SQL-SQLPublication ............................................................................ 48
-2.93
-Class mS-SQL-SQLRepository ............................................................................ 49
-2.94
-Class mS-SQL-SQLServer .................................................................................. 49
-2.95
-Class msAuthz-CentralAccessPolicies .................................................................. 50
-2.96
-Class msAuthz-CentralAccessPolicy .................................................................... 50
-2.97
-Class msAuthz-CentralAccessRule ...................................................................... 50
-2.98
-2.99
-Class msAuthz-CentralAccessRules ..................................................................... 51
-2.100  Class msCOM-Partition ...................................................................................... 51
-2.101  Class msCOM-PartitionSet ................................................................................. 52
-2.102  Class msDFS-DeletedLinkv2 .............................................................................. 52
-2.103  Class msDFS-Linkv2 ......................................................................................... 52
-2.104  Class msDFS-NamespaceAnchor ........................................................................ 53
-2.105  Class msDFS-Namespacev2 ............................................................................... 53
-2.106  Class msDFSR-Connection ................................................................................. 54
-2.107  Class msDFSR-Content ..................................................................................... 54
-2.108  Class msDFSR-ContentSet ................................................................................. 54
-2.109  Class msDFSR-GlobalSettings ............................................................................ 55
-
-[MS-ADSC] - v20240423
-Active Directory Schema Classes
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 125
-
-2.110  Class msDFSR-LocalSettings .............................................................................. 55
-2.111  Class msDFSR-Member ..................................................................................... 56
-2.112  Class msDFSR-ReplicationGroup ........................................................................ 56
-2.113  Class msDFSR-Subscriber ................................................................................. 57
-2.114  Class msDFSR-Subscription ............................................................................... 57
-2.115  Class msDFSR-Topology .................................................................................... 57
-2.116  Class msDNS-ServerSettings ............................................................................. 58
-2.117  Class msDS-App-Configuration .......................................................................... 58
-2.118  Class msDS-AppData ........................................................................................ 59
-2.119  Class msDS-AuthNPolicies ................................................................................. 59
-2.120  Class msDS-AuthNPolicy ................................................................................... 59
-2.121  Class msDS-AuthNPolicySilo .............................................................................. 60
-2.122  Class msDS-AuthNPolicySilos ............................................................................. 60
-2.123  Class msDS-AzAdminManager............................................................................ 61
-2.124  Class msDS-AzApplication ................................................................................. 61
-2.125  Class msDS-AzOperation ................................................................................... 61
-2.126  Class msDS-AzRole .......................................................................................... 62
-2.127  Class msDS-AzScope ........................................................................................ 62
-2.128  Class msDS-AzTask .......................................................................................... 63
-2.129  Class msDS-ClaimsTransformationPolicies ........................................................... 63
-2.130  Class msDS-ClaimsTransformationPolicyType ...................................................... 64
-2.131  Class msDS-ClaimType ..................................................................................... 64
-2.132  Class msDS-ClaimTypePropertyBase ................................................................... 64
-2.133  Class msDS-ClaimTypes .................................................................................... 65
-2.134  Class msDS-CloudExtensions ............................................................................. 65
-2.135  Class msDS-DelegatedManagedServiceAccount .................................................... 66
-2.136  Class msDS-Device .......................................................................................... 66
-2.137  Class msDS-DeviceContainer ............................................................................. 67
-2.138  Class msDS-DeviceRegistrationService ............................................................... 67
-2.139  Class msDS-DeviceRegistrationServiceContainer .................................................. 67
-2.140  Class msDS-GroupManagedServiceAccount ......................................................... 68
-2.141  Class msDS-KeyCredential ................................................................................ 68
-2.142  Class msDS-ManagedServiceAccount .................................................................. 69
-2.143  Class msDS-OptionalFeature ............................................................................. 69
-2.144  Class msDS-PasswordSettings ........................................................................... 70
-2.145  Class msDS-PasswordSettingsContainer .............................................................. 70
-2.146  Class msDS-QuotaContainer .............................................................................. 71
-2.147  Class msDS-QuotaControl ................................................................................. 71
-2.148  Class msDS-ResourceProperties ......................................................................... 71
-2.149  Class msDS-ResourceProperty ........................................................................... 72
-2.150  Class msDS-ResourcePropertyList ...................................................................... 72
-2.151  Class msDS-ShadowPrincipal ............................................................................. 73
-2.152  Class msDS-ShadowPrincipalContainer ............................................................... 73
-2.153  Class msDS-ValueType ..................................................................................... 73
-2.154  Class msExchConfigurationContainer .................................................................. 74
-2.155  Class msFVE-RecoveryInformation ..................................................................... 74
-2.156  Class msieee80211-Policy ................................................................................. 74
-2.157  Class msImaging-PostScanProcess ..................................................................... 75
-2.158  Class msImaging-PSPs...................................................................................... 75
-2.159  Class msKds-ProvRootKey ................................................................................. 76
-2.160  Class msKds-ProvServerConfiguration ................................................................ 76
-2.161  Class msMQ-Custom-Recipient ........................................................................... 76
-2.162  Class msMQ-Group ........................................................................................... 77
-2.163  Class mSMQConfiguration ................................................................................. 77
-2.164  Class mSMQEnterpriseSettings .......................................................................... 78
-2.165  Class mSMQMigratedUser .................................................................................. 78
-2.166  Class mSMQQueue ........................................................................................... 78
-2.167  Class mSMQSettings ......................................................................................... 79
-
-[MS-ADSC] - v20240423
-Active Directory Schema Classes
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 125
-
-2.168  Class mSMQSiteLink ......................................................................................... 79
-2.169  Class msPKI-Enterprise-Oid ............................................................................... 80
-2.170  Class msPKI-Key-Recovery-Agent ...................................................................... 80
-2.171  Class msPKI-PrivateKeyRecoveryAgent ............................................................... 81
-2.172  Class msPrint-ConnectionPolicy .......................................................................... 81
-2.173  Class msSFU30DomainInfo ................................................................................ 81
-2.174  Class msSFU30MailAliases ................................................................................. 82
-2.175  Class msSFU30NetId ........................................................................................ 82
-2.176  Class msSFU30NetworkUser .............................................................................. 82
-2.177  Class msSFU30NISMapConfig ............................................................................ 83
-2.178  Class msSPP-ActivationObject ............................................................................ 83
-2.179  Class msSPP-ActivationObjectsContainer ............................................................. 84
-2.180  Class msTAPI-RtConference ............................................................................... 84
-2.181  Class msTAPI-RtPerson ..................................................................................... 84
-2.182  Class msTPM-InformationObject......................................................................... 85
-2.183  Class msTPM-InformationObjectsContainer .......................................................... 85
-2.184  Class msWMI-IntRangeParam ............................................................................ 85
-2.185  Class msWMI-IntSetParam ................................................................................ 86
-2.186  Class msWMI-MergeablePolicyTemplate .............................................................. 86
-2.187  Class msWMI-ObjectEncoding ............................................................................ 87
-2.188  Class msWMI-PolicyTemplate ............................................................................. 87
-2.189  Class msWMI-PolicyType ................................................................................... 87
-2.190  Class msWMI-RangeParam ................................................................................ 88
-2.191  Class msWMI-RealRangeParam .......................................................................... 88
-2.192  Class msWMI-Rule ........................................................................................... 89
-2.193  Class msWMI-ShadowObject ............................................................................. 89
-2.194  Class msWMI-SimplePolicyTemplate ................................................................... 89
-2.195  Class msWMI-Som ........................................................................................... 90
-2.196  Class msWMI-StringSetParam............................................................................ 90
-2.197  Class msWMI-UintRangeParam .......................................................................... 91
-2.198  Class msWMI-UintSetParam .............................................................................. 91
-2.199  Class msWMI-UnknownRangeParam ................................................................... 91
-2.200  Class msWMI-WMIGPO ..................................................................................... 92
-2.201  Class nisMap ................................................................................................... 92
-2.202  Class nisNetgroup ............................................................................................ 93
-2.203  Class nisObject ................................................................................................ 93
-2.204  Class nTDSConnection ...................................................................................... 93
-2.205  Class nTDSDSA ................................................................................................ 94
-2.206  Class nTDSDSARO ............................................................................................ 94
-2.207  Class nTDSService ........................................................................................... 95
-2.208  Class nTDSSiteSettings ..................................................................................... 95
-2.209  Class nTFRSMember ......................................................................................... 95
-2.210  Class nTFRSReplicaSet ...................................................................................... 96
-2.211  Class nTFRSSettings ......................................................................................... 96
-2.212  Class nTFRSSubscriber ..................................................................................... 97
-2.213  Class nTFRSSubscriptions .................................................................................. 97
-2.214  Class oncRpc ................................................................................................... 98
-2.215  Class organization ............................................................................................ 98
-2.216  Class organizationalPerson ................................................................................ 99
-2.217  Class organizationalRole ................................................................................... 99
-2.218  Class organizationalUnit ................................................................................... 100
-2.219  Class packageRegistration ................................................................................ 100
-2.220  Class person ................................................................................................... 101
-2.221  Class physicalLocation ..................................................................................... 101
-2.222  Class pKICertificateTemplate ............................................................................ 101
-2.223  Class pKIEnrollmentService .............................................................................. 102
-2.224  Class posixAccount .......................................................................................... 102
-2.225  Class posixGroup ............................................................................................ 103
-
-[MS-ADSC] - v20240423
-Active Directory Schema Classes
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 125
-
-2.226  Class printQueue ............................................................................................. 103
-2.227  Class queryPolicy ............................................................................................ 104
-2.228  Class remoteMailRecipient ................................................................................ 104
-2.229  Class remoteStorageServicePoint ...................................................................... 104
-2.230  Class residentialPerson .................................................................................... 105
-2.231  Class rFC822LocalPart ..................................................................................... 105
-2.232  Class rIDManager ............................................................................................ 106
-2.233  Class rIDSet ................................................................................................... 106
-2.234  Class room ..................................................................................................... 107
-2.235  Class rpcContainer .......................................................................................... 107
-2.236  Class rpcEntry ................................................................................................ 107
-2.237  Class rpcGroup ............................................................................................... 108
-2.238  Class rpcProfile ............................................................................................... 108
-2.239  Class rpcProfileElement .................................................................................... 108
-2.240  Class rpcServer ............................................................................................... 109
-2.241  Class rpcServerElement ................................................................................... 109
-2.242  Class rRASAdministrationConnectionPoint .......................................................... 110
-2.243  Class rRASAdministrationDictionary ................................................................... 110
-2.244  Class samDomain ............................................................................................ 110
-2.245  Class samDomainBase ..................................................................................... 112
-2.246  Class samServer ............................................................................................. 112
-2.247  Class secret .................................................................................................... 113
-2.248  Class securityObject ........................................................................................ 113
-2.249  Class securityPrincipal ..................................................................................... 113
-2.250  Class server ................................................................................................... 114
-2.251  Class serversContainer .................................................................................... 114
-2.252  Class serviceAdministrationPoint ....................................................................... 114
-2.253  Class serviceClass ........................................................................................... 115
-2.254  Class serviceConnectionPoint ............................................................................ 115
-2.255  Class serviceInstance ...................................................................................... 116
-2.256  Class shadowAccount....................................................................................... 116
-2.257  Class simpleSecurityObject ............................................................................... 116
-2.258  Class site ....................................................................................................... 117
-2.259  Class siteLink ................................................................................................. 117
-2.260  Class siteLinkBridge......................................................................................... 118
-2.261  Class sitesContainer ........................................................................................ 118
-2.262  Class storage .................................................................................................. 118
-2.263  Class subnet ................................................................................................... 119
-2.264  Class subnetContainer ..................................................................................... 119
-2.265  Class subSchema ............................................................................................ 119
-2.266  Class top ........................................................................................................ 120
-2.267  Class trustedDomain ....................................................................................... 121
-2.268  Class typeLibrary ............................................................................................ 121
-2.269  Class user ...................................................................................................... 122
-2.270  Class volume .................................................................................................. 123
-
-3  Change Tracking .................................................................................................. 124
-
-4  Index ................................................................................................................... 125
-
-[MS-ADSC] - v20240423
-Active Directory Schema Classes
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 125
-
-1  Introduction
+## 1 Introduction
 
 Active Directory Schema Classes contains a list of the objects of type "class" that exist in the Active
 Directory schema for Active Directory Domain Services (AD DS). Active Directory and all
@@ -980,7 +839,7 @@ objects were first implemented in the Active Directory schema. Unless otherwise 
 continue to be available in the Active Directory schema in all subsequent versions of the product
 according to the list of products in [MS-ADTS] section 1.
 
-1.1  References
+### 1.1 References
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
@@ -1012,7 +871,8 @@ Release: April 23, 2024
 
 9 / 125
 
-2  Classes
+
+## 2 Classes
 
 The following sections specify the classes in the Active Directory schema.
 
@@ -1026,7 +886,7 @@ information, see [MS-ADTS]  section 3.1.1.1.7.
 Note: Lines of text in the class definitions that are excessively long have been "folded" in accordance
 with [RFC2849]  Note 2.
 
-2.1  Class account
+### 2.1 Class account
 
 This class is not used. It is included for compatibility with [RFC4524] section 3.1.
 
@@ -1047,7 +907,7 @@ This class is not used. It is included for compatibility with [RFC4524] section 
 
 Version-Specific Behavior: First implemented on Windows Server 2003 operating system.
 
-2.2  Class aCSPolicy
+### 2.2 Class aCSPolicy
 
 The Admission Control Service (ACS) bandwidth allocation policy for a user or profile.
 
@@ -1080,9 +940,10 @@ Release: April 23, 2024
 
 10 / 125
 
-Version-Specific Behavior: First implemented on Windows 2000 Server operating system.
 
-2.3  Class aCSResourceLimits
+Version-Specific Behavior: First implemented on Windows 2000 Server operating system.
+
+### 2.3 Class aCSResourceLimits
 
 Contains reservable resource limits for a subnet. These limits can be for each ACS service type or for
 all service types.
@@ -1107,7 +968,7 @@ all service types.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.4  Class aCSSubnet
+### 2.4 Class aCSSubnet
 
 Contains configuration parameters for an ACS server.
 
@@ -1146,7 +1007,8 @@ Release: April 23, 2024
 
 11 / 125
 
-2.5  Class addressBookContainer
+
+### 2.5 Class addressBookContainer
 
 A container for holding members of an address-book view.
 
@@ -1170,7 +1032,7 @@ A container for holding members of an address-book view.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.6  Class addressTemplate
+### 2.6 Class addressTemplate
 
 Specifies information for a display template.
 
@@ -1193,7 +1055,7 @@ Specifies information for a display template.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.7  Class applicationEntity
+### 2.7 Class applicationEntity
 
 The X.500 base class for applicationEntity.
 
@@ -1216,7 +1078,8 @@ Release: April 23, 2024
 
 12 / 125
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -1225,7 +1088,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.8  Class applicationProcess
+### 2.8 Class applicationProcess
 
 The X.500 base class for applicationProcess.
 
@@ -1249,7 +1112,7 @@ The X.500 base class for applicationProcess.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.9  Class applicationSettings
+### 2.9 Class applicationSettings
 
 A base class for server-specific application settings.
 
@@ -1269,7 +1132,7 @@ A base class for server-specific application settings.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.10  Class applicationSiteSettings
+### 2.10 Class applicationSiteSettings
 
 The container that holds all site-specific settings.
 
@@ -1283,7 +1146,8 @@ Release: April 23, 2024
 
 13 / 125
 
- governsId: 1.2.840.113556.1.5.68
+
+ governsId: 1.2.840.113556.1.5.68
  objectClassCategory: 2
  rdnAttId: cn
  subClassOf: top
@@ -1299,7 +1163,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.11  Class applicationVersion
+### 2.11 Class applicationVersion
 
 Stores versioning information for an application and its schema.
 
@@ -1321,7 +1185,7 @@ Stores versioning information for an application and its schema.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.12  Class attributeSchema
+### 2.12 Class attributeSchema
 
 Defines an attribute object in the schema.
 
@@ -1352,11 +1216,12 @@ Release: April 23, 2024
 
 14 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_DOMAIN_DISALLOW_RENAME
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_DOMAIN_DISALLOW_RENAME
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.13  Class bootableDevice
+### 2.13 Class bootableDevice
 
 Represents a device that has boot parameters.
 
@@ -1376,7 +1241,7 @@ Represents a device that has boot parameters.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2 operating system.
 
-2.14  Class builtinDomain
+### 2.14 Class builtinDomain
 
 The container that holds the default groups for a domain.
 
@@ -1398,7 +1263,7 @@ The container that holds the default groups for a domain.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.15  Class categoryRegistration
+### 2.15 Class categoryRegistration
 
 The registration information for a component category.
 
@@ -1419,7 +1284,8 @@ Release: April 23, 2024
 
 15 / 125
 
- schemaIdGuid: 7d6c0e9d-7e20-11d0-afd6-00c04fd930c9
+
+ schemaIdGuid: 7d6c0e9d-7e20-11d0-afd6-00c04fd930c9
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
@@ -1429,7 +1295,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.16  Class certificationAuthority
+### 2.16 Class certificationAuthority
 
 Represents a process that issues public key certificates, for example, Active Directory Certificate
 Services (AD CS).
@@ -1461,7 +1327,7 @@ Services (AD CS).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.17  Class classRegistration
+### 2.17 Class classRegistration
 
 The registration information for a Component Object Model (COM) object.
 
@@ -1489,11 +1355,12 @@ Release: April 23, 2024
 
 16 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.18  Class classSchema
+### 2.18 Class classSchema
 
 Defines a class object in the schema.
 
@@ -1520,7 +1387,7 @@ Defines a class object in the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.19  Class classStore
+### 2.19 Class classStore
 
 Used to create the class store container, which provides the framework for deploying application
 resources in Active Directory Domain Services (on Windows Server 2008 operating system, Windows
@@ -1555,9 +1422,10 @@ Release: April 23, 2024
 
 17 / 125
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.20  Class comConnectionPoint
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.20 Class comConnectionPoint
 
 The binding for running the COM or DCOM service.
 
@@ -1580,7 +1448,7 @@ The binding for running the COM or DCOM service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.21  Class computer
+### 2.21 Class computer
 
 A class that represents a computer account in the domain.
 
@@ -1627,7 +1495,8 @@ Release: April 23, 2024
 
 18 / 125
 
-  (OA;;SW;f3a64788-5306-11d1-a9c5-0000f80367c1;;PS)
+
+  (OA;;SW;f3a64788-5306-11d1-a9c5-0000f80367c1;;PS)
   (OA;;RPWP;77B5B886-944A-11d1-AEBD-0000F80367C1;;PS)
   (OA;;SW;72e39547-7b18-11d1-adef-00c04fd8d5cd;;PS)
   (OA;;SW;72e39547-7b18-11d1-adef-00c04fd8d5cd;;CO)
@@ -1648,7 +1517,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.22  Class configuration
+### 2.22 Class configuration
 
 A container that holds the configuration information for a domain.
 
@@ -1671,7 +1540,7 @@ A container that holds the configuration information for a domain.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.23  Class connectionPoint
+### 2.23 Class connectionPoint
 
 The base class from which all connectible objects are derived.
 
@@ -1697,12 +1566,13 @@ Release: April 23, 2024
 
 19 / 125
 
- defaultObjectCategory: CN=Connection-Point,<SchemaNCDN>
+
+ defaultObjectCategory: CN=Connection-Point,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.24  Class contact
+### 2.24 Class contact
 
 A class that contains information about a person or company that users might often contact.
 
@@ -1727,7 +1597,7 @@ A class that contains information about a person or company that users might oft
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.25  Class container
+### 2.25 Class container
 
 A class that is used to hold other classes.
 
@@ -1753,7 +1623,7 @@ A class that is used to hold other classes.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.26  Class controlAccessRight
+### 2.26 Class controlAccessRight
 
 Identifies an extended right that can be granted or revoked by means of an access control list (ACL).
 
@@ -1764,7 +1634,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: Control-Access-Right
+
+ cn: Control-Access-Right
  ldapDisplayName: controlAccessRight
  governsId: 1.2.840.113556.1.5.77
  objectClassCategory: 1
@@ -1783,7 +1654,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.27  Class country
+### 2.27 Class country
 
 The country/region in the address of the user. This class specifies the full name of the country/region.
 
@@ -1806,7 +1677,7 @@ The country/region in the address of the user. This class specifies the full nam
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.28  Class cRLDistributionPoint
+### 2.28 Class cRLDistributionPoint
 
 The object that holds the certificate, authority, and delta revocation lists.
 
@@ -1834,12 +1705,13 @@ Release: April 23, 2024
 
 21 / 125
 
- defaultObjectCategory: CN=CRL-Distribution-Point,<SchemaNCDN>
+
+ defaultObjectCategory: CN=CRL-Distribution-Point,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.29  Class crossRef
+### 2.29 Class crossRef
 
 Holds knowledge information about all directory service (DS) naming contexts and all external
 directories to which referrals can be generated.
@@ -1868,7 +1740,7 @@ directories to which referrals can be generated.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.30  Class crossRefContainer
+### 2.30 Class crossRefContainer
 
 Holds the cross-reference objects for all naming contexts.
 
@@ -1890,7 +1762,7 @@ Holds the cross-reference objects for all naming contexts.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.31  Class device
+### 2.31 Class device
 
 A generic base class for physical devices.
 
@@ -1901,7 +1773,8 @@ Release: April 23, 2024
 
 22 / 125
 
- cn: Device
+
+ cn: Device
  ldapDisplayName: device
  governsId: 2.5.6.14
  objectClassCategory: 0
@@ -1923,7 +1796,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.32  Class dfsConfiguration
+### 2.32 Class dfsConfiguration
 
 Holds all fault-tolerant Distributed File System (DFS) configurations.
 
@@ -1944,7 +1817,7 @@ Holds all fault-tolerant Distributed File System (DFS) configurations.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.33  Class dHCPClass
+### 2.33 Class dHCPClass
 
 Represents a Dynamic Host Configuration Protocol (DHCP) server or set of servers.
 
@@ -1971,7 +1844,8 @@ Release: April 23, 2024
 
 23 / 125
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -1980,7 +1854,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.34  Class displaySpecifier
+### 2.34 Class displaySpecifier
 
 Describes the context menus and property pages to use with an object in the directory.
 
@@ -2006,7 +1880,7 @@ Describes the context menus and property pages to use with an object in the dire
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.35  Class displayTemplate
+### 2.35 Class displayTemplate
 
 Specifies information for an address template.
 
@@ -2037,7 +1911,8 @@ Release: April 23, 2024
 
 24 / 125
 
-2.36  Class dMD
+
+### 2.36 Class dMD
 
 Holds the schema for Active Directory Domain Services (AD DS) and the Active Directory directory
 service. The Lightweight Directory Access Protocol (LDAP) name dMD stands for Directory
@@ -2063,7 +1938,7 @@ Management Domain.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.37  Class dnsNode
+### 2.37 Class dnsNode
 
 Holds the domain name system (DNS) resource records for a single host.
 
@@ -2088,7 +1963,7 @@ Holds the domain name system (DNS) resource records for a single host.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.38  Class dnsZone
+### 2.38 Class dnsZone
 
 The container for DNS nodes. This class holds zone metadata.
 
@@ -2106,7 +1981,8 @@ Release: April 23, 2024
 
 25 / 125
 
- systemMustContain: dc
+
+ systemMustContain: dc
  systemMayContain: managedBy, dnsSecureSecondaries, dNSProperty,
   dnsNotifySecondaries, dnsAllowXFR, dnsAllowDynamic, msDNS-IsSigned,
   msDNS-SignWithNSEC3, msDNS-NSEC3OptOut, msDNS-MaintainTrustAnchor,
@@ -2130,7 +2006,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.39  Class dnsZoneScope
+### 2.39 Class dnsZoneScope
 
 A copy of a zone, but with a different set of resource records.
 
@@ -2155,7 +2031,7 @@ A copy of a zone, but with a different set of resource records.
 
 Version-Specific Behavior: First implemented on Windows Server 2016 operating system.
 
-2.40  Class dnsZoneScopeContainer
+### 2.40 Class dnsZoneScopeContainer
 
 The container for DNS Zone Scope objects.
 
@@ -2176,7 +2052,8 @@ Release: April 23, 2024
 
 26 / 125
 
-  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;ED)(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)
+
+  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;ED)(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)
   (A;;CC;;;AU)(A;;RPLCLORC;;;WD)(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;CO)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -2186,7 +2063,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.41  Class document
+### 2.41 Class document
 
 Defines entries that represent documents.
 
@@ -2209,7 +2086,7 @@ Defines entries that represent documents.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.42  Class documentSeries
+### 2.42 Class documentSeries
 
 Defines an entry that represents a series of documents.
 
@@ -2231,7 +2108,7 @@ Defines an entry that represents a series of documents.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.43  Class domain
+### 2.43 Class domain
 
 Contains information about a domain.
 
@@ -2242,7 +2119,8 @@ Release: April 23, 2024
 
 27 / 125
 
- cn: Domain
+
+ cn: Domain
  ldapDisplayName: domain
  governsId: 1.2.840.113556.1.5.66
  objectClassCategory: 2
@@ -2258,7 +2136,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.44  Class domainDNS
+### 2.44 Class domainDNS
 
 A Windows NT operating system domain that has DNS-based (DC=) naming.
 
@@ -2316,7 +2194,8 @@ Release: April 23, 2024
 
 28 / 125
 
-  4828CC14-1437-45bc-9B07-AD6F015E5F28;RU)
+
+  4828CC14-1437-45bc-9B07-AD6F015E5F28;RU)
   (OA;CIIO;RPLCLORC;;4828CC14-1437-45bc-9B07-AD6F015E5F28;RU)
   (OA;;RP;b8119fd0-04f6-4762-ab7a-4986c76b3f9a;;RU)
   (OA;;RP;b8119fd0-04f6-4762-ab7a-4986c76b3f9a;;AU)
@@ -2352,7 +2231,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.45  Class domainPolicy
+### 2.45 Class domainPolicy
 
 Defines the Local Security Authority (LSA) policy for one or more domains.
 
@@ -2387,7 +2266,8 @@ Release: April 23, 2024
 
 29 / 125
 
-2.46  Class domainRelatedObject
+
+### 2.46 Class domainRelatedObject
 
 Defines an entry that represents a  list of fully qualified domain names (FQDN) (see definition (2) for
 fully qualified domain name in [MS-ADTS], and also see [RFC1035] section 3.1 and [RFC2181] section
@@ -2409,7 +2289,7 @@ fully qualified domain name in [MS-ADTS], and also see [RFC1035] section 3.1 and
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.47  Class dSA
+### 2.47 Class dSA
 
 The X.500 base class for dSA.
 
@@ -2431,7 +2311,7 @@ The X.500 base class for dSA.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.48  Class dSUISettings
+### 2.48 Class dSUISettings
 
 Stores configuration settings that are used by the Active Directory Users and Computers snap-in.
 
@@ -2456,14 +2336,15 @@ Release: April 23, 2024
 
 30 / 125
 
- defaultHidingValue: TRUE
+
+ defaultHidingValue: TRUE
  systemOnly: FALSE
  defaultObjectCategory: CN=DS-UI-Settings,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.49  Class dynamicObject
+### 2.49 Class dynamicObject
 
 If present in an entry, this class indicates that this entry has a limited lifetime and can disappear
 automatically when its Time to Live (TTL) reaches 0. If the client has not supplied a value for the
@@ -2486,7 +2367,7 @@ entryTtl attribute, the server provides one.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.50  Class fileLinkTracking
+### 2.50 Class fileLinkTracking
 
 The container for fileLinkTrackingEntry objects.
 
@@ -2507,7 +2388,7 @@ The container for fileLinkTrackingEntry objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.51  Class fileLinkTrackingEntry
+### 2.51 Class fileLinkTrackingEntry
 
 Holds the GUID and the current machine information for a link-tracked file. GUID is defined in [MS-
 DTYP] section 2.3.4.
@@ -2522,7 +2403,8 @@ Release: April 23, 2024
 
 31 / 125
 
- governsId: 1.2.840.113556.1.5.59
+
+ governsId: 1.2.840.113556.1.5.59
  objectClassCategory: 1
  rdnAttId: cn
  subClassOf: top
@@ -2537,7 +2419,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.52  Class foreignSecurityPrincipal
+### 2.52 Class foreignSecurityPrincipal
 
 Defines an entry that represents a security principal that is external to the forest.
 
@@ -2572,7 +2454,7 @@ Defines an entry that represents a security principal that is external to the fo
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.53  Class friendlyCountry
+### 2.53 Class friendlyCountry
 
 Defines country entries in the directory information tree.
 
@@ -2592,7 +2474,8 @@ Release: April 23, 2024
 
 32 / 125
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLOLORCWOWDSDDTDTSW;;;DA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLOLORCWOWDSDDTDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -2600,7 +2483,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.54  Class fTDfs
+### 2.54 Class fTDfs
 
 Defines a single fault-tolerant DFS configuration.
 
@@ -2624,7 +2507,7 @@ Defines a single fault-tolerant DFS configuration.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.55  Class group
+### 2.55 Class group
 
 Stores a list of user names. This class is used to apply security principals on resources.
 
@@ -2662,7 +2545,8 @@ Release: April 23, 2024
 
 33 / 125
 
-  (OA;;RP;46a9b11d-60ae-405a-b7e8-ff8a58d456d2;;S-1-5-32-560)
+
+  (OA;;RP;46a9b11d-60ae-405a-b7e8-ff8a58d456d2;;S-1-5-32-560)
  defaultHidingValue: FALSE
  systemOnly: FALSE
  defaultObjectCategory: CN=Group,<SchemaNCDN>
@@ -2670,7 +2554,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.56  Class groupOfNames
+### 2.56 Class groupOfNames
 
 Used to define entries that represent an unordered set of names, which represent individual objects or
 other groups of names.
@@ -2695,7 +2579,7 @@ other groups of names.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.57  Class groupOfUniqueNames
+### 2.57 Class groupOfUniqueNames
 
 Defines the entries for a group of unique names.
 
@@ -2718,7 +2602,7 @@ Defines the entries for a group of unique names.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.58  Class groupPolicyContainer
+### 2.58 Class groupPolicyContainer
 
 Represents the Group Policy Object (GPO). This class is used to define Group Policy settings.
 
@@ -2729,7 +2613,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: Group-Policy-Container
+
+ cn: Group-Policy-Container
  ldapDisplayName: groupPolicyContainer
  governsId: 1.2.840.113556.1.5.157
  objectClassCategory: 1
@@ -2752,7 +2637,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.59  Class ieee802Device
+### 2.59 Class ieee802Device
 
 A device that has a media access control (MAC) address.
 
@@ -2772,7 +2657,7 @@ A device that has a media access control (MAC) address.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.60  Class indexServerCatalog
+### 2.60 Class indexServerCatalog
 
 Holds the information for an Index Server catalog.
 
@@ -2799,11 +2684,12 @@ Release: April 23, 2024
 
 35 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.61  Class inetOrgPerson
+### 2.61 Class inetOrgPerson
 
 Represents people who are associated with an organization.
 
@@ -2849,7 +2735,7 @@ Represents people who are associated with an organization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.62  Class infrastructureUpdate
+### 2.62 Class infrastructureUpdate
 
 Represents the infrastructure master for a domain.
 
@@ -2869,7 +2755,8 @@ Release: April 23, 2024
 
 36 / 125
 
- schemaIdGuid: 2df90d89-009f-11d2-aa4c-00c04fd7d83a
+
+ schemaIdGuid: 2df90d89-009f-11d2-aa4c-00c04fd7d83a
  defaultSecurityDescriptor: D:(A;;GA;;;SY)
  defaultHidingValue: TRUE
  systemOnly: TRUE
@@ -2878,7 +2765,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.63  Class intellimirrorGroup
+### 2.63 Class intellimirrorGroup
 
 Remote boot legacy for managing groups of server machines.
 
@@ -2899,7 +2786,7 @@ Remote boot legacy for managing groups of server machines.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.64  Class intellimirrorSCP
+### 2.64 Class intellimirrorSCP
 
 Contains configuration information for the service that responds to Remote Boot clients that are
 requesting attention from a Remote Install Server.
@@ -2934,7 +2821,8 @@ Release: April 23, 2024
 
 37 / 125
 
-2.65  Class interSiteTransport
+
+### 2.65 Class interSiteTransport
 
 Contains information about the transport used for intersite replication. Objects of this class can
 contain information about IP or Simple Mail Transfer Protocol (SMTP) transport.
@@ -2958,7 +2846,7 @@ contain information about IP or Simple Mail Transfer Protocol (SMTP) transport.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.66  Class interSiteTransportContainer
+### 2.66 Class interSiteTransportContainer
 
 Holds interSiteTransport objects.
 
@@ -2979,7 +2867,7 @@ Holds interSiteTransport objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.67  Class ipHost
+### 2.67 Class ipHost
 
 An abstraction of a host; an IP device.
 
@@ -3003,11 +2891,12 @@ Release: April 23, 2024
 
 38 / 125
 
- defaultObjectCategory: CN=IpHost,<SchemaNCDN>
+
+ defaultObjectCategory: CN=IpHost,<SchemaNCDN>
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.68  Class ipNetwork
+### 2.68 Class ipNetwork
 
 An abstraction of a network. The distinguished value of the cn attribute denotes the canonical name of
 the network.
@@ -3031,7 +2920,7 @@ the network.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.69  Class ipProtocol
+### 2.69 Class ipProtocol
 
 An abstraction of an IP protocol.
 
@@ -3054,7 +2943,7 @@ An abstraction of an IP protocol.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.70  Class ipsecBase
+### 2.70 Class ipsecBase
 
 An Internet Protocol security (IPsec) base class from which all IPsec classes are derived.
 
@@ -3069,7 +2958,8 @@ Release: April 23, 2024
 
 39 / 125
 
- objectClassCategory: 2
+
+ objectClassCategory: 2
  rdnAttId: cn
  subClassOf: top
  systemMayContain: ipsecOwnersReference, ipsecName, ipsecID,
@@ -3083,7 +2973,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.71  Class ipsecFilter
+### 2.71 Class ipsecFilter
 
 A filter expression for applying security.
 
@@ -3103,7 +2993,7 @@ A filter expression for applying security.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.72  Class ipsecISAKMPPolicy
+### 2.72 Class ipsecISAKMPPolicy
 
 This class is for internal use only.
 
@@ -3123,7 +3013,7 @@ This class is for internal use only.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.73  Class ipsecNegotiationPolicy
+### 2.73 Class ipsecNegotiationPolicy
 
 This class is for internal use only.
 
@@ -3136,7 +3026,8 @@ Release: April 23, 2024
 
 40 / 125
 
- ldapDisplayName: ipsecNegotiationPolicy
+
+ ldapDisplayName: ipsecNegotiationPolicy
  governsId: 1.2.840.113556.1.5.119
  objectClassCategory: 1
  rdnAttId: cn
@@ -3153,7 +3044,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.74  Class ipsecNFA
+### 2.74 Class ipsecNFA
 
 This class is for internal use only.
 
@@ -3175,7 +3066,7 @@ This class is for internal use only.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.75  Class ipsecPolicy
+### 2.75 Class ipsecPolicy
 
 This class is for internal use only.
 
@@ -3203,7 +3094,8 @@ Release: April 23, 2024
 
 41 / 125
 
-2.76  Class ipService
+
+### 2.76 Class ipService
 
 An abstraction of an IP service.
 
@@ -3226,7 +3118,7 @@ An abstraction of an IP service.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.77  Class leaf
+### 2.77 Class leaf
 
 A base class for leaf objects.
 
@@ -3246,7 +3138,7 @@ A base class for leaf objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.78  Class licensingSiteSettings
+### 2.78 Class licensingSiteSettings
 
 Points to the licensing server for a site.
 
@@ -3272,11 +3164,12 @@ Release: April 23, 2024
 
 42 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.79  Class linkTrackObjectMoveTable
+### 2.79 Class linkTrackObjectMoveTable
 
 A container for linkTrackOMTEntry objects.
 
@@ -3297,7 +3190,7 @@ A container for linkTrackOMTEntry objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.80  Class linkTrackOMTEntry
+### 2.80 Class linkTrackOMTEntry
 
 Tracks the link for objects that have moved.
 
@@ -3320,7 +3213,7 @@ Tracks the link for objects that have moved.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.81  Class linkTrackVolEntry
+### 2.81 Class linkTrackVolEntry
 
 The entry for a link to a file on a volume.
 
@@ -3339,7 +3232,8 @@ Release: April 23, 2024
 
 43 / 125
 
-  timeRefresh, seqNotification, objectCount, linkTrackSecret,
+
+  timeRefresh, seqNotification, objectCount, linkTrackSecret,
   currMachineId
  systemPossSuperiors: linkTrackVolumeTable
  schemaIdGuid: ddac0cf6-af8f-11d0-afeb-00c04fd930c9
@@ -3352,7 +3246,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.82  Class linkTrackVolumeTable
+### 2.82 Class linkTrackVolumeTable
 
 A container for linkTrackVolEntry objects.
 
@@ -3373,7 +3267,7 @@ A container for linkTrackVolEntry objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.83  Class locality
+### 2.83 Class locality
 
 Contains a locality, such as a street address, city, and state.
 
@@ -3404,7 +3298,8 @@ Release: April 23, 2024
 
 44 / 125
 
-2.84  Class lostAndFound
+
+### 2.84 Class lostAndFound
 
 A special container for orphaned objects.
 
@@ -3426,7 +3321,7 @@ A special container for orphaned objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.85  Class mailRecipient
+### 2.85 Class mailRecipient
 
 Stores email configuration information.
 
@@ -3455,7 +3350,7 @@ Stores email configuration information.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.86  Class meeting
+### 2.86 Class meeting
 
 Stores information for setting up a meeting.
 
@@ -3474,7 +3369,8 @@ Release: April 23, 2024
 
 45 / 125
 
- systemMayContain: meetingURL, meetingType, meetingStartTime,
+
+ systemMayContain: meetingURL, meetingType, meetingStartTime,
   meetingScope, meetingRecurrence, meetingRating, meetingProtocol,
   meetingOwner, meetingOriginator, meetingMaxParticipants,
   meetingLocation, meetingLanguage, meetingKeyword,
@@ -3492,7 +3388,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.87  Class ms-net-ieee-80211-GroupPolicy
+### 2.87 Class ms-net-ieee-80211-GroupPolicy
 
 This class represents an 802.11 wireless network Group Policy Object and contains identifiers and
 configuration data relevant to an 802.11 wireless network.
@@ -3517,7 +3413,7 @@ configuration data relevant to an 802.11 wireless network.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.88  Class ms-net-ieee-8023-GroupPolicy
+### 2.88 Class ms-net-ieee-8023-GroupPolicy
 
 This class represents an 802.3 wired network GPO and contains identifiers and configuration data that
 are relevant to an 802.3 wired network.
@@ -3544,12 +3440,13 @@ Release: April 23, 2024
 
 46 / 125
 
- defaultObjectCategory: CN=ms-net-ieee-8023-GroupPolicy,<SchemaNCDN>
+
+ defaultObjectCategory: CN=ms-net-ieee-8023-GroupPolicy,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.89  Class mS-SQL-OLAPCube
+### 2.89 Class mS-SQL-OLAPCube
 
 Stores Microsoft SQL Server online analytical processing (OLAP) cube properties.
 
@@ -3573,7 +3470,7 @@ Stores Microsoft SQL Server online analytical processing (OLAP) cube properties.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.90  Class mS-SQL-OLAPDatabase
+### 2.90 Class mS-SQL-OLAPDatabase
 
 A container that stores mS-SQL-OLAPCube objects.
 
@@ -3599,7 +3496,7 @@ A container that stores mS-SQL-OLAPCube objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.91  Class mS-SQL-OLAPServer
+### 2.91 Class mS-SQL-OLAPServer
 
 A container that stores mS-SQL-OLAPDatabase objects.
 
@@ -3610,7 +3507,8 @@ Release: April 23, 2024
 
 47 / 125
 
- cn: MS-SQL-OLAPServer
+
+ cn: MS-SQL-OLAPServer
  ldapDisplayName: mS-SQL-OLAPServer
  governsId: 1.2.840.113556.1.5.185
  objectClassCategory: 1
@@ -3631,7 +3529,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.92  Class mS-SQL-SQLDatabase
+### 2.92 Class mS-SQL-SQLDatabase
 
 Stores SQL Server database properties.
 
@@ -3656,7 +3554,7 @@ Stores SQL Server database properties.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.93  Class mS-SQL-SQLPublication
+### 2.93 Class mS-SQL-SQLPublication
 
 Stores SQL Server publication properties. This class permits the user to browse the publications that
 are available for subscription.
@@ -3680,7 +3578,8 @@ Release: April 23, 2024
 
 48 / 125
 
-  mS-SQL-AllowAnonymousSubscription, mS-SQL-Database, mS-SQL-Type,
+
+  mS-SQL-AllowAnonymousSubscription, mS-SQL-Database, mS-SQL-Type,
   mS-SQL-Status, mS-SQL-Description, mS-SQL-Name
  systemPossSuperiors: mS-SQL-SQLServer
  schemaIdGuid: 17c2f64e-ccef-11d2-9993-0000f87a57d4
@@ -3693,7 +3592,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.94  Class mS-SQL-SQLRepository
+### 2.94 Class mS-SQL-SQLRepository
 
 Stores SQL Server repository properties.
 
@@ -3717,7 +3616,7 @@ Stores SQL Server repository properties.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.95  Class mS-SQL-SQLServer
+### 2.95 Class mS-SQL-SQLServer
 
 A container that stores mS-SQL-SQLDatabase, mS-SQL-SQLPublication, and mS-SQL-SQLRepository
 objects.
@@ -3750,12 +3649,13 @@ Release: April 23, 2024
 
 49 / 125
 
- defaultObjectCategory: CN=MS-SQL-SQLServer,<SchemaNCDN>
+
+ defaultObjectCategory: CN=MS-SQL-SQLServer,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.96  Class msAuthz-CentralAccessPolicies
+### 2.96 Class msAuthz-CentralAccessPolicies
 
 A container of this class can contain Central Access Policy objects.
 
@@ -3776,7 +3676,7 @@ A container of this class can contain Central Access Policy objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.97  Class msAuthz-CentralAccessPolicy
+### 2.97 Class msAuthz-CentralAccessPolicy
 
 A class that defines Central Access Policy objects.
 
@@ -3799,7 +3699,7 @@ A class that defines Central Access Policy objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.98  Class msAuthz-CentralAccessRule
+### 2.98 Class msAuthz-CentralAccessRule
 
 A class that defines central access rules used to construct a central access policy.
 
@@ -3817,7 +3717,8 @@ Release: April 23, 2024
 
 50 / 125
 
- systemMayContain: msAuthz-ResourceCondition,
+
+ systemMayContain: msAuthz-ResourceCondition,
   msAuthz-MemberRulesInCentralAccessPolicyBL, msAuthz-LastEffectiveSecurityPolicy,
   msAuthz-ProposedSecurityPolicy, msAuthz-EffectiveSecurityPolicy, Enabled
  systemPossSuperiors: msAuthz-CentralAccessRules
@@ -3831,7 +3732,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.99  Class msAuthz-CentralAccessRules
+### 2.99 Class msAuthz-CentralAccessRules
 
 A container of this class can contain Central Access Policy Entry objects.
 
@@ -3852,7 +3753,7 @@ A container of this class can contain Central Access Policy Entry objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.100  Class msCOM-Partition
+### 2.100 Class msCOM-Partition
 
 A namespace that is used by COM+ to allow multiple versions of the same COM+ application to exist
 on the same physical machine.
@@ -3882,7 +3783,8 @@ Release: April 23, 2024
 
 51 / 125
 
-2.101  Class msCOM-PartitionSet
+
+### 2.101 Class msCOM-PartitionSet
 
 A conceptual collection of COM+ partitions.
 
@@ -3905,7 +3807,7 @@ A conceptual collection of COM+ partitions.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.102  Class msDFS-DeletedLinkv2
+### 2.102 Class msDFS-DeletedLinkv2
 
 A DFS link in the DFS namespace.
 
@@ -3930,7 +3832,7 @@ A DFS link in the DFS namespace.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.103  Class msDFS-Linkv2
+### 2.103 Class msDFS-Linkv2
 
 A DFS link in the DFS namespace.
 
@@ -3952,7 +3854,8 @@ Release: April 23, 2024
 
 52 / 125
 
- systemMayContain: msDFS-Commentv2, msDFS-LinkSecurityDescriptorv2,
+
+ systemMayContain: msDFS-Commentv2, msDFS-LinkSecurityDescriptorv2,
   msDFS-ShortNameLinkPathv2
  systemPossSuperiors: msDFS-Namespacev2
  schemaIdGuid: 7769fb7a-1159-4e96-9ccd-68bc487073eb
@@ -3965,7 +3868,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.104  Class msDFS-NamespaceAnchor
+### 2.104 Class msDFS-NamespaceAnchor
 
 A DFS namespace anchor.
 
@@ -3988,7 +3891,7 @@ A DFS namespace anchor.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.105  Class msDFS-Namespacev2
+### 2.105 Class msDFS-Namespacev2
 
 A DFS namespace.
 
@@ -4021,7 +3924,8 @@ Release: April 23, 2024
 
 53 / 125
 
-2.106  Class msDFSR-Connection
+
+### 2.106 Class msDFSR-Connection
 
 A directional connection between two members.
 
@@ -4048,7 +3952,7 @@ A directional connection between two members.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.107  Class msDFSR-Content
+### 2.107 Class msDFSR-Content
 
 A container for msDFSR-ContentSet objects.
 
@@ -4072,7 +3976,7 @@ A container for msDFSR-ContentSet objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.108  Class msDFSR-ContentSet
+### 2.108 Class msDFSR-ContentSet
 
 A Distributed File System Replication (DFSR) content set.
 
@@ -4091,7 +3995,8 @@ Release: April 23, 2024
 
 54 / 125
 
-  msDFSR-OnDemandExclusionFileFilter,
+
+  msDFSR-OnDemandExclusionFileFilter,
   msDFSR-DefaultCompressionExclusionFilter, msDFSR-DeletedSizeInMb,
   msDFSR-Priority, msDFSR-ConflictSizeInMb, msDFSR-StagingSizeInMb,
   msDFSR-RootSizeInMb, description, msDFSR-DfsPath, msDFSR-FileFilter,
@@ -4109,7 +4014,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.109  Class msDFSR-GlobalSettings
+### 2.109 Class msDFSR-GlobalSettings
 
 The global settings that are applicable to all replication group members.
 
@@ -4133,7 +4038,7 @@ The global settings that are applicable to all replication group members.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.110  Class msDFSR-LocalSettings
+### 2.110 Class msDFSR-LocalSettings
 
 The DFSR settings that are applicable to a local computer.
 
@@ -4161,13 +4066,14 @@ Release: April 23, 2024
 
 55 / 125
 
- defaultHidingValue: TRUE
+
+ defaultHidingValue: TRUE
  systemOnly: FALSE
  defaultObjectCategory: CN=ms-DFSR-LocalSettings,<SchemaNCDN>
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.111  Class msDFSR-Member
+### 2.111 Class msDFSR-Member
 
 A replication group member.
 
@@ -4192,7 +4098,7 @@ A replication group member.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.112  Class msDFSR-ReplicationGroup
+### 2.112 Class msDFSR-ReplicationGroup
 
 A replication group container.
 
@@ -4229,7 +4135,8 @@ Release: April 23, 2024
 
 56 / 125
 
-2.113  Class msDFSR-Subscriber
+
+### 2.113 Class msDFSR-Subscriber
 
 Represents local computer membership of a replication group.
 
@@ -4254,7 +4161,7 @@ Represents local computer membership of a replication group.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.114  Class msDFSR-Subscription
+### 2.114 Class msDFSR-Subscription
 
 Represents local computer participation of a content set.
 
@@ -4286,7 +4193,7 @@ Represents local computer participation of a content set.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.115  Class msDFSR-Topology
+### 2.115 Class msDFSR-Topology
 
 A container for objects that form the replication topology.
 
@@ -4299,7 +4206,8 @@ Release: April 23, 2024
 
 57 / 125
 
- ldapDisplayName: msDFSR-Topology
+
+ ldapDisplayName: msDFSR-Topology
  governsId: 1.2.840.113556.1.6.13.4.8
  objectClassCategory: 1
  rdnAttId: cn
@@ -4318,7 +4226,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.116  Class msDNS-ServerSettings
+### 2.116 Class msDNS-ServerSettings
 
 Stores state information for DNS. The msDNS-KeymasterZones attribute is used to store values.
 
@@ -4340,7 +4248,7 @@ Stores state information for DNS. The msDNS-KeymasterZones attribute is used to 
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.117  Class msDS-App-Configuration
+### 2.117 Class msDS-App-Configuration
 
 Stores the settings information for an application. The msDS-Settings attribute is used to store the
 actual values.
@@ -4368,9 +4276,10 @@ Release: April 23, 2024
 
 58 / 125
 
-Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.118  Class msDS-AppData
+Version-Specific Behavior: First implemented on Windows Server 2003.
+
+### 2.118 Class msDS-AppData
 
 Stores data that is used by an object. For example, stores profile information for a user object.
 
@@ -4392,7 +4301,7 @@ Stores data that is used by an object. For example, stores profile information f
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.119  Class msDS-AuthNPolicies
+### 2.119 Class msDS-AuthNPolicies
 
 A container of this class can contain authentication policy objects.
 
@@ -4414,7 +4323,7 @@ A container of this class can contain authentication policy objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2 operating system.
 
-2.120  Class msDS-AuthNPolicy
+### 2.120 Class msDS-AuthNPolicy
 
 An instance of this class defines authentication policy behaviors for assigned principals.
 
@@ -4437,7 +4346,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  msDS-ServiceAuthNPolicyBL, msDS-AssignedAuthNPolicyBL,
+
+  msDS-ServiceAuthNPolicyBL, msDS-AssignedAuthNPolicyBL,
   msDS-AuthNPolicyEnforced, msDS-UserAllowedNTLMNetworkAuthentication,
   msDS-ServiceAllowedNTLMNetworkAuthentication, msDS-StrongNTLMPolicy
  systemPossSuperiors: msDS-AuthNPolicies
@@ -4452,7 +4362,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.121  Class msDS-AuthNPolicySilo
+### 2.121 Class msDS-AuthNPolicySilo
 
 An instance of this class defines authentication policies and related behaviors for assigned users,
 computers, and services.
@@ -4478,7 +4388,7 @@ computers, and services.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.122  Class msDS-AuthNPolicySilos
+### 2.122 Class msDS-AuthNPolicySilos
 
 A container of this class can contain authentication policy silo objects.
 
@@ -4505,9 +4415,10 @@ Release: April 23, 2024
 
 60 / 125
 
-Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.123  Class msDS-AzAdminManager
+Version-Specific Behavior: First implemented on Windows Server 2012 R2.
+
+### 2.123 Class msDS-AzAdminManager
 
 The root of an authorization policy store instance.
 
@@ -4533,7 +4444,7 @@ The root of an authorization policy store instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.124  Class msDS-AzApplication
+### 2.124 Class msDS-AzApplication
 
 Defines an installed instance of an application that is bound to a particular policy store.
 
@@ -4559,7 +4470,7 @@ Defines an installed instance of an application that is bound to a particular po
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.125  Class msDS-AzOperation
+### 2.125 Class msDS-AzOperation
 
 Describes a particular operation that is supported by an application.
 
@@ -4574,7 +4485,8 @@ Release: April 23, 2024
 
 61 / 125
 
- objectClassCategory: 1
+
+ objectClassCategory: 1
  rdnAttId: cn
  subClassOf: top
  systemMustContain: msDS-AzOperationID
@@ -4592,7 +4504,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.126  Class msDS-AzRole
+### 2.126 Class msDS-AzRole
 
 Defines a set of operations that can be performed by a particular set of users within a particular
 scope.
@@ -4618,7 +4530,7 @@ scope.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.127  Class msDS-AzScope
+### 2.127 Class msDS-AzScope
 
 Describes a set of objects that are managed by an application.
 
@@ -4644,14 +4556,15 @@ Release: April 23, 2024
 
 62 / 125
 
- defaultHidingValue: TRUE
+
+ defaultHidingValue: TRUE
  systemOnly: FALSE
  defaultObjectCategory: CN=ms-DS-Az-Scope,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.128  Class msDS-AzTask
+### 2.128 Class msDS-AzTask
 
 Describes a set of operations.
 
@@ -4678,7 +4591,7 @@ Describes a set of operations.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.129  Class msDS-ClaimsTransformationPolicies
+### 2.129 Class msDS-ClaimsTransformationPolicies
 
 An object of this class holds the one set of claims transformation policies for cross-forest claims
 transformation.
@@ -4707,7 +4620,8 @@ Release: April 23, 2024
 
 63 / 125
 
-2.130  Class msDS-ClaimsTransformationPolicyType
+
+### 2.130 Class msDS-ClaimsTransformationPolicyType
 
 An object of this class holds the one set of claims transformation policies for cross-forest claims
 transformation.
@@ -4731,7 +4645,7 @@ transformation.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.131  Class msDS-ClaimType
+### 2.131 Class msDS-ClaimType
 
 An instance of this class holds the definition of a claim type that can be defined on security principals.
 
@@ -4755,7 +4669,7 @@ An instance of this class holds the definition of a claim type that can be defin
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.132  Class msDS-ClaimTypePropertyBase
+### 2.132 Class msDS-ClaimTypePropertyBase
 
 An abstract class that defines the base class for claim type or resource property classes.
 
@@ -4776,7 +4690,8 @@ Release: April 23, 2024
 
 64 / 125
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;EA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;EA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: FALSE
  systemOnly: FALSE
@@ -4785,7 +4700,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.133  Class msDS-ClaimTypes
+### 2.133 Class msDS-ClaimTypes
 
 A container of this class can contain claim type objects.
 
@@ -4806,7 +4721,7 @@ A container of this class can contain claim type objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.134  Class msDS-CloudExtensions
+### 2.134 Class msDS-CloudExtensions
 
 A collection of attributes that contains application-specific strings for cloud scenarios.
 
@@ -4843,7 +4758,8 @@ Release: April 23, 2024
 
 65 / 125
 
-2.135  Class msDS-DelegatedManagedServiceAccount
+
+### 2.135 Class msDS-DelegatedManagedServiceAccount
 
 The delegated managed service account class is used to create an account which can supersede a
 legacy service account and can be shared by different computers.
@@ -4880,7 +4796,7 @@ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2025 operating system.
 
-2.136  Class msDS-Device
+### 2.136 Class msDS-Device
 
 This class represents a registered device.
 
@@ -4916,7 +4832,8 @@ Release: April 23, 2024
 
 66 / 125
 
-2.137  Class msDS-DeviceContainer
+
+### 2.137 Class msDS-DeviceContainer
 
 The container used to hold device objects.
 
@@ -4938,7 +4855,7 @@ The container used to hold device objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.138  Class msDS-DeviceRegistrationService
+### 2.138 Class msDS-DeviceRegistrationService
 
 This class holds the registration service configuration that is used for devices.
 
@@ -4964,7 +4881,7 @@ This class holds the registration service configuration that is used for devices
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.139  Class msDS-DeviceRegistrationServiceContainer
+### 2.139 Class msDS-DeviceRegistrationServiceContainer
 
 The container used to house all enrollment services used for device registrations.
 
@@ -4986,7 +4903,8 @@ Release: April 23, 2024
 
 67 / 125
 
- defaultHidingValue: TRUE
+
+ defaultHidingValue: TRUE
  systemOnly: FALSE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  defaultObjectCategory: CN=ms-DS-Device-Registration-Service-Container,
@@ -4995,7 +4913,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012 R2.
 
-2.140  Class msDS-GroupManagedServiceAccount
+### 2.140 Class msDS-GroupManagedServiceAccount
 
 The group managed service account class is used to create an account that can be shared by different
 computers in order to run Windows services.
@@ -5036,7 +4954,7 @@ computers in order to run Windows services.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.141  Class msDS-KeyCredential
+### 2.141 Class msDS-KeyCredential
 
 An instance of this class contains key material.
 
@@ -5056,7 +4974,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  msDS-ComputerSID, msDS-CustomKeyInformation, msDS-KeyApproximateLastLogonTimeStamp,
+
+  msDS-ComputerSID, msDS-CustomKeyInformation, msDS-KeyApproximateLastLogonTimeStamp,
   msDS-DeviceID
  systemPossSuperiors: Container
  schemaIdGuid: ee1f5543-7c2e-476a-8b3f-e11f4af6c498
@@ -5070,7 +4989,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.142  Class msDS-ManagedServiceAccount
+### 2.142 Class msDS-ManagedServiceAccount
 
 The service account class is used to create accounts that are used for running Windows services.
 
@@ -5110,7 +5029,7 @@ The service account class is used to create accounts that are used for running W
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.143  Class msDS-OptionalFeature
+### 2.143 Class msDS-OptionalFeature
 
 The configuration object for an optional feature.
 
@@ -5126,7 +5045,8 @@ Release: April 23, 2024
 
 69 / 125
 
- rdnAttId: cn
+
+ rdnAttId: cn
  subClassOf: top
  systemMustContain: msDS-OptionalFeatureFlags,
   msDS-OptionalFeatureGUID
@@ -5145,7 +5065,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.144  Class msDS-PasswordSettings
+### 2.144 Class msDS-PasswordSettings
 
 The password settings object for accounts.
 
@@ -5171,7 +5091,7 @@ The password settings object for accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.145  Class msDS-PasswordSettingsContainer
+### 2.145 Class msDS-PasswordSettingsContainer
 
 A container for password settings objects.
 
@@ -5196,11 +5116,12 @@ Release: April 23, 2024
 
 70 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.146  Class msDS-QuotaContainer
+### 2.146 Class msDS-QuotaContainer
 
 A special container that holds all quota specifications for the directory database.
 
@@ -5224,7 +5145,7 @@ A special container that holds all quota specifications for the directory databa
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.147  Class msDS-QuotaControl
+### 2.147 Class msDS-QuotaControl
 
 Represents quota specifications for the directory database.
 
@@ -5246,7 +5167,7 @@ Represents quota specifications for the directory database.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.148  Class msDS-ResourceProperties
+### 2.148 Class msDS-ResourceProperties
 
 A container of this class can contain resource properties.
 
@@ -5263,7 +5184,8 @@ Release: April 23, 2024
 
 71 / 125
 
- subClassOf: top
+
+ subClassOf: top
  systemPossSuperiors: container
  schemaIdGuid: 7a4a4584-b350-478f-acd6-b4b852d82cc0
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;EA)
@@ -5275,7 +5197,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.149  Class msDS-ResourceProperty
+### 2.149 Class msDS-ResourceProperty
 
 An instance of this class holds the definition of a property of resources.
 
@@ -5299,7 +5221,7 @@ An instance of this class holds the definition of a property of resources.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.150  Class msDS-ResourcePropertyList
+### 2.150 Class msDS-ResourcePropertyList
 
 An object of this class contains a list of resource properties.
 
@@ -5330,7 +5252,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.151  Class msDS-ShadowPrincipal
+
+### 2.151 Class msDS-ShadowPrincipal
 
 This class represents a principal from an external forest.
 
@@ -5352,7 +5275,7 @@ This class represents a principal from an external forest.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.152  Class msDS-ShadowPrincipalContainer
+### 2.152 Class msDS-ShadowPrincipalContainer
 
 This class is the dedicated container for msDS-ShadowPrincipal objects.
 
@@ -5373,7 +5296,7 @@ This class is the dedicated container for msDS-ShadowPrincipal objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2016.
 
-2.153  Class msDS-ValueType
+### 2.153 Class msDS-ValueType
 
 A value-type object holds value-type information for a resource property.
 
@@ -5400,11 +5323,12 @@ Release: April 23, 2024
 
 73 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.154  Class msExchConfigurationContainer
+### 2.154 Class msExchConfigurationContainer
 
 Stores configuration information for a Microsoft Exchange Server.
 
@@ -5426,7 +5350,7 @@ Stores configuration information for a Microsoft Exchange Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.155  Class msFVE-RecoveryInformation
+### 2.155 Class msFVE-RecoveryInformation
 
 Contains a full-volume encryption recovery password with its associated GUID.
 
@@ -5449,7 +5373,7 @@ Contains a full-volume encryption recovery password with its associated GUID.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.156  Class msieee80211-Policy
+### 2.156 Class msieee80211-Policy
 
 Stores a Wireless Network Policy object.
 
@@ -5467,7 +5391,8 @@ Release: April 23, 2024
 
 74 / 125
 
- systemMayContain: msieee80211-ID, msieee80211-DataType,
+
+ systemMayContain: msieee80211-ID, msieee80211-DataType,
   msieee80211-Data
  systemPossSuperiors: organizationalUnit, container, computer
  schemaIdGuid: 7b9a2d92-b7eb-4382-9772-c3e0f9baaf94
@@ -5480,7 +5405,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.157  Class msImaging-PostScanProcess
+### 2.157 Class msImaging-PostScanProcess
 
 The container for all Business Scan Post Scan Process objects.
 
@@ -5503,7 +5428,7 @@ The container for all Business Scan Post Scan Process objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2.
 
-2.158  Class msImaging-PSPs
+### 2.158 Class msImaging-PSPs
 
 The container for all Business Scan Post Scan Process objects.
 
@@ -5531,7 +5456,8 @@ Release: April 23, 2024
 
 75 / 125
 
-2.159  Class msKds-ProvRootKey
+
+### 2.159 Class msKds-ProvRootKey
 
 Root keys for the Group Key Distribution Service.
 
@@ -5557,7 +5483,7 @@ Root keys for the Group Key Distribution Service.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.160  Class msKds-ProvServerConfiguration
+### 2.160 Class msKds-ProvServerConfiguration
 
 Configuration for the Group Key Distribution Service.
 
@@ -5582,7 +5508,7 @@ Configuration for the Group Key Distribution Service.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.161  Class msMQ-Custom-Recipient
+### 2.161 Class msMQ-Custom-Recipient
 
 Defines a custom Microsoft Message Queuing (MSMQ) recipient; that is, an alias queue. This class
 defines an alias for an out-of-enterprise queue and contains the format name of that queue.
@@ -5600,7 +5526,8 @@ Release: April 23, 2024
 
 76 / 125
 
- subClassOf: top
+
+ subClassOf: top
  systemMayContain: msMQ-Recipient-FormatName
  systemPossSuperiors: organizationalUnit, domainDNS, container
  schemaIdGuid: 876d6817-35cc-436c-acea-5ef7174dd9be
@@ -5613,7 +5540,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.162  Class msMQ-Group
+### 2.162 Class msMQ-Group
 
 Defines a group of MSMQ queues; that is, a distribution list.
 
@@ -5635,7 +5562,7 @@ Defines a group of MSMQ queues; that is, a distribution list.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.163  Class mSMQConfiguration
+### 2.163 Class mSMQConfiguration
 
 An object that contains MSMQ configuration parameters for a specific computer. The attributes of this
 class are MSMQ-specific and are used for MSMQ routing decisions.
@@ -5667,9 +5594,10 @@ Release: April 23, 2024
 
 77 / 125
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.164  Class mSMQEnterpriseSettings
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.164 Class mSMQEnterpriseSettings
 
 An object that has general MSMQ information. This object is placed under \configuration\Services and
 contains organization-wide configuration information for Message Queuing. A forest can have only one
@@ -5694,7 +5622,7 @@ of these objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.165  Class mSMQMigratedUser
+### 2.165 Class mSMQMigratedUser
 
 An object that is associated with a migrated user. MSMQ 1.0 used a proprietary directory service that
 contained specific user information. As part of MSMQ integration with the Windows 2000 operating
@@ -5720,7 +5648,7 @@ in the Windows 2000 domain, a migrated user is created.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.166  Class mSMQQueue
+### 2.166 Class mSMQQueue
 
 A queue that is associated with a specific computer and is placed under the MSMQ-Configuration of
 that computer. MSMQ users create queues according to their requirements by using the Microsoft
@@ -5734,7 +5662,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: MSMQ-Queue
+
+ cn: MSMQ-Queue
  ldapDisplayName: mSMQQueue
  governsId: 1.2.840.113556.1.5.161
  objectClassCategory: 1
@@ -5756,7 +5685,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.167  Class mSMQSettings
+### 2.167 Class mSMQSettings
 
 An object that enables fast query of MSMQ servers at a specific site. This object holds information
 such as Message Queuing services, which the server provides.
@@ -5781,7 +5710,7 @@ such as Message Queuing services, which the server provides.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.168  Class mSMQSiteLink
+### 2.168 Class mSMQSiteLink
 
 Contains information about MSMQ routing connectivity between sites. This object is created for each
 routing link and contains connectivity information. An object of this type is contained by an MSMQ
@@ -5803,7 +5732,8 @@ Release: April 23, 2024
 
 79 / 125
 
- systemPossSuperiors: mSMQEnterpriseSettings
+
+ systemPossSuperiors: mSMQEnterpriseSettings
  schemaIdGuid: 9a0dc346-c100-11d1-bbc5-0080c76670c0
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
@@ -5814,7 +5744,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.169  Class msPKI-Enterprise-Oid
+### 2.169 Class msPKI-Enterprise-Oid
 
 The value that is used when a certificate user interface (UI) displays a friendly name for a certificate
 template, enhanced key usage, application policy, and issuance policy. The UI component tries to
@@ -5840,7 +5770,7 @@ locate a string in the attribute that matches the default language locale.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.170  Class msPKI-Key-Recovery-Agent
+### 2.170 Class msPKI-Key-Recovery-Agent
 
 An object that is associated with a key recovery agent (KRA) instance. One KRA object instance is
 created for each installed Cert Server (with a unique common name) during Cert Server setup. If two
@@ -5871,7 +5801,8 @@ Release: April 23, 2024
 
 80 / 125
 
-2.171  Class msPKI-PrivateKeyRecoveryAgent
+
+### 2.171 Class msPKI-PrivateKeyRecoveryAgent
 
 Publishes the KRA certificate in the KRA container.
 
@@ -5893,7 +5824,7 @@ Publishes the KRA certificate in the KRA container.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.172  Class msPrint-ConnectionPolicy
+### 2.172 Class msPrint-ConnectionPolicy
 
 Contains the printer connection policy.
 
@@ -5915,7 +5846,7 @@ Contains the printer connection policy.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.173  Class msSFU30DomainInfo
+### 2.173 Class msSFU30DomainInfo
 
 Represents an internal data structure that is used by the server for Network Information Service
 (NIS).
@@ -5940,7 +5871,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -5948,7 +5880,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.174  Class msSFU30MailAliases
+### 2.174 Class msSFU30MailAliases
 
 Represents email file data for Windows Services for UNIX.
 
@@ -5969,7 +5901,7 @@ Represents email file data for Windows Services for UNIX.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.175  Class msSFU30NetId
+### 2.175 Class msSFU30NetId
 
 Stores the network ID.
 
@@ -5991,7 +5923,7 @@ Stores the network ID.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.176  Class msSFU30NetworkUser
+### 2.176 Class msSFU30NetworkUser
 
 Represents network file data.
 
@@ -6007,7 +5939,8 @@ Release: April 23, 2024
 
 82 / 125
 
- rdnAttId: cn
+
+ rdnAttId: cn
  subClassOf: top
  mayContain: msSFU30KeyValues, msSFU30Name, msSFU30NisDomain,
   nisMapName
@@ -6021,7 +5954,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.177  Class msSFU30NISMapConfig
+### 2.177 Class msSFU30NISMapConfig
 
 Represents an internal data structure that is used by the server for NIS.
 
@@ -6044,7 +5977,7 @@ Represents an internal data structure that is used by the server for NIS.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.178  Class msSPP-ActivationObject
+### 2.178 Class msSPP-ActivationObject
 
 An activation object used in Active Directory Domain Services-based activation.
 
@@ -6075,9 +6008,10 @@ Release: April 23, 2024
 
 83 / 125
 
-Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.179  Class msSPP-ActivationObjectsContainer
+Version-Specific Behavior: First implemented on Windows Server 2012.
+
+### 2.179 Class msSPP-ActivationObjectsContainer
 
 A container for activation objects used by Active Directory Domain Services-based activation.
 
@@ -6098,7 +6032,7 @@ A container for activation objects used by Active Directory Domain Services-base
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.180  Class msTAPI-RtConference
+### 2.180 Class msTAPI-RtConference
 
 Publishes a real-time Telephony API (TAPI) multicast conference.
 
@@ -6121,7 +6055,7 @@ Publishes a real-time Telephony API (TAPI) multicast conference.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.181  Class msTAPI-RtPerson
+### 2.181 Class msTAPI-RtPerson
 
 Maps a user to the IP address of the machine that the user is logged on to for use by TAPI multicast
 conferences.
@@ -6143,7 +6077,8 @@ Release: April 23, 2024
 
 84 / 125
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -6152,7 +6087,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.182  Class msTPM-InformationObject
+### 2.182 Class msTPM-InformationObject
 
 This class contains recovery information for a Trusted Platform Module (TPM) device.
 
@@ -6175,7 +6110,7 @@ This class contains recovery information for a Trusted Platform Module (TPM) dev
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.183  Class msTPM-InformationObjectsContainer
+### 2.183 Class msTPM-InformationObjectsContainer
 
 A container for Trusted Platform Module (TPM) objects.
 
@@ -6197,7 +6132,7 @@ A container for Trusted Platform Module (TPM) objects.
 
 Version-Specific Behavior: First implemented on Windows Server 2012.
 
-2.184  Class msWMI-IntRangeParam
+### 2.184 Class msWMI-IntRangeParam
 
 An object for a signed integer range parameter.
 
@@ -6210,7 +6145,8 @@ Release: April 23, 2024
 
 85 / 125
 
- ldapDisplayName: msWMI-IntRangeParam
+
+ ldapDisplayName: msWMI-IntRangeParam
  governsId: 1.2.840.113556.1.5.205
  objectClassCategory: 1
  rdnAttId: cn
@@ -6228,7 +6164,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.185  Class msWMI-IntSetParam
+### 2.185 Class msWMI-IntSetParam
 
 An object for a signed integer set parameter.
 
@@ -6251,7 +6187,7 @@ An object for a signed integer set parameter.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.186  Class msWMI-MergeablePolicyTemplate
+### 2.186 Class msWMI-MergeablePolicyTemplate
 
 Provides a policy template that can be merged with other templates.
 
@@ -6279,7 +6215,8 @@ Release: April 23, 2024
 
 86 / 125
 
-2.187  Class msWMI-ObjectEncoding
+
+### 2.187 Class msWMI-ObjectEncoding
 
 Holds encoding data for a Windows Managment Instrumentation (WMI) class or instance object and
 also holds other information about the object.
@@ -6305,7 +6242,7 @@ also holds other information about the object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.188  Class msWMI-PolicyTemplate
+### 2.188 Class msWMI-PolicyTemplate
 
 Provides a template for creating a class instance in the target namespace.
 
@@ -6333,7 +6270,7 @@ Provides a template for creating a class instance in the target namespace.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.189  Class msWMI-PolicyType
+### 2.189 Class msWMI-PolicyType
 
 Communicates schema for WMI policy objects.
 
@@ -6348,7 +6285,8 @@ Release: April 23, 2024
 
 87 / 125
 
- objectClassCategory: 1
+
+ objectClassCategory: 1
  rdnAttId: cn
  subClassOf: top
  systemMustContain: msWMI-TargetObject, msWMI-ID
@@ -6368,7 +6306,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.190  Class msWMI-RangeParam
+### 2.190 Class msWMI-RangeParam
 
 The range parameter class that is the basis of the msWMI-PolicyTemplate class. This class describes
 one target property that can be merged. Each subclass of this class implements a specific type. This
@@ -6394,7 +6332,7 @@ the final target property.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.191  Class msWMI-RealRangeParam
+### 2.191 Class msWMI-RealRangeParam
 
 An object for a real number range parameter.
 
@@ -6417,7 +6355,8 @@ Release: April 23, 2024
 
 88 / 125
 
-  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
+
+  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
  defaultObjectCategory: CN=ms-WMI-RealRangeParam,<SchemaNCDN>
@@ -6425,7 +6364,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.192  Class msWMI-Rule
+### 2.192 Class msWMI-Rule
 
 Defines a single rule in a scope of management (SOM).
 
@@ -6448,7 +6387,7 @@ Defines a single rule in a scope of management (SOM).
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.193  Class msWMI-ShadowObject
+### 2.193 Class msWMI-ShadowObject
 
 Holds a WMI-compiled object instance.
 
@@ -6470,7 +6409,7 @@ Holds a WMI-compiled object instance.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.194  Class msWMI-SimplePolicyTemplate
+### 2.194 Class msWMI-SimplePolicyTemplate
 
 Provides a type of template that cannot be merged. This class is used when the target object is not
 intended to be combined; that is, merged.
@@ -6482,7 +6421,8 @@ Release: April 23, 2024
 
 89 / 125
 
- cn: ms-WMI-SimplePolicyTemplate
+
+ cn: ms-WMI-SimplePolicyTemplate
  ldapDisplayName: msWMI-SimplePolicyTemplate
  governsId: 1.2.840.113556.1.5.201
  objectClassCategory: 1
@@ -6500,7 +6440,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.195  Class msWMI-Som
+### 2.195 Class msWMI-Som
 
 Refines the SOM for a GPO. Adds a list of rules, expressed as WMI Query Language (WQL) queries,
 that are executed on the target machine. All queries have to return results in order for this SOM to be
@@ -6529,7 +6469,7 @@ applicable to the target.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.196  Class msWMI-StringSetParam
+### 2.196 Class msWMI-StringSetParam
 
 An object for a string set parameter.
 
@@ -6552,7 +6492,8 @@ Release: April 23, 2024
 
 90 / 125
 
-  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPCCDCLCLODTRC;;;AU)
+
+  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPCCDCLCLODTRC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
  defaultObjectCategory: CN=ms-WMI-StringSetParam,<SchemaNCDN>
@@ -6560,7 +6501,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.197  Class msWMI-UintRangeParam
+### 2.197 Class msWMI-UintRangeParam
 
 An object for an unsigned integer range parameter.
 
@@ -6583,7 +6524,7 @@ An object for an unsigned integer range parameter.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.198  Class msWMI-UintSetParam
+### 2.198 Class msWMI-UintSetParam
 
 An object for an unsigned integer set parameter.
 
@@ -6606,7 +6547,7 @@ An object for an unsigned integer set parameter.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.199  Class msWMI-UnknownRangeParam
+### 2.199 Class msWMI-UnknownRangeParam
 
 Supports parameter types that are unknown. They are transported as compiled WMI objects.
 
@@ -6619,7 +6560,8 @@ Release: April 23, 2024
 
 91 / 125
 
- ldapDisplayName: msWMI-UnknownRangeParam
+
+ ldapDisplayName: msWMI-UnknownRangeParam
  governsId: 1.2.840.113556.1.5.204
  objectClassCategory: 1
  rdnAttId: cn
@@ -6636,7 +6578,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.200  Class msWMI-WMIGPO
+### 2.200 Class msWMI-WMIGPO
 
 Ties the objects that express the WMI extensions to the Group Policy infrastructure. This value is
 written to Active Directory in the path pointed to by the corresponding Group Policy Object.
@@ -6662,7 +6604,7 @@ written to Active Directory in the path pointed to by the corresponding Group Po
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.201  Class nisMap
+### 2.201 Class nisMap
 
 A generic abstraction of a Network Information Service (NIS) map.
 
@@ -6688,11 +6630,12 @@ Release: April 23, 2024
 
 92 / 125
 
- defaultObjectCategory: CN=NisMap,<SchemaNCDN>
+
+ defaultObjectCategory: CN=NisMap,<SchemaNCDN>
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.202  Class nisNetgroup
+### 2.202 Class nisNetgroup
 
 An abstraction of a netgroup. This class can refer to other netgroups.
 
@@ -6716,7 +6659,7 @@ An abstraction of a netgroup. This class can refer to other netgroups.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.203  Class nisObject
+### 2.203 Class nisObject
 
 An entry in an NIS map.
 
@@ -6738,7 +6681,7 @@ An entry in an NIS map.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.204  Class nTDSConnection
+### 2.204 Class nTDSConnection
 
 A connection from a remote domain controller.
 
@@ -6755,7 +6698,8 @@ Release: April 23, 2024
 
 93 / 125
 
- subClassOf: leaf
+
+ subClassOf: leaf
  systemMustContain: options, fromServer, enabledConnection
  systemMayContain: transportType, schedule, mS-DS-ReplicatesNCReason,
   generatedConnection
@@ -6770,7 +6714,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.205  Class nTDSDSA
+### 2.205 Class nTDSDSA
 
 Represents the AD DS and Active Directory directory service agent (DSA) process on the server.
 
@@ -6801,7 +6745,7 @@ Represents the AD DS and Active Directory directory service agent (DSA) process 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.206  Class nTDSDSARO
+### 2.206 Class nTDSDSARO
 
 A subclass of the DSA, which is distinguished by its reduced privilege level.
 
@@ -6825,12 +6769,13 @@ Release: April 23, 2024
 
 94 / 125
 
- defaultObjectCategory: CN=NTDS-DSA-RO,<SchemaNCDN>
+
+ defaultObjectCategory: CN=NTDS-DSA-RO,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.207  Class nTDSService
+### 2.207 Class nTDSService
 
 Used for an NTDS services object, which contains information about the configuration of the directory
 service forest. This object is kept in the CN=Directory Service,CN=Windows
@@ -6856,7 +6801,7 @@ NT,CN=Services,CN=Configuration,... container.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.208  Class nTDSSiteSettings
+### 2.208 Class nTDSSiteSettings
 
 A container that holds all AD DS and Active Directory site-specific settings.
 
@@ -6880,7 +6825,7 @@ A container that holds all AD DS and Active Directory site-specific settings.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.209  Class nTFRSMember
+### 2.209 Class nTFRSMember
 
 Identifies a File Replication Service (FRS) replica set member.
 
@@ -6891,7 +6836,8 @@ Release: April 23, 2024
 
 95 / 125
 
- cn: NTFRS-Member
+
+ cn: NTFRS-Member
  ldapDisplayName: nTFRSMember
  governsId: 1.2.840.113556.1.5.153
  objectClassCategory: 1
@@ -6914,7 +6860,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.210  Class nTFRSReplicaSet
+### 2.210 Class nTFRSReplicaSet
 
 Defines the replica set for the FRS.
 
@@ -6943,7 +6889,7 @@ Defines the replica set for the FRS.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.211  Class nTFRSSettings
+### 2.211 Class nTFRSSettings
 
 Identifies the specific settings for FRS.
 
@@ -6961,7 +6907,8 @@ Release: April 23, 2024
 
 96 / 125
 
- systemMayContain: managedBy, fRSExtensions
+
+ systemMayContain: managedBy, fRSExtensions
  systemPossSuperiors: nTFRSSettings, container, organizationalUnit,
   organization
  schemaIdGuid: f780acc2-56f0-11d1-a9c6-0000f80367c1
@@ -6976,7 +6923,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.212  Class nTFRSSubscriber
+### 2.212 Class nTFRSSubscriber
 
 Identifies a subscriber to a replica set.
 
@@ -7004,7 +6951,7 @@ Identifies a subscriber to a replica set.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.213  Class nTFRSSubscriptions
+### 2.213 Class nTFRSSubscriptions
 
 Holds a set of subscriptions to a replica set.
 
@@ -7031,12 +6978,13 @@ Release: April 23, 2024
 
 97 / 125
 
- defaultObjectCategory: CN=NTFRS-Subscriptions,<SchemaNCDN>
+
+ defaultObjectCategory: CN=NTFRS-Subscriptions,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.214  Class oncRpc
+### 2.214 Class oncRpc
 
 An abstraction of an Open Network Computing (ONC) remote procedure call (RPC) binding, as
 specified in [RFC1831].
@@ -7060,7 +7008,7 @@ specified in [RFC1831].
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.215  Class organization
+### 2.215 Class organization
 
 Stores information about a company or organization.
 
@@ -7095,7 +7043,8 @@ Release: April 23, 2024
 
 98 / 125
 
-2.216  Class organizationalPerson
+
+### 2.216 Class organizationalPerson
 
 Used for objects that contain organizational information about a user, such as the employee number,
 department, manager, title, office, or address.
@@ -7135,7 +7084,7 @@ department, manager, title, office, or address.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.217  Class organizationalRole
+### 2.217 Class organizationalRole
 
 Used for objects that contain information that pertains to a position or role in an organization, such as
 a system administrator or manager. This class can also be used for a nonhuman identity in an
@@ -7167,13 +7116,14 @@ Release: April 23, 2024
 
 99 / 125
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  defaultObjectCategory: CN=Organizational-Role,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.218  Class organizationalUnit
+### 2.218 Class organizationalUnit
 
 A container for storing users, computers, and other account objects.
 
@@ -7210,7 +7160,7 @@ A container for storing users, computers, and other account objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.219  Class packageRegistration
+### 2.219 Class packageRegistration
 
 The registration information for an application.
 
@@ -7237,7 +7187,8 @@ Release: April 23, 2024
 
 100 / 125
 
- defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
+
+ defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -7246,7 +7197,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.220  Class person
+### 2.220 Class person
 
 Contains personal information about a user.
 
@@ -7271,7 +7222,7 @@ Contains personal information about a user.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.221  Class physicalLocation
+### 2.221 Class physicalLocation
 
 Stores physical address information.
 
@@ -7293,7 +7244,7 @@ Stores physical address information.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.222  Class pKICertificateTemplate
+### 2.222 Class pKICertificateTemplate
 
 Contains information for certificates that are issued by Active Directory Certificate Services (AD CS).
 
@@ -7304,7 +7255,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- cn: PKI-Certificate-Template
+
+ cn: PKI-Certificate-Template
  ldapDisplayName: pKICertificateTemplate
  governsId: 1.2.840.113556.1.5.177
  objectClassCategory: 1
@@ -7331,7 +7283,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.223  Class pKIEnrollmentService
+### 2.223 Class pKIEnrollmentService
 
 The certificate server that can process certificate requests and issue certificates.
 
@@ -7355,7 +7307,7 @@ The certificate server that can process certificate requests and issue certifica
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.224  Class posixAccount
+### 2.224 Class posixAccount
 
 An abstraction of an account that has Portable Operating System Interface (POSIX) attributes.
 
@@ -7374,7 +7326,8 @@ Active Directory Schema Classes
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  homeDirectory, userPassword, unixUserPassword, loginShell, gecos,
+
+  homeDirectory, userPassword, unixUserPassword, loginShell, gecos,
   description
  schemaIdGuid: ad44bb41-67d5-4d88-b575-7b20674e76d8
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;DA)
@@ -7385,7 +7338,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.225  Class posixGroup
+### 2.225 Class posixGroup
 
 An abstraction of a group of accounts.
 
@@ -7406,7 +7359,7 @@ An abstraction of a group of accounts.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.226  Class printQueue
+### 2.226 Class printQueue
 
 Contains information about a print queue.
 
@@ -7444,7 +7397,8 @@ Release: April 23, 2024
 
 103 / 125
 
-  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;PO)
+
+  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;PO)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;CO)(A;;RPLCLORC;;;AU)
  defaultHidingValue: FALSE
  systemOnly: FALSE
@@ -7453,7 +7407,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.227  Class queryPolicy
+### 2.227 Class queryPolicy
 
 Holds administrative limits for LDAP server resources for sorted and paged results.
 
@@ -7475,7 +7429,7 @@ Holds administrative limits for LDAP server resources for sorted and paged resul
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.228  Class remoteMailRecipient
+### 2.228 Class remoteMailRecipient
 
 An external mail recipient. This attribute is obsolete.
 
@@ -7499,7 +7453,7 @@ An external mail recipient. This attribute is obsolete.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.229  Class remoteStorageServicePoint
+### 2.229 Class remoteStorageServicePoint
 
 Holds information about the remote storage location for files that are stored offline.
 
@@ -7510,7 +7464,8 @@ Release: April 23, 2024
 
 104 / 125
 
- cn: Remote-Storage-Service-Point
+
+ cn: Remote-Storage-Service-Point
  ldapDisplayName: remoteStorageServicePoint
  governsId: 1.2.840.113556.1.5.146
  objectClassCategory: 1
@@ -7530,7 +7485,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.230  Class residentialPerson
+### 2.230 Class residentialPerson
 
 Defines entries that represent a person in the residential environment.
 
@@ -7556,7 +7511,7 @@ Defines entries that represent a person in the residential environment.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.231  Class rFC822LocalPart
+### 2.231 Class rFC822LocalPart
 
 Defines entries that represent the local part of mail addresses.
 
@@ -7580,7 +7535,8 @@ Release: April 23, 2024
 
 105 / 125
 
- schemaIdGuid: b93e3a78-cbae-485e-a07b-5ef4ae505686
+
+ schemaIdGuid: b93e3a78-cbae-485e-a07b-5ef4ae505686
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLOLORCWOWDSDDTDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
@@ -7589,7 +7545,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.232  Class rIDManager
+### 2.232 Class rIDManager
 
 Contains the relative ID (RID) operations master (also known as flexible single master operations or
 FSMO) and the RID-Available-Pool location that is used by the RID Manager. The RID Manager is a
@@ -7615,7 +7571,7 @@ component that runs on the domain controller and is responsible for allocating s
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.233  Class rIDSet
+### 2.233 Class rIDSet
 
 Holds the RID pools that were allocated by the domain controller. There is one rIDSet for each
 writable domain controller. Since read-only domain controllers cannot originate the creation of security
@@ -7647,7 +7603,8 @@ Release: April 23, 2024
 
 106 / 125
 
-2.234  Class room
+
+### 2.234 Class room
 
 Defines entries that represent rooms.
 
@@ -7670,7 +7627,7 @@ Defines entries that represent rooms.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.235  Class rpcContainer
+### 2.235 Class rpcContainer
 
 The default container for RPC endpoints.
 
@@ -7692,7 +7649,7 @@ The default container for RPC endpoints.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.236  Class rpcEntry
+### 2.236 Class rpcEntry
 
 An abstract class whose subclasses are used by the RPC Name Service (Ns), which is accessed
 through the RpcNs* functions in the Win32 API.
@@ -7716,13 +7673,14 @@ Release: April 23, 2024
 
 107 / 125
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  defaultObjectCategory: CN=rpc-Entry,<SchemaNCDN>
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.237  Class rpcGroup
+### 2.237 Class rpcGroup
 
 Represents an RPC group.
 
@@ -7744,7 +7702,7 @@ Represents an RPC group.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.238  Class rpcProfile
+### 2.238 Class rpcProfile
 
 Represents an RPC profile.
 
@@ -7765,7 +7723,7 @@ Represents an RPC profile.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.239  Class rpcProfileElement
+### 2.239 Class rpcProfileElement
 
 Holds an entry in an RPC profile.
 
@@ -7783,7 +7741,8 @@ Release: April 23, 2024
 
 108 / 125
 
- systemMustContain: rpcNsPriority, rpcNsInterfaceID
+
+ systemMustContain: rpcNsPriority, rpcNsInterfaceID
  systemMayContain: rpcNsProfileEntry, rpcNsAnnotation
  systemPossSuperiors: rpcProfile
  schemaIdGuid: f29653cf-7ad0-11d0-afd6-00c04fd930c9
@@ -7796,7 +7755,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.240  Class rpcServer
+### 2.240 Class rpcServer
 
 Represents a particular server that is holding one or more RPC interfaces.
 
@@ -7818,7 +7777,7 @@ Represents a particular server that is holding one or more RPC interfaces.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.241  Class rpcServerElement
+### 2.241 Class rpcServerElement
 
 Represents a single interface in a specified RPC server.
 
@@ -7848,7 +7807,8 @@ Release: April 23, 2024
 
 109 / 125
 
-2.242  Class rRASAdministrationConnectionPoint
+
+### 2.242 Class rRASAdministrationConnectionPoint
 
 Contains the connection point for the Routing and Remote Access service.
 
@@ -7873,7 +7833,7 @@ Contains the connection point for the Routing and Remote Access service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.243  Class rRASAdministrationDictionary
+### 2.243 Class rRASAdministrationDictionary
 
 A dictionary object for translating vendor-specific routing attributes to names.
 
@@ -7897,7 +7857,7 @@ A dictionary object for translating vendor-specific routing attributes to names.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.244  Class samDomain
+### 2.244 Class samDomain
 
 An auxiliary class that holds common properties for Windows NT domains.
 
@@ -7918,7 +7878,8 @@ Release: April 23, 2024
 
 110 / 125
 
-  pekKeyChangeInterval, nTMixedDomain, nextRid, nETBIOSName,
+
+  pekKeyChangeInterval, nTMixedDomain, nextRid, nETBIOSName,
   msDS-PerUserTrustTombstonesQuota, msDS-PerUserTrustQuota,
   ms-DS-MachineAccountQuota, msDS-LogonTimeSyncInterval,
   msDS-AllUsersTrustQuota, modifiedCountAtLastProm, minPwdLength,
@@ -7995,7 +7956,8 @@ Release: April 23, 2024
 
 111 / 125
 
-  (OA;CIIO;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;PS)
+
+  (OA;CIIO;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;PS)
   (OA;CIIO;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;CO)
   S:(AU;SA;WDWOWP;;;WD)(AU;SA;CR;;;BA)(AU;SA;CR;;;DU)
   (OU;CISA;WP;f30e3bbe-9ff0-11d1-b603-0000f80367c1;
@@ -8009,7 +7971,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.245  Class samDomainBase
+### 2.245 Class samDomainBase
 
 A base class for defining domains.
 
@@ -8033,7 +7995,7 @@ A base class for defining domains.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.246  Class samServer
+### 2.246 Class samServer
 
 Holds a revision level and a security descriptor that specifies who can make remote procedure calls
 (RPCs) through the Security Accounts Manager (SAM) interface.
@@ -8063,9 +8025,10 @@ Release: April 23, 2024
 
 112 / 125
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.247  Class secret
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.247 Class secret
 
 A Local Security Authority secret that is used for trust relationships and to save service passwords.
 
@@ -8086,7 +8049,7 @@ A Local Security Authority secret that is used for trust relationships and to sa
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.248  Class securityObject
+### 2.248 Class securityObject
 
 An auxiliary class that identifies security principals.
 
@@ -8108,7 +8071,7 @@ An auxiliary class that identifies security principals.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.249  Class securityPrincipal
+### 2.249 Class securityPrincipal
 
 Contains the security information for an object.
 
@@ -8132,7 +8095,8 @@ Release: April 23, 2024
 
 113 / 125
 
-  msds-tokenGroupNamesNoGCAcceptable
+
+  msds-tokenGroupNamesNoGCAcceptable
  schemaIdGuid: bf967ab0-0de6-11d0-a285-00aa003049e2
  defaultHidingValue: TRUE
  systemOnly: FALSE
@@ -8141,7 +8105,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.250  Class server
+### 2.250 Class server
 
 Represents a server computer within a site.
 
@@ -8165,7 +8129,7 @@ Represents a server computer within a site.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.251  Class serversContainer
+### 2.251 Class serversContainer
 
 Holds server objects within a site.
 
@@ -8186,7 +8150,7 @@ Holds server objects within a site.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.252  Class serviceAdministrationPoint
+### 2.252 Class serviceAdministrationPoint
 
 Holds binding information for connecting to a service in order to administer it.
 
@@ -8199,7 +8163,8 @@ Release: April 23, 2024
 
 114 / 125
 
- ldapDisplayName: serviceAdministrationPoint
+
+ ldapDisplayName: serviceAdministrationPoint
  governsId: 1.2.840.113556.1.5.94
  objectClassCategory: 1
  rdnAttId: cn
@@ -8215,7 +8180,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.253  Class serviceClass
+### 2.253 Class serviceClass
 
 Stores the properties of a Winsock service.
 
@@ -8238,7 +8203,7 @@ Stores the properties of a Winsock service.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.254  Class serviceConnectionPoint
+### 2.254 Class serviceConnectionPoint
 
 Publishes information that client applications can use to bind to a service.
 
@@ -8268,9 +8233,10 @@ Release: April 23, 2024
 
 115 / 125
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.255  Class serviceInstance
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.255 Class serviceInstance
 
 A connection point object that is used by the Windows Sockets Registration and Resolution (RnR)
 name service. The serviceInstance object class is used by various namespace providers (such as DNS)
@@ -8295,7 +8261,7 @@ to differentiate the type of data returned during service publication.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.256  Class shadowAccount
+### 2.256 Class shadowAccount
 
 Provides additional attributes for shadow passwords.
 
@@ -8317,7 +8283,7 @@ Provides additional attributes for shadow passwords.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.257  Class simpleSecurityObject
+### 2.257 Class simpleSecurityObject
 
 Allows an entry to have a userPassword attribute when the principal object classes of an entry do not
 allow userPassword as an attribute type.
@@ -8336,7 +8302,8 @@ Release: April 23, 2024
 
 116 / 125
 
- mayContain: userPassword
+
+ mayContain: userPassword
  schemaIdGuid: 5fe69b0b-e146-4f15-b0ab-c1e5d488e094
  defaultSecurityDescriptor: D:(A;;RPWPCRCCDCLCLOLORCWOWDSDDTDTSW;;;DA)
   (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
@@ -8346,7 +8313,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.258  Class site
+### 2.258 Class site
 
 A container for storing server objects. This class represents a physical location that contains
 computers. It is used to manage replication.
@@ -8371,7 +8338,7 @@ computers. It is used to manage replication.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.259  Class siteLink
+### 2.259 Class siteLink
 
 Represents the connection between two sites.
 
@@ -8401,7 +8368,8 @@ Release: April 23, 2024
 
 117 / 125
 
-2.260  Class siteLinkBridge
+
+### 2.260 Class siteLinkBridge
 
 An object that tracks the site links that are transitively connected.
 
@@ -8423,7 +8391,7 @@ An object that tracks the site links that are transitively connected.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.261  Class sitesContainer
+### 2.261 Class sitesContainer
 
 A container that stores site objects. This class is located in the configuration naming context.
 
@@ -8444,7 +8412,7 @@ A container that stores site objects. This class is located in the configuration
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.262  Class storage
+### 2.262 Class storage
 
 A generic object that publishes Universal Naming Conventions (UNCs) for files.
 
@@ -8470,11 +8438,12 @@ Release: April 23, 2024
 
 118 / 125
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.263  Class subnet
+### 2.263 Class subnet
 
 Represents a specific network subnet to which servers and workstations are attached.
 
@@ -8496,7 +8465,7 @@ Represents a specific network subnet to which servers and workstations are attac
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.264  Class subnetContainer
+### 2.264 Class subnetContainer
 
 A container that holds all subnet objects.
 
@@ -8517,7 +8486,7 @@ A container that holds all subnet objects.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.265  Class subSchema
+### 2.265 Class subSchema
 
 Contains the schema definition.
 
@@ -8537,7 +8506,8 @@ Release: April 23, 2024
 
 119 / 125
 
- systemPossSuperiors: dMD
+
+ systemPossSuperiors: dMD
  schemaIdGuid: 5a8b3261-c38d-11d1-bbc9-0080c76670c0
  defaultSecurityDescriptor: D:S:
  defaultHidingValue: TRUE
@@ -8547,7 +8517,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.266  Class top
+### 2.266 Class top
 
 The top-level class from which all classes are derived.
 
@@ -8611,7 +8581,8 @@ Release: April 23, 2024
 
 120 / 125
 
-  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
+
+  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;SY)(A;;RPLCLORC;;;AU)
  defaultHidingValue: TRUE
  systemOnly: TRUE
  defaultObjectCategory: CN=Top,<SchemaNCDN>
@@ -8619,7 +8590,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.267  Class trustedDomain
+### 2.267 Class trustedDomain
 
 An object that represents a domain that is trusted by, or trusting, the local domain.
 
@@ -8649,7 +8620,7 @@ An object that represents a domain that is trusted by, or trusting, the local do
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.268  Class typeLibrary
+### 2.268 Class typeLibrary
 
 Contains information about a type library.
 
@@ -8678,7 +8649,8 @@ Release: April 23, 2024
 
 121 / 125
 
-2.269  Class user
+
+### 2.269 Class user
 
 Stores information about an employee or contractor who works for an organization. It is also possible
 to apply this class to long-term visitors.
@@ -8754,7 +8726,8 @@ Release: April 23, 2024
 
 122 / 125
 
-  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;AO)(A;;RPLCLORC;;;PS)
+
+  (A;;RPWPCRCCDCLCLORCWOWDSDDTSW;;;AO)(A;;RPLCLORC;;;PS)
   (OA;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;PS)
   (OA;;CR;ab721a54-1e2f-11d0-9819-00aa0040529b;;PS)
   (OA;;CR;ab721a56-1e2f-11d0-9819-00aa0040529b;;PS)
@@ -8782,7 +8755,7 @@ Release: April 23, 2024
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.270  Class volume
+### 2.270 Class volume
 
 Contains information about a storage device or file. This class is used to create shared folders.
 
@@ -8812,7 +8785,8 @@ Release: April 23, 2024
 
 123 / 125
 
-3  Change Tracking
+
+## 3 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -8864,7 +8838,8 @@ Release: April 23, 2024
 
 124 / 125
 
-4  Index
+
+## 4 Index
 A
 
 Active Directory classes 10

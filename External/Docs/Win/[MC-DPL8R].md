@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 43
 
-Date
+
+Date
 
 Revision
 History
@@ -522,191 +524,83 @@ Significantly changed the technical content.
 
 3 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Command Frames (CFRAMEs)](#221-command-frames-cframes)
+      - [2.2.1.1 CONNECT](#2211-connect)
+      - [2.2.1.2 CONNECTED](#2212-connected)
+      - [2.2.1.3 CONNECTED_SIGNED](#2213-connectedsigned)
+      - [2.2.1.4 HARD_DISCONNECT](#2214-harddisconnect)
+      - [2.2.1.5 SACK](#2215-sack)
+    - [2.2.2 Data Frames (DFRAMEs)](#222-data-frames-dframes)
+    - [2.2.3 Coalesced Payloads](#223-coalesced-payloads)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Connect Retry Timer](#3121-connect-retry-timer)
+      - [3.1.2.2 Delayed Acknowledgment Timer](#3122-delayed-acknowledgment-timer)
+      - [3.1.2.3 Delayed Send Mask Timer](#3123-delayed-send-mask-timer)
+      - [3.1.2.4 Hard Disconnect Timer](#3124-hard-disconnect-timer)
+      - [3.1.2.5 Retry Timer](#3125-retry-timer)
+      - [3.1.2.6 KeepAlive Timer](#3126-keepalive-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Listening](#3141-listening)
+      - [3.1.4.2 Connecting](#3142-connecting)
+      - [3.1.4.3 Disconnecting Gracefully](#3143-disconnecting-gracefully)
+      - [3.1.4.4 Sending Application Data](#3144-sending-application-data)
+      - [3.1.4.5 Hard Disconnects](#3145-hard-disconnects)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 CFRAMEs](#3151-cframes)
+        - [3.1.5.1.1 CONNECT](#31511-connect)
+        - [3.1.5.1.2 CONNECTED](#31512-connected)
+        - [3.1.5.1.3 CONNECTED_SIGNED](#31513-connectedsigned)
+        - [3.1.5.1.4 HARD_DISCONNECT](#31514-harddisconnect)
+        - [3.1.5.1.5 SACK](#31515-sack)
+      - [3.1.5.2 DFRAMEs](#3152-dframes)
+        - [3.1.5.2.1 through 3.1.5.2.4. After the sequencing information is validated, and processing indicates](#31521-through-31524-after-the-sequencing-information-is-validated-and-processing-indicates)
+        - [3.1.5.2.2 Acknowledged Sequence ID (bNRcv) Processing](#31522-acknowledged-sequence-id-bnrcv-processing)
+        - [3.1.5.2.3 SACK Mask Processing](#31523-sack-mask-processing)
+        - [3.1.5.2.4 Send Mask Processing](#31524-send-mask-processing)
+        - [3.1.5.2.5 Coalesced Payload Processing](#31525-coalesced-payload-processing)
+        - [3.1.5.2.6 Large (Multipacket) Payload Processing](#31526-large-multipacket-payload-processing)
+        - [3.1.5.2.7 Signature Processing](#31527-signature-processing)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Connect Retry Timer](#3161-connect-retry-timer)
+      - [3.1.6.2 Delayed Acknowledgment Timer](#3162-delayed-acknowledgment-timer)
+      - [3.1.6.3 Delayed Send Mask Timer](#3163-delayed-send-mask-timer)
+      - [3.1.6.4 Hard Disconnect Timer](#3164-hard-disconnect-timer)
+      - [3.1.6.5 Retry Timer](#3165-retry-timer)
+      - [3.1.6.6 KeepAlive Timer](#3166-keepalive-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Sample Connection Sequence](#41-sample-connection-sequence)
+  - [4.2 Sample Upper-Layer Data Transmission and Acknowledgment](#42-sample-upper-layer-data-transmission-and-acknowledgment)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Command Frames (CFRAMEs) ...................................................................... 11
-CONNECT ............................................................................................. 11
-CONNECTED ......................................................................................... 12
-CONNECTED_SIGNED ............................................................................ 14
-HARD_DISCONNECT .............................................................................. 16
-SACK ................................................................................................... 17
-Data Frames (DFRAMEs) .............................................................................. 18
-Coalesced Payloads ..................................................................................... 21
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2.2.2
-2.2.3
-
-3.1
-
-3.1.3
-3.1.4
-
-3.1.1
-3.1.2
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-3.1.2.5
-3.1.2.6
-
-3  Protocol Details ..................................................................................................... 23
-Common Details .............................................................................................. 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Connect Retry Timer ............................................................................. 24
-Delayed Acknowledgment Timer ............................................................. 24
-Delayed Send Mask Timer ...................................................................... 24
-Hard Disconnect Timer .......................................................................... 25
-Retry Timer .......................................................................................... 25
-KeepAlive Timer .................................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Listening .............................................................................................. 25
-Connecting ........................................................................................... 25
-Disconnecting Gracefully ........................................................................ 25
-Sending Application Data ....................................................................... 26
-Hard Disconnects .................................................................................. 27
-Processing Events and Sequencing Rules ....................................................... 28
-CFRAMEs ............................................................................................. 28
-CONNECT ....................................................................................... 28
-CONNECTED ................................................................................... 28
-CONNECTED_SIGNED ...................................................................... 29
-HARD_DISCONNECT ........................................................................ 30
-SACK ............................................................................................. 30
-DFRAMEs ............................................................................................. 30
-Send Sequence ID (bSeq) Validation and Processing ............................ 31
-Acknowledged Sequence ID (bNRcv) Processing .................................. 31
-SACK Mask Processing ..................................................................... 31
-Send Mask Processing ...................................................................... 32
-Coalesced Payload Processing ........................................................... 32
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-
-3.1.5.1
-
-3.1.5.2
-
-3.1.5
-
-[MC-DPL8R] - v20240423
-DirectPlay 8 Protocol: Reliable
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 43
-
-3.1.5.2.6
-3.1.5.2.7
-
-3.1.6
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-
-3.1.7
-
-Large (Multipacket) Payload Processing .............................................. 32
-Signature Processing ....................................................................... 33
-Timer Events .............................................................................................. 34
-Connect Retry Timer ............................................................................. 34
-Delayed Acknowledgment Timer ............................................................. 34
-Delayed Send Mask Timer ...................................................................... 34
-Hard Disconnect Timer .......................................................................... 34
-Retry Timer .......................................................................................... 34
-KeepAlive Timer .................................................................................... 35
-Other Local Events ...................................................................................... 35
-
-4  Protocol Examples ................................................................................................. 36
-Sample Connection Sequence ............................................................................ 36
-Sample Upper-Layer Data Transmission and Acknowledgment ............................... 37
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 38
-Security Considerations for Implementers ........................................................... 38
-Index of Security Parameters ............................................................................ 38
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 39
-
-7  Change Tracking .................................................................................................... 40
-
-8  Index ..................................................................................................................... 41
-
-[MC-DPL8R] - v20240423
-DirectPlay 8 Protocol: Reliable
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 43
-
-1  Introduction
+## 1 Introduction
 
 This specification pertains to the DirectPlay 8 Protocol and describes functionality related to the
 reliable delivery of DirectPlay 8 messages. The protocol is intended for use in multiplayer game
@@ -716,7 +610,7 @@ over existing datagram protocols such as the User Datagram Protocol (UDP).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -783,7 +677,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-next send: The next 8-bit packet sequence ID that will be sent. This is represented as bNSeq in
+
+next send: The next 8-bit packet sequence ID that will be sent. This is represented as bNSeq in
 the selective acknowledgment packet structure, which does not have a sequence ID of its
 own. DirectPlay 8 protocol implementations also keep an internal counter so that IDs can be
 assigned in order. See Also, next receive.
@@ -838,14 +733,14 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -858,7 +753,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[FIPS180] FIPS PUBS, "Secure Hash Standard", FIPS PUB 180-1, April 1995,
+
+[FIPS180] FIPS PUBS, "Secure Hash Standard", FIPS PUB 180-1, April 1995,
 https://www.niatec.iri.isu.edu/GetFile.aspx?pid=63
 
 [MS-DTYP] Microsoft Corporation, "Windows Data Types".
@@ -866,7 +762,7 @@ https://www.niatec.iri.isu.edu/GetFile.aspx?pid=63
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-DPL8CS] Microsoft Corporation, "DirectPlay 8 Protocol: Core and Service Providers".
 
@@ -881,7 +777,7 @@ editor.org/info/rfc768
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.3  Overview
+### 1.3 Overview
 
 The DirectPlay 8 Protocol is designed to perform low latency, multiplayer game communication
 between two partners. Its messages are nominally transported over the User Datagram Protocol
@@ -924,7 +820,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-implementation either resends the original packet with the same sequence number that was
+
+implementation either resends the original packet with the same sequence number that was
 previously assigned if it had been marked as reliable; or the implementation updates future packets to
 include a send mask that indicates that the data is never resent if the dropped packet is not marked
 as reliable.
@@ -941,7 +838,7 @@ then a KeepAlive message is sent. A KeepAlive message is a reliable packet that 
 application payload. It relies on the normal reliable packet retry mechanism to detect that the other
 side is no longer available.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DirectPlay 8 Protocol requires UDP or a similar datagram-oriented, connectionless protocol. The
 DirectPlay 8 Protocol is always implemented together with the DirectPlay 8 Host and Port Enumeration
@@ -952,7 +849,7 @@ Note  All DirectPlay 8 Protocol messages are constructed so that at least one bi
 set. When a message is received and the lead byte is nonzero, the DirectPlay 8 Host and Port
 Enumeration Protocol passes the entire message through to the DirectPlay 8 Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 To establish a DirectPlay 8 Protocol connection, the consuming application on one computer system
 has to be listening for a new incoming connection or connections; that is, to be functioning as a server
@@ -960,7 +857,7 @@ in traditional networking parlance. The application on another computer system h
 server via external means, such as through a game server list or a local area network (LAN)
 broadcast discovery that uses the DirectPlay 8 Host and Port Enumeration Protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DirectPlay 8 Protocol is intended for use in multiplayer game communication where mixed
 reliable/unreliable, bidirectional, peer-to-peer traffic is desired. This protocol is not recommended for
@@ -968,7 +865,7 @@ file transfer, or for applications with robust security needs that cannot ensure
 such as IPsec. It is also not intended as a generic replacement for the Transmission Control
 Protocol (TCP) [RFC793].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -993,7 +890,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  A version level of 0x00010006 implements the base features, supports coalescence, and adds
+
+  A version level of 0x00010006 implements the base features, supports coalescence, and adds
 
 support for signing.
 
@@ -1024,11 +922,11 @@ the sender has to confirm whether the receiver will recognize the packet format.
 support for coalescence by specifying a version level value of 0x00010005 or higher in the
 dwCurrentProtocolVersion field of the CONNECT, CONNECTED, or CONNECTED_SIGNED message.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1039,11 +937,12 @@ Release: April 23, 2024
 
 10 / 43
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 DirectPlay 8 Protocol messages are nominally transported over UDP by using application-specific port
 numbers. They are also processed by receivers that are prepared to handle DirectPlay 8 Protocol: Host
@@ -1059,15 +958,15 @@ is ambiguous, the implementation MUST provide its own mechanism for distinguishi
 providers. The DirectPlay 8 Protocol assumes that all remote partners are using the same or binary-
 compatible transport providers.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Command Frames (CFRAMEs)
+#### 2.2.1 Command Frames (CFRAMEs)
 
 Command frames (CFRAMEs) are special control frames that do not carry application payload
 data. They are identified by not having the PACKET_COMMAND_DATA flag (0x01) set in their
 bCommand fields.
 
-2.2.1.1  CONNECT
+##### 2.2.1.1 CONNECT
 
 The CONNECT packet is used to request a connection. If accepted, the response is a
 CONNECTED (section 2.2.1.2) packet or a CONNECTED_SIGNED (section 2.2.1.3) packet, depending
@@ -1117,7 +1016,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x08
 
@@ -1183,7 +1083,7 @@ tTimestamp (4 bytes): The requestor's computer system tick count, in millisecond
 
 specified in little-endian byte order.
 
-2.2.1.2  CONNECTED
+##### 2.2.1.2 CONNECTED
 
 The CONNECTED packet is used to accept a connection request or complete a connection handshake
 when signing is not enabled.
@@ -1195,7 +1095,8 @@ Release: April 23, 2024
 
 12 / 43
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1288,7 +1189,8 @@ Release: April 23, 2024
 
 13 / 43
 
-Value
+
+Value
 
 Meaning
 
@@ -1305,7 +1207,7 @@ tTimestamp (4 bytes): The sender's computer system tick count, in millisecond un
 
 little-endian byte order.
 
-2.2.1.3  CONNECTED_SIGNED
+##### 2.2.1.3 CONNECTED_SIGNED
 
 The CONNECTED_SIGNED packet is used to accept a connection request or complete a connection
 handshake when signing is enabled.
@@ -1370,7 +1272,8 @@ Release: April 23, 2024
 
 14 / 43
 
-Value  Meaning
+
+Value  Meaning
 
 0x08
 
@@ -1455,7 +1358,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ullReceiverSecret (8 bytes): The initial value for generating signatures on packets sent by the
+
+ullReceiverSecret (8 bytes): The initial value for generating signatures on packets sent by the
 
 listener to the connector, in little-endian byte order. This MUST be set to zero when sent by the
 listener and MUST be nonzero when sent by the connector. Connectors SHOULD generate a
@@ -1480,7 +1384,7 @@ this field MUST be set to zero. Otherwise, if this message is a response to anot
 CONNECTED_SIGNED message, then dwEchoTimestamp MUST be set to the value of the
 tTimestamp field in the CONNECTED_SIGNED message that was received.
 
-2.2.1.4  HARD_DISCONNECT
+##### 2.2.1.4 HARD_DISCONNECT
 
 The HARD_DISCONNECT packet is used to quickly disconnect or acknowledge quick disconnection
 without waiting for remaining packets to be delivered.
@@ -1538,7 +1442,8 @@ Release: April 23, 2024
 
 16 / 43
 
-Value  Meaning
+
+Value  Meaning
 
 0x04
 
@@ -1570,7 +1475,7 @@ of the packet using the agreed-upon signing algorithm. The packet sequence ID to
 calculation is the value in bRspId. This field MUST NOT be present if signing is not enabled for the
 connection.
 
-2.2.1.5  SACK
+##### 2.2.1.5 SACK
 
 The SACK packet is used to selectively acknowledge outstanding packets. Packet acknowledgment
 (ACK) is typically bundled in all user data packets using the bSeq and bNRec fields found in the data
@@ -1624,7 +1529,8 @@ Release: April 23, 2024
 
 17 / 43
 
-bCommand (1 byte): The command-code bitmask that contains bitwise OR values from the following
+
+bCommand (1 byte): The command-code bitmask that contains bitwise OR values from the following
 table. The PACKET_COMMAND_CFRAME flag MUST be set. The PACKET_COMMAND_POLL
 flag SHOULD NOT be set and SHOULD be ignored on receipt. All other bits MUST be set to zero
 and the packet MUST be ignored if they are not.
@@ -1713,7 +1619,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwSendMask1 (4 bytes): The optional low 32 bits of the send mask, in little-endian byte order. The
+
+dwSendMask1 (4 bytes): The optional low 32 bits of the send mask, in little-endian byte order. The
 
 existence of this field in the packet is dependent upon the bFlags field having
 SACK_FLAGS_SEND_MASK1 set.
@@ -1729,7 +1636,7 @@ of the packet using the agreed-upon signing algorithm. The packet sequence ID to
 calculation is the value in bNSeq. This field MUST NOT be present if signing is not enabled for the
 connection.
 
-2.2.2  Data Frames (DFRAMEs)
+#### 2.2.2 Data Frames (DFRAMEs)
 
 Data frames exist in the standard connection sequence space and typically carry application payload
 data. They all are identified by having the PACKET_COMMAND_DATA flag (0x01) set in their
@@ -1793,7 +1700,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x01
 
@@ -1897,7 +1805,8 @@ Release: April 23, 2024
 
 20 / 43
 
-ullSignature (8 bytes): If the connection was established by using signing, this MUST be the
+
+ullSignature (8 bytes): If the connection was established by using signing, this MUST be the
 
 signature of the packet using the agreed-upon signing algorithm. The packet sequence ID to be
 used in the calculation is the value in bSeq. This field MUST NOT be present if signing is not
@@ -1917,7 +1826,7 @@ PACKET_CONTROL_COALESCE flag is set, the application payload data is not a singl
 or portion of a message; it is instead organized according to the coalesced payload format, as
 specified in section 2.2.3.
 
-2.2.3  Coalesced Payloads
+#### 2.2.3 Coalesced Payloads
 
 Coalesced payloads are a special form of payload within standard data frames (DFRAME). When
 the PACKET_CONTROL_COALESCE flag is set on the outer DFRAME header bControl field, the
@@ -1983,7 +1892,8 @@ Release: April 23, 2024
 
 21 / 43
 
-payload 2 (variable)
+
+payload 2 (variable)
 
 ...
 
@@ -2067,7 +1977,8 @@ Release: April 23, 2024
 
 22 / 43
 
-payload 2 (variable): See payload earlier in this topic.
+
+payload 2 (variable): See payload earlier in this topic.
 
 payload n (variable): See payload earlier in this topic.
 
@@ -2078,13 +1989,14 @@ Release: April 23, 2024
 
 23 / 43
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MC-DPL8R].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
 Although there are no traditional client or server roles after a connection is established, a computing
 system MUST initially determine whether to establish an outbound connection or listen for an inbound
@@ -2097,7 +2009,7 @@ Figure 1: DirectPlay8 Reliable Protocol system states
 When connected, the protocol behaves identically for both the connecting and listening computing
 systems.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2110,7 +2022,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-adhere to this model as long as their external behavior is consistent with that described in this
+
+adhere to this model as long as their external behavior is consistent with that described in this
 specification.
 
 dwSessID:  The game session ID used to establish the connection. This value is referenced in
@@ -2153,16 +2066,16 @@ Send Mask: A sliding window bitmask that indicates whether DFRAMEs that are not 
 reliable will not be retried. The window base reference is the current next send and work
 backward for up to 64 bits (messages).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Connect Retry Timer
+##### 3.1.2.1 Connect Retry Timer
 
 The Connect Retry Timer is used to retry CONNECT and CONNECTED messages if no response is
 received. Implementations can retry as many times as needed and at any frequency. Recommended
 values are for the first retry to be 200 milliseconds, which doubles for every subsequent retry and
 caps at 5 seconds and 14 retries.
 
-3.1.2.2  Delayed Acknowledgment Timer
+##### 3.1.2.2 Delayed Acknowledgment Timer
 
 The Delayed Acknowledgment Timer that is used to reduce the frequency of dedicated
 acknowledgments (ACKs) so that they can be piggybacked onto return traffic or multiple receives,
@@ -2171,7 +2084,7 @@ can be covered by a single reply. The recommended value is 100 milliseconds for 
 that maximizes ACK coalescence opportunity without introducing an undesirable latency under the
 particular application circumstances.
 
-3.1.2.3  Delayed Send Mask Timer
+##### 3.1.2.3 Delayed Send Mask Timer
 
 The Delayed Send Mask Timer is used to reduce the frequency of dedicated packets that contain a
 send mask so that the mask can be piggybacked onto additional traffic. The recommended value is
@@ -2183,10 +2096,11 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-40 milliseconds; however, it can be any value that maximizes a send mask coalescence opportunity
+
+40 milliseconds; however, it can be any value that maximizes a send mask coalescence opportunity
 under the particular application circumstances.
 
-3.1.2.4  Hard Disconnect Timer
+##### 3.1.2.4 Hard Disconnect Timer
 
 The Hard Disconnect Timer is used to space multiple hard disconnect packets over time in order to
 increase the likelihood that one or more arrive. The recommended value is one-half of the current
@@ -2194,7 +2108,7 @@ round-trip time (RTT), with a minimum value of 10 milliseconds. The maximum inte
 capped at 500 milliseconds but MAY be any value that is appropriate for particular application
 requirements or network circumstances.
 
-3.1.2.5  Retry Timer
+##### 3.1.2.5 Retry Timer
 
 The Retry Timer is used to track when a message is considered to have been dropped and either
 needs to be retried or causes a send mask to be sent. The recommended values are for the first retry
@@ -2203,32 +2117,32 @@ to be 2.5 round-trip time (RTT) plus the delayed acknowledgment (ACK) time-out (
 exponential backoff for the fourth through the eighth retries, and an overall cap at 5 seconds and
 10 retries.
 
-3.1.2.6  KeepAlive Timer
+##### 3.1.2.6 KeepAlive Timer
 
 The KeepAlive Timer is used to send a minimal reliable packet to keep the connection alive when no
 traffic has been received. The recommended value is 25 seconds of inactivity. There is a four second
 granularity on the timer.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Listening
+##### 3.1.4.1 Listening
 
 Higher layers that accept new connections SHOULD place the DirectPlay 8 Protocol in listening mode.
 The protocol SHOULD begin treating CONNECT messages from previously unknown sources as
 attempts to establish a connection and SHOULD respond with CONNECTED or CONNECTED_SIGNED
 messages, as specified in section 3.1.5.1.1.
 
-3.1.4.2  Connecting
+##### 3.1.4.2 Connecting
 
 To establish a new connection, higher layers SHOULD cause the DirectPlay 8 Protocol to send a
 CONNECT message to the specified destination. The connect timer SHOULD also be scheduled to
 trigger the resending of a CONNECT message if no response is received.
 
-3.1.4.3  Disconnecting Gracefully
+##### 3.1.4.3 Disconnecting Gracefully
 
 Higher layers that will no longer communicate over an established connection SHOULD cause the
 DirectPlay 8 Protocol to send a reliable DFRAME message that has the
@@ -2244,7 +2158,8 @@ Release: April 23, 2024
 
 26 / 43
 
-If the connection was established with signing, the DFRAME MUST be signed appropriately, as
+
+If the connection was established with signing, the DFRAME MUST be signed appropriately, as
 described in section 3.1.4.4.
 
 Implementations MUST NOT send any additional DFRAMEs after sending a packet that has the
@@ -2265,7 +2180,7 @@ and the acknowledgment (ACK) sent, the connection SHOULD be considered terminate
 
 Higher layers can also perform a hard disconnect, as described in section 3.1.4.5.
 
-3.1.4.4  Sending Application Data
+##### 3.1.4.4 Sending Application Data
 
 Higher layers pass messages to the DirectPlay 8 Protocol for transmission over an established
 connection. The protocol SHOULD send the packets by using the requested reliable/unreliable
@@ -2311,7 +2226,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The entire packet to be sent, extending from the beginning of the DFRAME header and concluding
+
+1.  The entire packet to be sent, extending from the beginning of the DFRAME header and concluding
 with the final byte of the final mask, payload, or coalesced payload, as appropriate, except with
 the DFRAME ullSignature bytes set to 0.
 
@@ -2361,7 +2277,7 @@ Implementations SHOULD also implement TCP-friendly congestion control mechanisms
 such as initially allowing only two packets on the network and gradually increasing the window by one
 as ACKs arrive without packet loss.
 
-3.1.4.5  Hard Disconnects
+##### 3.1.4.5 Hard Disconnects
 
 Higher layers that require to terminate the connection as quickly as possible do not initiate the
 graceful disconnect that is specified in section 3.1.4.3. Instead, the implementation cancels all
@@ -2381,7 +2297,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Implementations MUST NOT send any additional data after initiating a hard disconnect. They MAY
+
+Implementations MUST NOT send any additional data after initiating a hard disconnect. They MAY
 continue receiving packets until the remote partner acknowledges the termination request by sending
 its own hard disconnect packets.
 
@@ -2389,7 +2306,7 @@ When a HARD_DISCONNECT packet is received from the remote partner or the maximum
 local HARD_DISCONNECT packets have been sent and the final time-out has elapsed, the
 implementation SHOULD consider the connection terminated. See sections 3.1.5.1.4 and 3.1.6.4.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 When a packet arrives, the recipient SHOULD first check whether it is large enough to be a minimal
 data frame (DFRAME) (4 bytes) and whether the first byte has the low bit
@@ -2400,13 +2317,13 @@ it MUST process the message as a CFRAME (section 3.1.5.1) command frame. Otherwi
 message is not a valid DirectPlay 8 Protocol message and MUST be ignored or passed to other
 protocols.
 
-3.1.5.1  CFRAMEs
+##### 3.1.5.1 CFRAMEs
 
 Command frames (CFRAMEs) are handled according to the type of command; that is, the second
 byte of the packet listed as bExtOpcode MUST be a known value. If it is not one of the known values
 in this section, the packet MUST be discarded.
 
-3.1.5.1.1 CONNECT
+###### 3.1.5.1.1 CONNECT
 
 If the bExtOpcode field indicates FRAME_EXOPCODE_CONNECT (0x01), the source address (for
 example, IPv4 address and port type when running on UDP) for the message SHOULD be checked. If
@@ -2433,7 +2350,7 @@ CONNECTED_SIGNED response that uses a cookie value in its ullConnectSig field th
 subsequently verify that the connector saw the CONNECTED_SIGNED reply. This is described in more
 detail in section 3.1.5.1.3.
 
-3.1.5.1.2 CONNECTED
+###### 3.1.5.1.2 CONNECTED
 
 If the bExtOpcode field indicates FRAME_EXOPCODE_CONNECTED (0x02), the source address (for
 example, IPv4 address and port type when running on UDP) for the message SHOULD be checked. If
@@ -2447,7 +2364,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the source address matches that of a previously initiated outbound connection that has not
+
+If the source address matches that of a previously initiated outbound connection that has not
 completed the handshake process, the dwSessID field MUST match that of the previously sent
 CONNECT packet, and the PACKET_COMMAND_POLL flag MUST be set in the bCommand field
 before the packet can be accepted. If the connector is enforcing signing, this unsigned response
@@ -2465,7 +2383,7 @@ one used to establish the connection, and the PACKET_COMMAND_POLL flag MUST be s
 this connector's previous CONNECTED response was apparently lost and the connector SHOULD send
 a duplicate CONNECTED packet. Otherwise, the packet SHOULD be ignored.
 
-3.1.5.1.3 CONNECTED_SIGNED
+###### 3.1.5.1.3 CONNECTED_SIGNED
 
 If the bExtOpcode field indicates FRAME_EXOPCODE_CONNECTED_SIGNED (0x03), the source
 address (for example, IPv4 address and port type when running on UDP) for the message is checked.
@@ -2513,13 +2431,14 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This specification does not prescribe any particular method for generating or validating ullConnectSig
+
+This specification does not prescribe any particular method for generating or validating ullConnectSig
 cookies. If the implementation is set to use this field, it SHOULD incorporate the sender's source
 address (for example, the IP address and port for a UDP transport provider), the dwSessID value,
 and a time-dependent secret that only the listener knows and that uses a cryptographically secure
 algorithm that makes it difficult to guess.
 
-3.1.5.1.4 HARD_DISCONNECT
+###### 3.1.5.1.4 HARD_DISCONNECT
 
 If the bExtOpcode field indicates FRAME_EXOPCODE_HARD_DISCONNECT (0x04), the source
 address (for example, the IPv4 address and port type when running on UDP) for the message
@@ -2536,7 +2455,7 @@ Otherwise, the local node is receiving a new request to hard-terminate the conne
 abort all outstanding sends and then immediately send three HARD_DISCONNECT ACK packets. The
 connection is then considered to be terminated.
 
-3.1.5.1.5 SACK
+###### 3.1.5.1.5 SACK
 
 If the bExtOpcode field indicates FRAME_EXOPCODE_SACK (0x06), the source address (for
 example, IPv4 address and port type when running on UDP) for the message SHOULD be checked. If
@@ -2548,7 +2467,7 @@ then processed by using the standard rules in sections 3.1.5.2.1 through 3.1.5.2
 A successfully validated SACK packet SHOULD count as a valid receive and thus restart the KeepAlive
 timer.
 
-3.1.5.2  DFRAMEs
+##### 3.1.5.2 DFRAMEs
 
 Data frames (DFRAME) are checked to see if they were sent from an address (for example, IPv4
 address and port tuple when running on UDP) to which there is an established connection. If the
@@ -2565,7 +2484,7 @@ KeepAlives. This payload MUST NOT be indicated to the upper layer as data.
 
 All DFRAMEs, KeepAlive or otherwise, MUST have their bNRcv, bSeq, optional selective
 acknowledgment (SACK) mask, and optional send mask fields processed as described in sections
-3.1.5.2.1 through 3.1.5.2.4. After the sequencing information is validated, and processing indicates
+###### 3.1.5.2.1 through 3.1.5.2.4. After the sequencing information is validated, and processing indicates
 that the data is either in sequence or was not marked as PACKET_COMMAND_SEQUENTIAL in
 bCommand, the implementation SHOULD report the data payload or coalesced data payloads, if
 any, to its consumer. The exception is version 0x00010005 and higher KeepAlives, which SHOULD be
@@ -2578,7 +2497,8 @@ Release: April 23, 2024
 
 31 / 43
 
-All successfully validated DFRAME packets SHOULD count as a valid receive and thus restart the
+
+All successfully validated DFRAME packets SHOULD count as a valid receive and thus restart the
 KeepAlive Timer (section 3.1.2.6).
 
 If the DFRAME has the PACKET_CONTROL_END_STREAM flag set, implementations SHOULD begin
@@ -2619,7 +2539,7 @@ SHOULD indicate this to the sender using appropriate SACK masks on any outgoing 
 messages. This feedback enables the sender to avoid retrying packets that have already been
 successfully received.
 
-3.1.5.2.2 Acknowledged Sequence ID (bNRcv) Processing
+###### 3.1.5.2.2 Acknowledged Sequence ID (bNRcv) Processing
 
 The bNRcv field acknowledges reception of previously sent frames that are less than the specified ID.
 All data frame (DFRAME) packets that had been sent with bSeq values less than bNRcv,
@@ -2629,7 +2549,7 @@ SHOULD be canceled.
 Sequence IDs start at 0 for every connection. Therefore, each partner's next receive value from
 which bNRcv is generated MUST start at 0 for every connection.
 
-3.1.5.2.3 SACK Mask Processing
+###### 3.1.5.2.3 SACK Mask Processing
 
 When one or both of the optional selective acknowledgment (SACK) mask 32-bit fields is present
 and one or more bits are set, the sender is indicating that it received out-of-order, a packet or packets
@@ -2645,7 +2565,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The receiver of a SACK mask loops through each bit of the combined 64-bit value, from the least
+
+The receiver of a SACK mask loops through each bit of the combined 64-bit value, from the least
 significant to most significant. Each bit corresponds to a sequence ID after bNRcv, and if that bit is
 set, it indicates that the corresponding packet was received out of order. Implementations SHOULD
 avoid retrying those packets in the future.
@@ -2653,7 +2574,7 @@ avoid retrying those packets in the future.
 Implementations SHOULD also shorten the retry timer for the first frame of the window to
 10 milliseconds in order to speed recovery from the packet loss indicated by a SACK mask.
 
-3.1.5.2.4 Send Mask Processing
+###### 3.1.5.2.4 Send Mask Processing
 
 When one or both of the optional send mask 32-bit fields is present, and one or more bits are set,
 the sender is indicating that it sent a packet or packets that were not marked as reliable and for which
@@ -2672,7 +2593,7 @@ MUST be advanced, and if the packet with the next sequence ID was previously rec
 been queued due to the gap in the sequence, its contents SHOULD now be reported to the upper
 layer.
 
-3.1.5.2.5 Coalesced Payload Processing
+###### 3.1.5.2.5 Coalesced Payload Processing
 
 When a data frame (DFRAME) arrives with the PACKET_CONTROL_COALESCE flag set in
 bControl, the data payload is made of one or more coalesced payloads instead of a single payload.
@@ -2684,7 +2605,7 @@ that of the remainder of the packet. It SHOULD then report each individual paylo
 as if it had arrived in its own packet. These MUST be reported in the same order in which they were
 placed in the packet to preserve sequencing.
 
-3.1.5.2.6 Large (Multipacket) Payload Processing
+###### 3.1.5.2.6 Large (Multipacket) Payload Processing
 
 When a data frame (DFRAME) arrives with the PACKET_COMMAND_NEW_MSG flag set but not
 the PACKET_COMMAND_END_MSG flag set in bCommand, the complete data payload spans
@@ -2711,7 +2632,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-did not have the PACKET_COMMAND_END_MSG flag set, the receiver SHOULD behave as if the
+
+did not have the PACKET_COMMAND_END_MSG flag set, the receiver SHOULD behave as if the
 previous packet had the PACKET_COMMAND_END_MSG flag set but MAY terminate the connection.
 
 An implementation SHOULD provide an upper limit for the number of packets that can be used to send
@@ -2721,7 +2643,7 @@ PACKET_COMMAND_END_MSG flag, it SHOULD terminate the connection. The values for 
 limits SHOULD be appropriate for, and specific to, the application's intended resource consumption
 and sending patterns; no particular value is recommended in this specification.
 
-3.1.5.2.7 Signature Processing
+###### 3.1.5.2.7 Signature Processing
 
 All frames that are associated with a signed connection MUST have an ullSignature field present, and
 it MUST be validated. The method of validation depends on the signing mode that was agreed upon
@@ -2782,9 +2704,10 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.6  Timer Events
 
-3.1.6.1  Connect Retry Timer
+#### 3.1.6 Timer Events
+
+##### 3.1.6.1 Connect Retry Timer
 
 When the Connect Retry Timer expires, a new CONNECT message SHOULD be sent if it is an outbound
 connection that has not yet received a response from the listener; otherwise, for all other cases where
@@ -2797,28 +2720,28 @@ attempt MUST be considered as failed. If the connection was initiated from an in
 packet arriving on a listening computing system, the listener MAY choose to go back to listening if it
 did not allow additional connection attempts while the failed attempt was in progress.
 
-3.1.6.2  Delayed Acknowledgment Timer
+##### 3.1.6.2 Delayed Acknowledgment Timer
 
 When the delayed acknowledgment (ACK) timer expires without having been canceled, the
 computer system SHOULD send a dedicated selective acknowledgment (SACK) message that
 contains the current connection state information. Any active delayed send mask timer SHOULD then
 be canceled.
 
-3.1.6.3  Delayed Send Mask Timer
+##### 3.1.6.3 Delayed Send Mask Timer
 
 When the delayed send mask timer expires without having been canceled, the computer system
 SHOULD send a dedicated selective acknowledgment (SACK) message that contains the current
 connection state information. Any active delayed acknowledgment (ACK) timer SHOULD then be
 canceled.
 
-3.1.6.4  Hard Disconnect Timer
+##### 3.1.6.4 Hard Disconnect Timer
 
 When the Hard Disconnect Timer expires without having been canceled, the computer system SHOULD
 send another HARD_DISCONNECT packet. If the maximum number of resends has already occurred,
 the connection SHOULD be considered terminated. Otherwise, the hard disconnect timer SHOULD be
 rescheduled.
 
-3.1.6.5  Retry Timer
+##### 3.1.6.5 Retry Timer
 
 When the Retry Timer elapses without having been canceled and the associated packet was reliable,
 the data frame (DFRAME) SHOULD be resent and the retry timer SHOULD then be scheduled for the
@@ -2846,7 +2769,8 @@ DirectPlay 8 Protocol: Reliable
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Retried packets MUST always contain the latest DFRAME header information, except that bSeq MUST
+
+Retried packets MUST always contain the latest DFRAME header information, except that bSeq MUST
 be the sequence ID originally assigned to the packet, and if the send mask is present, it MUST be
 relative to that bSeq value.
 
@@ -2854,7 +2778,7 @@ For connections that enabled full signing, retried packets MUST always be proper
 whenever any header information is updated, the packet is not marked as reliable, or coalesced
 subpayloads are removed.
 
-3.1.6.6  KeepAlive Timer
+##### 3.1.6.6 KeepAlive Timer
 
 When the KeepAlive timer expires without having been canceled, the computing system SHOULD
 send a KeepAlive message. A KeepAlive message is a reliable data frame (DFRAME) with no
@@ -2867,7 +2791,7 @@ After the reliable KeepAlive message begins transmitting, it MUST behave like al
 DFRAMEs with respect to time-outs and maximum retries. The implementation SHOULD reschedule
 the KeepAlive timer to expire again after another period of inactivity.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -2878,9 +2802,10 @@ Release: April 23, 2024
 
 36 / 43
 
-4  Protocol Examples
 
-4.1  Sample Connection Sequence
+## 4 Protocol Examples
+
+### 4.1 Sample Connection Sequence
 
 The following five frames show an example of the multiple-step connection sequence and subsequent
 KeepAlive messages used when "Connector" initiates a connection to "Listener". The bytes are
@@ -2930,7 +2855,8 @@ Release: April 23, 2024
 
 37 / 43
 
-4.2  Sample Upper-Layer Data Transmission and Acknowledgment
+
+### 4.2 Sample Upper-Layer Data Transmission and Acknowledgment
 
 The following two frames show an example of an upper layer sending a payload from "Partner A" to
 "Partner B" and receiving an acknowledgment (ACK) in the reverse direction. The bytes are
@@ -2958,16 +2884,17 @@ Release: April 23, 2024
 
 38 / 43
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The DirectPlay 8 Protocol optionally uses the SHA-1 hashing algorithm (as specified in [FIPS180]),
 which has been shown to have weaknesses. However, the protocol is not intended for use in
 applications that demand robust security without Internet Protocol security (IPsec) or other
 lower-level security mechanisms already in place.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -2984,7 +2911,8 @@ Release: April 23, 2024
 
 39 / 43
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3047,7 +2975,8 @@ Release: April 23, 2024
 
 40 / 43
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3091,7 +3020,8 @@ Release: April 23, 2024
 
 41 / 43
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 23
@@ -3246,7 +3176,8 @@ P
 
 42 / 43
 
-V
+
+V
 
 Vendor-extensible fields 10
 Versioning 9

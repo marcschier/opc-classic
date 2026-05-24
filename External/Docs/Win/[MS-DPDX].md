@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 83
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 83
 
-Date
+
+Date
 
 Revision
 History
@@ -516,7 +518,8 @@ Significantly changed the technical content.
 
 3 / 83
 
-Date
+
+Date
 
 Revision
 History
@@ -541,294 +544,132 @@ Release: April 23, 2024
 
 4 / 83
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 How DXDiag Uses DirectPlay](#131-how-dxdiag-uses-directplay)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DPNID](#221-dpnid)
+    - [2.2.2 _MESSAGE_HEADER](#222-messageheader)
+    - [2.2.3 DXDiag DirectPlay Packets](#223-dxdiag-directplay-packets)
+    - [2.2.4 EnumQuery](#224-enumquery)
+    - [2.2.5 EnumResponse](#225-enumresponse)
+    - [2.2.6 SESS_PATH_TEST](#226-sesspathtest)
+    - [2.2.7 TRANS_COMMAND_CONNECT](#227-transcommandconnect)
+    - [2.2.8 TRANS_COMMAND_CONNECT_ACCEPT](#228-transcommandconnectaccept)
+    - [2.2.9 TRANS_COMMAND_SACK](#229-transcommandsack)
+    - [2.2.10 TRANS_USERDATA_ACK_SESSION_INFO](#2210-transuserdataacksessioninfo)
+    - [2.2.11 TRANS_USERDATA_ADD_PLAYER](#2211-transuserdataaddplayer)
+    - [2.2.12 TRANS_USERDATA_CONNECT_ATTEMPT_FAILED](#2212-transuserdataconnectattemptfailed)
+    - [2.2.13 TRANS_USERDATA_CONNECT_FAILED](#2213-transuserdataconnectfailed)
+    - [2.2.14 TRANS_USERDATA_TERMINATE_SESSION](#2214-transuserdataterminatesession)
+    - [2.2.15 TRANS_USERDATA_DESTROY_PLAYER](#2215-transuserdatadestroyplayer)
+    - [2.2.16 TRANS_USERDATA_END_OF_STREAM](#2216-transuserdataendofstream)
+    - [2.2.17 TRANS_USERDATA_HEADER](#2217-transuserdataheader)
+      - [2.2.17.1 Coalesced Payloads](#22171-coalesced-payloads)
+    - [2.2.18 TRANS_USERDATA_HOST_MIGRATE](#2218-transuserdatahostmigrate)
+    - [2.2.19 TRANS_USERDATA_HOST_MIGRATE_COMPLETE](#2219-transuserdatahostmigratecomplete)
+    - [2.2.20 TRANS_USERDATA_INSTRUCT_CONNECT](#2220-transuserdatainstructconnect)
+    - [2.2.21 TRANS_USERDATA_INSTRUCTED_CONNECT_FAILED](#2221-transuserdatainstructedconnectfailed)
+    - [2.2.22 TRANS_USERDATA_KEEPALIVE](#2222-transuserdatakeepalive)
+    - [2.2.23 TRANS_USERDATA_NAMETABLE_VERSION](#2223-transuserdatanametableversion)
+    - [2.2.24 TRANS_USERDATA_REQ_NAMETABLE_OP](#2224-transuserdatareqnametableop)
+    - [2.2.25 TRANS_USERDATA_ACK_NAMETABLE_OP](#2225-transuserdataacknametableop)
+    - [2.2.26 TRANS_USERDATA_PLAYER_CONNECT_INFO](#2226-transuserdataplayerconnectinfo)
+    - [2.2.27 TRANS_USERDATA_REQ_INTEGRITY_CHECK](#2227-transuserdatareqintegritycheck)
+    - [2.2.28 TRANS_USERDATA_INTEGRITY_CHECK](#2228-transuserdataintegritycheck)
+    - [2.2.29 TRANS_USERDATA_INTEGRITY_CHECK_RESPONSE](#2229-transuserdataintegritycheckresponse)
+    - [2.2.30 TRANS_USERDATA_RESYNC_VERSION](#2230-transuserdataresyncversion)
+    - [2.2.31 TRANS_USERDATA_SEND_MESSAGE](#2231-transuserdatasendmessage)
+    - [2.2.32 TRANS_USERDATA_SEND_PLAYER_DNID](#2232-transuserdatasendplayerdnid)
+    - [2.2.33 TRANS_USERDATA_SEND_SESSION_INFO](#2233-transuserdatasendsessioninfo)
+      - [2.2.33.1 DN_NAMETABLE_ENTRY_INFO](#22331-dnnametableentryinfo)
+      - [2.2.33.2 DN_NAMETABLE_MEMBERSHIP_INFO](#22332-dnnametablemembershipinfo)
+    - [2.2.34 DN_ADDRESSING_URL](#2234-dnaddressingurl)
+    - [2.2.35 DN_ALTERNATE_ADDRESS (IPv4)](#2235-dnalternateaddress-ipv4)
+      - [2.2.35.1 IN_ADDR (IPv4)](#22351-inaddr-ipv4)
+    - [2.2.36 DN_ALTERNATE_ADDRESS (IPv6)](#2236-dnalternateaddress-ipv6)
+      - [2.2.36.1 IN6_ADDR (IPv6)](#22361-in6addr-ipv6)
+    - [2.2.37 DN_NAMETABLE](#2237-dnnametable)
+    - [2.2.38 PATHTESTKEYDATA](#2238-pathtestkeydata)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Connect Retry Timer](#3121-connect-retry-timer)
+      - [3.1.2.2 EnumQuery Retry Timer](#3122-enumquery-retry-timer)
+      - [3.1.2.3 Retry Timer](#3123-retry-timer)
+      - [3.1.2.4 KeepAlive Retry Timer](#3124-keepalive-retry-timer)
+      - [3.1.2.5 Path Test Retry Timer](#3125-path-test-retry-timer)
+      - [3.1.2.6 Delayed Acknowledgment Timer](#3126-delayed-acknowledgment-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Sending a Chat Message](#3141-sending-a-chat-message)
+      - [3.1.4.2 Disconnecting](#3142-disconnecting)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Client Joins a DirectPlay Session with No Other Clients](#3151-client-joins-a-directplay-session-with-no-other-clients)
+      - [3.1.5.2 Client Joins a DirectPlay Session with Multiple Other Clients](#3152-client-joins-a-directplay-session-with-multiple-other-clients)
+      - [3.1.5.3 Client Disconnects from Chat Session](#3153-client-disconnects-from-chat-session)
+      - [3.1.5.4 Server Disconnects from Chat Session](#3154-server-disconnects-from-chat-session)
+      - [3.1.5.5 Client Is Forcefully Removed from Session](#3155-client-is-forcefully-removed-from-session)
+      - [3.1.5.6 Client Detects Loss of Connection to Other Client](#3156-client-detects-loss-of-connection-to-other-client)
+      - [3.1.5.7 Participant Receives Chat Message](#3157-participant-receives-chat-message)
+      - [3.1.5.8 Command Byte (bCommand) Validation and Processing](#3158-command-byte-bcommand-validation-and-processing)
+      - [3.1.5.9 Control Byte (bControl) Validation and Processing](#3159-control-byte-bcontrol-validation-and-processing)
+      - [3.1.5.10 Send Sequence ID (bSeq) Validation and Processing](#31510-send-sequence-id-bseq-validation-and-processing)
+      - [3.1.5.11 Acknowledged Sequence ID (bNRcv) Processing](#31511-acknowledged-sequence-id-bnrcv-processing)
+      - [3.1.5.12 SACK Mask Processing](#31512-sack-mask-processing)
+      - [3.1.5.13 Send Mask Processing](#31513-send-mask-processing)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Connect Retry Timer](#3161-connect-retry-timer)
+      - [3.1.6.2 EnumQuery Retry Timer](#3162-enumquery-retry-timer)
+      - [3.1.6.3 Retry Timer](#3163-retry-timer)
+      - [3.1.6.4 KeepAlive Retry Timer](#3164-keepalive-retry-timer)
+      - [3.1.6.5 Path Test Retry Timer](#3165-path-test-retry-timer)
+      - [3.1.6.6 Delayed Acknowledgment Timer](#3166-delayed-acknowledgment-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 User Joins a DXDiag Chat Session Example](#41-user-joins-a-dxdiag-chat-session-example)
+  - [4.2 Client Disconnects from a DXDiag Chat Session Example](#42-client-disconnects-from-a-dxdiag-chat-session-example)
+  - [4.3 New Client Joins a Game Session with an Existing Client Example](#43-new-client-joins-a-game-session-with-an-existing-client-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 12
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-How DXDiag Uses DirectPlay ........................................................................ 13
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-2.2.13
-2.2.14
-2.2.15
-2.2.16
-2.2.17
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-DPNID ....................................................................................................... 16
-_MESSAGE_HEADER ................................................................................... 16
-DXDiag DirectPlay Packets ........................................................................... 18
-EnumQuery ................................................................................................ 19
-EnumResponse ........................................................................................... 20
-SESS_PATH_TEST....................................................................................... 23
-TRANS_COMMAND_CONNECT ...................................................................... 24
-TRANS_COMMAND_CONNECT_ACCEPT .......................................................... 25
-TRANS_COMMAND_SACK ............................................................................ 27
-TRANS_USERDATA_ACK_SESSION_INFO ...................................................... 29
-TRANS_USERDATA_ADD_PLAYER ................................................................. 29
-TRANS_USERDATA_CONNECT_ATTEMPT_FAILED............................................ 31
-TRANS_USERDATA_CONNECT_FAILED .......................................................... 31
-TRANS_USERDATA_TERMINATE_SESSION ..................................................... 33
-TRANS_USERDATA_DESTROY_PLAYER .......................................................... 33
-TRANS_USERDATA_END_OF_STREAM ........................................................... 34
-TRANS_USERDATA_HEADER ........................................................................ 35
-Coalesced Payloads ............................................................................... 37
-TRANS_USERDATA_HOST_MIGRATE ............................................................. 38
-TRANS_USERDATA_HOST_MIGRATE_COMPLETE ............................................ 39
-TRANS_USERDATA_INSTRUCT_CONNECT ...................................................... 39
-TRANS_USERDATA_INSTRUCTED_CONNECT_FAILED ...................................... 40
-TRANS_USERDATA_KEEPALIVE .................................................................... 40
-TRANS_USERDATA_NAMETABLE_VERSION .................................................... 40
-TRANS_USERDATA_REQ_NAMETABLE_OP ..................................................... 41
-TRANS_USERDATA_ACK_NAMETABLE_OP ...................................................... 41
-TRANS_USERDATA_PLAYER_CONNECT_INFO ................................................. 42
-TRANS_USERDATA_REQ_INTEGRITY_CHECK ................................................. 45
-TRANS_USERDATA_INTEGRITY_CHECK ......................................................... 45
-TRANS_USERDATA_INTEGRITY_CHECK_RESPONSE ........................................ 46
-TRANS_USERDATA_RESYNC_VERSION .......................................................... 46
-TRANS_USERDATA_SEND_MESSAGE ............................................................ 47
-TRANS_USERDATA_SEND_PLAYER_DNID ...................................................... 47
-TRANS_USERDATA_SEND_SESSION_INFO .................................................... 47
-2.2.33.1  DN_NAMETABLE_ENTRY_INFO ................................................................ 51
-2.2.33.2  DN_NAMETABLE_MEMBERSHIP_INFO ...................................................... 53
-2.2.34  DN_ADDRESSING_URL ................................................................................ 53
-2.2.35  DN_ALTERNATE_ADDRESS (IPv4)................................................................. 55
-
-2.2.18
-2.2.19
-2.2.20
-2.2.21
-2.2.22
-2.2.23
-2.2.24
-2.2.25
-2.2.26
-2.2.27
-2.2.28
-2.2.29
-2.2.30
-2.2.31
-2.2.32
-2.2.33
-
-2.2.17.1
-
-[MS-DPDX] - v20240423
-DirectPlay DXDiag Usage Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 83
-
-2.2.35.1
-
-IN_ADDR (IPv4) ................................................................................... 56
-2.2.36  DN_ALTERNATE_ADDRESS (IPv6)................................................................. 56
-IN6_ADDR (IPv6) .................................................................................. 57
-2.2.37  DN_NAMETABLE ......................................................................................... 57
-PATHTESTKEYDATA .................................................................................... 58
-2.2.38
-
-2.2.36.1
-
-3.1
-
-3.1.5
-
-3.1.1
-3.1.2
-
-3.1.3
-3.1.4
-
-3.1.4.1
-3.1.4.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-3.1.2.5
-3.1.2.6
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-3.1.5.12
-3.1.5.13
-
-3  Protocol Details ..................................................................................................... 60
-Common Details .............................................................................................. 60
-Abstract Data Model .................................................................................... 60
-Timers ...................................................................................................... 60
-Connect Retry Timer ............................................................................. 60
-EnumQuery Retry Timer ........................................................................ 60
-Retry Timer .......................................................................................... 60
-KeepAlive Retry Timer ........................................................................... 61
-Path Test Retry Timer ............................................................................ 61
-Delayed Acknowledgment Timer ............................................................. 61
-Initialization ............................................................................................... 61
-Higher-Layer Triggered Events ..................................................................... 62
-Sending a Chat Message ........................................................................ 62
-Disconnecting ....................................................................................... 62
-Processing Events and Sequencing Rules ....................................................... 62
-Client Joins a DirectPlay Session with No Other Clients .............................. 62
-Client Joins a DirectPlay Session with Multiple Other Clients ....................... 64
-Client Disconnects from Chat Session ...................................................... 66
-Server Disconnects from Chat Session ..................................................... 66
-Client Is Forcefully Removed from Session ............................................... 67
-Client Detects Loss of Connection to Other Client ...................................... 67
-Participant Receives Chat Message .......................................................... 68
-Command Byte (bCommand) Validation and Processing ............................. 68
-Control Byte (bControl) Validation and Processing ..................................... 68
-Send Sequence ID (bSeq) Validation and Processing ................................. 68
-Acknowledged Sequence ID (bNRcv) Processing ....................................... 69
-SACK Mask Processing ........................................................................... 69
-Send Mask Processing ........................................................................... 69
-Timer Events .............................................................................................. 70
-Connect Retry Timer ............................................................................. 70
-EnumQuery Retry Timer ........................................................................ 70
-Retry Timer .......................................................................................... 70
-KeepAlive Retry Timer ........................................................................... 70
-Path Test Retry Timer ............................................................................ 70
-Delayed Acknowledgment Timer ............................................................. 71
-Other Local Events ...................................................................................... 71
-Server Details .................................................................................................. 71
-Abstract Data Model .................................................................................... 71
-Timers ...................................................................................................... 71
-Initialization ............................................................................................... 71
-Higher-Layer Triggered Events ..................................................................... 71
-Processing Events and Sequencing Rules ....................................................... 71
-Timer Events .............................................................................................. 71
-Other Local Events ...................................................................................... 71
-Client Details ................................................................................................... 71
-Abstract Data Model .................................................................................... 71
-Timers ...................................................................................................... 72
-Initialization ............................................................................................... 72
-Higher-Layer Triggered Events ..................................................................... 72
-Processing Events and Sequencing Rules ....................................................... 72
-Timer Events .............................................................................................. 72
-Other Local Events ...................................................................................... 72
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.1.7
-
-3.1.6
-
-3.3
-
-3.2
-
-[MS-DPDX] - v20240423
-DirectPlay DXDiag Usage Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 83
-
-4  Protocol Examples ................................................................................................. 73
-User Joins a DXDiag Chat Session Example ......................................................... 73
-Client Disconnects from a DXDiag Chat Session Example ...................................... 73
-New Client Joins a Game Session with an Existing Client Example .......................... 73
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 76
-Security Considerations for Implementers ........................................................... 76
-Index of Security Parameters ............................................................................ 76
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 77
-
-7  Change Tracking .................................................................................................... 80
-
-8  Index ..................................................................................................................... 81
-
-[MS-DPDX] - v20240423
-DirectPlay DXDiag Usage Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 83
-
-1  Introduction
+## 1 Introduction
 
 This specification pertains to the DirectPlay Protocol and describes how DirectPlay messages are used
 natively by the DXDiag application. This protocol is intended for peer-to-peer network video gaming.
@@ -836,7 +677,7 @@ natively by the DXDiag application. This protocol is intended for peer-to-peer n
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -901,7 +742,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DirectPlay 8 server application: A DirectPlay 8 application that is hosting a DirectPlay 8 session.
+
+DirectPlay 8 server application: A DirectPlay 8 application that is hosting a DirectPlay 8 session.
 When connected, the actual communication between nodes in a DirectPlay 8 session could be
 client/server or peer to peer. The term "server" in this definition is meant to indicate the role
 that the DirectPlay 8 server application is taking in the host enumeration process, which is the
@@ -979,7 +821,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-services. IPsec supports network-level peer authentication, data origin authentication, data
+
+services. IPsec supports network-level peer authentication, data origin authentication, data
 integrity, data confidentiality (encryption), and replay protection.
 
 Internet Protocol version 4 (IPv4): An Internet protocol that has 32-bit source and destination
@@ -1059,7 +902,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-round-trip time (RTT): The time that it takes a packet to be sent to a remote partner and for
+
+round-trip time (RTT): The time that it takes a packet to be sent to a remote partner and for
 
 that partner's acknowledgment to arrive at the original sender. This is a measurement of latency
 between partners.
@@ -1121,7 +965,7 @@ wide characters: Characters represented by a 2-byte value that are encoded using
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1135,7 +979,8 @@ Release: April 23, 2024
 
 11 / 83
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1155,7 +1000,7 @@ https://www.iana.org/assignments/service-names-port-numbers/service-names-port-n
 [RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IPX] Novell Corporation, "Internetwork Packet Exchange (IPX)",
 http://www.novell.com/documentation/nw6p/pdfdoc/ipx_enu/ipx_enu.pdf
@@ -1170,7 +1015,7 @@ http://www.novell.com/documentation/nw6p/pdfdoc/ipx_enu/ipx_enu.pdf
 
 [MC-DPLNAT] Microsoft Corporation, "DirectPlay 8 Protocol: NAT Locator".
 
-1.3  Overview
+### 1.3 Overview
 
 The DirectPlay DXDiag Usage Protocol is designed to handle the following two basic types of network
 messaging for networked gaming:
@@ -1206,7 +1051,8 @@ Release: April 23, 2024
 
 12 / 83
 
-Message category
+
+Message category
 
 Flags set
 
@@ -1230,7 +1076,7 @@ those that have to be delivered according to the upper layer and have to wait un
 sequence due to packet loss are resolved. However, non-sequential packets can be delivered to the
 upper layer as they arrive.
 
-1.3.1  How DXDiag Uses DirectPlay
+#### 1.3.1 How DXDiag Uses DirectPlay
 
 DirectPlay DXDiag Usage Protocol packets are transported by means of User Datagram Protocol
 (UDP) (as specified in [RFC768]) and internetwork packet exchange [IPX]. To facilitate transport
@@ -1275,11 +1121,12 @@ Release: April 23, 2024
 
 13 / 83
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-DPDX].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DirectPlay DXDiag Usage Protocol has a dependency on UDP, or other similar datagram-oriented,
 connectionless protocol such as IPX, for the transport layer. As a native Windows protocol, no other
@@ -1287,19 +1134,19 @@ protocols depend on the DirectPlay DXDiag Usage Protocol.
 
 Figure 1: DirectPlay DXDiag Usage Protocol relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 All multiple-byte fields used by the DirectPlay DXDiag Usage Protocol are in little-endian byte order,
 unless otherwise noted.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DirectPlay DXDiag Usage Protocol was designed for multiplayer network gaming, but not for other
 uses of peer-to-peer messaging. It is not recommended for file transfer or for applications with
 robust security requirements that cannot provide them at other layers such as Internet Protocol
 security IPsec.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1336,7 +1183,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Capability negotiation: The DirectPlay DXDiag Usage Protocol inspects the value of the
+
+  Capability negotiation: The DirectPlay DXDiag Usage Protocol inspects the value of the
 
 dwCurrentProtocolVersion field of the TRANS_COMMAND_CONNECT and
 TRANS_COMMAND_CONNECT_ACCEPT messages to identify the features that are supported by
@@ -1356,11 +1204,11 @@ DirectPlay 4, as described in [MC-DPL4CS]. These versions include:<2>
 
   DirectPlay 3A
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The DirectPlay DXDiag Usage Protocol uses one well-known UDP port assignment.
 
@@ -1383,20 +1231,21 @@ Release: April 23, 2024
 
 15 / 83
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The DirectPlay DXDiag Usage Protocol uses UDP, internetwork packet exchange (IPX), serial, or
 modem as the transport. The DirectPlay DXDiag Usage Protocol can utilize either IPv4 or IPv6. The
 wire protocol format is the same for UDP and IPX. When a serial or modem link is used, there is an
 extra header, as specified in section 2.2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  DPNID
+#### 2.2.1 DPNID
 
 The DPNID identifier describes the 32-bit DirectPlay network identifier for a player in a game
 session.
@@ -1424,7 +1273,7 @@ the instance GUID begins with 0xA1B2C3D4, the DPNID 0x00A00005 value would be XO
 Note  The DirectPlay host uses the DPNID of a player to determine the location for this DPNID entry
 in the name table.
 
-2.2.2  _MESSAGE_HEADER
+#### 2.2.2 _MESSAGE_HEADER
 
 When a serial or modem link is used, any of the packets listed in the table in section 2.2.3 are
 modified by prefixing them with the _MESSAGE_HEADER header. Exceptions to this are the packets
@@ -1441,7 +1290,8 @@ Release: April 23, 2024
 
 16 / 83
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-DPDX].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1504,7 +1354,8 @@ Release: April 23, 2024
 
 17 / 83
 
-wMessageCRC (2 bytes): A 16-bit integer that provides the CRC, in bytes, for the message data,
+
+wMessageCRC (2 bytes): A 16-bit integer that provides the CRC, in bytes, for the message data,
 
 which is calculated using the standardized CRC-16-IBM algorithm.
 
@@ -1512,7 +1363,7 @@ wHeaderCRC (2 bytes): A 16-bit integer that provides the CRC, in bytes, for the 
 
 which is calculated using the standardized CRC-16-IBM algorithm.
 
-2.2.3  DXDiag DirectPlay Packets
+#### 2.2.3 DXDiag DirectPlay Packets
 
 DirectPlay DXDiag Usage Protocol packets beginning with a zero byte are used to locate game
 sessions and to test network paths for peer connection attempts. Packets that have a nonzero first
@@ -1612,7 +1463,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Packet
+
+Packet
 
 Description
 
@@ -1683,7 +1535,7 @@ packet using a special coalesced payload, as defined in section 2.2.17.1. TRANS_
 packets that have the PACKET_COMMAND_USER1 or PACKET_COMMAND_USER2 flag set in the
 bCommand field of the TRANS_USERDATA_HEADER packet header can be coalesced.
 
-2.2.4  EnumQuery
+#### 2.2.4 EnumQuery
 
 The EnumQuery packet is used to enumerate hosting servers [MC-DPLHP]. The server replies with an
 EnumResponse to the client, where one EnumResponse message is sent for each game session that
@@ -1719,7 +1571,8 @@ Release: April 23, 2024
 
 19 / 83
 
-QueryType
+
+QueryType
 
 ApplicationGUID (16 bytes, optional)
 
@@ -1775,7 +1628,7 @@ ApplicationPayload (variable): The DirectPlay DXDiag Usage Protocol will never i
 
 application payload.
 
-2.2.5  EnumResponse
+#### 2.2.5 EnumResponse
 
 The EnumResponse packet is sent from the game session server to the client in response to the
 EnumQuery packet that was sent from the client.
@@ -1808,7 +1661,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ReplyOffset
+
+ReplyOffset
 
 ResponseSize
 
@@ -1865,7 +1719,8 @@ Release: April 23, 2024
 
 21 / 83
 
-...
+
+...
 
 ApplicationReservedData (variable)
 
@@ -1951,7 +1806,8 @@ Release: April 23, 2024
 
 22 / 83
 
-SessionNameSize (4 bytes): A 32-bit integer that specifies the size in bytes of the game session
+
+SessionNameSize (4 bytes): A 32-bit integer that specifies the size in bytes of the game session
 
 name.
 
@@ -2009,7 +1865,7 @@ ApplicationData (variable): This field MUST be filled with zeroes on sending and
 
 upon receipt.
 
-2.2.6  SESS_PATH_TEST
+#### 2.2.6 SESS_PATH_TEST
 
 The SESS_PATH_TEST packet is used to circumvent issues with NAT devices. SESS_PATH_TEST
 packets are sent only when IPv4 is the transport. Path test packets and NAT are described in [MC-
@@ -2041,7 +1897,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 blZero (1 byte): The leading zero byte for the packet. This field MUST be set to 0 to denote that this
 
@@ -2060,7 +1917,7 @@ Key (8 bytes): A 64-bit integer that provides the unique key associated with the
 
 message. For information about how this value is generated, see section 3.1.1.
 
-2.2.7  TRANS_COMMAND_CONNECT
+#### 2.2.7 TRANS_COMMAND_CONNECT
 
 The TRANS_COMMAND_CONNECT packet is used to request a connection. The response is a
 TRANS_COMMAND CONNECT_ACCEPT packet.
@@ -2128,7 +1985,8 @@ Release: April 23, 2024
 
 24 / 83
 
-dwCurrentProtocolVersion (4 bytes): The version number of the requestor's DirectPlay protocol,
+
+dwCurrentProtocolVersion (4 bytes): The version number of the requestor's DirectPlay protocol,
 in little-endian byte order, where the upper 16 bits are considered a major version number and
 the lower 16 bits are considered a minor version number. The major version number MUST NOT
 be set to any value other than 0x0001. The minor version number SHOULD<5> be set to 0x0000
@@ -2189,7 +2047,7 @@ tTimestamp (4 bytes): A 32-bit integer that provides the sender's computer syste
 value of the tTimestamp field SHOULD be ignored, but MAY be used to estimate the differences
 in local tick counts between a sender and receiver.
 
-2.2.8  TRANS_COMMAND_CONNECT_ACCEPT
+#### 2.2.8 TRANS_COMMAND_CONNECT_ACCEPT
 
 The TRANS_COMMAND_CONNECT_ACCEPT packet is used to accept a connection request.
 
@@ -2219,7 +2077,8 @@ Release: April 23, 2024
 
 25 / 83
 
-dwCurrentProtocolVersion
+
+dwCurrentProtocolVersion
 
 dwSessID
 
@@ -2294,7 +2153,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00010005
 
@@ -2325,7 +2185,7 @@ tTimestamp (4 bytes): A 32-bit integer that provides the sender's computer syste
 value of the tTimestamp field SHOULD be ignored, but MAY be used to estimate the differences
 in local tick counts between a sender and receiver.
 
-2.2.9  TRANS_COMMAND_SACK
+#### 2.2.9 TRANS_COMMAND_SACK
 
 The TRANS_COMMAND_SACK packet is used to acknowledge outstanding packets. Packet ACK is
 typically bundled in all user data packets using the bSeq and bNRcv fields found in the
@@ -2388,7 +2248,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x80
 
@@ -2477,7 +2338,8 @@ Release: April 23, 2024
 
 28 / 83
 
-dwSACKMask1 (4 bytes): A 32-bit integer that provides the optional low 32 bits of the SACK mask
+
+dwSACKMask1 (4 bytes): A 32-bit integer that provides the optional low 32 bits of the SACK mask
 in little-endian byte order. The existence of this field in the packet is dependent on the bFlags
 field having SACK_FLAGS_SACK_MASK1 set.
 
@@ -2494,7 +2356,7 @@ dwSendMask2 (4 bytes): A 32-bit integer that provides the optional high 32 bits 
 in little-endian byte order. The existence of this field in the packet is dependent on the bFlags
 field having SACK_FLAGS_SEND_MASK2 set.
 
-2.2.10 TRANS_USERDATA_ACK_SESSION_INFO
+#### 2.2.10 TRANS_USERDATA_ACK_SESSION_INFO
 
 The TRANS_USERDATA_ACK_SESSION_INFO packet is sent from the client to the server to
 acknowledge the receipt of connection information. This packet contains no user data beyond the
@@ -2517,7 +2379,7 @@ dwPacketType (4 bytes): A 32-bit integer that indicates the packet type. This fi
 0x000000C3 to denote that this message acknowledges the receipt of game session connection
 information.
 
-2.2.11 TRANS_USERDATA_ADD_PLAYER
+#### 2.2.11 TRANS_USERDATA_ADD_PLAYER
 
 The TRANS_USERDATA_ADD_PLAYER packet instructs clients to add a specified client to the game
 session. This packet begins with a TRANS_USERDATA_HEADER.
@@ -2556,7 +2418,8 @@ Release: April 23, 2024
 
 29 / 83
 
-dwNameSize
+
+dwNameSize
 
 dwDataOffset
 
@@ -2621,7 +2484,8 @@ Release: April 23, 2024
 
 30 / 83
 
-dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
+
+dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
 
 dwDNETClientVersion (4 bytes): A 32-bit integer that provides the DirectPlay version of the client
 being added to the chat session. This field MUST be set to the appropriate DirectPlay version for
@@ -2660,7 +2524,7 @@ name (variable): A variable length array of Unicode characters that contains the
 
 including the terminating null character.
 
-2.2.12 TRANS_USERDATA_CONNECT_ATTEMPT_FAILED
+#### 2.2.12 TRANS_USERDATA_CONNECT_ATTEMPT_FAILED
 
 The TRANS_USERDATA_CONNECT_ATTEMPT_FAILED packet is sent from the host to a connecting
 peer to indicate that an existing peer in the game session was unable to carry out the instruction
@@ -2690,7 +2554,7 @@ dpnID (4 bytes): A 32-bit field that contains the identifier for the existing pe
 
 that was unable to connect to the new peer.
 
-2.2.13 TRANS_USERDATA_CONNECT_FAILED
+#### 2.2.13 TRANS_USERDATA_CONNECT_FAILED
 
 The TRANS_USERDATA_CONNECT_FAILED packet indicates that a connection attempt failed. This
 packet begins with a TRANS_USERDATA_HEADER.
@@ -2702,7 +2566,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2807,11 +2672,12 @@ Release: April 23, 2024
 
 32 / 83
 
-reply (variable): A variable length array of characters that contains a reply message identifying the
+
+reply (variable): A variable length array of characters that contains a reply message identifying the
 
 connection failure, including the terminating null character.
 
-2.2.14 TRANS_USERDATA_TERMINATE_SESSION
+#### 2.2.14 TRANS_USERDATA_TERMINATE_SESSION
 
 The TRANS_USERDATA_TERMINATE_SESSION packet instructs the client to disconnect from the
 game session. This packet begins with a TRANS_USERDATA_HEADER (section 2.2.17).
@@ -2864,7 +2730,7 @@ TerminateData (variable): A variable-length field that contains a byte array fro
 
 that describes why the client is being terminated from the game session.
 
-2.2.15 TRANS_USERDATA_DESTROY_PLAYER
+#### 2.2.15 TRANS_USERDATA_DESTROY_PLAYER
 
 The TRANS_USERDATA_DESTROY_PLAYER packet instructs the client to remove a specified user from
 the name table. This packet begins with a TRANS_USERDATA_HEADER.
@@ -2895,7 +2761,8 @@ Release: April 23, 2024
 
 33 / 83
 
-dwDestroyReason
+
+dwDestroyReason
 
 dwPacketType (4 bytes): A 32-bit integer that indicates the packet type. This field MUST be set to
 0x000000D1 to denote that this message instructs the client to remove a specified user from the
@@ -2929,7 +2796,7 @@ The server removed the client.
 
 0x00000004
 
-2.2.16 TRANS_USERDATA_END_OF_STREAM
+#### 2.2.16 TRANS_USERDATA_END_OF_STREAM
 
 The TRANS_USERDATA_END_OF_STREAM packet is used to signal the disconnection of a user. This
 packet consists of only the TRANS_USERDATA_HEADER.
@@ -2999,7 +2866,8 @@ Release: April 23, 2024
 
 34 / 83
 
-Value
+
+Value
 
 Meaning
 
@@ -3034,7 +2902,7 @@ bNRcv (1 byte): An 8-bit integer that provides the expected sequence number of t
 
 received.
 
-2.2.17 TRANS_USERDATA_HEADER
+#### 2.2.17 TRANS_USERDATA_HEADER
 
 The TRANS_USERDATA_HEADER is a transport packet header that contains command, control, and
 ACK information. It is included with all TRANS_USERDATA DirectPlay packets.
@@ -3099,7 +2967,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x02
 
@@ -3229,7 +3098,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bSeq (1 byte): An 8-bit integer that provides the sequence number of the packet.
+
+bSeq (1 byte): An 8-bit integer that provides the sequence number of the packet.
 
 bNRcv (1 byte): An 8-bit integer that provides the expected sequence number of the next packet
 
@@ -3262,9 +3132,9 @@ DFRAME headers up to this point. If the PACKET_CONTROL_COALESCE flag is set, the
 is not a single message or portion of a message, but is instead organized according to the
 coalesced payload format, as specified in section 2.2.17.1.
 
-2.2.17.1
+##### 2.2.17.1 Coalesced Payloads
 
-Coalesced Payloads
+
 
 Coalesced payloads are a special form of payload within standard DFRAMEs. When the
 PACKET_CONTROL_COALESCE flag is set on the outer DFRAME header bControl field of the
@@ -3322,7 +3192,8 @@ Release: April 23, 2024
 
 37 / 83
 
-payload 1 (variable)
+
+payload 1 (variable)
 
 payload 2 (optional, variable)
 
@@ -3380,7 +3251,7 @@ message).
 
 payload 1 through payload n: Contains the consumer payload data.
 
-2.2.18 TRANS_USERDATA_HOST_MIGRATE
+#### 2.2.18 TRANS_USERDATA_HOST_MIGRATE
 
 The TRANS_USERDATA_HOST_MIGRATE packet indicates that host migration is enabled, and the
 host server is terminating. This packet begins with a TRANS_USERDATA_HEADER.
@@ -3409,7 +3280,8 @@ Release: April 23, 2024
 
 38 / 83
 
-dwPacketType (4 bytes): A 32-bit integer that indicates the packet type. This field MUST be set to
+
+dwPacketType (4 bytes): A 32-bit integer that indicates the packet type. This field MUST be set to
 
 0x000000CD to denote that this message indicates that the host migration procedure has started.
 
@@ -3417,7 +3289,7 @@ dpnidOldHost (4 bytes): A 32-bit integer that provides the identifier for the ol
 
 dpnidNewHost (4 bytes): A 32-bit integer that provides the identifier for the new host.
 
-2.2.19 TRANS_USERDATA_HOST_MIGRATE_COMPLETE
+#### 2.2.19 TRANS_USERDATA_HOST_MIGRATE_COMPLETE
 
 The TRANS_USERDATA_HOST_MIGRATE_COMPLETE packet informs clients that the game session-
 hosting responsibilities have successfully migrated from the departing old host. This packet begins
@@ -3441,7 +3313,7 @@ dwPacketType (4 bytes): A 32-bit integer that indicates the packet type. This fi
 0x000000CE to denote that this message informs clients that the game session-hosting
 responsibilities have successfully migrated from the departing old host.
 
-2.2.20 TRANS_USERDATA_INSTRUCT_CONNECT
+#### 2.2.20 TRANS_USERDATA_INSTRUCT_CONNECT
 
 The TRANS_USERDATA_INSTRUCT_CONNECT packet instructs a client to connect to a designated
 client. This packet begins with a TRANS_USERDATA_HEADER.
@@ -3476,7 +3348,7 @@ dwVersion (4 bytes): A 32-bit integer that specifies the current version of the 
 
 dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
 
-2.2.21 TRANS_USERDATA_INSTRUCTED_CONNECT_FAILED
+#### 2.2.21 TRANS_USERDATA_INSTRUCTED_CONNECT_FAILED
 
 The TRANS_USERDATA_INSTRUCTED_CONNECT_FAILED packet indicates that a client was unable to
 carry out a server instruction to connect to a new client. This packet begins with a
@@ -3489,7 +3361,8 @@ Release: April 23, 2024
 
 39 / 83
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3510,7 +3383,7 @@ instruction to connect to a new client.
 
 dpnID (4 bytes): A 32-bit integer that provides the identifier for the client.
 
-2.2.22 TRANS_USERDATA_KEEPALIVE
+#### 2.2.22 TRANS_USERDATA_KEEPALIVE
 
 The TRANS_USERDATA_KEEPALIVE packet is used by DXDiag to calculate an RTT. This packet begins
 with a TRANS_USERDATA_HEADER packet header.
@@ -3540,7 +3413,7 @@ to version 0x00010006 recipients. This value MUST be set to the same dwSessID va
 in the TRANS_COMMAND_CONNECT (section 2.2.7) message associated with the connection;
 otherwise, the packet SHOULD be ignored.
 
-2.2.23 TRANS_USERDATA_NAMETABLE_VERSION
+#### 2.2.23 TRANS_USERDATA_NAMETABLE_VERSION
 
 The TRANS_USERDATA_NAMETABLE_VERSION packet specifies the version number of the name
 table. This packet begins with a TRANS_USERDATA_HEADER.
@@ -3577,9 +3450,10 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
 
-2.2.24 TRANS_USERDATA_REQ_NAMETABLE_OP
+dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
+
+#### 2.2.24 TRANS_USERDATA_REQ_NAMETABLE_OP
 
 The TRANS_USERDATE_REQ_NAMETABLE_OP packet is sent from the new host to an existing peer in
 the game session that has a newer name table than that of the host. The host sends this message
@@ -3613,7 +3487,7 @@ dwVersion (4 bytes): A 32-bit field that contains the current name table version
 
 dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
 
-2.2.25 TRANS_USERDATA_ACK_NAMETABLE_OP
+#### 2.2.25 TRANS_USERDATA_ACK_NAMETABLE_OP
 
 The TRANS_USERDATE_ACK_NAMETABLE_OP packet is sent from the peer that is being queried for
 name table information back to the new host. The message will include all entries missing from the
@@ -3655,7 +3529,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwNumEntries (4 bytes): A 32-bit field that specifies the number of name table entries included in
+
+dwNumEntries (4 bytes): A 32-bit field that specifies the number of name table entries included in
 
 the message. The dwMsgId, dwOpOffset, dwOpSize, and op fields are present in a
 TRANS_USERDATE_ACK_NAMETABLE_OP message dwNumEntries times.
@@ -3691,7 +3566,7 @@ dwMsgId field value of 0x000000D1 would contain the dpnidLeaving, dwVersion,
 dwVersionNotUsed, and dwDestroyReason field information from an original
 TRANS_USERDATA_DESTROY_PLAYER packet.
 
-2.2.26 TRANS_USERDATA_PLAYER_CONNECT_INFO
+#### 2.2.26 TRANS_USERDATA_PLAYER_CONNECT_INFO
 
 The TRANS_USERDATA_PLAYER_CONNECT_INFO packet is used to send client connection information
 to the host. This packet begins with a TRANS_USERDATA_HEADER.
@@ -3734,7 +3609,8 @@ Release: April 23, 2024
 
 42 / 83
 
-dwConnectDataSize
+
+dwConnectDataSize
 
 dwURLOffset
 
@@ -3790,7 +3666,8 @@ Release: April 23, 2024
 
 43 / 83
 
-dwFlags (4 bytes): A 32-bit integer that specifies the connect flags. This field MUST be set to
+
+dwFlags (4 bytes): A 32-bit integer that specifies the connect flags. This field MUST be set to
 
 0x00000004 to indicate that the connecting application is a peer.
 
@@ -3873,7 +3750,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-connectData (variable): A variable length field that contains a byte array that provides the
+
+connectData (variable): A variable length field that contains a byte array that provides the
 
 connection data. This field's position is determined by dwConnectDataOffset and the size stated
 in dwConnectDataOffsetSize.
@@ -3893,7 +3771,7 @@ dwNameSize field; both are fields in the DN_NAMETABLE_ENTRY_INFO structure. The 
 character indicated by dwNameSize SHOULD be treated as the terminating null character, even if
 the sender did not transmit it that way.
 
-2.2.27 TRANS_USERDATA_REQ_INTEGRITY_CHECK
+#### 2.2.27 TRANS_USERDATA_REQ_INTEGRITY_CHECK
 
 The TRANS_USERDATA_REQ_INTEGRITY_CHECK packet requests that a host determine if a target
 client is still in the game session. This packet begins with a TRANS_USERDATA_HEADER.
@@ -3928,7 +3806,7 @@ dpnidTarget (4 bytes): A 32-bit integer that specifies the identifier of the sel
 
 which the host validates.
 
-2.2.28 TRANS_USERDATA_INTEGRITY_CHECK
+#### 2.2.28 TRANS_USERDATA_INTEGRITY_CHECK
 
 The TRANS_USERDATA_INTEGRITY_CHECK packet is a request from a host to a client inquiring
 whether the client is still in the game session. This packet begins with a
@@ -3956,7 +3834,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwPacketType (4 bytes): A 32-bit field that contains the packet type. This field MUST be set to
+
+dwPacketType (4 bytes): A 32-bit field that contains the packet type. This field MUST be set to
 0x000000E3 to indicate that the host is requesting a client to verify that it is still in the game
 session.
 
@@ -3964,7 +3843,7 @@ dpnidRequesting (4 bytes): A 32-bit field that contains the identifier of the cl
 
 validation. For more information, see section 2.2.1.
 
-2.2.29 TRANS_USERDATA_INTEGRITY_CHECK_RESPONSE
+#### 2.2.29 TRANS_USERDATA_INTEGRITY_CHECK_RESPONSE
 
 The TRANS_USERDATA_INTEGRITY_CHECK_RESPONSE packet is a response from a client to the
 host confirming that it is still in the game session. This packet begins with a
@@ -3994,7 +3873,7 @@ dpnidRequesting (4 bytes): A 32-bit field that contains the identifier of the cl
 
 validation. For more information, see section 2.2.1.
 
-2.2.30 TRANS_USERDATA_RESYNC_VERSION
+#### 2.2.30 TRANS_USERDATA_RESYNC_VERSION
 
 The TRANS_USERDATA_RESYNC_VERSION packet is used to request that the name table version
 number be resynchronized to the current version number. This packet begins with a
@@ -4026,7 +3905,7 @@ dwVersion (4 bytes): A 32-bit integer that provides the current name table versi
 
 dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
 
-2.2.31 TRANS_USERDATA_SEND_MESSAGE
+#### 2.2.31 TRANS_USERDATA_SEND_MESSAGE
 
 The TRANS_USERDATA_SEND_MESSAGE packet transmits a chat message to all other users in a chat
 session. This packet begins with a TRANS_USERDATA_HEADER and does not contain a
@@ -4039,7 +3918,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4071,7 +3951,7 @@ then the value specified in strChatString SHOULD be padded. If the length of the
 the received packet is less than 200 Unicode characters, the receiver SHOULD send an
 acknowledgment for the message, and the receiver SHOULD discard the message.
 
-2.2.32 TRANS_USERDATA_SEND_PLAYER_DNID
+#### 2.2.32 TRANS_USERDATA_SEND_PLAYER_DNID
 
 The TRANS_USERDATA_SEND_PLAYER_DNID packet is used to send a user identification number to
 another client. This packet begins with a TRANS_USERDATA_HEADER.
@@ -4096,7 +3976,7 @@ dwPacketType (4 bytes): A 32-bit integer that indicates the packet type. This fi
 
 dpnID (4 bytes): A 32-bit integer that provides the identifier of the client.
 
-2.2.33 TRANS_USERDATA_SEND_SESSION_INFO
+#### 2.2.33 TRANS_USERDATA_SEND_SESSION_INFO
 
 The TRANS_USERDATA_SEND_SESSION_INFO packet is used by the game session server to relay
 game session information to the client. This packet begins with a TRANS_USERDATA_HEADER.
@@ -4127,7 +4007,8 @@ Release: April 23, 2024
 
 47 / 83
 
-dwFlags
+
+dwFlags
 
 dwMaxPlayers
 
@@ -4184,7 +4065,8 @@ Release: April 23, 2024
 
 48 / 83
 
-...
+
+...
 
 URL (variable)
 
@@ -4243,7 +4125,8 @@ Release: April 23, 2024
 
 49 / 83
 
-Value
+
+Value
 
 Meaning
 
@@ -4325,7 +4208,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DN_NAMETABLE_ENTRY_INFO (variable): A dwEntryCount size array of structures that provides
+
+DN_NAMETABLE_ENTRY_INFO (variable): A dwEntryCount size array of structures that provides
 
 information on a name table entry, as specified in section 2.2.33.1.
 
@@ -4380,9 +4264,9 @@ reply (variable): A variable-length zero-terminated character array that contain
 
 field's position is determined by dwReplyOffset and the size stated in dwReplySize.
 
-2.2.33.1
+##### 2.2.33.1 DN_NAMETABLE_ENTRY_INFO
 
-DN_NAMETABLE_ENTRY_INFO
+
 
 Information on a name table entry. The number of DN_NAMETABLE_ENTRY_INFO structures in this
 packet is specified in the dwEntryCount field.
@@ -4407,7 +4291,8 @@ Release: April 23, 2024
 
 51 / 83
 
-dpnidOwner
+
+dpnidOwner
 
 dwFlags
 
@@ -4476,7 +4361,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwDNETVersion (4 bytes): A 32-bit integer that provides the DirectPlay version. This field MUST be
+
+dwDNETVersion (4 bytes): A 32-bit integer that provides the DirectPlay version. This field MUST be
 
 set to the appropriate DirectPlay version.<12>
 
@@ -4500,9 +4386,9 @@ dwPacketType field to the url field.
 
 dwURLSize (4 bytes): A 32-bit integer that provides the size, in bytes, of the url field.
 
-2.2.33.2
+##### 2.2.33.2 DN_NAMETABLE_MEMBERSHIP_INFO
 
-DN_NAMETABLE_MEMBERSHIP_INFO
+
 
 Information on a name table membership. The number of DN_NAMETABLE_MEMBERSHIP_INFO
 structures in this packet is specified in the dwMembershipCount field.
@@ -4536,7 +4422,7 @@ dwVersion (4 bytes): A 32-bit integer that specifies the name table version.
 
 dwVersionNotUsed (4 bytes): This field MUST be set to 0 when sending and ignored on receipt.
 
-2.2.34 DN_ADDRESSING_URL
+#### 2.2.34 DN_ADDRESSING_URL
 
 DirectPlay represents addresses for an application in the form of a URL. The structure of the URL is
 as follows:
@@ -4557,7 +4443,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A DirectPlay URL has three components: the scheme, the scheme separator, and the URL data:
+
+A DirectPlay URL has three components: the scheme, the scheme separator, and the URL data:
 
 Scheme: The scheme used for a DirectPlay URL is "x-directplay".
 
@@ -4648,7 +4535,8 @@ Release: April 23, 2024
 
 54 / 83
 
- x-directplay:/
+
+ x-directplay:/
   provider=%7B53934290-628D-11D2-AE0F-006097B01411%7D;
   device=%7BIPX ADAPTER GUID%7D;port=00230#IPXUserData
 
@@ -4666,7 +4554,7 @@ Modem Address
   device=%7BMODEM DEVICE GUID%7D;
   phonenumber=555-1212#ModemUserData
 
-2.2.35 DN_ALTERNATE_ADDRESS (IPv4)
+#### 2.2.35 DN_ALTERNATE_ADDRESS (IPv4)
 
 In DirectPlay 9, the DN_ALTERNATE_ADDRESS structure provides additional options for Internet
 Protocol (IP) connectivity. The alternative addresses included in DN_ALTERNATE_ADDRESS are
@@ -4714,9 +4602,9 @@ dwAddrIn (4 bytes): The address of the corresponding IN_ADDR (IPv4) structure fo
 
 DN_ALTERNATE_ADDRESS (IPv4) structure, which includes the IPv4 transport address.
 
-2.2.35.1
+##### 2.2.35.1 IN_ADDR (IPv4)
 
-IN_ADDR (IPv4)
+
 
 The IN_ADDR structure specifies a 4-byte IPv4 transport address. The IPv4 transport address
 192.168.239.061, when converted into a 4-byte binary IN_ADDR structure, would have the value
@@ -4729,7 +4617,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4756,7 +4645,7 @@ b3 (1 byte): Third octet of the IPv4 network address.
 
 b4 (1 byte): Fourth octet of the IPv4 network address.
 
-2.2.36 DN_ALTERNATE_ADDRESS (IPv6)
+#### 2.2.36 DN_ALTERNATE_ADDRESS (IPv6)
 
 The DN_ALTERNATE_ADDRESS (IPv6) structure is described in detail under the
 DN_ALTERNATE_ADDRESS (IPv4) (section 2.2.35) structure.
@@ -4805,9 +4694,9 @@ dwAddrIn (16 bytes): The address of the corresponding IN6_ADDR (IPv6) (section 2
 structure for this DN_ALTERNATE_ADDRESS (IPv6) structure, which includes the IPv6
 transport address.
 
-2.2.36.1
+##### 2.2.36.1 IN6_ADDR (IPv6)
 
-IN6_ADDR (IPv6)
+
 
 The IN6_ADDR structure specifies an IPv6 transport address whose bytes are in network byte
 order (big-endian). The IPv6 transport address 2001:0db8:85a3:0000:0000:8a2e:0370:7334, when
@@ -4822,7 +4711,8 @@ Release: April 23, 2024
 
 56 / 83
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4897,7 +4787,7 @@ b15 (1 byte): High byte of the eighth 4-digit hexadecimal portion of the IPv6 ne
 
 b16 (1 byte): Low byte of the eighth 4-digit hexadecimal portion of the IPv6 network address.
 
-2.2.37 DN_NAMETABLE
+#### 2.2.37 DN_NAMETABLE
 
 The name table is a concept used by DirectPlay to keep all participants in a game session in sync
 with the different actions that are being performed.
@@ -4918,7 +4808,8 @@ Release: April 23, 2024
 
 57 / 83
 
-Action
+
+Action
 
 Meaning
 
@@ -4943,7 +4834,7 @@ send a TRANS_USERDATA_RESYNC_VERSION message to all participants indicating the 
 value. All participants SHOULD then release their records of all name table operations with versions
 older than this value, as they will no longer be needed during host migration.
 
-2.2.38 PATHTESTKEYDATA
+#### 2.2.38 PATHTESTKEYDATA
 
 PATHTESTKEYDATA is a pseudo-structure that is hashed to generate 64-bit key values.
 
@@ -4993,7 +4884,8 @@ Release: April 23, 2024
 
 58 / 83
 
-guidInstance (16 bytes): A 128-bit instance GUID for identifying a specific instance of a game
+
+guidInstance (16 bytes): A 128-bit instance GUID for identifying a specific instance of a game
 
 session.
 
@@ -5004,11 +4896,12 @@ Release: April 23, 2024
 
 59 / 83
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in the DirectPlay DXDiag Usage Protocol. The described organization is
@@ -5030,16 +4923,16 @@ Path Test Key: A digest of the PATHTESTKEYDATA (section 2.2.38) pseudo structure
 the SHA-1 algorithm [FIPS180] and is used in the SESS_PATH_TEST (section 2.2.6) message sent
 during the peer connection process.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Connect Retry Timer
+##### 3.1.2.1 Connect Retry Timer
 
 The Connect Retry Timer is used to retry TRANS_COMMAND_CONNECT and
 TRANS_COMMAND_CONNECT_ACCEPT messages if no response is received. Implementations
 MAY<13> retry as many times as necessary at any frequency. Recommended values are for the first
 retry to be 200 ms, doubling every subsequent retry with a cap at 5 seconds and 14 retries.
 
-3.1.2.2  EnumQuery Retry Timer
+##### 3.1.2.2 EnumQuery Retry Timer
 
 The EnumQuery Retry Timer is used to retry EnumQuery (section 2.2.4) messages until the
 connection is fully established with all of the packets documented in section 3.1.5.1 for a single-client
@@ -5050,7 +4943,7 @@ connection is fully established with all of the packets documented in section 3.
 scenario or in section 3.1.5.2 for a multiple-client scenario. The frequency can be adjusted according
 to application and network requirements.
 
-3.1.2.3  Retry Timer
+##### 3.1.2.3 Retry Timer
 
 A packet is considered to be lost if one of the following occurs:
 
@@ -5070,7 +4963,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If a packet is lost, the implementation can resend the original packet with the same sequence number,
+
+If a packet is lost, the implementation can resend the original packet with the same sequence number,
 provided the packet was marked as reliable. Otherwise, the implementation updates future packets to
 include a send mask to indicate that the data is never resent if a dropped packet is not marked as
 reliable.
@@ -5095,7 +4989,7 @@ For the fourth through eighth retry attempts, it is recommended to have an expon
 
 In addition, it is also recommended to have an overall cap at 5 seconds and 10 retries.
 
-3.1.2.4  KeepAlive Retry Timer
+##### 3.1.2.4 KeepAlive Retry Timer
 
 The KeepAlive Retry Timer sends a minimal reliable packet to keep the connection alive when no
 traffic has been received from a peer for a specified time interval. The recommended time for
@@ -5108,14 +5002,14 @@ scenario.
 
 When a particular peer is marked as disconnected, the timer SHOULD be stopped for that peer.
 
-3.1.2.5  Path Test Retry Timer
+##### 3.1.2.5 Path Test Retry Timer
 
 The Path Test Retry Timer periodically resends SESS_PATH_TEST (section 2.2.6) messages to
 compensate for potential packet loss. The recommended time interval to retry is 375 milliseconds with
 a maximum of seven attempts. However, the attempts can be modified according to application and
 network requirements.
 
-3.1.2.6  Delayed Acknowledgment Timer
+##### 3.1.2.6 Delayed Acknowledgment Timer
 
 The Delayed Acknowledgment Timer reduces the frequency of dedicated acknowledgments
 (SACKs).This timer is used to reduce the frequency of dedicated acknowledgments (ACKs) so that
@@ -5125,7 +5019,7 @@ The recommended value for the Delayed Acknowledgment Timer is 20 milliseconds wh
 acknowledging out-of-order or duplicate packets. This value can be modified according to application
 and network requirements.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 To use the SESS_PATH_TEST (section 2.2.6) message, the new client and the existing client MUST fill
 in a PATHTESTKEYDATA (section 2.2.38) pseudo-structure with the following:
@@ -5149,7 +5043,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The guidInstance field MUST be set to the game session instance GUID.
 
@@ -5174,27 +5069,27 @@ to its instructed connection messages.
 For a new client, this value MUST be used in the periodic transmission of SESS_PATH_TEST messages.
 The Path Test Retry Timer (section 3.1.2.5) MUST be initialized.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Sending a Chat Message
+##### 3.1.4.1 Sending a Chat Message
 
 To send a chat message, a participant SHOULD send a TRANS_USERDATA_SEND_MESSAGE to the
 other participant. The TRANS_USERDATA_HEADER for the message SHOULD indicate that it is
 sequential and not reliable, that is, it SHOULD have the PACKET_COMMAND_SEQUENTIAL flag set,
 and SHOULD NOT have the PACKET_COMMAND_RELIABLE flag set in the bCommand field.
 
-3.1.4.2  Disconnecting
+##### 3.1.4.2 Disconnecting
 
 When a participant requests to disconnect, the upper layer SHOULD initiate the sequence defined in
 section 3.1.5.3.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The DXDiag application allows a client and server to create a chat session. All TRANS_USERDATA
 packets have their TRANS_USERDATA_HEADERs processed as specified in sections 3.1.5.8 and
 3.1.5.9.
 
-3.1.5.1  Client Joins a DirectPlay Session with No Other Clients
+##### 3.1.5.1 Client Joins a DirectPlay Session with No Other Clients
 
 
 
@@ -5231,7 +5126,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5334,7 +5230,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5400,7 +5297,7 @@ The client acknowledges it by sending a TRANS_COMMAND_SACK packet.
 The source address SHOULD be verified. If the address does not correspond to one with a fully
 established connection, it MUST be ignored.
 
-3.1.5.2  Client Joins a DirectPlay Session with Multiple Other Clients
+##### 3.1.5.2 Client Joins a DirectPlay Session with Multiple Other Clients
 
 
 
@@ -5444,7 +5341,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5544,7 +5442,8 @@ Release: April 23, 2024
 
 65 / 83
 
-3.1.5.3  Client Disconnects from Chat Session
+
+##### 3.1.5.3 Client Disconnects from Chat Session
 
 When a client disconnects, the server makes an announcement to remaining clients, and then the
 departing client disconnects.
@@ -5582,7 +5481,7 @@ the departing client.
 Each remaining client sends the server a TRANS_USERDATA_REQ_INTEGRITY_CHECK and
 TRANS_COMMAND_SACK packet to acknowledge the removal of the departed client.
 
-3.1.5.4  Server Disconnects from Chat Session
+##### 3.1.5.4 Server Disconnects from Chat Session
 
 A server can leave without destroying the chat session. The DirectPlay DXDiag Usage Protocol allows
 hosting to migrate to another member currently in the game session.<14>
@@ -5636,7 +5535,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5646,7 +5546,7 @@ participant in sync.
 The server sends a TRANS_USERDATA_HOST_MIGRATE_COMPLETE packet to all connected
 peers.
 
-3.1.5.5  Client Is Forcefully Removed from Session
+##### 3.1.5.5 Client Is Forcefully Removed from Session
 
 A server can purposefully remove a client from the game session.
 
@@ -5680,7 +5580,7 @@ clients that are present.
 The server issues a TRANS_USERDATA_DESTROY_PLAYER (section 2.2.15) packet to the
 remaining connected clients indicating the removal of the disconnecting client.
 
-3.1.5.6  Client Detects Loss of Connection to Other Client
+##### 3.1.5.6 Client Detects Loss of Connection to Other Client
 
 A client can detect the loss of connection to another client (departing client) in the game session.
 
@@ -5736,13 +5636,14 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.7  Participant Receives Chat Message
+
+##### 3.1.5.7 Participant Receives Chat Message
 
 When a participant receives a chat message, it can display the chat message to the user. It SHOULD
 send a TRANS_COMMAND_SACK message to acknowledge the packet sequence number in which the
 chat message was delivered.
 
-3.1.5.8  Command Byte (bCommand) Validation and Processing
+##### 3.1.5.8 Command Byte (bCommand) Validation and Processing
 
 Validation and processing of the bCommand field of the TRANS_USERDATA_HEADER (section 2.2.17)
 message is as follows:
@@ -5775,7 +5676,7 @@ packet.
 
 The POLL, SEQ, and REL bits SHOULD be set in session management messages.
 
-3.1.5.9  Control Byte (bControl) Validation and Processing
+##### 3.1.5.9 Control Byte (bControl) Validation and Processing
 
 Validation and processing of the bControl field of the TRANS_USERDATA_HEADER (section 2.2.17)
 message is as follows:
@@ -5795,9 +5696,9 @@ ignore the End Of Stream flag and SHOULD process the payload.
 If any of the SACK1, SACK2, SEND1, or SEND2 mask bits are set and if there is no corresponding
 DWORD in the header, the receiver SHOULD ignore this message.
 
-3.1.5.10
+##### 3.1.5.10 Send Sequence ID (bSeq) Validation and Processing
 
-Send Sequence ID (bSeq) Validation and Processing
+
 
 The TRANS_USERDATA_HEADER bSeq field MUST be either the next sequence ID expected or within
 63 packets beyond the ID expected by the receiver. If the sequence ID is not within this range, the
@@ -5818,7 +5719,8 @@ Release: April 23, 2024
 
 68 / 83
 
-  A delayed or retried transmission of the missing packet or packets, and can now process the
+
+  A delayed or retried transmission of the missing packet or packets, and can now process the
 
 sequence in order.
 
@@ -5831,9 +5733,9 @@ SHOULD indicate this to the sender using appropriate SACK masks on any outgoing
 TRANS_COMMAND_SACK or TRANS_USERDATA_HEADER based messages. This feedback enables the
 sender to avoid retrying packets that have already been successfully received.
 
-3.1.5.11
+##### 3.1.5.11 Acknowledged Sequence ID (bNRcv) Processing
 
-Acknowledged Sequence ID (bNRcv) Processing
+
 
 If the TRANS_USERDATA_HEADER bSeq sequence ID is valid, the bNRcv field SHOULD be
 inspected. All previously sent TRANS_USERDATA_HEADER packets that are covered by the bNRcv
@@ -5841,9 +5743,9 @@ sequence ID, that is, those packets that had been sent with bSeq values less tha
 for 8-bit counter wrapping) are acknowledged. These packets do not have to be remembered any
 longer, and their retry timers can be canceled.
 
-3.1.5.12
+##### 3.1.5.12 SACK Mask Processing
 
-SACK Mask Processing
+
 
 When one or both of the optional SACK mask 32-bit fields is present, and one or more bits are set in
 the fields, the sender is indicating that it received a packet or packets out of order, presumably due to
@@ -5860,9 +5762,9 @@ speed recovery from the packet loss. The recommended duration is 10 milliseconds
 modified according to application and network requirements. The receiver MAY also choose to remove
 the selectively acknowledged packets from its list to retry.
 
-3.1.5.13
+##### 3.1.5.13 Send Mask Processing
 
-Send Mask Processing
+
 
 When one or both of the optional send mask 32-bit fields is present, and one or more bits are set in
 the fields, the sender is indicating that it sent a packet or packets that were not marked as reliable
@@ -5886,9 +5788,10 @@ Release: April 23, 2024
 
 69 / 83
 
-3.1.6  Timer Events
 
-3.1.6.1  Connect Retry Timer
+#### 3.1.6 Timer Events
+
+##### 3.1.6.1 Connect Retry Timer
 
 When the connect retry timer expires, a new TRANS_COMMAND_CONNECT or
 TRANS_COMMAND_CONNECT_ACCEPT message SHOULD be sent, depending on the current state. The
@@ -5901,12 +5804,12 @@ TRANS_COMMAND_CONNECT packet arriving on a listening computer system, the listen
 to go back to listening if it did not allow additional connection attempts while the failed attempt was in
 progress.
 
-3.1.6.2  EnumQuery Retry Timer
+##### 3.1.6.2 EnumQuery Retry Timer
 
 When the EnumQuery Retry Timer expires, a new EnumQuery message SHOULD be sent. The
 EnumQuery Retry Timer SHOULD be rescheduled for the next period.
 
-3.1.6.3  Retry Timer
+##### 3.1.6.3 Retry Timer
 
 When the retry timer elapses without having been canceled, and the associated packet was marked as
 reliable, the TRANS_USERDATA_HEADER prefixed message SHOULD be resent, and the retry timer
@@ -5922,7 +5825,7 @@ When the retry timer elapses without having been canceled, and the associated pa
 marked as reliable, the packet's sequence ID SHOULD be remembered as requiring a send mask to
 be used in future transmissions.
 
-3.1.6.4  KeepAlive Retry Timer
+##### 3.1.6.4 KeepAlive Retry Timer
 
 A successfully validated SACK packet SHOULD count as a valid receive and therefore, restart the
 KeepAlive Retry Timer as described in section 3.1.2.4.
@@ -5930,7 +5833,7 @@ KeepAlive Retry Timer as described in section 3.1.2.4.
 All successfully validated DFRAME packets SHOULD count as valid receives and therefore, restart the
 KeepAlive Retry Timer as described in section 3.1.2.4.
 
-3.1.6.5  Path Test Retry Timer
+##### 3.1.6.5 Path Test Retry Timer
 
 When the Path Test Retry Timer elapses, the new client MUST send a new SESS_PATH_TEST
 message to the source address and port of the existing client for which it is expecting a connection.
@@ -5946,36 +5849,37 @@ Release: April 23, 2024
 
 70 / 83
 
-3.1.6.6  Delayed Acknowledgment Timer
+
+##### 3.1.6.6 Delayed Acknowledgment Timer
 
 When the Delayed Acknowledgment (SACK) Timer expires without having been canceled, the
 computer SHOULD send a dedicated SACK message that contains the current connection state
 information.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
+
+None.
+
+#### 3.2.3 Initialization
 
 When a DXDiag-compatible application initializes as a host, it begins listening for enumeration
 requests on port 6073. It also begins accepting connections on the user-specified port.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 When a server receives an EnumQuery request, the server SHOULD respond with an EnumResponse.
 
@@ -5983,17 +5887,17 @@ When a server receives a TRANS_COMMAND_CONNECT packet from a new client, the ser
 respond with a TRANS_COMMAND_CONNECT_ACCEPT packet and begin the sequence specified in
 section 3.1.5.1 or 3.1.5.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
@@ -6004,16 +5908,17 @@ Release: April 23, 2024
 
 71 / 83
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 When a DXDiag-compatible application initializes as a client, it begins enumerating for hosts on port
 6073.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 When a higher layer initiates game session discovery, the client SHOULD begin sending EnumQuery
 messages to the address specified by the higher layer. This MAY be the broadcast address to discover
@@ -6024,7 +5929,7 @@ automatically select a discovered game session. The higher layer will then initi
 attempt to the specified game session. The client SHOULD initiate the sequence identified in section
 3.1.5.1 or 3.1.5.2.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 When a client receives an EnumResponse to a previously sent query, the client SHOULD include the
 responder in a list of available game sessions in the user interface.
@@ -6035,11 +5940,11 @@ Once the client receives the subsequent TRANS_USERDATA_INSTRUCT_CONNECT message,
 SHOULD then begin connecting to the new participant using the previously specified addressing
 information.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -6050,9 +5955,10 @@ Release: April 23, 2024
 
 72 / 83
 
-4  Protocol Examples
 
-4.1  User Joins a DXDiag Chat Session Example
+## 4 Protocol Examples
+
+### 4.1 User Joins a DXDiag Chat Session Example
 
 The following example describes how clients connect to a DXDiag chat session.
 
@@ -6068,7 +5974,7 @@ The user selects the Network Provider, and then clicks Join Session.
 
 The DXDiag application goes through the steps listed in section 3.1.5.1.
 
-4.2  Client Disconnects from a DXDiag Chat Session Example
+### 4.2 Client Disconnects from a DXDiag Chat Session Example
 
 The following example describes how clients and servers disconnect from a DXDiag chat session.
 
@@ -6076,7 +5982,7 @@ The following example describes how clients and servers disconnect from a DXDiag
 the server or the client in the game session. However, the sequence of events that results differs
 according to the current role of the participant, as specified in sections 3.1.5.3 and 3.1.5.4.
 
-4.3  New Client Joins a Game Session with an Existing Client Example
+### 4.3 New Client Joins a Game Session with an Existing Client Example
 
 The following example demonstrates the message sequence when a new client joins a DirectPlay
 game session that has an existing client.
@@ -6088,7 +5994,8 @@ Release: April 23, 2024
 
 73 / 83
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-DPDX].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -6111,7 +6018,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EnumQuery message is lost and the second EnumQuery message is successfully received by the
+
+EnumQuery message is lost and the second EnumQuery message is successfully received by the
 server.
 
 2.  In response to the EnumQuery message, the server sends an EnumResponse message and echoes
@@ -6192,14 +6100,15 @@ Release: April 23, 2024
 
 75 / 83
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The DirectPlay DXDiag Usage Protocol is not intended for applications that require robust security,
 which cannot be implemented using other layers such as IPsec.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6210,7 +6119,8 @@ Release: April 23, 2024
 
 76 / 83
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6279,7 +6189,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<3> Section 2.2.5: Only the DPNSESSION_MIGRATE_HOST (0x00000004) value is used in the
+
+<3> Section 2.2.5: Only the DPNSESSION_MIGRATE_HOST (0x00000004) value is used in the
 Windows implementation of the ApplicationDescFlags field.
 
 <4> Section 2.2.6: The value of the dwMsgId field changes every time a SESS_PATH_TEST message
@@ -6348,7 +6259,8 @@ DirectPlay DXDiag Usage Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<11> Section 2.2.33.1: Only the 0x00000002 and 0x00000100 values are used in the Windows
+
+<11> Section 2.2.33.1: Only the 0x00000002 and 0x00000100 values are used in the Windows
 implementation of the dwFlags field.
 
 <12> Section 2.2.33.1: The dwDNETVersion field is set to one of the following values. Windows will
@@ -6386,7 +6298,8 @@ Release: April 23, 2024
 
 79 / 83
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6430,7 +6343,8 @@ Release: April 23, 2024
 
 80 / 83
 
-8  Index
+
+## 8 Index
 _
 
 _MESSAGE_HEADER message 16
@@ -6581,7 +6495,8 @@ Messages
 
 81 / 83
 
-   _MESSAGE_HEADER 16
+
+   _MESSAGE_HEADER 16
    chat 62
    DN_ADDRESSING_URL 53
    DN_ALTERNATE_ADDRESS (IPv4) 55
@@ -6746,7 +6661,8 @@ TRANS_COMMAND_CONNECT packet 24
 
 82 / 83
 
-TRANS_COMMAND_CONNECT_ACCEPT message 25
+
+TRANS_COMMAND_CONNECT_ACCEPT message 25
 TRANS_COMMAND_CONNECT_ACCEPT packet 25
 TRANS_COMMAND_SACK message 27
 TRANS_COMMAND_SACK packet 27

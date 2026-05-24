@@ -63,7 +63,8 @@ Release: February 7, 2023
 
 1 / 57
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: February 7, 2023
 
 2 / 57
 
-Date
+
+Date
 
 Revision
 History
@@ -508,193 +510,93 @@ Release: February 7, 2023
 
 3 / 57
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Common Definitions](#21-common-definitions)
+    - [2.1.1 Record](#211-record)
+    - [2.1.2 MultiByteInt31](#212-multibyteint31)
+      - [2.1.2.1 MultiByteInt31-(1 Byte)](#2121-multibyteint31-1-byte)
+      - [2.1.2.2 MultiByteInt31-(2 Bytes)](#2122-multibyteint31-2-bytes)
+      - [2.1.2.3 MultiByteInt31-(3 Bytes)](#2123-multibyteint31-3-bytes)
+      - [2.1.2.4 MultiByteInt31-(4 Bytes)](#2124-multibyteint31-4-bytes)
+      - [2.1.2.5 MultiByteInt31-(5 Bytes)](#2125-multibyteint31-5-bytes)
+    - [2.1.3 String](#213-string)
+    - [2.1.4 DictionaryString](#214-dictionarystring)
+  - [2.2 Records](#22-records)
+    - [2.2.1 Element Records](#221-element-records)
+      - [2.2.1.1 ShortElement Record (0x40)](#2211-shortelement-record-0x40)
+      - [2.2.1.2 Element Record (0x41)](#2212-element-record-0x41)
+      - [2.2.1.3 ShortDictionaryElement Record (0x42)](#2213-shortdictionaryelement-record-0x42)
+      - [2.2.1.4 DictionaryElement Record (0x43)](#2214-dictionaryelement-record-0x43)
+      - [2.2.1.5 PrefixDictionaryElement[A-Z] Record (0x44-0x5D)](#2215-prefixdictionaryelementa-z-record-0x44-0x5d)
+      - [2.2.1.6 PrefixElement[A-Z] Record (0x5E-0x77)](#2216-prefixelementa-z-record-0x5e-0x77)
+    - [2.2.2 Attribute Records](#222-attribute-records)
+      - [2.2.2.1 ShortAttribute Record (0x04)](#2221-shortattribute-record-0x04)
+      - [2.2.2.2 Attribute Record (0x05)](#2222-attribute-record-0x05)
+      - [2.2.2.3 ShortDictionaryAttribute Record (0x06)](#2223-shortdictionaryattribute-record-0x06)
+      - [2.2.2.4 DictionaryAttribute Record (0x07)](#2224-dictionaryattribute-record-0x07)
+      - [2.2.2.5 ShortXmlnsAttribute Record (0x08)](#2225-shortxmlnsattribute-record-0x08)
+      - [2.2.2.6 XmlnsAttribute Record (0x09)](#2226-xmlnsattribute-record-0x09)
+      - [2.2.2.7 ShortDictionaryXmlnsAttribute Record (0x0A)](#2227-shortdictionaryxmlnsattribute-record-0x0a)
+      - [2.2.2.8 DictionaryXmlsAttribute Record (0x0B)](#2228-dictionaryxmlsattribute-record-0x0b)
+      - [2.2.2.9 PrefixDictionaryAttribute[A-Z] Records (0x0C-0x25)](#2229-prefixdictionaryattributea-z-records-0x0c-0x25)
+      - [2.2.2.10 PrefixAttribute[A-Z] Records (0x26-0x3F)](#22210-prefixattributea-z-records-0x26-0x3f)
+    - [2.2.3 Text Records](#223-text-records)
+      - [2.2.3.1 ZeroText Record (0x80)](#2231-zerotext-record-0x80)
+      - [2.2.3.2 OneText Record (0x82)](#2232-onetext-record-0x82)
+      - [2.2.3.3 FalseText Record (0x84)](#2233-falsetext-record-0x84)
+      - [2.2.3.4 TrueText Record (0x86)](#2234-truetext-record-0x86)
+      - [2.2.3.5 Int8Text Record (0x88)](#2235-int8text-record-0x88)
+      - [2.2.3.6 Int16Text Record (0x8A)](#2236-int16text-record-0x8a)
+      - [2.2.3.7 Int32Text Record (0x8C)](#2237-int32text-record-0x8c)
+      - [2.2.3.8 Int64Text Record (0x8E)](#2238-int64text-record-0x8e)
+      - [2.2.3.9 FloatText Record (0x90)](#2239-floattext-record-0x90)
+      - [2.2.3.10 DoubleText Record (0x92)](#22310-doubletext-record-0x92)
+      - [2.2.3.11 DecimalText Record (0x94)](#22311-decimaltext-record-0x94)
+      - [2.2.3.12 DateTimeText Record (0x96)](#22312-datetimetext-record-0x96)
+      - [2.2.3.13 Chars8Text Record (0x98)](#22313-chars8text-record-0x98)
+        - [2.2.3.13.1 Character Escaping](#223131-character-escaping)
+      - [2.2.3.14 Chars16Text Record (0x9A)](#22314-chars16text-record-0x9a)
+      - [2.2.3.15 Chars32Text Record (0x9C)](#22315-chars32text-record-0x9c)
+      - [2.2.3.16 Bytes8Text Record (0x9E)](#22316-bytes8text-record-0x9e)
+      - [2.2.3.17 Bytes16Text Record (0xA0)](#22317-bytes16text-record-0xa0)
+      - [2.2.3.18 Bytes32Text Record (0xA2)](#22318-bytes32text-record-0xa2)
+      - [2.2.3.19 StartListText / EndListText Records (0xA4, 0xA6)](#22319-startlisttext-endlisttext-records-0xa4-0xa6)
+      - [2.2.3.20 EmptyText Record (0xA8)](#22320-emptytext-record-0xa8)
+      - [2.2.3.21 DictionaryText Record (0xAA)](#22321-dictionarytext-record-0xaa)
+      - [2.2.3.22 UniqueIdText Record (0xAC)](#22322-uniqueidtext-record-0xac)
+      - [2.2.3.23 TimeSpanText Record (0xAE)](#22323-timespantext-record-0xae)
+      - [2.2.3.24 UuidText Record (0xB0)](#22324-uuidtext-record-0xb0)
+      - [2.2.3.25 UInt64Text Record (0xB2)](#22325-uint64text-record-0xb2)
+      - [2.2.3.26 BoolText Record (0xB4)](#22326-booltext-record-0xb4)
+      - [2.2.3.27 UnicodeChars8Text Record (0xB6)](#22327-unicodechars8text-record-0xb6)
+      - [2.2.3.28 UnicodeChars16Text Record (0xB8)](#22328-unicodechars16text-record-0xb8)
+      - [2.2.3.29 UnicodeChars32TextRecord(0xBA)](#22329-unicodechars32textrecord0xba)
+      - [2.2.3.30 QNameDictionaryTextRecord(0xBC)](#22330-qnamedictionarytextrecord0xbc)
+      - [2.2.3.31 *TextWithEndElement Records](#22331-textwithendelement-records)
+  - [2.3 Miscellaneous Records](#23-miscellaneous-records)
+    - [2.3.1 EndElement Record (0x01)](#231-endelement-record-0x01)
+    - [2.3.2 Comment Record (0x02)](#232-comment-record-0x02)
+    - [2.3.3 Array Record (0x03)](#233-array-record-0x03)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Protocols and Other Structures ...................................................... 8
-Applicability Statement ....................................................................................... 8
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.2
-
-2.1
-
-2.2.2
-
-2.2.1
-
-2.1.3
-2.1.4
-
-2.1.1
-2.1.2
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-2.1.2.4
-2.1.2.5
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-
-2  Structures ............................................................................................................. 10
-Common Definitions ......................................................................................... 10
-Record ...................................................................................................... 10
-MultiByteInt31 ........................................................................................... 13
-MultiByteInt31-(1 Byte) ......................................................................... 13
-MultiByteInt31-(2 Bytes) ....................................................................... 14
-MultiByteInt31-(3 Bytes) ....................................................................... 15
-MultiByteInt31-(4 Bytes) ....................................................................... 16
-MultiByteInt31-(5 Bytes) ....................................................................... 17
-String........................................................................................................ 18
-DictionaryString ......................................................................................... 18
-Records .......................................................................................................... 19
-Element Records......................................................................................... 19
-ShortElement Record (0x40) .................................................................. 19
-Element Record (0x41) .......................................................................... 20
-ShortDictionaryElement Record (0x42) .................................................... 20
-DictionaryElement Record (0x43) ............................................................ 21
-PrefixDictionaryElement[A-Z] Record (0x44-0x5D) .................................... 21
-PrefixElement[A-Z] Record (0x5E-0x77) .................................................. 22
-Attribute Records ........................................................................................ 22
-ShortAttribute Record (0x04) ................................................................. 23
-Attribute Record (0x05) ......................................................................... 23
-ShortDictionaryAttribute Record (0x06) ................................................... 24
-DictionaryAttribute Record (0x07) ........................................................... 24
-ShortXmlnsAttribute Record (0x08) ......................................................... 25
-XmlnsAttribute Record (0x09) ................................................................ 25
-ShortDictionaryXmlnsAttribute Record (0x0A)........................................... 26
-DictionaryXmlsAttribute Record (0x0B) .................................................... 26
-PrefixDictionaryAttribute[A-Z] Records (0x0C-0x25).................................. 27
-PrefixAttribute[A-Z] Records (0x26-0x3F) ................................................ 27
-Text Records .............................................................................................. 28
-ZeroText Record (0x80) ......................................................................... 28
-2.2.3.1
-OneText Record (0x82).......................................................................... 28
-2.2.3.2
-FalseText Record (0x84) ........................................................................ 28
-2.2.3.3
-TrueText Record (0x86) ......................................................................... 28
-2.2.3.4
-Int8Text Record (0x88) ......................................................................... 29
-2.2.3.5
-Int16Text Record (0x8A) ....................................................................... 29
-2.2.3.6
-Int32Text Record (0x8C) ....................................................................... 29
-2.2.3.7
-Int64Text Record (0x8E) ........................................................................ 30
-2.2.3.8
-2.2.3.9
-FloatText Record (0x90) ........................................................................ 30
-2.2.3.10  DoubleText Record (0x92) ..................................................................... 31
-2.2.3.11  DecimalText Record (0x94) .................................................................... 31
-2.2.3.12  DateTimeText Record (0x96) .................................................................. 32
-Chars8Text Record (0x98) ..................................................................... 33
-2.2.3.13
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-
-2.2.3
-
-[MC-NBFX] - v20230207
-.NET Binary Format: XML Data Structure
-Copyright © 2023 Microsoft Corporation
-Release: February 7, 2023
-
-4 / 57
-
-2.2.3.13.1
-
-Character Escaping .......................................................................... 34
-Chars16Text Record (0x9A) ................................................................... 35
-2.2.3.14
-Chars32Text Record (0x9C) ................................................................... 35
-2.2.3.15
-Bytes8Text Record (0x9E) ...................................................................... 35
-2.2.3.16
-Bytes16Text Record (0xA0) .................................................................... 36
-2.2.3.17
-Bytes32Text Record (0xA2) .................................................................... 36
-2.2.3.18
-StartListText / EndListText Records (0xA4, 0xA6) ..................................... 37
-2.2.3.19
-2.2.3.20
-EmptyText Record (0xA8) ...................................................................... 37
-2.2.3.21  DictionaryText Record (0xAA) ................................................................. 37
-2.2.3.22  UniqueIdText Record (0xAC) .................................................................. 37
-2.2.3.23
-TimeSpanText Record (0xAE) ................................................................. 38
-2.2.3.24  UuidText Record (0xB0) ......................................................................... 39
-2.2.3.25  UInt64Text Record (0xB2) ..................................................................... 40
-2.2.3.26
-BoolText Record (0xB4) ......................................................................... 40
-2.2.3.27  UnicodeChars8Text Record (0xB6) .......................................................... 41
-2.2.3.28  UnicodeChars16Text Record (0xB8) ........................................................ 41
-2.2.3.29  UnicodeChars32TextRecord(0xBA) .......................................................... 42
-2.2.3.30  QNameDictionaryTextRecord(0xBC) ........................................................ 42
-*TextWithEndElement Records ............................................................... 42
-2.2.3.31
-Miscellaneous Records ...................................................................................... 43
-EndElement Record (0x01) .......................................................................... 43
-Comment Record (0x02) ............................................................................. 43
-Array Record (0x03) ................................................................................... 44
-
-2.3
-
-2.3.1
-2.3.2
-2.3.3
-
-3  Structure Examples ............................................................................................... 46
-
-4  Security Considerations ......................................................................................... 53
-
-5  Appendix A: Product Behavior ............................................................................... 54
-
-6  Change Tracking .................................................................................................... 55
-
-7  Index ..................................................................................................................... 56
-
-[MC-NBFX] - v20230207
-.NET Binary Format: XML Data Structure
-Copyright © 2023 Microsoft Corporation
-Release: February 7, 2023
-
-5 / 57
-
-1  Introduction
+## 1 Introduction
 
 This specification defines the .NET Binary Format: XML Data Structure, which is a binary format that
 can represent many XML documents, as specified in [XML1.0].
@@ -706,7 +608,7 @@ encoding an XML document in fewer bytes than the same document encoded in UTF-8,
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -767,7 +669,8 @@ most commonly used characters are defined as double-byte characters. Unless spec
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-otherwise, this term refers to the UTF-16 encoding form specified in [UNICODE5.0.0/2007]
+
+otherwise, this term refers to the UTF-16 encoding form specified in [UNICODE5.0.0/2007]
 section 3.9.
 
 UTF-8: A byte-oriented standard for encoding Unicode characters, defined in the Unicode standard.
@@ -780,14 +683,14 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -834,7 +737,8 @@ https://www.w3.org/TR/2000/REC-xml-20001006
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
 http://ieeexplore.ieee.org/servlet/opac?punumber=2355
@@ -848,18 +752,18 @@ http://ieeexplore.ieee.org/servlet/opac?punumber=2355
 [XML-INFOSET] Cowan, John, and Tobin, Richard, "XML Information Set (Second Edition)", W3C
 Recommendation, February 2004, http://www.w3.org/TR/2004/REC-xml-infoset-20040204
 
-1.3  Overview
+### 1.3 Overview
 
 The .NET Binary Format: XML Data Structure is used to efficiently represent XML 1.0 documents, as
 specified in [XML1.0].
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The .NET Binary Format: XML Data Structure is extended by the NET Binary Format: SOAP Data
 Structure, as described in [MC-NBFS], and the .NET Binary Format: SOAP Extension, as described in
 [MC-NBFSE].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The .NET Binary Format: XML Data Structure is a general-purpose way to represent an XML document
 that offers many benefits in terms of reduced size and processing costs, but at the expense of human
@@ -894,7 +798,8 @@ Release: February 7, 2023
 
 8 / 57
 
- <element   a  =  "value"  ></element  >       <!-- Not supported -->
+
+ <element   a  =  "value"  ></element  >       <!-- Not supported -->
 
 Processing instructions, data type definitions (DTDs), and declarations are not supported and cannot
 be represented by this format.
@@ -932,13 +837,13 @@ CDATA Section
 
  Insignificant White Space (in or around an element)   < element a = "value" ></element >
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 The .NET Binary Format: XML Data Structure has no versioning mechanism. The format contains both
 UTF-16 [RFC2781]-encoded and UTF-8 [RFC2279]-encoded strings, and their use is described in
 section 2.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 Records in the .NET Binary Format: XML Data Structure that contain DictionaryString structures
 use integers to represent strings. The producer and consumer of a document encoded in this format
@@ -954,7 +859,8 @@ Release: February 7, 2023
 
 9 / 57
 
-2  Structures
+
+## 2 Structures
 
 The .NET Binary Format: XML Data Structure is composed of zero or more records, each of which
 represents some characters in the XML document. The complete XML document represented by the
@@ -963,7 +869,7 @@ document is not necessarily a valid XML document.
 
 Unless otherwise noted, records can appear in any order.
 
-2.1  Common Definitions
+### 2.1 Common Definitions
 
 This section specifies the basic record structure and commonly used structures within those records.
 
@@ -973,7 +879,7 @@ Unless otherwise noted, the alignment of a record or any of the fields in the re
 assumed to be any particular value. The bit position diagrams are provided to indicate relative
 positions and sizes of fields, but do not indicate alignment.
 
-2.1.1  Record
+#### 2.1.1 Record
 
 Each record is encoded as follows.
 
@@ -1052,7 +958,8 @@ Release: February 7, 2023
 
 10 / 57
 
-RecordType
+
+RecordType
 
 Record
 
@@ -1186,7 +1093,8 @@ Release: February 7, 2023
 
 11 / 57
 
-RecordType
+
+RecordType
 
 Record
 
@@ -1325,7 +1233,8 @@ Release: February 7, 2023
 
 12 / 57
 
-RecordType
+
+RecordType
 
 Record
 
@@ -1382,7 +1291,7 @@ QNameDictionaryTextWithEndElement
 
 Reserved
 
-2.1.2  MultiByteInt31
+#### 2.1.2 MultiByteInt31
 
 This structure describes an unsigned 31-bit integer value in a variable- length packet. The size of the
 number to be stored determines the size of the packet according to the following mapping.
@@ -1421,7 +1330,7 @@ MultiByteInt31-(4 Bytes)
 
 MultiByteInt31-(5 Bytes)
 
-2.1.2.1  MultiByteInt31-(1 Byte)
+##### 2.1.2.1 MultiByteInt31-(1 Byte)
 
 The MultiByteInt31-(1 Byte) packet is used to store unsigned integer values in the range of 0x00 to
 0x7F (decimal 0 to 127) inclusive.
@@ -1435,7 +1344,8 @@ Release: February 7, 2023
 
 13 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1538,7 +1448,7 @@ Thus, the decimal value 17 is encoded as 1 byte, as in the following example.
 
  0x11
 
-2.1.2.2  MultiByteInt31-(2 Bytes)
+##### 2.1.2.2 MultiByteInt31-(2 Bytes)
 
 The MultiByteInt31-(2 Bytes) packet is used to store unsigned integers in the range of 0x0080 to
 0x3FFF (decimal 128 to 16383) inclusive.
@@ -1586,7 +1496,8 @@ Release: February 7, 2023
 
 14 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3
@@ -1628,7 +1539,7 @@ Thus, the decimal value 5521 is encoded in 2 bytes, as in the following example.
 
  0x91 0x2B
 
-2.1.2.3  MultiByteInt31-(3 Bytes)
+##### 2.1.2.3 MultiByteInt31-(3 Bytes)
 
 The MultiByteInt31-(3 Bytes) packet is used to store unsigned integers in the range of 0x004000 to
 0x1FFFFF (decimal 16384 to 2097151) inclusive.
@@ -1665,7 +1576,8 @@ Release: February 7, 2023
 
 15 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1713,7 +1625,7 @@ Thus, the decimal value 16384 is encoded in 3 bytes, as in the following example
 
  0x80 0x80 0x01
 
-2.1.2.4  MultiByteInt31-(4 Bytes)
+##### 2.1.2.4 MultiByteInt31-(4 Bytes)
 
 The MultiByteInt31-(4 Bytes) packet is used to store unsigned integers in the range of 0x00200000 to
 0x0FFFFFFF (decimal 2097152 to 268435455) inclusive.
@@ -1783,7 +1695,8 @@ Release: February 7, 2023
 
 16 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1812,7 +1725,7 @@ Thus, the decimal value 268435456 is encoded in 4 bytes, as in the following exa
 
  0x80 0x80 0x80 0x01
 
-2.1.2.5  MultiByteInt31-(5 Bytes)
+##### 2.1.2.5 MultiByteInt31-(5 Bytes)
 
 The MultiByteInt31-(5 Bytes) packet is used to store unsigned integers in the range of 0x010000000
 to 0x07FFFFFFF (decimal 268435456 to 2147483647) inclusive.
@@ -1908,7 +1821,8 @@ Release: February 7, 2023
 
 17 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1925,7 +1839,7 @@ Thus, the decimal value 268435456 is encoded in 5 bytes, as in the following exa
 
  0x80 0x80 0x80 0x80 0x01
 
-2.1.3  String
+#### 2.1.3 String
 
 The String structure describes a set of characters encoded in UTF-8, as specified in [RFC2279].
 
@@ -1963,7 +1877,7 @@ For example, the string "abc" is encoded as 4 bytes.
 
 This specification places no restrictions on the set of characters that can be encoded here.
 
-2.1.4  DictionaryString
+#### 2.1.4 DictionaryString
 
 The DictionaryString structure describes a reference to a set of characters.
 
@@ -1994,9 +1908,10 @@ producer and consumer of the document.
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-This specification places no restrictions on the set of characters that can be referenced.
 
-2.2  Records
+This specification places no restrictions on the set of characters that can be referenced.
+
+### 2.2 Records
 
 This section describes the format of each of the records noted earlier, and the characters they
 represent. The character representations of records are case sensitive and MUST use the exact casing
@@ -2018,13 +1933,13 @@ Text Records
 
 For reference, the record type is shown in hex following each record.
 
-2.2.1  Element Records
+#### 2.2.1 Element Records
 
 This section describes the different kinds of element records. An element record is any record with a
 record type. See the following tables from 0x40 to 0x77 inclusive. Element records represent different
 kinds of elements in the XML document.
 
-2.2.1.1  ShortElement Record (0x40)
+##### 2.2.1.1 ShortElement Record (0x40)
 
 This structure represents an element without a prefix.
 
@@ -2067,7 +1982,8 @@ Release: February 7, 2023
 
 19 / 57
 
-2.2.1.2  Element Record (0x41)
+
+##### 2.2.1.2 Element Record (0x41)
 
 This structure represents an element with a prefix.
 
@@ -2111,7 +2027,7 @@ refers to { xmlns:prefix="http://tempuri.org" }, this record is interpreted as t
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.1.3  ShortDictionaryElement Record (0x42)
+##### 2.2.1.3 ShortDictionaryElement Record (0x42)
 
 This structure represents an element without a prefix.
 
@@ -2147,14 +2063,15 @@ Attributes (variable): Zero or more attribute records.
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-For example, if name refers to the String "element" and attributes refers to {
+
+For example, if name refers to the String "element" and attributes refers to {
 xmlns="http://tempuri.org" }, this record is interpreted as the following characters.
 
  <element_xmlns="http://tempuri.org">
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.1.4  DictionaryElement Record (0x43)
+##### 2.2.1.4 DictionaryElement Record (0x43)
 
 This structure represents an element with a prefix.
 
@@ -2198,7 +2115,7 @@ refers to { xmlns:prefix="http://tempuri.org" }, this record is interpreted as t
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.1.5  PrefixDictionaryElement[A-Z] Record (0x44-0x5D)
+##### 2.2.1.5 PrefixDictionaryElement[A-Z] Record (0x44-0x5D)
 
 This structure represents an element with a single lowercase letter prefix.
 
@@ -2224,7 +2141,8 @@ Release: February 7, 2023
 
 21 / 57
 
-Attributes (variable)
+
+Attributes (variable)
 
 ...
 
@@ -2244,7 +2162,7 @@ characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.1.6  PrefixElement[A-Z] Record (0x5E-0x77)
+##### 2.2.1.6 PrefixElement[A-Z] Record (0x5E-0x77)
 
 This structure represents an element with a single lowercase letter prefix.
 
@@ -2282,7 +2200,7 @@ refers to { xmlns:b="http://tempuri.org" }, this record is interpreted as the fo
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2  Attribute Records
+#### 2.2.2 Attribute Records
 
 This section describes the different kinds of attribute records. An attribute record is any record with a
 record type (see Table 1) from 0x04 to 0x3F inclusive. An attribute record MUST follow another
@@ -2294,10 +2212,11 @@ record type (see Table 1) from 0x04 to 0x3F inclusive. An attribute record MUST 
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-attribute record or an element record. Attribute records represent different kinds of attributes in the
+
+attribute record or an element record. Attribute records represent different kinds of attributes in the
 XML document.
 
-2.2.2.1  ShortAttribute Record (0x04)
+##### 2.2.2.1 ShortAttribute Record (0x04)
 
 This structure represents an attribute without a prefix.
 
@@ -2333,7 +2252,7 @@ interpreted as the following characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.2  Attribute Record (0x05)
+##### 2.2.2.2 Attribute Record (0x05)
 
 This structure represents an attribute with a prefix.
 
@@ -2371,7 +2290,8 @@ Release: February 7, 2023
 
 23 / 57
 
-Name (variable): The name of the attribute encoded using String. The length of this String MUST be
+
+Name (variable): The name of the attribute encoded using String. The length of this String MUST be
 
 nonzero. The name MUST NOT be "xmlns".
 
@@ -2384,7 +2304,7 @@ refers to the text "value", this record is interpreted as the following characte
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.3  ShortDictionaryAttribute Record (0x06)
+##### 2.2.2.3 ShortDictionaryAttribute Record (0x06)
 
 This structure represents an attribute without a prefix.
 
@@ -2420,7 +2340,7 @@ interpreted as the following attribute.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.4  DictionaryAttribute Record (0x07)
+##### 2.2.2.4 DictionaryAttribute Record (0x07)
 
 This structure represents an attribute with a prefix.
 
@@ -2448,7 +2368,8 @@ Release: February 7, 2023
 
 24 / 57
 
-...
+
+...
 
 Value (variable)
 
@@ -2471,7 +2392,7 @@ the text "value", this record is interpreted as the following characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.5  ShortXmlnsAttribute Record (0x08)
+##### 2.2.2.5 ShortXmlnsAttribute Record (0x08)
 
 This structure represents an xmlns attribute without a prefix.
 
@@ -2499,7 +2420,7 @@ following characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.6  XmlnsAttribute Record (0x09)
+##### 2.2.2.6 XmlnsAttribute Record (0x09)
 
 This structure represents an xmlns attribute with a prefix.
 
@@ -2525,7 +2446,8 @@ Release: February 7, 2023
 
 25 / 57
 
-Value (variable)
+
+Value (variable)
 
 ...
 
@@ -2542,7 +2464,7 @@ this record is interpreted as the following characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.7  ShortDictionaryXmlnsAttribute Record (0x0A)
+##### 2.2.2.7 ShortDictionaryXmlnsAttribute Record (0x0A)
 
 This structure represents an xmlns attribute without a prefix.
 
@@ -2569,7 +2491,7 @@ For example, if value refers to the text "value", this record is interpreted as 
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.8  DictionaryXmlsAttribute Record (0x0B)
+##### 2.2.2.8 DictionaryXmlsAttribute Record (0x0B)
 
 This structure represents an xmlns attribute with a prefix.
 
@@ -2599,7 +2521,8 @@ Release: February 7, 2023
 
 26 / 57
 
-Prefix (variable): The prefix of the attribute encoded using String. The length of this String MUST
+
+Prefix (variable): The prefix of the attribute encoded using String. The length of this String MUST
 
 be nonzero. The prefix MUST NOT be "xmlns".
 
@@ -2612,7 +2535,7 @@ this record is interpreted as the following characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.2.9  PrefixDictionaryAttribute[A-Z] Records (0x0C-0x25)
+##### 2.2.2.9 PrefixDictionaryAttribute[A-Z] Records (0x0C-0x25)
 
 This structure represents an attribute with a single lowercase letter prefix.
 
@@ -2641,9 +2564,9 @@ String MUST be nonzero. The name MUST NOT be "xmlns".
 
 Value (variable): The value of the attribute encoded using a text record.
 
-2.2.2.10
+##### 2.2.2.10 PrefixAttribute[A-Z] Records (0x26-0x3F)
 
-PrefixAttribute[A-Z] Records (0x26-0x3F)
+
 
 This structure represents an attribute with a single lowercase letter prefix.
 
@@ -2681,20 +2604,21 @@ The prefix for this attribute is determined by the record type.
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-For example, if the record type is PrefixAttributeX, name refers to the string "attr", and value refers to
+
+For example, if the record type is PrefixAttributeX, name refers to the string "attr", and value refers to
 the text "value", this record is interpreted as the following characters.
 
  _x:attr="value"
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.3  Text Records
+#### 2.2.3 Text Records
 
 This section describes the different kinds of text records. A text record is any record with a record
 type (see Table 1) from 0x80 to 0xBD inclusive. Text records are used to represent the attribute or
 element content of the XML document.
 
-2.2.3.1  ZeroText Record (0x80)
+##### 2.2.3.1 ZeroText Record (0x80)
 
 This structure represents attribute or element content and MUST be interpreted as representing the
 following characters.
@@ -2703,7 +2627,7 @@ following characters.
 
 There are no additional fields for this record.
 
-2.2.3.2  OneText Record (0x82)
+##### 2.2.3.2 OneText Record (0x82)
 
 This structure represents attribute or element content and MUST be interpreted as representing the
 following characters.
@@ -2712,7 +2636,7 @@ following characters.
 
 There are no additional fields for this record.
 
-2.2.3.3  FalseText Record (0x84)
+##### 2.2.3.3 FalseText Record (0x84)
 
 This structure represents attribute or element content and MUST be interpreted as representing the
 following characters.
@@ -2721,7 +2645,7 @@ following characters.
 
 There are no additional fields for this record.
 
-2.2.3.4  TrueText Record (0x86)
+##### 2.2.3.4 TrueText Record (0x86)
 
 This structure represents attribute or element content and MUST be interpreted as representing the
 following characters.
@@ -2737,7 +2661,8 @@ Release: February 7, 2023
 
 28 / 57
 
-2.2.3.5  Int8Text Record (0x88)
+
+##### 2.2.3.5 Int8Text Record (0x88)
 
 This structure represents attribute or element content.
 
@@ -2764,7 +2689,7 @@ For example, if value is 0x80, this is interpreted as the following characters.
 
  -128
 
-2.2.3.6  Int16Text Record (0x8A)
+##### 2.2.3.6 Int16Text Record (0x8A)
 
 This structure represents attribute or element content.
 
@@ -2791,7 +2716,7 @@ For example, if value is 0x8000, this is interpreted as the following characters
 
  -32768
 
-2.2.3.7  Int32Text Record (0x8C)
+##### 2.2.3.7 Int32Text Record (0x8C)
 
 This structure represents attribute or element content.
 
@@ -2823,9 +2748,10 @@ For example, if value is 0x80000000, this is interpreted as the following charac
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
- -2147483648
 
-2.2.3.8  Int64Text Record (0x8E)
+ -2147483648
+
+##### 2.2.3.8 Int64Text Record (0x8E)
 
 This structure represents attribute or element content.
 
@@ -2854,7 +2780,7 @@ For example, if value is 0x8000000000000000, this is interpreted as the followin
 
  -9223372036854775808
 
-2.2.3.9  FloatText Record (0x90)
+##### 2.2.3.9 FloatText Record (0x90)
 
 This structure represents attribute or element content.
 
@@ -2911,13 +2837,14 @@ Release: February 7, 2023
 
 30 / 57
 
-For example, if value is 0x3F8CCCCD, this is interpreted as the following characters.
+
+For example, if value is 0x3F8CCCCD, this is interpreted as the following characters.
 
  1.1
 
-2.2.3.10
+##### 2.2.3.10 DoubleText Record (0x92)
 
-DoubleText Record (0x92)
+
 
 This structure represents attribute or element content.
 
@@ -2973,9 +2900,9 @@ For example, if value is 0x4005BF0A8B145774, this is interpreted as the followin
 
  2.7182818284590451
 
-2.2.3.11
+##### 2.2.3.11 DecimalText Record (0x94)
 
-DecimalText Record (0x94)
+
 
 This structure represents attribute or element content.
 
@@ -3003,7 +2930,8 @@ Release: February 7, 2023
 
 31 / 57
 
-Value (16 bytes): The decimal value encoded in 16-bytes as specified in [MS-OAUT] section 2.2.26.
+
+Value (16 bytes): The decimal value encoded in 16-bytes as specified in [MS-OAUT] section 2.2.26.
 
 See also [IEEE854].
 
@@ -3018,9 +2946,9 @@ characters.
 
  5.123456
 
-2.2.3.12
+##### 2.2.3.12 DateTimeText Record (0x96)
 
-DateTimeText Record (0x96)
+
 
 This structure represents attribute or element content.
 
@@ -3079,7 +3007,8 @@ Release: February 7, 2023
 
 32 / 57
 
-  MM is the two-digit representation of the month starting at "01".
+
+  MM is the two-digit representation of the month starting at "01".
 
 
 
@@ -3129,9 +3058,9 @@ If TZ is zero, the time is not specified as either UTC or a local time and nothi
 
 The interpreted format of a DateTimeText record is [ISO-8601] compliant.
 
-2.2.3.13
+##### 2.2.3.13 Chars8Text Record (0x98)
 
-Chars8Text Record (0x98)
+
 
 This structure represents attribute or element content.
 
@@ -3159,7 +3088,8 @@ Release: February 7, 2023
 
 33 / 57
 
-Length (1 byte): This is the length in bytes of the UTF-8 [RFC2279]-encoded string and is
+
+Length (1 byte): This is the length in bytes of the UTF-8 [RFC2279]-encoded string and is
 
 represented as UINT8.
 
@@ -3175,9 +3105,9 @@ UTF-8 [RFC2279]-encoded sequences MUST be fully formed. There MUST not be any pa
 character MUST be paired with a high surrogate character. (For more information on surrogate
 characters, see [UNICODE].)
 
-2.2.3.13.1
+###### 2.2.3.13.1 Character Escaping
 
-Character Escaping
+
 
 Characters MUST be interpreted as minimally escaped. This means that a character MUST be
 interpreted as escaped only if it is required to be escaped for the character to be legal at this point in
@@ -3234,11 +3164,12 @@ Release: February 7, 2023
 
 34 / 57
 
- &quot;&amp;&lt;>'&#0;
 
-2.2.3.14
+ &quot;&amp;&lt;>'&#0;
 
-Chars16Text Record (0x9A)
+##### 2.2.3.14 Chars16Text Record (0x9A)
+
+
 
 This structure represents attribute or element content.
 
@@ -3267,9 +3198,9 @@ Bytes (variable): The string encoded as UTF-8 [RFC2279] bytes.
 
 See Chars8Text Record for examples.
 
-2.2.3.15
+##### 2.2.3.15 Chars32Text Record (0x9C)
 
-Chars32Text Record (0x9C)
+
 
 This structure represents attribute or element content.
 
@@ -3298,9 +3229,9 @@ Bytes (variable): The string encoded as UTF-8 [RFC2279] bytes.
 
 See Chars8Text Record for examples.
 
-2.2.3.16
+##### 2.2.3.16 Bytes8Text Record (0x9E)
 
-Bytes8Text Record (0x9E)
+
 
 This structure represents attribute or element content.
 
@@ -3330,7 +3261,8 @@ Length (1 byte): This is the length, in bytes, of the binary data and is represe
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-Bytes (variable): The binary data.
+
+Bytes (variable): The binary data.
 
 This record MUST be interpreted as the characters obtained by encoding the bytes in base64 as
 specified in [RFC3548].
@@ -3344,9 +3276,9 @@ If length is 1 and bytes = { 0xFF }, this record MUST be interpreted as the foll
 
  /w==
 
-2.2.3.17
+##### 2.2.3.17 Bytes16Text Record (0xA0)
 
-Bytes16Text Record (0xA0)
+
 
 This structure represents attribute or element content.
 
@@ -3373,9 +3305,9 @@ Bytes (variable): The binary data.
 
 See Bytes8Text Record for examples.
 
-2.2.3.18
+##### 2.2.3.18 Bytes32Text Record (0xA2)
 
-Bytes32Text Record (0xA2)
+
 
 This structure represents attribute or element content.
 
@@ -3411,9 +3343,10 @@ Release: February 7, 2023
 
 36 / 57
 
-2.2.3.19
 
-StartListText / EndListText Records (0xA4, 0xA6)
+##### 2.2.3.19 StartListText / EndListText Records (0xA4, 0xA6)
+
+
 
 This structure represents attribute or element content. These records identify the start and end of a
 list of text records separated by a single whitespace character. They have no additional fields. The
@@ -3435,16 +3368,16 @@ is interpreted as the following characters.
 
 Note that the underscore is intended to represent a single ASCII white-space character (32).
 
-2.2.3.20
+##### 2.2.3.20 EmptyText Record (0xA8)
 
-EmptyText Record (0xA8)
+
 
 This structure represents a zero-length string. It has no additional fields. It MUST be interpreted as
 no characters.
 
-2.2.3.21
+##### 2.2.3.21 DictionaryText Record (0xAA)
 
-DictionaryText Record (0xAA)
+
 
 This structure represents attribute or element content.
 
@@ -3471,9 +3404,9 @@ For example, if value refers to the string "hello", this record is interpreted a
 
 See Character Escaping for notes on escaping of characters.
 
-2.2.3.22
+##### 2.2.3.22 UniqueIdText Record (0xAC)
 
-UniqueIdText Record (0xAC)
+
 
 This structure represents attribute or element content.
 
@@ -3484,7 +3417,8 @@ Release: February 7, 2023
 
 37 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3546,9 +3480,9 @@ this record is interpreted as the following characters.
 
  urn:uuid:33221100-5544-7766-8899-aabbccddeeff
 
-2.2.3.23
+##### 2.2.3.23 TimeSpanText Record (0xAE)
 
-TimeSpanText Record (0xAE)
+
 
 This structure represents attribute or element content.
 
@@ -3579,7 +3513,8 @@ Release: February 7, 2023
 
 38 / 57
 
-This structure MUST be interpreted as representing the characters formed by converting the value as
+
+This structure MUST be interpreted as representing the characters formed by converting the value as
 follows:
 
 If the day part is non-zero and the fraction of a second part is zero, then the time MUST be
@@ -3620,9 +3555,9 @@ zeros.
 
 All other characters are included as shown.
 
-2.2.3.24
+##### 2.2.3.24 UuidText Record (0xB0)
 
-UuidText Record (0xB0)
+
 
 This structure represents attribute or element content.
 
@@ -3666,7 +3601,8 @@ Release: February 7, 2023
 
 39 / 57
 
-Data1 (4 bytes): The first 4 bytes of the UUID. For more information see [RFC4122].
+
+Data1 (4 bytes): The first 4 bytes of the UUID. For more information see [RFC4122].
 
 Data2 (2 bytes): The first 5th and 6th bytes of the UUID. For more information see [RFC4122].
 
@@ -3698,9 +3634,9 @@ characters.
 Note that this record differs from the UniqueIdText record only by the absence of the characters
 "urn:uuid:".
 
-2.2.3.25
+##### 2.2.3.25 UInt64Text Record (0xB2)
 
-UInt64Text Record (0xB2)
+
 
 This structure represents attribute or element content.
 
@@ -3728,9 +3664,9 @@ For example, if value is 0xFFFFFFFFFFFFFFFF, this is interpreted as the followin
 
  18446744073709551615
 
-2.2.3.26
+##### 2.2.3.26 BoolText Record (0xB4)
 
-BoolText Record (0xB4)
+
 
 This structure represents attribute or element content.
 
@@ -3741,7 +3677,8 @@ Release: February 7, 2023
 
 40 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3764,9 +3701,9 @@ If value is 1, this record MUST be interpreted as the following characters.
 
  true
 
-2.2.3.27
+##### 2.2.3.27 UnicodeChars8Text Record (0xB6)
 
-UnicodeChars8Text Record (0xB6)
+
 
 This structure represents attribute or element content.
 
@@ -3798,9 +3735,9 @@ interpreted as the following characters.
 
 See Chars8Text Record for notes on escaping of characters.
 
-2.2.3.28
+##### 2.2.3.28 UnicodeChars16Text Record (0xB8)
 
-UnicodeChars16Text Record (0xB8)
+
 
 This structure represents attribute or element content.
 
@@ -3832,11 +3769,12 @@ Bytes (variable): The string encoded as UTF-16 [RFC2781] bytes.
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
-See UnicodeChars8Text Record for examples.
 
-2.2.3.29
+See UnicodeChars8Text Record for examples.
 
-UnicodeChars32TextRecord(0xBA)
+##### 2.2.3.29 UnicodeChars32TextRecord(0xBA)
+
+
 
 This structure represents attribute or element content.
 
@@ -3867,9 +3805,9 @@ Bytes (variable): The string encoded as UTF-16 [RFC2781] bytes.
 
 See UnicodeChars8Text Record for examples.
 
-2.2.3.30
+##### 2.2.3.30 QNameDictionaryTextRecord(0xBC)
 
-QNameDictionaryTextRecord(0xBC)
+
 
 This structure represents attribute or element content.
 
@@ -3903,9 +3841,9 @@ following characters.
 
  b:name
 
-2.2.3.31
+##### 2.2.3.31 *TextWithEndElement Records
 
-*TextWithEndElement Records
+
 
 These records are a simple optimization intended to reduce the size of the document.
 
@@ -3918,7 +3856,8 @@ Release: February 7, 2023
 
 42 / 57
 
- <value>123</value>
+
+ <value>123</value>
 
 can be represented by three records in the following format.
 
@@ -3940,11 +3879,11 @@ an EndElement record and must behave identically.
 
 These records MUST NOT be used inside Attribute records.
 
-2.3  Miscellaneous Records
+### 2.3 Miscellaneous Records
 
 This section lists the few remaining records that are not element, attribute, or text records.
 
-2.3.1  EndElement Record (0x01)
+#### 2.3.1 EndElement Record (0x01)
 
 This structure represents an end element. There are no additional fields for this record beyond the
 record type.
@@ -3961,7 +3900,7 @@ then this record is interpreted as the following characters.
 
 Additionally, this record MUST be interpreted as closing the most recently open element.
 
-2.3.2  Comment Record (0x02)
+#### 2.3.2 Comment Record (0x02)
 
 This structure represents a comment.
 
@@ -3972,7 +3911,8 @@ Release: February 7, 2023
 
 43 / 57
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3994,7 +3934,7 @@ following characters.
 
  <!--comment-->
 
-2.3.3  Array Record (0x03)
+#### 2.3.3 Array Record (0x03)
 
 This structure represents a series of repeating elements.
 
@@ -4069,7 +4009,8 @@ Release: February 7, 2023
 
 44 / 57
 
-RecordType  Record
+
+RecordType  Record
 
 DataSize
 
@@ -4141,7 +4082,8 @@ Release: February 7, 2023
 
 45 / 57
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following table provides an example of almost every record type, and shows the character
 interpretations.
@@ -4334,7 +4276,8 @@ ShortDictionaryXmlns
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
- Bytes (hex)
+
+ Bytes (hex)
 
  Chars
 
@@ -4576,7 +4519,8 @@ ns:pre="http:
 
 47 / 57
 
-Element
+
+Element
 
 OneText
 
@@ -4822,7 +4766,8 @@ B...˜˜˜.
 
 48 / 57
 
- Record
+
+ Record
 
 Int64Text
 
@@ -5062,7 +5007,8 @@ Chars16TextWithEnd
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
- Record
+
+ Record
 
 Element
 
@@ -5279,7 +5225,8 @@ Release: February 7, 2023
 
 50 / 57
 
- Record
+
+ Record
 
  Type
 (hex)
@@ -5510,7 +5457,8 @@ B..3_˜˜˜˜˜˜˜
 Copyright © 2023 Microsoft Corporation
 Release: February 7, 2023
 
- Bytes (hex)
+
+ Bytes (hex)
 
  Chars
 
@@ -5658,7 +5606,8 @@ Release: February 7, 2023
 
 52 / 57
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 Ultimately, this format simply represents a textual XML document. Implementations that process XML
 documents represented by this format have to guard against the same kinds of threats that occur
@@ -5675,7 +5624,8 @@ Release: February 7, 2023
 
 53 / 57
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5715,7 +5665,8 @@ Release: February 7, 2023
 
 54 / 57
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5759,7 +5710,8 @@ Release: February 7, 2023
 
 55 / 57
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 8
@@ -5891,7 +5843,8 @@ ShortXmlnsAttributeRecord packet 25
 
 56 / 57
 
-String packet 18
+
+String packet 18
 Structures
    MultiByteInt31 13
    overview 10

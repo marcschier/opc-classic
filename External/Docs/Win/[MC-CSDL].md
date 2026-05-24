@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 126
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Date
+
+Date
 
 Revision
 History
@@ -390,394 +392,175 @@ Release: March 13, 2019
 
 3 / 126
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 10
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Protocols and Other Structures .................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Localization ............................................................................... 12
-Vendor-Extensible Fields ................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2  Structures ............................................................................................................. 14
-Elements ......................................................................................................... 14
-Schema ..................................................................................................... 14
-2.1.1
-EntityType ................................................................................................. 15
-2.1.2
-Property .................................................................................................... 17
-2.1.3
-NavigationProperty ..................................................................................... 19
-2.1.4
-Entity Key .................................................................................................. 21
-2.1.5
-PropertyRef ................................................................................................ 21
-2.1.6
-ComplexType ............................................................................................. 22
-2.1.7
-Association ................................................................................................ 23
-2.1.8
-2.1.9
-Association End .......................................................................................... 24
-2.1.10  OnDelete ................................................................................................... 25
-ReferentialConstraint .................................................................................. 26
-2.1.11
-ReferentialConstraint Role ........................................................................... 27
-2.1.12
-2.1.12.1
-Principal ............................................................................................... 28
-2.1.12.2  Dependent ........................................................................................... 29
-2.1.13  Using ........................................................................................................ 30
-EntityContainer .......................................................................................... 31
-2.1.14
-FunctionImport........................................................................................... 32
-2.1.15
-FunctionImport ReturnType ......................................................................... 34
-2.1.16
-FunctionImport Parameter ........................................................................... 35
-2.1.17
-EntitySet ................................................................................................... 36
-2.1.18
-AssociationSet ............................................................................................ 37
-2.1.19
-2.1.20
-AssociationSet End ..................................................................................... 38
-2.1.21  Documentation ........................................................................................... 39
-2.1.22
-AnnotationElement ..................................................................................... 41
-2.1.23  Model Function ........................................................................................... 42
-2.1.24  Model Function Parameter ........................................................................... 44
-CollectionType ............................................................................................ 45
-2.1.25
-TypeRef ..................................................................................................... 46
-2.1.26
-ReferenceType ........................................................................................... 47
-2.1.27
-RowType ................................................................................................... 48
-2.1.28
-RowType Property ...................................................................................... 49
-2.1.29
-Function ReturnType ................................................................................... 51
-2.1.30
-ValueTerm ................................................................................................. 52
-2.1.31
-TypeAnnotation .......................................................................................... 52
-2.1.32
-PropertyValue ............................................................................................ 53
-2.1.33
-ValueAnnotation ......................................................................................... 53
-2.1.34
-Annotations ............................................................................................... 55
-2.1.35
-Expressions ............................................................................................... 55
-2.1.36
-Core Expressions .................................................................................. 56
-2.1.36.1.1  Null ............................................................................................... 56
-Primitive Scalar Constant Expressions ................................................ 56
-2.1.36.1.2
-Record Expression ........................................................................... 56
-2.1.36.1.3
-
-2.1.36.1
-
-[MC-CSDL] - v20190313
-Conceptual Schema Definition File Format
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 126
-
-2.1.37
-2.1.38
-2.1.39
-
-2.2
-
-2.2.1
-
-2.2.1.6
-
-2.2.1.5
-
-2.2.1.2
-
-2.2.1.1
-
-2.1.36.2
-
-2.2.1.5.1
-
-2.2.1.4.1
-
-2.2.1.2.1
-
-2.2.1.5.1.1
-
-2.2.1.4.1.1
-
-2.2.1.3
-2.2.1.4
-
-2.2.1.2.1.1
-2.2.1.2.1.2
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-
-2.1.36.1.4
-2.1.36.1.5
-2.1.36.1.6
-
-2.1.36.2.1
-2.1.36.2.2
-2.1.36.2.3
-2.1.36.2.4
-
-Collection Expression ....................................................................... 57
-LabeledElement Expression ............................................................... 57
-Path Expression .............................................................................. 57
-Extended Expressions ............................................................................ 58
-Apply Expression ............................................................................. 58
-If Expression ................................................................................... 58
-IsType Expression ........................................................................... 59
-AssertType Expression ..................................................................... 59
-EnumType ................................................................................................. 60
-EnumType Member ..................................................................................... 60
-Containment NavigationProperty .................................................................. 61
-Attributes ........................................................................................................ 62
-EDMSimpleType ......................................................................................... 62
-Commonly Applicable Facets .................................................................. 62
-Nullable .......................................................................................... 62
-ReadOnly ....................................................................................... 62
-Default ........................................................................................... 62
-Binary ................................................................................................. 62
-Facets ............................................................................................ 62
-MaxLength ................................................................................ 62
-FixedLength .............................................................................. 62
-Boolean ............................................................................................... 63
-DateTime ............................................................................................. 63
-Facets ............................................................................................ 63
-Precision ................................................................................... 63
-Time ................................................................................................... 63
-Facets ............................................................................................ 63
-Precision ................................................................................... 63
-DateTimeOffset ..................................................................................... 63
-Facets ............................................................................................ 63
-Precision ................................................................................... 63
-Decimal ............................................................................................... 63
-Facets ............................................................................................ 63
-Precision ................................................................................... 64
-Scale ........................................................................................ 64
-Single .................................................................................................. 64
-2.2.1.8
-2.2.1.9
-Double ................................................................................................. 64
-2.2.1.10  Guid .................................................................................................... 64
-SByte .................................................................................................. 64
-2.2.1.11
-Int16 ................................................................................................... 64
-2.2.1.12
-Int32 ................................................................................................... 64
-2.2.1.13
-Int64 ................................................................................................... 64
-2.2.1.14
-Byte .................................................................................................... 64
-2.2.1.15
-String .................................................................................................. 64
-2.2.1.16
-Facets ............................................................................................ 64
-2.2.1.16.1.1  Unicode .................................................................................... 65
-2.2.1.16.1.2
-FixedLength .............................................................................. 65
-2.2.1.16.1.3  MaxLength ................................................................................ 65
-Collation ................................................................................... 65
-2.2.1.16.1.4
-Stream ................................................................................................ 66
-Facets ............................................................................................ 66
-2.2.1.18  Geography ........................................................................................... 66
-Facets ............................................................................................ 66
-SRID ........................................................................................ 66
-2.2.1.19  GeographyPoint .................................................................................... 66
-Facets ............................................................................................ 66
-2.2.1.20  GeographyLineString ............................................................................. 66
-Facets ............................................................................................ 66
-
-2.2.1.7.1.1
-2.2.1.7.1.2
-
-2.2.1.18.1.1
-
-2.2.1.6.1.1
-
-2.2.1.19.1
-
-2.2.1.20.1
-
-2.2.1.16.1
-
-2.2.1.17.1
-
-2.2.1.18.1
-
-2.2.1.6.1
-
-2.2.1.7.1
-
-2.2.1.17
-
-2.2.1.7
-
-[MC-CSDL] - v20190313
-Conceptual Schema Definition File Format
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 126
-
-2.2.1.28.1
-
-2.2.1.27.1
-
-2.2.1.26.1
-
-2.2.1.25.1
-
-2.2.1.24.1
-
-2.2.1.23.1
-
-2.2.1.21.1
-
-2.2.1.22.1
-
-2.2.1.26.1.1
-
-2.2.1.21  GeographyPolygon ................................................................................ 67
-Facets ............................................................................................ 67
-2.2.1.22  GeographyCollection.............................................................................. 67
-Facets ............................................................................................ 67
-2.2.1.23  GeographyMultiPoint ............................................................................. 67
-Facets ............................................................................................ 67
-2.2.1.24  GeographyMultiLineString ...................................................................... 67
-Facets ............................................................................................ 67
-2.2.1.25  GeographyMultiPolygon ......................................................................... 67
-Facets ............................................................................................ 67
-2.2.1.26  Geometry............................................................................................. 68
-Facets ............................................................................................ 68
-SRID ........................................................................................ 68
-2.2.1.27  GeometryPoint ...................................................................................... 68
-Facets ............................................................................................ 68
-2.2.1.28  GeometryLineString .............................................................................. 68
-Facets ............................................................................................ 68
-2.2.1.29  GeometryPolygon .................................................................................. 68
-Facets ............................................................................................ 68
-2.2.1.30  GeometryCollection ............................................................................... 69
-Facets ............................................................................................ 69
-2.2.1.31  GeometryMultiPoint ............................................................................... 69
-Facets ............................................................................................ 69
-2.2.1.32  GeometryMultiLineString ........................................................................ 69
-Facets ............................................................................................ 69
-2.2.1.33  GeometryMultiPolygon ........................................................................... 69
-Facets ............................................................................................ 69
-Action ....................................................................................................... 69
-Multiplicity ................................................................................................. 70
-ConcurrencyMode ....................................................................................... 70
-QualifiedName ............................................................................................ 70
-SimpleIdentifier .......................................................................................... 70
-AnnotationAttribute..................................................................................... 70
-OpenType .................................................................................................. 70
-TypeTerm .................................................................................................. 71
-Facet Application .............................................................................................. 71
-
-2.2.1.30.1
-
-2.2.1.29.1
-
-2.2.1.31.1
-
-2.2.1.32.1
-
-2.2.1.33.1
-
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2.3
-
-3  Structure Examples ............................................................................................... 72
-ValueAnnotation .............................................................................................. 73
-ValueTerm and Edm.TypeTerm .......................................................................... 74
-
-3.1
-3.2
-
-4  Security Considerations ......................................................................................... 75
-
-5  Appendix A: Full XML Schemas .............................................................................. 76
-CSDL Schema 1.0 ............................................................................................ 76
-CSDL Schema 1.1 ............................................................................................ 82
-CSDL Schema 2.0 ............................................................................................ 89
-CSDL Schema 3.0 ............................................................................................ 99
-
-5.1
-5.2
-5.3
-5.4
-
-6  Appendix B: Differences Between CSDL 1.0 and CSDL 1.1 ................................... 117
-
-7  Appendix C: Differences Between CSDL 1.1 and CSDL 1.2 ................................... 118
-
-8  Appendix D: Differences Between CSDL 1.2 and CSDL 2.0 ................................... 119
-
-9  Appendix E: Differences Between CSDL 2.0 and CSDL 3.0 ................................... 120
-
-10  Appendix F: Product Behavior ............................................................................. 122
-
-11  Change Tracking .................................................................................................. 123
-
-12  Index ................................................................................................................... 124
-
-[MC-CSDL] - v20190313
-Conceptual Schema Definition File Format
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-6 / 126
-
-[MC-CSDL] - v20190313
-Conceptual Schema Definition File Format
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-7 / 126
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Elements](#21-elements)
+    - [2.1.1 Schema](#211-schema)
+    - [2.1.2 EntityType](#212-entitytype)
+    - [2.1.3 Property](#213-property)
+    - [2.1.4 NavigationProperty](#214-navigationproperty)
+    - [2.1.5 Entity Key](#215-entity-key)
+    - [2.1.6 PropertyRef](#216-propertyref)
+    - [2.1.7 ComplexType](#217-complextype)
+    - [2.1.8 Association](#218-association)
+    - [2.1.9 Association End](#219-association-end)
+    - [2.1.10 OnDelete](#2110-ondelete)
+    - [2.1.11 ReferentialConstraint](#2111-referentialconstraint)
+    - [2.1.12 ReferentialConstraint Role](#2112-referentialconstraint-role)
+      - [2.1.12.1 Principal](#21121-principal)
+      - [2.1.12.2 Dependent](#21122-dependent)
+    - [2.1.13 Using](#2113-using)
+    - [2.1.14 EntityContainer](#2114-entitycontainer)
+    - [2.1.15 FunctionImport](#2115-functionimport)
+    - [2.1.16 FunctionImport ReturnType](#2116-functionimport-returntype)
+    - [2.1.17 FunctionImport Parameter](#2117-functionimport-parameter)
+    - [2.1.18 EntitySet](#2118-entityset)
+    - [2.1.19 AssociationSet](#2119-associationset)
+    - [2.1.20 AssociationSet End](#2120-associationset-end)
+    - [2.1.21 Documentation](#2121-documentation)
+    - [2.1.22 AnnotationElement](#2122-annotationelement)
+    - [2.1.23 Model Function](#2123-model-function)
+    - [2.1.24 Model Function Parameter](#2124-model-function-parameter)
+    - [2.1.25 CollectionType](#2125-collectiontype)
+    - [2.1.26 TypeRef](#2126-typeref)
+    - [2.1.27 ReferenceType](#2127-referencetype)
+    - [2.1.28 RowType](#2128-rowtype)
+    - [2.1.29 RowType Property](#2129-rowtype-property)
+    - [2.1.30 Function ReturnType](#2130-function-returntype)
+    - [2.1.31 ValueTerm](#2131-valueterm)
+    - [2.1.32 TypeAnnotation](#2132-typeannotation)
+    - [2.1.33 PropertyValue](#2133-propertyvalue)
+    - [2.1.34 ValueAnnotation](#2134-valueannotation)
+    - [2.1.35 Annotations](#2135-annotations)
+    - [2.1.36 Expressions](#2136-expressions)
+      - [2.1.36.1 Core Expressions](#21361-core-expressions)
+        - [2.1.36.1.1 Null](#213611-null)
+        - [2.1.36.1.2 Primitive Scalar Constant Expressions](#213612-primitive-scalar-constant-expressions)
+        - [2.1.36.1.3 Record Expression](#213613-record-expression)
+        - [2.1.36.1.4 Collection Expression](#213614-collection-expression)
+        - [2.1.36.1.5 LabeledElement Expression](#213615-labeledelement-expression)
+        - [2.1.36.1.6 Path Expression](#213616-path-expression)
+      - [2.1.36.2 Extended Expressions](#21362-extended-expressions)
+        - [2.1.36.2.1 Apply Expression](#213621-apply-expression)
+        - [2.1.36.2.2 If Expression](#213622-if-expression)
+        - [2.1.36.2.3 IsType Expression](#213623-istype-expression)
+        - [2.1.36.2.4 AssertType Expression](#213624-asserttype-expression)
+    - [2.1.37 EnumType](#2137-enumtype)
+    - [2.1.38 EnumType Member](#2138-enumtype-member)
+    - [2.1.39 Containment NavigationProperty](#2139-containment-navigationproperty)
+  - [2.2 Attributes](#22-attributes)
+    - [2.2.1 EDMSimpleType](#221-edmsimpletype)
+      - [2.2.1.1 Commonly Applicable Facets](#2211-commonly-applicable-facets)
+        - [2.2.1.1.1 Nullable](#22111-nullable)
+        - [2.2.1.1.2 ReadOnly](#22112-readonly)
+        - [2.2.1.1.3 Default](#22113-default)
+      - [2.2.1.2 Binary](#2212-binary)
+        - [2.2.1.2.1 Facets](#22121-facets)
+          - [2.2.1.2.1.1 MaxLength](#221211-maxlength)
+          - [2.2.1.2.1.2 FixedLength](#221212-fixedlength)
+      - [2.2.1.3 Boolean](#2213-boolean)
+      - [2.2.1.4 DateTime](#2214-datetime)
+        - [2.2.1.4.1 Facets](#22141-facets)
+          - [2.2.1.4.1.1 Precision](#221411-precision)
+      - [2.2.1.5 Time](#2215-time)
+        - [2.2.1.5.1 Facets](#22151-facets)
+          - [2.2.1.5.1.1 Precision](#221511-precision)
+      - [2.2.1.6 DateTimeOffset](#2216-datetimeoffset)
+        - [2.2.1.6.1 Facets](#22161-facets)
+          - [2.2.1.6.1.1 Precision](#221611-precision)
+      - [2.2.1.7 Decimal](#2217-decimal)
+        - [2.2.1.7.1 Facets](#22171-facets)
+          - [2.2.1.7.1.1 Precision](#221711-precision)
+          - [2.2.1.7.1.2 Scale](#221712-scale)
+      - [2.2.1.8 Single](#2218-single)
+      - [2.2.1.9 Double](#2219-double)
+      - [2.2.1.10 Guid](#22110-guid)
+      - [2.2.1.11 SByte](#22111-sbyte)
+      - [2.2.1.12 Int16](#22112-int16)
+      - [2.2.1.13 Int32](#22113-int32)
+      - [2.2.1.14 Int64](#22114-int64)
+      - [2.2.1.15 Byte](#22115-byte)
+      - [2.2.1.16 String](#22116-string)
+        - [2.2.1.16.1 Facets](#221161-facets)
+          - [2.2.1.16.1.1 Unicode](#2211611-unicode)
+          - [2.2.1.16.1.2 FixedLength](#2211612-fixedlength)
+          - [2.2.1.16.1.3 MaxLength](#2211613-maxlength)
+          - [2.2.1.16.1.4 Collation](#2211614-collation)
+      - [2.2.1.17 Stream](#22117-stream)
+        - [2.2.1.17.1 Facets](#221171-facets)
+      - [2.2.1.18 Geography](#22118-geography)
+        - [2.2.1.18.1 Facets](#221181-facets)
+          - [2.2.1.18.1.1 SRID](#2211811-srid)
+      - [2.2.1.19 GeographyPoint](#22119-geographypoint)
+        - [2.2.1.19.1 Facets](#221191-facets)
+      - [2.2.1.20 GeographyLineString](#22120-geographylinestring)
+        - [2.2.1.20.1 Facets](#221201-facets)
+      - [2.2.1.21 GeographyPolygon](#22121-geographypolygon)
+        - [2.2.1.21.1 Facets](#221211-facets)
+      - [2.2.1.22 GeographyCollection](#22122-geographycollection)
+        - [2.2.1.22.1 Facets](#221221-facets)
+      - [2.2.1.23 GeographyMultiPoint](#22123-geographymultipoint)
+        - [2.2.1.23.1 Facets](#221231-facets)
+      - [2.2.1.24 GeographyMultiLineString](#22124-geographymultilinestring)
+        - [2.2.1.24.1 Facets](#221241-facets)
+      - [2.2.1.25 GeographyMultiPolygon](#22125-geographymultipolygon)
+        - [2.2.1.25.1 Facets](#221251-facets)
+      - [2.2.1.26 Geometry](#22126-geometry)
+        - [2.2.1.26.1 Facets](#221261-facets)
+          - [2.2.1.26.1.1 SRID](#2212611-srid)
+      - [2.2.1.27 GeometryPoint](#22127-geometrypoint)
+        - [2.2.1.27.1 Facets](#221271-facets)
+      - [2.2.1.28 GeometryLineString](#22128-geometrylinestring)
+        - [2.2.1.28.1 Facets](#221281-facets)
+      - [2.2.1.29 GeometryPolygon](#22129-geometrypolygon)
+        - [2.2.1.29.1 Facets](#221291-facets)
+      - [2.2.1.30 GeometryCollection](#22130-geometrycollection)
+        - [2.2.1.30.1 Facets](#221301-facets)
+      - [2.2.1.31 GeometryMultiPoint](#22131-geometrymultipoint)
+        - [2.2.1.31.1 Facets](#221311-facets)
+      - [2.2.1.32 GeometryMultiLineString](#22132-geometrymultilinestring)
+        - [2.2.1.32.1 Facets](#221321-facets)
+      - [2.2.1.33 GeometryMultiPolygon](#22133-geometrymultipolygon)
+        - [2.2.1.33.1 Facets](#221331-facets)
+    - [2.2.2 Action](#222-action)
+    - [2.2.3 Multiplicity](#223-multiplicity)
+    - [2.2.4 ConcurrencyMode](#224-concurrencymode)
+    - [2.2.5 QualifiedName](#225-qualifiedname)
+    - [2.2.6 SimpleIdentifier](#226-simpleidentifier)
+    - [2.2.7 AnnotationAttribute](#227-annotationattribute)
+    - [2.2.8 OpenType](#228-opentype)
+    - [2.2.9 TypeTerm](#229-typeterm)
+  - [2.3 Facet Application](#23-facet-application)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 ValueAnnotation](#31-valueannotation)
+  - [3.2 ValueTerm and Edm.TypeTerm](#32-valueterm-and-edmtypeterm)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Full XML Schemas](#5-appendix-a-full-xml-schemas)
+  - [5.1 CSDL Schema 1.0](#51-csdl-schema-10)
+  - [5.2 CSDL Schema 1.1](#52-csdl-schema-11)
+  - [5.3 CSDL Schema 2.0](#53-csdl-schema-20)
+  - [5.4 CSDL Schema 3.0](#54-csdl-schema-30)
+- [6 Appendix B: Differences Between CSDL 1.0 and CSDL 1.1](#6-appendix-b-differences-between-csdl-10-and-csdl-11)
+- [7 Appendix C: Differences Between CSDL 1.1 and CSDL 1.2](#7-appendix-c-differences-between-csdl-11-and-csdl-12)
+- [8 Appendix D: Differences Between CSDL 1.2 and CSDL 2.0](#8-appendix-d-differences-between-csdl-12-and-csdl-20)
+- [9 Appendix E: Differences Between CSDL 2.0 and CSDL 3.0](#9-appendix-e-differences-between-csdl-20-and-csdl-30)
+- [10 Appendix F: Product Behavior](#10-appendix-f-product-behavior)
+- [11 Change Tracking](#11-change-tracking)
+- [12 Index](#12-index)
+
+## 1 Introduction
 
 The conceptual schema definition file format provides the structure and semantics of the conceptual
 schema definition language (CSDL) for the Entity Data Model (EDM). CSDL is a language based on
@@ -843,12 +626,13 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-An example of a model that is defined by using CSDL is shown in section 3.
+
+An example of a model that is defined by using CSDL is shown in section 3.
 
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -918,7 +702,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Entity Data Model (EDM): A set of concepts that describes the structure of data, regardless of its
+
+Entity Data Model (EDM): A set of concepts that describes the structure of data, regardless of its
 
 stored form.
 
@@ -981,7 +766,7 @@ names but come from different sources. For more information, see [XMLNS-2ED].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -995,7 +780,8 @@ Release: March 13, 2019
 
 10 / 126
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1030,14 +816,14 @@ names-20060816/
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [EPSG] International Association of Oil & Gas Producers, "About the EPSG Dataset",
 https://epsg.org/home.html
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The conceptual schema definition language (CSDL) is an XML-based file format that describes
 the Entity Data Model (EDM). CSDL is based on standards defined in [XML1.0] and [XMLSCHEMA1].
@@ -1062,7 +848,8 @@ Release: March 13, 2019
 
 11 / 126
 
-    <EntityType/>
+
+    <EntityType/>
     <EntityType/>
     <ComplexType/>
 
@@ -1086,12 +873,12 @@ Release: March 13, 2019
 Note  The previous example is not a detailed specification. It is meant to provide only a visual
 overview.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Both Entity Data Model for Data Services Packaging Format [MC-EDMX] and Open Data Protocol [MS-
 ODATA] use the structures defined in conceptual schema definition language (CSDL).
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The conceptual schema definition language (CSDL) is an XML format that describes the structure
 and semantics of the Entity Data Model (EDM) schemas. All identifiers, such as names,
@@ -1101,13 +888,13 @@ EDM is a specification for defining conceptual data models. Applications can use
 conceptual model that describes the entity, relationships, and sets required in the domain served by
 the application.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This document describes the following conceptual schema definition language (CSDL) versions:
 CSDL 1.0, CSDL 1.1, CSDL 1.2, CSDL 2.0, and CSDL 3.0. Aspects of later CSDL versions that do not
 apply to earlier versions are identified in the text.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The conceptual schema definition language (CSDL) supports application-specific customization
 and extension through the use of annotations. These annotations allow applications to embed
@@ -1127,7 +914,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-namespaces for CSDL. Consult the reference for each CSDL element within this document to
+
+namespaces for CSDL. Consult the reference for each CSDL element within this document to
 determine whether AnnotationAttribute can be used for that element.
 
 The reserved XML namespaces for CSDL are:
@@ -1149,11 +937,12 @@ Release: March 13, 2019
 
 13 / 126
 
-2  Structures
 
-2.1  Elements
+## 2 Structures
 
-2.1.1  Schema
+### 2.1 Elements
+
+#### 2.1.1 Schema
 
 The Schema element is the top-level conceptual schema definition language (CSDL) construct
 that allows creation of a namespace.
@@ -1230,7 +1019,8 @@ Release: March 13, 2019
 
 14 / 126
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MC-CSDL].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1243,7 +1033,7 @@ In CSDL 3.0, Schema can contain any number of ValueTerm elements.
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.2  EntityType
+#### 2.1.2 EntityType
 
 An entity is an instance of an EntityType element. An EntityType has a unique identity, an
 independent existence, and forms the operational unit of consistency. EntityType elements model the
@@ -1271,7 +1061,8 @@ Release: March 13, 2019
 
 15 / 126
 
-The type of a Property in an EntityType can be a scalar type or ComplexType. EntityType can be
+
+The type of a Property in an EntityType can be a scalar type or ComplexType. EntityType can be
 categorized as an EDM type.
 
 The following is an example of an EntityType.
@@ -1353,7 +1144,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MC-CSDL].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1364,7 +1156,7 @@ In CSDL 3.0, EntityType can contain any number of ValueAnnotation elements.
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.3  Property
+#### 2.1.3 Property
 
 The declared properties of an EntityType element or ComplexType element are defined by using the
 Property element. EntityType and ComplexType can have Property elements. Property can be a
@@ -1404,7 +1196,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-TypeRef (section 2.1.26) (example 2). TypeRef is only allowed if the Type attribute value is equal
+
+TypeRef (section 2.1.26) (example 2). TypeRef is only allowed if the Type attribute value is equal
 to "Collection".
 
 In example 1, Property uses a Type attribute.
@@ -1479,7 +1272,8 @@ Release: March 13, 2019
 
 18 / 126
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MC-CSDL].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1496,7 +1290,7 @@ the instance is treated as if it includes N with a value of "null".
 
 on the same OpenEntityType.
 
-2.1.4  NavigationProperty
+#### 2.1.4 NavigationProperty
 
 NavigationProperty elements define non-structural properties on entities that allow for navigation
 from one Entity to another via a relationship. Standard properties describe a value that is associated
@@ -1514,7 +1308,8 @@ Release: March 13, 2019
 
 19 / 126
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MC-CSDL].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1570,11 +1365,12 @@ Release: March 13, 2019
 
 20 / 126
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MC-CSDL].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-2.1.5  Entity Key
+#### 2.1.5 Entity Key
 
 A Key element describes which Property elements form a key that can uniquely identify instances of
 an EntityType. Any set of non-nullable, immutable, scalar type declared properties can serve as
@@ -1604,7 +1400,7 @@ In CSDL 2.0 and CSDL 3.0, Key can contain any number of AnnotationElement elemen
 
 All child elements are to appear in the order indicated.
 
-2.1.6  PropertyRef
+#### 2.1.6 PropertyRef
 
 PropertyRef element refers to a declared property of an EntityType.
 
@@ -1634,13 +1430,14 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MC-CSDL].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.7  ComplexType
+#### 2.1.7 ComplexType
 
 A ComplexType element represents a set of related information. Like an EntityType element, a
 ComplexType element consists of one or more properties of scalar type or complex type. However,
@@ -1693,7 +1490,8 @@ Release: March 13, 2019
 
 22 / 126
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MC-CSDL].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1734,7 +1532,7 @@ In CSDL 3.0, ComplexType can contain any number of ValueAnnotation elements.
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.8  Association
+#### 2.1.8 Association
 
 An Association element defines a peer-to-peer relationship between participating EntityType
 elements and can support different multiplicities at the two ends. OnDelete operational behavior can
@@ -1754,7 +1552,8 @@ Release: March 13, 2019
 
 23 / 126
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MC-CSDL].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1795,7 +1594,7 @@ ReferentialConstraint, AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.9  Association End
+#### 2.1.9 Association End
 
 For a given Association, the End element defines one side of the relationship. End defines what type
 is participating in the relationship, multiplicity or the cardinality, and if there are any operation
@@ -1810,7 +1609,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MC-CSDL].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1844,7 +1644,7 @@ AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.10 OnDelete
+#### 2.1.10 OnDelete
 
 The OnDelete element is a trigger that is associated with a relationship. The action is performed on
 one end of the relationship when the state of the other side of the relationship changes.
@@ -1864,7 +1664,8 @@ Release: March 13, 2019
 
 25 / 126
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MC-CSDL].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1890,7 +1691,7 @@ AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.11 ReferentialConstraint
+#### 2.1.11 ReferentialConstraint
 
 In Entity Data Model (EDM), a ReferentialConstraint element can exist between the key of one
 entity type and the primitive property or properties of an associated entity type. A referential
@@ -1924,7 +1725,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MC-CSDL].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1952,7 +1754,7 @@ Principal, Dependent, AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.12 ReferentialConstraint Role
+#### 2.1.12 ReferentialConstraint Role
 
 When defining ReferentialConstraint elements, Role MUST be used to indicate which end of the
 association is the Principal and which end of the relationship is the Dependent. Thus, the
@@ -1980,9 +1782,10 @@ Release: March 13, 2019
 
 27 / 126
 
-2.1.12.1
 
-Principal
+##### 2.1.12.1 Principal
+
+
 
 The following example shows the usage of the PrincipalRole element in defining a
 ReferentialConstraint element.
@@ -2047,15 +1850,16 @@ Release: March 13, 2019
 
 28 / 126
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MC-CSDL].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.12.2
+##### 2.1.12.2 Dependent
 
-Dependent
+
 
 The following example shows the usage of the DependentRole element in defining a
 ReferentialConstraint.
@@ -2113,13 +1917,14 @@ Release: March 13, 2019
 
 29 / 126
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MC-CSDL].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.13 Using
+#### 2.1.13 Using
 
 Using imports the contents of the specified namespace. A schema can refer to contents of another
 schema or namespace by importing it by using the Using clause. The imported namespace can be
@@ -2164,13 +1969,14 @@ Release: March 13, 2019
 
 30 / 126
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MC-CSDL].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.14 EntityContainer
+#### 2.1.14 EntityContainer
 
 EntityContainer is conceptually similar to a database or data source. It groups EntitySet,
 AssociationSet, and FunctionImport child elements that represent a data source.
@@ -2224,7 +2030,8 @@ Release: March 13, 2019
 
 31 / 126
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MC-CSDL].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2245,7 +2052,7 @@ elements.
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.15 FunctionImport
+#### 2.1.15 FunctionImport
 
 FunctionImport element is used to import stored procedures or functions that are defined in the
 Store Schema Model into Entity Data Model (EDM).
@@ -2283,7 +2090,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -2363,13 +2171,14 @@ Release: March 13, 2019
 
 33 / 126
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MC-CSDL].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.16 FunctionImport ReturnType
+#### 2.1.16 FunctionImport ReturnType
 
 A ReturnType describes the shape of data that is returned from a FunctionImport element.
 ReturnType is used to map to stored procedures with multiple result sets. In CSDL 3.0, the return
@@ -2407,11 +2216,12 @@ Release: March 13, 2019
 
 34 / 126
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MC-CSDL].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
-2.1.17 FunctionImport Parameter
+#### 2.1.17 FunctionImport Parameter
 
 Functions that are defined in conceptual schema definition language (CSDL) optionally accept
 both in and out Parameter elements. Each Parameter element MUST have an associated Name and
@@ -2468,13 +2278,14 @@ Release: March 13, 2019
 
 35 / 126
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MC-CSDL].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.18 EntitySet
+#### 2.1.18 EntitySet
 
 An EntitySet element is a named set that can contain instances of a specified EntityType element and
 any of the specified EntityType subtypes. More than one EntitySet for a particular EntityType can
@@ -2520,7 +2331,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MC-CSDL].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2530,7 +2342,7 @@ AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.19 AssociationSet
+#### 2.1.19 AssociationSet
 
 An AssociationSet contains relationship instances of the specified association. The association
 specifies the EntityType elements of the two end points, whereas AssociationSet specifies the
@@ -2576,7 +2388,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MC-CSDL].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2586,7 +2399,7 @@ AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.20 AssociationSet End
+#### 2.1.20 AssociationSet End
 
 The End element defines the two sides of the AssociationSet element. This association is defined
 between the two EntitySets declared in an EntitySet attribute.
@@ -2634,13 +2447,14 @@ Release: March 13, 2019
 
 38 / 126
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MC-CSDL].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
 All child elements are to appear in the order indicated.
 
-2.1.21 Documentation
+#### 2.1.21 Documentation
 
 The Documentation element is used to provide documentation of comments on the contents of the
 conceptual schema definition language (CSDL) file.
@@ -2688,7 +2502,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-      </Documentation>
+
+      </Documentation>
    </End>
    <End Role="Product" EntitySet="Products">
       <Documentation>
@@ -2760,7 +2575,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MC-CSDL].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2793,7 +2609,7 @@ LongDescription, AnnotationElement.
 
 All child elements are to appear in the order indicated.
 
-2.1.22 AnnotationElement
+#### 2.1.22 AnnotationElement
 
 An AnnotationElement is a custom XML element that is applied to a conceptual schema
 definition language (CSDL) element. The AnnotationElement element and its child elements can
@@ -2821,7 +2637,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   </CLR:Attributes>
+
+   </CLR:Attributes>
    <RS:Security>
      <RS:ACE Principal="S-0-123-1321" Rights="+R+W"/>
      <RS:ACE Principal="S-0-123-2321" Rights="-R-W"/>
@@ -2849,7 +2666,7 @@ namespace plus element name is unique for a particular element.
 
   Annotation is an XML element that contains a valid XML structure.
 
-2.1.23 Model Function
+#### 2.1.23 Model Function
 
 A Function element is used to define or declare a user function. These functions are defined as child
 elements of the Schema element.
@@ -2901,7 +2718,8 @@ Release: March 13, 2019
 
 42 / 126
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MC-CSDL].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2956,10 +2774,11 @@ Release: March 13, 2019
 
 43 / 126
 
-All child elements are to appear in the order indicated. For all child elements within a given choice, the
+
+All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.24 Model Function Parameter
+#### 2.1.24 Model Function Parameter
 
 Function elements in conceptual schema definition language (CSDL) only support inbound
 parameters. CSDL does not allow setting the FunctionParameter mode. It is always set to
@@ -3024,14 +2843,15 @@ Release: March 13, 2019
 
 44 / 126
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MC-CSDL].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.25 CollectionType
+#### 2.1.25 CollectionType
 
 If the type of the FunctionParameter or ReturnType is a collection, the type can be expressed as
 an attribute or by using child element syntax.
@@ -3071,7 +2891,8 @@ Release: March 13, 2019
 
 45 / 126
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MC-CSDL].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -3092,7 +2913,7 @@ TypeRef
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.26 TypeRef
+#### 2.1.26 TypeRef
 
 The TypeRef element is used to reference an existing named type.
 
@@ -3123,7 +2944,8 @@ Release: March 13, 2019
 
 46 / 126
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MC-CSDL].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3153,7 +2975,7 @@ AnnotationAttribute attributes cannot collide.
 
 All child elements are to appear in the order indicated.
 
-2.1.27 ReferenceType
+#### 2.1.27 ReferenceType
 
 ReferenceType is used to specify the reference to an actual entity either in the return type or in a
 parameter definition. The reference type can be specified as an attribute or by using child element
@@ -3180,7 +3002,8 @@ Release: March 13, 2019
 
 47 / 126
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MC-CSDL].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3208,7 +3031,7 @@ AnnotationAttribute attributes cannot collide.
 
 All child elements are to appear in the order indicated.
 
-2.1.28 RowType
+#### 2.1.28 RowType
 
 A RowType is an unnamed structure. RowType is always declared inline.
 
@@ -3240,7 +3063,8 @@ Release: March 13, 2019
 
 48 / 126
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MC-CSDL].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3262,7 +3086,7 @@ AnnotationAttribute attributes cannot collide.
 
 All child elements are to appear in the order indicated.
 
-2.1.29 RowType Property
+#### 2.1.29 RowType Property
 
 One or more Property elements are used to describe the structure of a RowType element.
 
@@ -3298,7 +3122,8 @@ Release: March 13, 2019
 
 49 / 126
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MC-CSDL].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
@@ -3356,7 +3181,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.1.30 Function ReturnType
+
+#### 2.1.30 Function ReturnType
 
 ReturnType describes the shape of data that is returned from a Function. The return type of a
 function can be declared as a ReturnType attribute on a Function or as a child element.
@@ -3413,14 +3239,15 @@ Release: March 13, 2019
 
 51 / 126
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MC-CSDL].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
 All child elements are to appear in the order indicated. For all child elements within a given choice, the
 child elements can be ordered arbitrarily.
 
-2.1.31 ValueTerm
+#### 2.1.31 ValueTerm
 
 A ValueTerm element is used to define a value term in Entity Data Model (EDM).
 
@@ -3450,7 +3277,7 @@ primitive type, or EnumType, or a collection of ComplexType or primitive types.
 The ValueTerm element can have a DefaultValue attribute to provide a value for the
 ValueTerm if the term is applied but has no value specified.
 
-2.1.32 TypeAnnotation
+#### 2.1.32 TypeAnnotation
 
 A TypeAnnotation element is used to annotate a model element with a term and provide zero or
 more values for the properties of the term.
@@ -3470,7 +3297,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  TypeAnnotation MUST have a Term attribute defined that is a namespace qualified name,
+
+  TypeAnnotation MUST have a Term attribute defined that is a namespace qualified name,
 
 alias qualified name, or SimpleIdentifier.
 
@@ -3491,7 +3319,7 @@ environmental concerns.
 
   A TypeAnnotation can contain any number of PropertyValue elements.
 
-2.1.33 PropertyValue
+#### 2.1.33 PropertyValue
 
 A PropertyValue element is used to assign the result of an expression to a property of a term.
 
@@ -3536,7 +3364,7 @@ Float
 
   DateTime
 
-2.1.34 ValueAnnotation
+#### 2.1.34 ValueAnnotation
 
 ValueAnnotation is used to attach a named value to a model element.
 
@@ -3549,7 +3377,8 @@ Release: March 13, 2019
 
 53 / 126
 
- <ValueAnnotation Term="Title" String="MyTitle" />
+
+ <ValueAnnotation Term="Title" String="MyTitle" />
  <ValueAnnotation Term="ReadOnly" />
 
 The following rules apply to the ValueAnnotation element:
@@ -3642,14 +3471,15 @@ Release: March 13, 2019
 
 54 / 126
 
-
+
+
 
 If a ValueAnnotation has neither a child expression nor an attribute specifying a value, the value
 of the annotation is the DefaultValue specified for the annotation, or Null if no DefaultValue is
 specified. Note that a Null value for a term is distinct from the absence of a ValueAnnotation
 element for that term, in which case the term has no value.
 
-2.1.35 Annotations
+#### 2.1.35 Annotations
 
 The Annotations element is used to group one or more TypeAnnotation or ValueAnnotation elements
 that target the same model element.
@@ -3715,7 +3545,7 @@ Property
 
   Annotations MUST contain one or more TypeAnnotation or ValueAnnotation elements.
 
-2.1.36 Expressions
+#### 2.1.36 Expressions
 
 Expressions are described as core and extended expressions. Core expressions are required to be
 supported by any Entity Data Model (EDM) client.
@@ -3727,17 +3557,18 @@ Release: March 13, 2019
 
 55 / 126
 
-2.1.36.1
 
-Core Expressions
+##### 2.1.36.1 Core Expressions
 
-2.1.36.1.1  Null
+
+
+###### 2.1.36.1.1 Null
 
 Null is an expression that produces an untyped value.
 
-2.1.36.1.2
+###### 2.1.36.1.2 Primitive Scalar Constant Expressions
 
-Primitive Scalar Constant Expressions
+
 
 The following expression elements are defined as primitive scalar constant expressions:
 
@@ -3775,7 +3606,7 @@ The following is an example of primitive scalar constant expressions.
  <Guid>707043F1-E7DD-475C-9928-71DA38EA7D57</Guid>
  <Binary>6E67616F766169732E65</Binary>
 
-2.1.36.1.3  Record Expression
+###### 2.1.36.1.3 Record Expression
 
 The Record expression constructs a record of type EntityType or ComplexType with specified
 properties.
@@ -3804,9 +3635,10 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.1.36.1.4
 
-Collection Expression
+###### 2.1.36.1.4 Collection Expression
+
+
 
 The Collection expression element is used to construct elements with multiple values of specified
 type.
@@ -3829,9 +3661,9 @@ The following rule applies to the Collection expression element:
 The Collection expression element can have zero or more record expressions or primitive scalar
 constant expressions.
 
-2.1.36.1.5
+###### 2.1.36.1.5 LabeledElement Expression
 
-LabeledElement Expression
+
 
 A LabeledElement expression is used to assign a name to another expression.
 
@@ -3847,9 +3679,9 @@ The following rules apply to the LabeledElement expression:
 
   LabeledElement MUST have one expression element as an attribute or as a child element.
 
-2.1.36.1.6
+###### 2.1.36.1.6 Path Expression
 
-Path Expression
+
 
 The Path expression element is used to refer to model elements. A Path expression can resolve to
 the following:
@@ -3878,7 +3710,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- </ValueAnnotation>
+
+ </ValueAnnotation>
 
 The following rule applies to the Path expression element:
 
@@ -3886,11 +3719,11 @@ The following rule applies to the Path expression element:
 
 The value of a Path expression MUST be of the type SimpleIdentifier or QualifiedName.
 
-2.1.36.2
+##### 2.1.36.2 Extended Expressions
 
-Extended Expressions
 
-2.1.36.2.1  Apply Expression
+
+###### 2.1.36.2.1 Apply Expression
 
 The Apply expression element is used to apply a function for evaluating a value.
 
@@ -3915,9 +3748,9 @@ apply. Function is of type namespace qualified name or an alias qualified name.
 The Apply expression element can contain zero or more expression elements that specify the
 arguments of the function.
 
-2.1.36.2.2
+###### 2.1.36.2.2 If Expression
 
-If Expression
+
 
 An If expression element is used for conditional evaluations.
 
@@ -3961,13 +3794,14 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 The second and third expression elements MUST be type compatible.
 
-2.1.36.2.3
+###### 2.1.36.2.3 IsType Expression
 
-IsType Expression
+
 
 An IsType expression tests whether a child element expression is of a given type. The result of the
 IsType expression is a Boolean value. The following two examples show how you can use either the
@@ -3997,7 +3831,7 @@ IsType MUST define the type either as an attribute or as a child element TypeRef
 IsType MUST contain one expression as a child element. The expression MUST follow TypeRef if
 TypeRef is used to define the type.
 
-2.1.36.2.4  AssertType Expression
+###### 2.1.36.2.4 AssertType Expression
 
 An AssertType expression casts a child element expression to a given type. The result of the
 AssertType expression is an instance of the specified type or an error. The following two examples
@@ -4032,11 +3866,12 @@ Release: March 13, 2019
 
 59 / 126
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MC-CSDL].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
-2.1.37 EnumType
+#### 2.1.37 EnumType
 
 An EnumType element is used in CSDL 3.0 to declare an enumeration type. Enumeration types are
 scalar types.
@@ -4075,7 +3910,7 @@ set to "true".
 
 to as declared enumeration members.
 
-2.1.38 EnumType Member
+#### 2.1.38 EnumType Member
 
 A Member element is used inside an EnumType element to declare a member of an enumeration
 type.
@@ -4089,7 +3924,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MC-CSDL].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -4113,7 +3949,7 @@ one more than the value of the previous member for subsequent members.
 mapping from a value of the underlying type to a Member of an EnumType, the first matching
 Member is used.
 
-2.1.39 Containment NavigationProperty
+#### 2.1.39 Containment NavigationProperty
 
 Containment is specified by using a containment NavigationProperty element. A containment
 NavigationProperty is a NavigationProperty that has a ContainsTarget attribute set to "true".
@@ -4154,7 +3990,8 @@ Release: March 13, 2019
 
 61 / 126
 
-An AssociationSet has to have the same EntitySet on both ends if it is for a containment
+
+An AssociationSet has to have the same EntitySet on both ends if it is for a containment
 AssociationType that has either the same EntityType on both ends or an EntityType on one end
 that derives from the EntityType on the other end.
 
@@ -4166,47 +4003,47 @@ Note  Because the EntityType of an EntitySet on an AssociationSet End has to be 
 derived from the EntityTypes on the corresponding AssociationType End, the EntitySet MUST be
 either completely contained or completely noncontained.
 
-2.2  Attributes
+### 2.2 Attributes
 
-2.2.1  EDMSimpleType
+#### 2.2.1 EDMSimpleType
 
 The Entity Data Model (EDM) attribute defines an abstract type system that defines the primitive
 types that are listed in the following sections. All EDMSimpleTypes are equality comparable unless
 the specific section below says otherwise. EDMSimpleType can be categorized as an EDM type.
 
-2.2.1.1  Commonly Applicable Facets
+##### 2.2.1.1 Commonly Applicable Facets
 
-2.2.1.1.1 Nullable
+###### 2.2.1.1.1 Nullable
 
 The Nullable facet is a Boolean, which indicates that the Type can be null.
 
-2.2.1.1.2 ReadOnly
+###### 2.2.1.1.2 ReadOnly
 
 The ReadOnly facet is a Boolean, which indicates whether a property can be changed. If ReadOnly is
 not specified, its value is assumed to be false.
 
-2.2.1.1.3 Default
+###### 2.2.1.1.3 Default
 
 The Default facet is a string. Valid values for this facet depend upon the type that is being
 referenced. The Default facet MUST NOT be applied to a CollectionType or TypeRef.
 
 Note  ADO.NET Entity Framework does not support the Default facet for an Enum.
 
-2.2.1.2  Binary
+##### 2.2.1.2 Binary
 
 The Binary data type is used to represent fixed-length or variable-length binary data.
 
-2.2.1.2.1 Facets
+###### 2.2.1.2.1 Facets
 
 The EDM simple type facets applicable for the binary type are FixedLength and MaxLength.
 
-2.2.1.2.1.1  MaxLength
+###### 2.2.1.2.1.1 MaxLength
 
 The maximum size of the declared Binary data type value is specified by the value of the MaxLength
 facet. The MaxLength facet accepts a value of the literal string "Max" or a positive integer with value
 ranging from 1 to 2^31.
 
-2.2.1.2.1.2  FixedLength
+###### 2.2.1.2.1.2 FixedLength
 
 The FixedLength facet is a Boolean that specifies whether the length can vary.
 
@@ -4217,60 +4054,61 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.1.3  Boolean
+
+##### 2.2.1.3 Boolean
 
 The Boolean data type is used to represent the mathematical concept of binary valued logic. There
 are no applicable facets for this type.
 
-2.2.1.4  DateTime
+##### 2.2.1.4 DateTime
 
 The DateTime type represents date and time with values ranging from 12:00:00 midnight, January 1,
 1753 A.D. through 11:59:59 P.M, December 31, 9999 A.D.
 
-2.2.1.4.1 Facets
+###### 2.2.1.4.1 Facets
 
-2.2.1.4.1.1  Precision
+###### 2.2.1.4.1.1 Precision
 
 The Precision facet specifies the degree of granularity of the DateTime facet in fractions of a second,
 based on the number of decimal places that are supported. The actual values allowed will depend on
 the data provider. As an example, if a database allows a Precision of 3, the granularity supported is
 milliseconds.
 
-2.2.1.5  Time
+##### 2.2.1.5 Time
 
 The Time type represents a signed duration of time in terms of days, hours, minutes, seconds, and
 fractional seconds.
 
-2.2.1.5.1 Facets
+###### 2.2.1.5.1 Facets
 
-2.2.1.5.1.1  Precision
+###### 2.2.1.5.1.1 Precision
 
 The Precision facet specifies the degree of granularity of the Time type in fractions of a second,
 based on the number of decimal places that are supported. The actual values allowed will depend on
 the data provider. As an example, if a database allows a Precision of 3, the granularity supported is
 milliseconds.
 
-2.2.1.6  DateTimeOffset
+##### 2.2.1.6 DateTimeOffset
 
 The DateTimeOffset type represents date and time as an Offset in minutes from GMT, with values
 ranging from 12:00:00 midnight, January 1, 1753 A.D. through 11:59:59 P.M, December 31, 9999
 A.D.
 
-2.2.1.6.1 Facets
+###### 2.2.1.6.1 Facets
 
-2.2.1.6.1.1  Precision
+###### 2.2.1.6.1.1 Precision
 
 The Precision facet specifies the degree of granularity of the DateTimeOffset type in fractions of a
 second, based on the number of decimal places that are supported. For example, a Precision of 3
 means that the granularity supported is milliseconds.
 
-2.2.1.7  Decimal
+##### 2.2.1.7 Decimal
 
 The Decimal type represents numeric values with fixed precision and scale. The required precision
 and scale can be specified using its optional Precision and Scale facets. The Decimal type can
 describe a numeric value ranging from negative 10^255 + 1 to positive 10^255 -1.
 
-2.2.1.7.1 Facets
+###### 2.2.1.7.1 Facets
 
 [MC-CSDL] - v20190313
 Conceptual Schema Definition File Format
@@ -4279,73 +4117,74 @@ Release: March 13, 2019
 
 63 / 126
 
-2.2.1.7.1.1  Precision
+
+###### 2.2.1.7.1.1 Precision
 
 The Precision facet is a positive integer that specifies the maximum number of decimal digits that an
 instance of the decimal type can have, both to the left and to the right of the decimal point.
 
-2.2.1.7.1.2  Scale
+###### 2.2.1.7.1.2 Scale
 
 This is a positive integer that specifies the maximum number of decimal digits to the right of the
 decimal point that an instance of this type can have. The Scale value can range from 0 through the
 specified Precision value. The default Scale is 0.
 
-2.2.1.8  Single
+##### 2.2.1.8 Single
 
 The Single type represents a floating point number with 7 digits precision that can represent values
 with approximate range of ± 1.18e -38 through ± 3.40e +38.
 
-2.2.1.9  Double
+##### 2.2.1.9 Double
 
 The Double type represents a floating point number with 15 digits precision that can represent values
 with approximate range of ± 2.23e -308 through ± 1.79e +308.
 
-2.2.1.10
+##### 2.2.1.10 Guid
 
-Guid
+
 
 This Guid type, as specified in [RFC4122], represents a 16-byte (128-bit) unique identifier value.
 
-2.2.1.11
+##### 2.2.1.11 SByte
 
-SByte
+
 
 The SByte type represents a signed 8-bit integer value.
 
-2.2.1.12
+##### 2.2.1.12 Int16
 
-Int16
+
 
 The Int16 type represents a signed 16-bit integer value.
 
-2.2.1.13
+##### 2.2.1.13 Int32
 
-Int32
+
 
 The Int32 type represents a signed 32-bit integer value.
 
-2.2.1.14
+##### 2.2.1.14 Int64
 
-Int64
+
 
 The Int64 type represents a signed 64-bit integer value.
 
-2.2.1.15
+##### 2.2.1.15 Byte
 
-Byte
+
 
 The Byte type represents an unsigned 8-bit integer value.
 
-2.2.1.16
+##### 2.2.1.16 String
 
-String
+
 
 The String type represents fixed-length or variable-length character data. The EDMSimpleType
 facets applicable to String type are described below.
 
-2.2.1.16.1
+###### 2.2.1.16.1 Facets
 
-Facets
+
 
 The EDMSimpleType facets that are applicable for the String type are Unicode, Collation,
 FixedLength, and MaxLength. The facets Unicode and Collation are optional.
@@ -4357,7 +4196,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.1.16.1.1  Unicode
+
+###### 2.2.1.16.1.1 Unicode
 
 The Unicode facet is a Boolean value. This value, when set to true, dictates the String type that an
 instance will store. By default, UNICODE characters are used, otherwise standard ASCII encoding is
@@ -4366,19 +4206,19 @@ used. The default value for this facet is true.
 Note  The String data type does not support the kind of UNICODE to be specified, leaving it to the
 concrete type systems hosting EDM to choose the appropriate UNICODE type.
 
-2.2.1.16.1.2  FixedLength
+###### 2.2.1.16.1.2 FixedLength
 
 The FixedLength facet is a Boolean value. The Boolean value specifies whether the store requires a
 string to be fixed length or not (that is, setting this facet to true would require a fixed-length field
 [char or nchar] instead of variable-length [varchar or nvarchar]).
 
-2.2.1.16.1.3  MaxLength
+###### 2.2.1.16.1.3 MaxLength
 
 The MaxLength facet specifies the maximum length of an instance of the String type. The
 MaxLength facet accepts a value of the literal string "Max" or a positive integer. For Unicode equal
 to true, MaxLength can range from 1 to 2^30, or if false, MaxLength can range from 1 to 2^31.
 
-2.2.1.16.1.4  Collation
+###### 2.2.1.16.1.4 Collation
 
 The Collation facet is a string value that specifies the collating sequence (or sorting sequence) to be
 used for performing comparison and ordering operations over string values.
@@ -4430,21 +4270,22 @@ Release: March 13, 2019
 
 65 / 126
 
-2.2.1.17
 
-Stream
+##### 2.2.1.17 Stream
+
+
 
 The Stream data type is used to represent fixed-length or variable-length data stream.
 
-2.2.1.17.1
+###### 2.2.1.17.1 Facets
 
-Facets
+
 
 The EDMSimpleType facets applicable for the String data type are FixedLength and MaxLength.
 
-2.2.1.18
+##### 2.2.1.18 Geography
 
-Geography
+
 
 The Geography type represents any geospatial data type that uses a geographic (round-earth)
 coordinate system. Each entity’s data can be of any of the geographic primitive types; Geography
@@ -4457,13 +4298,13 @@ Geography is not an instantiable type. An entity can declare a property to be of
 instance of an entity MUST NOT have a value of type Geography. Each value MUST be of some
 subtype.
 
-2.2.1.18.1
+###### 2.2.1.18.1 Facets
 
-Facets
+
 
 The EDMSimpleType facets applicable for the Geography type are SRID. SRID is optional.
 
-2.2.1.18.1.1  SRID
+###### 2.2.1.18.1.1 SRID
 
 The SRID facet is an Int value. This value corresponds to the System Reference Identifier for the
 coordinate system that is used. The valid values and their meanings are as defined by the European
@@ -4473,24 +4314,24 @@ assumed, which corresponds to the WGS 84 datum.
 SRID can also have the special value "variable". This means that the SRID is explicitly stated to vary
 per entity instance.
 
-2.2.1.19
+##### 2.2.1.19 GeographyPoint
 
-GeographyPoint
+
 
 The GeographyPoint type represents a single position in a geographic (round-earth) coordinate
 system. GeographyPoint is not equality comparable, so it cannot be used in keys. The meaning of a
 GeographyPoint is as the meaning of Point in the OGC Simple Features specification ([OGC-
 SFACA/1.2.1] section 6.1.4), but for ellipsoidal coordinates.
 
-2.2.1.19.1
+###### 2.2.1.19.1 Facets
 
-Facets
+
 
 All facets for the GeographyPoint type behave exactly as for its base type, Geography.
 
-2.2.1.20
+##### 2.2.1.20 GeographyLineString
 
-GeographyLineString
+
 
 The GeographyLineString type represents a path in a geographic (round-earth) coordinate system.
 GeographyLineString is not equality comparable, so it cannot be used in keys. The meaning of a
@@ -4498,9 +4339,9 @@ GeographyLineString is as the meaning of LineString in the OGC Simple Features s
 ([OGC-SFACA/1.2.1] section 6.1.7), except that interpolation between control points is defined to be
 along great elliptic arcs.
 
-2.2.1.20.1
+###### 2.2.1.20.1 Facets
 
-Facets
+
 
 All facets for GeographyLineString behave exactly as for its base type, Geography.
 
@@ -4511,54 +4352,55 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.1.21
 
-GeographyPolygon
+##### 2.2.1.21 GeographyPolygon
+
+
 
 The GeographyPolygon type represents a surface in a geographic (round-earth) coordinate system.
 GeographyPolygon is not equality comparable, so it cannot be used in keys. The meaning of a
 GeographyPolygon is as the meaning of Polygon in the OGC Simple Features specification ([OGC-
 SFACA/1.2.1] section 6.1.11), except for ellipsoidal coordinates.
 
-2.2.1.21.1
+###### 2.2.1.21.1 Facets
 
-Facets
+
 
 All facets for GeographyPolygon behave exactly as for its base type, Geography.
 
-2.2.1.22
+##### 2.2.1.22 GeographyCollection
 
-GeographyCollection
+
 
 The GeographyCollection type represents a Geography that is defined as the union of a set of
 Geography instances. GeographyCollection is not equality comparable, so it cannot be used in
 keys. The meaning of a GeographyCollection is as the meaning of GeometryCollection in the OGC
 Simple Features specification ([OGC-SFACA/1.2.1] section 6.1.3), but for ellipsoidal coordinates.
 
-2.2.1.22.1
+###### 2.2.1.22.1 Facets
 
-Facets
+
 
 All facets for GeographyCollection behave exactly as for its base type, Geography.
 
-2.2.1.23
+##### 2.2.1.23 GeographyMultiPoint
 
-GeographyMultiPoint
+
 
 The GeographyMultiPoint type represents a Geography that is defined as the union of a set of
 GeographyPoint instances. GeographyMultiPoint is not equality comparable, so it cannot be used
 in keys. The meaning of a GeographyMultiPoint is as the meaning of MultiPoint in the OGC Simple
 Features specification ([OGC-SFACA/1.2.1] section 6.1.5), but for ellipsoidal coordinates.
 
-2.2.1.23.1
+###### 2.2.1.23.1 Facets
 
-Facets
+
 
 All facets for GeographyMultiPoint behave exactly as for its base type, Geography.
 
-2.2.1.24
+##### 2.2.1.24 GeographyMultiLineString
 
-GeographyMultiLineString
+
 
 The GeographyMultiLineString type represents a Geography that is defined as the union of a set
 of GeographyLineString instances. GeographyMultiLineString is not equality comparable, so it
@@ -4566,15 +4408,15 @@ cannot be used in keys. The meaning of a GeographyMultiLineString is as the mean
 MultiLineString in the OGC Simple Features specification ([OGC-SFACA/1.2.1] section 6.1.9), but for
 ellipsoidal coordinates.
 
-2.2.1.24.1
+###### 2.2.1.24.1 Facets
 
-Facets
+
 
 All facets for GeographyMultiLineString behave exactly as for its base type, Geography.
 
-2.2.1.25
+##### 2.2.1.25 GeographyMultiPolygon
 
-GeographyMultiPolygon
+
 
 The GeographyMultiPolygon type represents a Geography that is defined as the union of a set of
 GeographyPolygon instances. GeographyMultiPolygon is not equality comparable, so it cannot be
@@ -4582,9 +4424,9 @@ used in keys. The meaning of a GeographyMultiPolygon is as the meaning of MultiP
 OGC Simple Features specification ([OGC-SFACA/1.2.1] section 6.1.14), but for ellipsoidal
 coordinates.
 
-2.2.1.25.1
+###### 2.2.1.25.1 Facets
 
-Facets
+
 
 All facets for GeographyMultiPolygon behave exactly as for its base type, Geography.
 
@@ -4595,9 +4437,10 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-2.2.1.26
 
-Geometry
+##### 2.2.1.26 Geometry
+
+
 
 The Geometry type represents any geospatial data type that uses a geometric (flat-earth) coordinate
 system. Each entity’s data can be of any of the geometric primitive types; Geometry acts as an
@@ -4610,13 +4453,13 @@ Geometry is not an instantiable type. An entity can declare a property to be of 
 instance of an entity MUST NOT have a value of type Geometry. Each value MUST be of some
 subtype.
 
-2.2.1.26.1
+###### 2.2.1.26.1 Facets
 
-Facets
+
 
 The EDM simple type facets applicable for this type are SRID. SRID is optional.
 
-2.2.1.26.1.1  SRID
+###### 2.2.1.26.1.1 SRID
 
 The SRID facet is an Int value. This value corresponds to the System Reference Identifier for the
 coordinate system that is used. The valid values and their meanings are as defined by the European
@@ -4626,48 +4469,48 @@ which corresponds to a unitless planar coordinate system without a defined origi
 SRID can also have the special value "variable". This means that the SRID is explicitly stated to vary
 per entity instance.
 
-2.2.1.27
+##### 2.2.1.27 GeometryPoint
 
-GeometryPoint
+
 
 The GeometryPoint type represents a single position in a geometric (flat-earth) coordinate system.
 GeometryPoint is not equality comparable, so it cannot be used in keys. The meaning of a
 GeometryPoint is as the meaning of Point in the OGC Simple Features specification ([OGC-
 SFACA/1.2.1] section 6.1.4).
 
-2.2.1.27.1
+###### 2.2.1.27.1 Facets
 
-Facets
+
 
 All facets for GeometryPoint behave exactly as for its base type, Geometry.
 
-2.2.1.28
+##### 2.2.1.28 GeometryLineString
 
-GeometryLineString
+
 
 The GeometryLineString type represents a path in a geometric (flat-earth) coordinate system.
 GeometryLineString is not equality comparable, so it cannot be used in keys. The meaning of a
 GeometryLineString is as the meaning of LineString in the OGC Simple Features specification
 ([OGC-SFACA/1.2.1] section 6.1.7).
 
-2.2.1.28.1
+###### 2.2.1.28.1 Facets
 
-Facets
+
 
 All facets for GeometryLineString behave exactly as for its base type, Geometry.
 
-2.2.1.29
+##### 2.2.1.29 GeometryPolygon
 
-GeometryPolygon
+
 
 The GeometryPolygon type represents a surface in a geometric (flat-earth) coordinate system.
 GeometryPolygon is not equality comparable, so it cannot be used in keys. The meaning of a
 GeometryPolygon is as the meaning of Polygon in the OGC Simple Features specification ([OGC-
 SFACA/1.2.1] section 6.1.11).
 
-2.2.1.29.1
+###### 2.2.1.29.1 Facets
 
-Facets
+
 
 [MC-CSDL] - v20190313
 Conceptual Schema Definition File Format
@@ -4676,69 +4519,70 @@ Release: March 13, 2019
 
 68 / 126
 
-All facets for GeometryPolygon behave exactly as for its base type, Geometry.
 
-2.2.1.30
+All facets for GeometryPolygon behave exactly as for its base type, Geometry.
 
-GeometryCollection
+##### 2.2.1.30 GeometryCollection
+
+
 
 The GeometryCollection type represents a Geometry that is defined as the union of a set of
 Geometry instances. GeometryCollection is not equality comparable, so it cannot be used in keys.
 The meaning of a GeometryCollection is as the meaning of GeometryCollection in the OGC Simple
 Features specification ([OGC-SFACA/1.2.1] section 6.1.3).
 
-2.2.1.30.1
+###### 2.2.1.30.1 Facets
 
-Facets
+
 
 All facets for GeometryCollection behave exactly as for its base type, Geometry.
 
-2.2.1.31
+##### 2.2.1.31 GeometryMultiPoint
 
-GeometryMultiPoint
+
 
 The GeometryMultiPoint type represents a Geometry that is defined as the union of a set of
 GeometryPoint instances. GeometryMultiPoint is not equality comparable, so it cannot be used in
 keys. The meaning of a GeometryMultiPoint is as the meaning of MultiPoint in the OGC Simple
 Features specification ([OGC-SFACA/1.2.1] section 6.1.5).
 
-2.2.1.31.1
+###### 2.2.1.31.1 Facets
 
-Facets
+
 
 All facets for GeometryMultiPoint behave exactly as for its base type, Geometry.
 
-2.2.1.32
+##### 2.2.1.32 GeometryMultiLineString
 
-GeometryMultiLineString
+
 
 The GeometryMultiLineString type represents a Geometry that is defined as the union of a set of
 GeometryLineString instances. GeometryMultiLineString is not equality comparable, so it cannot
 be used in keys. The meaning of a GeometryMultiLineString is as the meaning of MultiLineString
 in the OGC Simple Features specification ([OGC-SFACA/1.2.1] section 6.1.9).
 
-2.2.1.32.1
+###### 2.2.1.32.1 Facets
 
-Facets
+
 
 All facets for GeometryMultiLineString behave exactly as for its base type, Geometry.
 
-2.2.1.33
+##### 2.2.1.33 GeometryMultiPolygon
 
-GeometryMultiPolygon
+
 
 The GeometryMultiPolygon type represents a Geometry that is defined as the union of a set of
 GeometryPolygon instances. GeometryMultiPolygon is not equality comparable, so it cannot be
 used in keys. The meaning of a GeometryMultiPolygon is as the meaning of MultiPolygon in the
 OGC Simple Features specification ([OGC-SFACA/1.2.1] section 6.1.14).
 
-2.2.1.33.1
+###### 2.2.1.33.1 Facets
 
-Facets
+
 
 All facets for GeometryMultiPolygon behave exactly as for its base type, Geometry.
 
-2.2.2  Action
+#### 2.2.2 Action
 
 Action can either be "Cascade" or "None".
 
@@ -4753,7 +4597,8 @@ Release: March 13, 2019
 
 69 / 126
 
-2.2.3  Multiplicity
+
+#### 2.2.3 Multiplicity
 
 The Multiplicity of a relationship describes the cardinality or number of instances of an EntityType
 that can be associated with the instances of another EntityType.
@@ -4761,7 +4606,7 @@ that can be associated with the instances of another EntityType.
 The possible types of multiplicity are as follows: one-to-one, one-to-many, zero-one to one, zero-one
 to many, and many-to-many.
 
-2.2.4  ConcurrencyMode
+#### 2.2.4 ConcurrencyMode
 
 ConcurrencyMode is a special facet that can be applied to any primitive Entity Data Model (EDM)
 type. Possible values are "None", which is the default, and "Fixed".
@@ -4780,7 +4625,7 @@ The property's type MUST be a simple type. It cannot be applied to properties of
 
 The property MUST be a declared property.
 
-2.2.5  QualifiedName
+#### 2.2.5 QualifiedName
 
 QualifiedName is a string-based representation of the name of the element or attribute.
 
@@ -4789,7 +4634,7 @@ The following pattern represents the allowed identifiers for QualifiedName.
  Value="[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}(\.[\p{L}\p{Nl}][\p{L}\p{N
 l}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}){0,}"
 
-2.2.6  SimpleIdentifier
+#### 2.2.6 SimpleIdentifier
 
 SimpleIdentifier is a string-based representation. The maximum length of the identifier MUST be
 less than 480.
@@ -4799,14 +4644,14 @@ The following pattern represents the allowed identifiers in the ECMA specificati
 
  value="[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}"
 
-2.2.7  AnnotationAttribute
+#### 2.2.7 AnnotationAttribute
 
 An AnnotationAttribute is a custom XML attribute that is applied to a CSDL element. The attribute
 can belong to any XML namespace (as defined in [XMLNS-2ED]) that is not in the list of reserved
 XML namespaces for CSDL. Consult the reference for each CSDL element within this document to
 determine whether AnnotationAttribute can be used for that element.
 
-2.2.8  OpenType
+#### 2.2.8 OpenType
 
 OpenType is a facet that can be applied to any EntityType. Possible values are "false", which is the
 default, and "true".
@@ -4818,15 +4663,16 @@ Release: March 13, 2019
 
 70 / 126
 
-EntityType elements marked with OpenType="false" or EntityType elements that do not explicitly
+
+EntityType elements marked with OpenType="false" or EntityType elements that do not explicitly
 include an OpenType attribute indicate that the element defines an EntityType. EntityType
 elements marked with OpenType="true" indicate that the element defines an OpenEntityType.
 
-2.2.9  TypeTerm
+#### 2.2.9 TypeTerm
 
 TypeTerm is a base type that is used to define vocabulary terms.
 
-2.3  Facet Application
+### 2.3 Facet Application
 
 Facets apply to the nominal type referenced in the element where the facet is declared. In the
 following example, the Nullable facet applies to the DateTime referenced type.
@@ -4847,7 +4693,8 @@ Release: March 13, 2019
 
 71 / 126
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following example shows a conceptual schema definition language (CSDL) that defines:
 
@@ -4921,7 +4768,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.1  ValueAnnotation
+
+### 3.1 ValueAnnotation
 
 The following examples show a conceptual schema definition language (CSDL) in which Model1 is
 extended with ValueAnnotation.
@@ -4996,7 +4844,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-3.2  ValueTerm and Edm.TypeTerm
+
+### 3.2 ValueTerm and Edm.TypeTerm
 
 The following example shows a conceptual schema definition language (CSDL) where the
 ValueTerm and an entity type that is derived from Edm.TypeTerm that is used in the previous
@@ -5020,7 +4869,8 @@ Release: March 13, 2019
 
 74 / 126
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 None.
 
@@ -5031,7 +4881,8 @@ Release: March 13, 2019
 
 75 / 126
 
-5  Appendix A: Full XML Schemas
+
+## 5 Appendix A: Full XML Schemas
 
 For ease of implementation, full XML schemas are provided in the following sections.
 
@@ -5055,7 +4906,7 @@ CSDL Schema 3.0  xs:
 
 5.4
 
-5.1  CSDL Schema 1.0
+### 5.1 CSDL Schema 1.0
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
@@ -5112,7 +4963,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:enumeration value="Double" />
+
+       <xs:enumeration value="Double" />
        <xs:enumeration value="Single" />
        <xs:enumeration value="Guid" />
        <xs:enumeration value="Int16" />
@@ -5189,7 +5041,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:sequence>
+
+     <xs:sequence>
        <xs:group ref="edm:GEmptyElementExtensibility" minOccurs="0" maxOccurs="1" />
      </xs:sequence>
      <xs:attribute name="Namespace" type="edm:TNamespaceName" use="required" />
@@ -5266,7 +5119,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:element name="Key" type="edm:TEntityKeyElement" minOccurs="0" maxOccurs="1" />
+
+       <xs:element name="Key" type="edm:TEntityKeyElement" minOccurs="0" maxOccurs="1" />
        <xs:choice minOccurs="0" maxOccurs="unbounded">
          <xs:element name="Property" type="edm:TEntityProperty" minOccurs="0"
 maxOccurs="unbounded" />
@@ -5343,7 +5197,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </xs:sequence>
+
+     </xs:sequence>
      <xs:attributeGroup ref="edm:TCommonPropertyAttributes" />
      <xs:anyAttribute namespace="##other" processContents="lax" />
    </xs:complexType>
@@ -5419,7 +5274,8 @@ Release: March 13, 2019
 
 80 / 126
 
-                 <xs:element name="Parameter" type="edm:TFunctionImportParameter"
+
+                 <xs:element name="Parameter" type="edm:TFunctionImportParameter"
 minOccurs="0" maxOccurs="unbounded" />
                </xs:sequence>
                <xs:attributeGroup ref="edm:TFunctionImportAttributes" />
@@ -5496,7 +5352,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:restriction base="xs:string">
+
+     <xs:restriction base="xs:string">
        <!-- The below pattern represents the allowed identifiers in ECMA specification plus
 the '.' for namespace qualification  -->
        <xs:pattern
@@ -5554,7 +5411,7 @@ l}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}){0,}" />
    </xs:simpleType>
  </xs:schema>
 
-5.2  CSDL Schema 1.1
+### 5.2 CSDL Schema 1.1
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
@@ -5570,7 +5427,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <xs:annotation>
+
+   <xs:annotation>
      <xs:documentation xml:lang="en">
              Common Data Model Schema Definition Language.
              Copyright (c) Microsoft Corp. All rights reserved.
@@ -5647,7 +5505,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <xs:simpleType name="TIsUnicodeFacet">
+
+   <xs:simpleType name="TIsUnicodeFacet">
      <xs:restriction base="xs:boolean" />
    </xs:simpleType>
    <xs:simpleType name="TCollationFacet">
@@ -5724,7 +5583,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </xs:sequence>
+
+     </xs:sequence>
      <xs:attributeGroup ref="edm:TDerivableTypeAttributes" />
      <xs:attribute ref="cg:TypeAccess" use="optional" />
      <xs:anyAttribute namespace="##other" processContents="lax" />
@@ -5800,7 +5660,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"
+
+       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"
 />
      </xs:sequence>
    </xs:group>
@@ -5877,7 +5738,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:attribute ref="cg:GetterAccess" use="optional" />
+
+     <xs:attribute ref="cg:GetterAccess" use="optional" />
    </xs:attributeGroup>
    <xs:attributeGroup name="TFunctionImportParameterAttributes">
      <xs:attribute name="Name" type="edm:TSimpleIdentifier" use="required" />
@@ -5954,7 +5816,8 @@ Release: March 13, 2019
 
 87 / 126
 
-                           defined Entity Type in AssociationType
+
+                           defined Entity Type in AssociationType
                      -->
                    <xs:complexType>
                      <xs:sequence>
@@ -6030,7 +5893,8 @@ Release: March 13, 2019
 
 88 / 126
 
-           <!-- The below pattern represents the allowed identifiers in ECMA specification
+
+           <!-- The below pattern represents the allowed identifiers in ECMA specification
 plus the '.' for namespace qualification  -->
            <xs:pattern
 value="[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}(\.[\p{L}\p{Nl}][\p{L}\p{N
@@ -6069,7 +5933,7 @@ l}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}){0,}" />
    </xs:simpleType>
  </xs:schema>
 
-5.3  CSDL Schema 2.0
+### 5.3 CSDL Schema 2.0
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
@@ -6104,7 +5968,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:attribute name="Alias" type="edm:TSimpleIdentifier" use="optional" />
+
+     <xs:attribute name="Alias" type="edm:TSimpleIdentifier" use="optional" />
      <xs:anyAttribute namespace="##other" processContents="lax" />
    </xs:complexType>
    <xs:group name="GSchemaBodyElements">
@@ -6181,7 +6046,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:sequence>
+
+     <xs:sequence>
        <xs:element name="Summary" type="edm:TText" minOccurs="0" maxOccurs="1" />
        <xs:element name="LongDescription" type="edm:TText" minOccurs="0" maxOccurs="1" />
      </xs:sequence>
@@ -6258,7 +6124,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </xs:sequence>
+
+     </xs:sequence>
      <xs:anyAttribute namespace="##other" processContents="lax" />
    </xs:complexType>
    <xs:complexType name="TReferentialConstraintRoleElement">
@@ -6308,7 +6175,8 @@ Release: March 13, 2019
 
 92 / 126
 
-   <xs:complexType name="TFunction">
+
+   <xs:complexType name="TFunction">
      <xs:sequence>
        <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0" maxOccurs="1"
 />
@@ -6385,7 +6253,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <xs:complexType name="TRowType">
+
+   <xs:complexType name="TRowType">
      <xs:choice minOccurs="1" maxOccurs="unbounded">
        <xs:element name="Property" type="edm:TProperty" minOccurs="0" maxOccurs="1" />
        <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"
@@ -6439,7 +6308,8 @@ Release: March 13, 2019
 
 94 / 126
 
-       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"
+
+       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"
 />
      </xs:sequence>
    </xs:complexType>
@@ -6516,7 +6386,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <xs:attributeGroup name="TFacetAttributes">
+
+   <xs:attributeGroup name="TFacetAttributes">
      <xs:attribute name="Nullable" type="xs:boolean" use="optional" />
      <xs:attribute name="DefaultValue" type="xs:string" use="optional" />
      <xs:attribute name="MaxLength" type="edm:TMaxLengthFacet" use="optional" />
@@ -6592,7 +6463,8 @@ Release: March 13, 2019
 
 96 / 126
 
-                 <xs:element name="Parameter" type="edm:TFunctionImportParameter"
+
+                 <xs:element name="Parameter" type="edm:TFunctionImportParameter"
 minOccurs="0" maxOccurs="unbounded" />
                  <xs:any namespace="##other" processContents="lax" minOccurs="0"
 maxOccurs="unbounded" />
@@ -6669,7 +6541,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <xs:simpleType name="TNamespaceName">
+
+   <xs:simpleType name="TNamespaceName">
      <xs:restriction base="edm:TQualifiedName">
        <xs:MaxLength value="512" />
      </xs:restriction>
@@ -6746,7 +6619,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:enumeration value="None" />
+
+       <xs:enumeration value="None" />
      </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="TMultiplicity">
@@ -6764,7 +6638,7 @@ Release: March 13, 2019
    </xs:simpleType>
  </xs:schema>
 
-5.4  CSDL Schema 3.0
+### 5.4 CSDL Schema 3.0
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
@@ -6820,7 +6694,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <!-- EDM SimpleType instances for use by EDM Instance documents-->
+
+   <!-- EDM SimpleType instances for use by EDM Instance documents-->
    <xs:simpleType name="EDMSimpleType">
      <xs:restriction base="xs:string">
        <xs:enumeration value="Binary" />
@@ -6897,7 +6772,8 @@ Release: March 13, 2019
 
 100 / 126
 
-   <!--
+
+   <!--
          types at all levels
      -->
    <xs:complexType name="TDocumentation">
@@ -6974,7 +6850,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </xs:sequence>
+
+     </xs:sequence>
      <xs:attributeGroup ref="edm:TTypeAttributes" />
      <xs:attribute ref="cg:TypeAccess" use="optional" />
      <xs:anyAttribute namespace="##other" processContents="lax" />
@@ -7051,7 +6928,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:attribute ref="cg:TypeAccess" use="optional" />
+
+     <xs:attribute ref="cg:TypeAccess" use="optional" />
      <xs:anyAttribute namespace="##other" processContents="lax" />
    </xs:complexType>
    <xs:complexType name="TEnumTypeMember">
@@ -7127,7 +7005,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         <xs:element name="TypeAnnotation" type="edm:TTypeAnnotation" minOccurs="0"
+
+         <xs:element name="TypeAnnotation" type="edm:TTypeAnnotation" minOccurs="0"
 maxOccurs="unbounded" />
        </xs:choice>
        <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"
@@ -7204,7 +7083,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:sequence>
+
+     <xs:sequence>
        <xs:choice minOccurs="0" maxOccurs="1">
          <xs:element name="CollectionType" type="edm:TCollectionType" minOccurs="0"
 maxOccurs="1" />
@@ -7281,7 +7161,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0" maxOccurs="1"
+
+       <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0" maxOccurs="1"
 />
        <xs:group ref="edm:GExpression" minOccurs="1" maxOccurs="1" />
      </xs:sequence>
@@ -7358,7 +7239,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       </xs:sequence>
+
+       </xs:sequence>
      </xs:sequence>
    </xs:group>
    <xs:attributeGroup name="GInlineExpressions">
@@ -7435,7 +7317,8 @@ Release: March 13, 2019
 
 107 / 126
 
-     </xs:simpleContent>
+
+     </xs:simpleContent>
    </xs:complexType>
    <xs:complexType name="TTimeConstantExpression">
      <xs:simpleContent>
@@ -7511,7 +7394,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0" maxOccurs="1"
+
+       <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0" maxOccurs="1"
 />
        <xs:group ref="edm:GExpression" minOccurs="1" maxOccurs="1" />
      </xs:sequence>
@@ -7588,7 +7472,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-               </xs:choice>
+
+               </xs:choice>
                <xs:any namespace="##other" processContents="lax" minOccurs="0"
 maxOccurs="unbounded" />
              </xs:choice>
@@ -7665,7 +7550,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         <xs:anyAttribute namespace="##other" processContents="lax" />
+
+         <xs:anyAttribute namespace="##other" processContents="lax" />
        </xs:extension>
      </xs:simpleContent>
    </xs:complexType>
@@ -7742,7 +7628,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0"
+
+         <xs:element name="Documentation" type="edm:TDocumentation" minOccurs="0"
 maxOccurs="1" />
          <xs:element name="CollectionType" type="edm:TCollectionType" minOccurs="0"
 maxOccurs="1" />
@@ -7819,7 +7706,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     <xs:attribute name="MaxLength" type="edm:TMaxLengthFacet" use="optional" />
+
+     <xs:attribute name="MaxLength" type="edm:TMaxLengthFacet" use="optional" />
      <xs:attribute name="Precision" type="edm:TPrecisionFacet" use="optional" />
      <xs:attribute name="Scale" type="edm:TScaleFacet" use="optional" />
      <xs:attribute name="SRID" type="edm:TSridFacet" use="optional" />
@@ -7896,7 +7784,8 @@ Release: March 13, 2019
 
 113 / 126
 
-                     <xs:any namespace="##other" processContents="lax" minOccurs="0"
+
+                     <xs:any namespace="##other" processContents="lax" minOccurs="0"
 maxOccurs="unbounded" />
                    </xs:choice>
                </xs:sequence>
@@ -7973,7 +7862,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       <!-- The below pattern represents the allowed identifiers in ECMA specification plus
+
+       <!-- The below pattern represents the allowed identifiers in ECMA specification plus
 the '.' for namespace qualification  -->
        <xs:pattern
 value="[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Nd}\p{Mn}\p{Mc}\p{Pc}\p{Cf}]{0,}(\.[\p{L}\p{Nl}][\p{L}\p{N
@@ -8050,7 +7940,8 @@ Conceptual Schema Definition File Format
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </xs:union>
+
+     </xs:union>
    </xs:simpleType>
    <xs:simpleType name="TAction">
      <xs:restriction base="xs:token">
@@ -8080,7 +7971,8 @@ Release: March 13, 2019
 
 116 / 126
 
-6  Appendix B: Differences Between CSDL 1.0 and CSDL 1.1
+
+## 6 Appendix B: Differences Between CSDL 1.0 and CSDL 1.1
 
 CSDL 1.1 is a superset of CSDL 1.0.
 
@@ -8107,7 +7999,8 @@ Release: March 13, 2019
 
 117 / 126
 
-7  Appendix C: Differences Between CSDL 1.1 and CSDL 1.2
+
+## 7 Appendix C: Differences Between CSDL 1.1 and CSDL 1.2
 
 CSDL 1.2 is a superset of CSDL 1.1.
 
@@ -8124,7 +8017,8 @@ Release: March 13, 2019
 
 118 / 126
 
-8  Appendix D: Differences Between CSDL 1.2 and CSDL 2.0
+
+## 8 Appendix D: Differences Between CSDL 1.2 and CSDL 2.0
 
 CSDL 2.0 is a superset of CSDL 1.2.
 
@@ -8163,7 +8057,8 @@ Release: March 13, 2019
 
 119 / 126
 
-9  Appendix E: Differences Between CSDL 2.0 and CSDL 3.0
+
+## 9 Appendix E: Differences Between CSDL 2.0 and CSDL 3.0
 
 CSDL 3.0 is a superset of CSDL 2.0.
 
@@ -8266,7 +8161,8 @@ Release: March 13, 2019
 
 120 / 126
 
-
+
+
 
 Int
 
@@ -8321,7 +8217,8 @@ Release: March 13, 2019
 
 121 / 126
 
-10  Appendix F: Product Behavior
+
+## 10 Appendix F: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8359,7 +8256,8 @@ Release: March 13, 2019
 
 122 / 126
 
-11  Change Tracking
+
+## 11 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -8403,7 +8301,8 @@ Release: March 13, 2019
 
 123 / 126
 
-12  Index
+
+## 12 Index
 A
 
 Action attribute 69
@@ -8534,7 +8433,8 @@ Release: March 13, 2019
 
 124 / 126
 
-Geography data type 66
+
+Geography data type 66
    facets 66
 GeographyCollection data type 67
    facets 67
@@ -8674,7 +8574,8 @@ String data type
 
 125 / 126
 
-Structures
+
+Structures
    attributes 62
    elements 14
    facets 71

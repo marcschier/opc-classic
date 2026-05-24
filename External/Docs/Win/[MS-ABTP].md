@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -177,203 +178,85 @@ Release: April 23, 2024
 
 2 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Enumerations](#221-enumerations)
+      - [2.2.1.1 MessageId Enumeration](#2211-messageid-enumeration)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 CommonHeader Structure](#2221-commonheader-structure)
+    - [2.2.3 Messages](#223-messages)
+      - [2.2.3.1 Challenge Message](#2231-challenge-message)
+      - [2.2.3.2 PairingRequired Message](#2232-pairingrequired-message)
+      - [2.2.3.3 ProtocolErrorResponse Message](#2233-protocolerrorresponse-message)
+      - [2.2.3.4 ReadyToPair Message](#2234-readytopair-message)
+      - [2.2.3.5 Response Message](#2235-response-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Pairing Request](#3141-pairing-request)
+      - [3.1.4.2 Cancellation](#3142-cancellation)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 ReadyToPair](#3151-readytopair)
+      - [3.1.5.2 Challenge](#3152-challenge)
+      - [3.1.5.3 Response](#3153-response)
+      - [3.1.5.4 Other Messages](#3154-other-messages)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 ClientGuardTimer](#3161-clientguardtimer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Successful Connection of Control Channel](#3171-successful-connection-of-control-channel)
+      - [3.1.7.2 Failed Connection of Control Channel](#3172-failed-connection-of-control-channel)
+      - [3.1.7.3 Disconnect Event of Control Channel](#3173-disconnect-event-of-control-channel)
+      - [3.1.7.4 Pairing Indication](#3174-pairing-indication)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Shutdown](#3241-shutdown)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 PairingRequired](#3251-pairingrequired)
+      - [3.2.5.2 Response](#3252-response)
+      - [3.2.5.3 Challenge](#3253-challenge)
+      - [3.2.5.4 Other Messages](#3254-other-messages)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 GuardTimer](#3261-guardtimer)
+      - [3.2.6.2 PausingTimer](#3262-pausingtimer)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Connect Event](#3271-connect-event)
+      - [3.2.7.2 Disconnect Event](#3272-disconnect-event)
+      - [3.2.7.3 Pairing indication](#3273-pairing-indication)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 PairingRequired](#41-pairingrequired)
+  - [4.2 ReadyToPair](#42-readytopair)
+  - [4.3 Challenge](#43-challenge)
+  - [4.4 Response](#44-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Enumerations ............................................................................................. 10
-MessageId Enumeration ......................................................................... 10
-Structures ................................................................................................. 10
-CommonHeader Structure ...................................................................... 10
-Messages ................................................................................................... 11
-Challenge Message ................................................................................ 11
-PairingRequired Message ....................................................................... 11
-ProtocolErrorResponse Message .............................................................. 11
-ReadyToPair Message ............................................................................ 12
-Response Message ................................................................................ 12
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-2.2.2.1
-
-2.2.3
-
-3.1
-
-3.1.6
-
-3.1.5
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 14
-Client Details ................................................................................................... 14
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Pairing Request..................................................................................... 16
-Cancellation ......................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-ReadyToPair ......................................................................................... 16
-Challenge ............................................................................................. 17
-Response ............................................................................................. 17
-Other Messages .................................................................................... 17
-Timer Events .............................................................................................. 17
-ClientGuardTimer .................................................................................. 17
-Other Local Events ...................................................................................... 17
-Successful Connection of Control Channel ................................................ 17
-Failed Connection of Control Channel ....................................................... 18
-Disconnect Event of Control Channel ....................................................... 18
-Pairing Indication .................................................................................. 18
-Server Details .................................................................................................. 18
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Shutdown ............................................................................................ 20
-Message Processing Events and Sequencing Rules .......................................... 20
-PairingRequired .................................................................................... 20
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-3.1.7.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.5.1
-
-3.1.6.1
-
-3.2.5
-
-3.1.7
-
-3.2
-
-[MS-ABTP] - v20240423
-Automatic Bluetooth Pairing Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 27
-
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.6
-
-3.2.6.1
-3.2.6.2
-
-3.2.7
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-Response ............................................................................................. 21
-Challenge ............................................................................................. 21
-Other Messages .................................................................................... 21
-Timer Events .............................................................................................. 21
-GuardTimer .......................................................................................... 21
-PausingTimer ....................................................................................... 21
-Other Local Events ...................................................................................... 22
-Connect Event ...................................................................................... 22
-Disconnect Event .................................................................................. 22
-Pairing indication .................................................................................. 22
-
-4  Protocol Examples ................................................................................................. 23
-PairingRequired ............................................................................................... 23
-ReadyToPair .................................................................................................... 23
-Challenge ........................................................................................................ 23
-Response ........................................................................................................ 23
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 25
-
-7  Change Tracking .................................................................................................... 26
-
-8  Index ..................................................................................................................... 27
-
-[MS-ABTP] - v20240423
-Automatic Bluetooth Pairing Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 27
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Automatic Bluetooth Pairing Protocol. This protocol facilitates the
 establishment of a secure, trusted Bluetooth (BT) pairing relationship between two devices without
@@ -384,7 +267,7 @@ secret are exchanged between the two devices using an out-of-band (OOB) mechanis
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -445,7 +328,8 @@ Release: April 23, 2024
 
 5 / 27
 
-out-of-band (OOB): A process for authenticating a user where two communication channels are
+
+out-of-band (OOB): A process for authenticating a user where two communication channels are
 
 used simultaneously between two devices or roles. A cellular network is an example of a channel
 that is commonly used for performing out-of-band authentication.
@@ -464,14 +348,14 @@ specified length of a Value field (16-bit), and the data in the Value field (var
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -488,7 +372,7 @@ https://www.bluetooth.com/specifications/archived-specifications/
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [BT-GAP] Bluetooth Special Interest Group, "Bluetooth Specification Version 4.0, Volume 3 - Core
 System Package [Host Volume], Part C - Generic Access Profile", June 2010,
@@ -511,7 +395,8 @@ Release: April 23, 2024
 
 6 / 27
 
-1.3  Overview
+
+### 1.3 Overview
 
 Bluetooth is one of the most common communication technologies that is used to enable scenarios
 that involve two different devices [BT40]. For security purposes, it is necessary to ensure that the
@@ -560,13 +445,14 @@ Release: April 23, 2024
 
 7 / 27
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-ABTP].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
 Figure 1: Establishing a secure, authenticated Bluetooth connection
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Automatic Bluetooth Pairing Protocol is dependent on the Bluetooth [BT40], RFComm [BT-
 RFCOMM], Service Discovery Protocol [BT-SDP], and Pairing protocols [BT-SEC].
@@ -578,28 +464,29 @@ Release: April 23, 2024
 
 8 / 27
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 To use the Automatic Bluetooth Pairing Protocol, both devices are required to support Bluetooth, the
 Bluetooth radio on both devices has to be turned on, and the Bluetooth MAC address of the server
 device and a shared secret have to be exchanged between the two devices by using an OOB
 mechanism.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable only when other Bluetooth pairing mechanisms are not appropriate or
 would prohibitively interrupt the user experience.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Protocol Versions: The Automatic Bluetooth Pairing Protocol does not support versioning, but it is
 extensible. This is defined in sections 3.1.5.4 and 3.2.5.4.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -610,9 +497,10 @@ Release: April 23, 2024
 
 9 / 27
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Automatic Bluetooth Pairing Protocol MUST have a byte stream connection between the client
 and server. This connection MUST be established by using RFCOMM [BT-RFCOMM]. To identify an
@@ -622,13 +510,13 @@ through SDP by using the globally unique identifier (GUID) {D9009112-CD2B-4e7a-A
 437D71E14905}. The RFCOMM communication channel is created before a Bluetooth pairing
 relationship with the server is created and MUST be unauthenticated.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This protocol uses a common type-length-value (TLV) encoding schema for all messages.
 
-2.2.1  Enumerations
+#### 2.2.1 Enumerations
 
-2.2.1.1  MessageId Enumeration
+##### 2.2.1.1 MessageId Enumeration
 
 The MessageId enumeration specifies the message type. The structure is referenced in the header of
 each message, as defined in section 2.2.2.1.
@@ -667,11 +555,11 @@ Identifies the Response message, as specified in section 2.2.3.5.
 
 5
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
 All multi-byte values are in network byte order unless specified otherwise.
 
-2.2.2.1  CommonHeader Structure
+##### 2.2.2.1 CommonHeader Structure
 
 The CommonHeader structure is used by all messages. It identifies the structure of the message and
 the encoded length of the message content.
@@ -683,7 +571,8 @@ Release: April 23, 2024
 
 10 / 27
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -704,9 +593,9 @@ Id (1 byte):  This field specifies the message type as indicated by the MessageI
 
 Length (2 bytes): This field specifies the number of bytes following the message header.
 
-2.2.3  Messages
+#### 2.2.3 Messages
 
-2.2.3.1  Challenge Message
+##### 2.2.3.1 Challenge Message
 
 The Challenge message is sent by each device to the peer device to authenticate pairing.
 
@@ -739,7 +628,7 @@ Payload (variable): This field contains the challenge value (128 bytes). Future 
 MAY define additional payload elements. This protocol version MUST ignore any payload after the
 challenge value in the packet.
 
-2.2.3.2  PairingRequired Message
+##### 2.2.3.2 PairingRequired Message
 
 The PairingRequired message is sent by the client to the server to prepare the pairing.
 
@@ -763,7 +652,7 @@ set to the payload size of the message. In this version of the protocol, the pay
 bytes). Future protocol versions MAY define additional message elements. This protocol version
 MUST ignore any payload.
 
-2.2.3.3  ProtocolErrorResponse Message
+##### 2.2.3.3 ProtocolErrorResponse Message
 
 The ProtocolErrorResponse message is sent by the receiver in response to a message that is not
 recognized. This message provides basic compatibility with future protocol versions that MAY contain
@@ -776,7 +665,8 @@ Automatic Bluetooth Pairing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-receiving a message where the value of the MessageId is outside of the range defined in section
+
+receiving a message where the value of the MessageId is outside of the range defined in section
 2.2.1.1.
 
 0  1  2  3  4  5  6  7  8  9
@@ -807,7 +697,7 @@ Payload (variable):  This field contains the MessageId (1 byte). Future protocol
 define additional message elements. This protocol version MUST ignore any payload after the
 MessageId.
 
-2.2.3.4  ReadyToPair Message
+##### 2.2.3.4 ReadyToPair Message
 
 The ReadyToPair message is sent by the server to the client in response to the PairingRequired
 message (section 2.2.3.2).
@@ -832,7 +722,7 @@ the payload size of the message. In this version of the protocol, the payload is
 Future protocol versions MAY define additional message elements. This protocol version MUST
 ignore any payload.
 
-2.2.3.5  Response Message
+##### 2.2.3.5 Response Message
 
 The Response message is sent in response to a Challenge message (section 2.2.3.1) to authenticate
 the pairing.
@@ -867,7 +757,8 @@ Automatic Bluetooth Pairing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Payload (variable):  This field contains the response value (32 bytes). Future protocol versions
+
+Payload (variable):  This field contains the response value (32 bytes). Future protocol versions
 
 MAY define additional message elements. This protocol version MUST ignore any payload after the
 response value in the packet.
@@ -879,7 +770,8 @@ Release: April 23, 2024
 
 13 / 27
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Automatic Bluetooth Pairing Protocol provides a client role and a server role.
 
@@ -889,7 +781,7 @@ secret, and a numeric value (representing a six-digit numeric code), the respons
 as a SHA-256 of the concatenation of the challenge value, the shared secret, and the numeric value
 represented (PIN) as a 32-byte value in network byte order.
 
-3.1  Client Details
+### 3.1 Client Details
 
 The role of the client in the Bluetooth pairing process is as follows:
 
@@ -928,13 +820,14 @@ Release: April 23, 2024
 
 14 / 27
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-ABTP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 2: Client state diagram
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 
@@ -950,7 +843,8 @@ Release: April 23, 2024
 
 15 / 27
 
-State: Specifies the state of the client which can be one of the following: IDLE, CONNECTING,
+
+State: Specifies the state of the client which can be one of the following: IDLE, CONNECTING,
 
 WAITING_FOR_SERVER_READY, WAITING_FOR_PAIRING, WAITING_FOR_CHALLENGE_REQUEST,
 WAITING_FOR_CHALLENGE_RESPONSE, WAITING_FOR_DISCONNECT, or FATAL_ERROR.
@@ -963,19 +857,19 @@ Expected Response: A 32-byte BLOB that contains the expected response value.
 
 Numeric Value: A six-digit confirmation value (PIN).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The client role maintains the following timers.
 
 ClientGuardTimer: The time-out interval is set to 10 seconds.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The initial state for the client is IDLE. The ClientGuardTimer (section 3.1.2) is not set.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Pairing Request
+##### 3.1.4.1 Pairing Request
 
 The higher layer can initiate pairing when the client is in the IDLE state (see section 3.1.1). When the
 client is in any other state, the client MUST fail the request. The higher layer MUST provide the Server
@@ -983,7 +877,7 @@ Address and the Shared Secret that is common to the client and server. The clien
 Server Address and the Shared Secret, initiates a Bluetooth connection to the specified server,
 sets the ClientGuardTimer (section 3.1.2), and transitions to the CONNECTING state.
 
-3.1.4.2  Cancellation
+##### 3.1.4.2 Cancellation
 
 The higher layer can cancel the pairing attempt at any time. When the client is in the CONNECTING,
 WAITING_FOR_SERVER_READY, WAITING_FOR_PAIRING, WAITING_FOR_CHALLENGE_REQUEST, or
@@ -991,7 +885,7 @@ WAITING_FOR_CHALLENGE_RESPONSE state, the client initiates a disconnect of the c
 stops the ClientGuardTimer (section 3.1.2), and transitions to the FATAL_ERROR state. When the
 client is in any other state, the client MUST ignore the request.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The message type is identified by using the MessageId value stored in the message header, as
 specified in section 2.2.1.1. A message is processed only when it has been fully received as indicated
@@ -1000,7 +894,7 @@ FATAL_ERROR or WAITING_FOR_DISCONNECT state, the client MUST ignore any messages
 When the client receives a message in any other state, the ClientGuardTimer (section 3.1.2) MUST
 be started or restarted.
 
-3.1.5.1  ReadyToPair
+##### 3.1.5.1 ReadyToPair
 
 When the client receives a ReadyToPair message (section 2.2.3.2) in the
 WAITING_FOR_SERVER_READY state, the client MUST initiate Bluetooth pairing with the server (as
@@ -1014,11 +908,12 @@ Automatic Bluetooth Pairing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the client receives the ReadyToPair message in any other state, the client MUST initiate a
+
+When the client receives the ReadyToPair message in any other state, the client MUST initiate a
 disconnect of the control channel, stop the ClientGuardTimer, and transition to the FATAL_ERROR
 state.
 
-3.1.5.2  Challenge
+##### 3.1.5.2 Challenge
 
 When the client receives a Challenge message (section 2.2.3.1) in the
 WAITING_FOR_CHALLENGE_REQUEST state, the client MUST compute the response value (as
@@ -1034,7 +929,7 @@ specified in section 3.2.1) for this challenge value. The client MUST restart th
 When the client receives the client message in any other state, the client MUST initiate a disconnect of
 the control channel, stop the ClientGuardTimer, and transition to the FATAL_ERROR state.
 
-3.1.5.3  Response
+##### 3.1.5.3 Response
 
 When the client receives a Response message (section 2.2.3.5) in the
 WAITING_FOR_CHALLENGE_RESPONSE state, the client MUST stop the ClientGuardTimer (section
@@ -1043,7 +938,7 @@ Response. If the values match, the client MUST complete the pairing with the ser
 to the WAITING_FOR_DISCONNECT state. If the values do not match, the client MUST transition to
 the FATAL_ERROR state. In all cases, the client MUST initiate the disconnect of the control channel.
 
-3.1.5.4  Other Messages
+##### 3.1.5.4 Other Messages
 
 When the client receives a message with an unknown message type, that is, a MessageId value that
 is not specified in section 2.2.1.1, the client MUST send a ProtocolErrorResponse message (section
@@ -1054,16 +949,16 @@ After the client receives a message that cannot be parsed according to the messa
 in section 2.2, the client initiates a disconnect of the control channel, stops the ClientGuardTimer
 (section 3.1.2), and transitions to the FATAL_ERROR state.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  ClientGuardTimer
+##### 3.1.6.1 ClientGuardTimer
 
 Upon expiration of the ClientGuardTimer (section 3.1.2), the client initiates a disconnect of the
 control channel and transitions to the FATAL_ERROR state.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Successful Connection of Control Channel
+##### 3.1.7.1 Successful Connection of Control Channel
 
 Upon successful connection of the control channel to the server, the client MUST send a
 PairingRequired message (section 2.2.3.2) to the server, restart the ClientGuardTimer (section
@@ -1076,13 +971,14 @@ Automatic Bluetooth Pairing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.7.2  Failed Connection of Control Channel
+
+##### 3.1.7.2 Failed Connection of Control Channel
 
 Upon a failed connection of the control channel to the server, the client MUST stop the
 ClientGuardTimer (section 3.1.2), indicate the failed pairing attempt to the higher layer, and
 transition to the IDLE state.
 
-3.1.7.3  Disconnect Event of Control Channel
+##### 3.1.7.3 Disconnect Event of Control Channel
 
 Upon receiving a disconnect event of the control channel while in the WAITING_FOR_DISCONNECT
 state, the client indicates the successful pairing with the server to the higher layer and transitions to
@@ -1092,7 +988,7 @@ When the client receives a disconnect event of the control channel while in any 
 stops the ClientGuardTimer (section 3.1.2) if it is running, indicates the failed pairing with the server
 to the higher layer, and transitions to the IDLE state.
 
-3.1.7.4  Pairing Indication
+##### 3.1.7.4 Pairing Indication
 
 When the Bluetooth layer indicates to the client that a pairing attempt has to be authenticated, the
 client compares its state to the WAITING_FOR_PAIRING state, compares the indicated peer address
@@ -1101,7 +997,7 @@ comparison. If all values match, the client MUST store the indicated Numeric Val
 the WAITING_FOR_CHALLENGE_REQUEST state; otherwise, the client MUST ignore the indication from
 the Bluetooth layer.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The role of the server in the Bluetooth pairing process is as follows:
 
@@ -1142,13 +1038,14 @@ Release: April 23, 2024
 
 18 / 27
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-ABTP].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 Figure 3: Server state diagram
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1163,7 +1060,8 @@ Release: April 23, 2024
 
 19 / 27
 
-State: Specifies the server state which can be one of the following: IDLE, CONNECTED,
+
+State: Specifies the server state which can be one of the following: IDLE, CONNECTED,
 
 WAITING_FOR_PAIRING, WAITING_FOR_CHALLENGE_RESPONSE,
 WAITING_FOR_CHALLENGE_REQUEST, WAITING_FOR_DISCONNECT, FATAL_ERROR, and
@@ -1181,7 +1079,7 @@ Consecutive Failure Count: An integer value representing the number of consecuti
 
 attempts that have failed.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The server role maintains the following timers.
 
@@ -1189,7 +1087,7 @@ GuardTimer: The time-out interval is set to 10 seconds.
 
 PausingTimer: The time-out interval is set to one hour.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The initial state for the server is IDLE.
 
@@ -1197,14 +1095,14 @@ The Shared Secret (section 3.2.1) is set to a value chosen by the higher layer.
 
 The GuardTimer and PausingTimer are not set (see section 3.2.2).
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Shutdown
+##### 3.2.4.1 Shutdown
 
 The higher layer can shut down the server at any time. The server disconnects the control channel at
 shutdown.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The message type is identified by using the MessageId value stored in the message header, as
 specified in section 2.2.1.1. A message is processed only when it has been fully received, as indicated
@@ -1213,7 +1111,7 @@ FATAL_ERROR, PAUSING, or WAITING_FOR_DISCONNECT state, the server MUST ignore an
 messages. When the server receives a message in any other state, the GuardTimer (section 3.2.2)
 MUST be started or restarted.
 
-3.2.5.1  PairingRequired
+##### 3.2.5.1 PairingRequired
 
 When the server receives a PairingRequired message (section 2.2.3.2) in the CONNECTED state,
 the server MUST send a ReadyToPair message (section 2.2.3.4) to the client, restart the
@@ -1229,7 +1127,8 @@ Automatic Bluetooth Pairing Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.2  Response
+
+##### 3.2.5.2 Response
 
 When the server receives a Response message (section 2.2.3.5) in the
 WAITING_FOR_CHALLENGE_RESPONSE state, the server MUST compare the response value of the
@@ -1246,7 +1145,7 @@ FATAL_ERROR state; otherwise, the server MUST transition to the PAUSING state.
 When the server receives a Response message in any other state, the server MUST initiate a
 disconnect of the control channel, stop the GuardTimer, and transition to the FATAL_ERROR state.
 
-3.2.5.3  Challenge
+##### 3.2.5.3 Challenge
 
 When the server receives a Challenge message (section 2.2.3.1) in the
 WAITING_FOR_CHALLENGE_REQUEST state, the server MUST compute the response value (as
@@ -1258,7 +1157,7 @@ restart the GuardTimer (section 3.2.2) and transition to the WAITING_FOR_DISCONN
 When the server receives a Challenge message in any other state, the server MUST initiate a
 disconnect of the control channel, stop the GuardTimer, and transition to the FATAL_ERROR state.
 
-3.2.5.4  Other Messages
+##### 3.2.5.4 Other Messages
 
 When the server receives a message with an unknown message type, that is, a value for the
 MessageId that is not specified in section 2.2.1.1, the server MUST send a ProtocolErrorResponse
@@ -1269,14 +1168,14 @@ When the server receives a message that cannot be parsed according to the messag
 in section 2.2, the server initiates a disconnect of the control channel, stops the GuardTimer (section
 3.2.2), and transitions to the FATAL_ERROR state.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  GuardTimer
+##### 3.2.6.1 GuardTimer
 
 Upon expiration of the GuardTimer (section 3.2.2), the server initiates a disconnect of the control
 channel and transitions to the FATAL_ERROR state.
 
-3.2.6.2  PausingTimer
+##### 3.2.6.2 PausingTimer
 
 Upon expiration of the PausingTimer (section 3.2.2), the server sets the Consecutive Failure
 Count (section 3.2.1) to 0 and transitions to the IDLE state.
@@ -1288,22 +1187,23 @@ Release: April 23, 2024
 
 21 / 27
 
-3.2.7  Other Local Events
 
-3.2.7.1  Connect Event
+#### 3.2.7 Other Local Events
+
+##### 3.2.7.1 Connect Event
 
 The server can only process connect events from clients when the server is in the IDLE state. When a
 client connects, the server MUST transition to the CONNECTED state, store the Client Address
 (section 3.2.1), and start the GuardTimer (section 3.2.2).
 
-3.2.7.2  Disconnect Event
+##### 3.2.7.2 Disconnect Event
 
 When the server receives a disconnect event of the control channel, the server stops the
 GuardTimer (section 3.2.2) if it is running. If the Consecutive Failure Count (section 3.2.1) equals
 4, the server MUST transition to the PAUSING state and start the PausingTimer (section 3.2.2);
 otherwise, the server transitions to the IDLE state.
 
-3.2.7.3  Pairing indication
+##### 3.2.7.3 Pairing indication
 
 When the Bluetooth layer indicates that a pairing attempt has to be authenticated, the server
 compares its state to the WAITING_FOR_PAIRING state, compares the indicated peer address with the
@@ -1324,25 +1224,26 @@ Release: April 23, 2024
 
 22 / 27
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following examples show the sequence of a successful Bluetooth pairing by using the Automatic
 Bluetooth Pairing Protocol. This sequence is demonstrated in the figure shown in section 1.3.
 
-4.1  PairingRequired
+### 4.1 PairingRequired
 
  Message Header: 0x02 0x00 0x00 (Type == PairingRequired, Length == 0)
 
-4.2  ReadyToPair
+### 4.2 ReadyToPair
 
  Message Header: 0x03 0x00 0x00 (Type == ReadyToPair, Length == 0)
 
-4.3  Challenge
+### 4.3 Challenge
 
  Message Header: 0x04 0x00 0x80 (Type == Challenge, Length == 128)
  Payload: Challenge value: 0x01 0x02 0x03 0x04 … 0x80
 
-4.4  Response
+### 4.4 Response
 
  Message Header: 0x05 0x00 0x20 (Type == Response, Length == 32)
  Payload: Response value: 0x01 0x02 0x03 0x04 … 0x20
@@ -1354,14 +1255,15 @@ Release: April 23, 2024
 
 23 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers are required to ensure that the OOB exchange of the shared secret is performed in a
 secure and authenticated manner.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -1384,7 +1286,8 @@ Release: April 23, 2024
 
 24 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1422,7 +1325,8 @@ Release: April 23, 2024
 
 25 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1466,7 +1370,8 @@ Release: April 23, 2024
 
 26 / 27
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model

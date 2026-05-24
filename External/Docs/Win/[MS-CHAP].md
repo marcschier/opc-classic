@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: April 23, 2024
 
 2 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -539,7 +541,8 @@ Release: April 23, 2024
 
 3 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -596,175 +599,78 @@ Release: April 23, 2024
 
 4 / 36
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Master Session Key (MSK) Derivation](#3151-master-session-key-msk-derivation)
+      - [3.1.5.2 username](#3152-username)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Peer Details](#32-peer-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 General Packet Validation](#3251-general-packet-validation)
+      - [3.2.5.2 Received Challenge-Request Packet](#3252-received-challenge-request-packet)
+      - [3.2.5.3 Received Success-Request Packet](#3253-received-success-request-packet)
+      - [3.2.5.4 Received Failure-Request Packet](#3254-received-failure-request-packet)
+      - [3.2.5.5 Received EAP Success Packet](#3255-received-eap-success-packet)
+      - [3.2.5.6 Received EAP Failure Packet](#3256-received-eap-failure-packet)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 EAP Server Details](#33-eap-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 General Packet Validation](#3351-general-packet-validation)
+      - [3.3.5.2 Received Challenge-Response Packet](#3352-received-challenge-response-packet)
+      - [3.3.5.3 Received Success-Response Packet](#3353-received-success-response-packet)
+      - [3.3.5.4 Received Change-Password-Response Packet](#3354-received-change-password-response-packet)
+      - [3.3.5.5 Received Failure-Response Packet](#3355-received-failure-response-packet)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Successful Mutual Authentication](#41-successful-mutual-authentication)
+  - [4.2 Failure Scenario with Retry](#42-failure-scenario-with-retry)
+  - [4.3 Failure Scenario with No Retry](#43-failure-scenario-with-no-retry)
+  - [4.4 Failure Scenario with No Retry Followed by a Failure-Response](#44-failure-scenario-with-no-retry-followed-by-a-failure-response)
+  - [4.5 Success Scenario with Change-Password-Response](#45-success-scenario-with-change-password-response)
+  - [4.6 Success Scenario on Retry After Challenge-Response Is Recomputed](#46-success-scenario-on-retry-after-challenge-response-is-recomputed)
+  - [4.7 Authentication Failure at the Peer](#47-authentication-failure-at-the-peer)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-
-2.1
-2.2
-
-3.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 14
-Common Details .............................................................................................. 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Master Session Key (MSK) Derivation ...................................................... 15
-username ............................................................................................ 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Peer Details ..................................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 18
-General Packet Validation....................................................................... 18
-Received Challenge-Request Packet ........................................................ 18
-Received Success-Request Packet ........................................................... 18
-Received Failure-Request Packet ............................................................. 18
-Received EAP Success Packet ................................................................. 19
-Received EAP Failure Packet ................................................................... 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-EAP Server Details ........................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 22
-General Packet Validation....................................................................... 22
-Received Challenge-Response Packet ...................................................... 22
-Received Success-Response Packet ......................................................... 23
-Received Change-Password-Response Packet ........................................... 23
-Received Failure-Response Packet ........................................................... 23
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.6
-3.2.7
-
-3.3.6
-3.3.7
-
-3.3
-
-[MS-CHAP] - v20240423
-Extensible Authentication Protocol Method for Microsoft Challenge Handshake Authentication Protocol (CHAP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 36
-
-4  Protocol Examples ................................................................................................. 25
-Successful Mutual Authentication ....................................................................... 25
-Failure Scenario with Retry ................................................................................ 25
-Failure Scenario with No Retry ........................................................................... 26
-Failure Scenario with No Retry Followed by a Failure-Response .............................. 26
-Success Scenario with Change-Password-Response .............................................. 27
-Success Scenario on Retry After Challenge-Response Is Recomputed ..................... 28
-Authentication Failure at the Peer ...................................................................... 28
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security ................................................................................................................. 30
-Security Considerations for Implementers ........................................................... 30
-Index of Security Parameters ............................................................................ 30
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 31
-
-7  Change Tracking .................................................................................................... 33
-
-8  Index ..................................................................................................................... 34
-
-[MS-CHAP] - v20240423
-Extensible Authentication Protocol Method for Microsoft Challenge Handshake Authentication Protocol (CHAP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 36
-
-1  Introduction
+## 1 Introduction
 
 The Extensible Authentication Protocol Method for Microsoft Challenge Handshake Authentication
 Protocol (CHAP) uses the Microsoft Challenge Handshake Authentication Protocol version 2
@@ -774,7 +680,7 @@ Protocol (EAP) framework [RFC3748].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -840,7 +746,8 @@ Release: April 23, 2024
 
 7 / 36
 
-mutual authentication: A mode in which each party verifies the identity of the other party, as
+
+mutual authentication: A mode in which each party verifies the identity of the other party, as
 
 described in [RFC3748] section 7.2.1.
 
@@ -857,14 +764,14 @@ prove knowledge of the secret password associated with the user name.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -896,7 +803,7 @@ Authentication Protocol (EAP)", RFC 3748, June 2004, https://www.rfc-editor.org/
 [UNICODE5.0.0/2007] The Unicode Consortium, "Unicode 5.0.0", 2007,
 http://www.unicode.org/versions/Unicode5.0.0/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE802.1X] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
 Metropolitan Area Networks - Port-Based Network Access Control", IEEE Std 802.1X-2004,
@@ -909,7 +816,8 @@ Release: April 23, 2024
 
 8 / 36
 
-Note Subscripton login or purchase to download the  PDF
+
+Note Subscripton login or purchase to download the  PDF
 
 [MS-GPWL] Microsoft Corporation, "Group Policy: Wireless/Wired Protocol Extension".
 
@@ -924,7 +832,7 @@ Service (RADIUS)", RFC 2865, June 2000, https://www.rfc-editor.org/info/rfc2865
 [RFC2869] Rigney, C., Willats, W., and Calhoun, P., "RADIUS Extensions", RFC 2869, June 2000,
 http://www.ietf.org/rfc/rfc2869.txt
 
-1.3  Overview
+### 1.3 Overview
 
 When users or devices are attached to a network, network administrators often require them to be
 authenticated and authorized before they access the network. For example, a wireless network
@@ -978,7 +886,8 @@ Release: April 23, 2024
 
 9 / 36
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-CHAP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -999,7 +908,7 @@ Dial-In User Service (RADIUS). For more information about RADIUS, see [RFC2865] 
 Figure 1: Typical deployment of Extensible Authentication Protocol Method for Microsoft
 CHAP
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Extensible Authentication Protocol Method for Microsoft CHAP is an EAP method that
 encapsulates MSCHAPv2 messages to provide password-based authentications in the EAP
@@ -1028,10 +937,11 @@ Release: April 23, 2024
 
 10 / 36
 
-local area network (WLAN). This configuration also carries the EAP method configuration as a part of
+
+local area network (WLAN). This configuration also carries the EAP method configuration as a part of
 it. The peer can use this configuration to initialize the MS-CHAP method.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Extensible Authentication Protocol Method for Microsoft CHAP has no specific prerequisites or
 preconditions; however, both EAP and MSCHAPv2 have their own prerequisites, as specified in
@@ -1041,7 +951,7 @@ For example, MSCHAPv2 depends on the out-of-band establishment of a shared secre
 peer and its authentication server. EAP depends on the out-of-band configuration of which methods
 are supported by a peer and its EAP server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Extensible Authentication Protocol Method for Microsoft CHAP is used when an EAP session is
 already set up and MSCHAPv2 is negotiated between a peer and its EAP server, as specified in
@@ -1065,15 +975,15 @@ section 5.
 The client and server implementations of this protocol have to use the same system active ANSI code
 page as specified in [MS-UCODEREF] section 2.2.1 for them to interoperate successfully.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1096,13 +1006,14 @@ Release: April 23, 2024
 
 11 / 36
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-CHAP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-2  Messages
+## 2 Messages
 
-2.1  Transport
+### 2.1 Transport
 
 When MSCHAPv2 is used as an EAP authentication method, protocols that carry EAP ultimately
 provide the transport of the encapsulated MSCHAPv2 messages, for example, the Point-to-Point
@@ -1114,7 +1025,7 @@ for Microsoft CHAP.
 Figure 2: Transport representation for the Extensible Authentication Protocol Method for
 Microsoft CHAP
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All message fields are transmitted from left to right, unless otherwise indicated.
 
@@ -1155,7 +1066,8 @@ Release: April 23, 2024
 
 12 / 36
 
-The following table specifies the encapsulation of MSCHAPv2 in EAP response messages, which are
+
+The following table specifies the encapsulation of MSCHAPv2 in EAP response messages, which are
 received by the EAP server. The format of EAP response messages is specified in [RFC3748] section
 4.1, with the Type field set to 0x1A and an OpCode of 02 for response.
 
@@ -1182,7 +1094,8 @@ Release: April 23, 2024
 
 13 / 36
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Extensible Authentication Protocol Method for Microsoft
 CHAP, including abstract data models and message processing rules.
@@ -1199,11 +1112,11 @@ Peer-specific details (section 3.2)
 
 EAP server-specific details (section 3.3)
 
-3.1  Common Details
+### 3.1 Common Details
 
 The details in this section are common to both peers and EAP server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model that an implementation can maintain to participate in this
 protocol. The described organization is provided to facilitate the explanation of how the protocol
@@ -1238,11 +1151,11 @@ fUseWinLogonCreds: A Boolean flag (configured through LogonCreds flag as specifi
 section 2.2.3.1.3) indicating whether Username and Password are obtained from the currently
 logged on user context.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 EAP-CHAP relies on EAP timers, as specified in [RFC3748] section 4.3.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 See sections 3.2.3 and 3.3.3.
 
@@ -1253,11 +1166,12 @@ Release: April 23, 2024
 
 14 / 36
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The Extensible Authentication Protocol Method for Microsoft CHAP uses the common message
 processing events and sequencing rules specified for EAP in [RFC3748]. These include:
@@ -1305,7 +1219,7 @@ when a peer receiving a Success-Request message that has an embedded MSCHAPv2 Su
 packet is validated successfully), the applicable message processing events are as specified in
 section 3.2.5.
 
-3.1.5.1  Master Session Key (MSK) Derivation
+##### 3.1.5.1 Master Session Key (MSK) Derivation
 
 Upon successful authentication, Extensible Authentication Protocol Method for Microsoft CHAP derives
 two 16-byte keys, MasterSendKey and MasterReceiveKey (as specified in [RFC3079], section 3.3).
@@ -1330,9 +1244,10 @@ Release: April 23, 2024
 
 15 / 36
 
- MSK = MasterReceiveKey + MasterSendKey + 32 bytes zeroes (padding)
 
-3.1.5.2  username
+ MSK = MasterReceiveKey + MasterSendKey + 32 bytes zeroes (padding)
+
+##### 3.1.5.2 username
 
 The username field is used in different routines, as specified in [RFC2759]. It is formed using the
 system's ANSI code page.
@@ -1340,19 +1255,19 @@ system's ANSI code page.
 [RFC2759] implementations MUST treat username as an opaque stream of bytes and MUST NOT
 convert it into ASCII format.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
  EAP-CHAP relies on the timer events in EAP, as specified in [RFC3748] section 4.3.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Peer Details
+### 3.2 Peer Details
 
 The details in this section are peer-specific.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a model of possible data organization that a peer-side implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1397,24 +1312,25 @@ Release: April 23, 2024
 
 16 / 36
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-CHAP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 Figure 3: EAP-CHAP Peer State Machine
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 See section 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Extensible Authentication Protocol Method for Microsoft CHAP is initialized on the peer when it is
 invoked by EAP as an authentication method. This initialization occurs when an Extensible
 Authentication Protocol Method for Microsoft CHAP Challenge-Request message is received from the
 EAP server.<2> The currentState variable is initialized to EAP_CHAP_BEGIN.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 As specified in [RFC3748] sections 3.2 and 3.3, EAP gets used directly on top of data link layers such
 as [IEEE802.1X] or Point-to-Point Protocol. The data link layer initializes EAP for use as the
@@ -1427,20 +1343,21 @@ Release: April 23, 2024
 
 17 / 36
 
-Identity Request message (as specified in [RFC3748] section 5.1) or a Challenge-Request message (in
+
+Identity Request message (as specified in [RFC3748] section 5.1) or a Challenge-Request message (in
 case the identity exchange is optional as specified in [RFC3748] section 7.3). If the peer EAP layer
 receives an Identity request, it requests the identity from the EAP-CHAP method. EAP-CHAP obtains
 the Username and Password using an implementation-specific mechanism and gives the Username as
 the identity. <3>
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  General Packet Validation
+##### 3.2.5.1 General Packet Validation
 
 When receiving a packet, the EAP-CHAP peer MUST validate that the packet conforms to the syntax
 as specified in Message Syntax (section 2.2). If an invalid packet is received, it MUST be discarded.
 
-3.2.5.2  Received Challenge-Request Packet
+##### 3.2.5.2 Received Challenge-Request Packet
 
 If the currentState variable is set to EAP_CHAP_BEGIN, then:
 
@@ -1466,7 +1383,7 @@ send it to the server.
 
 If the currentState variable is not set to EAP_CHAP_BEGIN, the packet is ignored.
 
-3.2.5.3  Received Success-Request Packet
+##### 3.2.5.3 Received Success-Request Packet
 
 If the currentState variable is set to EAP_CHAP_CHALLENGE_RESPONSE_SENT, then:
 
@@ -1495,7 +1412,7 @@ Trigger the transport layer with the authentication result as Failed.
 If the currentState variable is not set to EAP_CHAP_CHALLENGE_RESPONSE_SENT, the packet is
 ignored.
 
-3.2.5.4  Received Failure-Request Packet
+##### 3.2.5.4 Received Failure-Request Packet
 
 If the currentState variable is set to EAP_CHAP_CHALLENGE_RESPONSE_SENT, then:
 
@@ -1506,7 +1423,8 @@ Release: April 23, 2024
 
 18 / 36
 
-
+
+
 
 If the embedded MSCHAPv2 packet's R bit is set to 1 ([RFC2759] section 6), then:
 
@@ -1563,7 +1481,7 @@ server, and set currentState to EAP_CHAP_FAILURE_RESPONSE_SENT.
 If the currentState variable is not set to EAP_CHAP_CHALLENGE_RESPONSE_SENT, the packet is
 ignored.
 
-3.2.5.5  Received EAP Success Packet
+##### 3.2.5.5 Received EAP Success Packet
 
 If the currentState variable is set to EAP_CHAP_SUCCESS_RESPONSE_SENT, then:
 
@@ -1581,7 +1499,7 @@ Session Key to the transport layer.
 If the currentState variable is not set to EAP_CHAP_SUCCESS_RESPONSE_SENT, the packet is
 ignored.
 
-3.2.5.6  Received EAP Failure Packet
+##### 3.2.5.6 Received EAP Failure Packet
 
 If the currentState variable is set to EAP_CHAP_SUCCESS_RESPONSE_SENT,
 EAP_CHAP_FAILURE_RESPONSE_SENT, or EAP_CHAP_CHALLENGE_RESPONSE_SENT, then:
@@ -1597,25 +1515,26 @@ Release: April 23, 2024
 
 19 / 36
 
-  Set currentState to EAP_CHAP_FAILED.
+
+  Set currentState to EAP_CHAP_FAILED.
 
 If the currentState variable is not set to EAP_CHAP_SUCCESS_RESPONSE_SENT,
 EAP_CHAP_FAILURE_RESPONSE_SENT, or EAP_CHAP_CHALLENGE_RESPONSE_SENT, the packet is
 ignored.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 See section 3.1.6.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  EAP Server Details
+### 3.3 EAP Server Details
 
 The details in this section are specific to EAP server.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a model of possible data organization that a peer-side implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1670,18 +1589,19 @@ Release: April 23, 2024
 
 20 / 36
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-CHAP].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
 Figure 4: EAP-CHAP server state machine
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The Extensible Authentication Protocol Method for Microsoft CHAP relies on the timers in the
 Extensible Authentication Protocol (EAP) [RFC3748], for EAP server. See section 3.1.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The Extensible Authentication Protocol Method for Microsoft CHAP is initialized on the EAP server
 when it is invoked by EAP as an authentication method. This initialization occurs when an EAP-
@@ -1691,7 +1611,7 @@ an authentication, the server prepares a Challenge-Request packet, and sends it 
 currentState variable is initialized to EAP_CHAP_CHALLENGE_SENT, and the Challenge sent in the
 Challenge-Request message is assigned to AuthenticatorChallenge.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The Extensible Authentication Protocol Method for Microsoft CHAP is initialized on the EAP server
 when it is invoked by EAP as an authentication method. This occurs when an EAP-enabled protocol,
@@ -1706,14 +1626,15 @@ Release: April 23, 2024
 
 21 / 36
 
-3.3.5  Message Processing Events and Sequencing Rules
 
-3.3.5.1  General Packet Validation
+#### 3.3.5 Message Processing Events and Sequencing Rules
+
+##### 3.3.5.1 General Packet Validation
 
 When receiving a packet, the EAP-CHAP server MUST validate that the packet conforms to the syntax
 as specified in Message Syntax (section 2.2). If an invalid packet is received, it MUST be discarded.
 
-3.3.5.2  Received Challenge-Response Packet
+##### 3.3.5.2 Received Challenge-Response Packet
 
 If the currentState variable is set to EAP_CHAP_CHALLENGE_SENT, then:
 
@@ -1800,9 +1721,10 @@ Release: April 23, 2024
 
 22 / 36
 
-If the currentState variable is not set to EAP_CHAP_CHALLENGE_SENT, the packet is ignored.
 
-3.3.5.3  Received Success-Response Packet
+If the currentState variable is not set to EAP_CHAP_CHALLENGE_SENT, the packet is ignored.
+
+##### 3.3.5.3 Received Success-Response Packet
 
 If the currentState variable is set to EAP_CHAP_SUCCESS_REQUEST_SENT, then:
 
@@ -1824,7 +1746,7 @@ Session Key to the transport layer.
 If the currentState variable is not set to EAP_CHAP_SUCCESS_REQUEST_SENT, the packet is
 ignored.
 
-3.3.5.4  Received Change-Password-Response Packet
+##### 3.3.5.4 Received Change-Password-Response Packet
 
 If the currentState variable is set to EAP_CHAP_CHANGE_PASSWORD_SENT, then:
 
@@ -1863,7 +1785,7 @@ corresponds to the validation error, and send it to the peer.
 If the currentState variable is not set to EAP_CHAP_CHANGE_PASSWORD_SENT, the packet is
 ignored.
 
-3.3.5.5  Received Failure-Response Packet
+##### 3.3.5.5 Received Failure-Response Packet
 
 If the currentState variable is set to EAP_CHAP_FAILURE_REQUEST_SENT, then:
 
@@ -1882,11 +1804,12 @@ Release: April 23, 2024
 
 23 / 36
 
-3.3.6  Timer Events
+
+#### 3.3.6 Timer Events
 
 See section 3.1.6.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1897,25 +1820,26 @@ Release: April 23, 2024
 
 24 / 36
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-CHAP].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 This section presents examples of messages exchanged between a peer and an EAP server during
 the course of various authentication scenarios. Initial EAP Identity exchanges and a pass-through
 authenticator are not shown in the examples. EAP-Success and EAP-Failure messages are shown to
 indicate the status of the authentication.
 
-4.1  Successful Mutual Authentication
+### 4.1 Successful Mutual Authentication
 
 This example shows a peer and an EAP server successfully using Extensible Authentication Protocol
 Method for Microsoft CHAP messages for mutual authentication.
 
 Figure 5: Peer and EAP server using successful mutual authentication
 
-4.2  Failure Scenario with Retry
+### 4.2 Failure Scenario with Retry
 
 This example shows an authentication failure that was then retried, a subsequent authentication
 failure, and the EAP server terminating the authentication procedure.
@@ -1927,21 +1851,22 @@ Release: April 23, 2024
 
 25 / 36
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-CHAP].images/page026-img01.png)
 ![Extracted image 2 from page 26]([MS-CHAP].images/page026-img02.png)
 <!-- /Extracted images from page 26 -->
 
 Figure 6: Authentication failure with retry that also fails
 
-4.3  Failure Scenario with No Retry
+### 4.3 Failure Scenario with No Retry
 
 This example shows an EAP server terminating the authentication procedure when a non-retryable
 error occurs. The EAP server is not allowed to transmit a Failure-Request message.
 
 Figure 7: Authentication failure with no retry allowed
 
-4.4  Failure Scenario with No Retry Followed by a Failure-Response
+### 4.4 Failure Scenario with No Retry Followed by a Failure-Response
 
 This example shows an EAP server transmitting a Failure-Request message on a non-retryable error.
 It also shows the peer responding with a Failure-Response message before the EAP server terminates
@@ -1954,14 +1879,15 @@ Release: April 23, 2024
 
 26 / 36
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-CHAP].images/page027-img01.png)
 ![Extracted image 2 from page 27]([MS-CHAP].images/page027-img02.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 8: Failure scenario with no retry followed by a Failure-Response
 
-4.5  Success Scenario with Change-Password-Response
+### 4.5 Success Scenario with Change-Password-Response
 
 This example shows a successful password change when the EAP server sends an expired password
 indication to the peer. Before sending such an indication, the EAP server checks the local policy to see
@@ -1975,13 +1901,14 @@ Release: April 23, 2024
 
 27 / 36
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-CHAP].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
 Figure 9: Success scenario with Change-Password-Response
 
-4.6  Success Scenario on Retry After Challenge-Response Is Recomputed
+### 4.6 Success Scenario on Retry After Challenge-Response Is Recomputed
 
 This example shows the successful retry of an authentication after an attempt has failed. The EAP
 server sends a retryable failure indication to the peer. The peer recomputes the MSCHAPv2 response,
@@ -1989,7 +1916,7 @@ possibly after invoking the user interface to collect the user password again.
 
 Figure 10: Success scenario on retry after Challenge-Response is recomputed
 
-4.7  Authentication Failure at the Peer
+### 4.7 Authentication Failure at the Peer
 
 This example shows a mutual authentication scenario in which the EAP server fails
 authentication at the peer.
@@ -2001,7 +1928,8 @@ Release: April 23, 2024
 
 28 / 36
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-CHAP].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2014,9 +1942,10 @@ Release: April 23, 2024
 
 29 / 36
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Running MSCHAPv2 as an EAP method has the same security considerations as running it without
 EAP.
@@ -2076,7 +2005,7 @@ No
 
 No
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter   Section
 
@@ -2095,7 +2024,8 @@ Release: April 23, 2024
 
 30 / 36
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2163,7 +2093,8 @@ Release: April 23, 2024
 
 31 / 36
 
-<3> Section 3.2.4: On a peer, Windows invokes a user interface to accept the credentials from the
+
+<3> Section 3.2.4: On a peer, Windows invokes a user interface to accept the credentials from the
 user, and if they are provided, message processing continues. Trigger the transport layer with the
 authentication result as Failed, if the user cancels the authentication.
 
@@ -2186,7 +2117,8 @@ Release: April 23, 2024
 
 32 / 36
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2230,7 +2162,8 @@ Release: April 23, 2024
 
 33 / 36
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2369,7 +2302,8 @@ Extensible Authentication Protocol Method for Microsoft Challenge Handshake Auth
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-N
+
+N
 
 Normative references 8
 
@@ -2519,7 +2453,8 @@ Extensible Authentication Protocol Method for Microsoft Challenge Handshake Auth
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Success scenario with change-password-response
+
+Success scenario with change-password-response
 
 example 27
 

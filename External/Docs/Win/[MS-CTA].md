@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 20
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -220,109 +221,52 @@ Release: April 23, 2024
 
 2 / 20
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Algorithms](#14-relationship-to-protocols-and-other-algorithms)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Standards Assignments](#16-standards-assignments)
+- [2 Algorithm Details](#2-algorithm-details)
+  - [2.1 Claims Transformation Algorithm Details](#21-claims-transformation-algorithm-details)
+    - [2.1.1 Abstract Data Model](#211-abstract-data-model)
+    - [2.1.2 Data Structures](#212-data-structures)
+    - [2.1.3 Initialization](#213-initialization)
+    - [2.1.4 Processing Rules](#214-processing-rules)
+      - [2.1.4.1 Claims Transformation Rules Language Syntax](#2141-claims-transformation-rules-language-syntax)
+        - [2.1.4.1.1 Language Terminals](#21411-language-terminals)
+        - [2.1.4.1.2 Language Syntax](#21412-language-syntax)
+      - [2.1.4.2 Claims Transformation Rules Syntax Evaluation](#2142-claims-transformation-rules-syntax-evaluation)
+      - [2.1.4.3 Claims Transformation Rules Processing](#2143-claims-transformation-rules-processing)
+        - [2.1.4.3.1 Rule-set](#21431-rule-set)
+        - [2.1.4.3.2 Rule](#21432-rule)
+        - [2.1.4.3.3 Conditions](#21433-conditions)
+        - [2.1.4.3.4 Sel-condition](#21434-sel-condition)
+        - [2.1.4.3.5 Opt-cond-list](#21435-opt-cond-list)
+        - [2.1.4.3.6 Cond](#21436-cond)
+        - [2.1.4.3.7 Rule-action](#21437-rule-action)
+        - [2.1.4.3.8 Claim-copy](#21438-claim-copy)
+        - [2.1.4.3.9 Claim-new](#21439-claim-new)
+        - [2.1.4.3.10 Processing End](#214310-processing-end)
+- [3 Algorithm Examples](#3-algorithm-examples)
+  - [3.1 Processing "Allow All Claims" Rule](#31-processing-allow-all-claims-rule)
+  - [3.2 Processing "Deny Some Claims" Rule](#32-processing-deny-some-claims-rule)
+  - [3.3 Processing "Issue always" Rule](#33-processing-issue-always-rule)
+  - [3.4 Processing an Invalid Rule](#34-processing-an-invalid-rule)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Parameters](#42-index-of-security-parameters)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Protocols and Other Algorithms ...................................................... 5
-Applicability Statement ....................................................................................... 5
-Standards Assignments ....................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-
-2.1
-
-2.1.4.1
-
-2.1.4.2
-2.1.4.3
-
-2.1.4.1.1
-2.1.4.1.2
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-
-2  Algorithm Details..................................................................................................... 6
-Claims Transformation Algorithm Details ............................................................... 6
-Abstract Data Model ...................................................................................... 6
-Data Structures ............................................................................................ 7
-Initialization ................................................................................................. 7
-Processing Rules ........................................................................................... 8
-Claims Transformation Rules Language Syntax ........................................... 8
-Language Terminals ........................................................................... 8
-Language Syntax ............................................................................... 9
-Claims Transformation Rules Syntax Evaluation ........................................ 10
-Claims Transformation Rules Processing .................................................. 11
-Rule-set ......................................................................................... 12
-Rule ............................................................................................... 13
-Conditions ...................................................................................... 13
-Sel-condition .................................................................................. 13
-Opt-cond-list................................................................................... 13
-Cond .............................................................................................. 14
-Rule-action ..................................................................................... 15
-Claim-copy ..................................................................................... 15
-Claim-new ...................................................................................... 15
-Processing End ................................................................................ 15
-
-2.1.4.3.1
-2.1.4.3.2
-2.1.4.3.3
-2.1.4.3.4
-2.1.4.3.5
-2.1.4.3.6
-2.1.4.3.7
-2.1.4.3.8
-2.1.4.3.9
-2.1.4.3.10
-
-3  Algorithm Examples .............................................................................................. 16
-Processing "Allow All Claims" Rule ...................................................................... 16
-Processing "Deny Some Claims" Rule .................................................................. 16
-Processing "Issue always" Rule .......................................................................... 16
-Processing an Invalid Rule ................................................................................. 16
-
-3.1
-3.2
-3.3
-3.4
-
-4  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Parameters ............................................................................ 17
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 18
-
-6  Change Tracking .................................................................................................... 19
-
-7  Index ..................................................................................................................... 20
-
-[MS-CTA] - v20240423
-Claims Transformation Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 20
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Claims Transformation Algorithm, which is an algorithm to transform
 claims based on rules written in the claims transformation rules language, which is defined in this
@@ -331,7 +275,7 @@ document as well.
 Sections 1.6 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -394,14 +338,15 @@ Release: April 23, 2024
 
 4 / 20
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -413,11 +358,11 @@ ISO/IEC 9899:TC2, May 2005, http://www.open-std.org/jtc1/sc22/wg14/www/docs/n112
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This document defines the Claims Transformation Algorithm, which enables parsing, filtering, issuance
 and transformation of a set of input claims based on the input transformation rules.
@@ -431,16 +376,16 @@ This algorithm can be summarized at a high level as follows: Validate the transf
 the claims transformation rules language syntax and transform the input claims using the
 transformation rules based on the claims transformation processing rules.
 
-1.4  Relationship to Protocols and Other Algorithms
+### 1.4 Relationship to Protocols and Other Algorithms
 
 This algorithm does not depend on any other protocols or algorithms.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This algorithm is applicable when programmable claims transformation needs to be performed on
 claims.
 
-1.6  Standards Assignments
+### 1.6 Standards Assignments
 
 None.
 
@@ -451,13 +396,14 @@ Release: April 23, 2024
 
 5 / 20
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-CTA].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
-2  Algorithm Details
+## 2 Algorithm Details
 
-2.1  Claims Transformation Algorithm Details
+### 2.1 Claims Transformation Algorithm Details
 
 The Claims Transformation Algorithm is illustrated in the following state machine diagram, which
 consists of the following states:
@@ -485,7 +431,7 @@ duration of the invocation and does not preserve state beyond that scope.
 
 See the following sections for more details on the various states of the state machine.
 
-2.1.1  Abstract Data Model
+#### 2.1.1 Abstract Data Model
 
 None.
 
@@ -496,7 +442,8 @@ Release: April 23, 2024
 
 6 / 20
 
-2.1.2  Data Structures
+
+#### 2.1.2 Data Structures
 
 The following data structure definitions are applicable to the current document:
 
@@ -532,7 +479,7 @@ a case variation thereof:
 
 "boolean"
 
-2.1.3  Initialization
+#### 2.1.3 Initialization
 
 The Claims Transformation Algorithm MUST be invoked by passing in the following parameters:
 
@@ -579,7 +526,8 @@ Release: April 23, 2024
 
 7 / 20
 
-3.  InternalOutputContext: A list of claims that collects the output of claims transformation rules
+
+3.  InternalOutputContext: A list of claims that collects the output of claims transformation rules
 
 processing.
 
@@ -597,7 +545,7 @@ to it.
 
 5.  ReturnValue MUST be set to SUCCESS.
 
-2.1.4  Processing Rules
+#### 2.1.4 Processing Rules
 
 The Claims Transformation Algorithm is invoked by a caller by providing InputClaims and the
 InputTransformationRulesText as indicated in Initialization (section 2.1.3). This algorithm continues
@@ -626,12 +574,12 @@ an empty list and exit this algorithm.
 
 OutputClaims, and exit this algorithm.
 
-2.1.4.1  Claims Transformation Rules Language Syntax
+##### 2.1.4.1 Claims Transformation Rules Language Syntax
 
 The claims transformation rules language is a context-free language defined following, using
 tokens and ABNF.
 
-2.1.4.1.1 Language Terminals
+###### 2.1.4.1.1 Language Terminals
 
 The following table lists the complete set of terminal strings and associated language terminals used
 in the claims transformation rules language. These definitions MUST be treated as case insensitive.
@@ -660,7 +608,8 @@ Release: April 23, 2024
 
 8 / 20
 
-String
+
+String
 
 ","
 
@@ -758,7 +707,7 @@ BOOLEAN-TYPE
 
 NULL
 
-2.1.4.1.2 Language Syntax
+###### 2.1.4.1.2 Language Syntax
 
 The claims transformation rules language is specified here in ABNF form. This definition uses the
 terminals specified in the previous section as well as new ABNF productions defined here. The rules
@@ -775,7 +724,8 @@ Release: April 23, 2024
 
 9 / 20
 
-                         / Rule Rules
+
+                         / Rule Rules
 Rule                   = Rule-body
 Rule-body              = (Conditions IMPLY Rule-action SEMICOLON)
 Conditions             = NULL
@@ -827,7 +777,7 @@ Claim-val-assign       = VALUE ASSIGN Expr
 Claim-val-type-assign  = VALUE-TYPE ASSIGN Value-type-expr
 Claim-type-assign      = TYPE ASSIGN Expr
 
-2.1.4.2  Claims Transformation Rules Syntax Evaluation
+##### 2.1.4.2 Claims Transformation Rules Syntax Evaluation
 
 Syntax evaluation MUST perform the following processing:
 
@@ -849,7 +799,8 @@ Release: April 23, 2024
 
 10 / 20
 
-2.  If Rule-action contains one or more IDENTIFIERs, then each of the IDENTIFIERs MUST have
+
+2.  If Rule-action contains one or more IDENTIFIERs, then each of the IDENTIFIERs MUST have
 
 an identical matching IDENTIFIER in the Condition in the same Rule.
 
@@ -866,7 +817,7 @@ InputTransformationRulesText.
 tags (production names and terminals) and the matching portion of
 InputTransformationRulesText.
 
-2.1.4.3  Claims Transformation Rules Processing
+##### 2.1.4.3 Claims Transformation Rules Processing
 
 Claims transformation rules processing requires the InternalTransformationRules variable to be
 populated using InputTransformationRulesText and requires all other variables to be initialized
@@ -889,7 +840,8 @@ Release: April 23, 2024
 
 11 / 20
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-CTA].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -905,7 +857,7 @@ depth-first in the order in which the tags are placed.
 The processing steps for the critical tags are specified in the following subsections. Those tags not
 listed MUST be treated as if they have no processing steps and MUST be ignored during processing.
 
-2.1.4.3.1 Rule-set
+###### 2.1.4.3.1 Rule-set
 
 1.  Set ReturnValue to SUCCESS.
 
@@ -920,9 +872,10 @@ Claims Transformation Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  Go to Processing End (section 2.1.4.3.10).
 
-2.1.4.3.2 Rule
+4.  Go to Processing End (section 2.1.4.3.10).
+
+###### 2.1.4.3.2 Rule
 
 1.  Processing a Rule MUST perform the necessary operations using the InternalEvaluationContext
 
@@ -938,7 +891,7 @@ and initialize them by clearing them.
 
 n-tuples of claims generated by the Conditions.
 
-2.1.4.3.3 Conditions
+###### 2.1.4.3.3 Conditions
 
 1.  This processing step MUST evaluate to TRUE or FALSE.
 
@@ -975,7 +928,7 @@ InternalEvaluationContext that match each of the constituent "n" Sel-conditions.
 
 6.  Return the list of n-tuples of claims.
 
-2.1.4.3.4 Sel-condition
+###### 2.1.4.3.4 Sel-condition
 
 1.  This processing step MUST fill one InternalMatchingClaimsList with zero or more claims from
 
@@ -988,7 +941,7 @@ InternalMatchingClaimsList MUST be tagged by the string represented by the IDENT
 
 FALSE; else it MUST be TRUE.
 
-2.1.4.3.5 Opt-cond-list
+###### 2.1.4.3.5 Opt-cond-list
 
 [MS-CTA] - v20240423
 Claims Transformation Algorithm
@@ -997,7 +950,8 @@ Release: April 23, 2024
 
 13 / 20
 
-1.  If Opt-cond-list is NULL, the InternalMatchingClaimsList MUST be filled with all the claims in
+
+1.  If Opt-cond-list is NULL, the InternalMatchingClaimsList MUST be filled with all the claims in
 
 the InternalEvaluationContext. The processing of this production MUST stop, and
 InternalMatchingClaimsList must be returned as the evaluation result.
@@ -1014,7 +968,7 @@ InternalEvaluationContext, the claim MUST be added to the InternalMatchingClaims
 
 Return the InternalMatchingClaimsList as the evaluation result.
 
-2.1.4.3.6 Cond
+###### 2.1.4.3.6 Cond
 
 1.  This processing step MUST return TRUE if a given claim matches the current Cond, and FALSE
 
@@ -1125,7 +1079,8 @@ Claims Transformation Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.1.4.3.7 Rule-action
+
+###### 2.1.4.3.7 Rule-action
 
 1.  Successful processing of this step MUST result in creation of one or more claims.
 
@@ -1142,7 +1097,7 @@ processed using the matching n-tuples as input and the resulting claims collecte
 The above processing MUST generate one or more claims. The generated claims MUST be appended to
 the InternalEvaluationContext and the InternalOutputContext.
 
-2.1.4.3.8 Claim-copy
+###### 2.1.4.3.8 Claim-copy
 
 1.  This processing step MUST create one claim per matching n-tuple.
 
@@ -1150,7 +1105,7 @@ the InternalEvaluationContext and the InternalOutputContext.
 
 reference.
 
-2.1.4.3.9 Claim-new
+###### 2.1.4.3.9 Claim-new
 
 1.  Successful processing of this step MUST create one or more claims.
 
@@ -1180,9 +1135,9 @@ considered invalid.
 
 claim is generated, processing MUST stop, and a processing error MUST be indicated.
 
-2.1.4.3.10
+###### 2.1.4.3.10 Processing End
 
-Processing End
+
 
 
 
@@ -1200,11 +1155,12 @@ Release: April 23, 2024
 
 15 / 20
 
-3  Algorithm Examples
+
+## 3 Algorithm Examples
 
 This section contains some examples of the Claims Transformation Algorithm.
 
-3.1  Processing "Allow All Claims" Rule
+### 3.1 Processing "Allow All Claims" Rule
 
  Input:
 
@@ -1216,7 +1172,7 @@ This section contains some examples of the Claims Transformation Algorithm.
                  (TYPE = "type2", VALUE = "example", VALUE-TYPE = "string") }
  ReturnValue: SUCCESS.
 
-3.2  Processing "Deny Some Claims" Rule
+### 3.2 Processing "Deny Some Claims" Rule
 
  Input:
 
@@ -1229,7 +1185,7 @@ This section contains some examples of the Claims Transformation Algorithm.
                 (TYPE = "type3", VALUE = -33, VALUE-TYPE = "int64")}
  ReturnValue: SUCCESS.
 
-3.3  Processing "Issue always" Rule
+### 3.3 Processing "Issue always" Rule
 
  Input:
 
@@ -1241,7 +1197,7 @@ This section contains some examples of the Claims Transformation Algorithm.
 
  ReturnValue: SUCCESS.
 
-3.4  Processing an Invalid Rule
+### 3.4 Processing an Invalid Rule
 
  Input:
  InputTransformationRulesText: C1:[type] => ISSUE (Claim = C1);
@@ -1259,13 +1215,14 @@ Release: April 23, 2024
 
 16 / 20
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 None.
 
-4.2  Index of Security Parameters
+### 4.2 Index of Security Parameters
 
 None.
 
@@ -1276,7 +1233,8 @@ Release: April 23, 2024
 
 17 / 20
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1312,7 +1270,8 @@ Release: April 23, 2024
 
 18 / 20
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1356,7 +1315,8 @@ Release: April 23, 2024
 
 19 / 20
 
-7  Index
+
+## 7 Index
 A
 
 Abstract data model 6

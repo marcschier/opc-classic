@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -294,7 +295,8 @@ Release: April 23, 2024
 
 2 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -441,114 +443,53 @@ Release: April 23, 2024
 
 3 / 48
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Data Model and Common Elements](#2-data-model-and-common-elements)
+  - [2.1 Endpoints](#21-endpoints)
+  - [2.2 XML Namespaces and URIs](#22-xml-namespaces-and-uris)
+  - [2.3 XML Data Model](#23-xml-data-model)
+    - [2.3.1 Object Naming](#231-object-naming)
+    - [2.3.2 XML View of Directory Objects](#232-xml-view-of-directory-objects)
+    - [2.3.3 Synthetic Attributes](#233-synthetic-attributes)
+      - [2.3.3.1 ad:objectReferenceProperty](#2331-adobjectreferenceproperty)
+      - [2.3.3.2 ad:container-hierarchy-parent](#2332-adcontainer-hierarchy-parent)
+      - [2.3.3.3 ad:distinguishedName](#2333-addistinguishedname)
+      - [2.3.3.4 ad:relativeDistinguishedName](#2334-adrelativedistinguishedname)
+    - [2.3.4 Syntax Mapping](#234-syntax-mapping)
+  - [2.4 XPath 1.0-Derived Selection Language](#24-xpath-10-derived-selection-language)
+  - [2.5 Common SOAP Headers](#25-common-soap-headers)
+    - [2.5.1 ad:instance Header](#251-adinstance-header)
+    - [2.5.2 ad:objectReferenceProperty Header](#252-adobjectreferenceproperty-header)
+  - [2.6 Common SOAP Fault Detail](#26-common-soap-fault-detail)
+  - [2.7 Range Retrieval](#27-range-retrieval)
+    - [2.7.1 XML View of Multivalued Attribute with Range Option](#271-xml-view-of-multivalued-attribute-with-range-option)
+    - [2.7.2 Range Specifiers for Requests](#272-range-specifiers-for-requests)
+      - [2.7.2.1 WS-Transfer Range Retrieval Extensions](#2721-ws-transfer-range-retrieval-extensions)
+      - [2.7.2.2 WS-Enumeration Range Retrieval Extensions](#2722-ws-enumeration-range-retrieval-extensions)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 WS-Transfer 'Get' Example](#31-ws-transfer-get-example)
+  - [3.2 WS-Transfer Identity Management Extension 'ModifyRequest' Example](#32-ws-transfer-identity-management-extension-modifyrequest-example)
+  - [3.3 WS-Enumeration 'Pull' Example](#33-ws-enumeration-pull-example)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Protocols and Other Structures ...................................................... 9
-Applicability Statement ....................................................................................... 9
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-2.2
-2.3
-
-2.3.1
-2.3.2
-2.3.3
-
-2.3.3.1
-2.3.3.2
-2.3.3.3
-2.3.3.4
-
-2  Data Model and Common Elements ........................................................................ 10
-Endpoints ........................................................................................................ 10
-XML Namespaces and URIs ............................................................................... 11
-XML Data Model ............................................................................................... 12
-Object Naming ........................................................................................... 12
-XML View of Directory Objects ...................................................................... 13
-Synthetic Attributes .................................................................................... 14
-ad:objectReferenceProperty ................................................................... 15
-ad:container-hierarchy-parent ................................................................ 15
-ad:distinguishedName ........................................................................... 15
-ad:relativeDistinguishedName ................................................................ 16
-Syntax Mapping .......................................................................................... 16
-XPath 1.0-Derived Selection Language ................................................................ 17
-Common SOAP Headers .................................................................................... 19
-ad:instance Header ..................................................................................... 19
-ad:objectReferenceProperty Header .............................................................. 20
-Common SOAP Fault Detail ............................................................................... 21
-Range Retrieval ............................................................................................... 24
-XML View of Multivalued Attribute with Range Option ...................................... 24
-Range Specifiers for Requests ...................................................................... 25
-WS-Transfer Range Retrieval Extensions .................................................. 27
-WS-Enumeration Range Retrieval Extensions ............................................ 27
-
-2.7.2.1
-2.7.2.2
-
-2.5.1
-2.5.2
-
-2.7.1
-2.7.2
-
-2.4
-2.5
-
-2.6
-2.7
-
-2.3.4
-
-3  Structure Examples ............................................................................................... 29
-WS-Transfer 'Get' Example ................................................................................ 29
-WS-Transfer Identity Management Extension 'ModifyRequest' Example ................... 31
-WS-Enumeration 'Pull' Example ......................................................................... 33
-
-3.1
-3.2
-3.3
-
-4  Security ................................................................................................................. 35
-Security Considerations for Implementers ........................................................... 35
-Index of Security Fields .................................................................................... 35
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 36
-
-6  Change Tracking .................................................................................................... 46
-
-7  Index ..................................................................................................................... 47
-
-[MS-ADDM] - v20240423
-Active Directory Web Services: Data Model and Common Elements
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 48
-
-1  Introduction
+## 1 Introduction
 
 Active Directory Web Services: Data Model and Common Elements contains an XML data model and
 other protocol components (such as the definition of an XPath 1.0-derived selection language) that are
@@ -558,7 +499,7 @@ documentation for individual protocols contains references to this document, as 
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -620,7 +561,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-global catalog (GC): A unified partial view of multiple naming contexts (NCs) in a distributed
+
+global catalog (GC): A unified partial view of multiple naming contexts (NCs) in a distributed
 
 partitioned directory. The Active Directory directory service GC is implemented by GC servers.
 The definition of global catalog is specified in [MS-ADTS] section 3.1.1.1.8.
@@ -693,7 +635,8 @@ Release: April 23, 2024
 
 6 / 48
 
-Transport Layer Security (TLS): A security protocol that supports confidentiality and integrity of
+
+Transport Layer Security (TLS): A security protocol that supports confidentiality and integrity of
 messages in client and server applications communicating over open networks. TLS supports
 server and, optionally, client authentication by using X.509 certificates (as specified in [X509]).
 TLS is standardized in the IETF TLS working group.
@@ -716,14 +659,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -759,7 +702,8 @@ Release: April 23, 2024
 
 7 / 48
 
-[RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
+
+[RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
 December 1997, https://www.rfc-editor.org/info/rfc2251
 
 [RFC2252] Wahl, M., Coulbeck, A., Howes, T., and Kille, S., "Lightweight Directory Access Protocol
@@ -812,7 +756,7 @@ names-20060816/
 [XPATH] Clark, J. and DeRose, S., "XML Path Language (XPath), Version 1.0", W3C Recommendation,
 November 1999, http://www.w3.org/TR/1999/REC-xpath-19991116/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-RSAT] Microsoft Corporation, "Remote Server Administration Tools (RSAT) for Windows
 operating systems", https://support.microsoft.com/en-us/kb/2693643
@@ -824,7 +768,8 @@ Release: April 23, 2024
 
 8 / 48
 
-1.3  Overview
+
+### 1.3 Overview
 
 Active Directory Web Services (ADWS) permits access to Active Directory [MS-ADTS] via the use of
 common SOAP-based Web Service protocols such as WS-Transfer [WXFR] and WS-Enumeration
@@ -851,13 +796,13 @@ information used across the entire ADWS protocol set. For operations such as ran
 provides common extensions to [WXFR] and [WSENUM], which are used by certain protocols within
 the ADWS protocol set.<1>
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The information in this document is used by protocols in the set of Active Directory Web Services
 protocols. The ADWS protocol documentation set comprises this document and the following
 documents: [MS-WSDS], [MS-WSPELD], [MS-WSTIM], and [MS-ADCAP].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The XML data model and XPath 1.0-derived selection language is suitable for use when the
 implementer desires to retrieve and manipulate data stored in a directory service via an XML-based
@@ -871,11 +816,11 @@ pairs in which each attribute can have one or more values. It also assumes that 
 objects can be arranged in a single hierarchical tree structure. The XML data model described in this
 document might not be suitable for use with directories that do not expose such semantics.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -886,14 +831,15 @@ Release: April 23, 2024
 
 9 / 48
 
-2  Data Model and Common Elements
+
+## 2 Data Model and Common Elements
 
 This section discusses the shared protocol elements that are used by various protocols in the set of
 Active Directory Web Service protocols. In this document, the convention from [MS-ADTS] section
 3.1.1.1.2 is adopted such that, if variable O refers to a directory object and a is the LDAP display
 name of an attribute, then O!a denotes the value or values of attribute a on object O.
 
-2.1  Endpoints
+### 2.1 Endpoints
 
 This section specifies the Web Service endpoints that are used by protocols in the ADWS protocol set.
 ADWS exposes protocols that can be accessed via an endpoint. Each endpoint can be uniquely
@@ -1019,7 +965,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Windows Integrated: These endpoints use integrated Windows authentication with the .Net
+
+  Windows Integrated: These endpoints use integrated Windows authentication with the .Net
 
 Negotiate Stream protocol [MS-NNS] to authenticate the client and provide message security at
 the transport layer.
@@ -1032,7 +979,7 @@ Security [WSS] and the WS-Security UserNameToken profile [WSSUTP1.1].
 
 The "mex" endpoint neither requires nor supports authentication.
 
-2.2  XML Namespaces and URIs
+### 2.2 XML Namespaces and URIs
 
 The following XML namespaces are defined and referenced by the ADWS protocol set, using the XML
 namespace mechanisms defined in [XMLNS-2ED]. A brief informative summary of each namespace is
@@ -1112,7 +1059,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-URI
+
+URI
 
 http://schemas.microsoft.com/2008/1/ActiveDirectory/Dialect/XPath-Level-1
 
@@ -1171,13 +1119,13 @@ http://www.w3.org/2001/XMLSchema-instance
 
 [XMLSCHEMA1]
 
-2.3  XML Data Model
+### 2.3 XML Data Model
 
 This section documents how directory objects, each of which is a collection of LDAP attributes (with
 one or more values stored in each attribute) [MS-ADTS], are represented in XML. This XML view of
 directory objects is shared by the protocols in the ADWS protocol set.
 
-2.3.1  Object Naming
+#### 2.3.1 Object Naming
 
 In the ADWS data model, directory objects are identified by their object reference property. The
 object reference property can be either a GUID or the object's LDAP distinguished name.
@@ -1211,7 +1159,8 @@ Release: April 23, 2024
 
 12 / 48
 
-The object reference property value in the GUID form of {11111111-1111-1111-1111-
+
+The object reference property value in the GUID form of {11111111-1111-1111-1111-
 111111111111} exclusively refers to the LDAP rootDSE [RFC2251].
 
 The following SOAP message requests use the object reference property as either the GUID or the
@@ -1248,7 +1197,7 @@ ModifyRequest or AddRequest operation
 The object reference property in a protocol response can be in either GUID or distinguished name
 form.
 
-2.3.2  XML View of Directory Objects
+#### 2.3.2 XML View of Directory Objects
 
 In the XML view of the directory objects presented by ADWS, the XML elements are named for the
 LDAP classes and attributes used in the directory object. Additionally, XML elements are used to
@@ -1289,7 +1238,8 @@ Release: April 23, 2024
 
 13 / 48
 
-         ...
+
+         ...
          ...
          <ad:value xsi:type="XMLSYN(A1)">
              Sn(A1)
@@ -1333,7 +1283,7 @@ The LdapSyntax XML attribute is optional in a SOAP request.
 Multiple directory objects are represented as sibling XML elements, regardless of the hierarchical
 relationship between the objects in the LDAP directory tree.
 
-2.3.3  Synthetic Attributes
+#### 2.3.3 Synthetic Attributes
 
 In addition to containing the LDAP attributes of a directory object, the XML view of that object
 contains up to four additional attributes that are not part of that object's representation stored in the
@@ -1354,7 +1304,8 @@ Release: April 23, 2024
 
 14 / 48
 
-2.3.3.1  ad:objectReferenceProperty
+
+##### 2.3.3.1 ad:objectReferenceProperty
 
 The synthetic attribute ad:objectReferenceProperty contains the object reference property of the
 directory object, as described in section 2.3.1. Values of this attribute have xsi:type equal to
@@ -1374,7 +1325,7 @@ form.
      </ad:value>
  </ad:objectReferenceProperty>
 
-2.3.3.2  ad:container-hierarchy-parent
+##### 2.3.3.2 ad:container-hierarchy-parent
 
 The synthetic attribute ad:container-hierarchy-parent contains the object reference property (as
 described in section 2.3.1) of the directory object that is the object's parent in the directory tree.
@@ -1394,7 +1345,7 @@ GUID form.
      </ad:value>
  </ad:container-hierarchy-parent>
 
-2.3.3.3  ad:distinguishedName
+##### 2.3.3.3 ad:distinguishedName
 
 The synthetic attribute ad:distinguishedName contains the LDAP distinguished name of the
 directory object; that is, the value of O!distinguishedName where O is the directory object being
@@ -1416,7 +1367,8 @@ Release: April 23, 2024
 
 15 / 48
 
-2.3.3.4  ad:relativeDistinguishedName
+
+##### 2.3.3.4 ad:relativeDistinguishedName
 
 The synthetic attribute ad:relativeDistinguishedName contains the relative distinguished name of
 the directory object. Values of this attribute have xsi:type equal to "xsd:string".
@@ -1431,7 +1383,7 @@ found in the XML view of a directory object.
      <ad:value xsi:type="xsd:string">CN=Test</ad:value>
  </ad:relativeDistinguishedName>
 
-2.3.4  Syntax Mapping
+#### 2.3.4 Syntax Mapping
 
 As mentioned in section 2.3.2, the content of the <ad:value> element is the value of the directory
 attribute (or synthetic attribute) represented as an XML value. For LDAP directory attributes, the
@@ -1559,7 +1511,8 @@ Release: April 23, 2024
 
 16 / 48
 
-LDAP attribute syntax
+
+LDAP attribute syntax
 
 LDAPSYN
 
@@ -1617,7 +1570,7 @@ ad:relativeDistinguishedName
 
 xsd:string
 
-2.4  XPath 1.0-Derived Selection Language
+### 2.4 XPath 1.0-Derived Selection Language
 
 Some Web Service protocols in the ADWS protocol set require the use of a selection language to
 specify which portion of the directory object to operate on. In other words, the selection language
@@ -1655,7 +1608,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The value-element is the string literal "value" qualified with an XML namespace prefix that
+
+The value-element is the string literal "value" qualified with an XML namespace prefix that
 corresponds to the XML namespace URI "http://schemas.microsoft.com/2008/1/ActiveDirectory" in
 the scope of the XML node in which the XpathSelection expression appears. This is illustrated in the
 following example.
@@ -1720,11 +1674,12 @@ Release: April 23, 2024
 
 18 / 48
 
- <ad:value xsi:type="xsd:string">
+
+ <ad:value xsi:type="xsd:string">
      First sample description
  </ad:value>
 
-2.5  Common SOAP Headers
+### 2.5 Common SOAP Headers
 
 The following sections describe SOAP headers that are defined by the ADWS protocol set. These
 headers, and the ADWS protocols that use them, are summarized in the following table.
@@ -1758,7 +1713,7 @@ to be performed.
 
 [MS-WSTIM]
 
-2.5.1  ad:instance Header
+#### 2.5.1 ad:instance Header
 
 An implementation can allow multiple directory services to be accessed via a single endpoint.<5>
 The ad:instance SOAP header, which is located in the
@@ -1803,9 +1758,10 @@ Release: April 23, 2024
 
 19 / 48
 
- </soapenv:Envelope>
 
-2.5.2  ad:objectReferenceProperty Header
+ </soapenv:Envelope>
+
+#### 2.5.2 ad:objectReferenceProperty Header
 
 The ad:objectReferenceProperty SOAP header, which is located in the
 http://schemas.microsoft.com/2008/1/ActiveDirectory XML namespace, is attached to a SOAP
@@ -1869,14 +1825,15 @@ Release: April 23, 2024
 
 20 / 48
 
-         <ad:objectReferenceProperty>...</ad:objectReferenceProperty>
+
+         <ad:objectReferenceProperty>...</ad:objectReferenceProperty>
          <ad:instance>...</ad:Instance>
        </wsa:ReferenceParameters>
      </wxf:ResourceCreated>
    </soapenv:Body>
  </soapenv:Envelope>
 
-2.6  Common SOAP Fault Detail
+### 2.6 Common SOAP Fault Detail
 
 This section defines a SOAP fault Detail element [SOAP1.2-1/2003] that is used by the ADWS
 protocol set. This element is used for the "[Detail]" property of [WSASB]. The SOAP fault detail is
@@ -1943,7 +1900,8 @@ Release: April 23, 2024
 
 21 / 48
 
-         <xsd:element name="InvalidChange" type="ad:ChangeType"/>
+
+         <xsd:element name="InvalidChange" type="ad:ChangeType"/>
          <xsd:element name="InvalidAttributeTypeOrValue"
                       type="ad:InvalidAttributeTypeOrValueType"/>
        </xsd:choice>
@@ -2039,7 +1997,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Element
+
+Element
 
 Contents
 
@@ -2128,7 +2087,8 @@ Release: April 23, 2024
 
 23 / 48
 
- <soapenv:Envelope>
+
+ <soapenv:Envelope>
    <soapenv:Header>
    ....
    </soapenv:Header>
@@ -2159,7 +2119,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-2.7  Range Retrieval
+### 2.7 Range Retrieval
 
 Retrieving the contents of a multivalued attribute from a group such as a distribution list can often
 result in a large number of returned values. A directory service can place limits on the maximum
@@ -2180,7 +2140,7 @@ attribute with only a portion of its values. They also define extensions to the 
 WS-Enumeration [WSENUM] protocols that indicate how a requester is to specify the portion of the
 attribute values to be returned.
 
-2.7.1  XML View of Multivalued Attribute with Range Option
+#### 2.7.1 XML View of Multivalued Attribute with Range Option
 
 Section 2.3.2 describes the XML view of a directory object and its attributes as presented by ADWS.
 This section defines extensions to such an XML view for a multivalued attribute in which only a subset
@@ -2196,7 +2156,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following description defines how a multivalued LDAP attribute and a portion of its value(s)
+
+The following description defines how a multivalued LDAP attribute and a portion of its value(s)
 limited by a range are represented in the XML view. Let B be the LDAP display name of the
 multivalued attribute that contains the complete set of values V1(B)…Vn(B). Let RANGELOW(B) and
 RANGEHIGH(B) be the respective lower and higher range of values returned by the server for the
@@ -2247,7 +2208,7 @@ ADWS specification of the possible values of these XML attributes, which are ret
 as part of the XML view of the object for a request with range specification, is illustrated in section
 2.7.2.
 
-2.7.2  Range Specifiers for Requests
+#### 2.7.2 Range Specifiers for Requests
 
 The range option for an attribute query is represented using the following XML attributes in the
 request:
@@ -2261,7 +2222,8 @@ Release: April 23, 2024
 
 25 / 48
 
-where RANGELOW is the zero-based index of the first attribute value to retrieve, and RANGEHIGH is
+
+where RANGELOW is the zero-based index of the first attribute value to retrieve, and RANGEHIGH is
 the zero-based index of the last attribute value to retrieve.
 
 When querying for an attribute, a request can specify a RangeLow XML attribute in addition to a
@@ -2331,7 +2293,8 @@ Release: April 23, 2024
 
 26 / 48
 
-2.7.2.1  WS-Transfer Range Retrieval Extensions
+
+##### 2.7.2.1 WS-Transfer Range Retrieval Extensions
 
 This section illustrates a range retrieval extension to the Get operation of the WS-Transfer [WXFR]
 protocol, which, when used with [MS-WSTIM] extensions, provides a way to retrieve portions of a
@@ -2369,7 +2332,7 @@ defined in [MS-WSTIM] would be similar to the following.
    </xsd:complexContent>
  </xsd:complexType>
 
-2.7.2.2  WS-Enumeration Range Retrieval Extensions
+##### 2.7.2.2 WS-Enumeration Range Retrieval Extensions
 
 This section illustrates a range retrieval extension to the Enumerate operation of the WS-Enumerate
 [WSENUM] protocol, which, when used with [MS-WSDS] extensions, provides a way to retrieve
@@ -2396,7 +2359,8 @@ Release: April 23, 2024
 
 27 / 48
 
-     <xsd:complexContent>
+
+     <xsd:complexContent>
        <xsd:extension base="xsd:string">
          <xsd:attribute name="RangeLow" use="required" type="xsd:nonNegativeInteger"/>
          <xsd:attribute name="RangeHigh" use="optional" type="xsd:string"/>
@@ -2412,13 +2376,14 @@ Release: April 23, 2024
 
 28 / 48
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 This section contains examples of the XML view of sample directory objects, including the ADWS
 synthetic attributes. For illustrative purposes, these examples are shown in the context of protocols
 in the ADWS protocol set.
 
-3.1  WS-Transfer 'Get' Example
+### 3.1 WS-Transfer 'Get' Example
 
 The following example shows a WS-Transfer Get [WXFR] operation. Both the SOAP request message
 and the SOAP response message are shown. This example retrieves the complete XML view of a
@@ -2482,7 +2447,8 @@ Release: April 23, 2024
 
 29 / 48
 
-   </soapenv:Header>
+
+   </soapenv:Header>
    <soapenv:Body>
      <addata:user
          xmlns:addata="http://schemas.microsoft.com/2008/1/ActiveDirectory/Data"
@@ -2558,7 +2524,8 @@ Release: April 23, 2024
 
 30 / 48
 
-       </addata:objectClass>
+
+       </addata:objectClass>
        <addata:logonCount LdapSyntax="Integer">
          <ad:value xsi:type="xsd:string">0</ad:value>
        </addata:logonCount>
@@ -2608,7 +2575,7 @@ Release: April 23, 2024
    </soapenv:Body>
  </soapenv:Envelope>
 
-3.2  WS-Transfer Identity Management Extension 'ModifyRequest' Example
+### 3.2 WS-Transfer Identity Management Extension 'ModifyRequest' Example
 
 This example demonstrates a [MS-WSTIM] ModifyRequest operation. Both the SOAP request message
 and the SOAP response message are shown. In the SOAP request message, the requestor is specifying
@@ -2630,7 +2597,8 @@ Release: April 23, 2024
 
 31 / 48
 
-     xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+
+     xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
      xmlns:wsa="http://www.w3.org/2005/08/addressing">
    <soapenv:Header>
      <wsa:Action soapenv:mustUnderstand="1">
@@ -2705,13 +2673,14 @@ Release: April 23, 2024
 
 32 / 48
 
-             http://www.w3.org/2005/08/addressing/anonymous
+
+             http://www.w3.org/2005/08/addressing/anonymous
          </wsa:To>
      </soapenv:Header>
      <soapenv:Body/>
  </soapenv:Envelope>
 
-3.3  WS-Enumeration 'Pull' Example
+### 3.3 WS-Enumeration 'Pull' Example
 
 This example demonstrates a WS-Enumeration Pull operation [WSENUM] using a previously obtained
 enumeration context. Both the SOAP request message and the SOAP response message are shown.
@@ -2775,7 +2744,8 @@ Release: April 23, 2024
 
 33 / 48
 
-     </wsa:Action>
+
+     </wsa:Action>
      <wsa:RelatesTo>
        urn:uuid:b22747a9-ca15-41de-8c91-5a51bd88669c
      </wsa:RelatesTo>
@@ -2842,13 +2812,14 @@ Release: April 23, 2024
 
 34 / 48
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
  None.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -2859,7 +2830,8 @@ Release: April 23, 2024
 
 35 / 48
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2927,7 +2899,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<4> Section 2.3.4: Microsoft implementations of Active Directory Web Services: Data Model and
+
+<4> Section 2.3.4: Microsoft implementations of Active Directory Web Services: Data Model and
 Common Elements use the following mapping between rootDse attributes (specified by their LDAP
 display names) and XML syntaxes.
 
@@ -3122,7 +3095,8 @@ Release: April 23, 2024
 
 37 / 48
 
-rootDse attribute name
+
+rootDse attribute name
 
 LDAPSYN
 
@@ -3327,7 +3301,8 @@ Release: April 23, 2024
 
 38 / 48
 
-rootDse attribute name
+
+rootDse attribute name
 
 LDAPSYN
 
@@ -3478,7 +3453,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LDAP Error
+
+LDAP Error
 
 Win32 Error
 
@@ -3745,7 +3721,8 @@ Release: April 23, 2024
 
 40 / 48
 
-LDAP Error
+
+LDAP Error
 
 Win32 Error
 
@@ -3944,7 +3921,8 @@ Release: April 23, 2024
 
 41 / 48
 
-A
+
+A
 
 B
 
@@ -4068,7 +4046,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A
+
+A
 
 B
 
@@ -4193,7 +4172,8 @@ Release: April 23, 2024
 
 43 / 48
 
-A
+
+A
 
 B
 
@@ -4320,7 +4300,8 @@ Release: April 23, 2024
 
 44 / 48
 
-A
+
+A
 
 Second table:
 
@@ -4405,7 +4386,8 @@ Release: April 23, 2024
 
 45 / 48
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4449,7 +4431,8 @@ Release: April 23, 2024
 
 46 / 48
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 9
@@ -4588,7 +4571,8 @@ Active Directory Web Services: Data Model and Common Elements
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   fields index 35
+
+   fields index 35
    implementer considerations 35
 SOAP
    fault detail 21

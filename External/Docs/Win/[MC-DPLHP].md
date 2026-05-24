@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: April 23, 2024
 
 2 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: April 23, 2024
 
 3 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -542,108 +545,52 @@ Release: April 23, 2024
 
 4 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 EnumQuery](#221-enumquery)
+    - [2.2.2 EnumResponse](#222-enumresponse)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-EnumQuery ................................................................................................ 11
-EnumResponse ........................................................................................... 12
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 17
-Server Details .................................................................................................. 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Processing Events and Sequencing Rules ....................................................... 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Client Details ................................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Processing Events and Sequencing Rules ....................................................... 18
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 20
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MC-DPLHP] - v20240423
-DirectPlay 8 Protocol: Host and Port Enumeration
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 27
-
-1  Introduction
+## 1 Introduction
 
 This specification pertains to the DirectPlay 8 Protocol and describes the technology available for
 enumerating DirectPlay 8 hosts and ports. The enumeration functionality provided by the DirectPlay 8
@@ -652,7 +599,7 @@ Protocol allows a DirectPlay 8 Client/Peer to discover one or more DirectPlay 8 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -716,7 +663,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-these terms does not imply or require a specific algorithm or mechanism to generate the value.
+
+these terms does not imply or require a specific algorithm or mechanism to generate the value.
 Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
@@ -778,7 +726,7 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -792,7 +740,8 @@ Release: April 23, 2024
 
 7 / 27
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -815,11 +764,11 @@ https://www.iana.org/assignments/service-names-port-numbers/service-names-port-n
 [RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The DirectPlay 8 Protocol: Host and Port Enumeration enables a DirectPlay Client/Peer to discover
 DirectPlay Servers/Hosts.
@@ -857,7 +806,8 @@ Release: April 23, 2024
 
 8 / 27
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 How a DirectPlay Client/Peer connects to the game session being hosted by a DirectPlay Server/Host
 that chooses to send an EnumResponse message is specified in [MC-DPL8CS].
@@ -870,7 +820,7 @@ A DirectPlay 8 Service Provider allows DirectPlay 8 messages to be layered on to
 different underlying network transport protocols, such as IPv4, IPv6, IPX, and serial links. The
 details of the DirectPlay 8 Service Provider are specified in [MC-DPL8CS].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DirectPlay Client/Peer and DirectPlay Server/Host have already agreed upon the application GUID
 they will use to identify themselves as instances of the same DirectPlay 8 application.
@@ -878,7 +828,7 @@ they will use to identify themselves as instances of the same DirectPlay 8 appli
 The DirectPlay Server/Host is hosting a game session before it can participate in the DirectPlay 8
 Protocol: Host and Port Enumeration.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DirectPlay 8 Protocol: Host and Port Enumeration is appropriate for use when a DirectPlay
 Client/Peer has to query multiple DirectPlay Servers/Hosts for their current status, to determine
@@ -892,17 +842,17 @@ as specified in [IANAPORT]. Note that not all DirectPlay Servers/Hosts will resp
 messages sent to this port. Nor do all implementations of this protocol support the use of the
 DirectPlay 8 server well-known port.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The DirectPlay 8 Protocol: Host and Port Enumeration has no versioning or capability negotiation
 features. However, the application can use the application-specific fields of the protocol to perform
 application-level versioning or capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 DirectPlay 8 uses the following well-known UDP port assignment, as specified in [IANAPORT].
 
@@ -925,7 +875,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Host and Port Enumeration Protocol primarily uses port 6073 to allow for discovery of these other
+
+Host and Port Enumeration Protocol primarily uses port 6073 to allow for discovery of these other
 ports.
 
 The sender of a query message can use any port for the source of the message. The server listening
@@ -944,17 +895,18 @@ Release: April 23, 2024
 
 10 / 27
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 EnumQuery and EnumResponse messages are delivered using the same transport upon which the
 DirectPlay 8 Protocol: Reliable [MC-DPL8R] is built, which typically does not provide guaranteed
 message delivery. This means that both EnumQuery and EnumResponse messages might be lost.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  EnumQuery
+#### 2.2.1 EnumQuery
 
 The EnumQuery message is used to query for instances of a DirectPlay Server/Host that is hosting a
 game session.
@@ -1027,7 +979,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 information about the GUID type, see [MS-DTYP] section 2.3.4.
 
@@ -1045,7 +998,7 @@ Server/Host. The server application can then use the information to decide if it
 EnumQuery, and/or determine what additional information, if any, it SHOULD return in the
 EnumResponse message.
 
-2.2.2  EnumResponse
+#### 2.2.2 EnumResponse
 
 When a valid EnumQuery message is received by a DirectPlay Server/Host, it SHOULD reply with an
 EnumResponse message. The DirectPlay Server/Host SHOULD NOT respond to any EnumQuery
@@ -1102,7 +1055,8 @@ Release: April 23, 2024
 
 12 / 27
 
-PasswordOffset
+
+PasswordOffset
 
 PasswordSize
 
@@ -1161,7 +1115,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EnumPayload (2 bytes): This field is 16 bits in length. The EnumPayload is a value selected by the
+
+EnumPayload (2 bytes): This field is 16 bits in length. The EnumPayload is a value selected by the
 sender of the EnumQuery message that can be used to match EnumResponse messages to their
 corresponding EnumQuery.
 
@@ -1260,7 +1215,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Server/Host. Note that by the time the EnumResponse is received by the DirectPlay Client/Peer,
+
+Server/Host. Note that by the time the EnumResponse is received by the DirectPlay Client/Peer,
 the number of players in the game session might have changed.
 
 SessionNameOffset (4 bytes): A 32-bit field that specifies the offset, in bytes, from the start of the
@@ -1332,7 +1288,8 @@ Release: April 23, 2024
 
 15 / 27
 
-ReservedData (variable): The ReservedData field was intended to be used for future extensions to
+
+ReservedData (variable): The ReservedData field was intended to be used for future extensions to
 the DirectPlay 8 Protocol, but was never used. This field will never be used since DirectPlay has
 been deprecated.
 
@@ -1356,11 +1313,12 @@ Release: April 23, 2024
 
 16 / 27
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1395,7 +1353,7 @@ section 2.2.2.
 
 For more details on what it means to host a game session, see [MS-DPDX].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 EnumQuery and EnumResponse messages are delivered by using the DirectPlay 8 service
 providers, which do not offer reliable message delivery. Therefore, to achieve a degree of reliability
@@ -1407,7 +1365,7 @@ intervals. The frequency of EnumQuery messages is implementation-defined. The Di
 Protocol: Host and Port Enumeration places no restrictions on this frequency or on the number of
 EnumQuery messages that are sent.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 A DirectPlay Server/Host MUST be hosting a game session before it can respond to any
 EnumQuery messages.
@@ -1423,18 +1381,19 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-registered with IANA for use by DirectPlay 8. If the DirectPlay 8 application has no compelling
+
+registered with IANA for use by DirectPlay 8. If the DirectPlay 8 application has no compelling
 reason to use a different port, this is a good port to choose on an IPv4 or IPv6 network. Because this
 port is registered with IANA (as specified in [IANAPORT]), and is used by multiple games, it increases
 the likelihood that some firewalls might be preconfigured to allow traffic on this port. However, a
 game can use any port it deems appropriate, according to the rules and customs of the IP networks
 that it is using.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 When a DirectPlay Server/Host is hosting a game session and it receives an EnumQuery message,
 it SHOULD respond to the address from which the EnumQuery message originated with an
@@ -1442,17 +1401,17 @@ EnumResponse message. Note that the DirectPlay Server/Host can choose not to rep
 particular EnumQuery message for application-specific reasons, such as DirectPlay Server/Host load,
 current game state, or any other reason.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 A DirectPlay Client/Peer can send EnumQuery messages at any time and to any destination. It is
 useful for the DirectPlay Client/Peer to keep a record of the EnumQuery messages it has sent in the
@@ -1461,19 +1420,19 @@ enables the DirectPlay Client/Peer to measure the round-trip time (RTT) between 
 responding DirectPlay Server/Host. It also enables the DirectPlay Client/Peer to notice any packet loss
 that might be occurring between itself and any responding DirectPlay Server/Host.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 None.
 
@@ -1484,11 +1443,12 @@ Release: April 23, 2024
 
 18 / 27
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1499,11 +1459,12 @@ Release: April 23, 2024
 
 19 / 27
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MC-DPLHP].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following diagram shows an example use of the DirectPlay 8 Protocol: Host and Port Enumeration.
 
@@ -1530,7 +1491,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EnumPayload value of 1 from the EnumQuery message to the EnumResponse message and
+
+EnumPayload value of 1 from the EnumQuery message to the EnumResponse message and
 sends the EnumResponse message back to the address that the EnumQuery message came from.
 The EnumResponse message is sent directly via the selected DirectPlay 8 Service Provider, which
 does not offer reliable message delivery. Therefore, the EnumResponse message is at risk of being
@@ -1600,7 +1562,8 @@ DirectPlay 8 Protocol: Host and Port Enumeration
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Therefore, the EnumQuery message is at risk of being lost in transit. In this example step, the
+
+Therefore, the EnumQuery message is at risk of being lost in transit. In this example step, the
 EnumQuery message is successfully received by the DirectPlay Server/Host.
 
 9.  The DirectPlay Server/Host receives the EnumQuery message. The DirectPlay Server/Host is
@@ -1668,13 +1631,14 @@ Release: April 23, 2024
 
 22 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1685,7 +1649,8 @@ Release: April 23, 2024
 
 23 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1739,7 +1704,8 @@ Release: April 23, 2024
 
 24 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1783,7 +1749,8 @@ Release: April 23, 2024
 
 25 / 27
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1913,7 +1880,8 @@ Standards assignments 9
 
 26 / 27
 
-T
+
+T
 
 Timer events
    client 19

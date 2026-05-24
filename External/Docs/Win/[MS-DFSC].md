@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 77
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: September 16, 2024
 
 2 / 77
 
-Date
+
+Date
 
 Revision
 History
@@ -545,7 +547,8 @@ Release: September 16, 2024
 
 3 / 77
 
-Date
+
+Date
 
 Revision
 History
@@ -579,262 +582,111 @@ Release: September 16, 2024
 
 4 / 77
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.3
-1.4
-1.5
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 Common Requirements](#151-common-requirements)
+    - [1.5.2 Client](#152-client)
+    - [1.5.3 DC or DFS Root Target Server](#153-dc-or-dfs-root-target-server)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Conventions](#221-common-conventions)
+      - [2.2.1.1 Host Name](#2211-host-name)
+      - [2.2.1.2 Share Name](#2212-share-name)
+      - [2.2.1.3 UNC Path](#2213-unc-path)
+      - [2.2.1.4 DFS Root](#2214-dfs-root)
+      - [2.2.1.5 DFS Link](#2215-dfs-link)
+      - [2.2.1.6 DFS Root Target](#2216-dfs-root-target)
+      - [2.2.1.7 DFS Target](#2217-dfs-target)
+    - [2.2.2 REQ_GET_DFS_REFERRAL](#222-reqgetdfsreferral)
+    - [2.2.3 REQ_GET_DFS_REFERRAL_EX](#223-reqgetdfsreferralex)
+      - [2.2.3.1 RequestData](#2231-requestdata)
+    - [2.2.4 RESP_GET_DFS_REFERRAL](#224-respgetdfsreferral)
+    - [2.2.5 Referral Entry Types](#225-referral-entry-types)
+      - [2.2.5.1 DFS_REFERRAL_V1](#2251-dfsreferralv1)
+      - [2.2.5.2 DFS_REFERRAL_V2](#2252-dfsreferralv2)
+      - [2.2.5.3 DFS_REFERRAL_V3](#2253-dfsreferralv3)
+        - [2.2.5.3.1 NameListReferral Flag Set to 0](#22531-namelistreferral-flag-set-to-0)
+        - [2.2.5.3.2 NameListReferral Flag Set to 1](#22532-namelistreferral-flag-set-to-1)
+      - [2.2.5.4 DFS_REFERRAL_V4](#2254-dfsreferralv4)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 DFS Client Details](#31-dfs-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 User/Application Initiated I/O Operation on a UNC Path](#3141-userapplication-initiated-io-operation-on-a-unc-path)
+      - [3.1.4.2 Sending a DFS Referral Request to the Server](#3142-sending-a-dfs-referral-request-to-the-server)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 I/O Operation to Target Fails with STATUS_PATH_NOT_COVERED](#3151-io-operation-to-target-fails-with-statuspathnotcovered)
+      - [3.1.5.2 I/O Operation to Target Fails with an Error Other Than](#3152-io-operation-to-target-fails-with-an-error-other-than)
+      - [3.1.5.3 I/O Operation to a DFS Root Target or DFS Link Target Succeeds](#3153-io-operation-to-a-dfs-root-target-or-dfs-link-target-succeeds)
+      - [3.1.5.4 Receiving a Referral Response](#3154-receiving-a-referral-response)
+        - [3.1.5.4.1 Receiving a Domain Referral Response](#31541-receiving-a-domain-referral-response)
+        - [3.1.5.4.2 Receiving a DC Referral Response](#31542-receiving-a-dc-referral-response)
+        - [3.1.5.4.3 Receiving a Root Referral Response or Link Referral Response](#31543-receiving-a-root-referral-response-or-link-referral-response)
+        - [3.1.5.4.4 Receiving a sysvol Referral Response](#31544-receiving-a-sysvol-referral-response)
+        - [3.1.5.4.5 Determining Whether a Referral Response is an Interlink](#31545-determining-whether-a-referral-response-is-an-interlink)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 DFS Root Target Server Details](#32-dfs-root-target-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Algorithm for sorting target sites in referral response based on site location](#3211-algorithm-for-sorting-target-sites-in-referral-response-based-on-site-location)
+      - [3.2.1.2 Algorithm for sorting target sites in referral response based on site cost](#3212-algorithm-for-sorting-target-sites-in-referral-response-based-on-site-cost)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Handling a Path Normalization Request](#3241-handling-a-path-normalization-request)
+      - [3.2.4.2 Handling a DFS Referral Request](#3242-handling-a-dfs-referral-request)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a DFS Referral Request](#3251-receiving-a-dfs-referral-request)
+      - [3.2.5.2 Receiving a Domain Referral Request](#3252-receiving-a-domain-referral-request)
+      - [3.2.5.3 Receiving a DC Referral Request](#3253-receiving-a-dc-referral-request)
+      - [3.2.5.4 Receiving a sysvol Referral Request](#3254-receiving-a-sysvol-referral-request)
+      - [3.2.5.5 Receiving a Root Referral Request or Link Referral Request](#3255-receiving-a-root-referral-request-or-link-referral-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Domain Controller Details](#33-domain-controller-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a DFS Referral Request](#3351-receiving-a-dfs-referral-request)
+      - [3.3.5.2 Receiving a Domain Referral Request](#3352-receiving-a-domain-referral-request)
+      - [3.3.5.3 Receiving a DC Referral Request](#3353-receiving-a-dc-referral-request)
+      - [3.3.5.4 Receiving a sysvol Referral Request](#3354-receiving-a-sysvol-referral-request)
+      - [3.3.5.5 Receiving a Root Referral Request or Link Referral Request](#3355-receiving-a-root-referral-request-or-link-referral-request)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Domain Referral](#41-domain-referral)
+  - [4.2 DC Referral](#42-dc-referral)
+  - [4.3 Domain-Based DFS Root Referral](#43-domain-based-dfs-root-referral)
+  - [4.4 Domain-Based DFS Link Referral](#44-domain-based-dfs-link-referral)
+  - [4.5 Domain-Based DFS Root Referral Packet Trace](#45-domain-based-dfs-root-referral-packet-trace)
+  - [4.6 Standalone DFS Root Referral](#46-standalone-dfs-root-referral)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Common Requirements ............................................................................... 13
-Client ........................................................................................................ 13
-DC or DFS Root Target Server ...................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.5.1
-1.5.2
-1.5.3
-
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-Common Conventions ................................................................................. 15
-Host Name ........................................................................................... 16
-Share Name ......................................................................................... 16
-UNC Path ............................................................................................. 16
-DFS Root ............................................................................................. 16
-DFS Link .............................................................................................. 16
-DFS Root Target ................................................................................... 17
-DFS Target ........................................................................................... 17
-REQ_GET_DFS_REFERRAL ........................................................................... 17
-REQ_GET_DFS_REFERRAL_EX ...................................................................... 17
-RequestData ........................................................................................ 18
-RESP_GET_DFS_REFERRAL .......................................................................... 19
-Referral Entry Types ................................................................................... 20
-DFS_REFERRAL_V1 ............................................................................... 20
-DFS_REFERRAL_V2 ............................................................................... 21
-DFS_REFERRAL_V3 ............................................................................... 22
-NameListReferral Flag Set to 0 .......................................................... 22
-NameListReferral Flag Set to 1 .......................................................... 23
-DFS_REFERRAL_V4 ............................................................................... 23
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-
-2.2.5.3.1
-2.2.5.3.2
-
-2.2.4
-2.2.5
-
-2.2.2
-2.2.3
-
-2.2.3.1
-
-2.2.5.4
-
-3.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 25
-DFS Client Details ............................................................................................ 25
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-User/Application Initiated I/O Operation on a UNC Path ............................. 26
-Sending a DFS Referral Request to the Server .......................................... 39
-Message Processing Events and Sequencing Rules .......................................... 40
-I/O Operation to Target Fails with STATUS_PATH_NOT_COVERED ............... 40
-I/O Operation to Target Fails with an Error Other Than
-STATUS_PATH_NOT_COVERED ............................................................... 41
-I/O Operation to a DFS Root Target or DFS Link Target Succeeds ............... 41
-Receiving a Referral Response ................................................................ 41
-Receiving a Domain Referral Response ............................................... 41
-Receiving a DC Referral Response ..................................................... 42
-
-3.1.5.4.1
-3.1.5.4.2
-
-3.1.5.3
-3.1.5.4
-
-3.1.5.1
-3.1.5.2
-
-3.1.5
-
-[MS-DFSC] - v20240916
-Distributed File System (DFS): Referral Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 77
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.1.5.4.3
-3.1.5.4.4
-3.1.5.4.5
-
-Receiving a Root Referral Response or Link Referral Response .............. 42
-Receiving a sysvol Referral Response ................................................. 43
-Determining Whether a Referral Response is an Interlink ..................... 44
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-DFS Root Target Server Details .......................................................................... 44
-Abstract Data Model .................................................................................... 44
-Algorithm for sorting target sites in referral response based on site location . 44
-Algorithm for sorting target sites in referral response based on site cost ...... 45
-Timers ...................................................................................................... 45
-Initialization ............................................................................................... 45
-Higher-Layer Triggered Events ..................................................................... 45
-Handling a Path Normalization Request .................................................... 45
-Handling a DFS Referral Request ............................................................. 45
-Message Processing Events and Sequencing Rules .......................................... 46
-Receiving a DFS Referral Request ........................................................... 46
-Receiving a Domain Referral Request ...................................................... 46
-Receiving a DC Referral Request ............................................................. 46
-Receiving a sysvol Referral Request ........................................................ 46
-Receiving a Root Referral Request or Link Referral Request ........................ 46
-Timer Events .............................................................................................. 50
-Other Local Events ...................................................................................... 50
-Domain Controller Details ................................................................................. 50
-Abstract Data Model .................................................................................... 50
-Timers ...................................................................................................... 51
-Initialization ............................................................................................... 51
-Higher-Layer Triggered Events ..................................................................... 51
-Message Processing Events and Sequencing Rules .......................................... 51
-Receiving a DFS Referral Request ........................................................... 51
-Receiving a Domain Referral Request ...................................................... 51
-Receiving a DC Referral Request ............................................................. 52
-Receiving a sysvol Referral Request ........................................................ 53
-Receiving a Root Referral Request or Link Referral Request ........................ 55
-Timer Events .............................................................................................. 55
-Other Local Events ...................................................................................... 55
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.6
-3.3.7
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-4  Protocol Examples ................................................................................................. 56
-Domain Referral ............................................................................................... 56
-DC Referral ..................................................................................................... 57
-Domain-Based DFS Root Referral ....................................................................... 58
-Domain-Based DFS Link Referral ........................................................................ 59
-Domain-Based DFS Root Referral Packet Trace .................................................... 60
-Standalone DFS Root Referral ............................................................................ 63
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-5  Security ................................................................................................................. 64
-Security Considerations for Implementers ........................................................... 64
-Index of Security Parameters ............................................................................ 64
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 65
-
-7  Change Tracking .................................................................................................... 73
-
-8  Index ..................................................................................................................... 74
-
-[MS-DFSC] - v20240916
-Distributed File System (DFS): Referral Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 77
-
-1  Introduction
+## 1 Introduction
 
 The Distributed File System (DFS): Namespace Referral Protocol allows file system clients to resolve
 names from a namespace distributed across many servers and geographies into local names on
@@ -846,7 +698,7 @@ NetWare Core Protocol (NCP) (for more information, see [NOVELL]).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -903,7 +755,8 @@ Release: September 16, 2024
 
 7 / 77
 
-Distributed File System (DFS) interlink: A special form of DFS link whose link target is a DFS
+
+Distributed File System (DFS) interlink: A special form of DFS link whose link target is a DFS
 
 domain-based namespace.
 
@@ -976,7 +829,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<DomainName> is the name of the domain that hosts the DFS root; and <RootName> is the
+
+<DomainName> is the name of the domain that hosts the DFS root; and <RootName> is the
 name of the root of a domain-based DFS.  The DFS root has to reside on an NTFS volume.
 
 Distributed File System (DFS) root target: A server that hosts a DFS root of a DFS
@@ -1047,7 +901,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-share name: The name of a share.
+
+share name: The name of a share.
 
 site: A collection of one or more well-connected (reliable and fast) TCP/IP subnets. By defining
 
@@ -1090,14 +945,14 @@ For more information, see [MS-DTYP] section 2.2.57.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1117,7 +972,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[MS-ERREF] Microsoft Corporation, "Windows Error Codes".
+
+[MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
 [MS-NRPC] Microsoft Corporation, "Netlogon Remote Protocol".
 
@@ -1132,7 +988,7 @@ Release: September 16, 2024
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [KB831201] Microsoft Corporation, "An update for Windows Server 2003 and Windows 2000 Server
 makes it possible to put the logon server at the top of the DFS referrals list", November 2007,
@@ -1147,7 +1003,7 @@ Novell Press, June 1994, ISBN: 0782113621.
 [RFC3530] Shepler, S., et al., "Network File System (NFS) version 4 Protocol", RFC 3530, April 2003,
 http://www.ietf.org/rfc/rfc3530.txt
 
-1.3  Overview
+### 1.3 Overview
 
 The Distributed File System (DFS) enables file system clients to access remote file shares by using a
 DFS path (or virtual name) for the share, which is then transparently resolved to an actual share
@@ -1183,7 +1039,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-requests to DCs in order to discover the DFS root target servers hosting specific DFS namespaces.
+
+requests to DCs in order to discover the DFS root target servers hosting specific DFS namespaces.
 Clients can also issue referral requests to DFS root target servers to discover other DFS root target
 servers that host a DFS namespace. Clients issue referral requests to DFS root target servers to
 discover the locations of DFS link targets (shares on file servers).  After the components of a DFS
@@ -1225,7 +1082,7 @@ Clients can maintain local caches of information that are received through refer
 future referral requests and to improve the performance of DFS resource access, as specified in
 section 3.1.1.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DFS: Referral Protocol relies on the Server Message Block (SMB) Protocol, (as specified in [MS-
 SMB]) or the Server Message Block (SMB) Version 2 Protocol (as specified in [MS-SMB2]), or the
@@ -1251,7 +1108,8 @@ Release: September 16, 2024
 
 12 / 77
 
-The DFS: Referral Protocol does not specify a replication protocol for file and directory content
+
+The DFS: Referral Protocol does not specify a replication protocol for file and directory content
 between DFS root targets or DFS link targets, nor does it interact with any such protocol. While
 replication can be used in a deployment of the DFS: Referral Protocol, it is equally reasonable for the
 respective targets to have differing content. Enforcing appropriate consistency for file and directory
@@ -1260,9 +1118,9 @@ content is a deployment-specific consideration.
 All protocols that use SMB to access files on remote machines depend on DFS if those files are located
 on shares in a DFS namespace.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
-1.5.1  Common Requirements
+#### 1.5.1 Common Requirements
 
 The SMB DFS referral request uses the TRANS2_GET_DFS_REFERRAL SMB message, as specified in
 [MS-SMB]. This is available only in SMB versions beginning with NT LAN Manager 0.12. The SMB2 DFS
@@ -1279,13 +1137,13 @@ These shares can be set up as specified in [MS-SRVS].
 The DFS: Namespace Referral Protocol defines no security parameters beyond those of its SMB
 transport.
 
-1.5.2  Client
+#### 1.5.2 Client
 
 DFS clients that issue referral requests might or might not be joined to a domain. DFS
 namespaces accessed by the DFS client can be domain-based DFS namespaces or stand-alone
 DFS namespaces.
 
-1.5.3  DC or DFS Root Target Server
+#### 1.5.3 DC or DFS Root Target Server
 
 To permit the DFS targets in the referral response to be ordered on the basis of site cost between
 the client site and a DFS target site, a server joined to a domain is required to determine the site
@@ -1299,7 +1157,7 @@ domain-based DFS namespaces, the server is required to access the DFS metadata s
 object of the DFS namespace. Location and format of the DFS metadata is specified in [MS-DFSNM]
 section 2.3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DFS: Referral Protocol is applicable for scenarios in which files that are stored across one or more
 shares— possibly including one or more file servers—and the share administrator would like to
@@ -1316,7 +1174,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  A fault-tolerant namespace, such that failure of a share causes the client to fail over to an
+
+  A fault-tolerant namespace, such that failure of a share causes the client to fail over to an
 
 alternate share.
 
@@ -1328,7 +1187,7 @@ that contains the geographically "lowest cost" copy of the files.
 
 the file server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 A client specifies the highest DFS referral version supported in the MaxReferralLevel field of the
 REQ_GET_DFS_REFERRAL (section 2.2.2) message.
@@ -1336,7 +1195,7 @@ REQ_GET_DFS_REFERRAL (section 2.2.2) message.
 A server responds with the highest DFS referral version supported by both the client and the server in
 the VersionNumber field of each referral entry, as specified in section 2.2.5.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields defined in the DFS: Referral Protocol.
 
@@ -1344,7 +1203,7 @@ This protocol uses NTSTATUS values taken from the NTSTATUS number space, as spec
 ERREF]. Vendors SHOULD<1> reuse those values with their indicated meaning. Choosing any other
 value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1355,9 +1214,10 @@ Release: September 16, 2024
 
 14 / 77
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The DFS: Referral Protocol uses the Server Message Block (SMB) protocol family as its transport. The
 specific version of the SMB protocol used for the transport is chosen in the SMB layer. For more
@@ -1417,13 +1277,13 @@ implementation MUST transfer it using the IOCTL response message. The SMB2 IOCTL
 message is specified in [MS-SMB2] section 2.2.31 and the SMB2 IOCTL response message is specified
 in [MS-SMB2] section 2.2.32.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section describes the contents of the two SMB messages used by the DFS: Referral Protocol.
 These messages are REQ_GET_DFS_REFERRAL (section 2.2.2) and
 RESP_GET_DFS_REFERRAL (section 2.2.4).
 
-2.2.1  Common Conventions
+#### 2.2.1 Common Conventions
 
 All paths in REQ_GET_DFS_REFERRAL and RESP_GET_DFS_REFERRAL messages MUST be encoded
 with exactly one leading backslash, not two leading backslashes as is common to user-visible UNC
@@ -1441,22 +1301,23 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-server-specified values. For example, the string description "\<domain>\<namespace>" would take
+
+server-specified values. For example, the string description "\<domain>\<namespace>" would take
 the form "\contoso\templates" when populated with the values "contoso" for the <domain>
 placeholder and "templates" for the <namespace> placeholder.
 
 All 16-bit and 32-bit integers in REQ_GET_DFS_REFERRAL and RESP_GET_DFS_REFERRAL messages
 MUST be encoded as unsigned little-endian values.
 
-2.2.1.1  Host Name
+##### 2.2.1.1 Host Name
 
 "Host name" refers to the <servername> component of the UNC Path specified in section 2.2.1.3.
 
-2.2.1.2  Share Name
+##### 2.2.1.2 Share Name
 
 "Share name" refers to the <share> component of the UNC Path specified in section 2.2.1.3.
 
-2.2.1.3  UNC Path
+##### 2.2.1.3 UNC Path
 
 A UNC path can be used to access network resources, and MUST be in the format specified by the
 Universal Naming Convention.
@@ -1471,7 +1332,7 @@ resource and the type of resource being accessed. The only limitation placed on 
 DFS is that path components MUST be at least one character in length and MUST NOT contain a
 backslash (\) or a null.
 
-2.2.1.4  DFS Root
+##### 2.2.1.4 DFS Root
 
 A DFS root MUST be in one of the following UNC path formats.
 
@@ -1489,7 +1350,7 @@ that hosts the domain-based DFS namespace; and <DFSName> is the DFS namespace na
 Stand-alone DFS namespaces MUST be referred to only by the first path format; domain-based
 DFS namespaces MUST be referred to in either format, although the second format is preferred.
 
-2.2.1.5  DFS Link
+##### 2.2.1.5 DFS Link
 
 A DFS link MUST be in one of the following UNC path formats.
 
@@ -1514,12 +1375,13 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-In both examples, <DFSName> is the DFS namespace name, and <LinkPath> is the path of the
+
+In both examples, <DFSName> is the DFS namespace name, and <LinkPath> is the path of the
 DFS link relative to the DFS root target share. For example, if the full path used to access a DFS-
 based resource is \\contoso\share1\x\y, the DFS root target share is \\contoso\share1 and the DFS
 link path is x\y.
 
-2.2.1.6  DFS Root Target
+##### 2.2.1.6 DFS Root Target
 
 A DFS root target is a UNC path that MUST be in the following format.
 
@@ -1530,11 +1392,11 @@ A DFS root target is a UNC path that MUST be in the following format.
 <servername> is the host name of a DFS root target server and <sharename> is the sharename
 corresponding to a DFS namespace on the DFS root target server.
 
-2.2.1.7  DFS Target
+##### 2.2.1.7 DFS Target
 
 A DFS target is either a DFS root target or a DFS link target.
 
-2.2.2  REQ_GET_DFS_REFERRAL
+#### 2.2.2 REQ_GET_DFS_REFERRAL
 
 DFS referral requests are sent in the form of an REQ_GET_DFS_REFERRAL message, by using an
 appropriate transport as specified in section 2.1.
@@ -1568,7 +1430,7 @@ RequestFileName (variable):  A null-terminated Unicode string specifying the pat
 The specified path MUST NOT be case-sensitive. Its format depends on the type of referral
 request, as specified in section 3.1.4.2.
 
-2.2.3  REQ_GET_DFS_REFERRAL_EX
+#### 2.2.3 REQ_GET_DFS_REFERRAL_EX
 
 DFS referral requests sent in the form of an REQ_GET_DFS_REFERRAL_EX message take the following
 format:
@@ -1599,7 +1461,8 @@ Release: September 16, 2024
 
 17 / 77
 
-...
+
+...
 
 MaxReferralLevel (2 bytes): A 16-bit integer that indicates the highest DFS referral version
 
@@ -1628,7 +1491,7 @@ RequestDataLength (4 bytes): A 32-bit integer that specifies the length of the R
 
 RequestData (variable): The format for RequestData is given in section 2.2.3.1.
 
-2.2.3.1  RequestData
+##### 2.2.3.1 RequestData
 
 RequestData is part of the REQ_GET_DFS_REFERRAL_EX message (section 2.2.3).
 
@@ -1682,7 +1545,8 @@ Release: September 16, 2024
 
 18 / 77
 
-2.2.4  RESP_GET_DFS_REFERRAL
+
+#### 2.2.4 RESP_GET_DFS_REFERRAL
 
 A DFS server responds to a DFS client referral request with the RESP_GET_DFS_REFERRAL
 message. The fixed-length portion of this message is referred to as the "referral header" in this
@@ -1770,7 +1634,8 @@ Release: September 16, 2024
 
 19 / 77
 
-2.2.5  Referral Entry Types
+
+#### 2.2.5 Referral Entry Types
 
 The DFS: Referral Protocol defines four structures used to encode referral entries:
 DFS_REFERRAL_V1 (section 2.2.5.1), DFS_REFERRAL_V2 (section 2.2.5.2),
@@ -1798,7 +1663,7 @@ message.
 
 Examples of referral response packets of DFS referral versions 2 and 3 are specified in section 4.
 
-2.2.5.1  DFS_REFERRAL_V1
+##### 2.2.5.1 DFS_REFERRAL_V1
 
 The format of the version 1 referral entry is as follows.
 
@@ -1848,9 +1713,10 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ShareName (variable): A null-terminated Unicode character string that specifies a DFS target.
 
-2.2.5.2  DFS_REFERRAL_V2
+ShareName (variable): A null-terminated Unicode character string that specifies a DFS target.
+
+##### 2.2.5.2 DFS_REFERRAL_V2
 
 The format of the version 2 referral entry is as follows.
 
@@ -1928,7 +1794,8 @@ Release: September 16, 2024
 
 21 / 77
 
-2.2.5.3  DFS_REFERRAL_V3
+
+##### 2.2.5.3 DFS_REFERRAL_V3
 
 The format of the common elements of a version 3 referral entry is as follows. The entry continues in
 section 2.2.5.3.1 or 2.2.5.3.2, dependent on the value of the NameListReferral flag in the
@@ -1991,7 +1858,7 @@ DFS link.
 The following subsections define the remainder of the structure, which is dependent on whether the
 NameListReferral flag in the ReferralEntryFlags field has a value of 0 or 1 in.
 
-2.2.5.3.1 NameListReferral Flag Set to 0
+###### 2.2.5.3.1 NameListReferral Flag Set to 0
 
 When the NameListReferral flag in the ReferralEntryFlags field is 0, the remainder of the version 3
 referral entry MUST be formatted as follows.
@@ -2022,7 +1889,8 @@ Release: September 16, 2024
 
 22 / 77
 
-...
+
+...
 
 ...
 
@@ -2046,7 +1914,7 @@ ServiceSiteGuid (16 bytes):  These 16 bytes MUST always be set to 0 by the serve
 
 the client. For historical reasons, this field was defined in early implementations but never used.
 
-2.2.5.3.2 NameListReferral Flag Set to 1
+###### 2.2.5.3.2 NameListReferral Flag Set to 1
 
 When the NameListReferral flag in the ReferralEntryFlags field is 1, the remainder of the version 3
 referral entry MUST be formatted as follows.
@@ -2086,7 +1954,7 @@ Padding (variable): The server MAY insert zero or 16 padding bytes that MUST be 
 
 client.<3>
 
-2.2.5.4  DFS_REFERRAL_V4
+##### 2.2.5.4 DFS_REFERRAL_V4
 
 The format of the version 4 referral entry MUST be exactly the same as the format of the
 DFS_REFERRAL_V3 referral entry, with two exceptions.
@@ -2102,7 +1970,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2122,17 +1991,18 @@ Release: September 16, 2024
 
 24 / 77
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Distributed File System (DFS): Namespace Referral
 Protocol, including abstract data models, higher-layer triggered events, and message processing
 events and sequencing rules.
 
-3.1  DFS Client Details
+### 3.1 DFS Client Details
 
 In this section, unless stated otherwise, the term "client" refers to a DFS client.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -2189,7 +2059,8 @@ Release: September 16, 2024
 
 25 / 77
 
-TTL contains a value derived from the TimeToLive field of a referral entry (as specified in sections
+
+TTL contains a value derived from the TimeToLive field of a referral entry (as specified in sections
 2.2.5.1, 2.2.5.2, 2.2.5.3, and 2.2.5.4). This is the time stamp at which a ReferralCache entry is
 considered to be expired. An implementation is free to come up with soft and hard time-outs
 based on the TimeToLive field of the referral entry, for example. The soft time-out can be used
@@ -2203,20 +2074,20 @@ the string pointed to by the NetworkAddressOffset field (as specified in section
 2.2.5.3, and 2.2.5.4). TargetSetBoundary is only present in V4 referrals and reflects the value
 from the TargetSetBoundary of the referral entry (as specified in section 2.2.5.4).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 BootstrapDCTimer: This timer is applicable only to a domain-joined client. This timer is used to
 
 regularly update the value of BootstrapDC with the name of the domain controller (DC) in the
 domain of the client.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 A client MUST initialize BootstrapDC and BootstrapDCTimer after joining a domain.<5>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  User/Application Initiated I/O Operation on a UNC Path
+##### 3.1.4.1 User/Application Initiated I/O Operation on a UNC Path
 
 The calling application provides:
 
@@ -2244,7 +2115,8 @@ Release: September 16, 2024
 
 26 / 77
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-DFSC].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2257,7 +2129,8 @@ Release: September 16, 2024
 
 27 / 77
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-DFSC].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -2270,7 +2143,8 @@ Release: September 16, 2024
 
 28 / 77
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-DFSC].images/page029-img01.png)
 ![Extracted image 2 from page 29]([MS-DFSC].images/page029-img02.png)
 <!-- /Extracted images from page 29 -->
@@ -2286,7 +2160,8 @@ Release: September 16, 2024
 
 29 / 77
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-DFSC].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2299,7 +2174,8 @@ Release: September 16, 2024
 
 30 / 77
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-DFSC].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2312,7 +2188,8 @@ Release: September 16, 2024
 
 31 / 77
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-DFSC].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2325,7 +2202,8 @@ Release: September 16, 2024
 
 32 / 77
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-DFSC].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2338,7 +2216,8 @@ Release: September 16, 2024
 
 33 / 77
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-DFSC].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2351,7 +2230,8 @@ Release: September 16, 2024
 
 34 / 77
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-DFSC].images/page035-img01.png)
 ![Extracted image 2 from page 35]([MS-DFSC].images/page035-img02.png)
 <!-- /Extracted images from page 35 -->
@@ -2367,7 +2247,8 @@ Release: September 16, 2024
 
 35 / 77
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-DFSC].images/page036-img01.png)
 ![Extracted image 2 from page 36]([MS-DFSC].images/page036-img02.png)
 ![Extracted image 3 from page 36]([MS-DFSC].images/page036-img03.png)
@@ -2396,7 +2277,8 @@ Release: September 16, 2024
 
 36 / 77
 
-1.  If the path has only one path component (for example, \abc), go to step 12; otherwise, go to step
+
+1.  If the path has only one path component (for example, \abc), go to step 12; otherwise, go to step
 
 2.
 
@@ -2481,7 +2363,8 @@ Release: September 16, 2024
 
 37 / 77
 
-2.
+
+2.
 
  If processing of this I/O request encountered a ReferralCache hit, or one of its DFS referral
 requests succeeded (as would have occurred in the case of a previous Interlink - see step 11 -
@@ -2558,7 +2441,8 @@ Release: September 16, 2024
 
 38 / 77
 
-12. [not DFS] The path does not correspond to a DFS namespace or a SYSVOL/NETLOGON share. Do
+
+12. [not DFS] The path does not correspond to a DFS namespace or a SYSVOL/NETLOGON share. Do
 
 not change the path, and return an implementation-defined error.<6> The user/application
 initiated I/O request is handled by the local operating system.
@@ -2572,7 +2456,7 @@ this step.
 Link referral request has failed. Complete the user/application-initiated I/O request with the error
 code that occurred before the jump to this step.
 
-3.1.4.2  Sending a DFS Referral Request to the Server
+##### 3.1.4.2 Sending a DFS Referral Request to the Server
 
 This interface is only used internally by the DFS client to send a DFS referral request to a specific
 server. The caller provides the following:
@@ -2629,7 +2513,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Type
+
+Type
 
 RequestFileName
 
@@ -2681,9 +2566,9 @@ The client MUST validate that the returned referral response is properly formed,
 response is ill-formed, the client MUST fail the referral request and return the error code
 STATUS_INVALID_NETWORK_RESPONSE to the caller.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  I/O Operation to Target Fails with STATUS_PATH_NOT_COVERED
+##### 3.1.5.1 I/O Operation to Target Fails with STATUS_PATH_NOT_COVERED
 
 When an I/O operation that is issued to a link target fails with STATUS_PATH_NOT_COVERED
 (0xC0000257), the client MUST fail the original I/O request.
@@ -2714,7 +2599,8 @@ Release: September 16, 2024
 
 40 / 77
 
-3.1.5.2  I/O Operation to Target Fails with an Error Other Than
+
+##### 3.1.5.2 I/O Operation to Target Fails with an Error Other Than
 
 STATUS_PATH_NOT_COVERED
 
@@ -2730,13 +2616,13 @@ If a new target was selected from the TargetList, the TargetHint of the selected
 MUST have its value set to the selected target. This is a performance optimization for future
 operations that use the same ReferralCache entry, and is a case of "DFS client target failover".
 
-3.1.5.3  I/O Operation to a DFS Root Target or DFS Link Target Succeeds
+##### 3.1.5.3 I/O Operation to a DFS Root Target or DFS Link Target Succeeds
 
 When the operation issued to a DFS root target or DFS link target returns an NTSTATUS value with
 the Sev field set to 0 or 1, as specified in [MS-ERREF] section 2.3, the DFS client MUST complete the
 user/application-initiated I/O operation with the NTSTATUS value that was returned to the client.
 
-3.1.5.4  Receiving a Referral Response
+##### 3.1.5.4 Receiving a Referral Response
 
 The DFS client receives the referral response in the form of
 RESP_GET_DFS_REFERRAL (section 2.2.4). If the NumberOfReferrals field is at least 1, the client
@@ -2757,7 +2643,7 @@ If a DFS referral request fails with STATUS_BUFFER_OVERFLOW (0x80000005), the cl
 retry the referral request with a bigger buffer size.<11> Response data buffer size is determined as
 specified in section 3.2.5.1.
 
-3.1.5.4.1 Receiving a Domain Referral Response
+###### 3.1.5.4.1 Receiving a Domain Referral Response
 
 This is applicable only to a domain-joined computer. The client receives this response for the domain
 referral request that it issued to BootstrapDC (as specified in section 3.1.6). The domain referral
@@ -2780,9 +2666,10 @@ Release: September 16, 2024
 
 41 / 77
 
-The DFS client MUST NOT modify the DomainCache on a domain referral failure.
 
-3.1.5.4.2 Receiving a DC Referral Response
+The DFS client MUST NOT modify the DomainCache on a domain referral failure.
+
+###### 3.1.5.4.2 Receiving a DC Referral Response
 
 This is applicable only to a domain-joined computer. The DFS client receives this referral response for
 the DC referral request that it sent in step 5.2 of section 3.1.4.1. The DC referral response MUST be
@@ -2804,7 +2691,7 @@ entry that corresponds to the domain name. If the DomainCache entry's DCList is 
 client MUST replace it with the DC list from the referral response and set DCHint to the first DC in the
 new DCList.
 
-3.1.5.4.3 Receiving a Root Referral Response or Link Referral Response
+###### 3.1.5.4.3 Receiving a Root Referral Response or Link Referral Response
 
 This section describes the processing that occurs when the client gets a referral response after
 sending a DFS root referral request in step 6 of section 3.1.4.1 or a link referral request in either step
@@ -2851,7 +2738,8 @@ Release: September 16, 2024
 
 42 / 77
 
-If the client sends a DFS root referral request and receives a referral response with the ServerType
+
+If the client sends a DFS root referral request and receives a referral response with the ServerType
 field of the referral response entry (as specified in section 2.2.5) set to 0x0000, a link referral
 response is being returned. <15>
 
@@ -2908,7 +2796,7 @@ of a soft time-out period (as specified in section 3.1.1) while permitting the u
 discard it at the end of a hard time-out period (as specified in section 3.1.1) or fail the I/O operations
 that use the ReferralCache entry.<16>
 
-3.1.5.4.4 Receiving a sysvol Referral Response
+###### 3.1.5.4.4 Receiving a sysvol Referral Response
 
 The client receives this referral response for the sysvol referral request that it sent in step 10 of
 section 3.1.4.1.
@@ -2923,7 +2811,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.5.4.5 Determining Whether a Referral Response is an Interlink
+
+###### 3.1.5.4.5 Determining Whether a Referral Response is an Interlink
 
 A referral response is an Interlink if either of the following two conditions holds:
 
@@ -2938,20 +2827,20 @@ If the TargetList has one entry, and a lookup of the first path component of the
 against the DomainCache results in a cache hit, indicating that the path refers to a domain
 namespace.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 BootstrapDCTimer: When this timer expires, the DFS client MUST update BootstrapDC with the
 name of a DC in the domain of the client. It MUST then issue a domain referral (as specified in
 section 2.2.2) to the Bootstrap DC and process the response as specified in section 3.1.5.4.1. It MUST
 then restart the timer.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 On joining a domain, the client updates its BootstrapDC, issues a domain referral to the BootstrapDC,
 and enables the BootstrapDCTimer, as specified in section 3.1.6. On leaving a domain to join a
 workgroup, the client disables the BootstrapDCTimer.
 
-3.2  DFS Root Target Server Details
+### 3.2 DFS Root Target Server Details
 
 A DFS root target server hosts the DFS root of a DFS namespace. This section specifies how a DFS
 root target server processes and responds to DFS referral requests from DFS clients. If the server is
@@ -2959,7 +2848,7 @@ also a DC, it MUST also conform to the specification in section 3.3.
 
 DFS root target servers respond to DFS root referral requests and DFS link referral requests.<17>
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -2980,7 +2869,7 @@ the server. Used while processing DFS referral requests from DFS clients.
 DFSMetadataCache: Cache that MUST contain the DFS metadata of DFS namespaces for which the
 server is a root target. The cache MUST be maintained as specified in [MS-DFSNM] section 3.1.
 
-3.2.1.1  Algorithm for sorting target sites in referral response based on site location
+##### 3.2.1.1 Algorithm for sorting target sites in referral response based on site location
 
 The DFS server places the target servers in the referral response in the following order:
 
@@ -2996,11 +2885,12 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 Targets outside the client's site are appended to the response in random order.
 
-3.2.1.2  Algorithm for sorting target sites in referral response based on site cost
+##### 3.2.1.2 Algorithm for sorting target sites in referral response based on site cost
 
  The server performs the following actions:
 
@@ -3014,11 +2904,11 @@ Partition the targets into target sets, based on targets of equal site cost rela
 
 Place the targets within each target set in a random order.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When the DFS server is started:
 
@@ -3038,9 +2928,9 @@ It MUST initialize DFSNamespaceList to the list of domain-based and stand-alone 
 namespaces that it hosts. This list can be obtained from DFS metadata (as specified in [MS-
 DFSNM]), a configuration file, a configuration store, or from other implementation-defined means.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Handling a Path Normalization Request
+##### 3.2.4.1 Handling a Path Normalization Request
 
 As specified in [MS-SMB2] section 3.3.5.9 and [MS-SMB] section 3.3.5.5, the SMB server invokes the
 DFS server to normalize the path name.
@@ -3060,7 +2950,7 @@ root of the namespace and return STATUS_SUCCESS. For example, if the path name i
 "\MyDomain\MyDfs\MyDir\file1", then the DFS server MUST change the path name to
 "MyDir\file1".
 
-3.2.4.2  Handling a DFS Referral Request
+##### 3.2.4.2 Handling a DFS Referral Request
 
 The caller provides the following:
 
@@ -3077,7 +2967,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-IsExtendedReferral: A Boolean value that, if set, indicates the referral request contained in the
+
+IsExtendedReferral: A Boolean value that, if set, indicates the referral request contained in the
 
 Buffer parameter is of the form REQ_GET_DFS_REFERRAL_EX, as specified in section 2.2.3.
 
@@ -3085,9 +2976,9 @@ MaxOutputResponse: The maximum response buffer size that the calling application
 
 The server processes this request as specified in section 3.2.5.1.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a DFS Referral Request
+##### 3.2.5.1 Receiving a DFS Referral Request
 
 The server receives DFS referral requests from clients when they need to resolve DFS paths into file
 server paths.
@@ -3120,22 +3011,22 @@ server MAY<19> set the Padding field with a variable number of padding bytes.
 
 Processing of individual referral requests is explained in the following sections.
 
-3.2.5.2  Receiving a Domain Referral Request
+##### 3.2.5.2 Receiving a Domain Referral Request
 
 A server that is not running on a DC MUST fail this request with a STATUS_INVALID_PARAMETER
 (0xC000000D) return code.
 
-3.2.5.3  Receiving a DC Referral Request
+##### 3.2.5.3 Receiving a DC Referral Request
 
 A server that is not running on a DC MUST fail this request with a STATUS_INVALID_PARAMETER
 (0xC000000D) return code.
 
-3.2.5.4  Receiving a sysvol Referral Request
+##### 3.2.5.4 Receiving a sysvol Referral Request
 
 A server that is not running on a DC MUST fail this request with a STATUS_NOT_FOUND
 (0xC0000225) return code.<20>
 
-3.2.5.5  Receiving a Root Referral Request or Link Referral Request
+##### 3.2.5.5 Receiving a Root Referral Request or Link Referral Request
 
 If the DFS namespace for which referral is sought, as identified by the second path component, is
 not present in DFSNamespaceList, for a stand-alone namespace the server SHOULD<21> fail the
@@ -3147,7 +3038,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-referral request with a STATUS_NOT_FOUND (0xC0000225) return code, and for a domain-based DFS
+
+referral request with a STATUS_NOT_FOUND (0xC0000225) return code, and for a domain-based DFS
 namespace the server SHOULD<22> fail the referral request with a STATUS_DFS_UNAVAILABLE
 (0xC000026D) return code.
 
@@ -3229,7 +3121,8 @@ Release: September 16, 2024
 
 47 / 77
 
-
+
+
 
 From the IP address of the client, determine the site of the client as specified in [MS-NRPC]
 section 3.5.4.3.8.
@@ -3323,7 +3216,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Within each of the three groups, further sort targets that have the same site cost and priority
+
+  Within each of the three groups, further sort targets that have the same site cost and priority
 
 class in order of decreasing priority rank, with 0 (0x0000) being the highest priority rank and 31
 (0x001F) being the lowest priority rank. The server SHOULD create target sets that consist of
@@ -3411,7 +3305,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -3463,15 +3358,15 @@ referral entry to a string that contains the DFS target for the entry.
 Servers SHOULD<30> return fully qualified DNS host names of targets in responses to root referral
 requests and link referral requests.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Domain Controller Details
+### 3.3 Domain Controller Details
 
 This section specifies how a DFS server on a DC processes and responds to DFS referral requests
 from DFS clients.  It is applicable only to DFS servers running on DCs.<31>
@@ -3482,7 +3377,7 @@ If that DFS server is also hosting DFS root targets, then in addition to the req
 section, it MUST also conform to the requirements in section 3.2 while processing referral requests for
 those DFS root targets.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -3495,34 +3390,35 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-external behavior is consistent with that described in this document. The following state MUST be
+
+external behavior is consistent with that described in this document. The following state MUST be
 maintained at the DFS server running on a DC:
 
 SelfFirst: Indicates whether or not this DC returns itself as the first target in DC and sysvol referrals
 
 made to it. The default is false (the DC does not return itself as the first target).
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 SelfFirst MUST be initialized with the setting on the domain controller (DC) that indicates whether
 it returns itself as the first target in DC and sysvol referrals made to it.<32>
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 Servers receive and act upon DFS referral requests. No other higher-layer triggered events are used.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Receiving a DFS Referral Request
+##### 3.3.5.1 Receiving a DFS Referral Request
 
 For more information about DFS referral requests, see section 3.2.5.1. The processing of individual
 referral requests is explained in the following sections.
 
-3.3.5.2  Receiving a Domain Referral Request
+##### 3.3.5.2 Receiving a Domain Referral Request
 
 The server MUST return a list of domains, for the forest in which the DC exists, in both NetBIOS and
 fully qualified domain name forms. It SHOULD include the domains in other forests, which are part of
@@ -3566,7 +3462,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  MUST return the data equal to the requested buffer size or 56 KB of data, whichever is less.
+
+  MUST return the data equal to the requested buffer size or 56 KB of data, whichever is less.
 
 
 
@@ -3623,7 +3520,7 @@ The ExpandedNameOffset field MUST be set to 0.
 
   All other fields SHOULD be set to 0.
 
-3.3.5.3  Receiving a DC Referral Request
+##### 3.3.5.3 Receiving a DC Referral Request
 
 The domain name in the referral request MUST be either a domain in the current forest or a domain
 in a trusted forest. The server MUST fail DC referral requests for other domain names with a
@@ -3648,7 +3545,8 @@ Release: September 16, 2024
 
 52 / 77
 
-
+
+
 
 
 
@@ -3731,7 +3629,7 @@ section 3.2.1.2.<39>
 
 If SelfFirst is enabled, the server MUST place itself at the top of the DC referral response.
 
-3.3.5.4  Receiving a sysvol Referral Request
+##### 3.3.5.4 Receiving a sysvol Referral Request
 
 The domain name in the referral request MUST be either a domain in the current forest or a domain
 in another trusted forest. The DFS server MUST fail sysvol referral requests with other domain names
@@ -3744,7 +3642,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The DFS server MUST determine the list of DCs for the domain name specified in the sysvol referral
+
+The DFS server MUST determine the list of DCs for the domain name specified in the sysvol referral
 request from directory services and then generate a list of DCs to return in the referral response that
 MUST be in either of the following forms, where <dcname> is a DC in the domain specified in the first
 path component of the referral request:
@@ -3839,7 +3738,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  All other fields SHOULD be set to 0.
+
+  All other fields SHOULD be set to 0.
 
 The server MUST add one referral entry structure for each target returned. The server MUST initialize
 each referral entry as follows:
@@ -3893,7 +3793,7 @@ referral entry to the string that contains the target.
 
   All other fields MUST be set to 0.
 
-3.3.5.5  Receiving a Root Referral Request or Link Referral Request
+##### 3.3.5.5 Receiving a Root Referral Request or Link Referral Request
 
 Root referral requests and link referral requests MUST be handled as specified in section 3.2.5.5, with
 the following exception: a DC MUST process root referral requests and link referral requests for
@@ -3906,11 +3806,11 @@ configuration container of the directory service. A DC MUST fail the link referr
 STATUS_NOT_FOUND, if it’s not the DFS root target for the DFS namespace specified in the link
 referral request.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3921,13 +3821,14 @@ Release: September 16, 2024
 
 55 / 77
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-DFSC].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Domain Referral
+### 4.1 Domain Referral
 
 The following sequence diagram shows a domain referral.
 
@@ -3954,11 +3855,12 @@ Release: September 16, 2024
 
 56 / 77
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-DFSC].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
-4.2  DC Referral
+### 4.2 DC Referral
 
 The following sequence diagram shows a DC referral.
 
@@ -3984,14 +3886,15 @@ Release: September 16, 2024
 
 57 / 77
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-DFSC].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
 strings, each of which is a DC name. The DC names returned are in fully qualified domain name
 format, because the domain name in the request is also in the fully qualified domain name format.
 
-4.3  Domain-Based DFS Root Referral
+### 4.3 Domain-Based DFS Root Referral
 
 The following sequence diagram shows a root referral for a domain-based DFS namespace.
 
@@ -4007,7 +3910,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 59 -->
+
+<!-- Extracted images from page 59 -->
 ![Extracted image 1 from page 59]([MS-DFSC].images/page059-img01.png)
 <!-- /Extracted images from page 59 -->
 
@@ -4021,7 +3925,7 @@ response since DFS root targets are returned. The strings pointed to by the
 NetworkAddressOffset field of the individual referral entries are the DFS root targets for the
 domain-based DFS namespace.
 
-4.4  Domain-Based DFS Link Referral
+### 4.4 Domain-Based DFS Link Referral
 
 The following sequence diagram shows a DFS link referral for a domain-based DFS namespace.
 
@@ -4038,7 +3942,8 @@ Release: September 16, 2024
 
 59 / 77
 
-REQ_GET_DFS_REFERRAL. The DFS path specified in the DFS referral request is \dfsn-
+
+REQ_GET_DFS_REFERRAL. The DFS path specified in the DFS referral request is \dfsn-
 dev\testroot1\dfslinks\link1\file1, a path to a file in the DFS namespace.
 
 2.  The DFS root target's referral response contains one referral entry having referral version 3. The
@@ -4048,7 +3953,7 @@ another DFS root. The ServerType field is set to 0 in the response because a DFS
 returned. The string pointed to by the NetworkAddressOffset field of the referral entry is the
 DFS link target.
 
-4.5  Domain-Based DFS Root Referral Packet Trace
+### 4.5 Domain-Based DFS Root Referral Packet Trace
 
 The following figure shows the network packet trace of a domain-based DFS root referral request.
 The REQ_DFS_GET_REFERRAL structure is at offset 0x7E in the hexadecimal dump shown.
@@ -4062,7 +3967,8 @@ Release: September 16, 2024
 
 60 / 77
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-DFSC].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -4085,7 +3991,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-DFSC].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -4105,11 +4012,12 @@ Release: September 16, 2024
 
 62 / 77
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-DFSC].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
-4.6  Standalone DFS Root Referral
+### 4.6 Standalone DFS Root Referral
 
 The following sequence diagram shows a root referral for a stand-alone DFS namespace.
 
@@ -4132,13 +4040,14 @@ Release: September 16, 2024
 
 63 / 77
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4149,7 +4058,8 @@ Release: September 16, 2024
 
 64 / 77
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4217,7 +4127,8 @@ Release: September 16, 2024
 
 65 / 77
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.8: Windows uses only the values specified in [MS-ERREF].
@@ -4294,7 +4205,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Status Code
+
+Status Code
 
 Support Notes
 
@@ -4389,7 +4301,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-otherwise noted, the code is used in Windows 2000 operating system and later, Windows XP operating
+
+otherwise noted, the code is used in Windows 2000 operating system and later, Windows XP operating
 system and later. Note that domain support was not added until Windows 2000, so Windows NT 4.0
 SP2 does not apply.
 
@@ -4485,7 +4398,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Status Code
+
+Status Code
 
 Support Notes
 
@@ -4583,7 +4497,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Status Code
+
+Status Code
 
 Support Notes
 
@@ -4679,7 +4594,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<20> Section 3.2.5.4: Windows NT Server 4.0, Windows 2000, and Windows Server 2003 fail the
+
+<20> Section 3.2.5.4: Windows NT Server 4.0, Windows 2000, and Windows Server 2003 fail the
 referral request with a STATUS_NO_SUCH_DEVICE (0xC000000E) return code.
 
 <21> Section 3.2.5.5: Windows 2000 Server fails the referral request with a
@@ -4748,7 +4664,8 @@ Distributed File System (DFS): Referral Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<34> Section 3.3.5.2: Windows Server 2008 operating system and later fail the DFS referral request
+
+<34> Section 3.3.5.2: Windows Server 2008 operating system and later fail the DFS referral request
 when the value received in the MaxReferralLevel field of REQ_GET_DFS_REFERRAL (section 2.2.2) is
 less than 3. The earlier versions of Windows (Windows NT 4.0 SP2, Windows 2000, Windows Server
 2003) return the referral formatted in the requested version.
@@ -4810,7 +4727,8 @@ Release: September 16, 2024
 
 72 / 77
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -4822,7 +4740,8 @@ Release: September 16, 2024
 
 73 / 77
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4975,7 +4894,8 @@ Release: September 16, 2024
 
 74 / 77
 
-H
+
+H
 
 Higher-layer triggered events
    client
@@ -5137,7 +5057,8 @@ References 10
 
 75 / 77
 
-   normative 10
+
+   normative 10
 Referral entry types 20
 Referral request
    handling 45
@@ -5294,7 +5215,8 @@ Share name (share path name component 16
 
 76 / 77
 
-share path name component (share name) 16
+
+share path name component (share name) 16
 Standalone dfs root referral example 63
 Stand-alone DFS root referral example 63
 Standards assignments 14

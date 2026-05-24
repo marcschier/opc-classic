@@ -63,7 +63,8 @@ Release: September 12, 2018
 
 1 / 140
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: September 12, 2018
 
 2 / 140
 
-Date
+
+Date
 
 Revision
 History
@@ -523,552 +525,393 @@ Release: September 12, 2018
 
 3 / 140
 
-Table of Contents
 
-1  Introduction .......................................................................................................... 11
-References ...................................................................................................... 11
+## Table of Contents
 
-1.1
+- [1 Introduction](#1-introduction)
+  - [1.1 References](#11-references)
+- [2 Attributes](#2-attributes)
+  - [2.1 Attribute accountExpires](#21-attribute-accountexpires)
+  - [2.2 Attribute accountNameHistory](#22-attribute-accountnamehistory)
+  - [2.3 Attribute aCSAggregateTokenRatePerUser](#23-attribute-acsaggregatetokenrateperuser)
+  - [2.4 Attribute aCSAllocableRSVPBandwidth](#24-attribute-acsallocablersvpbandwidth)
+  - [2.5 Attribute aCSCacheTimeout](#25-attribute-acscachetimeout)
+  - [2.6 Attribute aCSDirection](#26-attribute-acsdirection)
+  - [2.7 Attribute aCSDSBMDeadTime](#27-attribute-acsdsbmdeadtime)
+  - [2.8 Attribute aCSDSBMPriority](#28-attribute-acsdsbmpriority)
+  - [2.9 Attribute aCSDSBMRefresh](#29-attribute-acsdsbmrefresh)
+  - [2.10 Attribute aCSEnableACSService](#210-attribute-acsenableacsservice)
+  - [2.11 Attribute aCSEnableRSVPAccounting](#211-attribute-acsenablersvpaccounting)
+  - [2.12 Attribute aCSEnableRSVPMessageLogging](#212-attribute-acsenablersvpmessagelogging)
+  - [2.13 Attribute aCSEventLogLevel](#213-attribute-acseventloglevel)
+  - [2.14 Attribute aCSIdentityName](#214-attribute-acsidentityname)
+  - [2.15 Attribute aCSMaxAggregatePeakRatePerUser](#215-attribute-acsmaxaggregatepeakrateperuser)
+  - [2.16 Attribute aCSMaxDurationPerFlow](#216-attribute-acsmaxdurationperflow)
+  - [2.17 Attribute aCSMaximumSDUSize](#217-attribute-acsmaximumsdusize)
+  - [2.18 Attribute aCSMaxNoOfAccountFiles](#218-attribute-acsmaxnoofaccountfiles)
+  - [2.19 Attribute aCSMaxNoOfLogFiles](#219-attribute-acsmaxnooflogfiles)
+  - [2.20 Attribute aCSMaxPeakBandwidth](#220-attribute-acsmaxpeakbandwidth)
+  - [2.21 Attribute aCSMaxPeakBandwidthPerFlow](#221-attribute-acsmaxpeakbandwidthperflow)
+  - [2.22 Attribute aCSMaxSizeOfRSVPAccountFile](#222-attribute-acsmaxsizeofrsvpaccountfile)
+  - [2.23 Attribute aCSMaxSizeOfRSVPLogFile](#223-attribute-acsmaxsizeofrsvplogfile)
+  - [2.24 Attribute aCSMaxTokenBucketPerFlow](#224-attribute-acsmaxtokenbucketperflow)
+  - [2.25 Attribute aCSMaxTokenRatePerFlow](#225-attribute-acsmaxtokenrateperflow)
+  - [2.26 Attribute aCSMinimumDelayVariation](#226-attribute-acsminimumdelayvariation)
+  - [2.27 Attribute aCSMinimumLatency](#227-attribute-acsminimumlatency)
+  - [2.28 Attribute aCSMinimumPolicedSize](#228-attribute-acsminimumpolicedsize)
+  - [2.29 Attribute aCSNonReservedMaxSDUSize](#229-attribute-acsnonreservedmaxsdusize)
+  - [2.30 Attribute aCSNonReservedMinPolicedSize](#230-attribute-acsnonreservedminpolicedsize)
+  - [2.31 Attribute aCSNonReservedPeakRate](#231-attribute-acsnonreservedpeakrate)
+  - [2.32 Attribute aCSNonReservedTokenSize](#232-attribute-acsnonreservedtokensize)
+  - [2.33 Attribute aCSNonReservedTxLimit](#233-attribute-acsnonreservedtxlimit)
+  - [2.34 Attribute aCSNonReservedTxSize](#234-attribute-acsnonreservedtxsize)
+  - [2.35 Attribute aCSPermissionBits](#235-attribute-acspermissionbits)
+  - [2.36 Attribute aCSPolicyName](#236-attribute-acspolicyname)
+  - [2.37 Attribute aCSPriority](#237-attribute-acspriority)
+  - [2.38 Attribute aCSRSVPAccountFilesLocation](#238-attribute-acsrsvpaccountfileslocation)
+  - [2.39 Attribute aCSRSVPLogFilesLocation](#239-attribute-acsrsvplogfileslocation)
+  - [2.40 Attribute aCSServerList](#240-attribute-acsserverlist)
+  - [2.41 Attribute aCSServiceType](#241-attribute-acsservicetype)
+  - [2.42 Attribute aCSTimeOfDay](#242-attribute-acstimeofday)
+  - [2.43 Attribute aCSTotalNoOfFlows](#243-attribute-acstotalnoofflows)
+  - [2.44 Attribute additionalTrustedServiceNames](#244-attribute-additionaltrustedservicenames)
+  - [2.45 Attribute addressBookRoots](#245-attribute-addressbookroots)
+  - [2.46 Attribute addressBookRoots2](#246-attribute-addressbookroots2)
+  - [2.47 Attribute addressEntryDisplayTable](#247-attribute-addressentrydisplaytable)
+  - [2.48 Attribute addressEntryDisplayTableMSDOS](#248-attribute-addressentrydisplaytablemsdos)
+  - [2.49 Attribute addressSyntax](#249-attribute-addresssyntax)
+  - [2.50 Attribute addressType](#250-attribute-addresstype)
+  - [2.51 Attribute adminContextMenu](#251-attribute-admincontextmenu)
+  - [2.52 Attribute adminCount](#252-attribute-admincount)
+  - [2.53 Attribute adminDescription](#253-attribute-admindescription)
+  - [2.54 Attribute adminDisplayName](#254-attribute-admindisplayname)
+  - [2.55 Attribute adminMultiselectPropertyPages](#255-attribute-adminmultiselectpropertypages)
+  - [2.56 Attribute adminPropertyPages](#256-attribute-adminpropertypages)
+  - [2.57 Attribute allowedAttributes](#257-attribute-allowedattributes)
+  - [2.58 Attribute allowedAttributesEffective](#258-attribute-allowedattributeseffective)
+  - [2.59 Attribute allowedChildClasses](#259-attribute-allowedchildclasses)
+  - [2.60 Attribute allowedChildClassesEffective](#260-attribute-allowedchildclasseseffective)
+  - [2.61 Attribute altSecurityIdentities](#261-attribute-altsecurityidentities)
+  - [2.62 Attribute aNR](#262-attribute-anr)
+  - [2.63 Attribute applicationName](#263-attribute-applicationname)
+  - [2.64 Attribute appliesTo](#264-attribute-appliesto)
+  - [2.65 Attribute appSchemaVersion](#265-attribute-appschemaversion)
+  - [2.66 Attribute assetNumber](#266-attribute-assetnumber)
+  - [2.67 Attribute assistant](#267-attribute-assistant)
+  - [2.68 Attribute associatedDomain](#268-attribute-associateddomain)
+  - [2.69 Attribute associatedName](#269-attribute-associatedname)
+  - [2.70 Attribute assocNTAccount](#270-attribute-assocntaccount)
+  - [2.71 Attribute attributeCertificateAttribute](#271-attribute-attributecertificateattribute)
+  - [2.72 Attribute attributeDisplayNames](#272-attribute-attributedisplaynames)
+  - [2.73 Attribute attributeID](#273-attribute-attributeid)
+  - [2.74 Attribute attributeSecurityGUID](#274-attribute-attributesecurityguid)
+  - [2.75 Attribute attributeSyntax](#275-attribute-attributesyntax)
+  - [2.76 Attribute attributeTypes](#276-attribute-attributetypes)
+  - [2.77 Attribute audio](#277-attribute-audio)
+  - [2.78 Attribute auditingPolicy](#278-attribute-auditingpolicy)
+  - [2.79 Attribute authenticationOptions](#279-attribute-authenticationoptions)
+  - [2.80 Attribute authorityRevocationList](#280-attribute-authorityrevocationlist)
+  - [2.81 Attribute auxiliaryClass](#281-attribute-auxiliaryclass)
+  - [2.82 Attribute badPasswordTime](#282-attribute-badpasswordtime)
+  - [2.83 Attribute badPwdCount](#283-attribute-badpwdcount)
+  - [2.84 Attribute birthLocation](#284-attribute-birthlocation)
+  - [2.85 Attribute bootFile](#285-attribute-bootfile)
+  - [2.86 Attribute bootParameter](#286-attribute-bootparameter)
+  - [2.87 Attribute bridgeheadServerListBL](#287-attribute-bridgeheadserverlistbl)
+  - [2.88 Attribute bridgeheadTransportList](#288-attribute-bridgeheadtransportlist)
+  - [2.89 Attribute buildingName](#289-attribute-buildingname)
+  - [2.90 Attribute builtinCreationTime](#290-attribute-builtincreationtime)
+  - [2.91 Attribute builtinModifiedCount](#291-attribute-builtinmodifiedcount)
+  - [2.92 Attribute businessCategory](#292-attribute-businesscategory)
+  - [2.93 Attribute bytesPerMinute](#293-attribute-bytesperminute)
+  - [2.94 Attribute c](#294-attribute-c)
+  - [2.95 Attribute cACertificate](#295-attribute-cacertificate)
+  - [2.96 Attribute cACertificateDN](#296-attribute-cacertificatedn)
+  - [2.97 Attribute cAConnect](#297-attribute-caconnect)
+  - [2.98 Attribute canonicalName](#298-attribute-canonicalname)
+  - [2.99 Attribute canUpgradeScript](#299-attribute-canupgradescript)
+  - [2.100 Attribute carLicense](#2100-attribute-carlicense)
+  - [2.101 Attribute catalogs](#2101-attribute-catalogs)
+  - [2.102 Attribute categories](#2102-attribute-categories)
+  - [2.103 Attribute categoryId](#2103-attribute-categoryid)
+  - [2.104 Attribute cAUsages](#2104-attribute-causages)
+  - [2.105 Attribute cAWEBURL](#2105-attribute-caweburl)
+  - [2.106 Attribute certificateAuthorityObject](#2106-attribute-certificateauthorityobject)
+  - [2.107 Attribute certificateRevocationList](#2107-attribute-certificaterevocationlist)
+  - [2.108 Attribute certificateTemplates](#2108-attribute-certificatetemplates)
+  - [2.109 Attribute classDisplayName](#2109-attribute-classdisplayname)
+  - [2.110 Attribute cn](#2110-attribute-cn)
+  - [2.111 Attribute co](#2111-attribute-co)
+  - [2.112 Attribute codePage](#2112-attribute-codepage)
+  - [2.113 Attribute cOMClassID](#2113-attribute-comclassid)
+  - [2.114 Attribute cOMCLSID](#2114-attribute-comclsid)
+  - [2.115 Attribute cOMInterfaceID](#2115-attribute-cominterfaceid)
+  - [2.116 Attribute comment](#2116-attribute-comment)
+  - [2.117 Attribute cOMOtherProgId](#2117-attribute-comotherprogid)
+  - [2.118 Attribute company](#2118-attribute-company)
+  - [2.119 Attribute cOMProgID](#2119-attribute-comprogid)
+  - [2.120 Attribute cOMTreatAsClassId](#2120-attribute-comtreatasclassid)
+  - [2.121 Attribute cOMTypelibId](#2121-attribute-comtypelibid)
+  - [2.122 Attribute cOMUniqueLIBID](#2122-attribute-comuniquelibid)
+  - [2.123 Attribute contentIndexingAllowed](#2123-attribute-contentindexingallowed)
+  - [2.124 Attribute contextMenu](#2124-attribute-contextmenu)
+  - [2.125 Attribute controlAccessRights](#2125-attribute-controlaccessrights)
+  - [2.126 Attribute cost](#2126-attribute-cost)
+  - [2.127 Attribute countryCode](#2127-attribute-countrycode)
+  - [2.128 Attribute createDialog](#2128-attribute-createdialog)
+  - [2.129 Attribute createTimeStamp](#2129-attribute-createtimestamp)
+  - [2.130 Attribute createWizardExt](#2130-attribute-createwizardext)
+  - [2.131 Attribute creationTime](#2131-attribute-creationtime)
+  - [2.132 Attribute creationWizard](#2132-attribute-creationwizard)
+  - [2.133 Attribute creator](#2133-attribute-creator)
+  - [2.134 Attribute cRLObject](#2134-attribute-crlobject)
+  - [2.135 Attribute cRLPartitionedRevocationList](#2135-attribute-crlpartitionedrevocationlist)
+  - [2.136 Attribute crossCertificatePair](#2136-attribute-crosscertificatepair)
+  - [2.137 Attribute currentLocation](#2137-attribute-currentlocation)
+  - [2.138 Attribute currentParentCA](#2138-attribute-currentparentca)
+  - [2.139 Attribute currentValue](#2139-attribute-currentvalue)
+  - [2.140 Attribute currMachineId](#2140-attribute-currmachineid)
+  - [2.141 Attribute dBCSPwd](#2141-attribute-dbcspwd)
+  - [2.142 Attribute dc](#2142-attribute-dc)
+  - [2.143 Attribute defaultClassStore](#2143-attribute-defaultclassstore)
+  - [2.144 Attribute defaultGroup](#2144-attribute-defaultgroup)
+  - [2.145 Attribute defaultHidingValue](#2145-attribute-defaulthidingvalue)
+  - [2.146 Attribute defaultLocalPolicyObject](#2146-attribute-defaultlocalpolicyobject)
+  - [2.147 Attribute defaultObjectCategory](#2147-attribute-defaultobjectcategory)
+  - [2.148 Attribute defaultPriority](#2148-attribute-defaultpriority)
+  - [2.149 Attribute defaultSecurityDescriptor](#2149-attribute-defaultsecuritydescriptor)
+  - [2.150 Attribute deltaRevocationList](#2150-attribute-deltarevocationlist)
+  - [2.151 Attribute department](#2151-attribute-department)
+  - [2.152 Attribute departmentNumber](#2152-attribute-departmentnumber)
+  - [2.153 Attribute description](#2153-attribute-description)
+  - [2.154 Attribute desktopProfile](#2154-attribute-desktopprofile)
+  - [2.155 Attribute destinationIndicator](#2155-attribute-destinationindicator)
+  - [2.156 Attribute dhcpClasses](#2156-attribute-dhcpclasses)
+  - [2.157 Attribute dhcpFlags](#2157-attribute-dhcpflags)
+  - [2.158 Attribute dhcpIdentification](#2158-attribute-dhcpidentification)
+  - [2.159 Attribute dhcpMask](#2159-attribute-dhcpmask)
+  - [2.160 Attribute dhcpMaxKey](#2160-attribute-dhcpmaxkey)
+  - [2.161 Attribute dhcpObjDescription](#2161-attribute-dhcpobjdescription)
+  - [2.162 Attribute dhcpObjName](#2162-attribute-dhcpobjname)
+  - [2.163 Attribute dhcpOptions](#2163-attribute-dhcpoptions)
+  - [2.164 Attribute dhcpProperties](#2164-attribute-dhcpproperties)
+  - [2.165 Attribute dhcpRanges](#2165-attribute-dhcpranges)
+  - [2.166 Attribute dhcpReservations](#2166-attribute-dhcpreservations)
+  - [2.167 Attribute dhcpServers](#2167-attribute-dhcpservers)
+  - [2.168 Attribute dhcpSites](#2168-attribute-dhcpsites)
+  - [2.169 Attribute dhcpState](#2169-attribute-dhcpstate)
+  - [2.170 Attribute dhcpSubnets](#2170-attribute-dhcpsubnets)
+  - [2.171 Attribute dhcpType](#2171-attribute-dhcptype)
+  - [2.172 Attribute dhcpUniqueKey](#2172-attribute-dhcpuniquekey)
+  - [2.173 Attribute dhcpUpdateTime](#2173-attribute-dhcpupdatetime)
+  - [2.174 Attribute directReports](#2174-attribute-directreports)
+  - [2.175 Attribute displayName](#2175-attribute-displayname)
+  - [2.176 Attribute displayNamePrintable](#2176-attribute-displaynameprintable)
+  - [2.177 Attribute distinguishedName](#2177-attribute-distinguishedname)
+  - [2.178 Attribute dITContentRules](#2178-attribute-ditcontentrules)
+  - [2.179 Attribute division](#2179-attribute-division)
+  - [2.180 Attribute dMDLocation](#2180-attribute-dmdlocation)
+  - [2.181 Attribute dmdName](#2181-attribute-dmdname)
+  - [2.182 Attribute dNReferenceUpdate](#2182-attribute-dnreferenceupdate)
+  - [2.183 Attribute dnsAllowDynamic](#2183-attribute-dnsallowdynamic)
+  - [2.184 Attribute dnsAllowXFR](#2184-attribute-dnsallowxfr)
+  - [2.185 Attribute dNSHostName](#2185-attribute-dnshostname)
+  - [2.186 Attribute dnsNotifySecondaries](#2186-attribute-dnsnotifysecondaries)
+  - [2.187 Attribute dNSProperty](#2187-attribute-dnsproperty)
+  - [2.188 Attribute dnsRecord](#2188-attribute-dnsrecord)
+  - [2.189 Attribute dnsRoot](#2189-attribute-dnsroot)
+  - [2.190 Attribute dnsSecureSecondaries](#2190-attribute-dnssecuresecondaries)
+  - [2.191 Attribute dNSTombstoned](#2191-attribute-dnstombstoned)
+  - [2.192 Attribute documentAuthor](#2192-attribute-documentauthor)
+  - [2.193 Attribute documentIdentifier](#2193-attribute-documentidentifier)
+  - [2.194 Attribute documentLocation](#2194-attribute-documentlocation)
+  - [2.195 Attribute documentPublisher](#2195-attribute-documentpublisher)
+  - [2.196 Attribute documentTitle](#2196-attribute-documenttitle)
+  - [2.197 Attribute documentVersion](#2197-attribute-documentversion)
+  - [2.198 Attribute domainCAs](#2198-attribute-domaincas)
+  - [2.199 Attribute domainCrossRef](#2199-attribute-domaincrossref)
+  - [2.200 Attribute domainID](#2200-attribute-domainid)
+  - [2.201 Attribute domainIdentifier](#2201-attribute-domainidentifier)
+  - [2.202 Attribute domainPolicyObject](#2202-attribute-domainpolicyobject)
+  - [2.203 Attribute domainPolicyReference](#2203-attribute-domainpolicyreference)
+  - [2.204 Attribute domainReplica](#2204-attribute-domainreplica)
+  - [2.205 Attribute domainWidePolicy](#2205-attribute-domainwidepolicy)
+  - [2.206 Attribute drink](#2206-attribute-drink)
+  - [2.207 Attribute driverName](#2207-attribute-drivername)
+  - [2.208 Attribute driverVersion](#2208-attribute-driverversion)
+  - [2.209 Attribute dSASignature](#2209-attribute-dsasignature)
+  - [2.210 Attribute dSCorePropagationData](#2210-attribute-dscorepropagationdata)
+  - [2.211 Attribute dSHeuristics](#2211-attribute-dsheuristics)
+  - [2.212 Attribute dSUIAdminMaximum](#2212-attribute-dsuiadminmaximum)
+  - [2.213 Attribute dSUIAdminNotification](#2213-attribute-dsuiadminnotification)
+  - [2.214 Attribute dSUIShellMaximum](#2214-attribute-dsuishellmaximum)
+  - [2.215 Attribute dynamicLDAPServer](#2215-attribute-dynamicldapserver)
+  - [2.216 Attribute eFSPolicy](#2216-attribute-efspolicy)
+  - [2.217 Attribute employeeID](#2217-attribute-employeeid)
+  - [2.218 Attribute employeeNumber](#2218-attribute-employeenumber)
+  - [2.219 Attribute employeeType](#2219-attribute-employeetype)
+  - [2.220 Attribute Enabled](#2220-attribute-enabled)
+  - [2.221 Attribute enabledConnection](#2221-attribute-enabledconnection)
+  - [2.222 Attribute enrollmentProviders](#2222-attribute-enrollmentproviders)
+  - [2.223 Attribute entryTTL](#2223-attribute-entryttl)
+  - [2.224 Attribute extendedAttributeInfo](#2224-attribute-extendedattributeinfo)
+  - [2.225 Attribute extendedCharsAllowed](#2225-attribute-extendedcharsallowed)
+  - [2.226 Attribute extendedClassInfo](#2226-attribute-extendedclassinfo)
+  - [2.227 Attribute extensionName](#2227-attribute-extensionname)
+  - [2.228 Attribute extraColumns](#2228-attribute-extracolumns)
+  - [2.229 Attribute facsimileTelephoneNumber](#2229-attribute-facsimiletelephonenumber)
+  - [2.230 Attribute fileExtPriority](#2230-attribute-fileextpriority)
+  - [2.231 Attribute flags](#2231-attribute-flags)
+  - [2.232 Attribute flatName](#2232-attribute-flatname)
+  - [2.233 Attribute forceLogoff](#2233-attribute-forcelogoff)
+  - [2.234 Attribute foreignIdentifier](#2234-attribute-foreignidentifier)
+  - [2.235 Attribute friendlyNames](#2235-attribute-friendlynames)
+  - [2.236 Attribute fromEntry](#2236-attribute-fromentry)
+  - [2.237 Attribute fromServer](#2237-attribute-fromserver)
+  - [2.238 Attribute frsComputerReference](#2238-attribute-frscomputerreference)
+  - [2.239 Attribute frsComputerReferenceBL](#2239-attribute-frscomputerreferencebl)
+  - [2.240 Attribute fRSControlDataCreation](#2240-attribute-frscontroldatacreation)
+  - [2.241 Attribute fRSControlInboundBacklog](#2241-attribute-frscontrolinboundbacklog)
+  - [2.242 Attribute fRSControlOutboundBacklog](#2242-attribute-frscontroloutboundbacklog)
+  - [2.243 Attribute fRSDirectoryFilter](#2243-attribute-frsdirectoryfilter)
+  - [2.244 Attribute fRSDSPoll](#2244-attribute-frsdspoll)
+  - [2.245 Attribute fRSExtensions](#2245-attribute-frsextensions)
+  - [2.246 Attribute fRSFaultCondition](#2246-attribute-frsfaultcondition)
+  - [2.247 Attribute fRSFileFilter](#2247-attribute-frsfilefilter)
+  - [2.248 Attribute fRSFlags](#2248-attribute-frsflags)
+  - [2.249 Attribute fRSLevelLimit](#2249-attribute-frslevellimit)
+  - [2.250 Attribute fRSMemberReference](#2250-attribute-frsmemberreference)
+  - [2.251 Attribute fRSMemberReferenceBL](#2251-attribute-frsmemberreferencebl)
+  - [2.252 Attribute fRSPartnerAuthLevel](#2252-attribute-frspartnerauthlevel)
+  - [2.253 Attribute fRSPrimaryMember](#2253-attribute-frsprimarymember)
+  - [2.254 Attribute fRSReplicaSetGUID](#2254-attribute-frsreplicasetguid)
+  - [2.255 Attribute fRSReplicaSetType](#2255-attribute-frsreplicasettype)
+  - [2.256 Attribute fRSRootPath](#2256-attribute-frsrootpath)
+  - [2.257 Attribute fRSRootSecurity](#2257-attribute-frsrootsecurity)
+  - [2.258 Attribute fRSServiceCommand](#2258-attribute-frsservicecommand)
+  - [2.259 Attribute fRSServiceCommandStatus](#2259-attribute-frsservicecommandstatus)
+  - [2.260 Attribute fRSStagingPath](#2260-attribute-frsstagingpath)
+  - [2.261 Attribute fRSTimeLastCommand](#2261-attribute-frstimelastcommand)
+  - [2.262 Attribute fRSTimeLastConfigChange](#2262-attribute-frstimelastconfigchange)
+  - [2.263 Attribute fRSUpdateTimeout](#2263-attribute-frsupdatetimeout)
+  - [2.264 Attribute fRSVersion](#2264-attribute-frsversion)
+  - [2.265 Attribute fRSVersionGUID](#2265-attribute-frsversionguid)
+  - [2.266 Attribute fRSWorkingPath](#2266-attribute-frsworkingpath)
+  - [2.267 Attribute fSMORoleOwner](#2267-attribute-fsmoroleowner)
+  - [2.268 Attribute garbageCollPeriod](#2268-attribute-garbagecollperiod)
+  - [2.269 Attribute gecos](#2269-attribute-gecos)
+  - [2.270 Attribute generatedConnection](#2270-attribute-generatedconnection)
+  - [2.271 Attribute generationQualifier](#2271-attribute-generationqualifier)
+  - [2.272 Attribute gidNumber](#2272-attribute-gidnumber)
+  - [2.273 Attribute givenName](#2273-attribute-givenname)
+  - [2.274 Attribute globalAddressList](#2274-attribute-globaladdresslist)
+  - [2.275 Attribute globalAddressList2](#2275-attribute-globaladdresslist2)
+  - [2.276 Attribute governsID](#2276-attribute-governsid)
+  - [2.277 Attribute gPCFileSysPath](#2277-attribute-gpcfilesyspath)
+  - [2.278 Attribute gPCFunctionalityVersion](#2278-attribute-gpcfunctionalityversion)
+  - [2.279 Attribute gPCMachineExtensionNames](#2279-attribute-gpcmachineextensionnames)
+  - [2.280 Attribute gPCUserExtensionNames](#2280-attribute-gpcuserextensionnames)
+  - [2.281 Attribute gPCWQLFilter](#2281-attribute-gpcwqlfilter)
+  - [2.282 Attribute gPLink](#2282-attribute-gplink)
+  - [2.283 Attribute gPOptions](#2283-attribute-gpoptions)
+  - [2.284 Attribute groupAttributes](#2284-attribute-groupattributes)
+  - [2.285 Attribute groupMembershipSAM](#2285-attribute-groupmembershipsam)
+  - [2.286 Attribute groupPriority](#2286-attribute-grouppriority)
+  - [2.287 Attribute groupsToIgnore](#2287-attribute-groupstoignore)
+  - [2.288 Attribute groupType](#2288-attribute-grouptype)
+  - [2.289 Attribute hasMasterNCs](#2289-attribute-hasmasterncs)
+  - [2.290 Attribute hasPartialReplicaNCs](#2290-attribute-haspartialreplicancs)
+  - [2.291 Attribute helpData16](#2291-attribute-helpdata16)
+  - [2.292 Attribute helpData32](#2292-attribute-helpdata32)
+  - [2.293 Attribute helpFileName](#2293-attribute-helpfilename)
+  - [2.294 Attribute hideFromAB](#2294-attribute-hidefromab)
+  - [2.295 Attribute homeDirectory](#2295-attribute-homedirectory)
+  - [2.296 Attribute homeDrive](#2296-attribute-homedrive)
+  - [2.297 Attribute homePhone](#2297-attribute-homephone)
+  - [2.298 Attribute homePostalAddress](#2298-attribute-homepostaladdress)
+  - [2.299 Attribute host](#2299-attribute-host)
+  - [2.300 Attribute houseIdentifier](#2300-attribute-houseidentifier)
+  - [2.301 Attribute iconPath](#2301-attribute-iconpath)
+  - [2.302 Attribute implementedCategories](#2302-attribute-implementedcategories)
+  - [2.303 Attribute indexedScopes](#2303-attribute-indexedscopes)
+  - [2.304 Attribute info](#2304-attribute-info)
+  - [2.305 Attribute initialAuthIncoming](#2305-attribute-initialauthincoming)
+  - [2.306 Attribute initialAuthOutgoing](#2306-attribute-initialauthoutgoing)
+  - [2.307 Attribute initials](#2307-attribute-initials)
+  - [2.308 Attribute installUiLevel](#2308-attribute-installuilevel)
+  - [2.309 Attribute instanceType](#2309-attribute-instancetype)
+  - [2.310 Attribute internationalISDNNumber](#2310-attribute-internationalisdnnumber)
+  - [2.311 Attribute interSiteTopologyFailover](#2311-attribute-intersitetopologyfailover)
+  - [2.312 Attribute interSiteTopologyGenerator](#2312-attribute-intersitetopologygenerator)
+  - [2.313 Attribute interSiteTopologyRenew](#2313-attribute-intersitetopologyrenew)
+  - [2.314 Attribute invocationId](#2314-attribute-invocationid)
+  - [2.315 Attribute ipHostNumber](#2315-attribute-iphostnumber)
+  - [2.316 Attribute ipNetmaskNumber](#2316-attribute-ipnetmasknumber)
+  - [2.317 Attribute ipNetworkNumber](#2317-attribute-ipnetworknumber)
+  - [2.318 Attribute ipPhone](#2318-attribute-ipphone)
+  - [2.319 Attribute ipProtocolNumber](#2319-attribute-ipprotocolnumber)
+  - [2.320 Attribute ipsecData](#2320-attribute-ipsecdata)
+  - [2.321 Attribute ipsecDataType](#2321-attribute-ipsecdatatype)
+  - [2.322 Attribute ipsecFilterReference](#2322-attribute-ipsecfilterreference)
+  - [2.323 Attribute ipsecID](#2323-attribute-ipsecid)
+  - [2.324 Attribute ipsecISAKMPReference](#2324-attribute-ipsecisakmpreference)
+  - [2.325 Attribute ipsecName](#2325-attribute-ipsecname)
+  - [2.326 Attribute iPSECNegotiationPolicyAction](#2326-attribute-ipsecnegotiationpolicyaction)
+  - [2.327 Attribute ipsecNegotiationPolicyReference](#2327-attribute-ipsecnegotiationpolicyreference)
+  - [2.328 Attribute iPSECNegotiationPolicyType](#2328-attribute-ipsecnegotiationpolicytype)
+  - [2.329 Attribute ipsecNFAReference](#2329-attribute-ipsecnfareference)
+  - [2.330 Attribute ipsecOwnersReference](#2330-attribute-ipsecownersreference)
+  - [2.331 Attribute ipsecPolicyReference](#2331-attribute-ipsecpolicyreference)
+  - [2.332 Attribute ipServicePort](#2332-attribute-ipserviceport)
+  - [2.333 Attribute ipServiceProtocol](#2333-attribute-ipserviceprotocol)
+  - [2.334 Attribute isCriticalSystemObject](#2334-attribute-iscriticalsystemobject)
+  - [2.335 Attribute isDefunct](#2335-attribute-isdefunct)
+  - [2.336 Attribute isDeleted](#2336-attribute-isdeleted)
+  - [2.337 Attribute isEphemeral](#2337-attribute-isephemeral)
+  - [2.338 Attribute isMemberOfPartialAttributeSet](#2338-attribute-ismemberofpartialattributeset)
+  - [2.339 Attribute isPrivilegeHolder](#2339-attribute-isprivilegeholder)
+  - [2.340 Attribute isRecycled](#2340-attribute-isrecycled)
+  - [2.341 Attribute isSingleValued](#2341-attribute-issinglevalued)
+  - [2.342 Attribute jpegPhoto](#2342-attribute-jpegphoto)
+  - [2.343 Attribute keywords](#2343-attribute-keywords)
+  - [2.344 Attribute knowledgeInformation](#2344-attribute-knowledgeinformation)
+  - [2.345 Attribute l](#2345-attribute-l)
+  - [2.346 Attribute labeledURI](#2346-attribute-labeleduri)
+  - [2.347 Attribute lastBackupRestorationTime](#2347-attribute-lastbackuprestorationtime)
+  - [2.348 Attribute lastContentIndexed](#2348-attribute-lastcontentindexed)
+  - [2.349 Attribute lastKnownParent](#2349-attribute-lastknownparent)
+  - [2.350 Attribute lastLogoff](#2350-attribute-lastlogoff)
+  - [2.351 Attribute lastLogon](#2351-attribute-lastlogon)
+  - [2.352 Attribute lastLogonTimestamp](#2352-attribute-lastlogontimestamp)
+  - [2.353 Attribute lastSetTime](#2353-attribute-lastsettime)
+  - [2.354 Attribute lastUpdateSequence](#2354-attribute-lastupdatesequence)
+  - [2.355 Attribute lDAPAdminLimits](#2355-attribute-ldapadminlimits)
+  - [2.356 Attribute lDAPDisplayName](#2356-attribute-ldapdisplayname)
+  - [2.357 Attribute lDAPIPDenyList](#2357-attribute-ldapipdenylist)
+  - [2.358 Attribute lSACreationTime](#2358-attribute-lsacreationtime)
+  - [2.359 Attribute lSAModifiedCount](#2359-attribute-lsamodifiedcount)
+  - [2.360 Attribute legacyExchangeDN](#2360-attribute-legacyexchangedn)
+  - [2.361 Attribute linkID](#2361-attribute-linkid)
+  - [2.362 Attribute linkTrackSecret](#2362-attribute-linktracksecret)
+  - [2.363 Attribute lmPwdHistory](#2363-attribute-lmpwdhistory)
+  - [2.364 Attribute localeID](#2364-attribute-localeid)
+  - [2.365 Attribute localizationDisplayId](#2365-attribute-localizationdisplayid)
+  - [2.366 Attribute localizedDescription](#2366-attribute-localizeddescription)
+  - [2.367 Attribute localPolicyFlags](#2367-attribute-localpolicyflags)
+  - [2.368 Attribute localPolicyReference](#2368-attribute-localpolicyreference)
+  - [2.369 Attribute location](#2369-attribute-location)
+  - [2.370 Attribute lockoutDuration](#2370-attribute-lockoutduration)
+  - [2.371 Attribute lockOutObservationWindow](#2371-attribute-lockoutobservationwindow)
+  - [2.372 Attribute lockoutThreshold](#2372-attribute-lockoutthreshold)
+  - [2.373 Attribute lockoutTime](#2373-attribute-lockouttime)
+  - [2.374 Attribute loginShell](#2374-attribute-loginshell)
+  - [2.375 Attribute logonCount](#2375-attribute-logoncount)
+  - [2.376 Attribute logonHours](#2376-attribute-logonhours)
+  - [2.377 Attribute logonWorkstation](#2377-attribute-logonworkstation)
+- [3 Change Tracking](#3-change-tracking)
+- [4 Index](#4-index)
 
-2  Attributes .............................................................................................................. 13
-Attribute accountExpires ................................................................................... 13
-Attribute accountNameHistory ........................................................................... 13
-Attribute aCSAggregateTokenRatePerUser ........................................................... 13
-Attribute aCSAllocableRSVPBandwidth ................................................................ 14
-Attribute aCSCacheTimeout ............................................................................... 14
-Attribute aCSDirection ...................................................................................... 14
-Attribute aCSDSBMDeadTime ............................................................................ 15
-Attribute aCSDSBMPriority ................................................................................ 15
-Attribute aCSDSBMRefresh ................................................................................ 15
-Attribute aCSEnableACSService ......................................................................... 16
-Attribute aCSEnableRSVPAccounting ................................................................... 16
-Attribute aCSEnableRSVPMessageLogging ........................................................... 16
-Attribute aCSEventLogLevel............................................................................... 17
-Attribute aCSIdentityName ................................................................................ 17
-Attribute aCSMaxAggregatePeakRatePerUser ....................................................... 17
-Attribute aCSMaxDurationPerFlow ...................................................................... 17
-Attribute aCSMaximumSDUSize ......................................................................... 18
-Attribute aCSMaxNoOfAccountFiles ..................................................................... 18
-Attribute aCSMaxNoOfLogFiles ........................................................................... 18
-Attribute aCSMaxPeakBandwidth ........................................................................ 19
-Attribute aCSMaxPeakBandwidthPerFlow ............................................................. 19
-Attribute aCSMaxSizeOfRSVPAccountFile ............................................................. 19
-Attribute aCSMaxSizeOfRSVPLogFile ................................................................... 20
-Attribute aCSMaxTokenBucketPerFlow ................................................................ 20
-Attribute aCSMaxTokenRatePerFlow ................................................................... 20
-Attribute aCSMinimumDelayVariation.................................................................. 21
-Attribute aCSMinimumLatency ........................................................................... 21
-Attribute aCSMinimumPolicedSize ...................................................................... 21
-Attribute aCSNonReservedMaxSDUSize ............................................................... 22
-Attribute aCSNonReservedMinPolicedSize ............................................................ 22
-Attribute aCSNonReservedPeakRate ................................................................... 22
-Attribute aCSNonReservedTokenSize .................................................................. 22
-Attribute aCSNonReservedTxLimit ...................................................................... 23
-Attribute aCSNonReservedTxSize ....................................................................... 23
-Attribute aCSPermissionBits .............................................................................. 23
-Attribute aCSPolicyName ................................................................................... 24
-Attribute aCSPriority ......................................................................................... 24
-Attribute aCSRSVPAccountFilesLocation .............................................................. 24
-Attribute aCSRSVPLogFilesLocation .................................................................... 25
-Attribute aCSServerList ..................................................................................... 25
-Attribute aCSServiceType .................................................................................. 25
-Attribute aCSTimeOfDay ................................................................................... 26
-Attribute aCSTotalNoOfFlows ............................................................................. 26
-Attribute additionalTrustedServiceNames ............................................................ 26
-Attribute addressBookRoots............................................................................... 27
-Attribute addressBookRoots2 ............................................................................. 27
-Attribute addressEntryDisplayTable .................................................................... 27
-Attribute addressEntryDisplayTableMSDOS .......................................................... 28
-Attribute addressSyntax .................................................................................... 28
-Attribute addressType ....................................................................................... 29
-Attribute adminContextMenu ............................................................................. 29
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-2.10
-2.11
-2.12
-2.13
-2.14
-2.15
-2.16
-2.17
-2.18
-2.19
-2.20
-2.21
-2.22
-2.23
-2.24
-2.25
-2.26
-2.27
-2.28
-2.29
-2.30
-2.31
-2.32
-2.33
-2.34
-2.35
-2.36
-2.37
-2.38
-2.39
-2.40
-2.41
-2.42
-2.43
-2.44
-2.45
-2.46
-2.47
-2.48
-2.49
-2.50
-2.51
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-4 / 140
-
-Attribute adminCount ....................................................................................... 29
-2.52
-Attribute adminDescription ................................................................................ 30
-2.53
-Attribute adminDisplayName ............................................................................. 30
-2.54
-Attribute adminMultiselectPropertyPages ............................................................. 30
-2.55
-Attribute adminPropertyPages............................................................................ 31
-2.56
-Attribute allowedAttributes ................................................................................ 31
-2.57
-Attribute allowedAttributesEffective .................................................................... 31
-2.58
-Attribute allowedChildClasses ............................................................................ 32
-2.59
-Attribute allowedChildClassesEffective ................................................................ 32
-2.60
-Attribute altSecurityIdentities ............................................................................ 33
-2.61
-Attribute aNR .................................................................................................. 33
-2.62
-Attribute applicationName ................................................................................. 33
-2.63
-Attribute appliesTo ........................................................................................... 34
-2.64
-Attribute appSchemaVersion.............................................................................. 34
-2.65
-Attribute assetNumber ...................................................................................... 34
-2.66
-Attribute assistant ............................................................................................ 35
-2.67
-Attribute associatedDomain ............................................................................... 35
-2.68
-Attribute associatedName ................................................................................. 35
-2.69
-Attribute assocNTAccount .................................................................................. 36
-2.70
-Attribute attributeCertificateAttribute .................................................................. 36
-2.71
-Attribute attributeDisplayNames ........................................................................ 36
-2.72
-Attribute attributeID ......................................................................................... 36
-2.73
-Attribute attributeSecurityGUID ......................................................................... 37
-2.74
-Attribute attributeSyntax .................................................................................. 37
-2.75
-Attribute attributeTypes .................................................................................... 37
-2.76
-Attribute audio ................................................................................................. 38
-2.77
-Attribute auditingPolicy ..................................................................................... 38
-2.78
-Attribute authenticationOptions.......................................................................... 38
-2.79
-Attribute authorityRevocationList ....................................................................... 39
-2.80
-Attribute auxiliaryClass ..................................................................................... 39
-2.81
-Attribute badPasswordTime ............................................................................... 40
-2.82
-Attribute badPwdCount ..................................................................................... 40
-2.83
-Attribute birthLocation ...................................................................................... 40
-2.84
-Attribute bootFile ............................................................................................. 41
-2.85
-Attribute bootParameter ................................................................................... 41
-2.86
-Attribute bridgeheadServerListBL ....................................................................... 41
-2.87
-Attribute bridgeheadTransportList ...................................................................... 42
-2.88
-Attribute buildingName ..................................................................................... 42
-2.89
-Attribute builtinCreationTime ............................................................................. 42
-2.90
-Attribute builtinModifiedCount ............................................................................ 43
-2.91
-Attribute businessCategory ................................................................................ 43
-2.92
-Attribute bytesPerMinute ................................................................................... 43
-2.93
-Attribute c ....................................................................................................... 43
-2.94
-Attribute cACertificate ....................................................................................... 44
-2.95
-Attribute cACertificateDN .................................................................................. 44
-2.96
-Attribute cAConnect ......................................................................................... 45
-2.97
-Attribute canonicalName ................................................................................... 45
-2.98
-2.99
-Attribute canUpgradeScript ............................................................................... 45
-2.100  Attribute carLicense .......................................................................................... 46
-2.101  Attribute catalogs ............................................................................................. 46
-2.102  Attribute categories .......................................................................................... 46
-2.103  Attribute categoryId ......................................................................................... 46
-2.104  Attribute cAUsages ........................................................................................... 47
-2.105  Attribute cAWEBURL ......................................................................................... 47
-2.106  Attribute certificateAuthorityObject .................................................................... 47
-2.107  Attribute certificateRevocationList ...................................................................... 48
-2.108  Attribute certificateTemplates ............................................................................ 48
-2.109  Attribute classDisplayName ............................................................................... 48
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-5 / 140
-
-2.110  Attribute cn ..................................................................................................... 49
-2.111  Attribute co ..................................................................................................... 49
-2.112  Attribute codePage ........................................................................................... 50
-2.113  Attribute cOMClassID ........................................................................................ 50
-2.114  Attribute cOMCLSID ......................................................................................... 50
-2.115  Attribute cOMInterfaceID .................................................................................. 51
-2.116  Attribute comment ........................................................................................... 51
-2.117  Attribute cOMOtherProgId ................................................................................. 51
-2.118  Attribute company............................................................................................ 52
-2.119  Attribute cOMProgID ......................................................................................... 52
-2.120  Attribute cOMTreatAsClassId ............................................................................. 52
-2.121  Attribute cOMTypelibId ..................................................................................... 53
-2.122  Attribute cOMUniqueLIBID ................................................................................. 53
-2.123  Attribute contentIndexingAllowed ....................................................................... 53
-2.124  Attribute contextMenu ...................................................................................... 53
-2.125  Attribute controlAccessRights ............................................................................ 54
-2.126  Attribute cost .................................................................................................. 54
-2.127  Attribute countryCode ....................................................................................... 54
-2.128  Attribute createDialog ....................................................................................... 55
-2.129  Attribute createTimeStamp................................................................................ 55
-2.130  Attribute createWizardExt ................................................................................. 56
-2.131  Attribute creationTime ...................................................................................... 56
-2.132  Attribute creationWizard ................................................................................... 56
-2.133  Attribute creator .............................................................................................. 56
-2.134  Attribute cRLObject .......................................................................................... 57
-2.135  Attribute cRLPartitionedRevocationList ................................................................ 57
-2.136  Attribute crossCertificatePair ............................................................................. 57
-2.137  Attribute currentLocation .................................................................................. 58
-2.138  Attribute currentParentCA ................................................................................. 58
-2.139  Attribute currentValue ...................................................................................... 58
-2.140  Attribute currMachineId .................................................................................... 59
-2.141  Attribute dBCSPwd ........................................................................................... 59
-2.142  Attribute dc ..................................................................................................... 60
-2.143  Attribute defaultClassStore ................................................................................ 60
-2.144  Attribute defaultGroup ...................................................................................... 60
-2.145  Attribute defaultHidingValue .............................................................................. 61
-2.146  Attribute defaultLocalPolicyObject ...................................................................... 61
-2.147  Attribute defaultObjectCategory ......................................................................... 61
-2.148  Attribute defaultPriority..................................................................................... 62
-2.149  Attribute defaultSecurityDescriptor ..................................................................... 62
-2.150  Attribute deltaRevocationList ............................................................................. 62
-2.151  Attribute department ........................................................................................ 63
-2.152  Attribute departmentNumber ............................................................................. 63
-2.153  Attribute description ......................................................................................... 63
-2.154  Attribute desktopProfile .................................................................................... 64
-2.155  Attribute destinationIndicator ............................................................................ 64
-2.156  Attribute dhcpClasses ....................................................................................... 64
-2.157  Attribute dhcpFlags .......................................................................................... 64
-2.158  Attribute dhcpIdentification ............................................................................... 65
-2.159  Attribute dhcpMask .......................................................................................... 65
-2.160  Attribute dhcpMaxKey ....................................................................................... 65
-2.161  Attribute dhcpObjDescription ............................................................................. 66
-2.162  Attribute dhcpObjName..................................................................................... 66
-2.163  Attribute dhcpOptions ....................................................................................... 66
-2.164  Attribute dhcpProperties ................................................................................... 66
-2.165  Attribute dhcpRanges ....................................................................................... 67
-2.166  Attribute dhcpReservations ................................................................................ 67
-2.167  Attribute dhcpServers ....................................................................................... 67
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-6 / 140
-
-2.168  Attribute dhcpSites ........................................................................................... 67
-2.169  Attribute dhcpState .......................................................................................... 68
-2.170  Attribute dhcpSubnets ...................................................................................... 68
-2.171  Attribute dhcpType ........................................................................................... 68
-2.172  Attribute dhcpUniqueKey ................................................................................... 69
-2.173  Attribute dhcpUpdateTime ................................................................................. 69
-2.174  Attribute directReports ...................................................................................... 69
-2.175  Attribute displayName ...................................................................................... 69
-2.176  Attribute displayNamePrintable .......................................................................... 70
-2.177  Attribute distinguishedName .............................................................................. 70
-2.178  Attribute dITContentRules ................................................................................. 71
-2.179  Attribute division .............................................................................................. 71
-2.180  Attribute dMDLocation ...................................................................................... 71
-2.181  Attribute dmdName .......................................................................................... 72
-2.182  Attribute dNReferenceUpdate............................................................................. 72
-2.183  Attribute dnsAllowDynamic ................................................................................ 73
-2.184  Attribute dnsAllowXFR ...................................................................................... 73
-2.185  Attribute dNSHostName .................................................................................... 73
-2.186  Attribute dnsNotifySecondaries .......................................................................... 73
-2.187  Attribute dNSProperty ....................................................................................... 74
-2.188  Attribute dnsRecord .......................................................................................... 74
-2.189  Attribute dnsRoot ............................................................................................. 74
-2.190  Attribute dnsSecureSecondaries ......................................................................... 75
-2.191  Attribute dNSTombstoned ................................................................................. 75
-2.192  Attribute documentAuthor ................................................................................. 75
-2.193  Attribute documentIdentifier .............................................................................. 76
-2.194  Attribute documentLocation ............................................................................... 76
-2.195  Attribute documentPublisher .............................................................................. 76
-2.196  Attribute documentTitle .................................................................................... 77
-2.197  Attribute documentVersion ................................................................................ 77
-2.198  Attribute domainCAs ......................................................................................... 77
-2.199  Attribute domainCrossRef .................................................................................. 77
-2.200  Attribute domainID ........................................................................................... 78
-2.201  Attribute domainIdentifier ................................................................................. 78
-2.202  Attribute domainPolicyObject ............................................................................. 78
-2.203  Attribute domainPolicyReference ........................................................................ 79
-2.204  Attribute domainReplica .................................................................................... 79
-2.205  Attribute domainWidePolicy ............................................................................... 79
-2.206  Attribute drink ................................................................................................. 80
-2.207  Attribute driverName ........................................................................................ 80
-2.208  Attribute driverVersion ...................................................................................... 80
-2.209  Attribute dSASignature ..................................................................................... 81
-2.210  Attribute dSCorePropagationData ....................................................................... 81
-2.211  Attribute dSHeuristics ....................................................................................... 81
-2.212  Attribute dSUIAdminMaximum ........................................................................... 82
-2.213  Attribute dSUIAdminNotification ......................................................................... 82
-2.214  Attribute dSUIShellMaximum ............................................................................. 82
-2.215  Attribute dynamicLDAPServer ............................................................................ 83
-2.216  Attribute eFSPolicy ........................................................................................... 83
-2.217  Attribute employeeID ....................................................................................... 83
-2.218  Attribute employeeNumber ................................................................................ 84
-2.219  Attribute employeeType .................................................................................... 84
-2.220  Attribute Enabled ............................................................................................. 84
-2.221  Attribute enabledConnection .............................................................................. 85
-2.222  Attribute enrollmentProviders ............................................................................ 85
-2.223  Attribute entryTTL ............................................................................................ 85
-2.224  Attribute extendedAttributeInfo ......................................................................... 86
-2.225  Attribute extendedCharsAllowed ........................................................................ 86
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-7 / 140
-
-2.226  Attribute extendedClassInfo .............................................................................. 87
-2.227  Attribute extensionName ................................................................................... 87
-2.228  Attribute extraColumns ..................................................................................... 87
-2.229  Attribute facsimileTelephoneNumber .................................................................. 88
-2.230  Attribute fileExtPriority...................................................................................... 88
-2.231  Attribute flags .................................................................................................. 88
-2.232  Attribute flatName ............................................................................................ 89
-2.233  Attribute forceLogoff ......................................................................................... 89
-2.234  Attribute foreignIdentifier .................................................................................. 89
-2.235  Attribute friendlyNames .................................................................................... 90
-2.236  Attribute fromEntry .......................................................................................... 90
-2.237  Attribute fromServer ........................................................................................ 90
-2.238  Attribute frsComputerReference ......................................................................... 91
-2.239  Attribute frsComputerReferenceBL ..................................................................... 91
-2.240  Attribute fRSControlDataCreation ....................................................................... 91
-2.241  Attribute fRSControlInboundBacklog ................................................................... 92
-2.242  Attribute fRSControlOutboundBacklog ................................................................. 92
-2.243  Attribute fRSDirectoryFilter ............................................................................... 92
-2.244  Attribute fRSDSPoll .......................................................................................... 93
-2.245  Attribute fRSExtensions .................................................................................... 93
-2.246  Attribute fRSFaultCondition ............................................................................... 93
-2.247  Attribute fRSFileFilter........................................................................................ 94
-2.248  Attribute fRSFlags ............................................................................................ 94
-2.249  Attribute fRSLevelLimit ..................................................................................... 94
-2.250  Attribute fRSMemberReference .......................................................................... 95
-2.251  Attribute fRSMemberReferenceBL ....................................................................... 95
-2.252  Attribute fRSPartnerAuthLevel ........................................................................... 95
-2.253  Attribute fRSPrimaryMember ............................................................................. 96
-2.254  Attribute fRSReplicaSetGUID ............................................................................. 96
-2.255  Attribute fRSReplicaSetType .............................................................................. 96
-2.256  Attribute fRSRootPath ....................................................................................... 97
-2.257  Attribute fRSRootSecurity.................................................................................. 97
-2.258  Attribute fRSServiceCommand ........................................................................... 97
-2.259  Attribute fRSServiceCommandStatus .................................................................. 98
-2.260  Attribute fRSStagingPath................................................................................... 98
-2.261  Attribute fRSTimeLastCommand ......................................................................... 98
-2.262  Attribute fRSTimeLastConfigChange ................................................................... 98
-2.263  Attribute fRSUpdateTimeout .............................................................................. 99
-2.264  Attribute fRSVersion ......................................................................................... 99
-2.265  Attribute fRSVersionGUID ................................................................................. 99
-2.266  Attribute fRSWorkingPath ................................................................................. 100
-2.267  Attribute fSMORoleOwner ................................................................................. 100
-2.268  Attribute garbageCollPeriod .............................................................................. 100
-2.269  Attribute gecos ............................................................................................... 101
-2.270  Attribute generatedConnection ......................................................................... 101
-2.271  Attribute generationQualifier ............................................................................ 101
-2.272  Attribute gidNumber ........................................................................................ 102
-2.273  Attribute givenName........................................................................................ 102
-2.274  Attribute globalAddressList ............................................................................... 102
-2.275  Attribute globalAddressList2 ............................................................................. 103
-2.276  Attribute governsID ......................................................................................... 103
-2.277  Attribute gPCFileSysPath .................................................................................. 104
-2.278  Attribute gPCFunctionalityVersion ...................................................................... 104
-2.279  Attribute gPCMachineExtensionNames ............................................................... 104
-2.280  Attribute gPCUserExtensionNames .................................................................... 104
-2.281  Attribute gPCWQLFilter .................................................................................... 105
-2.282  Attribute gPLink .............................................................................................. 105
-2.283  Attribute gPOptions ......................................................................................... 105
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-8 / 140
-
-2.284  Attribute groupAttributes ................................................................................. 106
-2.285  Attribute groupMembershipSAM ........................................................................ 106
-2.286  Attribute groupPriority ..................................................................................... 106
-2.287  Attribute groupsToIgnore ................................................................................. 106
-2.288  Attribute groupType ........................................................................................ 107
-2.289  Attribute hasMasterNCs ................................................................................... 107
-2.290  Attribute hasPartialReplicaNCs .......................................................................... 108
-2.291  Attribute helpData16 ....................................................................................... 108
-2.292  Attribute helpData32 ....................................................................................... 108
-2.293  Attribute helpFileName .................................................................................... 109
-2.294  Attribute hideFromAB ...................................................................................... 109
-2.295  Attribute homeDirectory ................................................................................... 109
-2.296  Attribute homeDrive ........................................................................................ 110
-2.297  Attribute homePhone ....................................................................................... 110
-2.298  Attribute homePostalAddress ............................................................................ 111
-2.299  Attribute host ................................................................................................. 111
-2.300  Attribute houseIdentifier .................................................................................. 111
-2.301  Attribute iconPath ........................................................................................... 112
-2.302  Attribute implementedCategories ...................................................................... 112
-2.303  Attribute indexedScopes .................................................................................. 112
-2.304  Attribute info .................................................................................................. 113
-2.305  Attribute initialAuthIncoming ............................................................................ 113
-2.306  Attribute initialAuthOutgoing ............................................................................ 113
-2.307  Attribute initials .............................................................................................. 114
-2.308  Attribute installUiLevel ..................................................................................... 114
-2.309  Attribute instanceType ..................................................................................... 114
-2.310  Attribute internationalISDNNumber ................................................................... 115
-2.311  Attribute interSiteTopologyFailover .................................................................... 115
-2.312  Attribute interSiteTopologyGenerator ................................................................. 116
-2.313  Attribute interSiteTopologyRenew ..................................................................... 116
-2.314  Attribute invocationId ...................................................................................... 117
-2.315  Attribute ipHostNumber ................................................................................... 117
-2.316  Attribute ipNetmaskNumber ............................................................................. 117
-2.317  Attribute ipNetworkNumber .............................................................................. 118
-2.318  Attribute ipPhone ............................................................................................ 118
-2.319  Attribute ipProtocolNumber .............................................................................. 118
-2.320  Attribute ipsecData .......................................................................................... 119
-2.321  Attribute ipsecDataType ................................................................................... 119
-2.322  Attribute ipsecFilterReference ........................................................................... 119
-2.323  Attribute ipsecID ............................................................................................. 120
-2.324  Attribute ipsecISAKMPReference ....................................................................... 120
-2.325  Attribute ipsecName ........................................................................................ 120
-2.326  Attribute iPSECNegotiationPolicyAction............................................................... 120
-2.327  Attribute ipsecNegotiationPolicyReference .......................................................... 121
-2.328  Attribute iPSECNegotiationPolicyType ................................................................ 121
-2.329  Attribute ipsecNFAReference ............................................................................. 121
-2.330  Attribute ipsecOwnersReference ........................................................................ 122
-2.331  Attribute ipsecPolicyReference .......................................................................... 122
-2.332  Attribute ipServicePort ..................................................................................... 122
-2.333  Attribute ipServiceProtocol ............................................................................... 123
-2.334  Attribute isCriticalSystemObject ........................................................................ 123
-2.335  Attribute isDefunct .......................................................................................... 123
-2.336  Attribute isDeleted .......................................................................................... 124
-2.337  Attribute isEphemeral ...................................................................................... 124
-2.338  Attribute isMemberOfPartialAttributeSet ............................................................. 124
-2.339  Attribute isPrivilegeHolder ................................................................................ 125
-2.340  Attribute isRecycled ......................................................................................... 125
-2.341  Attribute isSingleValued ................................................................................... 125
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-9 / 140
-
-2.342  Attribute jpegPhoto ......................................................................................... 126
-2.343  Attribute keywords .......................................................................................... 126
-2.344  Attribute knowledgeInformation ........................................................................ 126
-2.345  Attribute l ...................................................................................................... 127
-2.346  Attribute labeledURI ........................................................................................ 127
-2.347  Attribute lastBackupRestorationTime ................................................................. 127
-2.348  Attribute lastContentIndexed ............................................................................ 128
-2.349  Attribute lastKnownParent ................................................................................ 128
-2.350  Attribute lastLogoff .......................................................................................... 128
-2.351  Attribute lastLogon .......................................................................................... 129
-2.352  Attribute lastLogonTimestamp .......................................................................... 129
-2.353  Attribute lastSetTime ....................................................................................... 130
-2.354  Attribute lastUpdateSequence ........................................................................... 130
-2.355  Attribute lDAPAdminLimits................................................................................ 130
-2.356  Attribute lDAPDisplayName .............................................................................. 131
-2.357  Attribute lDAPIPDenyList .................................................................................. 131
-2.358  Attribute lSACreationTime ................................................................................ 131
-2.359  Attribute lSAModifiedCount ............................................................................... 132
-2.360  Attribute legacyExchangeDN ............................................................................. 132
-2.361  Attribute linkID ............................................................................................... 132
-2.362  Attribute linkTrackSecret .................................................................................. 133
-2.363  Attribute lmPwdHistory .................................................................................... 133
-2.364  Attribute localeID ............................................................................................ 133
-2.365  Attribute localizationDisplayId ........................................................................... 134
-2.366  Attribute localizedDescription ............................................................................ 134
-2.367  Attribute localPolicyFlags .................................................................................. 134
-2.368  Attribute localPolicyReference ........................................................................... 135
-2.369  Attribute location ............................................................................................ 135
-2.370  Attribute lockoutDuration ................................................................................. 135
-2.371  Attribute lockOutObservationWindow ................................................................. 136
-2.372  Attribute lockoutThreshold ............................................................................... 136
-2.373  Attribute lockoutTime ...................................................................................... 137
-2.374  Attribute loginShell .......................................................................................... 137
-2.375  Attribute logonCount ....................................................................................... 137
-2.376  Attribute logonHours ....................................................................................... 138
-2.377  Attribute logonWorkstation ............................................................................... 138
-
-3  Change Tracking .................................................................................................. 139
-
-4  Index ................................................................................................................... 140
-
-[MS-ADA1] - v20180912
-Active Directory Schema Attributes A-L
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-10 / 140
-
-1  Introduction
+## 1 Introduction
 
 Active Directory Schema Attributes A-L contains a partial list of the objects that exist in the Active
 Directory schema for Active Directory Domain Services (AD DS); it contains schema objects of
@@ -1087,7 +930,7 @@ objects were first implemented in the Active Directory schema. Unless otherwise 
 continue to be available in the Active Directory schema in all subsequent versions of the product
 according to the list of products in [MS-ADTS] section 1.
 
-1.1  References
+### 1.1 References
 
 [JFIF] Hamilton, E., "JPEG File Interchange Format, Version 1.02", September 1992,
 http://www.w3.org/Graphics/JPEG/jfif.txt
@@ -1132,7 +975,8 @@ Release: September 12, 2018
 
 11 / 140
 
-[RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
+
+[RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
 December 1997, https://www.rfc-editor.org/info/rfc2251
 
 [RFC2307] Howard, L., "An Approach for Using LDAP as a Network Information Service", RFC 2307,
@@ -1158,7 +1002,8 @@ Release: September 12, 2018
 
 12 / 140
 
-2  Attributes
+
+## 2 Attributes
 
 The following sections specify attributes in the Active Directory schema whose names start with the
 letters A through L.
@@ -1171,7 +1016,7 @@ attribute can be used.
 Note: Lines of text in the attribute definitions that are excessively long have been "folded" in
 accordance with [RFC2849] Note 2.
 
-2.1  Attribute accountExpires
+### 2.1 Attribute accountExpires
 
 This attribute specifies the date the account expires. This value represents the number of 100-
 nanosecond intervals since January 1, 1601, Coordinated Universal Time (Greenwich Mean Time). A
@@ -1195,7 +1040,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server operating sy
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008 operating
 system.
 
-2.2  Attribute accountNameHistory
+### 2.2 Attribute accountNameHistory
 
 This attribute specifies the length of time the account has been active.
 
@@ -1212,7 +1057,7 @@ This attribute specifies the length of time the account has been active.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.3  Attribute aCSAggregateTokenRatePerUser
+### 2.3 Attribute aCSAggregateTokenRatePerUser
 
 This attribute specifies the maximum quality of service token rate for any user for all flows.
 
@@ -1223,7 +1068,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: ACS-Aggregate-Token-Rate-Per-User
+
+ cn: ACS-Aggregate-Token-Rate-Per-User
  ldapDisplayName: aCSAggregateTokenRatePerUser
  attributeId: 1.2.840.113556.1.4.760
  attributeSyntax: 2.5.5.16
@@ -1236,7 +1082,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.4  Attribute aCSAllocableRSVPBandwidth
+### 2.4 Attribute aCSAllocableRSVPBandwidth
 
 This attribute specifies the maximum bandwidth that can be reserved.
 
@@ -1253,7 +1099,7 @@ This attribute specifies the maximum bandwidth that can be reserved.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.5  Attribute aCSCacheTimeout
+### 2.5 Attribute aCSCacheTimeout
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1271,7 +1117,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.6  Attribute aCSDirection
+### 2.6 Attribute aCSDirection
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1289,7 +1135,8 @@ Release: September 12, 2018
 
 14 / 140
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 7f56127a-5301-11d1-a9c5-0000f80367c1
  systemOnly: FALSE
  searchFlags: 0
@@ -1297,7 +1144,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.7  Attribute aCSDSBMDeadTime
+### 2.7 Attribute aCSDSBMDeadTime
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1315,7 +1162,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.8  Attribute aCSDSBMPriority
+### 2.8 Attribute aCSDSBMPriority
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1333,7 +1180,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.9  Attribute aCSDSBMRefresh
+### 2.9 Attribute aCSDSBMRefresh
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1355,11 +1202,12 @@ Release: September 12, 2018
 
 15 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.10  Attribute aCSEnableACSService
+### 2.10 Attribute aCSEnableACSService
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1377,7 +1225,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.11  Attribute aCSEnableRSVPAccounting
+### 2.11 Attribute aCSEnableRSVPAccounting
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1395,7 +1243,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.12  Attribute aCSEnableRSVPMessageLogging
+### 2.12 Attribute aCSEnableRSVPMessageLogging
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1420,7 +1268,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.13  Attribute aCSEventLogLevel
+
+### 2.13 Attribute aCSEventLogLevel
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1438,7 +1287,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.14  Attribute aCSIdentityName
+### 2.14 Attribute aCSIdentityName
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1456,7 +1305,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.15  Attribute aCSMaxAggregatePeakRatePerUser
+### 2.15 Attribute aCSMaxAggregatePeakRatePerUser
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1474,7 +1323,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.16  Attribute aCSMaxDurationPerFlow
+### 2.16 Attribute aCSMaxDurationPerFlow
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1486,7 +1335,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: ACS-Max-Duration-Per-Flow
+
+ cn: ACS-Max-Duration-Per-Flow
  ldapDisplayName: aCSMaxDurationPerFlow
  attributeId: 1.2.840.113556.1.4.761
  attributeSyntax: 2.5.5.9
@@ -1499,7 +1349,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.17  Attribute aCSMaximumSDUSize
+### 2.17 Attribute aCSMaximumSDUSize
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1517,7 +1367,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.18  Attribute aCSMaxNoOfAccountFiles
+### 2.18 Attribute aCSMaxNoOfAccountFiles
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1535,7 +1385,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.19  Attribute aCSMaxNoOfLogFiles
+### 2.19 Attribute aCSMaxNoOfLogFiles
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1552,7 +1402,8 @@ Release: September 12, 2018
 
 18 / 140
 
- omSyntax: 2
+
+ omSyntax: 2
  isSingleValued: TRUE
  schemaIdGuid: 1cb3559c-56d0-11d1-a9c6-0000f80367c1
  systemOnly: FALSE
@@ -1561,7 +1412,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.20  Attribute aCSMaxPeakBandwidth
+### 2.20 Attribute aCSMaxPeakBandwidth
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1579,7 +1430,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.21  Attribute aCSMaxPeakBandwidthPerFlow
+### 2.21 Attribute aCSMaxPeakBandwidthPerFlow
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1597,7 +1448,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.22  Attribute aCSMaxSizeOfRSVPAccountFile
+### 2.22 Attribute aCSMaxSizeOfRSVPAccountFile
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1618,12 +1469,13 @@ Release: September 12, 2018
 
 19 / 140
 
- searchFlags: 0
+
+ searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.23  Attribute aCSMaxSizeOfRSVPLogFile
+### 2.23 Attribute aCSMaxSizeOfRSVPLogFile
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1641,7 +1493,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.24  Attribute aCSMaxTokenBucketPerFlow
+### 2.24 Attribute aCSMaxTokenBucketPerFlow
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1659,7 +1511,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.25  Attribute aCSMaxTokenRatePerFlow
+### 2.25 Attribute aCSMaxTokenRatePerFlow
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1682,9 +1534,10 @@ Release: September 12, 2018
 
 20 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.26  Attribute aCSMinimumDelayVariation
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.26 Attribute aCSMinimumDelayVariation
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1702,7 +1555,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.27  Attribute aCSMinimumLatency
+### 2.27 Attribute aCSMinimumLatency
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1720,7 +1573,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.28  Attribute aCSMinimumPolicedSize
+### 2.28 Attribute aCSMinimumPolicedSize
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1745,7 +1598,8 @@ Release: September 12, 2018
 
 21 / 140
 
-2.29  Attribute aCSNonReservedMaxSDUSize
+
+### 2.29 Attribute aCSNonReservedMaxSDUSize
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1763,7 +1617,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.30  Attribute aCSNonReservedMinPolicedSize
+### 2.30 Attribute aCSNonReservedMinPolicedSize
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1781,7 +1635,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.31  Attribute aCSNonReservedPeakRate
+### 2.31 Attribute aCSNonReservedPeakRate
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1799,7 +1653,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.32  Attribute aCSNonReservedTokenSize
+### 2.32 Attribute aCSNonReservedTokenSize
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1811,7 +1665,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: ACS-Non-Reserved-Token-Size
+
+ cn: ACS-Non-Reserved-Token-Size
  ldapDisplayName: aCSNonReservedTokenSize
  attributeId: 1.2.840.113556.1.4.1319
  attributeSyntax: 2.5.5.16
@@ -1824,7 +1679,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.33  Attribute aCSNonReservedTxLimit
+### 2.33 Attribute aCSNonReservedTxLimit
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1842,7 +1697,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.34  Attribute aCSNonReservedTxSize
+### 2.34 Attribute aCSNonReservedTxSize
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1860,7 +1715,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.35  Attribute aCSPermissionBits
+### 2.35 Attribute aCSPermissionBits
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1877,7 +1732,8 @@ Release: September 12, 2018
 
 23 / 140
 
- omSyntax: 65
+
+ omSyntax: 65
  isSingleValued: TRUE
  schemaIdGuid: 7f561282-5301-11d1-a9c5-0000f80367c1
  systemOnly: FALSE
@@ -1886,7 +1742,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.36  Attribute aCSPolicyName
+### 2.36 Attribute aCSPolicyName
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1904,7 +1760,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.37  Attribute aCSPriority
+### 2.37 Attribute aCSPriority
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1922,7 +1778,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.38  Attribute aCSRSVPAccountFilesLocation
+### 2.38 Attribute aCSRSVPAccountFilesLocation
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1943,12 +1799,13 @@ Release: September 12, 2018
 
 24 / 140
 
- searchFlags: 0
+
+ searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.39  Attribute aCSRSVPLogFilesLocation
+### 2.39 Attribute aCSRSVPLogFilesLocation
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1966,7 +1823,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.40  Attribute aCSServerList
+### 2.40 Attribute aCSServerList
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -1984,7 +1841,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.41  Attribute aCSServiceType
+### 2.41 Attribute aCSServiceType
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -2007,9 +1864,10 @@ Release: September 12, 2018
 
 25 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.42  Attribute aCSTimeOfDay
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.42 Attribute aCSTimeOfDay
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -2027,7 +1885,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.43  Attribute aCSTotalNoOfFlows
+### 2.43 Attribute aCSTotalNoOfFlows
 
 This attribute is not necessary for Active Directory to function. The protocol does not define a format
 beyond that required by the schema.
@@ -2045,7 +1903,7 @@ beyond that required by the schema.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.44  Attribute additionalTrustedServiceNames
+### 2.44 Attribute additionalTrustedServiceNames
 
 This attribute specifies a list of services in the domain that can be trusted. This attribute is not
 necessary for Active Directory to function. The protocol does not define a format beyond that required
@@ -2071,7 +1929,8 @@ Release: September 12, 2018
 
 26 / 140
 
-2.45  Attribute addressBookRoots
+
+### 2.45 Attribute addressBookRoots
 
 This attribute is used by Microsoft Exchange Server and is not necessary for Active Directory
 functioning. It specifies the trees of address book containers to appear in the Messaging Application
@@ -2094,7 +1953,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.46  Attribute addressBookRoots2
+### 2.46 Attribute addressBookRoots2
 
 This attribute is used by Exchange Server and is not necessary for Active Directory functioning. It
 specifies the trees of address book containers to appear in the MAPI address book. Similar to
@@ -2116,7 +1975,7 @@ addressBookRoots, it differs by being a linked attribute.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.47  Attribute addressEntryDisplayTable
+### 2.47 Attribute addressEntryDisplayTable
 
 This attribute is used by Exchange Server and is not necessary for Active Directory functioning. It
 specifies the display table for an address entry.
@@ -2139,7 +1998,8 @@ Release: September 12, 2018
 
 27 / 140
 
- rangeUpper: 32768
+
+ rangeUpper: 32768
  mapiID: 32791
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
@@ -2148,7 +2008,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.48  Attribute addressEntryDisplayTableMSDOS
+### 2.48 Attribute addressEntryDisplayTableMSDOS
 
 This attribute is used by Exchange Server and is not necessary for Active Directory functioning. It
 specifies the MAPI display table for an address entry for an MS-DOS client.
@@ -2172,7 +2032,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.49  Attribute addressSyntax
+### 2.49 Attribute addressSyntax
 
 This attribute is used by Exchange Server and is not necessary for Active Directory functioning. It
 specifies a grammar for encoding the display table properties as a string.
@@ -2203,7 +2063,8 @@ Release: September 12, 2018
 
 28 / 140
 
-2.50  Attribute addressType
+
+### 2.50 Attribute addressType
 
 This attribute is used by Exchange Server and is not necessary for Active Directory functioning. It
 specifies a character string describing the format of the user's address. Address types map to address
@@ -2229,7 +2090,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.51  Attribute adminContextMenu
+### 2.51 Attribute adminContextMenu
 
 This attribute specifies the order number and GUID of the context menu to be used on administration
 screens. GUID is defined in [MS-DTYP] section 2.3.4.
@@ -2247,7 +2108,7 @@ screens. GUID is defined in [MS-DTYP] section 2.3.4.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.52  Attribute adminCount
+### 2.52 Attribute adminCount
 
 This attribute specifies that a given object has had its access control lists (ACLs) changed to a more
 secure value by the Active Directory system [MS-ADOD] because it is a member of one of the
@@ -2271,14 +2132,15 @@ Release: September 12, 2018
 
 29 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.53  Attribute adminDescription
+### 2.53 Attribute adminDescription
 
 This attribute specifies the description displayed on administration screens.
 
@@ -2299,7 +2161,7 @@ This attribute specifies the description displayed on administration screens.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.54  Attribute adminDisplayName
+### 2.54 Attribute adminDisplayName
 
 This attribute specifies the name to be displayed on administration screens.
 
@@ -2322,7 +2184,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.55  Attribute adminMultiselectPropertyPages
+### 2.55 Attribute adminMultiselectPropertyPages
 
 This attribute specifies the GUID of a Component Object Model (COM) object that implements
 multiselect property pages for the Active Directory Users and Computers snap-in.
@@ -2337,7 +2199,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- attributeId: 1.2.840.113556.1.4.1690
+
+ attributeId: 1.2.840.113556.1.4.1690
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: FALSE
@@ -2348,7 +2211,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2003 operating system.
 
-2.56  Attribute adminPropertyPages
+### 2.56 Attribute adminPropertyPages
 
 This attribute specifies the GUID of the property pages for an object to be displayed on Active
 Directory administration screens. For more information, see the document, "Extending the User
@@ -2367,7 +2230,7 @@ Interface for Directory Objects" [MSDN-ExtUserIntDirObj].
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.57  Attribute allowedAttributes
+### 2.57 Attribute allowedAttributes
 
 This attribute specifies attributes that will be permitted to be assigned to a class.
 
@@ -2389,7 +2252,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.58  Attribute allowedAttributesEffective
+### 2.58 Attribute allowedAttributesEffective
 
 This attribute specifies a list of attributes that can be modified on the object.
 
@@ -2403,7 +2266,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- attributeId: 1.2.840.113556.1.4.914
+
+ attributeId: 1.2.840.113556.1.4.914
  attributeSyntax: 2.5.5.2
  omSyntax: 6
  isSingleValued: FALSE
@@ -2419,7 +2283,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.59  Attribute allowedChildClasses
+### 2.59 Attribute allowedChildClasses
 
 This attribute specifies classes that can be contained by a class.
 
@@ -2441,7 +2305,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.60  Attribute allowedChildClassesEffective
+### 2.60 Attribute allowedChildClassesEffective
 
 This attribute specifies a list of classes that can be modified.
 
@@ -2470,7 +2334,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.61  Attribute altSecurityIdentities
+
+### 2.61 Attribute altSecurityIdentities
 
 This attribute specifies a given user mapping for [X509] certificates or external Kerberos user
 accounts for the purpose of authentication.
@@ -2494,7 +2359,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.62  Attribute aNR
+### 2.62 Attribute aNR
 
 This attribute specifies whether ambiguous name resolution is to be used when choosing between
 objects.
@@ -2516,7 +2381,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.63  Attribute applicationName
+### 2.63 Attribute applicationName
 
 This attribute is used to store the name of the application.
 
@@ -2539,11 +2404,12 @@ Release: September 12, 2018
 
 33 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.64  Attribute appliesTo
+### 2.64 Attribute appliesTo
 
 This attribute specifies the list of object classes that an extended right applies to. For more
 information on Active Directory object classes, see [MS-ADTS].
@@ -2563,7 +2429,7 @@ information on Active Directory object classes, see [MS-ADTS].
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.65  Attribute appSchemaVersion
+### 2.65 Attribute appSchemaVersion
 
 This attribute specifies the schema version of the directory. It is used to provide correct behavior
 across schema changes. For more information on the schema, see [MS-ADTS] section 3.1.1.2.
@@ -2581,7 +2447,7 @@ across schema changes. For more information on the schema, see [MS-ADTS] section
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.66  Attribute assetNumber
+### 2.66 Attribute assetNumber
 
 This attribute is used to store the tracking number of the object.
 
@@ -2603,9 +2469,10 @@ Release: September 12, 2018
 
 34 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.67  Attribute assistant
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.67 Attribute assistant
 
 This attribute can be used to store the distinguished name of an administrative assistant for a user.
 
@@ -2624,7 +2491,7 @@ This attribute can be used to store the distinguished name of an administrative 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.68  Attribute associatedDomain
+### 2.68 Attribute associatedDomain
 
 The associatedDomain attribute type specifies a fully qualified domain name (FQDN) (2) ([MS-ADTS]
 section 1.1) associated with an object.
@@ -2642,7 +2509,7 @@ section 1.1) associated with an object.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.69  Attribute associatedName
+### 2.69 Attribute associatedName
 
 The associatedName attribute type specifies an entry in the directory associated with a DNS domain.
 
@@ -2666,7 +2533,8 @@ Release: September 12, 2018
 
 35 / 140
 
-2.70  Attribute assocNTAccount
+
+### 2.70 Attribute assocNTAccount
 
 The Windows NT operating system account that applies to this object.
 
@@ -2682,7 +2550,7 @@ The Windows NT operating system account that applies to this object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.71  Attribute attributeCertificateAttribute
+### 2.71 Attribute attributeCertificateAttribute
 
 A digitally signed or certified identity and set of attributes. Used to bind authorization information to
 an identity.
@@ -2699,7 +2567,7 @@ an identity.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.72  Attribute attributeDisplayNames
+### 2.72 Attribute attributeDisplayNames
 
 The name to be displayed for this object.
 
@@ -2716,7 +2584,7 @@ The name to be displayed for this object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.73  Attribute attributeID
+### 2.73 Attribute attributeID
 
 This attribute specifies the unique X.500 object identifier (OID) for identifying an attribute. For more
 information, see [X500].
@@ -2732,7 +2600,8 @@ Release: September 12, 2018
 
 36 / 140
 
- attributeSyntax: 2.5.5.2
+
+ attributeSyntax: 2.5.5.2
  omSyntax: 6
  isSingleValued: TRUE
  schemaIdGuid: bf967922-0de6-11d0-a285-00aa003049e2
@@ -2745,7 +2614,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.74  Attribute attributeSecurityGUID
+### 2.74 Attribute attributeSecurityGUID
 
 This attribute specifies the GUID used to apply security credentials to a set of objects.
 
@@ -2767,7 +2636,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.75  Attribute attributeSyntax
+### 2.75 Attribute attributeSyntax
 
 This attribute specifies the OID for the syntax for this attribute.
 
@@ -2787,7 +2656,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.76  Attribute attributeTypes
+### 2.76 Attribute attributeTypes
 
 A multivalued property containing strings that represent each attribute in the schema.
 
@@ -2798,7 +2667,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Attribute-Types
+
+ cn: Attribute-Types
  ldapDisplayName: attributeTypes
  attributeId: 2.5.21.5
  attributeSyntax: 2.5.5.12
@@ -2815,7 +2685,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.77  Attribute audio
+### 2.77 Attribute audio
 
 This attribute can be used to store audio.
 
@@ -2833,7 +2703,7 @@ This attribute can be used to store audio.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.78  Attribute auditingPolicy
+### 2.78 Attribute auditingPolicy
 
 This attribute specifies the auditing policy for the local policy.
 
@@ -2853,7 +2723,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.79  Attribute authenticationOptions
+### 2.79 Attribute authenticationOptions
 
 This attribute specifies the authentication options used in the Active Directory Service Interface (ADSI)
 to bind to directory services objects.
@@ -2865,7 +2735,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Authentication-Options
+
+ cn: Authentication-Options
  ldapDisplayName: authenticationOptions
  attributeId: 1.2.840.113556.1.4.11
  attributeSyntax: 2.5.5.9
@@ -2881,7 +2752,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.80  Attribute authorityRevocationList
+### 2.80 Attribute authorityRevocationList
 
 Cross-certificate, certificate revocation list.
 
@@ -2902,7 +2773,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, rangeUpper is not defined.
 
-2.81  Attribute auxiliaryClass
+### 2.81 Attribute auxiliaryClass
 
 This attribute specifies the list of auxiliary classes to be associated with this class.
 
@@ -2929,7 +2800,8 @@ Release: September 12, 2018
 
 39 / 140
 
-2.82  Attribute badPasswordTime
+
+### 2.82 Attribute badPasswordTime
 
 This attribute specifies the last time and date that an attempt to log on to this account was made with
 an invalid password. This value is stored as a large integer that represents the number of 100
@@ -2952,7 +2824,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.83  Attribute badPwdCount
+### 2.83 Attribute badPwdCount
 
 This attribute specifies the number of times the user tried to log on to the account by using an
 incorrect password. A value of 0 indicates that the value is unknown.
@@ -2974,7 +2846,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.84  Attribute birthLocation
+### 2.84 Attribute birthLocation
 
 This attribute specifies the location of a system object, such as a file, at the time that it was originally
 created.
@@ -2997,12 +2869,13 @@ Release: September 12, 2018
 
 40 / 140
 
- rangeUpper: 32
+
+ rangeUpper: 32
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.85  Attribute bootFile
+### 2.85 Attribute bootFile
 
 This attribute specifies the boot image name.
 
@@ -3019,7 +2892,7 @@ This attribute specifies the boot image name.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2 operating system.
 
-2.86  Attribute bootParameter
+### 2.86 Attribute bootParameter
 
 This attribute specifies the rpc.bootparameter.
 
@@ -3036,7 +2909,7 @@ This attribute specifies the rpc.bootparameter.
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.87  Attribute bridgeheadServerListBL
+### 2.87 Attribute bridgeheadServerListBL
 
 This attribute is the back link attribute of bridgeheadServerList and contains the list of servers that are
 bridgeheads for Active Directory replication.
@@ -3062,11 +2935,12 @@ Release: September 12, 2018
 
 41 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.88  Attribute bridgeheadTransportList
+### 2.88 Attribute bridgeheadTransportList
 
 This attribute specifies the replication transports for which this server is an Active Directory
 bridgehead DC.
@@ -3086,7 +2960,7 @@ bridgehead DC.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.89  Attribute buildingName
+### 2.89 Attribute buildingName
 
 This attribute specifies the name of the building where an organization or organizational unit is based.
 
@@ -3104,7 +2978,7 @@ This attribute specifies the name of the building where an organization or organ
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.90  Attribute builtinCreationTime
+### 2.90 Attribute builtinCreationTime
 
 This attribute is used to support replication to Windows NT 4.0 operating system domains.
 
@@ -3128,7 +3002,8 @@ Release: September 12, 2018
 
 42 / 140
 
-2.91  Attribute builtinModifiedCount
+
+### 2.91 Attribute builtinModifiedCount
 
 This attribute is used to support replication to Windows NT 4.0 domains.
 
@@ -3145,7 +3020,7 @@ This attribute is used to support replication to Windows NT 4.0 domains.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.92  Attribute businessCategory
+### 2.92 Attribute businessCategory
 
 This attribute specifies descriptive text on an organizational unit.
 
@@ -3165,7 +3040,7 @@ This attribute specifies descriptive text on an organizational unit.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.93  Attribute bytesPerMinute
+### 2.93 Attribute bytesPerMinute
 
 This attribute specifies the printer data transfer rate.
 
@@ -3182,7 +3057,7 @@ This attribute specifies the printer data transfer rate.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.94  Attribute c
+### 2.94 Attribute c
 
 This attribute specifies the country/region in the address of the user. The country/region is
 represented as the two-character country code based on [ISO-3166].
@@ -3194,7 +3069,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Country-Name
+
+ cn: Country-Name
  ldapDisplayName: c
  attributeId: 2.5.4.6
  attributeSyntax: 2.5.5.12
@@ -3216,7 +3092,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.95  Attribute cACertificate
+### 2.95 Attribute cACertificate
 
 This attribute specifies certificates of trusted certificate authorities (CAs).
 
@@ -3237,7 +3113,7 @@ This attribute specifies certificates of trusted certificate authorities (CAs).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.96  Attribute cACertificateDN
+### 2.96 Attribute cACertificateDN
 
 This attribute specifies the full distinguished name from the certificate authority (CA) certificate.
 
@@ -3262,7 +3138,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.97  Attribute cAConnect
+
+### 2.97 Attribute cAConnect
 
 This attribute specifies the connection string for binding to a CA.
 
@@ -3279,7 +3156,7 @@ This attribute specifies the connection string for binding to a CA.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.98  Attribute canonicalName
+### 2.98 Attribute canonicalName
 
 This attribute specifies the name of the object in canonical format;
 myserver2.fabrikam.com/users/jeffsmith is an example of a distinguished name in canonical format.
@@ -3305,7 +3182,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.99  Attribute canUpgradeScript
+### 2.99 Attribute canUpgradeScript
 
 This attribute specifies the list of application packages that can be upgraded by this application
 package or that can upgrade this application package.
@@ -3328,9 +3205,10 @@ Release: September 12, 2018
 
 45 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.100  Attribute carLicense
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.100 Attribute carLicense
 
 This attribute can be used to store a vehicle license or registration plate.
 
@@ -3347,7 +3225,7 @@ This attribute can be used to store a vehicle license or registration plate.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.101  Attribute catalogs
+### 2.101 Attribute catalogs
 
 This attribute specifies the list of catalogs indexing storage on a given computer.
 
@@ -3364,7 +3242,7 @@ This attribute specifies the list of catalogs indexing storage on a given comput
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.102  Attribute categories
+### 2.102 Attribute categories
 
 This attribute specifies a list of category IDs (GUIDs) for categories that apply to this application.
 
@@ -3383,7 +3261,7 @@ This attribute specifies a list of category IDs (GUIDs) for categories that appl
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.103  Attribute categoryId
+### 2.103 Attribute categoryId
 
 This attribute specifies the ID for a component category.
 
@@ -3394,7 +3272,8 @@ Release: September 12, 2018
 
 46 / 140
 
- cn: Category-Id
+
+ cn: Category-Id
  ldapDisplayName: categoryId
  attributeId: 1.2.840.113556.1.4.322
  attributeSyntax: 2.5.5.10
@@ -3409,7 +3288,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.104  Attribute cAUsages
+### 2.104 Attribute cAUsages
 
 This attribute specifies the list of OID/cryptographic service provider (CSP) name concatenations.
 
@@ -3426,7 +3305,7 @@ This attribute specifies the list of OID/cryptographic service provider (CSP) na
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.105  Attribute cAWEBURL
+### 2.105 Attribute cAWEBURL
 
 This attribute specifies the URL for an HTTP connection to a CA.
 
@@ -3443,7 +3322,7 @@ This attribute specifies the URL for an HTTP connection to a CA.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.106  Attribute certificateAuthorityObject
+### 2.106 Attribute certificateAuthorityObject
 
 This attribute specifies a reference to the CA associated with a certificate revocation list (CRL)
 distribution point.
@@ -3460,7 +3339,8 @@ Release: September 12, 2018
 
 47 / 140
 
- omSyntax: 127
+
+ omSyntax: 127
  omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: TRUE
  schemaIdGuid: 963d2732-48be-11d1-a9c3-0000f80367c1
@@ -3472,7 +3352,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 On Windows 2000 Server, rangeUpper is not defined.
 
-2.107  Attribute certificateRevocationList
+### 2.107 Attribute certificateRevocationList
 
 This attribute represents a list of certificates that have been revoked.
 
@@ -3493,7 +3373,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, rangeUpper is not defined.
 
-2.108  Attribute certificateTemplates
+### 2.108 Attribute certificateTemplates
 
 This attribute contains information for a certificate issued by a certificate server.
 
@@ -3511,7 +3391,7 @@ This attribute contains information for a certificate issued by a certificate se
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.109  Attribute classDisplayName
+### 2.109 Attribute classDisplayName
 
 This attribute specifies the object name to be displayed on dialogs.
 
@@ -3526,7 +3406,8 @@ Release: September 12, 2018
 
 48 / 140
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: FALSE
  schemaIdGuid: 548e1c22-dea6-11d0-b010-0000f80367c1
@@ -3536,7 +3417,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.110  Attribute cn
+### 2.110 Attribute cn
 
 This attribute specifies the name that represents an object. It is used to perform searches.
 
@@ -3562,7 +3443,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.111  Attribute co
+### 2.111 Attribute co
 
 This attribute specifies the country/region in which the user is located.
 
@@ -3590,7 +3471,8 @@ Release: September 12, 2018
 
 49 / 140
 
-2.112  Attribute codePage
+
+### 2.112 Attribute codePage
 
 This attribute specifies the code page for the user's language of choice. The space of values is the
 Microsoft code page designation. For more information, see [MSDN-CP].
@@ -3616,7 +3498,7 @@ In Windows 2000 Server, rangeLower and rangeUpper are not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.113  Attribute cOMClassID
+### 2.113 Attribute cOMClassID
 
 This attribute specifies the list of ClassIDs implemented in this application package.
 
@@ -3633,7 +3515,7 @@ This attribute specifies the list of ClassIDs implemented in this application pa
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.114  Attribute cOMCLSID
+### 2.114 Attribute cOMCLSID
 
 This attribute specifies the GUID associated with this object class.
 
@@ -3657,9 +3539,10 @@ Release: September 12, 2018
 
 50 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.115  Attribute cOMInterfaceID
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.115 Attribute cOMInterfaceID
 
 This attribute specifies the list of interfaces implemented in this application package.
 
@@ -3678,7 +3561,7 @@ This attribute specifies the list of interfaces implemented in this application 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.116  Attribute comment
+### 2.116 Attribute comment
 
 This attribute can be used to store a comment for a user.
 
@@ -3699,7 +3582,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.117  Attribute cOMOtherProgId
+### 2.117 Attribute cOMOtherProgId
 
 This attribute specifies the list of other program ID strings for the host class.
 
@@ -3723,7 +3606,8 @@ Release: September 12, 2018
 
 51 / 140
 
-2.118  Attribute company
+
+### 2.118 Attribute company
 
 This attribute can be used to store a company name for a user.
 
@@ -3744,7 +3628,7 @@ This attribute can be used to store a company name for a user.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.119  Attribute cOMProgID
+### 2.119 Attribute cOMProgID
 
 This attribute specifies the list of COM object program IDs implemented in this application package.
 
@@ -3761,7 +3645,7 @@ This attribute specifies the list of COM object program IDs implemented in this 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.120  Attribute cOMTreatAsClassId
+### 2.120 Attribute cOMTreatAsClassId
 
 This attribute specifies the Treat-As string GUID class identifier (CLSID) for the host class.
 
@@ -3787,7 +3671,8 @@ Release: September 12, 2018
 
 52 / 140
 
-2.121  Attribute cOMTypelibId
+
+### 2.121 Attribute cOMTypelibId
 
 This attribute specifies the list of type library IDs contained in this application package.
 
@@ -3806,7 +3691,7 @@ This attribute specifies the list of type library IDs contained in this applicat
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.122  Attribute cOMUniqueLIBID
+### 2.122 Attribute cOMUniqueLIBID
 
 This attribute specifies a single-valued string GUID LIBID for a type library.
 
@@ -3825,7 +3710,7 @@ This attribute specifies a single-valued string GUID LIBID for a type library.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.123  Attribute contentIndexingAllowed
+### 2.123 Attribute contentIndexingAllowed
 
 Indicates whether the volume object can be content indexed.
 
@@ -3842,7 +3727,7 @@ Indicates whether the volume object can be content indexed.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.124  Attribute contextMenu
+### 2.124 Attribute contextMenu
 
 This attribute specifies the order number and GUID of the context menu to be used for an object.
 
@@ -3853,7 +3738,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Context-Menu
+
+ cn: Context-Menu
  ldapDisplayName: contextMenu
  attributeId: 1.2.840.113556.1.4.499
  attributeSyntax: 2.5.5.12
@@ -3866,7 +3752,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.125  Attribute controlAccessRights
+### 2.125 Attribute controlAccessRights
 
 This attribute is used by DS Security to determine which users can perform specific operations on the
 host object.
@@ -3886,7 +3772,7 @@ host object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.126  Attribute cost
+### 2.126 Attribute cost
 
 This attribute contains the relative cost for routing messages through a particular site connector.
 
@@ -3906,7 +3792,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.127  Attribute countryCode
+### 2.127 Attribute countryCode
 
 This attribute specifies the country code for the user's language of choice.
 
@@ -3919,7 +3805,8 @@ Release: September 12, 2018
 
 54 / 140
 
- ldapDisplayName: countryCode
+
+ ldapDisplayName: countryCode
  attributeId: 1.2.840.113556.1.4.25
  attributeSyntax: 2.5.5.9
  omSyntax: 2
@@ -3939,7 +3826,7 @@ In Windows 2000 Server, rangeLower and rangeUpper are not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.128  Attribute createDialog
+### 2.128 Attribute createDialog
 
 This attribute specifies the GUID of the dialog for creating an associated object.
 
@@ -3956,7 +3843,7 @@ This attribute specifies the GUID of the dialog for creating an associated objec
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.129  Attribute createTimeStamp
+### 2.129 Attribute createTimeStamp
 
 This attribute specifies the date this object was created. This value is replicated.
 
@@ -3984,7 +3871,8 @@ Release: September 12, 2018
 
 55 / 140
 
-2.130  Attribute createWizardExt
+
+### 2.130 Attribute createWizardExt
 
 The GUID of wizard extensions for creating an associated object.
 
@@ -4001,7 +3889,7 @@ The GUID of wizard extensions for creating an associated object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.131  Attribute creationTime
+### 2.131 Attribute creationTime
 
 This attribute specifies the date and time that the object was created.
 
@@ -4021,7 +3909,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.132  Attribute creationWizard
+### 2.132 Attribute creationWizard
 
 This attribute specifies the wizard to activate when creating objects of this class.
 
@@ -4038,7 +3926,7 @@ This attribute specifies the wizard to activate when creating objects of this cl
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.133  Attribute creator
+### 2.133 Attribute creator
 
 This attribute specifies the person who created the object.
 
@@ -4049,7 +3937,8 @@ Release: September 12, 2018
 
 56 / 140
 
- cn: Creator
+
+ cn: Creator
  ldapDisplayName: creator
  attributeId: 1.2.840.113556.1.4.679
  attributeSyntax: 2.5.5.12
@@ -4062,7 +3951,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.134  Attribute cRLObject
+### 2.134 Attribute cRLObject
 
 This attribute specifies the reference to the CRL object associated with a CA.
 
@@ -4080,7 +3969,7 @@ This attribute specifies the reference to the CRL object associated with a CA.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.135  Attribute cRLPartitionedRevocationList
+### 2.135 Attribute cRLPartitionedRevocationList
 
 This attribute specifies the public key infrastructure–revocation lists.
 
@@ -4100,7 +3989,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, rangeUpper is not defined.
 
-2.136  Attribute crossCertificatePair
+### 2.136 Attribute crossCertificatePair
 
 This attribute specifies the version 3 (v3) cross-certificate.
 
@@ -4115,7 +4004,8 @@ Release: September 12, 2018
 
 57 / 140
 
- attributeSyntax: 2.5.5.10
+
+ attributeSyntax: 2.5.5.10
  omSyntax: 4
  isSingleValued: FALSE
  schemaIdGuid: 167757b2-47f3-11d1-a9c3-0000f80367c1
@@ -4129,7 +4019,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, rangeUpper is not defined.
 
-2.137  Attribute currentLocation
+### 2.137 Attribute currentLocation
 
 This attribute specifies the computer location for an object that has moved.
 
@@ -4148,7 +4038,7 @@ This attribute specifies the computer location for an object that has moved.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.138  Attribute currentParentCA
+### 2.138 Attribute currentParentCA
 
 This attribute specifies a reference to the CAs that issued the current certificates for a CA.
 
@@ -4166,7 +4056,7 @@ This attribute specifies a reference to the CAs that issued the current certific
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.139  Attribute currentValue
+### 2.139 Attribute currentValue
 
 This attribute is used to store the new value of a secret object. Secret objects are specified in [MS-
 LSAD] section 3.1.1.4. The format of the value of this attribute is outside the scope of the state
@@ -4181,7 +4071,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Current-Value
+
+ cn: Current-Value
  ldapDisplayName: currentValue
  attributeId: 1.2.840.113556.1.4.27
  attributeSyntax: 2.5.5.10
@@ -4197,7 +4088,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.140  Attribute currMachineId
+### 2.140 Attribute currMachineId
 
 This attribute specifies the ID of the machine where a Link-Track-Vol-Entry object is located.
 
@@ -4216,7 +4107,7 @@ This attribute specifies the ID of the machine where a Link-Track-Vol-Entry obje
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.141  Attribute dBCSPwd
+### 2.141 Attribute dBCSPwd
 
 This attribute specifies the account's LAN Manager password.
 
@@ -4245,7 +4136,8 @@ Release: September 12, 2018
 
 59 / 140
 
-2.142  Attribute dc
+
+### 2.142 Attribute dc
 
 This attribute specifies the naming attribute for domain and DNS objects. Usually displayed as
 dc=DomainName.
@@ -4270,7 +4162,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.143  Attribute defaultClassStore
+### 2.143 Attribute defaultClassStore
 
 This attribute specifies the default Class Store for a given user.
 
@@ -4288,7 +4180,7 @@ This attribute specifies the default Class Store for a given user.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.144  Attribute defaultGroup
+### 2.144 Attribute defaultGroup
 
 This attribute specifies the group to which this object is assigned when it is created.
 
@@ -4313,7 +4205,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.145  Attribute defaultHidingValue
+
+### 2.145 Attribute defaultHidingValue
 
 This attribute specifies a Boolean value that specifies the default setting of the
 showInAdvancedViewOnly property of new instances of this class.
@@ -4334,7 +4227,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.146  Attribute defaultLocalPolicyObject
+### 2.146 Attribute defaultLocalPolicyObject
 
 This attribute specifies a reference to a policy object that defines the local policy for the host object.
 
@@ -4352,7 +4245,7 @@ This attribute specifies a reference to a policy object that defines the local p
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.147  Attribute defaultObjectCategory
+### 2.147 Attribute defaultObjectCategory
 
 This attribute specifies the value to use for the objectCategory attribute (see [MS-ADA3] section 2.39)
 if one is not specified on object instantiation. For more information on the defaultObjectCategory
@@ -4380,9 +4273,10 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.148  Attribute defaultPriority
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.148 Attribute defaultPriority
 
 The default priority (for example, of a process or a print job).
 
@@ -4399,7 +4293,7 @@ The default priority (for example, of a process or a print job).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.149  Attribute defaultSecurityDescriptor
+### 2.149 Attribute defaultSecurityDescriptor
 
 This attribute specifies the security descriptor to be assigned to the object when it is created.
 
@@ -4421,7 +4315,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.150  Attribute deltaRevocationList
+### 2.150 Attribute deltaRevocationList
 
 This list contains certificates revoked since the last delta update.
 
@@ -4446,9 +4340,10 @@ Release: September 12, 2018
 
 62 / 140
 
-In Windows 2000 Server, rangeUpper is not defined.
 
-2.151  Attribute department
+In Windows 2000 Server, rangeUpper is not defined.
+
+### 2.151 Attribute department
 
 This attribute contains the name of the user's department.
 
@@ -4469,7 +4364,7 @@ This attribute contains the name of the user's department.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.152  Attribute departmentNumber
+### 2.152 Attribute departmentNumber
 
 This attribute can be used to store a department number within an organization.
 
@@ -4486,7 +4381,7 @@ This attribute can be used to store a department number within an organization.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.153  Attribute description
+### 2.153 Attribute description
 
 This attribute specifies the description to display for an object.
 
@@ -4514,11 +4409,12 @@ Release: September 12, 2018
 
 63 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.154  Attribute desktopProfile
+### 2.154 Attribute desktopProfile
 
 This attribute specifies the location of the desktop profile for a user or group of users.
 
@@ -4535,7 +4431,7 @@ This attribute specifies the location of the desktop profile for a user or group
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.155  Attribute destinationIndicator
+### 2.155 Attribute destinationIndicator
 
 This is part of the [X500] specification.
 
@@ -4555,7 +4451,7 @@ This is part of the [X500] specification.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.156  Attribute dhcpClasses
+### 2.156 Attribute dhcpClasses
 
  cn: dhcp-Classes
  ldapDisplayName: dhcpClasses
@@ -4570,7 +4466,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.157  Attribute dhcpFlags
+### 2.157 Attribute dhcpFlags
 
  cn: dhcp-Flags
 
@@ -4581,7 +4477,8 @@ Release: September 12, 2018
 
 64 / 140
 
- ldapDisplayName: dhcpFlags
+
+ ldapDisplayName: dhcpFlags
  attributeId: 1.2.840.113556.1.4.700
  attributeSyntax: 2.5.5.16
  omSyntax: 65
@@ -4593,7 +4490,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.158  Attribute dhcpIdentification
+### 2.158 Attribute dhcpIdentification
 
  cn: dhcp-Identification
  ldapDisplayName: dhcpIdentification
@@ -4608,7 +4505,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.159  Attribute dhcpMask
+### 2.159 Attribute dhcpMask
 
  cn: dhcp-Mask
  ldapDisplayName: dhcpMask
@@ -4623,7 +4520,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.160  Attribute dhcpMaxKey
+### 2.160 Attribute dhcpMaxKey
 
  cn: dhcp-MaxKey
  ldapDisplayName: dhcpMaxKey
@@ -4645,7 +4542,8 @@ Release: September 12, 2018
 
 65 / 140
 
-2.161  Attribute dhcpObjDescription
+
+### 2.161 Attribute dhcpObjDescription
 
  cn: dhcp-Obj-Description
  ldapDisplayName: dhcpObjDescription
@@ -4660,7 +4558,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.162  Attribute dhcpObjName
+### 2.162 Attribute dhcpObjName
 
  cn: dhcp-Obj-Name
  ldapDisplayName: dhcpObjName
@@ -4675,7 +4573,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.163  Attribute dhcpOptions
+### 2.163 Attribute dhcpOptions
 
  cn: dhcp-Options
  ldapDisplayName: dhcpOptions
@@ -4690,7 +4588,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.164  Attribute dhcpProperties
+### 2.164 Attribute dhcpProperties
 
  cn: dhcp-Properties
  ldapDisplayName: dhcpProperties
@@ -4712,7 +4610,8 @@ Release: September 12, 2018
 
 66 / 140
 
-2.165  Attribute dhcpRanges
+
+### 2.165 Attribute dhcpRanges
 
  cn: dhcp-Ranges
  ldapDisplayName: dhcpRanges
@@ -4727,7 +4626,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.166  Attribute dhcpReservations
+### 2.166 Attribute dhcpReservations
 
  cn: dhcp-Reservations
  ldapDisplayName: dhcpReservations
@@ -4742,7 +4641,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.167  Attribute dhcpServers
+### 2.167 Attribute dhcpServers
 
 This attribute contains a list of servers authorized in the enterprise. This attribute is sent by the
 Dynamic Host Configuration Protocol (DHCP) server and can contain either the name of the server or
@@ -4764,7 +4663,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, extendedCharsAllowed is not defined.
 
-2.168  Attribute dhcpSites
+### 2.168 Attribute dhcpSites
 
  cn: dhcp-Sites
  ldapDisplayName: dhcpSites
@@ -4780,14 +4679,15 @@ Release: September 12, 2018
 
 67 / 140
 
- schemaIdGuid: 963d2749-48be-11d1-a9c3-0000f80367c1
+
+ schemaIdGuid: 963d2749-48be-11d1-a9c3-0000f80367c1
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.169  Attribute dhcpState
+### 2.169 Attribute dhcpState
 
  cn: dhcp-State
  ldapDisplayName: dhcpState
@@ -4802,7 +4702,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.170  Attribute dhcpSubnets
+### 2.170 Attribute dhcpSubnets
 
  cn: dhcp-Subnets
  ldapDisplayName: dhcpSubnets
@@ -4817,7 +4717,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.171  Attribute dhcpType
+### 2.171 Attribute dhcpType
 
 The type of DHCP server. This attribute is sent by the DHCP server during authorization and is
 currently being set to 0.
@@ -4842,7 +4742,8 @@ Release: September 12, 2018
 
 68 / 140
 
-2.172  Attribute dhcpUniqueKey
+
+### 2.172 Attribute dhcpUniqueKey
 
  cn: dhcp-Unique-Key
  ldapDisplayName: dhcpUniqueKey
@@ -4857,7 +4758,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.173  Attribute dhcpUpdateTime
+### 2.173 Attribute dhcpUpdateTime
 
  cn: dhcp-Update-Time
  ldapDisplayName: dhcpUpdateTime
@@ -4872,7 +4773,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.174  Attribute directReports
+### 2.174 Attribute directReports
 
 This attribute contains the list of users who directly report to a user. The users listed as reports are
 those who have their property-manager property set to this user. Each item in the list is a linked
@@ -4895,7 +4796,7 @@ reference to the object that represents the corresponding user.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.175  Attribute displayName
+### 2.175 Attribute displayName
 
 This attribute specifies the display name for an object, usually the combination of the user's first
 name, middle initial, and last name.
@@ -4909,7 +4810,8 @@ Release: September 12, 2018
 
 69 / 140
 
- ldapDisplayName: displayName
+
+ ldapDisplayName: displayName
  attributeId: 1.2.840.113556.1.2.13
  attributeSyntax: 2.5.5.12
  omSyntax: 64
@@ -4928,7 +4830,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.176  Attribute displayNamePrintable
+### 2.176 Attribute displayNamePrintable
 
 This attribute specifies the printable display name for an object, usually the combination of the user's
 first name, middle initial, and last name.
@@ -4953,7 +4855,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.177  Attribute distinguishedName
+### 2.177 Attribute distinguishedName
 
 This attribute is the same as the distinguished name for an object and is included on all objects in
 Active Directory. It is also used by Exchange Server. See [MS-ADTS] section 3.1.1.1.4 for more
@@ -4978,7 +4880,8 @@ Release: September 12, 2018
 
 70 / 140
 
- mapiID: 32828
+
+ mapiID: 32828
  isMemberOfPartialAttributeSet: TRUE
  systemFlags: FLAG_SCHEMA_BASE_OBJECT |
   FLAG_ATTR_REQ_PARTIAL_SET_MEMBER | FLAG_ATTR_NOT_REPLICATED
@@ -4988,7 +4891,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.178  Attribute dITContentRules
+### 2.178 Attribute dITContentRules
 
 This attribute specifies the permissible content of entries of a particular structural object class via the
 identification of an optional set of auxiliary object classes, as well as mandatory, optional, and
@@ -5012,7 +4915,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.179  Attribute division
+### 2.179 Attribute division
 
 This attribute can be used to store the name of a division for a user.
 
@@ -5032,7 +4935,7 @@ This attribute can be used to store the name of a division for a user.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.180  Attribute dMDLocation
+### 2.180 Attribute dMDLocation
 
 This attribute specifies the distinguished name to the schema partition.
 
@@ -5043,7 +4946,8 @@ Release: September 12, 2018
 
 71 / 140
 
- cn: DMD-Location
+
+ cn: DMD-Location
  ldapDisplayName: dMDLocation
  attributeId: 1.2.840.113556.1.2.36
  attributeSyntax: 2.5.5.1
@@ -5060,7 +4964,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.181  Attribute dmdName
+### 2.181 Attribute dmdName
 
 This attribute specifies a name used to identify the schema partition.
 
@@ -5080,7 +4984,7 @@ This attribute specifies a name used to identify the schema partition.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.182  Attribute dNReferenceUpdate
+### 2.182 Attribute dNReferenceUpdate
 
 If an object is renamed, this attribute is used to track all the previous and current names assigned to
 the object so that linked objects can still find it.
@@ -5109,7 +5013,8 @@ Release: September 12, 2018
 
 72 / 140
 
-2.183  Attribute dnsAllowDynamic
+
+### 2.183 Attribute dnsAllowDynamic
 
  cn: Dns-Allow-Dynamic
  ldapDisplayName: dnsAllowDynamic
@@ -5124,7 +5029,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.184  Attribute dnsAllowXFR
+### 2.184 Attribute dnsAllowXFR
 
  cn: Dns-Allow-XFR
  ldapDisplayName: dnsAllowXFR
@@ -5139,7 +5044,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.185  Attribute dNSHostName
+### 2.185 Attribute dNSHostName
 
 This attribute specifies the name of a computer as registered in DNS.
 
@@ -5165,7 +5070,7 @@ In Windows 2000 Server, attributeSecurityGuid is not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.186  Attribute dnsNotifySecondaries
+### 2.186 Attribute dnsNotifySecondaries
 
  cn: Dns-Notify-Secondaries
  ldapDisplayName: dnsNotifySecondaries
@@ -5177,7 +5082,8 @@ Release: September 12, 2018
 
 73 / 140
 
- attributeId: 1.2.840.113556.1.4.381
+
+ attributeId: 1.2.840.113556.1.4.381
  attributeSyntax: 2.5.5.9
  omSyntax: 2
  isSingleValued: FALSE
@@ -5188,7 +5094,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.187  Attribute dNSProperty
+### 2.187 Attribute dNSProperty
 
 Written onto dnsZone objects. This attribute is used to store zone properties in BLOB format.
 
@@ -5205,7 +5111,7 @@ Written onto dnsZone objects. This attribute is used to store zone properties in
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.188  Attribute dnsRecord
+### 2.188 Attribute dnsRecord
 
 This attribute is written onto dnsNode objects. Used to store DNS resource record definitions in BLOB
 format.
@@ -5223,7 +5129,7 @@ format.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.189  Attribute dnsRoot
+### 2.189 Attribute dnsRoot
 
 The uppermost fully qualified domain name (FQDN) (1) ([MS-ADTS] section 1.1) assigned to a domain
 naming context. This is set on a crossRef object and is used, among other things, for referral
@@ -5243,7 +5149,8 @@ Release: September 12, 2018
 
 74 / 140
 
- isSingleValued: FALSE
+
+ isSingleValued: FALSE
  schemaIdGuid: bf967959-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: fATTINDEX
@@ -5256,7 +5163,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.190  Attribute dnsSecureSecondaries
+### 2.190 Attribute dnsSecureSecondaries
 
  cn: Dns-Secure-Secondaries
  ldapDisplayName: dnsSecureSecondaries
@@ -5271,7 +5178,7 @@ The schemaFlagsEx attribute was added to this attribute definition in Windows Se
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.191  Attribute dNSTombstoned
+### 2.191 Attribute dNSTombstoned
 
 Set to TRUE if this object has been tombstoned. This attribute exists to make searching for
 tombstoned records easier and faster.
@@ -5294,7 +5201,7 @@ replicate node deletions between DNS servers.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.192  Attribute documentAuthor
+### 2.192 Attribute documentAuthor
 
  cn: documentAuthor
  ldapDisplayName: documentAuthor
@@ -5310,14 +5217,15 @@ Release: September 12, 2018
 
 75 / 140
 
- isSingleValued: FALSE
+
+ isSingleValued: FALSE
  schemaIdGuid: f18a8e19-af5f-4478-b096-6f35c27eb83f
  systemOnly: FALSE
  searchFlags: 0
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.193  Attribute documentIdentifier
+### 2.193 Attribute documentIdentifier
 
  cn: documentIdentifier
  ldapDisplayName: documentIdentifier
@@ -5333,7 +5241,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.194  Attribute documentLocation
+### 2.194 Attribute documentLocation
 
  cn: documentLocation
  ldapDisplayName: documentLocation
@@ -5349,7 +5257,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.195  Attribute documentPublisher
+### 2.195 Attribute documentPublisher
 
 This attribute specifies the person and/or organization that published a document.
 
@@ -5374,7 +5282,8 @@ Release: September 12, 2018
 
 76 / 140
 
-2.196  Attribute documentTitle
+
+### 2.196 Attribute documentTitle
 
  cn: documentTitle
  ldapDisplayName: documentTitle
@@ -5390,7 +5299,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.197  Attribute documentVersion
+### 2.197 Attribute documentVersion
 
  cn: documentVersion
  ldapDisplayName: documentVersion
@@ -5406,7 +5315,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.198  Attribute domainCAs
+### 2.198 Attribute domainCAs
 
 The Domain-Certificate-Authorities attribute contains a list of certificate authorities for a given
 domain.
@@ -5425,7 +5334,7 @@ domain.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.199  Attribute domainCrossRef
+### 2.199 Attribute domainCrossRef
 
 This is a reference from a trusted domain object to the cross-reference object of the trusted domain.
 
@@ -5442,7 +5351,8 @@ Release: September 12, 2018
 
 77 / 140
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: TRUE
  schemaIdGuid: b000ea7b-a086-11d0-afdd-00c04fd930c9
  systemOnly: FALSE
@@ -5454,7 +5364,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.200  Attribute domainID
+### 2.200 Attribute domainID
 
 Reference to a domain associated with a CA.
 
@@ -5472,7 +5382,7 @@ Reference to a domain associated with a CA.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.201  Attribute domainIdentifier
+### 2.201 Attribute domainIdentifier
 
 The domain security identifier (SID), as defined in [MS-DTYP] section 2.4.2, identifying the domain.
 The SID can be represented in any of the three formats described in that section, depending on the
@@ -5491,7 +5401,7 @@ type of protocol being used to carry the information.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.202  Attribute domainPolicyObject
+### 2.202 Attribute domainPolicyObject
 
 Reference to the policy object defining the Local Security Authority (LSA) policy for the host domain.
 
@@ -5508,7 +5418,8 @@ Release: September 12, 2018
 
 78 / 140
 
- omObjectClass: 1.3.12.2.1011.28.0.714
+
+ omObjectClass: 1.3.12.2.1011.28.0.714
  isSingleValued: TRUE
  schemaIdGuid: bf96795d-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
@@ -5517,7 +5428,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.203  Attribute domainPolicyReference
+### 2.203 Attribute domainPolicyReference
 
 The distinguished name of a domain policy object that a policy object copies from.
 
@@ -5536,7 +5447,7 @@ The distinguished name of a domain policy object that a policy object copies fro
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.204  Attribute domainReplica
+### 2.204 Attribute domainReplica
 
 A Unicode string attribute that gives the NetBIOS name of the PDC at the time of upgrade from
 Windows NT 4.0, otherwise the default value is NULL.
@@ -5562,7 +5473,7 @@ In Windows 2000 Server, attributeSecurityGuid is not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.205  Attribute domainWidePolicy
+### 2.205 Attribute domainWidePolicy
 
 This attribute is for user-extensible policy to be replicated to the clients.
 
@@ -5573,7 +5484,8 @@ Release: September 12, 2018
 
 79 / 140
 
- cn: Domain-Wide-Policy
+
+ cn: Domain-Wide-Policy
  ldapDisplayName: domainWidePolicy
  attributeId: 1.2.840.113556.1.4.421
  attributeSyntax: 2.5.5.10
@@ -5587,7 +5499,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.206  Attribute drink
+### 2.206 Attribute drink
 
  cn: drink
  ldapDisplayName: drink
@@ -5603,7 +5515,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.207  Attribute driverName
+### 2.207 Attribute driverName
 
  cn: Driver-Name
  ldapDisplayName: driverName
@@ -5619,7 +5531,7 @@ Version-Specific Behavior: First implemented on Windows Server 2003.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.208  Attribute driverVersion
+### 2.208 Attribute driverVersion
 
  cn: Driver-Version
  ldapDisplayName: driverVersion
@@ -5641,7 +5553,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.209  Attribute dSASignature
+
+### 2.209 Attribute dSASignature
 
 The DSA-Signature of an object is the Invocation-ID of the last directory to modify the object.
 
@@ -5662,7 +5575,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.210  Attribute dSCorePropagationData
+### 2.210 Attribute dSCorePropagationData
 
 This attribute is for internal use only.
 
@@ -5684,7 +5597,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.211  Attribute dSHeuristics
+### 2.211 Attribute dSHeuristics
 
 This attribute contains global settings for the entire forest. For more information on global settings,
 see [MS-ADTS].
@@ -5708,11 +5621,12 @@ Release: September 12, 2018
 
 81 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.212  Attribute dSUIAdminMaximum
+### 2.212 Attribute dSUIAdminMaximum
 
 This is the default maximum number of objects that will be shown in a container by the administration
 user interface (UI).
@@ -5730,7 +5644,7 @@ user interface (UI).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.213  Attribute dSUIAdminNotification
+### 2.213 Attribute dSUIAdminNotification
 
 This attribute specifies a list of the GUIDs of COM objects that support a callback interface that
 DSAdmin calls when an action has occurred on an object through the UI.
@@ -5748,7 +5662,7 @@ DSAdmin calls when an action has occurred on an object through the UI.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.214  Attribute dSUIShellMaximum
+### 2.214 Attribute dSUIShellMaximum
 
 This attribute specifies the default maximum number of objects that will be shown in a container by
 the shell UI.
@@ -5773,7 +5687,8 @@ Release: September 12, 2018
 
 82 / 140
 
-2.215  Attribute dynamicLDAPServer
+
+### 2.215 Attribute dynamicLDAPServer
 
 This attribute specifies the fully qualified domain name (FQDN) (1) ([MS-ADTS] section 1.1) of the
 server-handling dynamic properties for this account.
@@ -5792,7 +5707,7 @@ server-handling dynamic properties for this account.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.216  Attribute eFSPolicy
+### 2.216 Attribute eFSPolicy
 
 The Encrypting File System (EFS) Policy.
 
@@ -5813,7 +5728,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.217  Attribute employeeID
+### 2.217 Attribute employeeID
 
 This attribute specifies the ID of an employee.
 
@@ -5839,7 +5754,8 @@ Release: September 12, 2018
 
 83 / 140
 
-2.218  Attribute employeeNumber
+
+### 2.218 Attribute employeeNumber
 
 This attribute specifies the number assigned to an employee other than the ID.
 
@@ -5862,7 +5778,7 @@ In Windows 2000 Server, the following attributes are defined differently.
 
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
-2.219  Attribute employeeType
+### 2.219 Attribute employeeType
 
 This attribute specifies the job category for an employee.
 
@@ -5885,7 +5801,7 @@ In Windows 2000 Server, the following attributes are defined differently.
 
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
-2.220  Attribute Enabled
+### 2.220 Attribute Enabled
 
 This attribute is used to signify whether a given crossRef is enabled.
 
@@ -5905,7 +5821,8 @@ Release: September 12, 2018
 
 84 / 140
 
- searchFlags: 0
+
+ searchFlags: 0
  mapiID: 35873
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
@@ -5914,7 +5831,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.221  Attribute enabledConnection
+### 2.221 Attribute enabledConnection
 
 This attribute specifies whether a connection is available for use.
 
@@ -5934,7 +5851,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.222  Attribute enrollmentProviders
+### 2.222 Attribute enrollmentProviders
 
 Public key infrastructure (PKI) certificate templates.
 
@@ -5951,7 +5868,7 @@ Public key infrastructure (PKI) certificate templates.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.223  Attribute entryTTL
+### 2.223 Attribute entryTTL
 
 This operational attribute is maintained by the server and appears to be present in every dynamic
 entry. The attribute is not present when the entry does not contain the dynamicObject object class.
@@ -5970,7 +5887,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Entry-TTL
+
+ cn: Entry-TTL
  ldapDisplayName: entryTTL
  attributeId: 1.3.6.1.4.1.1466.101.119.3
  attributeSyntax: 2.5.5.9
@@ -5985,7 +5903,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.224  Attribute extendedAttributeInfo
+### 2.224 Attribute extendedAttributeInfo
 
 This attribute specifies a multivalued property containing strings that represent additional information
 for each attribute.
@@ -6007,7 +5925,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.225  Attribute extendedCharsAllowed
+### 2.225 Attribute extendedCharsAllowed
 
 This attribute specifies whether extended characters are allowed in the value of this attribute. Applies
 only to IA5, numeric, printable, and teletex string attributes.
@@ -6036,11 +5954,12 @@ Release: September 12, 2018
 
 86 / 140
 
- systemOnly: TRUE
+
+ systemOnly: TRUE
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.226  Attribute extendedClassInfo
+### 2.226 Attribute extendedClassInfo
 
 This attribute specifies a multivalued property containing strings that represent additional information
 for each class. Each value contains the governsID, lDAPDisplayName, and schemaIDGUID of the class.
@@ -6062,7 +5981,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.227  Attribute extensionName
+### 2.227 Attribute extensionName
 
 This attribute specifies the name of a property page used to extend the UI of a directory object.
 
@@ -6082,7 +6001,7 @@ This attribute specifies the name of a property page used to extend the UI of a 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.228  Attribute extraColumns
+### 2.228 Attribute extraColumns
 
 This is a multivalued attribute whose value(s) consist of a 5 tuple: (attribute name), (column title),
 (default visibility (0,1)), (column width (-1 for auto width)), and 0 (reserved for future use). This
@@ -6102,14 +6021,15 @@ Release: September 12, 2018
 
 87 / 140
 
- schemaIdGuid: d24e2846-1dd9-4bcf-99d7-a6227cc86da7
+
+ schemaIdGuid: d24e2846-1dd9-4bcf-99d7-a6227cc86da7
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.229  Attribute facsimileTelephoneNumber
+### 2.229 Attribute facsimileTelephoneNumber
 
 Contains the telephone number of the user's business fax machine.
 
@@ -6130,7 +6050,7 @@ Contains the telephone number of the user's business fax machine.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.230  Attribute fileExtPriority
+### 2.230 Attribute fileExtPriority
 
 This attribute specifies a list of file extensions in an application package and their associated priorities.
 
@@ -6147,7 +6067,7 @@ This attribute specifies a list of file extensions in an application package and
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.231  Attribute flags
+### 2.231 Attribute flags
 
 To be used by the object to store bit information.
 
@@ -6169,11 +6089,12 @@ Release: September 12, 2018
 
 88 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.232  Attribute flatName
+### 2.232 Attribute flatName
 
 For Windows NT domains, the flat name is the NetBIOS name. For links with non–Windows NT
 domains, the flat name is the identifying name of that domain or it is NULL.
@@ -6194,7 +6115,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.233  Attribute forceLogoff
+### 2.233 Attribute forceLogoff
 
 This attribute is used in computing the kickoff time. Logoff time minus Force Log Off equals kickoff
 time.
@@ -6218,7 +6139,7 @@ In Windows 2000 Server, attributeSecurityGuid is not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.234  Attribute foreignIdentifier
+### 2.234 Attribute foreignIdentifier
 
 This attribute specifies the security properties used by a foreign system.
 
@@ -6235,7 +6156,8 @@ Release: September 12, 2018
 
 89 / 140
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 3e97891e-8c01-11d0-afda-00c04fd930c9
  systemOnly: FALSE
  searchFlags: 0
@@ -6243,7 +6165,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.235  Attribute friendlyNames
+### 2.235 Attribute friendlyNames
 
 This attribute specifies a list of default friendly name definitions supported by a catalog.
 
@@ -6260,7 +6182,7 @@ This attribute specifies a list of default friendly name definitions supported b
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.236  Attribute fromEntry
+### 2.236 Attribute fromEntry
 
 This is a constructed attribute that is TRUE if the object is writable, and FALSE if it is read-only (for
 example, a global catalog replica instance).
@@ -6282,7 +6204,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.237  Attribute fromServer
+### 2.237 Attribute fromServer
 
 This attribute specifies the distinguished name of the replication source server.
 
@@ -6301,7 +6223,8 @@ Release: September 12, 2018
 
 90 / 140
 
- schemaIdGuid: bf967979-0de6-11d0-a285-00aa003049e2
+
+ schemaIdGuid: bf967979-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: fATTINDEX
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
@@ -6311,7 +6234,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.238  Attribute frsComputerReference
+### 2.238 Attribute frsComputerReference
 
 This File Replication service (FRS) attribute contains a reference to a replica set member's computer
 object.
@@ -6333,7 +6256,7 @@ object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.239  Attribute frsComputerReferenceBL
+### 2.239 Attribute frsComputerReferenceBL
 
 This FRS attribute is a back link attribute of Attribute frsComputerReference and contains a reference
 to replica sets to which this computer belongs.
@@ -6353,7 +6276,7 @@ to replica sets to which this computer belongs.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.240  Attribute fRSControlDataCreation
+### 2.240 Attribute fRSControlDataCreation
 
 This FRS attribute contains a Warning/Error level pair for file data creation (megabyte (MB) per
 second).
@@ -6367,7 +6290,8 @@ Release: September 12, 2018
 
 91 / 140
 
- ldapDisplayName: fRSControlDataCreation
+
+ ldapDisplayName: fRSControlDataCreation
  attributeId: 1.2.840.113556.1.4.871
  attributeSyntax: 2.5.5.12
  omSyntax: 64
@@ -6381,7 +6305,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.241  Attribute fRSControlInboundBacklog
+### 2.241 Attribute fRSControlInboundBacklog
 
 This FRS attribute contains a Warning/Error level pair for inbound backlog (number of files).
 
@@ -6400,7 +6324,7 @@ This FRS attribute contains a Warning/Error level pair for inbound backlog (numb
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.242  Attribute fRSControlOutboundBacklog
+### 2.242 Attribute fRSControlOutboundBacklog
 
 This FRS attribute contains a Warning/Error level pair for outbound backlog (number of files).
 
@@ -6419,7 +6343,7 @@ This FRS attribute contains a Warning/Error level pair for outbound backlog (num
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.243  Attribute fRSDirectoryFilter
+### 2.243 Attribute fRSDirectoryFilter
 
 This FRS attribute contains a list of directories excluded from file replication (for example, the "temp"
 directory or the "obj" directory).
@@ -6433,7 +6357,8 @@ Release: September 12, 2018
 
 92 / 140
 
- ldapDisplayName: fRSDirectoryFilter
+
+ ldapDisplayName: fRSDirectoryFilter
  attributeId: 1.2.840.113556.1.4.484
  attributeSyntax: 2.5.5.12
  omSyntax: 64
@@ -6447,7 +6372,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.244  Attribute fRSDSPoll
+### 2.244 Attribute fRSDSPoll
 
 This FRS attribute contains the DS polling interval for the file replication engine.
 
@@ -6464,7 +6389,7 @@ This FRS attribute contains the DS polling interval for the file replication eng
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.245  Attribute fRSExtensions
+### 2.245 Attribute fRSExtensions
 
 This FRS attribute contains binary data used by file replication.
 
@@ -6483,7 +6408,7 @@ This FRS attribute contains binary data used by file replication.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.246  Attribute fRSFaultCondition
+### 2.246 Attribute fRSFaultCondition
 
 This FRS attribute contains the fault condition for a member.
 
@@ -6500,7 +6425,8 @@ Release: September 12, 2018
 
 93 / 140
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: 1be8f178-a9ff-11d0-afe2-00c04fd930c9
  systemOnly: FALSE
  searchFlags: 0
@@ -6510,7 +6436,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.247  Attribute fRSFileFilter
+### 2.247 Attribute fRSFileFilter
 
 This FRS attribute contains the list of file extensions excluded from file replication.
 
@@ -6529,7 +6455,7 @@ This FRS attribute contains the list of file extensions excluded from file repli
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.248  Attribute fRSFlags
+### 2.248 Attribute fRSFlags
 
 This FRS attribute contains the FRS option flags.
 
@@ -6546,7 +6472,7 @@ This FRS attribute contains the FRS option flags.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.249  Attribute fRSLevelLimit
+### 2.249 Attribute fRSLevelLimit
 
 This FRS attribute contains the limit depth of the directory tree to replicate for file replication.
 
@@ -6567,11 +6493,12 @@ Release: September 12, 2018
 
 94 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.250  Attribute fRSMemberReference
+### 2.250 Attribute fRSMemberReference
 
 This FRS attribute contains a reference to the member object for this subscriber.
 
@@ -6592,7 +6519,7 @@ This FRS attribute contains a reference to the member object for this subscriber
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.251  Attribute fRSMemberReferenceBL
+### 2.251 Attribute fRSMemberReferenceBL
 
 This FRS attribute is the back link attribute of Attribute fRSMemberReference and contains a reference
 to subscriber objects for this member.
@@ -6612,7 +6539,7 @@ to subscriber objects for this member.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.252  Attribute fRSPartnerAuthLevel
+### 2.252 Attribute fRSPartnerAuthLevel
 
 This FRS attribute contains the remote procedure call (RPC) security level.
 
@@ -6633,11 +6560,12 @@ Release: September 12, 2018
 
 95 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.253  Attribute fRSPrimaryMember
+### 2.253 Attribute fRSPrimaryMember
 
 This FRS attribute contains a reference to the primary member of a replica set.
 
@@ -6656,7 +6584,7 @@ This FRS attribute contains a reference to the primary member of a replica set.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.254  Attribute fRSReplicaSetGUID
+### 2.254 Attribute fRSReplicaSetGUID
 
 This FRS attribute contains a GUID that identifies an FRS replica set.
 
@@ -6675,7 +6603,7 @@ This FRS attribute contains a GUID that identifies an FRS replica set.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.255  Attribute fRSReplicaSetType
+### 2.255 Attribute fRSReplicaSetType
 
 This FRS attribute contains a code that indicates whether this is a system volume (SYSVOL) replica
 set, a distributed file system (DFS) replica set, or other replica set.
@@ -6698,9 +6626,10 @@ Release: September 12, 2018
 
 96 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.256  Attribute fRSRootPath
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.256 Attribute fRSRootPath
 
 This FRS attribute contains a path to the root of the replicated file system tree.
 
@@ -6719,7 +6648,7 @@ This FRS attribute contains a path to the root of the replicated file system tre
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.257  Attribute fRSRootSecurity
+### 2.257 Attribute fRSRootSecurity
 
 This FRS attribute contains a security descriptor of the replica set root for file replication.
 
@@ -6738,7 +6667,7 @@ This FRS attribute contains a security descriptor of the replica set root for fi
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.258  Attribute fRSServiceCommand
+### 2.258 Attribute fRSServiceCommand
 
 This FRS attribute contains a Unicode string that an administrator can set to pass a command to every
 replica set member.
@@ -6765,7 +6694,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.259  Attribute fRSServiceCommandStatus
+
+### 2.259 Attribute fRSServiceCommandStatus
 
 This FRS attribute contains the response from the last command issued to a member.
 
@@ -6784,7 +6714,7 @@ This FRS attribute contains the response from the last command issued to a membe
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.260  Attribute fRSStagingPath
+### 2.260 Attribute fRSStagingPath
 
 This FRS attribute contains a path to the file replication staging area.
 
@@ -6803,7 +6733,7 @@ This FRS attribute contains a path to the file replication staging area.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.261  Attribute fRSTimeLastCommand
+### 2.261 Attribute fRSTimeLastCommand
 
 This FRS attribute contains the time in which the last command was executed.
 
@@ -6820,7 +6750,7 @@ This FRS attribute contains the time in which the last command was executed.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.262  Attribute fRSTimeLastConfigChange
+### 2.262 Attribute fRSTimeLastConfigChange
 
 This FRS attribute contains the time in which the last configuration change was accepted.
 
@@ -6831,7 +6761,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: FRS-Time-Last-Config-Change
+
+ cn: FRS-Time-Last-Config-Change
  ldapDisplayName: fRSTimeLastConfigChange
  attributeId: 1.2.840.113556.1.4.881
  attributeSyntax: 2.5.5.11
@@ -6844,7 +6775,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.263  Attribute fRSUpdateTimeout
+### 2.263 Attribute fRSUpdateTimeout
 
 This FRS attribute contains the maximum time, in minutes, to wait to complete an update before
 giving up.
@@ -6862,7 +6793,7 @@ giving up.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.264  Attribute fRSVersion
+### 2.264 Attribute fRSVersion
 
 This FRS attribute contains the version number and build date.
 
@@ -6881,7 +6812,7 @@ This FRS attribute contains the version number and build date.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.265  Attribute fRSVersionGUID
+### 2.265 Attribute fRSVersionGUID
 
 If this FRS attribute is present, changing its value indicates that a configuration change has been
 made on this replica set.
@@ -6897,7 +6828,8 @@ Release: September 12, 2018
 
 99 / 140
 
- attributeSyntax: 2.5.5.10
+
+ attributeSyntax: 2.5.5.10
  omSyntax: 4
  isSingleValued: TRUE
  schemaIdGuid: 26d9736c-6070-11d1-a9c6-0000f80367c1
@@ -6909,7 +6841,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.266  Attribute fRSWorkingPath
+### 2.266 Attribute fRSWorkingPath
 
 This FRS attribute contains the path to the file replication database.
 
@@ -6928,7 +6860,7 @@ This FRS attribute contains the path to the file replication database.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.267  Attribute fSMORoleOwner
+### 2.267 Attribute fSMORoleOwner
 
 The fSMORoleOwner attribute stores the distinguished name of a DSA object as described in [MS-
 ADTS] section 3.1.1.1.11 (FSMO Roles).
@@ -6950,7 +6882,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.268  Attribute garbageCollPeriod
+### 2.268 Attribute garbageCollPeriod
 
 This attribute is located on the CN=Directory Service,CN=Windows
 NT,CN=Services,CN=Configuration,... object. It represents the period, in hours, between DS garbage
@@ -6963,7 +6895,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Garbage-Coll-Period
+
+ cn: Garbage-Coll-Period
  ldapDisplayName: garbageCollPeriod
  attributeId: 1.2.840.113556.1.2.301
  attributeSyntax: 2.5.5.9
@@ -6980,7 +6913,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.269  Attribute gecos
+### 2.269 Attribute gecos
 
 The GECOS field (the common name, as specified in [RFC2307] section 3).
 
@@ -6997,7 +6930,7 @@ The GECOS field (the common name, as specified in [RFC2307] section 3).
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.270  Attribute generatedConnection
+### 2.270 Attribute generatedConnection
 
 Set to TRUE if this connection was created by autotopology generation.
 
@@ -7014,7 +6947,7 @@ Set to TRUE if this connection was created by autotopology generation.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.271  Attribute generationQualifier
+### 2.271 Attribute generationQualifier
 
 Indicates a person's generation; for example, junior (Jr.) or II.
 
@@ -7029,7 +6962,8 @@ Release: September 12, 2018
 
 101 / 140
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
  schemaIdGuid: 16775804-47f3-11d1-a9c3-0000f80367c1
@@ -7042,7 +6976,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.272  Attribute gidNumber
+### 2.272 Attribute gidNumber
 
 An integer uniquely identifying a group in an administrative domain, as specified in [RFC2307].
 
@@ -7058,7 +6992,7 @@ An integer uniquely identifying a group in an administrative domain, as specifie
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.273  Attribute givenName
+### 2.273 Attribute givenName
 
 Contains the given name (first name) of the user.
 
@@ -7083,7 +7017,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.274  Attribute globalAddressList
+### 2.274 Attribute globalAddressList
 
 This attribute is used on an Exchange Server container to store the distinguished name of a newly
 created global address list (GAL). Once this attribute has at least one entry, the implementer can
@@ -7096,7 +7030,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- cn: Global-Address-List
+
+ cn: Global-Address-List
  ldapDisplayName: globalAddressList
  attributeId: 1.2.840.113556.1.4.1245
  attributeSyntax: 2.5.5.1
@@ -7113,7 +7048,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.275  Attribute globalAddressList2
+### 2.275 Attribute globalAddressList2
 
 This attribute is used on an Exchange Server container to store the distinguished name of a newly
 created GAL. Once this attribute has at least one entry, the implementer can enable MAPI clients to
@@ -7135,7 +7070,7 @@ use a GAL. Similar to globalAddressList, it differs by being a linked attribute.
 
 Version-Specific Behavior: First implemented on Windows Server 2008.
 
-2.276  Attribute governsID
+### 2.276 Attribute governsID
 
 This attribute specifies the unique object ID of the class defined by this class-schema object.
 
@@ -7162,7 +7097,8 @@ Release: September 12, 2018
 
 103 / 140
 
-2.277  Attribute gPCFileSysPath
+
+### 2.277 Attribute gPCFileSysPath
 
 This attribute specifies the Universal Naming Convention (UNC) path to the Group Policy Object
 template located in the system volume (SYSVOL).
@@ -7180,7 +7116,7 @@ template located in the system volume (SYSVOL).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.278  Attribute gPCFunctionalityVersion
+### 2.278 Attribute gPCFunctionalityVersion
 
 This attribute specifies the version of the Group Policy Object Editor that created this object.
 
@@ -7197,7 +7133,7 @@ This attribute specifies the version of the Group Policy Object Editor that crea
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.279  Attribute gPCMachineExtensionNames
+### 2.279 Attribute gPCMachineExtensionNames
 
 This attribute is used by the Group Policy Object (GPO) for machine policies.
 
@@ -7214,7 +7150,7 @@ This attribute is used by the Group Policy Object (GPO) for machine policies.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.280  Attribute gPCUserExtensionNames
+### 2.280 Attribute gPCUserExtensionNames
 
 This attribute is used by the GPO for user policies.
 
@@ -7228,7 +7164,8 @@ Release: September 12, 2018
 
 104 / 140
 
- attributeId: 1.2.840.113556.1.4.1349
+
+ attributeId: 1.2.840.113556.1.4.1349
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -7239,7 +7176,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.281  Attribute gPCWQLFilter
+### 2.281 Attribute gPCWQLFilter
 
 This attribute is used to store a string that contains a GUID for the filter and a Windows Management
 Instrumentation (WMI) namespace path.
@@ -7257,7 +7194,7 @@ Instrumentation (WMI) namespace path.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.282  Attribute gPLink
+### 2.282 Attribute gPLink
 
 This attribute specifies a value used by the Group Policy Core Protocol. See [MS-GPOL] section 2.2.2.
 
@@ -7275,7 +7212,7 @@ This attribute specifies a value used by the Group Policy Core Protocol. See [MS
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.283  Attribute gPOptions
+### 2.283 Attribute gPOptions
 
 Options that affect all Group Policy associated with the object hosting this property.
 
@@ -7294,13 +7231,14 @@ Release: September 12, 2018
 
 105 / 140
 
- systemOnly: FALSE
+
+ systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.284  Attribute groupAttributes
+### 2.284 Attribute groupAttributes
 
  cn: Group-Attributes
  ldapDisplayName: groupAttributes
@@ -7315,7 +7253,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.285  Attribute groupMembershipSAM
+### 2.285 Attribute groupMembershipSAM
 
 Windows NT security. Down-level Windows NT support.
 
@@ -7332,7 +7270,7 @@ Windows NT security. Down-level Windows NT support.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.286  Attribute groupPriority
+### 2.286 Attribute groupPriority
 
  cn: Group-Priority
  ldapDisplayName: groupPriority
@@ -7347,7 +7285,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.287  Attribute groupsToIgnore
+### 2.287 Attribute groupsToIgnore
 
  cn: Groups-to-Ignore
  ldapDisplayName: groupsToIgnore
@@ -7360,7 +7298,8 @@ Release: September 12, 2018
 
 106 / 140
 
- attributeSyntax: 2.5.5.12
+
+ attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: FALSE
  schemaIdGuid: eea65904-8ac6-11d0-afda-00c04fd930c9
@@ -7370,7 +7309,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.288  Attribute groupType
+### 2.288 Attribute groupType
 
 This attribute contains a set of flags that define the type and scope of a group object. For more
 information about the possible values for this attribute, see the Remarks section of [MSDN-
@@ -7394,7 +7333,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.289  Attribute hasMasterNCs
+### 2.289 Attribute hasMasterNCs
 
 This attribute contains the distinguished names of naming contexts. Forward link for the Mastered-By
 attribute.
@@ -7425,7 +7364,8 @@ Release: September 12, 2018
 
 107 / 140
 
-2.290  Attribute hasPartialReplicaNCs
+
+### 2.290 Attribute hasPartialReplicaNCs
 
 Sibling to Has-Master-NCs. The Has-Partial-Replica-NCs attribute reflects the distinguished name for
 all other-domain NCs that have been replicated into a global catalog (GC).
@@ -7449,7 +7389,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.291  Attribute helpData16
+### 2.291 Attribute helpData16
 
 This attribute was used for the Win16 Help file format for Exchange Server 4.0. It is not used for any
 other versions of Exchange Server.
@@ -7473,7 +7413,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.292  Attribute helpData32
+### 2.292 Attribute helpData32
 
 This attribute was used for the Win32 Help file format for Exchange Server 4.0. It is not used for any
 other versions of Exchange Server.
@@ -7494,7 +7434,8 @@ Release: September 12, 2018
 
 108 / 140
 
- searchFlags: 0
+
+ searchFlags: 0
  rangeLower: 1
  rangeUpper: 32768
  mapiID: 32784
@@ -7505,7 +7446,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.293  Attribute helpFileName
+### 2.293 Attribute helpFileName
 
 This attribute was used for Exchange Server 4.0. It contained the name that is used for the file when
 the provider downloaded Help data to a client computer. It is not used for any other versions of
@@ -7530,7 +7471,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.294  Attribute hideFromAB
+### 2.294 Attribute hideFromAB
 
 This is a defunct attribute and is not to be used.
 
@@ -7546,7 +7487,7 @@ This is a defunct attribute and is not to be used.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.295  Attribute homeDirectory
+### 2.295 Attribute homeDirectory
 
 This attribute specifies the home directory for the account. This value can be a null string.
 
@@ -7560,7 +7501,8 @@ Release: September 12, 2018
 
 109 / 140
 
- attributeId: 1.2.840.113556.1.4.44
+
+ attributeId: 1.2.840.113556.1.4.44
  attributeSyntax: 2.5.5.12
  omSyntax: 64
  isSingleValued: TRUE
@@ -7575,7 +7517,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.296  Attribute homeDrive
+### 2.296 Attribute homeDrive
 
 This attribute specifies the drive letter to which to map the UNC path specified by homeDirectory. The
 drive letter is specified in the form "<DriveLetter>:" where <DriveLetter> is the letter of the drive to
@@ -7598,7 +7540,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.297  Attribute homePhone
+### 2.297 Attribute homePhone
 
 The user's main home telephone number.
 
@@ -7627,11 +7569,12 @@ Release: September 12, 2018
 
 110 / 140
 
-In Windows 2000 Server, the following attributes are defined differently.
+
+In Windows 2000 Server, the following attributes are defined differently.
 
  systemFlags: 0
 
-2.298  Attribute homePostalAddress
+### 2.298 Attribute homePostalAddress
 
 This attribute specifies a user's home address.
 
@@ -7655,7 +7598,7 @@ On Windows 2000 Server, the following attribute is defined differently.
 
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
-2.299  Attribute host
+### 2.299 Attribute host
 
 This attribute type specifies a host computer.
 
@@ -7673,7 +7616,7 @@ This attribute type specifies a host computer.
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.300  Attribute houseIdentifier
+### 2.300 Attribute houseIdentifier
 
 The houseIdentifier attribute specifies a linguistic construct used to identify a particular building; for
 example, a house number or house name relative to a street, avenue, town, or city.
@@ -7692,7 +7635,8 @@ Release: September 12, 2018
 
 111 / 140
 
- schemaIdGuid: a45398b7-c44a-4eb6-82d3-13c10946dbfe
+
+ schemaIdGuid: a45398b7-c44a-4eb6-82d3-13c10946dbfe
  systemOnly: FALSE
  searchFlags: 0
  rangeLower: 1
@@ -7700,7 +7644,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.301  Attribute iconPath
+### 2.301 Attribute iconPath
 
 This attribute specifies the source for loading an icon.
 
@@ -7719,7 +7663,7 @@ This attribute specifies the source for loading an icon.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.302  Attribute implementedCategories
+### 2.302 Attribute implementedCategories
 
 This attribute specifies a list of component category IDs that this object implements.
 
@@ -7738,7 +7682,7 @@ This attribute specifies a list of component category IDs that this object imple
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.303  Attribute indexedScopes
+### 2.303 Attribute indexedScopes
 
 This attribute specifies the list of indexed directory scopes (for example, C:\ or D:\).
 
@@ -7759,11 +7703,12 @@ Release: September 12, 2018
 
 112 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.304  Attribute info
+### 2.304 Attribute info
 
 This attribute specifies the user's comments. This string can be a null string.
 
@@ -7784,7 +7729,7 @@ This attribute specifies the user's comments. This string can be a null string.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.305  Attribute initialAuthIncoming
+### 2.305 Attribute initialAuthIncoming
 
 This attribute is not necessary for Active Directory functioning, and this protocol does not define a
 format beyond that required by the schema.
@@ -7805,7 +7750,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.306  Attribute initialAuthOutgoing
+### 2.306 Attribute initialAuthOutgoing
 
 This attribute is used to contain information about an initial outgoing authentication sent by the
 authentication server for this domain to the client that requested authentication. The server that uses
@@ -7825,7 +7770,8 @@ Release: September 12, 2018
 
 113 / 140
 
- schemaIdGuid: 52458024-ca6a-11d0-afff-0000f80367c1
+
+ schemaIdGuid: 52458024-ca6a-11d0-afff-0000f80367c1
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
@@ -7835,7 +7781,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.307  Attribute initials
+### 2.307 Attribute initials
 
 This attribute contains the initials for parts of the user's full name. This can be used as the middle
 initial in the Windows address book.
@@ -7857,7 +7803,7 @@ initial in the Windows address book.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.308  Attribute installUiLevel
+### 2.308 Attribute installUiLevel
 
 This attribute specifies information for the type (level) of installation that is used for the user
 interface. Possible installation levels are as follows: 2 INSTALLUILEVEL_NONE (silent installation), 3
@@ -7878,7 +7824,7 @@ progress, and errors).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.309  Attribute instanceType
+### 2.309 Attribute instanceType
 
 A bit field that dictates how the object is instantiated on a particular server. The value of this attribute
 can differ on different replicas even if the replicas are in sync. This attribute can be zero or a
@@ -7891,7 +7837,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-Bit flag
+
+Bit flag
 
 Meaning
 
@@ -7926,7 +7873,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.310  Attribute internationalISDNNumber
+### 2.310 Attribute internationalISDNNumber
 
 This attribute specifies an international ISDN number associated with an object.
 
@@ -7947,7 +7894,7 @@ This attribute specifies an international ISDN number associated with an object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.311  Attribute interSiteTopologyFailover
+### 2.311 Attribute interSiteTopologyFailover
 
 This attribute indicates how much time can transpire since the last keep-alive message for the
 intersite topology generator to be considered dead.
@@ -7962,7 +7909,8 @@ Release: September 12, 2018
 
 115 / 140
 
- attributeId: 1.2.840.113556.1.4.1248
+
+ attributeId: 1.2.840.113556.1.4.1248
  attributeSyntax: 2.5.5.9
  omSyntax: 2
  isSingleValued: TRUE
@@ -7979,7 +7927,7 @@ The schemaFlagsEx attribute was added to this attribute definition in Windows Se
 Note: This attribute is used for the server-to-server replication implementation only; the meaning is
 not significant to Windows clients.
 
-2.312  Attribute interSiteTopologyGenerator
+### 2.312 Attribute interSiteTopologyGenerator
 
 This attribute specifies support failover for the machine designated as the one that runs Knowledge
 Consistency Checker (KCC) intersite topology generation in a given site.
@@ -8004,7 +7952,7 @@ The schemaFlagsEx attribute was added to this attribute definition in Windows Se
 Note: This attribute is used for the server-to-server replication implementation only; the meaning is
 not significant to Windows clients.
 
-2.313  Attribute interSiteTopologyRenew
+### 2.313 Attribute interSiteTopologyRenew
 
 This attribute indicates how often the intersite topology generator updates the keep-alive message
 that is sent to domain controllers that are contained in the same site.
@@ -8028,14 +7976,15 @@ Release: September 12, 2018
 
 116 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
 Note: This attribute is used for the server-to-server replication implementation only; the meaning is
 not significant to Windows clients.
 
-2.314  Attribute invocationId
+### 2.314 Attribute invocationId
 
 This attribute is used to uniquely identify the specific version of the directory database associated with
 a domain controller.
@@ -8061,7 +8010,7 @@ In Windows 2000 Server, the following attributes are defined differently.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.315  Attribute ipHostNumber
+### 2.315 Attribute ipHostNumber
 
 This attribute specifies the IP address as a dotted decimal, omitting leading zeros.
 
@@ -8078,7 +8027,7 @@ This attribute specifies the IP address as a dotted decimal, omitting leading ze
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.316  Attribute ipNetmaskNumber
+### 2.316 Attribute ipNetmaskNumber
 
 This attribute specifies the IP netmask as a dotted decimal, omitting leading zeros.
 
@@ -8093,7 +8042,8 @@ Release: September 12, 2018
 
 117 / 140
 
- attributeSyntax: 2.5.5.5
+
+ attributeSyntax: 2.5.5.5
  omSyntax: 22
  isSingleValued: TRUE
  schemaIdGuid: 6ff64fcd-462e-4f62-b44a-9a5347659eb9
@@ -8103,7 +8053,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.317  Attribute ipNetworkNumber
+### 2.317 Attribute ipNetworkNumber
 
 This attribute specifies the IP network as a dotted decimal, omitting leading zeros.
 
@@ -8120,7 +8070,7 @@ This attribute specifies the IP network as a dotted decimal, omitting leading ze
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.318  Attribute ipPhone
+### 2.318 Attribute ipPhone
 
 This attribute specifies the TCP/IP address for the telephone. It is used by telephony.
 
@@ -8142,7 +8092,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 In Windows 2000 Server, rangeUpper is not defined.
 
-2.319  Attribute ipProtocolNumber
+### 2.319 Attribute ipProtocolNumber
 
 This attribute is part of the protocols map and stores the unique number that identifies the protocol.
 
@@ -8159,14 +8109,15 @@ Release: September 12, 2018
 
 118 / 140
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  schemaIdGuid: ebf5c6eb-0e2d-4415-9670-1081993b4211
  systemOnly: FALSE
  searchFlags: 0
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.320  Attribute ipsecData
+### 2.320 Attribute ipsecData
 
 The Ipsec-Data attribute is for internal use only.
 
@@ -8183,7 +8134,7 @@ The Ipsec-Data attribute is for internal use only.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.321  Attribute ipsecDataType
+### 2.321 Attribute ipsecDataType
 
 The Ipsec-Data-Type attribute is for internal use only.
 
@@ -8200,7 +8151,7 @@ The Ipsec-Data-Type attribute is for internal use only.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.322  Attribute ipsecFilterReference
+### 2.322 Attribute ipsecFilterReference
 
 The Ipsec-Filter-Reference attribute.
 
@@ -8223,9 +8174,10 @@ Release: September 12, 2018
 
 119 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.323  Attribute ipsecID
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.323 Attribute ipsecID
 
 The Ipsec-ID attribute.
 
@@ -8242,7 +8194,7 @@ The Ipsec-ID attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.324  Attribute ipsecISAKMPReference
+### 2.324 Attribute ipsecISAKMPReference
 
 The Ipsec-ISAKMP-Reference attribute (see [MS-GPIPSEC] section 2.2.1.1.1).
 
@@ -8260,7 +8212,7 @@ The Ipsec-ISAKMP-Reference attribute (see [MS-GPIPSEC] section 2.2.1.1.1).
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.325  Attribute ipsecName
+### 2.325 Attribute ipsecName
 
 The Ipsec-Name attribute.
 
@@ -8277,7 +8229,7 @@ The Ipsec-Name attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.326  Attribute iPSECNegotiationPolicyAction
+### 2.326 Attribute iPSECNegotiationPolicyAction
 
 The IPSEC-Negotiation-Policy-Action attribute.
 
@@ -8288,7 +8240,8 @@ Release: September 12, 2018
 
 120 / 140
 
- cn: IPSEC-Negotiation-Policy-Action
+
+ cn: IPSEC-Negotiation-Policy-Action
  ldapDisplayName: iPSECNegotiationPolicyAction
  attributeId: 1.2.840.113556.1.4.888
  attributeSyntax: 2.5.5.12
@@ -8301,7 +8254,7 @@ Release: September 12, 2018
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.327  Attribute ipsecNegotiationPolicyReference
+### 2.327 Attribute ipsecNegotiationPolicyReference
 
 The Ipsec-Negotiation-Policy-Reference attribute.
 
@@ -8319,7 +8272,7 @@ The Ipsec-Negotiation-Policy-Reference attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.328  Attribute iPSECNegotiationPolicyType
+### 2.328 Attribute iPSECNegotiationPolicyType
 
 The IPSEC-Negotiation-Policy-Type attribute.
 
@@ -8336,7 +8289,7 @@ The IPSEC-Negotiation-Policy-Type attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.329  Attribute ipsecNFAReference
+### 2.329 Attribute ipsecNFAReference
 
 The Ipsec-NFA-Reference attribute (see [MS-GPIPSEC] section 2.2.1.1.1).
 
@@ -8355,14 +8308,15 @@ Release: September 12, 2018
 
 121 / 140
 
- schemaIdGuid: b40ff821-427a-11d1-a9c2-0000f80367c1
+
+ schemaIdGuid: b40ff821-427a-11d1-a9c2-0000f80367c1
  systemOnly: FALSE
  searchFlags: 0
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.330  Attribute ipsecOwnersReference
+### 2.330 Attribute ipsecOwnersReference
 
 The Ipsec-Owners-Reference attribute.
 
@@ -8380,7 +8334,7 @@ The Ipsec-Owners-Reference attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.331  Attribute ipsecPolicyReference
+### 2.331 Attribute ipsecPolicyReference
 
 The Ipsec-Policy-Reference attribute.
 
@@ -8398,7 +8352,7 @@ The Ipsec-Policy-Reference attribute.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.332  Attribute ipServicePort
+### 2.332 Attribute ipServicePort
 
 This is a part of the services map and contains the port at which the UNIX service is available.
 
@@ -8419,9 +8373,10 @@ Release: September 12, 2018
 
 122 / 140
 
-Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.333  Attribute ipServiceProtocol
+Version-Specific Behavior: First implemented on Windows Server 2003 R2.
+
+### 2.333 Attribute ipServiceProtocol
 
 This is a part of the services map and stores the protocol number for a UNIX service.
 
@@ -8438,7 +8393,7 @@ This is a part of the services map and stores the protocol number for a UNIX ser
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.334  Attribute isCriticalSystemObject
+### 2.334 Attribute isCriticalSystemObject
 
 If TRUE, the object hosting this attribute is replicated during installation of a new replica.
 
@@ -8458,7 +8413,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.335  Attribute isDefunct
+### 2.335 Attribute isDefunct
 
 If TRUE, the class or attribute is no longer usable. Old versions of this object can exist, but new ones
 cannot be created.
@@ -8486,7 +8441,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.336  Attribute isDeleted
+
+### 2.336 Attribute isDeleted
 
 If TRUE, this object has been marked for deletion and will be removed from the Active Directory
 system [MS-ADOD].
@@ -8510,7 +8466,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.337  Attribute isEphemeral
+### 2.337 Attribute isEphemeral
 
  cn: Is-Ephemeral
  ldapDisplayName: isEphemeral
@@ -8525,7 +8481,7 @@ The schemaFlagsEx attribute was added to this attribute definition in Windows Se
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.338  Attribute isMemberOfPartialAttributeSet
+### 2.338 Attribute isMemberOfPartialAttributeSet
 
 If TRUE, this attribute is replicated to the global catalog.
 
@@ -8552,7 +8508,8 @@ Release: September 12, 2018
 
 124 / 140
 
-2.339  Attribute isPrivilegeHolder
+
+### 2.339 Attribute isPrivilegeHolder
 
 This attribute specifies a back link to privileges held by a given principal.
 
@@ -8571,7 +8528,7 @@ This attribute specifies a back link to privileges held by a given principal.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.340  Attribute isRecycled
+### 2.340 Attribute isRecycled
 
 If TRUE, this object has been marked for permanent deletion. Additionally, if the Recycle Bin optional
 feature is enabled, the value TRUE marks an object that cannot be undeleted. It will be removed from
@@ -8593,7 +8550,7 @@ the Active Directory system [MS-ADOD].
 
 Version-Specific Behavior: First implemented on Windows Server 2008 R2 operating system.
 
-2.341  Attribute isSingleValued
+### 2.341 Attribute isSingleValued
 
 If TRUE, this attribute can only store one value.
 
@@ -8619,9 +8576,10 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.342  Attribute jpegPhoto
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.342 Attribute jpegPhoto
 
 Used to store one or more images of a person by using the JPEG File Interchange Format, as specified
 in [JFIF].
@@ -8639,7 +8597,7 @@ in [JFIF].
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.343  Attribute keywords
+### 2.343 Attribute keywords
 
 This attribute specifies a list of keywords that can be used to locate a given connection point.
 
@@ -8662,7 +8620,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.344  Attribute knowledgeInformation
+### 2.344 Attribute knowledgeInformation
 
 This attribute specifies a human-readable accumulated description of knowledge that is mastered by a
 specific DSA.
@@ -8685,9 +8643,10 @@ Release: September 12, 2018
 
 126 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.345  Attribute l
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.345 Attribute l
 
 This attribute represents the name of a locality, such as a town or city.
 
@@ -8713,7 +8672,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.346  Attribute labeledURI
+### 2.346 Attribute labeledURI
 
 This attribute specifies a Uniform Resource Identifier (URI) followed by a label. The label is used to
 describe the resource to which the URI points, and it is intended as a friendly name.
@@ -8731,7 +8690,7 @@ describe the resource to which the URI points, and it is intended as a friendly 
 
 Version-Specific Behavior: First implemented on Windows Server 2003.
 
-2.347  Attribute lastBackupRestorationTime
+### 2.347 Attribute lastBackupRestorationTime
 
 This attribute specifies when the last system restore occurred.
 
@@ -8752,11 +8711,12 @@ Release: September 12, 2018
 
 127 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.348  Attribute lastContentIndexed
+### 2.348 Attribute lastContentIndexed
 
 This attribute specifies the time this volume was last content-indexed.
 
@@ -8773,7 +8733,7 @@ This attribute specifies the time this volume was last content-indexed.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.349  Attribute lastKnownParent
+### 2.349 Attribute lastKnownParent
 
 This attribute specifies the distinguished name of the last known parent of an orphaned or deleted
 object.
@@ -8795,7 +8755,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.350  Attribute lastLogoff
+### 2.350 Attribute lastLogoff
 
 This attribute specifies the last time the user logged off. This value is stored as a large integer that
 represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of zero
@@ -8818,7 +8778,8 @@ Release: September 12, 2018
 
 128 / 140
 
- attributeSecurityGuid: 5f202010-79a5-11d0-9020-00c04fc2d4cf
+
+ attributeSecurityGuid: 5f202010-79a5-11d0-9020-00c04fc2d4cf
  systemFlags: FLAG_SCHEMA_BASE_OBJECT | FLAG_ATTR_NOT_REPLICATED
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
@@ -8826,7 +8787,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.351  Attribute lastLogon
+### 2.351 Attribute lastLogon
 
 This attribute specifies the last time the user logged on. This value is stored as a large integer that
 represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of zero
@@ -8849,7 +8810,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.352  Attribute lastLogonTimestamp
+### 2.352 Attribute lastLogonTimestamp
 
 This is the time that the user last logged on to the domain. Whenever a user logs on, the value of this
 attribute is read from the DC. If msDS-LogonTimeSyncInterval is nonzero, and the value is older than
@@ -8883,9 +8844,10 @@ Release: September 12, 2018
 
 129 / 140
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.353  Attribute lastSetTime
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.353 Attribute lastSetTime
 
 This attribute specifies the last time the secret was changed.
 
@@ -8905,7 +8867,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.354  Attribute lastUpdateSequence
+### 2.354 Attribute lastUpdateSequence
 
 This attribute specifies the update sequence number for the last item in the class store that was
 changed.
@@ -8923,7 +8885,7 @@ changed.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.355  Attribute lDAPAdminLimits
+### 2.355 Attribute lDAPAdminLimits
 
 This attribute contains a set of attribute-value pairs defining LDAP server administrative limits.
 
@@ -8950,7 +8912,8 @@ Active Directory Schema Attributes A-L
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-2.356  Attribute lDAPDisplayName
+
+### 2.356 Attribute lDAPDisplayName
 
 This attribute specifies the name used by LDAP clients, such as the ADSI LDAP provider, to read and
 write the attribute by using the LDAP protocol.
@@ -8975,7 +8938,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.357  Attribute lDAPIPDenyList
+### 2.357 Attribute lDAPIPDenyList
 
 This attribute holds a list of binary IP addresses that are denied access to an LDAP server.
 
@@ -8995,7 +8958,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.358  Attribute lSACreationTime
+### 2.358 Attribute lSACreationTime
 
 This attribute is used to support replication to Windows NT 4.0 domains.
 
@@ -9017,9 +8980,10 @@ Release: September 12, 2018
 
 131 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.359  Attribute lSAModifiedCount
+Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+### 2.359 Attribute lSAModifiedCount
 
 This attribute is used to support replication to Windows NT 4.0 domains.
 
@@ -9036,7 +9000,7 @@ This attribute is used to support replication to Windows NT 4.0 domains.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.360  Attribute legacyExchangeDN
+### 2.360 Attribute legacyExchangeDN
 
 This attribute specifies the distinguished name previously used by Exchange Server.
 
@@ -9058,7 +9022,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.361  Attribute linkID
+### 2.361 Attribute linkID
 
 This attribute specifies an integer that indicates that the attribute is a linked attribute. An even integer
 is a forward link and an odd integer is a back link.
@@ -9083,11 +9047,12 @@ Release: September 12, 2018
 
 132 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.362  Attribute linkTrackSecret
+### 2.362 Attribute linkTrackSecret
 
 This attribute specifies a link to a secret key that allows an encrypted file to be translated into plain
 text.
@@ -9107,7 +9072,7 @@ text.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.363  Attribute lmPwdHistory
+### 2.363 Attribute lmPwdHistory
 
 The password history of the user in LAN Manager (LM) one-way format (OWF). The LM OWF is used
 for compatibility with LAN Manager 2.x clients, Windows 95 operating system, and Windows 98
@@ -9131,7 +9096,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.364  Attribute localeID
+### 2.364 Attribute localeID
 
 This attribute specifies a list of locale IDs supported by this application. A locale ID represents a
 geographic location; for example, a country/region, a city, or a county.
@@ -9150,14 +9115,15 @@ Release: September 12, 2018
 
 133 / 140
 
- schemaIdGuid: bf9679a1-0de6-11d0-a285-00aa003049e2
+
+ schemaIdGuid: bf9679a1-0de6-11d0-a285-00aa003049e2
  systemOnly: FALSE
  searchFlags: fCOPY
  systemFlags: FLAG_SCHEMA_BASE_OBJECT
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.365  Attribute localizationDisplayId
+### 2.365 Attribute localizationDisplayId
 
 This attribute is used to index the Extrts.mc file to get the localized displayName for the objects, for
 UI purposes.
@@ -9175,7 +9141,7 @@ UI purposes.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.366  Attribute localizedDescription
+### 2.366 Attribute localizedDescription
 
 This attribute specifies the localization ID and display name for an object.
 
@@ -9192,7 +9158,7 @@ This attribute specifies the localization ID and display name for an object.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.367  Attribute localPolicyFlags
+### 2.367 Attribute localPolicyFlags
 
 This attribute specifies flags that determine where a machine gets its policy (Local-Policy-Reference).
 
@@ -9215,11 +9181,12 @@ Release: September 12, 2018
 
 134 / 140
 
-Version-Specific Behavior: First implemented on Windows 2000 Server.
+
+Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.368  Attribute localPolicyReference
+### 2.368 Attribute localPolicyReference
 
 This attribute specifies the distinguished name of a local policy object that a policy object copies from.
 
@@ -9238,7 +9205,7 @@ This attribute specifies the distinguished name of a local policy object that a 
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.369  Attribute location
+### 2.369 Attribute location
 
 This attribute specifies the user's location, such as an office number.
 
@@ -9258,7 +9225,7 @@ This attribute specifies the user's location, such as an office number.
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
 
-2.370  Attribute lockoutDuration
+### 2.370 Attribute lockoutDuration
 
 This attribute specifies the amount of time an account is locked due to the Lockout-Threshold being
 exceeded. This value is stored as a large integer. It represents the negative of the number of 100
@@ -9283,7 +9250,8 @@ Release: September 12, 2018
 
 135 / 140
 
- systemFlags: FLAG_SCHEMA_BASE_OBJECT
+
+ systemFlags: FLAG_SCHEMA_BASE_OBJECT
  schemaFlagsEx: FLAG_ATTR_IS_CRITICAL
 
 Version-Specific Behavior: First implemented on Windows 2000 Server.
@@ -9292,7 +9260,7 @@ In Windows 2000 Server, rangeUpper is not defined.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.371  Attribute lockOutObservationWindow
+### 2.371 Attribute lockOutObservationWindow
 
 This attribute specifies the waiting period after which the Lockout Threshold (section 2.372) is reset.
 The valid values are <None> and 00:00:00:01 through the Lockout Duration (section 2.370) value.
@@ -9314,7 +9282,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.372  Attribute lockoutThreshold
+### 2.372 Attribute lockoutThreshold
 
 This attribute specifies the number of invalid logon attempts that are permitted before the account is
 locked out.
@@ -9344,7 +9312,8 @@ Release: September 12, 2018
 
 136 / 140
 
-2.373  Attribute lockoutTime
+
+### 2.373 Attribute lockoutTime
 
 This attribute specifies the date and time (UTC) that this account was locked out. This value is stored
 as a large integer that represents the number of 100 nanosecond intervals since January 1, 1601
@@ -9366,7 +9335,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.374  Attribute loginShell
+### 2.374 Attribute loginShell
 
 This attribute specifies the path to the logon shell. For more information, see [RFC2307] section 2.2.
 
@@ -9383,7 +9352,7 @@ This attribute specifies the path to the logon shell. For more information, see 
 
 Version-Specific Behavior: First implemented on Windows Server 2003 R2.
 
-2.375  Attribute logonCount
+### 2.375 Attribute logonCount
 
 This attribute specifies the number of times that the account has successfully logged on. A value of 0
 indicates that the value is unknown.
@@ -9410,9 +9379,10 @@ Release: September 12, 2018
 
 137 / 140
 
-The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.376  Attribute logonHours
+The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
+
+### 2.376 Attribute logonHours
 
 This attribute specifies the hours that the user is allowed to log on to the domain.
 
@@ -9433,7 +9403,7 @@ Version-Specific Behavior: First implemented on Windows 2000 Server.
 
 The schemaFlagsEx attribute was added to this attribute definition in Windows Server 2008.
 
-2.377  Attribute logonWorkstation
+### 2.377 Attribute logonWorkstation
 
 For more information, see the userWorkstations attribute in [MS-ADA3].
 
@@ -9458,7 +9428,8 @@ Release: September 12, 2018
 
 138 / 140
 
-3  Change Tracking
+
+## 3 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -9495,7 +9466,8 @@ Release: September 12, 2018
 
 139 / 140
 
-4  Index
+
+## 4 Index
 A
 
 Active Directory attributes beginning with A - L 13

@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 182
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -213,263 +214,110 @@ Release: October 26, 2021
 
 2 / 182
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 18
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+- [2 Functional Overview](#2-functional-overview)
+  - [2.1 Components and Capabilities](#21-components-and-capabilities)
+  - [2.2 Relevant Standards](#22-relevant-standards)
+  - [2.3 Protocol Relationships](#23-protocol-relationships)
+  - [2.4 Protocol Summary](#24-protocol-summary)
+  - [2.5 Environment](#25-environment)
+    - [2.5.1 Active Directory Protocols Dependencies](#251-active-directory-protocols-dependencies)
+    - [2.5.2 Dependencies on Active Directory Protocols](#252-dependencies-on-active-directory-protocols)
+  - [2.6 Assumptions and Preconditions](#26-assumptions-and-preconditions)
+  - [2.7 Use Cases](#27-use-cases)
+    - [2.7.1 Object Management](#271-object-management)
+      - [2.7.1.1 Create a Directory Object - Client Application](#2711-create-a-directory-object-client-application)
+      - [2.7.1.2 Search for a Directory Object - Client Application](#2712-search-for-a-directory-object-client-application)
+      - [2.7.1.3 Modify a Directory Object - Client Application](#2713-modify-a-directory-object-client-application)
+      - [2.7.1.4 Delete a Directory Object - Client Application](#2714-delete-a-directory-object-client-application)
+      - [2.7.1.5 Create an Organizational Unit - Client Application](#2715-create-an-organizational-unit-client-application)
+      - [2.7.1.6 Cross-Domain Move - Client Application](#2716-cross-domain-move-client-application)
+    - [2.7.2 Identity Lifecycle Management](#272-identity-lifecycle-management)
+      - [2.7.2.1 Create a New Account - Client Application](#2721-create-a-new-account-client-application)
+      - [2.7.2.2 Reset an Existing Account's Password - Client Application](#2722-reset-an-existing-accounts-password-client-application)
+      - [2.7.2.3 Change an Existing Account's Password (PDC) - Client Application](#2723-change-an-existing-accounts-password-pdc-client-application)
+      - [2.7.2.4 Change an Existing Account's Password (DC) - Client Application](#2724-change-an-existing-accounts-password-dc-client-application)
+      - [2.7.2.5 Change User Account Password Against an RODC - Client Application](#2725-change-user-account-password-against-an-rodc-client-application)
+      - [2.7.2.6 User Logon to Domain Services by Using an RODC and Updating the User](#2726-user-logon-to-domain-services-by-using-an-rodc-and-updating-the-user)
+      - [2.7.2.7 Query an Account's Group Membership - Client Application](#2727-query-an-accounts-group-membership-client-application)
+      - [2.7.2.8 Delete an Account - Client Application](#2728-delete-an-account-client-application)
+      - [2.7.2.9 Create a Security Group - Client Application](#2729-create-a-security-group-client-application)
+      - [2.7.2.10 Modify Group Member List - Client Application](#27210-modify-group-member-list-client-application)
+      - [2.7.2.11 Query for Members of a Group - Client Application](#27211-query-for-members-of-a-group-client-application)
+    - [2.7.3 Schema Management](#273-schema-management)
+      - [2.7.3.1 Add a New Class to the Schema - Client Application](#2731-add-a-new-class-to-the-schema-client-application)
+      - [2.7.3.2 Add a New Attribute to the Schema - Client Application](#2732-add-a-new-attribute-to-the-schema-client-application)
+      - [2.7.3.3 Add an Attribute to a Class - Client Application](#2733-add-an-attribute-to-a-class-client-application)
+    - [2.7.4 Name Translation](#274-name-translation)
+      - [2.7.4.1 Convert a SID to/from a Human-Readable Format - Client Application](#2741-convert-a-sid-tofrom-a-human-readable-format-client-application)
+    - [2.7.5 Directory Replication](#275-directory-replication)
+      - [2.7.5.1 Replicate Changes Within a Domain - Domain Controller](#2751-replicate-changes-within-a-domain-domain-controller)
+      - [2.7.5.2 Replicate Changes to a GC or a Partial Replica by Using RPC - Domain](#2752-replicate-changes-to-a-gc-or-a-partial-replica-by-using-rpc-domain)
+      - [2.7.5.3 Transferring a FSMO Role - Domain Controller](#2753-transferring-a-fsmo-role-domain-controller)
+    - [2.7.6 Trust Management](#276-trust-management)
+      - [2.7.6.1 Create a Trust - Domain Controller](#2761-create-a-trust-domain-controller)
+    - [2.7.7 Domain Services](#277-domain-services)
+      - [2.7.7.1 Join a Domain with a New Account - Domain Client](#2771-join-a-domain-with-a-new-account-domain-client)
+      - [2.7.7.2 Unjoin from the Domain - Domain Client](#2772-unjoin-from-the-domain-domain-client)
+      - [2.7.7.3 Supporting Use Cases](#2773-supporting-use-cases)
+        - [2.7.7.3.1 Locate a Domain Controller - Domain Client](#27731-locate-a-domain-controller-domain-client)
+  - [2.8 Versioning, Capability Negotiation, and Extensibility](#28-versioning-capability-negotiation-and-extensibility)
+  - [2.9 Error Handling](#29-error-handling)
+    - [2.9.1 Transient Unavailability of Durable Storage](#291-transient-unavailability-of-durable-storage)
+    - [2.9.2 Permanent Unavailability of Durable Storage](#292-permanent-unavailability-of-durable-storage)
+    - [2.9.3 Data Corruption](#293-data-corruption)
+    - [2.9.4 Unavailability of Networking](#294-unavailability-of-networking)
+    - [2.9.5 Unavailability of DNS](#295-unavailability-of-dns)
+    - [2.9.6 Failures while Joining or Unjoining a Domain](#296-failures-while-joining-or-unjoining-a-domain)
+  - [2.10 Coherency Requirements](#210-coherency-requirements)
+  - [2.11 Security](#211-security)
+    - [2.11.1 Security Elements](#2111-security-elements)
+    - [2.11.2 Communications Security](#2112-communications-security)
+    - [2.11.3 System Configuration Security](#2113-system-configuration-security)
+    - [2.11.4 Internal Security](#2114-internal-security)
+    - [2.11.5 External Security](#2115-external-security)
+  - [2.12 Additional Considerations](#212-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Domain-Join Examples](#31-domain-join-examples)
+    - [3.1.1 Example 1: Locate a Domain Controller](#311-example-1-locate-a-domain-controller)
+    - [3.1.2 Example 2: Joining a Domain by Creating an Account via SAMR](#312-example-2-joining-a-domain-by-creating-an-account-via-samr)
+    - [3.1.3 Example 3: Joining a Domain by Creating an Account via LDAP](#313-example-3-joining-a-domain-by-creating-an-account-via-ldap)
+    - [3.1.4 Example 4: Unjoining a Domain Member](#314-example-4-unjoining-a-domain-member)
+  - [3.2 Directory Examples](#32-directory-examples)
+    - [3.2.1 Example 1: Provision a User Account by Using LDAP](#321-example-1-provision-a-user-account-by-using-ldap)
+    - [3.2.2 Example 2: Provision a User Account by Using the SAMR Protocol](#322-example-2-provision-a-user-account-by-using-the-samr-protocol)
+    - [3.2.3 Example 3: Provision a User Account by Using the SAMR Protocol Including the](#323-example-3-provision-a-user-account-by-using-the-samr-protocol-including-the)
+    - [3.2.4 Example 4: Change a User Account's Password](#324-example-4-change-a-user-accounts-password)
+    - [3.2.5 Example 5: Change a User Account's Password Against a Non-PDC DC](#325-example-5-change-a-user-accounts-password-against-a-non-pdc-dc)
+    - [3.2.6 Example 6: Update the User's lastLogOnTimeStamp Against an RODC When the](#326-example-6-update-the-users-lastlogontimestamp-against-an-rodc-when-the)
+    - [3.2.7 Example 7: Determine the Group Membership of a User](#327-example-7-determine-the-group-membership-of-a-user)
+    - [3.2.8 Example 8: Delete a User Account](#328-example-8-delete-a-user-account)
+    - [3.2.9 Example 9: Obtain a List of User Accounts Using the Web Services Protocols](#329-example-9-obtain-a-list-of-user-accounts-using-the-web-services-protocols)
+    - [3.2.10 Example 10: Obtain a List of User Accounts Using LDAP](#3210-example-10-obtain-a-list-of-user-accounts-using-ldap)
+    - [3.2.11 Example 11: Manage Groups and Their Memberships](#3211-example-11-manage-groups-and-their-memberships)
+    - [3.2.12 Example12: Delete a Group](#3212-example12-delete-a-group)
+    - [3.2.13 Example 13: Extend the Schema to Support an Application by Adding a New](#3213-example-13-extend-the-schema-to-support-an-application-by-adding-a-new)
+    - [3.2.14 Example 14: Extend the Schema to Support an Application by Adding a New](#3214-example-14-extend-the-schema-to-support-an-application-by-adding-a-new)
+    - [3.2.15 Example 15: Extend the Schema to Support an Application by Adding an](#3215-example-15-extend-the-schema-to-support-an-application-by-adding-an)
+    - [3.2.16 Example 16: Partition Directory Data with Organizational Units](#3216-example-16-partition-directory-data-with-organizational-units)
+    - [3.2.17 Example 17: Store Application Data in the Directory](#3217-example-17-store-application-data-in-the-directory)
+    - [3.2.18 Example 18: Manage Access Control on Directory Objects](#3218-example-18-manage-access-control-on-directory-objects)
+    - [3.2.19 Example 19: Raise the Domain Functional Level](#3219-example-19-raise-the-domain-functional-level)
+    - [3.2.20 Example 20: Replicate Changes within a Domain](#3220-example-20-replicate-changes-within-a-domain)
+    - [3.2.21 Example 21: Transferring FSMO roles](#3221-example-21-transferring-fsmo-roles)
+    - [3.2.22 Example 22: Replicate Changes to a GC or a Partial Replica by Using SMTP](#3222-example-22-replicate-changes-to-a-gc-or-a-partial-replica-by-using-smtp)
+    - [3.2.23 Example 23: Cross-Domain Move](#3223-example-23-cross-domain-move)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.7.2
-
-2.7.1
-
-2.6
-2.7
-
-2.5.1
-2.5.2
-
-2.1
-2.2
-2.3
-2.4
-2.5
-
-2.7.2.1
-2.7.2.2
-2.7.2.3
-2.7.2.4
-2.7.2.5
-2.7.2.6
-
-2.7.1.1
-2.7.1.2
-2.7.1.3
-2.7.1.4
-2.7.1.5
-2.7.1.6
-
-2  Functional Overview .............................................................................................. 22
-Components and Capabilities ............................................................................. 22
-Relevant Standards .......................................................................................... 23
-Protocol Relationships ....................................................................................... 25
-Protocol Summary ............................................................................................ 27
-Environment .................................................................................................... 29
-Active Directory Protocols Dependencies ........................................................ 30
-Dependencies on Active Directory Protocols ................................................... 30
-Assumptions and Preconditions .......................................................................... 32
-Use Cases ....................................................................................................... 33
-Object Management .................................................................................... 33
-Create a Directory Object - Client Application ........................................... 34
-Search for a Directory Object - Client Application ...................................... 37
-Modify a Directory Object - Client Application ........................................... 40
-Delete a Directory Object - Client Application ........................................... 42
-Create an Organizational Unit - Client Application ..................................... 44
-Cross-Domain Move - Client Application ................................................... 46
-Identity Lifecycle Management ..................................................................... 48
-Create a New Account - Client Application ................................................ 49
-Reset an Existing Account's Password - Client Application .......................... 52
-Change an Existing Account's Password (PDC) - Client Application .............. 55
-Change an Existing Account's Password (DC) - Client Application ................ 57
-Change User Account Password Against an RODC - Client Application .......... 60
-User Logon to Domain Services by Using an RODC and Updating the User
-LastLogonTimeStamp - Client Application ................................................. 63
-2.7.2.7
-Query an Account's Group Membership - Client Application ........................ 64
-2.7.2.8
-Delete an Account - Client Application ..................................................... 66
-Create a Security Group - Client Application ............................................. 68
-2.7.2.9
-2.7.2.10  Modify Group Member List - Client Application .......................................... 71
-2.7.2.11  Query for Members of a Group - Client Application .................................... 73
-Schema Management .................................................................................. 75
-Add a New Class to the Schema - Client Application .................................. 75
-Add a New Attribute to the Schema - Client Application ............................. 78
-Add an Attribute to a Class - Client Application ......................................... 81
-Name Translation ....................................................................................... 84
-Convert a SID to/from a Human-Readable Format - Client Application ......... 84
-Directory Replication ................................................................................... 87
-Replicate Changes Within a Domain - Domain Controller ............................ 88
-Replicate Changes to a GC or a Partial Replica by Using RPC - Domain Controller
- .......................................................................................................... 90
-Transferring a FSMO Role - Domain Controller .......................................... 92
-Trust Management ...................................................................................... 94
-Create a Trust - Domain Controller .......................................................... 94
-Domain Services ......................................................................................... 96
-Join a Domain with a New Account - Domain Client ................................... 96
-Unjoin from the Domain - Domain Client .................................................. 99
-Supporting Use Cases ........................................................................... 100
-Locate a Domain Controller - Domain Client ....................................... 100
-Versioning, Capability Negotiation, and Extensibility ............................................ 103
-Error Handling ................................................................................................ 104
-Transient Unavailability of Durable Storage ................................................... 105
-
-2.7.7.1
-2.7.7.2
-2.7.7.3
-
-2.7.3.1
-2.7.3.2
-2.7.3.3
-
-2.7.5.1
-2.7.5.2
-
-2.7.7.3.1
-
-2.7.5.3
-
-2.7.6.1
-
-2.7.4.1
-
-2.8
-2.9
-
-2.9.1
-
-2.7.6
-
-2.7.7
-
-2.7.4
-
-2.7.3
-
-2.7.5
-
-[MS-ADOD] - v20211026
-Active Directory Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 182
-
-2.9.2
-2.9.3
-2.9.4
-2.9.5
-2.9.6
-
-2.10
-2.11
-
-2.11.1
-2.11.2
-2.11.3
-2.11.4
-2.11.5
-
-2.12
-
-Permanent Unavailability of Durable Storage ................................................. 105
-Data Corruption ......................................................................................... 106
-Unavailability of Networking ........................................................................ 106
-Unavailability of DNS.................................................................................. 107
-Failures while Joining or Unjoining a Domain ................................................. 107
-Coherency Requirements ................................................................................. 107
-Security ......................................................................................................... 108
-Security Elements ...................................................................................... 108
-Communications Security ........................................................................... 109
-System Configuration Security .................................................................... 111
-Internal Security ....................................................................................... 111
-External Security ....................................................................................... 112
-Additional Considerations ................................................................................. 113
-
-3.2
-
-3.1
-
-3.2.4
-3.2.5
-3.2.6
-
-3.2.1
-3.2.2
-3.2.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Examples ............................................................................................................. 114
-Domain-Join Examples ..................................................................................... 114
-Example 1: Locate a Domain Controller ........................................................ 114
-Example 2: Joining a Domain by Creating an Account via SAMR ...................... 117
-Example 3: Joining a Domain by Creating an Account via LDAP ....................... 120
-Example 4: Unjoining a Domain Member ...................................................... 124
-Directory Examples ......................................................................................... 126
-Example 1: Provision a User Account by Using LDAP ...................................... 127
-Example 2: Provision a User Account by Using the SAMR Protocol .................... 130
-Example 3: Provision a User Account by Using the SAMR Protocol Including the
-Need for a RID Allocation Request ............................................................... 134
-Example 4: Change a User Account's Password ............................................. 137
-Example 5: Change a User Account's Password Against a Non-PDC DC ............. 140
-Example 6: Update the User's lastLogOnTimeStamp Against an RODC When the
-User Binds to an LDAP Server ..................................................................... 143
-Example 7: Determine the Group Membership of a User ................................. 144
-Example 8: Delete a User Account ............................................................... 148
-Example 9: Obtain a List of User Accounts Using the Web Services Protocols .... 150
-Example 10: Obtain a List of User Accounts Using LDAP ................................. 152
-Example 11: Manage Groups and Their Memberships ..................................... 153
-Example12: Delete a Group ........................................................................ 157
-Example 13: Extend the Schema to Support an Application by Adding a New Class
- 159
-Example 14: Extend the Schema to Support an Application by Adding a New
-Attribute ................................................................................................... 160
-Example 15: Extend the Schema to Support an Application by Adding an Attribute
-to a Class ................................................................................................. 161
-Example 16: Partition Directory Data with Organizational Units ....................... 163
-Example 17: Store Application Data in the Directory ...................................... 165
-Example 18: Manage Access Control on Directory Objects .............................. 167
-Example 19: Raise the Domain Functional Level ............................................ 169
-Example 20: Replicate Changes within a Domain ........................................... 171
-Example 21: Transferring FSMO roles ........................................................... 173
-Example 22: Replicate Changes to a GC or a Partial Replica by Using SMTP ...... 176
-Example 23: Cross-Domain Move ................................................................ 177
-
-3.2.16
-3.2.17
-3.2.18
-3.2.19
-3.2.20
-3.2.21
-3.2.22
-3.2.23
-
-3.2.7
-3.2.8
-3.2.9
-3.2.10
-3.2.11
-3.2.12
-3.2.13
-
-3.2.15
-
-3.2.14
-
-4  Microsoft Implementations ................................................................................. 178
-Product Behavior ............................................................................................. 179
-
-4.1
-
-5  Change Tracking .................................................................................................. 181
-
-6  Index ................................................................................................................... 182
-
-[MS-ADOD] - v20211026
-Active Directory Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 182
-
-1  Introduction
+## 1 Introduction
 
 Active Directory® is a directory service (DS). Directory services can be used to provide a central
 store for identity and account information as well as storage of information for other systems and
@@ -509,7 +357,8 @@ Release: October 26, 2021
 
 5 / 182
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-ADOD].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -550,7 +399,8 @@ Release: October 26, 2021
 
 6 / 182
 
-Note  This document, like [MS-ADTS] and [MS-DRSR], uses the term "domain controller" to refer to a
+
+Note  This document, like [MS-ADTS] and [MS-DRSR], uses the term "domain controller" to refer to a
 DS that runs as either AD DS or AD LDS. Both AD DS and AD LDS are considered to be directory
 services.
 
@@ -617,7 +467,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Many network-related operations depend on domains in order to complete various tasks. This
+
+Many network-related operations depend on domains in order to complete various tasks. This
 document describes some of these tasks, including:
 
 
@@ -689,7 +540,8 @@ Release: October 26, 2021
 
 8 / 182
 
-Replication within a site occurs as a response to changes. On its NTDS Settings object, the source
+
+Replication within a site occurs as a response to changes. On its NTDS Settings object, the source
 domain controller stores a repsTo attribute that lists all servers in the same site that pull replication
 from it. The Knowledge Consistency Checker (KCC) updates these attributes, as described later in this
 section.
@@ -756,7 +608,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The fSMORoleOwner attribute of each FSMO role object is an object reference to the nTDSDSA object
+
+The fSMORoleOwner attribute of each FSMO role object is an object reference to the nTDSDSA object
 of the DC that owns the role; that is, the DC that performs updates to objects in the role. Information
 about nTDSDSA objects and how they represent DCs are specified in [MS-ADTS] section 6.1.
 
@@ -801,7 +654,7 @@ trust accounts, for the trusted domain. There are different types of trusts that
 Directory domains, as described in [MS-ADTS] section 6.1.6.2. TDOs can be managed through the
 LSAD protocol ([MS-LSAD] section 3.1.4.7).
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -824,7 +677,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-account database: The portion of the directory that maintains the accounts for the principals of
+
+account database: The portion of the directory that maintains the accounts for the principals of
 the domain. In Windows NT-4 style domains, the account database includes all information in
 the domain; in Active Directory–style domains, the account database contains a subset of the
 entire LDAP-accessible directory that the Active Directory–style domain hosts.
@@ -897,7 +751,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-certificate is commonly used for authentication and secure exchange of information on open
+
+certificate is commonly used for authentication and secure exchange of information on open
 networks, such as the Internet, extranets, and intranets. Certificates are digitally signed by the
 issuing certification authority (CA) and can be issued for a user, a computer, or a service. The
 most widely accepted format for certificates is defined by the ITU-T X.509 version 3
@@ -973,7 +828,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-domain controller (DC): The service, running on a server, that implements Active Directory, or
+
+domain controller (DC): The service, running on a server, that implements Active Directory, or
 the server hosting this service. The service hosts the data store for objects and interoperates
 with other DCs to ensure that a local change to an object replicates correctly across all DCs.
 When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
@@ -1043,7 +899,8 @@ Release: October 26, 2021
 
 13 / 182
 
-extended control: A mechanism that is used to specify extension information in a Lightweight
+
+extended control: A mechanism that is used to specify extension information in a Lightweight
 Directory Access Protocol (LDAP) version 3 operation. It is documented in [RFC2251]
 section 4.1.12, Controls, where it is referred to as a "control".
 
@@ -1118,7 +975,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Lightweight Directory Access Protocol (LDAP): The primary access protocol for Active
+
+Lightweight Directory Access Protocol (LDAP): The primary access protocol for Active
 
 Directory. Lightweight Directory Access Protocol (LDAP) is an industry-standard protocol,
 established by the Internet Engineering Task Force (IETF), which allows users to query and
@@ -1193,7 +1051,8 @@ Release: October 26, 2021
 
 15 / 182
 
-principal: A unique entity identifiable by a security identifier (SID) that is typically the
+
+principal: A unique entity identifiable by a security identifier (SID) that is typically the
 
 requester of access to securable objects or resources. It often corresponds to a human user but
 can also be a computer or service. It is sometimes referred to as a security principal.
@@ -1273,7 +1132,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-a string representation of SIDs is specified in [MS-DTYP] section 2.4.2 and [MS-AZOD] section
+
+a string representation of SIDs is specified in [MS-DTYP] section 2.4.2 and [MS-AZOD] section
 1.1.1.2.
 
 security principal: An entity that is associated with a human user or a program that can be
@@ -1347,7 +1207,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-track of the individual units of data (called packets) that a message is divided into for efficient
+
+track of the individual units of data (called packets) that a message is divided into for efficient
 routing through the Internet.
 
 Transport Layer Security (TLS): A security protocol that supports confidentiality and integrity of
@@ -1386,7 +1247,7 @@ Partial replicas are not writable. See also read-only full NC replica.
 
 XML: The Extensible Markup Language, as described in [XML1.0].
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1418,7 +1279,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
+
+[MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
 [MS-AUTHSOD] Microsoft Corporation, "Authentication Services Protocols Overview".
 
@@ -1485,7 +1347,8 @@ Release: October 26, 2021
 
 19 / 182
 
-[RFC1034] Mockapetris, P., "Domain Names - Concepts and Facilities", STD 13, RFC 1034, November
+
+[RFC1034] Mockapetris, P., "Domain Names - Concepts and Facilities", STD 13, RFC 1034, November
 1987, https://www.rfc-edit.org/info/rfc1034
 
 [RFC1035] Mockapetris, P., "Domain Names - Implementation and Specification", STD 13, RFC 1035,
@@ -1551,7 +1414,8 @@ Release: October 26, 2021
 
 20 / 182
 
-[RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
+
+[RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
 Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 
 [RFC4556] Zhu, L., and Tung, B., "Public Key Cryptography for Initial Authentication in Kerberos", RFC
@@ -1573,7 +1437,8 @@ Release: October 26, 2021
 
 21 / 182
 
-2  Functional Overview
+
+## 2 Functional Overview
 
 The Active Directory protocols provide a centralized directory service with the ability to integrate
 with the Windows domain security model. They are used for the following purposes:
@@ -1634,7 +1499,7 @@ support both the AD DS and AD LDS modes of operation. Implementers are free to i
 or both modes of operation, depending on their requirements for and intended use of the Active
 Directory system.
 
-2.1  Components and Capabilities
+### 2.1 Components and Capabilities
 
 From an abstract point of view, the functionality provided by the Active Directory protocols can be
 represented by the components shown in the following diagram.
@@ -1646,13 +1511,14 @@ Release: October 26, 2021
 
 22 / 182
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-ADOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
 Figure 2: Active Directory system components
 
-2.2  Relevant Standards
+### 2.2 Relevant Standards
 
 The following standards are relevant to the Active Directory system.
 
@@ -1681,7 +1547,8 @@ Release: October 26, 2021
 
 23 / 182
 
-Encryption and Checksum Specifications for Kerberos 5, as specified in [RFC3961]. This
+
+Encryption and Checksum Specifications for Kerberos 5, as specified in [RFC3961]. This
 standard is used for encryption and checksum mechanisms.
 
 Kerberos Authentication Protocol, as specified in [RFC4120]. This standard is used for
@@ -1720,11 +1587,12 @@ Release: October 26, 2021
 
 24 / 182
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-ADOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-2.3  Protocol Relationships
+### 2.3 Protocol Relationships
 
 Figure 3: Active Directory protocol grouping
 
@@ -1749,7 +1617,8 @@ Release: October 26, 2021
 
 25 / 182
 
-
+
+
 
 
 
@@ -1788,13 +1657,14 @@ Release: October 26, 2021
 
 26 / 182
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-ADOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 4: Protocol relationships
 
-2.4  Protocol Summary
+### 2.4 Protocol Summary
 
 The following tables provide a comprehensive list of the member protocols of the Active Directory
 system. Section 2.8 provides details about which protocols or protocol subsets are supported in the
@@ -1813,7 +1683,8 @@ Release: October 26, 2021
 
 27 / 182
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1967,7 +1838,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-ADOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2052,7 +1924,7 @@ WSPELD]
 [MS-
 ADDM]
 
-2.5  Environment
+### 2.5 Environment
 
 Because domain interactions are distributed among many computers for different, but related
 purposes, enumerating the dependencies of the Active Directory protocols is complex. The following
@@ -2072,7 +1944,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-(rendezvous). During this rendezvous process, the domain controller server publishes its name and
+
+(rendezvous). During this rendezvous process, the domain controller server publishes its name and
 the domain client locates the domain controller server through DNS. The details of this rendezvous
 process are described in section 2.7.7.3.1.
 
@@ -2082,7 +1955,7 @@ server, for example, leverages the authorization information that it contains fo
 its resources. For more detailed information about authentication and authorization, see [MS-
 AUTHSOD] and related documents.
 
-2.5.1  Active Directory Protocols Dependencies
+#### 2.5.1 Active Directory Protocols Dependencies
 
 This section describes the dependencies that the Active Directory protocols have on other entities.
 The Active Directory protocols require a durable storage system to maintain the state of the directory
@@ -2125,7 +1998,7 @@ limit to the number of domains that are possible on a network.
 
 Even at this relatively high level, the system of domain interactions is a complex aggregation.
 
-2.5.2  Dependencies on Active Directory Protocols
+#### 2.5.2 Dependencies on Active Directory Protocols
 
 This section lists entities that depend on the interfaces provided by the Active Directory protocols, as
 well as other entities that the Active Directory protocols depend on. Other entities take dependencies
@@ -2140,7 +2013,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The Active Directory protocols depend on the Windows Authentication Services [MS-AUTHSOD] to
+
+The Active Directory protocols depend on the Windows Authentication Services [MS-AUTHSOD] to
 authenticate clients that are accessing the system. The system controls access based on the identity
 of the client.
 
@@ -2216,7 +2090,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.6  Assumptions and Preconditions
+
+### 2.6 Assumptions and Preconditions
 
 The following assumptions and preconditions have to be satisfied for the Active Directory system to
 start to operate successfully:
@@ -2299,7 +2174,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.7  Use Cases
+
+### 2.7 Use Cases
 
 The following use cases span the functionality of the Active Directory system.
 
@@ -2361,7 +2237,7 @@ Locate a Domain Controller - Domain Client (section 2.7.7.3.1)
 
 Detailed descriptions for these use cases are provided in subsequent sections.
 
-2.7.1  Object Management
+#### 2.7.1 Object Management
 
 The use cases in this category reflect the most fundamental of operations in the Active Directory
 system, namely, the storage and retrieval of directory objects. Client applications, which, in a
@@ -2382,13 +2258,14 @@ Release: October 26, 2021
 
 33 / 182
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-ADOD].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
 Figure 6: Use cases for object management
 
-2.7.1.1  Create a Directory Object - Client Application
+##### 2.7.1.1 Create a Directory Object - Client Application
 
 In this use case, an administrator wants to create a new directory object on an existing application
 naming context (NC) to store information that could be used by applications on the client. To
@@ -2409,7 +2286,8 @@ Release: October 26, 2021
 
 34 / 182
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-ADOD].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2452,7 +2330,8 @@ Release: October 26, 2021
 
 35 / 182
 
-Applications on the client are the entities that store information in the application directory for
+
+Applications on the client are the entities that store information in the application directory for
 later retrieval and use in various operations.
 
   Application NC
@@ -2533,7 +2412,8 @@ Release: October 26, 2021
 
 36 / 182
 
-
+
+
 
 If the relative distinguished name (RDN) value (that is, the name of the directory object to be
 created) supplied by the administrator is not unique under the same parent container, as required
@@ -2564,7 +2444,7 @@ security principal in AD DS:
 6. The directory server sends a response to the client application that indicates that a security
 principal can be created only in a domain NC.
 
-2.7.1.2  Search for a Directory Object - Client Application
+##### 2.7.1.2 Search for a Directory Object - Client Application
 
 In this use case, an administrator or user wants to inspect the attribute values for a given set of
 directory objects in order to make informed decisions about the Active Directory system. To achieve
@@ -2588,7 +2468,8 @@ Release: October 26, 2021
 
 37 / 182
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-ADOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2633,7 +2514,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Preconditions
+
+Preconditions
 
 
 
@@ -2710,11 +2592,12 @@ Release: October 26, 2021
 
 39 / 182
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-ADOD].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
-2.7.1.3  Modify a Directory Object - Client Application
+##### 2.7.1.3 Modify a Directory Object - Client Application
 
 A common activity for an administrator is to modify objects. Timely updates on these directory
 objects ensure that the data in the system is current, which enables the Active Directory system to
@@ -2754,7 +2637,8 @@ Release: October 26, 2021
 
 40 / 182
 
-The directory server is the supporting actor that receives the modification request and modifies
+
+The directory server is the supporting actor that receives the modification request and modifies
 the directory object.
 
 Stakeholders
@@ -2831,11 +2715,12 @@ Release: October 26, 2021
 
 41 / 182
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-ADOD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-2.7.1.4  Delete a Directory Object - Client Application
+##### 2.7.1.4 Delete a Directory Object - Client Application
 
 An administrator can perform maintenance on an Active Directory system by removing objects that
 are no longer needed by the applications on the client. To achieve this, an administrator launches the
@@ -2874,7 +2759,8 @@ Release: October 26, 2021
 
 42 / 182
 
-  Directory server
+
+  Directory server
 
 The directory server is the supporting actor that receives the deletion request and deletes the
 directory object.
@@ -2956,7 +2842,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-ADOD].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -2970,7 +2857,7 @@ ADTS] section 3.1.1.5.5.3):
 6. The directory server sends a response to the client application that it cannot perform the
 operation.
 
-2.7.1.5  Create an Organizational Unit - Client Application
+##### 2.7.1.5 Create an Organizational Unit - Client Application
 
 To streamline directory object management, an administrator can use organizational units (OUs) to
 partition directory data. An organizational unit represents the smallest unit to which an administrator
@@ -3001,7 +2888,8 @@ Release: October 26, 2021
 
 44 / 182
 
-  Client application
+
+  Client application
 
 The client application is the primary actor. It is the entity that prepares the connection to the
 directory server, submits the request to create an organizational unit, and relays the response to
@@ -3078,7 +2966,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-with attributes that are mandated by the server's processing rules and constraints ([MS-ADTS]
+
+with attributes that are mandated by the server's processing rules and constraints ([MS-ADTS]
 sections 3.1.1.5.1 and 3.1.1.5.2).
 
 6.  The directory server sends a response to the client application that the new organizational unit has
@@ -3112,7 +3001,7 @@ If the organizational unit creation request does not contain all mandatory attri
 6. The directory server sends a response to the client application that the missing attribute is
 required in the request.
 
-2.7.1.6  Cross-Domain Move - Client Application
+##### 2.7.1.6 Cross-Domain Move - Client Application
 
 In this use case, cross-domain movement of an object is performed between two domain controllers
 that are present in different domains.
@@ -3133,7 +3022,8 @@ Release: October 26, 2021
 
 46 / 182
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-ADOD].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3176,7 +3066,8 @@ Release: October 26, 2021
 
 47 / 182
 
-
+
+
 
 The environment, as described in section 2.5, is in place and the system-wide preconditions, as
 described in section 2.6, are satisfied. The Active Directory system completes initialization, as
@@ -3217,7 +3108,7 @@ Extensions
 
 None.
 
-2.7.2  Identity Lifecycle Management
+#### 2.7.2 Identity Lifecycle Management
 
 The use cases in this category represent the management of accounts in the Active Directory system.
 These accounts are used to gain access to the Active Directory system. An account's lifecycle begins
@@ -3238,13 +3129,14 @@ Release: October 26, 2021
 
 48 / 182
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-ADOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
 Figure 13: Use cases for identity lifecycle management
 
-2.7.2.1  Create a New Account - Client Application
+##### 2.7.2.1 Create a New Account - Client Application
 
 In this use case, an administrator wants to create a new account in the directory to allow a user to
 access directory resources. The administrator launches the client application to create a new account.
@@ -3261,7 +3153,8 @@ Release: October 26, 2021
 
 49 / 182
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-ADOD].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
@@ -3298,7 +3191,8 @@ Release: October 26, 2021
 
 50 / 182
 
-The RID Master DC is a supporting actor. It is the domain controller that is the owner of the RID
+
+The RID Master DC is a supporting actor. It is the domain controller that is the owner of the RID
 Master FSMO role for the domain.
 
 Stakeholders
@@ -3379,7 +3273,8 @@ Release: October 26, 2021
 
 51 / 182
 
-5. The DC sends a response to the client application that the client application has supplied
+
+5. The DC sends a response to the client application that the client application has supplied
 credentials with insufficient access-control rights to set the password on the account.
 
 
@@ -3413,7 +3308,7 @@ new RID range.
 
 6-7. Same as main Success Scenario.
 
-2.7.2.2  Reset an Existing Account's Password - Client Application
+##### 2.7.2.2 Reset an Existing Account's Password - Client Application
 
 In this use case, a user has forgotten the password for his or her account and contacts an
 administrator. The administrator wants to reset the account's password to a known value so that they
@@ -3436,7 +3331,8 @@ Release: October 26, 2021
 
 52 / 182
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-ADOD].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -3479,7 +3375,8 @@ Release: October 26, 2021
 
 53 / 182
 
-The user is the person who needs to access directory resources.
+
+The user is the person who needs to access directory resources.
 
 For the user, the Active Directory system guarantees that, if possible, the password for the user's
 account is reset.
@@ -3560,7 +3457,8 @@ Release: October 26, 2021
 
 54 / 182
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-ADOD].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -3574,7 +3472,7 @@ constraints described in [MS-SAMR] section 3.1.1.7.1:
 6. The directory server sends a response to the client that the supplied password does not meet
 the constraints.
 
-2.7.2.3  Change an Existing Account's Password (PDC) - Client Application
+##### 2.7.2.3 Change an Existing Account's Password (PDC) - Client Application
 
 In this use case, a user whose account is present in an Active Directory domain wants to change the
 existing password to a new value. The user launches a client application to change the password on
@@ -3604,7 +3502,8 @@ Release: October 26, 2021
 
 55 / 182
 
-The client application is the primary actor. It is the entity that prepares the connection to the
+
+The client application is the primary actor. It is the entity that prepares the connection to the
 directory server, submits the request to change the password, and relays the response to the
 user.
 
@@ -3681,7 +3580,8 @@ Release: October 26, 2021
 
 56 / 182
 
-7.  The directory server updates the password of the existing account with the new value that is
+
+7.  The directory server updates the password of the existing account with the new value that is
 
 supplied in the request. Additional attributes are updated as mandated by the server's processing
 rules and constraints ([MS-ADTS] sections 3.1.1.5.1 and 3.1.1.5.3 and [MS-SAMR] section
@@ -3727,7 +3627,7 @@ If the new password that the user supplies does not satisfy the password constra
 7. The directory server sends a response to the client application that the supplied password does
 not meet the constraints.
 
-2.7.2.4  Change an Existing Account's Password (DC) - Client Application
+##### 2.7.2.4 Change an Existing Account's Password (DC) - Client Application
 
 In this use case, a user whose account is present in an Active Directory domain wants to change the
 existing password to a new value. The user starts a client application to change the password on the
@@ -3750,7 +3650,8 @@ Release: October 26, 2021
 
 57 / 182
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-ADOD].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
@@ -3778,7 +3679,8 @@ Release: October 26, 2021
 
 58 / 182
 
-A domain controller that is not the owner of the PDC FSMO role for the domain. It is the
+
+A domain controller that is not the owner of the PDC FSMO role for the domain. It is the
 supporting actor that receives the password-change request, performs the tasks that are
 associated with changing a user's password in the directory, and sends a password update request
 to the PDC.
@@ -3859,7 +3761,8 @@ Release: October 26, 2021
 
 59 / 182
 
-7.  The DC updates the password of the existing account with the new value that is supplied in the
+
+7.  The DC updates the password of the existing account with the new value that is supplied in the
 
 request. Additional attributes are updated as mandated by the server's processing rules and
 constraints ([MS-ADTS] sections 3.1.1.5.1 and 3.1.1.5.3 and [MS-SAMR] section 3.1.1.8.7).
@@ -3883,7 +3786,7 @@ Postconditions
 The account's password is changed at the DC, and it is also updated for the PDC FSMO role owner of
 the domain.
 
-2.7.2.5  Change User Account Password Against an RODC - Client Application
+##### 2.7.2.5 Change User Account Password Against an RODC - Client Application
 
 In this use case, a user whose account is present in an Active Directory domain wants to change the
 existing password to a new value. The user starts a client application to change the password on the
@@ -3906,7 +3809,8 @@ Release: October 26, 2021
 
 60 / 182
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-ADOD].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -3944,7 +3848,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-updates the user password details in its directory database. The DC contains a writable replica of
+
+updates the user password details in its directory database. The DC contains a writable replica of
 the domain NC in which the user account is present.
 
 Stakeholders
@@ -4027,13 +3932,14 @@ Release: October 26, 2021
 
 62 / 182
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-ADOD].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
 The account's password is changed, and it is updated in the writable NC replica of the DC.
 
-2.7.2.6  User Logon to Domain Services by Using an RODC and Updating the User
+##### 2.7.2.6 User Logon to Domain Services by Using an RODC and Updating the User
 
 LastLogonTimeStamp - Client Application
 
@@ -4076,7 +3982,8 @@ Release: October 26, 2021
 
 63 / 182
 
-The DC is a domain controller in the domain. It is the supporting actor that contains a writable
+
+The DC is a domain controller in the domain. It is the supporting actor that contains a writable
 replica of the naming context in which the user account is present.
 
 Stakeholders
@@ -4135,7 +4042,7 @@ Postcondition
 
 The user account's lastLogonTimeStamp attribute is updated to reflect the user's last logon time.
 
-2.7.2.7  Query an Account's Group Membership - Client Application
+##### 2.7.2.7 Query an Account's Group Membership - Client Application
 
 In this use case, an administrator wants to display an account's group membership in order to
 determine the account's access rights. The administrator launches a client application to query the
@@ -4155,7 +4062,8 @@ Release: October 26, 2021
 
 64 / 182
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-ADOD].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
@@ -4199,7 +4107,8 @@ Release: October 26, 2021
 
 65 / 182
 
-The directory is the entity that contains and maintains group membership.
+
+The directory is the entity that contains and maintains group membership.
 
 In this operation, the directory is left unchanged.
 
@@ -4258,7 +4167,7 @@ rights to retrieve the group membership of the account:
 5. The directory server sends a response to the client application. Group-membership information
 is not returned to the client application.
 
-2.7.2.8  Delete an Account - Client Application
+##### 2.7.2.8 Delete an Account - Client Application
 
 In this use case, an administrator wants to delete an account from the directory to prevent its further
 use. The administrator launches a client application to delete an account. The client application
@@ -4279,7 +4188,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-ADOD].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -4323,7 +4233,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Preconditions
+
+Preconditions
 
 
 
@@ -4378,7 +4289,7 @@ rights to delete the account:
 5. The directory server sends a response to the client application that the supplied credentials
 have insufficient access-control rights to delete the account.
 
-2.7.2.9  Create a Security Group - Client Application
+##### 2.7.2.9 Create a Security Group - Client Application
 
 In this use case, an administrator wants to create a security group to be used for access-control
 decisions. The administrator launches a client application to create the new security group. The client
@@ -4399,7 +4310,8 @@ Release: October 26, 2021
 
 68 / 182
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-ADOD].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -4443,7 +4355,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Preconditions
+
+Preconditions
 
 
 
@@ -4527,16 +4440,17 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-ADOD].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
 6. The directory server sends a response to the client application that the specified group name is
 already in use by an existing group.
 
-2.7.2.10
+##### 2.7.2.10 Modify Group Member List - Client Application
 
-Modify Group Member List - Client Application
+
 
 In this use case, an existing security group is used to control access to directory resources. An
 administrator wants to modify the member list of that group so that a new account can access the
@@ -4573,7 +4487,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Directory server
+
+  Directory server
 
 The directory server is the supporting actor that receives the request and modifies the list.
 
@@ -4654,7 +4569,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-ADOD].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -4673,9 +4589,9 @@ SAMR] section 3.1.1.8.9):
 6. The directory server sends a response to the client application that the specified member list
 does not meet the constraints.
 
-2.7.2.11
+##### 2.7.2.11 Query for Members of a Group - Client Application
 
-Query for Members of a Group - Client Application
+
 
 In this use case, an administrator wants to view the members of a group to better determine which
 users have certain access-control rights. The administrator starts a client application to query for the
@@ -4702,7 +4618,8 @@ Release: October 26, 2021
 
 73 / 182
 
-  Client application
+
+  Client application
 
 The client application is the primary actor. It is the entity that prepares the connection to the
 directory server, submits the request to retrieve a group's member list, and relays the response
@@ -4781,7 +4698,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-ADOD].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
@@ -4797,7 +4715,7 @@ rights to retrieve the member list of the group:
 5. The directory server sends a response to the client application. The member list of the group is
 not returned to the client application.
 
-2.7.3  Schema Management
+#### 2.7.3 Schema Management
 
 When the set of classes and attributes in the base Active Directory schema does not meet the
 requirements of the applications, the administrator can extend the schema by adding a new class to
@@ -4814,7 +4732,7 @@ The following diagram illustrates the use cases of schema management.
 
 Figure 25: Use cases for schema management
 
-2.7.3.1  Add a New Class to the Schema - Client Application
+##### 2.7.3.1 Add a New Class to the Schema - Client Application
 
 In this use case, the administrator realizes that the set of classes in the base Active Directory schema
 does not meet the requirements of an application on the client. The administrator extends the
@@ -4831,7 +4749,8 @@ Release: October 26, 2021
 
 75 / 182
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-ADOD].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
@@ -4874,7 +4793,8 @@ Release: October 26, 2021
 
 76 / 182
 
-The administrator initiates the addition of a new class to the schema. The administrator primarily
+
+The administrator initiates the addition of a new class to the schema. The administrator primarily
 wants to receive information that the class was successfully added or receive an error message if
 it was not added.
 
@@ -4955,7 +4875,8 @@ Release: October 26, 2021
 
 77 / 182
 
-
+
+
 
 If the directory server to which the client application connects does not own the Schema Master
 FSMO role ([MS-ADTS] section 3.1.1.2.5):
@@ -4984,7 +4905,7 @@ section 3.1.1.2.5.1.1):
 7. The directory server sends a response to the client application that it cannot perform the
 operation.
 
-2.7.3.2  Add a New Attribute to the Schema - Client Application
+##### 2.7.3.2 Add a New Attribute to the Schema - Client Application
 
 In this use case, an administrator realizes that the set of attributes in the base Active Directory
 schema does not meet the requirements of an application on the client. To extend the schema, the
@@ -5008,7 +4929,8 @@ Release: October 26, 2021
 
 78 / 182
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-ADOD].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -5053,7 +4975,8 @@ Release: October 26, 2021
 
 79 / 182
 
-
+
+
 
 
 
@@ -5136,7 +5059,8 @@ Release: October 26, 2021
 
 80 / 182
 
-7. The directory server sends a response to the client application with a referral to the directory
+
+7. The directory server sends a response to the client application with a referral to the directory
 server that does own the Schema Master FSMO role.
 
 
@@ -5158,7 +5082,7 @@ ADTS] section 3.1.1.2.5.1.1):
 8. The directory server sends a response to the client application that it cannot perform the
 operation.
 
-2.7.3.3  Add an Attribute to a Class - Client Application
+##### 2.7.3.3 Add an Attribute to a Class - Client Application
 
 In this use case, an existing class in the base Active Directory schema lacks an attribute that an
 application on the client requires. The administrator extends the schema by adding an attribute to the
@@ -5180,7 +5104,8 @@ Release: October 26, 2021
 
 81 / 182
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MS-ADOD].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -5225,7 +5150,8 @@ Release: October 26, 2021
 
 82 / 182
 
-
+
+
 
 
 
@@ -5313,7 +5239,8 @@ Release: October 26, 2021
 
 83 / 182
 
-<!-- Extracted images from page 84 -->
+
+<!-- Extracted images from page 84 -->
 ![Extracted image 1 from page 84]([MS-ADOD].images/page084-img01.png)
 <!-- /Extracted images from page 84 -->
 
@@ -5339,7 +5266,7 @@ section 3.1.1.2.5):
 7. The directory server sends a response to the client application indicating that it cannot perform
 the operation.
 
-2.7.4  Name Translation
+#### 2.7.4 Name Translation
 
 The use case in this category represents name translation between a directory object's security
 identifier (SID) and human-readable names of the security principals in the access control
@@ -5350,7 +5277,7 @@ The following use case diagram illustrates the use case of name translation.
 
 Figure 29: Use case for name translation
 
-2.7.4.1  Convert a SID to/from a Human-Readable Format - Client Application
+##### 2.7.4.1 Convert a SID to/from a Human-Readable Format - Client Application
 
 Note  This use case is applicable only to AD DS; it is not applicable to AD LDS.
 
@@ -5372,7 +5299,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 85 -->
+
+<!-- Extracted images from page 85 -->
 ![Extracted image 1 from page 85]([MS-ADOD].images/page085-img01.png)
 <!-- /Extracted images from page 85 -->
 
@@ -5417,7 +5345,8 @@ Release: October 26, 2021
 
 85 / 182
 
-The administrator performs security actions that trigger the requirement for a name translation.
+
+The administrator performs security actions that trigger the requirement for a name translation.
 The administrator primarily wants to read and provide human-readable names and does not want
 to understand machine-readable names.
 
@@ -5494,7 +5423,8 @@ Release: October 26, 2021
 
 86 / 182
 
-5. The directory server sends a response to the client application indicating that no object exists
+
+5. The directory server sends a response to the client application indicating that no object exists
 with the SID or the name provided.
 
   Not all SIDs in the request could be translated to names:
@@ -5521,7 +5451,7 @@ supplied:
 4. The directory server sends a response to the client application indicating that it has insufficient
 access-control rights to perform the name translation.
 
-2.7.5  Directory Replication
+#### 2.7.5 Directory Replication
 
 The use cases in this category represent replication of directory data that is maintained by the Active
 Directory system. Domain and forest data have to be replicated among disparate physical storage
@@ -5555,13 +5485,14 @@ Release: October 26, 2021
 
 87 / 182
 
-<!-- Extracted images from page 88 -->
+
+<!-- Extracted images from page 88 -->
 ![Extracted image 1 from page 88]([MS-ADOD].images/page088-img01.png)
 <!-- /Extracted images from page 88 -->
 
 Figure 31: Use cases for directory replication
 
-2.7.5.1  Replicate Changes Within a Domain - Domain Controller
+##### 2.7.5.1 Replicate Changes Within a Domain - Domain Controller
 
 In this use case, a domain is maintained by three domain controllers; that is, copies of the domain
 data, or replicas, exist on three domain controllers within the domain: Domain Controller 1 (DC1),
@@ -5589,7 +5520,8 @@ Release: October 26, 2021
 
 88 / 182
 
-<!-- Extracted images from page 89 -->
+
+<!-- Extracted images from page 89 -->
 ![Extracted image 1 from page 89]([MS-ADOD].images/page089-img01.png)
 <!-- /Extracted images from page 89 -->
 
@@ -5633,7 +5565,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Preconditions
+
+Preconditions
 
 
 
@@ -5681,7 +5614,7 @@ Extensions
 
 None.
 
-2.7.5.2  Replicate Changes to a GC or a Partial Replica by Using RPC - Domain
+##### 2.7.5.2 Replicate Changes to a GC or a Partial Replica by Using RPC - Domain
 
 Controller
 
@@ -5705,7 +5638,8 @@ Release: October 26, 2021
 
 90 / 182
 
-<!-- Extracted images from page 91 -->
+
+<!-- Extracted images from page 91 -->
 ![Extracted image 1 from page 91]([MS-ADOD].images/page091-img01.png)
 <!-- /Extracted images from page 91 -->
 
@@ -5764,7 +5698,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  DC2 responds to DC1 with the new values.
+
+3.  DC2 responds to DC1 with the new values.
 
 4.  DC1 applies the changes to its replica.
 
@@ -5797,7 +5732,7 @@ There are additional conditions that the configurations of the domain controller
 before the DRS Protocol Extensions for SMTP can be used to replicate state between the domain
 controllers, as described in [MS-SRPL] sections 1.5 and 3.1.3.
 
-2.7.5.3  Transferring a FSMO Role - Domain Controller
+##### 2.7.5.3 Transferring a FSMO Role - Domain Controller
 
 This use case describes the transfer of a FSMO role of one domain controller to another domain
 controller.
@@ -5818,7 +5753,8 @@ Release: October 26, 2021
 
 92 / 182
 
-<!-- Extracted images from page 93 -->
+
+<!-- Extracted images from page 93 -->
 ![Extracted image 1 from page 93]([MS-ADOD].images/page093-img01.png)
 <!-- /Extracted images from page 93 -->
 
@@ -5873,7 +5809,8 @@ Release: October 26, 2021
 
 93 / 182
 
-<!-- Extracted images from page 94 -->
+
+<!-- Extracted images from page 94 -->
 ![Extracted image 1 from page 94]([MS-ADOD].images/page094-img01.png)
 <!-- /Extracted images from page 94 -->
 
@@ -5892,7 +5829,7 @@ Extensions
 
 None.
 
-2.7.6  Trust Management
+#### 2.7.6 Trust Management
 
 These use cases describe the creation of trust relationships between domains or forests, along with
 trust validation. A domain trust is created by creating a trusted domain object (TDO), as specified
@@ -5902,7 +5839,7 @@ specified in [MS-NRPC] section 3.5.4.7.
 
 Figure 35: Use cases for trust management
 
-2.7.6.1  Create a Trust - Domain Controller
+##### 2.7.6.1 Create a Trust - Domain Controller
 
 In this use case, a trust is created between two domains or forests.
 
@@ -5921,7 +5858,8 @@ Release: October 26, 2021
 
 94 / 182
 
-<!-- Extracted images from page 95 -->
+
+<!-- Extracted images from page 95 -->
 ![Extracted image 1 from page 95]([MS-ADOD].images/page095-img01.png)
 <!-- /Extracted images from page 95 -->
 
@@ -5976,7 +5914,8 @@ Release: October 26, 2021
 
 95 / 182
 
-<!-- Extracted images from page 96 -->
+
+<!-- Extracted images from page 96 -->
 ![Extracted image 1 from page 96]([MS-ADOD].images/page096-img01.png)
 <!-- /Extracted images from page 96 -->
 
@@ -5986,7 +5925,7 @@ Extensions
 
 None.
 
-2.7.7  Domain Services
+#### 2.7.7 Domain Services
 
 The use cases in this category pertain to the interaction between domain clients and those servers
 that service requests from the domain client to participate in domain activities. The relevant domain
@@ -5997,7 +5936,7 @@ The following use case diagram shows the use cases that pertain to domain-join a
 
 Figure 37: Use cases for domain services
 
-2.7.7.1  Join a Domain with a New Account - Domain Client
+##### 2.7.7.1 Join a Domain with a New Account - Domain Client
 
 This use case describes the general case of how to join a domain with a new account. A new account
 can be created in the domain by using either SAMR or LDAP. See sections 3.1.2 and 3.1.3 for details.
@@ -6009,7 +5948,8 @@ Release: October 26, 2021
 
 96 / 182
 
-<!-- Extracted images from page 97 -->
+
+<!-- Extracted images from page 97 -->
 ![Extracted image 1 from page 97]([MS-ADOD].images/page097-img01.png)
 <!-- /Extracted images from page 97 -->
 
@@ -6054,7 +5994,8 @@ Release: October 26, 2021
 
 97 / 182
 
-The end user wants to join a domain client to a domain so that he or she can access resources
+
+The end user wants to join a domain client to a domain so that he or she can access resources
 within the domain.
 
 The end user primarily wants to receive information that the domain client was joined to the
@@ -6126,11 +6067,12 @@ Release: October 26, 2021
 
 98 / 182
 
-<!-- Extracted images from page 99 -->
+
+<!-- Extracted images from page 99 -->
 ![Extracted image 1 from page 99]([MS-ADOD].images/page099-img01.png)
 <!-- /Extracted images from page 99 -->
 
-2.7.7.2  Unjoin from the Domain - Domain Client
+##### 2.7.7.2 Unjoin from the Domain - Domain Client
 
 In this use case, a client administrator wants to unjoin a domain client from the domain that it is
 currently part of, usually to repurpose or decommission the client computer.
@@ -6178,7 +6120,8 @@ Release: October 26, 2021
 
 99 / 182
 
-The client computer is the computer on which the domain client runs before the domain-unjoin
+
+The client computer is the computer on which the domain client runs before the domain-unjoin
 task is initiated.
 
 The primary interest of the client computer is that the machine local state of the domain client is
@@ -6223,9 +6166,9 @@ Extensions
 
 None.
 
-2.7.7.3  Supporting Use Cases
+##### 2.7.7.3 Supporting Use Cases
 
-2.7.7.3.1 Locate a Domain Controller - Domain Client
+###### 2.7.7.3.1 Locate a Domain Controller - Domain Client
 
 This use case describes the task of locating a domain controller. When an application on the client
 needs to access resources in a domain, locating a domain controller is the first step in the process.
@@ -6251,7 +6194,8 @@ Release: October 26, 2021
 
 100 / 182
 
-<!-- Extracted images from page 101 -->
+
+<!-- Extracted images from page 101 -->
 ![Extracted image 1 from page 101]([MS-ADOD].images/page101-img01.png)
 <!-- /Extracted images from page 101 -->
 
@@ -6295,7 +6239,8 @@ Release: October 26, 2021
 
 101 / 182
 
-The end user primarily wants to receive information that a domain controller can be located so
+
+The end user primarily wants to receive information that a domain controller can be located so
 that the domain client can be joined to the domain or to receive an error message if the domain
 client cannot be joined. If a domain controller cannot be located, the local state of the domain
 client is left unchanged.
@@ -6366,7 +6311,8 @@ Release: October 26, 2021
 
 102 / 182
 
-1.  The domain client queries the NetBIOS Infrastructure for NetBIOS group names that contain a list
+
+1.  The domain client queries the NetBIOS Infrastructure for NetBIOS group names that contain a list
 
 of domain controllers.
 
@@ -6382,7 +6328,7 @@ client's ping.
 
 5.  A domain controller is chosen for use in other tasks; for example, to join a domain.
 
-2.8  Versioning, Capability Negotiation, and Extensibility
+### 2.8 Versioning, Capability Negotiation, and Extensibility
 
 There are two distinct modes of operation of the Active Directory system: Active Directory
 Domain Services (AD DS) and Active Directory Lightweight Directory Services (AD LDS).
@@ -6485,7 +6431,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Schemas
+
+Schemas
 implemented
 
 [MS-ADLS]
@@ -6542,7 +6489,7 @@ The state model, constraints, processing rules, and so on, in [MS-ADTS] apply to
 LDS, except as otherwise noted in [MS-ADTS]. [MS-ADDM] applies to the Web Services-enabled
 versions of both AD DS and AD LDS.
 
-2.9  Error Handling
+### 2.9 Error Handling
 
 There are several potential failure scenarios for the Active Directory system. "Failure", in this context,
 does not refer to an error returned by a member protocol due to an invalid or not permitted request
@@ -6581,7 +6528,8 @@ Release: October 26, 2021
 
 104 / 182
 
-The Active Directory system does not define any error handling requirements beyond those that are
+
+The Active Directory system does not define any error handling requirements beyond those that are
 described in the Technical Documents of the protocols that the system supports, as listed in section
 2.4, and in the failure scenarios described in the sections that follow.
 
@@ -6590,7 +6538,7 @@ affect one or more protocols supported by the system. Such error conditions and 
 semantics are described in the corresponding protocol Technical Documents. The system does not
 constrain the types of errors that can be received through the member protocols.
 
-2.9.1  Transient Unavailability of Durable Storage
+#### 2.9.1 Transient Unavailability of Durable Storage
 
 As described in section 2.6, the Active Directory system requires access to durable storage. The
 system has to be able to read from and write to this storage. This storage is used to store all persisted
@@ -6624,7 +6572,7 @@ during that period, after the durable system becomes available and the system re
 servicing of requests, the abstract data of the system's protocols is in the same state as immediately
 prior to the storage becoming unavailable.
 
-2.9.2  Permanent Unavailability of Durable Storage
+#### 2.9.2 Permanent Unavailability of Durable Storage
 
 The preceding failure scenario dealt with the case of a transient unavailability of the durable storage.
 However, it is also possible that the durable storage on which the system's state is stored becomes
@@ -6644,7 +6592,8 @@ Release: October 26, 2021
 
 105 / 182
 
-When rejecting a request while in this scenario, the member protocol is permitted to use any suitable
+
+When rejecting a request while in this scenario, the member protocol is permitted to use any suitable
 error code that indicates that the directory server cannot process the request. The system does not
 constrain the protocol's choice of error code.
 
@@ -6661,7 +6610,7 @@ taken. Further, any changes to the state that were replicated to one or more rep
 servers in the directory service subsequent to the time the backup was taken can be regained after
 the restore through replication.
 
-2.9.3  Data Corruption
+#### 2.9.3 Data Corruption
 
 While a durable storage system does everything possible to protect the integrity of the data that is
 stored on it, data corruption nonetheless remains a possibility even in the best maintained storage
@@ -6679,7 +6628,7 @@ After data corruption has been detected, recovery proceeds in a manner similar t
 durable storage has become permanently unavailable. Essentially, data that cannot be trusted is
 treated in the same manner as no data at all.
 
-2.9.4  Unavailability of Networking
+#### 2.9.4 Unavailability of Networking
 
 A functional networking system is vital to the ability of clients to communicate with the directory
 server. If the networking system becomes unavailable, clients cannot send any new requests to the
@@ -6709,7 +6658,8 @@ Release: October 26, 2021
 
 106 / 182
 
-2.9.5  Unavailability of DNS
+
+#### 2.9.5 Unavailability of DNS
 
 DNS can be used by clients of the Active Directory system in order to locate directory servers by
 using the algorithms described in [MS-ADTS] section 6.3. If DNS ceases to be available (for example,
@@ -6723,7 +6673,7 @@ immediately affected by the loss of DNS.
 After DNS is restored to normal operating behavior, clients that depend on the location algorithms of
 [MS-ADTS] section 6.3 can once again locate directory servers.
 
-2.9.6  Failures while Joining or Unjoining a Domain
+#### 2.9.6 Failures while Joining or Unjoining a Domain
 
 Several of the examples in this document describe domain-join tasks that are completed through a
 series of actions that affect necessary state changes such that the client is joined to the domain (see
@@ -6753,7 +6703,7 @@ efforts to either disable or delete the computer account object. Failure to disa
 computer account object in that case might require domain administrator intervention (outside the
 scope of the task) to apply the changes manually.
 
-2.10  Coherency Requirements
+### 2.10 Coherency Requirements
 
 Coherency requirements exist for shared state between the protocols that comprise the Active
 Directory system. As a general requirement, when multiple protocols share state and one of the
@@ -6773,7 +6723,8 @@ Release: October 26, 2021
 
 107 / 182
 
-The system exposes the same view of the shared state via all the protocols that share that state. This
+
+The system exposes the same view of the shared state via all the protocols that share that state. This
 means that all committed changes to the shared state are visible (subject to access-control
 restrictions) through all protocols that share that state, and no uncommitted changes are visible
 through any of the protocols that share that state. This does not require that all state be visible
@@ -6785,7 +6736,7 @@ State is shared transitively. If one abstract data model has a field that shares
 second abstract data model, and a third abstract data model also shares state with that field in the
 second model, then transitively the first and third abstract data models share state.
 
-2.11  Security
+### 2.11 Security
 
 This section documents system-wide security issues that are not otherwise described in the Technical
 Documents (TDs) for the member protocols. It does not duplicate what is already in the protocol TDs
@@ -6823,7 +6774,7 @@ eavesdropping and tampering.
 The following sections describe in more detail the security mechanisms and conditions in the Active
 Directory system.
 
-2.11.1 Security Elements
+#### 2.11.1 Security Elements
 
 Directory objects are protected by security descriptors that contain access control lists (ACLs)
 that grant or deny permissions to security principals, either directly or through group membership,
@@ -6838,7 +6789,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-other protocols substitute their own access checks, as described in that individual protocol's Technical
+
+other protocols substitute their own access checks, as described in that individual protocol's Technical
 Document.
 
 In the Active Directory system, the following protocols perform access checks, as described in [MS-
@@ -6886,7 +6838,7 @@ The protocols provide mechanisms to digitally sign requests and responses to pro
 tampering while they are transferred over the network and to encrypt the traffic to prevent
 eavesdropping. For more information, see section 2.11.2.
 
-2.11.2 Communications Security
+#### 2.11.2 Communications Security
 
 The Active Directory system relies on messages that are passed across the network between the
 client and the directory service and from one directory service server to another. The system does
@@ -6914,7 +6866,8 @@ Release: October 26, 2021
 
 109 / 182
 
-messages sent through the tunnel. Message-level security encrypts and/or digitally signs each
+
+messages sent through the tunnel. Message-level security encrypts and/or digitally signs each
 individual message to provide confidentially and integrity of the message, respectively.
 
 There is no single transport- or message-level mechanism that is used throughout all the protocols
@@ -7048,7 +7001,8 @@ Release: October 26, 2021
 
 110 / 182
 
-Protocol
+
+Protocol
 
 Mechanisms
 
@@ -7143,7 +7097,7 @@ ADCAP
 * Implementations can provide mechanisms to limit the operations that can be performed or the size
 of the response.<5>
 
-2.11.3 System Configuration Security
+#### 2.11.3 System Configuration Security
 
 The configuration data and parameters for the Active Directory system are stored in the directory
 service itself. The configuration data is retrieved and manipulated by using the same protocols that
@@ -7160,7 +7114,7 @@ Failure to do so could permit an attacker to perform an elevation-of-privilege a
 and modifying a request message sent by the client to perform an action of the attacker's choosing
 (using the client's privileges).
 
-2.11.4 Internal Security
+#### 2.11.4 Internal Security
 
 Internal security is the means by which the Active Directory system ensures its own security, including
 the steps that other entities that interact with the system have to take to protect the security of the
@@ -7177,7 +7131,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-service resources or that otherwise interfere with the directory service's ability to respond to requests
+
+service resources or that otherwise interfere with the directory service's ability to respond to requests
 from other clients.
 
 Other systems that interact with the Active Directory system can take the following steps to protect
@@ -7208,7 +7163,7 @@ connection consumes resources on the directory service. A single client that ope
 of connections can reduce the number of clients that the directory service can simultaneously
 service.
 
-2.11.5 External Security
+#### 2.11.5 External Security
 
 External security is the means by which the Active Directory system ensures the security of other
 systems with which it interacts, and the steps that such other systems can take to protect their own
@@ -7257,7 +7212,8 @@ Release: October 26, 2021
 
 112 / 182
 
-2.12  Additional Considerations
+
+### 2.12 Additional Considerations
 
 None.
 
@@ -7268,7 +7224,8 @@ Release: October 26, 2021
 
 113 / 182
 
-3  Examples
+
+## 3 Examples
 
 The following sections provide examples for the most common activities in the Active Directory
 system. These examples are divided into two major categories:  domain-join examples and directory
@@ -7278,7 +7235,7 @@ Note  Windows clients might generate extra messages for their internal processin
 are not required to achieve the goals of the examples and are therefore not described in this
 document.
 
-3.1  Domain-Join Examples
+### 3.1 Domain-Join Examples
 
 This section contains a set of examples that illustrate the activity of the Active Directory system when
 a client computer is joined to a domain. The following types of examples are covered in this
@@ -7300,7 +7257,7 @@ protocol that provides access to that state, not just the protocol that original
 be used to further modify that state. For example, a user that was created by using the SAMR protocol
 can have his or her password changed by using LDAP.
 
-3.1.1  Example 1: Locate a Domain Controller
+#### 3.1.1 Example 1: Locate a Domain Controller
 
 This example shows the pattern to locate a domain controller that is based on the domain name
 provided--both flat, NetBIOS names and the fully qualified Domain Name System (DNS) names
@@ -7337,7 +7294,8 @@ Release: October 26, 2021
 
 114 / 182
 
-<!-- Extracted images from page 115 -->
+
+<!-- Extracted images from page 115 -->
 ![Extracted image 1 from page 115]([MS-ADOD].images/page115-img01.png)
 <!-- /Extracted images from page 115 -->
 
@@ -7378,7 +7336,8 @@ Release: October 26, 2021
 
 115 / 182
 
-<!-- Extracted images from page 116 -->
+
+<!-- Extracted images from page 116 -->
 ![Extracted image 1 from page 116]([MS-ADOD].images/page116-img01.png)
 <!-- /Extracted images from page 116 -->
 
@@ -7427,7 +7386,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  By using the NetBIOS group names that domain controllers register along with their capabilities,
+
+3.  By using the NetBIOS group names that domain controllers register along with their capabilities,
 
 the domain client sends a MAILSLOT Ping to candidate domain controllers by using the Remote
 Mailslot Protocol [MS-MAIL]. The Ping response is used to determine availability and to confirm
@@ -7439,7 +7399,7 @@ capabilities that the domain controller returned satisfy the requested capabilit
 controllers respond or if none match the required capabilities, the client returns an error indicating
 that a domain controller could not be located.
 
-3.1.2  Example 2: Joining a Domain by Creating an Account via SAMR
+#### 3.1.2 Example 2: Joining a Domain by Creating an Account via SAMR
 
 This example describes the process of joining a client computer to a domain by creating an
 account via the SAMR protocol. This is a secure method to join a domain. It establishes the account
@@ -7476,7 +7436,8 @@ Release: October 26, 2021
 
 117 / 182
 
-<!-- Extracted images from page 118 -->
+
+<!-- Extracted images from page 118 -->
 ![Extracted image 1 from page 118]([MS-ADOD].images/page118-img01.png)
 <!-- /Extracted images from page 118 -->
 
@@ -7497,7 +7458,8 @@ Release: October 26, 2021
 
 118 / 182
 
-3.  To establish an SMB/CIFS session to the domain controller, the domain client sends an SMB
+
+3.  To establish an SMB/CIFS session to the domain controller, the domain client sends an SMB
 
 session bind request. In this bind request, it sends anonymous user credentials to the domain
 controller ([MS-CIFS] section 3.2.4.2).
@@ -7577,7 +7539,8 @@ Release: October 26, 2021
 
 119 / 182
 
-21. The domain client sends an IDL_DRSBind request, which creates a context handle that is
+
+21. The domain client sends an IDL_DRSBind request, which creates a context handle that is
 
 necessary to call any other methods in the interface ([MS-DRSR] section 4.1.3).
 
@@ -7642,7 +7605,7 @@ was established previously.
 
 37. Upon a successful response from the domain controller, the SMB/CIFS session is closed.
 
-3.1.3  Example 3: Joining a Domain by Creating an Account via LDAP
+#### 3.1.3 Example 3: Joining a Domain by Creating an Account via LDAP
 
 This example describes the process of joining a client computer to a domain by creating an
 account via LDAP. This is a secure way to join the domain. This task shares many of the actions to
@@ -7658,7 +7621,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-This example also highlights again why the domain controller server implementation has to enforce
+
+This example also highlights again why the domain controller server implementation has to enforce
 that the multiple interfaces to the same underlying account database keep the objects synchronized
 across the different protocol interfaces. This example is useful to join a client to a domain or to
 perform other domain-related operations by using LDAP in a domain environment.
@@ -7691,7 +7655,8 @@ Release: October 26, 2021
 
 121 / 182
 
-<!-- Extracted images from page 122 -->
+
+<!-- Extracted images from page 122 -->
 ![Extracted image 1 from page 122]([MS-ADOD].images/page122-img01.png)
 <!-- /Extracted images from page 122 -->
 
@@ -7716,7 +7681,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The domain controller uses one of the methods defined elsewhere ([MS-AUTHSOD] section 2) to
+
+4.  The domain controller uses one of the methods defined elsewhere ([MS-AUTHSOD] section 2) to
 verify the credentials. Depending on the negotiated authentication method, this might involve
 additional domain client and server interactions not directly relevant to this discussion. After
 verification, the domain controller sends an LDAP bind response ([RFC2251] section 4.2.3) to the
@@ -7799,7 +7765,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-21. The domain client sends an LDAP search request ([RFC2251] section 4.5.1) to the domain
+
+21. The domain client sends an LDAP search request ([RFC2251] section 4.5.1) to the domain
 
 controller with baseObject set to the FQDN format domain name.
 
@@ -7845,7 +7812,7 @@ trusts from the DC.
 
 32. The domain client updates its local state variables.
 
-3.1.4  Example 4: Unjoining a Domain Member
+#### 3.1.4 Example 4: Unjoining a Domain Member
 
 This example describes the process of unjoining a client computer from a domain. To unjoin from a
 domain, a client administrator locates a domain controller (DC) and then performs actions against
@@ -7877,7 +7844,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 125 -->
+
+<!-- Extracted images from page 125 -->
 ![Extracted image 1 from page 125]([MS-ADOD].images/page125-img01.png)
 <!-- /Extracted images from page 125 -->
 
@@ -7916,7 +7884,8 @@ Release: October 26, 2021
 
 125 / 182
 
- 5. By using the SMB connection that was established in the previous step, the domain client sends a
+
+ 5. By using the SMB connection that was established in the previous step, the domain client sends a
 SamrConnect5 request ([MS-SAMR] section 3.1.5.1.1) to the domain controller to connect to the
 SAM RPC server on the DC.
 
@@ -7973,7 +7942,7 @@ controller to close the SMB/SMB2/CIFS session that was established earlier.
 
 25. Upon a successful response from the domain controller, the SMB/SMB2/CIFS session is closed.
 
-3.2  Directory Examples
+### 3.2 Directory Examples
 
 This section contains a set of examples that describe common uses of the Active Directory system.
 The following examples are given:
@@ -7997,7 +7966,8 @@ Release: October 26, 2021
 
 126 / 182
 
-  Determine the group membership of a user.
+
+  Determine the group membership of a user.
 
   Delete a user account.
 
@@ -8038,7 +8008,7 @@ be used to further modify that state. For example, the user that was created by 
 protocol can have his or her password changed by using LDAP, or can be queried by using the Web
 Services protocols.
 
-3.2.1  Example 1: Provision a User Account by Using LDAP
+#### 3.2.1 Example 1: Provision a User Account by Using LDAP
 
 In this example, an administrator provisions a user account by using the Lightweight Directory
 Access Protocol (LDAP). To perform this task, the administrator runs a client application on a
@@ -8073,7 +8043,8 @@ Release: October 26, 2021
 
 127 / 182
 
-<!-- Extracted images from page 128 -->
+
+<!-- Extracted images from page 128 -->
 ![Extracted image 1 from page 128]([MS-ADOD].images/page128-img01.png)
 <!-- /Extracted images from page 128 -->
 
@@ -8095,7 +8066,8 @@ Release: October 26, 2021
 
 128 / 182
 
-1.  The client application starts, and an LDAP bind request ([RFC2251] section 4.2) is sent to the
+
+1.  The client application starts, and an LDAP bind request ([RFC2251] section 4.2) is sent to the
 
 directory server with the credentials of the administrator.
 
@@ -8172,7 +8144,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-14. The service validates the credentials in the AS request and sends an AS response ([RFC4120]
+
+14. The service validates the credentials in the AS request and sends an AS response ([RFC4120]
 
 section 3.1) with a TGT.
 
@@ -8226,7 +8199,7 @@ The user object has been populated with all specified attributes.
 
 LDAP connection to the directory server is closed.
 
-3.2.2  Example 2: Provision a User Account by Using the SAMR Protocol
+#### 3.2.2 Example 2: Provision a User Account by Using the SAMR Protocol
 
 A common administrative task is to provision an account for a new user. As shown in the previous
 section, this can be done by using LDAP. Another way to accomplish this task is to use the SAMR
@@ -8245,7 +8218,8 @@ Release: October 26, 2021
 
 130 / 182
 
-This example differs from the previous example (section 3.2.1) in that it uses the SAMR protocol
+
+This example differs from the previous example (section 3.2.1) in that it uses the SAMR protocol
 rather than LDAP to create the user and in that it only provides a minimal set of attributes for the
 newly created account.
 
@@ -8276,7 +8250,8 @@ Release: October 26, 2021
 
 131 / 182
 
-<!-- Extracted images from page 132 -->
+
+<!-- Extracted images from page 132 -->
 ![Extracted image 1 from page 132]([MS-ADOD].images/page132-img01.png)
 <!-- /Extracted images from page 132 -->
 
@@ -8301,7 +8276,8 @@ Release: October 26, 2021
 
 132 / 182
 
-3.  The server processes the request ([MS-SAMR] section 3.1.5.1.1) and sends a response with the
+
+3.  The server processes the request ([MS-SAMR] section 3.1.5.1.1) and sends a response with the
 
 server handle to be used by later calls.
 
@@ -8374,7 +8350,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-14. To obtain password policy information, the client application sends a
+
+14. To obtain password policy information, the client application sends a
 
 SamrGetUserDomainPasswordInformation request ([MS-SAMR] section 3.1.5.13.3), using the user
 handle that it previously obtained in step 11 for the newly created user.
@@ -8404,7 +8381,7 @@ the server handle).
 
 As the final step, the transports that were created for communication are closed.
 
-3.2.3  Example 3: Provision a User Account by Using the SAMR Protocol Including the
+#### 3.2.3 Example 3: Provision a User Account by Using the SAMR Protocol Including the
 
 Need for a RID Allocation Request
 
@@ -8447,7 +8424,8 @@ Release: October 26, 2021
 
 134 / 182
 
-<!-- Extracted images from page 135 -->
+
+<!-- Extracted images from page 135 -->
 ![Extracted image 1 from page 135]([MS-ADOD].images/page135-img01.png)
 <!-- /Extracted images from page 135 -->
 
@@ -8469,7 +8447,8 @@ Release: October 26, 2021
 
 135 / 182
 
- 2. The next step is to open a SAMR handle to the DC (directory server). The client application sends a
+
+ 2. The next step is to open a SAMR handle to the DC (directory server). The client application sends a
 SamrConnect5 request ([MS-SAMR] section 3.1.5.1.1) with the DesiredAccess parameter set to
 MAXIMUM_ALLOWED ([MS-SAMR] section 2.2.1.1) to the server, requesting a server handle.
 
@@ -8544,7 +8523,8 @@ Release: October 26, 2021
 
 136 / 182
 
-17. The RID master processes this request according the processing rules specified in [MS-DRSR]
+
+17. The RID master processes this request according the processing rules specified in [MS-DRSR]
 
 section 4.1.10.5 and returns a range of RIDs.
 
@@ -8566,7 +8546,7 @@ then the server handle).
 
 As the final step, the transports that were created for communication are closed.
 
-3.2.4  Example 4: Change a User Account's Password
+#### 3.2.4 Example 4: Change a User Account's Password
 
 In this example, a user changes the password on their account by using the SAMR protocol. To
 perform this task, a user runs a client application from a client computer that targets a directory
@@ -8605,7 +8585,8 @@ Release: October 26, 2021
 
 137 / 182
 
-<!-- Extracted images from page 138 -->
+
+<!-- Extracted images from page 138 -->
 ![Extracted image 1 from page 138]([MS-ADOD].images/page138-img01.png)
 <!-- /Extracted images from page 138 -->
 
@@ -8629,7 +8610,8 @@ Release: October 26, 2021
 
 138 / 182
 
-the DesiredAccess parameter ([MS-SAMR] section 2.2.1.1). This message requests a server
+
+the DesiredAccess parameter ([MS-SAMR] section 2.2.1.1). This message requests a server
 handle.
 
 3.  The server processes the request ([MS-SAMR] section 3.1.5.1.1) and sends a response with the
@@ -8707,7 +8689,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-16. The client application sends a SamrOpenUser request ([MS-SAMR] section 3.1.5.1.9). The request
+
+16. The client application sends a SamrOpenUser request ([MS-SAMR] section 3.1.5.1.9). The request
 
 includes the domain handle and the RID of the user, and has the desired value set in the
 DesiredAccess parameter ([MS-SAMR] section 2.2.1.1).
@@ -8750,7 +8733,7 @@ set to the handle that the client application is attempting to close. The client
 handles in the reverse order in which they were created (that is, the user handle, the domain
 handles, and then the server handle).
 
-3.2.5  Example 5: Change a User Account's Password Against a Non-PDC DC
+#### 3.2.5 Example 5: Change a User Account's Password Against a Non-PDC DC
 
 In this example, a user changes the password on the user account by using the SAMR protocol. To
 perform this task, a user runs a client application on a client computer that targets a DC in the
@@ -8783,7 +8766,8 @@ Release: October 26, 2021
 
 140 / 182
 
-<!-- Extracted images from page 141 -->
+
+<!-- Extracted images from page 141 -->
 ![Extracted image 1 from page 141]([MS-ADOD].images/page141-img01.png)
 <!-- /Extracted images from page 141 -->
 
@@ -8810,7 +8794,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
- 1. The client application uses a supported transport to bind to the SAMR endpoint on the DC, as
+
+ 1. The client application uses a supported transport to bind to the SAMR endpoint on the DC, as
 
 described in [MS-SAMR] section 2.1.
 
@@ -8890,14 +8875,15 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-24. – 25. The client application performs cleanup by closing all the handles that it opened during the
+
+24. – 25. The client application performs cleanup by closing all the handles that it opened during the
 
 session. This is done by calling SamrCloseHandle ([MS-SAMR] section 3.1.5.13.1) with SamHandle
 set to the handle that the client application is attempting to close. The client application closes the
 handles in the reverse order in which they were created (that is, the user handle, the domain
 handle, and then the server handle).
 
-3.2.6  Example 6: Update the User's lastLogOnTimeStamp Against an RODC When the
+#### 3.2.6 Example 6: Update the User's lastLogOnTimeStamp Against an RODC When the
 
 User Binds to an LDAP Server
 
@@ -8940,7 +8926,8 @@ Release: October 26, 2021
 
 143 / 182
 
-<!-- Extracted images from page 144 -->
+
+<!-- Extracted images from page 144 -->
 ![Extracted image 1 from page 144]([MS-ADOD].images/page144-img01.png)
 <!-- /Extracted images from page 144 -->
 
@@ -8975,7 +8962,7 @@ according to the processing rules specified in [MS-NRPC] section 3.4.5.6.4.
 
 updates the user account's lastLogonTimeStamp attribute, and returns a response.
 
-3.2.7  Example 7: Determine the Group Membership of a User
+#### 3.2.7 Example 7: Determine the Group Membership of a User
 
 In this example, an administrator queries the directory to determine the group membership of a user.
 The administrator does so by using the SAMR protocol. To perform this task, an administrator runs a
@@ -8991,7 +8978,8 @@ Release: October 26, 2021
 
 144 / 182
 
-This example uses the SAMR protocol.
+
+This example uses the SAMR protocol.
 
 This example covers the use case in section 2.7.2.7, Query an Account's Group Membership - Client
 Application.
@@ -9021,7 +9009,8 @@ Release: October 26, 2021
 
 145 / 182
 
-<!-- Extracted images from page 146 -->
+
+<!-- Extracted images from page 146 -->
 ![Extracted image 1 from page 146]([MS-ADOD].images/page146-img01.png)
 <!-- /Extracted images from page 146 -->
 
@@ -9041,7 +9030,8 @@ Release: October 26, 2021
 
 146 / 182
 
-2.  The next step is to open a SAMR handle to the directory server. To obtain a server handle, the
+
+2.  The next step is to open a SAMR handle to the directory server. To obtain a server handle, the
 client application sends a SamrConnect5 request ([MS-SAMR] section 3.1.5.1.1) with the
 DesiredAccess parameter set to MAXIMUM_ALLOWED ([MS-SAMR] section 2.2.1.1) to the
 directory server.
@@ -9115,7 +9105,8 @@ Release: October 26, 2021
 
 147 / 182
 
-3.2.8  Example 8: Delete a User Account
+
+#### 3.2.8 Example 8: Delete a User Account
 
 In this example, an administrator deletes a user account. This includes directory objects of class
 user as well as objects of classes that are derived from the user class. One way to delete a user
@@ -9156,7 +9147,8 @@ Release: October 26, 2021
 
 148 / 182
 
-<!-- Extracted images from page 149 -->
+
+<!-- Extracted images from page 149 -->
 ![Extracted image 1 from page 149]([MS-ADOD].images/page149-img01.png)
 <!-- /Extracted images from page 149 -->
 
@@ -9194,7 +9186,8 @@ Release: October 26, 2021
 
 149 / 182
 
-6.  The server processes the delete request ([RFC2251] section 4.8), verifies the processing rules and
+
+6.  The server processes the delete request ([RFC2251] section 4.8), verifies the processing rules and
 constraints, and then deletes the user object ([MS-ADTS] section 3.1.1.5.5). It then sends an
 LDAP delete response ([RFC2251] section 4.8) that indicates success.
 
@@ -9202,7 +9195,7 @@ LDAP delete response ([RFC2251] section 4.8) that indicates success.
 
 LDAP connection to the directory server is closed.
 
-3.2.9  Example 9: Obtain a List of User Accounts Using the Web Services Protocols
+#### 3.2.9 Example 9: Obtain a List of User Accounts Using the Web Services Protocols
 
 One way to obtain a list of users in the Active Directory system is to use the Web Services protocols,
 specifically WS-Enumeration [WSENUM], to query the directory. A client application can create a
@@ -9240,7 +9233,8 @@ Release: October 26, 2021
 
 150 / 182
 
-<!-- Extracted images from page 151 -->
+
+<!-- Extracted images from page 151 -->
 ![Extracted image 1 from page 151]([MS-ADOD].images/page151-img01.png)
 <!-- /Extracted images from page 151 -->
 
@@ -9277,7 +9271,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-previously returned enumeration context along with optional values such as the number of items
+
+previously returned enumeration context along with optional values such as the number of items
 (directory objects) that the server is to return to the client application in the Pull response.
 
 4.  The server retrieves the matching user objects ([MS-ADTS] section 3.1.1.3.1.3) from the
@@ -9304,7 +9299,7 @@ Release request is not sent.
 
 response to the client.
 
-3.2.10 Example 10: Obtain a List of User Accounts Using LDAP
+#### 3.2.10 Example 10: Obtain a List of User Accounts Using LDAP
 
 To obtain a list of user accounts in the Active Directory system, LDAP can be used to query the
 directory. A client can create a query with a supplied filter to locate accounts that are based on
@@ -9338,7 +9333,8 @@ Release: October 26, 2021
 
 152 / 182
 
-<!-- Extracted images from page 153 -->
+
+<!-- Extracted images from page 153 -->
 ![Extracted image 1 from page 153]([MS-ADOD].images/page153-img01.png)
 <!-- /Extracted images from page 153 -->
 
@@ -9371,7 +9367,7 @@ and constraints described in [MS-ADTS] sections 3.1.1.3.1.3 and 3.1.1.3.4.6.
 
 server. The LDAP connection to the directory server is closed.
 
-3.2.11 Example 11: Manage Groups and Their Memberships
+#### 3.2.11 Example 11: Manage Groups and Their Memberships
 
 This section discusses how to create a group, to add members to that group, and to query its
 membership. The state transitions of the directory client and the message flow between client and
@@ -9388,7 +9384,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Prerequisites
+
+Prerequisites
 
 The general requirements set forth in section 2.6, "Assumptions and Preconditions".
 
@@ -9414,7 +9411,8 @@ Release: October 26, 2021
 
 154 / 182
 
-<!-- Extracted images from page 155 -->
+
+<!-- Extracted images from page 155 -->
 ![Extracted image 1 from page 155]([MS-ADOD].images/page155-img01.png)
 <!-- /Extracted images from page 155 -->
 
@@ -9434,7 +9432,8 @@ Release: October 26, 2021
 
 155 / 182
 
-2.  The directory server verifies the credentials ([MS-AUTHSOD] section 2) and sends an LDAP bind
+
+2.  The directory server verifies the credentials ([MS-AUTHSOD] section 2) and sends an LDAP bind
 
 response ([RFC2251] section 4.2.3) to the client application.
 
@@ -9513,7 +9512,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The client application has now obtained the domain SID and can use it to open a SAMR handle to
+
+The client application has now obtained the domain SID and can use it to open a SAMR handle to
 the domain.
 
 18. The client application sends a SamrOpenDomain request ([MS-SAMR] section 3.1.5.1.5). The
@@ -9558,7 +9558,7 @@ set to the handle that the client application is attempting to close. The client
 handles in the reverse order in which they were received (that is, the group handle, the domain
 handle, and then the server handle).
 
-3.2.12 Example12: Delete a Group
+#### 3.2.12 Example12: Delete a Group
 
 In this example, a user deletes a security group, which is transformed into a tombstone ([MS-ADTS]
 section 3.1.1.5.5.1.1). To use LDAP is one way to accomplish this task. To perform this task, a user
@@ -9586,7 +9586,8 @@ Release: October 26, 2021
 
 157 / 182
 
-<!-- Extracted images from page 158 -->
+
+<!-- Extracted images from page 158 -->
 ![Extracted image 1 from page 158]([MS-ADOD].images/page158-img01.png)
 <!-- /Extracted images from page 158 -->
 
@@ -9633,11 +9634,12 @@ Release: October 26, 2021
 
 158 / 182
 
-<!-- Extracted images from page 159 -->
+
+<!-- Extracted images from page 159 -->
 ![Extracted image 1 from page 159]([MS-ADOD].images/page159-img01.png)
 <!-- /Extracted images from page 159 -->
 
-3.2.13 Example 13: Extend the Schema to Support an Application by Adding a New
+#### 3.2.13 Example 13: Extend the Schema to Support an Application by Adding a New
 
 Class
 
@@ -9680,7 +9682,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The sequence of events is described in the following steps.
+
+The sequence of events is described in the following steps.
 
 1.  The client application establishes an LDAP connection to the directory server and sends an LDAP
 
@@ -9704,7 +9707,7 @@ LDAP add response ([RFC2252] section 4.7) that indicates that the object creatio
 
 section 4.3) to the directory server.
 
-3.2.14 Example 14: Extend the Schema to Support an Application by Adding a New
+#### 3.2.14 Example 14: Extend the Schema to Support an Application by Adding a New
 
 Attribute
 
@@ -9745,7 +9748,8 @@ Release: October 26, 2021
 
 160 / 182
 
-<!-- Extracted images from page 161 -->
+
+<!-- Extracted images from page 161 -->
 ![Extracted image 1 from page 161]([MS-ADOD].images/page161-img01.png)
 <!-- /Extracted images from page 161 -->
 
@@ -9776,7 +9780,7 @@ that the object creation was successful.
 
 section 4.3) to the directory server.
 
-3.2.15 Example 15: Extend the Schema to Support an Application by Adding an
+#### 3.2.15 Example 15: Extend the Schema to Support an Application by Adding an
 
 Attribute to a Class
 
@@ -9791,7 +9795,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 162 -->
+
+<!-- Extracted images from page 162 -->
 ![Extracted image 1 from page 162]([MS-ADOD].images/page162-img01.png)
 <!-- /Extracted images from page 162 -->
 
@@ -9836,7 +9841,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.  The directory server verifies the credentials ([MS-AUTHSOD] section 2) and sends an LDAP bind
+
+2.  The directory server verifies the credentials ([MS-AUTHSOD] section 2) and sends an LDAP bind
 
 response ([RFC2251] section 4.2.3) to the client application.
 
@@ -9857,7 +9863,7 @@ modification was successful.
 
 section 4.3) to the directory server.
 
-3.2.16 Example 16: Partition Directory Data with Organizational Units
+#### 3.2.16 Example 16: Partition Directory Data with Organizational Units
 
 In this example, a user partitions the directory data using organizational units (OUs). This can be
 accomplished using LDAP. To perform this task, a user runs a client application from a client
@@ -9894,7 +9900,8 @@ Release: October 26, 2021
 
 163 / 182
 
-<!-- Extracted images from page 164 -->
+
+<!-- Extracted images from page 164 -->
 ![Extracted image 1 from page 164]([MS-ADOD].images/page164-img01.png)
 <!-- /Extracted images from page 164 -->
 
@@ -9938,7 +9945,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-7.  The user selects directory object(s) to be moved under the new OU. The client application sends a
+
+7.  The user selects directory object(s) to be moved under the new OU. The client application sends a
 series of LDAP modify DN requests ([RFC2251] section 4.9) to the directory server to move the
 directory object(s). The LDAP modify DN operation contains the distinguished name (DN) of the
 object to be moved, the new relative distinguished name (RDN), the DN of the new parent,
@@ -9953,7 +9961,7 @@ LDAP modify DN response ([RFC2251] section 4.9) to the client application that i
 
 LDAP connection to the directory server is closed.
 
-3.2.17 Example 17: Store Application Data in the Directory
+#### 3.2.17 Example 17: Store Application Data in the Directory
 
 Developers can create directory-enabled applications that store data in the Active Directory system.
 To store application data, a user runs the client application on a client computer that targets a
@@ -9988,7 +9996,8 @@ Release: October 26, 2021
 
 165 / 182
 
-<!-- Extracted images from page 166 -->
+
+<!-- Extracted images from page 166 -->
 ![Extracted image 1 from page 166]([MS-ADOD].images/page166-img01.png)
 <!-- /Extracted images from page 166 -->
 
@@ -10033,11 +10042,12 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-7.  The client application sends an LDAP unbind request ([RFC2251] section 4.3) to the server. The
+
+7.  The client application sends an LDAP unbind request ([RFC2251] section 4.3) to the server. The
 
 LDAP connection to the directory server is closed.
 
-3.2.18 Example 18: Manage Access Control on Directory Objects
+#### 3.2.18 Example 18: Manage Access Control on Directory Objects
 
 In this example, an administrator reads and modifies the access control settings of a directory
 object. This permits the administrator to control who has access to that object, and what type of
@@ -10074,7 +10084,8 @@ Release: October 26, 2021
 
 167 / 182
 
-<!-- Extracted images from page 168 -->
+
+<!-- Extracted images from page 168 -->
 ![Extracted image 1 from page 168]([MS-ADOD].images/page168-img01.png)
 <!-- /Extracted images from page 168 -->
 
@@ -10114,7 +10125,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 169 -->
+
+<!-- Extracted images from page 169 -->
 ![Extracted image 1 from page 169]([MS-ADOD].images/page169-img01.png)
 <!-- /Extracted images from page 169 -->
 
@@ -10168,7 +10180,7 @@ step 6.
 
 server. The LDAP connection to the directory server is closed.
 
-3.2.19 Example 19: Raise the Domain Functional Level
+#### 3.2.19 Example 19: Raise the Domain Functional Level
 
 In this example, an administrator uses LDAP to modify the msDS-Behavior-Version attribute ([MS-
 ADA2] section 2.254 and [MS-ADTS] section 3.1.1.5.3.1.1.5) to an incremented value in order to raise
@@ -10185,7 +10197,8 @@ Release: October 26, 2021
 
 169 / 182
 
-<!-- Extracted images from page 170 -->
+
+<!-- Extracted images from page 170 -->
 ![Extracted image 1 from page 170]([MS-ADOD].images/page170-img01.png)
 <!-- /Extracted images from page 170 -->
 
@@ -10229,7 +10242,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  An LDAP search request ([RFC2251] section 4.5.1) is sent to the directory to query the base
+
+3.  An LDAP search request ([RFC2251] section 4.5.1) is sent to the directory to query the base
 
 domain to look for the msDS-Behavior-Version attribute ([MS-ADA2] section 2.215 and [MS-
 ADTS] section 3.1.1.5.3.1.1.5).
@@ -10258,7 +10272,7 @@ modify response ([RFC2251] section 4.6) that indicates success.
 
 server. The LDAP connection to the directory server is closed.
 
-3.2.20 Example 20: Replicate Changes within a Domain
+#### 3.2.20 Example 20: Replicate Changes within a Domain
 
 This example shows how the originating updates to a domain controller are replicated to other
 domain controllers in the same domain.
@@ -10292,7 +10306,8 @@ Release: October 26, 2021
 
 171 / 182
 
-<!-- Extracted images from page 172 -->
+
+<!-- Extracted images from page 172 -->
 ![Extracted image 1 from page 172]([MS-ADOD].images/page172-img01.png)
 <!-- /Extracted images from page 172 -->
 
@@ -10341,7 +10356,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-13. DC3 sends an IDL_DRSUnbind request, which destroys the context handle that was previously
+
+13. DC3 sends an IDL_DRSUnbind request, which destroys the context handle that was previously
 
 created by the IDL_DRSBind request ([MS-DRSR] section 4.1.25).
 
@@ -10349,7 +10365,7 @@ created by the IDL_DRSBind request ([MS-DRSR] section 4.1.25).
 
 destroyed.
 
-3.2.21 Example 21: Transferring FSMO roles
+#### 3.2.21 Example 21: Transferring FSMO roles
 
 This example shows how the operation to transfer a FSMO role is accomplished by a DC that is being
 demoted.
@@ -10393,7 +10409,8 @@ Release: October 26, 2021
 
 173 / 182
 
-<!-- Extracted images from page 174 -->
+
+<!-- Extracted images from page 174 -->
 ![Extracted image 1 from page 174]([MS-ADOD].images/page174-img01.png)
 <!-- /Extracted images from page 174 -->
 
@@ -10418,7 +10435,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-5.  DC2 uses Kerberos ([MS-DRSR] section 2.2.3.2) to perform mutual authentication with DC1.
+
+5.  DC2 uses Kerberos ([MS-DRSR] section 2.2.3.2) to perform mutual authentication with DC1.
 
 6.  DC2 sends an IDL_DRSBind request to DC1, which creates a context handle that is required to call
 
@@ -10501,7 +10519,8 @@ Release: October 26, 2021
 
 175 / 182
 
-<!-- Extracted images from page 176 -->
+
+<!-- Extracted images from page 176 -->
 ![Extracted image 1 from page 176]([MS-ADOD].images/page176-img01.png)
 <!-- /Extracted images from page 176 -->
 
@@ -10513,7 +10532,7 @@ previously created by the IDL_DRSBind request ([MS-DRSR] section 4.1.25).
 
 destroyed.
 
-3.2.22 Example 22: Replicate Changes to a GC or a Partial Replica by Using SMTP
+#### 3.2.22 Example 22: Replicate Changes to a GC or a Partial Replica by Using SMTP
 
 This example describes how replication is performed between a full replica domain controller (DC1)
 and a partial replica domain controller (DC2) by using the SMTP transport.
@@ -10564,7 +10583,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  DC2 sends the SMTP response as follows.
+
+4.  DC2 sends the SMTP response as follows.
 
 After it processes the request, the DRS engine on DC2 generates another DRS BLOB, which
 contains the response. The SRPL extension performs the higher-layer triggered operation and then
@@ -10574,7 +10594,7 @@ receives the mail message and gives the frame to the SRPL extension. The SRPL ex
 performs message processing and passes the BLOB to the DRS engine, which processes the
 response.
 
-3.2.23 Example 23: Cross-Domain Move
+#### 3.2.23 Example 23: Cross-Domain Move
 
 This example demonstrates the use case in section 2.7.1.6, Cross-Domain Move - Client Application.
 
@@ -10587,7 +10607,8 @@ Release: October 26, 2021
 
 177 / 182
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 There are no variations in the behavior of the Active Directory system in different versions of Windows
 beyond those that are described in the specifications of the protocols supported by the system, as
@@ -10657,7 +10678,8 @@ Release: October 26, 2021
 
 178 / 182
 
-  Windows Server 2016 operating system
+
+  Windows Server 2016 operating system
 
   Windows Server operating system
 
@@ -10667,7 +10689,7 @@ Release: October 26, 2021
 
 Exceptions, if any, are noted below.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 1: AD DS uses the operations described in [MS-NRPC] section 3.6 only to maintain the
 change log that Windows NT 4.0 backup domain controller (BDC) replication uses.
@@ -10730,7 +10752,8 @@ Active Directory Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 Length of time the directory service waits when it performs an operation before the operation is
 timed-out.
@@ -10785,7 +10808,8 @@ Release: October 26, 2021
 
 180 / 182
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -10829,7 +10853,8 @@ Release: October 26, 2021
 
 181 / 182
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 113

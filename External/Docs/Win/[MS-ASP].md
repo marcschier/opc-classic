@@ -63,7 +63,8 @@ Release: April 7, 2021
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 7, 2021
 
 2 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -520,7 +522,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-Date
+
+Date
 
 Revision
 History
@@ -579,236 +582,106 @@ Release: April 7, 2021
 
 4 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Definitions](#221-common-definitions)
+      - [2.2.1.1 Digit](#2211-digit)
+      - [2.2.1.2 Octet](#2212-octet)
+      - [2.2.1.3 Carriage Return Line Feed](#2213-carriage-return-line-feed)
+      - [2.2.1.4 Space](#2214-space)
+      - [2.2.1.5 Delimiter](#2215-delimiter)
+      - [2.2.1.6 Stringtext](#2216-stringtext)
+    - [2.2.2 Common HTTP Headers and Fields](#222-common-http-headers-and-fields)
+      - [2.2.2.1 HTTP Version](#2221-http-version)
+      - [2.2.2.2 Host Header](#2222-host-header)
+      - [2.2.2.3 Content Length](#2223-content-length)
+      - [2.2.2.4 Content](#2224-content)
+    - [2.2.3 State Server Headers and Fields](#223-state-server-headers-and-fields)
+      - [2.2.3.1 Application Identifier](#2231-application-identifier)
+      - [2.2.3.2 Application Domain Identifier](#2232-application-domain-identifier)
+      - [2.2.3.3 Session Identifier](#2233-session-identifier)
+      - [2.2.3.4 ASP.NET Version](#2234-aspnet-version)
+      - [2.2.3.5 Timeout](#2235-timeout)
+      - [2.2.3.6 Exclusive Lock Acquire](#2236-exclusive-lock-acquire)
+      - [2.2.3.7 Exclusive Lock Release](#2237-exclusive-lock-release)
+      - [2.2.3.8 Lock Date](#2238-lock-date)
+      - [2.2.3.9 Lock Cookie](#2239-lock-cookie)
+      - [2.2.3.10 Lock Age](#22310-lock-age)
+      - [2.2.3.11 Extra Flags](#22311-extra-flags)
+      - [2.2.3.12 Action Flags](#22312-action-flags)
+      - [2.2.3.13 Unique identifier](#22313-unique-identifier)
+    - [2.2.4 Response Status Codes](#224-response-status-codes)
+      - [2.2.4.1 Response Status Code - OK](#2241-response-status-code-ok)
+      - [2.2.4.2 Response Status Code - Bad Request](#2242-response-status-code-bad-request)
+      - [2.2.4.3 Response Status Code - Not Found](#2243-response-status-code-not-found)
+      - [2.2.4.4 Response Status Code - Locked](#2244-response-status-code-locked)
+    - [2.2.5 Messages](#225-messages)
+      - [2.2.5.1 Get_Request](#2251-getrequest)
+      - [2.2.5.2 Get_Response](#2252-getresponse)
+      - [2.2.5.3 GetExclusive_Request](#2253-getexclusiverequest)
+      - [2.2.5.4 GetExclusive_Response](#2254-getexclusiveresponse)
+      - [2.2.5.5 Set_Request](#2255-setrequest)
+      - [2.2.5.6 Set_Response](#2256-setresponse)
+      - [2.2.5.7 ReleaseExclusive_Request](#2257-releaseexclusiverequest)
+      - [2.2.5.8 ReleaseExclusive_Response](#2258-releaseexclusiveresponse)
+      - [2.2.5.9 Remove_Request](#2259-removerequest)
+      - [2.2.5.10 Remove_Response](#22510-removeresponse)
+      - [2.2.5.11 ResetTimeout_Request](#22511-resettimeoutrequest)
+      - [2.2.5.12 ResetTimeout_Response](#22512-resettimeoutresponse)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing Non-Exclusive Get Requests](#3151-processing-non-exclusive-get-requests)
+      - [3.1.5.2 Processing Exclusive Get Requests](#3152-processing-exclusive-get-requests)
+      - [3.1.5.3 Saving Session Data with a Set Request](#3153-saving-session-data-with-a-set-request)
+      - [3.1.5.4 Releasing an Exclusive Session State Lock](#3154-releasing-an-exclusive-session-state-lock)
+      - [3.1.5.5 Removing Session State](#3155-removing-session-state)
+      - [3.1.5.6 Resetting Session State Time-out](#3156-resetting-session-state-time-out)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Non-Exclusive Get Requests](#3251-non-exclusive-get-requests)
+      - [3.2.5.2 Exclusive Get Requests](#3252-exclusive-get-requests)
+      - [3.2.5.3 Saving Session Data with a Set Request](#3253-saving-session-data-with-a-set-request)
+      - [3.2.5.4 Releasing an Exclusive Session State Lock](#3254-releasing-an-exclusive-session-state-lock)
+      - [3.2.5.5 Removing Session State](#3255-removing-session-state)
+      - [3.2.5.6 Resetting Session State Time-out](#3256-resetting-session-state-time-out)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.3
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Common Definitions .................................................................................... 10
-Digit .................................................................................................... 10
-Octet ................................................................................................... 10
-Carriage Return Line Feed ...................................................................... 10
-Space .................................................................................................. 10
-Delimiter .............................................................................................. 10
-Stringtext ............................................................................................ 11
-Common HTTP Headers and Fields ................................................................ 11
-HTTP Version ........................................................................................ 11
-Host Header ......................................................................................... 11
-Content Length ..................................................................................... 11
-Content ............................................................................................... 11
-State Server Headers and Fields ................................................................... 11
-2.2.3.1
-Application Identifier ............................................................................. 11
-2.2.3.2
-Application Domain Identifier .................................................................. 11
-2.2.3.3
-Session Identifier .................................................................................. 12
-2.2.3.4
-ASP.NET Version ................................................................................... 12
-2.2.3.5
-Timeout ............................................................................................... 12
-2.2.3.6
-Exclusive Lock Acquire ........................................................................... 12
-2.2.3.7
-Exclusive Lock Release .......................................................................... 12
-2.2.3.8
-Lock Date ............................................................................................ 13
-2.2.3.9
-Lock Cookie .......................................................................................... 13
-2.2.3.10
-Lock Age .............................................................................................. 13
-2.2.3.11
-Extra Flags ........................................................................................... 13
-Action Flags ......................................................................................... 14
-2.2.3.12
-2.2.3.13  Unique identifier ................................................................................... 14
-Response Status Codes ............................................................................... 14
-Response Status Code - OK .................................................................... 14
-Response Status Code - Bad Request ...................................................... 14
-Response Status Code - Not Found ......................................................... 14
-Response Status Code - Locked .............................................................. 15
-Messages ................................................................................................... 15
-Get_Request ........................................................................................ 15
-Get_Response ...................................................................................... 15
-GetExclusive_Request ........................................................................... 16
-GetExclusive_Response ......................................................................... 17
-Set_Request ......................................................................................... 17
-Set_Response ....................................................................................... 17
-ReleaseExclusive_Request ...................................................................... 18
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-2.2.5.6
-2.2.5.7
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-
-2.2.5
-
-2.2.4
-
-[MS-ASP] - v20210407
-ASP.NET State Server Protocol
-Copyright © 2021 Microsoft Corporation
-Release: April 7, 2021
-
-5 / 37
-
-2.2.5.8
-2.2.5.9
-2.2.5.10
-2.2.5.11
-2.2.5.12
-
-ReleaseExclusive_Response .................................................................... 18
-Remove_Request .................................................................................. 19
-Remove_Response ................................................................................ 19
-ResetTimeout_Request .......................................................................... 19
-ResetTimeout_Response ........................................................................ 20
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3  Protocol Details ..................................................................................................... 21
-Server Details .................................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Processing Events and Sequencing Rules ....................................................... 21
-Processing Non-Exclusive Get Requests ................................................... 21
-Processing Exclusive Get Requests .......................................................... 22
-Saving Session Data with a Set Request .................................................. 23
-Releasing an Exclusive Session State Lock ............................................... 24
-Removing Session State ........................................................................ 24
-Resetting Session State Time-out ............................................................ 25
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-Client Details ................................................................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Processing Events and Sequencing Rules ....................................................... 26
-Non-Exclusive Get Requests ................................................................... 26
-Exclusive Get Requests .......................................................................... 27
-Saving Session Data with a Set Request .................................................. 27
-Releasing an Exclusive Session State Lock ............................................... 28
-Removing Session State ........................................................................ 28
-Resetting Session State Time-out ............................................................ 28
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 29
-
-5  Security ................................................................................................................. 32
-Security Considerations for Implementers ........................................................... 32
-Index of Security Parameters ............................................................................ 32
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 33
-
-7  Change Tracking .................................................................................................... 35
-
-8  Index ..................................................................................................................... 36
-
-[MS-ASP] - v20210407
-ASP.NET State Server Protocol
-Copyright © 2021 Microsoft Corporation
-Release: April 7, 2021
-
-6 / 37
-
-1  Introduction
+## 1 Introduction
 
 The ASP.NET State Server Protocol is a contract for transmitting session state data between a client
 and a state server. This protocol is used for interaction between a client application that requires
@@ -819,7 +692,7 @@ Hypertext Transfer Protocol (HTTP).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -867,7 +740,7 @@ browser session.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -879,10 +752,11 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -900,11 +774,11 @@ Generic Syntax", RFC 2396, August 1998, https://www.rfc-editor.org/info/rfc2396
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 Web applications need to store state information that is associated with a specific user session. Earlier
 web technologies, such as Active Server Pages (ASP), included a session state feature that stored
@@ -947,7 +821,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-5.  When the client finishes processing a request, it makes an HTTP request to the state server to
+
+5.  When the client finishes processing a request, it makes an HTTP request to the state server to
 
 save any changes application code has made to session state. This request contains the updated
 session state data, as well user session, application domain, and web application identifiers.
@@ -956,7 +831,7 @@ session state data, as well user session, application domain, and web applicatio
 
 the user session identifier, application domain identifier, and application identifier.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The ASP.NET state server relies on HTTP (as specified in [RFC2616]).
 
@@ -967,28 +842,28 @@ The allowable characters for strings that are defined in section 2.2.1.6 come fr
 relative URI that is defined in "Uniform Resource Identifiers (URI): Generic Syntax," as specified in
 [RFC2396].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The ASP.NET State Server Protocol is used when a client application communicates with a state
 server. Client and server implementations of the ASP.NET State Server Protocol need to agree on how
 a client discovers a state server. Implementations need to agree on how a state server starts up and
 becomes available to process requests.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The ASP.NET State Server Protocol is intended for use by clients that need to store session state
 data outside the process space of the client application.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The ASP.NET State Server Protocol includes version information in server response messages that a
 client can use to implement versioning behavior.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -999,12 +874,13 @@ Release: April 7, 2021
 
 9 / 37
 
-2  Messages
+
+## 2 Messages
 
  The following sections specify transport for the ASP.NET State Server Protocol and details of message
 syntax, including common structures, certificate requirements, and common error codes.
 
-2.1  Transport
+### 2.1 Transport
 
 The ASP.NET State Server Protocol uses HTTP, as specified in [RFC2616], as the transport layer. The
 client indicates the requested data as part of an HTTP request header, and packages request data, as
@@ -1013,27 +889,27 @@ specified in section 3.2.
 State server implementations MUST accept the request data and provide responses according to the
 specifications in section 3.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Definitions
+#### 2.2.1 Common Definitions
 
 The following common constructions are used throughout this document. The constructions that are
 defined in the following sections are used only for convenience in constructing other messages; they
 have no other semantics.
 
-2.2.1.1  Digit
+##### 2.2.1.1 Digit
 
 The Digit is defined in the following code sample.
 
  DIGIT = any US-ASCII digit "0".."9"
 
-2.2.1.2  Octet
+##### 2.2.1.2 Octet
 
 The Octet is defined in the following code sample.
 
  OCTET = any 8-bit sequence of data
 
-2.2.1.3  Carriage Return Line Feed
+##### 2.2.1.3 Carriage Return Line Feed
 
 The Carriage Return Line Feed is defined in the following code sample.
 
@@ -1041,7 +917,7 @@ The Carriage Return Line Feed is defined in the following code sample.
  LF = "\n" | ascii linefeed
  CRLF = CRLF
 
-2.2.1.4  Space
+##### 2.2.1.4 Space
 
 The Space is defined in the following code sample.
 
@@ -1054,29 +930,30 @@ Release: April 7, 2021
 
 10 / 37
 
-2.2.1.5  Delimiter
+
+##### 2.2.1.5 Delimiter
 
 The Delimiter is defined in the following code sample.
 
  delimiter = "%2f" | "/"
 
-2.2.1.6  Stringtext
+##### 2.2.1.6 Stringtext
 
 Stringtext consists of the characters that are specified in [RFC2396] section 2.
 
  stringtext = *(a-z|A-Z|0-9|+|/|=|relativeURI)
 
-2.2.2  Common HTTP Headers and Fields
+#### 2.2.2 Common HTTP Headers and Fields
 
-2.2.2.1  HTTP Version
+##### 2.2.2.1 HTTP Version
 
 The http-version field is as specified in [RFC2616] section 3.1.
 
-2.2.2.2  Host Header
+##### 2.2.2.2 Host Header
 
 The host-information header field is as specified in [RFC2616] section 14.23.
 
-2.2.2.3  Content Length
+##### 2.2.2.3 Content Length
 
 The content-length entity-header field is as specified in [RFC2616] section 14.13.
 
@@ -1084,7 +961,7 @@ Example:
 
  Content-Length: 134\r\n
 
-2.2.2.4  Content
+##### 2.2.2.4 Content
 
 When a client or server sends session data, the session data is contained in a message body. The
 message body contains one or more 8-bit sequences representing the session data.
@@ -1096,9 +973,9 @@ Both the client and server MUST send and receive content as byte arrays (char* o
 
  content = *OCTET
 
-2.2.3  State Server Headers and Fields
+#### 2.2.3 State Server Headers and Fields
 
-2.2.3.1  Application Identifier
+##### 2.2.3.1 Application Identifier
 
 State server implementations MUST treat the application identifier as an opaque field.<1>
 
@@ -1111,19 +988,20 @@ Release: April 7, 2021
 
 11 / 37
 
-2.2.3.2  Application Domain Identifier
+
+##### 2.2.3.2 Application Domain Identifier
 
 State server implementations MUST treat the application domain identifier as an opaque field.<2>
 
  appdomain-identifier = "(" stringtext ")"
 
-2.2.3.3  Session Identifier
+##### 2.2.3.3 Session Identifier
 
 State server implementations MUST treat the user session identifier as an opaque field.<3>
 
  session-identifier = stringtext
 
-2.2.3.4  ASP.NET Version
+##### 2.2.3.4 ASP.NET Version
 
 A state server implementation indicates which version of the state server is using this response
 header.<4>
@@ -1135,7 +1013,7 @@ Example:
 
  X-AspNet-Version: 2.0.50727\r\n
 
-2.2.3.5  Timeout
+##### 2.2.3.5 Timeout
 
 Timeout is an integer that defines the expiry time in minutes for session state data. If this field is not
 set, the default time-out is 20 minutes.
@@ -1146,7 +1024,7 @@ Example:
 
  Timeout: 120\r\n
 
-2.2.3.6  Exclusive Lock Acquire
+##### 2.2.3.6 Exclusive Lock Acquire
 
 An ASP.NET web server indicates that it wants to acquire an exclusive lock on session state data by
 including this header in the request.
@@ -1160,14 +1038,15 @@ Release: April 7, 2021
 
 12 / 37
 
-2.2.3.7  Exclusive Lock Release
+
+##### 2.2.3.7 Exclusive Lock Release
 
 A client indicates that it wants to release an exclusive lock on session state data by including this
 header in the request.
 
  exclusive-release = "Exclusive: release" CRLF
 
-2.2.3.8  Lock Date
+##### 2.2.3.8 Lock Date
 
 Lock date is a 64-bit integer value that indicates the date a session state lock was created. A Lock
 date is measured in 100-nanosecond ticks since midnight, January 1, 0001 C.E. (Common Era), in the
@@ -1179,7 +1058,7 @@ Example:
 
  LockDate: 127916792367495010\r\n
 
-2.2.3.9  Lock Cookie
+##### 2.2.3.9 Lock Cookie
 
 Lock cookie is a 32-bit positive signed integer value indicating the lock identifier that MUST be
 associated for a piece of locked session state data. This value can be any positive signed integer
@@ -1191,9 +1070,9 @@ Example:
 
  LockCookie: 12\r\n
 
-2.2.3.10
+##### 2.2.3.10 Lock Age
 
-Lock Age
+
 
 Lock age is a 64-bit integer value indicating the current age of the lock cookie measured in seconds.
 
@@ -1203,9 +1082,9 @@ Example:
 
  LockAge: 27819380594\r\n
 
-2.2.3.11
+##### 2.2.3.11 Extra Flags
 
-Extra Flags
+
 
 The extra flags represent optional information about session state that a client requires a state
 server to store. A client can send this header when sending session data to a state server for the first
@@ -1218,7 +1097,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-session state data. A value of "1" means the client is creating an uninitialized session state item in the
+
+session state data. A value of "1" means the client is creating an uninitialized session state item in the
 session state store.
 
  extra-flags = "ExtraFlags:" SP ("0" | "1") CRLF
@@ -1227,9 +1107,9 @@ Example:
 
  ExtraFlags: 1\r\n
 
-2.2.3.12
+##### 2.2.3.12 Action Flags
 
-Action Flags
+
 
 The action flags represent optional data that a state server implementation returns to a client. A value
 of "0" means no special action by the client is necessary for the session state data. A value of "1"
@@ -1241,9 +1121,9 @@ Example:
 
  ActionFlags: 1\r\n
 
-2.2.3.13
+##### 2.2.3.13 Unique identifier
 
-Unique identifier
+
 
 Unique identifier is a concatenation of the application, application domain, and session identifier fields.
 The combined value is used as a unique identifier for session state.
@@ -1258,15 +1138,15 @@ Example:
   /fxstatebvt(NDbkwGi0191wFdDv0yOUOobtHns%3d)
  %2f15hgq1uszp2tjt45lkwxmb55
 
-2.2.4  Response Status Codes
+#### 2.2.4 Response Status Codes
 
-2.2.4.1  Response Status Code - OK
+##### 2.2.4.1 Response Status Code - OK
 
 This status code indicates that the requested operation succeeded.
 
  status-code-ok = "200 OK" CRLF
 
-2.2.4.2  Response Status Code - Bad Request
+##### 2.2.4.2 Response Status Code - Bad Request
 
 This status code indicates that the state server could not understand the client request.
 
@@ -1277,24 +1157,25 @@ Release: April 7, 2021
 
 14 / 37
 
- status-code-badrequest = "400 Bad Request" CRLF
 
-2.2.4.3  Response Status Code - Not Found
+ status-code-badrequest = "400 Bad Request" CRLF
+
+##### 2.2.4.3 Response Status Code - Not Found
 
 This status code indicates that the state server could not find the requested data.
 
  status-code-notfound = "404 Not Found" CRLF
 
-2.2.4.4  Response Status Code - Locked
+##### 2.2.4.4 Response Status Code - Locked
 
 This status code indicates that the requested data cannot be retrieved because another instance of the
 user session locked the session state data for exclusive access.
 
  status-code-locked = "423 Locked" CRLF
 
-2.2.5  Messages
+#### 2.2.5 Messages
 
-2.2.5.1  Get_Request
+##### 2.2.5.1 Get_Request
 
 The Get_Request message is sent by a client to request session state data in a non-exclusive
 manner. If multiple instances of the same user session are active, the request for session state data
@@ -1311,7 +1192,7 @@ Example:
  2f15hgq1uszp2tjt45lkwxmb55 HTTP/1.1
  Host: 10.0.0.100:42424
 
-2.2.5.2  Get_Response
+##### 2.2.5.2 Get_Response
 
 The Get_Response message is sent by a state server implementation to a client in response to a
 Get_Request message. Sections 3.1.5.1 and 3.2.5.1 specify using this message.
@@ -1335,7 +1216,8 @@ Release: April 7, 2021
 
 15 / 37
 
-Examples:
+
+Examples:
 
 Response-ok:
 
@@ -1368,7 +1250,7 @@ Response-locked (this response format is the same for all server responses):
  LockAge: 1275008970
  LockDate: 1337890127
 
-2.2.5.3  GetExclusive_Request
+##### 2.2.5.3 GetExclusive_Request
 
 The GetExclusive_Request message is sent by a client to request session state data in an exclusive
 manner. This means the current requestor wants an exclusive lock to be maintained on the session
@@ -1393,11 +1275,12 @@ Release: April 7, 2021
 
 16 / 37
 
- 2f15hgq1uszp2tjt45lkwxmb55 HTTP/1.1
+
+ 2f15hgq1uszp2tjt45lkwxmb55 HTTP/1.1
  Host: 10.0.0.100:42424
  Exclusive: Acquire
 
-2.2.5.4  GetExclusive_Response
+##### 2.2.5.4 GetExclusive_Response
 
 The GetExclusive_Response message is sent by a state server implementation to a client in response
 to a GetExclusive_Request message.
@@ -1425,7 +1308,7 @@ Example of response-ok:
 
  ...session state content here...
 
-2.2.5.5  Set_Request
+##### 2.2.5.5 Set_Request
 
 The Set_Request message is sent by a client to a state server to store session state data for the
 current requestor.
@@ -1454,7 +1337,8 @@ Release: April 7, 2021
 
 17 / 37
 
-2.2.5.6  Set_Response
+
+##### 2.2.5.6 Set_Response
 
 The Set_Response message is sent by a state server implementation to a client in response to a
 Set_Request message.
@@ -1474,7 +1358,7 @@ Example: response-ok:
  Content-Length: 0
  X-AspNet-Version: 2.0.50727
 
-2.2.5.7  ReleaseExclusive_Request
+##### 2.2.5.7 ReleaseExclusive_Request
 
 The ReleaseExclusive_Request message is sent by a client to indicate to a state server that the
 current requestor is releasing its exclusive lock on a piece of session state data.
@@ -1493,7 +1377,7 @@ Example:
  Exclusive: release
  Lock-Cookie: 12345
 
-2.2.5.8  ReleaseExclusive_Response
+##### 2.2.5.8 ReleaseExclusive_Response
 
 The ReleaseExclusive_Response message is sent by a state server implementation to a client in
 response to a ReleaseExclusive_Request message.
@@ -1516,7 +1400,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
- content-length aspnet-version lock-cookie lock-age lock-date
+
+ content-length aspnet-version lock-cookie lock-age lock-date
 
 Example:
 
@@ -1524,7 +1409,7 @@ Example:
  Content-Length: 0
  X-AspNet-Version: 2.0.50727
 
-2.2.5.9  Remove_Request
+##### 2.2.5.9 Remove_Request
 
 The Remove_Request message is sent by a client to delete session state information associated with
 the current requestor on a state server.
@@ -1542,9 +1427,9 @@ Example:
  Host: 10.0.0.100:42424
  Lock-Cookie: 12345
 
-2.2.5.10
+##### 2.2.5.10 Remove_Response
 
-Remove_Response
+
 
 The Remove_Response message is sent by a state server implementation to a client in response to a
 Remove_Request message.
@@ -1573,9 +1458,10 @@ Release: April 7, 2021
 
 19 / 37
 
-2.2.5.11
 
-ResetTimeout_Request
+##### 2.2.5.11 ResetTimeout_Request
+
+
 
 The ResetTimeout_Request message is sent by a client to reset the time-out counter of session state
 data that is associated with the current requestor so that the data is not automatically released by the
@@ -1592,9 +1478,9 @@ Example:
  2f15hgq1uszp2tjt45lkwxmb55 HTTP/1.1
  Host: 10.0.0.100:42424
 
-2.2.5.12
+##### 2.2.5.12 ResetTimeout_Response
 
-ResetTimeout_Response
+
 
 The ResetTimeout_Response message is sent by a state server implementation to a client in response
 to a ResetTimeout_Request message.
@@ -1621,11 +1507,12 @@ Release: April 7, 2021
 
 20 / 37
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1650,21 +1537,21 @@ the name-value pairs and associates them with the unique key for subsequent retr
 The state server supports basic locking semantics to ensure that concurrent read and write attempts
 do not corrupt session state.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The initialization requirements for a state server are implementation-dependent.<5>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Processing Non-Exclusive Get Requests
+##### 3.1.5.1 Processing Non-Exclusive Get Requests
 
 A client that uses a state server makes either an exclusive or a non-exclusive request to a state server
 implementation for session state data.<6>
@@ -1684,7 +1571,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-The state server MUST send a response back to the client by using one of the message formats that
+
+The state server MUST send a response back to the client by using one of the message formats that
 are specified in section 2.2.5.2.
 
 If the state server finds session data that is associated with the requested identifier, and the data is
@@ -1712,7 +1600,7 @@ The response-bad-request message, as specified in section 2.2.5.2, is conceptual
 throwing an exception. The session state server MUST send this message if something goes wrong and
 the server is unable to process the request.
 
-3.1.5.2  Processing Exclusive Get Requests
+##### 3.1.5.2 Processing Exclusive Get Requests
 
 A client that uses a state server makes either an exclusive or a non-exclusive request to a state server
 implementation for session state data.<7>
@@ -1750,7 +1638,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-If the state server finds session data that is associated with the requested identifier but the session
+
+If the state server finds session data that is associated with the requested identifier but the session
 data is locked by another request (that is, two or more clients are simultaneously running, and each
 client is using the same identifier), the state server MUST respond by using a response-locked
 message, as specified in section 2.2.5.4. The response-locked message contains a lock-
@@ -1766,7 +1655,7 @@ The response-bad-request message, as specified in section 2.2.5.4, is conceptual
 throwing an exception. The session state server MUST send this message if something goes wrong and
 the server is unable to process the request.
 
-3.1.5.3  Saving Session Data with a Set Request
+##### 3.1.5.3 Saving Session Data with a Set Request
 
 When a client needs to store session data in an out-of-process state server, it makes a request to the
 state server by using the message format that is specified in section 2.2.5.5.
@@ -1817,7 +1706,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-and each client is using the same identifier), the state server MUST NOT store the session data
+
+and each client is using the same identifier), the state server MUST NOT store the session data
 contained in the message.  Instead the state server MUST respond by using a response-locked
 message, as specified in section 2.2.5.6. The response-locked message contains a lock-age (section
 2.2.3.10) and lock-date (section 2.2.3.8) in addition to the value of the current lock-cookie. The lock-
@@ -1829,7 +1719,7 @@ The response-bad-request message, as specified in section 2.2.5.6, is conceptual
 throwing an exception. The session state server MUST send this message if something goes wrong and
 the server is unable to process the request.
 
-3.1.5.4  Releasing an Exclusive Session State Lock
+##### 3.1.5.4 Releasing an Exclusive Session State Lock
 
 A client can acquire an exclusive lock on a session state by using a successful GetExclusive_Request
 message. The client obtains the lock-cookie value that is associated with a piece of locked session
@@ -1865,7 +1755,7 @@ The response-bad-request message, as specified in section 2.2.5.8, is conceptual
 throwing an exception. The session state server MUST send this message if something goes wrong and
 the server is unable to process the request.
 
-3.1.5.5  Removing Session State
+##### 3.1.5.5 Removing Session State
 
 A client can acquire an exclusive lock on session state by using a successful GetExclusive_Request
 message. The client obtains that lock-cookie value that is associated with a piece of locked session
@@ -1881,7 +1771,8 @@ Release: April 7, 2021
 
 24 / 37
 
-A client sends a Remove_Request message to request that a specific set of session data be removed
+
+A client sends a Remove_Request message to request that a specific set of session data be removed
 from the state server. A state server implementation MUST construct a unique identifier that is based
 on the values that are contained in the combination of application-identifier, appdomain-identifier, and
 session-identifier. A state server does not need to interpret these values or assign any specific
@@ -1909,7 +1800,7 @@ The response-bad-request message, as specified in section 2.2.5.10, is conceptua
 throwing an exception. The session state server MUST send this message if something goes wrong and
 the server is unable to process the request.
 
-3.1.5.6  Resetting Session State Time-out
+##### 3.1.5.6 Resetting Session State Time-out
 
 A client can send a ResetTimeout_Request message to request that a state server refresh the time-out
 for a specific piece of session data.
@@ -1931,11 +1822,11 @@ section 2.2.5.12.
 If the state server cannot find any session data that is associated with the requested identifier, the
 state server MUST respond with a response-not-found message, as specified in section 2.2.5.12.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1946,9 +1837,10 @@ Release: April 7, 2021
 
 25 / 37
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1973,11 +1865,11 @@ the name-value pairs and associates them with the unique key for subsequent retr
 The state server supports basic locking semantics to ensure that concurrent read and write attempts
 do not corrupt session state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
  The initialization requirements for client startup are implementation-dependent.<9>
 
@@ -1989,13 +1881,13 @@ implementations MUST ensure that the combined values for these fields are unique
 least one of the three identifiers has to be unique to ensure that a state server can differentiate
 between different pieces of session state information.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Non-Exclusive Get Requests
+##### 3.2.5.1 Non-Exclusive Get Requests
 
 A client that uses a state server makes either an exclusive or a non-exclusive request to a state server
 implementation for session state data.<11>
@@ -2010,7 +1902,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-If the server responds with a response-ok message, as specified in section 2.2.5.2, the client MUST
+
+If the server responds with a response-ok message, as specified in section 2.2.5.2, the client MUST
 perform implementation-specific initialization tasks if the server returns an action-flags value of "1".
 However, because this is a non-exclusive get request, a client MUST NOT attempt to send session
 state updates back to a state server. As a result, any side effects from initialization tasks that change
@@ -2022,7 +1915,7 @@ retain the lock-cookie, lock-age, and lock-date values for use with custom concu
 If the server responds with either a response-bad-request or a response-not-found message, as
 specified in section 2.2.5.2, the client MAY surface some type of error back to the client's caller.<13>
 
-3.2.5.2  Exclusive Get Requests
+##### 3.2.5.2 Exclusive Get Requests
 
 A client that uses a state server makes either an exclusive or a non-exclusive request to a state server
 implementation for session state data.<14>
@@ -2044,7 +1937,7 @@ retain the lock-cookie, lock-age, and lock-date values for use with custom concu
 If the server responds with either a response-bad-request or a response-not-found message, as
 specified in section 2.2.5.4, the client MAY surface some type of error back to the client's caller.<16>
 
-3.2.5.3  Saving Session Data with a Set Request
+##### 3.2.5.3 Saving Session Data with a Set Request
 
 When a client needs to store session data in a state server, it makes a request to the state server by
 using the message format that is specified in section 2.2.5.5.
@@ -2074,7 +1967,8 @@ Release: April 7, 2021
 
 27 / 37
 
-3.2.5.4  Releasing an Exclusive Session State Lock
+
+##### 3.2.5.4 Releasing an Exclusive Session State Lock
 
 A client can acquire an exclusive lock on session state with a successful GetExclusive_Request
 message. The client obtains the lock-cookie value associated with a piece of locked session state from
@@ -2089,7 +1983,7 @@ If the server responds with a response-bad-request, response-locked, or a respon
 message, as specified in section 2.2.5.8, the client MAY surface some type of error back to the client's
 caller.<19>
 
-3.2.5.5  Removing Session State
+##### 3.2.5.5 Removing Session State
 
 A client can acquire an exclusive lock on session state with a successful GetExclusive_Request
 message. The client obtains a lock-cookie value that is associated with a piece of locked session state
@@ -2104,7 +1998,7 @@ from the state server.
 If the server responds with a response-bad-request, or response-locked as specified in section
 2.2.5.10, the client MAY surface some type of error back to the client's caller.<20>
 
-3.2.5.6  Resetting Session State Time-out
+##### 3.2.5.6 Resetting Session State Time-out
 
 A client can send a ResetTimeout_Request message to request that a state server refresh the time-out
 for a specific piece of session data.
@@ -2112,11 +2006,11 @@ for a specific piece of session data.
 If the server responds with a response-not-found message, as specified in section 2.2.5.12, the client
 MAY surface some type of error back to the client's caller.<21>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2127,7 +2021,8 @@ Release: April 7, 2021
 
 28 / 37
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 A client sends a Set_Request to the state server in order to create new session data:
 
@@ -2185,7 +2080,8 @@ Release: April 7, 2021
 
 29 / 37
 
- LockAge: 1275008970
+
+ LockAge: 1275008970
  LockDate: 1337890127
 
 A client with lock updates the session by using Set_Request:
@@ -2242,20 +2138,22 @@ Release: April 7, 2021
 
 30 / 37
 
-[MS-ASP] - v20210407
+
+[MS-ASP] - v20210407
 ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
 31 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -2266,7 +2164,8 @@ Release: April 7, 2021
 
 32 / 37
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2334,7 +2233,8 @@ ASP.NET State Server Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-<7> Section 3.1.5.2: The ASP.NET web server allows developers to specify whether web pages
+
+<7> Section 3.1.5.2: The ASP.NET web server allows developers to specify whether web pages
 require exclusive or non-exclusive access to session state.
 
 <8> Section 3.2.1: ASP.NET stores a unique session identifier in an HTTP cookie that the browser
@@ -2379,7 +2279,8 @@ Release: April 7, 2021
 
 34 / 37
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2416,7 +2317,8 @@ Release: April 7, 2021
 
 35 / 37
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2553,7 +2455,8 @@ O
 
 36 / 37
 
-Octet 10
+
+Octet 10
 OK 14
 Other local events
    client 28

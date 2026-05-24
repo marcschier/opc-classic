@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 50
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 50
 
-Date
+
+Date
 
 Revision
 History
@@ -536,7 +538,8 @@ Significantly changed the technical content.
 
 3 / 50
 
-Date
+
+Date
 
 Revision
 History
@@ -584,180 +587,75 @@ Release: April 23, 2024
 
 4 / 50
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.3.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Call Flows](#131-call-flows)
+      - [1.3.1.1 ServerWrap Subprotocol](#1311-serverwrap-subprotocol)
+      - [1.3.1.2 ClientWrap Subprotocol](#1312-clientwrap-subprotocol)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Server Public Key for ClientWrap Subprotocol](#221-server-public-key-for-clientwrap-subprotocol)
+    - [2.2.2 Client-Side-Wrapped Secret](#222-client-side-wrapped-secret)
+      - [2.2.2.1 EncryptedSecret structure Version 2](#2221-encryptedsecret-structure-version-2)
+      - [2.2.2.2 EncryptedSecret Structure Version 3](#2222-encryptedsecret-structure-version-3)
+      - [2.2.2.3 AccessCheck Structure Version 2](#2223-accesscheck-structure-version-2)
+      - [2.2.2.4 AccessCheck Structure Version 3](#2224-accesscheck-structure-version-3)
+    - [2.2.3 Unwrapped Secret (ClientWrap Subprotocol Only)](#223-unwrapped-secret-clientwrap-subprotocol-only)
+    - [2.2.4 Secret Wrapped with Symmetric Key](#224-secret-wrapped-with-symmetric-key)
+      - [2.2.4.1 Rc4EncryptedPayload Structure](#2241-rc4encryptedpayload-structure)
+    - [2.2.5 ClientWrap RSA Key Pair](#225-clientwrap-rsa-key-pair)
+    - [2.2.6 Unwrapped Secret](#226-unwrapped-secret)
+      - [2.2.6.1 Recovered Secret Structure](#2261-recovered-secret-structure)
+    - [2.2.7 ServerWrap Key](#227-serverwrap-key)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 BackupKey Remote Server Details](#31-backupkey-remote-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 ServerWrap Subprotocol](#3111-serverwrap-subprotocol)
+      - [3.1.1.2 ClientWrap Subprotocol](#3112-clientwrap-subprotocol)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 BackuprKey(Opnum 0)](#3141-backuprkeyopnum-0)
+        - [3.1.4.1.1 BACKUPKEY_BACKUP_GUID](#31411-backupkeybackupguid)
+        - [3.1.4.1.2 BACKUPKEY_RESTORE_GUID_WIN2K](#31412-backupkeyrestoreguidwin2k)
+          - [3.1.4.1.2.1 Processing a Valid ServerWrap Wrapped Secret](#314121-processing-a-valid-serverwrap-wrapped-secret)
+          - [3.1.4.1.2.2 Processing a ClientWrap Wrapped Secret](#314122-processing-a-clientwrap-wrapped-secret)
+        - [3.1.4.1.3 BACKUPKEY_RETRIEVE_BACKUP_KEY_GUID](#31413-backupkeyretrievebackupkeyguid)
+        - [3.1.4.1.4 BACKUPKEY_RESTORE_GUID](#31414-backupkeyrestoreguid)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 BackupKey Remote Client Details](#32-backupkey-remote-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Performing Client-Side Wrapping of Secrets](#3241-performing-client-side-wrapping-of-secrets)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 13
-Call Flows .................................................................................................. 13
-ServerWrap Subprotocol ........................................................................ 14
-ClientWrap Subprotocol ......................................................................... 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1.1
-1.3.1.2
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Common Data Types ........................................................................................ 18
-Server Public Key for ClientWrap Subprotocol ................................................. 18
-Client-Side-Wrapped Secret ......................................................................... 19
-EncryptedSecret structure Version 2 ........................................................ 20
-EncryptedSecret Structure Version 3 ....................................................... 20
-AccessCheck Structure Version 2 ............................................................ 21
-AccessCheck Structure Version 3 ............................................................ 22
-Unwrapped Secret (ClientWrap Subprotocol Only)........................................... 23
-Secret Wrapped with Symmetric Key ............................................................ 23
-Rc4EncryptedPayload Structure .............................................................. 24
-ClientWrap RSA Key Pair ............................................................................. 24
-Unwrapped Secret ...................................................................................... 26
-Recovered Secret Structure .................................................................... 27
-ServerWrap Key ......................................................................................... 28
-
-2.2.5
-2.2.6
-
-2.2.3
-2.2.4
-
-2.2.4.1
-
-2.2.6.1
-
-2.2.7
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1
-3.1.4.1.2
-
-3  Protocol Details ..................................................................................................... 29
-BackupKey Remote Server Details ...................................................................... 29
-Abstract Data Model .................................................................................... 29
-ServerWrap Subprotocol ........................................................................ 29
-ClientWrap Subprotocol ......................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-BackuprKey(Opnum 0) .......................................................................... 30
-BACKUPKEY_BACKUP_GUID .............................................................. 31
-BACKUPKEY_RESTORE_GUID_WIN2K ................................................ 33
-Processing a Valid ServerWrap Wrapped Secret ............................. 33
-Processing a ClientWrap Wrapped Secret ...................................... 34
-BACKUPKEY_RETRIEVE_BACKUP_KEY_GUID ....................................... 34
-BACKUPKEY_RESTORE_GUID ............................................................ 35
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-BackupKey Remote Client Details ....................................................................... 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.4.1.3
-3.1.4.1.4
-
-3.1.5
-3.1.6
-
-3.2
-
-[MS-BKRP] - v20240423
-BackupKey Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 50
-
-3.2.4.1
-
-3.2.5
-3.2.6
-
-Performing Client-Side Wrapping of Secrets ............................................. 38
-Timer Events .............................................................................................. 40
-Other Local Events ...................................................................................... 40
-
-4  Protocol Examples ................................................................................................. 41
-
-5  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Index of Security Parameters ............................................................................ 42
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 44
-
-7  Appendix B: Product Behavior ............................................................................... 45
-
-8  Change Tracking .................................................................................................... 48
-
-9  Index ..................................................................................................................... 49
-
-[MS-BKRP] - v20240423
-BackupKey Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 50
-
-1  Introduction
+## 1 Introduction
 
 The BackupKey Remote Protocol is used by clients to encrypt and decrypt sensitive data (such as
 cryptographic keys) with the help of a server. Data encrypted using this protocol can be decrypted
@@ -773,7 +671,7 @@ and PKI concepts, see [CRYPTO].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -824,7 +722,8 @@ Release: April 23, 2024
 
 7 / 50
 
-ClientWrap subprotocol: The subset of the BackupKey Remote Protocol that is used by a client
+
+ClientWrap subprotocol: The subset of the BackupKey Remote Protocol that is used by a client
 that is capable of performing local wrapping of secrets, as specified in sections 3.1.4.1.3 and
 3.1.4.1.4.
 
@@ -896,7 +795,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Interface Definition Language (IDL): The International Standards Organization (ISO) standard
+
+Interface Definition Language (IDL): The International Standards Organization (ISO) standard
 language for specifying the interface for remote procedure calls. For more information, see
 [C706] section 4.
 
@@ -971,7 +871,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RPC transport: The underlying network services used by the remote procedure call (RPC) runtime
+
+RPC transport: The underlying network services used by the remote procedure call (RPC) runtime
 
 for communications between network nodes. For more information, see [C706] section 2.
 
@@ -1046,7 +947,8 @@ Release: April 23, 2024
 
 10 / 50
 
-well-known endpoint: A preassigned, network-specific, stable address for a particular
+
+well-known endpoint: A preassigned, network-specific, stable address for a particular
 
 client/server instance. For more information, see [C706].
 
@@ -1058,14 +960,14 @@ backed up to storage that is not specially protected.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1114,7 +1016,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2743] Linn, J., "Generic Security Service Application Program Interface Version 2, Update 1", RFC
+
+[RFC2743] Linn, J., "Generic Security Service Application Program Interface Version 2, Update 1", RFC
 2743, January 2000, https://www.rfc-editor.org/info/rfc2743
 
 [RFC4120] Neuman, C., Yu, T., Hartman, S., and Raeburn, K., "The Kerberos Network Authentication
@@ -1153,7 +1056,7 @@ ut_doc_title
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CRYPTO] Menezes, A., Vanstone, S., and Oorschot, P., "Handbook of Applied Cryptography", 1997,
 https://cacr.uwaterloo.ca/hac/
@@ -1181,11 +1084,12 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MSFT-CVE-2023-36004] Microsoft Corporation, "Windows DPAPI (Data Protection Application
+
+[MSFT-CVE-2023-36004] Microsoft Corporation, "Windows DPAPI (Data Protection Application
 Programming Interface) Spoofing Vulnerability", CVE-2023-36004, December 12, 2023,
 https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-36004
 
-1.3  Overview
+### 1.3 Overview
 
 The BackupKey Remote Protocol provides a method of protecting a secret value so that the value can
 be stored in a potentially insecure location, while still being recoverable by an authorized user. The
@@ -1231,7 +1135,7 @@ in [MS-RPCE]. Named pipes over the Server Message Block (SMB) Protocol are used 
 SPNEGO [RFC4178] [MS-SPNG] is used to negotiate an authentication mechanism between client and
 server.
 
-1.3.1  Call Flows
+#### 1.3.1 Call Flows
 
 This section presents an overview of the message flows in a typical usage of the BackupKey Remote
 Protocol. It is divided into two subsections, one for the subprotocol with server-side wrapping
@@ -1245,7 +1149,8 @@ Release: April 23, 2024
 
 13 / 50
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-BKRP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1270,7 +1175,7 @@ context, as specified in section 3.2.4, and proceeds to issue its request. For b
 in this section omit these initial steps, as well as the steps required to create and replicate LSA global
 secrets among DCs.
 
-1.3.1.1  ServerWrap Subprotocol
+##### 1.3.1.1 ServerWrap Subprotocol
 
 In this subprotocol, the client submits a secret to the server for wrapping as specified in section
 3.1.4.1.1. This is shown in figure 1.
@@ -1290,14 +1195,15 @@ Release: April 23, 2024
 
 14 / 50
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-BKRP].images/page015-img01.png)
 ![Extracted image 2 from page 15]([MS-BKRP].images/page015-img02.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 2: Recovering a server-side wrapped secret
 
-1.3.1.2  ClientWrap Subprotocol
+##### 1.3.1.2 ClientWrap Subprotocol
 
 In this subprotocol, the client first retrieves the server's public key as specified in section 3.1.4.1.3.
 This is shown in figure 3.
@@ -1318,13 +1224,14 @@ Release: April 23, 2024
 
 15 / 50
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-BKRP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 Figure 4: Recovering a client-side wrapped secret
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The BackupKey Remote Protocol is built on the Microsoft Remote Procedure Call (RPC) interface (as
 specified in [C706] and [MS-RPCE]). It uses the Server Message Block (SMB) Protocol [MS-SMB]
@@ -1344,7 +1251,7 @@ Controller (DC) in an Active Directory domain. Clients use the DC Locator functi
 Remote Protocol (as specified in [MS-LSAD] section 3.1.1.4) is used by the server to replicate
 wrapping keys between all DCs in a domain.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The BackupKey Remote Protocol is an RPC interface and, as a result, has the prerequisites specified in
 [MS-RPCE] as common to RPC interfaces.
@@ -1369,19 +1276,20 @@ Release: April 23, 2024
 
 16 / 50
 
-The server must maintain a database of all the cryptographic keys used for secret wrapping, so that
+
+The server must maintain a database of all the cryptographic keys used for secret wrapping, so that
 it can perform the corresponding unwrapping operation when required. The contents of this database
 must be protected from disclosure, except to authorized administrators of the server. The server must
 either be configured with the required keys manually at startup or have a method for generating them
 when required. The server must also have a method of generating cryptographically strong random
 numbers for use as nonces in this protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when secure storage of secrets is desired but no secure media is available
 and there exists a common authentication infrastructure.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1402,7 +1310,7 @@ both of the subprotocols specified here. When a client wishes to wrap a secret, 
 some negotiation to discover which subprotocols are supported by the server. This negotiation is
 specified in section 3.2.4.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 No vendor-extensible fields are used by this protocol.
 
@@ -1410,7 +1318,7 @@ This protocol uses Win32 error codes. These values are taken from the Windows er
 defined in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated meaning.
 Choosing any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1435,9 +1343,10 @@ Release: April 23, 2024
 
 17 / 50
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The client and server MUST communicate over RPC using named pipes over the Server Message
 Block (SMB) Protocol. The SMB version, capabilities, and authentication used for this connection are
@@ -1461,7 +1370,7 @@ sections 3.1.3 and 3.1.4. It MUST support the use of SPNEGO [MS-SPNG] [RFC4178] 
 security providers, and it MUST register one or more security packages that can be negotiated using
 this protocol.<4>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST instruct the RPC runtime to perform a strict Network Data Representation
 (NDR) data consistency check at target level 6.0 as specified in [MS-RPCE] section 3.1.1.5.3.3.
@@ -1473,7 +1382,7 @@ will be used, as specified in [MS-RPCE] section 3.3.1.5.6.
 In addition to RPC base types and definitions specified in [C706] and [MS-RPCE], additional data types
 are defined below.
 
-2.2.1  Server Public Key for ClientWrap Subprotocol
+#### 2.2.1 Server Public Key for ClientWrap Subprotocol
 
 This section specifies the format in which the BackupKey Remote Protocol server returns its public
 key to a client for client-side secret wrapping, as specified in section 3.1.4.1.3.
@@ -1505,7 +1414,8 @@ Release: April 23, 2024
 
 18 / 50
 
-
+
+
 
 
 
@@ -1537,7 +1447,7 @@ The issuerUniqueID field SHOULD be identical to the subjectUniqueID field.
 
 The certificate SHOULD be self-signed.
 
-2.2.2  Client-Side-Wrapped Secret
+#### 2.2.2 Client-Side-Wrapped Secret
 
 The Client-Side-Wrapped_Secret structure MUST be used by the client to represent a secret wrapped
 using the server's public key, as specified in section 3.2.4.1.
@@ -1596,7 +1506,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cbEncryptedSecret (4 bytes): A 32-bit unsigned integer. It MUST be the length of the
+
+cbEncryptedSecret (4 bytes): A 32-bit unsigned integer. It MUST be the length of the
 EncryptedSecret field, in bytes. This field is encoded using little-endian format.
 
 cbAccessCheck (4 bytes): A 32-bit unsigned integer. It MUST be the length of the AccessCheck
@@ -1617,7 +1528,7 @@ AccessCheck (variable): This field contains information used by the server to de
 clients are permitted to unwrap the secret. Its length MUST be equal to cbAccessCheck bytes. It
 MUST be populated in accordance with the processing rules specified in section 3.2.4.1.
 
-2.2.2.1  EncryptedSecret structure Version 2
+##### 2.2.2.1 EncryptedSecret structure Version 2
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1660,7 +1571,7 @@ PayloadKey (32 bytes): This MUST contain the payload encryption key, consisting 
 Encryption Standard (DES) keys and an initialization vector (IV). These quantities, which are
 concatenated to form this field, are each 8 bytes long.
 
-2.2.2.2  EncryptedSecret Structure Version 3
+##### 2.2.2.2 EncryptedSecret Structure Version 3
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1698,7 +1609,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0x0e
+
+0x0e
 
 0x80
 
@@ -1727,7 +1639,7 @@ PayloadKey (48 bytes): This MUST contain the payload encryption key, consisting 
 Advanced Encryption Standard (AES) key and a 128-bit IV. These quantities are concatenated
 to form this field.
 
-2.2.2.3  AccessCheck Structure Version 2
+##### 2.2.2.3 AccessCheck Structure Version 2
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1779,7 +1691,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Nonce (variable): This MUST contain an arbitrary value chosen by the client, as specified in section
+
+Nonce (variable): This MUST contain an arbitrary value chosen by the client, as specified in section
 
 3.2.4.1.
 
@@ -1795,7 +1708,7 @@ Hash (20 bytes): This MUST be the SHA-1 hash [FIPS180-2] computed over all the p
 
 in the AccessCheck structure.
 
-2.2.2.4  AccessCheck Structure Version 3
+##### 2.2.2.4 AccessCheck Structure Version 3
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1861,7 +1774,8 @@ Release: April 23, 2024
 
 22 / 50
 
-2.2.3  Unwrapped Secret (ClientWrap Subprotocol Only)
+
+#### 2.2.3 Unwrapped Secret (ClientWrap Subprotocol Only)
 
 When returning an unwrapped secret to a client using the ClientWrap subprotocol (section 3.1.1.2),
 the server MUST embed the secret in the following structure.
@@ -1893,7 +1807,7 @@ Secret (variable): The unwrapped secret. This field MUST be a copy of the Secret
 
 placed in the EncryptedSecret (section 2.2.2.2) field during the wrapping operation.
 
-2.2.4  Secret Wrapped with Symmetric Key
+#### 2.2.4 Secret Wrapped with Symmetric Key
 
 The following structure MUST be used by servers to wrap a secret using the ServerWrap
 subprotocol, as specified in section 3.1.1.1.
@@ -1953,7 +1867,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-GUID_of_Wrapping_Key (16 bytes): This MUST be the 16-byte GUID ([MS-DTYP] section 2.3.4.2)
+
+GUID_of_Wrapping_Key (16 bytes): This MUST be the 16-byte GUID ([MS-DTYP] section 2.3.4.2)
 
 of the wrapping key used by the server for this operation.
 
@@ -1965,7 +1880,7 @@ Rc4EncryptedPayload (variable): This field MUST be an Rc4EncryptedPayload struct
 
 formatted as specified in section 2.2.4.1.
 
-2.2.4.1  Rc4EncryptedPayload Structure
+##### 2.2.4.1 Rc4EncryptedPayload Structure
 
 The Rc4EncryptedPayload structure MUST consist of the following structure, encrypted as specified in
 section 3.1.4.1.1.
@@ -2012,7 +1927,7 @@ DTYP] section 2.4.2.3).
 
 Secret (variable): This field MUST contain the secret to be wrapped.
 
-2.2.5  ClientWrap RSA Key Pair
+#### 2.2.5 ClientWrap RSA Key Pair
 
 The following structure MUST be used to represent a 2,048-bit ClientWrap RSA key pair [RFC8017]
 that is stored and replicated between servers using the LSA (Domain Policy) Remote Protocol as
@@ -2025,7 +1940,8 @@ Release: April 23, 2024
 
 24 / 50
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2127,7 +2043,8 @@ Release: April 23, 2024
 
 25 / 50
 
-...
+
+...
 
 ...
 
@@ -2181,7 +2098,7 @@ Certificate (variable): This field MUST contain the certificate for the key pair
 
 formatted as specified in section 2.2.1.
 
-2.2.6  Unwrapped Secret
+#### 2.2.6 Unwrapped Secret
 
 The UnwrappedSecret structure consists of the ClientWrap secret unwrapped through the
 ServerWrap subprotocol.
@@ -2196,7 +2113,8 @@ Release: April 23, 2024
 
 26 / 50
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2231,7 +2149,7 @@ RecoveredSecret (variable): This field MUST contain the secret recovered by the 
 
 operation, formatted as specified in section 2.2.6.1.
 
-2.2.6.1  Recovered Secret Structure
+##### 2.2.6.1 Recovered Secret Structure
 
 The RecoveredSecret structure MUST be formatted as follows. It MUST be encrypted with the RC4
 algorithm as specified in section 3.1.4.1.2. For more information about RC4, see [SCHNEIER] section
@@ -2279,7 +2197,8 @@ Release: April 23, 2024
 
 27 / 50
 
-2.2.7  ServerWrap Key
+
+#### 2.2.7 ServerWrap Key
 
 The following structure MUST be used for persisted ServerWrap keys that are stored and replicated
 between servers using the ServerWrap protocol as specified in sections 3.1.4.1.1 and 3.1.4.1.2.
@@ -2318,9 +2237,10 @@ Release: April 23, 2024
 
 28 / 50
 
-3  Protocol Details
 
-3.1  BackupKey Remote Server Details
+## 3 Protocol Details
+
+### 3.1 BackupKey Remote Server Details
 
 A server implementation of the BackupKey Remote Protocol MUST fully support at least one of its two
 subprotocols, as specified in section 3.1.4.1. Server implementations SHOULD fully support both
@@ -2328,7 +2248,7 @@ subprotocols. If a server supports the wrapping operation of a subprotocol, it M
 unwrapping operation of that subprotocol. A server MAY support the unwrapping operation of a
 subprotocol even if it does not support the wrapping operation.<5>
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2339,7 +2259,7 @@ document.
 Each of the two subprotocols has its own abstract data model, as specified in the following
 subsections.
 
-3.1.1.1  ServerWrap Subprotocol
+##### 3.1.1.1 ServerWrap Subprotocol
 
 ServerWrap keys: The server maintains a (possibly empty) set of symmetric keys, each identified
 
@@ -2354,7 +2274,7 @@ ServerWrap keys is designated as the current ServerWrap key, and its identifier 
 current ServerWrap key pair identifier. If the set of ServerWrap keys is empty, this identifier is
 empty as well. This identifier is held in persisted storage and survives system restarts.
 
-3.1.1.2  ClientWrap Subprotocol
+##### 3.1.1.2 ClientWrap Subprotocol
 
 ClientWrap key pairs: The server maintains a possibly empty set of RSA key pairs, each identified
 by a unique identifier. The public key of each pair is used for client-side secret wrapping, while
@@ -2370,7 +2290,7 @@ ClientWrap key pairs is designated as the current ClientWrap key pair, and its i
 as the current ClientWrap key pair identifier. If the set of ClientWrap key pairs is empty, then this
 identifier is empty as well. This identifier is held in persisted storage and survives system restarts.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -2381,7 +2301,8 @@ Release: April 23, 2024
 
 29 / 50
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 The server MUST register with RPC over SMB named pipes (protocol sequence ncacn_np, as
 specified in [MS-RPCE]) transport using at least one of the well-known endpoints specified in
@@ -2405,7 +2326,7 @@ specified in [MS-RPCE] section 3.1.1.5.3.2.2.2.
 The server MUST initialize its current ClientWrap key pair identifier and its set of ClientWrap key pairs
 from persisted storage.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The BackupKey interface consists of the following method:
 
@@ -2419,7 +2340,7 @@ BackuprKey  This is the only method defined by this protocol.
 
 Opnum: 0
 
-3.1.4.1  BackuprKey(Opnum 0)
+##### 3.1.4.1 BackuprKey(Opnum 0)
 
 This section specifies the BackuprKey method.
 
@@ -2449,7 +2370,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and all server implementations SHOULD support all four values. In addition, if a server supports
+
+and all server implementations SHOULD support all four values. In addition, if a server supports
 the wrapping operation of either subprotocol, it MUST also support the corresponding unwrap
 operation. Thus, if a server supports BACKUPKEY_BACKUP_GUID, then it MUST also support
 BACKUPKEY_RESTORE_GUID_WIN2K. Similarly, if a server supports
@@ -2536,7 +2458,7 @@ the server does not support the value specified for this parameter, the server M
 ERROR_INVALID_PARAMETER (0x57). Otherwise, the server MUST continue processing as specified in
 the appropriate subsection below.
 
-3.1.4.1.1 BACKUPKEY_BACKUP_GUID
+###### 3.1.4.1.1 BACKUPKEY_BACKUP_GUID
 
 [MS-BKRP] - v20240423
 BackupKey Remote Protocol
@@ -2545,7 +2467,8 @@ Release: April 23, 2024
 
 31 / 50
 
-The server MUST proceed as follows:
+
+The server MUST proceed as follows:
 
 1.  Retrieve the current ServerWrap key identifier, which is a 16-byte GUID stored as the value of the
 LSA (Domain Policy) Remote Protocol secret object named G$BCKUPKEY_P, using the method
@@ -2620,7 +2543,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-10. Encrypt the result of step 9 using the RC4 encryption algorithm ([SCHNEIER] section 17.1) with
+
+10. Encrypt the result of step 9 using the RC4 encryption algorithm ([SCHNEIER] section 17.1) with
 
 SymKey (computed in step 7) as the key.
 
@@ -2636,7 +2560,7 @@ field.
 
 and its length, in bytes, in the pcbDataOut parameter.
 
-3.1.4.1.2 BACKUPKEY_RESTORE_GUID_WIN2K
+###### 3.1.4.1.2 BACKUPKEY_RESTORE_GUID_WIN2K
 
 The server MUST first check the first four bytes of the wrapped secret passed in the pDataIn
 parameter, to see if they match the fixed values specified in section 2.2.4. If they match, the server
@@ -2645,7 +2569,7 @@ correspond to a valid dwVersion value specified in section 2.2.2, then the serve
 proceed as specified in section 3.1.4.1.2.2. In all other cases, the server MUST stop processing and
 return a non-zero error code.
 
-3.1.4.1.2.1  Processing a Valid ServerWrap Wrapped Secret
+###### 3.1.4.1.2.1 Processing a Valid ServerWrap Wrapped Secret
 
 In this case, the wrapped secret (supplied in the pDataIn parameter) is assumed to be formatted as
 specified in section 2.2.4. The server MUST proceed as follows. If, at any point in processing, the
@@ -2694,7 +2618,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.2.2  Processing a ClientWrap Wrapped Secret
+
+###### 3.1.4.1.2.2 Processing a ClientWrap Wrapped Secret
 
 If the server chooses to process a ClientWrap wrapped secret that was passed by the client to the
 BACKUPKEY_RESTORE_GUID_WIN2K interface, it MUST proceed as follows:
@@ -2743,7 +2668,7 @@ result of step 9 in the RecoveredSecret field.
 
 and its length in bytes in the pcbDataOut parameter.
 
-3.1.4.1.3 BACKUPKEY_RETRIEVE_BACKUP_KEY_GUID
+###### 3.1.4.1.3 BACKUPKEY_RETRIEVE_BACKUP_KEY_GUID
 
 The server MUST ignore the cbDataIn and pDataIn parameters. It MUST process the request as
 follows:
@@ -2771,7 +2696,8 @@ Release: April 23, 2024
 
 34 / 50
 
-1.  Generate a 2,048-bit RSA key pair. The structure of an RSA key pair is specified in
+
+1.  Generate a 2,048-bit RSA key pair. The structure of an RSA key pair is specified in
 [RFC8017], and methods for generating it are specified in [X9.31] section 4.1.
 
 2.  Using a cryptographically strong random number generator, generate a random 16-byte GUID.
@@ -2803,7 +2729,7 @@ by Active Directory server-to-server replication mechanisms.
 Certificate_Length field in the pcbDataOut parameter. Return success (that is, zero) to the
 client.
 
-3.1.4.1.4 BACKUPKEY_RESTORE_GUID
+###### 3.1.4.1.4 BACKUPKEY_RESTORE_GUID
 
 The server MUST proceed as follows:
 
@@ -2842,7 +2768,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  Using EncSecret and the value of dwVersion obtained in step 1, proceed as follows:
+
+4.  Using EncSecret and the value of dwVersion obtained in step 1, proceed as follows:
 
 1.  If dwVersion is equal to 0x00000002, verify that EncSecret is formatted as specified in
 
@@ -2914,23 +2841,24 @@ Release: April 23, 2024
 
 36 / 50
 
-3.1.5  Timer Events
+
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 The set of ServerWrap keys and the current ServerWrap key identifier, as well as the set of
 ClientWrap key pairs and the current ClientWrap key identifier, MUST be updated as the
 corresponding LSA (Domain Policy) Remote Protocol secret objects (specified in section 3.1.4 and its
 subsections) are updated by the replication mechanisms specified in [MS-LSAD] section 3.1.1.4.
 
-3.2  BackupKey Remote Client Details
+### 3.2 BackupKey Remote Client Details
 
 A client implementation of the BackupKey Remote Protocol MUST support at least one of its two
 subprotocols, as specified in section 3.2.4.1.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2956,15 +2884,15 @@ retrieve them afresh from the server for each ClientWrap wrapping operation. Eac
 is associated with an Active Directory domain. A client that executes this protocol against
 servers in multiple domains will have one ClientWrap public key for each such domain.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The BackupKey Remote Protocol client receives requests from a higher layer, requesting a protocol
 operation to be executed against a specified Active Directory domain and supplying user credentials
@@ -2978,7 +2906,8 @@ Release: April 23, 2024
 
 37 / 50
 
-For all operations, if the client needs to connect to a server, it MUST first locate the server by using
+
+For all operations, if the client needs to connect to a server, it MUST first locate the server by using
 the DC Locator protocol (as specified in [MS-ADTS] section 6.3.6) to locate a writable Domain
 Controller in that domain. It MUST then connect to the server using the supplied user credentials, as
 follows. First, the client SHOULD<14> attempt to connect to the \\pipe\protected_storage endpoint
@@ -3032,7 +2961,7 @@ When a protocol method fails, the client MUST attempt to locate another server a
 operation. If no other server can be located, or if the second server also returns an error, the client
 MUST return an error to the caller.
 
-3.2.4.1  Performing Client-Side Wrapping of Secrets
+##### 3.2.4.1 Performing Client-Side Wrapping of Secrets
 
 When requested by a higher layer to perform client-side wrapping of a client secret against a given
 Active Directory domain, a BackupKey Remote Protocol client that supports the ClientWrap
@@ -3058,7 +2987,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-that it is able to parse out the fields listed in section 2.2.1 from the certificate. If this validation fails,
+
+that it is able to parse out the fields listed in section 2.2.1 from the certificate. If this validation fails,
 the client MUST discard the received data and return an error to the caller. For details on the X.509
 certificate format, see [X509] section 2 and [RFC5280]. DER encoding is specified in [X690].
 
@@ -3139,16 +3069,17 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-10. Retrieve the GUID of the server public key from the SubjectUniqueID field of the server's
+
+10. Retrieve the GUID of the server public key from the SubjectUniqueID field of the server's
 
 ClientWrap public key certificate, as specified in section 2.2.1, and place it in the guidKey field of
 the wrapped secret constructed in step 10.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -3159,7 +3090,8 @@ Release: April 23, 2024
 
 40 / 50
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 To illustrate the working of the BackupKey Remote Protocol, this section sketches the process used in
 Windows for protecting user secrets with the Data Protection Application Program Interface
@@ -3206,9 +3138,10 @@ Release: April 23, 2024
 
 41 / 50
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The BackupKey server holds cryptographic keys and other material that can be used to recover all the
 secrets wrapped by clients of that server. These keys are therefore highly sensitive and have to be
@@ -3256,7 +3189,7 @@ protocol traffic is passing over a channel that can be eavesdropped, then both c
 to ensure that suitable security measures are in place, including the use of RPC encryption using the
 packet privacy authentication level.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -3275,7 +3208,8 @@ Release: April 23, 2024
 
 42 / 50
 
- Security parameter
+
+ Security parameter
 
  Section
 
@@ -3310,7 +3244,8 @@ Release: April 23, 2024
 
 43 / 50
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full Interface Definition Language (IDL) is provided below, where
 "ms-dtyp.idl" is the IDL specified in [MS-DTYP] Appendix A. The syntax uses the IDL syntax
@@ -3346,7 +3281,8 @@ Release: April 23, 2024
 
 44 / 50
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3481,7 +3417,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-also applies to subsequent updates unless otherwise specified. If a product edition appears with the
+
+also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
 
 Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
@@ -3548,7 +3485,8 @@ BackupKey Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<13> Section 3.1.4.1.4: Windows Server 2008 and later return ERROR_INVALID_DATA
+
+<13> Section 3.1.4.1.4: Windows Server 2008 and later return ERROR_INVALID_DATA
 (0x0000000D). Windows Server 2003 returns ERROR_IO_PENDING (0x000003e5).
 
 <14> Section 3.2.4: Windows 2000 clients only attempt to connect to the \\pipe\ntsvcs endpoint.
@@ -3593,7 +3531,8 @@ Release: April 23, 2024
 
 47 / 50
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3630,7 +3569,8 @@ Release: April 23, 2024
 
 48 / 50
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3770,7 +3710,8 @@ Release: April 23, 2024
 
 49 / 50
 
-Normative references 11
+
+Normative references 11
 
 O
 

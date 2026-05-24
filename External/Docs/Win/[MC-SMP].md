@@ -63,7 +63,8 @@ Release: October 31, 2025
 
 1 / 35
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: October 31, 2025
 
 2 / 35
 
-Date
+
+Date
 
 Revision
 History
@@ -532,7 +534,8 @@ Significantly changed the technical content.
 
 3 / 35
 
-Date
+
+Date
 
 Revision
 History
@@ -563,198 +566,82 @@ Release: October 31, 2025
 
 4 / 35
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Header](#221-header)
+      - [2.2.1.1 Control Flags](#2211-control-flags)
+    - [2.2.2 SYN Packet](#222-syn-packet)
+    - [2.2.3 ACK Packet](#223-ack-packet)
+    - [2.2.4 FIN Packet](#224-fin-packet)
+    - [2.2.5 DATA Packet](#225-data-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Session-Specific Structures](#3111-session-specific-structures)
+      - [3.1.1.2 Session States](#3112-session-states)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Session-Specific Structure](#3131-session-specific-structure)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Initialize by Higher Layer](#3141-initialize-by-higher-layer)
+      - [3.1.4.2 Read by Higher Layer](#3142-read-by-higher-layer)
+      - [3.1.4.3 Higher Layer Initiates Sending of Data](#3143-higher-layer-initiates-sending-of-data)
+      - [3.1.4.4 Close by Higher Layer](#3144-close-by-higher-layer)
+      - [3.1.4.5 Shutdown by Higher Layer](#3145-shutdown-by-higher-layer)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Packet](#3151-receiving-a-packet)
+        - [3.1.5.1.1 Receiving a DATA Packet](#31511-receiving-a-data-packet)
+        - [3.1.5.1.2 Receiving an ACK Packet](#31512-receiving-an-ack-packet)
+        - [3.1.5.1.3 Receiving a FIN Packet](#31513-receiving-a-fin-packet)
+      - [3.1.5.2 Flow Control Algorithm](#3152-flow-control-algorithm)
+        - [3.1.5.2.1 Session Variable Relationships for the Sender](#31521-session-variable-relationships-for-the-sender)
+        - [3.1.5.2.2 Session Variable Relationships for the Receiver](#31522-session-variable-relationships-for-the-receiver)
+        - [3.1.5.2.3 Update Sender's HighWaterForSend Variable Using an ACK Packet](#31523-update-senders-highwaterforsend-variable-using-an-ack-packet)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Initialization](#321-initialization)
+    - [3.2.2 Higher-Layer Triggered Events](#322-higher-layer-triggered-events)
+      - [3.2.2.1 Initialize by Higher Layer](#3221-initialize-by-higher-layer)
+    - [3.2.3 Session States](#323-session-states)
+    - [3.2.4 Processing Events and Sequencing Rules](#324-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Receiving a SYN Packet](#3241-receiving-a-syn-packet)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Initialization](#331-initialization)
+    - [3.3.2 Higher-Layer Triggered Events](#332-higher-layer-triggered-events)
+      - [3.3.2.1 Initialize by Higher Layer](#3321-initialize-by-higher-layer)
+      - [3.3.2.2 Open by Higher Layer](#3322-open-by-higher-layer)
+    - [3.3.3 Processing Events and Sequencing Rules](#333-processing-events-and-sequencing-rules)
+      - [3.3.3.1 Receiving a SYN Packet](#3331-receiving-a-syn-packet)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Opening a Session](#41-opening-a-session)
+  - [4.2 Update Window - ACK](#42-update-window-ack)
+  - [4.3 First Command in a Session](#43-first-command-in-a-session)
+  - [4.4 Closing a Session](#44-closing-a-session)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Header ...................................................................................................... 12
-Control Flags ........................................................................................ 13
-SYN Packet ................................................................................................ 13
-ACK Packet ................................................................................................ 14
-FIN Packet ................................................................................................. 14
-DATA Packet .............................................................................................. 15
-
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-2.2.1.1
-
-3.1
-
-3.1.5
-
-3.1.4
-
-3.1.1
-
-3.1.5.1
-
-3.1.3.1
-
-3.1.2
-3.1.3
-
-3.1.1.1
-3.1.1.2
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-3  Protocol Details ..................................................................................................... 16
-Common Details .............................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Session-Specific Structures .................................................................... 16
-Session States ...................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Session-Specific Structure ...................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Initialize by Higher Layer ....................................................................... 18
-Read by Higher Layer ............................................................................ 18
-Higher Layer Initiates Sending of Data ..................................................... 18
-Close by Higher Layer ............................................................................ 18
-Shutdown by Higher Layer ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Receiving a Packet ................................................................................ 19
-Receiving a DATA Packet .................................................................. 19
-Receiving an ACK Packet .................................................................. 20
-Receiving a FIN Packet ..................................................................... 20
-Flow Control Algorithm .......................................................................... 20
-Session Variable Relationships for the Sender ..................................... 21
-Session Variable Relationships for the Receiver ................................... 21
-Update Sender's HighWaterForSend Variable Using an ACK Packet ........ 21
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-Server Details .................................................................................................. 22
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 24
-Initialize by Higher Layer ....................................................................... 24
-Session States ........................................................................................... 24
-Processing Events and Sequencing Rules ....................................................... 24
-Receiving a SYN Packet ......................................................................... 24
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.2.1
-3.2.2
-
-3.1.6
-3.1.7
-
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.1.5.2
-
-3.2.2.1
-
-3.2
-
-[MC-SMP] - v20251031
-Session Multiplex Protocol
-Copyright © 2025 Microsoft Corporation
-Release: October 31, 2025
-
-5 / 35
-
-3.3
-
-3.3.1
-3.3.2
-
-Client Details ................................................................................................... 24
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Initialize by Higher Layer ....................................................................... 25
-Open by Higher Layer ............................................................................ 25
-Processing Events and Sequencing Rules ....................................................... 26
-Receiving a SYN Packet ......................................................................... 26
-
-3.3.2.1
-3.3.2.2
-
-3.3.3
-
-3.3.3.1
-
-4  Protocol Examples ................................................................................................. 27
-Opening a Session ............................................................................................ 27
-Update Window - ACK ....................................................................................... 27
-First Command in a Session .............................................................................. 28
-Closing a Session ............................................................................................. 28
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 30
-Security Considerations for Implementers ........................................................... 30
-Index of Security Parameters ............................................................................ 30
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 31
-
-7  Change Tracking .................................................................................................... 33
-
-8  Index ..................................................................................................................... 34
-
-[MC-SMP] - v20251031
-Session Multiplex Protocol
-Copyright © 2025 Microsoft Corporation
-Release: October 31, 2025
-
-6 / 35
-
-1  Introduction
+## 1 Introduction
 
 The Session Multiplex Protocol (SMP) is an application-layer protocol that provides session
 management capabilities between a database client and a database server. Specifically, SMP enables
@@ -763,7 +650,7 @@ multiple logical client connections to a single server over a lower-layer transp
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -814,7 +701,7 @@ and drivers that are provided by third parties.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -828,7 +715,8 @@ Release: October 31, 2025
 
 7 / 35
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -848,7 +736,7 @@ https://www.rfc-editor.org/info/rfc2246
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-TDS] Microsoft Corporation, "Tabular Data Stream Protocol".
 
@@ -862,7 +750,7 @@ us/windows/desktop/ipc/named-pipes
 [VIA] Intel Corporation, "Intel Virtual Interface (VI) Architecture Developer's Guide", September 1998,
 http://www.t11.org/ftp/t11/docs/07-159v0.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 Session Multiplex Protocol (SMP) is an application protocol that facilitates session management by
 providing a mechanism to create multiple lightweight communication channels (sessions) over a
@@ -896,7 +784,8 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MC-SMP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -904,7 +793,7 @@ The following diagram shows typical SMP communication flow for an arbitrary sess
 
 Figure 1: Example of a communication flow in SMP
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Session Multiplex Protocol (SMP) depends on an underlying reliable stream-oriented network
 transport. Optionally, Transport Layer Security (TLS)/Secure Sockets Layer (SSL) [RFC2246]
@@ -921,24 +810,25 @@ Release: October 31, 2025
 
 9 / 35
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MC-SMP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 2: Protocol relationship
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed throughout this document that the client has already discovered the server and
 established a network transport connection.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Session Multiplex Protocol (SMP) is used appropriately to facilitate the multiplexing of several
 sessions over a single reliable lower-layer transport connection where network or local connectivity is
 available.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 No version of Session Multiplex Protocol (SMP) exists other than the version that is described in this
 specification. Additional details follow.
@@ -959,7 +849,7 @@ Localization: SMP does not provide any localization-specific features.
 
 Capability negotiation: SMP does not support capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields.
 
@@ -970,7 +860,8 @@ Release: October 31, 2025
 
 10 / 35
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 There are no standards assignments for SMP.
 
@@ -981,24 +872,25 @@ Release: October 31, 2025
 
 11 / 35
 
-2  Messages
+
+## 2 Messages
 
 All integer fields are represented in little-endian byte order. This protocol references commonly used
 data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 Session Multiplex Protocol (SMP) is a simple protocol that is layered above existing reliable transport
 mechanisms, such as TCP [RFC793], named pipes [MSDN-NP], or Virtual Interface Architecture
 [VIA].<1> SMP enables the creation of multiple sessions over a single connection. SMP is defined as
 a transport-independent mechanism.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All SMP packets consist of a 16-byte header followed by an optional data payload, depending on the
 packet type.
 
-2.2.1  Header
+#### 2.2.1 Header
 
 The 16-byte SMP header has the following format.
 
@@ -1060,12 +952,13 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-Note  The difference between the values of the WNDW field of a received packet and the SEQNUM
+
+Note  The difference between the values of the WNDW field of a received packet and the SEQNUM
 field of the last sent packet is the available send window size. Any subsequent packets that are sent
 MUST NOT contain a SEQNUM value that is greater than the value of the WNDW field of the last
 received packet.
 
-2.2.1.1  Control Flags
+##### 2.2.1.1 Control Flags
 
 The control flag is 1 byte after the SMID field and indicates the type of the packet. Only DATA packets
 have payload data. The sender MUST NOT send a combination of flags in the same packet. For
@@ -1099,7 +992,7 @@ Indicates that the packet carries user data after the header (see DATA packet).
 
 0x08
 
-2.2.2  SYN Packet
+#### 2.2.2 SYN Packet
 
 The SYN packet is sent to indicate that a new connection is to be established. The ID for the session
 is the number that is stored in the SID field of the SYN packet.
@@ -1152,9 +1045,10 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-WNDW (4 bytes):  See section 2.2.1 for a description of the WNDW field.
 
-2.2.3  ACK Packet
+WNDW (4 bytes):  See section 2.2.1 for a description of the WNDW field.
+
+#### 2.2.3 ACK Packet
 
 The ACK packet updates the peer by changing the peer's send window size when several consecutive
 unanswered DATA packets are received. For example, with a send window size of 4 (the value of the
@@ -1207,7 +1101,7 @@ SEQNUM (4 bytes): See section 2.2.1 for a description of the SEQNUM field.
 
 WNDW (4 bytes): See section 2.2.1 for a description of the WNDW field.
 
-2.2.4  FIN Packet
+#### 2.2.4 FIN Packet
 
 The FIN packet is sent to indicate that the sending entity will no longer use the session to send or
 receive data.
@@ -1242,7 +1136,8 @@ Release: October 31, 2025
 
 14 / 35
 
-SMID (1 byte): See section 2.2.1 for a description of the SMID field.
+
+SMID (1 byte): See section 2.2.1 for a description of the SMID field.
 
 FLAGS (1 byte): This unsigned integer contains control flags that identify this packet as a FIN
 
@@ -1260,7 +1155,7 @@ SEQNUM (4 bytes): See section 2.2.1 for a description of the SEQNUM field.
 
 WNDW (4 bytes): See section 2.2.1 for a description of the WNDW field.
 
-2.2.5  DATA Packet
+#### 2.2.5 DATA Packet
 
 The DATA packet carries data in the DATA field, which follows the Header. The length of the DATA
 field is the total SMP packet length minus the SMP packet header length.
@@ -1322,7 +1217,8 @@ Release: October 31, 2025
 
 15 / 35
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section describes the important elements of the client and server software necessary to support
 SMP.
@@ -1331,7 +1227,7 @@ SMP is largely a symmetric protocol that obeys the same rules and semantics on b
 the server. Therefore, descriptions of the client and server roles are both contained in section 3.1,
 where section 3.3.2.2 applies only to the client and section 3.2.4.1 applies only to the server.
 
-3.1  Common Details
+### 3.1 Common Details
 
 Session Multiplex Protocol (SMP) is layered on top of a reliable, in-order, connection-oriented transport
 layer such as TCP [RFC793], named pipes [MSDN-NP], or Virtual Interface Architecture (VIA)
@@ -1349,7 +1245,7 @@ ESTABLISHED state, both endpoints of the session can be used by the higher layer
 receive data symmetrically, and therefore each can act as a sender and as a receiver. Either the
 client or the server can initiate connection termination by sending a FIN packet.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1357,7 +1253,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with what is described in this
 document.
 
-3.1.1.1  Session-Specific Structures
+##### 3.1.1.1 Session-Specific Structures
 
 The following structures are required per SMP session. These structures are needed to implement the
 flow control algorithm and for connection management:
@@ -1389,12 +1285,13 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-  Session.LastHighWaterForRecv: A 32-bit unsigned integer that tracks the value of the WNDW
+
+  Session.LastHighWaterForRecv: A 32-bit unsigned integer that tracks the value of the WNDW
 field of the last sent packet. It is used to implement a selective ACK algorithm and is optional.
 
   Session.ReceivePacketQueue: A queue that buffers received packets.
 
-3.1.1.2  Session States
+##### 3.1.1.2 Session States
 
 The state of an SMP session has to be maintained. An SMP session can be in any one of several
 states, which are described here and in the "Server Details" and "Client Details" sections.
@@ -1416,16 +1313,16 @@ CLOSED: The session has been closed by the higher layer, either by closing the S
 3.1.4.4) or by shutting down the SMP connection (section 3.1.4.5), at which point data can no
 longer be sent or received.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 In SMP, there are no timers. SMP assumes a reliable transport and the eventual delivery of messages.
 In the event of an error from the transport connection, SMP recycles all Session objects associated
 with the failed transport connection. Idle sessions are kept open until the higher layer closes them or
 an error in the transport connection occurs.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
-3.1.3.1  Session-Specific Structure
+##### 3.1.3.1 Session-Specific Structure
 
 Session-specific structures are initialized with the values described in the table that follows.
 
@@ -1465,15 +1362,16 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-3.1.4  Higher-Layer Triggered Events
 
-3.1.4.1  Initialize by Higher Layer
+#### 3.1.4 Higher-Layer Triggered Events
+
+##### 3.1.4.1 Initialize by Higher Layer
 
 The higher layer on both the client and server have to initialize SMP on each end of the lower-layer
 transport connection before SMP can operate. After initialization, the client enters a CLOSED state and
 the server enters a LISTENING state.
 
-3.1.4.2  Read by Higher Layer
+##### 3.1.4.2 Read by Higher Layer
 
 The Read by Higher Layer event is triggered when the higher layer chooses to perform a read
 operation on arriving DATA packets. The SMP layer performs one of the following, depending upon the
@@ -1492,7 +1390,7 @@ layer passes the data to the higher layer, the HighWaterForRecv variable of the 
 incremented by 1 and the SMP layer can send an ACK packet to the peer, as specified in section
 3.1.5.2.3.
 
-3.1.4.3  Higher Layer Initiates Sending of Data
+##### 3.1.4.3 Higher Layer Initiates Sending of Data
 
 This event is triggered when the higher layer initiates the sending of data over an SMP session.
 
@@ -1514,7 +1412,7 @@ described in section 3.1.5.2.
 If the value of SeqNumForSend is less than that of HighWaterForSend, the SMP layer of the sender
 sends the DATA packet according to the flow control algorithm described in section 3.1.5.2.
 
-3.1.4.4  Close by Higher Layer
+##### 3.1.4.4 Close by Higher Layer
 
 The Close by Higher Layer event is triggered when the upper layer closes a session. When this
 happens, the following MUST occur:
@@ -1540,18 +1438,19 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-prevent a new session from attempting to use an existing session identifier (SID). See section
+
+prevent a new session from attempting to use an existing session identifier (SID). See section
 2.2.1 for a description of the SID field.
 
-3.1.4.5  Shutdown by Higher Layer
+##### 3.1.4.5 Shutdown by Higher Layer
 
 The Shutdown by Higher Layer event is triggered when the upper layer shuts down the SMP
 connection. When this occurs, all sessions move from the CLOSED state to the END state and all
 associated data structures is released.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a Packet
+##### 3.1.5.1 Receiving a Packet
 
 The client or server MUST do the following when receiving a packet:
 
@@ -1601,7 +1500,7 @@ length of the Header (16 bytes).
 The sections that follow describe the processing of received DATA, ACK, and FIN packets. Processing
 of received SYN packets is covered in the server- and client-specific sections.
 
-3.1.5.1.1 Receiving a DATA Packet
+###### 3.1.5.1.1 Receiving a DATA Packet
 
 When a DATA packet is received in the SESSION ESTABLISHED state:
 
@@ -1628,7 +1527,8 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-  Set the value of the HighWaterForSend variable of the Session object equal to the value of the
+
+  Set the value of the HighWaterForSend variable of the Session object equal to the value of the
 
 WNDW field of the DATA packet.
 
@@ -1643,7 +1543,7 @@ Note  When a DATA packet is received in the FIN SENT state, the packet is ignore
 Note  When a DATA packet is received in the FIN RECEIVED state, an error SHOULD be raised to the
 higher layer and the underlying transport connection SHOULD be closed.
 
-3.1.5.1.2 Receiving an ACK Packet
+###### 3.1.5.1.2 Receiving an ACK Packet
 
 When an ACK packet is received, the following applies:
 
@@ -1671,7 +1571,7 @@ If the value of the SEQNUM field of the ACK packet is not equal to the value of 
 SeqNumForRecv variable of the Session object, an error is raised to the higher layer and the
 underlying transport connection is closed.
 
-3.1.5.1.3 Receiving a FIN Packet
+###### 3.1.5.1.3 Receiving a FIN Packet
 
 When a FIN packet is received, the following applies:
 
@@ -1691,7 +1591,7 @@ If the value of the SEQNUM field of the FIN packet is not equal to the value of 
 variable of the Session object, an error MAY be raised to the higher layer and the underlying transport
 connection MAY be closed.
 
-3.1.5.2  Flow Control Algorithm
+##### 3.1.5.2 Flow Control Algorithm
 
 SMP provides a means for the receiver to govern the amount of data sent by the sender. This is
 achieved by returning a window with every ACK or DATA packet. The returned window indicates a
@@ -1710,7 +1610,8 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-  Session.HighWaterForSend
+
+  Session.HighWaterForSend
 
 Flow control also involves the use of the following receiver variables:
 
@@ -1725,7 +1626,7 @@ LastHighWaterForRecv
 The sections that follow show the relationships of these variables in the sequence number space. The
 sequence number is a 32-bit unsigned integer that is allowed to wrap.
 
-3.1.5.2.1 Session Variable Relationships for the Sender
+###### 3.1.5.2.1 Session Variable Relationships for the Sender
 
 
 
@@ -1746,7 +1647,7 @@ the value of the SeqNumForSend variable. The send window is considered closed wh
 the send window size is 0. The maximum send window size for the implementation described in this
 document is 4.
 
-3.1.5.2.2 Session Variable Relationships for the Receiver
+###### 3.1.5.2.2 Session Variable Relationships for the Receiver
 
   When the higher layer retrieves a DATA packet from a session endpoint, the HighWaterForRecv
 
@@ -1772,7 +1673,7 @@ Note  The algorithm described above ensures that, at any time, the value of the 
 variable is less than or equal to the value of the HighWaterForRecv variable. The receive window size
 equals the value of HighWaterForRecv minus the value of SeqNumForRecv.
 
-3.1.5.2.3 Update Sender's HighWaterForSend Variable Using an ACK Packet
+###### 3.1.5.2.3 Update Sender's HighWaterForSend Variable Using an ACK Packet
 
 The ADM variable HighWaterForSend of the Session object is updated by receiving either a DATA
 packet or an ACK packet from the peer. The SMP layer MUST send ACK packets to facilitate flow
@@ -1787,11 +1688,12 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 There is no timer in SMP.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 In case of the following events, SMP closes the lower layer transport connection and an error is raised
 to the higher layer:
@@ -1802,7 +1704,7 @@ The lower-layer transport disconnects.
 
   A packet is received by a peer and does not follow the specifications outlined in section 2.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The following state diagram illustrates the progress of a session during the lifetime of the server. The
 diagram is only a summary and does not represent the total specification; for example, it does not
@@ -1815,13 +1717,14 @@ Release: October 31, 2025
 
 22 / 35
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MC-SMP].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
 Figure 3: Session Multiplex Protocol server state machine
 
-3.2.1  Initialization
+#### 3.2.1 Initialization
 
 On the server side, initialization of the Abstract Data Model described in the Common Details is
 performed when the upper layer makes a request to begin listening.
@@ -1833,23 +1736,24 @@ Release: October 31, 2025
 
 23 / 35
 
-3.2.2  Higher-Layer Triggered Events
 
-3.2.2.1  Initialize by Higher Layer
+#### 3.2.2 Higher-Layer Triggered Events
+
+##### 3.2.2.1 Initialize by Higher Layer
 
 The higher layer on the server MUST initialize SMP on each end of the lower-layer transport
 connection before SMP can operate. After initialization, the server enters a LISTENING state.
 
-3.2.3  Session States
+#### 3.2.3 Session States
 
 In addition to the states specified in the Common Details, a Server Session can also be in the following
 state:
 
 Listening: The server is ready for client connections.
 
-3.2.4  Processing Events and Sequencing Rules
+#### 3.2.4 Processing Events and Sequencing Rules
 
-3.2.4.1  Receiving a SYN Packet
+##### 3.2.4.1 Receiving a SYN Packet
 
 The following logic applies to the server only when receiving a SYN packet.
 
@@ -1866,7 +1770,7 @@ underlying transport connection MAY be closed.
 Note  If a SYN packet is received in the FIN RECEIVED state, an error SHOULD be raised to the higher
 layer and the underlying transport connection SHOULD be closed.
 
-3.3  Client Details
+### 3.3 Client Details
 
 The following state diagram illustrates the progress of a session during the lifetime of the client. The
 diagram is only a summary and does not represent the total specification; for example, it does not
@@ -1879,25 +1783,26 @@ Release: October 31, 2025
 
 24 / 35
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MC-SMP].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 4: Session Multiplex Protocol client state machine
 
-3.3.1  Initialization
+#### 3.3.1 Initialization
 
 On the client side, initialization of the Abstract Data Model described in the Common Details is
 performed when the upper layer makes a request for a new SMP session.
 
-3.3.2  Higher-Layer Triggered Events
+#### 3.3.2 Higher-Layer Triggered Events
 
-3.3.2.1  Initialize by Higher Layer
+##### 3.3.2.1 Initialize by Higher Layer
 
 The higher layer on the client MUST initialize SMP on each end of the lower-layer transport connection
 before SMP can operate. After initialization, the client enters a CLOSED state.
 
-3.3.2.2  Open by Higher Layer
+##### 3.3.2.2 Open by Higher Layer
 
 The Open by Higher Layer event is triggered from the client side only. When the higher layer triggers
 this event, the SMP layer MUST:
@@ -1909,7 +1814,8 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-  Choose a unique session identifier (SID), as specified in section 2.2.1, for each session
+
+  Choose a unique session identifier (SID), as specified in section 2.2.1, for each session
 
 multiplexed over a lower-layer transport connection.
 
@@ -1923,9 +1829,9 @@ containing Session variables that control protocol operation.
 
 Enter into the SESSION ESTABLISHED state.
 
-3.3.3  Processing Events and Sequencing Rules
+#### 3.3.3 Processing Events and Sequencing Rules
 
-3.3.3.1  Receiving a SYN Packet
+##### 3.3.3.1 Receiving a SYN Packet
 
 If a SYN packet is received by the client, an error SHOULD be raised to the higher layer and the
 underlying transport connection SHOULD be closed.
@@ -1937,11 +1843,12 @@ Release: October 31, 2025
 
 26 / 35
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section provides examples of SMP packets for various operations being performed.
 
-4.1  Opening a Session
+### 4.1 Opening a Session
 
 This example illustrates a SYN packet which creates a new session.
 
@@ -1980,7 +1887,7 @@ SEQNUM (4 bytes): 0x00000000 (The initial packet for this session)
 
 WNDW (4 bytes): 0x00000004 (The default of 4 receive buffers posted)
 
-4.2  Update Window - ACK
+### 4.2 Update Window - ACK
 
 This example illustrates an ACK packet that updates the peer with a change in window size.
 
@@ -2024,9 +1931,10 @@ Release: October 31, 2025
 
 27 / 35
 
-WNDW (4 bytes): 0x00000012
 
-4.3  First Command in a Session
+WNDW (4 bytes): 0x00000012
+
+### 4.3 First Command in a Session
 
 This example illustrates a DATA packet as the first command in a session.
 
@@ -2074,7 +1982,7 @@ DATA (variable): 0x01 01 00 50 00 00 01 00 16 00 00 00 12 00 00 00 02 00 00 00 0
 00 01 00 00 00 53 00 45 00 54 00 20 00 51 00 55 00 4F 00 54 00 45 00 44 00 5F 00 49 00 44 00
 45 00 4E 00 54 00 49 00 46 00 49 00 45 00 52 00 20 00 4F 00 46 00 46 00 (TDS request)
 
-4.4  Closing a Session
+### 4.4 Closing a Session
 
 This example illustrates the FIN packet as the last command in a session.
 
@@ -2112,7 +2020,8 @@ Release: October 31, 2025
 
 28 / 35
 
-SID (2 bytes): 0x0005 (session identifier (SID) equals 5)
+
+SID (2 bytes): 0x0005 (session identifier (SID) equals 5)
 
 LENGTH (4 bytes): 0x00000010 (The FIN packet does not have a payload)
 
@@ -2127,13 +2036,14 @@ Release: October 31, 2025
 
 29 / 35
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no special security considerations for this protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2144,7 +2054,8 @@ Release: October 31, 2025
 
 30 / 35
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2214,7 +2125,8 @@ Session Multiplex Protocol
 Copyright © 2025 Microsoft Corporation
 Release: October 31, 2025
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 2.1: Microsoft SQL Server supports TCP and named pipes as transport protocols for the
@@ -2242,7 +2154,8 @@ Release: October 31, 2025
 
 32 / 35
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2279,7 +2192,8 @@ Release: October 31, 2025
 
 33 / 35
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2410,7 +2324,8 @@ Release: October 31, 2025
 
 34 / 35
 
-Packet
+
+Packet
    SYN packet
       client receiving 26
       server receiving 24

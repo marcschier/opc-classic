@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 91
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: April 23, 2024
 
 2 / 91
 
-Date
+
+Date
 
 Revision
 History
@@ -521,617 +523,214 @@ Release: April 23, 2024
 
 3 / 91
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Message Flow Common to Both Modes .......................................................... 12
-Message Flow for Upload Mode ..................................................................... 13
-Message Flow for Upload-Reply Mode ............................................................ 13
-Message Flow Optional in Both Modes ........................................................... 14
-Canceling an Upload .............................................................................. 14
-Uploading to an Alternate Server ............................................................ 14
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Client to Server Upload ............................................................................... 15
-Server to Client Download ........................................................................... 15
-Back-End Client to Server Application ............................................................ 15
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.7.1
-1.7.2
-1.7.3
-
-1.3.4.1
-1.3.4.2
-
-1.4
-1.5
-1.6
-1.7
-
-1.8
-1.9
-
-2.2.3
-
-2.2.2
-
-2.2.4
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Upload Message Syntax .................................................................................... 17
-Common Among the Message Types ............................................................. 17
-Standard HTTP Header Fields.................................................................. 17
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 17
-CREATE-SESSION Request ........................................................................... 19
-Standard HTTP Header Fields.................................................................. 19
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 19
-Message Body ...................................................................................... 19
-Ack Response for CREATE-SESSION .............................................................. 19
-Standard HTTP Header Fields.................................................................. 19
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 19
-Message Body ...................................................................................... 20
-PING ......................................................................................................... 20
-Standard HTTP Header Fields.................................................................. 20
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 20
-Message Body ...................................................................................... 20
-ACK for PING ............................................................................................. 20
-Standard HTTP Header Fields.................................................................. 20
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 21
-Message Body ...................................................................................... 21
-FRAGMENT ................................................................................................ 21
-Standard HTTP Header Fields.................................................................. 21
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 21
-Message Body ...................................................................................... 21
-ACK for FRAGMENT ..................................................................................... 22
-Standard HTTP Header Fields.................................................................. 22
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 22
-Message Body ...................................................................................... 22
-CLOSE-SESSION ........................................................................................ 22
-Standard HTTP Header Fields.................................................................. 22
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 22
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-
-2.2.8.1
-2.2.8.2
-
-2.2.8
-
-2.2.6
-
-2.2.7
-
-2.2.5
-
-[MC-BUP] - v20240423
-Background Intelligent Transfer Service (BITS) Upload Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 91
-
-2.2.9
-
-2.2.11
-
-2.2.10
-
-2.2.8.3
-
-2.2.9.1
-2.2.9.2
-2.2.9.3
-
-Message Body ...................................................................................... 22
-ACK for CLOSE-SESSION ............................................................................. 23
-Standard HTTP Header Fields.................................................................. 23
-HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 23
-Message Body ...................................................................................... 23
-CANCEL-SESSION ....................................................................................... 23
-Standard HTTP Header Fields.................................................................. 23
-2.2.10.1
-2.2.10.2  HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 23
-2.2.10.3  Message Body ...................................................................................... 23
-ACK for CANCEL-SESSION ........................................................................... 23
-2.2.11.1
-Standard HTTP Header Fields.................................................................. 23
-2.2.11.2  HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 24
-2.2.11.3  Message Body ...................................................................................... 24
-2.2.12  Notification Request to the Server Application ................................................ 24
-2.2.12.1
-Standard HTTP Header Fields.................................................................. 24
-2.2.12.2  HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 24
-2.2.12.3  Message Body ...................................................................................... 24
-2.2.13  Notification Response from the Server Application .......................................... 25
-2.2.13.1
-Standard HTTP Header Fields.................................................................. 25
-2.2.13.2  HTTP Header Fields Introduced by the BITS Upload Protocol ....................... 25
-2.2.13.3  Message Body ...................................................................................... 25
-Download Message Syntax ................................................................................ 25
-
-2.3
-
-3.1
-
-3.1.5
-
-3.1.2
-
-3.1.1
-
-3.1.5.1
-
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3  Protocol Details ..................................................................................................... 26
-Upload Client Details ........................................................................................ 26
-Abstract Data Model .................................................................................... 26
-UploadEntityInfo ................................................................................... 26
-HTTPUploader ....................................................................................... 26
-Timers ...................................................................................................... 28
-Upload Request Timeout ........................................................................ 28
-Upload Response Timeout ...................................................................... 28
-Host Fallback Timeout ........................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-New Upload Request ............................................................................. 29
-Pause Existing Upload ............................................................................ 29
-Resume Existing Upload ......................................................................... 29
-Cancel Existing Upload ........................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 30
-Action for States ................................................................................... 30
-STATE_INIT .................................................................................... 30
-STATE_CREATE_SESSION ................................................................ 30
-STATE_PING ................................................................................... 30
-STATE_FRAGMENT........................................................................... 31
-STATE_COMPLETE ........................................................................... 31
-STATE_CANCEL ............................................................................... 32
-STATE_ERROR ................................................................................ 32
-STATE_GET_REPLY .......................................................................... 32
-STATE_SUSPEND............................................................................. 33
-Message Processing ............................................................................... 33
-Common to All Message Types .......................................................... 33
-CREATE-SESSION Response ............................................................. 34
-PING Response ............................................................................... 34
-FRAGMENT Response ....................................................................... 34
-CLOSE-SESSION Response ............................................................... 34
-CANCEL-SESSION Response ............................................................. 35
-Timer Events .............................................................................................. 35
-Upload Request Timeout ........................................................................ 35
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-3.1.5.1.6
-3.1.5.1.7
-3.1.5.1.8
-3.1.5.1.9
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-
-3.1.6.1
-
-3.1.5.2
-
-3.1.6
-
-[MC-BUP] - v20240423
-Background Intelligent Transfer Service (BITS) Upload Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 91
-
-3.2.5.2
-
-3.1.6.2
-3.1.6.3
-
-3.1.7
-
-3.1.7.1
-
-3.2
-
-3.2.1
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.2.1.3.1
-
-3.2.1.4
-
-3.2.2.1
-
-3.2.2
-
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-3.2.5.2.5
-3.2.5.2.6
-3.2.5.2.7
-3.2.5.2.8
-
-Upload Response Timeout ...................................................................... 35
-Host Fallback Timeout ........................................................................... 35
-Other Local Events ...................................................................................... 35
-Transport Error Occurred During the Transfer ........................................... 35
-Upload Server Details ....................................................................................... 35
-Abstract Data Model .................................................................................... 35
-BITSDirectoryConfig .............................................................................. 36
-ServerPortListener ................................................................................ 36
-BITSSessionManager ............................................................................. 36
-Table of Active Sessions ................................................................... 36
-BITSSessionWrapper ............................................................................. 36
-Timers ...................................................................................................... 38
-BITS Session Timeout ............................................................................ 38
-Initialization ............................................................................................... 38
-Higher-Layer Triggered Events ..................................................................... 39
-BITS Uploads Are Enabled for a Given Virtual Directory .............................. 39
-BITS Uploads Are Disabled for a Given Virtual Directory ............................. 39
-Message Processing Events and Sequencing Rules .......................................... 39
-Action for States ................................................................................... 39
-STATE_INIT .................................................................................... 39
-STATE_RECEIVE_FRAGMENTS ........................................................... 39
-STATE_NOTIFY ................................................................................ 40
-STATE_WAIT_FOR_CLOSE ................................................................ 40
-STATE_COMPLETE ........................................................................... 41
-STATE_CANCEL ............................................................................... 41
-Message Processing ............................................................................... 41
-General Rules for HTTP-Level Error Responses .................................... 41
-Message Flow.................................................................................. 41
-Common Message Validation ............................................................. 41
-CREATE-SESSION REQUEST ............................................................. 42
-PING REQUEST ............................................................................... 42
-FRAGMENT REQUEST ....................................................................... 42
-CLOSE-SESSION REQUEST ............................................................... 43
-CANCEL-SESSION REQUEST ............................................................. 43
-Timer Events .............................................................................................. 43
-BITS Session Timeout ............................................................................ 43
-Other Local Events ...................................................................................... 43
-Back-End Client Details ..................................................................................... 43
-Abstract Data Model .................................................................................... 43
-Back-End Client's State .......................................................................... 43
-Timers ...................................................................................................... 45
-Notification Send Timeout ...................................................................... 45
-Notification Receive Timeout .................................................................. 45
-Notification Receive Response Timeout .................................................... 46
-Initialization ............................................................................................... 46
-Higher-Layer Triggered Events ..................................................................... 46
-Message Processing Events and Sequencing Rules .......................................... 46
-Common .............................................................................................. 46
-Action for States ................................................................................... 46
-STATE_INIT .................................................................................... 46
-STATE_SEND_HEADERS ................................................................... 46
-STATE_SEND_DATA ......................................................................... 47
-STATE_RECEIVE_HEADERS ............................................................... 47
-STATE_RECEIVE_DATA .................................................................... 47
-STATE_COMPLETE ........................................................................... 48
-STATE_ERROR ................................................................................ 48
-Message Processing ............................................................................... 48
-General Rules for HTTP-Level Error Responses .................................... 48
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-3.3.5.2.4
-3.3.5.2.5
-3.3.5.2.6
-3.3.5.2.7
-
-3.3
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-3.3.1
-
-3.3.2
-
-3.3.1.1
-
-3.3.2.1
-3.3.2.2
-3.3.2.3
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-
-3.3.5.3
-
-3.3.5.3.1
-
-[MC-BUP] - v20240423
-Background Intelligent Transfer Service (BITS) Upload Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 91
-
-3.3.5.3.2
-
-3.3.6
-
-3.3.6.1
-3.3.6.2
-3.3.6.3
-
-3.4.5.1
-3.4.5.2
-
-3.4
-
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-
-3.5
-
-3.4.6
-3.4.7
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.5
-
-3.5.6
-3.5.7
-
-3.6
-
-3.5.4.1
-
-3.5.5.1
-3.5.5.2
-
-3.6.1
-
-3.6.2
-
-3.6.1.1
-
-3.6.2.1
-3.6.2.2
-
-3.6.3
-3.6.4
-
-3.6.4.1
-3.6.4.2
-3.6.4.3
-
-3.6.5.1
-3.6.5.2
-
-3.6.5
-
-Notification Response ....................................................................... 48
-Timer Events .............................................................................................. 49
-Notification Send Timeout ...................................................................... 49
-Notification Receive Timeout .................................................................. 49
-Notification Receive Response Timeout .................................................... 49
-Other Local Events ...................................................................................... 49
-Server Application Details ................................................................................. 49
-Abstract Data Model .................................................................................... 49
-Timers ...................................................................................................... 49
-Initialization ............................................................................................... 49
-Higher-Layer Triggered Events ..................................................................... 49
-Message Processing Events and Sequencing Rules .......................................... 50
-General Rules for HTTP-Level Error Responses .......................................... 50
-Notification Request .............................................................................. 50
-Timer Events .............................................................................................. 50
-Other Local Events ...................................................................................... 50
-Download Server Details ................................................................................... 51
-Abstract Data Model .................................................................................... 51
-Timers ...................................................................................................... 51
-Initialization ............................................................................................... 51
-Higher-Layer Triggered Events ..................................................................... 51
-Modify URL Content ............................................................................... 51
-Message Processing Events and Sequencing Rules .......................................... 51
-Receive GET Request ............................................................................. 51
-Receive HEAD Request .......................................................................... 52
-Timer Events .............................................................................................. 52
-Other Local Events ...................................................................................... 52
-Download Client Details .................................................................................... 52
-Abstract Data Model .................................................................................... 52
-STATE ................................................................................................. 53
-Timers ...................................................................................................... 54
-Request Timeout ................................................................................... 54
-Response Timeout ................................................................................. 54
-Initialization ............................................................................................... 54
-Higher-Layer Triggered Events ..................................................................... 55
-Pause Download ................................................................................... 55
-Resume Download ................................................................................ 55
-Cancel Download .................................................................................. 55
-Message Processing Events and Sequencing Rules .......................................... 55
-Common .............................................................................................. 55
-Action for States ................................................................................... 55
-STATE_INIT .................................................................................... 55
-STATE_SIZE ................................................................................... 56
-STATE_SEARCH .............................................................................. 56
-STATE_DOWNLOAD ......................................................................... 56
-Download from the BITS Peer-Caching: Content Retrieval Protocol
-Server ...................................................................................... 57
-Download from Original Server .................................................... 57
-Choosing Ranges ....................................................................... 58
-Trimming a Request to a Single URL ............................................. 59
-STATE_SUSPEND............................................................................. 59
-STATE_COMPLETE ........................................................................... 60
-Message Processing ............................................................................... 60
-Timer Events .............................................................................................. 60
-Request Timeout ................................................................................... 60
-Response Timeout ................................................................................. 60
-Other Local Events ...................................................................................... 60
-Result Found on Peers ........................................................................... 60
-
-3.6.5.2.4.2
-3.6.5.2.4.3
-3.6.5.2.4.4
-
-3.6.5.2.4.1
-
-3.6.5.2.5
-3.6.5.2.6
-
-3.6.5.3
-
-3.6.6
-
-3.6.6.1
-3.6.6.2
-
-3.6.7
-
-3.6.7.1
-
-3.6.5.2.1
-3.6.5.2.2
-3.6.5.2.3
-3.6.5.2.4
-
-[MC-BUP] - v20240423
-Background Intelligent Transfer Service (BITS) Upload Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 91
-
-4  Protocol Examples ................................................................................................. 62
-Successful Upload ............................................................................................ 62
-Successful Upload-Reply with Bits-Host-Id and Back-End Notifications .................... 69
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 79
-Security Considerations for Implementers ........................................................... 79
-Index of Security Parameters ............................................................................ 79
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 80
-
-7  Change Tracking .................................................................................................... 83
-
-8  Index ..................................................................................................................... 84
-
-[MC-BUP] - v20240423
-Background Intelligent Transfer Service (BITS) Upload Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 91
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Message Flow Common to Both Modes](#131-message-flow-common-to-both-modes)
+    - [1.3.2 Message Flow for Upload Mode](#132-message-flow-for-upload-mode)
+    - [1.3.3 Message Flow for Upload-Reply Mode](#133-message-flow-for-upload-reply-mode)
+    - [1.3.4 Message Flow Optional in Both Modes](#134-message-flow-optional-in-both-modes)
+      - [1.3.4.1 Canceling an Upload](#1341-canceling-an-upload)
+      - [1.3.4.2 Uploading to an Alternate Server](#1342-uploading-to-an-alternate-server)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Client to Server Upload](#171-client-to-server-upload)
+    - [1.7.2 Server to Client Download](#172-server-to-client-download)
+    - [1.7.3 Back-End Client to Server Application](#173-back-end-client-to-server-application)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Upload Message Syntax](#22-upload-message-syntax)
+    - [2.2.1 Common Among the Message Types](#221-common-among-the-message-types)
+      - [2.2.1.1 Standard HTTP Header Fields](#2211-standard-http-header-fields)
+      - [2.2.1.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2212-http-header-fields-introduced-by-the-bits-upload-protocol)
+    - [2.2.2 CREATE-SESSION Request](#222-create-session-request)
+      - [2.2.2.1 Standard HTTP Header Fields](#2221-standard-http-header-fields)
+      - [2.2.2.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2222-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.2.3 Message Body](#2223-message-body)
+    - [2.2.3 Ack Response for CREATE-SESSION](#223-ack-response-for-create-session)
+      - [2.2.3.1 Standard HTTP Header Fields](#2231-standard-http-header-fields)
+      - [2.2.3.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2232-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.3.3 Message Body](#2233-message-body)
+    - [2.2.4 PING](#224-ping)
+      - [2.2.4.1 Standard HTTP Header Fields](#2241-standard-http-header-fields)
+      - [2.2.4.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2242-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.4.3 Message Body](#2243-message-body)
+    - [2.2.5 ACK for PING](#225-ack-for-ping)
+      - [2.2.5.1 Standard HTTP Header Fields](#2251-standard-http-header-fields)
+      - [2.2.5.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2252-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.5.3 Message Body](#2253-message-body)
+    - [2.2.6 FRAGMENT](#226-fragment)
+      - [2.2.6.1 Standard HTTP Header Fields](#2261-standard-http-header-fields)
+      - [2.2.6.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2262-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.6.3 Message Body](#2263-message-body)
+    - [2.2.7 ACK for FRAGMENT](#227-ack-for-fragment)
+      - [2.2.7.1 Standard HTTP Header Fields](#2271-standard-http-header-fields)
+      - [2.2.7.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2272-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.7.3 Message Body](#2273-message-body)
+    - [2.2.8 CLOSE-SESSION](#228-close-session)
+      - [2.2.8.1 Standard HTTP Header Fields](#2281-standard-http-header-fields)
+      - [2.2.8.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2282-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.8.3 Message Body](#2283-message-body)
+    - [2.2.9 ACK for CLOSE-SESSION](#229-ack-for-close-session)
+      - [2.2.9.1 Standard HTTP Header Fields](#2291-standard-http-header-fields)
+      - [2.2.9.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#2292-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.9.3 Message Body](#2293-message-body)
+    - [2.2.10 CANCEL-SESSION](#2210-cancel-session)
+      - [2.2.10.1 Standard HTTP Header Fields](#22101-standard-http-header-fields)
+      - [2.2.10.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#22102-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.10.3 Message Body](#22103-message-body)
+    - [2.2.11 ACK for CANCEL-SESSION](#2211-ack-for-cancel-session)
+      - [2.2.11.1 Standard HTTP Header Fields](#22111-standard-http-header-fields)
+      - [2.2.11.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#22112-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.11.3 Message Body](#22113-message-body)
+    - [2.2.12 Notification Request to the Server Application](#2212-notification-request-to-the-server-application)
+      - [2.2.12.1 Standard HTTP Header Fields](#22121-standard-http-header-fields)
+      - [2.2.12.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#22122-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.12.3 Message Body](#22123-message-body)
+    - [2.2.13 Notification Response from the Server Application](#2213-notification-response-from-the-server-application)
+      - [2.2.13.1 Standard HTTP Header Fields](#22131-standard-http-header-fields)
+      - [2.2.13.2 HTTP Header Fields Introduced by the BITS Upload Protocol](#22132-http-header-fields-introduced-by-the-bits-upload-protocol)
+      - [2.2.13.3 Message Body](#22133-message-body)
+  - [2.3 Download Message Syntax](#23-download-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Upload Client Details](#31-upload-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 UploadEntityInfo](#3111-uploadentityinfo)
+      - [3.1.1.2 HTTPUploader](#3112-httpuploader)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Upload Request Timeout](#3121-upload-request-timeout)
+      - [3.1.2.2 Upload Response Timeout](#3122-upload-response-timeout)
+      - [3.1.2.3 Host Fallback Timeout](#3123-host-fallback-timeout)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 New Upload Request](#3141-new-upload-request)
+      - [3.1.4.2 Pause Existing Upload](#3142-pause-existing-upload)
+      - [3.1.4.3 Resume Existing Upload](#3143-resume-existing-upload)
+      - [3.1.4.4 Cancel Existing Upload](#3144-cancel-existing-upload)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Action for States](#3151-action-for-states)
+        - [3.1.5.1.1 STATE_INIT](#31511-stateinit)
+        - [3.1.5.1.2 STATE_CREATE_SESSION](#31512-statecreatesession)
+        - [3.1.5.1.3 STATE_PING](#31513-stateping)
+        - [3.1.5.1.4 STATE_FRAGMENT](#31514-statefragment)
+        - [3.1.5.1.5 STATE_COMPLETE](#31515-statecomplete)
+        - [3.1.5.1.6 STATE_CANCEL](#31516-statecancel)
+        - [3.1.5.1.7 STATE_ERROR](#31517-stateerror)
+        - [3.1.5.1.8 STATE_GET_REPLY](#31518-stategetreply)
+        - [3.1.5.1.9 STATE_SUSPEND](#31519-statesuspend)
+      - [3.1.5.2 Message Processing](#3152-message-processing)
+        - [3.1.5.2.1 Common to All Message Types](#31521-common-to-all-message-types)
+        - [3.1.5.2.2 CREATE-SESSION Response](#31522-create-session-response)
+        - [3.1.5.2.3 PING Response](#31523-ping-response)
+        - [3.1.5.2.4 FRAGMENT Response](#31524-fragment-response)
+        - [3.1.5.2.5 CLOSE-SESSION Response](#31525-close-session-response)
+        - [3.1.5.2.6 CANCEL-SESSION Response](#31526-cancel-session-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Upload Request Timeout](#3161-upload-request-timeout)
+      - [3.1.6.2 Upload Response Timeout](#3162-upload-response-timeout)
+      - [3.1.6.3 Host Fallback Timeout](#3163-host-fallback-timeout)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Transport Error Occurred During the Transfer](#3171-transport-error-occurred-during-the-transfer)
+  - [3.2 Upload Server Details](#32-upload-server-details)
+  - [3.3 and 3.4.](#33-and-34)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Back-End Client's State](#3311-back-end-clients-state)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Notification Send Timeout](#3321-notification-send-timeout)
+      - [3.3.2.2 Notification Receive Timeout](#3322-notification-receive-timeout)
+      - [3.3.2.3 Notification Receive Response Timeout](#3323-notification-receive-response-timeout)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Common](#3351-common)
+      - [3.3.5.2 Action for States](#3352-action-for-states)
+        - [3.3.5.2.1 STATE_INIT](#33521-stateinit)
+        - [3.3.5.2.2 STATE_SEND_HEADERS](#33522-statesendheaders)
+        - [3.3.5.2.3 STATE_SEND_DATA](#33523-statesenddata)
+        - [3.3.5.2.4 STATE_RECEIVE_HEADERS](#33524-statereceiveheaders)
+        - [3.3.5.2.5 STATE_RECEIVE_DATA](#33525-statereceivedata)
+        - [3.3.5.2.6 STATE_COMPLETE](#33526-statecomplete)
+        - [3.3.5.2.7 STATE_ERROR](#33527-stateerror)
+      - [3.3.5.3 Message Processing](#3353-message-processing)
+        - [3.3.5.3.1 General Rules for HTTP-Level Error Responses](#33531-general-rules-for-http-level-error-responses)
+        - [3.3.5.3.2 Notification Response](#33532-notification-response)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Notification Send Timeout](#3361-notification-send-timeout)
+      - [3.3.6.2 Notification Receive Timeout](#3362-notification-receive-timeout)
+      - [3.3.6.3 Notification Receive Response Timeout](#3363-notification-receive-response-timeout)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Server Application Details](#34-server-application-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 General Rules for HTTP-Level Error Responses](#3451-general-rules-for-http-level-error-responses)
+      - [3.4.5.2 Notification Request](#3452-notification-request)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 Download Server Details](#35-download-server-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+      - [3.5.4.1 Modify URL Content](#3541-modify-url-content)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Receive GET Request](#3551-receive-get-request)
+      - [3.5.5.2 Receive HEAD Request](#3552-receive-head-request)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+  - [3.6 Download Client Details](#36-download-client-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+      - [3.6.1.1 STATE](#3611-state)
+    - [3.6.2 Timers](#362-timers)
+      - [3.6.2.1 Request Timeout](#3621-request-timeout)
+      - [3.6.2.2 Response Timeout](#3622-response-timeout)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggered Events](#364-higher-layer-triggered-events)
+      - [3.6.4.1 Pause Download](#3641-pause-download)
+      - [3.6.4.2 Resume Download](#3642-resume-download)
+      - [3.6.4.3 Cancel Download](#3643-cancel-download)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Common](#3651-common)
+      - [3.6.5.2 Action for States](#3652-action-for-states)
+        - [3.6.5.2.1 STATE_INIT](#36521-stateinit)
+        - [3.6.5.2.2 STATE_SIZE](#36522-statesize)
+        - [3.6.5.2.3 STATE_SEARCH](#36523-statesearch)
+        - [3.6.5.2.4 STATE_DOWNLOAD](#36524-statedownload)
+          - [3.6.5.2.4.1 Download from the BITS Peer-Caching: Content Retrieval Protocol Server](#365241-download-from-the-bits-peer-caching-content-retrieval-protocol-server)
+          - [3.6.5.2.4.2 Download from Original Server](#365242-download-from-original-server)
+          - [3.6.5.2.4.3 Choosing Ranges](#365243-choosing-ranges)
+          - [3.6.5.2.4.4 Trimming a Request to a Single URL](#365244-trimming-a-request-to-a-single-url)
+        - [3.6.5.2.5 STATE_SUSPEND](#36525-statesuspend)
+        - [3.6.5.2.6 STATE_COMPLETE](#36526-statecomplete)
+      - [3.6.5.3 Message Processing](#3653-message-processing)
+    - [3.6.6 Timer Events](#366-timer-events)
+      - [3.6.6.1 Request Timeout](#3661-request-timeout)
+      - [3.6.6.2 Response Timeout](#3662-response-timeout)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+      - [3.6.7.1 Result Found on Peers](#3671-result-found-on-peers)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Successful Upload](#41-successful-upload)
+  - [4.2 Successful Upload-Reply with Bits-Host-Id and Back-End Notifications](#42-successful-upload-reply-with-bits-host-id-and-back-end-notifications)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document is a specification for the Background Intelligent Transfer Service (BITS) Upload
 Protocol. This protocol is used to transfer large payloads from a client to a server or server to client
@@ -1142,7 +741,7 @@ and uses several standard HTTP headers and defines some new headers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1207,7 +806,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Universal Naming Convention (UNC): A string format that specifies the location of a resource.
+
+Universal Naming Convention (UNC): A string format that specifies the location of a resource.
 
 For more information, see [MS-DTYP] section 2.2.57.
 
@@ -1220,14 +820,14 @@ virtual directory: A URL prefix that corresponds to a physical directory on the 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1275,12 +875,13 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MSDN-BITS] Microsoft Corporation, "Background Intelligent Transfer Service",
 http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Background Intelligent Transfer Service (BITS) Upload Protocol, hereafter called the BITS Upload
 Protocol, defines a way to transfer large payloads from a client to an HTTP server or vice versa, even
@@ -1314,7 +915,8 @@ Release: April 23, 2024
 
 11 / 91
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MC-BUP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1327,7 +929,7 @@ examples in section 4 contain detailed examples of each of the messages.
 Uploads can be accomplished in two modes: upload and upload-reply. The details about the
 messages exchanged in each mode are mentioned later.
 
-1.3.1  Message Flow Common to Both Modes
+#### 1.3.1 Message Flow Common to Both Modes
 
 The following steps describe the message flow process that is common to both modes of operation.
 
@@ -1340,7 +942,8 @@ Release: April 23, 2024
 
 12 / 91
 
-1.  The client initiates the upload by sending a CREATE-SESSION (section 2.2.2) message, which
+
+1.  The client initiates the upload by sending a CREATE-SESSION (section 2.2.2) message, which
 
 prompts the server to create a BITS session for the destination URL.
 
@@ -1357,7 +960,7 @@ from the client, the server processes and updates its copy of the request entity
 
 Ack (section 2.2.7) with the byte range received.
 
-1.3.2  Message Flow for Upload Mode
+#### 1.3.2 Message Flow for Upload Mode
 
 In this mode, the request entity is uploaded to the server. Figure 1 (section 1.3) explains this mode
 of operation in detail.
@@ -1376,7 +979,7 @@ necessary for a simple upload.
 CLOSE-SESSION (section 2.2.8) message, which prompts the server to move the request entity to
 the destination URL and delete BITS session data for the given session on the server.
 
-1.3.3  Message Flow for Upload-Reply Mode
+#### 1.3.3 Message Flow for Upload-Reply Mode
 
 In this mode, the server sends the request entity to the server application, which constructs a
 response entity. The server application sends the URL of the reply to the client as part of the
@@ -1414,19 +1017,20 @@ Release: April 23, 2024
 
 13 / 91
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MC-BUP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-1.3.4  Message Flow Optional in Both Modes
+#### 1.3.4 Message Flow Optional in Both Modes
 
-1.3.4.1  Canceling an Upload
+##### 1.3.4.1 Canceling an Upload
 
 If at any time during the upload, the client sends a CANCEL-SESSION (section 2.2.10) message to the
 server, the server deletes the BITS session data it maintains for the corresponding session
 represented through the BITS session ID and then replies with an Ack.
 
-1.3.4.2  Uploading to an Alternate Server
+##### 1.3.4.2 Uploading to an Alternate Server
 
 If the destination URL refers to a network load balancer or multiple servers, it is possible that the
 messages sent as part of each request could be forwarded to a different server behind the load
@@ -1448,7 +1052,7 @@ If the client makes no progress in the time interval provided through BITS-Host-
 See the state diagram in section 3.1.1.2 for the use of BITS-Host-ID and BITS-Host-Id-Fallback-
 Timeout.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is built on top of the HTTP 1.1 Protocol and has direct dependency on it. Depending on
 the authentication mechanism needed to perform the upload to a URL, this protocol can also have
@@ -1463,17 +1067,18 @@ Release: April 23, 2024
 
 14 / 91
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MC-BUP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 3: BITS Upload Protocol dependency with TLS authentication
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is best suited for transferring large entities over networks with frequent disconnections.
 
@@ -1482,11 +1087,11 @@ This protocol can be used along with a rate throttling mechanism to throttle the
 If an entity can be uploaded in a single fragment, this protocol is less efficient than an HTTP PUT or
 POST.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
-1.7.1  Client to Server Upload
+#### 1.7.1 Client to Server Upload
 
   Supported Transports: This protocol is implemented on top of HTTP 1.1 as discussed in section
 
@@ -1498,13 +1103,13 @@ SESSION message request. The server picks the best protocol it can use to talk t
 sends it as part of the Ack response for CREATE-SESSION. This version of the specification defines
 a single protocol whose identifying GUID is {7df0354d-249b-430f-820d-3d2a9bef4931}.
 
-1.7.2  Server to Client Download
+#### 1.7.2 Server to Client Download
 
   Capability Negotiation: A client using multi-range HTTP requests can detect a server that does not
 
 support multi-range requests and then retry using single-range requests.
 
-1.7.3  Back-End Client to Server Application
+#### 1.7.3 Back-End Client to Server Application
 
 This protocol does not define an explicit system for version negotiation between the back-end client
 and the server application. The presence of individual capabilities is implicitly signaled in each
@@ -1518,13 +1123,14 @@ Release: April 23, 2024
 
 15 / 91
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF]. Vendors can define their own HRESULT
 values, provided they set the C bit (0x20000000) for each vendor-defined value, indicating that the
 value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1535,15 +1141,16 @@ Release: April 23, 2024
 
 16 / 91
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The client, server, or proxy MAY impose additional requirements on authentication as part of the
 transfer. In these cases, authentication information MUST be exchanged between the client, server,
 and proxy as required by HTTP and the relevant authentication protocol.<1>
 
-2.2  Upload Message Syntax
+### 2.2 Upload Message Syntax
 
 Messages follow HTTP 1.1 syntax. The required HTTP headers and the format of the HTTP message
 body, as specified in section 4.3 of [RFC2616], for each message are described later. An
@@ -1553,7 +1160,7 @@ implementation MAY include additional HTTP headers in each message, following th
 A future version of this protocol MAY define new HTTP header fields. The recipient of a message MUST
 ignore any header fields that it does not understand.
 
-2.2.1  Common Among the Message Types
+#### 2.2.1 Common Among the Message Types
 
 The HTTP version MUST be 1.1.
 
@@ -1572,7 +1179,7 @@ The size of the value of a header field SHOULD NOT<2> be more than 4 kilobytes.
 Each response message MUST include a BITS-specific HTTP message header field named BITS-
 Package-Type with the field value Ack.
 
-2.2.1.1  Standard HTTP Header Fields
+##### 2.2.1.1 Standard HTTP Header Fields
 
 Content-Name: This indicates the name of the request entity. This SHOULD follow the rules
 mentioned for field content in [RFC2616] section 4.2. The length SHOULD NOT exceed 260 characters.
@@ -1582,7 +1189,7 @@ Content-Length: This indicates the number of bytes being included in the message
 or the response. This MUST follow the rules described in [RFC2616] section 14.13. This field MUST be
 present for all the request messages in section 2.2.
 
-2.2.1.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.1.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type: This represents the type of the message being sent from client to server or server
 to client. This is a string of characters and MUST be one of the following: CREATE-SESSION, PING,
@@ -1600,7 +1207,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-entity. This field MUST be present in all request messages except CREATE-SESSION. The field
+
+entity. This field MUST be present in all request messages except CREATE-SESSION. The field
 MUST be present in response messages with an HTTP status of 200. It MAY be present in other
 response messages; if present, its value MUST be the same as in the corresponding request
 message.
@@ -1716,7 +1324,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HRESULT
+
+HRESULT
 
 HTTP
 status
@@ -1730,12 +1339,12 @@ ERROR_DISK_FULL (x80070112)
 
 The server is out of disk space.
 
-2.2.2  CREATE-SESSION Request
+#### 2.2.2 CREATE-SESSION Request
 
 The CREATE-SESSION message represents a request to the server to create an upload BITS session
 for a new upload instance.
 
-2.2.2.1  Standard HTTP Header Fields
+##### 2.2.2.1 Standard HTTP Header Fields
 
 The standard HTTP header fields are Content-Name (section 2.2.1.1) and Content-
 Length (section 2.2.1.1).
@@ -1744,7 +1353,7 @@ The Content-Name field SHOULD<5> be present. The value is defined in section 2.2
 
 The value of the Content-Length field MUST be zero for this message type.
 
-2.2.2.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.2.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value of this field MUST be CREATE-SESSION for this
 message type.
@@ -1754,22 +1363,22 @@ that the client supports. A GUID (as specified in [MS-DTYP] section 2.3.4.3) MUS
 represent each protocol. The list MUST be ordered with the most preferred protocol being the head of
 the list. This field MUST be present.<6>
 
-2.2.2.3  Message Body
+##### 2.2.2.3 Message Body
 
 This message MUST NOT contain any message body.
 
-2.2.3  Ack Response for CREATE-SESSION
+#### 2.2.3 Ack Response for CREATE-SESSION
 
 This message is an acknowledgment to the CREATE-SESSION message.
 
-2.2.3.1  Standard HTTP Header Fields
+##### 2.2.3.1 Standard HTTP Header Fields
 
 Accept-Encoding: This specifies the content encoding schemes that the server supports; see sections
 3.5 and 14.3 of [RFC2616] for more details.<7>
 
 Content-Length (section 2.2.1.1): The value MUST be 0 for this message.
 
-2.2.3.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.3.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be Ack for this message.
 
@@ -1784,7 +1393,8 @@ Release: April 23, 2024
 
 19 / 91
 
-BITS-Session-Id (section 2.2.1.2): The BITS session ID that the client MUST include in future
+
+BITS-Session-Id (section 2.2.1.2): The BITS session ID that the client MUST include in future
 messages relating to this upload. This field MUST be present unless the server encountered an error
 creating the session.
 
@@ -1807,34 +1417,34 @@ the request and MUST NOT be present otherwise.
 BITS-Error-Context (section 2.2.1.2): This field MUST be present if the server encounters an error
 processing the request and MUST NOT be present otherwise.
 
-2.2.3.3  Message Body
+##### 2.2.3.3 Message Body
 
 This message MUST NOT contain any message body.
 
-2.2.4  PING
+#### 2.2.4 PING
 
 The client MAY send this message to check if it can contact the host returned as part of BITS-Host-
 ID header field before manipulating the destination URL as specified in section 2.2.3.2. The client
 SHOULD also send this message when a new TCP session to the server is established if a connection-
 oriented HTTP authentication scheme such as NTLM is expected.<9>
 
-2.2.4.1  Standard HTTP Header Fields
+##### 2.2.4.1 Standard HTTP Header Fields
 
 Content-Length (section 2.2.1.1): The value MUST be 0 for this message.
 
-2.2.4.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.4.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be PING for this message.
 
-2.2.4.3  Message Body
+##### 2.2.4.3 Message Body
 
 This message MUST NOT contain any message body.
 
-2.2.5  ACK for PING
+#### 2.2.5 ACK for PING
 
 This message is an acknowledgment to the PING message.
 
-2.2.5.1  Standard HTTP Header Fields
+##### 2.2.5.1 Standard HTTP Header Fields
 
 Content-Length (section 2.2.1.1): The value MUST be 0.
 
@@ -1845,7 +1455,8 @@ Release: April 23, 2024
 
 20 / 91
 
-2.2.5.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+
+##### 2.2.5.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be Ack.
 
@@ -1855,11 +1466,11 @@ the request and MUST NOT be present otherwise.
 BITS-Error-Context (section 2.2.1.2): This field MUST be present if the server encountered an error
 processing the request and MUST NOT be present otherwise.
 
-2.2.5.3  Message Body
+##### 2.2.5.3 Message Body
 
 This message MUST NOT contain any message body.
 
-2.2.6  FRAGMENT
+#### 2.2.6 FRAGMENT
 
 The client MUST use this message to send a block of data from the request entity to the destination
 URL. The intent of the protocol is for the client to send the data in one or more nonoverlapping
@@ -1882,7 +1493,7 @@ See section 3.2.5.1.2 for the validation required of the server.
 The client and server MAY impose limits on the minimum and maximum length of a fragment's
 body.<10>
 
-2.2.6.1  Standard HTTP Header Fields
+##### 2.2.6.1 Standard HTTP Header Fields
 
 Content-Name (section 2.2.1.1): This SHOULD be sent with the first fragment message and MAY be
 sent with the other fragment messages. This value SHOULD match the Content-Name value sent as
@@ -1896,13 +1507,13 @@ message, using the format in section 14.16 of [RFC2616]. This field MUST be pres
 Content-Encoding: This specifies the content encoding of the message body; see section 3.5 of
 [RFC2616] for more details.<12>
 
-2.2.6.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.6.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be FRAGMENT for this message.
 
 BITS-Session-Id (section 2.2.1.2).
 
-2.2.6.3  Message Body
+##### 2.2.6.3 Message Body
 
 The message body MUST contain the range of bytes being sent as part of the fragment.
 
@@ -1913,15 +1524,16 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.7  ACK for FRAGMENT
+
+#### 2.2.7 ACK for FRAGMENT
 
 The server MUST send this message as an acknowledgment to the FRAGMENT message.
 
-2.2.7.1  Standard HTTP Header Fields
+##### 2.2.7.1 Standard HTTP Header Fields
 
 Content-Length (section 2.2.1.1): The value MUST be 0.
 
-2.2.7.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.7.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be Ack for this message.
 
@@ -1942,27 +1554,27 @@ the request and MUST NOT be present otherwise.
 BITS-Error-Context (section 2.2.1.2): This field MUST be present if the server encountered an error
 processing the request and MUST NOT be present otherwise.
 
-2.2.7.3  Message Body
+##### 2.2.7.3 Message Body
 
 This message MUST NOT contain any message body.
 
-2.2.8  CLOSE-SESSION
+#### 2.2.8 CLOSE-SESSION
 
 This message MUST be sent to the server to inform that the upload of the request entity is complete
 and successful. This SHOULD trigger cleanup of any BITS session–specific information for the upload
 present on the server, including the reply URL.
 
-2.2.8.1  Standard HTTP Header Fields
+##### 2.2.8.1 Standard HTTP Header Fields
 
 Content-Length (section 2.2.1.1): The value MUST be 0.
 
-2.2.8.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.8.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be CLOSE-SESSION for this message.
 
 BITS-Session-Id (section 2.2.1.2).
 
-2.2.8.3  Message Body
+##### 2.2.8.3 Message Body
 
 This message MUST NOT contain any message body.
 
@@ -1973,16 +1585,17 @@ Release: April 23, 2024
 
 22 / 91
 
-2.2.9  ACK for CLOSE-SESSION
+
+#### 2.2.9 ACK for CLOSE-SESSION
 
 The server MUST send this message as an acknowledgment to CLOSE-SESSION request after
 releasing all the resources held on the server for the given BITS session.
 
-2.2.9.1  Standard HTTP Header Fields
+##### 2.2.9.1 Standard HTTP Header Fields
 
 Content-Length (section 2.2.1.1): The value MUST be 0.
 
-2.2.9.2  HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.9.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be Ack for this message.
 
@@ -1994,43 +1607,43 @@ the request and MUST NOT be present otherwise.
 BITS-Error-Context (section 2.2.1.2): This field MUST be present if the server encountered an error
 processing the request and MUST NOT be present otherwise.
 
-2.2.9.3  Message Body
+##### 2.2.9.3 Message Body
 
 This message MUST NOT contain any message body.
 
-2.2.10 CANCEL-SESSION
+#### 2.2.10 CANCEL-SESSION
 
 The client MUST send this message to terminate the given upload and cause the server to delete the
 BITS session.
 
-2.2.10.1
+##### 2.2.10.1 Standard HTTP Header Fields
 
-Standard HTTP Header Fields
+
 
 Content-Length (section 2.2.1.1): The value MUST be 0.
 
-2.2.10.2
+##### 2.2.10.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
-HTTP Header Fields Introduced by the BITS Upload Protocol
+
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be CANCEL-SESSION for this message.
 
 BITS-Session-Id (section 2.2.1.2).
 
-2.2.10.3
+##### 2.2.10.3 Message Body
 
-Message Body
+
 
 This message MUST NOT contain any message body.
 
-2.2.11 ACK for CANCEL-SESSION
+#### 2.2.11 ACK for CANCEL-SESSION
 
 The server MUST send this message as an acknowledgment to the CANCEL-SESSION request after
 releasing all the resources held on the server for the given BITS session.
 
-2.2.11.1
+##### 2.2.11.1 Standard HTTP Header Fields
 
-Standard HTTP Header Fields
+
 
 Content-Length (section 2.2.1.1): The value MUST be 0.
 
@@ -2041,9 +1654,10 @@ Release: April 23, 2024
 
 23 / 91
 
-2.2.11.2
 
-HTTP Header Fields Introduced by the BITS Upload Protocol
+##### 2.2.11.2 HTTP Header Fields Introduced by the BITS Upload Protocol
+
+
 
 BITS-Packet-Type (section 2.2.1.2): The value MUST be ACK for this message.
 
@@ -2055,27 +1669,27 @@ the request and MUST NOT be present otherwise.
 BITS-Error-Context (section 2.2.1.2): This field MUST be present if the server encountered an error
 processing the request and MUST NOT be present otherwise.
 
-2.2.11.3
+##### 2.2.11.3 Message Body
 
-Message Body
+
 
 This message MUST NOT contain any message body.
 
-2.2.12 Notification Request to the Server Application
+#### 2.2.12 Notification Request to the Server Application
 
 The back-end client MUST send this message if the notification option was defined for the virtual
 directory to which the request entity is being uploaded and is either
 NOTIFICATION_BY_REFERENCE (section 3.2.1.1) or NOTIFICATION_BY_VALUE (section 3.2.1.1).
 
-2.2.12.1
+##### 2.2.12.1 Standard HTTP Header Fields
 
-Standard HTTP Header Fields
+
 
 Content-Length (section 2.2.1.1): This MUST be equal to the size of the message body.
 
-2.2.12.2
+##### 2.2.12.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
-HTTP Header Fields Introduced by the BITS Upload Protocol
+
 
 BITS-Original-Request-URL: This specifies the destination URL of the request entity. This MUST
 follow the rules defined in [RFC2616] section 3.2.2. This field MUST be present.
@@ -2100,9 +1714,9 @@ rules specified for the Content-Name (section 2.2.1.1) header (range of characte
 would apply to this as well. No limit is imposed in the back-end client on the number of characters
 that the value of this field could contain.<14>
 
-2.2.12.3
+##### 2.2.12.3 Message Body
 
-Message Body
+
 
 If the notification type is NOTIFICATION_BY_VALUE (section 3.2.1.1), the request entity MUST be
 sent as the body of this message. For all other notification types, this message MUST NOT contain any
@@ -2115,22 +1729,23 @@ Release: April 23, 2024
 
 24 / 91
 
-2.2.13 Notification Response from the Server Application
+
+#### 2.2.13 Notification Response from the Server Application
 
 The server application sends this message to the back-end client, either to report successful
 processing of the request entity or to report an error. In upload-reply mode, the message defines
 the response entity, either by reference using the BITS-Static-Response-URL or by value in the HTTP
 message body.
 
-2.2.13.1
+##### 2.2.13.1 Standard HTTP Header Fields
 
-Standard HTTP Header Fields
+
 
 Content-Length (section 2.2.1.1): This MUST be equal to the size of the message body.
 
-2.2.13.2
+##### 2.2.13.2 HTTP Header Fields Introduced by the BITS Upload Protocol
 
-HTTP Header Fields Introduced by the BITS Upload Protocol
+
 
 BITS-Static-Response-URL: This MUST contain the absolute URL (do not specify a relative URL) to a
 static data entity to use as the response. The static data entity MUST be accessible by the client. This
@@ -2139,16 +1754,16 @@ MUST follow the rules defined in [RFC2616] section 3.2.2.
 BITS-Copy-File-To-Destination: The server application MUST send this header when requesting the
 server to copy the request entity to the destination URL.
 
-2.2.13.3
+##### 2.2.13.3 Message Body
 
-Message Body
+
 
 If the notification type is NOTIFICATION_BY_VALUE (section 3.2.1.1) and if the BITS-Static-Response-
 URL header field is not present, the response entity MUST be sent as the body of this message. If
 any other notification type is present or if the BITS-Static-Response-URL header field is present, this
 message MUST NOT contain a message body.
 
-2.3  Download Message Syntax
+### 2.3 Download Message Syntax
 
 Download messages are HTTP HEAD and GET request and response messages, following the syntax
 specified in [RFC2616]. The choice of HTTP/1.0 or HTTP/1.1 is implementation-dependent.<15>
@@ -2165,11 +1780,12 @@ Release: April 23, 2024
 
 25 / 91
 
-3  Protocol Details
 
-3.1  Upload Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Upload Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2177,7 +1793,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  UploadEntityInfo
+##### 3.1.1.1 UploadEntityInfo
 
 The client maintains the following information about the upload:
 
@@ -2197,7 +1813,7 @@ AuthCredentials: The authentication information passed by the higher-layer proto
 
 this information MUST be same as that defined by the authentication protocols.
 
-3.1.1.2  HTTPUploader
+##### 3.1.1.2 HTTPUploader
 
 HTTPUploader encapsulates state associated with the upload of a specific request entity.
 HTTPUploader can be represented in the following states.
@@ -2251,7 +1867,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- State
+
+ State
 
  Description
 
@@ -2327,21 +1944,22 @@ Release: April 23, 2024
 
 27 / 91
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MC-BUP].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
 Figure 4: Possible state transitions
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Upload Request Timeout
+##### 3.1.2.1 Upload Request Timeout
 
 This timer limits the amount of time taken for sending any of the requests mentioned in section 2.2
 regardless of the state transitions involved. The default value is 2 minutes; the legal range is any
 positive value.
 
-3.1.2.2  Upload Response Timeout
+##### 3.1.2.2 Upload Response Timeout
 
 This timer limits the amount of time taken for receiving any of the responses mentioned in section 2.2
 from the server regardless of the state transitions involved. The default value is 5 minutes; the legal
@@ -2354,19 +1972,20 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.2.3  Host Fallback Timeout
+
+##### 3.1.2.3 Host Fallback Timeout
 
 This timer limits the amount of time taken for the client to reconnect to the host name specified in the
 BITS-Host-ID header before reverting to the host name specified in the destination URL. The
 default value is 0xffffffff, meaning INFINITE; the legal range is any positive value.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  New Upload Request
+##### 3.1.4.1 New Upload Request
 
 The higher-layer protocol MUST populate the SourceEntityBuffer, SourceEntityName, SourceEntitySize,
 destination URL, and AuthCredentials member variables of the UploadEntityInfo (section 3.1.1.1)
@@ -2374,7 +1993,7 @@ object and pass the UploadEntityInfo object to the client. The client sets the U
 STATE_INIT, instantiates the HTTPUploader object, and passes the UploadEntityInfo object to it. The
 client returns the reference to the HTTPUploader object to the higher-layer protocol.
 
-3.1.4.2  Pause Existing Upload
+##### 3.1.4.2 Pause Existing Upload
 
 The higher-layer protocol might interrupt the existing upload. For this, the higher-layer protocol MUST
 pass the reference to the HTTPUploader object provided as part of 3.1.4.1.
@@ -2382,7 +2001,7 @@ pass the reference to the HTTPUploader object provided as part of 3.1.4.1.
 The client MUST set HTTPUploader.UploadSuspended to TRUE and wait for UploadEntityInfo.state to
 become STATE_SUSPEND.
 
-3.1.4.3  Resume Existing Upload
+##### 3.1.4.3 Resume Existing Upload
 
 The higher-layer protocol might resume the existing upload; either it was interrupted through a Pause
 Existing Upload event (section 3.1.4.2) or some error occurred that was sent to the higher-layer
@@ -2395,7 +2014,7 @@ HTTPUploader object provided as part of section 3.1.4.1.
  Set HTTPUploader.UploadSuspended to FALSE
  Set HTTPUploader.State to PING
 
-3.1.4.4  Cancel Existing Upload
+##### 3.1.4.4 Cancel Existing Upload
 
 The higher-layer protocol might cancel the existing upload. For this, the higher-layer protocol MUST
 pass the reference to the HTTPUploader object provided as part of section 3.1.4.1.
@@ -2410,13 +2029,14 @@ Release: April 23, 2024
 
 29 / 91
 
-3.1.5  Message Processing Events and Sequencing Rules
 
-3.1.5.1  Action for States
+#### 3.1.5 Message Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Action for States
 
 This section describes the actions taken at each state.
 
-3.1.5.1.1 STATE_INIT
+###### 3.1.5.1.1 STATE_INIT
 
  Set FRAGMENT-START-OFFSET to 0
  Set FRAGMENT-BUFFER to NULL
@@ -2434,7 +2054,7 @@ This section describes the actions taken at each state.
  Set state to CREATE_SESSION
  Return from this state.
 
-3.1.5.1.2 STATE_CREATE_SESSION
+###### 3.1.5.1.2 STATE_CREATE_SESSION
 
  If (UploadSuspended is TRUE)
     Set state to SUSPEND
@@ -2463,7 +2083,7 @@ This section describes the actions taken at each state.
 
  Set state to FRAGMENT
 
-3.1.5.1.3 STATE_PING
+###### 3.1.5.1.3 STATE_PING
 
  If (UploadSuspended is TRUE)
      Set State to SUSPEND
@@ -2478,7 +2098,8 @@ Release: April 23, 2024
 
 30 / 91
 
- Send PING message to the server.
+
+ Send PING message to the server.
 
  If (error encountered in send)
      Set State to ERROR
@@ -2492,7 +2113,7 @@ Release: April 23, 2024
 
  Set state to FRAGMENT
 
-3.1.5.1.4 STATE_FRAGMENT
+###### 3.1.5.1.4 STATE_FRAGMENT
 
  If (UploadSuspended is TRUE)
     Set State to SUSPEND
@@ -2535,7 +2156,7 @@ FRAGMENT-LENGTH)
 
  Set State to FRAGMENT
 
-3.1.5.1.5 STATE_COMPLETE
+###### 3.1.5.1.5 STATE_COMPLETE
 
  If (UploadSuspended is TRUE)
     Set State to SUSPEND
@@ -2550,7 +2171,8 @@ Release: April 23, 2024
 
 31 / 91
 
- If (error encountered in send)
+
+ If (error encountered in send)
     Set State to ERROR
     Return from this state.
 
@@ -2560,7 +2182,7 @@ Release: April 23, 2024
     Set State to ERROR
     Return from this state.
 
-3.1.5.1.6 STATE_CANCEL
+###### 3.1.5.1.6 STATE_CANCEL
 
  If (UploadSuspended is TRUE)
     Set State to SUSPEND
@@ -2578,7 +2200,7 @@ Release: April 23, 2024
     Set state to ERROR
     Return from this state.
 
-3.1.5.1.7 STATE_ERROR
+###### 3.1.5.1.7 STATE_ERROR
 
  If (UploadSuspended is TRUE)
     Set State to SUSPEND
@@ -2608,7 +2230,7 @@ higher-layer protocol so proper action can be taken
  Return the error info (HTTPStatusCode , BITSErrorCode and BITSErrorContext) to the higher-
 layer protocol so proper action can be taken
 
-3.1.5.1.8 STATE_GET_REPLY
+###### 3.1.5.1.8 STATE_GET_REPLY
 
 [MC-BUP] - v20240423
 Background Intelligent Transfer Service (BITS) Upload Protocol
@@ -2617,7 +2239,8 @@ Release: April 23, 2024
 
 32 / 91
 
- If (UploadSuspended is TRUE)
+
+ If (UploadSuspended is TRUE)
     Set State to SUSPEND
     Return from this state.
 
@@ -2634,15 +2257,15 @@ dependent method.
     Set State to COMPLETE
     Return from this state.
 
-3.1.5.1.9 STATE_SUSPEND
+###### 3.1.5.1.9 STATE_SUSPEND
 
  Wait for the current state to stop further processing and return.
 
  Return to higher-layer protocol.
 
-3.1.5.2  Message Processing
+##### 3.1.5.2 Message Processing
 
-3.1.5.2.1 Common to All Message Types
+###### 3.1.5.2.1 Common to All Message Types
 
 If the HTTP status code is 401 or 407, the client MUST follow the rules defined in [RFC2617] and
 [RFC2616] regarding sending the response for the authentication challenge.
@@ -2679,7 +2302,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For all other HTTP status codes as specified in [RFC2616] section 10, the client MUST return this error
+
+For all other HTTP status codes as specified in [RFC2616] section 10, the client MUST return this error
 to the higher-layer protocol so that the necessary steps can be taken.
 
 The upload request timer MUST be started before each message is sent to the server. It MUST be
@@ -2689,7 +2313,7 @@ The upload response timer MUST be started before the response is requested from 
 MUST be stopped when the response from the server is received with either a success status code or a
 failure status code.
 
-3.1.5.2.2 CREATE-SESSION Response
+###### 3.1.5.2.2 CREATE-SESSION Response
 
 The client MUST verify that the message satisfies the requirements in sections 2.2.1 and 2.2.3,
 discarding the message if not.
@@ -2705,7 +2329,7 @@ Host-ID, to validate that the host can be contacted.
 
 For handling other HTTP status codes, see section 3.1.5.2.1.
 
-3.1.5.2.3 PING Response
+###### 3.1.5.2.3 PING Response
 
 The client MUST verify that the message satisfies the requirements in sections 2.2.1 and 2.2.5,
 discarding the message if not.
@@ -2714,7 +2338,7 @@ If the result is 200, the request was successful.
 
 For handling other HTTP status codes, refer to 3.1.5.2.1.
 
-3.1.5.2.4 FRAGMENT Response
+###### 3.1.5.2.4 FRAGMENT Response
 
 The client MUST verify that the message satisfies the requirements in sections 2.2.1 and 2.2.7,
 discarding the message if not.
@@ -2733,7 +2357,7 @@ More details of state transitions can be found in section 3.1.5.1.8.
 
 For handling other HTTP status codes, refer to section 3.1.5.2.1.
 
-3.1.5.2.5 CLOSE-SESSION Response
+###### 3.1.5.2.5 CLOSE-SESSION Response
 
 The client MUST verify that the message satisfies the requirements in sections 2.2.1 and 2.2.9,
 discarding the message if not.
@@ -2745,13 +2369,14 @@ Release: April 23, 2024
 
 34 / 91
 
-If the HTTP status code is 200, the server has successfully cleaned up BITS session–specific data for
+
+If the HTTP status code is 200, the server has successfully cleaned up BITS session–specific data for
 the given upload. More details of state transitions based on the response information can be found in
 section 3.1.5.1.5.
 
 For handling other HTTP status codes, refer to section 3.1.5.2.1.
 
-3.1.5.2.6 CANCEL-SESSION Response
+###### 3.1.5.2.6 CANCEL-SESSION Response
 
 The client MUST verify that the message satisfies the requirements in sections 2.2.1 and 2.2.11,
 discarding the message if not.
@@ -2761,35 +2386,35 @@ the given upload. More details of state transitions based on the response is in 
 
 For handling other HTTP status codes, refer to section 3.1.5.2.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Upload Request Timeout
-
-The client cancels the current request, sets the state to STATE_SUSPENDED, and sends
-ERROR_TIMEOUT to the higher-layer protocol.
-
-3.1.6.2  Upload Response Timeout
+##### 3.1.6.1 Upload Request Timeout
 
 The client cancels the current request, sets the state to STATE_SUSPENDED, and sends
 ERROR_TIMEOUT to the higher-layer protocol.
 
-3.1.6.3  Host Fallback Timeout
+##### 3.1.6.2 Upload Response Timeout
+
+The client cancels the current request, sets the state to STATE_SUSPENDED, and sends
+ERROR_TIMEOUT to the higher-layer protocol.
+
+##### 3.1.6.3 Host Fallback Timeout
 
 The client MUST send future messages to the host in the destination URL, not the address in
 BitsHostID. See section 3.1.5.1.7 for more details.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Transport Error Occurred During the Transfer
+##### 3.1.7.1 Transport Error Occurred During the Transfer
 
 The client sends ERROR_TRANSPORT to the higher-layer protocol.
 
-3.2  Upload Server Details
+### 3.2 Upload Server Details
 
 An implementation that includes the upload mode SHOULD also implement the notification semantics
 presented in this section and in sections 3.3 and 3.4. If the implementation also implements the
 upload-reply of this protocol, it MUST implement the notification semantics as described in sections
-3.3 and 3.4.
+### 3.3 and 3.4.
 
 3.2.1  Abstract Data Model
 
@@ -2806,7 +2431,8 @@ Release: April 23, 2024
 
 35 / 91
 
-3.2.1.1  BITSDirectoryConfig
+
+3.2.1.1  BITSDirectoryConfig
 
 This represents the configuration options that apply to the virtual directory. Storing and retrieving the
 values for these properties is beyond the scope of this protocol.<17>
@@ -2881,7 +2507,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  BITSSessionId: This refers to BITS-Session-Id (section 2.2.3.2).
+
+  BITSSessionId: This refers to BITS-Session-Id (section 2.2.3.2).
 
   State: This represents the current active state of a BITSSessionWrapper object. This is an
 
@@ -2959,7 +2586,8 @@ Release: April 23, 2024
 
 37 / 91
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MC-BUP].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2986,7 +2614,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ServerPortListener (section 3.2.1.2) for the given port, and it MUST create a new instance of
+
+ServerPortListener (section 3.2.1.2) for the given port, and it MUST create a new instance of
 ServerPortListener otherwise. The server MUST register itself with ServerPortListener to receive the
 BITS upload messages (sent by the clients) from ServerPortListener.
 
@@ -3052,7 +2681,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       Set state to STATE_NOTIFY
+
+       Set state to STATE_NOTIFY
        Return from this state.
     If (processed the last fragment of the entity successfully)
        Set UploadComplete to true
@@ -3120,7 +2750,8 @@ Release: April 23, 2024
 
 40 / 91
 
-3.2.5.1.5 STATE_COMPLETE
+
+3.2.5.1.5 STATE_COMPLETE
 
 Apply the message processing rules as described in sections 3.2.5.2.1, 3.2.5.2.3, and 3.2.5.2.7.
 
@@ -3183,7 +2814,8 @@ Release: April 23, 2024
 
 41 / 91
 
-The server MUST verify that the request message satisfies the requirements in section 2.2. If the
+
+The server MUST verify that the request message satisfies the requirements in section 2.2. If the
 request message fails to satisfy the requirements, the server MUST send a 400 HTTP status code with
 BITS-Error 0x80070057, BITS-Error-Context 0x5.
 
@@ -3249,7 +2881,8 @@ Release: April 23, 2024
 
 42 / 91
 
-3.2.5.2.7 CLOSE-SESSION REQUEST
+
+3.2.5.2.7 CLOSE-SESSION REQUEST
 
 The server MUST move the request entity to the final destination to complete the upload. The server
 MUST delete the request entity and other state data associated with the BITS session. If the server
@@ -3291,7 +2924,7 @@ the BITS server to a server application. If the server URL is configured as an u
 back-end client also receives the server application's reply data and makes it available to the BITS
 server.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3299,7 +2932,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.3.1.1  Back-End Client's State
+##### 3.3.1.1 Back-End Client's State
 
 The back-end client uses the following state elements:
 
@@ -3314,7 +2947,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  NONE: No server application is associated with the server URL. The request entity is not sent
+
+  NONE: No server application is associated with the server URL. The request entity is not sent
 to the server application. The server populates the request entity in the location provided
 through the destination URL.
 
@@ -3399,21 +3033,22 @@ Release: April 23, 2024
 
 44 / 91
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MC-BUP].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
 Figure 6: Possible state transitions
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Notification Send Timeout
+##### 3.3.2.1 Notification Send Timeout
 
 This timer limits the amount of time taken for sending any of the requests mentioned in section 2.2.12
 regardless of the state transitions involved. The default value is 5 minutes; the legal range is any
 positive value.
 
-3.3.2.2  Notification Receive Timeout
+##### 3.3.2.2 Notification Receive Timeout
 
 This timer limits the amount of time taken for receiving any of the responses mentioned in section
 2.2.13 from the server regardless of the state transitions involved. The default value is 5 minutes; the
@@ -3426,13 +3061,14 @@ Release: April 23, 2024
 
 45 / 91
 
-3.3.2.3  Notification Receive Response Timeout
+
+##### 3.3.2.3 Notification Receive Response Timeout
 
 This timer limits the amount of time taken for receiving all the response headers mentioned in section
 2.2.13 from the server regardless of the state transitions involved. The default value is 5 minutes; the
 legal range is any positive value.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 At initialization, the layered protocol provides values for the back-end client's notificationType,
 notificationURL, RequestEntityPath, and destinationURL fields.
@@ -3440,13 +3076,13 @@ notificationURL, RequestEntityPath, and destinationURL fields.
 State is set to STATE_INIT,  ShouldcopyToDestination is set to FALSE, Set IsReplyStaticURL is set to
 FALSE, and the back-end client state machine is set in motion.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Common
+##### 3.3.5.1 Common
 
 The Notification send timer MUST be started before each message is sent to the server application. It
 MUST be stopped after the send is complete.
@@ -3459,11 +3095,11 @@ The Notification receive response timer MUST be started before the response from
 application is requested. It MUST be stopped after all the response headers are received from the
 server application with either a success status code or a failure status code.
 
-3.3.5.2  Action for States
+##### 3.3.5.2 Action for States
 
 The actions taken at each state are described in the following sections.
 
-3.3.5.2.1 STATE_INIT
+###### 3.3.5.2.1 STATE_INIT
 
  Set ShouldcopyToDestination to false.
  Set IsReplyStaticURL to false
@@ -3477,7 +3113,7 @@ The actions taken at each state are described in the following sections.
 
  Set state to SEND_HEADERS
 
-3.3.5.2.2 STATE_SEND_HEADERS
+###### 3.3.5.2.2 STATE_SEND_HEADERS
 
  If (NotificationType is NOTIFICATION_BY_REFERENCE)
     Prepare the HTTP request as specified in section 2.2.12
@@ -3491,7 +3127,8 @@ Release: April 23, 2024
 
 46 / 91
 
-          Set state to ERROR
+
+          Set state to ERROR
           Return from this state.
        If (no error occurred during send)
           Set state to RECEIVE_HEADERS
@@ -3507,7 +3144,7 @@ Release: April 23, 2024
        Set state to SEND_DATA
        Return from this state.
 
-3.3.5.2.3 STATE_SEND_DATA
+###### 3.3.5.2.3 STATE_SEND_DATA
 
  If (notification type is not NOTIFICATION_BY_VALUE)
     Set state to ERROR
@@ -3525,7 +3162,7 @@ Release: April 23, 2024
 
  Set state to RECEIVE_HEADERS
 
-3.3.5.2.4 STATE_RECEIVE_HEADERS
+###### 3.3.5.2.4 STATE_RECEIVE_HEADERS
 
  Read the response headers from the server application.
  If (error during read)
@@ -3545,7 +3182,7 @@ Release: April 23, 2024
  If (NotificationType is NOTIFICATION_BY_VALUE)
     Set state to STATE_RECEIVE_DATA
 
-3.3.5.2.5 STATE_RECEIVE_DATA
+###### 3.3.5.2.5 STATE_RECEIVE_DATA
 
  Create a response file and update the ResponseEntityPath accordingly
 
@@ -3560,11 +3197,12 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-    Return from this state.
+
+    Return from this state.
 
  Set state to COMPLETE.
 
-3.3.5.2.6 STATE_COMPLETE
+###### 3.3.5.2.6 STATE_COMPLETE
 
  If (HTTPStatusCode is not a success)
     Set state to ERROR
@@ -3582,20 +3220,20 @@ Release: April 23, 2024
     Set state to ERROR
     Return from this state.
 
-3.3.5.2.7 STATE_ERROR
+###### 3.3.5.2.7 STATE_ERROR
 
  Report HTTPStatusCode, BITSErrorCode to the higher-layer protocol.
 
-3.3.5.3  Message Processing
+##### 3.3.5.3 Message Processing
 
-3.3.5.3.1 General Rules for HTTP-Level Error Responses
+###### 3.3.5.3.1 General Rules for HTTP-Level Error Responses
 
 This section describes several circumstances where the server's response to an incoming message is a
 response at the HTTP level rather than a message from section 2.2. In all such cases, the response
 MUST conform to the format defined in section 6 of [RFC2616]. The HTTP message body of these
 messages SHOULD be empty.
 
-3.3.5.3.2 Notification Response
+###### 3.3.5.3.2 Notification Response
 
 The back-end client MUST validate the following aspects of a received message before determining
 the message type:
@@ -3617,33 +3255,34 @@ Release: April 23, 2024
 
 48 / 91
 
-3.3.6  Timer Events
 
-3.3.6.1  Notification Send Timeout
+#### 3.3.6 Timer Events
 
-The back-end client SHOULD abort the notification processing and enter STATE_ERROR with HTTP
-status code as 408, BITS-Error as x80070112, and BITS-Error-Context as
-CONTEXT_REMOTE_APPLICATION to the client.
-
-3.3.6.2  Notification Receive Timeout
+##### 3.3.6.1 Notification Send Timeout
 
 The back-end client SHOULD abort the notification processing and enter STATE_ERROR with HTTP
 status code as 408, BITS-Error as x80070112, and BITS-Error-Context as
 CONTEXT_REMOTE_APPLICATION to the client.
 
-3.3.6.3  Notification Receive Response Timeout
+##### 3.3.6.2 Notification Receive Timeout
+
+The back-end client SHOULD abort the notification processing and enter STATE_ERROR with HTTP
+status code as 408, BITS-Error as x80070112, and BITS-Error-Context as
+CONTEXT_REMOTE_APPLICATION to the client.
+
+##### 3.3.6.3 Notification Receive Response Timeout
 
 The back-end client SHOULD abort the notification processing and enter STATE_ERROR HTTP status
 code as 408, BITS-Error as x80070112, and BITS-Error-Context as CONTEXT_REMOTE_APPLICATION
 to the client.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  Server Application Details
+### 3.4 Server Application Details
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3669,15 +3308,15 @@ The server application maintains the following state elements:
 
  ReplyEntityPath: The local path that contains the response entity that is passed to the server.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
@@ -3688,16 +3327,17 @@ Release: April 23, 2024
 
 49 / 91
 
-3.4.5  Message Processing Events and Sequencing Rules
 
-3.4.5.1  General Rules for HTTP-Level Error Responses
+#### 3.4.5 Message Processing Events and Sequencing Rules
+
+##### 3.4.5.1 General Rules for HTTP-Level Error Responses
 
 This section describes several circumstances where the server's response to an incoming message is a
 response at the HTTP level rather than a message from section 2.2. In all such cases, the response
 MUST conform to the format defined in section 6 of [RFC2616]. The HTTP message body of these
 messages SHOULD be empty.
 
-3.4.5.2  Notification Request
+##### 3.4.5.2 Notification Request
 
 The server MUST validate the following aspects of a received message before determining the
 message type:
@@ -3744,11 +3384,11 @@ URL header field in its HTTP response.
 
  Any errors that occur while reading or populating MUST be sent to the back-end client.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
@@ -3759,9 +3399,10 @@ Release: April 23, 2024
 
 50 / 91
 
-3.5  Download Server Details
 
-3.5.1  Abstract Data Model
+### 3.5 Download Server Details
+
+#### 3.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3778,23 +3419,23 @@ content with fixed size and modification time. The server maintains the followin
 
   DATA_TIMESTAMP: The last-modified time of the URL content.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 None.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
-3.5.4.1  Modify URL Content
+##### 3.5.4.1 Modify URL Content
 
 The higher-layer protocol MUST pass the new URL content and length. The server MUST set
 DATA_BUFFER and DATA_LENGTH to the new values. The server MUST set the DATA_TIMESTAMP to
 the current UTC time.
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
 The server MUST follow standard message-processing rules in [RFC2616]. In addition:
 
@@ -3810,7 +3451,7 @@ multiple byte ranges.
 
   Successful responses to GET and HEAD requests MUST include the Content-Length header.
 
-3.5.5.1  Receive GET Request
+##### 3.5.5.1 Receive GET Request
 
 If the request contains a Range: header, the server MUST follow the rules in section 14.35 of
 [RFC2616] to validate the byte range(s) being requested and generate an appropriate response
@@ -3829,7 +3470,8 @@ Release: April 23, 2024
 
 51 / 91
 
-
+
+
 
 
 
@@ -3839,22 +3481,22 @@ section 14.29.
 If the server supports multiple byte-range requests, the response MUST return the byte ranges in
 the same order as in the GET request; no merging or reordering of ranges is allowed.
 
-3.5.5.2  Receive HEAD Request
+##### 3.5.5.2 Receive HEAD Request
 
 [RFC2616] specifies that the response MUST be identical to the response to a matching GET request,
 except that the body of the response is suppressed.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 None.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
 None.
 
-3.6  Download Client Details
+### 3.6 Download Client Details
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3909,7 +3551,8 @@ Release: April 23, 2024
 
 52 / 91
 
-  DATA_BUFFER: A buffer to hold the downloaded data.
+
+  DATA_BUFFER: A buffer to hold the downloaded data.
 
   DATA_LENGTH: A 64-bit integer containing the length of the URL content.
 
@@ -3932,7 +3575,7 @@ HTTP requests.
 
   STATE: See section 3.6.1.1.
 
-3.6.1.1  STATE
+##### 3.6.1.1 STATE
 
 The client can be represented in the following states.
 
@@ -3970,25 +3613,26 @@ Release: April 23, 2024
 
 53 / 91
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MC-BUP].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
 Figure 7: Possible state transitions
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
-3.6.2.1  Request Timeout
+##### 3.6.2.1 Request Timeout
 
 This timer limits the amount of time taken for sending any HTTP request. The default value is 5
 minutes; the legal range is any positive value.
 
-3.6.2.2  Response Timeout
+##### 3.6.2.2 Response Timeout
 
 This timer limits the amount of time taken for receiving any HTTP response. The default value is 5
 minutes; the legal range is any positive value.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 The higher-layer protocol passes values for the DESTINATION_URL, APPLICATION_RANGES,
 BPCR_ALLOWED, and optionally AUTH_CREDENTIALS.
@@ -4003,21 +3647,22 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client initializes Table of Contents and sets the Source field of each row to NULL.
+
+The client initializes Table of Contents and sets the Source field of each row to NULL.
 
 Set STATE to STATE_INIT.
 
 Set PEER_RETRY_COUNT = 0.
 
-3.6.4  Higher-Layer Triggered Events
+#### 3.6.4 Higher-Layer Triggered Events
 
-3.6.4.1  Pause Download
+##### 3.6.4.1 Pause Download
 
 The higher-layer protocol might interrupt the existing download.
 
 The client MUST set SUSPENDED to TRUE and wait for State to become STATE_SUSPEND.
 
-3.6.4.2  Resume Download
+##### 3.6.4.2 Resume Download
 
 The higher-layer protocol might resume the existing download; either it was interrupted through a
 Pause download event (section 3.6.4.1) or some error occurred that was sent to the higher-layer
@@ -4031,15 +3676,15 @@ protocol for further processing.
 If DATA_TIMESTAMP is UNKNOWN, the client MAY set state to STATE_SIZE in order to determine the
 length of the URL prior to download; otherwise it MUST set it to STATE_DOWNLOAD.<29>
 
-3.6.4.3  Cancel Download
+##### 3.6.4.3 Cancel Download
 
 The higher-layer protocol might cancel the existing download.
 
 Set STATE to STATE_COMPLETE.
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
-3.6.5.1  Common
+##### 3.6.5.1 Common
 
 The request timer MUST be started before each message is sent to the server. It MUST be stopped
 when the send is complete.
@@ -4048,11 +3693,11 @@ The response timer MUST be started before the response is requested from the ser
 stopped when the response from the server is received with either a success status code or a failure
 status code.
 
-3.6.5.2  Action for States
+##### 3.6.5.2 Action for States
 
 The actions taken at each state are described in the following sections.
 
-3.6.5.2.1 STATE_INIT
+###### 3.6.5.2.1 STATE_INIT
 
  Set DATA_LENGTH to UNKNOWN.
  Set DATA_TIMESTAMP to UNKNOWN.
@@ -4066,14 +3711,15 @@ Release: April 23, 2024
 
 55 / 91
 
- Set SINGLE_RANGE_ONLY to FALSE.
+
+ Set SINGLE_RANGE_ONLY to FALSE.
 
 If BPCR_ALLOWED is set to TRUE the client MUST set STATE to STATE_SIZE.
 
 If BPCR_ALLOWED is set to FALSE the client MAY set STATE to STATE_SIZE in order to determine the
 length of the URL prior to download; otherwise, it MUST set it to STATE_DOWNLOAD.<30>
 
-3.6.5.2.2 STATE_SIZE
+###### 3.6.5.2.2 STATE_SIZE
 
  If (SUSPENDED is TRUE)
     Set state to STATE_SUSPEND
@@ -4100,7 +3746,7 @@ present.
  else
     Set state to STATE_DOWNLOAD.
 
-3.6.5.2.3 STATE_SEARCH
+###### 3.6.5.2.3 STATE_SEARCH
 
 The client initiates a new FileSearchRequest element as specified in [MS-BPCR] section 3.1.4.1 by
 setting the values of OriginalUrl to DESTINATION_URL, FileModificationTime to DATA_TIMESTAMP and
@@ -4115,7 +3761,7 @@ inserts a row with RECORD_ID set to NULL and Source set to the hostname from DES
 
 The client sets STATE to STATE_DOWNLOAD.
 
-3.6.5.2.4 STATE_DOWNLOAD
+###### 3.6.5.2.4 STATE_DOWNLOAD
 
 If SUSPENDED is TRUE, set state to STATE_SUSPEND and return from this state.
 
@@ -4133,12 +3779,13 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If BPCR_ALLOWED is FALSE, then download the required contents from the original server as specified
+
+If BPCR_ALLOWED is FALSE, then download the required contents from the original server as specified
 in section 3.6.5.2.4.2.
 
 Otherwise, download the fragment from the peer server as specified in section 3.6.5.2.4.1.
 
-3.6.5.2.4.1  Download from the BITS Peer-Caching: Content Retrieval Protocol Server
+###### 3.6.5.2.4.1 Download from the BITS Peer-Caching: Content Retrieval Protocol Server
 
 Trim FRAGMENT_RANGES and FRAGMENT_LENGTH so that all ranges are provided by a single URL,
 using the algorithm in section 3.6.5.2.4.4.
@@ -4186,7 +3833,7 @@ increment PEER_RETRY_COUNT.
 
 else set BPCR_ALLOWED to FALSE and set STATE to STATE_DOWNLOAD.
 
-3.6.5.2.4.2  Download from Original Server
+###### 3.6.5.2.4.2 Download from Original Server
 
 Send an HTTP GET request to the server following the format in section 5 of [RFC2616], setting HTTP
 header fields as follows:
@@ -4209,7 +3856,8 @@ Release: April 23, 2024
 
 57 / 91
 
-If an error is encountered while receiving or reading the response info, set state to STATE_SUSPEND
+
+If an error is encountered while receiving or reading the response info, set state to STATE_SUSPEND
 and return the error to the higher-layer protocol.
 
 If FRAGMENT_RANGES contains a single range, validate and read the response as follows:
@@ -4276,7 +3924,7 @@ FRAGMENT_OFFSET, then advance FRAGMENT_OFFSET by FRAGMENT_LENGTH.
 
   Set state to STATE_DOWNLOAD.
 
-3.6.5.2.4.3  Choosing Ranges
+###### 3.6.5.2.4.3 Choosing Ranges
 
 The client is given FRAGMENT_LENGTH in bytes, FRAGMENT_OFFSET in bytes, and the array of byte
 ranges APPLICATION_RANGES.
@@ -4298,7 +3946,8 @@ Release: April 23, 2024
 
 58 / 91
 
-If SINGLE_RANGE_ONLY is TRUE, remove all but the first range from FRAGMENT_RANGES and set
+
+If SINGLE_RANGE_ONLY is TRUE, remove all but the first range from FRAGMENT_RANGES and set
 FRAGMENT_LENGTH to the length of that range.
 
 As a concrete example, assume APPLICATION_RANGES contains the following array of ranges:
@@ -4333,7 +3982,7 @@ FRAGMENT_RANGES is
 
   Offset 200, length 100
 
-3.6.5.2.4.4  Trimming a Request to a Single URL
+###### 3.6.5.2.4.4 Trimming a Request to a Single URL
 
 The Table of Contents can include multiple servers and/or peer records. Since a single HTTP request
 can contain only one URL, FRAGMENT_RANGES MUST be limited to a set of ranges in a single URL.
@@ -4356,7 +4005,7 @@ Table_of_Contents[INDEX].RecordId, then delete the current range and all followi
 FRAGMENT_RANGES, subtracting the same number of bytes from FRAGMENT_LENGTH. Terminate the
 algorithm.
 
-3.6.5.2.5 STATE_SUSPEND
+###### 3.6.5.2.5 STATE_SUSPEND
 
 Wait for the current state to stop further processing and return. Then return to the higher-layer
 protocol.
@@ -4368,11 +4017,12 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.6.5.2.6 STATE_COMPLETE
+
+###### 3.6.5.2.6 STATE_COMPLETE
 
 Signal completion to the higher-layer protocol.
 
-3.6.5.3  Message Processing
+##### 3.6.5.3 Message Processing
 
 If the HTTP status code is 200 or 206, the client MUST continue processing for the current state, as
 specified in section 3.6.1.1.
@@ -4383,23 +4033,23 @@ If the HTTP status code is 401 or 407, the client MUST follow the rules defined 
 For all other HTTP status codes as specified in [RFC2616] section 10, the client MUST return this error
 to the higher-layer protocol so that the necessary steps can be taken.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
-3.6.6.1  Request Timeout
-
-The client MUST cancel the current request, set the state to STATE_SUSPENDED, and send
-ERROR_TIMEOUT to the higher-layer protocol.
-
-3.6.6.2  Response Timeout
+##### 3.6.6.1 Request Timeout
 
 The client MUST cancel the current request, set the state to STATE_SUSPENDED, and send
 ERROR_TIMEOUT to the higher-layer protocol.
 
-3.6.7  Other Local Events
+##### 3.6.6.2 Response Timeout
+
+The client MUST cancel the current request, set the state to STATE_SUSPENDED, and send
+ERROR_TIMEOUT to the higher-layer protocol.
+
+#### 3.6.7 Other Local Events
 
 None.
 
-3.6.7.1  Result Found on Peers
+##### 3.6.7.1 Result Found on Peers
 
 When the BITS Peer-Caching: Content Retrieval Protocol client reports RESULT_FOUND ([MS-BPCR]
 section 3.1.7.3.2), update the table of cached contents with the returned results, as follows.
@@ -4432,7 +4082,8 @@ Release: April 23, 2024
 
 60 / 91
 
-If all rows of APPLICATION_RANGE have a non-NULL Source field, then cancel the
+
+If all rows of APPLICATION_RANGE have a non-NULL Source field, then cancel the
 FileSearchRequest element in Progress as specified in [MS-BPCR] section 3.1.4.2 and set STATE to
 STATE_DOWNLOAD.
 
@@ -4443,9 +4094,10 @@ Release: April 23, 2024
 
 61 / 91
 
-4  Protocol Examples
 
-4.1  Successful Upload
+## 4 Protocol Examples
+
+### 4.1 Successful Upload
 
 This contains the information about the messages exchanged as part of the upload of rfx2119.txt from
 BITS-CLT (client) to http://frankcao8/upload/2000mb-rfc2119.txt on FRANKCAO8 (server).
@@ -4511,7 +4163,8 @@ Release: April 23, 2024
 
 62 / 91
 
- 00fae090  0a 43 6f 6e 74 65 6e 74-2d 4e 61 6d 65 3a 20 72   .Content-Name: r
+
+ 00fae090  0a 43 6f 6e 74 65 6e 74-2d 4e 61 6d 65 3a 20 72   .Content-Name: r
  00fae0a0  66 63 32 31 31 39 2e 74-78 74 0d 0a 43 6f 6e 74   fc2119.txt..Cont
  00fae0b0  65 6e 74 2d 52 61 6e 67-65 3a 20 62 79 74 65 73   ent-Range: bytes
  00fae0c0  20 30 2d 34 38 39 31 2f-34 38 39 32 0d 0a 55 73    0-4891/4892..Us
@@ -4585,7 +4238,8 @@ Release: April 23, 2024
 
 63 / 91
 
- 00e20350  65 73 0d 0a 20 20 20 73-68 6f 75 6c 64 20 69 6e   es..   should in
+
+ 00e20350  65 73 0d 0a 20 20 20 73-68 6f 75 6c 64 20 69 6e   es..   should in
  00e20360  63 6f 72 70 6f 72 61 74-65 20 74 68 69 73 20 70   corporate this p
  00e20370  68 72 61 73 65 20 6e 65-61 72 20 74 68 65 20 62   hrase near the b
  00e20380  65 67 69 6e 6e 69 6e 67-20 6f 66 20 74 68 65 69   eginning of thei
@@ -4662,7 +4316,8 @@ Release: April 23, 2024
 
 64 / 91
 
- 00e207a0  65 6e 20 74 68 65 0d 0a-20 20 20 70 61 72 74 69   en the..   parti
+
+ 00e207a0  65 6e 20 74 68 65 0d 0a-20 20 20 70 61 72 74 69   en the..   parti
  00e207b0  63 75 6c 61 72 20 62 65-68 61 76 69 6f 72 20 69   cular behavior i
  00e207c0  73 20 61 63 63 65 70 74-61 62 6c 65 20 6f 72 20   s acceptable or
  00e207d0  65 76 65 6e 20 75 73 65-66 75 6c 2c 20 62 75 74   even useful, but
@@ -4739,7 +4394,8 @@ Release: April 23, 2024
 
 65 / 91
 
- 00e20bf0  76 69 64 65 73 2e 29 0d-0a 0d 0a 36 2e 20 47 75   vides.)....6. Gu
+
+ 00e20bf0  76 69 64 65 73 2e 29 0d-0a 0d 0a 36 2e 20 47 75   vides.)....6. Gu
  00e20c00  69 64 61 6e 63 65 20 69-6e 20 74 68 65 20 75 73   idance in the us
  00e20c10  65 20 6f 66 20 74 68 65-73 65 20 49 6d 70 65 72   e of these Imper
  00e20c20  61 74 69 76 65 73 0d 0a-0d 0a 20 20 20 49 6d 70   atives....   Imp
@@ -4816,7 +4472,8 @@ Release: April 23, 2024
 
 66 / 91
 
- 00e21040  6c 67 61 6d 20 6f 66 20-64 65 66 69 6e 69 74 69   lgam of definiti
+
+ 00e21040  6c 67 61 6d 20 6f 66 20-64 65 66 69 6e 69 74 69   lgam of definiti
  00e21050  6f 6e 73 20 74 61 6b 65-6e 0d 0a 20 20 20 66 72   ons taken..   fr
  00e21060  6f 6d 20 61 20 6e 75 6d-62 65 72 20 6f 66 20 52   om a number of R
  00e21070  46 43 73 2e 20 20 49 6e-20 61 64 64 69 74 69 6f   FCs.  In additio
@@ -4887,7 +4544,8 @@ Release: April 23, 2024
 
 67 / 91
 
- 015a6000  42 49 54 53 5f 50 4f 53-54 20 2f 75 70 6c 6f 61   BITS_POST /uploa
+
+ 015a6000  42 49 54 53 5f 50 4f 53-54 20 2f 75 70 6c 6f 61   BITS_POST /uploa
  015a6010  64 2f 32 30 30 30 6d 62-2d 72 66 63 32 31 31 39   d/2000mb-rfc2119
  015a6020  2e 74 78 74 20 48 54 54-50 2f 31 2e 31 0d 0a 41   .txt HTTP/1.1..A
  015a6030  63 63 65 70 74 3a 20 2a-2f 2a 0d 0a 42 49 54 53   ccept: */*..BITS
@@ -4951,7 +4609,8 @@ Release: April 23, 2024
 
 68 / 91
 
-4.2  Successful Upload-Reply with Bits-Host-Id and Back-End Notifications
+
+### 4.2 Successful Upload-Reply with Bits-Host-Id and Back-End Notifications
 
 This contains the information about the messages exchanged as part of the upload of rfx2119.txt from
 BITS-CLT (client) to http://frankcao8/upload/2100mb-rfc2119.txt on FRANKCAO8 (server).
@@ -5020,7 +4679,8 @@ Release: April 23, 2024
 
 69 / 91
 
- 011db040  0a 41 63 63 65 70 74 3a-20 2a 2f 2a 0d 0a 42 49   .Accept: */*..BI
+
+ 011db040  0a 41 63 63 65 70 74 3a-20 2a 2f 2a 0d 0a 42 49   .Accept: */*..BI
  011db050  54 53 2d 50 61 63 6b 65-74 2d 54 79 70 65 3a 20   TS-Packet-Type:
  011db060  50 69 6e 67 0d 0a 55 73-65 72 2d 41 67 65 6e 74   Ping..User-Agent
  011db070  3a 20 4d 69 63 72 6f 73-6f 66 74 20 42 49 54 53   : Microsoft BITS
@@ -5088,7 +4748,8 @@ Release: April 23, 2024
 
 70 / 91
 
- 00e200c0  20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20
+
+ 00e200c0  20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20
  00e200d0  20 20 20 20 20 20 20 20-20 20 20 20 4d 61 72 63               Marc
  00e200e0  68 20 31 39 39 37 0d 0a-43 61 74 65 67 6f 72 79   h 1997..Category
  00e200f0  3a 20 42 65 73 74 20 43-75 72 72 65 6e 74 20 50   : Best Current P
@@ -5165,7 +4826,8 @@ Release: April 23, 2024
 
 71 / 91
 
- 00e20510  72 20 74 68 65 20 74 65-72 6d 73 20 22 52 45 51   r the terms "REQ
+
+ 00e20510  72 20 74 68 65 20 74 65-72 6d 73 20 22 52 45 51   r the terms "REQ
  00e20520  55 49 52 45 44 22 20 6f-72 20 22 53 48 41 4c 4c   UIRED" or "SHALL
  00e20530  22 2c 20 6d 65 61 6e 20-74 68 61 74 20 74 68 65   ", mean that the
  00e20540  0d 0a 20 20 20 64 65 66-69 6e 69 74 69 6f 6e 20   ..   definition
@@ -5242,7 +4904,8 @@ Release: April 23, 2024
 
 72 / 91
 
- 00e20960  72 75 6c 79 20 6f 70 74-69 6f 6e 61 6c 2e 20 20   ruly optional.
+
+ 00e20960  72 75 6c 79 20 6f 70 74-69 6f 6e 61 6c 2e 20 20   ruly optional.
  00e20970  4f 6e 65 20 76 65 6e 64-6f 72 20 6d 61 79 20 63   One vendor may c
  00e20980  68 6f 6f 73 65 20 74 6f-20 69 6e 63 6c 75 64 65   hoose to include
  00e20990  20 74 68 65 20 69 74 65-6d 20 62 65 63 61 75 73    the item becaus
@@ -5319,7 +4982,8 @@ Release: April 23, 2024
 
 73 / 91
 
- 00e20db0  64 20 69 73 20 6e 6f 74-20 72 65 71 75 69 72 65   d is not require
+
+ 00e20db0  64 20 69 73 20 6e 6f 74-20 72 65 71 75 69 72 65   d is not require
  00e20dc0  64 20 66 6f 72 0d 0a 20-20 20 69 6e 74 65 72 6f   d for..   intero
  00e20dd0  70 65 72 61 62 69 6c 69-74 79 2e 0d 0a 0d 0a 37   perability.....7
  00e20de0  2e 20 53 65 63 75 72 69-74 79 20 43 6f 6e 73 69   . Security Consi
@@ -5396,7 +5060,8 @@ Release: April 23, 2024
 
 74 / 91
 
- 00e21200  76 65 72 73 69 74 79 0d-0a 20 20 20 20 20 20 31   versity..      1
+
+ 00e21200  76 65 72 73 69 74 79 0d-0a 20 20 20 20 20 20 31   versity..      1
  00e21210  33 35 30 20 4d 61 73 73-2e 20 41 76 65 2e 0d 0a   350 Mass. Ave...
  00e21220  20 20 20 20 20 20 43 61-6d 62 72 69 64 67 65 2c         Cambridge,
  00e21230  20 4d 41 20 30 32 31 33-38 0d 0a 0d 0a 20 20 20    MA 02138....
@@ -5467,7 +5132,8 @@ Release: April 23, 2024
 
 75 / 91
 
- 00119020  2e 30 0d 0a 43 6f 6e 74-65 6e 74 2d 74 79 70 65   .0..Content-type
+
+ 00119020  2e 30 0d 0a 43 6f 6e 74-65 6e 74 2d 74 79 70 65   .0..Content-type
  00119030  3a 20 74 65 78 74 2f 68-74 6d 6c 0d 0a 0d 0a      : text/html....
 
  Ack response from the server:
@@ -5535,7 +5201,8 @@ Release: April 23, 2024
 
 76 / 91
 
- 014800e0  65 66 69 6c 65 2e 62 69-6e 0d 0a 43 6f 6e 74 65   efile.bin..Conte
+
+ 014800e0  65 66 69 6c 65 2e 62 69-6e 0d 0a 43 6f 6e 74 65   efile.bin..Conte
  014800f0  6e 74 2d 52 61 6e 67 65-3a 20 62 79 74 65 73 20   nt-Range: bytes
  01480100  30 2d 39 39 37 36 2f 31-30 32 34 30 0d 0a 4c 61   0-9976/10240..La
  01480110  73 74 2d 4d 6f 64 69 66-69 65 64 3a 20 4d 6f 6e   st-Modified: Mon
@@ -5609,7 +5276,8 @@ Release: April 23, 2024
 
 77 / 91
 
- 011d90d0  69 63 72 6f 73 6f 66 74-20 42 49 54 53 2f 36 2e   icrosoft BITS/6.
+
+ 011d90d0  69 63 72 6f 73 6f 66 74-20 42 49 54 53 2f 36 2e   icrosoft BITS/6.
  011d90e0  37 0d 0a 48 6f 73 74 3a-20 46 52 41 4e 4b 43 41   7..Host: FRANKCA
  011d90f0  4f 38 0d 0a 43 6f 6e 74-65 6e 74 2d 4c 65 6e 67   O8..Content-Leng
  011d9100  74 68 3a 20 30 0d 0a 43-6f 6e 6e 65 63 74 69 6f   th: 0..Connectio
@@ -5635,13 +5303,14 @@ Release: April 23, 2024
 
 78 / 91
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5652,7 +5321,8 @@ Release: April 23, 2024
 
 79 / 91
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5720,7 +5390,8 @@ Release: April 23, 2024
 
 80 / 91
 
-<1> Section 2.1: In Windows, the client has the support to handle Basic [RFC2617], digest
+
+<1> Section 2.1: In Windows, the client has the support to handle Basic [RFC2617], digest
 [RFC2617], and NTLM and Kerberos [MS-NTHT], [RFC1510], and [RFC4559] authentication challenges
 returned by the server. Also, the client has support for client certificate–based authentication and
 server certificate–based authentication [RFC2818] for the request entity.
@@ -5789,7 +5460,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-megabytes. If the Ack to a FRAGMENT contains HTTP status 413, the client resends the data in smaller
+
+megabytes. If the Ack to a FRAGMENT contains HTTP status 413, the client resends the data in smaller
 fragments. The fragment size is not reduced to less than 5 kilobytes.
 
 <17> Section 3.2.1.1: In Windows, all the state elements can be set on the IIS virtual directory.
@@ -5839,7 +5511,8 @@ Release: April 23, 2024
 
 82 / 91
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5883,7 +5556,8 @@ Release: April 23, 2024
 
 83 / 91
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6020,7 +5694,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   abstract data model
+
+   abstract data model
       overview 43
       state 43
    higher-layer triggered events 46
@@ -6160,7 +5835,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Download message syntax 25
+
+Download message syntax 25
 Download server
    abstract data model 51
    higher-layer triggered events 51
@@ -6308,7 +5984,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      common to all message types 33
+
+      common to all message types 33
       CREATE-SESSION response 34
       FRAGMENT response 34
       PING response 34
@@ -6454,7 +6131,8 @@ Background Intelligent Transfer Service (BITS) Upload Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   message flow common to upload and upload-reply
+
+   message flow common to upload and upload-reply
 
 modes 12
 
@@ -6600,7 +6278,8 @@ Release: April 23, 2024
 
 88 / 91
 
-      CANCEL-SESSION request 43
+
+      CANCEL-SESSION request 43
       CLOSE-SESSION request 43
       common message validation 41
       CREATE-SESSION request 42
@@ -6748,7 +6427,8 @@ Release: April 23, 2024
 
 89 / 91
 
-      message body 25
+
+      message body 25
       overview 25
       standard HTTP header fields 25
    overview 17
@@ -6886,7 +6566,8 @@ Release: April 23, 2024
 
 90 / 91
 
-      CANCEL-SESSION request 43
+
+      CANCEL-SESSION request 43
       CLOSE-SESSION request 43
       common message validation 41
       CREATE-SESSION request 42

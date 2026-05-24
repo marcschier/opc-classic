@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 38
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 38
 
-Date
+
+Date
 
 Revision
 History
@@ -525,7 +527,8 @@ Release: April 23, 2024
 
 3 / 38
 
-Date
+
+Date
 
 Revision
 History
@@ -568,143 +571,63 @@ Release: April 23, 2024
 
 4 / 38
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HRESULT](#221-hresult)
+    - [2.2.2 CMachineId](#222-cmachineid)
+    - [2.2.3 CDomainRelativeObjId](#223-cdomainrelativeobjid)
+    - [2.2.4 CVolumeId](#224-cvolumeid)
+    - [2.2.5 CObjId](#225-cobjid)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 DLT Workstation Server Details](#31-dlt-workstation-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Receiving a LnkSearchMachine Call (Opnum 12)](#3141-receiving-a-lnksearchmachine-call-opnum-12)
+      - [3.1.4.2 Receiving a FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request](#3142-receiving-a-fsctllmrsetlinktrackinginformation-request)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 MUST be followed.](#3161-must-be-followed)
+      - [3.1.6.2 MUST be followed.](#3162-must-be-followed)
+      - [3.1.6.3 MUST be followed.](#3163-must-be-followed)
+      - [3.1.6.4 File Is Moved by the Local Machine from Remote Machine to Remote Machine](#3164-file-is-moved-by-the-local-machine-from-remote-machine-to-remote-machine)
+  - [3.2 DLT Workstation Client Details](#32-dlt-workstation-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Completing a LnkSearchMachine Call](#3241-completing-a-lnksearchmachine-call)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 LnkSearchMachine](#41-lnksearchmachine)
+  - [4.2 FSCTLs](#42-fsctls)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Data Types ........................................................................................ 13
-HRESULT ................................................................................................... 13
-CMachineId ................................................................................................ 13
-CDomainRelativeObjId ................................................................................ 13
-CVolumeId ................................................................................................. 14
-CObjId ...................................................................................................... 14
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-3.1
-
-3.1.5
-3.1.6
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 15
-DLT Workstation Server Details.......................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Receiving a LnkSearchMachine Call (Opnum 12) ....................................... 16
-Receiving a FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request ...... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-File Is Moved Between Volumes on Local Machine ..................................... 20
-File Is Moved from Local Machine to Remote Machine ................................ 20
-File Is Moved from Remote Machine to Local Machine ................................ 21
-File Is Moved by the Local Machine from Remote Machine to Remote Machine21
-DLT Workstation Client Details ........................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 23
-Completing a LnkSearchMachine Call ....................................................... 23
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-3.2.4.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 25
-LnkSearchMachine ........................................................................................... 25
-FSCTLs ........................................................................................................... 26
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 29
-
-7  Appendix B: Product Behavior ............................................................................... 31
-
-[MS-DLTW] - v20240423
-Distributed Link Tracking: Workstation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 38
-
-8  Change Tracking .................................................................................................... 36
-
-9  Index ..................................................................................................................... 37
-
-[MS-DLTW] - v20240423
-Distributed Link Tracking: Workstation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 38
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Distributed Link Tracking: Workstation Protocol.
 
@@ -722,7 +645,7 @@ workstation queries. Both DLT protocols are remote procedure call (RPC) interfac
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -775,7 +698,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-these terms does not imply or require a specific algorithm or mechanism to generate the value.
+
+these terms does not imply or require a specific algorithm or mechanism to generate the value.
 Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
@@ -853,21 +777,22 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-workstation: A terminal or desktop computer in a network that is used to run applications and is
+
+workstation: A terminal or desktop computer in a network that is used to run applications and is
 
 connected to a server from which it obtains data shared with other computers.
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -896,11 +821,11 @@ Networks", RFC 1088, February 1989, https://www.rfc-editor.org/info/rfc1088
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DLTM] Microsoft Corporation, "Distributed Link Tracking: Central Manager Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The Distributed Link Tracking: Workstation Protocol is based on the RPC runtime, as specified in
 [C706] and [MS-RPCE], and on the server message block (SMB) protocol and extensions, as
@@ -919,7 +844,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FileLocation, or another referral. This process of following referrals continues until a server returns the
+
+FileLocation, or another referral. This process of following referrals continues until a server returns the
 file's UNC name and FileLocation, or an error.
 
 Rather than following referrals in this manner, a client can use the Distributed Link Tracking: Central
@@ -994,7 +920,8 @@ Release: April 23, 2024
 
 10 / 38
 
-4.  When M0 attempts to open the file<2> by using the UNC "\\M1\share1\F1.txt", it receives a file-
+
+4.  When M0 attempts to open the file<2> by using the UNC "\\M1\share1\F1.txt", it receives a file-
 
 not-found error message. M0 then initiates a call to the DLT Workstation server on M1 with the
 previously stored FileID and FileLocation of the file.
@@ -1015,7 +942,7 @@ FileLocation value.
 
 FileLocation values.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Distributed Link Tracking: Workstation Protocol is dependent on the RPC runtime, as specified in
 [C706] and [MS-RPCE], which is one of its transport protocols.
@@ -1028,7 +955,7 @@ return to the client information about the new location of a file that has been 
 is available, it can be used to determine the correct computer on which to initiate a call to a DLT
 Workstation server.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Distributed Link Tracking: Workstation Protocol defines an RPC interface and, as a result, has the
 prerequisites as specified in [C706] and [MS-RPCE] as those common to RPC interfaces.
@@ -1037,7 +964,7 @@ For security purposes, this protocol also assumes that security credentials usab
 exist between the client and the server. That is, the client possesses credentials that the server will
 treat as authorized.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Distributed Link Tracking: Workstation Protocol is applicable to computers in a network that share
 files, as specified in the Server Message Block (SMB) Protocol, as specified in [MS-SMB] and [MS-
@@ -1071,17 +998,18 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the Distributed Link Tracking: Central Manager Protocol is being used in conjunction with this protocol,
+
+the Distributed Link Tracking: Central Manager Protocol is being used in conjunction with this protocol,
 it might not be necessary to use the tables for this protocol. However, the tables of the DLT Central
 Manager also have size limits, as specified in [MS-DLTM] section 3.1.1.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This section covers versioning issues in the area of supported transports. The protocol is defined over
 multiple named pipes. The mechanism for determining the named pipe to use is specified in section
 2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Distributed Link Tracking: Workstation Protocol does not define any vendor-extensible fields other
 than fields that contain globally unique identifiers (GUIDs), as specified in [MS-
@@ -1092,7 +1020,7 @@ This protocol uses HRESULTs, as specified in [MS-ERREF] section 2.1 and discusse
 HRESULT (section 2.2.1). Vendors are free to choose their own values for this field, so long as the C
 bit (0x20000000) is set, indicating that it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1131,9 +1059,10 @@ Release: April 23, 2024
 
 12 / 38
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Distributed Link Tracking: Workstation Protocol MUST use the RPC protocol sequence
 "ncacn_np", as specified in [MS-RPCE] section 2.1.1.2.
@@ -1160,12 +1089,12 @@ This protocol MUST use the following parameters:
 
   Version number: 1.2.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types, the following sections use the definition of a GUID, as specified in
 [C706] Appendix A.
 
-2.2.1  HRESULT
+#### 2.2.1 HRESULT
 
 HRESULT is a 32-bit, signed integer that is returned by RPC method calls. A negative value indicates
 an error, while a nonnegative value denotes success.
@@ -1173,7 +1102,7 @@ an error, while a nonnegative value denotes success.
 HRESULT is specified in [MS-ERREF] section 2.1. In the Distributed Link Tracking: Workstation
 Protocol, HRESULT is returned by the LnkSearchMachine method, which is specified in section 3.1.4.1.
 
-2.2.2  CMachineId
+#### 2.2.2 CMachineId
 
 The CMachineId structure is used to represent a MachineID, which is a unique identifier that
 represents the identity of a computer.
@@ -1186,7 +1115,7 @@ _szMachine:  This member MUST be a NetBIOS name, as specified in [RFC1088]. This
 
 be terminated with a zero byte, and any remaining bytes MUST also be zero.
 
-2.2.3  CDomainRelativeObjId
+#### 2.2.3 CDomainRelativeObjId
 
 The CDomainRelativeObjId structure is used to represent a file's FileLocation or its FileID, which is
 the FileLocation of a file at the time it was originally created.
@@ -1198,7 +1127,8 @@ Release: April 23, 2024
 
 13 / 38
 
- typedef struct CDomainRelativeObjId {
+
+ typedef struct CDomainRelativeObjId {
    CVolumeId _volume;
    CObjId _object;
  } CDomainRelativeObjId;
@@ -1207,7 +1137,7 @@ _volume:  A volume identifier for the volume that contains the file, as specifie
 
 _object:  A file identifier for the file, as specified in section 2.2.5.
 
-2.2.4  CVolumeId
+#### 2.2.4 CVolumeId
 
 The CVolumeId type is used to represent a VolumeID, which is a unique identifier that represents the
 identity of a file system volume.
@@ -1220,7 +1150,7 @@ _volume:  This field MUST contain a GUID for a volume. The lowest-order bit of t
 
 zero. Further restrictions on the value of a VolumeID are defined in section 3.1.1.
 
-2.2.5  CObjId
+#### 2.2.5 CObjId
 
 The CObjId type is used to represent an ObjectID, which is a unique identifier that represents the
 identity of a file within a file system volume.
@@ -1240,14 +1170,15 @@ Release: April 23, 2024
 
 14 / 38
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Distributed Link Tracking: Workstation Protocol is in the form of an RPC interface. The server of
 this interface MUST respond to LnkSearchMachine calls.
 
-3.1  DLT Workstation Server Details
+### 3.1 DLT Workstation Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. This description is provided to explain how the protocol
@@ -1280,11 +1211,11 @@ recent 10,000 entries.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. Any data
 structure that stores the preceding conceptual data can be used in the implementation.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are associated with this protocol.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server initializes the RPC protocol as specified in section 2.1.
 
@@ -1293,7 +1224,7 @@ listen on the "\\pipe\trkwks" named pipe endpoint.
 
 There MUST NOT be more than one server instance running on a computer.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Methods in RPC Opnum Order
 
@@ -1304,7 +1235,8 @@ Release: April 23, 2024
 
 15 / 38
 
-Method
+
+Method
 
 Description
 
@@ -1389,7 +1321,7 @@ opnum, and the server behavior is undefined <8> because it does not affect inter
 
 The methods MUST NOT throw an exception.
 
-3.1.4.1  Receiving a LnkSearchMachine Call (Opnum 12)
+##### 3.1.4.1 Receiving a LnkSearchMachine Call (Opnum 12)
 
 The LnkSearchMachine method searches for a file object on the specified computer. If information on
 the file is found, the method attempts to return it. If the file has been moved, the method returns
@@ -1408,7 +1340,8 @@ Release: April 23, 2024
 
 16 / 38
 
-   [out] CDomainRelativeObjId* pdroidNext,
+
+   [out] CDomainRelativeObjId* pdroidNext,
    [out] CMachineId* pmcidNext,
    [out, max_is(261), string] wchar_t* ptszPath
  );
@@ -1489,7 +1422,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MUST use the client's identity (obtained as specified in [MS-RPCE] section 3.3.3.4.3) to determine,
+
+MUST use the client's identity (obtained as specified in [MS-RPCE] section 3.3.3.4.3) to determine,
 based on local policy, whether or not the client is authorized to get the UNC of the file.
 
 If there is more than one file on the server computer that satisfies these conditions, the file MUST
@@ -1563,7 +1497,8 @@ Release: April 23, 2024
 
 18 / 38
 
-3.1.4.2  Receiving a FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request
+
+##### 3.1.4.2 Receiving a FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request
 
 The FSCTL_LMR_SET_LINK_TRACKING_INFORMATION request is defined in [MS-FSCC], section
 2.3.37. If the connection to the remote machine is using the [MS-SMB] protocol, this request is
@@ -1602,11 +1537,11 @@ MoveTable entry, the VolumeID MUST be the value of the VolumeID field of the
 TargetLinkTrackingInformationBuffer field in the request, and the ObjectID MUST be the value
 of the ObjectID field of the TargetLinkTrackingInformationBuffer field in the request.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 There are no timer events.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 When a file that has an ObjectID is moved to another volume, either on the same computer or on a
 different computer, an entry is added to the MoveTable. That entry indicates the file's ObjectID
@@ -1624,13 +1559,13 @@ Specifically:
 
 
 If a file is moved between volumes within the local machine, the procedure defined in section
-3.1.6.1 MUST be followed.
+##### 3.1.6.1 MUST be followed.
 
 If a file is moved from the local machine to a remote machine, the procedure defined in section
-3.1.6.2 MUST be followed.
+##### 3.1.6.2 MUST be followed.
 
 If a file is moved from a remote machine to the local machine, the procedure defined in section
-3.1.6.3 MUST be followed.
+##### 3.1.6.3 MUST be followed.
 
 If a file is moved by the local machine from one remote machine to another remote machine, the
 procedure in section 3.1.6.4 MUST be followed.
@@ -1646,7 +1581,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The remainder of this section also refers to the following FSCTL structures, which are defined in [MS-
+
+The remainder of this section also refers to the following FSCTL structures, which are defined in [MS-
 FSCC]. If the connection to the remote machine is using the [MS-SMB] protocol, these requests MUST
 be sent for a file using the NT_TRANSACT_IOCTL subcommand of an SMB_COM_NT_TRANSACTION
 request, as specified in [MS-SMB] section 2.2.7.2.1. Otherwise, these requests MUST be sent in an
@@ -1735,7 +1671,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-remote machine is using the [MS-SMB] protocol, this request MUST be sent by specifying
+
+remote machine is using the [MS-SMB] protocol, this request MUST be sent by specifying
 FileFsObjectIdInformation as the InformationLevel of a
 TRANS2_QUERY_FS_INFORMATION request, specified in [MS-SMB] section 2.2.6.3.1.
 Otherwise, the connection to the remote machine is using the [MS-SMB2] protocol, and this
@@ -1802,7 +1739,7 @@ FSCTL_DELETE_OBJECT_ID request ([MS-FSCC] section 2.3.3) for the source file.
 If that step is successful, the target file MUST have its FileID set to the FileID of the source file,
 and the CrossVolumeMoveFlag MUST be set to 1.
 
-3.1.6.4  File Is Moved by the Local Machine from Remote Machine to Remote Machine
+##### 3.1.6.4 File Is Moved by the Local Machine from Remote Machine to Remote Machine
 
 This section specifies the following two procedures for moving a file by the local machine:
 
@@ -1815,7 +1752,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  From one volume on a remote machine to another volume on the same remote machine.
+
+2.  From one volume on a remote machine to another volume on the same remote machine.
 
 Examples of these procedures are described in FSCTLs (section 4.2).
 
@@ -1897,9 +1835,10 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2  DLT Workstation Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 DLT Workstation Client Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. This description is provided to explain how the protocol
@@ -1918,11 +1857,11 @@ Maintaining this information allows the client to call the LnkSearchMachine (sec
 Note  The preceding conceptual data can be implemented by using a variety of techniques. Any data
 structure that stores the preceding conceptual data can be used in the implementation.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are associated with this protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client initializes the RPC protocol as specified in section 2.1.
 
@@ -1930,9 +1869,9 @@ The client SHOULD<25> perform method calls by using the named pipe endpoint of
 "\\pipe\trkwks", and MAY call by using the named pipe endpoint of "\\pipe\ntsvcs", as noted in section
 2.1.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
-3.2.4.1  Completing a LnkSearchMachine Call
+##### 3.2.4.1 Completing a LnkSearchMachine Call
 
 This section prescribes the actions that are necessary when completing a call to the LnkSearchMachine
 method.
@@ -1968,7 +1907,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-returned by the server in this call, then the client MAY<26> initiate another call to a DLT Workstation
+
+returned by the server in this call, then the client MAY<26> initiate another call to a DLT Workstation
 server on that computer. If it makes this call, it MUST call LnkSearchMachine with input parameters
 set as follows:
 
@@ -1983,11 +1923,11 @@ indication to the upper layers that triggered the call. If the return value spec
 TRK_E_POTENTIAL_FILE_FOUND, the client MUST also return an indication of such, as well as the
 updated MachineID, FileLocation, FileID, and UNC, to the upper layers that triggered the call.<27>
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 There are no timer events.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 The DLT Workstation client calls the LnkSearchMachine method when it wants to find a file's new
 location. For example, if a file has been moved (if its UNC has changed), and a higher layer wants to
@@ -2012,9 +1952,10 @@ Release: April 23, 2024
 
 24 / 38
 
-4  Protocol Examples
 
-4.1  LnkSearchMachine
+## 4 Protocol Examples
+
+### 4.1 LnkSearchMachine
 
 The following example shows an example LnkSearchMachine call, similar to the example in section 1.3
 with the IDs set as follows:
@@ -2080,14 +2021,15 @@ Release: April 23, 2024
 
 25 / 38
 
-     [out, max_is(261), string] WCHAR* ptszPath =
+
+     [out, max_is(261), string] WCHAR* ptszPath =
          "\\M2\share2\F2.txt"
  );
 
 The client sees the successful completion and updates its FileLinkInformation state with the new
 location.
 
-4.2  FSCTLs
+### 4.2 FSCTLs
 
 The following is an example of an FSCTL_LMR_SET_LINK_TRACKING_INFORMATION request, which
 notifies a server of a moved file. This example demonstrates a file being moved from a remote
@@ -2142,7 +2084,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-consequence, the ObjectID and BirthObjectId fields are the same value. This also means that the
+
+consequence, the ObjectID and BirthObjectId fields are the same value. This also means that the
 CrossVolumeMoveFlag, stored as the low order bit of the first byte of the BirthVolumeId field, is
 zero.
 
@@ -2161,13 +2104,14 @@ Release: April 23, 2024
 
 27 / 38
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no special security considerations for implementers to consider.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -2182,7 +2126,8 @@ Release: April 23, 2024
 
 28 / 38
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full Interface Definition Language (IDL) is provided as follows,
 where "ms-rpce.idl" is the IDL found in [MS-DTYP], Appendix A.
@@ -2256,7 +2201,8 @@ Release: April 23, 2024
 
 29 / 38
 
- // Local only
+
+ // Local only
  void Opnum11NotUsedOnWire(void);
 
  HRESULT LnkSearchMachine (
@@ -2277,7 +2223,8 @@ Release: April 23, 2024
 
 30 / 38
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2344,7 +2291,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-file. M1 returns an error indicating that the file does not exist, so the Shell shortcut implementation
+
+file. M1 returns an error indicating that the file does not exist, so the Shell shortcut implementation
 initiates the call to the DLT workstation on M1 to get the updated UNC. After storing the new
 FileLocation and UNC in the Shortcut file, the Shell shortcut implementation opens the destination file
 "F2.txt", and loads it into, for example, the Notepad program. None of this processing is visible to end
@@ -2421,7 +2369,8 @@ Release: April 23, 2024
 
 32 / 38
 
-  0x20: Prevents the search operation from giving preference to the volume specified by the
+
+  0x20: Prevents the search operation from giving preference to the volume specified by the
 
 VolumeID in the request, for the case where the requested file is located on multiple volumes.
 This flag also prevents the search operation from searching any machine other than the last
@@ -2502,7 +2451,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-implementations send an FSCTL_GET_OBJECT_ID request ([MS-FSCC] section 2.3.25) for the source
+
+implementations send an FSCTL_GET_OBJECT_ID request ([MS-FSCC] section 2.3.25) for the source
 file. If that request succeeds, and the BirthObjectId field of the FILE_OBJECTID_BUFFER structure
 ([MS-FSCC] section 2.1.3) in the response is not all zeros, then the file is tracked as described in this
 section.
@@ -2574,7 +2524,8 @@ Distributed Link Tracking: Workstation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FIND_VOLUME succeeds, the same processing is followed, only using the FileLocation from the referral
+
+FIND_VOLUME succeeds, the same processing is followed, only using the FileLocation from the referral
 and the MachineID returned from the FIND_VOLUME request. In each of these cases, if another
 TRK_E_REFERRAL return value is subsequently received, the preceding processing specified for
 TRK_E_REFERRAL is followed; no new call is made to the DLT Central Manager.
@@ -2591,7 +2542,8 @@ Release: April 23, 2024
 
 35 / 38
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2635,7 +2587,8 @@ Release: April 23, 2024
 
 36 / 38
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2775,7 +2728,8 @@ Messages
 
 37 / 38
 
-Methods
+
+Methods
    Completing a LnkSearchMachine Call 23
    Receiving a
 

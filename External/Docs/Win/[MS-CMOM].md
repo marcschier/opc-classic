@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 73
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 73
 
-Date
+
+Date
 
 Revision
 History
@@ -517,418 +519,164 @@ Release: April 23, 2024
 
 3 / 73
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.3.1
-1.3.3.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Management Client Role .............................................................................. 10
-Management Server Role ............................................................................. 11
-Common Scenarios ..................................................................................... 11
-Setting and Enabling a Configuration Setting ............................................ 11
-Subscribing to Transaction Monitoring Information .................................... 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Versioning and Capability Negotiation for the OleTx Transports Protocol ............ 14
-Versioning and Capability Negotiation for the Registry Protocol ......................... 14
-Versioning and Capability Negotiation for the Service Control Manager Remote
-Protocol ..................................................................................................... 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.7.1
-1.7.2
-1.7.3
-
-1.4
-1.5
-1.6
-1.7
-
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.1
-
-2.2.1.2.2
-
-2.2.1.2.1
-
-2.1.1
-2.1.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.1.2.1.1
-2.2.1.2.1.2
-2.2.1.2.1.3
-2.2.1.2.1.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Messages, Connections, and Sessions ........................................................... 15
-MS-CMP and MS-CMPO Initialization .............................................................. 15
-Message Syntax ............................................................................................... 15
-Protocol Versioning ..................................................................................... 15
-OleTx Transaction Protocol Message Versions ........................................... 15
-Registry Protocol Versions ...................................................................... 15
-Versioning Support of the Registry Keys ............................................. 16
-Versioning Support of the Functional Registry Key Values ............... 16
-Versioning Support of the Security Access Registry Key Values ........ 16
-Versioning Support of the RPC Security Registry Key Values ............ 16
-Versioning Support of the Endpoint Registry Key Values ................. 17
-Registry Path and Access Protocol of the Registry Key Values ................ 17
-Registry Path and Access Protocol of the Functional Registry Key ..... 17
-Registry Path and Access Protocol of the Security Access Registry Key18
-Registry Path and Access Protocol of the RPC Security Registry Key . 18
-Registry Path and Access Protocol of the Transaction Manager Contact
-Registry Keys ............................................................................ 18
-Registry Path and Access Protocol of the Transaction Manager Endpoint
-Registry Keys ............................................................................ 19
-OleTx Multiplexing Protocol Message Syntax .................................................. 19
-Connection Types .................................................................................. 20
-Data Structures .................................................................................... 20
-DtcUITranListElement ...................................................................... 20
-Enumerations ....................................................................................... 21
-TRACKING_STATUS ......................................................................... 21
-UPDATE_LIMIT ................................................................................ 23
-SHOW_LIMIT .................................................................................. 23
-TRACE_LEVEL ................................................................................. 23
-TRACE_SEVERITY_LEVEL .................................................................. 24
-Connection Type Details......................................................................... 24
-CONNTYPE_TXUSER_DTCUIC ............................................................ 24
-
-2.2.2.3.1
-2.2.2.3.2
-2.2.2.3.3
-2.2.2.3.4
-2.2.2.3.5
-
-2.2.1.2.2.1
-2.2.1.2.2.2
-2.2.1.2.2.3
-2.2.1.2.2.4
-
-2.2.2.1
-2.2.2.2
-
-2.2.1.2.2.5
-
-2.2.2.4.1
-
-2.2.2.2.1
-
-2.2.2.4
-
-2.2.2.3
-
-2.2.2
-
-[MS-CMOM] - v20240423
-MSDTC Connection Manager: OleTx Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 73
-
-2.2.2.4.1.1
-2.2.2.4.1.2
-2.2.2.4.1.3
-2.2.2.4.1.4
-2.2.2.4.1.5
-2.2.2.4.1.6
-2.2.2.4.1.7
-2.2.2.4.1.8
-
-MTAG_HELLO ............................................................................ 25
-MSG_DTCUIC_TRACELIMIT ......................................................... 25
-MSG_DTCUIC_UPDATELIMIT ....................................................... 25
-MSG_DTCUIC_SHOWLIMIT ......................................................... 26
-MSG_DTCUIC_STATS ................................................................. 26
-MSG_DTCUIC_TRANLIST ............................................................ 28
-MSG_DTCUIC_TRACE ................................................................. 29
-MSG_DTCUIC_TRACESTRING ...................................................... 30
-Registry Keys and Values ............................................................................. 32
-Enumerations ....................................................................................... 32
-RPC_NETWORK_PROTOCOL .............................................................. 32
-Functional Registry Key Values ............................................................... 32
-Security Access Registry Key Values ........................................................ 33
-RPC Security Registry Key Values ............................................................ 33
-Transaction Manager Contact Registry Keys ............................................. 34
-Subkey Values for the "HKEY_CLASSES_ROOT\CID\<GUID>" Keys ....... 34
-Transaction Manager Endpoint Registry Keys ............................................ 35
-
-Subkey Values for the
-"EndpointRegistryPath\MSDTCUIS_GUID"\CustomProperties Key .......... 35
-Service Names Used with the Service Control Manager Remote Protocol Transport36
-
-2.2.3
-
-2.2.3.1
-
-2.2.3.1.1
-
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-2.2.3.5.1
-
-2.2.3.6
-
-2.2.3.6.1
-
-2.2.4
-
-3.2
-
-3.1
-
-3.2.1
-
-3.2.1.1
-
-3.2.1.1.1
-3.2.1.1.2
-3.2.1.1.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-3.1.8
-
-3  Protocol Details ..................................................................................................... 37
-Common Details .............................................................................................. 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Protocol Versioning Details ........................................................................... 38
-Higher-Layer Triggered Events ..................................................................... 38
-Message Processing Events and Sequencing Rules .......................................... 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-Management Client Role ................................................................................... 38
-Abstract Data Model .................................................................................... 38
-CONNTYPE_TXUSER_DTCUIC Initiator States ........................................... 38
-Idle ............................................................................................... 39
-Active ............................................................................................ 39
-Ended ............................................................................................ 40
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Protocol Versioning Details ........................................................................... 40
-Determining the Version of the Registry Protocol ...................................... 41
-Determining the Management Server Cluster Resource ID .......................... 42
-Higher-Layer Triggered Events ..................................................................... 43
-Connecting to the Management Server .................................................... 43
-Testing the Connection .......................................................................... 43
-Setting the Update Limit on the Management Server ................................. 44
-Setting the Show Limit on the Management Server ................................... 44
-Setting the Trace Limit on the Management Server ................................... 44
-Disconnecting from the Management Server ............................................. 44
-Reading from a Registry Key of the Management Server ............................ 44
-Writing to a Registry Key of the Management Server ................................. 45
-Message Processing Events and Sequencing Rules .......................................... 45
-CONNTYPE_TXUSER_DTCUIC as Initiator ................................................. 45
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.6.1
-
-3.2.6
-
-3.2.5
-
-3.2.6.1.1
-
-3.2.6.1.2
-
-Receiving an MSG_DTCUIC_TRACESTRING, MSG_DTCUIC_TRACE,
-MSG_DTCUIC_STATS, or MSG_DTCUIC_TRANLIST Message ................. 45
-Connection Disconnected .................................................................. 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-
-3.2.7
-3.2.8
-
-[MS-CMOM] - v20240423
-MSDTC Connection Manager: OleTx Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 73
-
-3.3
-
-3.3.1
-
-3.3.1.1
-
-3.3.1.1.1
-
-3.3.1.2
-
-3.3.1.2.1
-3.3.1.2.2
-3.3.1.2.3
-3.3.1.2.4
-
-3.3.1.1.1.1
-3.3.1.1.1.2
-3.3.1.1.1.3
-
-Management Server Role .................................................................................. 46
-Abstract Data Model .................................................................................... 46
-Connection States ................................................................................. 47
-CONNTYPE_TXUSER_DTCUIC Acceptor States ..................................... 47
-Idle .......................................................................................... 48
-Active ....................................................................................... 48
-Ended ....................................................................................... 48
-Registry Keys (Public) ............................................................................ 49
-Functional Registry Keys .................................................................. 49
-Security Access Registry Keys ........................................................... 49
-RPC Security Registry Keys ............................................................... 50
-"EndpointRegistryPath\MSDTCUIS_GUID\CustomProperties" Registry Key51
-Timers ...................................................................................................... 51
-Update Timer ....................................................................................... 51
-Initialization ............................................................................................... 51
-Higher-Layer Triggered Events ..................................................................... 52
-Trace ................................................................................................... 52
-Trace String ......................................................................................... 53
-Update Transaction Stats ....................................................................... 53
-Message Processing Events and Sequencing Rules .......................................... 54
-CONNTYPE_TXUSER_DTCUIC as Acceptor ................................................ 55
-Receiving an MTAG_HELLO Message .................................................. 55
-Receiving an MSG_DTCUIC_UPDATELIMIT Message ............................. 55
-Receiving an MSG_DTCUIC_SHOWLIMIT Message ............................... 55
-Receiving an MSG_DTCUIC_TRACELIMIT Message ............................... 55
-Connection Disconnected .................................................................. 55
-Timer Events .............................................................................................. 56
-Update Timer ....................................................................................... 56
-Other Local Events ...................................................................................... 57
-Incoming Connection Request................................................................. 57
-Service Control Events ........................................................................... 58
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-
-3.3.2.1
-
-3.3.2
-
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-
-3.3.5
-
-3.3.5.1
-
-3.3.6
-
-3.3.7
-
-3.3.6.1
-
-3.3.7.1
-3.3.7.2
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 59
-Simple Management Client Scenario ................................................................... 59
-Beginning a Management Client .................................................................... 59
-Adjusting the Update Limit ........................................................................... 62
-Adjusting the Show Limit ............................................................................. 63
-Enabling XA Transactions Scenario ..................................................................... 63
-Setting the XaTransactions Registry Key on the Remote Machine ...................... 63
-Restarting the Transaction Manager on the Remote Machine ............................ 65
-Stopping the Transaction Manager Service ............................................... 65
-Starting the Transaction Manager Service ................................................ 66
-
-4.2.2.1
-4.2.2.2
-
-4.2.1
-4.2.2
-
-4.2
-
-5  Security ................................................................................................................. 68
-Security Considerations for Implementers ........................................................... 68
-Index of Security Parameters ............................................................................ 68
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 69
-
-7  Change Tracking .................................................................................................... 71
-
-8  Index ..................................................................................................................... 72
-
-[MS-CMOM] - v20240423
-MSDTC Connection Manager: OleTx Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 73
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Management Client Role](#131-management-client-role)
+    - [1.3.2 Management Server Role](#132-management-server-role)
+    - [1.3.3 Common Scenarios](#133-common-scenarios)
+      - [1.3.3.1 Setting and Enabling a Configuration Setting](#1331-setting-and-enabling-a-configuration-setting)
+      - [1.3.3.2 Subscribing to Transaction Monitoring Information](#1332-subscribing-to-transaction-monitoring-information)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Versioning and Capability Negotiation for the OleTx Transports Protocol](#171-versioning-and-capability-negotiation-for-the-oletx-transports-protocol)
+    - [1.7.2 Versioning and Capability Negotiation for the Registry Protocol](#172-versioning-and-capability-negotiation-for-the-registry-protocol)
+    - [1.7.3 Versioning and Capability Negotiation for the Service Control Manager Remote](#173-versioning-and-capability-negotiation-for-the-service-control-manager-remote)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Messages, Connections, and Sessions](#211-messages-connections-and-sessions)
+    - [2.1.2 MS-CMP and MS-CMPO Initialization](#212-ms-cmp-and-ms-cmpo-initialization)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Protocol Versioning](#221-protocol-versioning)
+      - [2.2.1.1 OleTx Transaction Protocol Message Versions](#2211-oletx-transaction-protocol-message-versions)
+      - [2.2.1.2 Registry Protocol Versions](#2212-registry-protocol-versions)
+        - [2.2.1.2.1 Versioning Support of the Registry Keys](#22121-versioning-support-of-the-registry-keys)
+          - [2.2.1.2.1.1 Versioning Support of the Functional Registry Key Values](#221211-versioning-support-of-the-functional-registry-key-values)
+          - [2.2.1.2.1.2 Versioning Support of the Security Access Registry Key Values](#221212-versioning-support-of-the-security-access-registry-key-values)
+          - [2.2.1.2.1.3 Versioning Support of the RPC Security Registry Key Values](#221213-versioning-support-of-the-rpc-security-registry-key-values)
+          - [2.2.1.2.1.4 Versioning Support of the Endpoint Registry Key Values](#221214-versioning-support-of-the-endpoint-registry-key-values)
+        - [2.2.1.2.2 Registry Path and Access Protocol of the Registry Key Values](#22122-registry-path-and-access-protocol-of-the-registry-key-values)
+          - [2.2.1.2.2.1 Registry Path and Access Protocol of the Functional Registry Key](#221221-registry-path-and-access-protocol-of-the-functional-registry-key)
+          - [2.2.1.2.2.2 Registry Path and Access Protocol of the Security Access Registry Key](#221222-registry-path-and-access-protocol-of-the-security-access-registry-key)
+          - [2.2.1.2.2.3 Registry Path and Access Protocol of the RPC Security Registry Key](#221223-registry-path-and-access-protocol-of-the-rpc-security-registry-key)
+          - [2.2.1.2.2.4 Registry Path and Access Protocol of the Transaction Manager Contact](#221224-registry-path-and-access-protocol-of-the-transaction-manager-contact)
+          - [2.2.1.2.2.5 Registry Path and Access Protocol of the Transaction Manager Endpoint](#221225-registry-path-and-access-protocol-of-the-transaction-manager-endpoint)
+    - [2.2.2 OleTx Multiplexing Protocol Message Syntax](#222-oletx-multiplexing-protocol-message-syntax)
+      - [2.2.2.1 Connection Types](#2221-connection-types)
+      - [2.2.2.2 Data Structures](#2222-data-structures)
+        - [2.2.2.2.1 DtcUITranListElement](#22221-dtcuitranlistelement)
+      - [2.2.2.3 Enumerations](#2223-enumerations)
+        - [2.2.2.3.1 TRACKING_STATUS](#22231-trackingstatus)
+        - [2.2.2.3.2 UPDATE_LIMIT](#22232-updatelimit)
+        - [2.2.2.3.3 SHOW_LIMIT](#22233-showlimit)
+        - [2.2.2.3.4 TRACE_LEVEL](#22234-tracelevel)
+        - [2.2.2.3.5 TRACE_SEVERITY_LEVEL](#22235-traceseveritylevel)
+      - [2.2.2.4 Connection Type Details](#2224-connection-type-details)
+        - [2.2.2.4.1 CONNTYPE_TXUSER_DTCUIC](#22241-conntypetxuserdtcuic)
+          - [2.2.2.4.1.1 MTAG_HELLO](#222411-mtaghello)
+          - [2.2.2.4.1.2 MSG_DTCUIC_TRACELIMIT](#222412-msgdtcuictracelimit)
+          - [2.2.2.4.1.3 MSG_DTCUIC_UPDATELIMIT](#222413-msgdtcuicupdatelimit)
+          - [2.2.2.4.1.4 MSG_DTCUIC_SHOWLIMIT](#222414-msgdtcuicshowlimit)
+          - [2.2.2.4.1.5 MSG_DTCUIC_STATS](#222415-msgdtcuicstats)
+          - [2.2.2.4.1.6 MSG_DTCUIC_TRANLIST](#222416-msgdtcuictranlist)
+          - [2.2.2.4.1.7 MSG_DTCUIC_TRACE](#222417-msgdtcuictrace)
+          - [2.2.2.4.1.8 MSG_DTCUIC_TRACESTRING](#222418-msgdtcuictracestring)
+    - [2.2.3 Registry Keys and Values](#223-registry-keys-and-values)
+      - [2.2.3.1 Enumerations](#2231-enumerations)
+        - [2.2.3.1.1 RPC_NETWORK_PROTOCOL](#22311-rpcnetworkprotocol)
+      - [2.2.3.2 Functional Registry Key Values](#2232-functional-registry-key-values)
+      - [2.2.3.3 Security Access Registry Key Values](#2233-security-access-registry-key-values)
+      - [2.2.3.4 RPC Security Registry Key Values](#2234-rpc-security-registry-key-values)
+      - [2.2.3.5 Transaction Manager Contact Registry Keys](#2235-transaction-manager-contact-registry-keys)
+        - [2.2.3.5.1 Subkey Values for the "HKEY_CLASSES_ROOT\CID\<GUID>" Keys](#22351-subkey-values-for-the-hkeyclassesrootcid-keys)
+      - [2.2.3.6 Transaction Manager Endpoint Registry Keys](#2236-transaction-manager-endpoint-registry-keys)
+        - [2.2.3.6.1 Subkey Values for the](#22361-subkey-values-for-the)
+    - [2.2.4 Service Names Used with the Service Control Manager Remote Protocol](#224-service-names-used-with-the-service-control-manager-remote-protocol)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Protocol Versioning Details](#314-protocol-versioning-details)
+    - [3.1.5 Higher-Layer Triggered Events](#315-higher-layer-triggered-events)
+    - [3.1.6 Message Processing Events and Sequencing Rules](#316-message-processing-events-and-sequencing-rules)
+    - [3.1.7 Timer Events](#317-timer-events)
+    - [3.1.8 Other Local Events](#318-other-local-events)
+  - [3.2 Management Client Role](#32-management-client-role)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 CONNTYPE_TXUSER_DTCUIC Initiator States](#3211-conntypetxuserdtcuic-initiator-states)
+        - [3.2.1.1.1 Idle](#32111-idle)
+        - [3.2.1.1.2 Active](#32112-active)
+        - [3.2.1.1.3 Ended](#32113-ended)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Protocol Versioning Details](#324-protocol-versioning-details)
+      - [3.2.4.1 Determining the Version of the Registry Protocol](#3241-determining-the-version-of-the-registry-protocol)
+      - [3.2.4.2 Determining the Management Server Cluster Resource ID](#3242-determining-the-management-server-cluster-resource-id)
+    - [3.2.5 Higher-Layer Triggered Events](#325-higher-layer-triggered-events)
+      - [3.2.5.1 Connecting to the Management Server](#3251-connecting-to-the-management-server)
+      - [3.2.5.2 Testing the Connection](#3252-testing-the-connection)
+      - [3.2.5.3 Setting the Update Limit on the Management Server](#3253-setting-the-update-limit-on-the-management-server)
+      - [3.2.5.4 Setting the Show Limit on the Management Server](#3254-setting-the-show-limit-on-the-management-server)
+      - [3.2.5.5 Setting the Trace Limit on the Management Server](#3255-setting-the-trace-limit-on-the-management-server)
+      - [3.2.5.6 Disconnecting from the Management Server](#3256-disconnecting-from-the-management-server)
+      - [3.2.5.7 Reading from a Registry Key of the Management Server](#3257-reading-from-a-registry-key-of-the-management-server)
+      - [3.2.5.8 Writing to a Registry Key of the Management Server](#3258-writing-to-a-registry-key-of-the-management-server)
+    - [3.2.6 Message Processing Events and Sequencing Rules](#326-message-processing-events-and-sequencing-rules)
+      - [3.2.6.1 CONNTYPE_TXUSER_DTCUIC as Initiator](#3261-conntypetxuserdtcuic-as-initiator)
+        - [3.2.6.1.1 Receiving an MSG_DTCUIC_TRACESTRING, MSG_DTCUIC_TRACE,](#32611-receiving-an-msgdtcuictracestring-msgdtcuictrace)
+        - [3.2.6.1.2 Connection Disconnected](#32612-connection-disconnected)
+    - [3.2.7 Timer Events](#327-timer-events)
+    - [3.2.8 Other Local Events](#328-other-local-events)
+  - [3.3 Management Server Role](#33-management-server-role)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Connection States](#3311-connection-states)
+        - [3.3.1.1.1 CONNTYPE_TXUSER_DTCUIC Acceptor States](#33111-conntypetxuserdtcuic-acceptor-states)
+          - [3.3.1.1.1.1 Idle](#331111-idle)
+          - [3.3.1.1.1.2 Active](#331112-active)
+          - [3.3.1.1.1.3 Ended](#331113-ended)
+      - [3.3.1.2 Registry Keys (Public)](#3312-registry-keys-public)
+        - [3.3.1.2.1 Functional Registry Keys](#33121-functional-registry-keys)
+        - [3.3.1.2.2 Security Access Registry Keys](#33122-security-access-registry-keys)
+        - [3.3.1.2.3 RPC Security Registry Keys](#33123-rpc-security-registry-keys)
+        - [3.3.1.2.4 "EndpointRegistryPath\MSDTCUIS_GUID\CustomProperties" Registry Key](#33124-endpointregistrypathmsdtcuisguidcustomproperties-registry-key)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Update Timer](#3321-update-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Trace](#3341-trace)
+      - [3.3.4.2 Trace String](#3342-trace-string)
+      - [3.3.4.3 Update Transaction Stats](#3343-update-transaction-stats)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 CONNTYPE_TXUSER_DTCUIC as Acceptor](#3351-conntypetxuserdtcuic-as-acceptor)
+        - [3.3.5.1.1 Receiving an MTAG_HELLO Message](#33511-receiving-an-mtaghello-message)
+        - [3.3.5.1.2 Receiving an MSG_DTCUIC_UPDATELIMIT Message](#33512-receiving-an-msgdtcuicupdatelimit-message)
+        - [3.3.5.1.3 Receiving an MSG_DTCUIC_SHOWLIMIT Message](#33513-receiving-an-msgdtcuicshowlimit-message)
+        - [3.3.5.1.4 Receiving an MSG_DTCUIC_TRACELIMIT Message](#33514-receiving-an-msgdtcuictracelimit-message)
+        - [3.3.5.1.5 Connection Disconnected](#33515-connection-disconnected)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Update Timer](#3361-update-timer)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Incoming Connection Request](#3371-incoming-connection-request)
+      - [3.3.7.2 Service Control Events](#3372-service-control-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Simple Management Client Scenario](#41-simple-management-client-scenario)
+    - [4.1.1 Beginning a Management Client](#411-beginning-a-management-client)
+    - [4.1.2 Adjusting the Update Limit](#412-adjusting-the-update-limit)
+    - [4.1.3 Adjusting the Show Limit](#413-adjusting-the-show-limit)
+  - [4.2 Enabling XA Transactions Scenario](#42-enabling-xa-transactions-scenario)
+    - [4.2.1 Setting the XaTransactions Registry Key on the Remote Machine](#421-setting-the-xatransactions-registry-key-on-the-remote-machine)
+    - [4.2.2 Restarting the Transaction Manager on the Remote Machine](#422-restarting-the-transaction-manager-on-the-remote-machine)
+      - [4.2.2.1 Stopping the Transaction Manager Service](#4221-stopping-the-transaction-manager-service)
+      - [4.2.2.2 Starting the Transaction Manager Service](#4222-starting-the-transaction-manager-service)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This specification specifies the MSDTC Connection Manager: OleTx Management Protocol, which
 enables the remote management of a transaction manager.
@@ -952,7 +700,7 @@ Protocol [MS-SCMR].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1000,7 +748,8 @@ Release: April 23, 2024
 
 7 / 73
 
-globally unique identifier (GUID): A term used interchangeably with universally unique
+
+globally unique identifier (GUID): A term used interchangeably with universally unique
 
 identifier (UUID) in Microsoft protocol technical documents (TDs). Interchanging the usage of
 these terms does not imply or require a specific algorithm or mechanism to generate the value.
@@ -1076,7 +825,8 @@ Release: April 23, 2024
 
 8 / 73
 
-transaction identifier: The GUID that uniquely identifies an atomic transaction.
+
+transaction identifier: The GUID that uniquely identifies an atomic transaction.
 
 transaction manager: The party that is responsible for managing and distributing the outcome of
 
@@ -1092,14 +842,14 @@ value: A data element associated with a key.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1144,7 +894,8 @@ Release: April 23, 2024
 
 9 / 73
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-CMOM].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1153,11 +904,11 @@ Release: April 23, 2024
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The OleTx Management Protocol facilitates remote management of a transaction manager.
 
@@ -1166,7 +917,7 @@ Management Server role's relationship to the transaction manager.
 
 Figure 1: Overview
 
-1.3.1  Management Client Role
+#### 1.3.1 Management Client Role
 
 The Management Client role is generally performed by software programs that manage the
 configuration and monitor the function of a transaction manager. Transaction manager
@@ -1200,11 +951,12 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Querying the status and managing the life cycle of a transaction manager.
+
+  Querying the status and managing the life cycle of a transaction manager.
 
   Subscribing to and receiving transaction monitoring information from a transaction manager.
 
-1.3.2  Management Server Role
+#### 1.3.2 Management Server Role
 
 The Management Server role is generally performed by specialized middleware software programs to
 provide transaction monitoring and transaction manager configuration services to applications. The
@@ -1241,11 +993,11 @@ transaction manager service.
 
 Providing applications with subscription services to transaction monitoring information.
 
-1.3.3  Common Scenarios
+#### 1.3.3 Common Scenarios
 
 This section provides some common scenarios for the OleTx Management Protocol.
 
-1.3.3.1  Setting and Enabling a Configuration Setting
+##### 1.3.3.1 Setting and Enabling a Configuration Setting
 
 The following figure illustrates a transaction manager configuration console that implements the
 Management Client protocol role enabling XA transactions. XA transactions are enabled by setting
@@ -1274,13 +1026,14 @@ Release: April 23, 2024
 
 11 / 73
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-CMOM].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 2: Setting and enabling a configuration setting
 
-1.3.3.2  Subscribing to Transaction Monitoring Information
+##### 1.3.3.2 Subscribing to Transaction Monitoring Information
 
 The following figure illustrates a transaction monitoring console using the Management Client role to
 subscribe to transaction monitoring information. After subscribing, transaction manager monitoring
@@ -1305,21 +1058,22 @@ Release: April 23, 2024
 
 12 / 73
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-CMOM].images/page013-img01.png)
 ![Extracted image 2 from page 13]([MS-CMOM].images/page013-img02.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 3: Subscribing to transaction monitoring information
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure illustrates the relationship between the OleTx Management Protocol and the
 underlying protocols on which it depends.
 
 Figure 4: Protocols on which the OleTx Management Protocol depends
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires the following:
 
@@ -1338,7 +1092,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  All participating roles possess implementations of the MSDTC Connection Manager: OleTx
+
+  All participating roles possess implementations of the MSDTC Connection Manager: OleTx
 
 Transports Protocol [MS-CMPO] and the MSDTC Connection Manager: OleTx Multiplexing Protocol
 [MS-CMP].
@@ -1358,7 +1113,7 @@ also require the following:
 
 present and operating.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to scenarios that require the management and monitoring of a transaction
 manager. The protocol supports the reading and setting of configuration values as well as the
@@ -1371,31 +1126,31 @@ RRP], and the Failover Cluster: Management API (ClusAPI) Protocol [MS-CMRP] func
 network transport for establishing many short-lived connection exchanges that accomplish specific
 tasks.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.7.1  Versioning and Capability Negotiation for the OleTx Transports Protocol
+#### 1.7.1 Versioning and Capability Negotiation for the OleTx Transports Protocol
 
 All versioning, versioning negotiation, and capability negotiation mechanisms specified in [MS-DTCO]
 section 1.7 are applicable to this protocol.
 
-1.7.2  Versioning and Capability Negotiation for the Registry Protocol
+#### 1.7.2 Versioning and Capability Negotiation for the Registry Protocol
 
 The registry protocol version is not negotiable. It can be determined as specified in section 3.2.4.1.
 
  Section 2.2.1.2.1 specifies which registry keys, key values, and access protocols are supported in
 which version of the protocol.
 
-1.7.3  Versioning and Capability Negotiation for the Service Control Manager Remote
+#### 1.7.3 Versioning and Capability Negotiation for the Service Control Manager Remote
 
 Protocol
 
 The versioning and capability negotiation for this protocol is specified in [MS-SCMR], section 1.7.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1406,9 +1161,10 @@ Release: April 23, 2024
 
 14 / 73
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses implementation of four transport protocols:
 
@@ -1429,11 +1185,11 @@ The Failover Cluster: Management API (ClusAPI) Protocol [MS-CMRP].
 
 The Service Control Manager Remote Protocol [MS-SCMR].
 
-2.1.1  Messages, Connections, and Sessions
+#### 2.1.1 Messages, Connections, and Sessions
 
 Messages, connections, and sessions are as specified in [MS-DTCO] section 2.1.1.
 
-2.1.2  MS-CMP and MS-CMPO Initialization
+#### 2.1.2 MS-CMP and MS-CMPO Initialization
 
 MSDTC Connection Manager: OleTx Multiplexing Protocol Specification [MS-CMP] initialization and
 MSDTC Connection Manager: OleTx Transports Protocol Specification [MS-CMPO] initialization for this
@@ -1443,17 +1199,17 @@ If the initialization of the underlying MSDTC Connection Manager: OleTx Multiple
 fails as specified in [MS-CMP] section 3.1.3.2, then the implementation-specific failure result MUST be
 returned to the higher-layer business logic.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Protocol Versioning
+#### 2.2.1 Protocol Versioning
 
-2.2.1.1  OleTx Transaction Protocol Message Versions
+##### 2.2.1.1 OleTx Transaction Protocol Message Versions
 
 The OleTx Transaction Protocol has five versions, as specified in [MS-DTCO] section 2.2.1: 1, 2, 4, 5,
 and 6 (version 3 is reserved and not used). All messages and data elements specified in section 2.2
 MUST be supported by all protocol versions.
 
-2.2.1.2  Registry Protocol Versions
+##### 2.2.1.2 Registry Protocol Versions
 
 The registry protocol has nine versions for MSDTC Connection Manager: OleTx Management Protocol:
 1, 2, 3, 4, 5, 6, 7, 8, and 9. For each version, there is a set of registry key values that MUST be
@@ -1483,18 +1239,19 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A supported registry key value is accessed either using the Windows Remote Registry Protocol [MS-
+
+A supported registry key value is accessed either using the Windows Remote Registry Protocol [MS-
 RRP] (as illustrated in section 4.2.1) or using the Failover Cluster: Management API (ClusAPI) Protocol
 [MS-CMRP] (as illustrated in section 4.1), depending on the version of the registry protocol. To access
 a supported registry key value via the Failover Cluster: Management API (ClusAPI) Protocol, the
 cluster resource ID (as specified in [MS-CMRP] section 3.1.4.2.32) MUST be known in order to
 construct the registry path of the registry key.
 
-2.2.1.2.1 Versioning Support of the Registry Keys
+###### 2.2.1.2.1 Versioning Support of the Registry Keys
 
 The following sections specify the versioning support of the registry key values used by this protocol.
 
-2.2.1.2.1.1  Versioning Support of the Functional Registry Key Values
+###### 2.2.1.2.1.1 Versioning Support of the Functional Registry Key Values
 
 The following table specifies the versioning support of the functional registry key values used by this
 protocol, as specified in section 2.2.3.2.
@@ -1537,7 +1294,7 @@ Required
 
 Required
 
-2.2.1.2.1.2  Versioning Support of the Security Access Registry Key Values
+###### 2.2.1.2.1.2 Versioning Support of the Security Access Registry Key Values
 
 The following table specifies the versioning support of the security access registry key values used by
 this protocol, as specified in section 2.2.3.3.
@@ -1594,7 +1351,7 @@ Not supported  Not supported  Not supported  Required
 
 Required
 
-2.2.1.2.1.3  Versioning Support of the RPC Security Registry Key Values
+###### 2.2.1.2.1.3 Versioning Support of the RPC Security Registry Key Values
 
 The following table specifies the versioning support of the remote procedure call (RPC) security
 registry key values used by this protocol, as specified in section 2.2.3.4.
@@ -1633,7 +1390,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Key value
+
+Key value
 
 V1
 
@@ -1689,7 +1447,7 @@ Required
 
 Required
 
-2.2.1.2.1.4  Versioning Support of the Endpoint Registry Key Values
+###### 2.2.1.2.1.4 Versioning Support of the Endpoint Registry Key Values
 
 The following table specifies the versioning support of the endpoint registry key values used by this
 protocol, as specified in section 2.2.3.5.
@@ -1725,7 +1483,7 @@ Required  Required  Required
 
 Required
 
-2.2.1.2.2 Registry Path and Access Protocol of the Registry Key Values
+###### 2.2.1.2.2 Registry Path and Access Protocol of the Registry Key Values
 
 Both the registry path of a registry key with supported registry key values and the protocol used to
 access the registry key vary, depending on the version of the registry protocol. The following sections
@@ -1740,7 +1498,7 @@ The <ResID> token in the registry path represents a cluster resource ID. The <DP
 registry path represents the string value of the
 "HKEY_LOCAL_MACHINE\Cluster\Resources\<ResID>\DataPointer\(Default)" registry key value.
 
-2.2.1.2.2.1  Registry Path and Access Protocol of the Functional Registry Key
+###### 2.2.1.2.2.1 Registry Path and Access Protocol of the Functional Registry Key
 
 The following table specifies the registry path and access protocol of the functional registry key used
 by this protocol, as specified in section 2.2.3.2.
@@ -1780,7 +1538,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Version  Registry path
+
+Version  Registry path
 
 HKEY_LOCAL_MACHINE\Software\Microsoft\MSDTC\Security
 
@@ -1800,7 +1559,7 @@ HKEY_LOCAL_MACHINE\Cluster\Resources\<ResID>\MSDTCPRIVATE\MSDTC\Security
 
 [MS-CMRP]
 
-2.2.1.2.2.2  Registry Path and Access Protocol of the Security Access Registry Key
+###### 2.2.1.2.2.2 Registry Path and Access Protocol of the Security Access Registry Key
 
 The following table specifies the registry path and access protocol of the security access registry key
 used by this protocol, as specified in section 2.2.3.3.
@@ -1837,7 +1596,7 @@ HKEY_LOCAL_MACHINE\Cluster\Resources\<ResID>\MSDTCPRIVATE\MSDTC\Security
 
 [MS-CMRP]
 
-2.2.1.2.2.3  Registry Path and Access Protocol of the RPC Security Registry Key
+###### 2.2.1.2.2.3 Registry Path and Access Protocol of the RPC Security Registry Key
 
 The following table specifies the registry path and access protocol of the RPC security registry key
 used by this protocol, as specified in section 2.2.3.4.
@@ -1910,7 +1669,7 @@ HKEY_LOCAL_MACHINE\Cluster\Resources\<ResID>\MSDTCPRIVATE\MSDTC
 
 9
 
-2.2.1.2.2.4  Registry Path and Access Protocol of the Transaction Manager Contact
+###### 2.2.1.2.2.4 Registry Path and Access Protocol of the Transaction Manager Contact
 
 Registry Keys
 
@@ -1921,7 +1680,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following table specifies the registry path and access protocol of the transaction manager contact
+
+The following table specifies the registry path and access protocol of the transaction manager contact
 registry keys used by this protocol, as specified in section 2.2.3.5. The <GUID> token is a
 GUIDString (as specified in [MS-DTYP] section 2.3.4.3).
 
@@ -1983,7 +1743,7 @@ HKEY_CLASSES_ROOT\CID\<GUID>
 
 [MS-RRP]
 
-2.2.1.2.2.5  Registry Path and Access Protocol of the Transaction Manager Endpoint
+###### 2.2.1.2.2.5 Registry Path and Access Protocol of the Transaction Manager Endpoint
 
 Registry Keys
 
@@ -2049,7 +1809,7 @@ Protocol
 
 [MS-RRP]
 
-2.2.2  OleTx Multiplexing Protocol Message Syntax
+#### 2.2.2 OleTx Multiplexing Protocol Message Syntax
 
 The layout of each OleTx Multiplexing Protocol message that is used by this protocol MUST extend the
 MESSAGE_PACKET structure, as specified in [MS-CMP] section 2.2.2.
@@ -2061,15 +1821,16 @@ Release: April 23, 2024
 
 19 / 73
 
-2.2.2.1  Connection Types
+
+##### 2.2.2.1 Connection Types
 
 This protocol defines only one connection type: CONNTYPE_TXUSER_DTCUIC. The connection type
 field for connections that implement this connection type, as specified in [MS-CMP] section 3.1.1.1,
 MUST be set to 0x00000000.
 
-2.2.2.2  Data Structures
+##### 2.2.2.2 Data Structures
 
-2.2.2.2.1 DtcUITranListElement
+###### 2.2.2.2.1 DtcUITranListElement
 
 The DtcUITranListElement structure is used to represent the tracking information for a transaction
 object as specified in [MS-DTCO], section 3.2.1.
@@ -2134,12 +1895,13 @@ Release: April 23, 2024
 
 20 / 73
 
-Enlistment field. If the transaction does not have a superior enlistment, the array MUST contain
+
+Enlistment field. If the transaction does not have a superior enlistment, the array MUST contain
 a null string.
 
-2.2.2.3  Enumerations
+##### 2.2.2.3 Enumerations
 
-2.2.2.3.1 TRACKING_STATUS
+###### 2.2.2.3.1 TRACKING_STATUS
 
 The TRACKING_STATUS enumeration specifies the status of a transaction (managed by the
 transaction manager) and is reported by the Management Server role in the dwStatus field of a
@@ -2206,7 +1968,8 @@ Release: April 23, 2024
 
 21 / 73
 
-[MS-DTCO]
+
+[MS-DTCO]
 Transaction
 States
 
@@ -2358,7 +2121,8 @@ Release: April 23, 2024
 
 22 / 73
 
-2.2.2.3.2 UPDATE_LIMIT
+
+###### 2.2.2.3.2 UPDATE_LIMIT
 
 The UPDATE_LIMIT enumeration specifies how often the Management Server transmits transaction
 tracking data and statistics to the Management Client (see section 3.3.6.1).
@@ -2382,7 +2146,7 @@ UPDATE_3:  A 3-second update period MUST be used.
 
 UPDATE_1:  A 1-second update period MUST be used.
 
-2.2.2.3.3 SHOW_LIMIT
+###### 2.2.2.3.3 SHOW_LIMIT
 
 The SHOW_LIMIT enumeration specifies the minimum age required of a transaction in order to be
 tracked by the Management Server and reported to the Management Client (see section 3.3.6.1).
@@ -2406,7 +2170,7 @@ SHOW_10_SEC:  A 10-second minimum transaction age MUST be used.
 
 SHOW_1_SEC:  A 1-second minimum transaction age MUST be used.
 
-2.2.2.3.4 TRACE_LEVEL
+###### 2.2.2.3.4 TRACE_LEVEL
 
 The TRACE_LEVEL enumeration specifies the level of traces the Management Server posts to the
 Management Client (see section 3.3.6.1).
@@ -2424,7 +2188,8 @@ Release: April 23, 2024
 
 23 / 73
 
-   TRACE_INFORMATION = 0x00000003,
+
+   TRACE_INFORMATION = 0x00000003,
    TRACE_ALL = 0x00000004
  } TRACE_LEVEL;
 
@@ -2444,7 +2209,7 @@ traced.
 
 TRACE_ALL:  This level indicates that all events MUST be traced.
 
-2.2.2.3.5 TRACE_SEVERITY_LEVEL
+###### 2.2.2.3.5 TRACE_SEVERITY_LEVEL
 
 The TRACE_SEVERITY_LEVEL enumeration specifies the severity level values for a trace event (see
 sections 2.2.2.4.1.7 and 2.2.2.4.1.8).
@@ -2468,9 +2233,9 @@ INFORMATION:  This level MUST be used to trace information about the normal prog
 
 significant operations.
 
-2.2.2.4  Connection Type Details
+##### 2.2.2.4 Connection Type Details
 
-2.2.2.4.1 CONNTYPE_TXUSER_DTCUIC
+###### 2.2.2.4.1 CONNTYPE_TXUSER_DTCUIC
 
 This connection type is used for transaction monitoring and defines the following messages:
 
@@ -2495,9 +2260,10 @@ Release: April 23, 2024
 
 24 / 73
 
-  MSG_DTCUIC_TRACESTRING
 
-2.2.2.4.1.1  MTAG_HELLO
+  MSG_DTCUIC_TRACESTRING
+
+###### 2.2.2.4.1.1 MTAG_HELLO
 
 The MTAG_HELLO message is sent by the Management Client to the Management Server in order to
 verify that the connection with the Management Server is established (if not, the sending fails; see
@@ -2525,7 +2291,7 @@ MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure (as spe
 DTCO], section 2.2.4.1). The dwUserMsgType field MUST be 0x00003006. The
 dwcbVarLenData field MUST be 0.
 
-2.2.2.4.1.2  MSG_DTCUIC_TRACELIMIT
+###### 2.2.2.4.1.2 MSG_DTCUIC_TRACELIMIT
 
 The MSG_DTCUIC_TRACELIMIT message is used by the Management Client to transmit a new trace
 level to the Management Server (see section 3.2.5.5).
@@ -2556,7 +2322,7 @@ dwcbVarLenData field MUST be equal to 4.
 
 dwTraceLimit (4 bytes): A TRACE_LEVEL value that indicates the requested trace level.
 
-2.2.2.4.1.3  MSG_DTCUIC_UPDATELIMIT
+###### 2.2.2.4.1.3 MSG_DTCUIC_UPDATELIMIT
 
 The MSG_DTCUIC_UPDATELIMIT message is used by the Management Client to request the use of a
 new update interval from the Management Server (see section 3.2.5.3).
@@ -2583,7 +2349,8 @@ Release: April 23, 2024
 
 25 / 73
 
-...
+
+...
 
 dwUpdateLimit
 
@@ -2594,7 +2361,7 @@ dwcbVarLenData field MUST be equal to 4.
 
 dwUpdateLimit (4 bytes): An UPDATE_LIMIT value that indicates the requested update interval.
 
-2.2.2.4.1.4  MSG_DTCUIC_SHOWLIMIT
+###### 2.2.2.4.1.4 MSG_DTCUIC_SHOWLIMIT
 
 The MSG_DTCUIC_SHOWLIMIT message is used by the Management Client to set the required
 minimum age of a transaction tracked by the Management Server (see section 3.2.5.4).
@@ -2627,7 +2394,7 @@ dwShowLimit (4 bytes): A SHOW_LIMIT value that indicates the requested minimum t
 
 age.
 
-2.2.2.4.1.5  MSG_DTCUIC_STATS
+###### 2.2.2.4.1.5 MSG_DTCUIC_STATS
 
 The MSG_DTCUIC_STATS message is sent by the Management Server to the Management Client to
 report current statistical information about transactions (see section 3.3.6.1).
@@ -2662,7 +2429,8 @@ Release: April 23, 2024
 
 26 / 73
 
-cInDoubt
+
+cInDoubt
 
 cHeuristic
 
@@ -2726,7 +2494,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cOpenMax (4 bytes): A 4-byte unsigned integer indicating the maximum value of the cOpen field
+
+cOpenMax (4 bytes): A 4-byte unsigned integer indicating the maximum value of the cOpen field
 
 since the transaction manager was started.
 
@@ -2783,7 +2552,7 @@ cSinglePhaseInDoubt (4 bytes): A 4-byte unsigned integer indicating the current 
 
 transactions that have entered the single-phase in-doubt state.
 
-2.2.2.4.1.6  MSG_DTCUIC_TRANLIST
+###### 2.2.2.4.1.6 MSG_DTCUIC_TRANLIST
 
 The MSG_DTCUIC_TRANLIST message is sent by the Management Server to the Management Client to
 report current information about the transactions it is tracking (see section 3.3.6.1).
@@ -2812,7 +2581,8 @@ Release: April 23, 2024
 
 28 / 73
 
-dwNumElements
+
+dwNumElements
 
 rgElements (variable)
 
@@ -2832,7 +2602,7 @@ rgElements (variable): This field MUST contain a list of DtcUITranListElement st
 number of structures in this field is limited superiorly by the maximum size of an OleTx
 Multiplexing Protocol message, as defined in [MS-CMP].
 
-2.2.2.4.1.7  MSG_DTCUIC_TRACE
+###### 2.2.2.4.1.7 MSG_DTCUIC_TRACE
 
 The MSG_DTCUIC_TRACE message is sent by the Management Server to the Management Client to
 trace a formatted message (see section 3.3.4.1).
@@ -2886,7 +2656,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Trace Source
 
@@ -2977,7 +2748,7 @@ process identifier value in hexadecimal notation.
 
 "Session Bind Failed due. Primary Timed Out while waiting for the secondary to Bind"
 
-2.2.2.4.1.8  MSG_DTCUIC_TRACESTRING
+###### 2.2.2.4.1.8 MSG_DTCUIC_TRACESTRING
 
 [MS-CMOM] - v20240423
 MSDTC Connection Manager: OleTx Management Protocol
@@ -2986,7 +2757,8 @@ Release: April 23, 2024
 
 30 / 73
 
-The MSG_DTCUIC_TRACESTRING message is sent by the Management Server to the Management
+
+The MSG_DTCUIC_TRACESTRING message is sent by the Management Server to the Management
 Client to trace an unformatted message (see section 3.3.4.2).
 
 0  1  2  3  4  5  6  7  8  9
@@ -3073,15 +2845,16 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 "Session Bind Failed due. Primary Timed Out while waiting for the secondary to Bind"
 
-2.2.3  Registry Keys and Values
+#### 2.2.3 Registry Keys and Values
 
-2.2.3.1  Enumerations
+##### 2.2.3.1 Enumerations
 
-2.2.3.1.1 RPC_NETWORK_PROTOCOL
+###### 2.2.3.1.1 RPC_NETWORK_PROTOCOL
 
 The RPC_NETWORK_PROTOCOL enumeration is used to specify the list of supported RPC network
 protocols.
@@ -3105,7 +2878,7 @@ UDP/IP:  The UDP/IP network protocol.
 
 LRPC:  The LRPC network protocol.
 
-2.2.3.2  Functional Registry Key Values
+##### 2.2.3.2 Functional Registry Key Values
 
 The functional registry key values control the functionality of the transaction manager. The registry
 path of the functional registry key with these key values, and the protocol used for accessing this key,
@@ -3171,7 +2944,8 @@ Release: April 23, 2024
 
 32 / 73
 
-2.2.3.3  Security Access Registry Key Values
+
+##### 2.2.3.3 Security Access Registry Key Values
 
 The security access registry key values control the access to the transaction manager endpoints. Both
 the registry path of the security access registry key with these key values, and the protocol used for
@@ -3252,7 +3026,7 @@ REG_DWORD  Any
 
 0x00000000
 
-2.2.3.4  RPC Security Registry Key Values
+##### 2.2.3.4 RPC Security Registry Key Values
 
 The RPC security registry key values control the supported RPC protocol sequences and the Security
 Level of the transaction manager endpoints. Both the registry path of the RPC security registry key
@@ -3304,7 +3078,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Name
+
+ Name
 
  Description
 
@@ -3334,7 +3109,7 @@ Value
 and
 0x00000000
 
-2.2.3.5  Transaction Manager Contact Registry Keys
+##### 2.2.3.5 Transaction Manager Contact Registry Keys
 
 The transaction manager contact registry keys contain contact identifier (CID) information required
 for accessing transaction manager endpoints. For all versions of the registry protocol, the registry path
@@ -3369,7 +3144,7 @@ HKEY_CLASSES_ROOT\CID\<MSDTCXATM_GUID>
 
 HKEY_CLASSES_ROOT\CID\<MSDTCTIPGW_GUID>
 
-2.2.3.5.1 Subkey Values for the "HKEY_CLASSES_ROOT\CID\<GUID>" Keys
+###### 2.2.3.5.1 Subkey Values for the "HKEY_CLASSES_ROOT\CID\<GUID>" Keys
 
 The following subkey MUST be present under a "HKEY_CLASSES_ROOT\CID\<GUID>" key:
 
@@ -3405,7 +3180,8 @@ Release: April 23, 2024
 
 34 / 73
 
-2.2.3.6  Transaction Manager Endpoint Registry Keys
+
+##### 2.2.3.6 Transaction Manager Endpoint Registry Keys
 
 The transaction manager endpoint registry keys contain the information required for the creation of
 transaction manager endpoints. The registry path of the transaction manager endpoint registry keys
@@ -3456,7 +3232,7 @@ in [MC-DTCXA] sections 3.2.3 and 3.4.3.
 Provider Name during initialization of the TIP Interoperability Provider Role as specified in [MS-
 DTCM] section 3.3.3.1.
 
-2.2.3.6.1 Subkey Values for the
+###### 2.2.3.6.1 Subkey Values for the
 
 "EndpointRegistryPath\MSDTCUIS_GUID"\CustomProperties Key
 
@@ -3497,7 +3273,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Description
 
@@ -3533,7 +3310,7 @@ representing the
 TRACE_LEVEL value in
 decimal notation.
 
-2.2.4  Service Names Used with the Service Control Manager Remote Protocol
+#### 2.2.4 Service Names Used with the Service Control Manager Remote Protocol
 
 Transport
 
@@ -3554,14 +3331,15 @@ Release: April 23, 2024
 
 36 / 73
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 This section contains common details for all protocol participants, as specified in sections 3.2 and
 3.3. Each protocol participant MUST conform to the details as specified in this section.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3601,11 +3379,11 @@ participant MUST support the existence of multiple instances of a single connect
 (sharing the same Connection ID and related to the same Session object). A protocol participant MUST
 also support initiating multiple concurrent sessions to a number of different endpoints.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 As specified in [MS-DTCO] section 3.1.3.
 
@@ -3616,30 +3394,31 @@ Release: April 23, 2024
 
 37 / 73
 
-3.1.4  Protocol Versioning Details
+
+#### 3.1.4 Protocol Versioning Details
 
 The versioning details of the OleTx Transports Protocol messages are specified in [MS-DTCO] section
 3.1.4.
 
-3.1.5  Higher-Layer Triggered Events
+#### 3.1.5 Higher-Layer Triggered Events
 
 None.
 
-3.1.6  Message Processing Events and Sequencing Rules
+#### 3.1.6 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.7  Timer Events
+#### 3.1.7 Timer Events
 
 None.
 
-3.1.8  Other Local Events
+#### 3.1.8 Other Local Events
 
 As specified in [MS-DTCO] section 3.1.8.
 
-3.2  Management Client Role
+### 3.2 Management Client Role
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3668,7 +3447,7 @@ the Management Client communicates.
 
 cluster resource on the Management Server.
 
-3.2.1.1  CONNTYPE_TXUSER_DTCUIC Initiator States
+##### 3.2.1.1 CONNTYPE_TXUSER_DTCUIC Initiator States
 
 The Management Client MUST act as an initiator for the CONNTYPE_TXUSER_DTCUIC Connection
 Type. In this role, the Management Client MUST provide support for the following states:
@@ -3684,7 +3463,8 @@ Release: April 23, 2024
 
 38 / 73
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-CMOM].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -3698,13 +3478,13 @@ This figure depicts the relationship between the CONNTYPE_TXUSER_DTCUIC Initiato
 
 Figure 5: Relationship between the CONNTYPE_TXUSER_ DTCUI initiator states
 
-3.2.1.1.1 Idle
+###### 3.2.1.1.1 Idle
 
 This is the initial state. The following event is processed in this state:
 
   Connecting to the Management Server.
 
-3.2.1.1.2 Active
+###### 3.2.1.1.2 Active
 
 The following events are processed in this state:
 
@@ -3735,21 +3515,22 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Receiving transaction statistics in MSG_DTCUIC_TRACESTRING, MSG_DTCUIC_TRACE,
+
+  Receiving transaction statistics in MSG_DTCUIC_TRACESTRING, MSG_DTCUIC_TRACE,
 
 MSG_DTCUIC_STATS or MSG_DTCUIC_TRANLIST messages.
 
   Disconnecting from the Management Server.
 
-3.2.1.1.3 Ended
+###### 3.2.1.1.3 Ended
 
 This is the final state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a Management Client is initialized:
 
@@ -3804,7 +3585,7 @@ The Management Connection field MUST be assigned a null value.
 
 The Management Server Cluster Resource ID field MUST be assigned a null value.
 
-3.2.4  Protocol Versioning Details
+#### 3.2.4 Protocol Versioning Details
 
 The following sections specify how to determine the version of the registry protocol and the value of
 the cluster resource ID.
@@ -3816,7 +3597,8 @@ Release: April 23, 2024
 
 40 / 73
 
-3.2.4.1  Determining the Version of the Registry Protocol
+
+##### 3.2.4.1 Determining the Version of the Registry Protocol
 
 If the Management Client role implementation has an existing MSDTC Connection Manager: OleTx
 Transports Protocol [MS-CMPO] session with the Management Server role implementation, the
@@ -3964,7 +3746,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwLevelThreeAccepted
+
+dwLevelThreeAccepted
 
 HKCR\CID.Local
 exists?
@@ -4033,7 +3816,7 @@ connection can be established, then the version of the registry protocol is 5.
 
   Otherwise, the version of the registry protocol is 4.
 
-3.2.4.2  Determining the Management Server Cluster Resource ID
+##### 3.2.4.2 Determining the Management Server Cluster Resource ID
 
 After the version of the registry protocol has been determined, the Management Client role
 implementation MUST use the following specified mechanisms to determine the Management Server
@@ -4063,7 +3846,8 @@ Release: April 23, 2024
 
 42 / 73
 
-
+
+
 
 If the "HKEY_LOCAL_MACHINE\Cluster\Resources\<ResID>\DataPointer" key exists, then
 the Management Server Cluster Resource ID is <ResID>.
@@ -4093,13 +3877,13 @@ GUID>">" key exists, then the Management Server Cluster Resource ID is <ResID>.
 
   Otherwise, continue enumerating the keys as specified in the previous step.
 
-3.2.5  Higher-Layer Triggered Events
+#### 3.2.5 Higher-Layer Triggered Events
 
 The Management Client MUST be prepared to process a set of events triggered by the higher-layer
 business logic, as specified in the following sections. The details of the higher-layer business logic
 are implementation-specific and not covered in this specification.
 
-3.2.5.1  Connecting to the Management Server
+##### 3.2.5.1 Connecting to the Management Server
 
 If the higher-layer business logic decides to connect to the Management Server, the Management
 Client MUST perform the following actions:
@@ -4113,7 +3897,7 @@ field as the partner's Name Object.
 
   Set the state of the Connection to Active.
 
-3.2.5.2  Testing the Connection
+##### 3.2.5.2 Testing the Connection
 
 If the higher-layer business logic decides to send an MTAG_HELLO message to test the
 connection with the Management Server, the Management Client MUST perform the following
@@ -4138,7 +3922,8 @@ Release: April 23, 2024
 
 43 / 73
 
-Because no response is expected from the server, the most likely cause of failure when
+
+Because no response is expected from the server, the most likely cause of failure when
 sending this message would be related to problems on the client side.
 
 
@@ -4151,7 +3936,7 @@ If the send fails:
 
   Set the state of the Connection to Ended.
 
-3.2.5.3  Setting the Update Limit on the Management Server
+##### 3.2.5.3 Setting the Update Limit on the Management Server
 
 If the higher-layer business logic decides to set the update limit on the Management Server, the
 Management Client MUST perform the following actions:
@@ -4164,7 +3949,7 @@ Management Connection field:
 
 The dwUpdateLimit field MUST be set to the provided value.
 
-3.2.5.4  Setting the Show Limit on the Management Server
+##### 3.2.5.4 Setting the Show Limit on the Management Server
 
 If the higher-layer business logic decides to set the show limit on the Management Server, the
 Management Client MUST perform the following actions:
@@ -4177,7 +3962,7 @@ Connection field:
 
 The dwShowLimit field MUST be set to the provided value.
 
-3.2.5.5  Setting the Trace Limit on the Management Server
+##### 3.2.5.5 Setting the Trace Limit on the Management Server
 
 If the higher-layer business logic decides to set the trace limit on the Management Server, the
 Management Client MUST perform the following actions:
@@ -4190,7 +3975,7 @@ Connection field:
 
 The dwTraceLimit field MUST be set to the provided value.
 
-3.2.5.6  Disconnecting from the Management Server
+##### 3.2.5.6 Disconnecting from the Management Server
 
 If the higher-layer business logic decides to disconnect from the Management Server, the
 Management Client MUST perform the following actions:
@@ -4201,7 +3986,7 @@ Management Client MUST perform the following actions:
 
   Set the Management Connection field to null.
 
-3.2.5.7  Reading from a Registry Key of the Management Server
+##### 3.2.5.7 Reading from a Registry Key of the Management Server
 
 If the higher-layer business logic reads a value stored in a registry key defined in section 3.3.1.2, the
 Management Client MUST perform the following actions:
@@ -4215,7 +4000,8 @@ Release: April 23, 2024
 
 44 / 73
 
-
+
+
 
 Establish a Windows Remote Registry Protocol [MS-RRP] connection to the remote machine using
 the Management Server Name (section 3.3.1).
@@ -4240,7 +4026,7 @@ section 3.1.5.17).
 
 For more information on how to use [MS-RRP] to access registry keys, refer to section 4.2.1.
 
-3.2.5.8  Writing to a Registry Key of the Management Server
+##### 3.2.5.8 Writing to a Registry Key of the Management Server
 
 If the higher-layer business logic writes to a value stored in a registry key defined in section 3.3.1.2,
 the Management Client MUST perform the following actions:
@@ -4270,15 +4056,15 @@ RRP] section 3.1.5.15).
 
 For more information on how to use [MS-RRP] to access registry keys, refer to section 4.2.1.
 
-3.2.6  Message Processing Events and Sequencing Rules
+#### 3.2.6 Message Processing Events and Sequencing Rules
 
-3.2.6.1  CONNTYPE_TXUSER_DTCUIC as Initiator
+##### 3.2.6.1 CONNTYPE_TXUSER_DTCUIC as Initiator
 
 For all messages received in this Connection type, the Management Client MUST process the
 message as specified in [MS-DTCO], section 3.1. The Management Client MUST additionally follow the
 processing rules specified in the following sections.
 
-3.2.6.1.1 Receiving an MSG_DTCUIC_TRACESTRING, MSG_DTCUIC_TRACE,
+###### 3.2.6.1.1 Receiving an MSG_DTCUIC_TRACESTRING, MSG_DTCUIC_TRACE,
 
 MSG_DTCUIC_STATS, or MSG_DTCUIC_TRANLIST Message
 
@@ -4297,22 +4083,23 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.6.1.2 Connection Disconnected
+
+###### 3.2.6.1.2 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCUIC Connection is disconnected, the Management Client MUST set
 the Management Connection field to a null value.
 
-3.2.7  Timer Events
+#### 3.2.7 Timer Events
 
 None.
 
-3.2.8  Other Local Events
+#### 3.2.8 Other Local Events
 
 None.
 
-3.3  Management Server Role
+### 3.3 Management Server Role
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4371,7 +4158,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Heuristic: A 4-byte reserved field that MUST be set to 0x00000000.
+
+  Heuristic: A 4-byte reserved field that MUST be set to 0x00000000.
 
   Open Max Transactions: A 4-byte unsigned integer indicating the maximum value of the Open
 
@@ -4426,11 +4214,11 @@ the number of seconds that elapsed from a baseline time to when the service was 
 
 that have entered the single-phase in-doubt state.
 
-3.3.1.1  Connection States
+##### 3.3.1.1 Connection States
 
 The Management Server MUST provide the following states for its supported Connection Types.
 
-3.3.1.1.1 CONNTYPE_TXUSER_DTCUIC Acceptor States
+###### 3.3.1.1.1 CONNTYPE_TXUSER_DTCUIC Acceptor States
 
 The Management Server MUST act as an acceptor for the CONNTYPE_TXUSER_DTCUIC Connection
 Type. In this role, the Management Server MUST provide support for the following states:
@@ -4454,15 +4242,16 @@ Release: April 23, 2024
 
 47 / 73
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-CMOM].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
 Figure 6: Relationship between the CONNTYPE_TXUSER_ DTCUI acceptor states
 
-3.3.1.1.1.1
+###### 3.3.1.1.1.1 Idle
 
-Idle
+
 
 This is the initial state. The following event is processed in this state:
 
@@ -4470,7 +4259,7 @@ This is the initial state. The following event is processed in this state:
 
 Incoming Connection Request event.
 
-3.3.1.1.1.2  Active
+###### 3.3.1.1.1.2 Active
 
 The following events are processed in this state:
 
@@ -4490,7 +4279,7 @@ Trace Event
 
 Trace String Event
 
-3.3.1.1.1.3  Ended
+###### 3.3.1.1.1.3 Ended
 
 This is the final state.
 
@@ -4501,7 +4290,8 @@ Release: April 23, 2024
 
 48 / 73
 
-3.3.1.2  Registry Keys (Public)
+
+##### 3.3.1.2 Registry Keys (Public)
 
 The Management Server uses the Windows registry to persistently store and retrieve the registry keys
 and values specified in section 2.2.3, and the persistent store is shared with [MS-CMPO], [MS-DTCO],
@@ -4524,7 +4314,7 @@ the abstract data model elements until the transaction manager service is stoppe
 Sections 3.3.1.2.1, 3.3.1.2.2, 3.3.1.2.3, and 3.3.1.2.4 specify the registry keys and the abstract data
 model elements loaded from each key.
 
-3.3.1.2.1 Functional Registry Keys
+###### 3.3.1.2.1 Functional Registry Keys
 
 If a key value in the following table is required by the registry protocol version, as specified in section
 2.2.1.2.1, then the key value, if present, MUST be of the correct type and MUST be set to a legal
@@ -4559,7 +4349,7 @@ Allow XA Security Flag as specified in [MS-DTCO] section 3.2.1. If the key value
 0x00000000 or is missing, then the flags MUST be set to FALSE, otherwise the flags
 MUST be set to TRUE.
 
-3.3.1.2.2 Security Access Registry Keys
+###### 3.3.1.2.2 Security Access Registry Keys
 
  If a key value in the following table is required by the registry protocol version as specified in section
 2.2.1.2.1, then the key value MUST be present, MUST be of the correct type and MUST be set to a
@@ -4573,7 +4363,8 @@ Release: April 23, 2024
 
 49 / 73
 
-Key value
+
+Key value
 
 Abstract Data Model element
 
@@ -4622,7 +4413,7 @@ Allow Remote Clients Security Flag specified in [MS-DTCO] section 3.2.1.
 If the key value is 0x00000000, then the flag MUST be set to FALSE,
 otherwise the flag MUST be set to TRUE.
 
-3.3.1.2.3 RPC Security Registry Keys
+###### 3.3.1.2.3 RPC Security Registry Keys
 
 If a key value in the following table is required by the registry protocol version as specified in section
 2.2.1.2.1, then the key value, if present, MUST be of the correct type and MUST be set to a legal
@@ -4670,7 +4461,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Key value
+
+Key value
 
 Abstract Data Model element
 
@@ -4688,7 +4480,7 @@ a single entry specifying TCP/IP.
 "Mutual Authentication", "Incoming Authentication", and "No Security" are specified in [MS-CMPO],
 section 3.2.1.1.
 
-3.3.1.2.4 "EndpointRegistryPath\MSDTCUIS_GUID\CustomProperties" Registry Key
+###### 3.3.1.2.4 "EndpointRegistryPath\MSDTCUIS_GUID\CustomProperties" Registry Key
 
 If a "CustomProperties" subkey value is present in the registry path, as specified in section 2.2.3.6,
 then the subkey value MUST be of the correct type and MUST be set to a legal value. The registry path
@@ -4714,11 +4506,11 @@ The Trace Limit field of the Management Server, as described in section 3.3.1.
 
 If the key value is missing, then the Trace Limit MUST be set to 0x00000002.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The Management Server MUST provide the following timers:
 
-3.3.2.1  Update Timer
+##### 3.3.2.1 Update Timer
 
 This timer MUST be created and started during initialization of the Management Server.
 
@@ -4728,7 +4520,7 @@ milliseconds.
 The minimum and maximum values of the timer are implementation-specific and MUST be greater
 than zero.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 When the Management Server role is initialized, it MUST perform the following actions:
 
@@ -4746,7 +4538,8 @@ Release: April 23, 2024
 
 51 / 73
 
-implementation (as specified in [MS-CMPO] section 3.2.3). The initialization process of the
+
+implementation (as specified in [MS-CMPO] section 3.2.3). The initialization process of the
 underlying OleTx Transports Protocol is specified in section 2.1.2.
 
 The Show Limit field MUST be loaded from the "DAC\ShowLimit" custom property of the
@@ -4776,7 +4569,7 @@ The Update Timer MUST be created and started.
 
 
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The Management Server MUST be prepared to process a set of events triggered by the higher-layer
 business logic, as specified in the following sections.
@@ -4784,7 +4577,7 @@ business logic, as specified in the following sections.
 The details of the higher-layer business logic are implementation-specific and not covered in this
 specification.
 
-3.3.4.1  Trace
+##### 3.3.4.1 Trace
 
 This event MUST be signaled with the following arguments:
 
@@ -4849,11 +4642,12 @@ Release: April 23, 2024
 
 52 / 73
 
-
+
+
 
 The szParam field of the message MUST be null.
 
-3.3.4.2  Trace String
+##### 3.3.4.2 Trace String
 
 This event MUST be signaled with the following arguments:
 
@@ -4887,7 +4681,7 @@ The dwSource field MUST be set to the value of the Source argument.
 
 The szMsg field of the message MUST be set to the MessageString argument.
 
-3.3.4.3  Update Transaction Stats
+##### 3.3.4.3 Update Transaction Stats
 
 This event MUST be signaled with the following arguments:
 
@@ -4959,7 +4753,8 @@ Release: April 23, 2024
 
 53 / 73
 
-
+
+
 
 
 
@@ -5057,7 +4852,7 @@ The Time Stamp field MUST be set to the value of the dwTimestamp argument.
 The Single Phase In Doubt field MUST be set to the value of the cSinglePhaseInDoubt
 argument.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The Show Limit, Update Limit, and Trace Limit Abstract Data Model data elements that these
 messages modify are initialized during Management Server role initialization (see section 3.3.3).
@@ -5069,19 +4864,20 @@ Release: April 23, 2024
 
 54 / 73
 
-3.3.5.1  CONNTYPE_TXUSER_DTCUIC as Acceptor
+
+##### 3.3.5.1 CONNTYPE_TXUSER_DTCUIC as Acceptor
 
 For all messages received in this Connection Type, the Management Server MUST process the
 message as specified in [MS-DTCO], section 3.1. The Management Server MUST also follow the
 processing rules specified in the following sections.
 
-3.3.5.1.1 Receiving an MTAG_HELLO Message
+###### 3.3.5.1.1 Receiving an MTAG_HELLO Message
 
 When the Management Server receives an MTAG_HELLO message, it MUST ignore it. This message is
 sent by the client just to see if sending it fails or succeeds, which means the connection is down or
 up, respectively.
 
-3.3.5.1.2 Receiving an MSG_DTCUIC_UPDATELIMIT Message
+###### 3.3.5.1.2 Receiving an MSG_DTCUIC_UPDATELIMIT Message
 
 When the Management Server receives an MSG_DTCUIC_UPDATELIMIT message, it MUST perform the
 following actions:
@@ -5096,7 +4892,7 @@ If the connection state is Active:
 
 in [MS-DTCO], section 3.1.6.
 
-3.3.5.1.3 Receiving an MSG_DTCUIC_SHOWLIMIT Message
+###### 3.3.5.1.3 Receiving an MSG_DTCUIC_SHOWLIMIT Message
 
 When the Management Server receives an MSG_DTCUIC_SHOWLIMIT message, it MUST perform the
 following actions:
@@ -5111,7 +4907,7 @@ If the connection state is Active:
 
 in [MS-DTCO], section 3.1.6.
 
-3.3.5.1.4 Receiving an MSG_DTCUIC_TRACELIMIT Message
+###### 3.3.5.1.4 Receiving an MSG_DTCUIC_TRACELIMIT Message
 
 When the Management Server receives an MSG_DTCUIC_TRACELIMIT message, it MUST perform the
 following actions:
@@ -5126,7 +4922,7 @@ If the connection state is Active:
 
 in [MS-DTCO], section 3.1.6.
 
-3.3.5.1.5 Connection Disconnected
+###### 3.3.5.1.5 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCUIC connection is disconnected, the Management Server MUST do
 the following:
@@ -5140,9 +4936,10 @@ Release: April 23, 2024
 
 55 / 73
 
-3.3.6  Timer Events
 
-3.3.6.1  Update Timer
+#### 3.3.6 Timer Events
+
+##### 3.3.6.1 Update Timer
 
 When this timer expires, the Management Server MUST perform the following actions:
 
@@ -5219,7 +5016,8 @@ Release: April 23, 2024
 
 56 / 73
 
-For each transaction object in the Tracked Transaction List:
+
+For each transaction object in the Tracked Transaction List:
 
 
 
@@ -5269,11 +5067,11 @@ rgElements: The list of DtcUITranListElement structures.
 
   Set the Update Timer's period to the value specified by the Update Limit and reset the timer.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 A Management Server MUST be prepared to process the local events defined in the following sections.
 
-3.3.7.1  Incoming Connection Request
+##### 3.3.7.1 Incoming Connection Request
 
 This event MUST be signaled by the underlying OleTx Multiplexing Protocol transport layer when a
 MTAG_CONNECTION_REQ message is received (as specified in [MS-CMP] section 3.1.5.5). The event
@@ -5298,7 +5096,8 @@ Release: April 23, 2024
 
 57 / 73
 
-
+
+
 
 If Allow Remote Administration flag is true or the request is from the same machine  (The
 Management Server determines this by comparing the Hostname fields of the Management
@@ -5319,7 +5118,7 @@ argument, and add the extended connection object to the Management Connection Li
 The Management Server MUST reject CONNTYPE_TXUSER_DTCUIC as specified in [MS-
 CMP] section 3.1.5.5, with the rejection Reason set to 0x80070005.
 
-3.3.7.2  Service Control Events
+##### 3.3.7.2 Service Control Events
 
 The Management Server MUST respond to Service Control Manager (SCM) [MS-SCMR] requests to
 perform the following actions:
@@ -5344,7 +5143,8 @@ Release: April 23, 2024
 
 58 / 73
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 These protocol examples assume that an OleTx transports session, as specified in [MS-CMPO], has
 already been established between the two protocol participants.
@@ -5355,13 +5155,13 @@ specified in [MS-CMPO]). In these examples, messages are sent from one protocol 
 another by submitting a MESSAGE_PACKET (as specified in [MS-CMP] section 2.2.2) to the underlying
 OleTx multiplexing layer (as specified in [MS-CMP]).
 
-4.1  Simple Management Client Scenario
+### 4.1 Simple Management Client Scenario
 
 This scenario exhibits how a Management Client creates a connection to a Management Server. The
 scenario begins by the Management Client establishing a transport session with a Management Server
 and negotiating its connection resources.
 
-4.1.1  Beginning a Management Client
+#### 4.1.1 Beginning a Management Client
 
 This packet sequence is initiated by starting a connection on a transport session between a
 Management Client and a Management Server.
@@ -5444,7 +5244,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the Management Server's Update Timer expires, the Management Server sends a
+
+When the Management Server's Update Timer expires, the Management Server sends a
 MSG_DTCUIC_STATS user message to the Management Client. In this message, the Management
 Server reports that two transactions are open, seventeen transactions have been committed, and as
 many as eight transactions were open at the same time since the transaction manager was started
@@ -5611,7 +5412,8 @@ Release: April 23, 2024
 
 60 / 73
 
-The Management Server then sends an MSG_DTCUIC_TRANLIST user message to the Management
+
+The Management Server then sends an MSG_DTCUIC_TRANLIST user message to the Management
 Client if there are any open transactions older than specified by the Show Limit value. In this
 message, the Management Server reports the Transaction Id, the Isolation Level, the description, the
 status and Parent name for two (2) open transactions. If there are no open transactions older than
@@ -5728,7 +5530,8 @@ Release: April 23, 2024
 
 61 / 73
 
-Field
+
+Field
 
 Value
 
@@ -5791,7 +5594,7 @@ szParent[16]
 The Management Server continues to send these messages until the Management Client closes the
 connection by initiating the disconnect sequence.
 
-4.1.2  Adjusting the Update Limit
+#### 4.1.2 Adjusting the Update Limit
 
 While the management connection is running, the Management Client can adjust the Management
 Server's Update Limit value by sending an MSG_DTCUIC_UPDATELIMIT user message to the
@@ -5832,7 +5635,8 @@ Release: April 23, 2024
 
 62 / 73
 
-Field
+
+Field
 
 Value
 
@@ -5853,7 +5657,7 @@ the new value. After the Update Timer notifies the Management Server to send tra
 and transaction list information, the timer will wait five seconds before notifying the server to send
 management data to the client.
 
-4.1.3  Adjusting the Show Limit
+#### 4.1.3 Adjusting the Show Limit
 
 To adjust the Show Limit value, the Management Client sends an MSG_DTCUIC_SHOWLIMIT user
 message to the Management Server, specifying the Show Limit value. In this message, the
@@ -5902,12 +5706,12 @@ the new value. When the Update Timer notifies the Management Server to send tran
 and transaction list information, the timer will only send transaction list information of transactions
 that have been open for ten (10) seconds or more.
 
-4.2  Enabling XA Transactions Scenario
+### 4.2 Enabling XA Transactions Scenario
 
 This scenario exhibits how a Management Client enables XA transactions on a remote machine;
 generally this scenario would be initiated by higher-layer logic.
 
-4.2.1  Setting the XaTransactions Registry Key on the Remote Machine
+#### 4.2.1 Setting the XaTransactions Registry Key on the Remote Machine
 
 The Management Client enables XA transactions on a remote machine by setting the
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSDTC\Security\XaTransactions registry value on the
@@ -5927,7 +5731,8 @@ Release: April 23, 2024
 
 63 / 73
 
- phKey      = NULL
+
+ phKey      = NULL
 
 When the Windows Remote Registry Protocol server receives this request from the client, the server
 opens the handle to the root key HKEY_LOCAL_MACHINE with write access and returns 0
@@ -5988,16 +5793,17 @@ Release: April 23, 2024
 
 64 / 73
 
-When the Windows Remote Registry Protocol server receives this request from the client, the server
+
+When the Windows Remote Registry Protocol server receives this request from the client, the server
 closes the registry key handle and returns 0 (ERROR_SUCCESS).
 
-4.2.2  Restarting the Transaction Manager on the Remote Machine
+#### 4.2.2 Restarting the Transaction Manager on the Remote Machine
 
 Because the XaTransactions registry value is only read during the initialization of the transaction
 manager, the remote transaction manager has to be restarted by using the Service Control Manager
 Remote Protocol [MS-SCMR].
 
-4.2.2.1  Stopping the Transaction Manager Service
+##### 4.2.2.1 Stopping the Transaction Manager Service
 
 To restart the transaction manager on the remote machine, the Management Client established a
 Service Control Manager Remote Protocol [MS-SCMR] connection with the remote machine (for
@@ -6051,7 +5857,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             parameter of the previous server response.
+
+             parameter of the previous server response.
 
 On receiving this request from the client, the server closes the handle to the service and returns from
 the method with an error code of 0.
@@ -6065,7 +5872,7 @@ the parameters.
 On receiving this request from the client, the server closes the handle to the open SCM database and
 returns from the method with an error code of 0.
 
-4.2.2.2  Starting the Transaction Manager Service
+##### 4.2.2.2 Starting the Transaction Manager Service
 
 To restart the transaction manager on the remote machine, the Management Client established a
 Service Control Manager Remote Protocol [MS-SCMR] connection with the remote machine (for
@@ -6113,7 +5920,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client closes the service handle by sending an RCloseServiceHandle call with the following
+
+The client closes the service handle by sending an RCloseServiceHandle call with the following
 values for the parameters.
 
  hScHandle = Handle returned in the lpScHandle
@@ -6138,7 +5946,8 @@ Release: April 23, 2024
 
 67 / 73
 
-5  Security
+
+## 5 Security
 
 This protocol employs the security mechanism of the underlying transport infrastructure specified in
 [MS-CMP] and [MS-CMPO]. Because the information exchanged in messages by this protocol can
@@ -6158,11 +5967,11 @@ follows:
 Full access (KEY_ALL_ACCESS) needs to be granted to BUILTIN_ADMINISTRATORS,
 LOCAL_SYSTEM, and the MSDTC service account.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6173,7 +5982,8 @@ Release: April 23, 2024
 
 68 / 73
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6242,7 +6052,8 @@ MSDTC Connection Manager: OleTx Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<3> Section 2.2.3.1.1: SPX is only supported on Windows NT 4.0 Option Pack, Windows 2000,
+
+<3> Section 2.2.3.1.1: SPX is only supported on Windows NT 4.0 Option Pack, Windows 2000,
 Windows XP, and Windows Server 2003.
 
 <4> Section 2.2.3.6.1: Subkey values for the
@@ -6277,7 +6088,8 @@ Release: April 23, 2024
 
 70 / 73
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6321,7 +6133,8 @@ Release: April 23, 2024
 
 71 / 73
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6457,7 +6270,8 @@ Server
 
 72 / 73
 
-   higher-layer triggered events 52
+
+   higher-layer triggered events 52
    initialization 51
    local events 57
    message processing 54

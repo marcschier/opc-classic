@@ -63,7 +63,8 @@ Release: January 13, 2025
 
 1 / 47
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: January 13, 2025
 
 2 / 47
 
-Date
+
+Date
 
 Revision
 History
@@ -552,226 +554,85 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-Table of Contents
 
-1.5
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+    - [1.4.1 NTLM Logon](#141-ntlm-logon)
+    - [1.4.2 Kerberos PAC Validation](#142-kerberos-pac-validation)
+    - [1.4.3 Digest Validation Protocol](#143-digest-validation-protocol)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 NTLM Logon](#151-ntlm-logon)
+    - [1.5.2 Kerberos PAC Validation](#152-kerberos-pac-validation)
+    - [1.5.3 Digest Validation Protocol](#153-digest-validation-protocol)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+    - [1.6.1 NTLM Logon](#161-ntlm-logon)
+    - [1.6.2 Kerberos PAC Validation](#162-kerberos-pac-validation)
+    - [1.6.3 Digest Validation Protocol](#163-digest-validation-protocol)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 NTLM Logon](#171-ntlm-logon)
+    - [1.7.2 Kerberos PAC Validation](#172-kerberos-pac-validation)
+    - [1.7.3 Digest Validation Protocol](#173-digest-validation-protocol)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+    - [1.8.1 NTLM Logon](#181-ntlm-logon)
+    - [1.8.2 Kerberos PAC Validation](#182-kerberos-pac-validation)
+    - [1.8.3 Digest Validation Protocol](#183-digest-validation-protocol)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NTLM Logon Message Syntax](#221-ntlm-logon-message-syntax)
+    - [2.2.2 Kerberos Ticket Validation Message Syntax](#222-kerberos-ticket-validation-message-syntax)
+    - [2.2.3 Kerberos Ticket Validation Response Message Syntax](#223-kerberos-ticket-validation-response-message-syntax)
+    - [2.2.4 Kerberos PAC Validation Message Syntax](#224-kerberos-pac-validation-message-syntax)
+      - [2.2.4.1 KERB_VERIFY_PAC_REQUEST Message](#2241-kerbverifypacrequest-message)
+    - [2.2.5 Digest Validation Message Syntax](#225-digest-validation-message-syntax)
+      - [2.2.5.1 DIGEST_VALIDATION_REQ Message](#2251-digestvalidationreq-message)
+      - [2.2.5.2 DIGEST_VALIDATION_RESP Message](#2252-digestvalidationresp-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 NTLM Logon Details](#31-ntlm-logon-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 NTLM Interactive Logon](#3151-ntlm-interactive-logon)
+      - [3.1.5.2 NTLM Network Logon](#3152-ntlm-network-logon)
+        - [3.1.5.2.1 Verifying Responses with Sub-Authentication Packages](#31521-verifying-responses-with-sub-authentication-packages)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Kerberos PAC Validation Details](#32-kerberos-pac-validation-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Generating a NETLOGON_TICKET_LOGON_INFO Message](#3251-generating-a-netlogonticketlogoninfo-message)
+      - [3.2.5.2 Kerberos Client Prepares Request](#3252-kerberos-client-prepares-request)
+      - [3.2.5.3 Processing a NETLOGON_TICKET_LOGON_INFO Message](#3253-processing-a-netlogonticketlogoninfo-message)
+    - [3.3.5 and following. The KDC returns validation information in the form of a](#335-and-following-the-kdc-returns-validation-information-in-the-form-of-a)
+      - [3.3.5.1 Generating the DIGEST_VALIDATION_REQ Message](#3351-generating-the-digestvalidationreq-message)
+      - [3.3.5.2 Request Processing and Generating DIGEST_VALIDATION_RESP Message](#3352-request-processing-and-generating-digestvalidationresp-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 NTLM Pass-Through Authentication](#41-ntlm-pass-through-authentication)
+  - [4.2 Kerberos PAC Validation](#42-kerberos-pac-validation)
+  - [4.3 Digest Validation Protocol](#43-digest-validation-protocol)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3
-1.4
-
-1.2.1
-1.2.2
-
-1.4.1
-1.4.2
-1.4.3
-
-1.5.1
-1.5.2
-1.5.3
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-NTLM Logon ............................................................................................... 11
-Kerberos PAC Validation .............................................................................. 11
-Digest Validation Protocol ............................................................................ 11
-Prerequisites/Preconditions ............................................................................... 11
-NTLM Logon ............................................................................................... 12
-Kerberos PAC Validation .............................................................................. 12
-Digest Validation Protocol ............................................................................ 12
-Applicability Statement ..................................................................................... 12
-NTLM Logon ............................................................................................... 12
-Kerberos PAC Validation .............................................................................. 12
-Digest Validation Protocol ............................................................................ 13
-Versioning and Capability Negotiation ................................................................. 13
-NTLM Logon ............................................................................................... 13
-Kerberos PAC Validation .............................................................................. 13
-Digest Validation Protocol ............................................................................ 13
-Vendor-Extensible Fields ................................................................................... 13
-NTLM Logon ............................................................................................... 13
-Kerberos PAC Validation .............................................................................. 13
-Digest Validation Protocol ............................................................................ 13
-Standards Assignments ..................................................................................... 13
-
-1.6.1
-1.6.2
-1.6.3
-
-1.8.1
-1.8.2
-1.8.3
-
-1.7.1
-1.7.2
-1.7.3
-
-1.6
-
-1.7
-
-1.8
-
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-NTLM Logon Message Syntax ....................................................................... 14
-Kerberos Ticket Validation Message Syntax .................................................... 14
-Kerberos Ticket Validation Response Message Syntax...................................... 14
-Kerberos PAC Validation Message Syntax ....................................................... 15
-KERB_VERIFY_PAC_REQUEST Message .................................................... 15
-Digest Validation Message Syntax ................................................................. 15
-DIGEST_VALIDATION_REQ Message ....................................................... 15
-DIGEST_VALIDATION_RESP Message ...................................................... 20
-
-2.2.5.1
-2.2.5.2
-
-2.2.4.1
-
-2.2.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 23
-NTLM Logon Details .......................................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-NTLM Interactive Logon ......................................................................... 26
-NTLM Network Logon ............................................................................. 27
-Verifying Responses with Sub-Authentication Packages ........................ 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Kerberos PAC Validation Details ......................................................................... 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-
-3.1.5.1
-3.1.5.2
-
-3.2.1
-3.2.2
-
-3.1.6
-3.1.7
-
-3.1.5.2.1
-
-3.2
-
-[MS-APDS] - v20250113
-Authentication Protocol Domain Support
-Copyright © 2025 Microsoft Corporation
-Release: January 13, 2025
-
-4 / 47
-
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-Generating a NETLOGON_TICKET_LOGON_INFO Message .......................... 30
-Kerberos Client Prepares Request ........................................................... 31
-Processing a NETLOGON_TICKET_LOGON_INFO Message ........................... 31
-Kerberos Client Receives Reply ............................................................... 32
-Generating a KERB_VERIFY_PAC_REQUEST Message ................................. 32
-Processing a KERB_VERIFY_PAC_REQUEST Message ................................. 32
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-Digest Validation Details ................................................................................... 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 33
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-Message Processing Events and Sequencing Rules .......................................... 34
-Generating the DIGEST_VALIDATION_REQ Message .................................. 34
-Request Processing and Generating DIGEST_VALIDATION_RESP Message ... 34
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-
-3.3.5.1
-3.3.5.2
-
-3.3.6
-3.3.7
-
-3.2.6
-3.2.7
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-4  Protocol Examples ................................................................................................. 36
-NTLM Pass-Through Authentication .................................................................... 36
-Kerberos PAC Validation .................................................................................... 37
-Digest Validation Protocol .................................................................................. 38
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 40
-Security Considerations for Implementers ........................................................... 40
-Index of Security Parameters ............................................................................ 40
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 41
-
-7  Change Tracking .................................................................................................... 44
-
-8  Index ..................................................................................................................... 45
-
-[MS-APDS] - v20250113
-Authentication Protocol Domain Support
-Copyright © 2025 Microsoft Corporation
-Release: January 13, 2025
-
-5 / 47
-
-1  Introduction
+## 1 Introduction
 
 Authentication Protocol Domain Support (APDS) specifies the required communication between a
 server and a domain controller (DC) that uses Netlogon interfaces to complete an authentication
@@ -798,7 +659,7 @@ Authentication Protocol Domain Support, are specified in this document.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -843,7 +704,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-domain: A set of users and computers sharing a common namespace and management
+
+domain: A set of users and computers sharing a common namespace and management
 
 infrastructure. At least one computer member of the set has to act as a domain controller
 (DC) and host a member list that identifies all members of the domain, as well as optionally
@@ -919,7 +781,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-NTLM client: The NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP] client.
+
+NTLM client: The NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP] client.
 
 NTLM server: The server side of NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP].
 
@@ -993,14 +856,15 @@ Release: January 13, 2025
 
 8 / 47
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1060,10 +924,11 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-[RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
+
+[RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
 by Microsoft Windows", RFC 4757, December 2006, https://www.rfc-editor.org/info/rfc4757
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RCMP] Microsoft Corporation, "Remote Certificate Mapping Protocol".
 
@@ -1081,7 +946,7 @@ August 1996, https://www.rfc-editor.org/info/rfc1994
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.3  Overview
+### 1.3 Overview
 
 Authentication protocols such as NT LAN Manager (NTLM), Kerberos, Secure Sockets Layer
 (SSL)/Transport Layer Security (TLS), and Digest authentication are used by a variety of
@@ -1134,7 +999,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-validation is performed between the server and the DC during the initial client/server Digest–
+
+validation is performed between the server and the DC during the initial client/server Digest–
 based authentication as follows:
 
 1.  The server which does not have access to the user's password sends a Digest validation
@@ -1157,7 +1023,7 @@ memberships, suitable for making authorization decisions.
 Remote Certificate Mapping Protocol [MS-RCMP], which relies on the generic pass-through
 capability of Netlogon to retrieve authorization information associated with users.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Each of the following protocols relies on the Netlogon Remote Protocol ([MS-NRPC]) to complete the
 authentication sequence and retrieve or validate authorization information associated with a user. All
@@ -1165,25 +1031,25 @@ higher-layer protocols that use one of the protocols specified in this document 
 Manager (NTLM) Authentication Protocol [MS-NLMP]) leverage the functionality specified here
 when in a domain environment.
 
-1.4.1  NTLM Logon
+#### 1.4.1 NTLM Logon
 
 NTLM authentication ([MS-NLMP]) uses the Netlogon pass-through authentication ([MS-NRPC] section
 3.2) to authenticate the user in the domain with the domain controller during an interactive
 logon or a network logon.
 
-1.4.2  Kerberos PAC Validation
+#### 1.4.2 Kerberos PAC Validation
 
 The server operating system uses the Netlogon generic pass-through ([MS-NRPC] section 3.2.4.1) to
 validate the privilege attribute certificate (PAC) with the domain controller, when required.
 
-1.4.3  Digest Validation Protocol
+#### 1.4.3 Digest Validation Protocol
 
 The Digest validation defined in this document relies on the generic pass-through capability of the
 Netlogon Remote Protocol ([MS-NRPC] section 3.2.4.1) as a transport for the
 DIGEST_VALIDATION_REQ (section 2.2.5.1) and DIGEST_VALIDATION_RESP (section 2.2.5.2)
 messages.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Each of the protocols in this specification relies on the Netlogon Remote Protocol [MS-NRPC]. [MS-
 NRPC] assumes that the following prerequisites are met:
@@ -1203,22 +1069,23 @@ Release: January 13, 2025
 
 11 / 47
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-APDS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.5.1  NTLM Logon
+#### 1.5.1 NTLM Logon
 
 NTLM interactive logon and NTLM network logon have all of the prerequisites and preconditions
 that are defined in the NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP].
 
-1.5.2  Kerberos PAC Validation
+#### 1.5.2 Kerberos PAC Validation
 
 Kerberos PAC validation assumes that the server operating system has a PAC that has been received
 in a ticket from the client to the application server. It is possible for a server operating system to
 require PAC validation (section 1.6.2).
 
-1.5.3  Digest Validation Protocol
+#### 1.5.3 Digest Validation Protocol
 
 The Digest validation protocol assumes the following:
 
@@ -1232,13 +1099,13 @@ The Digest client possesses the digest-response message ([RFC2617] section 3.2.2
 initial digest-challenge message ([RFC2617] section 3.2.1) used in the Digest authentication
 protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 All protocol support for domains requires a domain authority to process the requests. These protocols
 are not applicable to any stand-alone machine that is not associated with a domain. Each protocol has
 additional applicability constraints.
 
-1.6.1  NTLM Logon
+#### 1.6.1 NTLM Logon
 
 NTLM ([MS-NLMP] section 1.6) also applies when the NTLM server performing the NTLM
 authentication is a member of a domain. Both NTLM for interactive logon and NTLM for network
@@ -1255,7 +1122,7 @@ by using Kerberos.
 Client or application specifies a target name that cannot be resolved and, therefore, cannot log on by
 using Kerberos.
 
-1.6.2  Kerberos PAC Validation
+#### 1.6.2 Kerberos PAC Validation
 
 Figure 1: Kerberos PAC validation
 
@@ -1271,48 +1138,49 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-PAC validation is applicable for Kerberos applications that process and interpret the PAC and present
+
+PAC validation is applicable for Kerberos applications that process and interpret the PAC and present
 that authorization data to additional services. It is optional for a self-contained application because the
 security threat that the protocol addresses is not relevant for self-contained applications.
 
-1.6.3  Digest Validation Protocol
+#### 1.6.3 Digest Validation Protocol
 
 The Digest validation protocol is appropriate for servers that are implementing Digest
 authentication and are acting as members in an Active Directory–compatible domain.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.7.1  NTLM Logon
+#### 1.7.1 NTLM Logon
 
 NTLM interactive logon and network logon do not have any versioning or capability negotiation.
 
-1.7.2  Kerberos PAC Validation
+#### 1.7.2 Kerberos PAC Validation
 
 Kerberos PAC validation does not have any versioning or capability negotiation.
 
-1.7.3  Digest Validation Protocol
+#### 1.7.3 Digest Validation Protocol
 
 The DIGEST_VALIDATION_REQ and DIGEST_VALIDATION_RESP messages have a dedicated version
 number field. This document defines version 1 of the Digest validation protocol. The Digest
 validation protocol does not support any capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
-1.8.1  NTLM Logon
+#### 1.8.1 NTLM Logon
 
 NTLM interactive logon and network logon do not have any vendor-extensible fields.
 
-1.8.2  Kerberos PAC Validation
+#### 1.8.2 Kerberos PAC Validation
 
 Kerberos PAC validation does not have any vendor-extensible fields.
 
-1.8.3  Digest Validation Protocol
+#### 1.8.3 Digest Validation Protocol
 
 The Digest validation protocol does not have any vendor-extensible fields. Note that the Digest
 validation protocol has reserved fields for future use, but these fields are not intended to carry
 opaque or vendor-defined data.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1323,15 +1191,16 @@ Release: January 13, 2025
 
 13 / 47
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Domain support for the Authentication Protocol Domain Support protocol SHOULD use Netlogon
 remote procedure call (RPC) messages in the logon interface. The Netlogon RPC transport is
 specified in [MS-NRPC].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 For domain support, authentication protocols MUST use an NRPC pass-through authentication ([MS-
 NRPC] section 3.2) method with parameters determined by the authentication protocol being used.
@@ -1370,19 +1239,19 @@ STATUS_NO_SUCH_USER
 STATUS_NO_LOGON_SERVERS  0xC000005E  None of the domain controllers are reachable to service the
 request.
 
-2.2.1  NTLM Logon Message Syntax
+#### 2.2.1 NTLM Logon Message Syntax
 
 The specific message syntax for NTLM interactive logon or network logon is part of the NRPC
 pass-through authentication ([MS-NRPC] section 3.2).<1> The domain support for NTLM logon is
 invoked by calling an NRPC pass-through authentication method.
 
-2.2.2  Kerberos Ticket Validation Message Syntax
+#### 2.2.2 Kerberos Ticket Validation Message Syntax
 
 The Netlogon Ticket Logon Info validation request message, NETLOGON_TICKET_LOGON_INFO ([MS-
 NRPC] section 2.2.1.4.19), MUST be encoded as a contiguous buffer. The encoded data SHOULD be
 sent by using the generic pass-through mechanism ([MS-NRPC] section 3.2.4.1).
 
-2.2.3  Kerberos Ticket Validation Response Message Syntax
+#### 2.2.3 Kerberos Ticket Validation Response Message Syntax
 
 The Netlogon Ticket Logon Info validation response message,
 NETLOGON_VALIDATION_TICKET_LOGON ([MS-NRPC] section 2.2.1.4.20), MUST be encoded as a
@@ -1394,17 +1263,18 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-contiguous buffer. The encoded data SHOULD be sent by using the generic pass-through mechanism
+
+contiguous buffer. The encoded data SHOULD be sent by using the generic pass-through mechanism
 ([MS-NRPC] section 3.2.4.1).
 
-2.2.4  Kerberos PAC Validation Message Syntax
+#### 2.2.4 Kerberos PAC Validation Message Syntax
 
 The privilege attribute certificate (PAC) validation request message, KERB_VERIFY_PAC_REQUEST
 (section 2.2.4.1), MUST be encoded as a contiguous buffer. The encoded data SHOULD<2> be sent by
 using the generic pass-through mechanism ([MS-NRPC] section 3.2.4.1). The encoding of the
 KERB_VERIFY_PAC_REQUEST is specified in section 2.2.4.1.
 
-2.2.4.1  KERB_VERIFY_PAC_REQUEST Message
+##### 2.2.4.1 KERB_VERIFY_PAC_REQUEST Message
 
 The KERB_VERIFY_PAC_REQUEST Message used for PAC validation is defined as follows.
 
@@ -1454,7 +1324,7 @@ ChecksumAndSignature (variable): The PAC_SIGNATURE_DATA Signature value for the 
 Signature in the PAC. It MUST be followed by the PAC_SIGNATURE_DATA Signature value for
 the KDC Signature in the PAC.
 
-2.2.5  Digest Validation Message Syntax
+#### 2.2.5 Digest Validation Message Syntax
 
 The Digest validation protocol uses fields extracted from the digest-challenge and digest-response
 messages ([RFC2617] section 3.2 and [RFC2831] section 2.1) to verify the validity of the user
@@ -1468,7 +1338,8 @@ Release: January 13, 2025
 
 15 / 47
 
-2.2.5.1  DIGEST_VALIDATION_REQ Message
+
+##### 2.2.5.1 DIGEST_VALIDATION_REQ Message
 
 The DIGEST_VALIDATION_REQ message defines a request to validate the input from the Digest
 Protocol Extensions [MS-DPSP] and retrieve user authorization information.
@@ -1564,7 +1435,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -1666,7 +1538,8 @@ Release: January 13, 2025
 
 17 / 47
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5
@@ -1754,7 +1627,8 @@ Release: January 13, 2025
 
 18 / 47
 
-...
+
+...
 
 CNonce (variable)
 
@@ -1811,7 +1685,8 @@ Release: January 13, 2025
 
 19 / 47
 
-Username (variable): The user name value from the digest-response message.
+
+Username (variable): The user name value from the digest-response message.
 
 MUST be as specified in [RFC2617] section 3.2.2.
 
@@ -1871,7 +1746,7 @@ ServerName (variable): A Unicode string that MUST specify the NetBIOS name of th
 
 that sent the DIGEST_VALIDATION_REQ message.
 
-2.2.5.2  DIGEST_VALIDATION_RESP Message
+##### 2.2.5.2 DIGEST_VALIDATION_RESP Message
 
 The DIGEST_VALIDATION_RESP message is a response to a DIGEST_VALIDATION_REQ message
 (section 2.2.5.1).
@@ -1900,7 +1775,8 @@ Release: January 13, 2025
 
 20 / 47
 
-Status
+
+Status
 
 SessionKeyLength
 
@@ -1973,7 +1849,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-AuthDataSize (4 bytes): A 32-bit unsigned integer that MUST specify the number of bytes of the
+
+AuthDataSize (4 bytes): A 32-bit unsigned integer that MUST specify the number of bytes of the
 
 AuthData field in the DIGEST_VALIDATION_RESP message.
 
@@ -2025,7 +1902,8 @@ Release: January 13, 2025
 
 22 / 47
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 Authentication Protocol Domain Support (specified for each of the protocols in the following sections)
 uses NRPC [MS-NRPC] for transport. Each of the following protocols is a simple request-response
@@ -2034,7 +1912,7 @@ protocols are common to all of these protocols. All of these exchanges require t
 procedure call (RPC) connection through the Netlogon secure channel MUST be established with a
 domain controller (DC) for the domain to which the server belongs (section 1.5).
 
-3.1  NTLM Logon Details
+### 3.1 NTLM Logon Details
 
 NT LAN Manager (NTLM) interactive logon and network logon MUST complete the authentication
 sequence by contacting the DC using an NRPC pass-through authentication ([MS-NRPC] section 3.2)
@@ -2048,7 +1926,7 @@ NETLOGON_VALIDATION_SAM_INFO4, and MUST send it back to the NTLM server. If no m
 account is found, an error STATUS_NO_SUCH_USER (section 2.2) MUST be returned to the NTLM
 server, resulting in a logon failure.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2093,7 +1971,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-ResourceDCBlocked: A Boolean setting that controls the DC responding to NTLM authentication
+
+ResourceDCBlocked: A Boolean setting that controls the DC responding to NTLM authentication
 requests. When set to TRUE, this setting disables the resource domain DC from sending NTLM
 pass-through authentication messages (section 3.1.5).
 
@@ -2106,20 +1985,20 @@ AllowComputerLogon: A Boolean setting that indicates that the caller wants to au
 computer. Setting this flag results in the K bit being set in
 LogonInformation.LogonNetwork.Identity.ParameterControl.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The LogonAttempts field SHOULD be initialized to zero on startup.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The NTLM logon message exchange MUST be triggered by a server requesting user authentication via
 the Netlogon remote procedure call (RPC) mechanism to the domain controller (DC).
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 NTLM logon is a stateless protocol with request-response semantics.
 
@@ -2166,7 +2045,8 @@ Release: January 13, 2025
 
 24 / 47
 
-The DC MUST verify the account access status. If the account is not valid for logon, the APDS server
+
+The DC MUST verify the account access status. If the account is not valid for logon, the APDS server
 returns one of the following errors:
 
 
@@ -2254,7 +2134,8 @@ Release: January 13, 2025
 
 25 / 47
 
-
+
+
 
 The security descriptor MUST contain the ACL granting the client user
 ACTRL_DS_CONTROL_ACCESS ([MS-SAMR] section 2.2.1.17) to the server computer's AD
@@ -2301,7 +2182,7 @@ ImpersonationAccessToken.
 Other SID structures can be added to ImpersonationAccessToken following authentication (see
 [MS-DTYP] section 2.7.1).
 
-3.1.5.1  NTLM Interactive Logon
+##### 3.1.5.1 NTLM Interactive Logon
 
 If the domainControllerFunctionality attribute ([MS-ADTS] section 3.1.1.3.2.25) returns a value
 that is >= 6, the account is not also the NTLM server's account, and the APDS server determines that
@@ -2331,7 +2212,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-  LogonLevel MUST be NetlogonInteractiveInformation.
+
+  LogonLevel MUST be NetlogonInteractiveInformation.
 
 
 
@@ -2387,7 +2269,7 @@ request is NetlogonValidationSamInfo.
 If there is not a match, the DC SHOULD<16> return the failure error code
 STATUS_WRONG_PASSWORD (section 2.2) with no response data.
 
-3.1.5.2  NTLM Network Logon
+##### 3.1.5.2 NTLM Network Logon
 
 If the domainControllerFunctionality attribute ([MS-ADTS] section 3.1.1.3.2.25) returns a value that is
 >= 6, the account is not also the NTLM server's account, and the APDS server determines that an
@@ -2406,7 +2288,8 @@ Release: January 13, 2025
 
 27 / 47
 
-2.  If a user account object, and if the corresponding msDS-UserAllowedToAuthenticateFrom
+
+2.  If a user account object, and if the corresponding msDS-UserAllowedToAuthenticateFrom
 
 ([MS-ADA2] section 2.500) is populated and msDS-UserAllowedNTLMNetworkAuthentication
 is set to FALSE, APDS MUST return STATUS_ACCOUNT_RESTRICTION.
@@ -2484,7 +2367,8 @@ Release: January 13, 2025
 
 28 / 47
 
-If the account is a domain controller computer account, the subauthentication package is not verified,
+
+If the account is a domain controller computer account, the subauthentication package is not verified,
 and the E bit of LogonInformation.LogonNetwork.Identity.ParameterControl is not set, return
 STATUS_NOLOGON_SERVER_TRUST_ACCOUNT.
 
@@ -2517,7 +2401,7 @@ reference to NETLOGON_VALIDATION_SAM_INFO ([MS-NRPC] section 2.2.1.4.11, if the
 ValidationLevel in the request is NetlogonValidationSamInfo). If there is not a match, the DC MUST
 return a failure error code STATUS_LOGON_FAILURE with no response data.<22>
 
-3.1.5.2.1 Verifying Responses with Sub-Authentication Packages
+###### 3.1.5.2.1 Verifying Responses with Sub-Authentication Packages
 
 The request to verify by a subauthentication package SHOULD<23> be indicated by the
 ParameterControl field of the LogonInformation parameter. The ParameterControl field, defined in
@@ -2533,12 +2417,12 @@ LogonInformation parameter. In this case, such a subauthentication package MUST 
 response verification instead of using the method specified by section 3.3 of [MS-NLMP]. For more
 information about this subauthentication package, see [MSDN-0SUBAUTHROUTINE9].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no timer events for NTLM logon. All associated timer events are specified in the Netlogon
 Remote Protocol ([MS-NRPC]) that serves as the transport.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -2549,14 +2433,15 @@ Release: January 13, 2025
 
 29 / 47
 
-3.2  Kerberos PAC Validation Details
+
+### 3.2 Kerberos PAC Validation Details
 
 Kerberos PAC validation SHOULD use the generic pass-through mechanism ([MS-NRPC] section
 3.2.4.1). The NETLOGON_TICKET_LOGON_INFO message ([MS-NRPC] section 2.2.1.4.19) MUST be
 sent to the domain controller (DC) for privilege attribute certificate (PAC) verification. The ticket
 verification algorithm MUST occur (section 3.2.5).
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2571,23 +2456,23 @@ The server operating system MUST have the PAC.
 
 The Netlogon abstract data model is specified in [MS-NRPC] section 3.2.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 For information on higher-layer triggered events, see section 1.6.2.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Kerberos PAC validation is a stateless protocol with request-response semantics.
 
-3.2.5.1  Generating a NETLOGON_TICKET_LOGON_INFO Message
+##### 3.2.5.1 Generating a NETLOGON_TICKET_LOGON_INFO Message
 
 The server operating system MUST first assemble the NETLOGON_TICKET_LOGON_INFO structure
 ([MS-NRPC] section 2.2.1.4.19) by copying the service Ticket that the server operating system is to
@@ -2610,7 +2495,8 @@ Release: January 13, 2025
 
 30 / 47
 
-3.2.5.2  Kerberos Client Prepares Request
+
+##### 3.2.5.2 Kerberos Client Prepares Request
 
 To make the request, the client prepares a NETLOGON_LOGON_IDENTITY_INFO ([MS-NRPC]
 section 2.2.1.4.15). This is placed in the ServiceTicket field of a
@@ -2652,10 +2538,10 @@ The computer uses its secure channel to send the request to its domain controlle
 NetrLogonSamLogonEx ([MS-NRPC] section 3.5.4.5.1 and section 3.4.5.3.2).  The logon level is
 NetlogonTicketLogonInformation and the validation level is NetlogonValidationTicketLogon.
 
-3.2.5.3  Processing a NETLOGON_TICKET_LOGON_INFO Message
+##### 3.2.5.3 Processing a NETLOGON_TICKET_LOGON_INFO Message
 
 The processing steps followed by the key distribution center (KDC) are detailed in [MS-KILE] sections
-3.3.5 and following. The KDC returns validation information in the form of a
+#### 3.3.5 and following. The KDC returns validation information in the form of a
 NETLOGON_VALIDATION_TICKET_LOGON message (see [MS-NRPC] section 2.2.1.4.20).
 
 When the key distribution center (KDC) receives the request, it must decrypt the service ticket.  If
@@ -2686,7 +2572,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-Tickets must always have at least user groups. User groups are re-encoded into a
+
+Tickets must always have at least user groups. User groups are re-encoded into a
 NETLOGON_VALIDATION_SAM_INFO4 structure (see [MS-NRPC] section 2.2.1.4.13) and put in
 the UserInformation field of the validation information, NETLOGON_VALIDATION_TICKET_LOGON
 (see [MS-NRPC] section 2.2.1.4.20).
@@ -2752,7 +2639,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-The DC MUST verify the KDC checksum, which is a keyed hash [RFC4757] over the server checksum
+
+The DC MUST verify the KDC checksum, which is a keyed hash [RFC4757] over the server checksum
 passed in the request. If the checksum verification fails, the DC MUST return an error code,
 STATUS_LOGON_FAILURE (section 2.2) as the return value to the Netlogon Generic Pass-through
 method. If the checksum is verified, the DC MUST return STATUS_SUCCESS. There is no return
@@ -2815,7 +2703,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-This transaction does not have direct access to the user's password and relies on the DC to validate
+
+This transaction does not have direct access to the user's password and relies on the DC to validate
 the digest input data sent by the client.
 
 3.3.5  Message Processing Events and Sequencing Rules
@@ -2832,7 +2721,7 @@ status in the Netlogon generic pass-through function ([MS-NRPC] section 3.2.4.1)
 contained in the Payload buffer's Response field, and then send the DIGEST_VALIDATION_RESP
 message to the Digest server.
 
-3.3.5.1  Generating the DIGEST_VALIDATION_REQ Message
+##### 3.3.5.1 Generating the DIGEST_VALIDATION_REQ Message
 
 The Digest server MUST construct the DIGEST_VALIDATION_REQ (section 2.2.5.1) message by
 using fields extracted from the digest-challenge and digest-response messages ([RFC2617] section
@@ -2848,7 +2737,7 @@ section 3.2.4.1) in the NETLOGON_GENERIC_INFO structure ([MS-NRPC] section 2.2.1
 WDigest. The AlgType field of the DIGEST_VALIDATION_REQ (section 2.2.5.1) message
 SHOULD<25> be set to 0x03.
 
-3.3.5.2  Request Processing and Generating DIGEST_VALIDATION_RESP Message
+##### 3.3.5.2 Request Processing and Generating DIGEST_VALIDATION_RESP Message
 
 If the AlgType field of the DIGEST_VALIDATION_REQ (section 2.2.5.1) is not set to 0x03, the DC
 SHOULD<26> return SEC_E_QOP_NOT_SUPPORTED.
@@ -2882,19 +2771,20 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-The Digest validation response message DIGEST_VALIDATION_RESP MUST be packed as a
+
+The Digest validation response message DIGEST_VALIDATION_RESP MUST be packed as a
 contiguous buffer, and the encoded data SHOULD be sent by using the generic pass-through
 mechanism ([MS-NRPC] section 3.2.4.1). The encoding of DIGEST_VALIDATION_RESP is as specified
 in section 2.2.5.2. The Digest validation response message is sent by using the generic pass-through
 mechanism, as specified in [MS-NRPC] section 3.2.4.1.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events for the Digest validation protocol. All associated timer events are
 specified in the Netlogon Remote Protocol ([MS-NRPC]) that serves as the transport for Digest
 validation messages.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no other local events that impact the operation of this protocol.
 
@@ -2905,13 +2795,14 @@ Release: January 13, 2025
 
 35 / 47
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-APDS].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  NTLM Pass-Through Authentication
+### 4.1 NTLM Pass-Through Authentication
 
 Figure 2: NTLM pass-through authentication
 
@@ -2942,11 +2833,12 @@ Release: January 13, 2025
 
 36 / 47
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-APDS].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
-4.2  Kerberos PAC Validation
+### 4.2 Kerberos PAC Validation
 
 Figure 3: PAC validation
 
@@ -2971,11 +2863,12 @@ Release: January 13, 2025
 
 37 / 47
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-APDS].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
-4.3  Digest Validation Protocol
+### 4.3 Digest Validation Protocol
 
 Figure 4: Digest validation protocol
 
@@ -3016,7 +2909,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-error code as an error status in NRPC API. It does not send back the DIGEST_VALIDATION_RESP
+
+error code as an error status in NRPC API. It does not send back the DIGEST_VALIDATION_RESP
 message.
 
 5.  For mutual authentication, the server has the option to send a keyed hash over the URI that the
@@ -3032,9 +2926,10 @@ Release: January 13, 2025
 
 39 / 47
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Authentication Protocol Domain Support does not have any built-in security mechanisms to provide
 authentication or to ensure confidentiality and integrity. Instead, it relies on security mechanisms that
@@ -3046,7 +2941,7 @@ user's password in the clear) but is considered weaker than Kerberos [MS-KILE] a
 based authentication (for example, client-side authentication). Consequently, the Digest Protocol
 Extensions are used only in environments in which these stronger mechanisms are unavailable.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for Authentication Protocol Domain Support. All associated security
 parameters are specified in the Netlogon Remote Protocol [MS-NRPC], which provides all security for
@@ -3059,7 +2954,8 @@ Release: January 13, 2025
 
 40 / 47
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3127,7 +3023,8 @@ Release: January 13, 2025
 
 41 / 47
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 2.2.1: Although the Kerberos protocol is preferred for interactive logon, the NTLM
@@ -3195,7 +3092,8 @@ Release: January 13, 2025
 
 42 / 47
 
-<12> Section 3.1.5.1: msDS-UserAllowedToAuthenticateFrom is not supported by Windows 2000
+
+<12> Section 3.1.5.1: msDS-UserAllowedToAuthenticateFrom is not supported by Windows 2000
 Server, Windows Server 2003, Windows Server 2008, Windows Server 2008 R2, or Windows Server
 2012.
 
@@ -3263,7 +3161,8 @@ Authentication Protocol Domain Support
 Copyright © 2025 Microsoft Corporation
 Release: January 13, 2025
 
-<25> Section 3.3.5.1: Windows 2000 Server can send other AlgType values.
+
+<25> Section 3.3.5.1: Windows 2000 Server can send other AlgType values.
 
 <26> Section 3.3.5.2: Windows 2000 Server will not fail the DIGEST_VALIDATION_REQ request.
 
@@ -3274,7 +3173,8 @@ Release: January 13, 2025
 
 44 / 47
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3333,7 +3233,8 @@ Release: January 13, 2025
 
 45 / 47
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 12
@@ -3476,7 +3377,8 @@ NTLM Logon Message Syntax message 14
 
 46 / 47
 
-V
+
+V
 
 Vendor-extensible fields 13
 Versioning 13

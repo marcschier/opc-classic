@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 22
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 22
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: April 23, 2024
 
 3 / 22
 
-Date
+
+Date
 
 Revision
 History
@@ -567,90 +570,45 @@ Release: April 23, 2024
 
 4 / 22
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 NT Backup File](#21-nt-backup-file)
+  - [2.2 WIN32_STREAM_ID](#22-win32streamid)
+  - [2.3 Alternate Data Backup Stream Structure](#23-alternate-data-backup-stream-structure)
+  - [2.4 Data Backup Stream Structure](#24-data-backup-stream-structure)
+  - [2.5 Extended Attribute Data Backup Stream Structure](#25-extended-attribute-data-backup-stream-structure)
+  - [2.6 Link Backup Stream Structure](#26-link-backup-stream-structure)
+  - [2.7 Object ID Backup Stream Structure](#27-object-id-backup-stream-structure)
+  - [2.8 Reparse Backup Stream Structure](#28-reparse-backup-stream-structure)
+  - [2.9 Security Stream Structure](#29-security-stream-structure)
+  - [2.10 Sparse Block Stream Structure](#210-sparse-block-stream-structure)
+  - [2.11 TXFS Stream Structure](#211-txfs-stream-structure)
+  - [2.12 FileSystem Ghosted Extents Functionality](#212-filesystem-ghosted-extents-functionality)
+    - [2.12.1 Ghosted Extents Stream Structure](#2121-ghosted-extents-stream-structure)
+  - [2.13 Structure Usage](#213-structure-usage)
+    - [2.13.1 Creating an NT Backup File](#2131-creating-an-nt-backup-file)
+    - [2.13.2 Reconstituting a File from an NT Backup File](#2132-reconstituting-a-file-from-an-nt-backup-file)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Parameters](#42-index-of-security-parameters)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Protocols and Other Structures ...................................................... 9
-Applicability Statement ....................................................................................... 9
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-2.10
-2.11
-2.12
-
-2  Structures ............................................................................................................. 10
-NT Backup File ................................................................................................. 10
-WIN32_STREAM_ID ......................................................................................... 10
-Alternate Data Backup Stream Structure ............................................................. 12
-Data Backup Stream Structure .......................................................................... 12
-Extended Attribute Data Backup Stream Structure ............................................... 12
-Link Backup Stream Structure ........................................................................... 12
-Object ID Backup Stream Structure .................................................................... 12
-Reparse Backup Stream Structure ...................................................................... 13
-Security Stream Structure ................................................................................. 13
-Sparse Block Stream Structure .......................................................................... 13
-TXFS Stream Structure ..................................................................................... 13
-FileSystem Ghosted Extents Functionality ........................................................... 14
-2.12.1  Ghosted Extents Stream Structure ................................................................ 14
-Structure Usage ............................................................................................... 15
-Creating an NT Backup File .......................................................................... 15
-Reconstituting a File from an NT Backup File .................................................. 16
-
-2.13.1
-2.13.2
-
-2.13
-
-3  Structure Examples ............................................................................................... 17
-
-4  Security Considerations ......................................................................................... 18
-Security Considerations for Implementers ........................................................... 18
-Index of Security Parameters ............................................................................ 18
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 19
-
-6  Change Tracking .................................................................................................... 21
-
-7  Index ..................................................................................................................... 22
-
-[MS-BKUP] - v20240423
-Microsoft NT Backup File Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 22
-
-1  Introduction
+## 1 Introduction
 
 This specification describes the network format of the Windows NT backup file format and its
 constituent structures that can be used in other protocols.
@@ -658,7 +616,7 @@ constituent structures that can be used in other protocols.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -723,7 +681,8 @@ Microsoft NT Backup File Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-open of a file associated with (owned by) this reparse point. At that point, each installed filter
+
+open of a file associated with (owned by) this reparse point. At that point, each installed filter
 driver can check to see if it is the owner of the reparse point, and, if so, perform any special
 processing required for a file with that reparse point. The format of this data is understood by
 the application that stores the data and the file system filter that interprets the data and
@@ -764,14 +723,14 @@ unnamed stream: See main stream.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -792,10 +751,11 @@ Microsoft NT Backup File Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FFS] McKusick, M. K., Joy, W. N., Leffler, S. J., et al., "A Fast File System for UNIX", Computer
 Systems 2(3):181-197, 1984.
@@ -808,7 +768,7 @@ Systems 2(3):181-197, 1984.
 http://technet2.microsoft.com/WindowsServer/en/Library/81cc8a8a-bd32-4786-a849-
 03245d68d8e41033.mspx
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the structure of NT backup files as they are used in over-the-wire protocols.
 This file format is not a protocol; however, it is used to describe the format of data that is sent across
@@ -859,29 +819,30 @@ Release: April 23, 2024
 
 8 / 22
 
-The content of an NT Backup serialize file is a set of backup streams. (The different uses of the word
+
+The content of an NT Backup serialize file is a set of backup streams. (The different uses of the word
 "stream" are specified in section 2.2.) Each backup stream represents one aspect of the original file,
 such as its ACL, a contiguous allocated section of a file stream, a reparse point, and so on.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The File Replication Service Protocol (as specified in [MS-FRS1]) and the Distributed File System
 Replication Protocol (as specified in [MS-FRS2]) rely on the structures and definitions in this document
 to create and interpret the contents of a staging file that are sent and received across the network
 during file replication.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The structures and classes that this document defines are useful for any lower-level protocol, such as
 the File Replication Service Protocol (as specified in [MS-FRS1]), that serializes and exchanges native
 Windows file formats, but does not require that those file formats be remapped into a protocol-specific
 representation.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -892,7 +853,8 @@ Release: April 23, 2024
 
 9 / 22
 
-2  Structures
+
+## 2 Structures
 
 The following sections specify the Microsoft NT Backup File Structure.
 
@@ -913,7 +875,7 @@ alternate stream indicate the parts of a file in the file system.
 The Windows NT backup file format and its constituent structures reference commonly used data types
 as defined in [MS-DTYP].
 
-2.1  NT Backup File
+### 2.1 NT Backup File
 
 An NT backup file is made up of zero or more backup streams that appear one right after the
 other. A backup stream is a logically related collection of data that is related to one file. For example,
@@ -930,7 +892,7 @@ If an unrecognized or unused dwStreamId value or an otherwise malformed NT backu
 encountered, an implementation MAY process the remainder of the NT backup file. An implementation
 MAY delete the portion of the file it has created upon finding a malformed NT backup file.<1>
 
-2.2  WIN32_STREAM_ID
+### 2.2 WIN32_STREAM_ID
 
 The WIN32_STREAM_ID structure is a header that precedes each backup stream in the NT backup
 file. This header identifies the type of backup stream, its size, and other attributes. The structure is as
@@ -964,7 +926,8 @@ Release: April 23, 2024
 
 10 / 22
 
-cStreamName (variable)
+
+cStreamName (variable)
 
 ...
 
@@ -1077,14 +1040,15 @@ Microsoft NT Backup File Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cStreamName (variable):  A Unicode string that specifies the name of the alternate stream. This
+
+cStreamName (variable):  A Unicode string that specifies the name of the alternate stream. This
 
 string MUST NOT be null-terminated.
 
 Size bytes of data MUST follow the header. The meaning of the data depends on the dwStreamId
 value and is specified in the following sections.
 
-2.3  Alternate Data Backup Stream Structure
+### 2.3 Alternate Data Backup Stream Structure
 
 Some file systems support files that have named streams. The ALTERNATE_DATA dwStreamId field
 value MUST be used when recording these streams. Aside from the requirement that
@@ -1095,22 +1059,22 @@ streams. If the implementation does not support named streams or does not suppor
 cStreamName that is specified in the ALTERNATE_DATA structure, the implementation MAY ignore
 the stream or MAY choose some other way to store the data.<2>
 
-2.4  Data Backup Stream Structure
+### 2.4 Data Backup Stream Structure
 
 The data portion of a data backup stream structure is the data within the main stream of the file.
 When creating a backup file, the bytes of the main stream MUST be copied without modification to the
 data portion of a data backup stream.
 
-2.5  Extended Attribute Data Backup Stream Structure
+### 2.5 Extended Attribute Data Backup Stream Structure
 
 An implementation SHOULD NOT create an extended attribute data backup stream in an NT Backup
 format file and MUST ignore an extended attribute data backup stream, if received.<3>
 
-2.6  Link Backup Stream Structure
+### 2.6 Link Backup Stream Structure
 
 An implementation SHOULD NOT create a LINK backup stream and MUST ignore one if encountered.
 
-2.7  Object ID Backup Stream Structure
+### 2.7 Object ID Backup Stream Structure
 
 The Object ID Backup Stream contains a unique identifier for a file. The structure of the data portion
 of this backup stream is as follows:
@@ -1145,7 +1109,8 @@ Release: April 23, 2024
 
 12 / 22
 
-ObjectID (16 bytes):  A 16-byte GUID, as specified in [MS-DTYP] section 2.3.4.2, assigned by the
+
+ObjectID (16 bytes):  A 16-byte GUID, as specified in [MS-DTYP] section 2.3.4.2, assigned by the
 
 server on which the file is stored, that uniquely identifies the file or directory within the volume in
 which it is stored.
@@ -1154,19 +1119,19 @@ Data (48 bytes):  This field contains 48 bytes of implementation-defined metadat
 
 the file.<4>
 
-2.8  Reparse Backup Stream Structure
+### 2.8 Reparse Backup Stream Structure
 
 A reparse backup stream contains information about a reparse point in the file system. The data
 portion of a reparse point backup stream is the contents of the reparse point, which MUST be a
 REPARSE_DATA_BUFFER or REPARSE_GUID_DATA_BUFFER structure, as specified in [MS-FSCC]
 sections 2.1.2.2 and 2.1.2.3, respectively.
 
-2.9  Security Stream Structure
+### 2.9 Security Stream Structure
 
 The data portion of a SECURITY_DATA backup stream MUST contain a SECURITY_DESCRIPTOR. For
 more information, see [MS-DTYP] section 2.4.6.
 
-2.10  Sparse Block Stream Structure
+### 2.10 Sparse Block Stream Structure
 
 A sparse file (or a sparse named stream) is represented both by a DATA backup stream (or an
 ALTERNATE_DATA backup stream in the case of a named stream) followed by one or more
@@ -1207,7 +1172,7 @@ with this backup stream.
 An implementation SHOULD use file system sparse file support, if available, to represent the
 reconstituted file. Failure to do so could waste large amounts of disk space.<5>
 
-2.11  TXFS Stream Structure
+### 2.11 TXFS Stream Structure
 
 A TXFS backup stream has no meaning on a system other than the system on which it was created.
 An implementation MUST NOT send a TXFS stream and MUST ignore a TXFS stream, if received.
@@ -1219,7 +1184,8 @@ Release: April 23, 2024
 
 13 / 22
 
-2.12  FileSystem Ghosted Extents Functionality
+
+### 2.12 FileSystem Ghosted Extents Functionality
 
 Hierarchical Storage Management (HSM) solutions on top of a filesystem remove cold data and move
 it to the next storage tier. This movement creates sparse holes in file system data, and HSM solutions
@@ -1232,7 +1198,7 @@ those tokens should be reinserted in the data stream in exactly the same locatio
 original file state. The method to query the tokens, serialize the tokens, and restore the tokens is file
 system implementation specific.
 
-2.12.1 Ghosted Extents Stream Structure
+#### 2.12.1 Ghosted Extents Stream Structure
 
 A ghosted extent stream structure represents ghosted extents in the DATA backup stream. Ghosted
 extents are a kind of sparse extents, which store a GUID representing the owner of the extent and
@@ -1298,7 +1264,8 @@ Release: April 23, 2024
 
 14 / 22
 
-...
+
+...
 
 NextOffset
 
@@ -1320,14 +1287,14 @@ Size (4 bytes): Size of the metadata of the ghosted extent.
 
 Data (variable): Metadata of the ghosted extent.
 
-2.13  Structure Usage
+### 2.13 Structure Usage
 
 This specification describes only the format of individual structures.
 
 This section specifies the process of creating an NT backup file and of reconstituting an ordinary file
 from an NT backup file.
 
-2.13.1 Creating an NT Backup File
+#### 2.13.1 Creating an NT Backup File
 
 This section specifies a process for creating an NT backup file corresponding to a given file F.
 
@@ -1362,7 +1329,8 @@ Microsoft NT Backup File Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-stream SHOULD have a Size of 0. If the main stream of F is not sparse, the DATA backup stream
+
+stream SHOULD have a Size of 0. If the main stream of F is not sparse, the DATA backup stream
 MUST contain the contents of the main stream of F.
 
 If the main stream of F is sparse, it has any nonzero data in it, and that data is not stored in the DATA
@@ -1382,7 +1350,7 @@ If F has any ghosted extents, the NT backup file MUST generate one GHOSTED_EXTEN
 stream structure. During restore the GHOSTED_EXTENT backup stream structure is presented to the
 filesystem to recreate the file ghosted extent state.
 
-2.13.2 Reconstituting a File from an NT Backup File
+#### 2.13.2 Reconstituting a File from an NT Backup File
 
 An implementation creating a file F given an NT backup file MUST process all of the backup
 streams contained within the NT backup file.
@@ -1420,11 +1388,12 @@ Release: April 23, 2024
 
 16 / 22
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-BKUP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-3  Structure Examples
+## 3 Structure Examples
 
 This section presents an example of serializing an input file that has two streams. The unnamed
 stream contains "unnamed stream" in ASCII, and the alternate stream "stream1" contains "This is
@@ -1464,9 +1433,10 @@ Release: April 23, 2024
 
 17 / 22
 
-4  Security Considerations
 
-4.1  Security Considerations for Implementers
+## 4 Security Considerations
+
+### 4.1 Security Considerations for Implementers
 
 Allowing the use of all possible NT Backup file stream types when this serialization format is used by
 a file transfer protocol could unexpectedly grant access to a wider range of functionality than the
@@ -1485,7 +1455,7 @@ lists, or reparse information of the file.
 It is also important to protect the NT Backup serialized files themselves from unauthorized
 modification, for the same reasons.
 
-4.2  Index of Security Parameters
+### 4.2 Index of Security Parameters
 
 None.
 
@@ -1496,7 +1466,8 @@ Release: April 23, 2024
 
 18 / 22
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1561,7 +1532,8 @@ Release: April 23, 2024
 
 19 / 22
 
-<3> Section 2.5: The extended attribute stream exists only in files created by Windows versions
+
+<3> Section 2.5: The extended attribute stream exists only in files created by Windows versions
 Windows NT 3.1 operating system, Windows NT 3.5 operating system and Windows NT 3.51 operating
 system.
 
@@ -1591,7 +1563,8 @@ Release: April 23, 2024
 
 20 / 22
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1635,7 +1608,8 @@ Release: April 23, 2024
 
 21 / 22
 
-7  Index
+
+## 7 Index
 A
 
 Alternate data backup stream structure 12

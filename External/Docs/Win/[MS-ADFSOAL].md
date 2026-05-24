@@ -64,7 +64,8 @@ Release: September 16, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -180,186 +181,78 @@ Release: September 16, 2024
 
 2 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Methods](#221-http-methods)
+    - [2.2.2 HTTP Headers](#222-http-headers)
+      - [2.2.2.1 client-request-id](#2221-client-request-id)
+    - [2.2.3 Common URI Parameters](#223-common-uri-parameters)
+      - [2.2.3.1 api-version](#2231-api-version)
+      - [2.2.3.2 client-request-id](#2232-client-request-id)
+    - [2.2.4 Complex Types](#224-complex-types)
+      - [2.2.4.1 AuthorizationCode](#2241-authorizationcode)
+      - [2.2.4.2 Artifact](#2242-artifact)
+    - [2.2.5 ErrorDetails](#225-errordetails)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 OAuthAuthorizationCodeLookup Client Details](#31-oauthauthorizationcodelookup-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 http://server/adfs/artifact/{artifactId}?api-version={version}](#3151-httpserveradfsartifactartifactidapi-versionversion)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 OAuthAuthorizationCodeLookup Server Details](#32-oauthauthorizationcodelookup-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 http://server/adfs/artifact/{artifactId}](#3251-httpserveradfsartifactartifactid)
+        - [3.2.5.1.1 GET](#32511-get)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Artifact Request](#41-artifact-request)
+  - [4.2 Artifact Response](#42-artifact-response)
+  - [4.3 Artifact Error Response – Not Found](#43-artifact-error-response-not-found)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full JSON Schema](#6-appendix-a-full-json-schema)
+  - [6.1 artifact Object](#61-artifact-object)
+    - [6.1.1 data Field](#611-data-field)
+  - [6.2 ErrorDetails](#62-errordetails)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Data Types ........................................................................................ 11
-HTTP Methods ............................................................................................ 11
-HTTP Headers ............................................................................................ 11
-client-request-id ................................................................................... 11
-Common URI Parameters ............................................................................ 11
-api-version ........................................................................................... 12
-client-request-id ................................................................................... 12
-Complex Types ........................................................................................... 12
-AuthorizationCode ................................................................................. 12
-Artifact ................................................................................................ 13
-ErrorDetails ............................................................................................... 14
-Directory Service Schema Elements ................................................................... 14
-
-2.2.3.1
-2.2.3.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.4
-
-2.2.5
-
-2.3
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 16
-OAuthAuthorizationCodeLookup Client Details ...................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-http://server/adfs/artifact/{artifactId}?api-version={version} ................... 17
-GET ............................................................................................... 17
-Request Body ............................................................................ 17
-Response Body .......................................................................... 18
-Processing Details ...................................................................... 18
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-OAuthAuthorizationCodeLookup Server Details .................................................... 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 20
-http://server/adfs/artifact/{artifactId} .................................................... 20
-GET ............................................................................................... 20
-Request Body ............................................................................ 20
-Response Body .......................................................................... 21
-Processing Details ...................................................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.1.1
-
-3.2.5.1
-
-3.2
-
-[MS-ADFSOAL] - v20240916
-Active Directory Federation Services OAuth Authorization Code Lookup Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-3 / 27
-
-4  Protocol Examples ................................................................................................. 22
-Artifact Request ............................................................................................... 22
-Artifact Response ............................................................................................. 22
-Artifact Error Response – Not Found ................................................................... 22
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6.1
-
-6  Appendix A: Full JSON Schema .............................................................................. 24
-artifact Object ................................................................................................. 24
-data Field .................................................................................................. 24
-ErrorDetails ..................................................................................................... 24
-
-6.1.1
-
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 25
-
-8  Change Tracking .................................................................................................... 26
-
-9  Index ..................................................................................................................... 27
-
-[MS-ADFSOAL] - v20240916
-Active Directory Federation Services OAuth Authorization Code Lookup Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4 / 27
-
-1  Introduction
+## 1 Introduction
 
 The Active Directory Federation Services OAuth Authcode Lookup Protocol is defined as a RESTful
 protocol API.
@@ -421,7 +314,7 @@ relying party
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -452,7 +345,8 @@ Release: September 16, 2024
 
 5 / 27
 
-Active Directory Federation Services (AD FS) farm: A collection of AD FS servers that is
+
+Active Directory Federation Services (AD FS) farm: A collection of AD FS servers that is
 typically maintained by an enterprise to obtain greater redundancy and offer more reliable
 service than a single standalone AD FS server.
 
@@ -495,14 +389,14 @@ Generic Syntax [RFC3986].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -522,7 +416,8 @@ Release: September 16, 2024
 
 6 / 27
 
-[MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
+
+[MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
 
 [MS-ADA3] Microsoft Corporation, "Active Directory Schema Attributes N-Z".
 
@@ -540,7 +435,7 @@ Release: September 16, 2024
 [RFC6749] Hardt, D., Ed., "The OAuth 2.0 Authorization Framework", RFC 6749, October 2012,
 https://www.rfc-editor.org/info/rfc6749
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-ADFSWAP] Microsoft Corporation, "Active Directory Federation Service (AD FS) Web Agent
 Protocol".
@@ -548,7 +443,7 @@ Protocol".
 [RFC4559] Jaganathan, K., Zhu, L., and Brezak, J., "SPNEGO-based Kerberos and NTLM HTTP
 Authentication in Microsoft Windows", RFC 4559, June 2006, https://www.rfc-editor.org/info/rfc4559
 
-1.3  Overview
+### 1.3 Overview
 
 Active Directory Federation Services (AD FS) servers can be deployed in AD FS farm
 configurations, often behind a load-balancer, for increased scalability and reliability. The AD FS server
@@ -577,7 +472,8 @@ Release: September 16, 2024
 
 7 / 27
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-ADFSOAL].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -601,7 +497,7 @@ identifier contained within the authorization code presented to it by the OAuth 
 of the ADFSOAL Protocol corresponds to the AD FS server that is part of the same AD FS farm and
 originally issued the authorization code to the OAuth client.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The ADFSOAL Protocol depends on HTTP [RFC2616].
 
@@ -612,13 +508,14 @@ Release: September 16, 2024
 
 8 / 27
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-ADFSOAL].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 2: Protocol dependency
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 
 
@@ -645,7 +542,7 @@ Windows Authentication and is restricted to allow access only from the AD FS ser
 account. It is assumed that Integrated Windows Authentication has been established at a lower
 layer by using [RFC4559] before the protocol defined in this document begins functioning.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The ADFSOAL Protocol was designed to support AD FS servers deployed in an AD FS farm with
 standalone artifact store configuration.
@@ -654,7 +551,7 @@ The ADFSOAL Protocol is not required for stand-alone (non-farm) AD FS server dep
 not required for scenarios where AD FS servers are deployed in an AD FS farm with shared artifact
 store configuration.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -674,11 +571,12 @@ Release: September 16, 2024
 
 9 / 27
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -689,20 +587,21 @@ Release: September 16, 2024
 
 10 / 27
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The HTTP protocol [RFC2616] MUST be used as the transport.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Methods
+#### 2.2.1 HTTP Methods
 
 The ADFSOAL Protocol does not define any custom HTTP methods in addition to the existing set of
 standard HTTP methods.
 
-2.2.2  HTTP Headers
+#### 2.2.2 HTTP Headers
 
 The messages exchanged in the ADFSOAL Protocol use the following HTTP headers in addition to the
 existing set of standard HTTP headers.
@@ -717,7 +616,7 @@ request-id
 This optional header is used to specify a request identifier that is used when logging errors or
 failures that occur while processing the request.
 
-2.2.2.1  client-request-id
+##### 2.2.2.1 client-request-id
 
 The client-request-id HTTP header is optional and MAY be specified by the client role of the
 ADFSOAL Protocol. This header is used to provide the server role a unique request ID, which is then
@@ -737,7 +636,7 @@ The format for the client-request-id HTTP header is as follows.
  String = *(%x20-7E)
  client-request-id = String
 
-2.2.3  Common URI Parameters
+#### 2.2.3 Common URI Parameters
 
 The following table summarizes the set of common query parameters defined by this specification.
 
@@ -761,7 +660,8 @@ Release: September 16, 2024
 
 11 / 27
 
-URI
+
+URI
 parameter
 
 Description
@@ -770,7 +670,7 @@ request-id
 
 logging errors or failures that occur while processing the request.
 
-2.2.3.1  api-version
+##### 2.2.3.1 api-version
 
  GET http://server/adfs/artifact/{artifactId}?api-version={version} HTTP/1.1
 
@@ -782,7 +682,7 @@ The format of the api-version query parameter is as follows.
  String = *(%x20-7E)
  api-version = String
 
-2.2.3.2  client-request-id
+##### 2.2.3.2 client-request-id
 
  GET http://server/adfs/artifact/{artifactId}?api-version={version}&client-request-
 id={ClientRequestId} HTTP/1.1
@@ -799,7 +699,7 @@ The format of the client-request-id query parameter is as follows.
  String = *(%x20-7E)
  client-request-id = String
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 The following table summarizes the set of complex type definitions included in this specification.
 
@@ -816,7 +716,7 @@ Artifact
 An object that stores information corresponding to an authorization code issued by an AD FS
 server.
 
-2.2.4.1  AuthorizationCode
+##### 2.2.4.1 AuthorizationCode
 
 The authorization code is a concatenated string with the following format:
 
@@ -827,7 +727,8 @@ Release: September 16, 2024
 
 12 / 27
 
- issuerGuid.artifactId.signature
+
+ issuerGuid.artifactId.signature
 
 The authorization code contains a combination of three components with a '.' (period) delimiter:
 
@@ -846,7 +747,7 @@ artifact objects (section 2.2.4.2) that are stored in the artifact store of a pa
 signature: A base64 URL encoded string that contains a signature over the issuerGuid and the
 artifactId fields that can be verified by the server role of the ADFSOAL Protocol.
 
-2.2.4.2  Artifact
+##### 2.2.4.2 Artifact
 
 The artifact object is created by an AD FS server when it successfully processes an OAuth client's
 request for authorization, and is generated along with the OAuth authorization code. Before issuing an
@@ -899,7 +800,8 @@ Release: September 16, 2024
 
 13 / 27
 
-clientId:  The client identifier [RFC6749] for the OAuth client that originally requested the OAuth
+
+clientId:  The client identifier [RFC6749] for the OAuth client that originally requested the OAuth
 
 authorization code to which this artifact corresponds.
 
@@ -925,7 +827,7 @@ adheres to the following structure, as defined in [RFC6749] section 4.1.4.
      "refresh_token": {"type":"string", "optional":true},
  }
 
-2.2.5  ErrorDetails
+#### 2.2.5 ErrorDetails
 
 This object contains a collection of human-readable details that describe an error encountered by the
 server role of the ADFSOAL Protocol. It can be used by the client role of the ADFSOAL Protocol for
@@ -954,7 +856,7 @@ debugInfo:  Additional information regarding where and how the error occurred. T
 
 implementation-specific.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The protocol accesses the following Directory Service schema classes and attributes.
 
@@ -968,7 +870,8 @@ Release: September 16, 2024
 
 14 / 27
 
-Class
+
+Class
 
 Attribute
 
@@ -983,9 +886,10 @@ Release: September 16, 2024
 
 15 / 27
 
-3  Protocol Details
 
-3.1  OAuthAuthorizationCodeLookup Client Details
+## 3 Protocol Details
+
+### 3.1 OAuthAuthorizationCodeLookup Client Details
 
 The "client role" of the protocol corresponds to the AD FS server that needs to retrieve an access
 token, corresponding to an OAuth authorization code presented to it by the OAuth client, from the AD
@@ -997,24 +901,24 @@ of the ADFSOAL Protocol in order to look up the OAuth authorization code. If the
 the AD FS server implementing the server role returns the corresponding access token in the HTTP
 GET response.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server implementing the client role of the ADFSOAL Protocol must be able to connect to Active
 Directory and perform the queries referenced in section 3.1.5.1.1.3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -1067,7 +971,8 @@ Release: September 16, 2024
 
 16 / 27
 
-Status
+
+Status
 code
 
 501
@@ -1100,7 +1005,7 @@ The request body for messages to this service, unless otherwise noted, has the s
 The response body for messages from this service, unless otherwise noted, has the same encoding
 rules.
 
-3.1.5.1  http://server/adfs/artifact/{artifactId}?api-version={version}
+##### 3.1.5.1 http://server/adfs/artifact/{artifactId}?api-version={version}
 
 The {artifactId} component of the URI corresponds to the identifier of the artifact that the AD FS
 server implementing the client role of the ADFSOAL Protocol needs to look up on the AD FS server
@@ -1119,7 +1024,7 @@ GET
 
 Look up the artifact corresponding to the {artifactId} identifier.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 This method is transported by an HTTP GET.
 
@@ -1137,7 +1042,7 @@ The response message for this method does not contain any custom HTTP headers.
 The response message for this method can result in the status codes defined in the status table in
 section 3.1.5.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 [MS-ADFSOAL] - v20240916
 Active Directory Federation Services OAuth Authorization Code Lookup Protocol
@@ -1146,9 +1051,10 @@ Release: September 16, 2024
 
 17 / 27
 
-None.
 
-3.1.5.1.1.2  Response Body
+None.
+
+###### 3.1.5.1.1.2 Response Body
 
 If an artifact corresponding to the artifact identifier that was specified in the request was found in the
 artifact store on the AD FS server implementing the server role of the ADFSOAL Protocol, the HTTP
@@ -1160,7 +1066,7 @@ If an artifact corresponding to the artifact identifier specified in the request
 artifact store on the AD FS server implementing the server role of the ADFSOAL Protocol, the HTTP
 404 status code is returned. The response body for the GET response is empty in this case.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 When an AD FS server receives a request from an OAuth client to redeem an OAuth authorization
 code, it performs the following operations before determining whether to look up the authorization
@@ -1224,15 +1130,16 @@ Release: September 16, 2024
 
 18 / 27
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  OAuthAuthorizationCodeLookup Server Details
+### 3.2 OAuthAuthorizationCodeLookup Server Details
 
 The "server role" of the protocol corresponds to the AD FS server that receives an HTTP GET request
 to lookup an artifact identifier from another AD FS server in its farm. The request is authenticated by
@@ -1245,7 +1152,7 @@ originally issued by the AD FS server, it has a corresponding artifact stored in
 JSON formatted artifact is then base64 URL encoded and returned in the HTTP GET response to the
 caller, that is, to the AD FS server that implements the client role of the ADFSOAL Protocol.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1258,7 +1165,7 @@ the server successfully processes an OAuth client's request for authorization. T
 for the duration of the artifact lifetime. See section 2.2.4.2 for the definition of an artifact's data
 structure.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 ArtifactExpiryTimer: Artifacts are stored in the artifact store for a period corresponding to the
 artifact lifetime. The server MUST delete artifacts older than the artifact lifetime from its Artifact
@@ -1266,7 +1173,7 @@ Store ADM element. The artifact lifetime SHOULD be defined as 10 minutes and MUS
 to the OAuth authorization code lifetime, as defined in [RFC6749] section 4.1.2. This timer is used to
 delete artifacts older than the artifact lifetime.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When the protocol is first initialized, the AD FS server must have access to its Artifact Store ADM
 element, where it stores state about OAuth authorization codes issued by it for the duration of the
@@ -1276,7 +1183,7 @@ AD FS server MUST ensure that the artifact identifier is unique across its Artif
 Access to the Artifact Store ADM element must be initialized before the AD FS server services
 requests by using the ADFSOAL Protocol.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
@@ -1287,7 +1194,8 @@ Release: September 16, 2024
 
 19 / 27
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -1309,7 +1217,7 @@ The request body for messages to this service, unless otherwise noted, has the s
 The response body for messages from this service, unless otherwise noted, has the same encoding
 rules.
 
-3.2.5.1  http://server/adfs/artifact/{artifactId}
+##### 3.2.5.1 http://server/adfs/artifact/{artifactId}
 
 This URI corresponds to the artifact identifier that the AD FS server implementing the client role of the
 ADFSOAL Protocol needs to look up on the AD FS server implementing the server role of the ADFSOAL
@@ -1325,7 +1233,7 @@ GET
 
 Look up the artifact corresponding to the {artifactId} identifier.
 
-3.2.5.1.1 GET
+###### 3.2.5.1.1 GET
 
 This method is transported by an HTTP GET.
 
@@ -1344,7 +1252,7 @@ The response message for this method does not contain any custom HTTP headers.
 The response message for this method can result in the status codes defined in the status table in
 section 3.1.5.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 None.
 
@@ -1355,7 +1263,8 @@ Release: September 16, 2024
 
 20 / 27
 
-3.2.5.1.1.2  Response Body
+
+###### 3.2.5.1.1.2 Response Body
 
 If an artifact corresponding to the artifact identifier that was specified in the request was found in the
 artifact store on the AD FS server implementing the server role of the ADFSOAL Protocol, the HTTP
@@ -1367,7 +1276,7 @@ If an artifact corresponding to the artifact identifier specified in the request
 artifact store on the AD FS server implementing the server role of the ADFSOAL Protocol, the HTTP
 404 status code is returned. The response body for the GET response is empty in this case.
 
-3.2.5.1.1.3  Processing Details
+###### 3.2.5.1.1.3 Processing Details
 
 When an AD FS server implementing the server role of the ADFSOAL Protocol receives an HTTP GET
 request to look up a specified artifact identifier, it implements the following processing logic:
@@ -1412,12 +1321,12 @@ encounters an error while processing the request, it returns one of the HTTP err
 defined in section 3.1.5. In addition, the body of the HTTP response SHOULD contain an
 ErrorDetails object that provides the client with additional information about the error.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 When the ArtifactExpiryTimer expires, the artifact is deleted from the Artifact Store ADM element
 because it is older than the artifact lifetime.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1428,21 +1337,22 @@ Release: September 16, 2024
 
 21 / 27
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Note  Throughout these examples, the fictitious names "client.example.com" and
 "server.example.com" are used as they are used in [RFC6749].
 
 Note  Throughout these examples, the HTTP samples contain extra line breaks to enhance readability.
 
-4.1  Artifact Request
+### 4.1 Artifact Request
 
 The following shows an example of a GET request from the "client role" of the ADFSOAL Protocol.
 
  GET /adfs/artifact/yQNiQL5P0AgDAIaw0rL0FUcWQWs?api-version=1 HTTP/1.1
  Host: server
 
-4.2  Artifact Response
+### 4.2 Artifact Response
 
 The following shows an example of a successful server response in the ADFSOAL Protocol.
 
@@ -1458,7 +1368,7 @@ The following shows an example of a successful server response in the ADFSOAL Pr
      "relyingPartyIdentifier":"https:\/\/resource_server"
   }
 
-4.3  Artifact Error Response – Not Found
+### 4.3 Artifact Error Response – Not Found
 
 The following shows an example of a server response in the ADFSOAL Protocol when the requested
 artifact was not found.
@@ -1479,13 +1389,14 @@ Release: September 16, 2024
 
 22 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The ADFSOAL Protocol assumes that security has already been negotiated by using [RFC4559] prior to
 the protocol starting.
@@ -1497,9 +1408,10 @@ Release: September 16, 2024
 
 23 / 27
 
-6  Appendix A: Full JSON Schema
 
-6.1  artifact Object
+## 6 Appendix A: Full JSON Schema
+
+### 6.1 artifact Object
 
  {
          "description" : "artifact object",
@@ -1519,7 +1431,7 @@ Release: September 16, 2024
          }
  }
 
-6.1.1  data Field
+#### 6.1.1 data Field
 
  {
      "access_token": {"type":"string", "optional":false},
@@ -1528,7 +1440,7 @@ Release: September 16, 2024
      "refresh_token": {"type":"string", "optional":true},
  }
 
-6.2  ErrorDetails
+### 6.2 ErrorDetails
 
  {
      "description" : "error details",
@@ -1549,7 +1461,8 @@ Release: September 16, 2024
 
 24 / 27
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1585,7 +1498,8 @@ Release: September 16, 2024
 
 25 / 27
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1597,7 +1511,8 @@ Release: September 16, 2024
 
 26 / 27
 
-   Other local events 21
+
+   Other local events 21
    Timer events 21
    Timers 19
 Overview (synopsis) 7
@@ -1641,7 +1556,7 @@ V
 Vendor-extensible fields 10
 Versioning 9
 
-9  Index
+## 9 Index
 A
 
 Applicability 9

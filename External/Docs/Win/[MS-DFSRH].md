@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 87
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -521,7 +523,8 @@ Release: April 23, 2024
 
 3 / 87
 
-Date
+
+Date
 
 Revision
 History
@@ -554,290 +557,144 @@ Release: April 23, 2024
 
 4 / 87
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 DfsrHelperErrorsEnum](#2211-dfsrhelpererrorsenum)
+      - [2.2.1.2 DfsrReportingFlags](#2212-dfsrreportingflags)
+      - [2.2.1.3 AdAttributeData](#2213-adattributedata)
+      - [2.2.1.4 VersionVectorData](#2214-versionvectordata)
+      - [2.2.1.5 Server Health Report XML](#2215-server-health-report-xml)
+        - [2.2.1.5.1 xs Namespace](#22151-xs-namespace)
+        - [2.2.1.5.2 timestamp Element](#22152-timestamp-element)
+        - [2.2.1.5.3 folder Element](#22153-folder-element)
+        - [2.2.1.5.4 dfsrStats Element](#22154-dfsrstats-element)
+        - [2.2.1.5.5 transactions Element](#22155-transactions-element)
+        - [2.2.1.5.6 file Element](#22156-file-element)
+        - [2.2.1.5.7 affectedFileSet Element](#22157-affectedfileset-element)
+        - [2.2.1.5.8 set Element](#22158-set-element)
+        - [2.2.1.5.9 serviceInfo Element](#22159-serviceinfo-element)
+        - [2.2.1.5.10 server Element](#221510-server-element)
+        - [2.2.1.5.11 serverInfo Element](#221511-serverinfo-element)
+        - [2.2.1.5.12 drive Element](#221512-drive-element)
+        - [2.2.1.5.13 affectedContentSets Element](#221513-affectedcontentsets-element)
+        - [2.2.1.5.14 ref Element](#221514-ref-element)
+        - [2.2.1.5.15 errorReferences Element](#221515-errorreferences-element)
+        - [2.2.1.5.16 error Element](#221516-error-element)
+        - [2.2.1.5.17 Types of DFS Replication Errors](#221517-types-of-dfs-replication-errors)
+          - [2.2.1.5.17.1 EVENT_DFSR_SERVICE_INTERNAL_ERROR Message](#2215171-eventdfsrserviceinternalerror-message)
+          - [2.2.1.5.17.2 EVENT_DFSR_SERVICE_RESUME_FAILED_AFTER_BACKUP_RESTORE](#2215172-eventdfsrserviceresumefailedafterbackuprestore)
+          - [2.2.1.5.17.3 EVENT_DFSR_SERVICE_FAILED_PROCESSING_RESTORE_VOLUME_LIST](#2215173-eventdfsrservicefailedprocessingrestorevolumelist)
+          - [2.2.1.5.17.4 EVENT_DFSR_SERVICE_DS_UNREACHABLE_ERROR Message](#2215174-eventdfsrservicedsunreachableerror-message)
+          - [2.2.1.5.17.5 EVENT_DFSR_SERVICE_RPC_LISTENER_ERROR Message](#2215175-eventdfsrservicerpclistenererror-message)
+          - [2.2.1.5.17.6 EVENT_DFSR_SERVICE_DEBUG_LOG_STOP Message](#2215176-eventdfsrservicedebuglogstop-message)
+          - [2.2.1.5.17.7 EVENT_DFSR_SERVICE_LOG_INITIALIZATION_FAILED Message](#2215177-eventdfsrserviceloginitializationfailed-message)
+          - [2.2.1.5.17.8 EVENT_DFSR_VOLUME_ERROR Message](#2215178-eventdfsrvolumeerror-message)
+          - [2.2.1.5.17.9 EVENT_DFSR_VOLUME_JOURNAL_WRAP Message](#2215179-eventdfsrvolumejournalwrap-message)
+          - [2.2.1.5.17.10 EVENT_DFSR_VOLUME_DATABASE_ERROR Message](#22151710-eventdfsrvolumedatabaseerror-message)
+          - [2.2.1.5.17.11 EVENT_DFSR_VOLUME_JOURNAL_LOSS Message](#22151711-eventdfsrvolumejournalloss-message)
+          - [2.2.1.5.17.12 EVENT_DFSR_VOLUME_JOURNAL_RECOVERY_FAILED Message](#22151712-eventdfsrvolumejournalrecoveryfailed-message)
+          - [2.2.1.5.17.13 EVENT_DFSR_CS_ERROR Message](#22151713-eventdfsrcserror-message)
+          - [2.2.1.5.17.14 EVENT_DFSR_CS_DISABLED Message](#22151714-eventdfsrcsdisabled-message)
+          - [2.2.1.5.17.15 EVENT_DFSR_CS_STAGE_CLEANUP_STARTED Message](#22151715-eventdfsrcsstagecleanupstarted-message)
+          - [2.2.1.5.17.16 EVENT_DFSR_CS_STAGE_CLEANUP_FAILED Message](#22151716-eventdfsrcsstagecleanupfailed-message)
+          - [2.2.1.5.17.17 EVENT_DFSR_CS_STAGE_EXCEEDED_SIZE Message](#22151717-eventdfsrcsstageexceededsize-message)
+          - [2.2.1.5.17.18 EVENT_DFSR_CS_STAGE_INACCESSIBLE Message](#22151718-eventdfsrcsstageinaccessible-message)
+          - [2.2.1.5.17.19 EVENT_DFSR_CS_SHARING_VIOLATION_LOCAL Message](#22151719-eventdfsrcssharingviolationlocal-message)
+          - [2.2.1.5.17.20 EVENT_DFSR_CS_SHARING_VIOLATION_SERVING Message](#22151720-eventdfsrcssharingviolationserving-message)
+          - [2.2.1.5.17.21 EVENT_DFSR_CS_SHARING_VIOLATION_WALKING Message](#22151721-eventdfsrcssharingviolationwalking-message)
+          - [2.2.1.5.17.22 EVENT_DFSR_CS_UNSUPPORTED_ENCRYPTED_FILES Message](#22151722-eventdfsrcsunsupportedencryptedfiles-message)
+          - [2.2.1.5.17.23 EVENT_DFSR_CS_UNSUPPORTED_REPARSE_TAG Message](#22151723-eventdfsrcsunsupportedreparsetag-message)
+          - [2.2.1.5.17.24 EVENT_DFSR_CS_DISK_FULL Message](#22151724-eventdfsrcsdiskfull-message)
+          - [2.2.1.5.17.25 EVENT_DFSR_CONNECTION_ERROR Message](#22151725-eventdfsrconnectionerror-message)
+          - [2.2.1.5.17.26 EVENT_DFSR_CONNECTION_SERVICE_UNREACHABLE Message](#22151726-eventdfsrconnectionserviceunreachable-message)
+          - [2.2.1.5.17.27 EVENT_DFSR_CONNECTION_UNRECOGNIZED Message](#22151727-eventdfsrconnectionunrecognized-message)
+          - [2.2.1.5.17.28 EVENT_DFSR_INCOMPATIBLE_VERSION Message](#22151728-eventdfsrincompatibleversion-message)
+          - [2.2.1.5.17.29 EVENT_DFSR_CONFIG_DS_INVALID_DATA Message](#22151729-eventdfsrconfigdsinvaliddata-message)
+          - [2.2.1.5.17.30 EVENT_DFSR_CONFIG_DS_DUPLICATE_DATA Message](#22151730-eventdfsrconfigdsduplicatedata-message)
+          - [2.2.1.5.17.31 EVENT_DFSR_CONFIG_DS_INCONSISTENT_DATA Message](#22151731-eventdfsrconfigdsinconsistentdata-message)
+          - [2.2.1.5.17.32 EVENT_DFSR_CONFIG_INVALID_PARAMETER_ERROR Message](#22151732-eventdfsrconfiginvalidparametererror-message)
+          - [2.2.1.5.17.33 EVENT_DFSR_CONFIG_INVALID_PARAMETER_WARNING Message](#22151733-eventdfsrconfiginvalidparameterwarning-message)
+          - [2.2.1.5.17.34 EVENT_DFSR_CONFIG_DS_INVALID_SCHEMA_VERSION Message](#22151734-eventdfsrconfigdsinvalidschemaversion-message)
+          - [2.2.1.5.17.35 EVENT_DFSR_CONFIG_DS_UPDATE_FAILED Message](#22151735-eventdfsrconfigdsupdatefailed-message)
+          - [2.2.1.5.17.36 EVENT_DFSR_CONFIG_WMI_PROVIDER_REGISTRATION_FAILED](#22151736-eventdfsrconfigwmiproviderregistrationfailed)
+          - [2.2.1.5.17.37 EVENT_DFSR_CONFIG_VOLUME_NOT_SUPPORTED Message](#22151737-eventdfsrconfigvolumenotsupported-message)
+          - [2.2.1.5.17.38 EVENT_DFSR_CS_OVERLAPPING Message](#22151738-eventdfsrcsoverlapping-message)
+          - [2.2.1.5.17.39 EVENT_DFSR_CONFIG_CS_ROOT_INVALID Message](#22151739-eventdfsrconfigcsrootinvalid-message)
+          - [2.2.1.5.17.40 EVENT_DFSR_CONFIG_CS_ROOT_STALE Message](#22151740-eventdfsrconfigcsrootstale-message)
+          - [2.2.1.5.17.41 EVENT_DFSR_CS_OVERLAPPING_WITH_FRS1 Message](#22151741-eventdfsrcsoverlappingwithfrs1-message)
+          - [2.2.1.5.17.42 EVENT_DFSR_CS_OVERLAPPING_WITH_SYSTEM Message](#22151742-eventdfsrcsoverlappingwithsystem-message)
+          - [2.2.1.5.17.43 EVENT_DFSR_CS_OVERLAPPING_WITH_LOG Message](#22151743-eventdfsrcsoverlappingwithlog-message)
+          - [2.2.1.5.17.44 EVENT_DFSR_CONFIG_VOLUME_CONSISTENCY_CHECK_FAILED](#22151744-eventdfsrconfigvolumeconsistencycheckfailed)
+          - [2.2.1.5.17.45 EVENT_DFSR_CONFIG_NO_CONNECTIONS_ENABLED Message](#22151745-eventdfsrconfignoconnectionsenabled-message)
+          - [2.2.1.5.17.46 EVENT_DFSR_CONFIG_NO_CONNECTIONS_EXIST Message](#22151746-eventdfsrconfignoconnectionsexist-message)
+          - [2.2.1.5.17.47 ERROR_WMI_ACCESS_DENIED Message](#22151747-errorwmiaccessdenied-message)
+          - [2.2.1.5.17.48 ERROR_WMI_ERROR Message](#22151748-errorwmierror-message)
+          - [2.2.1.5.17.49 ERROR_WMI_NO_NAMESPACE Message](#22151749-errorwminonamespace-message)
+          - [2.2.1.5.17.50 ERROR_WMI_TIMEOUT Message](#22151750-errorwmitimeout-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Role Details](#31-server-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Methods with Prerequisites](#3151-methods-with-prerequisites)
+      - [3.1.5.2 IADProxy Interface](#3152-iadproxy-interface)
+        - [3.1.5.2.1 CreateObject Method (Opnum 3)](#31521-createobject-method-opnum-3)
+        - [3.1.5.2.2 DeleteObject Method (Opnum 4)](#31522-deleteobject-method-opnum-4)
+        - [3.1.5.2.3 ModifyObject Method (Opnum 5)](#31523-modifyobject-method-opnum-5)
+      - [3.1.5.3 IADProxy2 Interface](#3153-iadproxy2-interface)
+        - [3.1.5.3.1 CreateObject Method (Opnum 6)](#31531-createobject-method-opnum-6)
+        - [3.1.5.3.2 DeleteObject Method (Opnum 7)](#31532-deleteobject-method-opnum-7)
+        - [3.1.5.3.3 ModifyObject Method (Opnum 8)](#31533-modifyobject-method-opnum-8)
+      - [3.1.5.4 IServerHealthReport Interface](#3154-iserverhealthreport-interface)
+        - [3.1.5.4.1 GetReport Method (Opnum 3)](#31541-getreport-method-opnum-3)
+        - [3.1.5.4.2 GetCompressedReport Method (Opnum 4)](#31542-getcompressedreport-method-opnum-4)
+        - [3.1.5.4.3 GetRawReportEx Method (Opnum 5)](#31543-getrawreportex-method-opnum-5)
+        - [3.1.5.4.4 GetReferenceVersionVectors Method (Opnum 6)](#31544-getreferenceversionvectors-method-opnum-6)
+        - [3.1.5.4.5 GetReferenceBacklogCounts Method (Opnum 8)](#31545-getreferencebacklogcounts-method-opnum-8)
+      - [3.1.5.5 IServerHealthReport2 Interface](#3155-iserverhealthreport2-interface)
+        - [3.1.5.5.1 GetReport Method (Opnum 9)](#31551-getreport-method-opnum-9)
+        - [3.1.5.5.2 GetCompressedReport Method (Opnum 10)](#31552-getcompressedreport-method-opnum-10)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Role Details](#32-client-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Methods with Prerequisites](#3251-methods-with-prerequisites)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example of Messages Between a Client and Server](#41-example-of-messages-between-a-client-and-server)
+  - [4.2 Example of the Server Health Report in XML Format](#42-example-of-the-server-health-report-in-xml-format)
+- [5 Security](#5-security)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Common Data Types ................................................................................... 14
-DfsrHelperErrorsEnum ........................................................................... 14
-DfsrReportingFlags ................................................................................ 15
-AdAttributeData .................................................................................... 15
-VersionVectorData ................................................................................ 16
-Server Health Report XML ...................................................................... 17
-xs Namespace ................................................................................. 17
-timestamp Element.......................................................................... 17
-folder Element ................................................................................ 17
-dfsrStats Element ............................................................................ 19
-transactions Element ....................................................................... 19
-file Element .................................................................................... 20
-affectedFileSet Element .................................................................... 21
-set Element .................................................................................... 22
-serviceInfo Element ......................................................................... 24
-server Element ................................................................................ 25
-serverInfo Element .......................................................................... 27
-drive Element ................................................................................. 28
-affectedContentSets Element ............................................................ 29
-ref Element ..................................................................................... 30
-errorReferences Element .................................................................. 30
-error Element ................................................................................. 31
-Types of DFS Replication Errors ......................................................... 32
-EVENT_DFSR_SERVICE_INTERNAL_ERROR Message ...................... 32
-EVENT_DFSR_SERVICE_RESUME_FAILED_AFTER_BACKUP_RESTORE
-Message ................................................................................... 33
-
-2.2.1.5.1
-2.2.1.5.2
-2.2.1.5.3
-2.2.1.5.4
-2.2.1.5.5
-2.2.1.5.6
-2.2.1.5.7
-2.2.1.5.8
-2.2.1.5.9
-2.2.1.5.10
-2.2.1.5.11
-2.2.1.5.12
-2.2.1.5.13
-2.2.1.5.14
-2.2.1.5.15
-2.2.1.5.16
-2.2.1.5.17
-
-2.2.1.5.17.1
-2.2.1.5.17.2
-
-2.2.1.5.17.3
-
- EVENT_DFSR_SERVICE_FAILED_PROCESSING_RESTORE_VOLUME_LIS
-T Message ................................................................................ 33
-EVENT_DFSR_SERVICE_DS_UNREACHABLE_ERROR Message .......... 33
-2.2.1.5.17.4
-EVENT_DFSR_SERVICE_RPC_LISTENER_ERROR Message ............... 33
-2.2.1.5.17.5
-EVENT_DFSR_SERVICE_DEBUG_LOG_STOP Message ..................... 34
-2.2.1.5.17.6
-EVENT_DFSR_SERVICE_LOG_INITIALIZATION_FAILED Message ..... 34
-2.2.1.5.17.7
-EVENT_DFSR_VOLUME_ERROR Message ....................................... 35
-2.2.1.5.17.8
-2.2.1.5.17.9
-EVENT_DFSR_VOLUME_JOURNAL_WRAP Message ......................... 35
-2.2.1.5.17.10  EVENT_DFSR_VOLUME_DATABASE_ERROR Message ...................... 35
-2.2.1.5.17.11  EVENT_DFSR_VOLUME_JOURNAL_LOSS Message .......................... 36
-2.2.1.5.17.12  EVENT_DFSR_VOLUME_JOURNAL_RECOVERY_FAILED Message ....... 36
-2.2.1.5.17.13  EVENT_DFSR_CS_ERROR Message ............................................... 36
-
-5 / 87
-
-[MS-DFSRH] - v20240423
-DFS Replication Helper Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-2.2.1.5.17.14  EVENT_DFSR_CS_DISABLED Message .......................................... 37
-2.2.1.5.17.15  EVENT_DFSR_CS_STAGE_CLEANUP_STARTED Message ................. 37
-2.2.1.5.17.16  EVENT_DFSR_CS_STAGE_CLEANUP_FAILED Message .................... 38
-2.2.1.5.17.17  EVENT_DFSR_CS_STAGE_EXCEEDED_SIZE Message...................... 39
-2.2.1.5.17.18  EVENT_DFSR_CS_STAGE_INACCESSIBLE Message ........................ 39
-2.2.1.5.17.19  EVENT_DFSR_CS_SHARING_VIOLATION_LOCAL Message ............... 40
-2.2.1.5.17.20  EVENT_DFSR_CS_SHARING_VIOLATION_SERVING Message ........... 40
-2.2.1.5.17.21  EVENT_DFSR_CS_SHARING_VIOLATION_WALKING Message .......... 40
-2.2.1.5.17.22  EVENT_DFSR_CS_UNSUPPORTED_ENCRYPTED_FILES Message ....... 41
-2.2.1.5.17.23  EVENT_DFSR_CS_UNSUPPORTED_REPARSE_TAG Message ............. 41
-2.2.1.5.17.24  EVENT_DFSR_CS_DISK_FULL Message ......................................... 42
-2.2.1.5.17.25  EVENT_DFSR_CONNECTION_ERROR Message ............................... 42
-2.2.1.5.17.26  EVENT_DFSR_CONNECTION_SERVICE_UNREACHABLE Message ...... 43
-2.2.1.5.17.27  EVENT_DFSR_CONNECTION_UNRECOGNIZED Message .................. 43
-2.2.1.5.17.28  EVENT_DFSR_INCOMPATIBLE_VERSION Message .......................... 44
-2.2.1.5.17.29  EVENT_DFSR_CONFIG_DS_INVALID_DATA Message ...................... 44
-2.2.1.5.17.30  EVENT_DFSR_CONFIG_DS_DUPLICATE_DATA Message .................. 45
-2.2.1.5.17.31  EVENT_DFSR_CONFIG_DS_INCONSISTENT_DATA Message ............ 45
-2.2.1.5.17.32  EVENT_DFSR_CONFIG_INVALID_PARAMETER_ERROR Message ....... 46
-2.2.1.5.17.33  EVENT_DFSR_CONFIG_INVALID_PARAMETER_WARNING Message ... 46
-2.2.1.5.17.34  EVENT_DFSR_CONFIG_DS_INVALID_SCHEMA_VERSION Message ... 46
-2.2.1.5.17.35  EVENT_DFSR_CONFIG_DS_UPDATE_FAILED Message .................... 47
-2.2.1.5.17.36  EVENT_DFSR_CONFIG_WMI_PROVIDER_REGISTRATION_FAILED
-
-Message ................................................................................... 47
-2.2.1.5.17.37  EVENT_DFSR_CONFIG_VOLUME_NOT_SUPPORTED Message ........... 47
-2.2.1.5.17.38  EVENT_DFSR_CS_OVERLAPPING Message .................................... 48
-2.2.1.5.17.39  EVENT_DFSR_CONFIG_CS_ROOT_INVALID Message ...................... 48
-2.2.1.5.17.40  EVENT_DFSR_CONFIG_CS_ROOT_STALE Message ......................... 49
-2.2.1.5.17.41  EVENT_DFSR_CS_OVERLAPPING_WITH_FRS1 Message .................. 49
-2.2.1.5.17.42  EVENT_DFSR_CS_OVERLAPPING_WITH_SYSTEM Message .............. 50
-2.2.1.5.17.43  EVENT_DFSR_CS_OVERLAPPING_WITH_LOG Message ................... 50
-2.2.1.5.17.44  EVENT_DFSR_CONFIG_VOLUME_CONSISTENCY_CHECK_FAILED
-
-Message ................................................................................... 51
-2.2.1.5.17.45  EVENT_DFSR_CONFIG_NO_CONNECTIONS_ENABLED Message ....... 51
-2.2.1.5.17.46  EVENT_DFSR_CONFIG_NO_CONNECTIONS_EXIST Message ............ 52
-2.2.1.5.17.47  ERROR_WMI_ACCESS_DENIED Message ....................................... 52
-2.2.1.5.17.48  ERROR_WMI_ERROR Message ..................................................... 52
-2.2.1.5.17.49  ERROR_WMI_NO_NAMESPACE Message ....................................... 53
-2.2.1.5.17.50  ERROR_WMI_TIMEOUT Message .................................................. 53
-Directory Service Schema Elements ................................................................... 53
-
-2.3
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 54
-Server Role Details ........................................................................................... 54
-Abstract Data Model .................................................................................... 54
-Timers ...................................................................................................... 54
-Initialization ............................................................................................... 54
-Higher-Layer Triggered Events ..................................................................... 54
-Message Processing Events and Sequencing Rules .......................................... 54
-Methods with Prerequisites ..................................................................... 54
-IADProxy Interface ................................................................................ 54
-CreateObject Method (Opnum 3) ....................................................... 55
-DeleteObject Method (Opnum 4) ....................................................... 56
-ModifyObject Method (Opnum 5) ....................................................... 58
-IADProxy2 Interface .............................................................................. 59
-CreateObject Method (Opnum 6) ....................................................... 59
-DeleteObject Method (Opnum 7) ....................................................... 60
-ModifyObject Method (Opnum 8) ....................................................... 61
-IServerHealthReport Interface ................................................................ 62
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.3.1
-3.1.5.3.2
-3.1.5.3.3
-
-3.1.5.4
-
-3.1.5.3
-
-[MS-DFSRH] - v20240423
-DFS Replication Helper Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 87
-
-3.1.5.5
-
-3.1.5.5.1
-3.1.5.5.2
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-3.1.5.4.4
-3.1.5.4.5
-
-GetReport Method (Opnum 3) ........................................................... 63
-GetCompressedReport Method (Opnum 4) .......................................... 64
-GetRawReportEx Method (Opnum 5) .................................................. 66
-GetReferenceVersionVectors Method (Opnum 6) ................................. 66
-GetReferenceBacklogCounts Method (Opnum 8) .................................. 67
-IServerHealthReport2 Interface .............................................................. 67
-GetReport Method (Opnum 9) ........................................................... 68
-GetCompressedReport Method (Opnum 10) ........................................ 69
-Timer Events .............................................................................................. 70
-Other Local Events ...................................................................................... 70
-Client Role Details ............................................................................................ 70
-Abstract Data Model .................................................................................... 70
-Timers ...................................................................................................... 70
-Initialization ............................................................................................... 70
-Higher-Layer Triggered Events ..................................................................... 71
-Message Processing Events and Sequencing Rules .......................................... 71
-Methods with Prerequisites ..................................................................... 71
-Timer Events .............................................................................................. 71
-Other Local Events ...................................................................................... 71
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 72
-Example of Messages Between a Client and Server ............................................... 72
-Example of the Server Health Report in XML Format ............................................. 72
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 75
-
-6  Appendix A: Full IDL .............................................................................................. 76
-
-7  Appendix B: Product Behavior ............................................................................... 79
-
-8  Change Tracking .................................................................................................... 84
-
-9  Index ..................................................................................................................... 85
-
-[MS-DFSRH] - v20240423
-DFS Replication Helper Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 87
-
-1  Introduction
+## 1 Introduction
 
 The Distributed File System: Replication Helper (DFS-R Helper) Protocol is a set of DCOM interfaces for
 configuring and monitoring the Distributed File System.
@@ -845,7 +702,7 @@ configuring and monitoring the Distributed File System.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -910,7 +767,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
+
+[RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
 Interface Definition Language (IDL): The International Standards Organization (ISO) standard
@@ -990,7 +848,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
+
+not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
 use of this term does not imply or require that the algorithms described in [RFC4122] or [C706]
 has to be used for generating the UUID.
 
@@ -1008,14 +867,14 @@ on one or more partitions.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1057,7 +916,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
@@ -1079,7 +939,7 @@ W3C Recommendation, October 2004, http://www.w3.org/TR/2004/REC-xmlschema-0-2004
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [LDAP-ERR] Microsoft Corporation, "Return Values", http://msdn.microsoft.com/en-
 us/library/aa367014.aspx
@@ -1090,7 +950,7 @@ https://edn.embarcadero.com/el/article/22016
 [WMI] Microsoft Corporation, "Windows Management Instrumentation (WMI)",
 http://msdn.microsoft.com/en-us/library/aa394582.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Distributed File System: Replication Helper (DFS-R Helper) Protocol provides a set of DCOM
 interfaces for configuring and monitoring Distributed File System–Replication (DFS-R) on a
@@ -1122,7 +982,8 @@ Release: April 23, 2024
 
 11 / 87
 
-The client sends the server information about the Active Directory operation that the client is trying to
+
+The client sends the server information about the Active Directory operation that the client is trying to
 accomplish. The server then attempts to execute the command by using the machine account and
 returns information about the status of the operation.
 
@@ -1152,13 +1013,13 @@ Information about replicated folders on the server.
 Sections 2 and 3 specify the Distributed File System: Replication Helper (DFS-R Helper) Protocol and
 define protocol messages, their parameters, and the XML format of the health report.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Distributed File System: Replication Helper (DFS-R Helper) Protocol relies on the Distributed
 Component Object Model (DCOM) Remote Protocol (as specified in [MS-DCOM]), which uses RPC as its
 transport. For more information, see [MS-RPCE].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented over DCOM and RPC. Therefore, it has the prerequisites that are
 specified in [MS-DCOM] and [MS-RPCE] as common to the DCOM and RPC interfaces.
@@ -1166,13 +1027,13 @@ specified in [MS-DCOM] and [MS-RPCE] as common to the DCOM and RPC interfaces.
 The Distributed File System: Replication Helper (DFS-R Helper) Protocol assumes that a client has
 obtained the name of a server that supports this protocol suite before the protocol is invoked.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol enables a client application to modify the DFS-R configuration using the credentials of
 the server computer. The client also uses this protocol to get health information for the DFS-R service
 on the remote server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: This protocol uses the Distributed Component Object Model (DCOM) Remote
 Protocol (as specified in [MS-DCOM]), which in turn uses RPC over TCP as its only transport, as
@@ -1197,7 +1058,8 @@ Release: April 23, 2024
 
 12 / 87
 
-
+
+
 
 
 
@@ -1213,11 +1075,11 @@ Security and Authentication Methods: For more information, see [MS-DCOM] and [MS
 Administrator rights on the server computer are required to use the IADProxy and the IADProxy2
 interfaces.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Distributed File System: Replication Helper (DFS-R Helper) protocol has no standards
 assignments. It uses the following UUIDs to identify its interfaces.
@@ -1249,9 +1111,10 @@ Release: April 23, 2024
 
 13 / 87
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses RPC Dynamic Endpoints as defined in Part 4 of [C706].
 
@@ -1274,7 +1137,7 @@ and access operations and also decides whether to deny or grant access for these
 
 An implementation of DFS Replication Helper SHOULD choose to restrict access to the interfaces.<3>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 In addition to the RPC base types and the definitions that are specified in [C706] and [MS-DTYP], the
 sections that follow use the definitions of BSTR, GUID, SAFEARRAY, VARIANT, VARIANT_BOOL, and
@@ -1282,9 +1145,9 @@ DWORD, as specified in [MS-DTYP] Appendix A and in [MS-OAUT]. The IServerHealthR
 IServerHealthReport2 interfaces return reports as XML. For more information about XML, see
 [XML10], [XMLSCHEMA0], [XMLSCHEMA1], and [XMLSCHEMA2].
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  DfsrHelperErrorsEnum
+##### 2.2.1.1 DfsrHelperErrorsEnum
 
 The DfsrHelperErrorsEnum enumeration defines error codes that are specific to the IADProxy and
 IADProxy2 interfaces.
@@ -1315,7 +1178,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.2  DfsrReportingFlags
+
+##### 2.2.1.2 DfsrReportingFlags
 
 The DfsrReportingFlags enumeration represents the options for generating health reports, which are
 used in IServerHealthReport and IServerHealthReport2 interfaces. The UUID for this enumeration is
@@ -1336,7 +1200,7 @@ REPORTING_FLAGS_BACKLOG:  Return the count of backlog transactions.
 
 REPORTING_FLAGS_FILES:  Return the count and cumulative size of files in the replicated folders.
 
-2.2.1.3  AdAttributeData
+##### 2.2.1.3 AdAttributeData
 
 The AdAttributeData structure provides information about an Active Directory operation. This
 structure describes the Active Directory operation that is requested by the client. The UUID for this
@@ -1392,7 +1256,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-isString:  Specifies whether the value that is passed in the attributeValue field is a string. The value
+
+isString:  Specifies whether the value that is passed in the attributeValue field is a string. The value
 
 of this field MUST be VARIANT_FALSE (as specified in [MS-OAUT] section 2.2.27) if the
 attributeValue field contains a binary value. Otherwise, the value MUST be VARIANT_TRUE.
@@ -1400,7 +1265,7 @@ attributeValue field contains a binary value. Otherwise, the value MUST be VARIA
 length:  For a binary value, the length, in bytes, of the value MUST be provided in this field. For string
 data, this field MUST be set to the length, in bytes, of the Unicode string (see [UNICODE4.0].
 
-2.2.1.4  VersionVectorData
+##### 2.2.1.4 VersionVectorData
 
 The VersionVectorData structure provides information about the DFS-R version vector. The DFS-R
 version vector is an array of identifiers and versions of modified files in a replicated folder. The
@@ -1468,17 +1333,18 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.5  Server Health Report XML
+
+##### 2.2.1.5 Server Health Report XML
 
 The server health report is an XML document that contains the data that is related to DFS-R service
 health and SHOULD contain errors encountered during generation of the report.
 
-2.2.1.5.1 xs Namespace
+###### 2.2.1.5.1 xs Namespace
 
 The xs namespace that is used in subsections of section 2.2.1.5 refers to the XMLSchema namespace
 that is specified in [XMLSCHEMA0], [XMLSCHEMA1], and [XMLSCHEMA2].
 
-2.2.1.5.2 timestamp Element
+###### 2.2.1.5.2 timestamp Element
 
 The timestamp XML element represents the time in a specific time zone.
 
@@ -1528,7 +1394,7 @@ timezone  xs:int  MUST be the difference, in minutes, between the time in the se
 Coordinated Universal Time (UTC). This field SHOULD account for the daylight time
 adjustment.
 
-2.2.1.5.3 folder Element
+###### 2.2.1.5.3 folder Element
 
 The folder XML element represents a folder on the disk.
 
@@ -1544,7 +1410,8 @@ Release: April 23, 2024
 
 17 / 87
 
-         type="xs:string"
+
+         type="xs:string"
         />
        <xs:element name="fileCount"
          type="xs:long"
@@ -1642,7 +1509,8 @@ Release: April 23, 2024
 
 18 / 87
 
-Name  Type
+
+Name  Type
 
 Description
 
@@ -1654,7 +1522,7 @@ staging  The folder element represents a staging folder for a DFS-R replicated
 
 folder.
 
-2.2.1.5.4 dfsrStats Element
+###### 2.2.1.5.4 dfsrStats Element
 
 The dfsrStats XML element represents efficiency statistics for the DFS-R service.
 
@@ -1691,7 +1559,7 @@ xs:long  MUST be the total compressed size, in bytes, of all data that is receiv
 server from other members that participate in the same replication group over
 a network in order to transfer files or partial files. <7>
 
-2.2.1.5.5 transactions Element
+###### 2.2.1.5.5 transactions Element
 
 The transactions XML element represents file transfer statistics.
 
@@ -1718,7 +1586,8 @@ Release: April 23, 2024
 
 19 / 87
 
-Child Elements
+
+Child Elements
 
 Element
 
@@ -1764,7 +1633,7 @@ IServerHealthReport2::GetReferenceVersionVectors method to get this version
 vector from another server or use a different implementation-specific way of
 getting the version vectors.<9>
 
-2.2.1.5.6 file Element
+###### 2.2.1.5.6 file Element
 
 The file XML element represents information about a file.
 
@@ -1800,7 +1669,8 @@ Release: April 23, 2024
 
 20 / 87
 
-        />
+
+        />
      </xs:sequence>
    </xs:complexType>
  </xs:element>
@@ -1843,7 +1713,7 @@ timestamp  The timestamp is an optional element of the file element. If the time
 present in the file element, the server MAY provide a timestamp value<11> The
 format of this element is specified in section 2.2.1.5.2.
 
-2.2.1.5.7 affectedFileSet Element
+###### 2.2.1.5.7 affectedFileSet Element
 
 The affectedFileSet XML element represents information about the files that are involved in
 replication issues.
@@ -1883,7 +1753,8 @@ Release: April 23, 2024
 
 21 / 87
 
-Element  Type  Description
+
+Element  Type  Description
 
 file
 
@@ -1913,7 +1784,7 @@ filtered
 The file was filtered from replication on the basis of an implementation-
 specific filter that was set in the DFS Replication service. <12>
 
-2.2.1.5.8 set Element
+###### 2.2.1.5.8 set Element
 
 The set XML element represents information about a replicated folder.
 
@@ -1965,7 +1836,8 @@ Release: April 23, 2024
 
 22 / 87
 
-        />
+
+        />
        <xs:element
          minOccurs="0"
          maxOccurs="3"
@@ -2073,7 +1945,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Element
+
+Element
 
 Type
 
@@ -2123,7 +1996,7 @@ guid
 
 xs:string  MUST be the unique identifier of the replicated folder.
 
-2.2.1.5.9 serviceInfo Element
+###### 2.2.1.5.9 serviceInfo Element
 
 The serviceInfo XML element represents information about the DFS Replication service on the
 server.
@@ -2167,7 +2040,8 @@ Release: April 23, 2024
 
 24 / 87
 
-Element
+
+Element
 
 Type
 
@@ -2214,9 +2088,9 @@ timestamp  MUST be the date and time when the DFS Replication service starts. Th
 
 element is specified in section 2.2.1.5.2.
 
-2.2.1.5.10
+###### 2.2.1.5.10 server Element
 
-server Element
+
 
 The server XML element represents a list of replicated folders that are affected by a particular error.
 
@@ -2264,7 +2138,8 @@ Release: April 23, 2024
 
 25 / 87
 
- <xs:element name="server">
+
+ <xs:element name="server">
    <xs:complexType>
      <xs:sequence>
        <xs:element
@@ -2340,7 +2215,8 @@ Release: April 23, 2024
 
 26 / 87
 
-      />
+
+      />
      <xs:attribute name="dfsrHelperVersion"
        type="xs:string"
       />
@@ -2442,9 +2318,9 @@ xs:string  MUST be the version of the DFS-R Helper Protocol server. The version
 
 numbering is implementation specific.<16>
 
-2.2.1.5.11
+###### 2.2.1.5.11 serverInfo Element
 
-serverInfo Element
+
 
 The serverInfo XML element represents information about the server.
 
@@ -2457,7 +2333,8 @@ Release: April 23, 2024
 
 27 / 87
 
-   <xs:complexType>
+
+   <xs:complexType>
      <xs:sequence>
        <xs:element name="referenceDC"
          maxOccurs="unbounded"
@@ -2503,9 +2380,9 @@ xs:string  MUST be the name of the domain to which this server belongs. Either t
 
 NetBIOS name of the domain MAY be used.<17>
 
-2.2.1.5.12
+###### 2.2.1.5.12 drive Element
 
-drive Element
+
 
 The drive XML element represents information about a volume on the server.
 
@@ -2539,7 +2416,8 @@ Release: April 23, 2024
 
 28 / 87
 
-   </xs:complexType>
+
+   </xs:complexType>
  </xs:element>
 
 Child Elements
@@ -2584,9 +2462,9 @@ xs:string  MUST be the human-readable name of the volume. The volume name format
 
 implementation specific.<21>
 
-2.2.1.5.13
+###### 2.2.1.5.13 affectedContentSets Element
 
-affectedContentSets Element
+
 
 The affectedContentSets XML element represents a list of replicated folders that are affected by a
 specific error.
@@ -2626,7 +2504,8 @@ Release: April 23, 2024
 
 29 / 87
 
-Child Elements
+
+Child Elements
 
 Element  Type  Description
 
@@ -2663,9 +2542,9 @@ Value  Description
 
 all
 
-2.2.1.5.14
+###### 2.2.1.5.14 ref Element
 
-ref Element
+
 
 The ref XML element represents information about an error parameter. Depending on what the error
 is, specific named parameters MUST be defined. For more information about errors and their
@@ -2699,9 +2578,9 @@ xs:string  MUST be the name of the error parameter.
 
 extension: MUST be the value of the error parameter that is associated with this refId.
 
-2.2.1.5.15
+###### 2.2.1.5.15 errorReferences Element
 
-errorReferences Element
+
 
 The errorReferences XML element represents information about all parameters of an error.
 
@@ -2712,7 +2591,8 @@ Release: April 23, 2024
 
 30 / 87
 
-   <xs:element name="errorReferences">
+
+   <xs:element name="errorReferences">
      <xs:complexType>
        <xs:sequence>
          <xs:element ref="ref" maxOccurs="unbounded" />
@@ -2741,9 +2621,9 @@ ref
 MUST be one or more error references. The format of this element is specified in section
 2.2.1.5.14.
 
-2.2.1.5.16
+###### 2.2.1.5.16 error Element
 
-error Element
+
 
 The error XML element represents information about an error on the server.
 
@@ -2793,7 +2673,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Element
+
+Element
 
 Type
 
@@ -2837,9 +2718,9 @@ This error message represents a replication error.
 
 Warning  This error message represents a replication warning.
 
-2.2.1.5.17
+###### 2.2.1.5.17 Types of DFS Replication Errors
 
-Types of DFS Replication Errors
+
 
 This section specifies errors that the server SHOULD choose to detect and return to the client as part
 of the error XML element. The server MAY also choose to ignore any error condition that is described
@@ -2869,7 +2750,7 @@ parameter MUST be an XML string and SHOULD<24> correspond to that provided in th
 of Types of DFS Replication Error, as specified in section 2.2.1.5.17. The client MUST NOT make any
 assumptions about the format of the data within the strings.
 
-2.2.1.5.17.1  EVENT_DFSR_SERVICE_INTERNAL_ERROR Message
+###### 2.2.1.5.17.1 EVENT_DFSR_SERVICE_INTERNAL_ERROR Message
 
 32 / 87
 
@@ -2878,7 +2759,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error description: The DFS Replication service has stopped because of an internal error from which it
+
+Error description: The DFS Replication service has stopped because of an internal error from which it
 cannot recover. No content is replicating to or from this server.<25>
 
 Error ID: 1010
@@ -2893,7 +2775,7 @@ Ref ID   Meaning
 
 1010.3  The service restart time.
 
-2.2.1.5.17.2  EVENT_DFSR_SERVICE_RESUME_FAILED_AFTER_BACKUP_RESTORE
+###### 2.2.1.5.17.2 EVENT_DFSR_SERVICE_RESUME_FAILED_AFTER_BACKUP_RESTORE
 
 Message
 
@@ -2903,7 +2785,7 @@ Error ID: 1106
 
 Error parameters: This error does not have any parameters.
 
-2.2.1.5.17.3  EVENT_DFSR_SERVICE_FAILED_PROCESSING_RESTORE_VOLUME_LIST
+###### 2.2.1.5.17.3 EVENT_DFSR_SERVICE_FAILED_PROCESSING_RESTORE_VOLUME_LIST
 
 Message
 
@@ -2914,7 +2796,7 @@ Error ID: 1108
 
 Error parameters: This error does not have any parameters.
 
-2.2.1.5.17.4  EVENT_DFSR_SERVICE_DS_UNREACHABLE_ERROR Message
+###### 2.2.1.5.17.4 EVENT_DFSR_SERVICE_DS_UNREACHABLE_ERROR Message
 
 Error description: The DFS Replication service failed to contact the domain controller to access
 configuration information. Replication is stopped. The service will try again during the next
@@ -2936,7 +2818,7 @@ controller network name is not retrievable.
 
 1202.2  The domain controller polling interval, in minutes.
 
-2.2.1.5.17.5  EVENT_DFSR_SERVICE_RPC_LISTENER_ERROR Message
+###### 2.2.1.5.17.5 EVENT_DFSR_SERVICE_RPC_LISTENER_ERROR Message
 
 [MS-DFSRH] - v20240423
 DFS Replication Helper Protocol
@@ -2945,7 +2827,8 @@ Release: April 23, 2024
 
 33 / 87
 
-Error description: The DFS-R service failed to start an RPC listener. Replication is disabled on this
+
+Error description: The DFS-R service failed to start an RPC listener. Replication is disabled on this
 computer.
 
 Error ID: 1208
@@ -2960,7 +2843,7 @@ Ref ID   Meaning
 
 1208.3  The implementation-specific error string.
 
-2.2.1.5.17.6  EVENT_DFSR_SERVICE_DEBUG_LOG_STOP Message
+###### 2.2.1.5.17.6 EVENT_DFSR_SERVICE_DEBUG_LOG_STOP Message
 
 Error description: The DFS Replication service encountered an error while writing to the debug log
 file. Failure to write to the debug log file can occur because the disk is full, the disk is failing, or a
@@ -2985,7 +2868,7 @@ Ref ID   Meaning
 
 1302.6  The maximum count of debug log messages.
 
-2.2.1.5.17.7  EVENT_DFSR_SERVICE_LOG_INITIALIZATION_FAILED Message
+###### 2.2.1.5.17.7 EVENT_DFSR_SERVICE_LOG_INITIALIZATION_FAILED Message
 
 Error description: The DFS Replication service encountered errors while configuring the debug log
 files. Logging is disabled until this error is resolved.
@@ -3009,7 +2892,8 @@ Release: April 23, 2024
 
 34 / 87
 
-2.2.1.5.17.8  EVENT_DFSR_VOLUME_ERROR Message
+
+###### 2.2.1.5.17.8 EVENT_DFSR_VOLUME_ERROR Message
 
 Error description: The DFS Replication service stopped replication on the volume. This failure can
 occur because the disk is full, the disk is failing, or a quota limit has been reached. This failure can
@@ -3030,7 +2914,7 @@ Ref ID   Meaning
 
 2004.4  The implementation-specific error string.
 
-2.2.1.5.17.9  EVENT_DFSR_VOLUME_JOURNAL_WRAP Message
+###### 2.2.1.5.17.9 EVENT_DFSR_VOLUME_JOURNAL_WRAP Message
 
 Error description: The DFS-R service has detected a file system change journal wrap error on the
 volume.
@@ -3060,7 +2944,7 @@ Ref ID   Meaning
 
 2202.2  The volume path.
 
-2.2.1.5.17.10 EVENT_DFSR_VOLUME_DATABASE_ERROR Message
+###### 2.2.1.5.17.10 EVENT_DFSR_VOLUME_DATABASE_ERROR Message
 
 Error description: The DFS Replication service failed to recover from an internal database error on
 the volume. Replication has been stopped for all replicated folders on this volume.
@@ -3076,7 +2960,8 @@ Release: April 23, 2024
 
 35 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 2104.1  The volume GUID.
 
@@ -3088,7 +2973,7 @@ Release: April 23, 2024
 
 2104.5  The implementation-specific database error.<28>
 
-2.2.1.5.17.11 EVENT_DFSR_VOLUME_JOURNAL_LOSS Message
+###### 2.2.1.5.17.11 EVENT_DFSR_VOLUME_JOURNAL_LOSS Message
 
 Error description: The DFS Replication service has detected a file system change journal loss on the
 volume. The service has automatically initiated the journal loss recovery process.<29>
@@ -3105,7 +2990,7 @@ Ref ID   Meaning
 
 2204.3  The number of event occurrences.
 
-2.2.1.5.17.12 EVENT_DFSR_VOLUME_JOURNAL_RECOVERY_FAILED Message
+###### 2.2.1.5.17.12 EVENT_DFSR_VOLUME_JOURNAL_RECOVERY_FAILED Message
 
 Error description: The DFS Replication service failed to recover from a file system change journal
 wrap or loss on the volume. Recovery will be attempted periodically.<30>
@@ -3126,7 +3011,7 @@ Ref ID   Meaning
 
 2208.5  The implementation-specific error string.
 
-2.2.1.5.17.13 EVENT_DFSR_CS_ERROR Message
+###### 2.2.1.5.17.13 EVENT_DFSR_CS_ERROR Message
 
 Error description: The DFS Replication service stopped replication on the replicated folder because
 of an error.
@@ -3138,7 +3023,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error ID: 4004
+
+Error ID: 4004
 
 Error parameters:
 
@@ -3162,7 +3048,7 @@ Ref ID   Meaning
 
 4004.9  The member GUID.
 
-2.2.1.5.17.14 EVENT_DFSR_CS_DISABLED Message
+###### 2.2.1.5.17.14 EVENT_DFSR_CS_DISABLED Message
 
 Error description: The replicated folder at the local path was disabled by an administrator. The
 replicated folder does not participate in replication until it is enabled.
@@ -3175,7 +3061,7 @@ Ref ID   Meaning
 
 4114.1  The number of all disabled replicated folders in the replication group.
 
-2.2.1.5.17.15 EVENT_DFSR_CS_STAGE_CLEANUP_STARTED Message
+###### 2.2.1.5.17.15 EVENT_DFSR_CS_STAGE_CLEANUP_STARTED Message
 
 Error description: The DFS Replication service has detected that the staging space that is in use for
 the replicated folders is above the high-water mark. The service attempts to clean up the staging
@@ -3206,7 +3092,8 @@ Release: April 23, 2024
 
 37 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 4202.3
 
@@ -3242,7 +3129,7 @@ The replication group name.
 
 4202.12  The number of event occurrences.
 
-2.2.1.5.17.16 EVENT_DFSR_CS_STAGE_CLEANUP_FAILED Message
+###### 2.2.1.5.17.16 EVENT_DFSR_CS_STAGE_CLEANUP_FAILED Message
 
 Error description: The DFS Replication service failed to clean up old staging files for the replicated
 folder. The service might fail to replicate some large files, and the replicated folder might get out of
@@ -3306,7 +3193,8 @@ Release: April 23, 2024
 
 38 / 87
 
-2.2.1.5.17.17 EVENT_DFSR_CS_STAGE_EXCEEDED_SIZE Message
+
+###### 2.2.1.5.17.17 EVENT_DFSR_CS_STAGE_EXCEEDED_SIZE Message
 
 Error description: The DFS Replication service detected that the staging-space usage is above the
 staging quota for the replicated folder. The service might fail to replicate some large files, and the
@@ -3361,7 +3249,7 @@ The name of the replication group.
 
 4208.12  The number of event occurrences.
 
-2.2.1.5.17.18 EVENT_DFSR_CS_STAGE_INACCESSIBLE Message
+###### 2.2.1.5.17.18 EVENT_DFSR_CS_STAGE_INACCESSIBLE Message
 
 Error description: The DFS Replication service could not replicate the replicated folder because the
 staging path is invalid or inaccessible.
@@ -3389,13 +3277,14 @@ Release: April 23, 2024
 
 39 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 4212.6  The replication group GUID.
 
 4212.7  The member GUID.
 
-2.2.1.5.17.19 EVENT_DFSR_CS_SHARING_VIOLATION_LOCAL Message
+###### 2.2.1.5.17.19 EVENT_DFSR_CS_SHARING_VIOLATION_LOCAL Message
 
 Error description: The DFS Replication service was repeatedly prevented from replicating a file
 because of consistent sharing violations that were encountered on the file. A local sharing violation
@@ -3405,7 +3294,7 @@ Error ID: 4302
 
 Error parameters: There are no parameters supplied with this message.
 
-2.2.1.5.17.20 EVENT_DFSR_CS_SHARING_VIOLATION_SERVING Message
+###### 2.2.1.5.17.20 EVENT_DFSR_CS_SHARING_VIOLATION_SERVING Message
 
 Error description: The DFS Replication service was repeatedly prevented from replicating a file
 because of consistent sharing violations that were encountered on the file. The service failed to
@@ -3433,7 +3322,7 @@ Ref ID   Meaning
 
 4304.8  The member GUID.
 
-2.2.1.5.17.21 EVENT_DFSR_CS_SHARING_VIOLATION_WALKING Message
+###### 2.2.1.5.17.21 EVENT_DFSR_CS_SHARING_VIOLATION_WALKING Message
 
 Error description: The DFS Replication service failed to get folder information when walking the file
 system on a journal wrap or loss recovery because of repeated sharing violations that were
@@ -3451,7 +3340,8 @@ Release: April 23, 2024
 
 40 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 4312.1  The replicated folder GUID.
 
@@ -3469,7 +3359,7 @@ Release: April 23, 2024
 
 4312.8  The member GUID.
 
-2.2.1.5.17.22 EVENT_DFSR_CS_UNSUPPORTED_ENCRYPTED_FILES Message
+###### 2.2.1.5.17.22 EVENT_DFSR_CS_UNSUPPORTED_ENCRYPTED_FILES Message
 
 Error description: The DFS Replication service encountered an encrypted file.<35>
 
@@ -3493,7 +3383,7 @@ Ref ID   Meaning
 
 4402.7  The member GUID.
 
-2.2.1.5.17.23 EVENT_DFSR_CS_UNSUPPORTED_REPARSE_TAG Message
+###### 2.2.1.5.17.23 EVENT_DFSR_CS_UNSUPPORTED_REPARSE_TAG Message
 
 Error description: The DFS Replication service encountered an unsupported reparse point in a
 replicated folder. This reparse point will not be replicated because the replication of this type of
@@ -3516,7 +3406,8 @@ Release: April 23, 2024
 
 41 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 4406.3  The root path of the replicated folder.
 
@@ -3528,7 +3419,7 @@ Release: April 23, 2024
 
 4406.7  The member GUID.
 
-2.2.1.5.17.24 EVENT_DFSR_CS_DISK_FULL Message
+###### 2.2.1.5.17.24 EVENT_DFSR_CS_DISK_FULL Message
 
 Error description: The DFS Replication service encountered errors when it replicated one or more
 files because adequate free space was not available on the volume. This volume contains the
@@ -3558,7 +3449,7 @@ Ref ID   Meaning
 
 4502.9  The path of the staging folder.
 
-2.2.1.5.17.25 EVENT_DFSR_CONNECTION_ERROR Message
+###### 2.2.1.5.17.25 EVENT_DFSR_CONNECTION_ERROR Message
 
 Error description: The DFS Replication service encountered an error communicating with the
 partner member.
@@ -3580,7 +3471,8 @@ Release: April 23, 2024
 
 42 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 5002.3  The name of the replication group.
 
@@ -3596,7 +3488,7 @@ Release: April 23, 2024
 
 5002.9  The replication group GUID.
 
-2.2.1.5.17.26 EVENT_DFSR_CONNECTION_SERVICE_UNREACHABLE Message
+###### 2.2.1.5.17.26 EVENT_DFSR_CONNECTION_SERVICE_UNREACHABLE Message
 
 Error description: The DFS Replication service failed to communicate with the partner for the
 replication group. This error can occur if the host is unreachable or if the DFS Replication service is
@@ -3631,7 +3523,7 @@ retrievable.
 
 5008.9  The replication group GUID.
 
-2.2.1.5.17.27 EVENT_DFSR_CONNECTION_UNRECOGNIZED Message
+###### 2.2.1.5.17.27 EVENT_DFSR_CONNECTION_UNRECOGNIZED Message
 
 Error description: The DFS Replication service failed to communicate with the replication partner.
 The partner did not recognize the connection or the replication group configuration.
@@ -3647,7 +3539,8 @@ Release: April 23, 2024
 
 43 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 5012.1  The replicated folder GUID.
 
@@ -3667,7 +3560,7 @@ Release: April 23, 2024
 
 5012.9  The replication group GUID.
 
-2.2.1.5.17.28 EVENT_DFSR_INCOMPATIBLE_VERSION Message
+###### 2.2.1.5.17.28 EVENT_DFSR_INCOMPATIBLE_VERSION Message
 
 Error description: The DFS Replication service failed to communicate with the partner. The partner
 is running a different version of the communication protocol.
@@ -3694,7 +3587,7 @@ Ref ID   Meaning
 
 5102.8  The replication group GUID.
 
-2.2.1.5.17.29 EVENT_DFSR_CONFIG_DS_INVALID_DATA Message
+###### 2.2.1.5.17.29 EVENT_DFSR_CONFIG_DS_INVALID_DATA Message
 
 Error description: The DFS Replication service detected object data that is not valid while it was
 polling for configuration information.
@@ -3710,7 +3603,8 @@ Release: April 23, 2024
 
 44 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 6002.1  The configuration object type.
 
@@ -3722,7 +3616,7 @@ Release: April 23, 2024
 
 6002.5  The polling cycle, in minutes.
 
-2.2.1.5.17.30 EVENT_DFSR_CONFIG_DS_DUPLICATE_DATA Message
+###### 2.2.1.5.17.30 EVENT_DFSR_CONFIG_DS_DUPLICATE_DATA Message
 
 Error description: The DFS Replication service detected a conflict between two or more objects while
 it was polling for configuration information. The DFS Replication service resolved the conflict by
@@ -3744,7 +3638,7 @@ Ref ID   Meaning
 
 6004.5  The polling cycle, in minutes.
 
-2.2.1.5.17.31 EVENT_DFSR_CONFIG_DS_INCONSISTENT_DATA Message
+###### 2.2.1.5.17.31 EVENT_DFSR_CONFIG_DS_INCONSISTENT_DATA Message
 
 Error description: The DFS Replication service detected an inconsistent object while it was polling for
 configuration information: an object referenced another object that does not exist.
@@ -3772,7 +3666,8 @@ Release: April 23, 2024
 
 45 / 87
 
-2.2.1.5.17.32 EVENT_DFSR_CONFIG_INVALID_PARAMETER_ERROR Message
+
+###### 2.2.1.5.17.32 EVENT_DFSR_CONFIG_INVALID_PARAMETER_ERROR Message
 
 Error description: The DFS Replication service detected a bad parameter in the configuration, and
 the service could recover from this error.
@@ -3795,7 +3690,7 @@ Ref ID   Meaning
 
 6008.6  The configuration source name. <36>
 
-2.2.1.5.17.33 EVENT_DFSR_CONFIG_INVALID_PARAMETER_WARNING Message
+###### 2.2.1.5.17.33 EVENT_DFSR_CONFIG_INVALID_PARAMETER_WARNING Message
 
 Error description: The DFS Replication service detected a bad parameter in the configuration. The
 service has ignored the input value and used the default value instead.
@@ -3818,7 +3713,7 @@ Ref ID   Meaning
 
 6010.6  The configuration source name. <37>
 
-2.2.1.5.17.34 EVENT_DFSR_CONFIG_DS_INVALID_SCHEMA_VERSION Message
+###### 2.2.1.5.17.34 EVENT_DFSR_CONFIG_DS_INVALID_SCHEMA_VERSION Message
 
 Error description: The DFS Replication service detected an incompatible Active Directory schema
 version while it was trying to read configuration objects from the server. The service disconnected
@@ -3835,7 +3730,8 @@ Release: April 23, 2024
 
 46 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 6012.1  The domain controller.
 
@@ -3847,7 +3743,7 @@ Release: April 23, 2024
 
 6012.5  The polling cycle, in minutes.
 
-2.2.1.5.17.35 EVENT_DFSR_CONFIG_DS_UPDATE_FAILED Message
+###### 2.2.1.5.17.35 EVENT_DFSR_CONFIG_DS_UPDATE_FAILED Message
 
 Error description: The DFS Replication service failed to update the configuration in Active
 Directory. The service will retry this operation periodically.<38>
@@ -3870,7 +3766,7 @@ Ref ID   Meaning
 
 6016.6  The polling cycle, in minutes.
 
-2.2.1.5.17.36 EVENT_DFSR_CONFIG_WMI_PROVIDER_REGISTRATION_FAILED
+###### 2.2.1.5.17.36 EVENT_DFSR_CONFIG_WMI_PROVIDER_REGISTRATION_FAILED
 
 Message
 
@@ -3886,7 +3782,7 @@ Ref ID   Meaning
 
 6104.2  The implementation-specific error string.
 
-2.2.1.5.17.37 EVENT_DFSR_CONFIG_VOLUME_NOT_SUPPORTED Message
+###### 2.2.1.5.17.37 EVENT_DFSR_CONFIG_VOLUME_NOT_SUPPORTED Message
 
 Error description: The DFS Replication service is unable to start replication on the volume because
 the volume is not supported.<39>
@@ -3898,7 +3794,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error ID: 6302
+
+Error ID: 6302
 
 Error parameters:
 
@@ -3908,7 +3805,7 @@ Ref ID   Meaning
 
 6302.2  The volume path.
 
-2.2.1.5.17.38 EVENT_DFSR_CS_OVERLAPPING Message
+###### 2.2.1.5.17.38 EVENT_DFSR_CS_OVERLAPPING Message
 
 Error description: The DFS Replication service failed to initialize the replicated folder because the
 service detected that one of its private folders overlaps with an existing File Replication Service (FRS)
@@ -3961,7 +3858,7 @@ The FRS folder name.
 
 6402.11  The distinguished name of the subscriber.
 
-2.2.1.5.17.39 EVENT_DFSR_CONFIG_CS_ROOT_INVALID Message
+###### 2.2.1.5.17.39 EVENT_DFSR_CONFIG_CS_ROOT_INVALID Message
 
 Error description: The DFS Replication service failed to replicate the replicated folder because the
 local path is not the fully qualified path name of an existing accessible local folder.
@@ -3981,7 +3878,8 @@ Release: April 23, 2024
 
 48 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 6404.2  The replicated folder root.
 
@@ -3993,7 +3891,7 @@ Release: April 23, 2024
 
 6404.6  The member GUID.
 
-2.2.1.5.17.40 EVENT_DFSR_CONFIG_CS_ROOT_STALE Message
+###### 2.2.1.5.17.40 EVENT_DFSR_CONFIG_CS_ROOT_STALE Message
 
 Error description: The DFS Replication service detected that the local path of a replicated folder
 does not match the newly configured local path of the replicated folder. The service will replicate the
@@ -4021,7 +3919,7 @@ Ref ID   Meaning
 
 6406.7  The member GUID.
 
-2.2.1.5.17.41 EVENT_DFSR_CS_OVERLAPPING_WITH_FRS1 Message
+###### 2.2.1.5.17.41 EVENT_DFSR_CS_OVERLAPPING_WITH_FRS1 Message
 
 Error description: The DFS Replication service failed to initialize the replicated folder because the
 service detected that one of its folders overlaps with an existing folder that is replicated by using DFS
@@ -4052,7 +3950,8 @@ Release: April 23, 2024
 
 49 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 6408.4
 
@@ -4090,7 +3989,7 @@ The overlapped folder in another replicated folder.
 
 6408.15  The member GUID.
 
-2.2.1.5.17.42 EVENT_DFSR_CS_OVERLAPPING_WITH_SYSTEM Message
+###### 2.2.1.5.17.42 EVENT_DFSR_CS_OVERLAPPING_WITH_SYSTEM Message
 
 Error description: The DFS Replication service failed to initialize the replicated folder because the
 service detected that one of its working folders overlaps with an operating system folder. This is an
@@ -4121,7 +4020,7 @@ Ref ID   Meaning
 
 6410.9  The system folder path.
 
-2.2.1.5.17.43 EVENT_DFSR_CS_OVERLAPPING_WITH_LOG Message
+###### 2.2.1.5.17.43 EVENT_DFSR_CS_OVERLAPPING_WITH_LOG Message
 
 50 / 87
 
@@ -4130,7 +4029,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error description: The DFS Replication service failed to initialize the replicated folder because the
+
+Error description: The DFS Replication service failed to initialize the replicated folder because the
 service detected that one of its working folders overlaps with the debug log folder. This is an
 unsupported configuration. The condition under which this event is generated is controlled by DFS
 Replication, as specified in [MS-FRS2].
@@ -4159,7 +4059,7 @@ Ref ID   Meaning
 
 6412.9  The log folder path.
 
-2.2.1.5.17.44 EVENT_DFSR_CONFIG_VOLUME_CONSISTENCY_CHECK_FAILED
+###### 2.2.1.5.17.44 EVENT_DFSR_CONFIG_VOLUME_CONSISTENCY_CHECK_FAILED
 
 Message
 
@@ -4180,7 +4080,7 @@ Ref ID   Meaning
 
 6602.4  The volume path.
 
-2.2.1.5.17.45 EVENT_DFSR_CONFIG_NO_CONNECTIONS_ENABLED Message
+###### 2.2.1.5.17.45 EVENT_DFSR_CONFIG_NO_CONNECTIONS_ENABLED Message
 
 Error description: No connections are enabled for the replication group.
 
@@ -4195,7 +4095,8 @@ Release: April 23, 2024
 
 51 / 87
 
-Ref ID   Meaning
+
+Ref ID   Meaning
 
 6802.1  The replication group GUID.
 
@@ -4203,7 +4104,7 @@ Release: April 23, 2024
 
 6802.3  The member GUID.
 
-2.2.1.5.17.46 EVENT_DFSR_CONFIG_NO_CONNECTIONS_EXIST Message
+###### 2.2.1.5.17.46 EVENT_DFSR_CONFIG_NO_CONNECTIONS_EXIST Message
 
 Error description: No connections are defined for the replication group.
 
@@ -4219,7 +4120,7 @@ Ref ID   Meaning
 
 6804.3  The member GUID .
 
-2.2.1.5.17.47 ERROR_WMI_ACCESS_DENIED Message
+###### 2.2.1.5.17.47 ERROR_WMI_ACCESS_DENIED Message
 
 Error description: Caller does not have permission to perform the WMI action [WMI].
 
@@ -4233,7 +4134,7 @@ Ref ID   Meaning
 
 10001.2  The implementation-specific error code.
 
-2.2.1.5.17.48 ERROR_WMI_ERROR Message
+###### 2.2.1.5.17.48 ERROR_WMI_ERROR Message
 
 Error description: A failure caused by a call to WMI [WMI] excluding failures reported by
 ERROR_WMI_ACCESS_DENIED, ERROR_WMI_NO_NAMESPACE, and ERROR_WMI_TIMEOUT
@@ -4256,7 +4157,8 @@ Release: April 23, 2024
 
 52 / 87
 
-2.2.1.5.17.49 ERROR_WMI_NO_NAMESPACE Message
+
+###### 2.2.1.5.17.49 ERROR_WMI_NO_NAMESPACE Message
 
 Error description: The queried WMI namespace [WMI] cannot be found.
 
@@ -4270,7 +4172,7 @@ Ref ID   Meaning
 
 10007.2  The implementation-specific error code.
 
-2.2.1.5.17.50 ERROR_WMI_TIMEOUT Message
+###### 2.2.1.5.17.50 ERROR_WMI_TIMEOUT Message
 
 Error description: A WMI provider cannot be loaded or a WMI operation [WMI] timed out.
 
@@ -4284,7 +4186,7 @@ Ref ID   Meaning
 
 10008.2  The implementation-specific error code.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The protocol accesses the following Directory Service schema classes and attributes listed in the
 following table(s).
@@ -4314,25 +4216,26 @@ Release: April 23, 2024
 
 53 / 87
 
-3  Protocol Details
 
-3.1  Server Role Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Role Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
+
+None.
+
+#### 3.1.3 Initialization
 
 The server MUST be considered to be initialized after a successful activation of one of the three
 interfaces that are registered with the Distributed Component Object Model (DCOM) Remote Protocol
 infrastructure, as specified in [MS-DCOM] section 1.3.6. <40>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 All method invocations are triggered by higher-layer events, such as commands issued within
 administrative and diagnostic applications. The details of method invocations are provided in the
@@ -4343,15 +4246,15 @@ VCOs (virtual computer objects). IADProxy2 interface gets the token for the VCO 
 impersonates it to access Active Directory with VCO credentials. IServerHealthReport2 interface
 allows applications to display the VCO's DNS and NetBIOS name in the generated health report.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Methods with Prerequisites
+##### 3.1.5.1 Methods with Prerequisites
 
 The methods of the IServerHealthReport (section 3.1.5.4), IServerHealthReport2 (section 3.1.5.5),
 IADProxy (section 3.1.5.2), and IADProxy2 (section 3.1.5.3) interfaces require no prerequisite calls
 against the server.<41>
 
-3.1.5.2  IADProxy Interface
+##### 3.1.5.2 IADProxy Interface
 
 The IADProxy interface inherits the IUnknown interface, as specified in [MS-DCOM] section 3.1.1.5.8.
 Method opnum field values start with 3; opnum values 0 through 2 represent the
@@ -4378,7 +4281,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -4394,7 +4298,7 @@ name.
 
 Opnum: 5
 
-3.1.5.2.1 CreateObject Method (Opnum 3)
+###### 3.1.5.2.1 CreateObject Method (Opnum 3)
 
 The CreateObject method MUST execute an LDAP command under machine security credentials to
 create an Active Directory object that has a specified distinguished name and attributes.<43>
@@ -4459,7 +4363,8 @@ Release: April 23, 2024
 
 55 / 87
 
-When the server receives this message, it MUST check whether the caller has sufficient rights to
+
+When the server receives this message, it MUST check whether the caller has sufficient rights to
 perform the operation. The implementation MUST perform a check to verify that the rights are
 appropriate for the creation of Active Directory objects.
 
@@ -4513,7 +4418,7 @@ operation and MUST return dfsrHelperLdapErrorBase + the server-side error code t
 For all other LDAP errors, the server MUST return dfsrHelperLdapErrorBase + the LDAP return
 code to the caller.
 
-3.1.5.2.2 DeleteObject Method (Opnum 4)
+###### 3.1.5.2.2 DeleteObject Method (Opnum 4)
 
 The DeleteObject method MUST execute an LDAP command under machine security credentials to
 delete an Active Directory object with a specified distinguished name.<46>
@@ -4530,7 +4435,8 @@ Release: April 23, 2024
 
 56 / 87
 
-domainControllerName: MUST be the FQDN of the domain controller to which the method sends
+
+domainControllerName: MUST be the FQDN of the domain controller to which the method sends
 
 the LDAP command.
 
@@ -4620,12 +4526,13 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 For all other LDAP errors, the server MUST return dfsrHelperLdapErrorBase and the LDAP return
 code to the caller.
 
-3.1.5.2.3 ModifyObject Method (Opnum 5)
+###### 3.1.5.2.3 ModifyObject Method (Opnum 5)
 
 The ModifyObject method MUST execute an LDAP command under machine security credentials to
 add, delete, or modify attributes of an Active Directory object that has a specified distinguished
@@ -4704,7 +4611,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If both the security check and the parameter validation succeed, the server MUST create a new LDAP
+
+If both the security check and the parameter validation succeed, the server MUST create a new LDAP
 command for modifying an existing Active Directory object that has the specified distinguished name
 and attributes.
 
@@ -4725,7 +4633,7 @@ operation and MUST return dfsrHelperLdapErrorBase + the server-side error code t
 For all other LDAP errors, the server MUST return dfsrHelperLdapErrorBase + the LDAP return
 code to the caller.
 
-3.1.5.3  IADProxy2 Interface
+##### 3.1.5.3 IADProxy2 Interface
 
 The IADProxy2 interface inherits the IADProxy interface, which in turn inherits the IUnknown
 interface, as specified in [MS-DCOM] section 3.1.1.5.8. Method opnum field values start with 6.
@@ -4756,7 +4664,7 @@ ModifyObject  Add, delete, or modify attributes of the specified Active Director
 
 Opnum: 8
 
-3.1.5.3.1 CreateObject Method (Opnum 6)
+###### 3.1.5.3.1 CreateObject Method (Opnum 6)
 
 The CreateObject method MUST execute an LDAP command under machine security credentials, or
 for a cluster, under the specified network name credentials in order to create an Active Directory
@@ -4777,7 +4685,8 @@ Release: April 23, 2024
 
 59 / 87
 
-domainControllerName: MUST be the FQDN of the domain controller to which the method sends
+
+domainControllerName: MUST be the FQDN of the domain controller to which the method sends
 the LDAP request. The format of the distinguished name MUST be as specified in [RFC2251]
 section 4.1.3.
 
@@ -4835,7 +4744,7 @@ IADProxy::CreateObject (as specified in section 3.1.5.2.1), with the following a
 The server MUST execute the LDAP command under the credentials that correspond to the
 network resource name that is supplied in the networkNameResourceName parameter.
 
-3.1.5.3.2 DeleteObject Method (Opnum 7)
+###### 3.1.5.3.2 DeleteObject Method (Opnum 7)
 
 The DeleteObject method executes an LDAP command to delete an Active Directory object that has
 a specified distinguished name and attributes. The command MUST be executed under the machine
@@ -4854,7 +4763,8 @@ Release: April 23, 2024
 
 60 / 87
 
-domainControllerName: MUST be the FQDN of the domain controller to which the method sends
+
+domainControllerName: MUST be the FQDN of the domain controller to which the method sends
 
 the LDAP request.
 
@@ -4900,7 +4810,7 @@ IADProxy::DeleteObject (as specified in section 3.1.5.2.2), with the following a
 The server MUST execute the LDAP command under the credentials that correspond to the
 network resource name that is supplied in the networkNameResourceName parameter.
 
-3.1.5.3.3 ModifyObject Method (Opnum 8)
+###### 3.1.5.3.3 ModifyObject Method (Opnum 8)
 
 The ModifyObject method executes an LDAP command to add, delete, or modify attributes of a
 specified Active Directory object. The command MUST be executed under machine security
@@ -4932,7 +4842,8 @@ Release: April 23, 2024
 
 61 / 87
 
-networkNameResourceName: MUST be the name of the cluster resource (the resource type MUST
+
+networkNameResourceName: MUST be the name of the cluster resource (the resource type MUST
 be "Network Name"). If this parameter is a non-empty string, the server MUST execute the LDAP
 command under the account that corresponds to this network name. There are no constraints
 regarding the format of the network name except the requirement that its length be no more than
@@ -4971,7 +4882,7 @@ IADProxy::ModifyObject (as specified in section 3.1.5.2.3), with the following a
 The server MUST execute the LDAP command under the credentials that correspond to the
 network resource name that is supplied in the networkNameResourceName parameter.
 
-3.1.5.4  IServerHealthReport Interface
+##### 3.1.5.4 IServerHealthReport Interface
 
 The IServerHealthReport interface, as specified in [MS-DCOM], inherits the IUnknown interface.
 Method opnum field values start with 3; opnum values 0 through 2 represent the
@@ -5025,7 +4936,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -5037,7 +4949,7 @@ specified version vectors.
 
 Opnum: 8
 
-3.1.5.4.1 GetReport Method (Opnum 3)
+###### 3.1.5.4.1 GetReport Method (Opnum 3)
 
 The GetReport method retrieves health information for the specified replication group that is hosted
 on the server in addition to the global health data of the DFS-R service on the server.
@@ -5107,7 +5019,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0xFFFFFFFF on failure. For protocol purposes, all nonzero values MUST be treated as equivalent
+
+0xFFFFFFFF on failure. For protocol purposes, all nonzero values MUST be treated as equivalent
 failures.
 
 After receiving this message, the server MUST validate only the following parameters:
@@ -5175,7 +5088,7 @@ proceed with getting other health information and to exclude from the report the
 was unable to collect.  Alternatively, the server MAY choose to abort further processing and return the
 implementation-specific error to the client. <59>
 
-3.1.5.4.2 GetCompressedReport Method (Opnum 4)
+###### 3.1.5.4.2 GetCompressedReport Method (Opnum 4)
 
 The GetCompressedReport method gets the health information for the specified replication group
 and the global health data of the DFS-R service on the server. The server MUST encode the report as
@@ -5191,7 +5104,8 @@ Release: April 23, 2024
 
 64 / 87
 
-   [in] GUID replicationGroupGuid,
+
+   [in] GUID replicationGroupGuid,
    [in] BSTR referenceMember,
    [in] SAFEARRAY (_VersionVectorData)* referenceVersionVectors,
    [in] long flags,
@@ -5269,10 +5183,11 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST return the response to the client. The response MUST contain the output parameters
+
+The server MUST return the response to the client. The response MUST contain the output parameters
 previously described for this method, and the status of the operation.
 
-3.1.5.4.3 GetRawReportEx Method (Opnum 5)
+###### 3.1.5.4.3 GetRawReportEx Method (Opnum 5)
 
 The GetRawReportEx method is not currently in use and has never been implemented in any version
 of the DFS-R Helper Protocol. It is reserved for future use.
@@ -5301,7 +5216,7 @@ E_NOTIMPL
 
 Not implemented.
 
-3.1.5.4.4 GetReferenceVersionVectors Method (Opnum 6)
+###### 3.1.5.4.4 GetReferenceVersionVectors Method (Opnum 6)
 
 The GetReferenceVersionVectors method gets the version vectors for all replicated folders in the
 specified replication group.
@@ -5339,10 +5254,11 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST return the response to the client. The response MUST contain the output parameters
+
+The server MUST return the response to the client. The response MUST contain the output parameters
 previously described for this method, and the status of the operation.
 
-3.1.5.4.5 GetReferenceBacklogCounts Method (Opnum 8)
+###### 3.1.5.4.5 GetReferenceBacklogCounts Method (Opnum 8)
 
 The GetReferenceBacklogCounts method gets the outbound backlog for a replicated folder on the
 member, relative to specific version vectors.
@@ -5399,7 +5315,7 @@ The backlog counts MUST be saved in the backlogCounts output parameter.
 The server MUST return the response to the client. The response MUST contain the output parameters
 that were previously mentioned and also the status of the operation.
 
-3.1.5.5  IServerHealthReport2 Interface
+##### 3.1.5.5 IServerHealthReport2 Interface
 
 The IServerHealthReport2 interface inherits the IServerHealthReport interface, which in turn inherits
 the IUnknown interface, as specified in [MS-DCOM] section 3.1.1.5.8. Method opnum field values start
@@ -5413,7 +5329,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To receive incoming remote calls for this interface, the server MUST implement a DCOM object that
+
+To receive incoming remote calls for this interface, the server MUST implement a DCOM object that
 uses the UUID {20D15747-6C48-4254-A358-65039FD8C63C}.
 
 Methods in RPC Opnum Order
@@ -5439,7 +5356,7 @@ Opnum: 10
 Note  The defined methods have the same names as methods found under other opnums in the
 IServerHealthReport interface.
 
-3.1.5.5.1 GetReport Method (Opnum 9)
+###### 3.1.5.5.1 GetReport Method (Opnum 9)
 
 The GetReport method retrieves health information for the specified replication group that is hosted on
 the server in addition to the global health data of the DFS-R service on the server.
@@ -5494,7 +5411,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -5535,7 +5453,7 @@ contain an error description.
 If the serverName field is NULL, the generated report MUST contain the DFS-R Helper Protocol
 server's local DNS and NetBIOS names.
 
-3.1.5.5.2 GetCompressedReport Method (Opnum 10)
+###### 3.1.5.5.2 GetCompressedReport Method (Opnum 10)
 
 The GetCompressedReport method gets the health information for the specified replication group and
 the global health data of the DFS-R service on the server. The server MUST encode the report as a
@@ -5574,7 +5492,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-parameter. Otherwise, this parameter MUST be set to NULL. The VersionVectorData structure is
+
+parameter. Otherwise, this parameter MUST be set to NULL. The VersionVectorData structure is
 specified in section 2.2.1.4.
 
 flags: MUST be zero or more combinations of values of DfsrReportingFlags enumeration. The
@@ -5617,25 +5536,25 @@ contain an error description.
 If the serverName field is NULL, the generated report MUST contain the DFS-R Helper Protocol
 server's local DNS and NetBIOS names.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No timer events are used in the DFS-R Helper Protocol.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No other local events are used in the DFS-R Helper Protocol.
 
-3.2  Client Role Details
+### 3.2 Client Role Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 A client MUST initialize by creating an RPC binding handle to one of the interfaces. For more
 information and a description of how to get a client-side RPC binding handle for an interface, see [MS-
@@ -5648,30 +5567,31 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-No additional initialization is required. The client can call the method of the interfaces immediately
+
+No additional initialization is required. The client can call the method of the interfaces immediately
 after binding.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 All method invocations are triggered by higher-layer events, such as commands issued in
 administrative and diagnostic applications.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The DFS-R Helper Protocol client does not maintain any state. It MUST send to the server the
 command that is issued by administrative and diagnostic applications. All error codes are returned
 directly to the application.
 
-3.2.5.1  Methods with Prerequisites
+##### 3.2.5.1 Methods with Prerequisites
 
 The methods of the IServerHealthReport, IServerHealthReport2, IADProxy, and IADProxy2 interfaces
 require no prerequisite calls against the server.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No timer events are used in the DFS-R Helper Protocol.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 No other local events are used in the DFS-R Helper Protocol.
 
@@ -5682,17 +5602,18 @@ Release: April 23, 2024
 
 71 / 87
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-DFSRH].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Example of Messages Between a Client and Server
+### 4.1 Example of Messages Between a Client and Server
 
 Figure 1: Example of messages between a client and server
 
-4.2  Example of the Server Health Report in XML Format
+### 4.2 Example of the Server Health Report in XML Format
 
 The following is an example of the server health report in XML format.
 
@@ -5711,7 +5632,8 @@ Release: April 23, 2024
 
 72 / 87
 
-       <serviceInfo>
+
+       <serviceInfo>
          <state>4</state>
          <version>5.2.3790.2075</version>
          <timestamp timezone="60">
@@ -5788,7 +5710,8 @@ Release: April 23, 2024
 
 73 / 87
 
-           <timestamp timezone="240">
+
+           <timestamp timezone="240">
              <fileTime>127727764510000000</fileTime>
              <systemTime>Monday, October 03, 2005 05:27:31</systemTime>
            </timestamp>
@@ -5816,7 +5739,8 @@ Release: April 23, 2024
 
 74 / 87
 
-5  Security
+
+## 5 Security
 
 All security considerations that apply to DCOM interfaces, as specified in [MS-DCOM] section 5, are
 also applicable to the DFS-R Helper Protocol.
@@ -5835,7 +5759,8 @@ Release: April 23, 2024
 
 75 / 87
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 The DFS-R Helper Protocol contains one interface, whose IDL definition is listed in this section.
 
@@ -5910,7 +5835,8 @@ Release: April 23, 2024
 
 76 / 87
 
-       [in] BSTR domainControllerName,
+
+       [in] BSTR domainControllerName,
        [in] BSTR distinguishedName,
        [in] SAFEARRAY(_AdAttributeData) *attributes,
        [in] BSTR verifyNameDomainControllerName);
@@ -5987,7 +5913,8 @@ Release: April 23, 2024
 
 77 / 87
 
-       [out] SAFEARRAY(_VersionVectorData) *memberVersionVectors,
+
+       [out] SAFEARRAY(_VersionVectorData) *memberVersionVectors,
        [out] BSTR *reportCompressed,
        [out] long *uncompressedReportSize);
 
@@ -6053,7 +5980,8 @@ Release: April 23, 2024
 
 78 / 87
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6117,7 +6045,8 @@ Release: April 23, 2024
 
 79 / 87
 
-<5> Section 2.2.1.5.3: Windows-based server implementations format paths in the format {drive
+
+<5> Section 2.2.1.5.3: Windows-based server implementations format paths in the format {drive
 letter} + ":" + "\" + {path on disk}.
 
 <6> Section 2.2.1.5.4: The Windows Server DFS Replication Helper protocol implementation does not
@@ -6189,7 +6118,8 @@ Release: April 23, 2024
 
 80 / 87
 
-<19> Section 2.2.1.5.12: In Windows-based server implementations, the drive letter is in the format
+
+<19> Section 2.2.1.5.12: In Windows-based server implementations, the drive letter is in the format
 {the drive letter} + ":" or the path of the volume mount point, in the format {the drive letter} + ":" +
 "\" + {the path on disk}.
 
@@ -6256,7 +6186,8 @@ Release: April 23, 2024
 
 81 / 87
 
-EVENT_DFSR_CS_SHARING_VIOLATION_SERVING are detected for the same replicated folder, only
+
+EVENT_DFSR_CS_SHARING_VIOLATION_SERVING are detected for the same replicated folder, only
 one instance is reported.
 
 <35> Section 2.2.1.5.17.22: This error is raised when the file is encrypted by using the Encrypting
@@ -6324,7 +6255,8 @@ DFS Replication Helper Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<49> Section 3.1.5.2.3: A Windows-based client only specifies distinguished names of DFS Replication
+
+<49> Section 3.1.5.2.3: A Windows-based client only specifies distinguished names of DFS Replication
 configuration objects that are specified in [MS-FRS2] section 2.3.5.
 
 <50> Section 3.1.5.2.3: In Windows-based server implementations the sufficient rights check is
@@ -6386,7 +6318,8 @@ Release: April 23, 2024
 
 83 / 87
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6430,7 +6363,8 @@ Release: April 23, 2024
 
 84 / 87
 
-9  Index
+
+## 9 Index
 _
 
 _AdAttributeData structure 15
@@ -6602,7 +6536,8 @@ Examples
 
 85 / 87
 
-   example of the server health report in xml format
+
+   example of the server health report in xml format
 
 72
 
@@ -6750,7 +6685,8 @@ Timer events
 
 86 / 87
 
-Timers
+
+Timers
    client 70
    server 54
 timestamp 17

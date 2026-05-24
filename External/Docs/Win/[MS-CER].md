@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: June 1, 2017
 
 2 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -503,118 +505,55 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Count.txt](#221-counttxt)
+    - [2.2.2 Tracking Files](#222-tracking-files)
+      - [2.2.2.1 Hits.log](#2221-hitslog)
+      - [2.2.2.2 Crash.log](#2222-crashlog)
+    - [2.2.3 CER File Share Folder Structure](#223-cer-file-share-folder-structure)
+      - [2.2.3.1 Application Fault or Hang Reports](#2231-application-fault-or-hang-reports)
+      - [2.2.3.2 Specialized Reporting Types](#2232-specialized-reporting-types)
+        - [2.2.3.2.1 Kernel Fault Reports](#22321-kernel-fault-reports)
+        - [2.2.3.2.2 Shutdown Reports](#22322-shutdown-reports)
+    - [2.2.4 Policy.txt](#224-policytxt)
+    - [2.2.5 Status.txt](#225-statustxt)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client to Server Detail](#31-client-to-server-detail)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Application Fault Example](#41-application-fault-example)
+  - [4.2 Kernel Fault Example](#42-kernel-fault-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Count.txt ..................................................................................................... 9
-Tracking Files ............................................................................................... 9
-Hits.log ................................................................................................ 10
-Crash.log ............................................................................................. 10
-CER File Share Folder Structure .................................................................... 10
-Application Fault or Hang Reports ........................................................... 11
-Specialized Reporting Types ................................................................... 12
-Kernel Fault Reports ........................................................................ 12
-Shutdown Reports ........................................................................... 12
-Policy.txt ................................................................................................... 12
-Status.txt .................................................................................................. 14
-
-2.2.3.2.1
-2.2.3.2.2
-
-2.2.3.1
-2.2.3.2
-
-2.2.4
-2.2.5
-
-2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 17
-Client to Server Detail ...................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 19
-Application Fault Example ................................................................................. 19
-Kernel Fault Example ........................................................................................ 20
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-CER] - v20170601
-Corporate Error Reporting Version 1.0 Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 27
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Corporate Error Reporting Version 1.0 Protocol. This protocol is designed
 to enable businesses to manage all error reporting information within the organization. Through use
@@ -624,7 +563,7 @@ remote CER file share for analysis.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -684,7 +623,8 @@ Release: June 1, 2017
 
 5 / 27
 
-tracking: A CER client feature that adds information to logging files during the error reporting
+
+tracking: A CER client feature that adds information to logging files during the error reporting
 
 process.
 
@@ -695,14 +635,14 @@ For more information, see [MS-DTYP] section 2.2.57.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -725,7 +665,7 @@ Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CAB] Microsoft Corporation, "Microsoft Cabinet Format", March 1997,
 http://msdn.microsoft.com/en-us/library/bb417343.aspx
@@ -733,7 +673,7 @@ http://msdn.microsoft.com/en-us/library/bb417343.aspx
 [MSDN-FILE] Microsoft Corporation, "Naming Files, Paths, and Namespaces",
 https://learn.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file
 
-1.3  Overview
+### 1.3 Overview
 
 The Corporate Error Reporting Version 1.0 Protocol provides an organization with the ability to copy
 error reports from a set of client machines to a CER file share on a specified Server Message Block
@@ -750,7 +690,8 @@ Release: June 1, 2017
 
 6 / 27
 
-The CER client then performs a check to determine if a path to a CER file share has been specified for
+
+The CER client then performs a check to determine if a path to a CER file share has been specified for
 this client system. If the path has been specified, the Corporate Error Reporting Version 1.0 Protocol
 will be used.
 
@@ -774,12 +715,12 @@ The server is simply an SMB Protocol file server with a specific set of files. A
 Corporate Error Reporting Version 1.0 Protocol is in the CER client and helper processes which access
 the file server, but the CER client and these helper processes never interact directly.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Corporate Error Reporting Version 1.0 Protocol uses the SMB Protocol [MS-SMB] to copy error
 reports from the client machine to the CER file share.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 1.  The client system is able to create error reports.
 
@@ -806,7 +747,7 @@ server [MS-SMB].
 
 paths described in section 2.2.3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Corporate Error Reporting Version 1.0 Protocol is appropriate for small, medium, or large
 organizations that want to manage and review all error reporting information within the organization.
@@ -822,15 +763,16 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -841,18 +783,19 @@ Release: June 1, 2017
 
 8 / 27
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Corporate Error Reporting Version 1.0 Protocol MUST use Server Message Block, as specified in
 [MS-SMB], to read and write files on the specified CER file share.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Corporate Error Reporting Version 1.0 Protocol transmits messages in the form of files.
 
-2.2.1  Count.txt
+#### 2.2.1 Count.txt
 
 The Count.txt file includes two text parameters that track aggregate information about how frequently
 certain problems occur on specific clients and how much report data has been collected. Its format is a
@@ -874,7 +817,7 @@ Hits: The total number of hits this problem has received. This MUST be a positiv
 
 NOT be zero.
 
-2.2.2  Tracking Files
+#### 2.2.2 Tracking Files
 
  There are two tracking files with very similar formats. The hits.log file is specific to a given error
 signature, while a single crash.log file is used for all errors reported to the CER file share. Each of
@@ -907,7 +850,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-MUST NOT appear in Machine, since that is reserved as the item delimiter. If the system is
+
+MUST NOT appear in Machine, since that is reserved as the item delimiter. If the system is
 unable to determine the name of the machine, then "UNKNOWN" MUST be used in its place.
 
 User: The user name of the user who was logged on when the report was generated. If the system is
@@ -915,7 +859,7 @@ unable to determine the name of that user, then "unknown user" MUST be used in i
 CRLF pair MUST NOT appear in User, since that is reserved as the line delimiter. An HTAB MUST
 NOT appear in User, since that is reserved as the item delimiter.
 
-2.2.2.1  Hits.log
+##### 2.2.2.1 Hits.log
 
  The hits.log file MUST conform to the following syntax, as specified in [RFC4234].
 
@@ -930,7 +874,7 @@ since that is reserved as the line delimiter. An HTAB MUST NOT appear in the Fil
 that is reserved as the item delimiter. If an error reporting file was not written, the string "No
 CAB" MUST be used in its place.
 
-2.2.2.2  Crash.log
+##### 2.2.2.2 Crash.log
 
  The crash.log file MUST conform to the following syntax, as specified in [RFC4234].
 
@@ -953,7 +897,7 @@ described in section 2.2.3). A CRLF pair MUST NOT appear in the ErrorSubPath, si
 reserved as the line delimiter. An HTAB MUST NOT appear in the ErrorSubPath, since that is
 reserved as the item delimiter.
 
-2.2.3  CER File Share Folder Structure
+#### 2.2.3 CER File Share Folder Structure
 
  The Corporate Error Reporting Version 1.0 Protocol specifies two globally unique file path locations
 per CER file share, the root-level location of policy.txt (section 2.2.4) and the root-level location of
@@ -971,7 +915,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-tracking feature is enabled), and status.txt files, and writes its error reporting file, using a standard
+
+tracking feature is enabled), and status.txt files, and writes its error reporting file, using a standard
 scheme. The scheme uses the concept of the error subpath SMB file server directory path fragment,
 whose specifics will be discussed under each kind of report.
 
@@ -1003,7 +948,7 @@ Error signature-specific files
  <UNC file share path>\status\<error subpath>\status.txt
  <UNC file share path>\counts\<error subpath>\count.txt
 
-2.2.3.1  Application Fault or Hang Reports
+##### 2.2.3.1 Application Fault or Hang Reports
 
 For user-mode error reports, the CER client MUST obtain the following information from the system
 to create this error signature.
@@ -1047,7 +992,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- The specific file paths used in making this type of report MUST be as follows:
+
+ The specific file paths used in making this type of report MUST be as follows:
 
   <UNC file share path>\cabs\<AppName>\<AppVer>\<ModName>\<ModVer>\<Offset>\<error
 
@@ -1063,12 +1009,12 @@ path>\status\<AppName>\<AppVer>\<ModName>\<ModVer>\<Offset>\status.txt
 
 path>\counts\<AppName>\<AppVer>\<ModName>\<ModVer>\<Offset>\count.txt
 
-2.2.3.2  Specialized Reporting Types
+##### 2.2.3.2 Specialized Reporting Types
 
 For other event types, the folder structure is dependent on the type of error event described in the
 report.
 
-2.2.3.2.1 Kernel Fault Reports
+###### 2.2.3.2.1 Kernel Fault Reports
 
 For kernel fault reports, "blue" MUST be used as the error signature and error subpath. The
 specific file paths used in making this type of report MUST be as follows.
@@ -1081,7 +1027,7 @@ specific file paths used in making this type of report MUST be as follows.
 
   <UNC file share path>\counts\blue\count.txt
 
-2.2.3.2.2 Shutdown Reports
+###### 2.2.3.2.2 Shutdown Reports
 
 For unplanned shutdown reports, "shutdown" MUST be used as the error signature and error
 subpath. The specific file paths used in making this type of report MUST be as follows.
@@ -1094,7 +1040,7 @@ subpath. The specific file paths used in making this type of report MUST be as f
 
   <UNC file share path>\counts\shutdown\count.txt
 
-2.2.4  Policy.txt
+#### 2.2.4 Policy.txt
 
 The Corporate Error Reporting Version 1.0 Protocol allows for a set of configuration parameters that
 describe which tracking or response options are preferred. These parameters are set in one of two text
@@ -1117,7 +1063,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-                           [NoSecondLevelCollection] [NoFileCollection]
+
+                           [NoSecondLevelCollection] [NoFileCollection]
                            [NoExternalURL] [FileTreeRoot]
                            ; terms may appear in any order
  CERBooleanValue        = "YES" / "TRUE" / "1" / "NO" / "FALSE" / "0"
@@ -1190,7 +1137,8 @@ Release: June 1, 2017
 
 13 / 27
 
-NoExternalURL: A True CERBooleanValue instructs the CER client to ignore URL information
+
+NoExternalURL: A True CERBooleanValue instructs the CER client to ignore URL information
 described in status.txt. A False CERBooleanValue instructs the CER client to honor URL
 information. If this parameter is absent, the CER client SHOULD use a default value of "NO".<5>
 
@@ -1207,7 +1155,7 @@ SHOULD abort the error reporting process.
 
 Path: A CRLF pair MUST NOT appear in the Path value, since that is reserved as the line delimiter.
 
-2.2.5  Status.txt
+#### 2.2.5 Status.txt
 
 If present, status.txt MUST be placed in a final subfolder of the "status" branch of the CER file share
 (For an example, see section 4.1). The presence of a status.txt file in the final subfolder for a specific
@@ -1262,7 +1210,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-                           GetFileList CRLF
+
+                           GetFileList CRLF
                            ; the encoded characters spell case-sensitive "GetFileVersion="
  Path                    = 1*CHAR    ;    see below for delimiter handling
  Tracking                = %d84.114.97.99.107.105.110.103.61 CERBooleanValue CRLF
@@ -1336,7 +1285,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-GetFile: This parameter lists any number of semicolon-delimited file names to collect and include in
+
+GetFile: This parameter lists any number of semicolon-delimited file names to collect and include in
 the error report. It MUST be in a file path notation supported by the client systems that are
 expected to encounter the type of error this file corresponds to. The notation MUST support
 environment variables.
@@ -1363,11 +1313,12 @@ Release: June 1, 2017
 
 16 / 27
 
-3  Protocol Details
 
-3.1  Client to Server Detail
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client to Server Detail
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1381,28 +1332,28 @@ The DWFileTreeRoot parameter specifies the UNC path to the location of the CER f
 existence of this parameter instructs the CER client that the Corporate Error Reporting Version 1.0
 Protocol will be used.<7>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The CER client MUST check for the existence of the DWFileTreeRoot parameter. If there is no
 parameter, or if the parameter is not valid, the CER client MUST stop any further processing.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When a system or application error occurs, if the CER client is configured to use the Corporate Error
 Reporting Version 1.0 Protocol as specified in section 3.1.1, the CER client MUST perform the following
@@ -1423,7 +1374,8 @@ Release: June 1, 2017
 
 17 / 27
 
-2.  If both a status.txt file and a policy.txt file exist for a particular error and contain the same
+
+2.  If both a status.txt file and a policy.txt file exist for a particular error and contain the same
 
 parameter with different values, the CER client MUST use status.txt parameter over the policy.txt
 parameter. If neither exist, the CER client SHOULD refer to its default value for that particular
@@ -1488,9 +1440,10 @@ Release: June 1, 2017
 
 18 / 27
 
-4  Protocol Examples
 
-4.1  Application Fault Example
+## 4 Protocol Examples
+
+### 4.1 Application Fault Example
 
 1.  An application fault occurs while running TestApplication.exe.
 
@@ -1552,7 +1505,8 @@ Corporate Error Reporting Version 1.0 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-8.  This status.txt file has specified that additional data be added to the error report, in the form of
+
+8.  This status.txt file has specified that additional data be added to the error report, in the form of
 
 two registry key values, a WMI query, two files, and version information for two files. The CER
 client collects this information and compresses all of the report files into a single file with the
@@ -1595,7 +1549,7 @@ the crash.log file on the CER file share for this problem:
 
  "15:32:23  04-23-2007   TestMachine   TestUser   d5je031w.cab"
 
-4.2  Kernel Fault Example
+### 4.2 Kernel Fault Example
 
 1.  Kernel-mode fault occurs.
 
@@ -1608,7 +1562,8 @@ Release: June 1, 2017
 
 20 / 27
 
-3.  The CER client checks to see whether a CER file share has been configured as specified in
+
+3.  The CER client checks to see whether a CER file share has been configured as specified in
 
 section 3.1.1. The following value is set:
 
@@ -1655,13 +1610,14 @@ Release: June 1, 2017
 
 21 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1672,7 +1628,8 @@ Release: June 1, 2017
 
 22 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1736,7 +1693,8 @@ Release: June 1, 2017
 
 23 / 27
 
-<11> Section 3.1.7: Windows uses .CAB files for this compression; for more information, see [MSDN-
+
+<11> Section 3.1.7: Windows uses .CAB files for this compression; for more information, see [MSDN-
 CAB].
 
 [MS-CER] - v20170601
@@ -1746,7 +1704,8 @@ Release: June 1, 2017
 
 24 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1758,7 +1717,8 @@ Release: June 1, 2017
 
 25 / 27
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 17
@@ -1890,7 +1850,8 @@ Tracking Files message 9
 
 26 / 27
 
-Transport 9
+
+Transport 9
 Triggered events - higher-layer 17
 
 V

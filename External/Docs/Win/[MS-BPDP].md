@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: June 1, 2017
 
 2 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: June 1, 2017
 
 3 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -537,241 +540,100 @@ Release: June 1, 2017
 
 4 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Protocol Metadata](#3111-protocol-metadata)
+      - [3.1.1.2 Table of Connected Subnets](#3112-table-of-connected-subnets)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Hello](#3141-hello)
+        - [3.1.4.1.1 Messages](#31411-messages)
+      - [3.1.4.2 Bye](#3142-bye)
+        - [3.1.4.2.1 Messages](#31421-messages)
+      - [3.1.4.3 Probe](#3143-probe)
+        - [3.1.4.3.1 Messages](#31431-messages)
+      - [3.1.4.4 ProbeMatch](#3144-probematch)
+        - [3.1.4.4.1 Messages](#31441-messages)
+      - [3.1.4.5 Resolve](#3145-resolve)
+        - [3.1.4.5.1 Messages](#31451-messages)
+      - [3.1.4.6 ResolveMatch](#3146-resolvematch)
+        - [3.1.4.6.1 Messages](#31461-messages)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Shutdown](#3161-shutdown)
+      - [3.1.6.2 Add a Local IP Address](#3162-add-a-local-ip-address)
+      - [3.1.6.3 Remove an IP Address](#3163-remove-an-ip-address)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Table of Subnets](#3211-table-of-subnets)
+      - [3.2.1.2 Table of Servers](#3212-table-of-servers)
+      - [3.2.1.3 Tables of Server Addresses](#3213-tables-of-server-addresses)
+      - [3.2.1.4 Scope List](#3214-scope-list)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Discovery Timer](#3221-discovery-timer)
+      - [3.2.2.2 Discovery Suppression Timer](#3222-discovery-suppression-timer)
+      - [3.2.2.3 Address Scavenger Timer](#3223-address-scavenger-timer)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Hello](#3241-hello)
+      - [3.2.4.2 Bye](#3242-bye)
+      - [3.2.4.3 Probe](#3243-probe)
+      - [3.2.4.4 ProbeMatch](#3244-probematch)
+    - [3.2.5 Timer Events](#325-timer-events)
+      - [3.2.5.1 Discovery Time-Out](#3251-discovery-time-out)
+      - [3.2.5.2 Discovery Suppression Time-Out](#3252-discovery-suppression-time-out)
+      - [3.2.5.3 Address Scavenger Time-Out](#3253-address-scavenger-time-out)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 Attach to a Subnet](#3261-attach-to-a-subnet)
+      - [3.2.6.2 Detach from a Subnet](#3262-detach-from-a-subnet)
+      - [3.2.6.3 Clear the Table of Servers](#3263-clear-the-table-of-servers)
+      - [3.2.6.4 Discovery Request](#3264-discovery-request)
+      - [3.2.6.5 Cancel Discovery Request](#3265-cancel-discovery-request)
+      - [3.2.6.6 Enumerate Server Addresses](#3266-enumerate-server-addresses)
+      - [3.2.6.7 Update Server Address Time Stamp](#3267-update-server-address-time-stamp)
+      - [3.2.6.8 Shut Down](#3268-shut-down)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Hello Message at Server Startup and Bye Message at Shutdown](#41-hello-message-at-server-startup-and-bye-message-at-shutdown)
+  - [4.2 Client Probe with Probe-Match Replies](#42-client-probe-with-probe-match-replies)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Potential for High Unicast Traffic](#511-potential-for-high-unicast-traffic)
+    - [5.1.2 Lack of Message Authentication](#512-lack-of-message-authentication)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 12
-Elements ................................................................................................... 12
-Complex Types ........................................................................................... 13
-Simple Types ............................................................................................. 13
-Attributes .................................................................................................. 13
-Groups ...................................................................................................... 13
-Attribute Groups ......................................................................................... 13
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.1
-
-3.1.4.4
-
-3.1.4.3
-
-3.1.4.2
-
-3.1.4.1
-
-3.1.4.3.1
-
-3.1.4.2.1
-
-3.1.4.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 14
-Server Details .................................................................................................. 14
-Abstract Data Model .................................................................................... 14
-Protocol Metadata ................................................................................. 14
-Table of Connected Subnets ................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 15
-Hello ................................................................................................... 15
-Messages ....................................................................................... 15
-Bye ..................................................................................................... 16
-Messages ....................................................................................... 16
-Probe .................................................................................................. 16
-Messages ....................................................................................... 16
-ProbeMatch .......................................................................................... 16
-Messages ....................................................................................... 17
-Resolve................................................................................................ 17
-Messages ....................................................................................... 17
-ResolveMatch ....................................................................................... 17
-Messages ....................................................................................... 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Shutdown ............................................................................................ 18
-Add a Local IP Address .......................................................................... 18
-Remove an IP Address ........................................................................... 18
-Client Details ................................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Table of Subnets ................................................................................... 19
-Table of Servers ................................................................................... 19
-Tables of Server Addresses .................................................................... 20
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.1.5
-3.1.6
-
-3.1.4.5.1
-
-3.1.4.6.1
-
-3.1.4.4.1
-
-3.1.4.6
-
-3.1.4.5
-
-3.2.1
-
-3.2
-
-[MS-BPDP] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 37
-
-3.2.1.4
-
-3.2.2
-
-3.2.2.1
-3.2.2.2
-3.2.2.3
-
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.6
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6.1
-3.2.6.2
-3.2.6.3
-3.2.6.4
-3.2.6.5
-3.2.6.6
-3.2.6.7
-3.2.6.8
-
-Scope List ............................................................................................ 20
-Timers ...................................................................................................... 20
-Discovery Timer .................................................................................... 20
-Discovery Suppression Timer .................................................................. 20
-Address Scavenger Timer ....................................................................... 20
-Initialization ............................................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 21
-Hello ................................................................................................... 21
-Bye ..................................................................................................... 21
-Probe .................................................................................................. 22
-ProbeMatch .......................................................................................... 22
-Timer Events .............................................................................................. 22
-Discovery Time-Out ............................................................................... 22
-Discovery Suppression Time-Out............................................................. 22
-Address Scavenger Time-Out ................................................................. 22
-Other Local Events ...................................................................................... 23
-Attach to a Subnet ................................................................................ 23
-Detach from a Subnet ........................................................................... 23
-Clear the Table of Servers ...................................................................... 23
-Discovery Request ................................................................................ 23
-Cancel Discovery Request ...................................................................... 23
-Enumerate Server Addresses .................................................................. 23
-Update Server Address Time Stamp ........................................................ 24
-Shut Down ........................................................................................... 24
-
-4  Protocol Examples ................................................................................................. 25
-Hello Message at Server Startup and Bye Message at Shutdown ............................ 25
-Client Probe with Probe-Match Replies ................................................................ 26
-
-4.1
-4.2
-
-5.1
-
-5  Security ................................................................................................................. 30
-Security Considerations for Implementers ........................................................... 30
-Potential for High Unicast Traffic ................................................................... 30
-Lack of Message Authentication .................................................................... 30
-Index of Security Parameters ............................................................................ 30
-
-5.1.1
-5.1.2
-
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 31
-
-7  Appendix B: Product Behavior ............................................................................... 32
-
-8  Change Tracking .................................................................................................... 34
-
-9  Index ..................................................................................................................... 35
-
-[MS-BPDP] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 37
-
-1  Introduction
+## 1 Introduction
 
 This document describes the Background Intelligent Transfer Service (BITS) Peer-Caching: Peer
 Discovery Protocol. This protocol is used to locate hosts in a domain that supports the URL-caching
@@ -781,7 +643,7 @@ Discovery (WS-Discovery) Protocol, as specified in [WS-Discovery].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -843,7 +705,8 @@ Release: June 1, 2017
 
 7 / 37
 
-universally unique identifier (UUID): A 128-bit value. UUIDs can be used for multiple
+
+universally unique identifier (UUID): A 128-bit value. UUIDs can be used for multiple
 
 purposes, from tagging objects with an extremely short lifetime, to reliably identifying very
 persistent objects in cross-process communication such as client and server interfaces, manager
@@ -872,14 +735,14 @@ regardless of the message formats or network protocols that are used.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -910,7 +773,8 @@ Release: June 1, 2017
 
 8 / 37
 
-[WS-Discovery] Beatty, J., Kakivaya, G., Kemp D., et al., "Web Services Dynamic Discovery (WS-
+
+[WS-Discovery] Beatty, J., Kakivaya, G., Kemp D., et al., "Web Services Dynamic Discovery (WS-
 Discovery)", April 2005, http://specs.xmlsoap.org/ws/2005/04/discovery/ws-discovery.pdf
 
 [WSAddressing] Box, D., et al., "Web Services Addressing (WS-Addressing)", August 2004,
@@ -929,7 +793,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-BPAU] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Peer-Caching: Peer
 Authentication Protocol".
@@ -940,7 +804,7 @@ Content Retrieval Protocol".
 [MSDN-BITS] Microsoft Corporation, "Background Intelligent Transfer Service",
 http://msdn.microsoft.com/en-us/library/bb968799(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The BITS Peer-Caching: Peer Discovery Protocol is used to locate networked hosts or devices that are
 implementing the server role of the BITS Peer-Caching: Content Retrieval Protocol. The BITS Peer-
@@ -959,7 +823,7 @@ Windows uses the BITS Peer-Caching: Peer Discovery Protocol to implement a distr
 cache of URL content for use by the Background Intelligent Transfer Service (BITS) component. For
 more information about BITS, see [MSDN-BITS].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The BITS Peer-Caching: Peer Discovery Protocol does not authenticate computers to each other;
 Windows uses the Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Authentication
@@ -976,7 +840,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Prot
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-BPDP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -986,18 +851,18 @@ higher level protocol.
 
 Figure 1: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol defines no prerequisites.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The primary purpose of the BITS Peer-Caching: Peer Discovery Protocol is to locate peer servers for
 use by the BITS Peer-Caching: Content Retrieval Protocol, as specified in [MS-BPCR]. The BITS Peer-
 Caching: Peer Discovery Protocol is intended for use by hosts that are members of an Active Directory
 domain.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1023,11 +888,12 @@ Release: June 1, 2017
 
 10 / 37
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 No vendor-extensible fields are defined.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1038,15 +904,16 @@ Release: June 1, 2017
 
 11 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The BITS Peer-Caching: Peer Discovery Protocol is a specialization of the WS-Discovery Protocol. The
 Web Services Dynamic Discovery (WS-Discovery) Protocol, including dependent transports, is as
 specified in [WS-Discovery].
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description
@@ -1056,7 +923,7 @@ The BITS Peer-Caching: Peer Discovery Protocol follows the message syntax of [WS
 Messages MUST use SOAP version 1.2, as specified in [SOAP1.2-2/2003]. This protocol does not
 require the generation or processing of SOAP faults. No additional SOAP faults are defined.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1083,11 +950,11 @@ http://schemas.xmlsoap.org/ws/2005/04/discovery
 
 [WS-Discovery]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common WSDL messages.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The BITS Peer-Caching: Peer Discovery Protocol defines the
 http://schemas.microsoft.com/windows/2005/05/BITS/cache namespace as follows:
@@ -1116,7 +983,8 @@ Release: June 1, 2017
 
 12 / 37
 
-[WS-Discovery] section 2.6 refers to the a:EndpointReference element, as specified in
+
+[WS-Discovery] section 2.6 refers to the a:EndpointReference element, as specified in
 [WSAddressing] section 2. Within messages sent by the BITS Peer-Caching: Peer Discovery Protocol,
 the specification of the a:EndpointReference element is constrained in the following ways:
 
@@ -1140,23 +1008,23 @@ The Ipv4-address MUST be a dotted IPv4 address.
 
 The Ipv6-address MUST have one of the formats specified in [RFC3513] section 2.2.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -1167,11 +1035,12 @@ Release: June 1, 2017
 
 13 / 37
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1181,7 +1050,7 @@ document.
 
 The server behaves as a WS-Discovery Target Service, as specified in [WS-Discovery].
 
-3.1.1.1  Protocol Metadata
+##### 3.1.1.1 Protocol Metadata
 
 The server maintains several pieces of metadata about itself:
 
@@ -1197,7 +1066,7 @@ Its active WS-Discovery scopes.
 
   A GUID ([MS-DTYP] section 2.3.4) that is the instance GUID for WS-Discovery.
 
-3.1.1.2  Table of Connected Subnets
+##### 3.1.1.2 Table of Connected Subnets
 
 The server maintains a table of all subnets for which it currently has an active IP address. Each row of
 the table represents a single subnet and includes the following data:
@@ -1215,11 +1084,11 @@ The subnet mask (for IPv4) or prefix (for IPv6).
 Note  The abstract data model can be implemented in a variety of ways. This protocol does not
 prescribe or advocate any specific implementation technique.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol-specific timers are required by the server.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The first time the protocol is initialized, the server MUST create a unique instance GUID and SHOULD
 set its metadata version to zero. In subsequent initializations, the server SHOULD test whether its set
@@ -1237,10 +1106,11 @@ Release: June 1, 2017
 
 14 / 37
 
-The server MUST begin listening for messages. Transport information is specified in [WS-Discovery]
+
+The server MUST begin listening for messages. Transport information is specified in [WS-Discovery]
 section 2.4.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations defined by this specification:
 
@@ -1278,7 +1148,7 @@ type.
 
 All other messages are discarded without further processing.
 
-3.1.4.1  Hello
+##### 3.1.4.1 Hello
 
 A server of the BITS Peer-Caching: Peer Discovery Protocol uses the Hello message to announce its
 presence.
@@ -1303,7 +1173,7 @@ addressed to the Endpoint Reference in question.
 address in each of the subnets to which the message is sent.<4> The format of address URIs is
 specified in section 2.2.3.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1319,7 +1189,8 @@ Release: June 1, 2017
 
 15 / 37
 
-3.1.4.2  Bye
+
+##### 3.1.4.2 Bye
 
 A server of the BITS Peer-Caching: Peer Discovery Protocol uses the Bye message to indicate that it is
 disconnecting from a network.
@@ -1328,7 +1199,7 @@ The format of the Bye message is specified in [WS-Discovery] section 4.2.
 
 The BITS Peer-Caching: Peer Discovery Protocol places no new requirements on the Bye message.
 
-3.1.4.2.1 Messages
+###### 3.1.4.2.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1339,7 +1210,7 @@ ByeMsg
 
 Used to announce that a service is leaving a network.
 
-3.1.4.3  Probe
+##### 3.1.4.3 Probe
 
 The server adheres to the requirements, as specified in [WS-Discovery] section 5. In addition, the
 BITS Peer-Caching: Peer Discovery Protocol adds the following requirements:
@@ -1359,7 +1230,7 @@ URI encoding of server addresses, see section 2.2.3.
 
 The server MAY limit the number and rate of Probe messages processed.
 
-3.1.4.3.1 Messages
+###### 3.1.4.3.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1368,7 +1239,7 @@ Message  Description
 
 ProbeMsg  Used to find a service on the network based on service type.
 
-3.1.4.4  ProbeMatch
+##### 3.1.4.4 ProbeMatch
 
 A server of the BITS Peer-Caching: Peer Discovery Protocol sends a Probe-Match message after it
 receives a Probe message that matches the server's WS-Discovery type and scope.
@@ -1391,7 +1262,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Prot
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  A single d:Types child element MUST be present and include the type "msbits:PeerServer".
+
+  A single d:Types child element MUST be present and include the type "msbits:PeerServer".
 
   A single d:Scopes child element MUST be present and contain at least one scope conforming to
 
@@ -1401,7 +1273,7 @@ section 2.2.3 of this document. <6>
 
 address in the subnet to which the message is sent.<7>
 
-3.1.4.4.1 Messages
+###### 3.1.4.4.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1414,7 +1286,7 @@ ProbeMatchMsg  Used for responding to a Probe message to indicate that the servi
 
 type.
 
-3.1.4.5  Resolve
+##### 3.1.4.5 Resolve
 
 A server is required to respond to a Resolve message that matches its Endpoint Reference, as
 specified in [WS-Discovery] section 6.1. The BITS Peer-Caching: Peer Discovery Protocol relaxes that
@@ -1428,7 +1300,7 @@ Endpoint Reference of a server but not its XAddrs, and it requires the XAddrs. A
 Match messages sent by the BITS Peer-Caching: Peer Discovery Protocol server role carry the server's
 XAddrs in addition to the Endpoint Reference, so the additional message exchange is not necessary.
 
-3.1.4.5.1 Messages
+###### 3.1.4.5.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1439,14 +1311,14 @@ Description
 
 ResolveMsg  Used to locate a particular target service and retrieve network transport information.
 
-3.1.4.6  ResolveMatch
+##### 3.1.4.6 ResolveMatch
 
 The BITS Peer-Caching: Peer Discovery Protocol does not use WS-Discovery's Resolve and Resolve-
 Match messages and makes no changes to the definitions as specified in [WS-Discovery] sections 6.1
 and 6.2. They SHOULD NOT be sent by an implementation of this protocol and also SHOULD be
 ignored or treated as not matching if received.<9>
 
-3.1.4.6.1 Messages
+###### 3.1.4.6.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1466,15 +1338,16 @@ Release: June 1, 2017
 
 17 / 37
 
-3.1.5  Timer Events
+
+#### 3.1.5 Timer Events
 
 Timers are defined in [WS-Discovery] sections 2.4, 3, and 7.
 
 BITS Peer-Caching: Peer Discovery Protocol defines no additional requirements.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
-3.1.6.1  Shutdown
+##### 3.1.6.1 Shutdown
 
 The server MUST ignore further incoming messages.
 
@@ -1482,7 +1355,7 @@ The server MAY send a Bye message as specified in [WS-Discovery] sections 3 and 
 
 The server SHOULD close the network ports specified in [WS-Discovery] section 2.4.<11>
 
-3.1.6.2  Add a Local IP Address
+##### 3.1.6.2 Add a Local IP Address
 
 When a local IP address is added, the server checks whether it is a loopback address or a temporary
 IPv6 address. If it is either address, the notification MUST be ignored.
@@ -1508,7 +1381,7 @@ message only to that subnet, in which case it SHOULD NOT contain addresses in ot
 If the server sends the message to multiple subnets, the /s:Envelope/s:Body/d:Hello/d:XAddrs
 element MUST contain the server addresses in each of those subnets.
 
-3.1.6.3  Remove an IP Address
+##### 3.1.6.3 Remove an IP Address
 
 When an IP address is to be deleted, the server MUST check whether the address is a member of the
 address list in any row of the table of connected subnets. If not, the notification is ignored.
@@ -1530,7 +1403,8 @@ Release: June 1, 2017
 
 18 / 37
 
-When a Hello message is sent, the server MUST send the message to the subnet whose address list
+
+When a Hello message is sent, the server MUST send the message to the subnet whose address list
 changed, implying that the /s:Envelope/s:Body/d:Hello/d:XAddrs element MUST contain the
 server addresses in that subnet from the table of connected subnets. The server SHOULD send the
 message only to that subnet, in which case it SHOULD NOT contain addresses in other subnets.<17>
@@ -1539,9 +1413,9 @@ If the server sends the Hello message to multiple connected subnets, the
 /s:Envelope/s:Body/d:Hello/d:XAddrs element MUST contain the server addresses in each of
 those subnets.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1551,7 +1425,7 @@ document.
 
 The client behaves as a WS-Discovery client, as indicated throughout [WS-Discovery].
 
-3.2.1.1  Table of Subnets
+##### 3.2.1.1 Table of Subnets
 
 The client maintains a table of all IP subnets for which it currently holds the following:
 
@@ -1574,7 +1448,7 @@ empty string if not available).
 
 For each IPv6 subnet, the client saves its subnet ID and subnet mask.
 
-3.2.1.2  Table of Servers
+##### 3.2.1.2 Table of Servers
 
 The client maintains a table of all servers that are present or cached. Each row of the table represents
 a single server and includes:
@@ -1604,7 +1478,8 @@ Release: June 1, 2017
 
 19 / 37
 
-3.2.1.3  Tables of Server Addresses
+
+##### 3.2.1.3 Tables of Server Addresses
 
 For each subnet, the client maintains a table of servers and their local addresses. Each row of the
 table represents a single server address and includes:
@@ -1626,14 +1501,14 @@ successfully and contains this address. A higher-layer protocol SHOULD also upda
 server is successfully contacted through content retrieval (BITS Peer-Caching: Content Retrieval
 Protocol).
 
-3.2.1.4  Scope List
+##### 3.2.1.4 Scope List
 
 The client maintains a list of active WS-Discovery scopes defined by implementation-dependent
 means.<20>
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Discovery Timer
+##### 3.2.2.1 Discovery Timer
 
 A higher-layer protocol can signal the BITS Peer-Caching: Peer Discovery Protocol to discover more
 servers. Each such request is called a discovery. Each discovery has a finite lifetime after which the
@@ -1645,19 +1520,19 @@ it to a value lower than the completion time of the SOAP-over-UDP transmission a
 Discovery's use of SOAP-over-UDP is as specified in [WS-Discovery] section 2.4. For more information
 about SOAP-over-UDP, see [SOAP-UDP].
 
-3.2.2.2  Discovery Suppression Timer
+##### 3.2.2.2 Discovery Suppression Timer
 
 The protocol imposes a waiting period after sending a Probe message to avoid an inundation of
 network traffic from repeated discoveries. During this waiting period, new discovery requests from a
 higher-layer protocol complete immediately, without triggering a Probe message. The default value for
 this timer is 10 minutes; it can be any nonnegative value.
 
-3.2.2.3  Address Scavenger Timer
+##### 3.2.2.3 Address Scavenger Timer
 
 To reduce accumulation of obsolete server and address entries, each address contains a scavenger
 timer. The default timer interval is seven days and MAY be any positive value.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST identify its WS-Discovery scope(s) through defining a single scope by prepending the
 string "https://" to the FQDN of the host.
@@ -1675,7 +1550,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Prot
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.4  Message Processing Events and Sequencing Rules
+
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The client MUST verify that each received message matches the schema as specified in [WS-
 Discovery], Appendix III, while discarding malformed messages. Further parsing depends on the
@@ -1686,7 +1562,7 @@ operations defined in section 3.1.4.
 
 Other messages not listed in the following subsections MUST be ignored.
 
-3.2.4.1  Hello
+##### 3.2.4.1 Hello
 
 The client adheres to the requirements as specified in [WS-Discovery] section 4.1. In addition, BITS
 Peer-Caching: Peer Discovery Protocol adds the following requirements:
@@ -1728,7 +1604,7 @@ M_FQDN. If no row matches, create a new row by using the address from the messag
 the timestamp of the row to the current UTC time; set the address of the row to the current
 message address.
 
-3.2.4.2  Bye
+##### 3.2.4.2 Bye
 
 The client adheres to the requirements as specified in [WS-Discovery] section 4.2. In addition, (BITS)
 Peer-Caching: Peer Discovery Protocol adds the following requirements.
@@ -1747,7 +1623,8 @@ Release: June 1, 2017
 
 21 / 37
 
-3.2.4.3  Probe
+
+##### 3.2.4.3 Probe
 
 A client of the BITS Peer-Caching: Peer Discovery Protocol uses the Probe message to solicit potential
 servers.
@@ -1762,7 +1639,7 @@ additional constraints are placed on the /s:Envelope/s:Body/d:Probe element:
 A client or server MUST support the "http://schemas.xmlsoap.org/ws/2005/04/discovery/rfc2396"
 matching rule and MAY support other rules.
 
-3.2.4.4  ProbeMatch
+##### 3.2.4.4 ProbeMatch
 
 The client adheres to the requirements as specified in [WS-Discovery] section 5. In addition, BITS
 Peer-Caching: Peer Discovery Protocol adds the following requirements:
@@ -1792,19 +1669,19 @@ references to the /s:Envelope/s:Body/d:Hello element replaced by
 
 The client MAY enforce limits on the number or rate of Probe-Match messages processed.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
-3.2.5.1  Discovery Time-Out
+##### 3.2.5.1 Discovery Time-Out
 
 When a discovery's timer expires, the higher-layer protocol MUST be notified that the discovery has
 completed; then, the discovery MUST be deleted.
 
-3.2.5.2  Discovery Suppression Time-Out
+##### 3.2.5.2 Discovery Suppression Time-Out
 
 When the discovery suppression timer expires, nothing happens. However, the next discovery will
 trigger a Probe message because the client will see that the timer is expired.
 
-3.2.5.3  Address Scavenger Time-Out
+##### 3.2.5.3 Address Scavenger Time-Out
 
 When a server's address scavenger timer expires, the address SHOULD be deleted from its table of
 server addresses. If its table is for a detached subnet and no other addresses remain, the table
@@ -1818,9 +1695,10 @@ Release: June 1, 2017
 
 22 / 37
 
-3.2.6  Other Local Events
 
-3.2.6.1  Attach to a Subnet
+#### 3.2.6 Other Local Events
+
+##### 3.2.6.1 Attach to a Subnet
 
 When the client host attaches to an IP subnet, the client MUST check whether any existing row in the
 table of subnets matches the new subnet. If no row matches, the client MUST:
@@ -1831,7 +1709,7 @@ table of subnets matches the new subnet. If no row matches, the client MUST:
 
 3.  Set the row's M_ATTACHED flag to true.
 
-3.2.6.2  Detach from a Subnet
+##### 3.2.6.2 Detach from a Subnet
 
 When the client host detaches from an IP subnet, the client MUST find the row with matching subnet
 information in the table of subnets. Then the client MUST:
@@ -1842,7 +1720,7 @@ information in the table of subnets. Then the client MUST:
 
 associated table and the current row.
 
-3.2.6.3  Clear the Table of Servers
+##### 3.2.6.3 Clear the Table of Servers
 
 A higher-layer protocol MAY signal the BITS Peer-Caching: Peer Discovery Protocol to remove all
 servers from the table of servers.
@@ -1855,7 +1733,7 @@ MUST clear the associated table of server addresses.
 The client MUST mark the Discovery Suppression timer as not-pending, so that the next discovery
 request will not be suppressed.
 
-3.2.6.4  Discovery Request
+##### 3.2.6.4 Discovery Request
 
 A higher-layer protocol MAY signal the protocol to discover more servers.
 
@@ -1865,12 +1743,12 @@ discovery has terminated.
 
 Otherwise, the client MUST send a Probe message.
 
-3.2.6.5  Cancel Discovery Request
+##### 3.2.6.5 Cancel Discovery Request
 
 When a discovery request is canceled, the client MUST cancel the discovery's timer and immediately
 notify the higher layer that the discovery has terminated.
 
-3.2.6.6  Enumerate Server Addresses
+##### 3.2.6.6 Enumerate Server Addresses
 
 A higher-layer protocol MAY ask for a list of all online servers. When this occurs, the client MUST
 create a list of servers as follows:
@@ -1882,7 +1760,8 @@ Release: June 1, 2017
 
 23 / 37
 
-
+
+
 
 The client creates an empty list of servers. It then enumerates the table of addresses for each
 subnet with M_ATTACHED == true. For each address, the client adds the server to the list if it is
@@ -1891,13 +1770,13 @@ not already there, then it appends the address to the server entry.
 The result is a list of all servers currently sharing at least one subnet with the client, together with the
 relevant server addresses. This list is returned to the higher-layer protocol.
 
-3.2.6.7  Update Server Address Time Stamp
+##### 3.2.6.7 Update Server Address Time Stamp
 
 A higher-layer protocol MAY signal the client to update the time stamp of a particular server address.
 When this occurs, the client SHOULD set the time stamp of the address to the current UTC time and
 restart the address's scavenger timer.
 
-3.2.6.8  Shut Down
+##### 3.2.6.8 Shut Down
 
 When the protocol is shut down, the client:
 
@@ -1916,9 +1795,10 @@ Release: June 1, 2017
 
 24 / 37
 
-4  Protocol Examples
 
-4.1  Hello Message at Server Startup and Bye Message at Shutdown
+## 4 Protocol Examples
+
+### 4.1 Hello Message at Server Startup and Bye Message at Shutdown
 
 A host named \\myclient is a member of the Active Directory domain MyDomain. The host is
 connected to a single network, holding both an IPv4 address and an IPv6 address. When the BITS
@@ -1987,7 +1867,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Discovery Prot
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- (1) <?xml version="1.0" encoding="utf-8"?>
+
+ (1) <?xml version="1.0" encoding="utf-8"?>
  (2) <soap:Envelope
  (3)  xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
  (4)  xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
@@ -2018,7 +1899,7 @@ Release: June 1, 2017
  (29)  </soap:Body>
  (30) </soap:Envelope>
 
-4.2  Client Probe with Probe-Match Replies
+### 4.2 Client Probe with Probe-Match Replies
 
 A host named \\client1 is a member of the Active Directory domain MyDomain. The host is
 connected to a single network, holding both an IPv4 address and an IPv6 address.
@@ -2060,7 +1941,8 @@ Release: June 1, 2017
 
 26 / 37
 
- (26)    </wsd:Scopes>
+
+ (26)    </wsd:Scopes>
  (27)   </wsd:Probe>
  (28)  </soap:Body>
  (29) </soap:Envelope>
@@ -2134,7 +2016,8 @@ Release: June 1, 2017
 
 27 / 37
 
- (53)  </wsd:ProbeMatches>
+
+ (53)  </wsd:ProbeMatches>
  (54) </soap:Body>
  (55) </soap:Envelope>
 
@@ -2207,7 +2090,8 @@ Release: June 1, 2017
 
 28 / 37
 
-The host \\products is a member of a different Active Directory domain. Line 25 of the Probe message
+
+The host \\products is a member of a different Active Directory domain. Line 25 of the Probe message
 fails to match the host's own WS-Discovery scope, and so the Probe is discarded without response.
 
 [MS-BPDP] - v20170601
@@ -2217,22 +2101,23 @@ Release: June 1, 2017
 
 29 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
 
-5.1.1  Potential for High Unicast Traffic
+### 5.1 Security Considerations for Implementers
+
+#### 5.1.1 Potential for High Unicast Traffic
 
 WS-Discovery does not provide a way to control the number or pace of replies to a Probe message. In
 a very large network, a client can be overwhelmed by many server replies.
 
-5.1.2  Lack of Message Authentication
+#### 5.1.2 Lack of Message Authentication
 
 This protocol does not provide any authentication for messages. It is possible for a malicious host to
 send incorrect Hello, Bye, and Probe-Match messages in order to confuse a client. A client needs to
 consider all information gained from this protocol as insecure until corroborated by other means.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol does not define any security parameters.
 
@@ -2243,7 +2128,8 @@ Release: June 1, 2017
 
 30 / 37
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For the full WSDL description for this specification, see WSDL for WS-Discovery in [WS-Discovery].
 
@@ -2254,7 +2140,8 @@ Release: June 1, 2017
 
 31 / 37
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2322,7 +2209,8 @@ Release: June 1, 2017
 
 32 / 37
 
-<16> Section 3.1.6.3: Windows Vista and Windows Server 2008 do not send a Hello message.
+
+<16> Section 3.1.6.3: Windows Vista and Windows Server 2008 do not send a Hello message.
 
 <17> Section 3.1.6.3: In server role, Windows sends a URI list containing all server addresses from
 the table of connected subnets.
@@ -2355,7 +2243,8 @@ Release: June 1, 2017
 
 33 / 37
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2367,7 +2256,8 @@ Release: June 1, 2017
 
 34 / 37
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2508,7 +2398,8 @@ Release: June 1, 2017
 
 35 / 37
 
-   server 15
+
+   server 15
 Messages
    attribute groups 13
    attributes 13
@@ -2651,7 +2542,8 @@ Release: June 1, 2017
 
 36 / 37
 
-Vendor-extensible fields 11
+
+Vendor-extensible fields 11
 Versioning 10
 
 [MS-BPDP] - v20170601

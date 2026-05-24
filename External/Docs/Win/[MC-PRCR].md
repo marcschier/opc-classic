@@ -63,7 +63,8 @@ Release: April 7, 2021
 
 1 / 47
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 7, 2021
 
 2 / 47
 
-Date
+
+Date
 
 Revision
 History
@@ -508,250 +510,106 @@ Release: April 7, 2021
 
 3 / 47
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.3.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Identifiers](#131-identifiers)
+      - [1.3.1.1 Mesh Name](#1311-mesh-name)
+      - [1.3.1.2 ClientId](#1312-clientid)
+      - [1.3.1.3 RegistrationId](#1313-registrationid)
+    - [1.3.2 Connecting to the Resolver Service](#132-connecting-to-the-resolver-service)
+    - [1.3.3 List of Resolver Service Operations](#133-list-of-resolver-service-operations)
+    - [1.3.4 Registration Record Maintenance](#134-registration-record-maintenance)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Structures Used](#222-structures-used)
+      - [2.2.2.1 PeerNodeAddress Structure](#2221-peernodeaddress-structure)
+      - [2.2.2.2 RefreshResult Enumeration](#2222-refreshresult-enumeration)
+    - [2.2.3 Resolver Client Messages](#223-resolver-client-messages)
+      - [2.2.3.1 Register Message](#2231-register-message)
+      - [2.2.3.2 Resolve Message](#2232-resolve-message)
+      - [2.2.3.3 Refresh Message](#2233-refresh-message)
+      - [2.2.3.4 Update Message](#2234-update-message)
+      - [2.2.3.5 Unregister Message](#2235-unregister-message)
+      - [2.2.3.6 GetServiceInfo Message](#2236-getserviceinfo-message)
+    - [2.2.4 Resolver Service Messages](#224-resolver-service-messages)
+      - [2.2.4.1 RegisterResponse Message](#2241-registerresponse-message)
+      - [2.2.4.2 ResolveResponse Message](#2242-resolveresponse-message)
+      - [2.2.4.3 RefreshResponse Message](#2243-refreshresponse-message)
+      - [2.2.4.4 ServiceSettingsResponseInfo Message](#2244-servicesettingsresponseinfo-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Resolver Client Details](#31-resolver-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Client Refresh Timer](#3121-client-refresh-timer)
+      - [3.1.2.2 Message Response Timer](#3122-message-response-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Register](#3141-register)
+      - [3.1.4.2 Update](#3142-update)
+      - [3.1.4.3 Resolve](#3143-resolve)
+      - [3.1.4.4 Unregister](#3144-unregister)
+      - [3.1.4.5 Refresh](#3145-refresh)
+      - [3.1.4.6 GetServiceInfo](#3146-getserviceinfo)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 RegisterResponse Message](#3151-registerresponse-message)
+      - [3.1.5.2 ResolveResponse Message](#3152-resolveresponse-message)
+      - [3.1.5.3 RefreshResponse Message](#3153-refreshresponse-message)
+      - [3.1.5.4 ServiceSettingsResponseInfo Message](#3154-servicesettingsresponseinfo-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Client Refresh Timer](#3161-client-refresh-timer)
+      - [3.1.6.2 Message Response Timer](#3162-message-response-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Shutting Down the Resolver Service](#3171-shutting-down-the-resolver-service)
+  - [3.2 Resolver Service Details](#32-resolver-service-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+      - [3.2.2.1 Maintenance Timer](#3221-maintenance-timer)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Register](#3251-register)
+      - [3.2.5.2 Update](#3252-update)
+      - [3.2.5.3 Resolve](#3253-resolve)
+      - [3.2.5.4 Unregister](#3254-unregister)
+      - [3.2.5.5 Refresh](#3255-refresh)
+      - [3.2.5.6 GetServiceInfo](#3256-getserviceinfo)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Maintenance Timer](#3261-maintenance-timer)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Peer Discovery](#41-peer-discovery)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 http://schemas.microsoft.com/net/2006/05/peer/resolver](#61-httpschemasmicrosoftcomnet200605peerresolver)
+  - [6.2 http://schemas.microsoft.com/net/2006/05/peer](#62-httpschemasmicrosoftcomnet200605peer)
+  - [6.3 http://schemas.datacontract.org/2004/07/System.ServiceModel.PeerResolvers](#63-httpschemasdatacontractorg200407systemservicemodelpeerresolvers)
+  - [6.4 http://schemas.microsoft.com/2003/10/Serialization](#64-httpschemasmicrosoftcom200310serialization)
+  - [6.5 http://www.w3.org/2005/08/addressing](#65-httpwwww3org200508addressing)
+  - [6.6 http://schemas.datacontract.org/2004/07/System.Net](#66-httpschemasdatacontractorg200407systemnet)
+  - [6.7 http://schemas.datacontract.org/2004/07/System.Net.Sockets](#67-httpschemasdatacontractorg200407systemnetsockets)
+  - [6.8 http://schemas.microsoft.com/2003/10/Serialization/Arrays](#68-httpschemasmicrosoftcom200310serializationarrays)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-1.3.1.3
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Identifiers .................................................................................................... 8
-Mesh Name ............................................................................................ 8
-ClientId ................................................................................................. 8
-RegistrationId ......................................................................................... 8
-Connecting to the Resolver Service ................................................................. 9
-List of Resolver Service Operations ................................................................. 9
-Registration Record Maintenance .................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2
-1.3.3
-1.3.4
-
-2.2.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Namespaces .............................................................................................. 11
-Structures Used .......................................................................................... 12
-PeerNodeAddress Structure .................................................................... 12
-RefreshResult Enumeration .................................................................... 13
-Resolver Client Messages ............................................................................. 14
-Register Message .................................................................................. 14
-Resolve Message ................................................................................... 15
-Refresh Message ................................................................................... 16
-Update Message ................................................................................... 16
-Unregister Message ............................................................................... 17
-GetServiceInfo Message ......................................................................... 18
-Resolver Service Messages .......................................................................... 18
-RegisterResponse Message ..................................................................... 18
-ResolveResponse Message ..................................................................... 19
-RefreshResponse Message ..................................................................... 20
-ServiceSettingsResponseInfo Message ..................................................... 21
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-
-2.2.4
-
-3.1
-
-3.1.1
-3.1.2
-
-3.1.3
-3.1.4
-
-3.1.2.1
-3.1.2.2
-
-3  Protocol Details ..................................................................................................... 22
-Resolver Client Details ...................................................................................... 22
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 23
-Client Refresh Timer .............................................................................. 23
-Message Response Timer ....................................................................... 23
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 23
-Register ............................................................................................... 24
-Update ................................................................................................ 24
-Resolve................................................................................................ 24
-Unregister ............................................................................................ 24
-Refresh ................................................................................................ 24
-GetServiceInfo ...................................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-
-3.1.5
-
-[MC-PRCR] - v20210407
-Peer Channel Custom Resolver Protocol
-Copyright © 2021 Microsoft Corporation
-Release: April 7, 2021
-
-4 / 47
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.6
-
-3.1.6.1
-3.1.6.2
-
-3.1.7
-
-3.1.7.1
-
-3.2
-
-3.2.1
-3.2.2
-
-3.2.3
-3.2.4
-3.2.5
-
-3.2.2.1
-
-RegisterResponse Message ..................................................................... 24
-ResolveResponse Message ..................................................................... 25
-RefreshResponse Message ..................................................................... 25
-ServiceSettingsResponseInfo Message ..................................................... 25
-Timer Events .............................................................................................. 25
-Client Refresh Timer .............................................................................. 25
-Message Response Timer ....................................................................... 25
-Other Local Events ...................................................................................... 25
-Shutting Down the Resolver Service ........................................................ 25
-Resolver Service Details .................................................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Maintenance Timer ................................................................................ 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-Register ............................................................................................... 26
-Update ................................................................................................ 27
-Resolve................................................................................................ 27
-Unregister ............................................................................................ 27
-Refresh ................................................................................................ 27
-GetServiceInfo ...................................................................................... 27
-Timer Events .............................................................................................. 28
-Maintenance Timer ................................................................................ 28
-Other Local Events ...................................................................................... 28
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-4  Protocol Examples ................................................................................................. 29
-Peer Discovery ................................................................................................. 29
-
-4.1
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 32
-http://schemas.microsoft.com/net/2006/05/peer/resolver .................................... 32
-http://schemas.microsoft.com/net/2006/05/peer ................................................. 33
-http://schemas.datacontract.org/2004/07/System.ServiceModel.PeerResolvers ....... 35
-http://schemas.microsoft.com/2003/10/Serialization ........................................... 35
-http://www.w3.org/2005/08/addressing ............................................................. 36
-http://schemas.datacontract.org/2004/07/System.Net ......................................... 38
-http://schemas.datacontract.org/2004/07/System.Net.Sockets ............................. 38
-http://schemas.microsoft.com/2003/10/Serialization/Arrays ................................. 42
-
-6.1
-6.2
-6.3
-6.4
-6.5
-6.6
-6.7
-6.8
-
-7  Appendix B: Product Behavior ............................................................................... 43
-
-8  Change Tracking .................................................................................................... 44
-
-9  Index ..................................................................................................................... 45
-
-[MC-PRCR] - v20210407
-Peer Channel Custom Resolver Protocol
-Copyright © 2021 Microsoft Corporation
-Release: April 7, 2021
-
-5 / 47
-
-1  Introduction
+## 1 Introduction
 
 The Peer Channel Custom Resolver Protocol is used for storage and retrieval of endpoint
 information of clients that have access to a known service. Clients that use the service can store
@@ -761,7 +619,7 @@ order to establish direct connections between them.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -812,7 +670,7 @@ information.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -824,10 +682,11 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -890,19 +749,20 @@ Release: April 7, 2021
 
 7 / 47
 
-[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
+
+[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
 [XMLSCHEMA] World Wide Web Consortium, "XML Schema", September 2005,
 http://www.w3.org/2001/XMLSchema
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
 [MS-PNRP] Microsoft Corporation, "Peer Name Resolution Protocol (PNRP) Version 4.0".
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol is intended to be used together with the Peer Channel Protocol [MC-PRCH] as a peer
 discovery service.
@@ -923,9 +783,9 @@ that information.
 
 information, or to request a list of the endpoint information of other clients.
 
-1.3.1  Identifiers
+#### 1.3.1 Identifiers
 
-1.3.1.1  Mesh Name
+##### 1.3.1.1 Mesh Name
 
 Registration information is associated with a string called a mesh name, which is used to group
 related sets of endpoint information. When registration records are created or requested, the
@@ -934,12 +794,12 @@ resolver service. The resolver service guarantees that clients requesting endpoi
 corresponding to a particular mesh name will only receive endpoint information that was registered
 with the same mesh name.
 
-1.3.1.2  ClientId
+##### 1.3.1.2 ClientId
 
 Each resolver client generates a unique string that is used to identify itself to the resolver service.
 This ID remains constant throughout the lifetime of the resolver client.
 
-1.3.1.3  RegistrationId
+##### 1.3.1.3 RegistrationId
 
 When a new registration record is created at the resolver service, it is assigned a unique
 RegistrationId in the form of a GUID. This RegistrationId remains valid for that registration record
@@ -952,14 +812,15 @@ Release: April 7, 2021
 
 8 / 47
 
-1.3.2  Connecting to the Resolver Service
+
+#### 1.3.2 Connecting to the Resolver Service
 
 The resolver client is configured with the location of the resolver service and a transport that
 matches the requirements of the service. All clients need to be configured to use the same transport.
 The connection that is used by the custom resolver service and the custom resolver client to
 communicate is protocol independent.
 
-1.3.3  List of Resolver Service Operations
+#### 1.3.3 List of Resolver Service Operations
 
 The Peer Channel Custom Resolver Protocol is initiated by a request from a resolver client (with the
 sole exception of registration record maintenance; see section 1.3.4). The following operations are
@@ -983,7 +844,7 @@ name.
 
 Protocol node will use referrals to initiate neighbor connections.
 
-1.3.4  Registration Record Maintenance
+#### 1.3.4 Registration Record Maintenance
 
 Registration records reside at the custom resolver service and are associated with an expiry time
 and date. These records are to be deleted or marked as invalid by that expiry time (which is
@@ -994,7 +855,7 @@ If the resolver service fails, the resolver clients that use the service attempt
 their information. After the resolver service is restarted, it repopulates its records data store of
 registration records upon receiving refresh or reregistration requests from resolver clients.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is transport-agnostic, and therefore, it can be used together with a variety of transport
 protocols, for example, TCP and HTTP.
@@ -1008,7 +869,7 @@ resolution systems, such as the Peer Name Resolution Protocol (PNRP) [MS-PNRP]. 
 intended for use by the Peer Channel Protocol [MC-PRCH] for neighbor discovery when PNRP is
 unavailable.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 All resolver clients are configured with the location and transport protocol of the resolver service,
 as well as any security information, if applicable.
@@ -1020,7 +881,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is intended for use together with the Peer Channel Protocol ([MC-PRCH]) as a means to
 enable neighbor discovery. This protocol is suitable for storage and distribution of endpoint
@@ -1030,15 +892,15 @@ not intended for, nor is it ideal for, use with hierarchal namespaces, for examp
 This protocol does not guarantee the reliability of endpoint information, longevity of registration
 records, or availability of the resolver service.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1049,21 +911,22 @@ Release: April 7, 2021
 
 10 / 47
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The transport is configured under a higher-layer protocol or application. This protocol does not specify
 or require any particular transport mechanism; however, TCP SHOULD be used and other transport
 protocols MAY be used.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Peer Channel Custom Resolver messages are defined by the Web Services Description Language
 (WSDL), as specified in [WSDL], and MUST be formatted using the SOAP syntax ([SOAP1.2-1/2003]).
 The schema for wsp:PolicyReference is defined in Web Services Policy Framework ([WSPOLICY]).
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces that use the mechanisms specified
 in [XMLNS]. Although the specification associates a specific XML namespace prefix for each XML
@@ -1186,7 +1049,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-Prefix
+
+Prefix
 
 Namespace URI
 
@@ -1209,9 +1073,9 @@ http://schemas.microsoft.com/2003/10/Serialization/Arrays
 
 See section 6.8
 
-2.2.2  Structures Used
+#### 2.2.2 Structures Used
 
-2.2.2.1  PeerNodeAddress Structure
+##### 2.2.2.1 PeerNodeAddress Structure
 
 The PeerNodeAddress structure MUST contain a URI and one or more IPAddresses. It is intended to be
 used to describe a Peer Channel protocol endpoint. While in use by this protocol, a PeerNodeAddress
@@ -1268,7 +1132,8 @@ Release: April 7, 2021
 
 12 / 47
 
-         <xs:element name="IPAddresses">
+
+         <xs:element name="IPAddresses">
            <xs:complexType>
              <xs:sequence>
                <xs:element maxOccurs="unbounded" ref="d5p1:IPAddress" />
@@ -1333,7 +1198,7 @@ address. For IPv4 addresses, this element MUST be ignored. All
 IPAddresses in a single PeerNodeAddress MUST have the same
 ScopeId.
 
-2.2.2.2  RefreshResult Enumeration
+##### 2.2.2.2 RefreshResult Enumeration
 
 This is sent as part of the RefreshResponse message to indicate the result of an attempt to refresh a
 registration record. It has the following valid values, formatted as strings.
@@ -1353,7 +1218,8 @@ Release: April 7, 2021
 
 13 / 47
 
-Enumeration value   Description
+
+Enumeration value   Description
 
 Success
 
@@ -1361,9 +1227,9 @@ The registration record was found and refreshed.
 
 RegistrationNotFound   The resolver service could not find the registration record.
 
-2.2.3  Resolver Client Messages
+#### 2.2.3 Resolver Client Messages
 
-2.2.3.1  Register Message
+##### 2.2.3.1 Register Message
 
 The Register message is sent by the client to register its PeerNodeAddress structure with a custom
 resolver service.
@@ -1423,7 +1289,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-Value
+
+Value
 
 Description
 
@@ -1433,7 +1300,7 @@ The mesh name.
 
 NodeAddress   A PeerNodeAddress structure containing the resolver client's endpoint information.
 
-2.2.3.2  Resolve Message
+##### 2.2.3.2 Resolve Message
 
 The Resolve message is sent by the resolver client to discover the PeerNodeAddress structure of
 other clients.
@@ -1492,7 +1359,8 @@ Release: April 7, 2021
 
 15 / 47
 
-2.2.3.3  Refresh Message
+
+##### 2.2.3.3 Refresh Message
 
 The Refresh message is sent by a client to refresh its registration record with the resolver service.
 
@@ -1534,7 +1402,7 @@ RegistrationId   A string that uniquely identifies the registration record of a 
 
 by the resolver service as a result of processing a Register message.
 
-2.2.3.4  Update Message
+##### 2.2.3.4 Update Message
 
 The Update message is sent by the resolver client when some details of its registration record
 need to be updated, for example, when its IP addresses have changed.
@@ -1558,7 +1426,8 @@ Release: April 7, 2021
 
 16 / 47
 
- Data Types:
+
+ Data Types:
  <xs:complexType name="UpdateInfo">
      <xs:sequence>
        <xs:element minOccurs="0" name="ClientId" type="ser:guid" />
@@ -1594,7 +1463,7 @@ RegistrationId   A GUID identifying the registration record to be updated. Creat
 
 result of processing a Register message.
 
-2.2.3.5  Unregister Message
+##### 2.2.3.5 Unregister Message
 
 The Unregister message is sent by a resolver client to remove its registration record from the
 service.
@@ -1629,7 +1498,8 @@ Release: April 7, 2021
 
 17 / 47
 
-Refer to the following table for information about the different values of the "xs:element name"
+
+Refer to the following table for information about the different values of the "xs:element name"
 attribute.
 
 Value
@@ -1642,7 +1512,7 @@ The mesh name.
 
 RegistrationId   A unique string identifying a registration record to be deleted.
 
-2.2.3.6  GetServiceInfo Message
+##### 2.2.3.6 GetServiceInfo Message
 
 The GetServiceInfo message is sent by the resolver client during the initialization of a Peer Channel
 protocol client. It is used to determine whether the Peer Channel protocol client will use referrals to
@@ -1658,9 +1528,9 @@ wsam:Action="http://schemas.microsoft.com/net/2006/05/peer/resolver/GetServiceSe
 message="tns:IPeerResolverContract_GetServiceInfo_InputMessage" />
  </wsdl:operation>
 
-2.2.4  Resolver Service Messages
+#### 2.2.4 Resolver Service Messages
 
-2.2.4.1  RegisterResponse Message
+##### 2.2.4.1 RegisterResponse Message
 
 The RegisterResponse message is sent by the resolver service in response to a Register or Update
 message. It is only sent to the originator of the Register or Update message, and it indicates the
@@ -1694,7 +1564,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
- <xs:element name="RegisterResponse" nillable="true" type="tns:RegisterResponse" />
+
+ <xs:element name="RegisterResponse" nillable="true" type="tns:RegisterResponse" />
 
 Refer to the following table for information about the different values of the "xs:element name"
 attribute.
@@ -1712,7 +1583,7 @@ RegistrationLifetime   The duration for which the resolver service guarantees th
 record will not be deleted. Formatted as an xs:duration, as specified in [XMLSCHEMA] Part
 2: Datatypes, section 3.2.6.
 
-2.2.4.2  ResolveResponse Message
+##### 2.2.4.2 ResolveResponse Message
 
 The ResolveResponse message is sent by the resolver service in response to a Resolve message. It
 contains endpoint information that corresponds to the details of the Resolve request.
@@ -1763,7 +1634,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-     </xs:sequence>
+
+     </xs:sequence>
  </xs:complexType>
  <xs:element name="PeerNodeAddress" nillable="true" type="tns:PeerNodeAddress" />
 
@@ -1786,7 +1658,7 @@ PeerNodeAddress
 
 See section 2.2.2.1.
 
-2.2.4.3  RefreshResponse Message
+##### 2.2.4.3 RefreshResponse Message
 
 The RefreshResponse message is sent by the resolver service in response to a Refresh message. It
 is sent to the originator of the Refresh message and indicates the result of an attempt to extend the
@@ -1835,7 +1707,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-Value
+
+Value
 
 Description
 
@@ -1853,7 +1726,7 @@ A string indicating the result of the refresh operation. It MUST be one of two v
 "RegistrationNotFound" if the RegistrationId element given by the client could not be
 found by the service.
 
-2.2.4.4  ServiceSettingsResponseInfo Message
+##### 2.2.4.4 ServiceSettingsResponseInfo Message
 
 The ServiceSettingsResponseInfo message is sent by the resolver service in response to a
 GetServiceInfo message. The message contains a Boolean value indicating whether referrals are to be
@@ -1894,24 +1767,25 @@ Release: April 7, 2021
 
 21 / 47
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MC-PRCR].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 All interactions between the resolver client and resolver service MUST be initiated by the client,
 and all messages sent by the resolver client (except for Unregister) MUST receive a corresponding
 response message from the resolver service.
 
-3.1  Resolver Client Details
+### 3.1 Resolver Client Details
 
 The following diagram depicts the typical message sequence used by a client when communicating
 with a resolver service.
 
 Figure 1: Resolver message sequence
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The resolver client MUST store the following information:
 
@@ -1935,7 +1809,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-The resolver client MUST also store the following for each registration that it makes with the resolver
+
+The resolver client MUST also store the following for each registration that it makes with the resolver
 service:
 
   RegistrationId: A GUID ([MS-DTYP] section 2.3.4) that identifies the specific registration
@@ -1952,9 +1827,9 @@ resolver service before it is eligible to be deleted. The RegistrationLifetime e
 in the RegisterResponse message returned by the resolver service as a result of a successful
 Register or Update operation. For more see registration lifetime in the glossary section 1.1.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Client Refresh Timer
+##### 3.1.2.1 Client Refresh Timer
 
 The client refresh timer is only used when the resolver client has registered endpoint information
 with the resolver service and does not require that information to be deleted.
@@ -1967,12 +1842,12 @@ or any subsequent Update request.
 Note that the exact interval used for the timer MAY vary to take into account the network latency
 between the resolver client and server.<1>
 
-3.1.2.2  Message Response Timer
+##### 3.1.2.2 Message Response Timer
 
 This timer measures the length of time that an operation requiring a response will wait to receive an
 answer. This timer MUST have duration of 2 minutes.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The higher-layer application or protocol configuration specifies the following:
 
@@ -1980,7 +1855,7 @@ The higher-layer application or protocol configuration specifies the following:
 
   Security protocol to use in order to secure the connection (if applicable).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 All higher-layer triggered events follow the following processing procedure:
 
@@ -2002,25 +1877,26 @@ Release: April 7, 2021
 
 23 / 47
 
-3.1.4.1  Register
+
+##### 3.1.4.1 Register
 
 The Register message stores endpoint information at the resolver service. The resolver client
 MUST follow the procedure outlined in section 3.1.4 and MUST send a Register message to the
 resolver service.
 
-3.1.4.2  Update
+##### 3.1.4.2 Update
 
 The Update message modifies an existing registration record stored at the resolver service. The
 resolver client MUST follow the procedure outlined in section 3.1.4 and MUST send an Update
 message to the resolver service.
 
-3.1.4.3  Resolve
+##### 3.1.4.3 Resolve
 
 The Resolve operation retrieves registration information corresponding to a specific mesh name. The
 resolver client MUST follow the procedure outlined in section 3.1.4 and MUST send a Resolve
 message to the resolver service.
 
-3.1.4.4  Unregister
+##### 3.1.4.4 Unregister
 
 The Unregister message removes a specific registration record from the resolver service. The
 resolver client MUST follow the procedure outlined in section 3.1.4, with the exception that it MUST
@@ -2028,19 +1904,19 @@ NOT start a message response timer. It MUST send an Unregister message to the re
 SHOULD close the connection to the resolver service after successfully sending the Unregister
 message.
 
-3.1.4.5  Refresh
+##### 3.1.4.5 Refresh
 
 The Refresh message extends the registration lifetime of a specific registration. The resolver
 client MUST follow the procedure outlined in section 3.1.4 and MUST send a Refresh message to the
 resolver service.
 
-3.1.4.6  GetServiceInfo
+##### 3.1.4.6 GetServiceInfo
 
 The GetServiceInfo operation is used to query the referral policy of a Peer Channel protocol mesh. The
 resolver client MUST follow the procedure outlined in section 3.1.4 and MUST send a GetServiceInfo
 message to the resolver service.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 After an appropriate response message is received (for instance, RegisterResponse for a Register
 request, and so on), the resolver client:
@@ -2049,7 +1925,7 @@ request, and so on), the resolver client:
 
   SHOULD close the connection with the resolver service.
 
-3.1.5.1  RegisterResponse Message
+##### 3.1.5.1 RegisterResponse Message
 
 If the resolver client is not waiting for a response to a Register or Update message, it MUST ignore
 the RegisterResponse message.
@@ -2065,10 +1941,11 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-refresh timer with the time interval indicated in the RegistrationLifetime value in the
+
+refresh timer with the time interval indicated in the RegistrationLifetime value in the
 RegisterResponse message.
 
-3.1.5.2  ResolveResponse Message
+##### 3.1.5.2 ResolveResponse Message
 
 If the resolver client is not waiting for a response to a Resolve message, it MUST ignore this
 message.
@@ -2076,7 +1953,7 @@ message.
 Upon receiving this message, the client MUST deliver the list of PeerNodeAddress elements to the
 higher-layer protocol or application.
 
-3.1.5.3  RefreshResponse Message
+##### 3.1.5.3 RefreshResponse Message
 
 If the resolver client is not waiting for a response to a Refresh message, it MUST ignore this
 message.
@@ -2094,7 +1971,7 @@ the value given by RegistrationLifetime in the RefreshResponse message.
  If the RefreshResult value is "RegistrationNotFound", the resolver client MUST ignore the value of
 the RegistrationLifetime field and initiate the Register event.
 
-3.1.5.4  ServiceSettingsResponseInfo Message
+##### 3.1.5.4 ServiceSettingsResponseInfo Message
 
 If the custom resolver client is not waiting for a ServiceSettingsResponseInfo message, it MUST
 ignore this message.
@@ -2102,21 +1979,21 @@ ignore this message.
 Otherwise, it MUST pass the value of the ControlMeshShape field to the higher-level protocol or
 application.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Client Refresh Timer
+##### 3.1.6.1 Client Refresh Timer
 
 When the client refresh timer fires, the resolver client MUST initiate a Refresh operation.
 
-3.1.6.2  Message Response Timer
+##### 3.1.6.2 Message Response Timer
 
 If the message response timer fires, it indicates that the operation that started the timer has failed.
 The client MUST close the connection with the service and signal failure to the higher-layer protocol or
 application.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Shutting Down the Resolver Service
+##### 3.1.7.1 Shutting Down the Resolver Service
 
 When the resolver client attempts to shut down, it SHOULD send an Unregister request to the
 resolver service.
@@ -2128,9 +2005,10 @@ Release: April 7, 2021
 
 25 / 47
 
-3.2  Resolver Service Details
 
-3.2.1  Abstract Data Model
+### 3.2 Resolver Service Details
+
+#### 3.2.1 Abstract Data Model
 
 The resolver service MUST store the following information:
 
@@ -2152,25 +2030,25 @@ remain valid before requiring to be refreshed. This SHOULD be set to 10 minutes.
 
 protocol clients that are using this resolver service as a discovery mechanism.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
-3.2.2.1  Maintenance Timer
+##### 3.2.2.1 Maintenance Timer
 
 The maintenance timer is used to periodically remove stale registration records from the records
 data store of the resolver service.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The resolver service MUST start a listener that will accept connections at the specific location and
 with the specific protocol and security configuration with which resolver clients have been
 configured.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events for the resolver service. All operations are confined to the
 processing of messages (section 3.2.5) or the maintenance timer (section 3.2.2.1).
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The resolver service MUST send all response messages to the originator of the corresponding
 request message.
@@ -2178,7 +2056,7 @@ request message.
 If any request message is incomplete or incorrectly formatted, the resolver service MUST abort the
 connection with the resolver client immediately.
 
-3.2.5.1  Register
+##### 3.2.5.1 Register
 
 The service MUST create a new registration record using the PeerNodeAddress structure that is
 contained in the Register message and MUST assign the new record a unique RegistrationId
@@ -2194,7 +2072,8 @@ Release: April 7, 2021
 
 26 / 47
 
-3.2.5.2  Update
+
+##### 3.2.5.2 Update
 
 The service MUST attempt to locate the registration record indicated by the MeshId and
 RegistrationId fields in the Update message. If the record cannot be found, the resolver service
@@ -2207,7 +2086,7 @@ RegistrationId of the registration record that was updated and RegistrationLifet
 "DefaultRegistrationLifetime". If any error occurs during the processing of the Update operation, the
 connection with the resolver client MUST be aborted immediately.
 
-3.2.5.3  Resolve
+##### 3.2.5.3 Resolve
 
 The resolver service MUST attempt to locate registration records associated with the value of the
 MeshId element in the Resolve message. The resolver service MAY<3> use the RegistrationId or
@@ -2218,14 +2097,14 @@ message with the PeerNodeAddress structures of these records and send it to the 
 client. If any error occurs during the processing of the Resolve operation, the connection with the
 resolver client MUST be aborted immediately.
 
-3.2.5.4  Unregister
+##### 3.2.5.4 Unregister
 
 The resolver service SHOULD attempt to locate a registration record, as given by the value of the
 RegistrationId element in the Unregister message. If the record is found, it MUST be removed or
 otherwise marked as expired. If any error occurs during the processing of the Unregister operation,
 the connection with the resolver client MUST be aborted immediately.
 
-3.2.5.5  Refresh
+##### 3.2.5.5 Refresh
 
 The resolver service MUST attempt to locate the registration record indicated by the value of the
 RegistrationId element in the Refresh request. If the record is found, the resolver service MUST
@@ -2238,7 +2117,7 @@ service MUST send a RefreshResponse message to the requesting resolver client wi
 other error occurs during the processing of the Refresh operation, the connection with the resolver
 client MUST be aborted immediately.
 
-3.2.5.6  GetServiceInfo
+##### 3.2.5.6 GetServiceInfo
 
 The resolver service MUST return to the requesting resolver client a ServiceSettingsResponseInfo
 message with the local value of "ReferralPolicy" entered for the ControlMeshShape element. If any
@@ -2252,15 +2131,16 @@ Release: April 7, 2021
 
 27 / 47
 
-3.2.6  Timer Events
 
-3.2.6.1  Maintenance Timer
+#### 3.2.6 Timer Events
+
+##### 3.2.6.1 Maintenance Timer
 
 When the maintenance timer fires, the resolver service MUST examine the registration records in
 its records data store. All records whose expiration time precedes the current system time MUST be
 removed or marked as invalid.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events for the resolver service.
 
@@ -2271,9 +2151,10 @@ Release: April 7, 2021
 
 28 / 47
 
-4  Protocol Examples
 
-4.1  Peer Discovery
+## 4 Protocol Examples
+
+### 4.1 Peer Discovery
 
 The primary use of the Peer Channel Custom Resolver Protocol is to allow client applications to
 discover and connect to other clients. The following example illustrates how the use of this protocol
@@ -2342,7 +2223,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MC-PRCR].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2373,9 +2255,10 @@ Release: April 7, 2021
 
 30 / 47
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Although the Peer Channel Custom Resolver Protocol does not include any specific security
 information, it is advised that the connection between the custom resolver client and the custom
@@ -2384,7 +2267,7 @@ remain private. Additionally, a malicious attacker could use information sent ov
 the records data store of the resolver service (for example, by prematurely unregistering
 registration records from the service by sniffing RegistrationIds off the wire).
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2395,7 +2278,8 @@ Release: April 7, 2021
 
 31 / 47
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 WSDL name
 
@@ -2417,7 +2301,7 @@ section 6.2
 
 For ease of implementation, the full WSDLs are provided in the following sections.
 
-6.1  http://schemas.microsoft.com/net/2006/05/peer/resolver
+### 6.1 http://schemas.microsoft.com/net/2006/05/peer/resolver
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -2481,7 +2365,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-   <wsdl:message name="IPeerResolverContract_Unregister_OutputMessage" />
+
+   <wsdl:message name="IPeerResolverContract_Unregister_OutputMessage" />
    <wsdl:message name="RefreshInfo">
      <wsdl:part name="Refresh" xmlns:peer="http://schemas.microsoft.com/net/2006/05/peer"
 element="peer:Refresh" />
@@ -2553,7 +2438,8 @@ Release: April 7, 2021
 
 33 / 47
 
-6.2  http://schemas.microsoft.com/net/2006/05/peer
+
+### 6.2 http://schemas.microsoft.com/net/2006/05/peer
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/"
@@ -2630,7 +2516,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-   <xs:element name="ArrayOfPeerNodeAddress" nillable="true" type="tns:ArrayOfPeerNodeAddress"
+
+   <xs:element name="ArrayOfPeerNodeAddress" nillable="true" type="tns:ArrayOfPeerNodeAddress"
 />
    <xs:element name="ResolveResponse" nillable="true" type="tns:ResolveResponseInfo" />
    <xs:complexType name="UnregisterInfo">
@@ -2670,7 +2557,7 @@ type="tns:ServiceSettingsResponseInfo" />
 />
  </xs:schema>
 
-6.3  http://schemas.datacontract.org/2004/07/System.ServiceModel.PeerResolvers
+### 6.3 http://schemas.datacontract.org/2004/07/System.ServiceModel.PeerResolvers
 
  <xs:schema
 xmlns:tns="http://schemas.datacontract.org/2004/07/System.ServiceModel.PeerResolvers"
@@ -2686,7 +2573,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema">
    <xs:element name="RefreshResult" nillable="true" type="tns:RefreshResult" />
  </xs:schema>
 
-6.4  http://schemas.microsoft.com/2003/10/Serialization
+### 6.4 http://schemas.microsoft.com/2003/10/Serialization
 
  <?xml version="1.0" encoding="UTF-8"?>
   <xs:schema xmlns:tns3="http://schemas.microsoft.com/2003/10/Serialization/"
@@ -2702,7 +2589,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-    <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+
+    <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
     <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
     <xs:element name="boolean" nillable="true" type="xs:boolean"/>
     <xs:element name="byte" nillable="true" type="xs:byte"/>
@@ -2743,7 +2631,7 @@ F]{12}"/>
     <xs:attribute name="Ref" type="xs:IDREF"/>
   </xs:schema>
 
-6.5  http://www.w3.org/2005/08/addressing
+### 6.5 http://www.w3.org/2005/08/addressing
 
  <?xml version="1.0" encoding="UTF-8"?>
  <xs:schema attributeFormDefault="unqualified" finalDefault="" elementFormDefault="qualified"
@@ -2776,7 +2664,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-   <xs:complexType name="MetadataType" mixed="false">
+
+   <xs:complexType name="MetadataType" mixed="false">
      <xs:sequence>
        <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
      </xs:sequence>
@@ -2853,7 +2742,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-         <xs:anyAttribute namespace="##other" processContents="lax"/>
+
+         <xs:anyAttribute namespace="##other" processContents="lax"/>
        </xs:extension>
      </xs:simpleContent>
    </xs:complexType>
@@ -2868,7 +2758,7 @@ Release: April 7, 2021
    </xs:complexType>
  </xs:schema>
 
-6.6  http://schemas.datacontract.org/2004/07/System.Net
+### 6.6 http://schemas.datacontract.org/2004/07/System.Net
 
  <?xml version="1.0" encoding="utf-8"?>
   <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Net"
@@ -2900,7 +2790,7 @@ type="tns:IPAddress" />
     <xs:element name="ArrayOfIPAddress" nillable="true" type="tns:ArrayOfIPAddress" />
   </xs:schema>
 
-6.7  http://schemas.datacontract.org/2004/07/System.Net.Sockets
+### 6.7 http://schemas.datacontract.org/2004/07/System.Net.Sockets
 
  <?xml version="1.0" encoding="utf-8"?>
   <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Net.Sockets"
@@ -2925,7 +2815,8 @@ Peer Channel Custom Resolver Protocol
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-        </xs:enumeration>
+
+        </xs:enumeration>
         <xs:enumeration value="Unspecified">
           <xs:annotation>
             <xs:appinfo>
@@ -3001,7 +2892,8 @@ Release: April 7, 2021
 
 39 / 47
 
-              <EnumerationValue
+
+              <EnumerationValue
 xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
             </xs:appinfo>
           </xs:annotation>
@@ -3078,7 +2970,8 @@ Release: April 7, 2021
 
 40 / 47
 
-        <xs:enumeration value="HyperChannel">
+
+        <xs:enumeration value="HyperChannel">
           <xs:annotation>
             <xs:appinfo>
               <EnumerationValue
@@ -3155,7 +3048,8 @@ Release: April 7, 2021
 
 41 / 47
 
-            </xs:appinfo>
+
+            </xs:appinfo>
           </xs:annotation>
         </xs:enumeration>
         <xs:enumeration value="Ieee12844">
@@ -3195,7 +3089,7 @@ xmlns="http://schemas.microsoft.com/2003/10/Serialization/">29</EnumerationValue
     <xs:element name="AddressFamily" nillable="true" type="tns:AddressFamily" />
   </xs:schema>
 
-6.8  http://schemas.microsoft.com/2003/10/Serialization/Arrays
+### 6.8 http://schemas.microsoft.com/2003/10/Serialization/Arrays
 
  <?xml version="1.0" encoding="utf-8"?>
   <xs:schema elementFormDefault="qualified"
@@ -3219,7 +3113,8 @@ Release: April 7, 2021
 
 42 / 47
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3275,7 +3170,8 @@ Release: April 7, 2021
 
 43 / 47
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3312,7 +3208,8 @@ Release: April 7, 2021
 
 44 / 47
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3448,7 +3345,8 @@ Messages
 
 45 / 47
 
-   transport 11
+
+   transport 11
    Unregister message 17
    Update message 16
 
@@ -3589,7 +3487,8 @@ Timers
 
 46 / 47
 
-   resolver service - maintenance timer 26
+
+   resolver service - maintenance timer 26
 Tracking changes 44
 Transport 11
 Triggered events - higher-layer

@@ -63,7 +63,8 @@ Release: October 9, 2023
 
 1 / 65
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -132,240 +133,107 @@ Release: October 9, 2023
 
 2 / 65
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Setup](#131-setup)
+    - [1.3.2 Discovery](#132-discovery)
+    - [1.3.3 Connection](#133-connection)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Common Data Types](#222-common-data-types)
+      - [2.2.2.1 Headers](#2221-headers)
+        - [2.2.2.1.1 Common Header](#22211-common-header)
+      - [2.2.2.2 Discovery Messages](#2222-discovery-messages)
+        - [2.2.2.2.1 UDP: Presence Request](#22221-udp-presence-request)
+        - [2.2.2.2.2 UDP: Presence Response](#22222-udp-presence-response)
+        - [2.2.2.2.3 Bluetooth: Advertising Beacon](#22223-bluetooth-advertising-beacon)
+      - [2.2.2.3 Connection Messages](#2223-connection-messages)
+        - [2.2.2.3.1 Connection Header](#22231-connection-header)
+        - [2.2.2.3.2 Connection Request](#22232-connection-request)
+        - [2.2.2.3.3 Connection Response](#22233-connection-response)
+        - [2.2.2.3.4 Device Authentication Request](#22234-device-authentication-request)
+        - [2.2.2.3.5 Device Authentication Response](#22235-device-authentication-response)
+        - [2.2.2.3.6 User-Device Authentication Request](#22236-user-device-authentication-request)
+        - [2.2.2.3.7 User-Device Authentication Response](#22237-user-device-authentication-response)
+        - [2.2.2.3.8 Authentication Done Request](#22238-authentication-done-request)
+        - [2.2.2.3.9 Authentication Done Response](#22239-authentication-done-response)
+        - [2.2.2.3.10 Authentication Failure](#222310-authentication-failure)
+        - [2.2.2.3.11 Upgrade Request](#222311-upgrade-request)
+        - [2.2.2.3.12 Upgrade Response](#222312-upgrade-response)
+        - [2.2.2.3.13 Upgrade Finalization](#222313-upgrade-finalization)
+        - [2.2.2.3.14 Upgrade Finalization Response](#222314-upgrade-finalization-response)
+        - [2.2.2.3.15 Transport Request](#222315-transport-request)
+        - [2.2.2.3.16 Transport Confirmation](#222316-transport-confirmation)
+        - [2.2.2.3.17 Upgrade Failure](#222317-upgrade-failure)
+        - [2.2.2.3.18 Device Info Message](#222318-device-info-message)
+        - [2.2.2.3.19 Device Info Response Message](#222319-device-info-response-message)
+      - [2.2.2.4 Session Messages](#2224-session-messages)
+        - [2.2.2.4.1 Ack Messages](#22241-ack-messages)
+        - [2.2.2.4.2 App Control Messages](#22242-app-control-messages)
+          - [2.2.2.4.2.1 Launch Uri Messages](#222421-launch-uri-messages)
+          - [2.2.2.4.2.2 Launch Uri for Target Messages](#222422-launch-uri-for-target-messages)
+          - [2.2.2.4.2.3 Launch Uri Result](#222423-launch-uri-result)
+          - [2.2.2.4.2.4 App Service Messages](#222424-app-service-messages)
+          - [2.2.2.4.2.5 App Services Result](#222425-app-services-result)
+          - [2.2.2.4.2.6 Get Resource](#222426-get-resource)
+          - [2.2.2.4.2.7 Get Resource Response](#222427-get-resource-response)
+          - [2.2.2.4.2.8 Set Resource](#222428-set-resource)
+          - [2.2.2.4.2.9 Set Resource Response](#222429-set-resource-response)
+      - [2.2.2.5 Disconnect Message](#2225-disconnect-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Peer Details](#31-peer-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 CDP Service](#3111-cdp-service)
+      - [3.1.1.2 Discovery Object](#3112-discovery-object)
+      - [3.1.1.3 Connection Manager Object](#3113-connection-manager-object)
+      - [3.1.1.4 Session Object](#3114-session-object)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Encryption](#3131-encryption)
+        - [3.1.3.1.1 Encryption Example](#31311-encryption-example)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Discovery](#3151-discovery)
+      - [3.1.5.2 Connection](#3152-connection)
+      - [3.1.5.3 Session](#3153-session)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Discovery](#41-discovery)
+    - [4.1.1 Discovery Presence Request](#411-discovery-presence-request)
+    - [4.1.2 Discovery Presence Response](#412-discovery-presence-response)
+  - [4.2 Connection](#42-connection)
+    - [4.2.1 Connection Request](#421-connection-request)
+    - [4.2.2 Connection Response](#422-connection-response)
+    - [4.2.3 Device Authentication Request](#423-device-authentication-request)
+    - [4.2.4 Device Authentication Response](#424-device-authentication-response)
+    - [4.2.5 User Device Authentication Request](#425-user-device-authentication-request)
+    - [4.2.6 User Device Authentication Response](#426-user-device-authentication-response)
+    - [4.2.7 Authentication Done Request](#427-authentication-done-request)
+    - [4.2.8 Authentication Done Response](#428-authentication-done-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Setup .......................................................................................................... 8
-Discovery .................................................................................................... 8
-Connection .................................................................................................. 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.1
-2.2
-
-2.2.2.2
-
-2.2.2.3
-
-2.2.2.1
-
-2.2.2.1.1
-
-2.2.1
-2.2.2
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Namespaces ................................................................................................ 9
-Common Data Types ..................................................................................... 9
-Headers ................................................................................................. 9
-Common Header ............................................................................... 9
-Discovery Messages .............................................................................. 11
-UDP: Presence Request .................................................................... 12
-UDP: Presence Response .................................................................. 12
-Bluetooth: Advertising Beacon .......................................................... 13
-Connection Messages ............................................................................ 15
-Connection Header .......................................................................... 15
-2.2.2.3.1
-Connection Request ......................................................................... 17
-2.2.2.3.2
-Connection Response ....................................................................... 17
-2.2.2.3.3
-Device Authentication Request .......................................................... 18
-2.2.2.3.4
-Device Authentication Response ........................................................ 19
-2.2.2.3.5
-User-Device Authentication Request .................................................. 20
-2.2.2.3.6
-User-Device Authentication Response ................................................ 20
-2.2.2.3.7
-Authentication Done Request ............................................................ 21
-2.2.2.3.8
-Authentication Done Response .......................................................... 21
-2.2.2.3.9
-2.2.2.3.10
-Authentication Failure ...................................................................... 21
-2.2.2.3.11  Upgrade Request ............................................................................. 21
-2.2.2.3.12  Upgrade Response ........................................................................... 22
-2.2.2.3.13  Upgrade Finalization ........................................................................ 24
-2.2.2.3.14  Upgrade Finalization Response .......................................................... 25
-Transport Request ........................................................................... 25
-2.2.2.3.15
-2.2.2.3.16
-Transport Confirmation .................................................................... 25
-2.2.2.3.17  Upgrade Failure ............................................................................... 25
-2.2.2.3.18  Device Info Message ........................................................................ 26
-2.2.2.3.19  Device Info Response Message .......................................................... 26
-Session Messages ................................................................................. 26
-Ack Messages ................................................................................. 26
-App Control Messages ...................................................................... 27
-Launch Uri Messages .................................................................. 27
-Launch Uri for Target Messages ................................................... 28
-Launch Uri Result ....................................................................... 30
-App Service Messages ................................................................ 31
-App Services Result.................................................................... 32
-
-2.2.2.4.2.1
-2.2.2.4.2.2
-2.2.2.4.2.3
-2.2.2.4.2.4
-2.2.2.4.2.5
-
-2.2.2.4.1
-2.2.2.4.2
-
-2.2.2.4
-
-[MS-CDP] - v20231009
-Connected Devices Platform Protocol Version 3
-Copyright © 2023 Microsoft Corporation
-Release: October 9, 2023
-
-3 / 65
-
-2.2.2.4.2.6
-2.2.2.4.2.7
-2.2.2.4.2.8
-2.2.2.4.2.9
-
-Get Resource ............................................................................. 33
-Get Resource Response .............................................................. 33
-Set Resource ............................................................................. 33
-Set Resource Response............................................................... 34
-Disconnect Message .............................................................................. 35
-
-2.2.2.5
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 36
-Peer Details ..................................................................................................... 36
-Abstract Data Model .................................................................................... 36
-CDP Service ......................................................................................... 36
-Discovery Object ................................................................................... 36
-Connection Manager Object .................................................................... 37
-Session Object ...................................................................................... 38
-Timers ...................................................................................................... 38
-Initialization ............................................................................................... 38
-Encryption ........................................................................................... 39
-Encryption Example ......................................................................... 39
-Higher-Layer Triggered Events ..................................................................... 44
-Message Processing Events and Sequencing Rules .......................................... 44
-Discovery ............................................................................................. 45
-Connection ........................................................................................... 45
-Session ................................................................................................ 45
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.4
-3.1.5
-
-3.1.6
-3.1.7
-
-3.1.3.1.1
-
-3.1.3.1
-
-4.2
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 47
-Discovery ........................................................................................................ 47
-Discovery Presence Request ......................................................................... 47
-Discovery Presence Response ....................................................................... 48
-Connection ...................................................................................................... 49
-Connection Request .................................................................................... 49
-Connection Response .................................................................................. 51
-Device Authentication Request ..................................................................... 53
-Device Authentication Response ................................................................... 54
-User Device Authentication Request .............................................................. 55
-User Device Authentication Response ............................................................ 57
-Authentication Done Request ....................................................................... 58
-Authentication Done Response ..................................................................... 59
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-4.2.5
-4.2.6
-4.2.7
-4.2.8
-
-5  Security ................................................................................................................. 61
-Security Considerations for Implementers ........................................................... 61
-Index of Security Parameters ............................................................................ 61
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 62
-
-7  Change Tracking .................................................................................................... 63
-
-8  Index ..................................................................................................................... 64
-
-[MS-CDP] - v20231009
-Connected Devices Platform Protocol Version 3
-Copyright © 2023 Microsoft Corporation
-Release: October 9, 2023
-
-4 / 65
-
-1  Introduction
+## 1 Introduction
 
 The Connected Devices Platform Service Protocol provides a way for devices such as PC's and
 smartphones to discover and send messages between each other. It provides a transport-agnostic
@@ -376,7 +244,7 @@ successful, the two devices can communicate over any available transport.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -438,7 +306,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-function (for example, MD5 and SHA-1) in combination with a secret shared key. The
+
+function (for example, MD5 and SHA-1) in combination with a secret shared key. The
 cryptographic strength of HMAC depends on the properties of the underlying hash function.
 
 initialization vector: A data block that some modes of the AES cipher block operation require as
@@ -513,21 +382,22 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-CDP].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -538,11 +408,11 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Connected Devices Platform V3 service has multiple possible transports. The protocol defines the
 discovery system to authenticate and verify users and devices as well as the message exchange
@@ -568,12 +438,13 @@ Release: October 9, 2023
 
 7 / 65
 
-1.3.1  Setup
+
+#### 1.3.1 Setup
 
 Prior to CDP being used, each device sets up a key-pair to secure communications. A key-pair is the
 association of a public key and its corresponding private key when used in cryptography.
 
-1.3.2  Discovery
+#### 1.3.2 Discovery
 
 As described earlier, a client first sends a presence request to the network via broadcast and multicast
 and starts listening over Bluetooth Low Energy (BLE). This can include parameters and properties
@@ -581,7 +452,7 @@ to any host that receives the broadcast, which the host can use to evaluate whet
 client then receives unicast responses and can generate the list of available devices. In terms of BLE,
 devices are constantly advertising a thumbprint that a listener can understand.
 
-1.3.3  Connection
+#### 1.3.3 Connection
 
 After a device is discovered, the client sends a protocol message to verify that the protocol is
 supported between both devices. The client derives a session key and a public key and sends a
@@ -590,34 +461,34 @@ Finally, the client initiates authorization– the server provides authorization
 constructs the payload and completes the challenge. The server returns the pairing state and then
 devices are connected for launch and message exchange.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 None.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Peers have to be able to communicate with one of our web services in order to obtain information
 about other devices singed in with the same Microsoft Account. In order to fully establish a channel
 with this protocol, two devices have to be signed-in with the same Microsoft Account. This is a
 restriction that can be later loosened within the protocol’s implementation.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Connected Devices Platform Service Protocol provides a way for devices such as PCs and
 smartphones to discover and send messages between each other. It provides a transport-agnostic
 means of building connections among all of a user's devices, whether available through available
 transports.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document is focused on the third version of the protocol (V3)—the protocol version is contained in
 the header of the messages.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None
 
@@ -628,9 +499,10 @@ Release: October 9, 2023
 
 8 / 65
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 As stated earlier in this document, this protocol can be used for multiple transports. A specific
 transport is not defined for these messages. Bluetooth Low Energy (BLE), Bluetooth, LAN, and
@@ -645,22 +517,22 @@ to the component that implements the protocol. Messages are sent and received ov
 transport on ports that are analogous to ports in TCP/IP. Well-known ports allow two peers
 to establish initial communication.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 None.
 
-2.2.2  Common Data Types
+#### 2.2.2 Common Data Types
 
 The data types in the following sections are as specified in [MS-DTYP].
 
-2.2.2.1  Headers
+##### 2.2.2.1 Headers
 
 The methods in this protocol use the following headers as part of the information exchanged, prior to
 any requests or responses that are included in the exchange.
 
-2.2.2.1.1 Common Header
+###### 2.2.2.1.1 Common Header
 
 The Common Header is used as part of the information exchanged prior to any requests or responses
 that are included in the exchange. Each channel is responsible for defining its own inner protocol and
@@ -704,7 +576,8 @@ Release: October 9, 2023
 
 9 / 65
 
-FragmentIndex
+
+FragmentIndex
 
 FragmentCount
 
@@ -784,7 +657,8 @@ Release: October 9, 2023
 
 10 / 65
 
-Value
+
+Value
 
 Meaning
 
@@ -862,7 +736,7 @@ Message deserialization will therefore be split into two phases. With the first 
 parsing header, validating authenticity, deduping, and decryption. The Payload field will be passed up
 to the owner to manage the second part of the deserialization.
 
-2.2.2.2  Discovery Messages
+##### 2.2.2.2 Discovery Messages
 
 Discovery messages are used for User Datagram Protocol (UDP), in which a device sends out a
 presence request and a second device responds with presence response message. For Bluetooth,
@@ -875,7 +749,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-2.2.2.2.1 UDP: Presence Request
+
+###### 2.2.2.2.1 UDP: Presence Request
 
 The UDP presence request message is one that any device can subscribe to and respond to for
 participation in the Connected Devices Protocol message exchange.
@@ -913,7 +788,7 @@ Presence Request
 
 Presence Response
 
-2.2.2.2.2 UDP: Presence Response
+###### 2.2.2.2.2 UDP: Presence Response
 
 The UDP presence response message is used when a device receives a presence request. The device
 responds with a presence response message to notify that it is available.
@@ -966,7 +841,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-Discovery_Type (1 byte): Indicates type of discovery message, in this case, Presence Response (1).
+
+Discovery_Type (1 byte): Indicates type of discovery message, in this case, Presence Response (1).
 
 Connection_Mode (2 bytes): Displays types of available connections, which can be one of the
 
@@ -1054,7 +930,7 @@ Calculated by using the DeviceIdSalt. and PrincipalUserNameHash.<3>
 
 MacAddress (6 bytes): A Bluetooth MAC address used to de-duplicate devices.<4>
 
-2.2.2.2.3 Bluetooth: Advertising Beacon
+###### 2.2.2.2.3 Bluetooth: Advertising Beacon
 
 Bluetooth devices advertise over a beacon. This is the basic beacon structure:
 
@@ -1065,7 +941,8 @@ Release: October 9, 2023
 
 13 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1171,7 +1048,8 @@ Release: October 9, 2023
 
 14 / 65
 
-Value
+
+Value
 
 Meaning
 
@@ -1251,12 +1129,12 @@ Salt (4 bytes): Four random bytes.
 
 Device_Hash (19 bytes): SHA256 Hash of Salt plus Device Thumbprint.
 
-2.2.2.3  Connection Messages
+##### 2.2.2.3 Connection Messages
 
 These are the connection messages used when a device is discovered during authentication for a
 connection.
 
-2.2.2.3.1 Connection Header
+###### 2.2.2.3.1 Connection Header
 
 The Connection Header message is common for all Connection Messages.
 
@@ -1267,7 +1145,8 @@ Release: October 9, 2023
 
 15 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1427,7 +1306,8 @@ Release: October 9, 2023
 
 16 / 65
 
-2.2.2.3.2 Connection Request
+
+###### 2.2.2.3.2 Connection Request
 
 The Connection Request message is used when the client initiates a connection request with a host
 device.
@@ -1502,7 +1382,7 @@ PublicKeyYLength (2 bytes): The length of PublicKeyY.
 
 PublicKeyY (variable): A fixed-length key that is based on PublicKeyYLength.
 
-2.2.2.3.3 Connection Response
+###### 2.2.2.3.3 Connection Response
 
 The Connection Response message is used for the host to respond with a connection response
 message that includes device information. Only the Result is sent if the Result is anything other than
@@ -1515,7 +1395,8 @@ Release: October 9, 2023
 
 17 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1594,7 +1475,7 @@ PublicKeyY (variable): A fixed-length key that is based on the curve type from c
 
 which is sent only if the connection is successful. This is the Y component of the key.
 
-2.2.2.3.4 Device Authentication Request
+###### 2.2.2.3.4 Device Authentication Request
 
 The Device Authentication Request message is used for all authentication in which client devices send
 their self-signed device certificate.
@@ -1606,7 +1487,8 @@ Release: October 9, 2023
 
 18 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1645,7 +1527,7 @@ SignedThumbprintLength (2 bytes): The length of SignedThumbprint.
 
 SignedThumbprint (variable): A device certificate thumbprint.
 
-2.2.2.3.5 Device Authentication Response
+###### 2.2.2.3.5 Device Authentication Response
 
 The Device Authentication Response message is used for all authentication in which hosts send their
 device certificate which is self-signed.
@@ -1692,7 +1574,8 @@ Release: October 9, 2023
 
 19 / 65
 
-2.2.2.3.6 User-Device Authentication Request
+
+###### 2.2.2.3.6 User-Device Authentication Request
 
 The User-Device Authentication Request message is used if authentication policy requires user-device
 authentication. The user-device certificate is sent with the request.
@@ -1732,7 +1615,7 @@ SignedThumbprintLength (2 bytes): The length of SignedThumbprint.
 
 SignedThumbprint (variable): A signed User-Device Cert Thumbprint.
 
-2.2.2.3.7 User-Device Authentication Response
+###### 2.2.2.3.7 User-Device Authentication Response
 
 The ser-Device Authentication Response message is used if authentication policy requires user-device
 authentication. The user-device certificate is sent with the request.
@@ -1779,13 +1662,14 @@ Release: October 9, 2023
 
 20 / 65
 
-2.2.2.3.8 Authentication Done Request
+
+###### 2.2.2.3.8 Authentication Done Request
 
 Message to acknowledge that Authentication was completed.
 
 Empty Payload.
 
-2.2.2.3.9 Authentication Done Response
+###### 2.2.2.3.9 Authentication Done Response
 
 The Authentication Done Request message is used to respond with the status of authentication at the
 completion of the authentication process to indicate the type of failure encountered, if any.
@@ -1827,12 +1711,12 @@ Failure_NotAllowed
 
 Failure_Unknown
 
-2.2.2.3.10  Authentication Failure
+###### 2.2.2.3.10 Authentication Failure
 
 The Authentication Failure message is used if the authentication process itself fails to complete, then
 an empty payload is returned.
 
-2.2.2.3.11  Upgrade Request
+###### 2.2.2.3.11 Upgrade Request
 
 The Upgrade Request message transports an upgrade request.
 
@@ -1868,7 +1752,8 @@ Release: October 9, 2023
 
 21 / 65
 
-EndpointType2
+
+EndpointType2
 
 EndpointType1Data
 
@@ -1934,7 +1819,7 @@ If the network type of the device is "Public", CDP will use TTK (Trust Tuple Key
 "WFDCDPSvc" from the firewall rule "Connected Devices Platform - Wi-Fi Direct Transport (TCP-In)" to
 allow traffic over network using TCP protocol.
 
-2.2.2.3.12  Upgrade Response
+###### 2.2.2.3.12 Upgrade Response
 
 The Upgrade Response message transports an upgrade response.
 
@@ -1945,7 +1830,8 @@ Release: October 9, 2023
 
 22 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2022,7 +1908,8 @@ Release: October 9, 2023
 
 23 / 65
 
-...
+
+...
 
 Endpoint Type
 
@@ -2060,7 +1947,7 @@ If the network type of the device is "Public", CDP will use TTK (Trust Tuple Key
 "WFDCDPSvc" from the firewall rule "Connected Devices Platform - Wi-Fi Direct Transport (TCP-In)" to
 allow traffic over network using TCP protocol.
 
-2.2.2.3.13  Upgrade Finalization
+###### 2.2.2.3.13 Upgrade Finalization
 
 The Upgrade Finalization message transports an upgrade finalization request.
 
@@ -2098,7 +1985,8 @@ Release: October 9, 2023
 
 24 / 65
 
-...
+
+...
 
 Metadata: The overall section is also prefixed with the size to indicate how many such endpoint type-
 to-data mappings are present. Transport defined data that is size prefixed for each transport
@@ -2118,13 +2006,13 @@ EndpointType(n)Data Length (4 bytes): The length of the Endpoint Type data.
 
 EndpointType(n)Data (8 bytes): The Endpoint Type data.
 
-2.2.2.3.14  Upgrade Finalization Response
+###### 2.2.2.3.14 Upgrade Finalization Response
 
 This message acknowledges that the transport upgrade was completed. It contains an empty payload.
 
-2.2.2.3.15
+###### 2.2.2.3.15 Transport Request
 
-Transport Request
+
 
 The Transport Request message transports the details of an upgrade.
 
@@ -2147,9 +2035,9 @@ UpgradeId (16 bytes)
 
 UpgradeId (16 bytes): A random GUID identifying this upgrade process across this transport.
 
-2.2.2.3.16
+###### 2.2.2.3.16 Transport Confirmation
 
-Transport Confirmation
+
 
 The Transport Confirmation response message confirms the details of an upgrade.
 
@@ -2172,7 +2060,7 @@ UpgradeId (16 bytes)
 
 UpgradeId (16 bytes): A random GUID identifying this upgrade process across this transport.
 
-2.2.2.3.17  Upgrade Failure
+###### 2.2.2.3.17 Upgrade Failure
 
 [MS-CDP] - v20231009
 Connected Devices Platform Protocol Version 3
@@ -2181,7 +2069,8 @@ Release: October 9, 2023
 
 25 / 65
 
-The Upgrade Failure message indicates that an transport upgrade failed. It contains either an empty
+
+The Upgrade Failure message indicates that an transport upgrade failed. It contains either an empty
 payload or a single implementation-specific field.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2201,7 +2090,7 @@ FailureReason (4 bytes): An implementation-specific<7> field containing the HRES
 
 following the upgrade. A value of zero indicates success.
 
-2.2.2.3.18  Device Info Message
+###### 2.2.2.3.18 Device Info Message
 
 The Device Info message requests information from the device.
 
@@ -2222,17 +2111,17 @@ DeviceInfo (variable)
 
 DeviceInfo (variable): A variable length payload to specify information about the source device.
 
-2.2.2.3.19  Device Info Response Message
+###### 2.2.2.3.19 Device Info Response Message
 
 The Device Info Response message is used to acknowledge that the device information message was
 received. It contains an empty payload.
 
-2.2.2.4  Session Messages
+##### 2.2.2.4 Session Messages
 
 The Session messages are sent across during an active session between two connected and
 authenticated devices.
 
-2.2.2.4.1 Ack Messages
+###### 2.2.2.4.1 Ack Messages
 
 The ack messages acknowledge receipt of a message.
 
@@ -2270,7 +2159,8 @@ Release: October 9, 2023
 
 26 / 65
 
-...
+
+...
 
 LowWatermark (4 bytes): The sequence number of the latest acknowledged message.
 
@@ -2284,7 +2174,7 @@ RejectedCount (2 bytes): Number of entries in the rejected list.
 
 Rejected (variable, 4 bytes per list item): The sequence numbers of messages that were rejected.
 
-2.2.2.4.2 App Control Messages
+###### 2.2.2.4.2 App Control Messages
 
 There are nine types of app control messages that are used.
 
@@ -2343,7 +2233,7 @@ Set Resource
 
 Set Resource Response
 
-2.2.2.4.2.1  Launch Uri Messages
+###### 2.2.2.4.2.1 Launch Uri Messages
 
 The Launch Uri messages allow you to launch apps on CDP-enabled devices. This simply launches
 using the LaunchURIAsync API.
@@ -2355,7 +2245,8 @@ Release: October 9, 2023
 
 27 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2438,7 +2329,7 @@ InputData (variable): Optional. BOND.NET serialized data that is passed as a val
 
 launched by the call.
 
-2.2.2.4.2.2  Launch Uri for Target Messages
+###### 2.2.2.4.2.2 Launch Uri for Target Messages
 
 28 / 65
 
@@ -2447,7 +2338,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-The Launch Uri for Target messages allow you to launch apps on targeted CDP-enabled devices.
+
+The Launch Uri for Target messages allow you to launch apps on targeted CDP-enabled devices.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2523,7 +2415,8 @@ Release: October 9, 2023
 
 29 / 65
 
-...
+
+...
 
 ...
 
@@ -2600,7 +2493,7 @@ InputData (variable): Optional. BOND.NET serialized data that is passed as a val
 
 launched by the call.
 
-2.2.2.4.2.3  Launch Uri Result
+###### 2.2.2.4.2.3 Launch Uri Result
 
 [MS-CDP] - v20231009
 Connected Devices Platform Protocol Version 3
@@ -2609,7 +2502,8 @@ Release: October 9, 2023
 
 30 / 65
 
-The Launch Uri Result message returns the result of the LaunchUriAsync API call on the second device.
+
+The Launch Uri Result message returns the result of the LaunchUriAsync API call on the second device.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2650,7 +2544,7 @@ InputData (variable): Optional. BOND.NET serialized data that is passed as a val
 
 launched by the call.
 
-2.2.2.4.2.4  App Service Messages
+###### 2.2.2.4.2.4 App Service Messages
 
 The App Service messages allow background invocation of background services within apps.
 
@@ -2692,7 +2586,8 @@ Release: October 9, 2023
 
 31 / 65
 
-InputDataLength
+
+InputDataLength
 
 InputData (variable)
 
@@ -2737,7 +2632,7 @@ The input data for the app service is in JSON format.
 
 BOND.NET serialized data.
 
-2.2.2.4.2.5  App Services Result
+###### 2.2.2.4.2.5 App Services Result
 
 The App Services Result message returns the result of the App Services API call from the second
 device.
@@ -2768,7 +2663,8 @@ Release: October 9, 2023
 
 32 / 65
 
-AppServicesResult (4 bytes): The HRESULT returned by the call, zero (0x00000000) if successful.
+
+AppServicesResult (4 bytes): The HRESULT returned by the call, zero (0x00000000) if successful.
 
 ReturnDataSize (4 bytes): The size, in bytes, of the ReturnData field, not including the null
 
@@ -2776,7 +2672,7 @@ terminator of the string.
 
 ReturnData (variable): The UTF-8-encoded response returned from the application app service.
 
-2.2.2.4.2.6  Get Resource
+###### 2.2.2.4.2.6 Get Resource
 
 The Get Resource message requests a resource using the resource URL.
 
@@ -2803,7 +2699,7 @@ ResourceUrl (variable): The UTF-8-encoded URL that represents the application in
 
 the resource ID. Conforms to <app id>/<resource id>.
 
-2.2.2.4.2.7  Get Resource Response
+###### 2.2.2.4.2.7 Get Resource Response
 
 The Get Resource Response message returns the response from the service.
 
@@ -2834,7 +2730,7 @@ ResourceDataSize (4 bytes): The size, in bytes, of the ResourceData field.
 
 ResourceData (variable): The UTF-8-encoded response returned from the application app service.
 
-2.2.2.4.2.8  Set Resource
+###### 2.2.2.4.2.8 Set Resource
 
 The Set Resource message transports resource data to be set on the service.
 
@@ -2845,7 +2741,8 @@ Release: October 9, 2023
 
 33 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2879,7 +2776,7 @@ ResourceDataSize (4 bytes): The size, in bytes, of the ResourceData field.
 ResourceData (variable): The UTF-8-encoded resource data to be set on the application app
 service.
 
-2.2.2.4.2.9  Set Resource Response
+###### 2.2.2.4.2.9 Set Resource Response
 
 The Set Resource Response message returns an HRESULT with the status of the set-resource request.
 
@@ -2923,7 +2820,8 @@ Release: October 9, 2023
 
 34 / 65
 
-2.2.2.5  Disconnect Message
+
+##### 2.2.2.5 Disconnect Message
 
 The Disconnect message is an optional message sent by a client or host used to inform the other
 device to disconnect the connected session. The SessionId is sent to identify the session to be
@@ -2951,9 +2849,10 @@ Release: October 9, 2023
 
 35 / 65
 
-3  Protocol Details
 
-3.1  Peer Details
+## 3 Protocol Details
+
+### 3.1 Peer Details
 
 This section defines peer roles in the Connected Devices Platform V3 Service Protocol.
 
@@ -2977,7 +2876,7 @@ During a connection, these two devices communicate by sending messages back and 
 requesting/requiring Ack messages when necessary. All messages during a connection are contained
 in Session Messages.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2990,12 +2889,12 @@ between a client and host), and connections. When one device discovers another, 
 trigger a connection. If the connection is successful, based on authentication, each peer creates a
 session. At this point, the objects act more as peers than clients and hosts.
 
-3.1.1.1  CDP Service
+##### 3.1.1.1 CDP Service
 
 The Connected Devices Platform service, CDPService, contains the entire state of the protocol
 described in this object.
 
-3.1.1.2  Discovery Object
+##### 3.1.1.2 Discovery Object
 
 The Discovery object encapsulates the state for the discovery of one peer from another. Again, the
 discovering peer is the client and the discovered peer is the host.
@@ -3022,7 +2921,8 @@ Release: October 9, 2023
 
 36 / 65
 
-Value
+
+Value
 
 Meaning
 
@@ -3054,7 +2954,7 @@ Ready
 The object has sent the Presence Response message and has sent the basic
 information it to facilitate a connection request.
 
-3.1.1.3  Connection Manager Object
+##### 3.1.1.3 Connection Manager Object
 
 The Connection Manager object encapsulates the state for the connection between one peer and
 another. Again, the connecting peer is the client and the peer hosting the connection is the host.
@@ -3118,7 +3018,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-Value
+
+Value
 
 Meaning
 
@@ -3140,7 +3041,7 @@ device has failed authentication.
 The object has published the Authentication Response message and is
 ready to engage in a session with the peer.
 
-3.1.1.4  Session Object
+##### 3.1.1.4 Session Object
 
 A Session object encapsulates the state for a socket-based connection between two peer applications.
 
@@ -3175,7 +3076,7 @@ Terminated
 
 The Session object has been terminated by the application, or it timed out.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Heartbeat timer: The heartbeat timer is used to track whether a session is still alive. If two peers
 are not actively sending or receiving messages, heartbeat timers verify the connection between
@@ -3186,7 +3087,7 @@ Message Timer: A timeout indicating that we have not received the requested ACK 
 message. While sending a message, an ACK can be requested – if it is, the service starts a timer
 to verify that a response is received in time.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The CDPService MUST be initialized prior to being useful for any discovery, connection, or sessions;
 initializing at system startup and signing in with a user account is sufficient. On initialization:
@@ -3202,11 +3103,12 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-  Generation of User-Device Certificate (on system sign-in) – this certificate is used as part of
+
+  Generation of User-Device Certificate (on system sign-in) – this certificate is used as part of
 
 authentication between two devices with the same user.
 
-3.1.3.1  Encryption
+##### 3.1.3.1 Encryption
 
 During connection establishment, the first connect message from each side is used to trade, amongst
 other things, random 64-bit nonces. The initiator of the connection is referred to as the client, and his
@@ -3251,7 +3153,7 @@ number 0x2 to indicate that it has a HMAC and should be verified.
 The message size field is then set to the sum of the length of the message header (everything before
 the payload), the encrypted payload length, and the hash length.
 
-3.1.3.1.1 Encryption Example
+###### 3.1.3.1.1 Encryption Example
 
 The following is an example of the process to convert an unencrypted message to an encrypted
 message.
@@ -3265,7 +3167,8 @@ Release: October 9, 2023
 
 39 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3343,7 +3246,8 @@ Release: October 9, 2023
 
 40 / 65
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3431,7 +3335,8 @@ Release: October 9, 2023
 
 41 / 65
 
-SessionID =
+
+SessionID =
 
 0x00, 0x00, 0x00, 0x01
 
@@ -3527,7 +3432,8 @@ Release: October 9, 2023
 
 42 / 65
 
-RequestID = 0
+
+RequestID = 0
 
 0x00, 0x00, 0x00, 0x00
 
@@ -3625,7 +3531,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-RequestID = 0
+
+RequestID = 0
 
 0x00, 0x00, 0x00, 0x00
 
@@ -3683,13 +3590,13 @@ Encrypted
 
 SHA 256 Hash (32 bytes)
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 When CDPService is inactive for a specific duration (defined by the idle timer), it automatically shuts
 down to save the system resources. The service wakes up again when there’s traffic detected on a
 specific port or when it’s activated through some other means.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 When a message is received, the type of message is handled and disambiguated at the first level – the
 three primary message types are Discovery, Connect, and Session respectively. Session messages
@@ -3705,7 +3612,8 @@ Connected Devices Platform Protocol Version 3
 Copyright © 2023 Microsoft Corporation
 Release: October 9, 2023
 
-3.1.5.1  Discovery
+
+##### 3.1.5.1 Discovery
 
 If the message is a discovery message, the service will do the following, depending on if it is client
 and host. A client initiates this segment by sending a Presence Request message.
@@ -3720,7 +3628,7 @@ Host
 
 2.  Send a PresenceResponse back to the original device.
 
-3.1.5.2  Connection
+##### 3.1.5.2 Connection
 
 If the message is a discovery message, the service will do the following, depending on if it is client
 and host. A client initiates this segment by sending a ConnectionRequest message. The client either
@@ -3752,7 +3660,7 @@ Request message. This again flows in the order above: ConnectionRequest ->
 DeviceAuthenticationRequest -> UserDeviceAuthenticationRequest (if necessary) ->
 Authentication Done Request.
 
-3.1.5.3  Session
+##### 3.1.5.3 Session
 
 Host
 
@@ -3774,13 +3682,14 @@ Release: October 9, 2023
 
 45 / 65
 
-1.  Wait for messages responses from Host device and optionally request Ack’s to determine whether
+
+1.  Wait for messages responses from Host device and optionally request Ack’s to determine whether
 
 message gets acknowledged.
 
 2.  Reset heartbeat timer as a result of receiving a message, which verifies the connection still exists.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The following timer events are associated with the timers defined by this protocol (section 3.1.2).
 
@@ -3792,7 +3701,7 @@ Message Timer: A timeout indicating that we have not received the requested ACK 
 
 message. If this timer fires, the message is resent.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -3803,7 +3712,8 @@ Release: October 9, 2023
 
 46 / 65
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following scenario shows a successful connection established between two peers, Peer A and Peer
 B.
@@ -3817,9 +3727,9 @@ Peer A has a 32-byte device ID that has a base64 encoding representation of
 Peer B has a 32-byte device ID that has a base64 encoding representation of
 "l6+4vOa41cFV+CvBEbJtoY5xRfqDoo63l90QGa+HAUw=".
 
-4.1  Discovery
+### 4.1 Discovery
 
-4.1.1  Discovery Presence Request
+#### 4.1.1 Discovery Presence Request
 
 When discovery on Peer A is activated, it sends the following message, a Discovery Presence
 Request, on all available transports. On IP networks, it chooses to send to the well-defined port
@@ -3883,7 +3793,8 @@ Release: October 9, 2023
 
 47 / 65
 
-ChannelID = 0
+
+ChannelID = 0
 
 0x00, 0x00, 0x00, 0x00,
 
@@ -3896,7 +3807,7 @@ Presence Request
 
 0x00
 
-4.1.2  Discovery Presence Response
+#### 4.1.2 Discovery Presence Response
 
 When Peer B receives the Discovery Presence Request from Peer A, it proceeds to respond with a
 Discovery Presence Response. On IP networks, this is sent from the well-defined port 5050.
@@ -3960,7 +3871,8 @@ Release: October 9, 2023
 
 48 / 65
 
-ChannelID = 0
+
+ChannelID = 0
 
 0x00, 0x00, 0x00, 0x00,
 
@@ -4001,9 +3913,9 @@ DeviceIdHash = SHA256 hash of device id, salted, 32-bytes
 
 0x4C, 0x02, 0x7A, 0x54
 
-4.2  Connection
+### 4.2 Connection
 
-4.2.1  Connection Request
+#### 4.2.1 Connection Request
 
 MessageLength = 128 bytes.
 
@@ -4031,7 +3943,8 @@ Release: October 9, 2023
 
 49 / 65
 
-Version = 0x03
+
+Version = 0x03
 
 MessageType = Connect
 
@@ -4112,7 +4025,8 @@ Release: October 9, 2023
 
 50 / 65
 
-PublicKeyYLength = 32
+
+PublicKeyYLength = 32
 
 0x00, 0x20
 
@@ -4132,7 +4046,7 @@ PublicKeyY =
 
 ...
 
-4.2.2  Connection Response
+#### 4.2.2 Connection Response
 
 MessageLength = 114 bytes.
 
@@ -4188,7 +4102,8 @@ Release: October 9, 2023
 
 51 / 65
 
-SessionID =
+
+SessionID =
 
 0x00, 0x00, 0x00, 0x01,
 
@@ -4260,7 +4175,8 @@ Release: October 9, 2023
 
 52 / 65
 
-4.2.3  Device Authentication Request
+
+#### 4.2.3 Device Authentication Request
 
 MessageLength = 500 bytes.
 
@@ -4348,7 +4264,8 @@ Release: October 9, 2023
 
 53 / 65
 
-...
+
+...
 
 SignedThumbprintLength = 64
 
@@ -4362,7 +4279,7 @@ SignedThumbprint =
 
 ...
 
-4.2.4  Device Authentication Response
+#### 4.2.4 Device Authentication Response
 
 MessageLength = 501 bytes.
 
@@ -4424,7 +4341,8 @@ Release: October 9, 2023
 
 54 / 65
 
-ChannelID = 0
+
+ChannelID = 0
 
 0x00, 0x00, 0x00, 0x00,
 
@@ -4465,7 +4383,7 @@ SignedThumbprint =
 
 ...
 
-4.2.5  User Device Authentication Request
+#### 4.2.5 User Device Authentication Request
 
 MessageLength = 422 bytes
 
@@ -4503,7 +4421,8 @@ Release: October 9, 2023
 
 55 / 65
 
-SequenceNumber = 0
+
+SequenceNumber = 0
 
 0x00, 0x00, 0x00, 0x00
 
@@ -4575,7 +4494,8 @@ Release: October 9, 2023
 
 56 / 65
 
-4.2.6  User Device Authentication Response
+
+#### 4.2.6 User Device Authentication Response
 
 MessageLength = 421 bytes
 
@@ -4658,7 +4578,8 @@ Release: October 9, 2023
 
 57 / 65
 
-DeviceCert =
+
+DeviceCert =
 
 0x30, 0x82, 0x01, 0x30,
 
@@ -4678,7 +4599,7 @@ SignedThumbprint =
 
 ...
 
-4.2.7  Authentication Done Request
+#### 4.2.7 Authentication Done Request
 
 MessageLength = 45 bytes.
 
@@ -4734,7 +4655,8 @@ Release: October 9, 2023
 
 58 / 65
 
-SessionID =
+
+SessionID =
 
 0x00, 0x00, 0x00, 0x01,
 
@@ -4757,7 +4679,7 @@ AuthDoneRequest
 
 0x06
 
-4.2.8  Authentication Done Response
+#### 4.2.8 Authentication Done Response
 
 MessageLength = 46 bytes.
 
@@ -4813,7 +4735,8 @@ Release: October 9, 2023
 
 59 / 65
 
-SessionID =
+
+SessionID =
 
 0x00, 0x00, 0x00, 0x01,
 
@@ -4847,13 +4770,14 @@ Release: October 9, 2023
 
 60 / 65
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4864,7 +4788,8 @@ Release: October 9, 2023
 
 61 / 65
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4926,7 +4851,8 @@ Release: October 9, 2023
 
 62 / 65
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4993,7 +4919,8 @@ Release: October 9, 2023
 
 63 / 65
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 36
@@ -5126,7 +5053,8 @@ Release: October 9, 2023
 
 64 / 65
 
-References 7
+
+References 7
    informative 7
    normative 7
 Relationship to other protocols 8

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -298,7 +299,8 @@ Release: April 23, 2024
 
 2 / 43
 
-Date
+
+Date
 
 Revision
 History
@@ -432,272 +434,113 @@ Release: April 23, 2024
 
 3 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Versioning](#171-versioning)
+    - [1.7.2 Capability Negotiation](#172-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 GetFsTrustInformation](#3111-getfstrustinformation)
+      - [3.1.1.2 GetTrustedRealmUri](#3112-gettrustedrealmuri)
+      - [3.1.1.3 GetClaims](#3113-getclaims)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 GetFsTrustInformation](#3141-getfstrustinformation)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 GetFsTrustInformationSoapIn](#314111-getfstrustinformationsoapin)
+            - [3.1.4.1.1.1.1 SoftwareVersion Parameter](#3141111-softwareversion-parameter)
+          - [3.1.4.1.1.2 GetFsTrustInformationSoapIn Processing](#314112-getfstrustinformationsoapin-processing)
+          - [3.1.4.1.1.3 GetFsTrustInformationSoapOut](#314113-getfstrustinformationsoapout)
+            - [3.1.4.1.1.3.1 SoftwareVersion Parameter](#3141131-softwareversion-parameter)
+            - [3.1.4.1.1.3.2 hostedRealmUri Parameter](#3141132-hostedrealmuri-parameter)
+            - [3.1.4.1.1.3.3 lsUrl Parameter](#3141133-lsurl-parameter)
+            - [3.1.4.1.1.3.4 fsDomainAccount Parameter](#3141134-fsdomainaccount-parameter)
+            - [3.1.4.1.1.3.5 X509Thumbprint Parameter](#3141135-x509thumbprint-parameter)
+            - [3.1.4.1.1.3.6 SerializedStore Parameter](#3141136-serializedstore-parameter)
+          - [3.1.4.1.1.4 GetFsTrustInformationSoapOut Processing](#314114-getfstrustinformationsoapout-processing)
+            - [3.1.4.1.1.4.1 Versioning Processing](#3141141-versioning-processing)
+            - [3.1.4.1.1.4.2 Certificate Processing](#3141142-certificate-processing)
+            - [3.1.4.1.1.4.3 Other Processing](#3141143-other-processing)
+      - [3.1.4.2 GetTrustedRealmUri](#3142-gettrustedrealmuri)
+        - [3.1.4.2.1 Messages](#31421-messages)
+          - [3.1.4.2.1.1 GetTrustedRealmUriSoapIn](#314211-gettrustedrealmurisoapin)
+            - [3.1.4.2.1.1.1 Email Parameter](#3142111-email-parameter)
+          - [3.1.4.2.1.2 GetTrustedRealmUriSoapIn Processing](#314212-gettrustedrealmurisoapin-processing)
+          - [3.1.4.2.1.3 GetTrustedRealmUriSoapOut](#314213-gettrustedrealmurisoapout)
+            - [3.1.4.2.1.3.1 trustedRealmUri](#3142131-trustedrealmuri)
+          - [3.1.4.2.1.4 GetTrustedRealmUriSoapOut Processing](#314214-gettrustedrealmurisoapout-processing)
+      - [3.1.4.3 GetClaims](#3143-getclaims)
+        - [3.1.4.3.1 Messages](#31431-messages)
+          - [3.1.4.3.1.1 GetClaimsSoapIn](#314311-getclaimssoapin)
+          - [3.1.4.3.1.2 GetClaimsSoapIn Processing](#314312-getclaimssoapin-processing)
+          - [3.1.4.3.1.3 GetClaimsSoapOut](#314313-getclaimssoapout)
+          - [3.1.4.3.1.4 GetClaimsSoapOut Processing](#314314-getclaimssoapout-processing)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 GetFsTrustInformation Initialization](#3231-getfstrustinformation-initialization)
+      - [3.2.3.2 GetTrustedRealmUri Initialization](#3232-gettrustedrealmuri-initialization)
+      - [3.2.3.3 GetClaims Initialization](#3233-getclaims-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 GetFsTrustInformation](#3241-getfstrustinformation)
+        - [3.2.4.1.1 GetFsTrustInformationSoapIn Processing](#32411-getfstrustinformationsoapin-processing)
+        - [3.2.4.1.2 GetFsTrustInformationSoapOut Processing](#32412-getfstrustinformationsoapout-processing)
+          - [3.2.4.1.2.1 Versioning](#324121-versioning)
+          - [3.2.4.1.2.2 Certificates](#324122-certificates)
+          - [3.2.4.1.2.3 Other Data](#324123-other-data)
+      - [3.2.4.2 GetTrustedRealmUri](#3242-gettrustedrealmuri)
+        - [3.2.4.2.1 GetTrustedRealmUriSoapIn Processing](#32421-gettrustedrealmurisoapin-processing)
+        - [3.2.4.2.2 GetTrustedRealmUriSoapOut Processing](#32422-gettrustedrealmurisoapout-processing)
+      - [3.2.4.3 GetClaims](#3243-getclaims)
+        - [3.2.4.3.1 GetClaimsSoapIn Processing](#32431-getclaimssoapin-processing)
+        - [3.2.4.3.2 GetClaimsSoapOut Processing](#32432-getclaimssoapout-processing)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 GetFsTrustInformation Request Message Example](#41-getfstrustinformation-request-message-example)
+  - [4.2 GetFsTrustInformation Response Message Example](#42-getfstrustinformation-response-message-example)
+  - [4.3 GetTrustedRealmUri Request Message Example](#43-gettrustedrealmuri-request-message-example)
+  - [4.4 GetTrustedRealmUri Response Message Example](#44-gettrustedrealmuri-response-message-example)
+  - [4.5 GetClaims Request Message Example](#45-getclaims-request-message-example)
+  - [4.6 GetClaims Response Message Example](#46-getclaims-response-message-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Versioning ................................................................................................. 10
-Capability Negotiation ................................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Message Syntax ................................................................................. 11
-Namespaces .............................................................................................. 11
-Messages ................................................................................................... 11
-Elements ................................................................................................... 11
-Complex Types ........................................................................................... 11
-Simple Types ............................................................................................. 12
-Attributes .................................................................................................. 12
-Groups ...................................................................................................... 12
-Attribute Groups ......................................................................................... 12
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.4.1.1
-
-3.1.4.1.1.1
-
-3.1.4.1.1.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3  Protocol Details ..................................................................................................... 13
-Server Details .................................................................................................. 13
-Abstract Data Model .................................................................................... 13
-GetFsTrustInformation ........................................................................... 13
-GetTrustedRealmUri .............................................................................. 14
-GetClaims ............................................................................................ 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-GetFsTrustInformation ........................................................................... 15
-Messages ....................................................................................... 15
-GetFsTrustInformationSoapIn ...................................................... 15
-SoftwareVersion Parameter ................................................... 16
-GetFsTrustInformationSoapIn Processing ...................................... 16
-GetFsTrustInformationSoapOut .................................................... 16
-SoftwareVersion Parameter ................................................... 17
-hostedRealmUri Parameter .................................................... 17
-lsUrl Parameter .................................................................... 17
-fsDomainAccount Parameter .................................................. 17
-X509Thumbprint Parameter ................................................... 18
-SerializedStore Parameter ..................................................... 18
-GetFsTrustInformationSoapOut Processing .................................... 18
-Versioning Processing ........................................................... 19
-Certificate Processing ............................................................ 19
-Other Processing .................................................................. 19
-GetTrustedRealmUri .............................................................................. 19
-Messages ....................................................................................... 19
-GetTrustedRealmUriSoapIn ......................................................... 20
-
-3.1.4.1.1.3.1
-3.1.4.1.1.3.2
-3.1.4.1.1.3.3
-3.1.4.1.1.3.4
-3.1.4.1.1.3.5
-3.1.4.1.1.3.6
-
-3.1.4.1.1.4.1
-3.1.4.1.1.4.2
-3.1.4.1.1.4.3
-
-3.1.4.1.1.2
-3.1.4.1.1.3
-
-3.1.4.2.1.1
-
-3.1.4.1.1.4
-
-3.1.4.2.1
-
-3.1.4.2
-
-[MS-ADFSWAP] - v20240423
-Active Directory Federation Service (AD FS) Web Agent Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 43
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.2.1.4
-
-3.1.4.2.1.3.1
-
-3.1.4.2.1.1.1
-
-3.1.4.2.1.2
-3.1.4.2.1.3
-
-3.1.4.3.1.1
-3.1.4.3.1.2
-3.1.4.3.1.3
-3.1.4.3.1.4
-
-Email Parameter ................................................................... 20
-GetTrustedRealmUriSoapIn Processing ......................................... 20
-GetTrustedRealmUriSoapOut ....................................................... 20
-trustedRealmUri ................................................................... 20
-GetTrustedRealmUriSoapOut Processing ....................................... 20
-GetClaims ............................................................................................ 21
-Messages ....................................................................................... 21
-GetClaimsSoapIn ....................................................................... 21
-GetClaimsSoapIn Processing ....................................................... 21
-GetClaimsSoapOut ..................................................................... 21
-GetClaimsSoapOut Processing ..................................................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-Client Details ................................................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-GetFsTrustInformation Initialization ......................................................... 23
-GetTrustedRealmUri Initialization ............................................................ 23
-GetClaims Initialization .......................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 23
-GetFsTrustInformation ........................................................................... 23
-GetFsTrustInformationSoapIn Processing ........................................... 24
-GetFsTrustInformationSoapOut Processing ......................................... 24
-Versioning ................................................................................. 24
-Certificates ............................................................................... 24
-Other Data ................................................................................ 25
-GetTrustedRealmUri .............................................................................. 25
-GetTrustedRealmUriSoapIn Processing ............................................... 25
-GetTrustedRealmUriSoapOut Processing ............................................. 25
-GetClaims ............................................................................................ 25
-GetClaimsSoapIn Processing ............................................................. 25
-GetClaimsSoapOut Processing ........................................................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-3.2.4.1.2.1
-3.2.4.1.2.2
-3.2.4.1.2.3
-
-3.2.3.1
-3.2.3.2
-3.2.3.3
-
-3.2.4
-
-3.2.4.1
-
-3.2.4.1.1
-3.2.4.1.2
-
-3.2.4.2
-
-3.2.4.2.1
-3.2.4.2.2
-
-3.2.4.3
-
-3.2.4.3.1
-3.2.4.3.2
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ................................................................................................. 27
-GetFsTrustInformation Request Message Example ................................................ 27
-GetFsTrustInformation Response Message Example .............................................. 27
-GetTrustedRealmUri Request Message Example ................................................... 28
-GetTrustedRealmUri Response Message Example ................................................. 28
-GetClaims Request Message Example ................................................................. 28
-GetClaims Response Message Example ............................................................... 29
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-5  Security ................................................................................................................. 30
-Security Considerations for Implementers ........................................................... 30
-Index of Security Parameters ............................................................................ 30
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 31
-
-7  Appendix B: Product Behavior ............................................................................... 40
-
-8  Change Tracking .................................................................................................... 41
-
-9  Index ..................................................................................................................... 42
-
-[MS-ADFSWAP] - v20240423
-Active Directory Federation Service (AD FS) Web Agent Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 43
-
-1  Introduction
+## 1 Introduction
 
 The Active Directory Federation Service (AD FS) Web Agent Protocol is used by a Web service (WS)
 resource to obtain configuration data about a security token service (STS) in order to validate
@@ -706,7 +549,7 @@ security tokens from that STS using the protocol defined in [MS-MWBF].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -766,7 +609,8 @@ Release: April 23, 2024
 
 6 / 43
 
-XML Schema (XSD): A language that defines the elements, attributes, namespaces, and data
+
+XML Schema (XSD): A language that defines the elements, attributes, namespaces, and data
 
 types for XML documents as defined by [XMLSCHEMA1/2] and [XMLSCHEMA2/2] standards. An
 XML schema uses XML syntax for its language.
@@ -774,14 +618,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -833,7 +677,8 @@ Release: April 23, 2024
 
 7 / 43
 
-[X509] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: Public-Key
+
+[X509] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: Public-Key
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
@@ -856,11 +701,11 @@ Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The [MS-MWBF] specification defines a standard mechanism that can be used by a client to acquire a
 security token from a security token service (STS). Acquiring a security token is designed to
@@ -899,7 +744,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The protocol is based on SOAP as defined in [SOAP1.1] and [SOAP1.2-1/2007]. The protocol defines
+
+The protocol is based on SOAP as defined in [SOAP1.1] and [SOAP1.2-1/2007]. The protocol defines
 the following operations:
 
   A GetFsTrustInformation operation that enables the WS resource to obtain configuration data from
@@ -918,7 +764,7 @@ that indicates the security token claims that the STS can emit.
 In section 3, the protocol specification describes the message processing model for the client and the
 STS to successfully emit or consume protocol messages that are created in accordance with section 2.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Active Directory Federation Service (AD FS) Web Agent Protocol uses standard web protocols. To
 use this document effectively, the reader has to be familiar with the IETF specifications:
@@ -950,11 +796,11 @@ Extensible Markup Language (XML) 1.0 (Fourth Edition), as specified in [XML].
 
   XML Schema Part 2: Datatypes Second Edition, as specified in [XMLSCHEMA2].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client must be configured with the URL of the server's SOAP service in order to call the service.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Active Directory Federation Service (AD FS) Web Agent Protocol is used by any software that
 needs knowledge of the configuration of an STS in order to validate security tokens from that STS.
@@ -968,9 +814,10 @@ Release: April 23, 2024
 
 9 / 43
 
-1.7  Versioning and Capability Negotiation
 
-1.7.1  Versioning
+### 1.7 Versioning and Capability Negotiation
+
+#### 1.7.1 Versioning
 
 This protocol uses the versioning mechanisms defined in the following specifications:
 
@@ -982,12 +829,12 @@ The data formatting and message processing of this protocol do not contain any f
 mechanisms. The data itself is versioned to enable servers to determine whether clients need a full
 update or have an up-to-date version. This mechanism is described fully in sections 2 and 3 below.
 
-1.7.2  Capability Negotiation
+#### 1.7.2 Capability Negotiation
 
 There is no functionality for capability negotiation in the Active Directory Federation Service (AD FS)
 Web Agent Protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 As specified in section 2, the Active Directory Federation Service (AD FS) Web Agent Protocol uses
 SOAP messages for communication, as specified in [SOAP1.1] and [SOAP1.2-1/2007]. The core
@@ -995,7 +842,7 @@ functionality of SOAP is to provide extensibility. [SOAP1.2-1/2007] and [SOAP1.1
 discussion on the SOAP messaging framework extensibility model. Vendors can use these SOAP
 extensibility points as specified.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for the Active Directory Federation Service (AD FS) Web Agent
 Protocol beyond those defined in the following specifications:
@@ -1014,9 +861,10 @@ Release: April 23, 2024
 
 10 / 43
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The GetFsTrustInformation request message (section 3.1.4.1.1.1), GetTrustedRealmUri request
 message (section 3.1.4.2.1.1), and GetClaims request message (section 3.1.4.3.1.1) MUST be
@@ -1026,13 +874,13 @@ The client role and server role MUST use the HTTPS URL scheme to identify the se
 processing GetFsTrustInformation request, GetTrustedRealmUri request, and GetClaims request
 messages.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema (XSD) as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description
 Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1103,15 +951,15 @@ http://www.w3.org/2001/XMLSchema
 
 [XMLSCHEMA1]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML schema message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
@@ -1122,19 +970,20 @@ Release: April 23, 2024
 
 11 / 43
 
-2.2.5  Simple Types
+
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
@@ -1145,7 +994,8 @@ Release: April 23, 2024
 
 12 / 43
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section addresses the message processing model for the protocol. It includes related information
 required by an implementation to successfully emit or consume protocol messages, such as an
@@ -1154,12 +1004,12 @@ abstract data model for maintaining configuration or state information.
 The protocol specifies two distinct roles for the entities that emit and consume protocol messages. The
 server and the client roles are described in separate subsections below.
 
-3.1  Server Details
+### 3.1 Server Details
 
 This section describes details of protocol processing that must be understood in order to implement a
 server that can correctly perform its role in the protocol message exchange.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1171,7 +1021,7 @@ The data used by each message exchange is different. The abstract data models fo
 GetFsTrustInformation, GetTrustedRealmUri, and GetClaims message exchanges can be found in the
 following sections.
 
-3.1.1.1  GetFsTrustInformation
+##### 3.1.1.1 GetFsTrustInformation
 
 The client calls this method to get the information the client needs to verify security tokens issued
 by the server to the client using the protocol defined in [MS-MWBF]. The following data is used in the
@@ -1263,7 +1113,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Description
 
@@ -1305,7 +1156,7 @@ All Responses: lsUrl
 * Unless otherwise specified, all GUID values in this document follow the pattern specified for the
 "guid" simple type, which is first defined in section 3.1.4.1.1.1.
 
-3.1.1.2  GetTrustedRealmUri
+##### 3.1.1.2 GetTrustedRealmUri
 
 At the client, a higher layer might need to know whether the server accepts security tokens from a
 particular user's security realm as described in [MS-MWBF]. The user is represented by an email
@@ -1341,7 +1192,7 @@ All Responses:
 trustedRealmUri
 element
 
-3.1.1.3  GetClaims
+##### 3.1.1.3 GetClaims
 
 The client calls this method to discover what claims can be issued inside a security token using the
 protocol defined in [MS-MWBF]. The following data is used in the request and response.
@@ -1375,7 +1226,7 @@ This is the string value of the claim described.
 
 All Responses: GroupClaim element
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no protocol-specific timer events that must be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
@@ -1387,17 +1238,18 @@ Release: April 23, 2024
 
 14 / 43
 
-receive messages over HTTPS. The protocol does not include provisions for time-based retry for
+
+receive messages over HTTPS. The protocol does not include provisions for time-based retry for
 sending protocol messages.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The initialization steps required for each of the three protocol message request and response pairs are
 unrelated to one another. Prior to sending any protocol message, the client MUST be configured with
 the URL to which the request is to be sent. The following sections define the initialization required for
 the client role prior to emitting each request message.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The WSDL operations detailed in this section are unrelated to one another.
 
@@ -1425,13 +1277,13 @@ Note  All protocol messages MUST be well-formed XML placed within a SOAP envelop
 [SOAP1.2-1/2007] section 5.1 or [SOAP1.1] section 4. When the server receives a request that does
 not conform to the protocol, the server MUST return a SOAP fault.
 
-3.1.4.1  GetFsTrustInformation
+##### 3.1.4.1 GetFsTrustInformation
 
 The GetFsTrustInformation exchange MUST consist of a single request message and a single response
 message. The exchange MUST be initiated by the client with a request message to the server. The
 following sections describe the server processing for the request and response messages.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1446,7 +1298,7 @@ The GetFsTrustInformation request message.
 
 GetFsTrustInformationSoapOut  The GetFsTrustInformation response message.
 
-3.1.4.1.1.1  GetFsTrustInformationSoapIn
+###### 3.1.4.1.1.1 GetFsTrustInformationSoapIn
 
 The SOAP body of the GetFsTrustInformation request message MUST conform to the following XML
 schema.
@@ -1466,7 +1318,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </s:element>
+
+ </s:element>
  <s:complexType name="VersionInformation">
    <s:sequence>
      <s:element minOccurs="0" maxOccurs="1" name="SoftwareVersion" type="s:long" />
@@ -1481,11 +1334,11 @@ F]{12}" />
    </s:restriction>
  </s:simpleType>
 
-3.1.4.1.1.1.1  SoftwareVersion Parameter
+###### 3.1.4.1.1.1.1 SoftwareVersion Parameter
 
 The value of this parameter MUST be 1. The server MUST ignore this value.
 
-3.1.4.1.1.2  GetFsTrustInformationSoapIn Processing
+###### 3.1.4.1.1.2 GetFsTrustInformationSoapIn Processing
 
 If the request does not contain a wsVersion element, the server MUST proceed as if the client has an
 outdated copy; otherwise, the version number and GUID parameters in GetFsTrustInformation
@@ -1495,7 +1348,7 @@ then the client has an outdated copy. If the version number in the request is le
 number of the server's local configuration, then the client has an outdated copy. Otherwise, the client
 has an up-to-date copy. For the corresponding response processing, see section 3.1.4.1.1.4.
 
-3.1.4.1.1.3  GetFsTrustInformationSoapOut
+###### 3.1.4.1.1.3 GetFsTrustInformationSoapOut
 
 The SOAP body of the GetFsTrustInformation response message MUST conform to the following XML
 schema.
@@ -1536,7 +1389,8 @@ Release: April 23, 2024
 
 16 / 43
 
-     <s:element minOccurs="1" maxOccurs="1" name="certificates"
+
+     <s:element minOccurs="1" maxOccurs="1" name="certificates"
 type="tns:FederationCertificates" />
      <s:element minOccurs="0" maxOccurs="1" name="fsDomainAccount" type="s:string" />
      <s:element minOccurs="0" maxOccurs="1" name="hostedRealmUri" type="s:string" />
@@ -1584,19 +1438,19 @@ type="tns:CertInfo" />
    </s:sequence>
  </s:complexType>
 
-3.1.4.1.1.3.1  SoftwareVersion Parameter
+###### 3.1.4.1.1.3.1 SoftwareVersion Parameter
 
 The value of this parameter MUST be 1.
 
-3.1.4.1.1.3.2  hostedRealmUri Parameter
+###### 3.1.4.1.1.3.2 hostedRealmUri Parameter
 
 This parameter MUST be a URI conforming to [RFC2396].
 
-3.1.4.1.1.3.3  lsUrl Parameter
+###### 3.1.4.1.1.3.3 lsUrl Parameter
 
 This parameter MUST be a URL conforming to [RFC1738].
 
-3.1.4.1.1.3.4  fsDomainAccount Parameter
+###### 3.1.4.1.1.3.4 fsDomainAccount Parameter
 
 This parameter MUST be a NetBIOS name, followed by a backslash ("\"), and finally followed by a
 sAMAccountName as described in [MS-ADTS] section 3.1.1.3.2.38.
@@ -1608,14 +1462,15 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.1.3.5  X509Thumbprint Parameter
+
+###### 3.1.4.1.1.3.5 X509Thumbprint Parameter
 
 This parameter MUST contain a sequence of 40 hexadecimal digital characters. The characters MUST
 be limited to alphanumeric hexadecimal digits. If the character is an alphabetical character, it MUST
 be uppercased. Specifically, the characters MUST only be 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, or
 F. The sequence MUST NOT contain any spaces.
 
-3.1.4.1.1.3.6  SerializedStore Parameter
+###### 3.1.4.1.1.3.6 SerializedStore Parameter
 
 This parameter MUST contain an encoded list of certificates. The format of this list MUST be a CMS
 signed-data content type as defined by [RFC3852] section 5.1. The list MUST be initially encoded
@@ -1658,7 +1513,7 @@ null.
 The certificates field of the SignedData sequence MUST contain a list of X.509 certificates conforming
 to [X509]. The crls field MUST be null. The SignerInfos field MUST be empty.
 
-3.1.4.1.1.4  GetFsTrustInformationSoapOut Processing
+###### 3.1.4.1.1.4 GetFsTrustInformationSoapOut Processing
 
 Response processing can be divided into version processing, certificates processing, and other
 processing. The following sections address this processing.
@@ -1670,7 +1525,8 @@ Release: April 23, 2024
 
 18 / 43
 
-3.1.4.1.1.4.1  Versioning Processing
+
+###### 3.1.4.1.1.4.1 Versioning Processing
 
 If the client's data is up-to-date, as described in section 3.1.4.1.1.2, then the
 GetFsTrustInformationResult MUST be set to false, and the VersionInformation and FsInformation
@@ -1684,7 +1540,7 @@ The Version element MUST be set to the version number for the current configurat
 the server. The Guid element MUST be set to the GUID for the current configuration maintained by the
 server.
 
-3.1.4.1.1.4.2  Certificate Processing
+###### 3.1.4.1.1.4.2 Certificate Processing
 
 The server MUST maintain a list of at least one X.509 certificate that is used for signing security
 tokens. For each of the X.509 certificates, the server MUST maintain a SHA-1 hash of the certificate.
@@ -1704,7 +1560,7 @@ The server MUST maintain a configured method for checking revocation on the X.50
 described in section 3.2.4.1.2.2. The method MUST be included in the response RevocationFlags
 element, as detailed in section 3.1.4.1.1.3.
 
-3.1.4.1.1.4.3  Other Processing
+###### 3.1.4.1.1.4.3 Other Processing
 
 The server MUST maintain a URI to identify itself as described in section 3.1.1.1. This URI MUST be
 included in the response as the hostedRealmUri element.
@@ -1715,13 +1571,13 @@ requests. This URL MUST be included in the response as the lsUrl element.
 Finally, the server MUST include the service principal name of the domain account under which it runs
 according to [MS-ADTS] as the fsDomainAccount element.
 
-3.1.4.2  GetTrustedRealmUri
+##### 3.1.4.2 GetTrustedRealmUri
 
 The GetTrustedRealmUri exchange consists of a single request message and a single response
 message. The exchange MUST be initiated by the client with a request message to the server. The
 following sections describe the server processing for the request and response messages.
 
-3.1.4.2.1 Messages
+###### 3.1.4.2.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1741,13 +1597,14 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Message
+
+Message
 
 Description
 
 GetTrustedRealmUriSoapOut  The GetTrustedRealmUri response message.
 
-3.1.4.2.1.1  GetTrustedRealmUriSoapIn
+###### 3.1.4.2.1.1 GetTrustedRealmUriSoapIn
 
 The SOAP body of the GetTrustedRealmUri request message MUST conform to the following XML
 schema.
@@ -1760,15 +1617,15 @@ schema.
    </s:complexType>
  </s:element>
 
-3.1.4.2.1.1.1  Email Parameter
+###### 3.1.4.2.1.1.1 Email Parameter
 
 The element named "email" MUST contain an email address conforming to [RFC2822].
 
-3.1.4.2.1.2  GetTrustedRealmUriSoapIn Processing
+###### 3.1.4.2.1.2 GetTrustedRealmUriSoapIn Processing
 
 As described in section 3.2.3.2, the client MUST include an email address in the request.
 
-3.1.4.2.1.3  GetTrustedRealmUriSoapOut
+###### 3.1.4.2.1.3 GetTrustedRealmUriSoapOut
 
 The SOAP body of the GetTrustedRealmUri response message MUST conform to the following XML
 schema.
@@ -1783,11 +1640,11 @@ schema.
    </s:complexType>
  </s:element>
 
-3.1.4.2.1.3.1  trustedRealmUri
+###### 3.1.4.2.1.3.1 trustedRealmUri
 
 The "trustedRealmUri" element MUST contain a URI conforming to [RFC2396].
 
-3.1.4.2.1.4  GetTrustedRealmUriSoapOut Processing
+###### 3.1.4.2.1.4 GetTrustedRealmUriSoapOut Processing
 
 If the suffix of the [RFC2822] email address from the request matches the local configuration of the
 server for a security realm from which the server accepts security tokens OR if there exists a trusted
@@ -1804,13 +1661,14 @@ Release: April 23, 2024
 
 20 / 43
 
-3.1.4.3  GetClaims
+
+##### 3.1.4.3 GetClaims
 
 The GetClaims exchange consists of a single request message and a single response message. The
 exchange MUST be initiated by the client with a request message to the server. The following sections
 describe the server processing for the request and response messages.
 
-3.1.4.3.1 Messages
+###### 3.1.4.3.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1825,7 +1683,7 @@ The GetClaims request message.
 
 GetClaimsSoapOut  The GetClaims response message.
 
-3.1.4.3.1.1  GetClaimsSoapIn
+###### 3.1.4.3.1.1 GetClaimsSoapIn
 
 The SOAP body of the GetClaims request message MUST conform to the following XML schema.
 
@@ -1844,11 +1702,11 @@ The SOAP body of the GetClaims request message MUST conform to the following XML
    </s:restriction>
  </s:simpleType>
 
-3.1.4.3.1.2  GetClaimsSoapIn Processing
+###### 3.1.4.3.1.2 GetClaimsSoapIn Processing
 
 As described in section 3.2.3.3, the client MUST set the claim type in the request to "Group".
 
-3.1.4.3.1.3  GetClaimsSoapOut
+###### 3.1.4.3.1.3 GetClaimsSoapOut
 
 The SOAP body of the GetClaims response message MUST conform to the following XML schema.
 
@@ -1877,7 +1735,8 @@ Release: April 23, 2024
 
 21 / 43
 
-   <s:complexContent mixed="false">
+
+   <s:complexContent mixed="false">
      <s:extension base="tns:TrustPolicyEntryBase">
        <s:attribute name="IsSensitive" type="s:boolean" use="required" />
      </s:extension>
@@ -1919,19 +1778,19 @@ F]{12}" />
    </s:restriction>
  </s:simpleType>
 
-3.1.4.3.1.4  GetClaimsSoapOut Processing
+###### 3.1.4.3.1.4 GetClaimsSoapOut Processing
 
 The collection of claims that is returned MUST represent the group claims that can appear in a
 security token from the server.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 There are no protocol-specific timer events that must be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
 receive messages over HTTPS. The protocol does not include provisions for time-based retry for
 sending protocol messages.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 This protocol does not have dependencies on any transport protocols other than HTTP 1.1. This
 protocol relies on this transport mechanism for the correct and timely delivery of protocol messages.
@@ -1945,29 +1804,30 @@ Release: April 23, 2024
 
 22 / 43
 
-3.2  Client Details
+
+### 3.2 Client Details
 
 This section describes details of protocol processing that must be understood to implement a client
 that can correctly perform its role in the protocol message exchange.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model described in section 3.1.1 applies for the client role as well.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no protocol-specific timer events that must be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
 receive messages over HTTPS. The protocol does not include provisions for time-based retry for
 sending protocol messages.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Prior to receiving request messages, the server MUST open an endpoint to listen for request
 messages. In order to provide the data described in the abstract data model, that data MUST be
 configured on the server by an administrator.
 
-3.2.3.1  GetFsTrustInformation Initialization
+##### 3.2.3.1 GetFsTrustInformation Initialization
 
 The client can maintain a cached copy of the data described in section 3.1.1.1.<1>
 
@@ -1976,24 +1836,24 @@ GUID of the currently cached trust information. If no trust information is cache
 client MUST use a version number equal to 0 and a GUID equal to 00000000-0000-0000-0000-
 000000000000.
 
-3.2.3.2  GetTrustedRealmUri Initialization
+##### 3.2.3.2 GetTrustedRealmUri Initialization
 
 Prior to emitting a GetTrustedRealmUri request, the client MUST have an email address conforming to
 [RFC2822] to include in the request message. This information MUST be provided by a higher layer, as
 described in section 3.2.4.2.
 
-3.2.3.3  GetClaims Initialization
+##### 3.2.3.3 GetClaims Initialization
 
 Prior to emitting a GetClaims request, the client MUST set the claim type to "Group" for the request.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The WSDL operations detailed in section 3.1.4 are unrelated to one another. A client MUST emit
 request messages according to the events that trigger the requests as described in the following
 sections. The following sections define the message processing rules separately for the
 GetFsTrustInformation, GetTrustedRealmUri, and GetClaims message exchanges.
 
-3.2.4.1  GetFsTrustInformation
+##### 3.2.4.1 GetFsTrustInformation
 
 The GetFsTrustInformation exchange MUST consist of a single request message and a single response
 message. The exchange MUST be initiated by the client with a request message to the server.
@@ -2008,24 +1868,25 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-a GetFsTrustInformation request MAY be triggered by the receipt of a security token from the server.
+
+a GetFsTrustInformation request MAY be triggered by the receipt of a security token from the server.
 Implementations MAY choose to improve the performance of security token verification by emitting a
 GetFsTrustInformation request and caching the data from the response prior to receiving a security
 token from the server.<2>
 
 The following sections describe the client processing for the request and response messages.
 
-3.2.4.1.1 GetFsTrustInformationSoapIn Processing
+###### 3.2.4.1.1 GetFsTrustInformationSoapIn Processing
 
 As described in section 3.2.3.1, the client MUST include the current policy version number and
 corresponding GUID in the request.
 
-3.2.4.1.2 GetFsTrustInformationSoapOut Processing
+###### 3.2.4.1.2 GetFsTrustInformationSoapOut Processing
 
 GetFsTrustInformation response processing can be divided into version processing, certificates
 processing, and other processing. The following sections discuss these processing steps.
 
-3.2.4.1.2.1  Versioning
+###### 3.2.4.1.2.1 Versioning
 
 As detailed in section 3.1.4.1.1.3, the response MUST contain a version number and GUID
 representing the configuration data described in section 3.1.1.1. This version number and GUID MUST
@@ -2036,7 +1897,7 @@ version number is smaller than the response version number, then the response co
 that MUST be used instead of the locally cached data. If there is no locally cached data, the version
 number and GUID SHOULD be cached for use in processing future server responses.
 
-3.2.4.1.2.2  Certificates
+###### 3.2.4.1.2.2 Certificates
 
 The abstract data model for the certificates is described in section 3.2.3.1. The Federation Certificates
 data described in section 3.2.3.1 MUST include at least one X.509 certificate. The Trusted Certificates
@@ -2093,7 +1954,8 @@ Release: April 23, 2024
 
 24 / 43
 
-3.2.4.1.2.3  Other Data
+
+###### 3.2.4.1.2.3 Other Data
 
 The other data contained in the response MUST be cached for use in the protocol described in [MS-
 MWBF]. The Login Service URL MUST be cached for the purpose of redirecting requests according to
@@ -2101,7 +1963,7 @@ MWBF]. The Login Service URL MUST be cached for the purpose of redirecting reque
 verifying the issuer field in received security tokens. The Federation Service Domain Account name
 MUST be cached for the purpose of verifying incoming security token signatures.
 
-3.2.4.2  GetTrustedRealmUri
+##### 3.2.4.2 GetTrustedRealmUri
 
 The GetTrustedRealmUri exchange consists of a single request message and a single response
 message. The exchange MUST be initiated by the client with a request message to the server.
@@ -2113,12 +1975,12 @@ trigger the emission of a GetTrustedRealmUri request.
 
 The following sections describe the client processing for the request and response messages.
 
-3.2.4.2.1 GetTrustedRealmUriSoapIn Processing
+###### 3.2.4.2.1 GetTrustedRealmUriSoapIn Processing
 
 Upon receiving the GetTrustedRealmUri request, the email specified in the request MUST be extracted
 for use in processing the response. There is no other request-specific processing.
 
-3.2.4.2.2 GetTrustedRealmUriSoapOut Processing
+###### 3.2.4.2.2 GetTrustedRealmUriSoapOut Processing
 
 The GetTrustedRealmUriResult response element described in section 3.1.4.2.1.3 MUST indicate
 whether or not the email address matches a security realm from which the server accepts security
@@ -2127,7 +1989,7 @@ tokens and MUST contain the trustedRealmUri element as described in section 3.1.
 The result and the security realm URI MUST be provided to the higher layer that requested the
 information.
 
-3.2.4.3  GetClaims
+##### 3.2.4.3 GetClaims
 
 The GetClaims exchange consists of a single request message and a single response message. The
 exchange MUST be initiated by the client with a request message to the server.
@@ -2138,12 +2000,12 @@ call into the local client APIs, will trigger the emission of a GetClaims reques
 
 The following sections describe the client processing for the request and response messages.
 
-3.2.4.3.1 GetClaimsSoapIn Processing
+###### 3.2.4.3.1 GetClaimsSoapIn Processing
 
 Upon receiving the GetClaims request, the claim type specified in the request MUST be extracted for
 use in processing the response. There is no other request-specific processing.
 
-3.2.4.3.2 GetClaimsSoapOut Processing
+###### 3.2.4.3.2 GetClaimsSoapOut Processing
 
 The server MUST return a groupClaimCollection that contains each of the configured group claim
 values.
@@ -2155,14 +2017,15 @@ Release: April 23, 2024
 
 25 / 43
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 There are no protocol-specific timer events that must be serviced by an implementation. This protocol
 does not require timers beyond those that might be used by the underlying transport to transmit and
 receive messages over HTTPS. The protocol does not include provisions for time-based retry for
 sending protocol messages.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 This protocol does not have dependencies on any transport protocols other than HTTP 1.1. This
 protocol relies on this transport mechanism for the correct and timely delivery of protocol messages.
@@ -2176,11 +2039,12 @@ Release: April 23, 2024
 
 26 / 43
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The examples shown in subsequent sections are based on the full WSDL defined in section 6.
 
-4.1  GetFsTrustInformation Request Message Example
+### 4.1 GetFsTrustInformation Request Message Example
 
  <?xml version="1.0" encoding="utf-8"?>
    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -2204,7 +2068,7 @@ xmlns="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/">
    </soap:Body>
  </soap:Envelope>
 
-4.2  GetFsTrustInformation Response Message Example
+### 4.2 GetFsTrustInformation Response Message Example
 
  <?xml version="1.0" encoding="utf-8"?>
    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -2249,7 +2113,8 @@ Release: April 23, 2024
 
 27 / 43
 
-             <RevocationCheckFlags>
+
+             <RevocationCheckFlags>
              CheckChainExcludeRoot
            </RevocationCheckFlags>
          </verificationMethod>
@@ -2273,7 +2138,7 @@ K7trUKusjANBgkqhkiG9w0BAQUFADCBhDETMBEGCgmSJomT8ixkARkWA2NvbTEZMBcGCgmSJomT8ixkA
    </soap:Body>
  </soap:Envelope>
 
-4.3  GetTrustedRealmUri Request Message Example
+### 4.3 GetTrustedRealmUri Request Message Example
 
  <?xml version="1.0" encoding="utf-8"?>
    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -2289,7 +2154,7 @@ xmlns="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/">
    </soap:Body>
  </soap:Envelope>
 
-4.4  GetTrustedRealmUri Response Message Example
+### 4.4 GetTrustedRealmUri Response Message Example
 
  <?xml version="1.0" encoding="utf-8"?>
    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -2308,7 +2173,7 @@ xmlns="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/">
    </soap:Body>
  </soap:Envelope>
 
-4.5  GetClaims Request Message Example
+### 4.5 GetClaims Request Message Example
 
  <?xml version="1.0" encoding="utf-8"?>
 
@@ -2319,7 +2184,8 @@ Release: April 23, 2024
 
 28 / 43
 
-   <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+
+   <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema">
      <soap:Body>
@@ -2332,7 +2198,7 @@ xmlns="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/">
    </soap:Body>
  </soap:Envelope>
 
-4.6  GetClaims Response Message Example
+### 4.6 GetClaims Response Message Example
 
  <?xml version="1.0" encoding="utf-8"?>
  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
@@ -2359,15 +2225,16 @@ Release: April 23, 2024
 
 29 / 43
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers have to ensure that SSL is used to authenticate that the server is the intended server
 referred to by the server endpoint URL. Otherwise, there are no specific security considerations
 beyond those specified in normative references.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None of the protocol parameters are specific to the security of the protocol.
 
@@ -2378,7 +2245,8 @@ Release: April 23, 2024
 
 30 / 43
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation, the full WSDL is provided below:
 
@@ -2453,7 +2321,8 @@ Release: April 23, 2024
 
 31 / 43
 
-           <s:enumeration value="SidExpansionFailure" />
+
+           <s:enumeration value="SidExpansionFailure" />
            <s:enumeration value="NoAccountStores" />
            <s:enumeration value="NoActiveDirectoryForSids" />
            <s:enumeration value="NoAccountStoresForCert" />
@@ -2530,7 +2399,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         <s:complexType>
+
+         <s:complexType>
            <s:sequence>
              <s:element minOccurs="0" maxOccurs="1" name="rstr" type="tns:RSTRResult" />
            </s:sequence>
@@ -2607,7 +2477,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <s:element name="GetFsTrustInformation">
+
+       <s:element name="GetFsTrustInformation">
          <s:complexType>
            <s:sequence>
              <s:element minOccurs="0" maxOccurs="1" name="wsVersion"
@@ -2683,7 +2554,8 @@ Release: April 23, 2024
 
 34 / 43
 
-           <s:element minOccurs="0" maxOccurs="1" name="SerializedStore" type="s:base64Binary"
+
+           <s:element minOccurs="0" maxOccurs="1" name="SerializedStore" type="s:base64Binary"
 />
          </s:sequence>
        </s:complexType>
@@ -2760,7 +2632,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           </s:extension>
+
+           </s:extension>
          </s:complexContent>
        </s:complexType>
        <s:complexType name="ActiveDirectoryGroupClaim">
@@ -2837,7 +2710,8 @@ Release: April 23, 2024
 
 36 / 43
 
-     <wsdl:part name="parameters" element="tns:GetClaimsResponse" />
+
+     <wsdl:part name="parameters" element="tns:GetClaimsResponse" />
    </wsdl:message>
    <wsdl:portType name="FederationServerServiceSoap">
      <wsdl:operation name="LsRequestSecurityToken">
@@ -2913,7 +2787,8 @@ Release: April 23, 2024
 
 37 / 43
 
-       <soap:operation
+
+       <soap:operation
 soapAction="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/GetProxyTr
 ustConfiguration" style="document" />
        <wsdl:input>
@@ -2990,7 +2865,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <soap12:operation
+
+       <soap12:operation
 soapAction="http://schemas.microsoft.com/ActiveDirectory/FederationService/2005/07/LsRequestS
 ecurityTokenWithCookie" style="document" />
        <wsdl:input>
@@ -3063,7 +2939,8 @@ Release: April 23, 2024
 
 39 / 43
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3115,7 +2992,8 @@ Release: April 23, 2024
 
 40 / 43
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3159,7 +3037,8 @@ Release: April 23, 2024
 
 41 / 43
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3291,7 +3170,8 @@ Active Directory Federation Service (AD FS) Web Agent Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      GetFsTrustInformation method 13
+
+      GetFsTrustInformation method 13
       GetTrustedRealmUri method 14
       overview 13
    GetClaims operation 21

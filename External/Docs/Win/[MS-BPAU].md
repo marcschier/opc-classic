@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: June 1, 2017
 
 2 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: June 1, 2017
 
 3 / 29
 
-Date
+
+Date
 
 Revision
 History
@@ -536,153 +539,64 @@ Release: June 1, 2017
 
 4 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 KEY_LENGTH](#221-keylength)
+    - [2.2.2 CERTIFICATE_BLOB](#222-certificateblob)
+      - [2.2.2.1 Certificate Properties](#2221-certificate-properties)
+        - [2.2.2.1.1 KEY_PROV_INFO](#22211-keyprovinfo)
+      - [2.2.2.2 Certificate Encoding](#2222-certificate-encoding)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 BitsPeerAuth Server Details](#31-bitspeerauth-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Local Certificate (Public)](#3111-local-certificate-public)
+      - [3.1.1.2 Table of Peer Certificates](#3112-table-of-peer-certificates)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 ExchangePublicKeys (Opnum 0)](#3141-exchangepublickeys-opnum-0)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Verifying authentication status](#3161-verifying-authentication-status)
+  - [3.2 BitsPeerAuth Client Details](#32-bitspeerauth-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Local Certificate (Public)](#3211-local-certificate-public)
+      - [3.2.1.2 Table of Peer Certificates](#3212-table-of-peer-certificates)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 ExchangePublicKeys (Opnum 0)](#3241-exchangepublickeys-opnum-0)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 Verifying authentication status](#3261-verifying-authentication-status)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Typical Success Scenario](#41-typical-success-scenario)
+  - [4.2 Typical Encoded Certificate from Windows Vista](#42-typical-encoded-certificate-from-windows-vista)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Data Types ........................................................................................ 12
-KEY_LENGTH ............................................................................................. 12
-CERTIFICATE_BLOB .................................................................................... 12
-Certificate Properties ............................................................................. 12
-KEY_PROV_INFO ............................................................................. 14
-Certificate Encoding .............................................................................. 15
-
-2.2.1
-2.2.2
-
-2.2.2.1.1
-
-2.2.2.1
-
-2.2.2.2
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.5
-3.1.6
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 16
-BitsPeerAuth Server Details ............................................................................... 16
-Abstract Data Model .................................................................................... 16
-Local Certificate (Public) ........................................................................ 16
-Table of Peer Certificates ....................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 17
-ExchangePublicKeys (Opnum 0) .............................................................. 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Verifying authentication status ............................................................... 18
-BitsPeerAuth Client Details ................................................................................ 18
-Abstract Data Model .................................................................................... 18
-Local Certificate (Public) ........................................................................ 18
-Table of Peer Certificates ....................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-ExchangePublicKeys (Opnum 0) .............................................................. 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Verifying authentication status ............................................................... 20
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.1.1
-3.2.1.2
-
-3.2.5
-3.2.6
-
-3.2.6.1
-
-3.1.6.1
-
-3.2.4.1
-
-3.2.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 21
-Typical Success Scenario ................................................................................... 21
-Typical Encoded Certificate from Windows Vista ................................................... 21
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 25
-
-7  Appendix B: Product Behavior ............................................................................... 26
-
-[MS-BPAU] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Authentication Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 29
-
-8  Change Tracking .................................................................................................... 27
-
-9  Index ..................................................................................................................... 28
-
-[MS-BPAU] - v20170601
-Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Authentication Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 29
-
-1  Introduction
+## 1 Introduction
 
 The Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Authentication Protocol
 provides authentication for computers in a domain in support of the BITS Peer-Caching: Content
@@ -693,7 +607,7 @@ domain.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -751,7 +665,8 @@ Release: June 1, 2017
 
 7 / 29
 
-fully qualified domain name (FQDN): In Active Directory, a fully qualified domain name
+
+fully qualified domain name (FQDN): In Active Directory, a fully qualified domain name
 
 (FQDN) that identifies a domain.
 
@@ -829,7 +744,8 @@ Release: June 1, 2017
 
 8 / 29
 
-imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the use of
+
+imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the use of
 this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
 be used for generating the UUID.
 
@@ -840,14 +756,14 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -873,7 +789,7 @@ Note Registration is required to download the document.
 Certificate and Certificate Revocation List (CRL) Profile", RFC 3280, April 2002, http://www.rfc-
 editor.org/info/rfc3280
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-BPCR] Microsoft Corporation, "Background Intelligent Transfer Service (BITS) Peer-Caching:
 Content Retrieval Protocol".
@@ -894,11 +810,12 @@ Release: June 1, 2017
 
 9 / 29
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-BPAU].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The BITS Peer-Caching: Peer Authentication Protocol allows hosts in an Active Directory domain to
 exchange self-signed X.509 certificates with enough information to associate those certificates
@@ -919,7 +836,7 @@ Background Intelligent Transfer Service (BITS) component. (For more information 
 [MSDN-BITS].) Peer authentication ensures that peer clients and servers are members of the same
 domain, or in domains with bidirectional trust.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 A host that implements the client or server role of Peer authentication typically implements the same
 role in the BITS Peer-Caching: Content Retrieval Protocol, as specified in [MS-BPCR], and the BITS
@@ -931,7 +848,7 @@ and relies on the message authentication and security features of the Kerberos P
 
 Figure 1: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client and server must reside in domains with bidirectional trust in order for Kerberos
 authentication to succeed.
@@ -943,21 +860,22 @@ Release: June 1, 2017
 
 10 / 29
 
-The RPC implementation must support the Kerberos security provider.
+
+The RPC implementation must support the Kerberos security provider.
 
 Both client and server must be provisioned with X.509 certificates; the subject field of each
 certificate must be a SID matching the Kerberos identity of its owner.
 
 The RPC server must be fully initialized before the protocol can start.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is intended for use by hosts that are members of a domain and use self-signed
 certificates for authentication during content retrieval. In an environment where certificates are
 issued from a trusted certificate authority, the content retrieval client and server ought to be able
 to authenticate peers without using the BITS Peer-Caching: Peer Authentication Protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -972,13 +890,13 @@ RPCE] section 1.7.<1>
 Security and Authentication Methods: Authentication and security are provided as specified in
 [MS-RPCE]. This protocol supports only the Kerberos authentication method.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF]. Vendors can define their own HRESULT
 values, provided they set the C bit (0x20000000) for each vendor-defined value, indicating the value
 is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -995,9 +913,10 @@ Release: June 1, 2017
 
 11 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol requires the following RPC protocol sequence: RPC over TCP (ncacn_ip_tcp), as
 specified in [MS-RPCE] section 2.1.1.1.
@@ -1007,7 +926,7 @@ This protocol requires RPC dynamic endpoints, as specified in [C706] Part 4.
 This protocol uses security information as described in [MS-RPCE]. The server MUST register the
 Kerberos security provider.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support both the NDR and NDR64
 transfer syntaxes and provide a negotiation mechanism for determining which transfer syntax will
@@ -1016,7 +935,7 @@ be used, as specified in [MS-RPCE] section 3 .
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data types
 are specified in the following sections.
 
-2.2.1  KEY_LENGTH
+#### 2.2.1 KEY_LENGTH
 
 The type KEY_LENGTH represents the length of a marshaled certificate. The size is limited to a
 maximum of 64 KB.
@@ -1025,7 +944,7 @@ This type is declared as follows:
 
  typedef [range(0, 65536)] DWORD KEY_LENGTH;
 
-2.2.2  CERTIFICATE_BLOB
+#### 2.2.2 CERTIFICATE_BLOB
 
 At the IDL level, certificates are exchanged as opaque arrays of bytes. The format of a marshaled
 certificate is described in the following sections.
@@ -1034,7 +953,7 @@ The certificate MUST consist of zero or more certificate properties, followed by
 The format of certificate properties is specified in section 2.2.2.1. The format of the encoded
 certificate is specified in section 2.2.2.2.
 
-2.2.2.1  Certificate Properties
+##### 2.2.2.1 Certificate Properties
 
 Each property in the certificate blob MUST be formatted as follows.
 
@@ -1064,7 +983,8 @@ Release: June 1, 2017
 
 12 / 29
 
-...
+
+...
 
 PropertyID (4 bytes): This field MUST identify the property whose value is contained in the Value
 field. It MUST be an unsigned 32-bit integer in little-endian format. This field MUST be set to one
@@ -1195,7 +1115,8 @@ Release: June 1, 2017
 
 13 / 29
 
-Reserved (4 bytes): This is a 32-bit unsigned integer in little-endian format that must be set to
+
+Reserved (4 bytes): This is a 32-bit unsigned integer in little-endian format that must be set to
 
 0x00000001.
 
@@ -1207,7 +1128,7 @@ Value (variable): This field MUST contain the value of the specified property, i
 
 for the property associated with the table of possible values for PropertyID.
 
-2.2.2.1.1 KEY_PROV_INFO
+###### 2.2.2.1.1 KEY_PROV_INFO
 
 The value for the KEY_PROV_INFO property (if this property is present) MUST be in the following
 format:
@@ -1269,7 +1190,8 @@ Release: June 1, 2017
 
 14 / 29
 
-Name Data (variable): This field MUST contain the following items, in any order, at the locations
+
+Name Data (variable): This field MUST contain the following items, in any order, at the locations
 indicated by the respective preceding Offset fields. These items MUST be completely contained
 inside this field and MUST NOT overlap each other. There MUST be no unused areas within this
 field that span more than eight contiguous bytes. All unused bytes within this field SHOULD be set
@@ -1303,7 +1225,7 @@ Provider Name (variable): This MUST be a null-terminated Unicode string in UTF-1
 
 representing the CSP associated with the public key contained in the certificate.
 
-2.2.2.2  Certificate Encoding
+##### 2.2.2.2 Certificate Encoding
 
 The encoded certificate MUST be formatted as follows.
 
@@ -1348,7 +1270,8 @@ Release: June 1, 2017
 
 15 / 29
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This interface defines a single method, ExchangePublicKeys, whose purpose is to declare that the
 client and the server have each been configured with a specific X.509 certificate used for
@@ -1363,11 +1286,11 @@ certificate is no longer valid, or the client might be contacting the server for
 The recipient of each certificate is expected to validate the certificate and then add it to the table of
 peer certificates allowed by the BITS Peer-Caching: Content Retrieval Protocol.
 
-3.1  BitsPeerAuth Server Details
+### 3.1 BitsPeerAuth Server Details
 
 This interface is identified by UUID "e3d0d746-d2af-40fd-8a7a-0d7078bb7092".
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1375,7 +1298,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Local Certificate (Public)
+##### 3.1.1.1 Local Certificate (Public)
 
 Local Certificate (Public): The server has access to a single X.509 certificate that identifies it to
 peers during content retrieval. For more information on content retrieval, see [MS-BPCR] sections 2
@@ -1384,17 +1307,17 @@ and 3.
 Note  The abstract interface notation (Public) indicates that this Abstract Data Model element can be
 directly accessed from outside this protocol.
 
-3.1.1.2  Table of Peer Certificates
+##### 3.1.1.2 Table of Peer Certificates
 
 The server maintains a table of X.509 certificates corresponding to peers that are allowed to
 communicate with it via content retrieval. Each certificate is associated with a particular Kerberos
 principal.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required beyond those specified in [MS-RPCE] section 3.3.2.2.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 At initialization time, the server MUST register the RPC interface and begin listening on a dynamic
 endpoint, as specified in [C706] part 6.2.2. The server MUST also initialize an empty table of peer
@@ -1407,7 +1330,8 @@ Release: June 1, 2017
 
 16 / 29
 
-3.1.4  Message Processing Events and Sequencing Rules
+
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 6.0, as specified in [MS-RPCE] section 3.
@@ -1425,7 +1349,7 @@ ExchangePublicKeys  Exchanges certificates used for content retrieval.
 
 Opnum: 0
 
-3.1.4.1  ExchangePublicKeys (Opnum 0)
+##### 3.1.4.1 ExchangePublicKeys (Opnum 0)
 
  HRESULT ExchangePublicKeys(
    [in] handle_t Binding,
@@ -1481,7 +1405,8 @@ Background Intelligent Transfer Service (BITS) Peer-Caching: Peer Authentication
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-the server MUST return 0x80070005. If the SID string represents the client's Kerberos identity, the
+
+the server MUST return 0x80070005. If the SID string represents the client's Kerberos identity, the
 server MUST add the certificate to its table of peer certificates. The server MAY impose
 implementation-specific limits on the size of the table.<3> If the client certificate is not added
 because of such a limit, the server MUST return 0x80040006. If the table already contains a certificate
@@ -1500,25 +1425,25 @@ The client and server SHOULD NOT include a KEY_PROV_INFO property in the CERTIFI
 because it refers to local resources on the sender. Recipients SHOULD ignore the KEY_PROV_INFO
 property.<5>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No local events are defined, beyond those specified in [MS-RPCE].
 
-3.1.6.1  Verifying authentication status
+##### 3.1.6.1 Verifying authentication status
 
 A higher-layer protocol can check whether a given X.509 certificate is present in the table of peer
 certificates. Given a X.509 certificate, if the table contains an entry mapping the certificate to a
 Kerberos principal, the server MUST return TRUE. Otherwise the server MUST return FALSE.
 
-3.2  BitsPeerAuth Client Details
+### 3.2 BitsPeerAuth Client Details
 
 The topics in this section specify the details of the client-side behavior of this protocol.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1526,7 +1451,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Local Certificate (Public)
+##### 3.2.1.1 Local Certificate (Public)
 
 The client has access to a single X.509 certificate that identifies it to peers during content retrieval.
 For more information on content retrieval, see [MS-BPCR] sections 2 and 3.
@@ -1541,19 +1466,20 @@ Release: June 1, 2017
 
 18 / 29
 
-3.2.1.2  Table of Peer Certificates
+
+##### 3.2.1.2 Table of Peer Certificates
 
 The client maintains a table of X.509 certificates corresponding to peers that are allowed to
 communicate with it via content retrieval. Each certificate is associated with a particular Kerberos
 principal.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This protocol uses non-default behavior for the RPC Call Timeout timer defined in [MS-RPCE] section
 3.3.2.2.2. The client SHOULD use a timeout of 15,000 milliseconds for the single method of this
 interface.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST direct RPC to use the Kerberos security provider and require mutual authentication,
 as specified in [MS-KILE] section 3.3.1. The server principal name MUST be the domain account of
@@ -1562,7 +1488,7 @@ the server computer. For example, if the server's fully qualified domain name (F
 "sample$@corp.contoso.com". See [MSFT-ADN] for more information. The client MUST also initialize
 an empty table of peer certificates.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 See Message Processing Events and Sequencing Rules (section 3.1.4) under server details for basic
 message processing requirements.
@@ -1577,7 +1503,7 @@ ExchangePublicKeys  Exchanges certificates that are used for content retrieval.
 
 OpNum: 0.
 
-3.2.4.1  ExchangePublicKeys (Opnum 0)
+##### 3.2.4.1 ExchangePublicKeys (Opnum 0)
 
 For the ExchangePublicKeys method signature and parameter details, see section 3.1.4.1 under
 server details. Processing instructions that are unique to the client are covered in this topic.
@@ -1607,19 +1533,20 @@ Release: June 1, 2017
 
 19 / 29
 
-certificates. The client MAY impose implementation-specific limits on the size of the table.<6> If the
+
+certificates. The client MAY impose implementation-specific limits on the size of the table.<6> If the
 server certificate is not added because of such a limit, the client MUST return an error to the higher-
 layer protocol. If the table already contains a certificate that corresponds to this server, the client MAY
 choose whether to replace or augment the prior certificate.<7> In either case, the client MUST
 indicate success to the higher-layer protocol.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
-3.2.6.1  Verifying authentication status
+##### 3.2.6.1 Verifying authentication status
 
 A higher-layer protocol can check whether a given X.509 certificate is present in the table of peer
 certificates. Given a X.509 certificate, if the table contains an entry mapping the certificate to a
@@ -1632,9 +1559,10 @@ Release: June 1, 2017
 
 20 / 29
 
-4  Protocol Examples
 
-4.1  Typical Success Scenario
+## 4 Protocol Examples
+
+### 4.1 Typical Success Scenario
 
 A common scenario is that the client's table of peer certificates contains a certificate for the server,
 but the server's table no longer contains the client's certificate. If the client attempts a discovery
@@ -1677,7 +1605,7 @@ table without discarding any other rows.
 The client retries the content retrieval request; it succeeds this time because the server finds the
 client certificate in its table of peer certificates.
 
-4.2  Typical Encoded Certificate from Windows Vista
+### 4.2 Typical Encoded Certificate from Windows Vista
 
 A sample of an encoded certificate from the computer "jroberts21.ntdev.corp.microsoft.com" is
 shown below.
@@ -1697,7 +1625,8 @@ Release: June 1, 2017
 
 21 / 29
 
-The DER-encoded extension data is as follows:
+
+The DER-encoded extension data is as follows:
 
  0060                              30 14 06 08  2b 06 01 05          0...+...
  0070    05 07 03 01  06 08 2b 06  01 05 05 07  03 02        ......+.......
@@ -1762,7 +1691,8 @@ Release: June 1, 2017
 
 22 / 29
 
- 01c0  71 41 a9 76 12 a5 ee 5a 05 ce 24 77 71 a9 49 4d qA.v...Z..$wq.IM
+
+ 01c0  71 41 a9 76 12 a5 ee 5a 05 ce 24 77 71 a9 49 4d qA.v...Z..$wq.IM
  01d0  0d 2a 7d 8e a7 7c 69 04 9e 4a ca 7a 89 1b b5 22 .*}..|i..J.z..."
  01e0  c7 de d6 eb 45 21 b6 3d cb 0b 75 a3 59 b9 b2 82 ....E!.=..u.Y...
  01f0  4b 77 d8 c8 f2 b3 ff 46 48 03 d0 d1 30 eb 4d 5c Kw.....FH...0.M\
@@ -1790,13 +1720,14 @@ Release: June 1, 2017
 
 23 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 No additional security considerations are known.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -1819,7 +1750,8 @@ Release: June 1, 2017
 
 24 / 29
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided, where "ms-rpce.idl" is the IDL found in [MS-
 DTYP] Appendix A.
@@ -1848,7 +1780,8 @@ Release: June 1, 2017
 
 25 / 29
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1901,7 +1834,8 @@ Release: June 1, 2017
 
 26 / 29
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1913,7 +1847,8 @@ Release: June 1, 2017
 
 27 / 29
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2053,7 +1988,8 @@ Release: June 1, 2017
 
 28 / 29
 
-Prerequisites 10
+
+Prerequisites 10
 Product behavior 26
 Protocol Details
    overview 16

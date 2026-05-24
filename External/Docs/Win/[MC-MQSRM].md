@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 109
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: April 23, 2024
 
 2 / 109
 
-Date
+
+Date
 
 Revision
 History
@@ -516,512 +518,181 @@ Release: April 23, 2024
 
 3 / 109
 
-Table of Contents
 
-1.3
-
-1.3.6
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.5.1
-1.3.5.2
-1.3.5.3
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Introduction ............................................................................................... 12
-Message Queuing ....................................................................................... 12
-SRMP ........................................................................................................ 13
-Message Structure ...................................................................................... 13
-User Message Types .................................................................................... 13
-Regular Messages ................................................................................. 13
-Durable Messages ................................................................................. 13
-Stream Messages .................................................................................. 14
-Message Queues ......................................................................................... 14
-System Queues .................................................................................... 14
-Outgoing Queues .................................................................................. 15
-Source Journaling ....................................................................................... 15
-Positive Source Journaling ...................................................................... 15
-Negative Source Journaling .................................................................... 15
-Internal Receipts ........................................................................................ 15
-1.3.8
-Protocol Security ........................................................................................ 16
-1.3.9
-1.3.10  WS-Routing (SOAP-RP) ............................................................................... 16
-1.3.11  Unicast vs. Multicast Messages ..................................................................... 16
-SRMP Example Message .............................................................................. 16
-1.3.12
-Typical Message Queuing Scenario ................................................................ 17
-1.3.13
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 19
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 20
-Vendor-Extensible Fields ................................................................................... 20
-Standards Assignments ..................................................................................... 20
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.7.1
-1.3.7.2
-
-1.3.6.1
-1.3.6.2
-
-1.3.7
-
-2.2
-
-2.1
-
-2.2.1
-
-2.1.3.1
-
-2.1.1
-2.1.2
-2.1.3
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 21
-Transport ........................................................................................................ 21
-Unicast ...................................................................................................... 21
-Multicast .................................................................................................... 21
-Use of PGM ................................................................................................ 21
-Clarifications for RFC 3208 ..................................................................... 21
-Message Syntax ............................................................................................... 22
-Common Data Types ................................................................................... 22
-GUID String ......................................................................................... 22
-ISO 8601 Date String ............................................................................ 22
-xs:unsignedLong ................................................................................... 23
-SRMP Message Structure ............................................................................. 23
-Standard XML Namespaces .......................................................................... 23
-WS-Routing Path Element ............................................................................ 24
-action Element...................................................................................... 24
-to Element ........................................................................................... 24
-id Element ........................................................................................... 25
-rev Element ......................................................................................... 25
-Other Elements ..................................................................................... 26
-SRMP Header Elements ............................................................................... 26
-properties Element ................................................................................ 26
-expiresAt Element ........................................................................... 26
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-
-2.2.2
-2.2.3
-2.2.4
-
-2.2.5.1.1
-
-2.2.5.1
-
-2.2.5
-
-[MC-MQSRM] - v20240423
-Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 109
-
-2.2.6
-
-2.2.5.3
-
-2.2.5.2
-
-2.2.5.1.2
-2.2.5.1.3
-
-2.2.5.4
-2.2.5.5
-2.2.5.6
-
-2.2.5.2.1
-2.2.5.2.2
-2.2.5.2.3
-
-2.2.5.3.1
-2.2.5.3.2
-2.2.5.3.3
-2.2.5.3.4
-
-sentAt Element ............................................................................... 26
-inReplyTo Element ........................................................................... 26
-services Element ................................................................................... 27
-durable/ Element ............................................................................. 27
-deliveryReceiptRequest Element ........................................................ 27
-commitmentReceiptRequest Element ................................................. 28
-stream Element .................................................................................... 28
-streamId Element ............................................................................ 29
-current Element .............................................................................. 29
-previous Element............................................................................. 29
-start Element .................................................................................. 29
-deliveryReceipt Element ......................................................................... 30
-commitmentReceipt Element .................................................................. 30
-streamReceipt Element .......................................................................... 31
-MSMQ Elements ......................................................................................... 31
-Class Element ....................................................................................... 32
-2.2.6.1
-Priority Element .................................................................................... 32
-2.2.6.2
-Journal/ Element ................................................................................... 32
-2.2.6.3
-DeadLetter/ Element ............................................................................. 32
-2.2.6.4
-Correlation Element ............................................................................... 32
-2.2.6.5
-Trace/ Element ..................................................................................... 33
-2.2.6.6
-ConnectorType Element ......................................................................... 33
-2.2.6.7
-App Element ......................................................................................... 33
-2.2.6.8
-2.2.6.9
-BodyType Element ................................................................................ 33
-2.2.6.10  HashAlgorithm Element ......................................................................... 33
-Eod Element ......................................................................................... 33
-2.2.6.11
-Provider Element .................................................................................. 34
-2.2.6.12
-2.2.6.13
-SourceQmGuid Element ......................................................................... 34
-2.2.6.14  DestinationMqf Element ......................................................................... 34
-AdminMqf Element ................................................................................ 35
-2.2.6.15
-ResponseMqf Element ............................................................................ 35
-2.2.6.16
-TTrq Element ........................................................................................ 35
-2.2.6.17
-Signature Elements ..................................................................................... 35
-SignedInfo Element ............................................................................... 36
-SignatureMethod Element ................................................................. 36
-Reference Element .......................................................................... 36
-DigestMethod Element ................................................................ 36
-DigestValue Element .................................................................. 36
-SignatureValue Element ......................................................................... 37
-Directory Service Schema Elements ................................................................... 37
-
-2.2.7.1.2.1
-2.2.7.1.2.2
-
-2.2.7.1.1
-2.2.7.1.2
-
-2.2.7.1
-
-2.2.7.2
-
-2.2.7
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.1.1.1
-3.1.1.1.2
-
-3  Protocol Details ..................................................................................................... 38
-Common Details .............................................................................................. 38
-Abstract Data Model .................................................................................... 38
-Protocol State ....................................................................................... 38
-Persistent State Storage ................................................................... 38
-State Diagrams ............................................................................... 38
-Regular and Durable Message State Sender .................................. 38
-Regular and Durable Message State Receiver ................................ 39
-Regular and Durable Message Position Deleted State Receiver ......... 40
-Stream Message State Sender ..................................................... 41
-Stream Message State Receiver ................................................... 42
-Stream Message Position Deleted State Receiver ........................... 43
-Shared Data Elements ..................................................................... 44
-SRMPMessage ................................................................................. 45
-SRMPState ..................................................................................... 45
-Stream........................................................................................... 46
-TransparentStoreAndForward ............................................................ 47
-
-3.1.1.1.2.1
-3.1.1.1.2.2
-3.1.1.1.2.3
-3.1.1.1.2.4
-3.1.1.1.2.5
-3.1.1.1.2.6
-
-3.1.1.1.3
-3.1.1.1.4
-3.1.1.1.5
-3.1.1.1.6
-3.1.1.1.7
-
-[MC-MQSRM] - v20240423
-Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 109
-
-3.1.1.2
-3.1.1.3
-
-3.1.1.4
-
-3.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-
-3.1.3
-
-3.1.3.1
-3.1.3.2
-
-3.1.4
-
-3.1.5
-
-3.1.4.1
-
-3.1.5.1
-
-3.1.1.4.1
-3.1.1.4.2
-3.1.1.4.3
-
-3.1.1.1.8
-3.1.1.1.9
-3.1.1.1.10
-
-3.1.1.3.1
-3.1.1.3.2
-3.1.1.3.3
-3.1.1.3.4
-
-DefaultStreamReceiptURLReplacement ............................................... 47
-OutboundRedirectionExceptionCollection ............................................ 47
-Redirection ..................................................................................... 47
-3.1.1.1.10.1  OutboundRedirectionCollection .................................................... 47
-InboundRedirectionCollection ...................................................... 47
-3.1.1.1.10.2
-StreamReceiptURLReplacementCollection ...................................... 47
-3.1.1.1.10.3
-Stream Message Sequence ..................................................................... 48
-Receipts ............................................................................................... 48
-Delivery Receipts ............................................................................. 48
-Stream Receipts .............................................................................. 49
-Final Stream Receipts ...................................................................... 49
-Commitment Receipts ...................................................................... 49
-Sequence Diagrams .............................................................................. 50
-Regular SRMP Message and Receipts ................................................. 50
-Stream Sequence and Receipts ......................................................... 50
-Stream Message and Multiple Receipts ............................................... 52
-Timers ...................................................................................................... 53
-Retransmission Timer ............................................................................ 53
-Stream Receipt Wait Timer ..................................................................... 53
-Stream Receipt Coalescing Timer ............................................................ 54
-Session Cleanup Timer .......................................................................... 54
-Initialization ............................................................................................... 54
-Global Initialization ............................................................................... 54
-Stream Initialization .............................................................................. 54
-Higher-Layer Triggered Events ..................................................................... 55
-Queue Manager Started ......................................................................... 55
-Message Processing Events and Sequencing Rules .......................................... 55
-SRMP Message Received ........................................................................ 55
-Message Deserialization ................................................................... 55
-Handling Incorrectly Formatted Messages ........................................... 59
-Redirection and Error Handling .......................................................... 59
-Checking Message Expiration ............................................................ 61
-Identifying the Message Type ............................................................ 61
-User Message Processing .................................................................. 62
-Checking Message Signature ....................................................... 63
-Processing Regular and Durable Messages .................................... 64
-Processing Stream Messages ....................................................... 64
-Processing IncomingTransactionalTransferInfo ............................... 65
-Delivery Receipt Message Processing ................................................. 66
-Stream Receipt Message Processing ................................................... 66
-Marking Acknowledged Messages ................................................. 66
-Processing OutgoingTransferInfo.................................................. 67
-Deleting Acknowledged Messages ................................................ 67
-Source Journaling ...................................................................... 68
-Final Stream Receipt Message Processing ........................................... 68
-Deleting Acknowledged Messages ................................................ 68
-Processing OutgoingTransferInfo.................................................. 69
-Deadlettering ............................................................................ 69
-Commitment Receipt Message Processing ........................................... 69
-3.1.5.1.10
-3.1.5.1.11  Detecting Duplicates ........................................................................ 69
-Inserting a Message into Its Destination Queue ................................... 69
-3.1.5.1.12
-Source Journal Message Processing ......................................................... 71
-Negative Source Journaling............................................................... 71
-Nonstream Messages .................................................................. 71
-Stream Messages ....................................................................... 71
-Positive Source Journaling ................................................................ 72
-Timer Events .............................................................................................. 72
-Retransmission Timer ............................................................................ 72
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-3.1.5.1.6
-
-3.1.5.1.6.1
-3.1.5.1.6.2
-3.1.5.1.6.3
-3.1.5.1.6.4
-
-3.1.5.1.8.1
-3.1.5.1.8.2
-3.1.5.1.8.3
-3.1.5.1.8.4
-
-3.1.5.1.9.1
-3.1.5.1.9.2
-3.1.5.1.9.3
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-
-3.1.5.1.7
-3.1.5.1.8
-
-3.1.5.2.2
-
-3.1.5.1.9
-
-3.1.5.2.1
-
-3.1.5.2
-
-3.1.6
-
-3.1.6.1
-
-[MC-MQSRM] - v20240423
-Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 109
-
-3.1.6.2
-3.1.6.3
-3.1.6.4
-
-3.1.7
-
-3.1.7.1
-3.1.7.2
-
-Stream Receipt Wait Timer ..................................................................... 72
-Stream Receipt Coalescing Timer ............................................................ 73
-Session Cleanup Timer Event.................................................................. 73
-Other Local Events ...................................................................................... 74
-Handling a Network Disconnect ............................................................... 74
-Send User Message ............................................................................... 74
-Checking for Message Expiration ....................................................... 74
-Updating the SRMP Message Elements ............................................... 75
-Outgoing Stream Message Processing ................................................ 75
-Message Serialization ....................................................................... 76
-Sending the Message ....................................................................... 85
-Message Position Deleted ....................................................................... 86
-Sending a Commitment Receipt ........................................................ 86
-Deadlettering .................................................................................. 86
-Sending a Final Stream Receipt ......................................................... 87
-Pause Queue Event ............................................................................... 87
-Resume Queue Event ............................................................................ 87
-Stream Element Removed Event ............................................................. 88
-Message Position Available ..................................................................... 88
-Send User Message Wrapper .................................................................. 89
-Establish Transport Connection ............................................................... 89
-
-3.1.7.2.1
-3.1.7.2.2
-3.1.7.2.3
-3.1.7.2.4
-3.1.7.2.5
-
-3.1.7.3
-
-3.1.7.3.1
-3.1.7.3.2
-3.1.7.3.3
-
-3.1.7.4
-3.1.7.5
-3.1.7.6
-3.1.7.7
-3.1.7.8
-3.1.7.9
-
-4  Protocol Examples ................................................................................................. 91
-Simple SRMP Message ...................................................................................... 91
-Simple Message Including MSMQ Element ........................................................... 91
-Combined Delivery and Commitment Receipt Request Example ............................. 92
-Stream Sample ................................................................................................ 95
-PGM Example .................................................................................................. 99
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5  Security ............................................................................................................... 101
-Security Considerations for Implementers .......................................................... 101
-Index of Security Parameters ........................................................................... 101
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 102
-
-7  Change Tracking .................................................................................................. 106
-
-8  Index ................................................................................................................... 107
-
-[MC-MQSRM] - v20240423
-Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 109
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Introduction](#131-introduction)
+    - [1.3.2 Message Queuing](#132-message-queuing)
+    - [1.3.3 SRMP](#133-srmp)
+    - [1.3.4 Message Structure](#134-message-structure)
+    - [1.3.5 User Message Types](#135-user-message-types)
+      - [1.3.5.1 Regular Messages](#1351-regular-messages)
+      - [1.3.5.2 Durable Messages](#1352-durable-messages)
+      - [1.3.5.3 Stream Messages](#1353-stream-messages)
+    - [1.3.6 Message Queues](#136-message-queues)
+      - [1.3.6.1 System Queues](#1361-system-queues)
+      - [1.3.6.2 Outgoing Queues](#1362-outgoing-queues)
+    - [1.3.7 Source Journaling](#137-source-journaling)
+      - [1.3.7.1 Positive Source Journaling](#1371-positive-source-journaling)
+      - [1.3.7.2 Negative Source Journaling](#1372-negative-source-journaling)
+    - [1.3.8 Internal Receipts](#138-internal-receipts)
+    - [1.3.9 Protocol Security](#139-protocol-security)
+    - [1.3.10 WS-Routing (SOAP-RP)](#1310-ws-routing-soap-rp)
+    - [1.3.11 Unicast vs. Multicast Messages](#1311-unicast-vs-multicast-messages)
+    - [1.3.12 SRMP Example Message](#1312-srmp-example-message)
+    - [1.3.13 Typical Message Queuing Scenario](#1313-typical-message-queuing-scenario)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Unicast](#211-unicast)
+    - [2.1.2 Multicast](#212-multicast)
+    - [2.1.3 Use of PGM](#213-use-of-pgm)
+      - [2.1.3.1 Clarifications for RFC 3208](#2131-clarifications-for-rfc-3208)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 GUID String](#2211-guid-string)
+      - [2.2.1.2 ISO 8601 Date String](#2212-iso-8601-date-string)
+      - [2.2.1.3 xs:unsignedLong](#2213-xsunsignedlong)
+    - [2.2.2 SRMP Message Structure](#222-srmp-message-structure)
+    - [2.2.3 Standard XML Namespaces](#223-standard-xml-namespaces)
+    - [2.2.4 WS-Routing Path Element](#224-ws-routing-path-element)
+      - [2.2.4.1 action Element](#2241-action-element)
+      - [2.2.4.2 to Element](#2242-to-element)
+      - [2.2.4.3 id Element](#2243-id-element)
+      - [2.2.4.4 rev Element](#2244-rev-element)
+      - [2.2.4.5 Other Elements](#2245-other-elements)
+    - [2.2.5 SRMP Header Elements](#225-srmp-header-elements)
+      - [2.2.5.1 properties Element](#2251-properties-element)
+        - [2.2.5.1.1 expiresAt Element](#22511-expiresat-element)
+        - [2.2.5.1.2 sentAt Element](#22512-sentat-element)
+        - [2.2.5.1.3 inReplyTo Element](#22513-inreplyto-element)
+      - [2.2.5.2 services Element](#2252-services-element)
+        - [2.2.5.2.1 durable/ Element](#22521-durable-element)
+        - [2.2.5.2.2 deliveryReceiptRequest Element](#22522-deliveryreceiptrequest-element)
+        - [2.2.5.2.3 commitmentReceiptRequest Element](#22523-commitmentreceiptrequest-element)
+      - [2.2.5.3 stream Element](#2253-stream-element)
+        - [2.2.5.3.1 streamId Element](#22531-streamid-element)
+        - [2.2.5.3.2 current Element](#22532-current-element)
+        - [2.2.5.3.3 previous Element](#22533-previous-element)
+        - [2.2.5.3.4 start Element](#22534-start-element)
+      - [2.2.5.4 deliveryReceipt Element](#2254-deliveryreceipt-element)
+      - [2.2.5.5 commitmentReceipt Element](#2255-commitmentreceipt-element)
+      - [2.2.5.6 streamReceipt Element](#2256-streamreceipt-element)
+    - [2.2.6 MSMQ Elements](#226-msmq-elements)
+      - [2.2.6.1 Class Element](#2261-class-element)
+      - [2.2.6.2 Priority Element](#2262-priority-element)
+      - [2.2.6.3 Journal/ Element](#2263-journal-element)
+      - [2.2.6.4 DeadLetter/ Element](#2264-deadletter-element)
+      - [2.2.6.5 Correlation Element](#2265-correlation-element)
+      - [2.2.6.6 Trace/ Element](#2266-trace-element)
+      - [2.2.6.7 ConnectorType Element](#2267-connectortype-element)
+      - [2.2.6.8 App Element](#2268-app-element)
+      - [2.2.6.9 BodyType Element](#2269-bodytype-element)
+      - [2.2.6.10 HashAlgorithm Element](#22610-hashalgorithm-element)
+      - [2.2.6.11 Eod Element](#22611-eod-element)
+      - [2.2.6.12 Provider Element](#22612-provider-element)
+      - [2.2.6.13 SourceQmGuid Element](#22613-sourceqmguid-element)
+      - [2.2.6.14 DestinationMqf Element](#22614-destinationmqf-element)
+      - [2.2.6.15 AdminMqf Element](#22615-adminmqf-element)
+      - [2.2.6.16 ResponseMqf Element](#22616-responsemqf-element)
+      - [2.2.6.17 TTrq Element](#22617-ttrq-element)
+    - [2.2.7 Signature Elements](#227-signature-elements)
+      - [2.2.7.1 SignedInfo Element](#2271-signedinfo-element)
+        - [2.2.7.1.1 SignatureMethod Element](#22711-signaturemethod-element)
+        - [2.2.7.1.2 Reference Element](#22712-reference-element)
+          - [2.2.7.1.2.1 DigestMethod Element](#227121-digestmethod-element)
+          - [2.2.7.1.2.2 DigestValue Element](#227122-digestvalue-element)
+      - [2.2.7.2 SignatureValue Element](#2272-signaturevalue-element)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Protocol State](#3111-protocol-state)
+        - [3.1.1.1.1 Persistent State Storage](#31111-persistent-state-storage)
+        - [3.1.1.1.2 State Diagrams](#31112-state-diagrams)
+          - [3.1.1.1.2.1 Regular and Durable Message State Sender](#311121-regular-and-durable-message-state-sender)
+          - [3.1.1.1.2.2 Regular and Durable Message State Receiver](#311122-regular-and-durable-message-state-receiver)
+          - [3.1.1.1.2.3 Regular and Durable Message Position Deleted State Receiver](#311123-regular-and-durable-message-position-deleted-state-receiver)
+          - [3.1.1.1.2.4 Stream Message State Sender](#311124-stream-message-state-sender)
+          - [3.1.1.1.2.5 Stream Message State Receiver](#311125-stream-message-state-receiver)
+          - [3.1.1.1.2.6 Stream Message Position Deleted State Receiver](#311126-stream-message-position-deleted-state-receiver)
+        - [3.1.1.1.3 Shared Data Elements](#31113-shared-data-elements)
+        - [3.1.5.1.1 and 3.1.7.2.3. In addition, this protocol extends the data element for SRMP-specific](#31511-and-31723-in-addition-this-protocol-extends-the-data-element-for-srmp-specific)
+        - [3.1.5.1.2 Handling Incorrectly Formatted Messages](#31512-handling-incorrectly-formatted-messages)
+        - [3.1.5.1.3 Redirection and Error Handling](#31513-redirection-and-error-handling)
+        - [3.1.5.1.4 Checking Message Expiration](#31514-checking-message-expiration)
+        - [3.1.5.1.5 Identifying the Message Type](#31515-identifying-the-message-type)
+        - [3.1.5.1.6 User Message Processing](#31516-user-message-processing)
+          - [3.1.5.1.6.1 Checking Message Signature](#315161-checking-message-signature)
+          - [3.1.5.1.6.2 Processing Regular and Durable Messages](#315162-processing-regular-and-durable-messages)
+          - [3.1.5.1.6.3 Processing Stream Messages](#315163-processing-stream-messages)
+          - [3.1.5.1.6.4 Processing IncomingTransactionalTransferInfo](#315164-processing-incomingtransactionaltransferinfo)
+        - [3.1.5.1.7 Delivery Receipt Message Processing](#31517-delivery-receipt-message-processing)
+        - [3.1.5.1.8 Stream Receipt Message Processing](#31518-stream-receipt-message-processing)
+          - [3.1.5.1.8.1 Marking Acknowledged Messages](#315181-marking-acknowledged-messages)
+          - [3.1.5.1.8.2 Processing OutgoingTransferInfo](#315182-processing-outgoingtransferinfo)
+          - [3.1.5.1.8.3 Deleting Acknowledged Messages](#315183-deleting-acknowledged-messages)
+          - [3.1.5.1.8.4 Source Journaling](#315184-source-journaling)
+        - [3.1.5.1.9 Final Stream Receipt Message Processing](#31519-final-stream-receipt-message-processing)
+          - [3.1.5.1.9.1 Deleting Acknowledged Messages](#315191-deleting-acknowledged-messages)
+          - [3.1.5.1.9.2 Processing OutgoingTransferInfo](#315192-processing-outgoingtransferinfo)
+          - [3.1.5.1.9.3 Deadlettering](#315193-deadlettering)
+        - [3.1.5.1.10 Commitment Receipt Message Processing](#315110-commitment-receipt-message-processing)
+        - [3.1.5.1.11 Detecting Duplicates](#315111-detecting-duplicates)
+        - [3.1.5.1.12 Inserting a Message into Its Destination Queue](#315112-inserting-a-message-into-its-destination-queue)
+      - [3.1.5.2 Source Journal Message Processing](#3152-source-journal-message-processing)
+        - [3.1.5.2.1 Negative Source Journaling](#31521-negative-source-journaling)
+          - [3.1.5.2.1.1 Nonstream Messages](#315211-nonstream-messages)
+          - [3.1.5.2.1.2 Stream Messages](#315212-stream-messages)
+        - [3.1.5.2.2 Positive Source Journaling](#31522-positive-source-journaling)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Retransmission Timer](#3161-retransmission-timer)
+      - [3.1.6.2 Stream Receipt Wait Timer](#3162-stream-receipt-wait-timer)
+      - [3.1.6.3 Stream Receipt Coalescing Timer](#3163-stream-receipt-coalescing-timer)
+      - [3.1.6.4 Session Cleanup Timer Event](#3164-session-cleanup-timer-event)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Handling a Network Disconnect](#3171-handling-a-network-disconnect)
+      - [3.1.7.2 Send User Message](#3172-send-user-message)
+        - [3.1.7.2.1 Checking for Message Expiration](#31721-checking-for-message-expiration)
+        - [3.1.7.2.2 Updating the SRMP Message Elements](#31722-updating-the-srmp-message-elements)
+        - [3.1.7.2.3 Outgoing Stream Message Processing](#31723-outgoing-stream-message-processing)
+        - [3.1.7.2.4 Message Serialization](#31724-message-serialization)
+        - [3.1.7.2.5 Sending the Message](#31725-sending-the-message)
+      - [3.1.7.3 Message Position Deleted](#3173-message-position-deleted)
+        - [3.1.7.3.1 Sending a Commitment Receipt](#31731-sending-a-commitment-receipt)
+        - [3.1.7.3.2 Deadlettering](#31732-deadlettering)
+        - [3.1.7.3.3 Sending a Final Stream Receipt](#31733-sending-a-final-stream-receipt)
+      - [3.1.7.4 Pause Queue Event](#3174-pause-queue-event)
+      - [3.1.7.5 Resume Queue Event](#3175-resume-queue-event)
+      - [3.1.7.6 Stream Element Removed Event](#3176-stream-element-removed-event)
+      - [3.1.7.7 Message Position Available](#3177-message-position-available)
+      - [3.1.7.8 Send User Message Wrapper](#3178-send-user-message-wrapper)
+      - [3.1.7.9 Establish Transport Connection](#3179-establish-transport-connection)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Simple SRMP Message](#41-simple-srmp-message)
+  - [4.2 Simple Message Including MSMQ Element](#42-simple-message-including-msmq-element)
+  - [4.3 Combined Delivery and Commitment Receipt Request Example](#43-combined-delivery-and-commitment-receipt-request-example)
+  - [4.4 Stream Sample](#44-stream-sample)
+  - [4.5 PGM Example](#45-pgm-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP),
 which defines a mechanism for reliably transferring messages between two message queues that
@@ -1041,7 +712,7 @@ required.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1093,7 +764,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-appended to the tail through a write operation (Send) that appends the message and
+
+appended to the tail through a write operation (Send) that appends the message and
 increments the tail pointer. Messages are consumed from the head through a destructive read
 operation (Receive) that deletes the message and increments the head pointer. A message at
 the head can also be read through a nondestructive read operation (Peek).
@@ -1170,7 +842,8 @@ Release: April 23, 2024
 
 9 / 109
 
-system queue: An internal queue that is used by the queue manager for a purpose other than
+
+system queue: An internal queue that is used by the queue manager for a purpose other than
 
 holding messages destined for a remote destination queue.
 
@@ -1200,14 +873,14 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1240,7 +913,8 @@ Release: April 23, 2024
 
 10 / 109
 
-[MS-MQDSSM] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Schema
+
+[MS-MQDSSM] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Schema
 Mapping".
 
 [MS-MQDS] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Protocol".
@@ -1306,7 +980,8 @@ Release: April 23, 2024
 
 11 / 109
 
-[W3C-XSD] World Wide Web Consortium, "XML Schema Part 2: Datatypes Second Edition", 28
+
+[W3C-XSD] World Wide Web Consortium, "XML Schema Part 2: Datatypes Second Edition", 28
 October 2004, http://www.w3.org/TR/2004/REC-xmlschema-2-20041028
 
 [XML1.0] Bray, T., Paoli, J., Sperberg-McQueen, C.M., and Maler, E., "Extensible Markup Language
@@ -1316,16 +991,16 @@ https://www.w3.org/TR/2000/REC-xml-20001006
 [XMLDSig] Bartel, M., Boyer, J., Fox, B., et al., "XML-Signature Syntax and Processing", W3C
 Recommendation, February 2002, http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQOD] Microsoft Corporation, "Message Queuing Protocols Overview".
 
 [MSDN-WSROUTING] Microsoft Corporation, "Web Services Routing Protocol (WS-Routing)",
 http://msdn.microsoft.com/en-us/library/ms951249.aspx
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Introduction
+#### 1.3.1 Introduction
 
 SRMP is used by a client to reliably transfer messages to a server. Specifically, it is used by the
 MSMQ queue manager (QM) service on the sender to send a message or a message stream to the
@@ -1338,7 +1013,7 @@ on whether the message is unicast or multicast. SRMP enhances SOAP with addition
 acknowledgment that ensure that messages are reliably transferred regardless of connection,
 application, or node failures.
 
-1.3.2  Message Queuing
+#### 1.3.2 Message Queuing
 
 Microsoft Message Queuing (MSMQ) is a communications service that asynchronously and reliably
 passes messages between client applications that run on different hosts. In MSMQ, clients send
@@ -1370,10 +1045,11 @@ Release: April 23, 2024
 
 12 / 109
 
-destination host sends back and also from the dead-letter queues and queue journals for
+
+destination host sends back and also from the dead-letter queues and queue journals for
 messages sent. For more information about MSMQ architecture, see [MS-MQOD].
 
-1.3.3  SRMP
+#### 1.3.3 SRMP
 
 SRMP defines a mechanism for reliably transferring messages between QMs that are located on two
 different hosts. The protocol does not define the QM or its interface to client applications.
@@ -1387,7 +1063,7 @@ these messages. In the case of HTTP 1.1, this service can be accomplished by usi
 Microsoft introduced SRMP in Windows XP operating system (2001) and Windows Server 2003
 operating system as part of MSMQ version 3.0.
 
-1.3.4  Message Structure
+#### 1.3.4 Message Structure
 
 A typical message that is exchanged in a message queuing system includes a message packet
 header, which contains a set of message properties, or metadata, about the message. The message
@@ -1397,14 +1073,14 @@ not as part of the SOAP 1.1 message. Thus, the SOAP 1.1 message acts as the mess
 header with its body element empty. This allows the sending of multimedia contents in application
 messages. For more information about MIME, see [RFC2045] and [RFC2046].
 
-1.3.5  User Message Types
+#### 1.3.5 User Message Types
 
 Messages that are sent by using SRMP can be one of three types: regular, durable, or stream. The
 type of message, and how it is delivered, depends on whether the implementer wants better
 performance with minimal resources (as with regular messaging) or reliability and recovery after a
 failure (which the durable and stream message types provide).
 
-1.3.5.1  Regular Messages
+##### 1.3.5.1 Regular Messages
 
 Messages that are sent as regular messages are stored in RAM during transfer and delivery to the
 destination queue until they are received. Storage in RAM provides fast performance, but the
@@ -1420,7 +1096,7 @@ on a server are lost if a receiving QM fails.
 
 Regular messages correspond to express messages, as described in [MS-MQQB] section 1.3.2.1.1.
 
-1.3.5.2  Durable Messages
+##### 1.3.5.2 Durable Messages
 
 Messages sent as durable messages are written to stable storage on both the sending and
 receiving computer. After delivery to the destination queue, durable messages are stored on disk until
@@ -1433,7 +1109,8 @@ Release: April 23, 2024
 
 13 / 109
 
- Disk storage makes delivery somewhat slower than with regular messages but is ideal when
+
+ Disk storage makes delivery somewhat slower than with regular messages but is ideal when
 persistence through service restart or failure is required. If a computer fails or is shut down while
 sending messages, the messages are stored on disk. When the computer is restarted and the QM
 service restarts, the sending process automatically resumes. Durable messages are not guaranteed to
@@ -1441,7 +1118,7 @@ be delivered only once or in order.
 
 Durable messages correspond to recoverable messages, as described in [MS-MQQB] section 1.3.2.1.2.
 
-1.3.5.3  Stream Messages
+##### 1.3.5.3 Stream Messages
 
 A stream message is a durable message that has exactly-once-and-in-order (EOIO) delivery
 guarantees. When delivering stream messages, SRMP uses an additional level of acknowledgment to
@@ -1458,7 +1135,7 @@ as the external behavior of a QM is consistent with the behavior specified in th
 Stream messages correspond to transactional messages, as described in [MS-MQQB] section
 1.3.2.1.3.
 
-1.3.6  Message Queues
+#### 1.3.6 Message Queues
 
 A queue is a logical data structure that contains an ordered list of zero or more messages. A QM
 maintains a set of queues that hold messages. The QM requires a set of predefined or system
@@ -1477,7 +1154,7 @@ messages, and a nontransactional queue accepts only regular and durable messages
 transactional queue requires persistent storage of messages and guaranteed consistency through
 process or node failure.
 
-1.3.6.1  System Queues
+##### 1.3.6.1 System Queues
 
 All QMs support system queues, which include the following types of queues:
 
@@ -1499,16 +1176,17 @@ Release: April 23, 2024
 
 14 / 109
 
-  Queue journals, which contain copies of the messages sent from hosts when positive source
+
+  Queue journals, which contain copies of the messages sent from hosts when positive source
 
 journaling is requested by message queuing applications.
 
-1.3.6.2  Outgoing Queues
+##### 1.3.6.2 Outgoing Queues
 
 Outgoing queues contain messages that are sent to specific destination addresses. Messages
 remain in outgoing queues until they can be transferred to their respective destination queues.
 
-1.3.7  Source Journaling
+#### 1.3.7 Source Journaling
 
 Source journaling is the process of storing copies of outgoing messages on a source computer.
 Source journaling is selected on a per-message basis and is programmatically implemented as a
@@ -1519,12 +1197,12 @@ journaling is not selected.
 There are two types of source journaling: positive source journaling and negative source journaling, as
 described in the sections that follow.
 
-1.3.7.1  Positive Source Journaling
+##### 1.3.7.1 Positive Source Journaling
 
 Positive source journaling tracks successfully sent messages by placing message copies in the local
 host queue journal.
 
-1.3.7.2  Negative Source Journaling
+##### 1.3.7.2 Negative Source Journaling
 
 Negative source journaling tracks unsuccessfully sent messages by placing message copies in the
 local host dead-letter queue. When a message queuing application requests negative source
@@ -1537,7 +1215,7 @@ For transactional messages, a copy of the message is placed in the system transa
 queue or an application-specified queue of the local host only if message queuing does not confirm
 that the message was retrieved from its destination queue.
 
-1.3.8  Internal Receipts
+#### 1.3.8 Internal Receipts
 
 Internal receipts are system-generated protocol messages that the receiving QM at the final
 destination of a message sends to the sending QM to acknowledge receipt (or other processing) of a
@@ -1562,15 +1240,16 @@ Release: April 23, 2024
 
 15 / 109
 
-  Stream receipt: This message acknowledges in-order receipt of stream messages. This receipt
+
+  Stream receipt: This message acknowledges in-order receipt of stream messages. This receipt
 is required to guarantee EOIO delivery of stream messages. Stream receipts correspond to order
 acknowledgments, as described in [MS-MQQB] section 1.3.5.1.
 
-1.3.9  Protocol Security
+#### 1.3.9 Protocol Security
 
 SRMP uses HTTP over Secure Sockets Layer (HTTPS) for secure transport of messages.
 
-1.3.10 WS-Routing (SOAP-RP)
+#### 1.3.10 WS-Routing (SOAP-RP)
 
 The Web Services Routing Protocol described in [MSDN-WSROUTING], which was formerly known as
 the SOAP Routing Protocol (SOAP-RP), is a SOAP-based stateless protocol for exchanging one-way
@@ -1585,7 +1264,7 @@ routing-related fields are largely ignored. Instead, SRMP relies on HTTP and TCP
 the sender and the receiving Web service. This document describes the WS-Routing fields that SRMP
 uses. For more information about WS-Routing, see [MSDN-WSROUTING].
 
-1.3.11 Unicast vs. Multicast Messages
+#### 1.3.11 Unicast vs. Multicast Messages
 
 SRMP messages can be sent to either a single destination queue (called a unicast message) or
 simultaneously to multiple destination queues (called a multicast message). If unicast messaging is
@@ -1607,7 +1286,7 @@ queue name is stated as a multicast URI that uses the PGM Protocol as follows.
 
  <to>MSMQ:MULTICAST=234.1.1.1:8001</to>
 
-1.3.12 SRMP Example Message
+#### 1.3.12 SRMP Example Message
 
 The following is a typical SRMP message that illustrates the basic message structure. At the top is the
 HTTP POST request. This is followed by the MIME content type information. The SOAP 1.1 message
@@ -1628,7 +1307,8 @@ Release: April 23, 2024
 
 16 / 109
 
-<Properties> elements, such as <expiresAt>, followed by MSMQ-specific elements, such as
+
+<Properties> elements, such as <expiresAt>, followed by MSMQ-specific elements, such as
 <Priority>.
 
  POST /msmq/private$/simpleq HTTP/1.1
@@ -1672,7 +1352,7 @@ Release: April 23, 2024
  Content-Length: 223
  Content-Id: body@caf195ea-615c-4264-ae08-11a4e60194c0
 
-1.3.13 Typical Message Queuing Scenario
+#### 1.3.13 Typical Message Queuing Scenario
 
 A typical message queuing scenario achieves reliable asynchronous messaging between a client
 computer and a server application. The client application might be an order application that is used for
@@ -1696,13 +1376,14 @@ Release: April 23, 2024
 
 17 / 109
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MC-MQSRM].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 Figure 1: A typical message queuing scenario
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on SOAP 1.1, and either HTTP 1.1 or the PGM Protocol, to provide a transport
 for messages. In the point-to-point (unicast) scenario, this protocol uses HTTP over TCP to transport
@@ -1720,7 +1401,8 @@ Release: April 23, 2024
 
 18 / 109
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MC-MQSRM].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1730,7 +1412,7 @@ This protocol uses shared state and processing rules described in [MS-MQDMPR]. F
 information, see [MS-MQDMPR] section 1.4 for details about relationships between all MSMQ protocols
 through this shared state.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed that, before invoking SRMP, the protocol client has obtained the name of a server
 computer that supports this protocol and the name of a queue hosted on the server. This specification
@@ -1740,7 +1422,7 @@ between a client application and the API of the QM.
 The protocol assumes that any network address translations (NATs) or firewalls are configured to
 allow sending QMs to be addressable.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The implementation of the server side of this protocol applies to queue managers that provide
 message queuing communication services to clients. The implementation of the client side of this
@@ -1770,7 +1452,8 @@ Release: April 23, 2024
 
 19 / 109
 
-
+
+
 
 
 
@@ -1779,7 +1462,7 @@ If message data is greater than 4 megabytes in size.
 If the client-side or server-side service is incapable of processing HTTP 1.1 messages (for unicast
 SRMP) or PGM messages (for multicast SRMP).
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1791,11 +1474,11 @@ section 2.1.
 
   Capability Negotiation: There are no capabilities to negotiate.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1806,11 +1489,12 @@ Release: April 23, 2024
 
 20 / 109
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
 
-2.1.1  Unicast
+### 2.1 Transport
+
+#### 2.1.1 Unicast
 
 For unicast messages, SRMP MUST be carried out over [SOAP1.1] and HTTP 1.1 [RFC2616]. Both the
 sending and the receiving sides MUST provide Web services with the following capabilities:
@@ -1830,7 +1514,7 @@ transport:
 
 [RFC2818].
 
-2.1.2  Multicast
+#### 2.1.2 Multicast
 
 For multicast messages, SRMP MUST be carried out over [SOAP1.1] and PGM [RFC3208]. Both the
 sending and the receiving sides MUST provide services that support SOAP (as specified in [SOAP1.1])
@@ -1839,14 +1523,14 @@ over PGM (as specified in [RFC3208]) over IP.<2>
 When using PGM as the transport, the sender and receivers need to agree on both the multicast
 address and the port.
 
-2.1.3  Use of PGM
+#### 2.1.3 Use of PGM
 
 The PGM specification [RFC3208] is ambiguous in a number of areas. SRMP uses PGM as specified in
 the following section. All sections of [RFC3208] except sections 7, 9.5, and 11–15 MUST be
 implemented (that is, no network element or designated local repairer functionality, nor appendices
 A–E).<3>
 
-2.1.3.1  Clarifications for RFC 3208
+##### 2.1.3.1 Clarifications for RFC 3208
 
 The following values SHOULD<4> be used for the constants defined in [RFC3208].
 
@@ -1889,7 +1573,8 @@ Release: April 23, 2024
 
 21 / 109
 
-Constant
+
+Constant
 
 Value
 
@@ -1943,19 +1628,19 @@ NAK request.
 Implementations of this specification SHOULD limit the size of application data packets (APDUs) to
 64 kilobytes to protect the server from denial of service attacks.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section specifies the syntax of SOAP 1.1 [SOAP1.1] messages that are exchanged by using SRMP.
 All messages are encoded in XML [XML1.0], as specified in [SOAP1.1] section 3.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  GUID String
+##### 2.2.1.1 GUID String
 
 This type is a string representation of a GUID type (as specified in [MS-DTYP] section 2.3.4.3) in the
 string form of a UUID (as specified in [RFC4122] section 3).
 
-2.2.1.2  ISO 8601 Date String
+##### 2.2.1.2 ISO 8601 Date String
 
 This string is an ISO 8601–formatted date and time (see [ISO-8601] for details) that uses the format
 "YYYYMMDDThhmmss".
@@ -1967,11 +1652,12 @@ Release: April 23, 2024
 
 22 / 109
 
-2.2.1.3  xs:unsignedLong
+
+##### 2.2.1.3 xs:unsignedLong
 
 The xs:unsignedLong integer is an unsigned long integer, as described in [W3C-XSD].
 
-2.2.2  SRMP Message Structure
+#### 2.2.2 SRMP Message Structure
 
 All SRMP messages MUST conform to the basic structure of a SOAP 1.1 message, as specified in
 [SOAP1.1] section 4, as follows:
@@ -2001,7 +1687,7 @@ application MUST be encoded as a multipart MIME attachment (see [RFC2387]) by th
 Internal receipt messages (delivery, commitment, and stream receipts) MUST NOT contain a multipart
 MIME payload attachment.
 
-2.2.3  Standard XML Namespaces
+#### 2.2.3 Standard XML Namespaces
 
 The following table shows the standard XML namespaces that are used in this protocol and the alias
 (prefix) that is used in the remaining sections of this protocol specification. Typically, SRMP messages
@@ -2055,7 +1741,8 @@ Release: April 23, 2024
 
 23 / 109
 
-2.2.4  WS-Routing Path Element
+
+#### 2.2.4 WS-Routing Path Element
 
 SRMP uses the WS-Routing <rp:path> element, as defined in http://schemas.xmlsoap.org/rp, for its
 addressing purposes. The <path> element specifies the destination queue for the SRMP message,
@@ -2069,7 +1756,7 @@ marked as follows with the SOAP attribute se:mustUnderstand="1".
 
 The child elements of <rp:path> are used as described in the following sections.
 
-2.2.4.1  action Element
+##### 2.2.4.1 action Element
 
 The WS-Routing <action> element MUST be present as a child element of the <rp:path> element. To
 identify the message to the application, the <action> element MAY contain a string that represents a
@@ -2089,7 +1776,7 @@ message, the <action> element MUST contain the label string "MSMQ:QM Ordering Ac
 The <action> element corresponds to the Message.Label attribute of the ADM Message data
 element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
-2.2.4.2  to Element
+##### 2.2.4.2 to Element
 
 The WS-Routing <to> element MUST be present as a child element of the <rp:path> element. It
 MUST contain a string that represents the URI of the destination queue that is the ultimate
@@ -2113,7 +1800,8 @@ Release: April 23, 2024
 
 24 / 109
 
-If PGM [RFC3208] is selected as the underlying transport protocol, the URI of the destination queue
+
+If PGM [RFC3208] is selected as the underlying transport protocol, the URI of the destination queue
 MUST begin with "MSMQ:MULTICAST=", followed by the multicast IP address of the destination queue,
 followed by ":", and followed by the port number of the destination queue. This sequence, as is shown
 in the following example, is how multicast transport is activated for SRMP messages.
@@ -2123,7 +1811,7 @@ in the following example, is how multicast transport is activated for SRMP messa
 The <to> element corresponds to the Message.DestinationQueueFormatName attribute of the
 ADM Message data element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
-2.2.4.3  id Element
+##### 2.2.4.3 id Element
 
 The WS-Routing <id> element MUST be present as a child element of the <rp:path> element. The
 content of this element uniquely identifies the message across all MSMQ QMs.
@@ -2143,7 +1831,7 @@ element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <id>uuid:26626@32221eda-9376-46df-b6ed-783091123831</id>
 
-2.2.4.4  rev Element
+##### 2.2.4.4 rev Element
 
 The WS-Routing <rev> element MAY be present as a child element of the <rp:path> element. If
 present, exactly one<8> WS-Routing <via> element MUST be present as a child element of the
@@ -2172,19 +1860,20 @@ Release: April 23, 2024
 
 25 / 109
 
-2.2.4.5  Other Elements
+
+##### 2.2.4.5 Other Elements
 
 The WS-Routing elements <fwd>, <from>, <relatesTo>, and <fault> MAY<10> be present as child
 elements of the <rp:path> element and MUST be ignored.
 
-2.2.5  SRMP Header Elements
+#### 2.2.5 SRMP Header Elements
 
 SRMP defines six protocol-specific elements inside the SOAP header: <properties>, <services>,
 <stream>, <deliveryReceipt>, <commitmentReceipt>, and <streamReceipt>. The SRMP namespace
 MUST be declared as xmlns="http://schemas.xmlsoap.org/srmp/", either globally in the <se:Header>
 element or locally in each SRMP element.
 
-2.2.5.1  properties Element
+##### 2.2.5.1 properties Element
 
 The SRMP <properties> element MUST be present as a child element of the <se:Header> element. It
 MUST be marked with the SOAP attribute se:mustUnderstand="1", as the following example shows.
@@ -2194,7 +1883,7 @@ This element specifies common message properties of SRMP messages.
 
 The child elements of the <properties> element are used as described in the following sections.
 
-2.2.5.1.1 expiresAt Element
+###### 2.2.5.1.1 expiresAt Element
 
 The SRMP <expiresAt> element MUST be present as a child element of the <properties> element. It
 MUST contain an ISO 8601 date string, as the following example shows, and is expressed in
@@ -2208,7 +1897,7 @@ Message data element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <expiresAt>20070619T210654</expiresAt>
 
-2.2.5.1.2 sentAt Element
+###### 2.2.5.1.2 sentAt Element
 
 The SRMP <sentAt> element MAY be present as a child element of the <properties> element.
 
@@ -2222,7 +1911,7 @@ element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <sentAt>20070618T210654</sentAt>
 
-2.2.5.1.3 inReplyTo Element
+###### 2.2.5.1.3 inReplyTo Element
 
 The SRMP <inReplyTo> element MAY<11> be present as a child element of the <properties> element
 and MUST be ignored.
@@ -2234,7 +1923,8 @@ Release: April 23, 2024
 
 26 / 109
 
-2.2.5.2  services Element
+
+##### 2.2.5.2 services Element
 
 The SRMP <services> element MAY be present as a child element of the <se:Header> element. If
 present, it MUST be marked with the SOAP attribute se:mustUnderstand="1", as the following
@@ -2246,7 +1936,7 @@ This element specifies services that relate to the delivery guarantees of SRMP m
 
 The child elements of <services> are used as described in the following sections.
 
-2.2.5.2.1 durable/ Element
+###### 2.2.5.2.1 durable/ Element
 
 The SRMP <durable/> element MAY be present as a child element of the <services> element. If the
 <stream> element (see section 2.2.5.3) is present, <durable/> MUST be present.
@@ -2263,7 +1953,7 @@ of the ADM Message data element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <durable/>
 
-2.2.5.2.2 deliveryReceiptRequest Element
+###### 2.2.5.2.2 deliveryReceiptRequest Element
 
 The SRMP <deliveryReceiptRequest> element MAY be present as a child element of the <services>
 element. If present, the SRMP <sendTo> element MUST be present as a child element of the
@@ -2298,7 +1988,8 @@ Release: April 23, 2024
 
 27 / 109
 
-2.2.5.2.3 commitmentReceiptRequest Element
+
+###### 2.2.5.2.3 commitmentReceiptRequest Element
 
 The SRMP <commitmentReceiptRequest> element MAY be present as a child element of the
 <services> element. If present:
@@ -2351,7 +2042,7 @@ negative commitment receipt, depending on the decision, as described previously.
      <positiveOnly/>
  </commitmentReceiptRequest>
 
-2.2.5.3  stream Element
+##### 2.2.5.3 stream Element
 
 The SRMP <stream> element MAY be present as a child element of the <se:Header> element. If
 present, it MUST be marked with the SOAP attribute se:mustUnderstand="1", as the following
@@ -2373,11 +2064,12 @@ Release: April 23, 2024
 
 28 / 109
 
- <stream se:mustUnderstand="1">
+
+ <stream se:mustUnderstand="1">
 
 The child elements of <stream> are used as described in the following sections.
 
-2.2.5.3.1 streamId Element
+###### 2.2.5.3.1 streamId Element
 
 The SRMP <streamId> element MUST be present as a child element of the <stream> element. It
 defines a unique identifier for the stream and MUST begin with "uid:", as the example shows, and be
@@ -2398,7 +2090,7 @@ section 3.1.1.12.
 In the preceding example, the stream identifier converted to hex reads 0x432B164300000006. The
 lower half is the ordinal (0x6); the upper half converts to Friday, September 16, 2005 12:00:19 PM.
 
-2.2.5.3.2 current Element
+###### 2.2.5.3.2 current Element
 
 The SRMP <current> element MUST be present as a child element of the <stream> element.
 
@@ -2411,7 +2103,7 @@ ADM Message data element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <current>42</current>
 
-2.2.5.3.3 previous Element
+###### 2.2.5.3.3 previous Element
 
 The SRMP <previous> element MAY be present as a child element of the <stream> element.
 
@@ -2426,7 +2118,7 @@ attribute of the ADM Message data element. For details, see [MS-MQDMPR] section 
 
  <previous>41</previous>
 
-2.2.5.3.4 start Element
+###### 2.2.5.3.4 start Element
 
 [MC-MQSRM] - v20240423
 Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
@@ -2435,7 +2127,8 @@ Release: April 23, 2024
 
 29 / 109
 
-The SRMP <start> element MAY be present as a child element of the <stream> element. If present,
+
+The SRMP <start> element MAY be present as a child element of the <stream> element. If present,
 the SRMP element <sendReceiptsTo> MUST be present as a child element of the <start> element, as
 the following example shows. The <sendReceiptsTo> element MUST contain a string that represents
 the URI of the administration queue to which receipts are sent. The URI MUST use HTTP/HTTPS name
@@ -2453,7 +2146,7 @@ any subsequent message of the stream.
      </sendReceiptsTo>
  </start>
 
-2.2.5.4  deliveryReceipt Element
+##### 2.2.5.4 deliveryReceipt Element
 
 The SRMP <deliveryReceipt> element MAY be present as a child element of the <se:Header>
 element. This element MUST be generated in response to a message that contains the
@@ -2483,7 +2176,7 @@ in the original message (see section 2.2.5.2.2).
      <id>uuid:32852@32221eda-9376-46df-b6ed-783091123831</id>
  </deliveryReceipt>
 
-2.2.5.5  commitmentReceipt Element
+##### 2.2.5.5 commitmentReceipt Element
 
 The SRMP <commitmentReceipt> element MAY be present as a child element of the <se:Header>
 element. This element MUST be generated in response to a message that contains the
@@ -2506,7 +2199,8 @@ Release: April 23, 2024
 
 30 / 109
 
-
+
+
 
 
 
@@ -2530,7 +2224,7 @@ administration queue that is specified in the <sendTo> element of the
      <id>uuid:32852@32221eda-9376-46df-b6ed-783091123831</id>
  </commitmentReceipt>
 
-2.2.5.6  streamReceipt Element
+##### 2.2.5.6 streamReceipt Element
 
 The SRMP <streamReceipt> element MAY be present as a child element of the <se:Header> element.
 The stream receipt element is generated by the receiver QM and sent to the sender QM. The sender
@@ -2557,7 +2251,7 @@ acknowledges receipt of all messages in the stream up to and including the messa
      <lastOrdinal>2</lastOrdinal>
  </streamReceipt>
 
-2.2.6  MSMQ Elements
+#### 2.2.6 MSMQ Elements
 
 MSMQ uses the following XML elements for specific purposes. They each have corresponding
 attributes in the ADM Message data element of the abstract data model, as described in [MS-
@@ -2578,7 +2272,8 @@ Release: April 23, 2024
 
 31 / 109
 
-2.2.6.1  Class Element
+
+##### 2.2.6.1 Class Element
 
 The MSMQ <Class> element MUST be present as a child element of the <Msmq> element. The
 <Class> element corresponds to the Message.Class attribute of the ADM Message data element.
@@ -2589,7 +2284,7 @@ shows, that corresponds to an enumeration value as described in [MS-MQMQ] sectio
 
  <Class>255</Class>
 
-2.2.6.2  Priority Element
+##### 2.2.6.2 Priority Element
 
 The MSMQ <Priority> element MUST be present as a child element of the <Msmq> element. The
 <Priority> element corresponds to the Message.Priority attribute of the ADM Message data
@@ -2598,7 +2293,7 @@ following example shows. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <Priority>3</Priority>
 
-2.2.6.3  Journal/ Element
+##### 2.2.6.3 Journal/ Element
 
 The MSMQ <Journal/> element MAY be present as a child element of the <Msmq> element. The
 <Journal/> element, as the following example shows, corresponds to the
@@ -2607,7 +2302,7 @@ details, see [MS-MQDMPR] section 3.1.1.12.
 
  <Journal/>
 
-2.2.6.4  DeadLetter/ Element
+##### 2.2.6.4 DeadLetter/ Element
 
 The MSMQ <DeadLetter/> element, as the following example shows, MAY be present as a child
 element of the <Msmq> element. The <DeadLetter/> element corresponds to the
@@ -2616,7 +2311,7 @@ details, see [MS-MQDMPR] section 3.1.1.12.
 
  <DeadLetter/>
 
-2.2.6.5  Correlation Element
+##### 2.2.6.5 Correlation Element
 
 The MSMQ <Correlation> element MAY be present as a child element of the <Msmq> element. The
 <Correlation> element corresponds to the Message.CorrelationIdentifier attribute of the ADM
@@ -2634,7 +2329,8 @@ Release: April 23, 2024
 
 32 / 109
 
-2.2.6.6  Trace/ Element
+
+##### 2.2.6.6 Trace/ Element
 
 The MSMQ <Trace/> element, as the following example shows, MAY be present as a child element of
 the <Msmq> element. The <Trace/> element corresponds to the Message.TracingRequested =
@@ -2642,7 +2338,7 @@ True attribute of the ADM Message data element. For details, see [MS-MQDMPR] sec
 
  <Trace/>
 
-2.2.6.7  ConnectorType Element
+##### 2.2.6.7 ConnectorType Element
 
 The MSMQ <ConnectorType> element MAY be present as a child element of the <Msmq> element. It
 MUST contain a GUID string, as the following example shows.
@@ -2652,7 +2348,7 @@ the ADM Message data element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <ConnectorType>fd74b8eb-2af7-4ac5-9405-074e315df392</ConnectorType>
 
-2.2.6.8  App Element
+##### 2.2.6.8 App Element
 
 The MSMQ <App> element MAY be present as a child element of the <Msmq> element. It MUST
 contain a number of type xs:unsignedLong, as the following example shows. The <App> element
@@ -2661,7 +2357,7 @@ details, see [MS-MQDMPR] section 3.1.1.12.
 
  <App>36</App>
 
-2.2.6.9  BodyType Element
+##### 2.2.6.9 BodyType Element
 
 The MSMQ <BodyType> element MUST be present as a child element of the <Msmq> element. It
 MUST contain a number of type xs:unsignedLong, as the following example shows. The <BodyType>
@@ -2670,9 +2366,9 @@ details, see [MS-MQDMPR] section 3.1.1.12.
 
  <BodyType>8</BodyType>
 
-2.2.6.10
+##### 2.2.6.10 HashAlgorithm Element
 
-HashAlgorithm Element
+
 
 The MSMQ <HashAlgorithm> element MAY be present as a child element of the <Msmq> element. It
 MUST contain a number of type xs:unsignedLong, as the following example shows. The
@@ -2681,9 +2377,9 @@ Message data element. For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <HashAlgorithm>32772</HashAlgorithm>
 
-2.2.6.11
+##### 2.2.6.11 Eod Element
 
-Eod Element
+
 
 The MSMQ <Eod> element MAY be present as a child element of the <Msmq> element. If this
 element is present:
@@ -2695,7 +2391,8 @@ Release: April 23, 2024
 
 33 / 109
 
-
+
+
 
 
 
@@ -2719,9 +2416,9 @@ details, see [MS-MQDMPR] section 3.1.1.12.
      <Last/>
  </Eod>
 
-2.2.6.12
+##### 2.2.6.12 Provider Element
 
-Provider Element
+
 
 The MSMQ <Provider> element MAY be present as a child element of the <Msmq> element. If this
 element is present:
@@ -2745,9 +2442,9 @@ details, see [MS-MQDMPR] section 3.1.1.12.
      <Name>ProviderName</Name>
  </Provider>
 
-2.2.6.13
+##### 2.2.6.13 SourceQmGuid Element
 
-SourceQmGuid Element
+
 
 The MSMQ <SourceQmGuid> element MUST be present as a child element of the <Msmq> element.
 It MUST contain a GUID string, as the following example shows. The <SourceQmGuid > element
@@ -2756,9 +2453,9 @@ For details, see [MS-MQDMPR] section 3.1.1.12.
 
  <SourceQmGuid>fd74b8eb-2af7-4ac5-9405-074e315df392</SourceQmGuid>
 
-2.2.6.14
+##### 2.2.6.14 DestinationMqf Element
 
-DestinationMqf Element
+
 
 The MSMQ <DestinationMqf> element MAY be present as a child element of the <Msmq> element. It
 MUST contain one or more MSMQ-formatted names, each name separated by white space, as the
@@ -2773,15 +2470,16 @@ Release: April 23, 2024
 
 34 / 109
 
- <DestinationMqf>
+
+ <DestinationMqf>
      http://Machine1/msmq/private$/SimpleQ
      http://Machine2/msmq/private$/SimpleQ
      http://Machine3/msmq/private$/SimpleQ
  </DestinationMqf>
 
-2.2.6.15
+##### 2.2.6.15 AdminMqf Element
 
-AdminMqf Element
+
 
 The MSMQ <AdminMqf> element MAY be present as a child element of the <Msmq> element. It
 MUST contain one or more MSMQ-formatted names, each name separated by white space, as the
@@ -2795,9 +2493,9 @@ For details, see [MS-MQDMPR] section 3.1.1.12.
      http://Machine3/msmq/private$/AdminQ
  </AdminMqf>
 
-2.2.6.16
+##### 2.2.6.16 ResponseMqf Element
 
-ResponseMqf Element
+
 
 The MSMQ <ResponseMqf> element MAY be present as a child element of the <Msmq> element. It
 MUST contain one or more MSMQ-formatted names, each name separated by white space, as the
@@ -2811,9 +2509,9 @@ details, see [MS-MQDMPR] section 3.1.1.12.
      http://Machine3/msmq/private$/ResponseQ
  </ResponseMqf>
 
-2.2.6.17
+##### 2.2.6.17 TTrq Element
 
-TTrq Element
+
 
 The MSMQ <TTrq> element MUST be present as a child element of the <Msmq> element. It MUST
 contain an ISO 8601 date string, as the following example shows. The <TTrq> element corresponds to
@@ -2825,7 +2523,7 @@ message MUST not be processed by the receiver and MUST be discarded.
 
  <TTrq>20070619T210654</TTrq>
 
-2.2.7  Signature Elements
+#### 2.2.7 Signature Elements
 
 MSMQ uses the following XML elements to define an XML digital signature.
 
@@ -2840,13 +2538,14 @@ Release: April 23, 2024
 
 35 / 109
 
-Syntax and processing rules for the XML digital signature are described in [XMLDSig].
+
+Syntax and processing rules for the XML digital signature are described in [XMLDSig].
 
  <Signature xmlns="http://www.w3.org/2000/02/xmldsig#">
 
 The child elements of the <Signature> element are used as described in the following sections.
 
-2.2.7.1  SignedInfo Element
+##### 2.2.7.1 SignedInfo Element
 
 The Signature <SignedInfo> element MUST be present exactly once as a child element of the
 <Signature> element.
@@ -2855,7 +2554,7 @@ The Signature <SignedInfo> element MUST be present exactly once as a child eleme
 
 The child elements of <SignedInfo> are used as described in the following sections.
 
-2.2.7.1.1 SignatureMethod Element
+###### 2.2.7.1.1 SignatureMethod Element
 
 The Signature <SignatureMethod> element MUST be present exactly once as a child element of the
 <SignedInfo> element. The value of the <SignatureMethod> element defines the algorithm that was
@@ -2863,7 +2562,7 @@ used to create this signature. The default algorithm is the DSA algorithm.
 
  <SignatureMethod Algorithm="http://www.w3.org/2000/02/xmldsig#dsa"></SignatureMethod>
 
-2.2.7.1.2 Reference Element
+###### 2.2.7.1.2 Reference Element
 
 The Signature <Reference> element MAY be present up to two times as a child element of the
 <SignedInfo> element.
@@ -2878,7 +2577,7 @@ queue manager and followed by a double quotation mark.
 
  <Reference URI="cid:body@f6a3323c-7c7b-4a5f-b0ed-b3f63a200893">
 
-2.2.7.1.2.1  DigestMethod Element
+###### 2.2.7.1.2.1 DigestMethod Element
 
 If a <Reference> element is present, the Signature <Digest> element MUST be present exactly once
 as a child element of the <Reference> element.
@@ -2889,7 +2588,7 @@ method is the SHA1 algorithm.
 
  <DigestMethod Algorithm="http://www.w3.org/2000/02/xmldsig#sha1"></DigestMethod>
 
-2.2.7.1.2.2  DigestValue Element
+###### 2.2.7.1.2.2 DigestValue Element
 
 [MC-MQSRM] - v20240423
 Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
@@ -2898,7 +2597,8 @@ Release: April 23, 2024
 
 36 / 109
 
-If a <Reference> element is present, the Signature <DigestValue> element MUST be present exactly
+
+If a <Reference> element is present, the Signature <DigestValue> element MUST be present exactly
 once as a child element of the <Reference> element.
 
 The <DigestValue> element contains a hash value based on a single message property preceded by a
@@ -2908,7 +2608,7 @@ property.
 
  <DigestValue>XU9yAzfwEPuP7L5iOcQY9XRNEWM=</DigestValue>
 
-2.2.7.2  SignatureValue Element
+##### 2.2.7.2 SignatureValue Element
 
 The Signature <SignatureValue> element MUST be present exactly once as a child element of the
 <Signature> element.
@@ -2921,7 +2621,7 @@ Base64 encoding.
  <SignatureValue>ZxvFMInWLSb1+iNj5xA/OhPHE4uzIx4nXOCmoOyGSSyHWEuODsByooS00j9RsMuGN/FmpEEOgJ1NF
 CBEDaBAag==</SignatureValue>
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol uses abstract data model (ADM) elements specified in section 3.1.1. A subset of these
 elements can be published in a directory. This protocol SHOULD<13> access the directory using the
@@ -2935,7 +2635,8 @@ Release: April 23, 2024
 
 37 / 109
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP) is often described as a
 communication mechanism between a "client" and "server"; however, for purposes of this section, the
@@ -2943,12 +2644,12 @@ terms "sender" and "receiver", respectively, are used to refer to these roles. T
 connectionless; it behaves as is typical in peer-to-peer mode, where either participant sends and
 receives messages in a symmetrical manner.
 
-3.1  Common Details
+### 3.1 Common Details
 
 There are no distinct client and server roles in this protocol; therefore, all protocol details are
 described in this section.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The document is organized in order to facilitate the
@@ -2966,23 +2667,23 @@ Section 3.1.1.1.3 details the elements from the shared data model that are manip
 protocol, and sections 3.1.1.1.4 through 3.1.1.1.6 detail the data model elements that are specific to
 this protocol.
 
-3.1.1.1  Protocol State
+##### 3.1.1.1 Protocol State
 
 This section describes the abstract data model (ADM) state and elements that this protocol maintains.
 The section shows the protocol state diagrams and describes the shared ADM elements that the
 protocol uses and any extensions to the ADM that are specific to this protocol.
 
-3.1.1.1.1 Persistent State Storage
+###### 3.1.1.1.1 Persistent State Storage
 
 Some protocol data elements MUST be saved in a persistent location that will survive process and
 node failure. A persistent storage requirement is indicated with a note in the element description that
 indicates "This value MUST be saved to persistent storage".
 
-3.1.1.1.2 State Diagrams
+###### 3.1.1.1.2 State Diagrams
 
 This section contains the state diagrams that pertain to this protocol.
 
-3.1.1.1.2.1  Regular and Durable Message State Sender
+###### 3.1.1.1.2.1 Regular and Durable Message State Sender
 
 The following figure shows the protocol state at the sender for regular and durable SRMP messages.
 
@@ -2993,13 +2694,14 @@ Release: April 23, 2024
 
 38 / 109
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MC-MQSRM].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
 Figure 3: Regular and durable message state sender
 
-3.1.1.1.2.2  Regular and Durable Message State Receiver
+###### 3.1.1.1.2.2 Regular and Durable Message State Receiver
 
 The following figure shows the protocol state at the receiver for regular and durable SRMP messages.
 
@@ -3010,13 +2712,14 @@ Release: April 23, 2024
 
 39 / 109
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MC-MQSRM].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
 Figure 4: Regular and durable message state receiver
 
-3.1.1.1.2.3  Regular and Durable Message Position Deleted State Receiver
+###### 3.1.1.1.2.3 Regular and Durable Message Position Deleted State Receiver
 
 For regular and durable SRMP messages, the following figure shows the protocol state at the receiver
 after a message gets removed from its destination queue.
@@ -3028,13 +2731,14 @@ Release: April 23, 2024
 
 40 / 109
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MC-MQSRM].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
 Figure 5: Regular and durable message position deleted state receiver
 
-3.1.1.1.2.4  Stream Message State Sender
+###### 3.1.1.1.2.4 Stream Message State Sender
 
 The following figure shows the protocol state at the sender for SRMP stream messages.
 
@@ -3045,13 +2749,14 @@ Release: April 23, 2024
 
 41 / 109
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MC-MQSRM].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
 Figure 6: Stream message state sender
 
-3.1.1.1.2.5  Stream Message State Receiver
+###### 3.1.1.1.2.5 Stream Message State Receiver
 
 The following figure shows the protocol state at the receiver for SRMP stream messages.
 
@@ -3062,13 +2767,14 @@ Release: April 23, 2024
 
 42 / 109
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MC-MQSRM].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
 Figure 7: Stream message state receiver
 
-3.1.1.1.2.6  Stream Message Position Deleted State Receiver
+###### 3.1.1.1.2.6 Stream Message Position Deleted State Receiver
 
 The following figure shows the protocol state at the receiver after a stream message gets removed
 from its destination queue.
@@ -3080,13 +2786,14 @@ Release: April 23, 2024
 
 43 / 109
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MC-MQSRM].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
 Figure 8: Stream message position deleted state receiver
 
-3.1.1.1.3 Shared Data Elements
+###### 3.1.1.1.3 Shared Data Elements
 
 This protocol manipulates the following abstract data model (ADM) elements from the shared ADM
 that is defined in [MS-MQDMPR] section 3.1.1.
@@ -3105,7 +2812,8 @@ Release: April 23, 2024
 
 44 / 109
 
-  SystemDeadletterQueue: A reference to a queue instance that represents the system dead-
+
+  SystemDeadletterQueue: A reference to a queue instance that represents the system dead-
 
 letter queue.
 
@@ -3138,7 +2846,7 @@ IncomingTransactionalTransferInfo: As defined in [MS-MQDMPR] section 3.1.1.5.
 
 Message: As defined in [MS-MQDMPR] section 3.1.1.12: The Message data element is used by SRMP
 to serialize and deserialize protocol messages, from or to its attributes, as described in sections
-3.1.5.1.1 and 3.1.7.2.3. In addition, this protocol extends the data element for SRMP-specific
+###### 3.1.5.1.1 and 3.1.7.2.3. In addition, this protocol extends the data element for SRMP-specific
 attributes, as described in the next section.
 
 3.1.1.1.4 SRMPMessage
@@ -3182,7 +2890,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-elimination mechanism. When a message arrives, the SRMPMessage.Identifier value is checked
+
+elimination mechanism. When a message arrives, the SRMPMessage.Identifier value is checked
 against this table. If the value exists, the packet MUST be rejected as a duplicate. The length of
 history that this table maintains is implementation-dependent. This value SHOULD<16> be saved
 to persistent storage.
@@ -3257,7 +2966,8 @@ Release: April 23, 2024
 
 46 / 109
 
-SendReceiptsTo: A string that contains the URI that stream receipt messages are sent to.
+
+SendReceiptsTo: A string that contains the URI that stream receipt messages are sent to.
 
 UnackedStreamMessageArrivalTime: The arrival time of the oldest unacknowledged stream
 
@@ -3323,7 +3033,8 @@ Release: April 23, 2024
 
 47 / 109
 
-A collection of Redirection data elements that is used to replace the value of the <sendReceiptsTo>
+
+A collection of Redirection data elements that is used to replace the value of the <sendReceiptsTo>
 element (section 2.2.5.3.4) of an outgoing message with a value configured by an administrator, as
 described in section 3.1.7.2.4.
 
@@ -3395,7 +3106,8 @@ Release: April 23, 2024
 
 48 / 109
 
-This protocol does not correlate delivery receipts with the original message on the sending side
+
+This protocol does not correlate delivery receipts with the original message on the sending side
 because successful transmission of a protocol message is acknowledged by the "HTTP 200 OK"
 response of the transport.
 
@@ -3462,7 +3174,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MC-MQSRM].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
@@ -3500,7 +3213,8 @@ Release: April 23, 2024
 
 50 / 109
 
-The following figure illustrates the sending of a message stream between two QMs. In this case, the
+
+The following figure illustrates the sending of a message stream between two QMs. In this case, the
 sender is not requesting delivery or commitment receipts for the individual messages. For brevity, the
 HTTP, SOAP, and MIME annotations are omitted.
 
@@ -3531,7 +3245,8 @@ Release: April 23, 2024
 
 51 / 109
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MC-MQSRM].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
@@ -3554,7 +3269,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MC-MQSRM].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -3600,7 +3316,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.2.3  Stream Receipt Coalescing Timer
+
+3.1.2.3  Stream Receipt Coalescing Timer
 
 This session-specific timer regulates the amount of time that the protocol waits before sending a
 Stream Receipt (section 3.1.1.3.2). The protocol maintains one instance of the timer per message
@@ -3691,7 +3408,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  SendReceiptsTo MUST be set to an empty string.
+
+  SendReceiptsTo MUST be set to an empty string.
 
   UnackedStreamMessageArrivalTime MUST be set to zero.
 
@@ -3767,7 +3485,8 @@ Release: April 23, 2024
 
 55 / 109
 
-
+
+
 
 
 
@@ -3875,7 +3594,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -3983,7 +3703,8 @@ Release: April 23, 2024
 
 57 / 109
 
-
+
+
 
 
 
@@ -4091,7 +3812,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If the string that is contained in the <DestinationMqf> element begins with
 "http://" or "https://", the current collection element MUST be set to the substring
@@ -4162,13 +3884,13 @@ The SRMPMessage.TimeToReachQueue attribute MUST be set to the time span value
 that is the difference between the UTC date/time value that is contained in the <TTrq>
 element and the UTC date/time value that is contained in the <sentAt> element.
 
-3.1.5.1.2 Handling Incorrectly Formatted Messages
+###### 3.1.5.1.2 Handling Incorrectly Formatted Messages
 
 If the protocol receives a request that does not conform to the structures outlined in section 2, it
 detects the error during message deserialization. The protocol MUST discard the received packet and
 perform no further processing for it. The protocol MUST return "HTTP 400 Bad Request" to the sender.
 
-3.1.5.1.3 Redirection and Error Handling
+###### 3.1.5.1.3 Redirection and Error Handling
 
 The protocol MUST perform the following steps:
 
@@ -4186,7 +3908,8 @@ Release: April 23, 2024
 
 59 / 109
 
-
+
+
 
 If SRMPMessage.DestinationQueueFormatName does not begin with "MULTICAST":
 
@@ -4296,7 +4019,8 @@ Release: April 23, 2024
 
 60 / 109
 
-
+
+
 
 The protocol MUST perform no further processing.
 
@@ -4322,7 +4046,7 @@ disregard the message and perform no further processing.
 If the message is rejected for any of the previous reasons, the protocol MUST return the "HTTP
 400 Bad Request" error message to the sender.
 
-3.1.5.1.4 Checking Message Expiration
+###### 3.1.5.1.4 Checking Message Expiration
 
 To control message lifetime, a message can contain a <TTrq> element in the <Msmq> element or
 the <expiresAt> element in the <properties> element. Both these elements are deserialized to the
@@ -4330,7 +4054,7 @@ SRMPMessage.TimeToReachQueue attribute, with the <TTrq> element taking precedenc
 present in the message. The protocol checks this value while sending a message, as specified in
 section 3.1.7.2.1; it is not checked while processing a received message.
 
-3.1.5.1.5 Identifying the Message Type
+###### 3.1.5.1.5 Identifying the Message Type
 
 A message is identified by inspecting the contents of its SOAP <header> element (see section 2.2.2).
 The following section describes how to identify each message type. Any message that does not match
@@ -4371,7 +4095,8 @@ Release: April 23, 2024
 
 61 / 109
 
-
+
+
 
 
 
@@ -4430,7 +4155,7 @@ MQMSG_CLASS_NACK_RECEIVE_TIMEOUT, the <decision> element contains the string
 "negative", and the original message was deleted from the destination queue because the
 message expired.
 
-3.1.5.1.6 User Message Processing
+###### 3.1.5.1.6 User Message Processing
 
 A user message contains an application-defined message that is sent from the remote host.
 Processing a user message is done in the following order, depending on the type of user message:
@@ -4464,10 +4189,11 @@ Release: April 23, 2024
 
 62 / 109
 
-The protocol MUST perform all these steps, which are described in greater detail in the following
+
+The protocol MUST perform all these steps, which are described in greater detail in the following
 sections, in order to process a user message.
 
-3.1.5.1.6.1  Checking Message Signature
+###### 3.1.5.1.6.1 Checking Message Signature
 
 If Message.AuthenticationLevel ([MS-MQDMPR] section 3.1.1.12) equals XmlSig, the protocol
 MUST perform the following actions:
@@ -4556,7 +4282,8 @@ Release: April 23, 2024
 
 63 / 109
 
-
+
+
 
 
 
@@ -4609,7 +4336,7 @@ UserMessage.SecurityHeader.SecurityData.SenderCert certificate and then base64-e
 the digest into an 88-character stream. If that stream does not equal the value of
 <SignatureValue>, the protocol MUST disregard the message and perform no further processing.
 
-3.1.5.1.6.2  Processing Regular and Durable Messages
+###### 3.1.5.1.6.2 Processing Regular and Durable Messages
 
 If the <durable/> element in the <services> element is present, or if the <stream> element is
 present, the protocol MUST save the message to disk.
@@ -4624,7 +4351,7 @@ SRMPMessage.AdministationQueueFormatName. The <receivedAt> child element of the
 SRMPMessage.Identifier. The delivery receipt MUST be sent to the remote host as specified in
 section 3.1.7.2.5.
 
-3.1.5.1.6.3  Processing Stream Messages
+###### 3.1.5.1.6.3 Processing Stream Messages
 
 [MC-MQSRM] - v20240423
 Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
@@ -4633,7 +4360,8 @@ Release: April 23, 2024
 
 64 / 109
 
-Stream messages that are duplicates or are out of order are rejected. If the message does not
+
+Stream messages that are duplicates or are out of order are rejected. If the message does not
 satisfy one of the following criteria, then it is either a duplicate or out of order and MUST be ignored.
 No further processing is performed.
 
@@ -4710,7 +4438,7 @@ The protocol MUST perform no further actions.
 
 The protocol MUST start the Stream Receipt Coalescing Timer.
 
-3.1.5.1.6.4  Processing IncomingTransactionalTransferInfo
+###### 3.1.5.1.6.4 Processing IncomingTransactionalTransferInfo
 
 For incoming stream messages, the following steps MUST be taken:
 
@@ -4732,7 +4460,8 @@ Release: April 23, 2024
 
 65 / 109
 
-
+
+
 
 The IncomingTransactionalTransferInfo object MUST be selected from the
 Queue.IncomingTransactionalTransferInfoCollection of the destination queue, where
@@ -4761,7 +4490,7 @@ SRMPMessage.DestinationQueueFormatName.
 RejectCount MUST be incremented by 1. If the message is accepted, RejectCount MUST be
 set to zero.
 
-3.1.5.1.7 Delivery Receipt Message Processing
+###### 3.1.5.1.7 Delivery Receipt Message Processing
 
 The protocol MUST perform the following steps to process a delivery receipt message:
 
@@ -4774,7 +4503,7 @@ Inserting the message into its destination queue (see section 3.1.5.1.12).
 No specific steps for processing a delivery receipt message are required; in particular, there is no
 correlation of the original message requesting the delivery receipt.
 
-3.1.5.1.8 Stream Receipt Message Processing
+###### 3.1.5.1.8 Stream Receipt Message Processing
 
 The protocol MUST perform the following steps to process a stream receipt message:
 
@@ -4794,7 +4523,7 @@ Processing OutgoingTransferInfo.
 
 Inserting the message into its destination queue (see section 3.1.5.1.12).
 
-3.1.5.1.8.1  Marking Acknowledged Messages
+###### 3.1.5.1.8.1 Marking Acknowledged Messages
 
 The protocol MUST locate the Stream element that corresponds to the incoming stream receipt by
 selecting it from SRMPState.StreamCollection, where Stream.Id equals the <streamId> element
@@ -4812,7 +4541,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -4823,7 +4553,7 @@ and
 The SRMPMessage.TransactionSequenceNumber is greater than zero, and is less than or
 equal to, the <lastOrdinal> element in the <streamReceipt> element.
 
-3.1.5.1.8.2  Processing OutgoingTransferInfo
+###### 3.1.5.1.8.2 Processing OutgoingTransferInfo
 
 The protocol MUST dereference the OutgoingQueue.OutgoingTransferInfoReference to retrieve
 the corresponding OutgoingTransferInfo object.
@@ -4874,7 +4604,7 @@ table entry.
 The OutgoingTransferInfo.EodResendInterval MUST be set to the value at the index that
 corresponds to Stream.ResendIntervalIndex in the SRMPState.ResendTimerTable.
 
-3.1.5.1.8.3  Deleting Acknowledged Messages
+###### 3.1.5.1.8.3 Deleting Acknowledged Messages
 
 The protocol MUST delete all elements from the OutgoingQueue where
 SRMPMessage.TransactionSequenceNumber is greater than zero,
@@ -4886,7 +4616,8 @@ Release: April 23, 2024
 
 67 / 109
 
-SRMPMessage.AwaitingStreamReceipt is set to False, and
+
+SRMPMessage.AwaitingStreamReceipt is set to False, and
 SRMPMessage.AwaitingFinalStreamReceipt is set to False by performing the following steps:
 
   Raise a Message Position Deleted event as defined in [MS-MQDMPR] section 3.1.7.2.1 for each
@@ -4911,12 +4642,12 @@ iReason: AckReachQueue ([MS-MQDMPR] section 3.1.1.12).
 
 iQueue: A reference to the OutgoingQueue.
 
-3.1.5.1.8.4  Source Journaling
+###### 3.1.5.1.8.4 Source Journaling
 
 A stream message that is deleted from the OutgoingQueue with the <Journal/> element present in
 the <Msmq> element MUST be moved to the system queue journal as specified in section 3.1.5.2.2.
 
-3.1.5.1.9 Final Stream Receipt Message Processing
+###### 3.1.5.1.9 Final Stream Receipt Message Processing
 
 The protocol MUST perform the following steps to process a final stream receipt message:
 
@@ -4928,7 +4659,7 @@ Processing OutgoingTransferInfo.
 
   Deadlettering.
 
-3.1.5.1.9.1  Deleting Acknowledged Messages
+###### 3.1.5.1.9.1 Deleting Acknowledged Messages
 
 The protocol MUST locate the Stream element that corresponds to the incoming final stream receipt
 by selecting it from SRMPState.StreamCollection, where Stream.Id equals the <streamId>
@@ -4975,14 +4706,15 @@ Release: April 23, 2024
 
 68 / 109
 
-The protocol MUST raise a Stream Element Removed Event (section 3.1.7.6) with the following
+
+The protocol MUST raise a Stream Element Removed Event (section 3.1.7.6) with the following
 argument:
 
 
 
 iQueue: A reference to the OutgoingQueue.
 
-3.1.5.1.9.2  Processing OutgoingTransferInfo
+###### 3.1.5.1.9.2 Processing OutgoingTransferInfo
 
 The protocol MUST dereference the OutgoingQueue.OutgoingTransferInfoReference to retrieve
 the corresponding OutgoingTransferInfo object.
@@ -4990,14 +4722,14 @@ the corresponding OutgoingTransferInfo object.
 For each message that is deleted from the OutgoingQueue, the protocol MUST decrement
 OutgoingTransferInfo.EodNoReadCount by 1.
 
-3.1.5.1.9.3  Deadlettering
+###### 3.1.5.1.9.3 Deadlettering
 
 A stream message that is deleted from the OutgoingQueue with the <DeadLetter/> element
 present in the <Msmq> element MUST be dead-lettered as specified in section 3.1.5.2.1.2.
 
-3.1.5.1.10
+###### 3.1.5.1.10 Commitment Receipt Message Processing
 
-Commitment Receipt Message Processing
+
 
 The protocol MUST perform the following steps to process a commitment receipt message:
 
@@ -5010,7 +4742,7 @@ Inserting the message into its destination queue (see section 3.1.5.1.12).
 No specific steps for processing a commitment receipt message are required; in particular, no
 correlation of the original message requesting the commitment receipt.
 
-3.1.5.1.11  Detecting Duplicates
+###### 3.1.5.1.11 Detecting Duplicates
 
 If the value that is contained in the SRMPMessage.Identifier.Lineage is equal to a NULL GUID and
 SRMPMessage.Identifier.Uniquifier is equal to 1, duplicate detection MUST be bypassed.
@@ -5020,9 +4752,9 @@ SRMPState.MessageIdHistoryTable, the protocol MUST discard this message and perf
 further processing; otherwise, the value that is contained in the SRMPMessage.Identifier MUST be
 inserted into the SRMPState.MessageIdHistoryTable.
 
-3.1.5.1.12
+###### 3.1.5.1.12 Inserting a Message into Its Destination Queue
 
-Inserting a Message into Its Destination Queue
+
 
 The protocol MUST perform an access check to authorize access to the queue that is addressed by
 SRMPMessage.DestinationQueueFormatName, using the following logic:
@@ -5063,7 +4795,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5160,7 +4893,8 @@ Release: April 23, 2024
 
 70 / 109
 
-
+
+
 
 iQueue: A reference to the Queue ADM element instance that is addressed by
 SRMPMessage.DestinationQueueFormatName.
@@ -5182,16 +4916,16 @@ If rStatus is 2, indicating that the QueueManagerQuota ADM attribute of the loca
 QueueManager ADM element instance would be exceeded, the protocol MUST disregard the
 message and return the "HTTP 500 Internal Server Error" error message to the sender.
 
-3.1.5.2  Source Journal Message Processing
+##### 3.1.5.2 Source Journal Message Processing
 
 Messages MUST be journaled using the logic described in the following sections.
 
-3.1.5.2.1 Negative Source Journaling
+###### 3.1.5.2.1 Negative Source Journaling
 
 If the <DeadLetter/> element is present in the <Msmq> element, the protocol MUST deadletter
 messages as described in the following sections.
 
-3.1.5.2.1.1  Nonstream Messages
+###### 3.1.5.2.1.1 Nonstream Messages
 
 If the message expires or is purged from the destination queue before reaching the receiving
 application, the message MUST be moved to the system dead-letter queue. This is achieved by
@@ -5209,7 +4943,7 @@ iTargetQueue: QueueManager.SystemDeadletterQueue
 
 The dead-letter queues are system-generated and implementation-dependent.<26>
 
-3.1.5.2.1.2  Stream Messages
+###### 3.1.5.2.1.2 Stream Messages
 
 A stream message SRMPMessage (section 3.1.1.1.4) that is deleted from the OutgoingQueue with
 the <DeadLetter/> element present in the <Msmq> element MUST be moved to a transactional
@@ -5241,10 +4975,11 @@ Release: April 23, 2024
 
 71 / 109
 
-The system transactional dead-letter queue is system-generated and implementation-
+
+The system transactional dead-letter queue is system-generated and implementation-
 dependent.<27>
 
-3.1.5.2.2 Positive Source Journaling
+###### 3.1.5.2.2 Positive Source Journaling
 
 A message that is deleted from the OutgoingQueue with the <Journal/> element present in the
 <Msmq> element MUST be moved to the system queue journal.
@@ -5263,11 +4998,11 @@ iTargetQueue: QueueManaer.SystemJournalQueue.
 
 The queue journal is system-generated and implementation-dependent.<28>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The following timer events are internal to this protocol.
 
-3.1.6.1  Retransmission Timer
+##### 3.1.6.1 Retransmission Timer
 
 This event MUST be generated with the following arguments:
 
@@ -5307,7 +5042,7 @@ iData := NULL
 
 The protocol MUST restart the Retransmission Timer if it is in the stopped state.
 
-3.1.6.2  Stream Receipt Wait Timer
+##### 3.1.6.2 Stream Receipt Wait Timer
 
 This event MUST be generated with the following arguments:
 
@@ -5322,7 +5057,8 @@ Release: April 23, 2024
 
 72 / 109
 
-  None
+
+  None
 
 This event indicates a time-out while waiting for a stream receipt from the remote host. When the
 Stream Receipt Wait Timer (section 3.1.2.2) fires, the protocol MUST retransmit all messages in the
@@ -5335,7 +5071,7 @@ OutgoingTransferInfo.EodResendInterval.
 The value of OutgoingTransferInfo.EodResendTime MUST be set to the current system time +
 OutgoingTransferInfo.EodResendInterval.
 
-3.1.6.3  Stream Receipt Coalescing Timer
+##### 3.1.6.3 Stream Receipt Coalescing Timer
 
 This event MUST be generated with the following arguments:
 
@@ -5383,7 +5119,7 @@ specified in section 3.1.7.2.5.
 The protocol MUST remove the subset computed above from the
 Stream.UnacknowledgedStreamMessages collection.
 
-3.1.6.4  Session Cleanup Timer Event
+##### 3.1.6.4 Session Cleanup Timer Event
 
 When the Session Cleanup Timer (section 3.1.2.4) expires, the protocol MUST apply the following logic
 to close an idle session:
@@ -5399,7 +5135,8 @@ Release: April 23, 2024
 
 73 / 109
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 In addition to the higher-layer triggered events listed in section 3.1.4, the operation of the Message
 Queuing (MSMQ): SOAP Reliable Messaging Protocol is initiated and subsequently driven by the
@@ -5415,11 +5152,11 @@ Pause Queue ([MS-MQDMPR] section 3.1.7.2.3).
 
   Resume Queue ([MS-MQDMPR] section 3.1.7.2.4).
 
-3.1.7.1  Handling a Network Disconnect
+##### 3.1.7.1 Handling a Network Disconnect
 
 Because SRMP is connectionless, no specific steps are required for handling a network disconnect.
 
-3.1.7.2  Send User Message
+##### 3.1.7.2 Send User Message
 
 The following arguments are passed when the event is raised:
 
@@ -5443,7 +5180,7 @@ The following steps MUST be performed to send the message:
 
 5.  Sending the Message (section 3.1.7.2.5).
 
-3.1.7.2.1 Checking for Message Expiration
+###### 3.1.7.2.1 Checking for Message Expiration
 
 The value of SRMPMessage.TimeToReachQueue controls the message lifetime. The protocol MUST
 check the message for expiration before sending.
@@ -5477,21 +5214,22 @@ Release: April 23, 2024
 
 74 / 109
 
-If SRMPMessage.TransactionIdentifier is specified for the expired message, the protocol MUST
+
+If SRMPMessage.TransactionIdentifier is specified for the expired message, the protocol MUST
 raise a Stream Element Removed Event (section 3.1.7.6) with the following argument:
 
 
 
 iQueue: A reference to the OutgoingQueue.
 
-3.1.7.2.2 Updating the SRMP Message Elements
+###### 3.1.7.2.2 Updating the SRMP Message Elements
 
 The protocol MUST set the <id> element in the <path> element to a string that represents the
 current SRMPState.MessageIdOrdinal (the message index) and the source QM GUID, as
 described in section 2.2.4.3. The value of SRMPState.MessageIdOrdinal MUST be incremented by
 1.
 
-3.1.7.2.3 Outgoing Stream Message Processing
+###### 3.1.7.2.3 Outgoing Stream Message Processing
 
 If SRMPMessage.TransactionIdentifier is specified, the message is a stream message, and the
 following steps MUST be performed:
@@ -5572,7 +5310,8 @@ Release: April 23, 2024
 
 75 / 109
 
-
+
+
 
 
 
@@ -5654,7 +5393,7 @@ OutgoingTransferInfo.EodResendInterval.
 The value of OutgoingTransferInfo.EodResendTime MUST be set to the current system time +
 OutgoingTransferInfo.EodResendInterval.
 
-3.1.7.2.4 Message Serialization
+###### 3.1.7.2.4 Message Serialization
 
 A new SRMPMessage to be sent by the QM MUST be serialized in the following way:
 
@@ -5665,7 +5404,8 @@ Release: April 23, 2024
 
 76 / 109
 
-  A string buffer large enough to hold the new outgoing message MUST be instantiated.
+
+  A string buffer large enough to hold the new outgoing message MUST be instantiated.
 
 
 
@@ -5783,7 +5523,8 @@ Release: April 23, 2024
 
 77 / 109
 
-
+
+
 
 
 
@@ -5900,7 +5641,8 @@ Release: April 23, 2024
 
 78 / 109
 
-
+
+
 
 If the SRMPMessage.FinalAckRequired attribute is set to True, the contents of the
 <commitmentReceiptRequest> element MUST be assembled as follows:
@@ -6020,7 +5762,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The string </previous> MUST be appended to the string buffer.
 
@@ -6136,7 +5879,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6253,7 +5997,8 @@ Release: April 23, 2024
 
 81 / 109
 
-
+
+
 
 
 
@@ -6369,7 +6114,8 @@ Release: April 23, 2024
 
 82 / 109
 
-
+
+
 
 For each member element of the string collection contained in
 SRMPMessage.DestinationMultiQueueFormatName, the string contained in
@@ -6480,7 +6226,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-QueueManager.Identifier ([MS-MQDMPR] section 3.1.1.12), followed by the
+
+QueueManager.Identifier ([MS-MQDMPR] section 3.1.1.12), followed by the
 string ">.
 
 
@@ -6578,7 +6325,8 @@ Release: April 23, 2024
 
 84 / 109
 
-
+
+
 
 
 
@@ -6628,7 +6376,7 @@ The string <se:Body></se:Body> MUST be appended to the string buffer.
 
 The string </se:Envelope> MUST be appended to the string buffer.
 
-3.1.7.2.5 Sending the Message
+###### 3.1.7.2.5 Sending the Message
 
 The protocol MUST send the message on the transport (see section 3.1.7.7 for more details). If the
 transport is HTTP or HTTPS, the protocol MUST wait for the HTTP response or time-out from the
@@ -6675,7 +6423,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 iQueue.State MUST be set to Inactive.
 
@@ -6687,7 +6436,7 @@ iQueue.State MUST be set to Inactive.
 
 iOutgoingQueue := iQueue
 
-3.1.7.3  Message Position Deleted
+##### 3.1.7.3 Message Position Deleted
 
 This event is triggered when the Message Position Deleted ([MS-MQDMPR] section 3.1.7.2.1) event is
 raised. For the protocol to process this event, the following conditions MUST be met:
@@ -6713,7 +6462,7 @@ message expired, or the queue was deleted or purged. Operations that occur on me
 destination queue are outside the definition of this protocol; however, the protocol MUST ensure that
 messages are tracked and that the following acknowledgment logic is applied.
 
-3.1.7.3.1 Sending a Commitment Receipt
+###### 3.1.7.3.1 Sending a Commitment Receipt
 
 If the <commitmentReceiptRequest> element is present in a user message, the protocol MUST send
 a commitment receipt (see section 3.1.1.3.4) message to the original sender when the message is
@@ -6738,7 +6487,7 @@ other value, the server MUST not send a commitment receipt message.
 The commitment receipt message MUST be addressed by setting the <to> element of the <path>
 element to the URI in the <sendTo> element of the <commitmentReceiptRequest> element.
 
-3.1.7.3.2 Deadlettering
+###### 3.1.7.3.2 Deadlettering
 
 For nonstream messages, if the <DeadLetter/> element is present in the <Msmq> element, and if the
 message expires (iReason equals NackReceiveTimeout or NackReceiveTimeoutAtSender) or is
@@ -6753,7 +6502,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.7.3.3 Sending a Final Stream Receipt
+
+###### 3.1.7.3.3 Sending a Final Stream Receipt
 
 For stream messages, if the <Deadletter/> element is present in the <Msmq> element the protocol
 MUST send a final stream receipt message to the original sender when the message is removed from
@@ -6779,7 +6529,7 @@ The stream receipt message MUST be addressed to the sender order queue by settin
 element of the <path> element to the URI in the <sendReceiptsTo> element of the <start> element
 of the first stream message.
 
-3.1.7.4  Pause Queue Event
+##### 3.1.7.4 Pause Queue Event
 
 This event is triggered when the Pause Queue ([MS-MQDMPR] section 3.1.7.2.3) event is raised. Upon
 this event, the Stream Receipt Wait Timer (section 3.1.2.2) and the Retransmission
@@ -6793,7 +6543,7 @@ event MUST be raised with the following argument:
 
 iOutgoingQueue := iQueue
 
-3.1.7.5  Resume Queue Event
+##### 3.1.7.5 Resume Queue Event
 
 This event is triggered when the Resume Queue ([MS-MQDMPR] section 3.1.7.2.4) event is raised. If
 there are messages in the iQueue.MessagePositionList, they MUST be transferred using the steps
@@ -6831,7 +6581,8 @@ Release: April 23, 2024
 
 87 / 109
 
-3.1.7.6  Stream Element Removed Event
+
+##### 3.1.7.6 Stream Element Removed Event
 
 This event MUST be generated with the following arguments:
 
@@ -6859,7 +6610,7 @@ If there are no such <SRMPMessage> elements present in the OutgoingQueue, the pr
 MUST locate the <Stream> element in SRMPState.StreamCollection, with a
 Stream.OutgoingQueueReference attribute equal to iQueue and delete that Stream element.
 
-3.1.7.7  Message Position Available
+##### 3.1.7.7 Message Position Available
 
 This event is triggered when the Message Position Available ([MS-MQDMPR] section 3.1.7.2.2) event is
 raised.
@@ -6927,7 +6678,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6935,7 +6687,7 @@ iPosition := A reference to OutgoingMessagePosition.MessagePosition.
 
 iData := NULL.
 
-3.1.7.8  Send User Message Wrapper
+##### 3.1.7.8 Send User Message Wrapper
 
 This event MUST be generated with the following arguments:
 
@@ -6972,7 +6724,7 @@ the following argument:
 
 iPosition := iMessagePosition
 
-3.1.7.9  Establish Transport Connection
+##### 3.1.7.9 Establish Transport Connection
 
 This event MUST be generated with the following argument:
 
@@ -7018,7 +6770,8 @@ Release: April 23, 2024
 
 89 / 109
 
-attribute of the matching Redirection ADM element instance in the
+
+attribute of the matching Redirection ADM element instance in the
 OutboundRedirectionCollection ADM element.
 
 
@@ -7037,9 +6790,10 @@ Release: April 23, 2024
 
 90 / 109
 
-4  Protocol Examples
 
-4.1  Simple SRMP Message
+## 4 Protocol Examples
+
+### 4.1 Simple SRMP Message
 
 This sample message contains the minimum fields that are necessary to send a message without any
 receipts expected. This example also includes the HTTP and MIME fields that are necessary to send the
@@ -7078,7 +6832,7 @@ message.
 
  First Message--MSMQ - SOAP boundary, 53287--
 
-4.2  Simple Message Including MSMQ Element
+### 4.2 Simple Message Including MSMQ Element
 
 The following is a simple message that includes the MSMQ element and a slightly more complex
 message payload.
@@ -7107,7 +6861,8 @@ Release: April 23, 2024
 
 91 / 109
 
-       <action>MSMQ:</action>
+
+       <action>MSMQ:</action>
        <to>http://machine2/msmq/private$/simpleQ</to>
        <id>uuid:20503@caf195ea-615c-4264-ae08-11a4e60194c0</id>
      </path>
@@ -7139,7 +6894,7 @@ Release: April 23, 2024
    <orderTime>2007-07-18T20:11:40.2614595-07:00</orderTime>
  </Order>--MSMQ - SOAP boundary, 26500--
 
-4.3  Combined Delivery and Commitment Receipt Request Example
+### 4.3 Combined Delivery and Commitment Receipt Request Example
 
 The following example requests both a delivery receipt and a commitment receipt acknowledgment in
 the same message.
@@ -7180,7 +6935,8 @@ Release: April 23, 2024
 
 92 / 109
 
-     se:mustUnderstand="1">
+
+     se:mustUnderstand="1">
        <commitmentReceiptRequest>
          <sendTo>http://machine1/MSMQ/private$/deliverydone</sendTo>
          <negativeOnly/>
@@ -7249,7 +7005,8 @@ Release: April 23, 2024
 
 93 / 109
 
-       <HashAlgorithm>0</HashAlgorithm>
+
+       <HashAlgorithm>0</HashAlgorithm>
        <SourceQmGuid>ac678228-2dd6-418b-b31f-0539ffeea853</SourceQmGuid>
        <TTrq>20070723T032451</TTrq>
      </Msmq>
@@ -7316,12 +7073,13 @@ Release: April 23, 2024
 
 94 / 109
 
- HTTP/1.1 200 OK
+
+ HTTP/1.1 200 OK
  Content-Length: 0
  Server: Microsoft-IIS/7.0
  Date: Thu, 19 Jul 2007 03:27:21 GMT
 
-4.4  Stream Sample
+### 4.4 Stream Sample
 
 The following is an example of the messages that are exchanged in a stream. For brevity, the HTTP
 1.1 200 acknowledgments are not included.
@@ -7387,7 +7145,8 @@ Release: April 23, 2024
 
 95 / 109
 
-The following is the stream receipt message (ordering ACK) acknowledging the first message.
+
+The following is the stream receipt message (ordering ACK) acknowledging the first message.
 
  POST /msmq/private$/receipts?senderstream=xrntv HTTP/1.1
  Host: machine1
@@ -7461,7 +7220,8 @@ Release: April 23, 2024
 
 96 / 109
 
-     </properties>
+
+     </properties>
      <Stream se:mustUnderstand="1">
        <streamId>uid:2744e4e1-2b48-43e8-b441-42745f280d53\4839986701558349830</streamId>
        <current>2</current>
@@ -7534,7 +7294,8 @@ Release: April 23, 2024
 
 97 / 109
 
-The following is the third message in the stream.
+
+The following is the third message in the stream.
 
  POST /msmq/private$/tsimpleq HTTP/1.1
  Host: machine2
@@ -7603,7 +7364,8 @@ Release: April 23, 2024
 
 98 / 109
 
- xmlns="http://schemas.xmlsoap.org/srmp/">
+
+ xmlns="http://schemas.xmlsoap.org/srmp/">
    <se:Header>
      <path xmlns="http://schemas.xmlsoap.org/rp/" se:mustUnderstand="1">
      <action>MSMQ:QM Ordering Ack</action>
@@ -7635,7 +7397,7 @@ Release: April 23, 2024
    <se:Body></se:Body>
  </se:Envelope>
 
-4.5  PGM Example
+### 4.5 PGM Example
 
 The following is an example of a simple SRMP message that uses the PGM transport instead of TCP.
 
@@ -7676,7 +7438,8 @@ Release: April 23, 2024
 
 99 / 109
 
-       <HashAlgorithm>32772</HashAlgorithm>
+
+       <HashAlgorithm>32772</HashAlgorithm>
        <SourceQmGuid>32221eda-9376-46df-b6ed-783091123831</SourceQmGuid>
        <TTrq>20070612T023719</TTrq>
      </Msmq>
@@ -7696,15 +7459,16 @@ Release: April 23, 2024
 
 100 / 109
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 SRMP relies on HTTPS for security. HTTPS relies on Transport Layer Security (TLS) as specified in
 [RFC2246] or Secure Sockets Layer (SSL) [RFC2818]. The message syntax of SRMP does not contain
 elements for authentication and encryption.<31>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -7715,7 +7479,8 @@ Release: April 23, 2024
 
 101 / 109
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7783,7 +7548,8 @@ Release: April 23, 2024
 
 102 / 109
 
-<3> Section 2.1.3:  Exceptions that affect interoperability are noted for the following sections of
+
+<3> Section 2.1.3:  Exceptions that affect interoperability are noted for the following sections of
 [RFC3208]:
 
 
@@ -7864,7 +7630,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<8> Section 2.2.4.4: This specification imposes a stricter standard than the one specified in [MSDN-
+
+<8> Section 2.2.4.4: This specification imposes a stricter standard than the one specified in [MSDN-
 WSROUTING].
 
 <9> Section 2.2.4.4: In the case of an empty <via> element, Windows allows the form "<via/>" but
@@ -7930,7 +7697,8 @@ Release: April 23, 2024
 
 104 / 109
 
-<19> Section 3.1.2.4: The Windows default value for the Session Cleanup Timer is 300,000
+
+<19> Section 3.1.2.4: The Windows default value for the Session Cleanup Timer is 300,000
 milliseconds. This default value can be overridden by setting the registry key
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSMQ\Parameters\CleanupInterval to the desired
 value, in milliseconds.
@@ -7994,7 +7762,8 @@ Release: April 23, 2024
 
 105 / 109
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -8038,7 +7807,8 @@ Release: April 23, 2024
 
 106 / 109
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -8175,7 +7945,8 @@ Release: April 23, 2024
 
 107 / 109
 
-      available 88
+
+      available 88
       deleted 86
    overview 74
    pause queue 87
@@ -8318,7 +8089,8 @@ Message Queuing (MSMQ): SOAP Reliable Messaging Protocol (SRMP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   fault element 26
+
+   fault element 26
    from element 26
    fwd element 26
    id element 25

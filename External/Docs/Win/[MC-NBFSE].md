@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 13
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: March 13, 2019
 
 2 / 13
 
-Date
+
+Date
 
 Revision
 History
@@ -500,56 +502,29 @@ Release: March 13, 2019
 
 3 / 13
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 StringTable](#21-stringtable)
+  - [2.2 DictionaryString](#22-dictionarystring)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Structures ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Versioning and Localization ................................................................................. 6
-Vendor-Extensible Fields ..................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 7
-StringTable ....................................................................................................... 7
-DictionaryString ................................................................................................. 7
-
-2.1
-2.2
-
-3  Structure Examples ................................................................................................. 8
-
-4  Security Considerations ......................................................................................... 10
-
-5  Appendix A: Product Behavior ............................................................................... 11
-
-6  Change Tracking .................................................................................................... 12
-
-7  Index ..................................................................................................................... 13
-
-[MC-NBFSE] - v20190313
-.NET Binary Format: SOAP Extension
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-4 / 13
-
-1  Introduction
+## 1 Introduction
 
 In many types of communication, there are often repeated strings, both within a document and within
 the context of related documents. For example, a request for a record set yields a list of records in
@@ -572,7 +547,7 @@ which provides a context that defines related documents.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -595,14 +570,14 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -617,7 +592,8 @@ assist you in finding the relevant information.
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[MC-NBFX] Microsoft Corporation, ".NET Binary Format: XML Data Structure".
+
+[MC-NBFX] Microsoft Corporation, ".NET Binary Format: XML Data Structure".
 
 [MC-NMF] Microsoft Corporation, ".NET Message Framing Protocol".
 
@@ -628,17 +604,17 @@ Release: March 13, 2019
 Messaging Framework (Second Edition)", W3C Recommendation, April 2007,
 http://www.w3.org/TR/2007/REC-soap12-part1-20070427/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 This .NET Binary Format: SOAP Extension is used to efficiently represent SOAP documents, as
 specified in [SOAP1.2-1/2007]. When multiple documents are being processed, this format can be
 more efficient than the .NET Binary Format: SOAP Data Structure, as specified in [MC-NBFS].
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The .NET Binary Format: SOAP Extension uses the .NET Binary Format: SOAP Data Structure, as
 specified in [MC-NBFS].
@@ -646,18 +622,18 @@ specified in [MC-NBFS].
 The .NET Message Framing Protocol, as specified in [MC-NMF], uses the .NET Binary Format: SOAP
 Extension.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The .NET Binary Format: SOAP Extension is a general-purpose way to process a series of SOAP
 documents, and is applied in the same way as specified in [MC-NBFS] section 1.5. Additionally, the
 format is particularly well-suited for environments where a series of SOAP documents that share a
 common or repetitive vocabulary are processed.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 For information on versioning and localization, see [MC-NBFS] section 1.6.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The .NET Binary Format: SOAP Extension has no vendor-extensible fields.
 
@@ -668,7 +644,8 @@ Release: March 13, 2019
 
 6 / 13
 
-2  Structures
+
+## 2 Structures
 
 The structures in the .NET Binary Format: SOAP Extension are identical to those specified in [MC-
 NBFS], except for the addition of one new structure and a further extension of the DictionaryString
@@ -677,7 +654,7 @@ structure, as specified in [MC-NBFS] section 2.1.
 The format is identical to the .NET Binary Format: SOAP Data Structure, as specified in [MC-NBFS],
 except that the document MUST be preceded by a StringTable structure, as specified in section 2.1.
 
-2.1  StringTable
+### 2.1 StringTable
 
 The StringTable structure describes a set of new strings to which subsequent records can refer. As
 specified in [MC-NBFS] (section 2.2), the static DictionaryStrings defined by [MC-NBFS] map even
@@ -716,7 +693,7 @@ assigned the next-higher odd number. A consumer of this format MUST maintain thi
 there are no further documents to process. Subsequent records and documents will refer to this
 String by this ID, as specified in section 2.2.
 
-2.2  DictionaryString
+### 2.2 DictionaryString
 
 The DictionaryString structure describes a reference to a set of characters.
 
@@ -747,7 +724,8 @@ Release: March 13, 2019
 
 7 / 13
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following example is of a SOAP document that uses the .NET Binary Format: SOAP Extension
 format.
@@ -826,7 +804,8 @@ Release: March 13, 2019
 
 8 / 13
 
- Bytes (hex)
+
+ Bytes (hex)
 
  Records
 
@@ -855,7 +834,8 @@ Release: March 13, 2019
 
 9 / 13
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 The .NET Binary Format: SOAP Extension has the same security considerations as the .NET Binary
 Format: SOAP Data Structure, as specified in [MC-NBFS] section 4, and the .NET Binary Format: XML
@@ -875,7 +855,8 @@ Release: March 13, 2019
 
 10 / 13
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -915,7 +896,8 @@ Release: March 13, 2019
 
 11 / 13
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -959,7 +941,8 @@ Release: March 13, 2019
 
 12 / 13
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 6

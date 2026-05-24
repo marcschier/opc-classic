@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 145
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 145
 
-Date
+
+Date
 
 Revision
 History
@@ -530,7 +532,8 @@ Release: April 23, 2024
 
 3 / 145
 
-Date
+
+Date
 
 Revision
 History
@@ -555,532 +558,241 @@ Release: April 23, 2024
 
 4 / 145
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 10
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Common Data Types ........................................................................................ 14
-
-2.1
-2.2
-
-3.1
-
-3.1.1
-
-3.1.4.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3.1.1.3.1
-3.1.1.3.2
-3.1.1.3.3
-3.1.1.3.4
-3.1.1.3.5
-3.1.1.3.6
-3.1.1.3.7
-
-3  Protocol Details ..................................................................................................... 15
-IIS Application Host Administration Server Details ................................................ 15
-Abstract Data Model .................................................................................... 15
-Configuration Store ............................................................................... 15
-Configuration Path ................................................................................ 15
-Configuration Settings ........................................................................... 15
-Configuration Properties ................................................................... 16
-Configuration Elements .................................................................... 16
-Configuration Collections .................................................................. 16
-Configuration Sections and Section Definition and Section Groups ......... 17
-Configuration Schema ...................................................................... 17
-Inheritance and Merging of Configuration Settings ............................... 17
-Programmatic Configuration Settings ................................................. 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-IAppHostAdminManager ......................................................................... 18
-GetAdminSection (Opnum 3) ............................................................ 19
-GetMetadata (Opnum 4) ................................................................... 20
-SetMetadata (Opnum 5) ................................................................... 22
-ConfigManager (Opnum 6)................................................................ 24
-IAppHostChangeHandler ........................................................................ 24
-OnSectionChanges (Opnum 3) .......................................................... 25
-IAppHostChildElementCollection .............................................................. 25
-Count (Opnum 3) ............................................................................ 25
-Item (Opnum 4) .............................................................................. 26
-IAppHostCollectionSchema ..................................................................... 27
-AddElementNames (Opnum 3) .......................................................... 27
-GetAddElementSchema (Opnum 4) .................................................... 28
-RemoveElementSchema (Opnum 5) ................................................... 29
-ClearElementSchema (Opnum 6) ....................................................... 29
-IsMergeAppend (Opnum 7) ............................................................... 30
-GetMetadata (Opnum 8) ................................................................... 30
-DoesAllowDuplicates (Opnum 9) ........................................................ 30
-IAppHostConfigException ....................................................................... 31
-LineNumber (Opnum 3).................................................................... 31
-FileName (Opnum 4) ....................................................................... 32
-ConfigPath (Opnum 5) ..................................................................... 32
-
-3.1.4.4.1
-3.1.4.4.2
-3.1.4.4.3
-3.1.4.4.4
-3.1.4.4.5
-3.1.4.4.6
-3.1.4.4.7
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-
-3.1.4.5.1
-3.1.4.5.2
-3.1.4.5.3
-
-3.1.4.3.1
-3.1.4.3.2
-
-3.1.4.2.1
-
-3.1.4.4
-
-3.1.4.5
-
-3.1.4.2
-
-3.1.4.3
-
-[MC-IISA] - v20240423
-Internet Information Services (IIS) Application Host COM Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 145
-
-3.1.4.8
-
-3.1.4.7
-
-3.1.4.6
-
-3.1.4.9
-
-3.1.4.10
-
-3.1.4.11
-
-3.1.4.12
-
-3.1.4.9.1
-3.1.4.9.2
-
-3.1.4.8.1
-3.1.4.8.2
-3.1.4.8.3
-3.1.4.8.4
-
-3.1.4.5.4
-3.1.4.5.5
-3.1.4.5.6
-3.1.4.5.7
-
-3.1.4.7.1
-3.1.4.7.2
-3.1.4.7.3
-3.1.4.7.4
-3.1.4.7.5
-
-3.1.4.6.1
-3.1.4.6.2
-3.1.4.6.3
-3.1.4.6.4
-3.1.4.6.5
-3.1.4.6.6
-3.1.4.6.7
-3.1.4.6.8
-
-ErrorLine (Opnum 6) ........................................................................ 33
-PreErrorLine (Opnum 7) ................................................................... 33
-PostErrorLine (Opnum 8) .................................................................. 34
-ErrorString (Opnum 9) ..................................................................... 35
-IAppHostConfigFile ................................................................................ 35
-ConfigPath (Opnum 3) ..................................................................... 36
-FilePath (Opnum 4) ......................................................................... 36
-Locations (Opnum 5) ....................................................................... 37
-GetAdminSection (Opnum 6) ............................................................ 37
-GetMetadata (Opnum 7) ................................................................... 38
-SetMetadata (Opnum 8) ................................................................... 39
-ClearInvalidSections (Opnum 9) ........................................................ 39
-RootSectionGroup (Opnum 10) ......................................................... 39
-IAppHostConfigLocation ......................................................................... 40
-Path (Opnum 3) .............................................................................. 41
-Count (Opnum 4) ............................................................................ 41
-Item (Opnum 5) .............................................................................. 42
-AddConfigSection (Opnum 6) ............................................................ 42
-DeleteConfigSection (Opnum 7) ........................................................ 43
-IAppHostConfigLocationCollection ........................................................... 44
-Count (Opnum 3) ............................................................................ 44
-Item (Opnum 4) .............................................................................. 45
-AddLocation (Opnum 5) ................................................................... 45
-DeleteLocation (Opnum 6) ................................................................ 46
-IAppHostConfigManager ......................................................................... 47
-GetConfigFile (Opnum 3) .................................................................. 47
-GetUniqueConfigPath (Opnum 4) ....................................................... 48
-IAppHostConstantValue ......................................................................... 49
-3.1.4.10.1  Name (Opnum 3) ............................................................................ 49
-Value (Opnum 4) ............................................................................. 50
-3.1.4.10.2
-IAppHostConstantValueCollection ............................................................ 50
-Count (Opnum 3) ............................................................................ 50
-Item (Opnum 4) .............................................................................. 51
-IAppHostElement .................................................................................. 52
-3.1.4.12.1  Name (Opnum 3) ............................................................................ 52
-Collection (Opnum 4) ....................................................................... 53
-3.1.4.12.2
-Properties (Opnum 5) ...................................................................... 53
-3.1.4.12.3
-3.1.4.12.4
-ChildElements (Opnum 6) ................................................................. 54
-3.1.4.12.5  GetMetadata (Opnum 7) ................................................................... 55
-SetMetadata (Opnum 8) ................................................................... 57
-3.1.4.12.6
-3.1.4.12.7
-Schema (Opnum 9) ......................................................................... 58
-3.1.4.12.8  GetElementByName (Opnum 10) ....................................................... 59
-3.1.4.12.9  GetPropertyByName (Opnum 11) ...................................................... 59
-3.1.4.12.10  Clear (Opnum 12) ........................................................................... 60
-3.1.4.12.11  Methods (Opnum 13) ....................................................................... 60
-IAppHostElementCollection..................................................................... 61
-3.1.4.13.1
-Count (Opnum 3) ............................................................................ 62
-3.1.4.13.2
-Item (Opnum 4) .............................................................................. 62
-AddElement (Opnum 5) .................................................................... 63
-3.1.4.13.3
-3.1.4.13.4  DeleteElement (Opnum 6) ................................................................ 63
-Clear (Opnum 7) ............................................................................. 64
-3.1.4.13.5
-CreateNewElement (Opnum 8) .......................................................... 65
-3.1.4.13.6
-Schema (Opnum 9) ......................................................................... 65
-3.1.4.13.7
-IAppHostElementSchema ....................................................................... 66
-3.1.4.14.1  Name (Opnum 3) ............................................................................ 66
-3.1.4.14.2  DoesAllowUnschematizedProperties (Opnum 4) ................................... 67
-3.1.4.14.3  GetMetadata (Opnum 5) ................................................................... 67
-CollectionSchema (Opnum 6) ............................................................ 68
-3.1.4.14.4
-
-3.1.4.11.1
-3.1.4.11.2
-
-3.1.4.13
-
-3.1.4.14
-
-[MC-IISA] - v20240423
-Internet Information Services (IIS) Application Host COM Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 145
-
-3.1.4.20
-
-3.1.4.21
-
-3.1.4.22
-
-3.1.4.15
-
-3.1.4.16
-
-3.1.4.17
-
-3.1.4.18
-
-3.1.4.19
-
-3.1.4.15.1
-3.1.4.15.2
-
-3.1.4.18.1
-3.1.4.18.2
-
-3.1.4.14.5
-3.1.4.14.6
-3.1.4.14.7
-
-ChildElementSchemas (Opnum 7) ..................................................... 69
-PropertySchemas (Opnum 8) ............................................................ 69
-IsCollectionDefault (Opnum 9) .......................................................... 70
-IAppHostElementSchemaCollection ......................................................... 70
-Count (Opnum 3) ............................................................................ 71
-Item (Opnum 4) .............................................................................. 71
-IAppHostMappingExtension .................................................................... 72
-3.1.4.16.1  GetSiteNameFromSiteID (Opnum 3) .................................................. 72
-3.1.4.16.2  GetSiteIDFromSiteName (Opnum 4) .................................................. 73
-3.1.4.16.3  GetSiteElementFromSiteID (Opnum 5) ............................................... 74
-3.1.4.16.4  MapPath (Opnum 6) ........................................................................ 74
-IAppHostMethod ................................................................................... 75
-3.1.4.17.1  Name (Opnum 3) ............................................................................ 76
-Schema (Opnum 4) ......................................................................... 76
-3.1.4.17.2
-CreateInstance (Opnum 5) ............................................................... 77
-3.1.4.17.3
-IAppHostMethodCollection ...................................................................... 77
-Count (Opnum 3) ............................................................................ 77
-Item (Opnum 4) .............................................................................. 78
-IAppHostMethodInstance ....................................................................... 79
-3.1.4.19.1
-Input (Opnum 3) ............................................................................. 79
-3.1.4.19.2  Output (Opnum 4) ........................................................................... 79
-3.1.4.19.3
-Execute (Opnum 5) ......................................................................... 80
-3.1.4.19.4  GetMetaData (Opnum 6) .................................................................. 80
-SetMetadata (Opnum 7) ................................................................... 81
-3.1.4.19.5
-IAppHostMethodSchema ........................................................................ 82
-3.1.4.20.1  Name (Opnum 3) ............................................................................ 82
-3.1.4.20.2
-InputSchema (Opnum 4) .................................................................. 83
-3.1.4.20.3  OutputSchema (Opnum 5) ................................................................ 83
-3.1.4.20.4  GetMetadata (Opnum 6) ................................................................... 83
-IAppHostPathMapper ............................................................................. 84
-3.1.4.21.1  MapPath (Opnum 3) ........................................................................ 84
-IAppHostProperty .................................................................................. 85
-3.1.4.22.1  Name (Opnum 3) ............................................................................ 86
-Value (Get) (Opnum 4) .................................................................... 86
-3.1.4.22.2
-Value (Set) (Opnum 5) .................................................................... 87
-3.1.4.22.3
-Clear (Opnum 6) ............................................................................. 87
-3.1.4.22.4
-StringValue (Opnum 7) .................................................................... 88
-3.1.4.22.5
-3.1.4.22.6
-Exception (Opnum 8) ....................................................................... 88
-3.1.4.22.7  GetMetadata (Opnum 9) ................................................................... 89
-SetMetadata (Opnum 10) ................................................................. 90
-3.1.4.22.8
-Schema (Opnum 11) ....................................................................... 91
-3.1.4.22.9
-IAppHostPropertyCollection .................................................................... 91
-Count (Opnum 3) ............................................................................ 92
-Item (Opnum 4) .............................................................................. 92
-IAppHostPropertyException .................................................................... 93
-InvalidValue (Opnum 10) ................................................................. 93
-ValidationFailureReason (Opnum 11) ................................................. 94
-ValidationFailureParameters (Opnum 12) ........................................... 94
-IAppHostPropertySchema ...................................................................... 95
-3.1.4.25.1  Name (Opnum 3) ............................................................................ 95
-3.1.4.25.2
-Type (Opnum 4) .............................................................................. 96
-3.1.4.25.3  DefaultValue (Opnum 5) ................................................................... 96
-IsRequired (Opnum 6) ..................................................................... 97
-3.1.4.25.4
-IsUniqueKey (Opnum 7) ................................................................... 97
-3.1.4.25.5
-IsCombinedKey (Opnum 8) ............................................................... 98
-3.1.4.25.6
-IsExpanded (Opnum 9) .................................................................... 98
-3.1.4.25.7
-ValidationType (Opnum 10) .............................................................. 99
-3.1.4.25.8
-ValidationParameter (Opnum 11) ...................................................... 99
-3.1.4.25.9
-
-3.1.4.24.1
-3.1.4.24.2
-3.1.4.24.3
-
-3.1.4.23.1
-3.1.4.23.2
-
-3.1.4.23
-
-3.1.4.24
-
-3.1.4.25
-
-[MC-IISA] - v20240423
-Internet Information Services (IIS) Application Host COM Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 145
-
-3.1.4.26
-
-3.1.4.27
-
-3.1.4.26.1
-3.1.4.26.2
-
-3.1.4.25.10  GetMetaData (Opnum 12) ............................................................... 100
-3.1.4.25.11  IsCaseSensitive (Opnum 13) ............................................................ 101
-3.1.4.25.12  PossibleValues (Opnum 14) ............................................................. 101
-3.1.4.25.13  DoesAllowInfinite (Opnum 15) ......................................................... 102
-3.1.4.25.14  IsEncrypted (Opnum 16) ................................................................. 102
-3.1.4.25.15  TimeSpanFormat (Opnum 17) .......................................................... 103
-IAppHostPropertySchemaCollection ........................................................ 103
-Count (Opnum 3) ........................................................................... 104
-Item (Opnum 4) ............................................................................. 104
-IAppHostSectionDefinition ..................................................................... 105
-3.1.4.27.1  Name (Opnum 3) ........................................................................... 105
-Type (Get) (Opnum 4) .................................................................... 106
-3.1.4.27.2
-3.1.4.27.3
-Type (Set) (Opnum 5) .................................................................... 106
-3.1.4.27.4  OverrideModeDefault (Get) (Opnum 6) ............................................. 107
-3.1.4.27.5  OverrideModeDefault (Set) (Opnum 7) .............................................. 108
-AllowDefinition (Get) (Opnum 8) ...................................................... 108
-3.1.4.27.6
-AllowDefinition (Set) (Opnum 9) ...................................................... 109
-3.1.4.27.7
-AllowLocation (Get) (Opnum 10) ...................................................... 109
-3.1.4.27.8
-AllowLocation (Set) (Opnum 11) ...................................................... 110
-3.1.4.27.9
-IAppHostSectionDefinitionCollection ....................................................... 110
-Count (Opnum 3) ........................................................................... 111
-3.1.4.28.1
-Item (Opnum 4) ............................................................................. 111
-3.1.4.28.2
-3.1.4.28.3
-AddSection (Opnum 5) .................................................................... 112
-3.1.4.28.4  DeleteSection (Opnum 6) ................................................................ 112
-IAppHostSectionGroup .......................................................................... 113
-Count (Opnum 3) ........................................................................... 113
-3.1.4.29.1
-Item (Opnum 4) ............................................................................. 114
-3.1.4.29.2
-Sections (Opnum 5) ........................................................................ 115
-3.1.4.29.3
-3.1.4.29.4
-AddSectionGroup (Opnum 6) ........................................................... 115
-3.1.4.29.5  DeleteSectionGroup (Opnum 7) ........................................................ 116
-3.1.4.29.6  Name (Opnum 8) ........................................................................... 116
-Type (Get) (Opnum 9) .................................................................... 117
-3.1.4.29.7
-Type (Set) (Opnum 10) ................................................................... 117
-3.1.4.29.8
-IAppHostWritableAdminManager ............................................................ 118
-CommitChanges (Opnum 7)............................................................. 118
-CommitPath (Get) (Opnum 8) .......................................................... 119
-CommitPath (Set) (Opnum 9) .......................................................... 119
-Timer Events ............................................................................................. 120
-Other Local Events ..................................................................................... 120
-
-3.1.4.30.1
-3.1.4.30.2
-3.1.4.30.3
-
-3.1.4.28
-
-3.1.4.29
-
-3.1.4.30
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ............................................................................................... 121
-Create an AppHostAdminManager Locally ........................................................... 121
-Get Metadata: Get the overrideMode of a defaultDocument Section ....................... 121
-Set Metadata: Set the overrideMode of the defaultDocument Section .................... 121
-Create a New Configuration Section Entry in the configSections Section ................. 121
-Get a Section for Read Access: The defaultDocument Section ............................... 122
-Get a Property: Get the Enabled Property of the defaultDocument Section ............. 122
-Get a Section: Get the anonymousAuthentication Section .................................... 122
-List the Entries of a Collection ........................................................................... 122
-Remove an Entry of a Collection ....................................................................... 122
-Edit the Configuration of APPHOST in a Location Tag ........................................... 123
-Read Schema Information: Determine If IsMergeAppend Is Set in the defaultDocuments
-Section .......................................................................................................... 123
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-4.11
-
-4.12  Get a Section for Write: Get the defaultDocument Section and Toggle the Enabled
-
-Attribute ........................................................................................................ 123
-4.13  Write into a Collection: Clear the Contents of the defaultDocument Section for Site1123
-4.14  Write into a Collection: Add an Entry for the defaultDocument Section for Site1 as a
-
-Location Tag ................................................................................................... 124
-
-[MC-IISA] - v20240423
-Internet Information Services (IIS) Application Host COM Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 145
-
-5  Security ............................................................................................................... 125
-Security Considerations for Implementers .......................................................... 125
-Index of Security Parameters ........................................................................... 125
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 126
-
-7  Appendix B: Product Behavior ............................................................................. 140
-
-8  Change Tracking .................................................................................................. 141
-
-9  Index ................................................................................................................... 142
-
-[MC-IISA] - v20240423
-Internet Information Services (IIS) Application Host COM Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 145
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IIS Application Host Administration Server Details](#31-iis-application-host-administration-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Configuration Store](#3111-configuration-store)
+      - [3.1.1.2 Configuration Path](#3112-configuration-path)
+      - [3.1.1.3 Configuration Settings](#3113-configuration-settings)
+        - [3.1.1.3.1 Configuration Properties](#31131-configuration-properties)
+        - [3.1.1.3.2 Configuration Elements](#31132-configuration-elements)
+        - [3.1.1.3.3 Configuration Collections](#31133-configuration-collections)
+        - [3.1.1.3.4 Configuration Sections and Section Definition and Section Groups](#31134-configuration-sections-and-section-definition-and-section-groups)
+        - [3.1.1.3.5 Configuration Schema](#31135-configuration-schema)
+        - [3.1.1.3.6 Inheritance and Merging of Configuration Settings](#31136-inheritance-and-merging-of-configuration-settings)
+        - [3.1.1.3.7 Programmatic Configuration Settings](#31137-programmatic-configuration-settings)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 IAppHostAdminManager](#3141-iapphostadminmanager)
+        - [3.1.4.1.1 GetAdminSection (Opnum 3)](#31411-getadminsection-opnum-3)
+        - [3.1.4.1.2 GetMetadata (Opnum 4)](#31412-getmetadata-opnum-4)
+        - [3.1.4.1.3 SetMetadata (Opnum 5)](#31413-setmetadata-opnum-5)
+        - [3.1.4.1.4 ConfigManager (Opnum 6)](#31414-configmanager-opnum-6)
+      - [3.1.4.2 IAppHostChangeHandler](#3142-iapphostchangehandler)
+        - [3.1.4.2.1 OnSectionChanges (Opnum 3)](#31421-onsectionchanges-opnum-3)
+      - [3.1.4.3 IAppHostChildElementCollection](#3143-iapphostchildelementcollection)
+        - [3.1.4.3.1 Count (Opnum 3)](#31431-count-opnum-3)
+        - [3.1.4.3.2 Item (Opnum 4)](#31432-item-opnum-4)
+      - [3.1.4.4 IAppHostCollectionSchema](#3144-iapphostcollectionschema)
+        - [3.1.4.4.1 AddElementNames (Opnum 3)](#31441-addelementnames-opnum-3)
+        - [3.1.4.4.2 GetAddElementSchema (Opnum 4)](#31442-getaddelementschema-opnum-4)
+        - [3.1.4.4.3 RemoveElementSchema (Opnum 5)](#31443-removeelementschema-opnum-5)
+        - [3.1.4.4.4 ClearElementSchema (Opnum 6)](#31444-clearelementschema-opnum-6)
+        - [3.1.4.4.5 IsMergeAppend (Opnum 7)](#31445-ismergeappend-opnum-7)
+        - [3.1.4.4.6 GetMetadata (Opnum 8)](#31446-getmetadata-opnum-8)
+        - [3.1.4.4.7 DoesAllowDuplicates (Opnum 9)](#31447-doesallowduplicates-opnum-9)
+      - [3.1.4.5 IAppHostConfigException](#3145-iapphostconfigexception)
+        - [3.1.4.5.1 LineNumber (Opnum 3)](#31451-linenumber-opnum-3)
+        - [3.1.4.5.2 FileName (Opnum 4)](#31452-filename-opnum-4)
+        - [3.1.4.5.3 ConfigPath (Opnum 5)](#31453-configpath-opnum-5)
+        - [3.1.4.5.4 ErrorLine (Opnum 6)](#31454-errorline-opnum-6)
+        - [3.1.4.5.5 PreErrorLine (Opnum 7)](#31455-preerrorline-opnum-7)
+        - [3.1.4.5.6 PostErrorLine (Opnum 8)](#31456-posterrorline-opnum-8)
+        - [3.1.4.5.7 ErrorString (Opnum 9)](#31457-errorstring-opnum-9)
+      - [3.1.4.6 IAppHostConfigFile](#3146-iapphostconfigfile)
+        - [3.1.4.6.1 ConfigPath (Opnum 3)](#31461-configpath-opnum-3)
+        - [3.1.4.6.2 FilePath (Opnum 4)](#31462-filepath-opnum-4)
+        - [3.1.4.6.3 Locations (Opnum 5)](#31463-locations-opnum-5)
+        - [3.1.4.6.4 GetAdminSection (Opnum 6)](#31464-getadminsection-opnum-6)
+        - [3.1.4.6.5 GetMetadata (Opnum 7)](#31465-getmetadata-opnum-7)
+        - [3.1.4.6.6 SetMetadata (Opnum 8)](#31466-setmetadata-opnum-8)
+        - [3.1.4.6.7 ClearInvalidSections (Opnum 9)](#31467-clearinvalidsections-opnum-9)
+        - [3.1.4.6.8 RootSectionGroup (Opnum 10)](#31468-rootsectiongroup-opnum-10)
+      - [3.1.4.7 IAppHostConfigLocation](#3147-iapphostconfiglocation)
+        - [3.1.4.7.1 Path (Opnum 3)](#31471-path-opnum-3)
+        - [3.1.4.7.2 Count (Opnum 4)](#31472-count-opnum-4)
+        - [3.1.4.7.3 Item (Opnum 5)](#31473-item-opnum-5)
+        - [3.1.4.7.4 AddConfigSection (Opnum 6)](#31474-addconfigsection-opnum-6)
+        - [3.1.4.7.5 DeleteConfigSection (Opnum 7)](#31475-deleteconfigsection-opnum-7)
+      - [3.1.4.8 IAppHostConfigLocationCollection](#3148-iapphostconfiglocationcollection)
+        - [3.1.4.8.1 Count (Opnum 3)](#31481-count-opnum-3)
+        - [3.1.4.8.2 Item (Opnum 4)](#31482-item-opnum-4)
+        - [3.1.4.8.3 AddLocation (Opnum 5)](#31483-addlocation-opnum-5)
+        - [3.1.4.8.4 DeleteLocation (Opnum 6)](#31484-deletelocation-opnum-6)
+      - [3.1.4.9 IAppHostConfigManager](#3149-iapphostconfigmanager)
+        - [3.1.4.9.1 GetConfigFile (Opnum 3)](#31491-getconfigfile-opnum-3)
+        - [3.1.4.9.2 GetUniqueConfigPath (Opnum 4)](#31492-getuniqueconfigpath-opnum-4)
+      - [3.1.4.10 IAppHostConstantValue](#31410-iapphostconstantvalue)
+        - [3.1.4.10.1 Name (Opnum 3)](#314101-name-opnum-3)
+        - [3.1.4.10.2 Value (Opnum 4)](#314102-value-opnum-4)
+      - [3.1.4.11 IAppHostConstantValueCollection](#31411-iapphostconstantvaluecollection)
+        - [3.1.4.11.1 Count (Opnum 3)](#314111-count-opnum-3)
+        - [3.1.4.11.2 Item (Opnum 4)](#314112-item-opnum-4)
+      - [3.1.4.12 IAppHostElement](#31412-iapphostelement)
+        - [3.1.4.12.1 Name (Opnum 3)](#314121-name-opnum-3)
+        - [3.1.4.12.2 Collection (Opnum 4)](#314122-collection-opnum-4)
+        - [3.1.4.12.3 Properties (Opnum 5)](#314123-properties-opnum-5)
+        - [3.1.4.12.4 ChildElements (Opnum 6)](#314124-childelements-opnum-6)
+        - [3.1.4.12.5 GetMetadata (Opnum 7)](#314125-getmetadata-opnum-7)
+        - [3.1.4.12.6 SetMetadata (Opnum 8)](#314126-setmetadata-opnum-8)
+        - [3.1.4.12.7 Schema (Opnum 9)](#314127-schema-opnum-9)
+        - [3.1.4.12.8 GetElementByName (Opnum 10)](#314128-getelementbyname-opnum-10)
+        - [3.1.4.12.9 GetPropertyByName (Opnum 11)](#314129-getpropertybyname-opnum-11)
+        - [3.1.4.12.10 Clear (Opnum 12)](#3141210-clear-opnum-12)
+        - [3.1.4.12.11 Methods (Opnum 13)](#3141211-methods-opnum-13)
+      - [3.1.4.13 IAppHostElementCollection](#31413-iapphostelementcollection)
+        - [3.1.4.13.1 Count (Opnum 3)](#314131-count-opnum-3)
+        - [3.1.4.13.2 Item (Opnum 4)](#314132-item-opnum-4)
+        - [3.1.4.13.3 AddElement (Opnum 5)](#314133-addelement-opnum-5)
+        - [3.1.4.13.4 DeleteElement (Opnum 6)](#314134-deleteelement-opnum-6)
+        - [3.1.4.13.5 Clear (Opnum 7)](#314135-clear-opnum-7)
+        - [3.1.4.13.6 CreateNewElement (Opnum 8)](#314136-createnewelement-opnum-8)
+        - [3.1.4.13.7 Schema (Opnum 9)](#314137-schema-opnum-9)
+      - [3.1.4.14 IAppHostElementSchema](#31414-iapphostelementschema)
+        - [3.1.4.14.1 Name (Opnum 3)](#314141-name-opnum-3)
+        - [3.1.4.14.2 DoesAllowUnschematizedProperties (Opnum 4)](#314142-doesallowunschematizedproperties-opnum-4)
+        - [3.1.4.14.3 GetMetadata (Opnum 5)](#314143-getmetadata-opnum-5)
+        - [3.1.4.14.4 CollectionSchema (Opnum 6)](#314144-collectionschema-opnum-6)
+        - [3.1.4.14.5 ChildElementSchemas (Opnum 7)](#314145-childelementschemas-opnum-7)
+        - [3.1.4.14.6 PropertySchemas (Opnum 8)](#314146-propertyschemas-opnum-8)
+        - [3.1.4.14.7 IsCollectionDefault (Opnum 9)](#314147-iscollectiondefault-opnum-9)
+      - [3.1.4.15 IAppHostElementSchemaCollection](#31415-iapphostelementschemacollection)
+        - [3.1.4.15.1 Count (Opnum 3)](#314151-count-opnum-3)
+        - [3.1.4.15.2 Item (Opnum 4)](#314152-item-opnum-4)
+      - [3.1.4.16 IAppHostMappingExtension](#31416-iapphostmappingextension)
+        - [3.1.4.16.1 GetSiteNameFromSiteID (Opnum 3)](#314161-getsitenamefromsiteid-opnum-3)
+        - [3.1.4.16.2 GetSiteIDFromSiteName (Opnum 4)](#314162-getsiteidfromsitename-opnum-4)
+        - [3.1.4.16.3 GetSiteElementFromSiteID (Opnum 5)](#314163-getsiteelementfromsiteid-opnum-5)
+        - [3.1.4.16.4 MapPath (Opnum 6)](#314164-mappath-opnum-6)
+      - [3.1.4.17 IAppHostMethod](#31417-iapphostmethod)
+        - [3.1.4.17.1 Name (Opnum 3)](#314171-name-opnum-3)
+        - [3.1.4.17.2 Schema (Opnum 4)](#314172-schema-opnum-4)
+        - [3.1.4.17.3 CreateInstance (Opnum 5)](#314173-createinstance-opnum-5)
+      - [3.1.4.18 IAppHostMethodCollection](#31418-iapphostmethodcollection)
+        - [3.1.4.18.1 Count (Opnum 3)](#314181-count-opnum-3)
+        - [3.1.4.18.2 Item (Opnum 4)](#314182-item-opnum-4)
+      - [3.1.4.19 IAppHostMethodInstance](#31419-iapphostmethodinstance)
+        - [3.1.4.19.1 Input (Opnum 3)](#314191-input-opnum-3)
+        - [3.1.4.19.2 Output (Opnum 4)](#314192-output-opnum-4)
+        - [3.1.4.19.3 Execute (Opnum 5)](#314193-execute-opnum-5)
+        - [3.1.4.19.4 GetMetaData (Opnum 6)](#314194-getmetadata-opnum-6)
+        - [3.1.4.19.5 SetMetadata (Opnum 7)](#314195-setmetadata-opnum-7)
+      - [3.1.4.20 IAppHostMethodSchema](#31420-iapphostmethodschema)
+        - [3.1.4.20.1 Name (Opnum 3)](#314201-name-opnum-3)
+        - [3.1.4.20.2 InputSchema (Opnum 4)](#314202-inputschema-opnum-4)
+        - [3.1.4.20.3 OutputSchema (Opnum 5)](#314203-outputschema-opnum-5)
+        - [3.1.4.20.4 GetMetadata (Opnum 6)](#314204-getmetadata-opnum-6)
+      - [3.1.4.21 IAppHostPathMapper](#31421-iapphostpathmapper)
+        - [3.1.4.21.1 MapPath (Opnum 3)](#314211-mappath-opnum-3)
+      - [3.1.4.22 IAppHostProperty](#31422-iapphostproperty)
+        - [3.1.4.22.1 Name (Opnum 3)](#314221-name-opnum-3)
+        - [3.1.4.22.2 Value (Get) (Opnum 4)](#314222-value-get-opnum-4)
+        - [3.1.4.22.3 Value (Set) (Opnum 5)](#314223-value-set-opnum-5)
+        - [3.1.4.22.4 Clear (Opnum 6)](#314224-clear-opnum-6)
+        - [3.1.4.22.5 StringValue (Opnum 7)](#314225-stringvalue-opnum-7)
+        - [3.1.4.22.6 Exception (Opnum 8)](#314226-exception-opnum-8)
+        - [3.1.4.22.7 GetMetadata (Opnum 9)](#314227-getmetadata-opnum-9)
+        - [3.1.4.22.8 SetMetadata (Opnum 10)](#314228-setmetadata-opnum-10)
+        - [3.1.4.22.9 Schema (Opnum 11)](#314229-schema-opnum-11)
+      - [3.1.4.23 IAppHostPropertyCollection](#31423-iapphostpropertycollection)
+        - [3.1.4.23.1 Count (Opnum 3)](#314231-count-opnum-3)
+        - [3.1.4.23.2 Item (Opnum 4)](#314232-item-opnum-4)
+      - [3.1.4.24 IAppHostPropertyException](#31424-iapphostpropertyexception)
+        - [3.1.4.24.1 InvalidValue (Opnum 10)](#314241-invalidvalue-opnum-10)
+        - [3.1.4.24.2 ValidationFailureReason (Opnum 11)](#314242-validationfailurereason-opnum-11)
+        - [3.1.4.24.3 ValidationFailureParameters (Opnum 12)](#314243-validationfailureparameters-opnum-12)
+      - [3.1.4.25 IAppHostPropertySchema](#31425-iapphostpropertyschema)
+        - [3.1.4.25.1 Name (Opnum 3)](#314251-name-opnum-3)
+        - [3.1.4.25.2 Type (Opnum 4)](#314252-type-opnum-4)
+        - [3.1.4.25.3 DefaultValue (Opnum 5)](#314253-defaultvalue-opnum-5)
+        - [3.1.4.25.4 IsRequired (Opnum 6)](#314254-isrequired-opnum-6)
+        - [3.1.4.25.5 IsUniqueKey (Opnum 7)](#314255-isuniquekey-opnum-7)
+        - [3.1.4.25.6 IsCombinedKey (Opnum 8)](#314256-iscombinedkey-opnum-8)
+        - [3.1.4.25.7 IsExpanded (Opnum 9)](#314257-isexpanded-opnum-9)
+        - [3.1.4.25.8 ValidationType (Opnum 10)](#314258-validationtype-opnum-10)
+        - [3.1.4.25.9 ValidationParameter (Opnum 11)](#314259-validationparameter-opnum-11)
+        - [3.1.4.25.10 GetMetaData (Opnum 12)](#3142510-getmetadata-opnum-12)
+        - [3.1.4.25.11 IsCaseSensitive (Opnum 13)](#3142511-iscasesensitive-opnum-13)
+        - [3.1.4.25.12 PossibleValues (Opnum 14)](#3142512-possiblevalues-opnum-14)
+        - [3.1.4.25.13 DoesAllowInfinite (Opnum 15)](#3142513-doesallowinfinite-opnum-15)
+        - [3.1.4.25.14 IsEncrypted (Opnum 16)](#3142514-isencrypted-opnum-16)
+        - [3.1.4.25.15 TimeSpanFormat (Opnum 17)](#3142515-timespanformat-opnum-17)
+      - [3.1.4.26 IAppHostPropertySchemaCollection](#31426-iapphostpropertyschemacollection)
+        - [3.1.4.26.1 Count (Opnum 3)](#314261-count-opnum-3)
+        - [3.1.4.26.2 Item (Opnum 4)](#314262-item-opnum-4)
+      - [3.1.4.27 IAppHostSectionDefinition](#31427-iapphostsectiondefinition)
+        - [3.1.4.27.1 Name (Opnum 3)](#314271-name-opnum-3)
+        - [3.1.4.27.2 Type (Get) (Opnum 4)](#314272-type-get-opnum-4)
+        - [3.1.4.27.3 Type (Set) (Opnum 5)](#314273-type-set-opnum-5)
+        - [3.1.4.27.4 OverrideModeDefault (Get) (Opnum 6)](#314274-overridemodedefault-get-opnum-6)
+        - [3.1.4.27.5 OverrideModeDefault (Set) (Opnum 7)](#314275-overridemodedefault-set-opnum-7)
+        - [3.1.4.27.6 AllowDefinition (Get) (Opnum 8)](#314276-allowdefinition-get-opnum-8)
+        - [3.1.4.27.7 AllowDefinition (Set) (Opnum 9)](#314277-allowdefinition-set-opnum-9)
+        - [3.1.4.27.8 AllowLocation (Get) (Opnum 10)](#314278-allowlocation-get-opnum-10)
+        - [3.1.4.27.9 AllowLocation (Set) (Opnum 11)](#314279-allowlocation-set-opnum-11)
+      - [3.1.4.28 IAppHostSectionDefinitionCollection](#31428-iapphostsectiondefinitioncollection)
+        - [3.1.4.28.1 Count (Opnum 3)](#314281-count-opnum-3)
+        - [3.1.4.28.2 Item (Opnum 4)](#314282-item-opnum-4)
+        - [3.1.4.28.3 AddSection (Opnum 5)](#314283-addsection-opnum-5)
+        - [3.1.4.28.4 DeleteSection (Opnum 6)](#314284-deletesection-opnum-6)
+      - [3.1.4.29 IAppHostSectionGroup](#31429-iapphostsectiongroup)
+        - [3.1.4.29.1 Count (Opnum 3)](#314291-count-opnum-3)
+        - [3.1.4.29.2 Item (Opnum 4)](#314292-item-opnum-4)
+        - [3.1.4.29.3 Sections (Opnum 5)](#314293-sections-opnum-5)
+        - [3.1.4.29.4 AddSectionGroup (Opnum 6)](#314294-addsectiongroup-opnum-6)
+        - [3.1.4.29.5 DeleteSectionGroup (Opnum 7)](#314295-deletesectiongroup-opnum-7)
+        - [3.1.4.29.6 Name (Opnum 8)](#314296-name-opnum-8)
+        - [3.1.4.29.7 Type (Get) (Opnum 9)](#314297-type-get-opnum-9)
+        - [3.1.4.29.8 Type (Set) (Opnum 10)](#314298-type-set-opnum-10)
+      - [3.1.4.30 IAppHostWritableAdminManager](#31430-iapphostwritableadminmanager)
+        - [3.1.4.30.1 CommitChanges (Opnum 7)](#314301-commitchanges-opnum-7)
+        - [3.1.4.30.2 CommitPath (Get) (Opnum 8)](#314302-commitpath-get-opnum-8)
+        - [3.1.4.30.3 CommitPath (Set) (Opnum 9)](#314303-commitpath-set-opnum-9)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Create an AppHostAdminManager Locally](#41-create-an-apphostadminmanager-locally)
+  - [4.2 Get Metadata: Get the overrideMode of a defaultDocument Section](#42-get-metadata-get-the-overridemode-of-a-defaultdocument-section)
+  - [4.3 Set Metadata: Set the overrideMode of the defaultDocument Section](#43-set-metadata-set-the-overridemode-of-the-defaultdocument-section)
+  - [4.4 Create a New Configuration Section Entry in the configSections Section](#44-create-a-new-configuration-section-entry-in-the-configsections-section)
+  - [4.5 Get a Section for Read Access: The defaultDocument Section](#45-get-a-section-for-read-access-the-defaultdocument-section)
+  - [4.6 Get a Property: Get the Enabled Property of the defaultDocument Section](#46-get-a-property-get-the-enabled-property-of-the-defaultdocument-section)
+  - [4.7 Get a Section: Get the anonymousAuthentication Section](#47-get-a-section-get-the-anonymousauthentication-section)
+  - [4.8 List the Entries of a Collection](#48-list-the-entries-of-a-collection)
+  - [4.9 Remove an Entry of a Collection](#49-remove-an-entry-of-a-collection)
+  - [4.10 Edit the Configuration of APPHOST in a Location Tag](#410-edit-the-configuration-of-apphost-in-a-location-tag)
+  - [4.11 Read Schema Information: Determine If IsMergeAppend Is Set in the](#411-read-schema-information-determine-if-ismergeappend-is-set-in-the)
+  - [4.12 Get a Section for Write: Get the defaultDocument Section and Toggle the Enabled](#412-get-a-section-for-write-get-the-defaultdocument-section-and-toggle-the-enabled)
+  - [4.13 Write into a Collection: Clear the Contents of the defaultDocument Section for](#413-write-into-a-collection-clear-the-contents-of-the-defaultdocument-section-for)
+  - [4.14 Write into a Collection: Add an Entry for the defaultDocument Section for Site1 as](#414-write-into-a-collection-add-an-entry-for-the-defaultdocument-section-for-site1-as)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Internet Information Services (IIS) Application Host COM Protocol. This
 protocol is a client-to-server protocol that enables remote read/write access to server data. The server
@@ -1090,7 +802,7 @@ server service, which can be a web server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1136,7 +848,7 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1150,7 +862,8 @@ Release: April 23, 2024
 
 10 / 145
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1174,22 +887,22 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-IIS7AH] Microsoft Corporation, "IIS 7.0: IIS Application Host Administration API Reference",
 http://msdn.microsoft.com/en-us/library/aa965120.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol is intended to provide read/write access to administrative configuration data that is
 located on a remote server computer. The administrative configuration data is implementation-specific
 for each server.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the protocol described in [MS-DCOM].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the protocol specified in [MS-DCOM] is implemented on both the client and
 server computers.
@@ -1197,12 +910,12 @@ server computers.
 This protocol specification assumes that any security or authentication associations between the client
 and server be performed by the DCOM layer.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to the remote reading and writing of hierarchically organized server
 administration data.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol does not provide a mechanism for protocol versioning or capability negotiation.
 
@@ -1213,7 +926,8 @@ Release: April 23, 2024
 
 11 / 145
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not include any vendor-extensible fields.
 
@@ -1225,7 +939,7 @@ This protocol uses Win32 error codes. These values are taken from the numbering 
 Windows error codes, as specified in [MS-ERREF] section 2.2. Vendors SHOULD use those values,
 retaining their default meaning. Choosing any other meaning for these values risks a future collision.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following parameters are implementation-specific proprietary assignments.<1>.
 
@@ -1351,7 +1065,8 @@ None
 
 12 / 145
 
-Parameter
+
+Parameter
 
 Value
 
@@ -1474,9 +1189,10 @@ Release: April 23, 2024
 
 13 / 145
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use the DCOM Remote Protocol, as specified in [MS-DCOM], as its transport. On
 its behalf, the DCOM Remote Protocol uses the following remote procedure call (RPC) protocol
@@ -1490,7 +1206,7 @@ Class with the CLSIDs (specified in section 1.9) AppHostAdminManager using the U
 fb53-4fd5-8c7b-ff59de606c5b}, and AppHostWritableAdminManager using the UUID {2b72133b-3f5b-
 4602-8952-803546ce3344}.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 None.
 
@@ -1501,23 +1217,24 @@ Release: April 23, 2024
 
 14 / 145
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other states
 are required on the client side of this protocol. Calls that are made by any client application are passed
 directly to the transport, and the results that are returned by the transport are passed directly back to
 the calling application.
 
-3.1  IIS Application Host Administration Server Details
+### 3.1 IIS Application Host Administration Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual data model that an implementation MUST expose to participate in
 this protocol. The model is provided to facilitate the explanation of how the protocol behaves. This
 document does not mandate that implementations adhere to this model as long as their external
 behavior is consistent with that described in this document.
 
-3.1.1.1  Configuration Store
+##### 3.1.1.1 Configuration Store
 
 This protocol is used to manage administrative data that is organized in a hierarchical manner. Each
 node in the hierarchy is identified by a name. Node names are strings that cannot contain the '/'
@@ -1527,7 +1244,7 @@ nodes. Every node is uniquely identified using a fully qualified name known as a
 
 Each node of the configuration store can store configuration settings (see section 3.1.1.3).
 
-3.1.1.2  Configuration Path
+##### 3.1.1.2 Configuration Path
 
 Each node can be uniquely identified by a fully qualified name. A fully qualified name consists of
 names of all the ancestor nodes listed in order beginning with the root node of the tree. Node names
@@ -1560,7 +1277,8 @@ Release: April 23, 2024
 
 15 / 145
 
-3.1.1.3  Configuration Settings
+
+##### 3.1.1.3 Configuration Settings
 
 Configuration settings are where the actual configuration data is stored. Configuration settings are
 organized in one of three ways, configuration properties, configuration elements, or configuration
@@ -1568,14 +1286,14 @@ collections. Configuration data is ultimately stored in configuration properties
 and configuration collections are used to organized and group together different configuration
 properties in a logical way.
 
-3.1.1.3.1 Configuration Properties
+###### 3.1.1.3.1 Configuration Properties
 
 A configuration property has a name and can store a primitive value of a specific set of types including
 boolean, integer, string, and other standard types. The configuration property name MUST be
 unique in relation to its parent configuration element. A configuration property cannot have any
 children.
 
-3.1.1.3.2 Configuration Elements
+###### 3.1.1.3.2 Configuration Elements
 
 A configuration element is designed to help with the logical organization of data. It can contain zero,
 or more configuration elements, configuration properties, and configuration collections.
@@ -1603,7 +1321,7 @@ elements could be grouped together under a configuration element called <authent
 Fully qualified name for the <anonymousAuthentication> element within the hierarchy of configuration
 elements would be system.webServer/security/authentication/anonymousAuthentication.
 
-3.1.1.3.3 Configuration Collections
+###### 3.1.1.3.3 Configuration Collections
 
 Configuration collections are special configuration elements that serve as containers, where elements
 inside them are considered to be part of a set that can be dynamically added and removed. Elements
@@ -1628,7 +1346,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The configuration properties in a collection item describe additional data consumed by the
 operation.
@@ -1636,7 +1355,7 @@ operation.
 Configuration schema can be used to establish uniqueness and other constraints on a configuration
 collection.
 
-3.1.1.3.4 Configuration Sections and Section Definition and Section Groups
+###### 3.1.1.3.4 Configuration Sections and Section Definition and Section Groups
 
 A configuration section is a configuration element that contains logically related configuration
 settings. A configuration section is typically consumed by a functional component on the server,
@@ -1656,7 +1375,7 @@ security, and authentication would be configuration section groups. This hierarc
 allows configuration sections and section groups with the same name, but under different
 section groups.
 
-3.1.1.3.5 Configuration Schema
+###### 3.1.1.3.5 Configuration Schema
 
 The structure of the configuration settings is described using a schema. A client can use configuration
 schema to discover, navigate and manipulate the configuration store.
@@ -1673,7 +1392,7 @@ deletes all the values inherited from an ancestor, is clear. The schema also inc
 merging semantics to detail, if configuration elements inherited from ancestor are appended after
 ancestor elements or pre-pended before ancestor elements (see section 3.1.1.3.6).
 
-3.1.1.3.6 Inheritance and Merging of Configuration Settings
+###### 3.1.1.3.6 Inheritance and Merging of Configuration Settings
 
 The configuration system supports configuration settings inheritance along the configuration path.
 
@@ -1696,7 +1415,8 @@ Release: April 23, 2024
 
 17 / 145
 
-default collections. If collection is not configured directly on the requested configuration path nor on
+
+default collections. If collection is not configured directly on the requested configuration path nor on
 any of the parent configuration paths, it will be empty.
 
 The exact merging rules are as follows:
@@ -1747,7 +1467,7 @@ properties and collection elements defined on the given configuration path, pare
 default value in the configuration schema. These inheritance and merging rules are used for
 calculation of merged configuration elements.
 
-3.1.1.3.7 Programmatic Configuration Settings
+###### 3.1.1.3.7 Programmatic Configuration Settings
 
 The configuration system MAY support custom server-side extensions. This allows some of the
 configuration settings to be generated programmatically as opposed to being expressed in storage.
@@ -1755,20 +1475,20 @@ The IIS Application Host COM protocol allows clients to query if a configuration
 configuration property is implemented by a server-side extension. Beyond that, server-side extensions
 are an implementation detail and not governed by this specification.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol implementation does not require the explicit use of any timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 This protocol uses DCOM initialization.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 In the interfaces that are described in the following sections, no exceptions are thrown except those
 that are thrown by the underlying RPC protocol, as specified in [MS-RPCE].
 
-3.1.4.1  IAppHostAdminManager
+##### 3.1.4.1 IAppHostAdminManager
 
 The IAppHostAdminManager interface represents a read-only interface to an administration system
 that is implemented on the server.
@@ -1780,7 +1500,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The administration system consists primarily of a set of administration objects of varying complexity,
+
+The administration system consists primarily of a set of administration objects of varying complexity,
 which are accessed through the IAppHostElement interface (section 3.1.4.12) and exist at one or
 more paths that are exposed by the server. The administration system allows access to individual
 IAppHostElement objects that are available at specific paths and also provides access to merged
@@ -1817,7 +1538,7 @@ ConfigManager
 
 Opnum: 6
 
-3.1.4.1.1 GetAdminSection (Opnum 3)
+###### 3.1.4.1.1 GetAdminSection (Opnum 3)
 
 The GetAdminSection method is received by the server in an RPC_REQUEST packet. In response, the
 server returns an IAppHostElement that contains a merging of one or more individual
@@ -1853,7 +1574,8 @@ Release: April 23, 2024
 
 19 / 145
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. If processing fails, the server MUST return a nonzero HRESULT code as defined in
 [MS-ERREF]. The following table describes the error conditions that MUST be handled and the
 corresponding error codes. A server MAY return additional implementation-specific error codes.
@@ -1906,7 +1628,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.1.2 GetMetadata (Opnum 4)
+###### 3.1.4.1.2 GetMetadata (Opnum 4)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. The purpose of the
 method is to retrieve settings and other behavior-modifying attributes of the administration system.
@@ -1948,7 +1670,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2045,7 +1768,8 @@ Release: April 23, 2024
 
 21 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -2094,7 +1818,7 @@ The metadata property specified by bstrMetadataType is not supported.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.1.3 SetMetadata (Opnum 5)
+###### 3.1.4.1.3 SetMetadata (Opnum 5)
 
 The SetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 administration system implementation changes its behavior as specified by the provided metadata.
@@ -2133,7 +1857,8 @@ Release: April 23, 2024
 
 22 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -2227,7 +1952,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2263,7 +1989,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.1.4 ConfigManager (Opnum 6)
+###### 3.1.4.1.4 ConfigManager (Opnum 6)
 
 The ConfigManager method is received by the server in an RPC_REQUEST packet. In response, the
 server returns an IAppHostConfigManager that provides direct access to the supported path hierarchy
@@ -2307,7 +2033,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.2  IAppHostChangeHandler
+##### 3.1.4.2 IAppHostChangeHandler
 
 The IAppHostChangeHandler describes an interface that clients can implement and that is called
 when the administration system has detected a change in a part of its path hierarchy.
@@ -2319,7 +2045,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To receive incoming remote calls for this interface, the client MUST implement this interface
+
+To receive incoming remote calls for this interface, the client MUST implement this interface
 (09829352-87c2-418d-8d79-4133969a489d). It MUST then specify an object that implements this
 interface to the IAppHostAdminManager::SetMetadata() method by using a bstrMetadataName of
 "changeHandler".
@@ -2339,7 +2066,7 @@ Description
 
 OnSectionChanges  Opnum: 3
 
-3.1.4.2.1 OnSectionChanges (Opnum 3)
+###### 3.1.4.2.1 OnSectionChanges (Opnum 3)
 
 The OnSectionChanges method is called by the server by using an RPC_REQUEST packet. This method
 is called when a change in the path of the administration system hierarchy is detected. The callee (the
@@ -2361,7 +2088,7 @@ system.
 
 Return Values: The return value MUST be ignored by the server.
 
-3.1.4.3  IAppHostChildElementCollection
+##### 3.1.4.3 IAppHostChildElementCollection
 
 The IAppHostChildElementCollection interface provides methods that allow access to any fixed child
 IAppHostElement objects that are contained by the specific IAppHostElement object that provides this
@@ -2391,7 +2118,8 @@ Release: April 23, 2024
 
 25 / 145
 
-3.1.4.3.1 Count (Opnum 3)
+
+###### 3.1.4.3.1 Count (Opnum 3)
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the number of child IAppHostElement objects in the specific IAppHostChildElementCollection
@@ -2426,7 +2154,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.3.2 Item (Opnum 4)
+###### 3.1.4.3.2 Item (Opnum 4)
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the requested child IAppHostElement object that is contained in the specific
@@ -2460,7 +2188,8 @@ Release: April 23, 2024
 
 26 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2488,7 +2217,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.4  IAppHostCollectionSchema
+##### 3.1.4.4 IAppHostCollectionSchema
 
 The IAppHostCollectionSchema provides methods that describe the schema and constraints that apply
 to a specific IAppHostElementCollection from which this object was retrieved.
@@ -2525,7 +2254,7 @@ DoesAllowDuplicates
 
 Opnum: 9
 
-3.1.4.4.1 AddElementNames (Opnum 3)
+###### 3.1.4.4.1 AddElementNames (Opnum 3)
 
 The AddElementNames method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a comma-delimited list of names that are supported by the administration system as
@@ -2545,7 +2274,8 @@ Release: April 23, 2024
 
 27 / 145
 
-pbstrElementName: Returns the comma-delimited string that contains the names of all supported
+
+pbstrElementName: Returns the comma-delimited string that contains the names of all supported
 names of IAppHostElement objects that are contained in the IAppHostElementCollection from
 which the specified IAppHostCollectionSchema was retrieved.
 
@@ -2577,7 +2307,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.4.2 GetAddElementSchema (Opnum 4)
+###### 3.1.4.4.2 GetAddElementSchema (Opnum 4)
 
 The GetAddElementSchema method is received by the server in an RPC_REQUEST packet. In
 response, the server returns an IAppHostElementSchema that represents the schema and constraints
@@ -2631,13 +2361,14 @@ Release: April 23, 2024
 
 28 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
 ERROR_INVALID_INDEX
 
-3.1.4.4.3 RemoveElementSchema (Opnum 5)
+###### 3.1.4.4.3 RemoveElementSchema (Opnum 5)
 
 The RemoveElementSchema method is received by the server in an RPC_REQUEST packet. In
 response, the server returns the IAppHostElementSchema that represents the schema and constraints
@@ -2673,7 +2404,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.4.4 ClearElementSchema (Opnum 6)
+###### 3.1.4.4.4 ClearElementSchema (Opnum 6)
 
 The ClearElementSchema method is received by the server in an RPC_REQUEST packet. In response,
 the server returns the IAppHostElementSchema that represents the schema and constraints of an
@@ -2701,7 +2432,8 @@ Release: April 23, 2024
 
 29 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2717,7 +2449,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.4.5 IsMergeAppend (Opnum 7)
+###### 3.1.4.4.5 IsMergeAppend (Opnum 7)
 
 The IsMergeAppend method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a Boolean that represents whether the IAppHostElementCollection, from which the
@@ -2754,7 +2486,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.4.6 GetMetadata (Opnum 8)
+###### 3.1.4.4.6 GetMetadata (Opnum 8)
 
 The GetMetadata method is currently reserved for future use. The server MUST return
 ERROR_NOT_SUPPORTED (as defined in [MS-ERREF]) to indicate that the method isn't implemented.
@@ -2775,11 +2507,12 @@ Release: April 23, 2024
 
 30 / 145
 
-Return Values: The server MUST return ERROR_NOT_SUPPORTED (as defined in [MS-ERREF]) to
+
+Return Values: The server MUST return ERROR_NOT_SUPPORTED (as defined in [MS-ERREF]) to
 
 indicate that the method isn’t implemented.
 
-3.1.4.4.7 DoesAllowDuplicates (Opnum 9)
+###### 3.1.4.4.7 DoesAllowDuplicates (Opnum 9)
 
 The DoesAllowDuplicates method is received by the server in an RPC_REQUEST packet. In response,
 the server returns whether (through a Boolean) the IAppHostElementCollection from which the
@@ -2813,7 +2546,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.5  IAppHostConfigException
+##### 3.1.4.5 IAppHostConfigException
 
 Methods that receive an error when they access the administration system can retrieve more specific
 information about why the error occurred by using the IAppHostConfigException interface.
@@ -2857,7 +2590,8 @@ Release: April 23, 2024
 
 31 / 145
 
-3.1.4.5.1 LineNumber (Opnum 3)
+
+###### 3.1.4.5.1 LineNumber (Opnum 3)
 
 The LineNumber (opnum 3) method is received by the server in an RPC_REQUEST packet. In
 response, the server returns a specific line number that might provide more detail regarding the
@@ -2890,7 +2624,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.5.2 FileName (Opnum 4)
+###### 3.1.4.5.2 FileName (Opnum 4)
 
 The FileName method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a file name that can provide more detail regarding the location of the error in the hierarchy of
@@ -2937,7 +2671,8 @@ Release: April 23, 2024
 
 32 / 145
 
-3.1.4.5.3 ConfigPath (Opnum 5)
+
+###### 3.1.4.5.3 ConfigPath (Opnum 5)
 
 The ConfigPath method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a path in the supported hierarchy of the administration system that contains the error.
@@ -2977,7 +2712,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.5.4 ErrorLine (Opnum 6)
+###### 3.1.4.5.4 ErrorLine (Opnum 6)
 
 The ErrorLine method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a textual representation of the specific data in the administration system that is causing the
@@ -3016,7 +2751,8 @@ Release: April 23, 2024
 
 33 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3028,7 +2764,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.5.5 PreErrorLine (Opnum 7)
+###### 3.1.4.5.5 PreErrorLine (Opnum 7)
 
 The PreErrorLine method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a textual representation of the data that precedes the specific data in the
@@ -3068,7 +2804,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.5.6 PostErrorLine (Opnum 8)
+###### 3.1.4.5.6 PostErrorLine (Opnum 8)
 
 The PostErrorLine method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a textual representation of the data that follows the specific data in the administration
@@ -3091,7 +2827,8 @@ Release: April 23, 2024
 
 34 / 145
 
-describes the error conditions that MUST be handled and the corresponding error codes. A server
+
+describes the error conditions that MUST be handled and the corresponding error codes. A server
 MAY return additional implementation-specific error codes.
 
 Return value/code
@@ -3116,7 +2853,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.5.7 ErrorString (Opnum 9)
+###### 3.1.4.5.7 ErrorString (Opnum 9)
 
 The ErrorString method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a description of the error that occurred in the administration system.
@@ -3156,7 +2893,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.6  IAppHostConfigFile
+##### 3.1.4.6 IAppHostConfigFile
 
 The IAppHostConfigFile interface provides methods for direct access to a container of
 IAppHostElement objects in the administration system. The administration system implements a path
@@ -3174,7 +2911,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The IAppHostConfigFile interface inherits opnums 0–2 from the IUnknown interface.
+
+The IAppHostConfigFile interface inherits opnums 0–2 from the IUnknown interface.
 
 Methods in RPC Opnum Order
 
@@ -3212,7 +2950,7 @@ RootSectionGroup
 
 Opnum: 10
 
-3.1.4.6.1 ConfigPath (Opnum 3)
+###### 3.1.4.6.1 ConfigPath (Opnum 3)
 
 The ConfigPath method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the hierarchy path that is represented by the specific IAppHostConfigFile.
@@ -3251,7 +2989,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.6.2 FilePath (Opnum 4)
+###### 3.1.4.6.2 FilePath (Opnum 4)
 
 The FilePath method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the server operating system file path that corresponds to the specific IAppHostConfigFile, if
@@ -3264,7 +3002,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- [propget] HRESULT FilePath(
+
+ [propget] HRESULT FilePath(
    [out, retval] BSTR* pbstrFilePath
  );
 
@@ -3298,7 +3037,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.6.3 Locations (Opnum 5)
+###### 3.1.4.6.3 Locations (Opnum 5)
 
 The Locations method is received by the server in an RPC_REQUEST packet. In response, the server
 returns any hierarchy subpaths that exist in the specified IAppHostConfigFile. These subpaths are
@@ -3351,7 +3090,8 @@ Release: April 23, 2024
 
 37 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3369,7 +3109,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.6.4 GetAdminSection (Opnum 6)
+###### 3.1.4.6.4 GetAdminSection (Opnum 6)
 
 The GetAdminSection method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a single IAppHostElement at the specified hierarchy path in the specific
@@ -3441,7 +3181,8 @@ Release: April 23, 2024
 
 38 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3461,7 +3202,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.6.5 GetMetadata (Opnum 7)
+###### 3.1.4.6.5 GetMetadata (Opnum 7)
 
 The GetMetadata method is currently reserved for future use. The server MUST return
 ERROR_NOT_SUPPORTED (as defined in [MS-ERREF]) to indicate that the method isn’t implemented.
@@ -3481,7 +3222,7 @@ Return Values: The server MUST return ERROR_NOT_SUPPORTED (as defined in [MS-ERR
 
 indicate that the method isn't implemented.
 
-3.1.4.6.6 SetMetadata (Opnum 8)
+###### 3.1.4.6.6 SetMetadata (Opnum 8)
 
 The SetMetadata method is currently reserved for future use. The server MUST return
 ERROR_NOT_SUPPORTED (as defined in [MS-ERREF]) to indicate that the method isn't implemented.
@@ -3499,7 +3240,7 @@ Return Values: The server MUST return ERROR_NOT_SUPPORTED (as defined in [MS-ERR
 
 indicate that the method isn't implemented.
 
-3.1.4.6.7 ClearInvalidSections (Opnum 9)
+###### 3.1.4.6.7 ClearInvalidSections (Opnum 9)
 
 The ClearInvalidSections method is received by the server in an RPC_REQUEST packet. In response,
 the server MAY clear any invalid IAppHostElement objects that exist in the specific IAppHostConfigFile.
@@ -3515,7 +3256,8 @@ Release: April 23, 2024
 
 39 / 145
 
-Return Values: This method MUST return S_OK (0x00000000) on success, and a failure result (as
+
+Return Values: This method MUST return S_OK (0x00000000) on success, and a failure result (as
 specified in [MS-ERREF] section 2) on failure. All failure results MUST be treated identically. The
 following table specifies failure results specific to this method.
 
@@ -3535,7 +3277,7 @@ When processing this call, the server MUST do the following:
 
 If clearing invalid sections is not supported, the server MUST return ERROR_NOT_SUPPORTED.
 
-3.1.4.6.8 RootSectionGroup (Opnum 10)
+###### 3.1.4.6.8 RootSectionGroup (Opnum 10)
 
 The RootSectionGroup method is received by the server in an RPC_REQUEST packet. In response, the
 server returns an IAppHostSectionGroup object, which represents a declaration of IAppHostElement
@@ -3583,7 +3325,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.7  IAppHostConfigLocation
+##### 3.1.4.7 IAppHostConfigLocation
 
 The IAppHostConfigLocation interface provides methods that access the IAppHostElement objects
 that are contained in a specific hierarchy subpath in a specified IAppHostConfigFile. IAppHostConfigFile
@@ -3596,7 +3338,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Each IAppHostConfigFile can optionally contain subpaths within it. Each subpath is represented by an
+
+Each IAppHostConfigFile can optionally contain subpaths within it. Each subpath is represented by an
 IAppHostConfigLocation object. The object contains a collection of IAppHostElement objects, with the
 guarantee that each IAppHostConfigLocation contains at most one IAppHostElement object of the
 same name (in other words, the IAppHostElement object name is a key into the collection).
@@ -3627,7 +3370,7 @@ Opnum: 6
 
 DeleteConfigSection  Opnum: 7
 
-3.1.4.7.1 Path (Opnum 3)
+###### 3.1.4.7.1 Path (Opnum 3)
 
 The Path method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the subpath for the specific IAppHostConfigLocation.
@@ -3669,7 +3412,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.7.2 Count (Opnum 4)
+###### 3.1.4.7.2 Count (Opnum 4)
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -3678,7 +3421,8 @@ Release: April 23, 2024
 
 41 / 145
 
-The Count method is received by the server in an RPC_REQUEST packet. In response, the server
+
+The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the number of IAppHostElement objects that are defined or exist at the specified
 IAppHostConfigLocation.
 
@@ -3711,7 +3455,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.7.3 Item (Opnum 5)
+###### 3.1.4.7.3 Item (Opnum 5)
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the IAppHostElement object that corresponds to the specific index parameter.
@@ -3758,7 +3502,8 @@ Release: April 23, 2024
 
 42 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3774,7 +3519,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.7.4 AddConfigSection (Opnum 6)
+###### 3.1.4.7.4 AddConfigSection (Opnum 6)
 
 The AddConfigSection method is received by the server in an RPC_REQUEST packet. In response, the
 server attempts to create a new empty IAppHostElement and add it to the specified
@@ -3831,7 +3576,7 @@ The instance is not editable.
 
 ERROR_LOCK_VIOLATION
 
-3.1.4.7.5 DeleteConfigSection (Opnum 7)
+###### 3.1.4.7.5 DeleteConfigSection (Opnum 7)
 
 The DeleteConfigSection method is received by the server in an RPC_REQUEST packet. In response,
 the server attempts to delete the IAppHostElement of the specified index.
@@ -3845,7 +3590,8 @@ Release: April 23, 2024
 
 43 / 145
 
-   [in] VARIANT cIndex
+
+   [in] VARIANT cIndex
  );
 
 cIndex: A VARIANT, which is used to specify the IAppHostElement object to delete. If the VARIANT is
@@ -3899,7 +3645,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.8  IAppHostConfigLocationCollection
+##### 3.1.4.8 IAppHostConfigLocationCollection
 
 The IAppHostConfigLocationCollection interface provides methods that access the collection of
 subpaths that are available in the specified IAppHostConfigFile.
@@ -3926,7 +3672,7 @@ Opnum: 5
 
 DeleteLocation  Opnum: 6
 
-3.1.4.8.1 Count (Opnum 3)
+###### 3.1.4.8.1 Count (Opnum 3)
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -3935,7 +3681,8 @@ Release: April 23, 2024
 
 44 / 145
 
-The Count method is received by the server in an RPC_REQUEST packet. In response, the server
+
+The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of subpaths (each represented by the IAppHostConfigLocation) in the specified
 collection.
 
@@ -3966,7 +3713,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.8.2 Item (Opnum 4)
+###### 3.1.4.8.2 Item (Opnum 4)
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the specific IAppHostConfigLocation that represents the subpath being retrieved.
@@ -4012,7 +3759,8 @@ Release: April 23, 2024
 
 45 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4028,7 +3776,7 @@ The subpath with name specified by cIndex could not be found.
 
 ERROR_PATH_NOT_FOUND
 
-3.1.4.8.3 AddLocation (Opnum 5)
+###### 3.1.4.8.3 AddLocation (Opnum 5)
 
 The AddLocation method is received by the server in an RPC_REQUEST packet. In response, the
 server attempts to create a new subpath container in the IAppHostConfigFile that provides the
@@ -4091,7 +3839,7 @@ ERROR_BAD_PATHNAME
 The server resource (for example, a file or database) corresponding to the
 path bstrLocationPath could not be found.
 
-3.1.4.8.4 DeleteLocation (Opnum 6)
+###### 3.1.4.8.4 DeleteLocation (Opnum 6)
 
 The DeleteLocation method is received by the server in an RPC_REQUEST packet. In response, the
 server attempts to delete the specific subpath container (the IAppHostConfigLocation object).
@@ -4103,7 +3851,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HRESULT DeleteLocation(
+
+ HRESULT DeleteLocation(
    [in] VARIANT cIndex
  );
 
@@ -4141,7 +3890,7 @@ ERROR_INVALID_INDEX
 The integer index specified by cIndex is invalid, or the location with name
 specified by cIndex could not be found.
 
-3.1.4.9  IAppHostConfigManager
+##### 3.1.4.9 IAppHostConfigManager
 
 The IAppHostConfigManager interface provides methods that allow access to the available hierarchy
 paths and the IAppHostElement objects that are defined within.
@@ -4160,7 +3909,7 @@ Opnum: 3
 
 GetUniqueConfigPath  Opnum: 4
 
-3.1.4.9.1 GetConfigFile (Opnum 3)
+###### 3.1.4.9.1 GetConfigFile (Opnum 3)
 
 The GetConfigFile method is received by the server in an RPC_REQUEST packet. In response, the
 server returns an IAppHostConfigFile for the specific hierarchy path.
@@ -4180,7 +3929,8 @@ Release: April 23, 2024
 
 47 / 145
 
- );
+
+ );
 
 bstrConfigPath: The hierarchy path for the IAppHostConfigFile to retrieve.
 
@@ -4233,7 +3983,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.9.2 GetUniqueConfigPath (Opnum 4)
+###### 3.1.4.9.2 GetUniqueConfigPath (Opnum 4)
 
 The GetUniqueConfigPath method is received by the server in an RPC_REQUEST packet. In response,
 the server returns the deepest hierarchy path (up to the specified hierarchy path) that contains a
@@ -4263,7 +4013,8 @@ Release: April 23, 2024
 
 48 / 145
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *pbstrUniquePath is not NULL. If processing fails, the server MUST
 return a nonzero HRESULT code as defined in [MS-ERREF]. The following table describes the error
 conditions that MUST be handled and the corresponding error codes. A server MAY return
@@ -4309,9 +4060,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.10
+##### 3.1.4.10 IAppHostConstantValue
 
-IAppHostConstantValue
+
 
 The IAppHostConstantValue interface provides methods that access the string names of a specific
 constant and its corresponding value.
@@ -4330,7 +4081,7 @@ Value
 
 Opnum: 4
 
-3.1.4.10.1  Name (Opnum 3)
+###### 3.1.4.10.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 provides the string name of the specified constant.
@@ -4348,7 +4099,8 @@ Release: April 23, 2024
 
 49 / 145
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *pbstrName is not NULL. If processing fails, the server MUST return a
 nonzero HRESULT code as defined in [MS-ERREF]. The following table describes the error
 conditions that MUST be handled and the corresponding error codes. A server MAY return
@@ -4370,7 +4122,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.10.2  Value (Opnum 4)
+###### 3.1.4.10.2 Value (Opnum 4)
 
 The Value method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the integer value of the constant.
@@ -4402,9 +4154,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.11
+##### 3.1.4.11 IAppHostConstantValueCollection
 
-IAppHostConstantValueCollection
+
 
 The IAppHostConstantValueCollection interface provides methods that access a collection of constant
 values.
@@ -4430,9 +4182,10 @@ Release: April 23, 2024
 
 50 / 145
 
-3.1.4.11.1
 
-Count (Opnum 3)
+###### 3.1.4.11.1 Count (Opnum 3)
+
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of constant values in the specified IAppHostConstantValueCollection.
@@ -4464,9 +4217,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.11.2
+###### 3.1.4.11.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the specified constant value.
@@ -4506,7 +4259,8 @@ Release: April 23, 2024
 
 51 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4529,9 +4283,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.12
+##### 3.1.4.12 IAppHostElement
 
-IAppHostElement
+
 
 The IAppHostElement interface provides methods to the base administration system object of this
 whole project.
@@ -4608,7 +4362,8 @@ Release: April 23, 2024
 
 52 / 145
 
-3.1.4.12.1  Name (Opnum 3)
+
+###### 3.1.4.12.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the IAppHostElement object.
@@ -4647,9 +4402,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.12.2
+###### 3.1.4.12.2 Collection (Opnum 4)
 
-Collection (Opnum 4)
+
 
 The Collection method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostElementCollection that represents a collection of "collection IAppHostElement"
@@ -4691,7 +4446,8 @@ Release: April 23, 2024
 
 53 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4701,9 +4457,9 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.12.3
+###### 3.1.4.12.3 Properties (Opnum 5)
 
-Properties (Opnum 5)
+
 
 The Properties method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostPropertyCollection that contains the IAppHostProperty objects that are available
@@ -4751,9 +4507,9 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.12.4
+###### 3.1.4.12.4 ChildElements (Opnum 6)
 
-ChildElements (Opnum 6)
+
 
 The ChildElements method is received by the server in an RPC_REQUEST packet. In response, the
 server returns an IAppHostChildElementCollection that contains child IAppHostElement objects if any
@@ -4774,7 +4530,8 @@ Release: April 23, 2024
 
 54 / 145
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. If processing fails, the server MUST return a nonzero HRESULT code as defined in
 [MS-ERREF]. The following table describes the error conditions that MUST be handled and the
 corresponding error codes. A server MAY return additional implementation-specific error codes.
@@ -4807,7 +4564,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.12.5  GetMetadata (Opnum 7)
+###### 3.1.4.12.5 GetMetadata (Opnum 7)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the specific piece of named metadata.
@@ -4866,7 +4623,8 @@ Release: April 23, 2024
 
 55 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -4967,7 +4725,8 @@ Release: April 23, 2024
 
 56 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4989,9 +4748,9 @@ E_OUTOFMEMORY
 
 Not enough memory is available to process this command.
 
-3.1.4.12.6
+###### 3.1.4.12.6 SetMetadata (Opnum 8)
 
-SetMetadata (Opnum 8)
+
 
 The SetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the value of the metadata from the server administration system.
@@ -5061,7 +4820,8 @@ Release: April 23, 2024
 
 57 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -5125,9 +4885,9 @@ ERROR_INVALID_DATA
 The data is invalid. The value that was attempted to be set is invalid against
 the schema.
 
-3.1.4.12.7
+###### 3.1.4.12.7 Schema (Opnum 9)
 
-Schema (Opnum 9)
+
 
 The Schema method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostElementSchema that represents the schema and constraints for the specified
@@ -5150,7 +4910,8 @@ Release: April 23, 2024
 
 58 / 145
 
-conditions that MUST be handled and the corresponding error codes. A server MAY return
+
+conditions that MUST be handled and the corresponding error codes. A server MAY return
 additional implementation-specific error codes.
 
 Return value/code
@@ -5169,7 +4930,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.12.8  GetElementByName (Opnum 10)
+###### 3.1.4.12.8 GetElementByName (Opnum 10)
 
 The GetElementByName method is received by the server in an RPC_REQUEST packet. In response,
 the server returns the child IAppHostElement object with the specified name.
@@ -5217,7 +4978,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.12.9  GetPropertyByName (Opnum 11)
+###### 3.1.4.12.9 GetPropertyByName (Opnum 11)
 
 The GetPropertyByName method is received by the server in an RPC_REQUEST packet. In response,
 the server returns the IAppHostProperty of the specified name.
@@ -5233,7 +4994,8 @@ Release: April 23, 2024
 
 59 / 145
 
- );
+
+ );
 
 bstrSubName: The name of the IAppHostProperty to fetch.
 
@@ -5273,7 +5035,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.12.10  Clear (Opnum 12)
+###### 3.1.4.12.10 Clear (Opnum 12)
 
 The Clear method is received by the server in an RPC_REQUEST packet. In response, the server clears
 the contents of the specified IAppHostElement object. The administration system can choose to either
@@ -5304,7 +5066,7 @@ The element is not editable.
 
 ERROR_LOCK_VIOLATION
 
-3.1.4.12.11  Methods (Opnum 13)
+###### 3.1.4.12.11 Methods (Opnum 13)
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -5313,7 +5075,8 @@ Release: April 23, 2024
 
 60 / 145
 
-The Methods method is received by the server in an RPC_REQUEST packet. In response, the server
+
+The Methods method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostMethodCollection, which is the collection of methods that are supported for the
 specific IAppHostElement object.
 
@@ -5353,9 +5116,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.13
+##### 3.1.4.13 IAppHostElementCollection
 
-IAppHostElementCollection
+
 
 The IAppHostElementCollection interface provides methods that access a collection of "collection
 IAppHostElements".
@@ -5403,7 +5166,8 @@ Release: April 23, 2024
 
 61 / 145
 
-Method
+
+Method
 
 Description
 
@@ -5423,9 +5187,9 @@ Returns the Document Object Model (DOM) description for the collection.
 
 Opnum: 9
 
-3.1.4.13.1
+###### 3.1.4.13.1 Count (Opnum 3)
 
-Count (Opnum 3)
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a count of the number of IAppHostElement objects in the collection.
@@ -5457,9 +5221,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.13.2
+###### 3.1.4.13.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostElement for the specified index.
@@ -5484,7 +5248,8 @@ Release: April 23, 2024
 
 62 / 145
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *ppElement is not NULL. If processing fails, the server MUST return a
 nonzero HRESULT code as defined in [MS-ERREF]. The following table describes the error
 conditions that MUST be handled and the corresponding error codes. A server MAY return
@@ -5513,7 +5278,7 @@ ERROR_INVALID_INDEX
 The integer index specified by cIndex is invalid, or the IAppHostElement
 specified by cIndex doesn’t match any element in the collection.
 
-3.1.4.13.3  AddElement (Opnum 5)
+###### 3.1.4.13.3 AddElement (Opnum 5)
 
 The AddElement method is received by the server in an RPC_REQUEST packet. In response, the server
 attempts to add a newly created IAppHostElement object to the specified collection.
@@ -5577,7 +5342,8 @@ Release: April 23, 2024
 
 63 / 145
 
-3.1.4.13.4  DeleteElement (Opnum 6)
+
+###### 3.1.4.13.4 DeleteElement (Opnum 6)
 
 The DeleteElement method is received by the server in an RPC_REQUEST packet. In response, the
 server deletes the IAppHostElement at the specified index.
@@ -5631,9 +5397,9 @@ The index specified by cIndex is invalid.
 
 ERROR_INVALID_INDEX
 
-3.1.4.13.5
+###### 3.1.4.13.5 Clear (Opnum 7)
 
-Clear (Opnum 7)
+
 
 The Clear method is received by the server in an RPC_REQUEST packet. In response, the server clears
 the specified IAppHostElementCollection of all the collection IAppHostElement objects in it.
@@ -5654,7 +5420,8 @@ Release: April 23, 2024
 
 64 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5676,9 +5443,9 @@ The instance is not editable.
 
 ERROR_LOCK_VIOLATION
 
-3.1.4.13.6
+###### 3.1.4.13.6 CreateNewElement (Opnum 8)
 
-CreateNewElement (Opnum 8)
+
 
 The CreateNewElement method is received by the server in an RPC_REQUEST packet. In response, the
 server creates a new unattached IAppHostElement object that has the specified name. The name
@@ -5735,9 +5502,9 @@ ERROR_INVALID_INDEX
 The schema does not permit the creation of an element with name
 bstrElementName.
 
-3.1.4.13.7
+###### 3.1.4.13.7 Schema (Opnum 9)
 
-Schema (Opnum 9)
+
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -5746,7 +5513,8 @@ Release: April 23, 2024
 
 65 / 145
 
-The Schema method is received by the server in an RPC_REQUEST packet. In response, the server
+
+The Schema method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostCollectionSchema for the specified IAppHostElementCollection, which represents
 the schema and constraints of the specified collection.
 
@@ -5778,9 +5546,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.14
+##### 3.1.4.14 IAppHostElementSchema
 
-IAppHostElementSchema
+
 
 The IAppHostElementSchema interface provides methods that access the schema and constraints of
 a specific IAppHostElement object.
@@ -5825,7 +5593,7 @@ Opnum: 8
 
 Opnum: 9
 
-3.1.4.14.1  Name (Opnum 3)
+###### 3.1.4.14.1 Name (Opnum 3)
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -5834,7 +5602,8 @@ Release: April 23, 2024
 
 66 / 145
 
-The Name method is received by the server in an RPC_REQUEST packet. In response, the server
+
+The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the corresponding IAppHostElement from which the IAppHostElementSchema was
 retrieved.
 
@@ -5872,7 +5641,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.14.2  DoesAllowUnschematizedProperties (Opnum 4)
+###### 3.1.4.14.2 DoesAllowUnschematizedProperties (Opnum 4)
 
 The DoesAllowUnschematizedProperties method is received by the server in an RPC_REQUEST packet.
 In response, the server returns whether the corresponding IAppHostElement supports
@@ -5914,7 +5683,8 @@ Release: April 23, 2024
 
 67 / 145
 
-3.1.4.14.3  GetMetadata (Opnum 5)
+
+###### 3.1.4.14.3 GetMetadata (Opnum 5)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the specific element of named metadata.
@@ -5971,9 +5741,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.14.4
+###### 3.1.4.14.4 CollectionSchema (Opnum 6)
 
-CollectionSchema (Opnum 6)
+
 
 The CollectionSchema method is received by the server in an RPC_REQUEST packet. If the specified
 IAppHostElement object supports child collection elements, the server returns the schema and
@@ -5996,7 +5766,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-error conditions that MUST be handled and the corresponding error codes. A server MAY return
+
+error conditions that MUST be handled and the corresponding error codes. A server MAY return
 additional implementation-specific error codes.
 
 Return value/code
@@ -6015,9 +5786,9 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.14.5
+###### 3.1.4.14.5 ChildElementSchemas (Opnum 7)
 
-ChildElementSchemas (Opnum 7)
+
 
 The ChildElementSchemas method is received by the server in an RPC_REQUEST packet. In response,
 the server returns the schema and constraints of any child elements that are contained in the
@@ -6057,9 +5828,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.14.6
+###### 3.1.4.14.6 PropertySchemas (Opnum 8)
 
-PropertySchemas (Opnum 8)
+
 
 The PropertySchemas method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the schema and constraints for the IAppHostProperty objects that are contained in the
@@ -6078,7 +5849,8 @@ Release: April 23, 2024
 
 69 / 145
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *ppPropertySchemas is not NULL. If processing fails, the server
 MUST return a nonzero HRESULT code as defined in [MS-ERREF]. The following table describes the
 error conditions that MUST be handled and the corresponding error codes. A server MAY return
@@ -6100,9 +5872,9 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.14.7
+###### 3.1.4.14.7 IsCollectionDefault (Opnum 9)
 
-IsCollectionDefault (Opnum 9)
+
 
 The IsCollectionDefault method is received by the server in an RPC_REQUEST packet. In response, the
 server returns whether the corresponding IAppHostElement object is also considered to be a
@@ -6143,9 +5915,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.15
+##### 3.1.4.15 IAppHostElementSchemaCollection
 
-IAppHostElementSchemaCollection
+
 
 The IAppHostElementSchemaCollection interface provides methods that access a collection of schema
 and constraints for child IAppHostElement objects that are supported by the corresponding
@@ -6162,7 +5934,8 @@ Release: April 23, 2024
 
 70 / 145
 
-Method  Description
+
+Method  Description
 
 Count
 
@@ -6172,9 +5945,9 @@ Item
 
 Opnum: 4
 
-3.1.4.15.1
+###### 3.1.4.15.1 Count (Opnum 3)
 
-Count (Opnum 3)
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of IAppHostElementSchema objects that are contained in the collection.
@@ -6206,9 +5979,9 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.15.2
+###### 3.1.4.15.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the IAppHostElementSchema that is specified by the specific index.
@@ -6239,7 +6012,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6263,9 +6037,9 @@ The integer index specified by cIndex is invalid, or there is no
 IAppHostElementSchema instance in the collection with a name as specified
 by cIndex.
 
-3.1.4.16
+##### 3.1.4.16 IAppHostMappingExtension
 
-IAppHostMappingExtension
+
 
 The IAppHostMappingExtension interface provides methods that access the path hierarchy mapping
 system of the administration system.
@@ -6296,7 +6070,7 @@ MapPath
 
 Opnum: 6
 
-3.1.4.16.1  GetSiteNameFromSiteID (Opnum 3)
+###### 3.1.4.16.1 GetSiteNameFromSiteID (Opnum 3)
 
 The GetSiteNameFromSiteId method is received by the server in an RPC_REQUEST packet. In
 response, the server returns a string name for the specific integer site ID, which is a concept that is
@@ -6324,7 +6098,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-conditions that MUST be handled and the corresponding error codes. A server MAY return
+
+conditions that MUST be handled and the corresponding error codes. A server MAY return
 additional implementation-specific error codes.
 
 Return value/code
@@ -6361,7 +6136,7 @@ ERROR_NOT_FOUND
 
 The configuration contains no sites.
 
-3.1.4.16.2  GetSiteIDFromSiteName (Opnum 4)
+###### 3.1.4.16.2 GetSiteIDFromSiteName (Opnum 4)
 
 The GetSiteIdFromSiteName method is received by the server in an RPC_REQUEST packet. In
 response, the server returns a unique integer ID for the specific site name. Site name and ID are
@@ -6418,7 +6193,8 @@ Release: April 23, 2024
 
 73 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6428,7 +6204,7 @@ ERROR_NOT_FOUND
 
 The configuration contains no sites.
 
-3.1.4.16.3  GetSiteElementFromSiteID (Opnum 5)
+###### 3.1.4.16.3 GetSiteElementFromSiteID (Opnum 5)
 
 The GetSiteElementFromSiteId method is received by the server in an RPC_REQUEST packet. In
 response, the server obtains the site section element from a specific site ID in order to access site
@@ -6478,7 +6254,7 @@ The given site ID could not be found.
 
 ERROR_FILE_NOT_FOUND
 
-3.1.4.16.4  MapPath (Opnum 6)
+###### 3.1.4.16.4 MapPath (Opnum 6)
 
 The MapPath method is received by the server in an RPC_REQUEST packet. In response, the server
 returns how the administration system maps the specific site name and virtual path into an optionally
@@ -6499,7 +6275,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HRESULT MapPath(
+
+ HRESULT MapPath(
    [in] BSTR bstrSiteName,
    [in] BSTR bstrVirtualPath,
    [out] BSTR* pbstrPhysicalPath,
@@ -6558,9 +6335,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.17
+##### 3.1.4.17 IAppHostMethod
 
-IAppHostMethod
+
 
 The IAppHostMethod interface provides methods that access a custom method that is optionally
 supported on a specific IAppHostElement object.
@@ -6580,7 +6357,8 @@ Release: April 23, 2024
 
 75 / 145
 
-Method
+
+Method
 
 Description
 
@@ -6594,7 +6372,7 @@ Opnum: 4
 
 CreateInstance  Opnum: 5
 
-3.1.4.17.1  Name (Opnum 3)
+###### 3.1.4.17.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the custom method.
@@ -6633,9 +6411,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.17.2
+###### 3.1.4.17.2 Schema (Opnum 4)
 
-Schema (Opnum 4)
+
 
 The Schema method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the schema and constraints for the specified custom IAppHostMethod.
@@ -6660,7 +6438,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6676,9 +6455,9 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.17.3
+###### 3.1.4.17.3 CreateInstance (Opnum 5)
 
-CreateInstance (Opnum 5)
+
 
 The CreateInstance method is received by the server in an RPC_REQUEST packet. In response, the
 server creates an instance object of the method that can be executed. This behavior is analogous to
@@ -6718,9 +6497,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.18
+##### 3.1.4.18 IAppHostMethodCollection
 
-IAppHostMethodCollection
+
 
 The IAppHostMethodCollection interface provides methods that access a collection of supported
 IAppHostMethod objects.
@@ -6746,9 +6525,10 @@ Release: April 23, 2024
 
 77 / 145
 
-3.1.4.18.1
 
-Count (Opnum 3)
+###### 3.1.4.18.1 Count (Opnum 3)
+
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of IAppHostMethod objects in the collection.
@@ -6780,9 +6560,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.18.2
+###### 3.1.4.18.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the IAppHostMethod that is specified by the index.
@@ -6827,7 +6607,8 @@ Release: April 23, 2024
 
 78 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6844,9 +6625,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.19
+##### 3.1.4.19 IAppHostMethodInstance
 
-IAppHostMethodInstance
+
 
 The IAppHostMethodInstance interface provides methods that access a specific invocation instance of
 the corresponding IAppHostMethod. The caller sets parameters and then executes the instance of the
@@ -6876,9 +6657,9 @@ GetMetadata  Opnum: 6
 
 SetMetadata  Opnum: 7
 
-3.1.4.19.1
+###### 3.1.4.19.1 Input (Opnum 3)
 
-Input (Opnum 3)
+
 
 The Input method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostElement in which input parameters can be specified for the specified method
@@ -6916,13 +6697,14 @@ Release: April 23, 2024
 
 79 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.19.2  Output (Opnum 4)
+###### 3.1.4.19.2 Output (Opnum 4)
 
 The Output method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an IAppHostElement from which output parameters are retrieved after the specified method
@@ -6956,9 +6738,9 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.19.3
+###### 3.1.4.19.3 Execute (Opnum 5)
 
-Execute (Opnum 5)
+
 
 The Execute method is received by the server in an RPC_REQUEST packet. In response, the server
 actually executes the specified custom method.
@@ -6987,7 +6769,8 @@ Release: April 23, 2024
 
 80 / 145
 
-3.1.4.19.4  GetMetaData (Opnum 6)
+
+###### 3.1.4.19.4 GetMetaData (Opnum 6)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the specific piece of named metadata property. The metadata properties supported by
@@ -7037,9 +6820,9 @@ The metadata property specified by bstrMetadataType is not supported.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.19.5
+###### 3.1.4.19.5 SetMetadata (Opnum 7)
 
-SetMetadata (Opnum 7)
+
 
 The SetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server sets the specific named metadata property. The metadata properties supported by this method
@@ -7065,7 +6848,8 @@ Release: April 23, 2024
 
 81 / 145
 
-[MS-ERREF]. The following table describes the error conditions that MUST be handled and the
+
+[MS-ERREF]. The following table describes the error conditions that MUST be handled and the
 corresponding error codes. A server MAY return additional implementation-specific error codes.
 
 Return value/code
@@ -7096,9 +6880,9 @@ The metadata property specified by bstrMetadataType is not supported.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.20
+##### 3.1.4.20 IAppHostMethodSchema
 
-IAppHostMethodSchema
+
 
 The IAppHostMethodSchema interface provides methods that access the schema and constraints of
 the corresponding IAppHostMethod.
@@ -7125,7 +6909,7 @@ GetMetadata
 
 Opnum: 6
 
-3.1.4.20.1  Name (Opnum 3)
+###### 3.1.4.20.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the specified IAppHostMethod.
@@ -7149,7 +6933,8 @@ Release: April 23, 2024
 
 82 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7171,9 +6956,9 @@ One or more parameters are incorrect or null.
 
 Not enough memory is available to process this command.
 
-3.1.4.20.2
+###### 3.1.4.20.2 InputSchema (Opnum 4)
 
-InputSchema (Opnum 4)
+
 
 The InputSchema method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the schema and constraints of the input parameters to the method call. This can be
@@ -7206,7 +6991,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.20.3  OutputSchema (Opnum 5)
+###### 3.1.4.20.3 OutputSchema (Opnum 5)
 
 The OutputSchema method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the schema and constraints of the output parameters to the method call. This can be
@@ -7230,7 +7015,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7246,7 +7032,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.20.4  GetMetadata (Opnum 6)
+###### 3.1.4.20.4 GetMetadata (Opnum 6)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the named metadata for the specified method schema. The metadata properties
@@ -7290,9 +7076,9 @@ The metadata property requested by bstrMetadataType is not supported.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.21
+##### 3.1.4.21 IAppHostPathMapper
 
-IAppHostPathMapper
+
 
 The IAppHostPathMapper interface provides methods that are called by the server implementation
 when the server informs the client about hierarchy mapping decisions.
@@ -7312,7 +7098,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The IAppHostPathMapper interface inherits opnums 0–2 from the IUnknown interface.
+
+The IAppHostPathMapper interface inherits opnums 0–2 from the IUnknown interface.
 
 Methods in RPC Opnum Order
 
@@ -7320,7 +7107,7 @@ Method  Description
 
 MapPath  Opnum: 3
 
-3.1.4.21.1  MapPath (Opnum 3)
+###### 3.1.4.21.1 MapPath (Opnum 3)
 
 The MapPath method is called by the server in an RPC_REQUEST packet. In response, the client
 implementation receives the details of the specific mapping decision and optionally, can change the
@@ -7370,9 +7157,9 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.22
+##### 3.1.4.22 IAppHostProperty
 
-IAppHostProperty
+
 
 The IAppHostProperty interface provides methods that access properties that can be contained under
 an IAppHostElement object.
@@ -7388,7 +7175,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The IAppHostProperty interface inherits opnums 0–2 from the IUnknown interface.
+
+The IAppHostProperty interface inherits opnums 0–2 from the IUnknown interface.
 
 Methods in RPC Opnum Order
 
@@ -7432,7 +7220,7 @@ Schema
 
 Opnum: 11
 
-3.1.4.22.1  Name (Opnum 3)
+###### 3.1.4.22.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the specific IAppHostProperty.
@@ -7478,7 +7266,8 @@ Release: April 23, 2024
 
 86 / 145
 
-3.1.4.22.2  Value (Get) (Opnum 4)
+
+###### 3.1.4.22.2 Value (Get) (Opnum 4)
 
 The Value (Get) method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the value of the specified property.
@@ -7510,7 +7299,7 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.22.3  Value (Set) (Opnum 5)
+###### 3.1.4.22.3 Value (Set) (Opnum 5)
 
 The Value (Set) method is received by the server in an RPC_REQUEST packet. In response, the server
 sets the value of the specified property.
@@ -7561,7 +7350,8 @@ Release: April 23, 2024
 
 87 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7571,9 +7361,9 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.22.4
+###### 3.1.4.22.4 Clear (Opnum 6)
 
-Clear (Opnum 6)
+
 
 The Clear method is received by the server in an RPC_REQUEST packet. In response, the server clears
 the value of the specified property.
@@ -7609,9 +7399,9 @@ The schema does not define the property being cleared.
 
 ERROR_INVALID_INDEX
 
-3.1.4.22.5
+###### 3.1.4.22.5 StringValue (Opnum 7)
 
-StringValue (Opnum 7)
+
 
 The StringValue method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a string representation of the value of the specified property.
@@ -7645,7 +7435,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7667,9 +7458,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.22.6
+###### 3.1.4.22.6 Exception (Opnum 8)
 
-Exception (Opnum 8)
+
 
 The Exception method is received by the server in an RPC_REQUEST packet. In response, the server
 returns administration system exception information that is related to the processing of the specified
@@ -7703,7 +7494,7 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.22.7  GetMetadata (Opnum 9)
+###### 3.1.4.22.7 GetMetadata (Opnum 9)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the named metadata for the specified property.
@@ -7730,7 +7521,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -7794,9 +7586,9 @@ The metadata property specified by bstrMetadataType is not supported.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.22.8
+###### 3.1.4.22.8 SetMetadata (Opnum 10)
 
-SetMetadata (Opnum 10)
+
 
  The SetMetadata method is received by the server in an RPC_REQUEST packet.
 
@@ -7822,7 +7614,8 @@ Release: April 23, 2024
 
 90 / 145
 
-Value
+
+Value
 
 Meaning
 
@@ -7871,9 +7664,9 @@ The instance is not editable.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.22.9
+###### 3.1.4.22.9 Schema (Opnum 11)
 
-Schema (Opnum 11)
+
 
 The Schema method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the schema and constraints of the specified property, as defined in the
@@ -7914,9 +7707,10 @@ Release: April 23, 2024
 
 91 / 145
 
-3.1.4.23
 
-IAppHostPropertyCollection
+##### 3.1.4.23 IAppHostPropertyCollection
+
+
 
 The IAppHostPropertyCollection interface provides methods that access a collection of
 IAppHostProperty objects that are supported by a corresponding IAppHostElement.
@@ -7935,9 +7729,9 @@ Item
 
 Opnum: 4
 
-3.1.4.23.1
+###### 3.1.4.23.1 Count (Opnum 3)
 
-Count (Opnum 3)
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of IAppHostProperty objects that are contained in the collection.
@@ -7969,9 +7763,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.23.2
+###### 3.1.4.23.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the property that is specified by the specific index.
@@ -7988,7 +7782,8 @@ Release: April 23, 2024
 
 92 / 145
 
-cIndex: The VARIANT index of the property to be fetched. If the VARIANT is of type integer, the index
+
+cIndex: The VARIANT index of the property to be fetched. If the VARIANT is of type integer, the index
 is a zero-based index to the collection. If the VARIANT is of type string, the index is a string that is
 the name of the property being retrieved.
 
@@ -8029,9 +7824,9 @@ ERROR_INVALID_INDEX
 The integer value specified by cIndex is invalid, or there is no property
 with a name as specified by cIndex.
 
-3.1.4.24
+##### 3.1.4.24 IAppHostPropertyException
 
-IAppHostPropertyException
+
 
 The IAppHostPropertyException interface provides methods that access the exception information
 that the administration system encountered when processing the corresponding IAppHostProperty.
@@ -8057,9 +7852,9 @@ Opnum: 11
 
 ValidationFailureParameters  Opnum: 12
 
-3.1.4.24.1
+###### 3.1.4.24.1 InvalidValue (Opnum 10)
 
-InvalidValue (Opnum 10)
+
 
 The InvalidValue method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a string representation of the invalid value that is encountered by the administration
@@ -8075,7 +7870,8 @@ Release: April 23, 2024
 
 93 / 145
 
- );
+
+ );
 
 pbstrValue: Contains the invalid value representation.
 
@@ -8107,7 +7903,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.24.2  ValidationFailureReason (Opnum 11)
+###### 3.1.4.24.2 ValidationFailureReason (Opnum 11)
 
 The ValidationFailureReason method is received by the server in an RPC_REQUEST packet. In
 response, the server returns a description of the error that is encountered.
@@ -8146,7 +7942,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.24.3  ValidationFailureParameters (Opnum 12)
+###### 3.1.4.24.3 ValidationFailureParameters (Opnum 12)
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -8155,7 +7951,8 @@ Release: April 23, 2024
 
 94 / 145
 
-The ValidationFailureParameters method is currently reserved for future use. The server MUST return
+
+The ValidationFailureParameters method is currently reserved for future use. The server MUST return
 ERROR_NOT_SUPPORTED (as defined in [MS-ERREF]) to indicate that the method isnt implemented.
 
  [propget] HRESULT ValidationFailureParameters(
@@ -8168,9 +7965,9 @@ Return Values: The server MUST return ERROR_NOT_SUPPORTED (as defined in [MS-ERR
 
 indicate that the method isn't implemented.
 
-3.1.4.25
+##### 3.1.4.25 IAppHostPropertySchema
 
-IAppHostPropertySchema
+
 
 The IAppHostPropertySchema interface provides methods that access the schema and constraints for
 the corresponding IAppHostProperty object.
@@ -8241,7 +8038,7 @@ TimeSpanFormat
 
 Opnum: 17
 
-3.1.4.25.1  Name (Opnum 3)
+###### 3.1.4.25.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the corresponding IAppHostProperty.
@@ -8253,7 +8050,8 @@ Release: April 23, 2024
 
 95 / 145
 
- [propget] HRESULT Name(
+
+ [propget] HRESULT Name(
    [out, retval] BSTR* pbstrName
  );
 
@@ -8287,9 +8085,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.25.2
+###### 3.1.4.25.2 Type (Opnum 4)
 
-Type (Opnum 4)
+
 
 The Type method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a string that represents the type of the property. Which types are supported is a server
@@ -8342,7 +8140,8 @@ Release: April 23, 2024
 
 96 / 145
 
-3.1.4.25.3  DefaultValue (Opnum 5)
+
+###### 3.1.4.25.3 DefaultValue (Opnum 5)
 
 The DefaultValue method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the system-wide default value for the specified property, as defined by the
@@ -8381,9 +8180,9 @@ The default value has a type that is not supported by the schema.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.25.4
+###### 3.1.4.25.4 IsRequired (Opnum 6)
 
-IsRequired (Opnum 6)
+
 
 The IsRequired method is received by the server in an RPC_REQUEST packet. In response, the server
 returns whether the specified property is required to be set on the server when the parent
@@ -8423,15 +8222,16 @@ Release: April 23, 2024
 
 97 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.25.5
+###### 3.1.4.25.5 IsUniqueKey (Opnum 7)
 
-IsUniqueKey (Opnum 7)
+
 
 The IsUniqueKey method is received by the server in an RPC_REQUEST packet. In response, the
 server returns whether the specified property must be unique compared to all other properties of the
@@ -8467,9 +8267,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.25.6
+###### 3.1.4.25.6 IsCombinedKey (Opnum 8)
 
-IsCombinedKey (Opnum 8)
+
 
 The IsCombinedKey method is received by the server in an RPC_REQUEST packet. In response, the
 server returns whether the specified property is part of a group of properties that combine to be
@@ -8496,7 +8296,8 @@ Release: April 23, 2024
 
 98 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8512,9 +8313,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.25.7
+###### 3.1.4.25.7 IsExpanded (Opnum 9)
 
-IsExpanded (Opnum 9)
+
 
 The IsExpanded method is received by the server in an RPC_REQUEST packet. In response, the server
 returns whether the specified property supports being expanded on the server side to expand any
@@ -8547,7 +8348,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.25.8  ValidationType (Opnum 10)
+###### 3.1.4.25.8 ValidationType (Opnum 10)
 
 The ValidationType method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a string representing additional custom validation done when processing the
@@ -8573,7 +8374,8 @@ Release: April 23, 2024
 
 99 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8595,7 +8397,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.25.9  ValidationParameter (Opnum 11)
+###### 3.1.4.25.9 ValidationParameter (Opnum 11)
 
 The ValidationParameter method is received by the server in an RPC_REQUEST packet. In response,
 the server returns any parameter that applies to the ValidationType of the specified property. Again,
@@ -8636,7 +8438,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.25.10  GetMetaData (Opnum 12)
+###### 3.1.4.25.10 GetMetaData (Opnum 12)
 
 The GetMetadata method is received by the server in an RPC_REQUEST packet. In response, the
 server returns any named metadata for the property schema.
@@ -8655,7 +8457,8 @@ Release: April 23, 2024
 
 100 / 145
 
-bstrMetadataType: The name of the metadata property to fetch.
+
+bstrMetadataType: The name of the metadata property to fetch.
 
 pValue: Returns the value of the specified metadata property, and the type depends on the property
 
@@ -8688,7 +8491,7 @@ The metadata property specified by bstrMetadataType is not supported.
 
 ERROR_NOT_SUPPORTED
 
-3.1.4.25.11  IsCaseSensitive (Opnum 13)
+###### 3.1.4.25.11 IsCaseSensitive (Opnum 13)
 
 The IsCaseSensitive method is received by the server in an RPC_REQUEST packet. In response, the
 server returns whether the corresponding property is compared to others in a case-sensitive manner,
@@ -8721,7 +8524,7 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.25.12  PossibleValues (Opnum 14)
+###### 3.1.4.25.12 PossibleValues (Opnum 14)
 
 The PossibleValues method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a collection of the possible constant values for the specified property, if applicable. The
@@ -8736,7 +8539,8 @@ Release: April 23, 2024
 
 101 / 145
 
-   [out, retval] IAppHostConstantValueCollection** ppValues
+
+   [out, retval] IAppHostConstantValueCollection** ppValues
  );
 
 ppValues: Contains the collection of possible values.
@@ -8764,7 +8568,7 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.25.13  DoesAllowInfinite (Opnum 15)
+###### 3.1.4.25.13 DoesAllowInfinite (Opnum 15)
 
 The DoesAllowInfinite method is received by the server in an RPC_REQUEST packet. In response, the
 server returns whether the property supports having an infinite value set.
@@ -8798,7 +8602,7 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.25.14  IsEncrypted (Opnum 16)
+###### 3.1.4.25.14 IsEncrypted (Opnum 16)
 
 The IsEncrypted method is received by the server in an RPC_REQUEST packet. In response, the server
 returns whether the corresponding IAppHostProperty will be encrypted when it is persisted in the
@@ -8814,7 +8618,8 @@ Release: April 23, 2024
 
 102 / 145
 
- );
+
+ );
 
 pfIsEncrypted: A pointer to a Boolean value that, if set to TRUE, indicates that the property that is
 
@@ -8841,7 +8646,7 @@ One or more parameters are incorrect or null.
 
 ERROR_INVALID_PARAMETER
 
-3.1.4.25.15  TimeSpanFormat (Opnum 17)
+###### 3.1.4.25.15 TimeSpanFormat (Opnum 17)
 
 The TimeSpanFormat method is received by the server in an RPC_REQUEST packet. In response, the
 server returns a format string that describes how the corresponding property is supposed to be
@@ -8894,9 +8699,10 @@ Release: April 23, 2024
 
 103 / 145
 
-3.1.4.26
 
-IAppHostPropertySchemaCollection
+##### 3.1.4.26 IAppHostPropertySchemaCollection
+
+
 
 The IAppHostPropertySchemaCollection interface provides methods that access a collection of
 IAppHostPropertySchema objects.
@@ -8915,9 +8721,9 @@ Item
 
 Opnum: 4
 
-3.1.4.26.1
+###### 3.1.4.26.1 Count (Opnum 3)
 
-Count (Opnum 3)
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of the IAppHostPropertySchema objects in the specified collection.
@@ -8949,9 +8755,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.26.2
+###### 3.1.4.26.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the IAppHostPropertySchema that is specified by the index.
@@ -8973,7 +8779,8 @@ Release: April 23, 2024
 
 104 / 145
 
-ppPropertySchema: Contains the IAppHostPropertySchema that is selected.
+
+ppPropertySchema: Contains the IAppHostPropertySchema that is selected.
 
 Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *ppPropertySchema is not NULL. If processing fails, the server MUST
@@ -9005,9 +8812,9 @@ The integer index specified by cIndex is invalid, or the
 IappHostPropertySchema instance with name specified by cIndex could not
 be found.
 
-3.1.4.27
+##### 3.1.4.27 IAppHostSectionDefinition
 
-IAppHostSectionDefinition
+
 
 The IAppHostSectionDefinition interface provides methods that access a declaration of the
 IAppHostElement object that is supported by the administration system. A declaration is distinct from
@@ -9078,13 +8885,14 @@ Release: April 23, 2024
 
 105 / 145
 
-Method
+
+Method
 
 Description
 
 Opnum: 11
 
-3.1.4.27.1  Name (Opnum 3)
+###### 3.1.4.27.1 Name (Opnum 3)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the IAppHostElement being declared.
@@ -9123,9 +8931,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.27.2
+###### 3.1.4.27.2 Type (Get) (Opnum 4)
 
-Type (Get) (Opnum 4)
+
 
 The Type (Get) method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a string that represents an implementation-specific type name for the declaration.
@@ -9157,7 +8965,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9175,9 +8984,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.27.3
+###### 3.1.4.27.3 Type (Set) (Opnum 5)
 
-Type (Set) (Opnum 5)
+
 
 The Type (Set) method is received by the server in an RPC_REQUEST packet. In response, the server
 sets the type name of a specified declaration.
@@ -9209,7 +9018,7 @@ The operation completed successfully.
 
 Not enough memory is available to process this command.
 
-3.1.4.27.4  OverrideModeDefault (Get) (Opnum 6)
+###### 3.1.4.27.4 OverrideModeDefault (Get) (Opnum 6)
 
 The OverrideModeDefault (Get) method is received by the server in an RPC_REQUEST packet. In
 response, the server returns an implementation-specific override behavior string for the declaration.
@@ -9233,7 +9042,8 @@ Release: April 23, 2024
 
 107 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9261,7 +9071,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.27.5  OverrideModeDefault (Set) (Opnum 7)
+###### 3.1.4.27.5 OverrideModeDefault (Set) (Opnum 7)
 
 The OverrideModeDefault (Set) method is received by the server in an RPC_REQUEST packet. In
 response, the server sets an implementation-specific override behavior string for the declaration.
@@ -9299,7 +9109,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.27.6  AllowDefinition (Get) (Opnum 8)
+###### 3.1.4.27.6 AllowDefinition (Get) (Opnum 8)
 
 The AllowDefinition (Get) method is received by the server in an RPC_REQUEST packet. In response,
 the server returns an implementation-specific string that defines where the specified declaration can
@@ -9316,7 +9126,8 @@ Release: April 23, 2024
 
 108 / 145
 
-pbstrAllowDefinition: Contains the value that defines where the specified declaration can apply in
+
+pbstrAllowDefinition: Contains the value that defines where the specified declaration can apply in
 
 the administration system.
 
@@ -9348,7 +9159,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.27.7  AllowDefinition (Set) (Opnum 9)
+###### 3.1.4.27.7 AllowDefinition (Set) (Opnum 9)
 
 The AllowDefinition (Set) method is received by the server in an RPC_REQUEST packet. In response,
 the server sets an implementation-specific string that defines where the specified declaration can
@@ -9389,7 +9200,7 @@ Configuration data or schema on the server are malformed or corrupted.
 
 ERROR_INVALID_DATA
 
-3.1.4.27.8  AllowLocation (Get) (Opnum 10)
+###### 3.1.4.27.8 AllowLocation (Get) (Opnum 10)
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -9398,7 +9209,8 @@ Release: April 23, 2024
 
 109 / 145
 
-The AllowLocation (Get) method is received by the server in an RPC_REQUEST packet. In response,
+
+The AllowLocation (Get) method is received by the server in an RPC_REQUEST packet. In response,
 the server returns an implementation-specific string that defines whether the declared
 IAppHostElement can exist in subpaths within an IAppHostConfigFile.
 
@@ -9436,7 +9248,7 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.27.9  AllowLocation (Set) (Opnum 11)
+###### 3.1.4.27.9 AllowLocation (Set) (Opnum 11)
 
 The AllowLocation (Set) method is received by the server in an RPC_REQUEST packet. In response,
 the server sets an implementation-specific string that defines whether the declared IAppHostElement
@@ -9482,9 +9294,10 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.28
 
-IAppHostSectionDefinitionCollection
+##### 3.1.4.28 IAppHostSectionDefinitionCollection
+
+
 
 The IAppHostSectionDefinitionCollection interface provides methods that access a collection of
 IAppHostSectionDefinition objects.
@@ -9511,9 +9324,9 @@ Opnum: 5
 
 DeleteSection  Opnum: 6
 
-3.1.4.28.1
+###### 3.1.4.28.1 Count (Opnum 3)
 
-Count (Opnum 3)
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the count of the IAppHostSectionDefinition objects in the collection.
@@ -9545,9 +9358,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.28.2
+###### 3.1.4.28.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the IAppHostSectionDefinition object that is specified in the index.
@@ -9563,7 +9376,8 @@ Release: April 23, 2024
 
 111 / 145
 
- );
+
+ );
 
 varIndex: A VARIANT that specifies the section definition to retrieve. If the VARIANT is of type
 
@@ -9595,7 +9409,7 @@ The operation completed successfully.
 The integer index specified by varIndex is invalid, or the element with name
 specified by varIndex could not be found.
 
-3.1.4.28.3  AddSection (Opnum 5)
+###### 3.1.4.28.3 AddSection (Opnum 5)
 
 The AddSection method is received by the server in an RPC_REQUEST packet. In response, the server
 adds a section definition to the administration system.
@@ -9648,13 +9462,14 @@ Release: April 23, 2024
 
 112 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
 ERROR_ALREADY_EXISTS
 
-3.1.4.28.4  DeleteSection (Opnum 6)
+###### 3.1.4.28.4 DeleteSection (Opnum 6)
 
 The DeleteSection method is received by the server in an RPC_REQUEST packet. In response, the
 server deletes the specified section definition.
@@ -9701,9 +9516,9 @@ The system cannot find the path specified.The section could not be found.
 
 ERROR_PATH_NOT_FOUND
 
-3.1.4.29
+##### 3.1.4.29 IAppHostSectionGroup
 
-IAppHostSectionGroup
+
 
 The IAppHostSectionGroup interface provides methods that access a group of section definitions that
 have a common prefix name.
@@ -9735,7 +9550,8 @@ Release: April 23, 2024
 
 113 / 145
 
-Method
+
+Method
 
 Description
 
@@ -9761,9 +9577,9 @@ Opnum: 9
 
 Opnum: 10
 
-3.1.4.29.1
+###### 3.1.4.29.1 Count (Opnum 3)
 
-Count (Opnum 3)
+
 
 The Count method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a count of child section groups that are contained in the specified section group.
@@ -9795,9 +9611,9 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.29.2
+###### 3.1.4.29.2 Item (Opnum 4)
 
-Item (Opnum 4)
+
 
 The Item method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a section group that matches the specified index.
@@ -9821,7 +9637,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *ppSectionGroup is not NULL. If processing fails, the server MUST
 return a nonzero HRESULT code as defined in [MS-ERREF]. The following table below describes the
 error conditions that MUST be handled and the corresponding error codes. A server MAY return
@@ -9844,9 +9661,9 @@ The operation completed successfully.
 The integer index specified by varIndex is invalid, or the section group with name
 specified by varIndex could not be found.
 
-3.1.4.29.3
+###### 3.1.4.29.3 Sections (Opnum 5)
 
-Sections (Opnum 5)
+
 
 The Sections method is received by the server in an RPC_REQUEST packet. In response, the server
 returns a collection of section definitions in the specified section group.
@@ -9879,7 +9696,7 @@ The operation completed successfully.
 
 One or more parameters are incorrect or null.
 
-3.1.4.29.4  AddSectionGroup (Opnum 6)
+###### 3.1.4.29.4 AddSectionGroup (Opnum 6)
 
 The AddSectionGroup method is received by the server in an RPC_REQUEST packet. In response, the
 server adds a new section group to the specified section group.
@@ -9900,7 +9717,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The server MUST return zero if it successfully processes the message that is received
+
+Return Values: The server MUST return zero if it successfully processes the message that is received
 from the client. In this case, *ppSectionGroup is not NULL. If processing fails, the server MUST
 return a nonzero HRESULT code as defined in [MS-ERREF]. The following table describes the error
 conditions that MUST be handled and the corresponding error codes. A server MAY return
@@ -9934,7 +9752,7 @@ A section group with name bstrSectionGroupName already exists.
 
 ERROR_ALREADY_EXISTS
 
-3.1.4.29.5  DeleteSectionGroup (Opnum 7)
+###### 3.1.4.29.5 DeleteSectionGroup (Opnum 7)
 
 The DeleteSectionGroup method is received by the server in an RPC_REQUEST packet. In response,
 the server deletes the specified section group.
@@ -9976,7 +9794,7 @@ The instance is not editable.
 
 ERROR_LOCK_VIOLATION
 
-3.1.4.29.6  Name (Opnum 8)
+###### 3.1.4.29.6 Name (Opnum 8)
 
 The Name method is received by the server in an RPC_REQUEST packet. In response, the server
 returns the name of the specified section group.
@@ -9988,7 +9806,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- [propget] HRESULT Name(
+
+ [propget] HRESULT Name(
    [out, retval] BSTR* pbstrName
  );
 
@@ -10022,9 +9841,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.29.7
+###### 3.1.4.29.7 Type (Get) (Opnum 9)
 
-Type (Get) (Opnum 9)
+
 
 The Type (Get) method is received by the server in an RPC_REQUEST packet. In response, the server
 returns an implementation-specific type string for the specified section group.
@@ -10063,9 +9882,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.29.8
+###### 3.1.4.29.8 Type (Set) (Opnum 10)
 
-Type (Set) (Opnum 10)
+
 
 [MC-IISA] - v20240423
 Internet Information Services (IIS) Application Host COM Protocol
@@ -10074,7 +9893,8 @@ Release: April 23, 2024
 
 117 / 145
 
-The Type (Set) method is received by the server in an RPC_REQUEST packet. In response, the server
+
+The Type (Set) method is received by the server in an RPC_REQUEST packet. In response, the server
 sets the implementation-specific type string for the specified section group.
 
  [propput] HRESULT Type(
@@ -10110,9 +9930,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.30
+##### 3.1.4.30 IAppHostWritableAdminManager
 
-IAppHostWritableAdminManager
+
 
 The IAppHostWritableAdminManager interface provides methods that access a writable version of an
 administration system. It extends the IAppHostAdminManager, which is a read-only interface. The
@@ -10143,9 +9963,9 @@ CommitPath
 
 Opnum: 9
 
-3.1.4.30.1
+###### 3.1.4.30.1 CommitChanges (Opnum 7)
 
-CommitChanges (Opnum 7)
+
 
 The CommitChanges method is received by the server in an RPC_REQUEST packet. In response, the
 server commits any in-memory changes that it accumulates to a persisted store. This behavior
@@ -10158,7 +9978,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HRESULT CommitChanges();
+
+ HRESULT CommitChanges();
 
 This method has no parameters.
 
@@ -10207,9 +10028,9 @@ Access is denied.
 
 ERROR_ACCESS_DENIED
 
-3.1.4.30.2
+###### 3.1.4.30.2 CommitPath (Get) (Opnum 8)
 
-CommitPath (Get) (Opnum 8)
+
 
 The CommitPath (Get) method is received by the server in an RPC_REQUEST packet. In response, the
 server returns the hierarchy path that the administration system writes changes to after having its
@@ -10251,7 +10072,8 @@ Release: April 23, 2024
 
 119 / 145
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10261,9 +10083,9 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.4.30.3
+###### 3.1.4.30.3 CommitPath (Set) (Opnum 9)
 
-CommitPath (Set) (Opnum 9)
+
 
 The CommitPath (Set) method is received by the server in an RPC_REQUEST packet. In response, the
 server changes the hierarchy path where changes are committed.
@@ -10308,11 +10130,11 @@ Not enough memory is available to process this command.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -10323,7 +10145,8 @@ Release: April 23, 2024
 
 120 / 145
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section shows examples of client use of this protocol. All examples are shown in JScript
 development software; however, any client scripting or programming language that can create and
@@ -10331,12 +10154,12 @@ manipulate DCOM objects can be used.
 
 For more information and sample usage of the protocol by a client, see [MSDN-IIS7AH].
 
-4.1  Create an AppHostAdminManager Locally
+### 4.1 Create an AppHostAdminManager Locally
 
  var adminManager = WScript.CreateObject("Microsoft.ApplicationHost.Adm
  inManager" );
 
-4.2  Get Metadata: Get the overrideMode of a defaultDocument Section
+### 4.2 Get Metadata: Get the overrideMode of a defaultDocument Section
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Ad
  minManager" );
@@ -10346,7 +10169,7 @@ For more information and sample usage of the protocol by a client, see [MSDN-IIS
 
  /* WScript.Echo(overrideMode); */
 
-4.3  Set Metadata: Set the overrideMode of the defaultDocument Section
+### 4.3 Set Metadata: Set the overrideMode of the defaultDocument Section
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Wr
  itableAdminManager" );
@@ -10357,7 +10180,7 @@ For more information and sample usage of the protocol by a client, see [MSDN-IIS
  configSection.SetMetadata( "overrideMode", "Deny" );
  adminManager.CommitChanges();
 
-4.4  Create a New Configuration Section Entry in the configSections Section
+### 4.4 Create a New Configuration Section Entry in the configSections Section
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Wr
  itableAdminManager");
@@ -10391,17 +10214,18 @@ Release: April 23, 2024
 
 121 / 145
 
- var configSection=sectionGroup.Sections.AddSection("NewSectionGroup");
+
+ var configSection=sectionGroup.Sections.AddSection("NewSectionGroup");
  adminManager.CommitChanges();
 
-4.5  Get a Section for Read Access: The defaultDocument Section
+### 4.5 Get a Section for Read Access: The defaultDocument Section
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Ad
  minManager" );
  var configSection = adminManager.GetAdminSection( "system.webServer/de
  faultDocument","MACHINE/WEBROOT/APPHOST" );
 
-4.6  Get a Property: Get the Enabled Property of the defaultDocument Section
+### 4.6 Get a Property: Get the Enabled Property of the defaultDocument Section
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Ad
  minManager" );
@@ -10409,7 +10233,7 @@ Release: April 23, 2024
  faultDocument", "MACHINE/WEBROOT/APPHOST" );
  var isEnabled = configSection.Properties.Item( "enabled" ).Value;
 
-4.7  Get a Section: Get the anonymousAuthentication Section
+### 4.7 Get a Section: Get the anonymousAuthentication Section
 
 To get the anonymousAuthentication section:
 
@@ -10427,7 +10251,7 @@ To get a child element:
  faultDocument", "MACHINE/WEBROOT/APPHOST" );
  var filesElement = configSection.GetElementByName( "files" );
 
-4.8  List the Entries of a Collection
+### 4.8 List the Entries of a Collection
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Ad
  minManager" );
@@ -10441,7 +10265,7 @@ To get a child element:
  m( "value" ).Value );
  }
 
-4.9  Remove an Entry of a Collection
+### 4.9 Remove an Entry of a Collection
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Wr
  itableAdminManager" );
@@ -10453,7 +10277,8 @@ Release: April 23, 2024
 
 122 / 145
 
- adminManager.CommitPath = "MACHINE/WEBROOT/APPHOST";
+
+ adminManager.CommitPath = "MACHINE/WEBROOT/APPHOST";
 
  var configSection = adminManager.GetAdminSection( "system.webServer/de
  faultDocument", "MACHINE/WEBROOT/APPHOST" );
@@ -10464,7 +10289,7 @@ Release: April 23, 2024
  }
  adminManager.CommitChanges();
 
-4.10  Edit the Configuration of APPHOST in a Location Tag
+### 4.10 Edit the Configuration of APPHOST in a Location Tag
 
  var adminManager = WScript.CreateObject( "Microsoft.ApplicationHost.Wr
  itableAdminManager" );
@@ -10477,7 +10302,7 @@ Release: April 23, 2024
 
  adminManager.CommitChanges();
 
-4.11  Read Schema Information: Determine If IsMergeAppend Is Set in the
+### 4.11 Read Schema Information: Determine If IsMergeAppend Is Set in the
 
 defaultDocuments Section
 
@@ -10488,7 +10313,7 @@ defaultDocuments Section
  var isMergeAppend = configSection.GetElementByName( "files" ).Collecti
  on.Schema.IsMergeAppend;
 
-4.12  Get a Section for Write: Get the defaultDocument Section and Toggle the Enabled
+### 4.12 Get a Section for Write: Get the defaultDocument Section and Toggle the Enabled
 
 Attribute
 
@@ -10501,7 +10326,7 @@ Attribute
  configSection.Properties.Item( "enabled" ).Value = true;
  adminManager.CommitChanges();
 
-4.13  Write into a Collection: Clear the Contents of the defaultDocument Section for
+### 4.13 Write into a Collection: Clear the Contents of the defaultDocument Section for
 
 Site1
 
@@ -10520,9 +10345,10 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- adminManager.CommitChanges();
 
-4.14  Write into a Collection: Add an Entry for the defaultDocument Section for Site1 as
+ adminManager.CommitChanges();
+
+### 4.14 Write into a Collection: Add an Entry for the defaultDocument Section for Site1 as
 
 a Location Tag
 
@@ -10548,15 +10374,16 @@ Release: April 23, 2024
 
 124 / 145
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers have to enforce security as specified in [C706].
 
 Implementers have to review the security considerations as specified in [MS-RPCE].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -10567,7 +10394,8 @@ Release: April 23, 2024
 
 125 / 145
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided where "ms-dtyp.idl" refers to the IDL found in
 [MS-DTYP], "ms-dcom.idl" is the IDL specified in [MS-DCOM], Appendix A, and "ms-oaut.idl" is the
@@ -10642,7 +10470,8 @@ Release: April 23, 2024
 
 126 / 145
 
-   );
+
+   );
 
    [propget, id(DISPID_VALUE)] HRESULT Item(
      [in] VARIANT cIndex,
@@ -10719,7 +10548,8 @@ Release: April 23, 2024
 
 127 / 145
 
-     [in] VARIANT cIndex,
+
+     [in] VARIANT cIndex,
      [out, retval] IAppHostMethod ** ppMethod
    );
  }
@@ -10795,7 +10625,8 @@ Release: April 23, 2024
 
 128 / 145
 
- interface IAppHostConstantValue : IUnknown
+
+ interface IAppHostConstantValue : IUnknown
  {
    [propget] HRESULT Name(
      [out, retval] BSTR * pbstrName
@@ -10872,7 +10703,8 @@ Release: April 23, 2024
 
 129 / 145
 
-     [out, retval] VARIANT_BOOL * pfAllowInfinite
+
+     [out, retval] VARIANT_BOOL * pfAllowInfinite
    );
 
    [propget] HRESULT IsEncrypted(
@@ -10949,7 +10781,8 @@ Release: April 23, 2024
 
 130 / 145
 
-     [in] BSTR bstrMetadataType,
+
+     [in] BSTR bstrMetadataType,
      [out, retval] VARIANT * pValue
    );
 
@@ -11026,7 +10859,8 @@ Release: April 23, 2024
 
 131 / 145
 
-     [out, retval] VARIANT * pValue
+
+     [out, retval] VARIANT * pValue
    );
 
    HRESULT SetMetadata(
@@ -11102,7 +10936,8 @@ Release: April 23, 2024
 
 132 / 145
 
- [
+
+ [
    object,
    uuid( eafe4895-a929-41ea-b14d-613e23f62b71 ),
    pointer_default( unique ),
@@ -11179,7 +11014,8 @@ Release: April 23, 2024
 
 133 / 145
 
- {
+
+ {
    [propget] HRESULT Name(
      [out, retval] BSTR * pbstrName
    );
@@ -11256,7 +11092,8 @@ Release: April 23, 2024
 
 134 / 145
 
-   [propget] HRESULT StringValue(
+
+   [propget] HRESULT StringValue(
      [out, retval] BSTR * pbstrValue
    );
 
@@ -11332,7 +11169,8 @@ Release: April 23, 2024
 
 135 / 145
 
-   [propget] HRESULT Type(
+
+   [propget] HRESULT Type(
      [out, retval] BSTR * pbstrType
    );
 
@@ -11407,7 +11245,8 @@ Release: April 23, 2024
 
 136 / 145
 
- interface IAppHostSectionGroup : IUnknown
+
+ interface IAppHostSectionGroup : IUnknown
  {
    [propget] HRESULT Count(
      [out, retval] unsigned long * pcSectionGroup
@@ -11484,7 +11323,8 @@ Release: April 23, 2024
 
 137 / 145
 
-     [in] BSTR bstrMetadataType,
+
+     [in] BSTR bstrMetadataType,
      [in] VARIANT value
    );
 
@@ -11561,7 +11401,8 @@ Release: April 23, 2024
 
 138 / 145
 
-   );
+
+   );
  }
 
  [
@@ -11611,7 +11452,8 @@ Release: April 23, 2024
 
 139 / 145
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11667,7 +11509,8 @@ Release: April 23, 2024
 
 140 / 145
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -11711,7 +11554,8 @@ Release: April 23, 2024
 
 141 / 145
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -11883,7 +11727,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      adding entry as location tag 124
+
+      adding entry as location tag 124
       clearing contents 123
 Exception method 88
 Execute method 80
@@ -12034,7 +11879,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   IAppHostCollectionSchema 27
+
+   IAppHostCollectionSchema 27
    IAppHostConfigException 31
    IAppHostConfigFile 35
    IAppHostConfigLocation 40
@@ -12179,7 +12025,8 @@ Internet Information Services (IIS) Application Host COM Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SetMetadata method (section 3.1.4.1.3 22, section
+
+SetMetadata method (section 3.1.4.1.3 22, section
 3.1.4.6.6 39, section 3.1.4.12.6 57, section
 3.1.4.19.5 81, section 3.1.4.22.8 90)
 

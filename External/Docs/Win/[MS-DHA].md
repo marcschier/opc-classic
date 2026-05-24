@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -135,194 +136,85 @@ Release: April 23, 2024
 
 2 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 HTTP Methods](#222-http-methods)
+    - [2.2.3 HTTP Headers](#223-http-headers)
+    - [2.2.4 XML Elements](#224-xml-elements)
+      - [2.2.4.1 Claims](#2241-claims)
+      - [2.2.4.2 HealthCertificateBlob](#2242-healthcertificateblob)
+    - [2.2.5 Simple Types](#225-simple-types)
+      - [2.2.5.1 Boolean_T](#2251-booleant)
+    - [2.2.6 Attributes](#226-attributes)
+      - [2.2.6.1 ErrorCode](#2261-errorcode)
+      - [2.2.6.2 ErrorMessage](#2262-errormessage)
+    - [2.2.7 Common Data Structures](#227-common-data-structures)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 DHA-Enabled Client Details](#31-dha-enabled-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 DHA-Boot-Data](#3151-dha-boot-data)
+        - [3.1.5.1.1 POST](#31511-post)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 DHA-Service Details](#32-dha-service-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 DHA-Encrypted-Data](#3251-dha-encrypted-data)
+        - [3.2.5.1.1 POST](#32511-post)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full XML Schema](#6-appendix-a-full-xml-schema)
+  - [6.1 Health CertificateRequestV1 Schema](#61-health-certificaterequestv1-schema)
+  - [6.2 Health CertificateRequestV3 Schema](#62-health-certificaterequestv3-schema)
+  - [6.3 Health CertificateRequestV4 Schema](#63-health-certificaterequestv4-schema)
+  - [6.4 HealthCertificateResponseV1 Schema](#64-healthcertificateresponsev1-schema)
+  - [6.5 HealthCertificateResponseV3 Schema](#65-healthcertificateresponsev3-schema)
+  - [6.6 HealthCertificateResponseV4 Schema](#66-healthcertificateresponsev4-schema)
+  - [6.7 HealthCertificateValidationRequestV1 Schema](#67-healthcertificatevalidationrequestv1-schema)
+  - [6.8 HealthCertificateValidationRequestV3 Schema](#68-healthcertificatevalidationrequestv3-schema)
+  - [6.9 HealthCertificateValidationRequestV4 Schema](#69-healthcertificatevalidationrequestv4-schema)
+  - [6.10 HealthCertificateValidationResponseV1 Schema](#610-healthcertificatevalidationresponsev1-schema)
+  - [6.11 HealthCertificateValidationResponseV3 Schema](#611-healthcertificatevalidationresponsev3-schema)
+  - [6.12 HealthCertificateValidationResponseV4 Schema](#612-healthcertificatevalidationresponsev4-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Data Types ........................................................................................ 11
-Namespaces .............................................................................................. 11
-HTTP Methods ............................................................................................ 12
-HTTP Headers ............................................................................................ 12
-XML Elements ............................................................................................ 12
-Claims ................................................................................................. 12
-HealthCertificateBlob ............................................................................. 12
-Simple Types ............................................................................................. 12
-Boolean_T ............................................................................................ 12
-Attributes .................................................................................................. 13
-ErrorCode ............................................................................................ 13
-ErrorMessage ....................................................................................... 13
-Common Data Structures ............................................................................ 13
-
-2.2.6.1
-2.2.6.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.5.1
-
-2.2.6
-
-2.2.5
-
-2.2.7
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 14
-DHA-Enabled Client Details................................................................................ 14
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-DHA-Boot-Data ..................................................................................... 18
-POST ............................................................................................. 18
-Request Body ............................................................................ 18
-Response Body .......................................................................... 18
-Processing Details ...................................................................... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-DHA-Service Details ......................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 20
-DHA-Encrypted-Data ............................................................................. 20
-POST ............................................................................................. 20
-Request Body ............................................................................ 20
-Response Body .......................................................................... 21
-Processing Details ...................................................................... 23
-Timer Events .............................................................................................. 23
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.5.1.1
-
-3.2.5.1
-
-3.2.6
-
-3.2
-
-[MS-DHA] - v20240423
-Device Health Attestation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 43
-
-3.2.7
-
-Other Local Events ...................................................................................... 23
-
-4  Protocol Examples ................................................................................................. 24
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Full XML Schema ................................................................................ 26
-6.1
-Health CertificateRequestV1 Schema .................................................................. 26
-6.2
-Health CertificateRequestV3 Schema .................................................................. 26
-6.3
-Health CertificateRequestV4 Schema .................................................................. 27
-6.4
-HealthCertificateResponseV1 Schema ................................................................. 29
-6.5
-HealthCertificateResponseV3 Schema ................................................................. 30
-6.6
-HealthCertificateResponseV4 Schema ................................................................. 31
-6.7
-HealthCertificateValidationRequestV1 Schema ..................................................... 31
-6.8
-HealthCertificateValidationRequestV3 Schema ..................................................... 32
-HealthCertificateValidationRequestV4 Schema ..................................................... 32
-6.9
-6.10  HealthCertificateValidationResponseV1 Schema ................................................... 33
-6.11  HealthCertificateValidationResponseV3 Schema ................................................... 33
-6.12  HealthCertificateValidationResponseV4 Schema ................................................... 35
-
-7  Appendix B: Product Behavior ............................................................................... 40
-
-8  Change Tracking .................................................................................................... 41
-
-9  Index ..................................................................................................................... 42
-
-[MS-DHA] - v20240423
-Device Health Attestation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 43
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Device Health Attestation (DHA) Protocol.
 
@@ -334,7 +226,7 @@ device or made available to a MDM service provider.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -393,7 +285,8 @@ Release: April 23, 2024
 
 5 / 43
 
-simple type: An element that can contain only text and appears as <simpleType> in an XML
+
+simple type: An element that can contain only text and appears as <simpleType> in an XML
 
 document or any attribute of an element. Attributes are considered simple types because they
 contain only text. See also complex type.
@@ -427,14 +320,14 @@ document type at a relatively high level of abstraction.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -459,7 +352,8 @@ Release: April 23, 2024
 
 6 / 43
 
-[X509] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: Public-Key
+
+[X509] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: Public-Key
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
@@ -470,12 +364,12 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [TPM] Trusted Computing Group, "TPM Work Group",
 https://www.trustedcomputinggroup.org/groups/tpm/
 
-1.3  Overview
+### 1.3 Overview
 
 Many enterprises check software state and policy compliance before allowing computers to access
 corporate network resources. The goal of these checks is to ensure that the operating system (OS) is
@@ -509,7 +403,8 @@ Release: April 23, 2024
 
 7 / 43
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-DHA].images/page008-img01.png)
 ![Extracted image 2 from page 8]([MS-DHA].images/page008-img02.png)
 <!-- /Extracted images from page 8 -->
@@ -521,7 +416,7 @@ Device Health Attestation session.
 
 Figure 2: Device, DHA-service communication
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure illustrates the relationship of this protocol to industry-standard protocols.
 
@@ -535,13 +430,14 @@ Release: April 23, 2024
 
 8 / 43
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-DHA].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 3: Relationship of DHA protocol to industry-standard protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DHA protocol assumes the availability of the following resources:
 
@@ -551,12 +447,12 @@ The DHA protocol assumes the availability of the following resources:
 
 specified in [TPM] .
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The DHA protocol is applicable for monitoring/assessing the state into which a device is booted, and to
 monitor/verify if the device is booted to a secure/compliant state.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -586,11 +482,12 @@ Release: April 23, 2024
 
 9 / 43
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -601,9 +498,10 @@ Release: April 23, 2024
 
 10 / 43
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DHA is a client-to-server protocol that consists of an HTTP- -based Web service. It supports TLS over
 HTTPS over TCP/IP [RFC2818], using the following implementation-specific<1> endpoints:
@@ -628,12 +526,12 @@ communication channel in following format.
 
 The DHA-Service Responses use TLS/SSL to forward an encrypted BLOB to the Device
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 XML schema element definitions that are specific to a particular request/response body are described
 within the corresponding sections.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces that use the mechanisms
 specified in [XMLNS]. Although this specification associates a specific XML namespace prefix with
@@ -698,7 +596,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Prefi
+
+Prefi
 x
 
 Namespace URI
@@ -751,27 +650,27 @@ specification
 This
 specification
 
-2.2.2  HTTP Methods
+#### 2.2.2 HTTP Methods
 
 This protocol uses the existing set of standard HTTP methods.
 
-2.2.3  HTTP Headers
+#### 2.2.3 HTTP Headers
 
 None.
 
-2.2.4  XML Elements
+#### 2.2.4 XML Elements
 
-2.2.4.1  Claims
+##### 2.2.4.1 Claims
 
 <Claims> contain Base64 opaque information that is gathered from the client and returned to the
 server, upon which the basis of health attestation is established. In the case of
 HealthCertificateRequest, <Claims> will also contain the TCG (boot) log from the client.
 
-2.2.4.2  HealthCertificateBlob
+##### 2.2.4.2 HealthCertificateBlob
 
 An encrypted BLOB containing the Health Certificate.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 The following table summarizes the set of custom simple type definitions that are included in this
 specification.
@@ -793,7 +692,8 @@ Release: April 23, 2024
 
 12 / 43
 
-2.2.5.1  Boolean_T
+
+##### 2.2.5.1 Boolean_T
 
  <xs:simpleType name="Boolean_T">:
    <xs:restriction base="xs:boolean">:
@@ -801,7 +701,7 @@ Release: April 23, 2024
    </xs:restriction>:
  </xs:simpleType>
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 The following table summarizes the set of common XML schema attribute definitions that are
 included in this specification.
@@ -822,15 +722,15 @@ the error.
 
 section 2.2.6.2   Contains a description of the error.
 
-2.2.6.1  ErrorCode
+##### 2.2.6.1 ErrorCode
 
 Contains the code that is associated with the error.
 
-2.2.6.2  ErrorMessage
+##### 2.2.6.2 ErrorMessage
 
 Contains a description of the error.
 
-2.2.7  Common Data Structures
+#### 2.2.7 Common Data Structures
 
  None.
 
@@ -841,9 +741,10 @@ Release: April 23, 2024
 
 13 / 43
 
-3  Protocol Details
 
-3.1  DHA-Enabled Client Details
+## 3 Protocol Details
+
+### 3.1 DHA-Enabled Client Details
 
  The DHA protocol enables Mobile Device Management (MDM) solutions to get a Device Health Report
 (DHA-Report) from devices that meet the following requirements.
@@ -906,7 +807,8 @@ Release: April 23, 2024
 
 14 / 43
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-DHA].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -945,7 +847,8 @@ Release: April 23, 2024
 
 15 / 43
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-DHA].images/page016-img01.png)
 ![Extracted image 2 from page 16]([MS-DHA].images/page016-img02.png)
 <!-- /Extracted images from page 16 -->
@@ -972,7 +875,8 @@ Release: April 23, 2024
 
 16 / 43
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-DHA].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -984,15 +888,15 @@ DHA-Validation-Data, forward it to Device Management Server (MDM-Server)
 
 Figure 7: Device to MDM-Server communication
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
  None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Device health attestation flow is triggered on a TPM-compatible device under the following
 conditions.
@@ -1000,11 +904,11 @@ conditions.
   When the device boots.
   When the device reboots.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
  The device receives a mobile device management request for device health verification.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
  The following HTTP methods can be performed on this resource.
 
@@ -1030,7 +934,8 @@ Release: April 23, 2024
 
 17 / 43
 
-Status code
+
+Status code
 
 Reason phrase
 
@@ -1063,17 +968,17 @@ no more specific message is suitable. An
 issue is preventing the service from issuing
 certificates
 
-3.1.5.1  DHA-Boot-Data
+##### 3.1.5.1 DHA-Boot-Data
 
 The TPM-compatible client sends DHA-Boot-Data (i.e. TCG logs, PC measurements, a signed
 certificate) to the DHA-Service (DHA-Service) - receives an Encrypted BLOB from the DHA-Service
 Provider (DHA-EB).
 
-3.1.5.1.1 POST
+###### 3.1.5.1.1 POST
 
 This method sends information from the TPM-compatible device to the DHA-Service.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The request body from the TPM-compatible device to the DHA-Service is an encrypted BLOB. It
 resembles the following.
@@ -1101,7 +1006,7 @@ ABFeGl0IEJvb3QgU2VydmljZXMgUmV0dXJuZWQgd2l0aCBTdWNjZXNz</Claims>
 MFNPZvCBpa29O2E+23zWHz01hqw==</AIKPublic>
  </HealthCertificateRequest>
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The response body from the DHA-Service to the TPM-compatible device is an encrypted BLOB (DHA-
 Encrypted-Data).
@@ -1113,24 +1018,25 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-DHA].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The encrypted BLOB is cached on the client in encrypted format.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When the TPM-compatible device is booted or rebooted, it triggers an event that sends the DHA-Boot-
 Data to the DHA-Service over TLS/SSL protected communication channel.
 
-3.2  DHA-Service Details
+### 3.2 DHA-Service Details
 
  The DHA-Service consists of two major communication paths:
 
@@ -1147,19 +1053,19 @@ client.
 
 Figure 8: Device to DHA-Service communication
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
  None.
 
@@ -1170,7 +1076,8 @@ Release: April 23, 2024
 
 19 / 43
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The following HTTP methods can be performed on this resource.
 
@@ -1224,18 +1131,18 @@ no more specific message is suitable. An
 issue is preventing the service from issuing
 certificates
 
-3.2.5.1  DHA-Encrypted-Data
+##### 3.2.5.1 DHA-Encrypted-Data
 
 The DHA-Service receives the DHA-Boot-Data from the TPM-compatible device. The DHA-Service
 reviews the data, creates an Encrypted BLOB (DHA-Encrypted-Data), and sends it to the TPM-
 compatible device. When the TPM-compatible device receives the DHA-Encrypted-Data, it caches the
 data in its local storage.
 
-3.2.5.1.1 POST
+###### 3.2.5.1.1 POST
 
 This method sends information from the DHA-Service to the TPM-compatible device.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 The health certificate validation request body is specified in section 3.1.5.1.1.1, Boot Data POST
 Request body.
@@ -1262,7 +1169,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     2VydGlmaWNhdGUgeG1sbnM6eHNkPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS
+
+     2VydGlmaWNhdGUgeG1sbnM6eHNkPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS
      IgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNThrdFNVMFRWYi9KdWlyO
      FFySjgvNWs4dU9ibm5DUWVERVhnbC9qVHVXeHJYUTVFESUVobHBISis2WStNVEpBMElvZUwxQ
      k9sSktZNGxqSDAvOXZvdnppU0pUZXNLaUI3OGV4RHpHRmtBYjZHb3duWWZxSHBaZWZTd2g3Tn
@@ -1277,7 +1185,7 @@ Release: April 23, 2024
    </HealthCertificateBlob>:
  </HealthCertificateValidationRequest>
 
-3.2.5.1.1.2  Response Body
+###### 3.2.5.1.1.2 Response Body
 
 Response (DHA-Service->MDM-Server): DHA-Service reviews the data, creates a report (DHA-
 Report), and forwards the report to MDM-Server.
@@ -1334,7 +1242,8 @@ Release: April 23, 2024
 
 21 / 43
 
-<OSRevListInfo>8073EEA7F8FAD001200000000B00A8285B04DE618ACF4174C59F07AECC002D11DD7D97FA5D464F
+
+<OSRevListInfo>8073EEA7F8FAD001200000000B00A8285B04DE618ACF4174C59F07AECC002D11DD7D97FA5D464F
 190C9D9E3479BA</OSRevListInfo>
          <PageFileEncryptionEnabled>false</PageFileEncryptionEnabled>
          <PCRS hashAlgorithm="SHA1">
@@ -1410,7 +1319,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         <VBSMemoryScrubbingProtectionEnabled>false</VBSMemoryScrubbingProtectionEnabled>
+
+         <VBSMemoryScrubbingProtectionEnabled>false</VBSMemoryScrubbingProtectionEnabled>
          <VBSSigningPublicKey>
 
 <Modulus>F37D9E557BD9BD566E0B9F8AF40C08E7C425D531823876406F3063BDA0EC5C69DF85ED207B7E07DA4745
@@ -1436,17 +1346,17 @@ sOSLoaderHash>
      </HealthCertificateProperties>
  </HealthCertificateValidationResponse> >
 
-3.2.5.1.1.3  Processing Details
+###### 3.2.5.1.1.3 Processing Details
 
 The Device Management Server (MDM-Server) adds a "Nonce" to the payload, and forwards the DHA-
 Validation-Data to DHA-Service. The TCG log that contains health measurements is validated against
 the Platform Configuration Registers in the TPM (PCR) table. A report is created.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1457,7 +1367,8 @@ Release: April 23, 2024
 
 23 / 43
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 [MS-DHA] - v20240423
 Device Health Attestation Protocol
@@ -1466,13 +1377,14 @@ Release: April 23, 2024
 
 24 / 43
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1483,11 +1395,12 @@ Release: April 23, 2024
 
 25 / 43
 
-6  Appendix A: Full XML Schema
+
+## 6 Appendix A: Full XML Schema
 
 For ease of implementation, the following are the XML schemas for this protocol.
 
-6.1  Health CertificateRequestV1 Schema
+### 6.1 Health CertificateRequestV1 Schema
 
  <?xml version="1.0" encoding="UTF-8"?>
  <xs:schema id="HealthCertificateRequest"
@@ -1528,7 +1441,7 @@ maxOccurs="1"/>
 
  </xs:schema>
 
-6.2  Health CertificateRequestV3 Schema
+### 6.2 Health CertificateRequestV3 Schema
 
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema id="HealthCertificateRequest"
@@ -1555,7 +1468,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-          Each represents one of the three supported ways of obtaining a Health
+
+          Each represents one of the three supported ways of obtaining a Health
 Certificate
       </xs:documentation>
     </xs:annotation>
@@ -1611,7 +1525,7 @@ maxOccurs="10"/>
 
 </xs:schema>
 
-6.3  Health CertificateRequestV4 Schema
+### 6.3 Health CertificateRequestV4 Schema
 
  <?xml version="1.0" encoding="UTF-8"?>
 
@@ -1629,7 +1543,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <xs:element name="HealthCertificateRequest"   type="HealthCertificateRequest_T"/>
+
+     <xs:element name="HealthCertificateRequest"   type="HealthCertificateRequest_T"/>
 
      <xs:complexType name="HealthCertificateRequest_T">
          <xs:annotation>
@@ -1706,7 +1621,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             </xs:element>
+
+             </xs:element>
          </xs:sequence>
      </xs:complexType>
 
@@ -1742,7 +1658,7 @@ maxOccurs="10"/>
      </xs:simpleType>
  </xs:schema>
 
-6.4  HealthCertificateResponseV1 Schema
+### 6.4 HealthCertificateResponseV1 Schema
 
  <?xml version="1.0" encoding="UTF-8"?>
  <xs:schema id="HealthCertificateResponse"
@@ -1780,7 +1696,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                     </xs:documentation>
+
+                     </xs:documentation>
                  </xs:annotation>
                  <xs:simpleType>
                      <xs:restriction base="NonEmptyBase64Binary">
@@ -1807,7 +1724,7 @@ Release: April 23, 2024
 
  </xs:schema>
 
-6.5  HealthCertificateResponseV3 Schema
+### 6.5 HealthCertificateResponseV3 Schema
 
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema id="HealthCertificateResponse"
@@ -1855,7 +1772,8 @@ Release: April 23, 2024
 
 30 / 43
 
-            </xs:extension>
+
+            </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
@@ -1878,11 +1796,11 @@ use="optional"/>
 
 </xs:schema>
 
-6.6  HealthCertificateResponseV4 Schema
+### 6.6 HealthCertificateResponseV4 Schema
 
 The is no new schema for the v4 response. It is the same as the schema for v3.
 
-6.7  HealthCertificateValidationRequestV1 Schema
+### 6.7 HealthCertificateValidationRequestV1 Schema
 
  <?xml version="1.0" encoding="UTF-8"?>
  <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -1928,9 +1846,10 @@ Release: April 23, 2024
 
 31 / 43
 
- </xs:schema>
 
-6.8  HealthCertificateValidationRequestV3 Schema
+ </xs:schema>
+
+### 6.8 HealthCertificateValidationRequestV3 Schema
 
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -1972,7 +1891,7 @@ type="HealthCertificateValidationRequest_T"/>
 
 </xs:schema>
 
-6.9  HealthCertificateValidationRequestV4 Schema
+### 6.9 HealthCertificateValidationRequestV4 Schema
 
  <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -2000,7 +1919,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      <xs:element name="Nonce"                    type="xs:hexBinary" minOccurs ="0"
+
+      <xs:element name="Nonce"                    type="xs:hexBinary" minOccurs ="0"
 maxOccurs ="1"/>
       <xs:element name="Claims"                   type="NonEmptyBase64Binary"/>
       <xs:element name="HealthCertificateBlob"    type="NonEmptyBase64Binary"/>
@@ -2022,7 +1942,7 @@ maxOccurs ="1"/>
 
 </xs:schema>
 
-6.10  HealthCertificateValidationResponseV1 Schema
+### 6.10 HealthCertificateValidationResponseV1 Schema
 
  <?xml version="1.0" encoding="UTF-8"?>
  <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -2063,7 +1983,7 @@ type="HealthCertificateValidationRequest_T"/>
 
  </xs:schema>
 
-6.11  HealthCertificateValidationResponseV3 Schema
+### 6.11 HealthCertificateValidationResponseV3 Schema
 
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -2074,7 +1994,8 @@ Release: April 23, 2024
 
 33 / 43
 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 
 xmlns="http://schemas.microsoft.com/windows/security/healthcertificate/validation/respons
 e/v3"
@@ -2151,7 +2072,8 @@ Release: April 23, 2024
 
 34 / 43
 
-        </xs:sequence>
+
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="HealthStatusMismatchFlags_T">
@@ -2201,7 +2123,7 @@ type="HealthStatusMismatchFlags_T"             minOccurs="0"/>
     </xs:simpleType>
 </xs:schema>
 
-6.12  HealthCertificateValidationResponseV4 Schema
+### 6.12 HealthCertificateValidationResponseV4 Schema
 
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -2223,7 +2145,8 @@ Release: April 23, 2024
 
 35 / 43
 
-    <xs:complexType name="ResponseCommon_T">
+
+    <xs:complexType name="ResponseCommon_T">
         <xs:attribute name="ErrorCode" type="xs:int" use="required"/>
         <xs:attribute name="ErrorMessage" type="xs:string" use="required"/>
         <xs:attribute name="ProtocolVersion" use="required">
@@ -2300,7 +2223,8 @@ Release: April 23, 2024
 
 36 / 43
 
-    </xs:complexType>
+
+    </xs:complexType>
 
     <xs:complexType name="PubKeyInfo_T">
         <xs:sequence>
@@ -2377,7 +2301,8 @@ Device Health Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-        <xs:attribute name="hashAlgorithm" type="xs:string" use="required"/>
+
+        <xs:attribute name="hashAlgorithm" type="xs:string" use="required"/>
     </xs:complexType>
 
    <xs:complexType name="PCRS_T">
@@ -2454,7 +2379,8 @@ Release: April 23, 2024
 
 38 / 43
 
-        <xs:annotation>
+
+        <xs:annotation>
             <xs:documentation>Generic health properties strings can be added to this with
 unique names.</xs:documentation>
         </xs:annotation>
@@ -2480,7 +2406,8 @@ Release: April 23, 2024
 
 39 / 43
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2527,7 +2454,8 @@ Release: April 23, 2024
 
 40 / 43
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2571,7 +2499,8 @@ Release: April 23, 2024
 
 41 / 43
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2712,7 +2641,8 @@ Normative references 6
 
 42 / 43
 
-O
+
+O
 
 Vendor-extensible fields 10
 Versioning 9

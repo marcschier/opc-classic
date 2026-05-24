@@ -63,7 +63,8 @@ Release: January 17, 2020
 
 1 / 19
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: January 17, 2020
 
 2 / 19
 
-Date
+
+Date
 
 Revision
 History
@@ -489,105 +491,50 @@ Release: January 17, 2020
 
 3 / 19
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 IClusCfgAsyncEvictCleanup Server Details](#314-icluscfgasyncevictcleanup-server-details)
+      - [3.1.4.1 CleanupNode (Opnum 7)](#3141-cleanupnode-opnum-7)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Common Data Types .......................................................................................... 8
-
-2.1
-2.2
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ....................................................................................................... 9
-Server Details .................................................................................................... 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-IClusCfgAsyncEvictCleanup Server Details ....................................................... 9
-CleanupNode (Opnum 7) ....................................................................... 10
-Timer Events .............................................................................................. 11
-Other Local Events ...................................................................................... 11
-Client Details ................................................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Timer Events .............................................................................................. 11
-Other Local Events ...................................................................................... 12
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.1.5
-3.1.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 13
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 15
-
-7  Appendix B: Product Behavior ............................................................................... 16
-
-8  Change Tracking .................................................................................................... 17
-
-9  Index ..................................................................................................................... 18
-
-[MC-CCFG] - v20200117
-Server Cluster: Configuration (ClusCfg) Protocol
-Copyright © 2020 Microsoft Corporation
-Release: January 17, 2020
-
-4 / 19
-
-1  Introduction
+## 1 Introduction
 
 The Server Cluster: Configuration (ClusCfg) Protocol is a DCOM interface, as specified in [MS-DCOM],
 for initiating configuration operations for a failover cluster. The ClusCfg Protocol allows users to
@@ -597,7 +544,7 @@ installation state.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -660,7 +607,8 @@ Server Cluster: Configuration (ClusCfg) Protocol
 Copyright © 2020 Microsoft Corporation
 Release: January 17, 2020
 
-this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
+
+this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
 be used for generating the UUID.
 
 well-known endpoint: A preassigned, network-specific, stable address for a particular
@@ -670,14 +618,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -705,12 +653,12 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CLUS] Microsoft Corporation, "Windows Clustering", http://msdn.microsoft.com/en-
 us/library/aa373130.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The ClusCfg Protocol provides a DCOM interface that enables a client to restore a node back to its
 pre-cluster installation state. For more information about clustering, see [MSDN-CLUS].
@@ -722,13 +670,14 @@ Release: January 17, 2020
 
 6 / 19
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 This protocol relies on the Distributed Component Object Model (DCOM) Remote Protocol, as specified
 in [MS-DCOM], and on the Microsoft Remote Procedure Call (RPC) Extensions, as specified in [MS-
 RPCE].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented over DCOM and RPC, and as a result, has the prerequisites that are
 specified in the Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM] and the
@@ -739,12 +688,12 @@ It is assumed that a ClusCfg Protocol client has obtained the name or IP address
 that supports the ClusCfg Protocol before this protocol is invoked. This is done by using any
 implementation-specific method.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The method of the ClusCfg Protocol is specific to a Windows Server 2003 operating system failover
 cluster. As such, the protocol is applicable to a node that was a member of a failover cluster.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -758,7 +707,7 @@ Security and authentication methods: As specified in [MS-DCOM] and [MS-RPCE].
 
 Capability and versioning negotiation is handled as specified in [MS-DCOM].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
@@ -766,7 +715,7 @@ This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors 
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
 indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards assignments have been received for this protocol. All values that are used in these
 extensions are in the private ranges that are specified in section 2.1. The following table contains the
@@ -791,9 +740,10 @@ Release: January 17, 2020
 
 7 / 19
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DCOM (as specified in [MS-DCOM]) is used as the transport protocol. The ClusCfg Protocol that is
 documented here relies on DCOM authentication (as specified in [MS-DCOM]) and encryption for all
@@ -806,7 +756,7 @@ This protocol MUST use the UUID interface, as explained in section 1.9: 52C80B95
 The class identifier (CLSID) of the object that implements this interface, as explained in section
 1.9, is 08F35A72-D7C4-42F4-BC81-5188E19DFA39.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol uses the RPC base types and definitions that are specified in [C706] and [MS-RPCE],
 and does not define any additional data types.
@@ -818,9 +768,10 @@ Release: January 17, 2020
 
 8 / 19
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 The ClusCfg Protocol server provides a method to allow a client to restore a node that was evicted
 from a cluster to be restored to its precluster installation state. Evicting a node from a cluster is
@@ -829,7 +780,7 @@ described in [MS-CMRP] section 3.1.1.6.
 The following sections specify server details of the IClusCfgAsyncEvictCleanup interface of the ClusCfg
 Protocol including abstract data models, timers, and message processing rules.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -843,17 +794,17 @@ as other persisted data, such as data that can be stored in a registry.
 Configuration of a node as a member of a cluster is done by using implementation-specific methods
 between servers.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required other than the internal timers that are used in RPC to implement
 resiliency to network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST listen on the well-known endpoint that is defined for this RPC interface. For more
 information, see Transport (section 2.1).
 
-3.1.4  IClusCfgAsyncEvictCleanup Server Details
+#### 3.1.4 IClusCfgAsyncEvictCleanup Server Details
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict Network Data
 Representation (NDR) data consistency check at target level 5.0, as specified in [MS-RPCE] section 3.
@@ -883,13 +834,14 @@ Release: January 17, 2020
 
 9 / 19
 
-Opnums 0, 1, and 2 are reserved for the QueryInterface, AddRef, and Release methods that are used
+
+Opnums 0, 1, and 2 are reserved for the QueryInterface, AddRef, and Release methods that are used
 by the standard COM IUnknown interface, as specified in [MS-DCOM]. Opnums 3 and 4 are not used
 across the network. These opnums are reserved and MUST NOT be reused by non-Microsoft
 implementations. Opnums 5 and 6 are reserved for the GetIDsOfNames, and Invoke methods in the
 IDispatch interface, as specified in [MS-OAUT].<1>
 
-3.1.4.1  CleanupNode (Opnum 7)
+##### 3.1.4.1 CleanupNode (Opnum 7)
 
 The CleanupNode method removes all persistent artifacts that exist on the node after it is evicted
 from a cluster.
@@ -958,7 +910,8 @@ Server Cluster: Configuration (ClusCfg) Protocol
 Copyright © 2020 Microsoft Corporation
 Release: January 17, 2020
 
-values indicate success, with the lower 16 bits in positive nonzero values containing warnings or
+
+values indicate success, with the lower 16 bits in positive nonzero values containing warnings or
 flags that are defined in the method implementation.
 
 Return value/code  Description
@@ -974,31 +927,31 @@ Exceptions thrown:
 No exceptions are thrown except those that are thrown by the underlying RPC protocol, as specified in
 [MS-RPCE].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No timer events are required except the events that are maintained in the underlying RPC transport
 (see section 2.1).
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No additional local events are used other than the events that are maintained in the underlying RPC
 transport (see section 2.1).
 
-3.2  Client Details
+### 3.2 Client Details
 
 The following sections specify client details of the ClusCfg Protocol, including abstract data models,
 timers, and message processing rules.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required other than those internal ones that are used in an RPC to implement
 resiliency to network outages, as specified in [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client application initiates the conversation with the server by performing DCOM activation (as
 specified in [MS-DCOM] section 3.2.4.1.1) of the CLSID specified in section 1.9. After getting the
@@ -1006,12 +959,12 @@ interface pointer to the DCOM object as a result of the activation, the client a
 object by making calls on the DCOM interface that it supports. After the conversation with the server
 is complete, the client application does a Release on the interface pointer.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict Network Data
 Representation (NDR) data consistency check at target level 5.0, as specified in [MS-RPCE] section 3.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client other than the events that are maintained in the
 underlying RPC transport.
@@ -1023,7 +976,8 @@ Server Cluster: Configuration (ClusCfg) Protocol
 Copyright © 2020 Microsoft Corporation
 Release: January 17, 2020
 
-3.2.6  Other Local Events
+
+#### 3.2.6 Other Local Events
 
 No additional local events are used on the client other than the events that are maintained in the
 underlying RPC transport.
@@ -1035,11 +989,12 @@ Release: January 17, 2020
 
 12 / 19
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MC-CCFG].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following example builds on the example that is provided in [MS-DCOM] section 4.1.
 
@@ -1054,15 +1009,16 @@ Release: January 17, 2020
 
 13 / 19
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol relies on the security features that are provided by DCOM as specified in [MS-DCOM].
 Review the security considerations that are listed in [MS-RPCE] section 5.1 because those
 considerations are also valid for DCOM and DCOM-based protocols.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for this protocol.
 
@@ -1073,7 +1029,8 @@ Release: January 17, 2020
 
 14 / 19
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided where "ms-oaut.idl" is the IDL that is specified in
 [MS-OAUT] Appendix A.
@@ -1104,7 +1061,8 @@ Release: January 17, 2020
 
 15 / 19
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1131,7 +1089,8 @@ Release: January 17, 2020
 
 16 / 19
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1143,7 +1102,8 @@ Release: January 17, 2020
 
 17 / 19
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1276,7 +1236,8 @@ Timer events
 
 18 / 19
 
-Timers
+
+Timers
    client 11
    server 9
 Tracking changes 17

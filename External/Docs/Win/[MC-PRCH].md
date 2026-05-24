@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 75
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: March 13, 2019
 
 2 / 75
 
-Date
+
+Date
 
 Revision
 History
@@ -492,357 +494,142 @@ Release: March 13, 2019
 
 3 / 75
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Mesh and Mesh Names ................................................................................ 11
-Channel Types ........................................................................................... 11
-Discovery .................................................................................................. 11
-Connecting to Other Nodes .......................................................................... 11
-Exchanging Application Messages ................................................................. 11
-Security..................................................................................................... 12
-Transport-Layer Security ....................................................................... 12
-Password ........................................................................................ 12
-Trusted Certificate ........................................................................... 12
-Message-Layer Security ......................................................................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.6.1.1
-1.3.6.1.2
-
-1.3.6.1
-
-1.3.6.2
-
-2.2.3
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Common Message Syntax ................................................................................. 14
-Namespaces .............................................................................................. 14
-Structures ................................................................................................. 15
-PeerHashToken Element ........................................................................ 15
-PeerNodeAddress Structure .................................................................... 15
-Referral Structure ................................................................................. 17
-RefuseReason Enumeration .................................................................... 17
-DisconnectReason Enumeration .............................................................. 18
-FloodMessage Header ............................................................................ 19
-Endpoint Format ................................................................................... 19
-Messages ................................................................................................... 20
-RequestSecurityToken Message .............................................................. 20
-Computing the PeerHashToken.......................................................... 20
-RequestSecurityTokenResponse Message ................................................. 21
-Connect Message .................................................................................. 21
-Welcome Message ................................................................................. 22
-Refuse Message .................................................................................... 22
-Disconnect Message .............................................................................. 22
-Flood (Application) Message ................................................................... 23
-LinkUtility Message................................................................................ 23
-Ping Message ....................................................................................... 24
-Elements ................................................................................................... 24
-Complex Types ........................................................................................... 24
-Simple Types ............................................................................................. 24
-Attributes .................................................................................................. 24
-Groups ...................................................................................................... 24
-Attribute Groups ......................................................................................... 24
-
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2.2.3.1.1
-
-3  Protocol Details ..................................................................................................... 25
-PeerService Port Receiving Node Details ............................................................. 25
-
-3.1
-
-4 / 75
-
-[MC-PRCH] - v20190313
-Peer Channel Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-3.1.1
-3.1.2
-3.1.3
-
-3.1.4
-
-3.1.3.1
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.5
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.5.2
-
-3.1.5.2.1
-
-3.1.5.3
-
-3.1.5.3.1
-
-3.1.5.4
-
-3.1.5.4.1
-
-3.1.5.5
-
-3.1.5.5.1
-
-3.1.5.6
-
-3.1.5.6.1
-
-3.1.5.7
-
-3.1.5.7.1
-
-3.1.5.8
-
-3.1.5.8.1
-
-3.1.5.9
-
-3.1.5.9.1
-
-3.1.5.6.1.1
-
-3.1.5.5.1.1
-
-3.1.5.4.1.1
-
-3.1.5.3.1.1
-
-3.1.5.2.1.1
-
-3.1.5.6.1.1.1
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 27
-Setting Configuration ............................................................................. 27
-Higher-Layer Triggered Events ..................................................................... 28
-Opening a Node .................................................................................... 28
-Receiving a Message ............................................................................. 28
-Closing a Node ..................................................................................... 29
-Message Processing and Sequencing Rules .................................................... 29
-ProcessRequestSecurityToken ................................................................. 29
-Messages ....................................................................................... 30
-PeerService_ProcessRequestSecurityToken_InputMessage .............. 30
-PeerService_ProcessRequestSecurityToken_OutputMessage ............ 30
-Connect ............................................................................................... 31
-Messages ....................................................................................... 31
-ConnectInfo .............................................................................. 31
-Welcome .............................................................................................. 33
-Messages ....................................................................................... 33
-WelcomeInfo ............................................................................. 34
-Refuse ................................................................................................. 34
-Messages ....................................................................................... 34
-RefuseInfo ................................................................................ 35
-Disconnect ........................................................................................... 35
-Messages ....................................................................................... 35
-DisconnectInfo .......................................................................... 35
-LinkUtility ............................................................................................ 36
-Messages ....................................................................................... 36
-UtilityInfo ................................................................................. 36
-Computing the LinkUtilityIndex .............................................. 36
-Ping .................................................................................................... 36
-Messages ....................................................................................... 37
-PeerService_Ping_InputMessage .................................................. 37
-Fault ................................................................................................... 37
-Messages ....................................................................................... 37
-PeerService_Fault_InputMessage ................................................. 37
-FloodMessage ....................................................................................... 37
-Messages ....................................................................................... 37
-PeerService_FloodMessage_InputMessage .................................... 38
-Timer Events .............................................................................................. 40
-Security Handshake Timer ..................................................................... 40
-Connect Handshake Timer ...................................................................... 40
-LinkUtility Timer ................................................................................... 40
-Maintenance Timer ................................................................................ 40
-Maintenance Algorithm ..................................................................... 41
-Pruning Algorithm ............................................................................ 42
-Establish a Neighbor Connection ........................................................ 43
-Create a TCP/IP Connection .............................................................. 44
-No Security ..................................................................................... 44
-Password-Based Security.................................................................. 44
-Certificate-Based Security ................................................................ 45
-Password-Based Security Handshake ................................................. 45
-Connect Handshake ......................................................................... 45
-Other Local Events ...................................................................................... 47
-PeerService Port Sending Node Details ............................................................... 47
-Abstract Data Model .................................................................................... 47
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Higher-Layer Triggered Events ..................................................................... 48
-
-3.1.5.7.1.1
-
-3.1.5.8.1.1
-
-3.1.5.9.1.1
-
-3.1.6.4.1
-3.1.6.4.2
-3.1.6.4.3
-3.1.6.4.4
-3.1.6.4.5
-3.1.6.4.6
-3.1.6.4.7
-3.1.6.4.8
-3.1.6.4.9
-
-3.1.6
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-
-3.2
-
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-[MC-PRCH] - v20190313
-Peer Channel Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 75
-
-3.2.4.1
-
-3.2.4.1.1
-
-Sending Messages ................................................................................. 48
-Sending Signed Messages ................................................................. 48
-Message Processing Events and Sequencing Rules .......................................... 48
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 49
-
-3.2.5
-3.2.6
-3.2.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 50
-Establishing a Neighbor Connection in Password Mode .......................................... 50
-Connection Initiator Sends the RequestSecurityToken Message ........................ 50
-Responding Node Sends Back a RequestSecurityTokenResponse ...................... 51
-Requesting Node Sends a Connect Message ................................................... 52
-Responding Node Sends a Welcome Message ................................................. 53
-Nonpassword Security Modes ............................................................................ 53
-Flooding a Message .......................................................................................... 53
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-
-4.2
-4.3
-
-5  Security ................................................................................................................. 55
-Security Considerations for Implementers ........................................................... 55
-Index of Security Parameters ............................................................................ 55
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL Definitions ........................................................................ 56
-
-7  Appendix B: Product Behavior ............................................................................... 70
-
-8  Change Tracking .................................................................................................... 72
-
-9  Index ..................................................................................................................... 73
-
-[MC-PRCH] - v20190313
-Peer Channel Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-6 / 75
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Mesh and Mesh Names](#131-mesh-and-mesh-names)
+    - [1.3.2 Channel Types](#132-channel-types)
+    - [1.3.3 Discovery](#133-discovery)
+    - [1.3.4 Connecting to Other Nodes](#134-connecting-to-other-nodes)
+    - [1.3.5 Exchanging Application Messages](#135-exchanging-application-messages)
+    - [1.3.6 Security](#136-security)
+      - [1.3.6.1 Transport-Layer Security](#1361-transport-layer-security)
+        - [1.3.6.1.1 Password](#13611-password)
+        - [1.3.6.1.2 Trusted Certificate](#13612-trusted-certificate)
+      - [1.3.6.2 Message-Layer Security](#1362-message-layer-security)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 PeerHashToken Element](#2221-peerhashtoken-element)
+      - [2.2.2.2 PeerNodeAddress Structure](#2222-peernodeaddress-structure)
+      - [2.2.2.3 Referral Structure](#2223-referral-structure)
+      - [2.2.2.4 RefuseReason Enumeration](#2224-refusereason-enumeration)
+      - [2.2.2.5 DisconnectReason Enumeration](#2225-disconnectreason-enumeration)
+      - [2.2.2.6 FloodMessage Header](#2226-floodmessage-header)
+      - [2.2.2.7 Endpoint Format](#2227-endpoint-format)
+    - [2.2.3 Messages](#223-messages)
+      - [2.2.3.1 RequestSecurityToken Message](#2231-requestsecuritytoken-message)
+        - [2.2.3.1.1 Computing the PeerHashToken](#22311-computing-the-peerhashtoken)
+      - [2.2.3.2 RequestSecurityTokenResponse Message](#2232-requestsecuritytokenresponse-message)
+      - [2.2.3.3 Connect Message](#2233-connect-message)
+      - [2.2.3.4 Welcome Message](#2234-welcome-message)
+      - [2.2.3.5 Refuse Message](#2235-refuse-message)
+      - [2.2.3.6 Disconnect Message](#2236-disconnect-message)
+      - [2.2.3.7 Flood (Application) Message](#2237-flood-application-message)
+      - [2.2.3.8 LinkUtility Message](#2238-linkutility-message)
+      - [2.2.3.9 Ping Message](#2239-ping-message)
+    - [2.2.4 Elements](#224-elements)
+    - [2.2.5 Complex Types](#225-complex-types)
+    - [2.2.6 Simple Types](#226-simple-types)
+    - [2.2.7 Attributes](#227-attributes)
+    - [2.2.8 Groups](#228-groups)
+    - [2.2.9 Attribute Groups](#229-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 PeerService Port Receiving Node Details](#31-peerservice-port-receiving-node-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Setting Configuration](#3131-setting-configuration)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Opening a Node](#3141-opening-a-node)
+      - [3.1.4.2 Receiving a Message](#3142-receiving-a-message)
+      - [3.1.4.3 Closing a Node](#3143-closing-a-node)
+    - [3.1.5 Message Processing and Sequencing Rules](#315-message-processing-and-sequencing-rules)
+      - [3.1.5.1 ProcessRequestSecurityToken](#3151-processrequestsecuritytoken)
+        - [3.1.5.1.1 Messages](#31511-messages)
+          - [3.1.5.1.1.1 PeerService_ProcessRequestSecurityToken_InputMessage](#315111-peerserviceprocessrequestsecuritytokeninputmessage)
+          - [3.1.5.1.1.2 PeerService_ProcessRequestSecurityToken_OutputMessage](#315112-peerserviceprocessrequestsecuritytokenoutputmessage)
+      - [3.1.5.2 Connect](#3152-connect)
+        - [3.1.5.2.1 Messages](#31521-messages)
+          - [3.1.5.2.1.1 ConnectInfo](#315211-connectinfo)
+      - [3.1.5.3 Welcome](#3153-welcome)
+        - [3.1.5.3.1 Messages](#31531-messages)
+          - [3.1.5.3.1.1 WelcomeInfo](#315311-welcomeinfo)
+      - [3.1.5.4 Refuse](#3154-refuse)
+        - [3.1.5.4.1 Messages](#31541-messages)
+          - [3.1.5.4.1.1 RefuseInfo](#315411-refuseinfo)
+      - [3.1.5.5 Disconnect](#3155-disconnect)
+        - [3.1.5.5.1 Messages](#31551-messages)
+          - [3.1.5.5.1.1 DisconnectInfo](#315511-disconnectinfo)
+      - [3.1.5.6 LinkUtility](#3156-linkutility)
+        - [3.1.5.6.1 Messages](#31561-messages)
+          - [3.1.5.6.1.1 UtilityInfo](#315611-utilityinfo)
+            - [3.1.5.6.1.1.1 Computing the LinkUtilityIndex](#3156111-computing-the-linkutilityindex)
+      - [3.1.5.7 Ping](#3157-ping)
+        - [3.1.5.7.1 Messages](#31571-messages)
+          - [3.1.5.7.1.1 PeerService_Ping_InputMessage](#315711-peerservicepinginputmessage)
+      - [3.1.5.8 Fault](#3158-fault)
+        - [3.1.5.8.1 Messages](#31581-messages)
+          - [3.1.5.8.1.1 PeerService_Fault_InputMessage](#315811-peerservicefaultinputmessage)
+      - [3.1.5.9 FloodMessage](#3159-floodmessage)
+        - [3.1.5.9.1 Messages](#31591-messages)
+          - [3.1.5.9.1.1 PeerService_FloodMessage_InputMessage](#315911-peerservicefloodmessageinputmessage)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Security Handshake Timer](#3161-security-handshake-timer)
+      - [3.1.6.2 Connect Handshake Timer](#3162-connect-handshake-timer)
+      - [3.1.6.3 LinkUtility Timer](#3163-linkutility-timer)
+      - [3.1.6.4 Maintenance Timer](#3164-maintenance-timer)
+        - [3.1.6.4.1 Maintenance Algorithm](#31641-maintenance-algorithm)
+        - [3.1.6.4.2 Pruning Algorithm](#31642-pruning-algorithm)
+        - [3.1.6.4.3 Establish a Neighbor Connection](#31643-establish-a-neighbor-connection)
+        - [3.1.6.4.4 Create a TCP/IP Connection](#31644-create-a-tcpip-connection)
+        - [3.1.6.4.5 No Security](#31645-no-security)
+        - [3.1.6.4.6 Password-Based Security](#31646-password-based-security)
+        - [3.1.6.4.7 Certificate-Based Security](#31647-certificate-based-security)
+        - [3.1.6.4.8 Password-Based Security Handshake](#31648-password-based-security-handshake)
+        - [3.1.6.4.9 Connect Handshake](#31649-connect-handshake)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 PeerService Port Sending Node Details](#32-peerservice-port-sending-node-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Sending Messages](#3241-sending-messages)
+        - [3.2.4.1.1 Sending Signed Messages](#32411-sending-signed-messages)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Establishing a Neighbor Connection in Password Mode](#41-establishing-a-neighbor-connection-in-password-mode)
+    - [4.1.1 Connection Initiator Sends the RequestSecurityToken Message](#411-connection-initiator-sends-the-requestsecuritytoken-message)
+    - [4.1.2 Responding Node Sends Back a RequestSecurityTokenResponse](#412-responding-node-sends-back-a-requestsecuritytokenresponse)
+    - [4.1.3 Requesting Node Sends a Connect Message](#413-requesting-node-sends-a-connect-message)
+    - [4.1.4 Responding Node Sends a Welcome Message](#414-responding-node-sends-a-welcome-message)
+  - [4.2 Nonpassword Security Modes](#42-nonpassword-security-modes)
+  - [4.3 Flooding a Message](#43-flooding-a-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL Definitions](#6-appendix-a-full-wsdl-definitions)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Peer Channel Protocol is used for broadcasting messages over a virtual network of cooperating
 nodes. This protocol is used to send and receive messages between nodes in a named mesh. The
@@ -861,7 +648,7 @@ neighbor connection and tune its neighbor set based on the utility of the neighb
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -912,7 +699,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-neighbor connection: A TCP/IP connection between the endpoints of two nodes.
+
+neighbor connection: A TCP/IP connection between the endpoints of two nodes.
 
 node: An instance of a channel endpoint participating in the mesh that implements the Peer
 
@@ -951,14 +739,14 @@ names but come from different sources. For more information, see [XMLNS-2ED].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -984,7 +772,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-[MS-WSPOL] Microsoft Corporation, "Web Services: Policy Assertions and WSDL Extensions".
+
+[MS-WSPOL] Microsoft Corporation, "Web Services: Policy Assertions and WSDL Extensions".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
@@ -1051,7 +840,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MC-PRCH].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1059,7 +849,7 @@ Release: March 13, 2019
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-PRCR] Microsoft Corporation, "Peer Channel Custom Resolver Protocol".
 
@@ -1070,7 +860,7 @@ Release: March 13, 2019
 [MSDN-SECURITY_INFORMATION] Microsoft Corporation, "SECURITY_INFORMATION",
 http://msdn.microsoft.com/en-us/library/aa379573.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Nodes using the Peer Channel Protocol create a mesh of redundant connections used for
 broadcasting and receiving messages in a decentralized manner. Messages sent by any node typically
@@ -1096,7 +886,8 @@ Release: March 13, 2019
 
 10 / 75
 
-1.3.1  Mesh and Mesh Names
+
+#### 1.3.1 Mesh and Mesh Names
 
 A mesh name is used to identify a set of nodes that establish connections to each other to form a
 mesh. The name is any unique identifier that follows the host name syntax rules of URI. This name is
@@ -1112,7 +903,7 @@ JoesDocumentUpdateNotice
 
   AdamsStockTicker
 
-1.3.2  Channel Types
+#### 1.3.2 Channel Types
 
 A channel type is defined as a logical grouping of operations (messages) that can be sent over the
 mesh. A mesh can be used to handle more than one channel type simultaneously.
@@ -1130,7 +921,7 @@ net.p2p://BobsNewsFlash/Political
 
 net.p2p://BobsNewsFlash/Financial/Stocks
 
-1.3.3  Discovery
+#### 1.3.3 Discovery
 
 The Peer Channel Protocol uses a discovery service as a repository to store and retrieve each
 node's Endpoint Information (section 3.1.1). All nodes participating in a given mesh use the same
@@ -1140,7 +931,7 @@ establish neighbor connections. The discovery service can return endpoints that 
 active due to transient conditions. Connecting nodes can handle such error conditions by requesting
 additional connection information from the discovery service and then retrying the connect operations.
 
-1.3.4  Connecting to Other Nodes
+#### 1.3.4 Connecting to Other Nodes
 
 A node typically establishes three neighbor connections, if possible. A node that does not discover
 other nodes initially will at first be alone but will be discovered by other nodes that join the mesh
@@ -1154,7 +945,7 @@ another node. The responding node sends back a message indicating its availabili
 connection is accepted by the responding node, the connection is now ready for sending and receiving
 application messages.
 
-1.3.5  Exchanging Application Messages
+#### 1.3.5 Exchanging Application Messages
 
 After establishing connections with one or more neighbors, a node is ready to send and receive
 application messages. If per-message security is configured, each message is first processed for
@@ -1168,7 +959,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-All nodes receive all messages addressed to the mesh, even if some of the messages are only
+
+All nodes receive all messages addressed to the mesh, even if some of the messages are only
 intended for a subset of the mesh.
 
 Each message is identified by a unique message ID that is generated by the node that initially creates
@@ -1179,18 +971,18 @@ Outgoing messages (called flood messages) are created by adding a Peer Channel P
 the message (see section 2.2.3.7) and then sending the messages to the corresponding ChannelType
 URI.
 
-1.3.6  Security
+#### 1.3.6 Security
 
 A mesh can be secured at neighbor transport layer, message layer, or both.
 
-1.3.6.1  Transport-Layer Security
+##### 1.3.6.1 Transport-Layer Security
 
 A mesh can be configured to send and receive all messages over a secure transport. In this case, all
 neighbor-to-neighbor connections established will be Transport Layer Security (TLS) over TCP
 connections, as specified in [RFC4346]. Peer Channel supports two different types of credentials for
 achieving transport-layer security, as described in the following sections.
 
-1.3.6.1.1 Password
+###### 1.3.6.1.1 Password
 
 Every node that attempts to join the mesh is required to prove knowledge of the mesh password. A
 secure neighbor-to-neighbor connection is established using any arbitrary X.509 certificate [X509]
@@ -1198,7 +990,7 @@ secure neighbor-to-neighbor connection is established using any arbitrary X.509 
 exchange messages to send tokens that prove their knowledge of the password. Each node validates
 the other node's security token before initiating further message exchanges with that node.
 
-1.3.6.1.2 Trusted Certificate
+###### 1.3.6.1.2 Trusted Certificate
 
 Every node has a certificate that all nodes can validate and trust that is provisioned out of band.
 Secure neighbor-to-neighbor connections are established using these certificates. Applications
@@ -1209,7 +1001,7 @@ a given node will be connected to at any time, so all nodes have to implement ge
 schemes). However, no message exchange takes place. If the nodes fail to authenticate each other's
 certificate, the neighbor connection is dropped.
 
-1.3.6.2  Message-Layer Security
+##### 1.3.6.2 Message-Layer Security
 
 Independent of transport-layer security, the Peer Channel Protocol also supports per-message
 security. Application messages (not protocol messages) are signed with a trusted X.509 certificate to
@@ -1217,7 +1009,7 @@ make individual messages tamper-proof. The application provides the scheme to va
 certificate that is used to secure the message. The vendor also distributes the certificates used to
 validate these messages.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Peer Channel Protocol depends on the following non-native protocols:
 
@@ -1233,7 +1025,8 @@ Release: March 13, 2019
 
 12 / 75
 
-
+
+
 
 
 
@@ -1253,7 +1046,7 @@ The Peer Channel Protocol also has an optional dependency on the Peer Name Resol
 can be used to register and resolve the peer's addresses during connection and maintenance
 operations.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 In addition to the protocol dependencies listed in the section "Relationship to Other Protocols", it is
 assumed that a node connecting to the mesh is configured with the following details:
@@ -1273,7 +1066,7 @@ mesh.
 It is assumed that these details are available to all participating nodes before connecting to the mesh.
 The Peer Channel Protocol is not used to communicate these details.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Peer Channel Protocol is suitable for scenarios in which messages sent by any node can reach all
 other nodes participating in a single named mesh. It is suitable for both local networks and Global
@@ -1285,15 +1078,15 @@ messages are to be addressed to the mesh, not to any particular peer.
 The Peer Channel Protocol is suited for use in scenarios that do not require a high degree of reliability,
 because it does not include any mechanism to guarantee message delivery.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1304,15 +1097,16 @@ Release: March 13, 2019
 
 13 / 75
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 A node configured without transport security MUST use TCP as the neighbor-to-neighbor transport. A
 node configured with transport security MUST use TLS to secure the channel, as specified in
 [RFC4346].
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 The Peer Channel Protocol is comprised of messages that are based on SOAP (as specified in
 [SOAP1.2/1]) syntax. Peer Channel Protocol messages are defined as a Web Services Description
@@ -1320,7 +1114,7 @@ Language (WSDL) [WSDL] operation binding. Peer Channel Protocol messages define 
 header and the element type in the SOAP body, with the exception of flood messages, which are
 identified by the presence of other Peer Channel Protocol–specific headers in the SOAP message.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1435,7 +1229,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Prefix
+
+Prefix
 
 Namespace URI
 
@@ -1445,7 +1240,7 @@ tns
 
 Various
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
 The tns ("this namespace") prefix
 is used as a convention to refer to
@@ -1455,7 +1250,7 @@ WSDL listing in Appendix A.
 Peer Channel Protocol–specific structures are specified in this section. These structures are reused
 across several Peer Channel Protocol messages.
 
-2.2.2.1  PeerHashToken Element
+##### 2.2.2.1 PeerHashToken Element
 
 The PeerHashToken element is used to transport authentication information when password-based
 authentication is used. It contains a node's authenticator token. For details on how the
@@ -1484,7 +1279,7 @@ MUST contain the token being validated.
 
 PeerHashToken/Authenticator  MUST contain a token in base64-encoded form.
 
-2.2.2.2  PeerNodeAddress Structure
+##### 2.2.2.2 PeerNodeAddress Structure
 
 The PeerNodeAddress structure contains the URI of the node and the set of IP addresses on which the
 node is listening.
@@ -1509,7 +1304,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Net"
+
+ <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Net"
          elementFormDefault="qualified"
          targetNamespace="http://schemas.datacontract.org/2004/07/System.Net"
          xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -1601,7 +1397,8 @@ instances. For IPv6 addresses, this element
 
 16 / 75
 
-Element
+
+Element
 
 Type
 
@@ -1620,7 +1417,7 @@ For IPv6 address, this element MUST contain
 the Scope ID of the address. For IPv4
 addresses, this element MUST be ignored.
 
-2.2.2.3  Referral Structure
+##### 2.2.2.3 Referral Structure
 
 A Referral contains the Endpoint Information (section 3.1.1) of a node. For information about how
 Referrals are used, see section 3.1. Note that the Referral structure itself does not include any
@@ -1648,7 +1445,7 @@ Referral/NodeId  MUST contain a 64-bit unique identifier.
 
 Referral/Address  MUST contain the PeerNodeAddress of the node.
 
-2.2.2.4  RefuseReason Enumeration
+##### 2.2.2.4 RefuseReason Enumeration
 
 The RefuseReason enumeration describes the reason a requested neighbor connection has been
 denied.
@@ -1677,7 +1474,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-           </xs:annotation>
+
+           </xs:annotation>
          </xs:enumeration>
          <xs:enumeration value="NodeBusy">
            <xs:annotation>
@@ -1709,7 +1507,7 @@ NodeBusy
 
 The responding node has already connected to the configured maximum number of nodes.
 
-2.2.2.5  DisconnectReason Enumeration
+##### 2.2.2.5 DisconnectReason Enumeration
 
 The DisconnectReason enumeration describes the reason a neighbor connection is closed.
 
@@ -1753,7 +1551,8 @@ Release: March 13, 2019
 
 18 / 75
 
-             </xs:appinfo>
+
+             </xs:appinfo>
            </xs:annotation>
          </xs:enumeration>
          <xs:enumeration value="NodeBusy">
@@ -1803,7 +1602,7 @@ InternalFailure
 
 An unhandled internal failure caused this connection to be closed.
 
-2.2.2.6  FloodMessage Header
+##### 2.2.2.6 FloodMessage Header
 
 The FloodMessage header is used to identify flood (application) messages. The header MUST be
 formatted as follows.
@@ -1813,7 +1612,7 @@ formatted as follows.
  PeerFlooder
  </p:FloodMessage>
 
-2.2.2.7  Endpoint Format
+##### 2.2.2.7 Endpoint Format
 
 An endpoint URI has the following syntax:
 
@@ -1828,7 +1627,8 @@ Release: March 13, 2019
 
 19 / 75
 
-  Scheme is "net.p2p" for neighbor connections or "net.tcp" for a connection with a resolver
+
+  Scheme is "net.p2p" for neighbor connections or "net.tcp" for a connection with a resolver
 
 service.
 
@@ -1842,9 +1642,9 @@ service.
 
 in [RFC4122].
 
-2.2.3  Messages
+#### 2.2.3 Messages
 
-2.2.3.1  RequestSecurityToken Message
+##### 2.2.3.1 RequestSecurityToken Message
 
 The RequestSecurityToken (RST) message is sent to initiate the process of authenticating a neighbor
 connection. The PeerHashToken element is used as the CustomToken binding of this message. The
@@ -1871,7 +1671,7 @@ RequestSecurityToken/RequestType
 
 "http://schemas.xmlsoap.org/ws/2005/02/trust/Validate"
 
-2.2.3.1.1 Computing the PeerHashToken
+###### 2.2.3.1.1 Computing the PeerHashToken
 
 The PeerHashToken contains only an authenticator element. The authenticator element carries a
 base64-encoded security token as the text node. The security token is an HMACSHA256 value that
@@ -1900,14 +1700,15 @@ Release: March 13, 2019
 
 20 / 75
 
-  PUBLICKEY is the public key of the node for which the PeerHashToken is being computed. Public
+
+  PUBLICKEY is the public key of the node for which the PeerHashToken is being computed. Public
 key bits of the certificate that are provisioned for the neighbor connection MUST be used here.
 
   HASHEDKEY is computed by concatenating the byte streams of (a) the output of the function
 
 SHA256 over the PWD and (b) the public key in the node's certificate.
 
-2.2.3.2  RequestSecurityTokenResponse Message
+##### 2.2.3.2 RequestSecurityTokenResponse Message
 
 The RequestSecurityTokenResponse message is sent to complete the process of authenticating a
 neighbor connection. The message carries the validation results of the requesting node's
@@ -1945,7 +1746,7 @@ MUST contain an instance of PeerHashToken containing the
 hash of the responding party. For instructions on how to
 compute the hash, see section 2.2.3.1.1.
 
-2.2.3.3  Connect Message
+##### 2.2.3.3 Connect Message
 
 The Connect message is used to request a connection to another node.
 
@@ -1980,7 +1781,8 @@ Release: March 13, 2019
 
 21 / 75
 
-2.2.3.4  Welcome Message
+
+##### 2.2.3.4 Welcome Message
 
 The Welcome message is sent by a responding node to accept a neighbor connection.
 
@@ -2010,7 +1812,7 @@ WelcomeInfo/Referrals  A collection of Referral elements. Each element in the Re
 
 a neighbor to which the responding node is currently connected.
 
-2.2.3.5  Refuse Message
+##### 2.2.3.5 Refuse Message
 
 The Refuse message is sent by a responding node to reject a neighbor connection.
 
@@ -2041,7 +1843,7 @@ RefuseInfo/Referrals  A collection of Referral (section 2.2.2.3) elements. Each 
 
 MUST refer to a node to which the responding neighbor is currently connected.
 
-2.2.3.6  Disconnect Message
+##### 2.2.3.6 Disconnect Message
 
 The Disconnect message is sent by a node to close a neighbor connection.
 
@@ -2052,7 +1854,8 @@ Release: March 13, 2019
 
 22 / 75
 
- <xs:complexType name="DisconnectInfo">
+
+ <xs:complexType name="DisconnectInfo">
    <xs:sequence>
      <xs:element minOccurs="0" name="Reason"
          xmlns:q3="http://schemas.datacontract.org/2004/07/System.ServiceModel.Channels"
@@ -2080,7 +1883,7 @@ DisconnectInfo/Referrals  A collection of Referral elements. Each element in the
 
 to a node to which the responding neighbor is currently connected.
 
-2.2.3.7  Flood (Application) Message
+##### 2.2.3.7 Flood (Application) Message
 
 The Flood (application) message contains application-specific information.
 
@@ -2115,7 +1918,7 @@ Description
 
 PeerHopCount  An integer value specifying the number of hops allowed for flood messages.
 
-2.2.3.8  LinkUtility Message
+##### 2.2.3.8 LinkUtility Message
 
 The LinkUtility message is used to transmit the LinkUtilityInfo value to another neighbor, indicating
 the usefulness of their neighbor connection.
@@ -2130,7 +1933,8 @@ Release: March 13, 2019
 
 23 / 75
 
-     <xs:element minOccurs="0" name="Total" type="xs:unsignedInt" />
+
+     <xs:element minOccurs="0" name="Total" type="xs:unsignedInt" />
      <xs:element minOccurs="0" name="Useful" type="xs:unsignedInt" />
    </xs:sequence>
  </xs:complexType>
@@ -2154,7 +1958,7 @@ LinkUtilityInfo/Useful  MUST indicate the number of messages (out of the LinkUti
 
 duplicates.
 
-2.2.3.9  Ping Message
+##### 2.2.3.9 Ping Message
 
 The Ping message is used to check the validity of a connection when a node resumes activity from
 standby. It MUST NOT contain a body.
@@ -2165,27 +1969,27 @@ standby. It MUST NOT contain a body.
        message="tns:PeerService_Ping_InputMessage" />
  </wsdl:operation>
 
-2.2.4  Elements
+#### 2.2.4 Elements
 
 This specification does not define any common XML Schema element definitions.
 
-2.2.5  Complex Types
+#### 2.2.5 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.6  Simple Types
+#### 2.2.6 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.7  Attributes
+#### 2.2.7 Attributes
 
 This specification does not define any common XML Schema attribute type definitions.
 
-2.2.8  Groups
+#### 2.2.8 Groups
 
 This specification does not define any common XML Schema group type definitions.
 
-2.2.9  Attribute Groups
+#### 2.2.9 Attribute Groups
 
 This specification does not define any common XML Schema attribute group type definitions.
 
@@ -2196,7 +2000,8 @@ Release: March 13, 2019
 
 24 / 75
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Peer Channel Protocol will be defined from the perspective of two distinct roles:
 
@@ -2210,9 +2015,9 @@ The sending node: Transmits outbound application messages to neighbors.
 
 All nodes implementing the Peer Channel Protocol MUST implement both roles.
 
-3.1  PeerService Port Receiving Node Details
+### 3.1 PeerService Port Receiving Node Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2279,7 +2084,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -2338,7 +2144,7 @@ Note  This removes previously seen MessageIds to maintain a reasonable cache siz
 connection set and tunes it for optimal throughput. The period of this timer SHOULD be set as
 specified in section 3.1.2.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Each receiving node MUST have the following timers:
 
@@ -2362,7 +2168,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-
+
+
 
 
 
@@ -2400,9 +2207,9 @@ following timer is created:
 LinkUtility timer: This timer exists for each neighbor connection and is used to send a LinkUtility
 message at regular intervals. The period SHOULD be 1 minute.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
-3.1.3.1  Setting Configuration
+##### 3.1.3.1 Setting Configuration
 
 A node MUST be configured with the following information before connecting to a mesh.
 
@@ -2447,7 +2254,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Security mode and security configuration: The node must have all necessary security information
+
+  Security mode and security configuration: The node must have all necessary security information
 
 to connect to the mesh if the mesh is configured to support security. All nodes participating in a
 single mesh MUST have the same security configuration.
@@ -2455,7 +2263,7 @@ single mesh MUST have the same security configuration.
 For each new connection where the ConnectionState data element is set to the Connected value,
 the node MUST initialize LinkUtilityIndex to zero to indicate the usefulness of the connection.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 A node MUST provide (to higher-layer applications and protocols) three logical operations that can be
 invoked:
@@ -2466,7 +2274,7 @@ invoked:
 
   Closing a node (section 3.1.4.3)
 
-3.1.4.1  Opening a Node
+##### 3.1.4.1 Opening a Node
 
 When a higher-layer application or protocol triggers the Open event, the node MUST carry out the
 following procedure:
@@ -2499,7 +2307,7 @@ If any aforementioned operations fail, the protocol SHOULD return to the higher-
 error indicating the cause of the failure, and it MUST abort the operation, reverting any of the actions
 that were completed before the failure.
 
-3.1.4.2  Receiving a Message
+##### 3.1.4.2 Receiving a Message
 
 If the mesh configuration requires that messages be signed, the receiver MUST look for the signature
 and then verify it. If the signature verification fails, the node MUST abort the neighbor connection and
@@ -2518,7 +2326,8 @@ Release: March 13, 2019
 
 28 / 75
 
-For each incoming message, a LinkUtilityIndex MUST be updated. A LinkUtility message is sent only if
+
+For each incoming message, a LinkUtilityIndex MUST be updated. A LinkUtility message is sent only if
 the foregoing conditions are met. The Useful and Total values in the LinkUtility message MUST be
 updated on message reception to reflect the current state of the link. However, the LinkUtilityIndex
 MUST reflect cumulative values and MUST never be reset after a neighbor connection is established.
@@ -2529,7 +2338,7 @@ message to make sure that they are within the valid boundaries specified in sect
 Processing and error handling for each message MUST be done by following the specification for each
 message type as specified in section 3.1.5.
 
-3.1.4.3  Closing a Node
+##### 3.1.4.3 Closing a Node
 
 A node SHOULD take the following steps when closing down:
 
@@ -2544,7 +2353,7 @@ neighbor with the Reason element set to "LeavingMesh".
 If any error occurs during the close operation, the protocol SHOULD return an error to the higher-level
 application, and the local node MUST be aborted.
 
-3.1.5  Message Processing and Sequencing Rules
+#### 3.1.5 Message Processing and Sequencing Rules
 
 The following table summarizes the list of WSDL operations as defined by this specification.
 
@@ -2586,7 +2395,7 @@ FloodMessage
 
 Flood a message in the peer to peer mesh.
 
-3.1.5.1  ProcessRequestSecurityToken
+##### 3.1.5.1 ProcessRequestSecurityToken
 
 The WSDL snippet that follows applies to the ProcessRequestSecurityToken operation.
 
@@ -2604,9 +2413,10 @@ Release: March 13, 2019
 
 29 / 75
 
- </wsdl:operation>
 
-3.1.5.1.1 Messages
+ </wsdl:operation>
+
+###### 3.1.5.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2621,7 +2431,7 @@ Authenticate a neighbor connection.
 
 PeerService_ProcessRequestSecurityToken_OutputMessage  Authenticate a neighbor connection.
 
-3.1.5.1.1.1  PeerService_ProcessRequestSecurityToken_InputMessage
+###### 3.1.5.1.1.1 PeerService_ProcessRequestSecurityToken_InputMessage
 
 The receiving node MUST follow the following sequence of rules for processing this message:
 
@@ -2654,7 +2464,7 @@ connection to the Authenticated state and starts the Connect Handshake timer.
 In case of failures of any kind (communication, timing, security token validation), both nodes MUST
 drop the neighbor connection.
 
-3.1.5.1.1.2  PeerService_ProcessRequestSecurityToken_OutputMessage
+###### 3.1.5.1.1.2 PeerService_ProcessRequestSecurityToken_OutputMessage
 
 The receiving node MUST follow the following sequence of rules for processing this message:
 
@@ -2679,7 +2489,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Envelope/Body/RequestSecurityTokenResponse/RequestedSecurityToken/PeerHashToken in the
+
+Envelope/Body/RequestSecurityTokenResponse/RequestedSecurityToken/PeerHashToken in the
 message).
 
 4.  The receiving node MUST compute the sender's Authenticator token using the sender's public key
@@ -2697,7 +2508,7 @@ connection to the Authenticated state.
 
 7.  The receiving node SHOULD start the Connect Handshake timer.
 
-3.1.5.2  Connect
+##### 3.1.5.2 Connect
 
 The following WSDL snippet applies to the Connect operation.
 
@@ -2708,7 +2519,7 @@ The following WSDL snippet applies to the Connect operation.
         name="ConnectInfo" message="tns:ConnectInfo" />
  </wsdl:operation>
 
-3.1.5.2.1 Messages
+###### 3.1.5.2.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2721,7 +2532,7 @@ ConnectInfo
 
 Initiate a neighbor connection.
 
-3.1.5.2.1.1  ConnectInfo
+###### 3.1.5.2.1.1 ConnectInfo
 
 1.  If the value of the ConnectionState data element for the connection is not equal to the
 Authenticated state, it MUST abort the neighbor connection and stop the protocol.
@@ -2756,7 +2567,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-connection, a Refuse message MUST be sent with DuplicateNeighbor as the RefuseReason,
+
+connection, a Refuse message MUST be sent with DuplicateNeighbor as the RefuseReason,
 and the connection MUST be closed. If this is the existing connection, a Disconnect message
 MUST be sent with DuplicateNeighbor as the DisconnectReason, and the old connection MUST
 be closed.
@@ -2781,13 +2593,14 @@ Release: March 13, 2019
 
 32 / 75
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MC-PRCH].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
 Figure 2: Flow chart of connection process for responding node
 
-3.1.5.3  Welcome
+##### 3.1.5.3 Welcome
 
 The WSDL snippet that follows applies to the Welcome operation.
 
@@ -2798,7 +2611,7 @@ The WSDL snippet that follows applies to the Welcome operation.
         name="WelcomeInfo" message="tns:WelcomeInfo" />
  </wsdl:operation>
 
-3.1.5.3.1 Messages
+###### 3.1.5.3.1 Messages
 
 [MC-PRCH] - v20190313
 Peer Channel Protocol
@@ -2807,7 +2620,8 @@ Release: March 13, 2019
 
 33 / 75
 
-The following table summarizes the set of WSDL message definitions that are specific to this
+
+The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
 
 Message
@@ -2816,7 +2630,7 @@ Description
 
 WelcomeInfo  Accept a neighbor connection.
 
-3.1.5.3.1.1  WelcomeInfo
+###### 3.1.5.3.1.1 WelcomeInfo
 
 A Welcome message is sent as a response to a Connect message if the responding node is willing to
 accept the neighbor connection. A Welcome message MUST be processed as follows by the
@@ -2856,7 +2670,7 @@ processing the message further.
 
 7.  The receiving node MUST change the neighbor's state to Connected.
 
-3.1.5.4  Refuse
+##### 3.1.5.4 Refuse
 
 The WSDL snippet that follows applies to the Refuse operation.
 
@@ -2867,7 +2681,7 @@ The WSDL snippet that follows applies to the Refuse operation.
         name="RefuseInfo" message="tns:RefuseInfo" />
  </wsdl:operation>
 
-3.1.5.4.1 Messages
+###### 3.1.5.4.1 Messages
 
 [MC-PRCH] - v20190313
 Peer Channel Protocol
@@ -2876,14 +2690,15 @@ Release: March 13, 2019
 
 34 / 75
 
-The following table summarizes the set of WSDL message definitions that are specific to this
+
+The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
 
 Message  Description
 
 RefuseInfo  Refuse an incoming neighbor connection.
 
-3.1.5.4.1.1  RefuseInfo
+###### 3.1.5.4.1.1 RefuseInfo
 
 A receiving node MUST process the Refuse message as follows:
 
@@ -2899,7 +2714,7 @@ cache.
 
 4.  The receiving node MUST close the connection.
 
-3.1.5.5  Disconnect
+##### 3.1.5.5 Disconnect
 
 The WSDL snippet that follows applies to the Disconnect operation.
 
@@ -2910,7 +2725,7 @@ The WSDL snippet that follows applies to the Disconnect operation.
         name="DisconnectInfo" message="tns:DisconnectInfo" />
  </wsdl:operation>
 
-3.1.5.5.1 Messages
+###### 3.1.5.5.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2921,7 +2736,7 @@ Description
 
 DisconnectInfo  Disconnect a neighbor connection.
 
-3.1.5.5.1.1  DisconnectInfo
+###### 3.1.5.5.1.1 DisconnectInfo
 
 A receiving node MUST process a Disconnect message as follows:
 
@@ -2940,7 +2755,8 @@ Release: March 13, 2019
 
 35 / 75
 
-3.1.5.6  LinkUtility
+
+##### 3.1.5.6 LinkUtility
 
 The WSDL snippet that follows applies to the LinkUtility operation.
 
@@ -2951,7 +2767,7 @@ The WSDL snippet that follows applies to the LinkUtility operation.
         name="UtilityInfo" message="tns:UtilityInfo" />
  </wsdl:operation>
 
-3.1.5.6.1 Messages
+###### 3.1.5.6.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -2960,7 +2776,7 @@ Message  Description
 
 UtilityInfo  Update the link utility metric for a connection.
 
-3.1.5.6.1.1  UtilityInfo
+###### 3.1.5.6.1.1 UtilityInfo
 
 A receiving node MUST process a LinkUtility message as follows:
 
@@ -2979,7 +2795,7 @@ the message and abort the connection.
 
 4.  Adjust the total messages pending acknowledgment to reflect this LinkUtility message.
 
-3.1.5.6.1.1.1  Computing the LinkUtilityIndex
+###### 3.1.5.6.1.1.1 Computing the LinkUtilityIndex
 
 The node uses the following algorithm to calculate the LinkUtilityIndex of a neighbor connection. For
 each transmitted or received message, the following calculation is performed.
@@ -2991,7 +2807,7 @@ each transmitted or received message, the following calculation is performed.
      Useful = {One, if the message was a useful message;
                otherwise, zero.}
 
-3.1.5.7  Ping
+##### 3.1.5.7 Ping
 
 The WSDL snippet that follows applies to the Ping operation.
 
@@ -3007,10 +2823,11 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-        message="tns:PeerService_Ping_InputMessage" />
+
+        message="tns:PeerService_Ping_InputMessage" />
  </wsdl:operation>
 
-3.1.5.7.1 Messages
+###### 3.1.5.7.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3021,13 +2838,13 @@ Description
 
 PeerService_Ping_InputMessage  Test a connection.
 
-3.1.5.7.1.1  PeerService_Ping_InputMessage
+###### 3.1.5.7.1.1 PeerService_Ping_InputMessage
 
 A node MUST NOT send any response to the Ping message. Any additional fields contained in the
 message MUST be ignored. The Ping message is only used to validate that a connection between two
 neighbors is still valid.
 
-3.1.5.8  Fault
+##### 3.1.5.8 Fault
 
 The WSDL snippet that follows applies to the Fault operation.
 
@@ -3038,7 +2855,7 @@ message="tns:PeerService_Fault_InputMessage" />
 message="tns:PeerService_Fault_InputMessage" />
  </wsdl:operation>
 
-3.1.5.8.1 Messages
+###### 3.1.5.8.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3049,11 +2866,11 @@ Description
 
 PeerService_Fault_InputMessage  Abort a connection.
 
-3.1.5.8.1.1  PeerService_Fault_InputMessage
+###### 3.1.5.8.1.1 PeerService_Fault_InputMessage
 
 A node MUST send a Fault message in all cases where a connection must be aborted
 
-3.1.5.9  FloodMessage
+##### 3.1.5.9 FloodMessage
 
 The WSDL snippet that follows applies to the FloodMessage operation.
 
@@ -3064,7 +2881,7 @@ The WSDL snippet that follows applies to the FloodMessage operation.
         message="tns:PeerService_FloodMessage_InputMessage" />
  </wsdl:operation>
 
-3.1.5.9.1 Messages
+###### 3.1.5.9.1 Messages
 
 [MC-PRCH] - v20190313
 Peer Channel Protocol
@@ -3073,7 +2890,8 @@ Release: March 13, 2019
 
 37 / 75
 
-The following table summarizes the set of WSDL message definitions that are specific to this
+
+The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
 
 Message
@@ -3082,7 +2900,7 @@ Description
 
 PeerService_FloodMessage_InputMessage  Application data message
 
-3.1.5.9.1.1  PeerService_FloodMessage_InputMessage
+###### 3.1.5.9.1.1 PeerService_FloodMessage_InputMessage
 
 For each ChannelType instance in the node that has the matching URI (with the PeerVia header
 value in the message), a copy of the Flood message is dispatched for processing. The following steps
@@ -3144,7 +2962,8 @@ Release: March 13, 2019
 
 38 / 75
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MC-PRCH].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -3168,7 +2987,8 @@ Release: March 13, 2019
 
 39 / 75
 
-When this throttling limit is reached, the node MUST take the following steps to recover from the
+
+When this throttling limit is reached, the node MUST take the following steps to recover from the
 backlog of messages:
 
 
@@ -3199,28 +3019,28 @@ step 3, the neighbor connection MUST be aborted.
 The node MUST ensure that the pending message count drops below the preconfigured throttle limit
 (determined by implementation) before message receiving is resumed.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Security Handshake Timer
+##### 3.1.6.1 Security Handshake Timer
 
 When a newly established connection's Security Handshake timer expires, the connection MUST be
 aborted, and the ConnectionState regarding that connection MUST be deleted. Messages received on
 the connection MUST be dropped.
 
-3.1.6.2  Connect Handshake Timer
+##### 3.1.6.2 Connect Handshake Timer
 
 When the Connect Handshake timer (that is created for a neighbor connection) expires, the
 connection MUST be aborted, and the ConnectionState information regarding that connection MUST
 be deleted. Messages received on the connection MUST be dropped.
 
-3.1.6.3  LinkUtility Timer
+##### 3.1.6.3 LinkUtility Timer
 
 When the LinkUtility timer (for a particular neighbor connection) expires, the node MUST send a
 LinkUtility message containing the current LinkUtilityInfo to the neighbor. However, if no messages
 from that neighbor have been received since the last firing of the LinkUtility timer, the node MUST
 NOT send a LinkUtility message.
 
-3.1.6.4  Maintenance Timer
+##### 3.1.6.4 Maintenance Timer
 
 When the Maintenance timer expires, the node MUST employ a maintenance algorithm to ensure that
 it has a useful set of connections to the mesh. The algorithm MUST prefer to remain connected to
@@ -3237,7 +3057,8 @@ Release: March 13, 2019
 
 40 / 75
 
-The Maintenance algorithm MUST prune excess connections by sending a Disconnect message. The
+
+The Maintenance algorithm MUST prune excess connections by sending a Disconnect message. The
 Reason element MUST be set to "NotUsefulNeighbor".
 
 When new connections are required, the node SHOULD<8> discover nodes to connect to by
@@ -3245,7 +3066,7 @@ examining the Referral cache returned from previous connection attempts. If the 
 mode is turned OFF or if the local Referral cache is empty, it MUST use the discovery service to
 locate nodes.
 
-3.1.6.4.1 Maintenance Algorithm
+###### 3.1.6.4.1 Maintenance Algorithm
 
 The follow procedure SHOULD be used during maintenance to ensure that a node has a set of useful
 connections to the mesh:
@@ -3279,13 +3100,14 @@ Release: March 13, 2019
 
 41 / 75
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MC-PRCH].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
 Figure 4: Flow chart of the maintenance procedure
 
-3.1.6.4.2 Pruning Algorithm
+###### 3.1.6.4.2 Pruning Algorithm
 
 The following procedure SHOULD be used in the case in which, during maintenance, a node has a
 neighbor count greater than an IdealNeighborCount.
@@ -3303,7 +3125,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MC-PRCH].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -3314,7 +3137,7 @@ algorithm.
 
 Figure 5: Neighbor pruning procedure
 
-3.1.6.4.3 Establish a Neighbor Connection
+###### 3.1.6.4.3 Establish a Neighbor Connection
 
 The requesting node MUST open a TCP/IP connection with the responding node by doing the
 following.
@@ -3334,12 +3157,13 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-  Certificate-based security (section 3.1.6.4.7)
+
+  Certificate-based security (section 3.1.6.4.7)
 
 After the type of connection has been established, follow the appropriate connection protocol defined
 in the following sections.
 
-3.1.6.4.4 Create a TCP/IP Connection
+###### 3.1.6.4.4 Create a TCP/IP Connection
 
 To create a TCP/IP connection, follow these steps:
 
@@ -3373,7 +3197,7 @@ the certificate credentials could not be validated), the connection attempt MUST
 
 8.  If the connection attempt succeeded, exit for each.
 
-3.1.6.4.5 No Security
+###### 3.1.6.4.5 No Security
 
 The node MUST create a TCP/IP connection to the responding node. At this point, both nodes MUST
 transition the value of the ConnectionState data element for this connection to the Authenticated
@@ -3383,7 +3207,7 @@ neighbor connection is successfully established.
 On successful completion of the Connect handshake, the node MUST be prepared to send and receive
 all Peer Channel Protocol messages.
 
-3.1.6.4.6 Password-Based Security
+###### 3.1.6.4.6 Password-Based Security
 
 The requesting node MUST provide an X.509 certificate to secure the connection. The node MUST
 create a TCP/IP connection to the responding node. The requesting node MUST initiate the
@@ -3402,7 +3226,8 @@ Release: March 13, 2019
 
 44 / 75
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MC-PRCH].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -3411,14 +3236,14 @@ Password-Based Security mode.
 
 Figure 6: Neighbor connection handshake using password-based security
 
-3.1.6.4.7 Certificate-Based Security
+###### 3.1.6.4.7 Certificate-Based Security
 
 The higher-level application or protocol MUST provide an X.509 certificate to secure the connection.
 The node MUST create a TCP/IP connection to the responding node. The requesting node MUST
 initiate the Connect handshake. On successful completion of the Connect handshake, the node MUST
 be prepared to send and receive all Peer Channel Protocol messages.
 
-3.1.6.4.8 Password-Based Security Handshake
+###### 3.1.6.4.8 Password-Based Security Handshake
 
 After creating a connection (TLS over TCP with anonymous X.509 certificates), the requesting node
 MUST send a RequestSecurityToken to prove the knowledge of the password. The responding node
@@ -3428,7 +3253,7 @@ At this point, both nodes MUST transition the value of the ConnectionState data 
 connection to the Authenticated state. A Connect handshake MUST then be initiated by the requesting
 node. A Connect Handshake timer MUST be started.
 
-3.1.6.4.9 Connect Handshake
+###### 3.1.6.4.9 Connect Handshake
 
 The requesting node's connection goes through the following transitions once the value of the
 ConnectionState data element for the connection is equal to the Authenticated state:
@@ -3454,7 +3279,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MC-PRCH].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -3487,17 +3313,18 @@ Release: March 13, 2019
 
 46 / 75
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MC-PRCH].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
 Figure 8: State transitions of node during connection process
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no other local events to be defined for this protocol.
 
-3.2  PeerService Port Sending Node Details
+### 3.2 PeerService Port Sending Node Details
 
 The sender role is a superset of the message processing and data model. Senders follow all the
 message processing rules of receivers that are defined in the previous section. In addition, senders
@@ -3505,15 +3332,15 @@ MUST be able to send flood messages to the mesh. This is triggered by a higher-l
 action. Any sender-related specification here is in relation to the sender's role that is a superset of the
 receiver's role (see section 3.1).
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The sender abstract data model is the same as the receiver abstract data model (see section 3.1.1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The sender timers are the same as the receiver timers (see section 3.1.2).
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 For receiver initialization, see section 3.1.3.
 
@@ -3524,12 +3351,13 @@ Release: March 13, 2019
 
 47 / 75
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 The sender has one additional higher-layer triggered event, which is the sending of an application
 message.
 
-3.2.4.1  Sending Messages
+##### 3.2.4.1 Sending Messages
 
 Flood messages are exchanged between nodes as a result of an application generating messages to
 be sent to the mesh. When a higher layer passes a message to the node, it adds the following
@@ -3580,7 +3408,7 @@ The Peer Channel Protocol allows multiple channel type registrations on the same
 in the same mesh. This means that a single Peer Channel Protocol endpoint can act as a multiplexer
 and send messages destined for different channel types.
 
-3.2.4.1.1 Sending Signed Messages
+###### 3.2.4.1.1 Sending Signed Messages
 
 After adding the flood headers, the application message (excluding the PeerHopCount header) MUST
 secure the message (for more information, see [MSDN-SECURITY_INFORMATION]). Receiving nodes
@@ -3597,11 +3425,11 @@ immediate neighbors. Those neighbors, in turn, send the message to their neighbo
 this manner, the message is flooded through the mesh. The flood comes to an end when all nodes
 that received the message do not forward it any further.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 See section 3.1.5.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -3612,7 +3440,8 @@ Release: March 13, 2019
 
 48 / 75
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -3623,14 +3452,15 @@ Release: March 13, 2019
 
 49 / 75
 
-4  Protocol Examples
 
-4.1  Establishing a Neighbor Connection in Password Mode
+## 4 Protocol Examples
+
+### 4.1 Establishing a Neighbor Connection in Password Mode
 
 When the mesh is password secured, first the Password-Based Security handshake takes place. After
 a successful security handshake, the Connect handshake follows.
 
-4.1.1  Connection Initiator Sends the RequestSecurityToken Message
+#### 4.1.1 Connection Initiator Sends the RequestSecurityToken Message
 
 An example of a RequestSecurityToken message follows. It gives the layout of a Request Security
 token.
@@ -3690,7 +3520,8 @@ Release: March 13, 2019
 
 50 / 75
 
-12 – Start of the RequestSecurityToken message. Acts as the parent element for the type of token
+
+12 – Start of the RequestSecurityToken message. Acts as the parent element for the type of token
 being carried in this message. The Peer Channel Protocol only allows
 "http://schemas.microsoft.com/net/2006/05/peer/PeerHashToken" elements.
 
@@ -3699,7 +3530,7 @@ being carried in this message. The Peer Channel Protocol only allows
 14 - PeerHashToken carries an Authenticator element that carries the HMAC value computed based
 on the public key and the hash of the password (see next section).
 
-4.1.2  Responding Node Sends Back a RequestSecurityTokenResponse
+#### 4.1.2 Responding Node Sends Back a RequestSecurityTokenResponse
 
 An example of a RequestSecurityTokenResponse message follows.
 
@@ -3760,7 +3591,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-12 - Start of the "RequestedSecurityToken" element. This contains the response of the responding
+
+12 - Start of the "RequestedSecurityToken" element. This contains the response of the responding
 node. This must contain the PeerHashToken of the responding node. The hash that the requesting
 node separately computes for the responding party must match this value for the security handshake
 to succeed.
@@ -3769,7 +3601,7 @@ to succeed.
 
 14 – Authenticator element containing the hash.
 
-4.1.3  Requesting Node Sends a Connect Message
+#### 4.1.3 Requesting Node Sends a Connect Message
 
 Now that the Password-Based Security handshake is successful, the requesting node sends a
 Connect message.
@@ -3834,7 +3666,8 @@ Release: March 13, 2019
 
 52 / 75
 
-           </b:IPAddress>
+
+           </b:IPAddress>
            <b:IPAddress>
              <b:m_Address>0</b:m_Address>
              <b:m_Family>InterNetworkV6</b:m_Family>
@@ -3859,7 +3692,7 @@ Release: March 13, 2019
    </s:Body>
  </s:Envelope>
 
-4.1.4  Responding Node Sends a Welcome Message
+#### 4.1.4 Responding Node Sends a Welcome Message
 
 The responding node accepts the request and sends back a Welcome message.
 
@@ -3882,12 +3715,12 @@ An example of a Welcome message follows.
    </s:Body>
  </s:Envelope>
 
-4.2  Nonpassword Security Modes
+### 4.2 Nonpassword Security Modes
 
 If the mesh is configured with any other transport security mode, the Connect handshake (see section
 3.1.6.2) will be the first sequence of messages to be exchanged on the connection.
 
-4.3  Flooding a Message
+### 4.3 Flooding a Message
 
 A sample flood message follows.
 
@@ -3903,7 +3736,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
- /wsa10:Action>
+
+ /wsa10:Action>
  (03) <wsa10:To s:mustUnderstand="1">net.p2p:// MyPeerApplication/</wsa10:To>
  (04) <MessageID xmlns="http://schemas.microsoft.com/net/2006/05/peer">
  urn:uuid:271dddd4-fa44-46e2-9b86-090c0a52326c</MessageID>
@@ -3940,7 +3774,8 @@ Release: March 13, 2019
 
 54 / 75
 
-5  Security
+
+## 5 Security
 
 The following security modes are available to use with the Peer Channel Protocol:
 
@@ -3971,7 +3806,7 @@ signature along with the message. The signature is computed using a well-known X
 credential. The signature is computed over the application message and sent along with the
 application message. The message is secured, as specified in [WSTrust].
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 In a mesh configured with no security, neighbor connections are not authenticated. Also, individual
 application messages are not signed, which exposes the mesh to tampering attacks.
@@ -3987,7 +3822,7 @@ connection being requested by a node with an un-trusted certificate is rejected.
 If a mesh is configured with message integrity check, the signature in the message is verified to
 preserve message integrity as described in section 3.1.4.2.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The following security parameters are associated with this protocol.
 
@@ -4010,7 +3845,8 @@ Release: March 13, 2019
 
 55 / 75
 
-6  Appendix A: Full WSDL Definitions
+
+## 6 Appendix A: Full WSDL Definitions
 
 For ease of implementation, this section provides the full Web Services Description Language
 (WSDL). The syntax uses the XML syntax extensions, as specified in [WSDL].
@@ -4085,7 +3921,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         <xs:anyAttribute namespace="##other" processContents="lax" />
+
+         <xs:anyAttribute namespace="##other" processContents="lax" />
        </xs:complexType>
        <xs:complexType name="ReferenceParametersType">
          <xs:sequence>
@@ -4162,7 +3999,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-         <xs:simpleContent>
+
+         <xs:simpleContent>
            <xs:extension base="xs:unsignedLong">
              <xs:anyAttribute namespace="##other" processContents="lax" />
            </xs:extension>
@@ -4239,7 +4077,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-             <xs:annotation>
+
+             <xs:annotation>
                <xs:appinfo>
                  <EnumerationValue
 xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
@@ -4316,7 +4155,8 @@ Release: March 13, 2019
 
 59 / 75
 
-             <xs:annotation>
+
+             <xs:annotation>
                <xs:appinfo>
                  <EnumerationValue
 xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
@@ -4393,7 +4233,8 @@ Release: March 13, 2019
 
 60 / 75
 
-             <xs:annotation>
+
+             <xs:annotation>
                <xs:appinfo>
                  <EnumerationValue
 xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
@@ -4470,7 +4311,8 @@ Release: March 13, 2019
 
 61 / 75
 
-             </xs:annotation>
+
+             </xs:annotation>
            </xs:enumeration>
            <xs:enumeration value="DecNet">
              <xs:annotation>
@@ -4547,7 +4389,8 @@ Release: March 13, 2019
 
 62 / 75
 
-                 <EnumerationValue
+
+                 <EnumerationValue
 xmlns="http://schemas.microsoft.com/2003/10/Serialization/">21</EnumerationValue>
                </xs:appinfo>
              </xs:annotation>
@@ -4624,7 +4467,8 @@ Release: March 13, 2019
 
 63 / 75
 
-           </xs:appinfo>
+
+           </xs:appinfo>
          </xs:annotation>
          <xs:sequence>
            <xs:element name="options" type="tns:SocketInformationOptions" />
@@ -4701,7 +4545,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-       </xs:complexType>
+
+       </xs:complexType>
        <xs:element name="ConnectInfo" nillable="true" type="tns:ConnectInfo" />
        <xs:complexType name="PeerNodeAddress">
          <xs:sequence>
@@ -4777,7 +4622,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-   <!--Imported types-->
+
+   <!--Imported types-->
    <wsdl:types>
      <xsd:schema targetNamespace="http://schemas.microsoft.com/net/2006/05/peer/Imports">
        <xsd:import namespace="http://tempuri.org/" />
@@ -4854,7 +4700,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </wsdl:operation>
+
+     </wsdl:operation>
      <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Welcome">
        <wsdl:input wsaw:Action="http://schemas.microsoft.com/net/2006/05/peer/Welcome"
 name="WelcomeInfo" message="tns:WelcomeInfo" />
@@ -4931,7 +4778,8 @@ Release: March 13, 2019
 
 67 / 75
 
-   </wsdl:portType>
+
+   </wsdl:portType>
 
    <!-- PeerService binding definition-->
    <wsdl:binding name="DefaultBinding_PeerService" type="tns:PeerService">
@@ -5008,7 +4856,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-     </wsdl:operation>
+
+     </wsdl:operation>
      <wsdl:operation name="Connect">
        <soap:operation soapAction="http://schemas.microsoft.com/net/2006/05/peer/Connect"
 style="document" />
@@ -5084,7 +4933,8 @@ Release: March 13, 2019
 
 69 / 75
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5152,7 +5002,8 @@ Peer Channel Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-eight or below at any point during the grace period, neighbor monitoring is discontinued, the grace
+
+eight or below at any point during the grace period, neighbor monitoring is discontinued, the grace
 period timer is canceled, and message reception at the local node resumes.
 
 <8> Section 3.1.6.4: Windows has a maximum Referral cache size of 50 neighbors.
@@ -5164,7 +5015,8 @@ Release: March 13, 2019
 
 71 / 75
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5201,7 +5053,8 @@ Release: March 13, 2019
 
 72 / 75
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -5341,7 +5194,8 @@ Messages
 
 73 / 75
 
-   PeerNodeAddress structure 15
+
+   PeerNodeAddress structure 15
    Ping Message 24
    Ping Message message 24
    Referral structure 17
@@ -5487,7 +5341,8 @@ Timer events
 
 74 / 75
 
-      sending node 48
+
+      sending node 48
 Timers
    PeerService port
       receiving node 26
