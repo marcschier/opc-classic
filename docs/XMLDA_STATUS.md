@@ -1,6 +1,6 @@
 # XML-DA spec coverage
 
-`Opc.Classic.Xml` provides an AOT- and trim-compatible OPC XML-DA 1.0 client surface. The package contains request/response DTOs, SOAP 1.1 serializers, response readers, and the `HttpXmlDaClient` transport that uses a caller-owned `HttpClient`.
+`Opc.Classic.Xml` provides an AOT- and trim-compatible OPC XML-DA 1.0 client surface. The package contains request/response DTOs, SOAP 1.1 serializers, response readers, and the `HttpXmlDaClient` transport that uses a caller-owned `HttpClient`. It does not expose XML-DA server hosting APIs.
 
 ## Supported transport model
 

@@ -28,4 +28,6 @@ The OPC Compliance Test Tool is the OPC Foundation conformance suite for OPC Cla
 
 CTT pass/fail is evaluated per OPC Foundation test in `ctt-results.xml`. A release candidate requires a completed CTT run with no failing conformance tests and no infrastructure failure. Keep the XML report with the release artifacts for auditability.
 
+Local runs should target the same ProgID and CLSID pair as CI so reports remain comparable.
+
 CTT is a required gate for `1.0.0-rc.1` and later stable releases.

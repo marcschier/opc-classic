@@ -6,6 +6,7 @@ This repository publishes MIT-licensed `Opc.Classic.*` NuGet packages from plain
 
 - Use SemVer: `<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`.
 - Use prerelease labels in the order `alpha`, `beta`, then `rc`.
+- Release tags use a leading `v` and lowercase prerelease labels.
 - Do not reuse release tags. If a package must be replaced, cut a higher version.
 - Package IDs and namespaces remain under `Opc.Classic.*`.
 - Stable `1.0.0` follows the release-candidate soak only after CI, package install, and conformance gates are green.

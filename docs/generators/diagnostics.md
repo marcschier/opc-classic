@@ -1,6 +1,6 @@
 # OPC Classic generator diagnostics
 
-The `Opc.Classic.Generators` package reports these diagnostics while validating `[OpcInterface]`, `[OpcMethod]`, `[GenerateOpcProxy]`, and `[OpcGenerateServerDispatch]` declarations. The diagnostic category is `Opc.Classic.Generators`.
+The `Opc.Classic.Generators` package reports these diagnostics while validating `[OpcInterface]`, `[OpcMethod]`, `[GenerateOpcProxy]`, and `[OpcGenerateServerDispatch]` declarations. The diagnostic category is `Opc.Classic.Generators`, and each descriptor links back to this file.
 
 ## Interface contract diagnostics
 
