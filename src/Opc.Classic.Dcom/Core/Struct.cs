@@ -232,13 +232,11 @@ public sealed class Struct {
         var member = Members.GetAndRemoveAt(index);
         if (member is ComArray) {
             // we need to remove it's max count values also.
-            // JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
             ArrayMaxCounts.RemoveAll(((ComArray)member).ConformantMaxCounts);
 
         }
         else if (member is Struct && ((Struct)member)._arrayAdded) {
             // we need to remove it's max count values also.
-            // JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
             ArrayMaxCounts.RemoveAll(((Struct)member).ArrayMaxCounts);
         }
         if (ArrayMaxCounts.Count == 0) {

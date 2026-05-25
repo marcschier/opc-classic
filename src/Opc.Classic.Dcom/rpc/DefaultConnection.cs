@@ -266,7 +266,6 @@ public class DefaultConnection : IConnection {
         // caution, frag length is changed here...it is void of security info.
         ProcessIncoming(bufferToBeUsed);
         bufferToBeUsed.Index = ConnectionOrientedPdu.TYPE_OFFSET;
-        // TODO: Cleanup
         var type = bufferToBeUsed.Dec_ndr_small();
 
         ConnectionOrientedPdu pdu;

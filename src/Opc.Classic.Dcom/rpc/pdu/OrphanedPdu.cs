@@ -6,7 +6,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class OrphanedPdu : ConnectionOrientedPdu {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int ORPHANED_TYPE = 0x13;
 
     /// <inheritdoc/>

@@ -8,7 +8,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class Auth3Pdu : ConnectionOrientedPdu {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int AUTH3_TYPE = 0x10;
 
     /// <inheritdoc/>

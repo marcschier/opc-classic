@@ -95,7 +95,6 @@ internal sealed class ComOxidDetails {
     internal void InterruptRemUnknownThreadGroup() {
         if (_remUnknownThread != null) {
             try {
-                // TODO:
                 // _remUnknownThread.interrupt();
 
                 // old: remUnknownThread.destroy();

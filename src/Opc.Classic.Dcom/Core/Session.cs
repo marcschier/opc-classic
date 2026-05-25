@@ -66,10 +66,6 @@ public sealed class Session {
         catch (UnknownHostException) {
         }
 
-        // TODO
-        // System.setProperty("SharpCifs.smb.client.domain", "JIDomain"); //is being put in for completing type2 message
-        //                                                                //somehow windows is not taking empty domain name.
-
         ComOxidRuntime.Instance.StartResolver();
         OxidResolverPort = ComOxidRuntime.Instance.OxidResolverPort;
         // This schedule used to be every 2 mins.

@@ -23,8 +23,6 @@ public abstract class TransportFactory {
     /// </summary>
     public static PropertyBag DefaultProperties { get; } = new PropertyBag();
 
-    // TODO!!!
-
     //    private static class MetaTransportFactory extends TransportFactory {
     //
     //        public Transport createTransport(String address, PropertyBag properties)

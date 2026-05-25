@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class FaultCoPdu : ConnectionOrientedPdu, IFragmentable {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int FAULT_TYPE = 0x03;
 
     /// <inheritdoc/>

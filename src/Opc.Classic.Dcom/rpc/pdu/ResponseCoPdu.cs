@@ -12,7 +12,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int RESPONSE_TYPE = 0x02;
 
     /// <inheritdoc/>

@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class BindPdu : ConnectionOrientedPdu {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int BIND_TYPE = 0x0b;
 
     // Phase 4G audit (date: 2026-05-22): PFC_CONC_MPX (0x10) is parsed and

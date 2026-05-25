@@ -321,10 +321,6 @@ public sealed class ComArray {
                 ErrorCode.INTEROP_ARRAY_PRIMITIVE_NOTACCEPT), nameof(array));
         }
 
-        // TODO
-        // TODO
-        // TODO
-
         // bad way...but what the heck...
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
         // yield results identical to the Java Class.getName method:
@@ -334,11 +330,7 @@ public sealed class ComArray {
         }
         ArrayInstance = array;
 
-        var upperBounds2 = new List<object>(); // TODO
-
-        // TODO
-        // TODO
-        // TODO
+        var upperBounds2 = new List<object>();
 
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
         var name = array.GetType().FullName;
@@ -381,10 +373,6 @@ public sealed class ComArray {
     /// <returns></returns>
     private int ComputeLengthArray(object array) {
         var length = 0;
-
-        // TODO
-        // TODO
-        // TODO
 
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
         // yield results identical to the Java Class.getName method:
@@ -435,10 +423,6 @@ public sealed class ComArray {
             _isVaryingProxy = false; // this is since encode is recursive.
         }
 
-        // TODO
-        // TODO
-        // TODO
-
         // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
         var name = array.GetType().FullName;
         var o = (object[])array;
@@ -454,10 +438,6 @@ public sealed class ComArray {
                 context.Flag = oldFlag;
                 return;
             }
-
-            // TODO
-            // TODO
-            // TODO
 
             // JAVA TO C# CONVERTER WARNING
             Encode(ndr, o[i] /*Array.get(array, i)*/, context);

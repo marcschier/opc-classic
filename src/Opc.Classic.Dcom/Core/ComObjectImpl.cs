@@ -165,8 +165,6 @@ internal sealed class ComObjectImpl : IComObject, IComObjectInternal {
             Log.Logger.Warning("RELEASE called directly ! removing 5 references for " + _ptr.IPID + " session: " + _session.SessionIdentifier);
             // <see cref="Session"/>.debug_delIpids(_ptr.IPID, 5);
         }
-        // TODO??
-        //        session.getStub2().addRef_ReleaseRef(obj);
         _session.AddRef_ReleaseRef(_ptr.IPID, obj, -5);
     }
 

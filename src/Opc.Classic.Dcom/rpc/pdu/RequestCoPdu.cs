@@ -13,7 +13,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class RequestCoPdu : ConnectionOrientedPdu, IFragmentable {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int REQUEST_TYPE = 0x00;
 
     /// <inheritdoc/>

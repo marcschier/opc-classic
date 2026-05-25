@@ -823,7 +823,6 @@ public sealed class Variant {
                 var obj2 = (object[][])array.ArrayInstance;
                 // variants = new <see cref="Variant"/>[array.getNumElementsInAllDimensions()];
 
-                // TODO
                 // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
                 var name = obj2.GetType().FullName;
                 object subArray = obj2;

@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class BindNoAcknowledgePdu : ConnectionOrientedPdu {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int BIND_NO_ACKNOWLEDGE_TYPE = 0x0d;
 
     /// <inheritdoc/>

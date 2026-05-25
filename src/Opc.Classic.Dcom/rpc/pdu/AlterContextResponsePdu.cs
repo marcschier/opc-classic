@@ -9,7 +9,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class AlterContextResponsePdu : ConnectionOrientedPdu {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int ALTER_CONTEXT_RESPONSE_TYPE = 0x0f;
 
     /// <inheritdoc/>

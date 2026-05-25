@@ -7,7 +7,6 @@ namespace Opc.Classic.Dcom.Rpc.pdu;
 /// </summary>
 public class ShutdownPdu : ConnectionOrientedPdu {
 
-    /// <summary> Type info - TODO - move to PduTypes.cs </summary>
     public const int SHUTDOWN_TYPE = 0x11;
 
     /// <inheritdoc/>
