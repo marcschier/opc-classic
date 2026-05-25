@@ -32,6 +32,7 @@
     <Project Path="tests/Opc.Classic.Discovery.Tests/Opc.Classic.Discovery.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dx.Tests/Opc.Classic.Dx.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Generators.Tests/Opc.Classic.Generators.Tests.csproj" />
+    <Project Path="mcp/Opc.Classic.Mcp/Opc.Classic.Mcp.csproj" />
     <Project Path="tests/Opc.Classic.MigrationAnalyzer.Tests/Opc.Classic.MigrationAnalyzer.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hda.Tests/Opc.Classic.Hda.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hosting.Tests/Opc.Classic.Hosting.Tests.csproj" />

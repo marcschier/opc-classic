@@ -6,18 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup Label="Microsoft.Extensions (DI, configuration, hosting, logging, options)">
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup Label="BCL standalone packages used on net10">
@@ -47,15 +47,12 @@
     <PackageVersion Include="Kerberos.NET" Version="4.6.146" />
   </ItemGroup>
 
-  <!--
-    Phase 2E complete: BouncyCastle is eliminated. MD4 + RC4 are hand-rolled
-    in src/Opc.Classic.Dcom/Crypto/. MD5 / HMAC-MD5 / DES come from BCL via the
-    transitional shim Crypto/BcCompat.cs. Phase 2D complete: LGPL transitional
-    package removed. Phase 2G complete: Serilog package references removed.
-  -->
+  <ItemGroup Label="Model Context Protocol (mcp/ tool consumes this)">
+    <PackageVersion Include="ModelContextProtocol" Version="1.2.0" />
+  </ItemGroup>
+
   <ItemGroup Label="Historical transitional package versions">
     <PackageVersion Include="Serilog" Version="2.8.0" />
   </ItemGroup>
 
 </Project>
-
