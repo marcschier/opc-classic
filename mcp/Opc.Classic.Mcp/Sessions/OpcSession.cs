@@ -43,6 +43,15 @@ public sealed class OpcSession : IAsyncDisposable
     /// <summary>Per-session OPC DA client state.</summary>
     public DaClientState? DaClient { get; set; }
 
+    /// <summary>Per-session OPC Batch client state.</summary>
+    public BatchClientState? BatchClient { get; set; }
+
+    /// <summary>Per-session OPC Commands client state.</summary>
+    public CommandsClientState? CommandsClient { get; set; }
+
+    /// <summary>Per-session OPC Complex Data client state.</summary>
+    public CpxClientState? CpxClient { get; set; }
+
     /// <summary>Per-session OPC AE client state.</summary>
     public AeClientState? AeClient { get; set; }
 
@@ -65,14 +74,35 @@ public sealed class OpcSession : IAsyncDisposable
 
         _disposed = true;
         DaClientState? daClient = DaClient;
+        BatchClientState? batchClient = BatchClient;
+        CommandsClientState? commandsClient = CommandsClient;
+        CpxClientState? cpxClient = CpxClient;
         AeClientState? aeClient = AeClient;
         HdaClientState? hdaClient = HdaClient;
         DaClient = null;
+        BatchClient = null;
+        CommandsClient = null;
+        CpxClient = null;
         AeClient = null;
         HdaClient = null;
+        if (cpxClient is not null)
+        {
+            await cpxClient.DisposeAsync().ConfigureAwait(false);
+        }
+
         if (daClient is not null)
         {
             await daClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (batchClient is not null)
+        {
+            await batchClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (commandsClient is not null)
+        {
+            await commandsClient.DisposeAsync().ConfigureAwait(false);
         }
 
         if (aeClient is not null)
@@ -116,6 +146,9 @@ public sealed class DaClientState : IAsyncDisposable
         GroupState2 = new IOPCGroupStateMgt2ClientProxy(channel);
         ConnectionPoint = new IConnectionPointClientProxy(channel);
     }
+
+    /// <summary>Underlying DCOM call channel used by optional companion interfaces.</summary>
+    internal ICallChannel CallChannel => _channel;
 
     /// <summary>Target host.</summary>
     public string Host { get; }
