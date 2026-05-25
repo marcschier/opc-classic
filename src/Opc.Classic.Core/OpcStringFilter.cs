@@ -29,7 +29,13 @@ public static class OpcStringFilter
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(pattern);
 
-        var memo = new bool?[value.Length + 1, pattern.Length + 1];
+        // Jagged memoization table: memo[valueIndex][patternIndex].
+        // Inner arrays are sized to pattern.Length + 1; default null = unknown.
+        var memo = new bool?[value.Length + 1][];
+        for (int i = 0; i < memo.Length; i++)
+        {
+            memo[i] = new bool?[pattern.Length + 1];
+        }
         return MatchCore(value, 0, pattern, 0, caseSensitive, memo);
     }
 
@@ -39,12 +45,12 @@ public static class OpcStringFilter
         string pattern,
         int patternIndex,
         bool caseSensitive,
-        bool?[,] memo)
+        bool?[][] memo)
     {
         int memoPatternIndex = patternIndex;
-        if (memo[valueIndex, memoPatternIndex].HasValue)
+        if (memo[valueIndex][memoPatternIndex].HasValue)
         {
-            return memo[valueIndex, memoPatternIndex]!.Value;
+            return memo[valueIndex][memoPatternIndex]!.Value;
         }
 
         bool result;
@@ -72,7 +78,7 @@ public static class OpcStringFilter
                 && MatchCore(value, valueIndex + 1, pattern, nextPatternIndex, caseSensitive, memo);
         }
 
-        memo[valueIndex, memoPatternIndex] = result;
+        memo[valueIndex][memoPatternIndex] = result;
         return result;
     }
 

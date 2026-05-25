@@ -26,6 +26,9 @@ public sealed class OpcCommonClientProxy
     public static Guid InterfaceId => OpcGuids.IID_IOPCCommon;
 
     /// <summary>OPC Common <c>IOPCCommon</c> DCE/RPC operation numbers.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Design", "CA1034:Nested types should not be visible",
+        Justification = "Opnums is the conventional nested constants table for proxy classes across the Opc.Classic.* code base and matches the shape emitted by OpcInterfaceGenerator.")]
     public static class Opnums
     {
         /// <summary><c>IOPCCommon::SetClientName</c> operation number.</summary>

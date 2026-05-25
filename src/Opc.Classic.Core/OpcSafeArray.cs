@@ -44,20 +44,20 @@ public sealed record OpcSafeArray
         ElementType = elementType;
         Data = data;
         Features = features;
-        Lengths = lengths is null
+        _lengths = lengths is null
             ? new[] { data.Length }
             : (int[])lengths.Clone();
-        LowerBounds = lowerBounds is null
-            ? new int[Lengths.Length]
+        _lowerBounds = lowerBounds is null
+            ? new int[_lengths.Length]
             : (int[])lowerBounds.Clone();
 
-        if (Lengths.Length == 0)
+        if (_lengths.Length == 0)
         {
             throw new ArgumentException("SAFEARRAY rank must be at least 1.", nameof(lengths));
         }
-        if (Lengths.Length > 256)
+        if (_lengths.Length > 256)
         {
-            throw new ArgumentOutOfRangeException(nameof(lengths), Lengths.Length, "SAFEARRAY rank must not exceed 256.");
+            throw new ArgumentOutOfRangeException(nameof(lengths), _lengths.Length, "SAFEARRAY rank must not exceed 256.");
         }
         if (VarTypeMask.IsArray(elementType) || VarTypeMask.IsByRef(elementType))
         {
@@ -66,22 +66,22 @@ public sealed record OpcSafeArray
 
         ValidateFeatures(elementType, features);
 
-        if (Lengths.Length != LowerBounds.Length)
+        if (_lengths.Length != _lowerBounds.Length)
         {
             throw new ArgumentException(
-                $"Lengths.Length ({Lengths.Length}) must equal LowerBounds.Length ({LowerBounds.Length}).",
+                $"Lengths.Length ({_lengths.Length}) must equal LowerBounds.Length ({_lowerBounds.Length}).",
                 nameof(lowerBounds));
         }
 
         long product = 1;
-        for (int i = 0; i < Lengths.Length; i++)
+        for (int i = 0; i < _lengths.Length; i++)
         {
-            if (Lengths[i] < 0)
+            if (_lengths[i] < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(lengths),
-                    $"Dimension {i} has negative length {Lengths[i]}.");
+                    $"Dimension {i} has negative length {_lengths[i]}.");
             }
-            product *= Lengths[i];
+            product *= _lengths[i];
         }
 
         if (product != data.Length)
@@ -92,14 +92,17 @@ public sealed record OpcSafeArray
         }
     }
 
+    private readonly int[] _lengths;
+    private readonly int[] _lowerBounds;
+
     /// <summary>The element <see cref="VarType"/> (without VT_ARRAY).</summary>
     public VarType ElementType { get; }
 
     /// <summary>Per-dimension element counts. The number of dimensions equals <c>Lengths.Length</c>.</summary>
-    public int[] Lengths { get; }
+    public ReadOnlySpan<int> Lengths => _lengths;
 
     /// <summary>Per-dimension lower bounds (typically all zero).</summary>
-    public int[] LowerBounds { get; }
+    public ReadOnlySpan<int> LowerBounds => _lowerBounds;
 
     /// <summary>SAFEARRAY FADF_* descriptor flags preserved on encode/decode.</summary>
     public SafeArrayFeatures Features { get; }
@@ -108,7 +111,7 @@ public sealed record OpcSafeArray
     public Array Data { get; }
 
     /// <summary>Number of dimensions.</summary>
-    public int Rank => Lengths.Length;
+    public int Rank => _lengths.Length;
 
     /// <summary>Total element count (product of <see cref="Lengths"/>).</summary>
     public int TotalElements => Data.Length;
@@ -186,17 +189,17 @@ public sealed record OpcSafeArray
         {
             return false;
         }
-        if (Lengths.Length != other.Lengths.Length)
+        if (_lengths.Length != other._lengths.Length)
         {
             return false;
         }
-        for (int i = 0; i < Lengths.Length; i++)
+        for (int i = 0; i < _lengths.Length; i++)
         {
-            if (Lengths[i] != other.Lengths[i])
+            if (_lengths[i] != other._lengths[i])
             {
                 return false;
             }
-            if (LowerBounds[i] != other.LowerBounds[i])
+            if (_lowerBounds[i] != other._lowerBounds[i])
             {
                 return false;
             }
@@ -224,10 +227,10 @@ public sealed record OpcSafeArray
         hc.Add(ElementType);
         hc.Add(Features);
         hc.Add(Data.Length);
-        for (int i = 0; i < Lengths.Length; i++)
+        for (int i = 0; i < _lengths.Length; i++)
         {
-            hc.Add(Lengths[i]);
-            hc.Add(LowerBounds[i]);
+            hc.Add(_lengths[i]);
+            hc.Add(_lowerBounds[i]);
         }
         return hc.ToHashCode();
     }

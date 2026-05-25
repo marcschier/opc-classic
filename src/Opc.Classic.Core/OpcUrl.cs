@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Opc.Classic;
 
@@ -56,6 +57,15 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     }
 
     /// <summary>Parse a URL. Throws <see cref="FormatException"/> on syntax errors.</summary>
+    /// <remarks>
+    /// OPC Classic URL schemes (<c>opcda</c>, <c>opcae</c>, <c>opchda</c>, <c>opcdx</c>, <c>opc.xml-da</c>) are not
+    /// registered <see cref="Uri"/> schemes; the URL is parsed directly rather than going through
+    /// <see cref="Uri"/> to preserve OPC ProgID/CLSID path semantics and avoid platform-specific
+    /// <see cref="Uri"/> normalization differences.
+    /// </remarks>
+    [SuppressMessage(
+        "Design", "CA1054:URI-like parameters should not be strings",
+        Justification = "OPC URL schemes are not registered with System.Uri; parsing the raw string preserves OPC-specific semantics across platforms.")]
     public static OpcUrl Parse(string url)
     {
         ArgumentNullException.ThrowIfNull(url);
@@ -68,6 +78,10 @@ public sealed class OpcUrl : IEquatable<OpcUrl>
     /// Attempt to parse a URL. Returns <see langword="false"/> with
     /// <paramref name="result"/> <see langword="null"/> on failure.
     /// </summary>
+    /// <remarks>See <see cref="Parse(string)" /> for why the URL is parsed as a raw string.</remarks>
+    [SuppressMessage(
+        "Design", "CA1054:URI-like parameters should not be strings",
+        Justification = "OPC URL schemes are not registered with System.Uri; parsing the raw string preserves OPC-specific semantics across platforms.")]
     public static bool TryParse(string? url, out OpcUrl? result)
     {
         result = null;

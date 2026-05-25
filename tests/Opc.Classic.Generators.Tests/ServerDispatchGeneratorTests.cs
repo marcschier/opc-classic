@@ -65,7 +65,7 @@ public sealed class ServerDispatchGeneratorTests
         DispatchResult result = await dispatcher.DispatchAsync(999, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
 
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.NotImplemented.Code);
-        await Assert.That(result.Payload).IsNull();
+        await Assert.That(result.Payload.IsEmpty).IsTrue();
     }
 
     [Test]
@@ -81,7 +81,7 @@ public sealed class ServerDispatchGeneratorTests
 
         DispatchResult result = await dispatcher.DispatchAsync(IServerDispatchRoundTrip.Opnums.AddAsync, request, CancellationToken.None);
 
-        var reader = new NdrReader(result.Payload!.AsSpan());
+        var reader = new NdrReader(result.Payload.Span);
         int sum = reader.ReadInt32();
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(sum).IsEqualTo(7);
@@ -100,7 +100,7 @@ public sealed class ServerDispatchGeneratorTests
 
         DispatchResult result = await dispatcher.DispatchAsync(IServerDispatchRoundTrip.Opnums.AdjustAsync, request, CancellationToken.None);
 
-        var reader = new NdrReader(result.Payload!.AsSpan());
+        var reader = new NdrReader(result.Payload.Span);
         int returnValue = reader.ReadInt32();
         int current = reader.ReadInt32();
         string? name = reader.ReadUnicodeStringPtr();

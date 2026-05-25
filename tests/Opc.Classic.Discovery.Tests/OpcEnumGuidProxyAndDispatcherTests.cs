@@ -92,7 +92,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
             EncodeInt32(3),
             CancellationToken.None);
 
-        var reader = new NdrReader(result.Payload!.AsSpan());
+        var reader = new NdrReader(result.Payload.Span);
         Guid[] classIds = reader.ReadConformantGuidArray();
         int fetched = reader.ReadInt32();
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.False.Code);
@@ -119,7 +119,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
             ReadOnlyMemory<byte>.Empty,
             CancellationToken.None);
 
-        IOpcInterfaceRef cloneRef = DecodeInterfaceRef(clone.Payload!);
+        IOpcInterfaceRef cloneRef = DecodeInterfaceRef(clone.Payload);
         await Assert.That(skip.Hresult).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(reset.Hresult).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(server.ResetCount).IsEqualTo(1);
@@ -134,7 +134,7 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
         DispatchResult result = await dispatcher.DispatchAsync(999, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
 
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.NotImplemented.Code);
-        await Assert.That(result.Payload).IsNull();
+        await Assert.That(result.Payload.IsEmpty).IsTrue();
     }
 
     private static byte[] EncodeInt32(int value) => WritePayload((ref NdrWriter writer) => writer.WriteInt32(value));
@@ -142,9 +142,9 @@ public sealed class OpcEnumGuidProxyAndDispatcherTests
     private static ReadOnlyMemory<byte> EncodeInterfaceRef(IOpcInterfaceRef interfaceRef) =>
         WritePayload((ref NdrWriter writer) => OpcInterfaceRefCodec.Write(ref writer, interfaceRef));
 
-    private static IOpcInterfaceRef DecodeInterfaceRef(byte[] payload)
+    private static IOpcInterfaceRef DecodeInterfaceRef(ReadOnlyMemory<byte> payload)
     {
-        var reader = new NdrReader(payload);
+        var reader = new NdrReader(payload.Span);
         return OpcInterfaceRefCodec.Read(ref reader);
     }
 

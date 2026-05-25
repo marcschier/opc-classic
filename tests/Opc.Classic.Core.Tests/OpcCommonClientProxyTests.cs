@@ -77,7 +77,7 @@ public sealed class OpcCommonClientProxyTests
         DispatchResult result = await dispatcher.DispatchAsync(999, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
 
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.NotImplemented.Code);
-        await Assert.That(result.Payload).IsNull();
+        await Assert.That(result.Payload.IsEmpty).IsTrue();
     }
 
     private static byte[] WritePayload(NdrWriteAction write)
