@@ -93,6 +93,8 @@ internal sealed class McpTestServer : IAsyncDisposable
             .WithTools<SessionTools>()
             .WithTools<DiscoveryTools>()
             .WithTools<DaClientTools>()
+            .WithTools<AeClientTools>()
+            .WithTools<HdaClientTools>()
             .WithTools<BatchTools>()
             .WithTools<CommandsTools>()
             .WithTools<CpxTools>()

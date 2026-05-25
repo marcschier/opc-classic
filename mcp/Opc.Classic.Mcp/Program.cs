@@ -24,11 +24,13 @@ builder.Services
     .WithTools<SessionTools>()
     .WithTools<DiscoveryTools>()
     .WithTools<DaClientTools>()
+    .WithTools<AeClientTools>()
+    .WithTools<HdaClientTools>()
     .WithTools<BatchTools>()
     .WithTools<CommandsTools>()
     .WithTools<CpxTools>()
-    .WithTools<AeClientTools>()
-    .WithTools<HdaClientTools>();
+    .WithTools<DxTools>()
+    .WithTools<SecurityTools>()
+    .WithTools<XmlDaTools>();
 
 await builder.Build().RunAsync().ConfigureAwait(false);
-

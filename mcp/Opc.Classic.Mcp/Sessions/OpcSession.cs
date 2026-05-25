@@ -5,6 +5,8 @@
 
 using System.Collections.Concurrent;
 using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dx;
+using Opc.Classic.Xml;
 
 namespace Opc.Classic.Mcp.Sessions;
 
@@ -43,6 +45,12 @@ public sealed class OpcSession : IAsyncDisposable
     /// <summary>Per-session OPC DA client state.</summary>
     public DaClientState? DaClient { get; set; }
 
+    /// <summary>Per-session OPC AE client state.</summary>
+    public AeClientState? AeClient { get; set; }
+
+    /// <summary>Per-session OPC HDA client state.</summary>
+    public HdaClientState? HdaClient { get; set; }
+
     /// <summary>Per-session OPC Batch client state.</summary>
     public BatchClientState? BatchClient { get; set; }
 
@@ -52,11 +60,14 @@ public sealed class OpcSession : IAsyncDisposable
     /// <summary>Per-session OPC Complex Data client state.</summary>
     public CpxClientState? CpxClient { get; set; }
 
-    /// <summary>Per-session OPC AE client state.</summary>
-    public AeClientState? AeClient { get; set; }
+    /// <summary>Per-session OPC DX client state.</summary>
+    public DxClientState? DxClient { get; set; }
 
-    /// <summary>Per-session OPC HDA client state.</summary>
-    public HdaClientState? HdaClient { get; set; }
+    /// <summary>Per-session OPC Security client state.</summary>
+    public SecurityClientState? SecurityClient { get; set; }
+
+    /// <summary>Per-session OPC XML-DA client state.</summary>
+    public XmlDaClientState? XmlDaClient { get; set; }
 
     /// <summary>Returns true when the session has exceeded its idle expiry.</summary>
     public bool IsExpired(DateTimeOffset now) => now - LastUsedAt >= IdleExpiry;
@@ -74,17 +85,23 @@ public sealed class OpcSession : IAsyncDisposable
 
         _disposed = true;
         DaClientState? daClient = DaClient;
+        AeClientState? aeClient = AeClient;
+        HdaClientState? hdaClient = HdaClient;
         BatchClientState? batchClient = BatchClient;
         CommandsClientState? commandsClient = CommandsClient;
         CpxClientState? cpxClient = CpxClient;
-        AeClientState? aeClient = AeClient;
-        HdaClientState? hdaClient = HdaClient;
+        DxClientState? dxClient = DxClient;
+        SecurityClientState? securityClient = SecurityClient;
+        XmlDaClientState? xmlDaClient = XmlDaClient;
         DaClient = null;
+        AeClient = null;
+        HdaClient = null;
         BatchClient = null;
         CommandsClient = null;
         CpxClient = null;
-        AeClient = null;
-        HdaClient = null;
+        DxClient = null;
+        SecurityClient = null;
+        XmlDaClient = null;
         if (cpxClient is not null)
         {
             await cpxClient.DisposeAsync().ConfigureAwait(false);
@@ -93,6 +110,16 @@ public sealed class OpcSession : IAsyncDisposable
         if (daClient is not null)
         {
             await daClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (aeClient is not null)
+        {
+            await aeClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (hdaClient is not null)
+        {
+            await hdaClient.DisposeAsync().ConfigureAwait(false);
         }
 
         if (batchClient is not null)
@@ -105,14 +132,19 @@ public sealed class OpcSession : IAsyncDisposable
             await commandsClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (aeClient is not null)
+        if (dxClient is not null)
         {
-            await aeClient.DisposeAsync().ConfigureAwait(false);
+            await dxClient.DisposeAsync().ConfigureAwait(false);
         }
 
-        if (hdaClient is not null)
+        if (securityClient is not null)
         {
-            await hdaClient.DisposeAsync().ConfigureAwait(false);
+            await securityClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (xmlDaClient is not null)
+        {
+            await xmlDaClient.DisposeAsync().ConfigureAwait(false);
         }
     }
 }
@@ -277,3 +309,149 @@ public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int
 /// <summary>Tracks a poll-based DA subscription.</summary>
 public sealed record DaSubscriptionContext(string SubscriptionId, int GroupHandle, bool FromCache, int TransactionId, int? CancelId);
 
+/// <summary>Operations required by MCP DX tools.</summary>
+public interface IOpcDxClient : IAsyncDisposable
+{
+    /// <summary>Gets DX server status.</summary>
+    Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Lists DX connection names.</summary>
+    Task<IReadOnlyList<string>> QueryConnectionNamesAsync(string browsePath, IReadOnlyList<string> connectionMasks, bool recursive, CancellationToken cancellationToken = default);
+
+    /// <summary>Lists configured source servers.</summary>
+    Task<IReadOnlyList<DxSourceServer>> QuerySourceServersAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Adds a DX connection.</summary>
+    Task<OpcResultId> AddConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default);
+
+    /// <summary>Modifies a DX connection.</summary>
+    Task<OpcResultId> ModifyConnectionAsync(DxConnection connection, CancellationToken cancellationToken = default);
+
+    /// <summary>Updates DX connections matching a mask.</summary>
+    Task<OpcResultId> UpdateConnectionAsync(string browsePath, string connectionName, bool recursive, DxConnection connectionDefinition, CancellationToken cancellationToken = default);
+
+    /// <summary>Deletes a DX connection.</summary>
+    Task<OpcResultId> DeleteConnectionAsync(string browsePath, string connectionName, bool recursive, CancellationToken cancellationToken = default);
+
+    /// <summary>Adds a source server.</summary>
+    Task<OpcResultId> AddSourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default);
+
+    /// <summary>Modifies a source server.</summary>
+    Task<OpcResultId> ModifySourceServerAsync(DxSourceServer sourceServer, CancellationToken cancellationToken = default);
+
+    /// <summary>Resets the DX configuration and returns the new version.</summary>
+    Task<string> ResetConfigurationAsync(string configurationVersion, CancellationToken cancellationToken = default);
+}
+
+/// <summary>Holds OPC DX client state for an MCP session.</summary>
+public sealed class DxClientState : IAsyncDisposable
+{
+    /// <summary>Creates DX client state.</summary>
+    public DxClientState(string host, string? progId, Guid? clsid, IOpcDxClient client)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(host);
+        ArgumentNullException.ThrowIfNull(client);
+
+        Host = host;
+        ProgId = progId;
+        Clsid = clsid;
+        Client = client;
+    }
+
+    /// <summary>Target host or connection scheme.</summary>
+    public string Host { get; }
+
+    /// <summary>Connected DX server ProgID, if known.</summary>
+    public string? ProgId { get; }
+
+    /// <summary>Connected DX server CLSID, if known.</summary>
+    public Guid? Clsid { get; }
+
+    /// <summary>DX client implementation.</summary>
+    public IOpcDxClient Client { get; }
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync() => await Client.DisposeAsync().ConfigureAwait(false);
+}
+
+/// <summary>Operations required by MCP OPC Security tools.</summary>
+public interface IOpcSecurityClient : IAsyncDisposable
+{
+    /// <summary>True when authenticated.</summary>
+    bool IsAuthenticated { get; }
+
+    /// <summary>Current identity, or empty when anonymous/default.</summary>
+    string CurrentIdentity { get; }
+
+    /// <summary>Checks whether Windows-integrated OPC Security is available.</summary>
+    Task<bool> IsAvailableNtAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Checks whether private username/password OPC Security is available.</summary>
+    Task<bool> IsAvailablePrivateAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Logs on with server-private credentials.</summary>
+    Task<bool> LogonPrivateAsync(string username, string password, CancellationToken cancellationToken = default);
+
+    /// <summary>Logs off and returns to the connection default identity.</summary>
+    Task LogoffAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>Holds OPC Security client state for an MCP session.</summary>
+public sealed class SecurityClientState : IAsyncDisposable
+{
+    /// <summary>Creates OPC Security client state.</summary>
+    public SecurityClientState(IOpcSecurityClient client)
+    {
+        ArgumentNullException.ThrowIfNull(client);
+        Client = client;
+    }
+
+    /// <summary>Security client implementation.</summary>
+    public IOpcSecurityClient Client { get; }
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync() => await Client.DisposeAsync().ConfigureAwait(false);
+}
+
+/// <summary>Holds OPC XML-DA client state for an MCP session.</summary>
+public sealed class XmlDaClientState : IAsyncDisposable
+{
+    private readonly IDisposable? _ownedDisposable;
+    private readonly IAsyncDisposable? _ownedAsyncDisposable;
+    private bool _disposed;
+
+    /// <summary>Creates XML-DA client state.</summary>
+    public XmlDaClientState(string endpointUrl, IXmlDaClient client, IDisposable? ownedDisposable = null, IAsyncDisposable? ownedAsyncDisposable = null)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(endpointUrl);
+        ArgumentNullException.ThrowIfNull(client);
+
+        EndpointUrl = endpointUrl;
+        Client = client;
+        _ownedDisposable = ownedDisposable;
+        _ownedAsyncDisposable = ownedAsyncDisposable;
+    }
+
+    /// <summary>HTTP/SOAP endpoint URL.</summary>
+    public string EndpointUrl { get; }
+
+    /// <summary>XML-DA client implementation.</summary>
+    public IXmlDaClient Client { get; }
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        if (_ownedAsyncDisposable is not null)
+        {
+            await _ownedAsyncDisposable.DisposeAsync().ConfigureAwait(false);
+        }
+
+        _ownedDisposable?.Dispose();
+    }
+}
