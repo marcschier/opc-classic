@@ -4,6 +4,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Opc.Classic.Mcp.Sessions;
+using Opc.Classic.Mcp.Tools;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -14,10 +16,13 @@ builder.Logging.AddConsole(static o =>
     o.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 
-// MCP server hosted over stdio. Tool classes are wired in WithTools<T>() calls below
-// (Wave MCP-2 onward — kept empty here intentionally to keep MCP-1 a pure bootstrap).
+builder.Services.AddSingleton<IOpcSessionManager, OpcSessionManager>();
+
 builder.Services
     .AddMcpServer()
-    .WithStdioServerTransport();
+    .WithStdioServerTransport()
+    .WithTools<SessionTools>()
+    .WithTools<DiscoveryTools>()
+    .WithTools<DaClientTools>();
 
 await builder.Build().RunAsync().ConfigureAwait(false);

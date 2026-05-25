@@ -14,9 +14,9 @@
     <ToolCommandName>opc-classic-mcp</ToolCommandName>
 
     <!-- Self-contained single-file delivery so AI agents launch us without runtime hassle -->
-    <SelfContained>true</SelfContained>
-    <PublishSelfContained>true</PublishSelfContained>
-    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained Condition="'$(SelfContained)' == ''">false</SelfContained>
+    <PublishSelfContained Condition="'$(PublishSelfContained)' == ''">true</PublishSelfContained>
+    <PublishSingleFile Condition="'$(PublishSingleFile)' == ''">true</PublishSingleFile>
 
     <!-- Package metadata -->
     <PackageReadmeFile>README.md</PackageReadmeFile>
