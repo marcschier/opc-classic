@@ -23,6 +23,9 @@ builder.Services
     .WithStdioServerTransport()
     .WithTools<SessionTools>()
     .WithTools<DiscoveryTools>()
-    .WithTools<DaClientTools>();
+    .WithTools<DaClientTools>()
+    .WithTools<AeClientTools>()
+    .WithTools<HdaClientTools>();
 
 await builder.Build().RunAsync().ConfigureAwait(false);
+

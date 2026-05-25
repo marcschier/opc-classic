@@ -92,7 +92,10 @@ internal sealed class McpTestServer : IAsyncDisposable
             .WithStreamServerTransport(clientToServer.Reader.AsStream(), serverToClient.Writer.AsStream())
             .WithTools<SessionTools>()
             .WithTools<DiscoveryTools>()
-            .WithTools<DaClientTools>();
+            .WithTools<DaClientTools>()
+            .WithTools<DxTools>()
+            .WithTools<SecurityTools>()
+            .WithTools<XmlDaTools>();
 
         IHost host = builder.Build();
         await host.StartAsync().ConfigureAwait(false);

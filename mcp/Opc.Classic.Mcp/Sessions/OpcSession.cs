@@ -43,6 +43,12 @@ public sealed class OpcSession : IAsyncDisposable
     /// <summary>Per-session OPC DA client state.</summary>
     public DaClientState? DaClient { get; set; }
 
+    /// <summary>Per-session OPC AE client state.</summary>
+    public AeClientState? AeClient { get; set; }
+
+    /// <summary>Per-session OPC HDA client state.</summary>
+    public HdaClientState? HdaClient { get; set; }
+
     /// <summary>Returns true when the session has exceeded its idle expiry.</summary>
     public bool IsExpired(DateTimeOffset now) => now - LastUsedAt >= IdleExpiry;
 
@@ -59,10 +65,24 @@ public sealed class OpcSession : IAsyncDisposable
 
         _disposed = true;
         DaClientState? daClient = DaClient;
+        AeClientState? aeClient = AeClient;
+        HdaClientState? hdaClient = HdaClient;
         DaClient = null;
+        AeClient = null;
+        HdaClient = null;
         if (daClient is not null)
         {
             await daClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (aeClient is not null)
+        {
+            await aeClient.DisposeAsync().ConfigureAwait(false);
+        }
+
+        if (hdaClient is not null)
+        {
+            await hdaClient.DisposeAsync().ConfigureAwait(false);
         }
     }
 }
@@ -223,3 +243,4 @@ public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int
 
 /// <summary>Tracks a poll-based DA subscription.</summary>
 public sealed record DaSubscriptionContext(string SubscriptionId, int GroupHandle, bool FromCache, int TransactionId, int? CancelId);
+
