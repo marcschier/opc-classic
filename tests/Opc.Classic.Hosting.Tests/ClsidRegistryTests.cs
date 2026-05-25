@@ -128,9 +128,9 @@ public sealed class ClsidRegistryTests
             friendlyName,
             implementedCategories);
 
-    private static IConfiguration CreateConfiguration(params OpcClsidRegistration[] registrations)
+    private static InMemoryConfigurationSection CreateConfiguration(params OpcClsidRegistration[] registrations)
     {
-        var root = new InMemoryConfigurationSection(string.Empty, string.Empty);
+        InMemoryConfigurationSection root = new(string.Empty, string.Empty);
         var servers = root.GetOrAddSection("Opc.Classic").GetOrAddSection("Servers");
 
         for (var i = 0; i < registrations.Length; i++)

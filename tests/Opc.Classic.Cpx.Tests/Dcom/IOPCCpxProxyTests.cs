@@ -61,6 +61,6 @@ public sealed class IOPCCpxProxyTests
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
-        return buffer[..writer.Position];
+        return buffer.AsMemory(0, writer.Position);
     }
 }

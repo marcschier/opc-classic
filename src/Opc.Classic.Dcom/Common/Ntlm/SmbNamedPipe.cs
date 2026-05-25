@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace SharpCifs.Smb;
@@ -13,11 +14,17 @@ public sealed class SmbNamedPipe : IDisposable {
     private readonly MemoryStream _input = new();
     private readonly MemoryStream _output = new();
 
+    [SuppressMessage(
+        "Design", "CA1054:URI-like parameters should not be strings",
+        Justification = "SMB pipe URLs use the Windows UNC form (\\\\server\\IPC$\\pipe\\xyz) which is not a registered System.Uri scheme.")]
     public SmbNamedPipe(string url, int pipeType) {
         Url = url;
         PipeType = pipeType;
     }
 
+    [SuppressMessage(
+        "Design", "CA1056:URI-like properties should not be strings",
+        Justification = "SMB pipe URLs use the Windows UNC form (\\\\server\\IPC$\\pipe\\xyz) which is not a registered System.Uri scheme.")]
     public string Url { get; }
 
     public int PipeType { get; }

@@ -381,11 +381,11 @@ public sealed class KerberosSession : IKerberosSession
         return transformer.MakeChecksum(data, _sessionKey, usage, KeyDerivationMode.Kc, transformer.ChecksumSize).ToArray();
     }
 
-    private KerberosCryptoTransformer GetTransformer()
-    {
-        KerberosCryptoTransformer? transformer = CryptoService.CreateTransform(_etype);
-        return transformer ?? throw new NotSupportedException($"Kerberos encryption type {_etype} is not supported for GSS-API packet protection.");
-    }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Maintainability", "CA1508:Avoid dead conditional code",
+        Justification = "Defensive null guard; the Kerberos.NET CryptoService.CreateTransform contract is not annotated [return: NotNull] and may return null for unknown etypes added in future versions.")]
+    private KerberosCryptoTransformer GetTransformer() =>
+        CryptoService.CreateTransform(_etype) ?? throw new NotSupportedException($"Kerberos encryption type {_etype} is not supported for GSS-API packet protection.");
 
     private bool IsRc4Hmac() => _etype is EncryptionType.RC4_HMAC_NT or EncryptionType.RC4_HMAC_NT_EXP;
 

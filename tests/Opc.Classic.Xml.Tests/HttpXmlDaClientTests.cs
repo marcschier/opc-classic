@@ -236,7 +236,7 @@ public sealed class HttpXmlDaClientTests
         var client = BuildClient(handler);
 
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         bool threw = false;
         try

@@ -119,7 +119,7 @@ public sealed class InMemoryCallChannelTests
             return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
         });
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         bool threw = false;
         try
@@ -181,10 +181,10 @@ public sealed class InMemoryCallChannelTests
     [Test]
     public async Task InMemoryCallChannel_SatisfiesICallChannelContract()
     {
-        ICallChannel channel = new InMemoryCallChannel((_, _, _, _) =>
+        InMemoryCallChannel channel = new((_, _, _, _) =>
             Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
 
-        NdrCallResult result = await channel.InvokeAsync(Guid.Empty, 3, ReadOnlyMemory<byte>.Empty);
+        NdrCallResult result = await ((ICallChannel)channel).InvokeAsync(Guid.Empty, 3, ReadOnlyMemory<byte>.Empty);
 
         await Assert.That(result.Hresult).IsEqualTo(0);
     }

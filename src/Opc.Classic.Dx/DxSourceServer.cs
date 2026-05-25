@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Opc.Classic.Dx;
 
@@ -14,6 +15,14 @@ namespace Opc.Classic.Dx;
 public sealed record DxSourceServer
 {
     /// <summary>Constructs a source-server definition.</summary>
+    /// <remarks>
+    /// <paramref name="serverUrl"/> is a string and not a <see cref="Uri"/> because OPC URLs
+    /// use custom non-registered schemes (e.g. <c>opcda://</c>) that <see cref="Uri"/>'s parser
+    /// does not understand consistently across platforms.
+    /// </remarks>
+    [SuppressMessage(
+        "Design", "CA1054:URI-like parameters should not be strings",
+        Justification = "serverUrl carries a ProgID-qualified OPC DA URL (opcda://...) which is not a registered System.Uri scheme.")]
     public DxSourceServer(
         string? name = null,
         string? serverUrl = null,
@@ -45,6 +54,10 @@ public sealed record DxSourceServer
     public string? Name { get; init; }
 
     /// <summary>Source server URL, typically an OPC DA URL or ProgID-qualified endpoint.</summary>
+    /// <remarks>See <see cref="DxSourceServer(string?, string?, string?, string?, string?, string?, string?, bool?, int, int)"/>.</remarks>
+    [SuppressMessage(
+        "Design", "CA1056:URI-like properties should not be strings",
+        Justification = "ServerUrl carries a ProgID-qualified OPC DA URL (opcda://...) which is not a registered System.Uri scheme.")]
     public string? ServerUrl { get; init; }
 
     /// <summary>Server-defined description.</summary>

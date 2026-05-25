@@ -71,7 +71,7 @@ public sealed class AsyncTransportTests
     [Test]
     public async Task IAsyncTransport_RemoteEndpoint_is_set()
     {
-        await using IAsyncTransport transport = new InMemoryAsyncTransport();
+        await using InMemoryAsyncTransport transport = new();
 
         var endpoint = transport.RemoteEndpoint as IPEndPoint;
 

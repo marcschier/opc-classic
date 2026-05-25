@@ -95,7 +95,7 @@ public sealed class OpcDaDataChangePublisherTests
     {
         var publisher = CreatePublisher();
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         var threw = false;
         try

@@ -579,8 +579,8 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     private static ReadOnlyMemory<byte> EncodeInterfaceRef(Guid iid, int seed) =>
         WritePayload((ref NdrWriter writer) => OpcInterfaceRefCodec.Write(ref writer, InterfaceRef(iid, seed)));
 
-    private static IOpcInterfaceRef InterfaceRef(Guid iid, int seed) =>
-        new OpcInterfaceRef(iid, 0, 1, 1, unchecked((ulong)(uint)seed), Guid.CreateVersion7(), 0, Array.Empty<ushort>());
+    private static OpcInterfaceRef InterfaceRef(Guid iid, int seed) =>
+        new(iid, 0, 1, 1, unchecked((ulong)(uint)seed), Guid.CreateVersion7(), 0, Array.Empty<ushort>());
 
     private static ReadOnlyMemory<byte> EncodeItemResults(int serverHandle, int error) =>
         WritePayload((ref NdrWriter writer) =>
@@ -601,7 +601,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
-        return buffer[..writer.Position];
+        return buffer.AsMemory(0, writer.Position);
     }
 
     private static T[] ReadArray<T>(ref NdrReader reader, NdrReadFunc<T> read)

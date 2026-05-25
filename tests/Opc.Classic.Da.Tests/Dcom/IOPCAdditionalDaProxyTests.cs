@@ -559,7 +559,7 @@ public sealed class IOPCAdditionalDaProxyTests
         var buffer = new byte[capacity];
         var writer = new NdrWriter(buffer);
         write(ref writer);
-        return buffer[..writer.Position];
+        return buffer.AsMemory(0, writer.Position);
     }
 
     private static ReadOnlyMemory<byte> EncodeBoolean(bool value) => EncodeInt32(value ? -1 : 0);

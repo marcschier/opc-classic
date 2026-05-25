@@ -259,7 +259,7 @@ public sealed class IDaServerContractTests
     {
         await using var server = new FakeDaServer();
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
         try
         {
             await foreach (var _ in server.BrowseAsync(string.Empty, BrowseFilters.All, cts.Token))
