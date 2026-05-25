@@ -17,6 +17,9 @@
 - [Troubleshooting](tutorials/09-troubleshooting-and-diagnostics.md)
 - [AOT + trimming](tutorials/10-aot-and-trimming.md)
 
+## Tools / Integrations
+- [Opc.Classic.Mcp](mcp/README.md) — stdio MCP server for Claude Desktop, Cursor, VS Code Copilot Chat, GitHub Copilot CLI, and other AI agents
+
 ## Security
 - [Threat model](security/THREAT_MODEL.md)
 - [Channel binding (CBT) on TLS](security/CHANNEL_BINDING.md)
