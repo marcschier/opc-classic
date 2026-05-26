@@ -1,0 +1,53 @@
+name: Docker test fleet
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Which smoke to run: matrix (default) or interactive-build-only'
+        required: false
+        default: 'matrix'
+        type: choice
+        options: [matrix, interactive-build-only]
+  schedule:
+    # Monthly on the 1st at 04:00 UTC. Windows-container builds are expensive
+    # (~10-15 min build stage + ~3-5 GB image disk); monthly cadence matches
+    # the value of the matrix smoke vs the cost.
+    - cron: '0 4 1 * *'
+
+permissions:
+  contents: read
+
+jobs:
+  docker-test-fleet:
+    runs-on: windows-2022
+    if: github.repository == 'marcschier/opc-classic'
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Switch Docker daemon to Windows containers
+        shell: pwsh
+        run: |
+          # The windows-2022 runner ships Docker Desktop in Linux mode by default.
+          # Toggle to Windows mode for the fleet build.
+          $dockerCli = "$env:ProgramFiles\Docker\Docker\DockerCli.exe"
+          if (Test-Path $dockerCli) {
+            & $dockerCli -SwitchWindowsEngine
+            Start-Sleep -Seconds 10
+          } else {
+            Write-Warning 'DockerCli.exe not found at expected path; assuming Windows mode is already active.'
+          }
+          docker version
+
+      - name: Build fleet images
+        shell: pwsh
+        run: docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
+
+      - name: Upload CTT matrix results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-test-fleet-results
+          path: docker/results/*.xml
+          if-no-files-found: warn
