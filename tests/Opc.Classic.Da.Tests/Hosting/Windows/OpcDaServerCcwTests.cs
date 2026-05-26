@@ -121,6 +121,68 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
+    public async Task GetStatus_via_CCW_returns_populated_OPCSERVERSTATUS_struct()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+
+        (int hr, IntPtr statusPtr) = InvokeGetStatus(ccw);
+
+        try
+        {
+            await Assert.That(hr).IsEqualTo(S_OK);
+            await Assert.That(statusPtr).IsNotEqualTo(IntPtr.Zero);
+            // Skim a few well-known offsets: StartTime (offset 0), State (offset 24).
+            long startTime = System.Runtime.InteropServices.Marshal.ReadInt64(statusPtr, 0);
+            int state = System.Runtime.InteropServices.Marshal.ReadInt32(statusPtr, 24);
+            await Assert.That(startTime).IsGreaterThan(0L);
+            await Assert.That(state).IsEqualTo((int)OpcServerState.Running);
+        }
+        finally
+        {
+            // Free the allocated CoTaskMem (caller-owned per OPC contract).
+            // OPCSERVERSTATUS contains szVendorInfo LPWSTR at offset 44 -- free it first.
+            IntPtr vendorInfoPtr = System.Runtime.InteropServices.Marshal.ReadIntPtr(statusPtr, 44);
+            if (vendorInfoPtr != IntPtr.Zero)
+            {
+                System.Runtime.InteropServices.Marshal.FreeCoTaskMem(vendorInfoPtr);
+            }
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(statusPtr);
+        }
+    }
+
+    [Test]
+    public async Task GetErrorString_via_CCW_returns_LPWSTR()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+
+        (int hr, IntPtr stringPtr) = InvokeGetErrorString(ccw, dwError: unchecked((int)0x80004005), dwLocale: 1033);
+
+        try
+        {
+            await Assert.That(hr).IsEqualTo(S_OK);
+            await Assert.That(stringPtr).IsNotEqualTo(IntPtr.Zero);
+            string? text = System.Runtime.InteropServices.Marshal.PtrToStringUni(stringPtr);
+            await Assert.That(text).IsEqualTo("ok");
+        }
+        finally
+        {
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(stringPtr);
+        }
+    }
+
+    [Test]
     public async Task RemoveGroup_via_CCW_delegates_to_managed_server()
     {
         if (!OperatingSystem.IsWindows())
@@ -140,20 +202,23 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
-    public async Task IOPCServer_vtable_slots_return_E_NOTIMPL()
+    public async Task IOPCServer_unimplemented_pointer_returning_vtable_slots_return_E_NOTIMPL()
     {
         if (!OperatingSystem.IsWindows())
         {
             return;
         }
 
+        // ocom-6c implemented GetErrorString + GetStatus + RemoveGroup with real bodies;
+        // the remaining IOPCServer slots that return interface pointers
+        // (AddGroup, GetGroupByName, CreateGroupEnumerator) still return E_NOTIMPL
+        // pending follow-up COM marshaling work.
         IntPtr ccw = OpcDaServerCcw.Create(new StubDaServer(), IOPCServer.InterfaceId);
-        NotImplStubsResult result = InvokeOpcServerStubs(ccw);
+        (int hrAddGroup, int hrGetGroupByName, int hrCreateGroupEnumerator) = InvokeRemainingStubs(ccw);
 
-        await Assert.That(result.HrGetErrorString).IsEqualTo(E_NOTIMPL);
-        await Assert.That(result.StringOut).IsEqualTo(IntPtr.Zero);
-        await Assert.That(result.HrGetStatus).IsEqualTo(E_NOTIMPL);
-        await Assert.That(result.StatusOut).IsEqualTo(IntPtr.Zero);
+        await Assert.That(hrAddGroup).IsEqualTo(E_NOTIMPL);
+        await Assert.That(hrGetGroupByName).IsEqualTo(E_NOTIMPL);
+        await Assert.That(hrCreateGroupEnumerator).IsEqualTo(E_NOTIMPL);
     }
 
     [Test]
@@ -178,9 +243,26 @@ public sealed class OpcDaServerCcwTests
         uint After1stAddRef, uint After2ndAddRef,
         uint After1stRelease, uint After2ndRelease);
 
-    private readonly record struct NotImplStubsResult(
-        int HrGetErrorString, IntPtr StringOut,
-        int HrGetStatus, IntPtr StatusOut);
+    private static unsafe (int HrAddGroup, int HrGetGroupByName, int HrCreateGroupEnumerator) InvokeRemainingStubs(IntPtr ccw)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+
+        // slot 3 = AddGroup (12 params); slot 5 = GetGroupByName (3 params); slot 8 = CreateGroupEnumerator (3 params)
+        var addGroup = (delegate* unmanaged<IntPtr, IntPtr, int, uint, uint, IntPtr, IntPtr, uint, IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[3];
+        IntPtr ppUnk1;
+        Guid iid = Guid.Empty;
+        int hrAdd = addGroup(ccw, IntPtr.Zero, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero, IntPtr.Zero, &iid, &ppUnk1);
+
+        var getGroupByName = (delegate* unmanaged<IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[5];
+        IntPtr ppUnk2;
+        int hrByName = getGroupByName(ccw, IntPtr.Zero, &iid, &ppUnk2);
+
+        var createGroupEnumerator = (delegate* unmanaged<IntPtr, uint, Guid*, IntPtr*, int>)vtable[8];
+        IntPtr ppUnk3;
+        int hrEnum = createGroupEnumerator(ccw, 0, &iid, &ppUnk3);
+
+        return (hrAdd, hrByName, hrEnum);
+    }
 
     private static unsafe QueryInterfaceResult InvokeQueryInterface(IntPtr ccw, Guid iid)
     {
@@ -204,19 +286,22 @@ public sealed class OpcDaServerCcwTests
         return new AddRefReleaseResult(a1, a2, r1, r2);
     }
 
-    private static unsafe NotImplStubsResult InvokeOpcServerStubs(IntPtr ccw)
+    private static unsafe (int Hr, IntPtr StatusPtr) InvokeGetStatus(IntPtr ccw)
     {
         IntPtr* vtable = *(IntPtr**)ccw;
-
-        var getErrorString = (delegate* unmanaged<IntPtr, int, uint, IntPtr*, int>)vtable[4];
-        IntPtr stringOut;
-        int hrGetError = getErrorString(ccw, 0, 0, &stringOut);
-
         var getStatus = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[6];
         IntPtr statusOut;
-        int hrGetStatus = getStatus(ccw, &statusOut);
+        int hr = getStatus(ccw, &statusOut);
+        return (hr, statusOut);
+    }
 
-        return new NotImplStubsResult(hrGetError, stringOut, hrGetStatus, statusOut);
+    private static unsafe (int Hr, IntPtr StringPtr) InvokeGetErrorString(IntPtr ccw, int dwError, uint dwLocale)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var getErrorString = (delegate* unmanaged<IntPtr, int, uint, IntPtr*, int>)vtable[4];
+        IntPtr stringOut;
+        int hr = getErrorString(ccw, dwError, dwLocale, &stringOut);
+        return (hr, stringOut);
     }
 
     private static unsafe int InvokeRemoveGroup(IntPtr ccw, uint hServerGroup, int bForce)

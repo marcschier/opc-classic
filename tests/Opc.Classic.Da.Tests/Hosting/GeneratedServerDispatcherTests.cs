@@ -203,6 +203,101 @@ public sealed class GeneratedServerDispatcherTests
         await Assert.That(impl.LastUnadvisedCookie).IsEqualTo(42);
     }
 
+    // ===== IOPCItemIO =====
+
+    [Test]
+    public async Task IOPCItemIO_WriteVqt_dispatches_with_item_ids()
+    {
+        var impl = new StubItemIO();
+        var dispatcher = new IOPCItemIOServerDispatcher(impl);
+        byte[] payload = WritePayload((ref NdrWriter writer) =>
+        {
+            // string[] itemIds = ["Item.A"]
+            writer.WriteInt32(1);
+            writer.WriteUnicodeStringPtr("Item.A");
+            // OpcItemVqt[] values = [{ value=42, no quality, no timestamp }]
+            writer.WriteInt32(1);
+            // value variant
+            Opc.Classic.Ndr.NdrVariantExtensions.WriteVariant(ref writer, new OpcVariant(VarType.VT_I4, 42));
+            // bQualitySpecified, wQuality, wReserved
+            writer.WriteInt32(0);
+            writer.WriteUInt16(0);
+            writer.WriteUInt16(0);
+            // bTimeStampSpecified, dwReserved, ftTimeStamp
+            writer.WriteInt32(0);
+            writer.WriteUInt32(0);
+            writer.WriteInt64(0);
+        });
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCItemIO.Opnums.WriteVqtAsync, payload, CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(impl.LastItemIds).IsEquivalentTo(new[] { "Item.A" });
+    }
+
+    [Test]
+    public async Task IOPCItemIO_unknown_opnum_returns_E_NOTIMPL()
+    {
+        var dispatcher = new IOPCItemIOServerDispatcher(new StubItemIO());
+
+        DispatchResult result = await dispatcher.DispatchAsync(99, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.NotImplemented.Code);
+    }
+
+    // ===== IOPCEnumGUID =====
+
+    [Test]
+    public async Task IOPCEnumGUID_Next_returns_count_and_guids()
+    {
+        var impl = new StubEnumGuid
+        {
+            NextGuids = [Guid.Parse("11111111-1111-1111-1111-111111111111")],
+        };
+        var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(5));
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCEnumGUID.Opnums.NextAsync, payload, CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(impl.LastNextCount).IsEqualTo(5);
+    }
+
+    [Test]
+    public async Task IOPCEnumGUID_Reset_dispatches()
+    {
+        var impl = new StubEnumGuid();
+        var dispatcher = new IOPCEnumGUIDServerDispatcher(impl);
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCEnumGUID.Opnums.ResetAsync, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(impl.ResetCallCount).IsEqualTo(1);
+    }
+
+    // ===== IOPCServerList =====
+
+    [Test]
+    public async Task IOPCServerList_ClsidFromProgId_dispatches_with_string()
+    {
+        Guid expected = Guid.Parse("12345678-1234-1234-1234-123456789012");
+        var impl = new StubServerList { LookupResult = expected };
+        var dispatcher = new IOPCServerListServerDispatcher(impl);
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("Some.Server.1"));
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCServerList.Opnums.ClsidFromProgIdAsync, payload, CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        var reader = new NdrReader(result.Payload.Span);
+        Guid returned = reader.ReadGuid();
+        await Assert.That(returned).IsEqualTo(expected);
+        await Assert.That(impl.LastProgId).IsEqualTo("Some.Server.1");
+    }
+
     // ===== IOPCShutdown =====
 
     [Test]
@@ -347,6 +442,66 @@ public sealed class GeneratedServerDispatcherTests
         {
             LastReason = reason;
             return Task.CompletedTask;
+        }
+    }
+
+    private sealed class StubItemIO : IOPCItemIO
+    {
+        public string[] LastItemIds { get; private set; } = Array.Empty<string>();
+
+        public Task ReadAsync(string[] itemIds, int[] maxAges,
+            out OpcVariant[] values, out ushort[] qualities, out long[] timestamps, out int[] errors,
+            CancellationToken cancellationToken = default)
+        {
+            LastItemIds = itemIds;
+            values = new OpcVariant[itemIds.Length];
+            qualities = new ushort[itemIds.Length];
+            timestamps = new long[itemIds.Length];
+            errors = new int[itemIds.Length];
+            return Task.CompletedTask;
+        }
+
+        public Task<int[]> WriteVqtAsync(string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default)
+        {
+            LastItemIds = itemIds;
+            return Task.FromResult(new int[itemIds.Length]);
+        }
+    }
+
+    private sealed class StubEnumGuid : IOPCEnumGUID
+    {
+        public int LastNextCount { get; private set; }
+
+        public int ResetCallCount { get; private set; }
+
+        public Guid[] NextGuids { get; set; } = Array.Empty<Guid>();
+
+        public Task<Guid[]> NextAsync(int count, CancellationToken cancellationToken = default)
+        {
+            LastNextCount = count;
+            return Task.FromResult(NextGuids);
+        }
+
+        public Task SkipAsync(int count, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task ResetAsync(CancellationToken cancellationToken = default)
+        {
+            ResetCallCount++;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class StubServerList : IOPCServerList
+    {
+        public string? LastProgId { get; private set; }
+
+        public Guid LookupResult { get; set; }
+
+        public Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default)
+        {
+            LastProgId = progId;
+            return Task.FromResult(LookupResult);
         }
     }
 }

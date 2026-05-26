@@ -224,12 +224,82 @@ public static unsafe class OpcDaServerCcw
     [UnmanagedCallersOnly]
     private static int GetErrorString(IntPtr pThis, int dwError, uint dwLocale, IntPtr* ppString)
     {
-        _ = pThis; _ = dwError; _ = dwLocale;
         if (ppString != null)
         {
             *ppString = IntPtr.Zero;
         }
-        return E_NOTIMPL;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI; the underlying impl is async-by-design.
+            string text = server.GetErrorStringAsync(dwError, (int)dwLocale, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            if (ppString != null)
+            {
+                *ppString = AllocateLpwStr(text);
+            }
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
+    }
+
+    [UnmanagedCallersOnly]
+    private static int GetStatus(IntPtr pThis, IntPtr* ppServerStatus)
+    {
+        if (ppServerStatus != null)
+        {
+            *ppServerStatus = IntPtr.Zero;
+        }
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002
+            OpcServerStatus status = server.GetStatusAsync(CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+
+            if (ppServerStatus != null)
+            {
+                *ppServerStatus = AllocateOpcServerStatus(status);
+            }
+            return S_OK;
+        }
+#pragma warning disable CA1031
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
@@ -239,17 +309,6 @@ public static unsafe class OpcDaServerCcw
         if (ppUnk != null)
         {
             *ppUnk = IntPtr.Zero;
-        }
-        return E_NOTIMPL;
-    }
-
-    [UnmanagedCallersOnly]
-    private static int GetStatus(IntPtr pThis, IntPtr* ppServerStatus)
-    {
-        _ = pThis;
-        if (ppServerStatus != null)
-        {
-            *ppServerStatus = IntPtr.Zero;
         }
         return E_NOTIMPL;
     }
@@ -307,5 +366,66 @@ public static unsafe class OpcDaServerCcw
         public GCHandle ServerHandle { get; }
 
         public long RefCount;
+    }
+
+    // ----- COM allocation helpers -----
+
+    /// <summary>
+    /// OPC DA's <c>OPCSERVERSTATUS</c> struct laid out for direct CoTaskMemAlloc.
+    /// Wire layout matches the C IDL: 3 FILETIMEs, OPCSERVERSTATE (4), GroupCount/BandWidth (8),
+    /// 4 WORDs, then LPWSTR pointer. <c>Pack = 4</c> matches the x86/x64 COM ABI.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    private struct OPCSERVERSTATUS_NATIVE
+    {
+        public long ftStartTime;
+        public long ftCurrentTime;
+        public long ftLastUpdateTime;
+        public int dwServerState;
+        public uint dwGroupCount;
+        public uint dwBandWidth;
+        public ushort wMajorVersion;
+        public ushort wMinorVersion;
+        public ushort wBuildNumber;
+        public ushort wReserved;
+        public IntPtr szVendorInfo;
+    }
+
+    /// <summary>Allocates an LPWSTR (null-terminated UTF-16) via CoTaskMemAlloc.</summary>
+    private static IntPtr AllocateLpwStr(string? value)
+    {
+        if (value is null)
+        {
+            return IntPtr.Zero;
+        }
+        int byteCount = (value.Length + 1) * sizeof(char);
+        IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
+        Marshal.Copy(value.ToCharArray(), 0, ptr, value.Length);
+        Marshal.WriteInt16(ptr, value.Length * sizeof(char), 0); // null terminator
+        return ptr;
+    }
+
+    /// <summary>Allocates an OPCSERVERSTATUS via CoTaskMemAlloc and fills it from <paramref name="status"/>.</summary>
+    private static IntPtr AllocateOpcServerStatus(OpcServerStatus status)
+    {
+        int size = sizeof(OPCSERVERSTATUS_NATIVE);
+        IntPtr ptr = Marshal.AllocCoTaskMem(size);
+        Version version = status.ServerVersion ?? new Version(1, 0, 0);
+        var native = new OPCSERVERSTATUS_NATIVE
+        {
+            ftStartTime = status.StartTime.ToFileTime(),
+            ftCurrentTime = status.CurrentTime.ToFileTime(),
+            ftLastUpdateTime = status.LastUpdateTime.ToFileTime(),
+            dwServerState = (int)status.State,
+            dwGroupCount = (uint)status.GroupCount,
+            dwBandWidth = (uint)status.BandWidth,
+            wMajorVersion = (ushort)version.Major,
+            wMinorVersion = (ushort)version.Minor,
+            wBuildNumber = (ushort)Math.Max(0, version.Build),
+            wReserved = 0,
+            szVendorInfo = AllocateLpwStr(status.VendorInfo),
+        };
+        Marshal.StructureToPtr(native, ptr, fDeleteOld: false);
+        return ptr;
     }
 }
