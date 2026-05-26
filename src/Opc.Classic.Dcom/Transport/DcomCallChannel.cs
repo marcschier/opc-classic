@@ -67,7 +67,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
             int contextId = await EnsurePresentationContextAsync(interfaceId, cancellationToken).ConfigureAwait(false);
             Guid causalityId = CausalityContext.Current.Value.GetValueOrDefault();
-            byte[] requestStub = BuildRequestStub(requestPayload, causalityId);
+            byte[] requestStub = OrpcEnvelope.BuildRequestStub(requestPayload, causalityId);
             var request = new RequestCoPdu {
                 AllocationHint = requestStub.Length,
                 ContextId = contextId,
@@ -80,7 +80,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
             ConnectionOrientedPdu reply = await ReadFragmentedPduAsync(cancellationToken).ConfigureAwait(false);
             return reply switch {
-                ResponseCoPdu response => new NdrCallResult(0, ExtractResponseBody(response.Stub)),
+                ResponseCoPdu response => new NdrCallResult(0, OrpcEnvelope.ExtractResponseBody(response.Stub)),
                 FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty),
                 _ => throw new InvalidOperationException($"Unexpected DCE/RPC PDU type {reply.Type}.")
             };
@@ -169,7 +169,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         ConnectionOrientedPdu pdu,
         CancellationToken cancellationToken,
         ReadOnlyMemory<byte> authenticationBody = default) {
-        byte[] bytes = EncodePdu(pdu, _maxTransmitFragment);
+        byte[] bytes = PduCodec.EncodePdu(pdu, _maxTransmitFragment);
         if (!authenticationBody.IsEmpty) {
             bytes = AttachAuthenticationVerifier(bytes, authenticationBody);
         }
@@ -201,40 +201,15 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     }
 
     private async ValueTask<DecodedPdu> ReadSinglePduAsync(CancellationToken cancellationToken) {
-        byte[] frame = await ReadPduFrameAsync(cancellationToken).ConfigureAwait(false);
+        byte[] frame = await PduCodec.ReadPduFrameAsync(_transport.Input, cancellationToken).ConfigureAwait(false);
         AuthenticationStrippedFrame stripped = StripAuthenticationVerifier(frame);
         byte pduType = stripped.PduBytes[ConnectionOrientedPdu.TYPE_OFFSET];
         if (stripped.AuthenticationBody.Length > 0 && IsPacketProtectedPdu(pduType)) {
             VerifyPacketProtection(stripped);
         }
 
-        ConnectionOrientedPdu pdu = DecodePdu(stripped.PduBytes);
+        ConnectionOrientedPdu pdu = PduCodec.DecodePdu(stripped.PduBytes);
         return new DecodedPdu(pdu, stripped.AuthenticationBody);
-    }
-
-    private async ValueTask<byte[]> ReadPduFrameAsync(CancellationToken cancellationToken) {
-        while (true) {
-            ReadResult result = await _transport.Input.ReadAsync(cancellationToken).ConfigureAwait(false);
-            ReadOnlySequence<byte> buffer = result.Buffer;
-            try {
-                if (TryGetFragmentLength(buffer, out int fragmentLength) && buffer.Length >= fragmentLength) {
-                    ReadOnlySequence<byte> frame = buffer.Slice(0, fragmentLength);
-                    return frame.ToArray();
-                }
-
-                if (result.IsCompleted) {
-                    throw new EndOfStreamException("Transport completed before a full DCE/RPC PDU arrived.");
-                }
-            }
-            finally {
-                if (TryGetFragmentLength(buffer, out int fragmentLength) && buffer.Length >= fragmentLength) {
-                    _transport.Input.AdvanceTo(buffer.GetPosition(fragmentLength));
-                }
-                else {
-                    _transport.Input.AdvanceTo(buffer.Start, buffer.End);
-                }
-            }
-        }
     }
 
     private void VerifyPacketProtection(AuthenticationStrippedFrame stripped) {
@@ -311,35 +286,6 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return new AuthenticationStrippedFrame(pduBytes, authenticationBody);
     }
 
-    private static byte[] EncodePdu(ConnectionOrientedPdu pdu, int maxTransmitFragment) {
-        int capacity = Math.Max(maxTransmitFragment, ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE);
-        var ndr = new NdrCodec { Format = pdu.Format };
-        var buffer = new NdrBuffer(new byte[capacity], 0);
-        pdu.Encode(ndr, buffer);
-        return buffer.Buf.AsSpan(0, buffer.Length).ToArray();
-    }
-
-    private static ConnectionOrientedPdu DecodePdu(byte[] bytes) {
-        byte type = bytes[ConnectionOrientedPdu.TYPE_OFFSET];
-        ConnectionOrientedPdu pdu = type switch {
-            RequestCoPdu.REQUEST_TYPE => new RequestCoPdu(),
-            ResponseCoPdu.RESPONSE_TYPE => new ResponseCoPdu(),
-            FaultCoPdu.FAULT_TYPE => new FaultCoPdu(),
-            BindPdu.BIND_TYPE => new BindPdu(),
-            BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE => new BindAcknowledgePdu(),
-            BindNoAcknowledgePdu.BIND_NO_ACKNOWLEDGE_TYPE => new BindNoAcknowledgePdu(),
-            AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE => new AlterContextResponsePdu(),
-            ShutdownPdu.SHUTDOWN_TYPE => new ShutdownPdu(),
-            Auth3Pdu.AUTH3_TYPE => new Auth3Pdu(),
-            _ => throw new InvalidOperationException($"Unknown DCE/RPC PDU type 0x{type:X2}.")
-        };
-
-        var ndr = new NdrCodec { Format = pdu.Format };
-        var buffer = new NdrBuffer(bytes, 0) { Length = bytes.Length };
-        pdu.Decode(ndr, buffer);
-        return pdu;
-    }
-
     private static PresentationContext CreatePresentationContext(Guid interfaceId, int contextId) =>
         new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0));
 
@@ -353,36 +299,6 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
                 throw new InvalidOperationException($"Presentation context rejected: {result}.");
             }
         }
-    }
-
-    private static byte[] BuildRequestStub(ReadOnlyMemory<byte> requestPayload, Guid causalityId) {
-        byte[] stub = new byte[OrpcThis.NullExtensionsWireSize + requestPayload.Length];
-        var writer = new NdrWriter(stub);
-        new OrpcThis { CausalityId = causalityId }.Write(ref writer);
-        requestPayload.Span.CopyTo(stub.AsSpan(writer.Position));
-        return stub;
-    }
-
-    private static ReadOnlyMemory<byte> ExtractResponseBody(byte[] stub) {
-        if (stub is null || stub.Length == 0) {
-            throw new InvalidOperationException("DCOM response stub is missing the ORPC_THAT envelope.");
-        }
-
-        var reader = new NdrReader(stub);
-        _ = OrpcThat.Read(ref reader);
-        return stub.AsMemory(reader.Position);
-    }
-
-    private static bool TryGetFragmentLength(ReadOnlySequence<byte> buffer, out int fragmentLength) {
-        fragmentLength = 0;
-        if (buffer.Length < ConnectionOrientedPdu.HEADER_LENGTH) {
-            return false;
-        }
-
-        Span<byte> lengthBytes = stackalloc byte[2];
-        buffer.Slice(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, 2).CopyTo(lengthBytes);
-        fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(lengthBytes);
-        return fragmentLength >= ConnectionOrientedPdu.HEADER_LENGTH;
     }
 
     private static bool IsPacketProtectedPdu(byte pduType) =>
