@@ -89,6 +89,7 @@ public sealed class RpcServerConnectionProcessor
             "RpcServerConnectionProcessor: connection from {Remote} faulted");
 
     private readonly IReadOnlyDictionary<Guid, IOpcServerDispatcher> _dispatchers;
+    private readonly OpcObjectRegistry? _objectRegistry;
     private readonly ILogger _logger;
 
     /// <summary>
@@ -96,7 +97,8 @@ public sealed class RpcServerConnectionProcessor
     /// interface set.
     /// </summary>
     /// <param name="dispatchers">
-    /// Interface-ID → dispatcher. Typically populated from the
+    /// Interface-ID → dispatcher for the root server object (calls
+    /// without <c>PFC_OBJECT_UUID</c>). Typically populated from the
     /// source-generated <c>*ServerDispatcher</c> wrappers around the
     /// managed server implementations.
     /// </param>
@@ -104,9 +106,29 @@ public sealed class RpcServerConnectionProcessor
     public RpcServerConnectionProcessor(
         IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers,
         ILogger? logger = null)
+        : this(dispatchers, objectRegistry: null, logger)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a processor that routes PDUs for the supplied root
+    /// interface set plus a per-object IPID registry.
+    /// </summary>
+    /// <param name="dispatchers">Root-object dispatchers (called when no Object UUID is present).</param>
+    /// <param name="objectRegistry">
+    /// Optional registry consulted when the inbound request carries an
+    /// Object UUID. <see langword="null"/> falls back to root-only
+    /// behavior.
+    /// </param>
+    /// <param name="logger">Optional logger; defaults to <see cref="NullLogger.Instance"/>.</param>
+    public RpcServerConnectionProcessor(
+        IReadOnlyDictionary<Guid, IOpcServerDispatcher> dispatchers,
+        OpcObjectRegistry? objectRegistry,
+        ILogger? logger = null)
     {
         ArgumentNullException.ThrowIfNull(dispatchers);
         _dispatchers = dispatchers;
+        _objectRegistry = objectRegistry;
         _logger = logger ?? NullLogger.Instance;
     }
 
@@ -345,8 +367,7 @@ public sealed class RpcServerConnectionProcessor
         int maxTransmitFragment,
         CancellationToken cancellationToken)
     {
-        if (!contextMap.TryGetValue(request.ContextId, out Guid interfaceId)
-            || !_dispatchers.TryGetValue(interfaceId, out IOpcServerDispatcher? dispatcher))
+        if (!contextMap.TryGetValue(request.ContextId, out Guid interfaceId))
         {
             UnknownContext(_logger, transport.RemoteEndpoint, request.ContextId, null);
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
@@ -354,24 +375,64 @@ public sealed class RpcServerConnectionProcessor
             return;
         }
 
-        ReadOnlyMemory<byte> body;
-        try
+        IOpcServerDispatcher? dispatcher = ResolveDispatcher(request, interfaceId);
+        if (dispatcher is null)
         {
-            body = request.Stub is null
-                ? ReadOnlyMemory<byte>.Empty
-                : OrpcEnvelope.ExtractRequestBody(request.Stub);
+            UnknownContext(_logger, transport.RemoteEndpoint, request.ContextId, null);
+            await WriteFaultAsync(transport, request.CallId, request.ContextId,
+                FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
+            return;
         }
-        catch (InvalidOperationException)
+
+        if (!TryExtractRequestBody(request, out ReadOnlyMemory<byte> body))
         {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
                 FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
             return;
         }
 
-        DispatchResult result;
+        DispatchResult? result = await TryDispatchAsync(transport, dispatcher, interfaceId, request, body, cancellationToken)
+            .ConfigureAwait(false);
+        if (result is null)
+        {
+            await WriteFaultAsync(transport, request.CallId, request.ContextId,
+                FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
+        await WriteRequestOutcomeAsync(transport, request, result.Value, maxTransmitFragment, cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    private static bool TryExtractRequestBody(RequestCoPdu request, out ReadOnlyMemory<byte> body)
+    {
+        body = ReadOnlyMemory<byte>.Empty;
+        if (request.Stub is null)
+        {
+            return true;
+        }
         try
         {
-            result = await dispatcher.DispatchAsync(request.Opnum, body, cancellationToken).ConfigureAwait(false);
+            body = OrpcEnvelope.ExtractRequestBody(request.Stub);
+            return true;
+        }
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+    }
+
+    private async ValueTask<DispatchResult?> TryDispatchAsync(
+        IAsyncTransport transport,
+        IOpcServerDispatcher dispatcher,
+        Guid interfaceId,
+        RequestCoPdu request,
+        ReadOnlyMemory<byte> body,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await dispatcher.DispatchAsync(request.Opnum, body, cancellationToken).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -380,11 +441,17 @@ public sealed class RpcServerConnectionProcessor
         catch (Exception ex)
         {
             DispatcherThrew(_logger, transport.RemoteEndpoint, interfaceId, request.Opnum, ex);
-            await WriteFaultAsync(transport, request.CallId, request.ContextId,
-                FaultCode.UNSPECIFIED_REJECTION, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
-            return;
+            return null;
         }
+    }
 
+    private static async ValueTask WriteRequestOutcomeAsync(
+        IAsyncTransport transport,
+        RequestCoPdu request,
+        DispatchResult result,
+        int maxTransmitFragment,
+        CancellationToken cancellationToken)
+    {
         if (result.IsFailure)
         {
             await WriteFaultAsync(transport, request.CallId, request.ContextId,
@@ -401,6 +468,21 @@ public sealed class RpcServerConnectionProcessor
             CallId = request.CallId,
         };
         await WritePduAsync(transport, response, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
+    }
+
+    private IOpcServerDispatcher? ResolveDispatcher(RequestCoPdu request, Guid interfaceId)
+    {
+        // Per-object route: if the request carries an Object UUID and the
+        // registry knows it for the requested interface, prefer it over
+        // the root map. Otherwise fall through to the root dispatcher set.
+        if (_objectRegistry is not null && request.Object is not null
+            && Guid.TryParse(request.Object.ToString(), out Guid ipid)
+            && _objectRegistry.TryGetDispatcher(ipid, interfaceId, out IOpcServerDispatcher perObject))
+        {
+            return perObject;
+        }
+
+        return _dispatchers.TryGetValue(interfaceId, out IOpcServerDispatcher? root) ? root : null;
     }
 
     private static async ValueTask WritePduAsync(

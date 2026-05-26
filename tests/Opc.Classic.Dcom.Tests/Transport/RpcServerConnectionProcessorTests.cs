@@ -198,6 +198,85 @@ public sealed class RpcServerConnectionProcessorTests
             .Throws<ArgumentNullException>();
     }
 
+    [Test]
+    public async Task Request_with_object_uuid_routes_through_object_registry()
+    {
+        // Demonstrates the per-object IPID routing path. The root
+        // dispatcher returns one payload; the per-object dispatcher
+        // (registered with a specific IPID) returns a different one.
+        // A request with PFC_OBJECT_UUID + matching Object UUID must
+        // hit the per-object dispatcher; a request without it must
+        // fall back to the root.
+        byte[] rootPayload = [0x52, 0x4F, 0x4F, 0x54];
+        byte[] objectPayload = [0x4F, 0x42, 0x4A, 0x21];
+
+        var rootDispatcher = new StubDispatcher(_ => DispatchResult.Success(rootPayload));
+        var objectDispatcher = new StubDispatcher(_ => DispatchResult.Success(objectPayload));
+        var registry = new OpcObjectRegistry();
+        Guid objectIpid = registry.Register(new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = objectDispatcher });
+
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = rootDispatcher },
+            registry);
+
+        await using var transport = new InMemoryAsyncTransport();
+        await WritePduToInbound(transport, NewBindForInterface(InterfaceId, contextId: 0, callId: 1));
+        // Request 1: no Object UUID -> root dispatcher
+        await WritePduToInbound(transport, NewRequest(contextId: 0, opnum: 3, callId: 2, payload: []));
+        // Request 2: with Object UUID -> object dispatcher
+        await WritePduToInbound(transport, NewRequestWithObject(contextId: 0, opnum: 3, callId: 3, ipid: objectIpid));
+
+        await RunProcessorAndShutdown(processor, transport);
+
+        await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
+        ResponseCoPdu rootResponse = await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        ResponseCoPdu objectResponse = await ReadOutboundPduAs<ResponseCoPdu>(transport);
+
+        ReadOnlyMemory<byte> rootBody = OrpcEnvelope.ExtractResponseBody(rootResponse.Stub);
+        ReadOnlyMemory<byte> objectBody = OrpcEnvelope.ExtractResponseBody(objectResponse.Stub);
+        await Assert.That(rootBody.ToArray()).IsEquivalentTo(rootPayload);
+        await Assert.That(objectBody.ToArray()).IsEquivalentTo(objectPayload);
+    }
+
+    [Test]
+    public async Task Request_with_unknown_object_uuid_falls_back_to_root_dispatcher()
+    {
+        byte[] rootPayload = [0xFA, 0x11, 0xBA, 0xCC];
+        var rootDispatcher = new StubDispatcher(_ => DispatchResult.Success(rootPayload));
+        var registry = new OpcObjectRegistry();
+
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher> { [InterfaceId] = rootDispatcher },
+            registry);
+
+        await using var transport = new InMemoryAsyncTransport();
+        await WritePduToInbound(transport, NewBindForInterface(InterfaceId, contextId: 0, callId: 1));
+        // Unknown IPID — registry has nothing — must fall back to root
+        await WritePduToInbound(transport, NewRequestWithObject(contextId: 0, opnum: 3, callId: 2, ipid: Guid.NewGuid()));
+
+        await RunProcessorAndShutdown(processor, transport);
+
+        await ReadOutboundPduAs<BindAcknowledgePdu>(transport);
+        ResponseCoPdu response = await ReadOutboundPduAs<ResponseCoPdu>(transport);
+        ReadOnlyMemory<byte> body = OrpcEnvelope.ExtractResponseBody(response.Stub);
+        await Assert.That(body.ToArray()).IsEquivalentTo(rootPayload);
+    }
+
+    private static RequestCoPdu NewRequestWithObject(int contextId, int opnum, int callId, Guid ipid)
+    {
+        byte[] stub = OrpcEnvelope.BuildRequestStub(Array.Empty<byte>(), Guid.NewGuid());
+        var request = new RequestCoPdu
+        {
+            CallId = callId,
+            ContextId = contextId,
+            Opnum = opnum,
+            AllocationHint = stub.Length,
+            Stub = stub,
+            Object = new UUID(ipid.ToString("D")),
+        };
+        return request;
+    }
+
     private static async Task RunProcessorAndShutdown(
         RpcServerConnectionProcessor processor, InMemoryAsyncTransport transport)
     {
