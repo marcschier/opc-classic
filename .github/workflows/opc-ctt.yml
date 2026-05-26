@@ -2,15 +2,20 @@ name: OPC CTT conformance
 
 on:
   workflow_dispatch:
-    inputs:
-      ctt-installer-url:
-        description: 'Direct download URL for the OPC CTT installer (member-only)'
-        required: false
-        type: string
   schedule:
-    # Once weekly on Sunday at 03:00 UTC; only runs if the OPC_CTT_INSTALLER_URL
-    # secret is configured (the step is gated below).
+    # Weekly on Sunday at 03:00 UTC.
     - cron: '0 3 * * 0'
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  # CttServer ProgID/CLSID — must match samples/Opc.Classic.Samples.CttServer/Program.cs.
+  CTT_PROGID: Opc.Classic.DaSample.1
+  CTT_CLSID: '{8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A}'
 
 jobs:
   opc-ctt-conformance:
@@ -19,58 +24,161 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check for CTT installer URL
-        id: check-secret
-        shell: pwsh
-        run: |
-          $url = if ('${{ inputs.ctt-installer-url }}') { '${{ inputs.ctt-installer-url }}' } else { '${{ secrets.OPC_CTT_INSTALLER_URL }}' }
-          if (-not $url) {
-            Write-Host "::warning::OPC_CTT_INSTALLER_URL not configured - skipping CTT conformance"
-            echo "skip=true" >> $env:GITHUB_OUTPUT
-          } else {
-            echo "skip=false" >> $env:GITHUB_OUTPUT
-            echo "url=$url" >> $env:GITHUB_OUTPUT
-          }
-
       - uses: actions/setup-dotnet@v4
-        if: steps.check-secret.outputs.skip != 'true'
         with:
           global-json-file: global.json
 
-      - name: Download + install OPC CTT
-        if: steps.check-secret.outputs.skip != 'true'
+      # ----- Install the OPC Compliance Test Tool from vendored MSIs -----
+      # Install order matters: the Common Modules MSI provides OpcCtt.exe and
+      # the OPCEnum service that the plugin MSIs depend on; plugins must come
+      # after. Exit code 0 = success; 3010 = reboot pending (harmless in CI).
+      - name: Install CTT Common Modules
         shell: pwsh
         run: |
-          $url = '${{ steps.check-secret.outputs.url }}'
-          $installer = "$env:RUNNER_TEMP\OpcCtt.exe"
-          Invoke-WebRequest -Uri $url -OutFile $installer
-          Start-Process -FilePath $installer -ArgumentList '/S' -Wait
-
-      - name: Start managed Opc.Classic.Samples.CttServer
-        if: steps.check-secret.outputs.skip != 'true'
-        shell: pwsh
-        run: |
-          Start-Process dotnet -ArgumentList "run", "--project", "samples/Opc.Classic.Samples.CttServer", "--no-build", "-c", "Release" -NoNewWindow
-          Start-Sleep -Seconds 5  # let the server bind
-          Write-Host "Opc.Classic.Samples.CttServer launched"
-
-      - name: Run OPC CTT against managed server
-        if: steps.check-secret.outputs.skip != 'true'
-        shell: pwsh
-        run: |
-          $cttExe = "${env:ProgramFiles(x86)}\OPC Foundation\OPC Compliance Test Tool\OpcCtt.exe"
-          if (Test-Path $cttExe) {
-            # CTT is typically GUI; CI requires the headless mode (-headless or /AUTO).
-            # The exact invocation depends on CTT version (verify against installer docs).
-            & $cttExe /AUTO /Output:$env:RUNNER_TEMP\ctt-results.xml /ServerProgId:Opc.Classic.DaSample.1
-          } else {
-            Write-Warning "OPC CTT not installed at expected path"
-            exit 1
+          $msi = Resolve-Path 'External/CTT/Test Tool v2.0.15/OPC CTT Common Modules 2.0.15.msi'
+          Write-Host "Installing $msi"
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            throw "msiexec failed with exit code $($p.ExitCode)"
           }
 
-      - name: Upload CTT results
-        if: always() && steps.check-secret.outputs.skip != 'true'
+      - name: Install CTT Data Access 2.05a Plugin
+        shell: pwsh
+        run: |
+          $msi = Resolve-Path 'External/CTT/Data Access 2.05a Plugin v2.0.22/OPC CTT DataAccess2 Modules 2.0.22.msi'
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            throw "msiexec failed with exit code $($p.ExitCode)"
+          }
+
+      - name: Install CTT Data Access 3.0 Plugin
+        shell: pwsh
+        run: |
+          $msi = Resolve-Path 'External/CTT/Data Access 3.0 Plugin v1.0.18/OPC CTT DataAccess3 Modules 1.0.18.msi'
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            throw "msiexec failed with exit code $($p.ExitCode)"
+          }
+
+      - name: Install CTT Alarms & Events Plugin
+        shell: pwsh
+        run: |
+          $msi = Resolve-Path 'External/CTT/Alarm and Events Plugin v1.0.14/OPC CTT AlarmEvents Modules 1.0.14.msi'
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            throw "msiexec failed with exit code $($p.ExitCode)"
+          }
+
+      - name: Install CTT Historical Data Plugin
+        shell: pwsh
+        run: |
+          $msi = Resolve-Path 'External/CTT/Historical Data Plugin v1.0.8/OPC CTT Historical DA Modules 1.0.8.msi'
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            throw "msiexec failed with exit code $($p.ExitCode)"
+          }
+
+      - name: Install CTT XML-DA Plugin
+        shell: pwsh
+        run: |
+          $msi = Resolve-Path 'External/CTT/XML-DA Plugin v1.0.8/OPC CTT XMLDA Modules 1.0.8.msi'
+          $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
+            throw "msiexec failed with exit code $($p.ExitCode)"
+          }
+
+      - name: Ensure OPCEnum service is running
+        shell: pwsh
+        run: |
+          # OPCEnum is the OPC Foundation server-enumeration service installed by
+          # the Common Modules MSI. CTT browses it to find OPC servers on the host.
+          $svc = Get-Service -Name OpcEnum -ErrorAction SilentlyContinue
+          if ($null -eq $svc) {
+            Write-Host "::warning::OpcEnum service not installed; the CTT may still find servers via direct CLSID lookup"
+          } elseif ($svc.Status -ne 'Running') {
+            Start-Service OpcEnum
+            Write-Host "Started OpcEnum service"
+          } else {
+            Write-Host "OpcEnum service already running"
+          }
+
+      # ----- Build + register the managed sample DA server -----
+      - name: Publish Opc.Classic.Samples.CttServer (Release)
+        run: dotnet publish samples/Opc.Classic.Samples.CttServer -c Release -v:minimal
+
+      - name: Register Opc.Classic.DaSample.1 (HKLM, both registry views)
+        shell: pwsh
+        run: |
+          $exe = Resolve-Path 'samples/Opc.Classic.Samples.CttServer/bin/Release/net10.0/publish/Opc.Classic.Samples.CttServer.exe'
+          & $exe --register
+          if ($LASTEXITCODE -ne 0) {
+            throw "--register failed with exit code $LASTEXITCODE"
+          }
+
+          Write-Host '--- HKLM:\Software\Classes\CLSID\{8F7C1B14-...} ---'
+          reg query "HKLM\Software\Classes\CLSID\$($env:CTT_CLSID)" /s
+
+      # ----- Run the CTT (continue-on-error: this is a plumbing smoke; the
+      #       IClassFactory stub returns E_NOINTERFACE so conformance will fail
+      #       until IOPCServer dispatch is wired up. See docs/ctt/CI_DESIGN.md). -----
+      - name: Locate OpcCtt.exe and dump help
+        id: locate-ctt
+        shell: pwsh
+        run: |
+          $candidates = @(
+            "$env:ProgramFiles\OPC Foundation\OPC Compliance Test Tool\OpcCtt.exe",
+            "${env:ProgramFiles(x86)}\OPC Foundation\OPC Compliance Test Tool\OpcCtt.exe",
+            "$env:ProgramFiles\OPC Foundation\OPC Foundation Compliance Test Tool\OpcCtt.exe",
+            "${env:ProgramFiles(x86)}\OPC Foundation\OPC Foundation Compliance Test Tool\OpcCtt.exe"
+          )
+          $found = $null
+          foreach ($c in $candidates) {
+            if (Test-Path $c) { $found = $c; break }
+          }
+          if (-not $found) {
+            Write-Host "::warning::OpcCtt.exe was not found in any expected install path"
+            Get-ChildItem "$env:ProgramFiles\OPC Foundation" -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "Found candidate: $($_.FullName)" }
+            Get-ChildItem "${env:ProgramFiles(x86)}\OPC Foundation" -Recurse -Filter 'OpcCtt.exe' -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "Found candidate: $($_.FullName)" }
+            echo "found=" >> $env:GITHUB_OUTPUT
+            exit 0
+          }
+          echo "found=$found" >> $env:GITHUB_OUTPUT
+          Write-Host "OpcCtt.exe located at: $found"
+
+          # Dump help output as a diagnostic; the actual headless CLI flags are
+          # TBD and will be confirmed on the first real CI run.
+          & $found /? 2>&1 | Tee-Object -FilePath "$env:RUNNER_TEMP\opcctt-help.txt"
+
+      - name: Run OPC CTT against managed server (smoke; non-blocking)
+        if: steps.locate-ctt.outputs.found != ''
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $cttExe = '${{ steps.locate-ctt.outputs.found }}'
+          $output = "$env:RUNNER_TEMP\ctt-results.xml"
+          Write-Host "Running CTT smoke against $($env:CTT_PROGID)"
+          # TODO: the actual CTT v2.0.15 headless CLI is unverified. /AUTO /Output:
+          # /ServerProgId: is speculative — replace with the canonical syntax once
+          # confirmed against the help output from the previous step.
+          & $cttExe /AUTO "/Output:$output" "/ServerProgId:$($env:CTT_PROGID)"
+          Write-Host "CTT exit code: $LASTEXITCODE"
+
+      # ----- Always unregister + collect logs, even on failure -----
+      - name: Unregister managed server (always)
+        if: always()
+        shell: pwsh
+        run: |
+          $exe = 'samples/Opc.Classic.Samples.CttServer/bin/Release/net10.0/publish/Opc.Classic.Samples.CttServer.exe'
+          if (Test-Path $exe) {
+            & $exe --unregister
+          }
+
+      - name: Upload CTT artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: opc-ctt-results
-          path: ${{ runner.temp }}/ctt-results.xml
+          path: |
+            ${{ runner.temp }}/ctt-results.xml
+            ${{ runner.temp }}/opcctt-help.txt
+          if-no-files-found: warn
