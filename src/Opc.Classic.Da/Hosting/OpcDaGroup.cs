@@ -32,10 +32,15 @@ namespace Opc.Classic.Da.Hosting;
 /// outbound <c>IOPCDataCallback</c>) is ocom-7b.
 /// </para>
 /// </remarks>
-public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO
+public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
+    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3
 {
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
     private int _nextItemHandle = 1;
+    private int _nextCancelId = 1;
+
+    /// <summary>Async I/O callbacks enabled (the GetEnable/SetEnable state).</summary>
+    private bool _callbacksEnabled = true;
 
     /// <summary>Initializes a new group with the supplied creation parameters.</summary>
     public OpcDaGroup(
@@ -398,6 +403,235 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         return Task.FromResult(errors);
     }
 
+    // ----- IOPCSyncIO2 -----
+
+    /// <inheritdoc />
+    public Task ReadMaxAgeAsync(
+        int[] serverHandles,
+        int[] maxAges,
+        out OpcVariant[] values,
+        out ushort[] qualities,
+        out long[] timestamps,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(maxAges);
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = maxAges; // in-memory: max-age is satisfied immediately
+
+        int count = serverHandles.Length;
+        values = new OpcVariant[count];
+        qualities = new ushort[count];
+        timestamps = new long[count];
+        errors = new int[count];
+        for (int i = 0; i < count; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                OpcItemState snapshot = item.GetSnapshot();
+                values[i] = snapshot.Value;
+                qualities[i] = (ushort)snapshot.Quality.RawValue;
+                timestamps[i] = snapshot.Timestamp.ToFileTime();
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                values[i] = OpcVariant.Empty;
+                qualities[i] = OpcDaItemQuality.BadNonSpecific;
+                timestamps[i] = 0;
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(values);
+        if (serverHandles.Length != values.Length)
+        {
+            throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                OpcItemVqt vqt = values[i];
+                ushort quality = vqt.Quality is { } q ? (ushort)q.RawValue : OpcDaItemQuality.GoodNonSpecific;
+                DateTimeOffset ts = vqt.Timestamp ?? now;
+                item.Update(vqt.Value, quality, ts);
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    // ----- IOPCAsyncIO2 -----
+
+    /// <inheritdoc />
+    Task<int> IOPCAsyncIO2.ReadAsync(int[] serverHandles, int transactionId, out int[] errors, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = transactionId;
+        // Allocate a cancel id; per-item error reporting is identical to sync read.
+        // The real ocom-7b path would fire-and-forget a callback delivering the
+        // read results to the subscribed sink; here we just produce the per-item
+        // errors synchronously so the client gets a consistent dispatch contract.
+        int cancelId = Interlocked.Increment(ref _nextCancelId);
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            errors[i] = _items.ContainsKey(serverHandles[i])
+                ? OpcResultId.Ok.Code
+                : OpcResultId.InvalidHandle.Code;
+        }
+        return Task.FromResult(cancelId);
+    }
+
+    /// <inheritdoc />
+    Task<int> IOPCAsyncIO2.WriteAsync(int[] serverHandles, OpcVariant[] values, int transactionId, out int[] errors, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(values);
+        if (serverHandles.Length != values.Length)
+        {
+            throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = transactionId;
+        int cancelId = Interlocked.Increment(ref _nextCancelId);
+        errors = new int[serverHandles.Length];
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                item.Update(values[i], OpcDaItemQuality.GoodNonSpecific, now);
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(cancelId);
+    }
+
+    /// <inheritdoc />
+    public Task<int> Refresh2Async(int dataSource, int transactionId, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = dataSource;
+        _ = transactionId;
+        return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
+    }
+
+    /// <inheritdoc />
+    public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = cancelId;
+        // No in-flight transactions to cancel in this in-memory impl.
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task SetEnableAsync(bool enabled, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _callbacksEnabled = enabled;
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task<bool> GetEnableAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(_callbacksEnabled);
+    }
+
+    // ----- IOPCAsyncIO3 -----
+
+    /// <inheritdoc />
+    public Task<int> ReadMaxAgeAsync(int[] serverHandles, int[] maxAges, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(maxAges);
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = transactionId;
+        _ = maxAges;
+        int cancelId = Interlocked.Increment(ref _nextCancelId);
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            errors[i] = _items.ContainsKey(serverHandles[i])
+                ? OpcResultId.Ok.Code
+                : OpcResultId.InvalidHandle.Code;
+        }
+        return Task.FromResult(cancelId);
+    }
+
+    /// <inheritdoc />
+    public Task<int> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, int transactionId, out int[] errors, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(values);
+        if (serverHandles.Length != values.Length)
+        {
+            throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = transactionId;
+        int cancelId = Interlocked.Increment(ref _nextCancelId);
+        errors = new int[serverHandles.Length];
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                OpcItemVqt vqt = values[i];
+                ushort quality = vqt.Quality is { } q ? (ushort)q.RawValue : OpcDaItemQuality.GoodNonSpecific;
+                DateTimeOffset ts = vqt.Timestamp ?? now;
+                item.Update(vqt.Value, quality, ts);
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(cancelId);
+    }
+
+    /// <inheritdoc />
+    public Task<int> RefreshMaxAgeAsync(int maxAge, int transactionId, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = maxAge;
+        _ = transactionId;
+        return Task.FromResult(Interlocked.Increment(ref _nextCancelId));
+    }
+
+    // IOPCSyncIO2 has the same ReadAsync/WriteAsync as IOPCSyncIO -- the
+    // generator binds them to the same interface methods. Explicit interface
+    // implementation routes both to the shared in-memory paths.
+    Task<OpcItemState[]> IOPCSyncIO2.ReadAsync(int dataSource, int[] serverHandles, out int[] errors, CancellationToken cancellationToken) =>
+        ReadAsync(dataSource, serverHandles, out errors, cancellationToken);
+
+    Task<int[]> IOPCSyncIO2.WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken) =>
+        WriteAsync(serverHandles, values, cancellationToken);
+
     private (OpcItemResult Result, int Hresult) TryAddItem(OpcItemDef? def)
     {
         if (def is null || string.IsNullOrWhiteSpace(def.ItemId))
@@ -426,3 +660,4 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
             OpcResultId.Ok.Code);
     }
 }
+
