@@ -33,11 +33,13 @@ namespace Opc.Classic.Da.Hosting;
 /// </para>
 /// </remarks>
 public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
-    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3
+    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint
 {
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
+    private readonly ConcurrentDictionary<int, IOpcInterfaceRef> _sinks = new();
     private int _nextItemHandle = 1;
     private int _nextCancelId = 1;
+    private int _nextSubscriptionCookie = 1;
 
     /// <summary>Async I/O callbacks enabled (the GetEnable/SetEnable state).</summary>
     private bool _callbacksEnabled = true;
@@ -97,6 +99,12 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
 
     /// <summary>Test helper: returns the number of items currently in the group.</summary>
     public int ItemCount => _items.Count;
+
+    /// <summary>Read-only view of the data-callback subscriptions registered via <see cref="IConnectionPoint.AdviseAsync"/>.</summary>
+    public IReadOnlyDictionary<int, IOpcInterfaceRef> Subscriptions => _sinks;
+
+    /// <summary>Test helper: returns the number of active <c>IOPCDataCallback</c> subscriptions.</summary>
+    public int SubscriptionCount => _sinks.Count;
 
     /// <summary>Returns the item for a given server handle, or <see langword="null"/> if unknown.</summary>
     public OpcDaItem? GetItem(int serverHandle) =>
@@ -631,6 +639,117 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
 
     Task<int[]> IOPCSyncIO2.WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken) =>
         WriteAsync(serverHandles, values, cancellationToken);
+
+    // ----- IConnectionPoint (subscription sink-binding) -----
+
+    /// <inheritdoc />
+    public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(IOPCDataCallback.InterfaceId);
+    }
+
+    /// <inheritdoc />
+    public Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(sink);
+        cancellationToken.ThrowIfCancellationRequested();
+        int cookie = Interlocked.Increment(ref _nextSubscriptionCookie);
+        _sinks[cookie] = sink;
+        return Task.FromResult(cookie);
+    }
+
+    /// <inheritdoc />
+    public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _sinks.TryRemove(cookie, out _);
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Fans out an <c>OnDataChange</c> callback for all active subscriptions.
+    /// Delivers via the caller-supplied <paramref name="sender"/> delegate;
+    /// the OpcDaGroup itself stays transport-agnostic (it doesn't construct
+    /// outbound channels). Callers (typically the host) supply a sender that
+    /// resolves each sink's <see cref="IOpcInterfaceRef"/> into a real
+    /// <c>DcomCallChannel</c> + <c>IOPCDataCallbackClientProxy</c> and invokes
+    /// <c>OnDataChangeAsync</c> on it.
+    /// </summary>
+    /// <param name="transactionId">Transaction id echoed in the callback payload.</param>
+    /// <param name="serverHandles">Server handles for the items whose values changed; unknown handles are skipped.</param>
+    /// <param name="sender">Delivery callback invoked once per active subscription with the change payload.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    public async Task TriggerDataChangeAsync(
+        int transactionId,
+        int[] serverHandles,
+        Func<IOpcInterfaceRef, DataChangePayload, CancellationToken, Task> sender,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(sender);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (!_callbacksEnabled || _sinks.IsEmpty)
+        {
+            return;
+        }
+
+        DataChangePayload payload = BuildDataChangePayload(transactionId, serverHandles);
+        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
+        {
+            await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    private DataChangePayload BuildDataChangePayload(int transactionId, int[] serverHandles)
+    {
+        var clientHandles = new List<int>(serverHandles.Length);
+        var values = new List<OpcVariant>(serverHandles.Length);
+        var qualities = new List<ushort>(serverHandles.Length);
+        var timestamps = new List<long>(serverHandles.Length);
+        var errors = new List<int>(serverHandles.Length);
+
+        foreach (int serverHandle in serverHandles)
+        {
+            if (!_items.TryGetValue(serverHandle, out OpcDaItem? item))
+            {
+                continue;
+            }
+            OpcItemState snapshot = item.GetSnapshot();
+            clientHandles.Add(snapshot.ClientHandle);
+            values.Add(snapshot.Value);
+            qualities.Add((ushort)snapshot.Quality.RawValue);
+            timestamps.Add(snapshot.Timestamp.ToFileTime());
+            errors.Add(0);
+        }
+
+        return new DataChangePayload(
+            TransactionId: transactionId,
+            GroupHandle: ClientHandle,
+            MasterQuality: OpcDaItemQuality.GoodNonSpecific,
+            MasterError: 0,
+            ClientHandles: clientHandles.ToArray(),
+            Values: values.ToArray(),
+            Qualities: qualities.ToArray(),
+            Timestamps: timestamps.ToArray(),
+            Errors: errors.ToArray());
+    }
+
+    /// <summary>
+    /// Immutable snapshot of an <c>OnDataChange</c> payload delivered to a
+    /// subscribed <c>IOPCDataCallback</c> sink.
+    /// </summary>
+    public sealed record DataChangePayload(
+        int TransactionId,
+        int GroupHandle,
+        int MasterQuality,
+        int MasterError,
+        int[] ClientHandles,
+        OpcVariant[] Values,
+        ushort[] Qualities,
+        long[] Timestamps,
+        int[] Errors);
 
     private (OpcItemResult Result, int Hresult) TryAddItem(OpcItemDef? def)
     {

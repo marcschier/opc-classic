@@ -123,6 +123,7 @@ public sealed class CttDaServer : IOpcDaServer
             [IOPCSyncIO2.InterfaceId] = new IOPCSyncIO2ServerDispatcher(managedGroup),
             [IOPCAsyncIO2.InterfaceId] = new IOPCAsyncIO2ServerDispatcher(managedGroup),
             [IOPCAsyncIO3.InterfaceId] = new IOPCAsyncIO3ServerDispatcher(managedGroup),
+            [IConnectionPoint.InterfaceId] = new IConnectionPointServerDispatcher(managedGroup),
         };
         Guid ipid = _objectRegistry.Register(dispatchers);
 
