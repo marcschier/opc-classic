@@ -203,6 +203,32 @@ public sealed class GeneratedServerDispatcherTests
         await Assert.That(impl.LastUnadvisedCookie).IsEqualTo(42);
     }
 
+    // ===== IOPCShutdown =====
+
+    [Test]
+    public async Task IOPCShutdown_ShutdownRequest_dispatches_with_reason_string()
+    {
+        var impl = new StubShutdown();
+        var dispatcher = new IOPCShutdownServerDispatcher(impl);
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteUnicodeStringPtr("Server going down for maintenance"));
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IOPCShutdown.Opnums.ShutdownRequestAsync, payload, CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(impl.LastReason).IsEqualTo("Server going down for maintenance");
+    }
+
+    [Test]
+    public async Task IOPCShutdown_unknown_opnum_returns_E_NOTIMPL()
+    {
+        var dispatcher = new IOPCShutdownServerDispatcher(new StubShutdown());
+
+        DispatchResult result = await dispatcher.DispatchAsync(99, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
+
+        await Assert.That(result.Hresult).IsEqualTo(OpcResultId.NotImplemented.Code);
+    }
+
     // ===== helpers =====
 
     private static byte[] WritePayload(NdrWriteAction action)
@@ -309,6 +335,17 @@ public sealed class GeneratedServerDispatcherTests
         public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
         {
             LastUnadvisedCookie = cookie;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class StubShutdown : IOPCShutdown
+    {
+        public string? LastReason { get; private set; }
+
+        public Task ShutdownRequestAsync(string reason, CancellationToken cancellationToken = default)
+        {
+            LastReason = reason;
             return Task.CompletedTask;
         }
     }

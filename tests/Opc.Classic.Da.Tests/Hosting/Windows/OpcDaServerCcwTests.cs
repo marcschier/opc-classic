@@ -121,6 +121,25 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
+    public async Task RemoveGroup_via_CCW_delegates_to_managed_server()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+
+        int hr = InvokeRemoveGroup(ccw, hServerGroup: 12345, bForce: 1);
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(stub.LastRemovedGroupHandle).IsEqualTo(12345);
+        await Assert.That(stub.LastRemoveGroupForce).IsTrue();
+        await Assert.That(stub.RemoveGroupCallCount).IsEqualTo(1);
+    }
+
+    [Test]
     public async Task IOPCServer_vtable_slots_return_E_NOTIMPL()
     {
         if (!OperatingSystem.IsWindows())
@@ -135,7 +154,6 @@ public sealed class OpcDaServerCcwTests
         await Assert.That(result.StringOut).IsEqualTo(IntPtr.Zero);
         await Assert.That(result.HrGetStatus).IsEqualTo(E_NOTIMPL);
         await Assert.That(result.StatusOut).IsEqualTo(IntPtr.Zero);
-        await Assert.That(result.HrRemoveGroup).IsEqualTo(E_NOTIMPL);
     }
 
     [Test]
@@ -162,8 +180,7 @@ public sealed class OpcDaServerCcwTests
 
     private readonly record struct NotImplStubsResult(
         int HrGetErrorString, IntPtr StringOut,
-        int HrGetStatus, IntPtr StatusOut,
-        int HrRemoveGroup);
+        int HrGetStatus, IntPtr StatusOut);
 
     private static unsafe QueryInterfaceResult InvokeQueryInterface(IntPtr ccw, Guid iid)
     {
@@ -199,10 +216,49 @@ public sealed class OpcDaServerCcwTests
         IntPtr statusOut;
         int hrGetStatus = getStatus(ccw, &statusOut);
 
-        var removeGroup = (delegate* unmanaged<IntPtr, uint, int, int>)vtable[7];
-        int hrRemoveGroup = removeGroup(ccw, 1, 0);
+        return new NotImplStubsResult(hrGetError, stringOut, hrGetStatus, statusOut);
+    }
 
-        return new NotImplStubsResult(hrGetError, stringOut, hrGetStatus, statusOut, hrRemoveGroup);
+    private static unsafe int InvokeRemoveGroup(IntPtr ccw, uint hServerGroup, int bForce)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var removeGroup = (delegate* unmanaged<IntPtr, uint, int, int>)vtable[7];
+        return removeGroup(ccw, hServerGroup, bForce);
+    }
+
+    private sealed class RecordingDaServer : IOpcDaServer
+    {
+        public int RemoveGroupCallCount { get; private set; }
+
+        public int LastRemovedGroupHandle { get; private set; }
+
+        public bool LastRemoveGroupForce { get; private set; }
+
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult(new OpcServerStatus
+            {
+                Spec = OpcStatusSpec.Da,
+                StartTime = DateTimeOffset.UnixEpoch,
+                CurrentTime = DateTimeOffset.UnixEpoch,
+                LastUpdateTime = DateTimeOffset.UnixEpoch,
+                State = OpcServerState.Running,
+                ServerVersion = new Version(1, 0, 0),
+                VendorInfo = "recording-test",
+            });
+
+        public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) =>
+            Task.FromResult(1);
+
+        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default)
+        {
+            RemoveGroupCallCount++;
+            LastRemovedGroupHandle = serverGroupHandle;
+            LastRemoveGroupForce = force;
+            return Task.CompletedTask;
+        }
+
+        public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
+            Task.FromResult("ok");
     }
 
     private sealed class StubDaServer : IOpcDaServer

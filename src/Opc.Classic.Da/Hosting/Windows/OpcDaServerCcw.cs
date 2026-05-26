@@ -53,6 +53,7 @@ public static unsafe class OpcDaServerCcw
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
+    private const int E_FAIL = unchecked((int)0x80004005);
 
     private const int VtableSlotCount = 12; // 3 IUnknown + 9 IOPCServer
 
@@ -256,8 +257,33 @@ public static unsafe class OpcDaServerCcw
     [UnmanagedCallersOnly]
     private static int RemoveGroup(IntPtr pThis, uint hServerGroup, int bForce)
     {
-        _ = pThis; _ = hServerGroup; _ = bForce;
-        return E_NOTIMPL;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002 // The CCW method runs synchronously across the COM ABI; bridge to the async impl via .GetAwaiter().GetResult().
+            server.RemoveGroupAsync((int)hServerGroup, bForce != 0, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch: any escaping managed exception would crash the process.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
