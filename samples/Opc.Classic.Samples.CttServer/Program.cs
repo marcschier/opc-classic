@@ -30,18 +30,18 @@ internal static class Program
 
         bool embedded = HasEmbeddingFlag(args);
 
-        var host = Host.CreateApplicationBuilder(args);
+        var builder = Host.CreateApplicationBuilder(args);
 
-        host.Logging.ClearProviders();
-        host.Logging.AddSimpleConsole(static opt =>
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSimpleConsole(static opt =>
         {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
 
-        host.Services.AddClassicServer();
-        host.Services.AddClassicClsidRegistry(host.Configuration);
-        host.Services.AddOpcDaServer<CttDaServer>(opt =>
+        builder.Services.AddClassicServer();
+        builder.Services.AddClassicClsidRegistry(builder.Configuration);
+        builder.Services.AddOpcDaServer<CttDaServer>(opt =>
         {
             opt.Clsid = SampleClsid;
             opt.ProgId = SampleProgId;
@@ -49,18 +49,17 @@ internal static class Program
             opt.ListenAddress = "127.0.0.1:0";
         });
 
+        var host = builder.Build();
+
         uint comClassObjectCookie = 0;
         if (embedded && OperatingSystem.IsWindows())
         {
-            Opc.Classic.Hosting.Windows.ComClassObjectRegistrar.InitializeApartmentThreaded();
-            comClassObjectCookie =
-                Opc.Classic.Hosting.Windows.ComClassObjectRegistrar.RegisterClassObject(SampleClsid);
-            Opc.Classic.Hosting.Windows.ComClassObjectRegistrar.ResumeClassObjects();
+            comClassObjectCookie = RegisterScmFactory(host.Services);
         }
 
         try
         {
-            await host.Build().RunAsync().ConfigureAwait(false);
+            await host.RunAsync().ConfigureAwait(false);
         }
         finally
         {
@@ -72,6 +71,24 @@ internal static class Program
         }
 
         return 0;
+    }
+
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    private static uint RegisterScmFactory(IServiceProvider services)
+    {
+        // Resolve the managed server instance from DI, build a CCW factory
+        // that hands out an OpcDaServerCcw backed by it, and register the
+        // class object with SCM via the ocom-6 callback overload.
+        // The factory closure captures the IOpcDaServer for the process
+        // lifetime (matches the SCM-activation lifecycle).
+        var serverImpl = services.GetRequiredService<IOpcDaServer>();
+        Opc.Classic.Hosting.Windows.ComClassObjectRegistrar.InitializeApartmentThreaded();
+        uint cookie = Opc.Classic.Hosting.Windows.ComClassObjectRegistrar.RegisterClassObject(
+            SampleClsid,
+            createInstanceCallback: requestedIid =>
+                Opc.Classic.Da.Hosting.Windows.OpcDaServerCcw.Create(serverImpl, requestedIid));
+        Opc.Classic.Hosting.Windows.ComClassObjectRegistrar.ResumeClassObjects();
+        return cookie;
     }
 
     private static bool TryHandleRegistrationCommand(string[] args, out int exitCode)

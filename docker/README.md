@@ -29,6 +29,30 @@ The two scaffold containers compile their Dockerfiles but emit a placeholder
 EXE; `server-init.ps1` / `client.ps1` detect this and idle so you can
 `docker exec` in for debugging.
 
+## Managed-server state (ocom dispatch sweep — 2026-05-26)
+
+The `opc-classic/managed` container now runs a managed CttServer with the
+full server-side dispatch sweep wired in:
+
+| Piece | Source commit | What ships |
+|---|---|---|
+| Cross-platform RPC listener (`OpcServerListener` + `TcpServerEndpoint` + `RpcServerConnectionProcessor`) | `6823f5a` (ocom-1b) | Real TCP accept + DCE/RPC bind/alter/request/shutdown PDU handling |
+| DA/AE/HDA hosts wired to the listener | `a689fbd` (ocom-2) | Managed servers physically accept inbound DCOM calls |
+| IPID per-object dispatch routing (`OpcObjectRegistry`) | `b42a127` (ocom-3a) | `RequestCoPdu.Object` UUIDs resolve to per-group dispatchers |
+| `OpcDaGroup` + CttDaServer real group tracking | `b201173` (ocom-3b) | `AddGroup` returns a real IPID; `IOPCGroupStateMgt(2)` routes to the managed group |
+| Windows CCW factory + SCM wireup | `c4b0800` (ocom-6) + `Program.cs` rev | `IClassFactory::CreateInstance` returns a real `IOPCServer` CCW backed by `CttDaServer` |
+| `IConnectionPoint` server dispatch | `ce7186d` (ocom-8) | Server-side dispatch of `Advise`/`Unadvise`/`GetConnectionInterface` |
+| Outbound `IOPCDataCallback` (server→client) | `1723d11` (ocom-7) | Symmetric listener model proves callbacks compose |
+
+What's still stubbed (will surface as `E_NOTIMPL` in CTT):
+
+- All 9 `IOPCServer` vtable methods in the Windows CCW (`OpcDaServerCcw`) return `E_NOTIMPL`. The cross-platform transport path serves IOPCServer fully; the Windows-CCW path is the one a real OPC client (via opcproxy.dll) currently sees.
+- `OpcDaGroup` only implements `IOPCGroupStateMgt(2)`. `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3` are mechanical follow-ups to add to the dispatcher set at AddGroup time.
+- The `IConnectionPoint.Advise` payload (the sink ref) is decoded but the application-level "store sink + invoke OnDataChange on data update" wiring is a follow-up.
+
+The first real CTT run from this state should establish a baseline of what's
+covered vs not; the rest is incremental.
+
 ## Prerequisites
 
 - **Windows 10/11 Pro/Enterprise** or **Windows Server 2022+** host (Linux
