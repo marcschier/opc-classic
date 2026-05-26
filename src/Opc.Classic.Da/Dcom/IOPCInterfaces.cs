@@ -650,9 +650,24 @@ public partial interface IOPCAsyncIO3
 
 /// <summary><c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).</summary>
 [OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
+[OpcGenerateServerDispatch]
 public partial interface IConnectionPointContainer
 {
-    // EnumConnectionPoints and FindConnectionPoint return COM interface pointers.
+    /// <summary>
+    /// <c>IConnectionPointContainer::EnumConnectionPoints</c> (opnum 3).
+    /// Returns an enumerator (<c>IEnumConnectionPoints</c>) over all connection
+    /// points this container exposes.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IConnectionPointContainer::FindConnectionPoint</c> (opnum 4).
+    /// Returns the <c>IConnectionPoint</c> for a specific outbound IID
+    /// (e.g. <see cref="IOPCDataCallback.InterfaceId"/>).
+    /// </summary>
+    [OpcMethod(4)]
+    Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>

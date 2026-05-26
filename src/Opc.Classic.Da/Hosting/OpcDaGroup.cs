@@ -33,7 +33,7 @@ namespace Opc.Classic.Da.Hosting;
 /// </para>
 /// </remarks>
 public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
-    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint
+    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint, IConnectionPointContainer
 {
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
     private readonly ConcurrentDictionary<int, IOpcInterfaceRef> _sinks = new();
@@ -665,6 +665,46 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         cancellationToken.ThrowIfCancellationRequested();
         _sinks.TryRemove(cookie, out _);
         return Task.CompletedTask;
+    }
+
+    // ----- IConnectionPointContainer -----
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> EnumConnectionPointsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+            iid: Guid.Parse("B196B285-BAB4-101A-B69C-00AA00341D07"), // IID_IEnumConnectionPoints
+            flags: 0,
+            publicRefs: 1,
+            oxid: 1,
+            oid: unchecked((ulong)ServerHandle),
+            ipid: Guid.CreateVersion7(),
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>()));
+    }
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (iid != IOPCDataCallback.InterfaceId)
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
+
+        // OpcDaGroup IS the IConnectionPoint for IOPCDataCallback. Return a
+        // synthetic interface ref carrying this group's identity; in the real
+        // wire path the IPID would be the one assigned at AddGroup time.
+        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+            iid: IConnectionPoint.InterfaceId,
+            flags: 0,
+            publicRefs: 1,
+            oxid: 1,
+            oid: unchecked((ulong)ServerHandle),
+            ipid: Guid.CreateVersion7(),
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>()));
     }
 
     /// <summary>

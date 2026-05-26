@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
+using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
 namespace Opc.Classic.Da.Tests.Hosting;
@@ -138,6 +139,45 @@ public sealed class OpcDaGroupSubscriptionTests
         await Assert.That(captured).IsNotNull();
         await Assert.That(captured!.ClientHandles.Length).IsEqualTo(0);
         await Assert.That(captured.Values.Length).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task IConnectionPointContainer_FindConnectionPointAsync_returns_connection_point_for_DataCallback()
+    {
+        var group = CreateGroup();
+        IConnectionPointContainer container = group;
+
+        var iref = await container.FindConnectionPointAsync(
+            IOPCDataCallback.InterfaceId,
+            TestContext.Current!.CancellationToken);
+
+        await Assert.That(iref.Iid).IsEqualTo(IConnectionPoint.InterfaceId);
+        await Assert.That(iref.Ipid).IsNotEqualTo(Guid.Empty);
+    }
+
+    [Test]
+    public async Task IConnectionPointContainer_FindConnectionPointAsync_throws_for_unknown_iid()
+    {
+        var group = CreateGroup();
+        IConnectionPointContainer container = group;
+
+        await Assert.That(async () =>
+        {
+            _ = await container.FindConnectionPointAsync(
+                Guid.NewGuid(),
+                TestContext.Current!.CancellationToken);
+        }).Throws<Opc.Classic.OpcException>();
+    }
+
+    [Test]
+    public async Task IConnectionPointContainer_EnumConnectionPointsAsync_returns_interface_ref()
+    {
+        var group = CreateGroup();
+        IConnectionPointContainer container = group;
+
+        var iref = await container.EnumConnectionPointsAsync(TestContext.Current!.CancellationToken);
+
+        await Assert.That(iref.Ipid).IsNotEqualTo(Guid.Empty);
     }
 
     private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId)
