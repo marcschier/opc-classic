@@ -4,6 +4,8 @@
     <Description>TUnit-based unit tests for Opc.Classic.Da managed types.</Description>
     <RootNamespace>Opc.Classic.Da.Tests</RootNamespace>
     <AssemblyName>Opc.Classic.Da.Tests</AssemblyName>
+    <!-- OpcDaServerCcwTests invokes CCW vtable thunks through function pointers. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

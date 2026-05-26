@@ -4,6 +4,8 @@
     <Description>OPC Data Access (DA) 2.05a / 3.00 managed records and NDR wire codecs.</Description>
     <RootNamespace>Opc.Classic.Da</RootNamespace>
     <AssemblyName>Opc.Classic.Da</AssemblyName>
+    <!-- Hosting/Windows/OpcDaServerCcw uses unsafe COM-vtable interop for AOT-friendly CCW. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

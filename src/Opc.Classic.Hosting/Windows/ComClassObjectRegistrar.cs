@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -25,18 +26,25 @@ namespace Opc.Classic.Hosting.Windows;
 /// to the client.
 /// </para>
 /// <para>
-/// The class factory exposed by this type implements a STUB form of <c>IClassFactory</c>:
-/// <c>CreateInstance</c> always returns <c>E_NOINTERFACE</c>. The intent for <c>ctt-2</c>
-/// is to satisfy SCM's "class object registered" expectation so that the EXE is launched
-/// and the registration plumbing can be smoke-tested, while leaving the actual
-/// <c>IOPCServer</c> dispatch wire-up to a follow-up todo (the managed DCOM listener is
-/// currently scaffold-grade).
+/// Each <see cref="RegisterClassObject(Guid, Func{Guid, IntPtr}?, bool)"/> call allocates a
+/// fresh <c>IClassFactory</c> instance whose <c>CreateInstance</c> delegates to the
+/// supplied <see cref="Func{T, TResult}"/>; the callback receives the requested IID
+/// and returns a CCW pointer (or <see cref="IntPtr.Zero"/> for
+/// <see cref="E_NOINTERFACE"/>). The previous parameterless overload remains for
+/// callers that only need to satisfy SCM's "class object registered" expectation
+/// without actually dispatching activations (the original <c>ctt-2</c> smoke).
 /// </para>
 /// <para>
 /// All COM interop here is written in raw <c>unsafe</c> code that is compatible with
 /// NativeAOT trimming (<c>IsAotCompatible=true</c>). No reflection-based
 /// <c>[ComVisible]</c> or runtime CCW marshalling is used; the vtable is built explicitly
 /// from <c>[UnmanagedCallersOnly]</c> static methods.
+/// </para>
+/// <para>
+/// CCW instances are never freed (leak-at-process-exit) because Windows COM expects
+/// the IUnknown pointer it received via <c>CoRegisterClassObject</c> to remain valid
+/// for the lifetime of the registration; this matches the canonical CCW pattern and
+/// avoids use-after-free races on Release.
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
@@ -53,10 +61,7 @@ public static unsafe class ComClassObjectRegistrar
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid IID_IClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
 
-    // Static factory instance allocated in unmanaged memory so its address is stable
-    // across managed GC cycles. SCM holds the IUnknown* across the process lifetime.
-    private static IntPtr s_factoryInstance;
-    private static long s_refCount;
+    private static readonly ConcurrentDictionary<IntPtr, FactoryEntry> s_factories = new();
 
     /// <summary>
     /// Initializes the calling thread's COM apartment as STA. Idempotent: subsequent
@@ -79,24 +84,43 @@ public static unsafe class ComClassObjectRegistrar
     public static void Uninitialize() => CoUninitialize();
 
     /// <summary>
-    /// Registers the IUnknown-stub <c>IClassFactory</c> with the given CLSID against
-    /// the Windows COM SCM. Returns the registration cookie to pass to
-    /// <see cref="RevokeClassObject(uint)" /> on shutdown.
+    /// Registers a stub <c>IClassFactory</c> whose <c>CreateInstance</c> always
+    /// returns <see cref="E_NOINTERFACE"/>. Useful when only SCM's "class object
+    /// registered" expectation needs to be satisfied (smoke / registration-plumbing
+    /// validation).
+    /// </summary>
+    public static uint RegisterClassObject(Guid clsid, bool suspended = true) =>
+        RegisterClassObject(clsid, createInstanceCallback: null, suspended);
+
+    /// <summary>
+    /// Registers a class factory whose <c>CreateInstance</c> dispatches to
+    /// <paramref name="createInstanceCallback"/>. The callback receives the
+    /// client-requested IID and must return a CCW <see cref="IntPtr"/> with
+    /// ref count = 1 (the caller's reference) or <see cref="IntPtr.Zero"/>
+    /// for <see cref="E_NOINTERFACE"/>.
     /// </summary>
     /// <param name="clsid">The CLSID the class factory should be advertised for.</param>
+    /// <param name="createInstanceCallback">
+    /// Per-call factory invoked at activation time. <see langword="null"/> falls
+    /// back to <see cref="E_NOINTERFACE"/>.
+    /// </param>
     /// <param name="suspended">
     /// When <see langword="true" /> (recommended for multi-class servers), register with
     /// <c>REGCLS_SUSPENDED</c> so SCM does not dispatch activations until
     /// <see cref="ResumeClassObjects" /> is called.
     /// </param>
-    public static uint RegisterClassObject(Guid clsid, bool suspended = true)
+    public static uint RegisterClassObject(
+        Guid clsid,
+        Func<Guid, IntPtr>? createInstanceCallback,
+        bool suspended = true)
     {
-        EnsureFactoryAllocated();
+        IntPtr factoryInstance = AllocateFactoryInstance();
+        s_factories[factoryInstance] = new FactoryEntry(clsid, createInstanceCallback);
 
         int regcls = REGCLS_MULTIPLEUSE | (suspended ? REGCLS_SUSPENDED : 0);
         int hr = CoRegisterClassObject(
             in clsid,
-            s_factoryInstance,
+            factoryInstance,
             CLSCTX_LOCAL_SERVER,
             regcls,
             out uint cookie);
@@ -112,7 +136,7 @@ public static unsafe class ComClassObjectRegistrar
 
     /// <summary>
     /// Resumes activation dispatch after all class objects have been registered with
-    /// <see cref="REGCLS_SUSPENDED" />.
+    /// <c>REGCLS_SUSPENDED</c>.
     /// </summary>
     public static void ResumeClassObjects()
     {
@@ -141,13 +165,8 @@ public static unsafe class ComClassObjectRegistrar
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized native struct with explicit byte count.")]
-    private static void EnsureFactoryAllocated()
+    private static IntPtr AllocateFactoryInstance()
     {
-        if (s_factoryInstance != IntPtr.Zero)
-        {
-            return;
-        }
-
         IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
         vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -157,14 +176,7 @@ public static unsafe class ComClassObjectRegistrar
 
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
-
-        IntPtr previous = Interlocked.CompareExchange(ref s_factoryInstance, (IntPtr)instance, IntPtr.Zero);
-        if (previous != IntPtr.Zero)
-        {
-            // Lost the race; another thread already allocated. Free our copy.
-            NativeMemory.Free(vtable);
-            NativeMemory.Free(instance);
-        }
+        return (IntPtr)instance;
     }
 
     [UnmanagedCallersOnly]
@@ -185,7 +197,6 @@ public static unsafe class ComClassObjectRegistrar
         if (iid == IID_IUnknown || iid == IID_IClassFactory)
         {
             *ppv = pThis;
-            Interlocked.Increment(ref s_refCount);
             return S_OK;
         }
 
@@ -196,36 +207,68 @@ public static unsafe class ComClassObjectRegistrar
     [UnmanagedCallersOnly]
     private static uint AddRef(IntPtr pThis)
     {
-        _ = pThis;
-        long next = Interlocked.Increment(ref s_refCount);
-        return (uint)next;
+        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry))
+        {
+            return 1;
+        }
+        return (uint)Interlocked.Increment(ref entry.RefCount);
     }
 
     [UnmanagedCallersOnly]
     private static uint Release(IntPtr pThis)
     {
-        _ = pThis;
-        long next = Interlocked.Decrement(ref s_refCount);
-        // Static singleton: never actually free, even at ref count 0. SCM revokes
-        // via CoRevokeClassObject which calls Release; we keep the instance alive
-        // for re-registration scenarios.
+        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry))
+        {
+            return 0;
+        }
+
+        long next = Interlocked.Decrement(ref entry.RefCount);
+        // Static factory instances are leaked at process exit (matches the
+        // canonical CCW pattern). SCM holds references over the registration
+        // lifetime; freeing here would race with QueryInterface calls in flight.
         return next < 0 ? 0 : (uint)next;
     }
 
     [UnmanagedCallersOnly]
     private static int CreateInstance(IntPtr pThis, IntPtr pUnkOuter, Guid* riid, IntPtr* ppv)
     {
-        _ = pThis;
         _ = pUnkOuter;
-        _ = riid;
-        if (ppv != null)
+        if (ppv == null)
         {
-            *ppv = IntPtr.Zero;
+            return E_INVALIDARG;
         }
-        // STUB: IOPCServer dispatch is not yet wired up. SCM accepts the activation
-        // (the class object IS registered) but the client immediately sees
-        // E_NOINTERFACE. Replaced by a real factory in a follow-up todo.
-        return E_NOINTERFACE;
+        *ppv = IntPtr.Zero;
+
+        if (riid == null)
+        {
+            return E_INVALIDARG;
+        }
+
+        if (!s_factories.TryGetValue(pThis, out FactoryEntry? entry)
+            || entry.CreateInstanceCallback is null)
+        {
+            return E_NOINTERFACE;
+        }
+
+        IntPtr ccw;
+        try
+        {
+            ccw = entry.CreateInstanceCallback(*riid);
+        }
+#pragma warning disable CA1031 // Crossing the unmanaged COM boundary; any managed exception here would escape into ole32 and crash the process.
+        catch (Exception)
+#pragma warning restore CA1031
+        {
+            return E_NOINTERFACE;
+        }
+
+        if (ccw == IntPtr.Zero)
+        {
+            return E_NOINTERFACE;
+        }
+
+        *ppv = ccw;
+        return S_OK;
     }
 
     [UnmanagedCallersOnly]
@@ -262,4 +305,19 @@ public static unsafe class ComClassObjectRegistrar
     [DllImport("ole32.dll", ExactSpelling = true)]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     private static extern int CoResumeClassObjects();
+
+    private sealed class FactoryEntry
+    {
+        public FactoryEntry(Guid clsid, Func<Guid, IntPtr>? createInstanceCallback)
+        {
+            Clsid = clsid;
+            CreateInstanceCallback = createInstanceCallback;
+        }
+
+        public Guid Clsid { get; }
+
+        public Func<Guid, IntPtr>? CreateInstanceCallback { get; }
+
+        public long RefCount;
+    }
 }
