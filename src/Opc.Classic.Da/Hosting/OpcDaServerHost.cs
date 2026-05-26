@@ -38,6 +38,7 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
 
     private readonly IOpcDaServer _serverImpl;
     private readonly OpcDaServerOptions _options;
+    private readonly OpcObjectRegistry _objectRegistry;
     private readonly ILogger<OpcDaServerHost> _logger;
     private OpcServerListener? _listener;
 
@@ -45,10 +46,12 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     public OpcDaServerHost(
         IOpcDaServer serverImpl,
         IOptions<OpcDaServerOptions> options,
+        OpcObjectRegistry objectRegistry,
         ILogger<OpcDaServerHost> logger)
     {
         _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
@@ -83,6 +86,7 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
             {
                 [IOPCServer.InterfaceId] = dispatcher,
             },
+            _objectRegistry,
             _logger);
         _listener = new OpcServerListener(endpoint, processor, _logger);
 

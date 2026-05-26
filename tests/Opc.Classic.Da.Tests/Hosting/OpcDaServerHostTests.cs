@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Opc.Classic.Da.Hosting;
+using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 using TUnit.Core;
 
@@ -124,7 +125,7 @@ public sealed class OpcDaServerHostTests
     }
 
     private static OpcDaServerHost CreateHost(OpcDaServerOptions options) =>
-        new(new StubDaServer(), Options.Create(options), NoopLogger<OpcDaServerHost>.Instance);
+        new(new StubDaServer(), Options.Create(options), new OpcObjectRegistry(), NoopLogger<OpcDaServerHost>.Instance);
 
     private static ServiceProvider CreateProvider(OpcDaServerOptions options)
     {

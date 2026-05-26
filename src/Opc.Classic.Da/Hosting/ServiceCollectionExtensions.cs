@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
+using Opc.Classic.Dcom.Transport;
 
 namespace Opc.Classic.Da.Hosting;
 
@@ -27,6 +28,11 @@ public static class OpcDaHostingServiceCollectionExtensions
         services.Configure(configureOptions);
         services.AddSingleton<IOpcDaServer, T>();
         services.AddSingleton<IOpcDaDataChangePublisher, OpcDaDataChangePublisher>();
+        // Per-CLSID IPID registry: shared across the host + the user's IOpcDaServer
+        // implementation so AddGroup/RemoveGroup can register and unregister
+        // managed group objects whose per-call interfaces (IOPCGroupStateMgt etc.)
+        // dispatch through the cross-platform listener path.
+        services.AddSingleton<OpcObjectRegistry>();
         services.AddSingleton<Opc.Classic.Hosting.IOpcServerHost, OpcDaServerHost>();
         return services;
     }
