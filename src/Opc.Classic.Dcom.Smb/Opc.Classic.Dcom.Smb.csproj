@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Opc.Classic.Dcom.Smb</RootNamespace>
+    <Description>Minimal SMB2 client for the ncacn_np (RPC over SMB) transport used by OPC Classic WINREG discovery and legacy IActivation. Implements SMB 2.0.2/2.1/3.0/3.1.1 dialect negotiation, NTLMSSP session setup (via Opc.Classic.Dcom NTLM impl), IPC$ tree connect, named-pipe CREATE/CLOSE/READ/WRITE/IOCTL with FSCTL_PIPE_TRANSCEIVE per [MS-SMB2] + [MS-RPCE] §2.1.1.2.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+  </ItemGroup>
+</Project>

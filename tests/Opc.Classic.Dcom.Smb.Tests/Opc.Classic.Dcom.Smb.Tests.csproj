@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>TUnit tests for the SMB2 wire-format codecs and the Smb2Connection state machine.</Description>
+    <RootNamespace>Opc.Classic.Dcom.Smb.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Dcom.Smb.Tests</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Smb\Opc.Classic.Dcom.Smb.csproj" />
+  </ItemGroup>
+</Project>
