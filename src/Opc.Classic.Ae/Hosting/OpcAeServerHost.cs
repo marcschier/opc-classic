@@ -4,11 +4,14 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Opc.Classic.Ae.Dcom;
+using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Ae.Hosting;
@@ -16,23 +19,27 @@ namespace Opc.Classic.Ae.Hosting;
 /// <summary>
 /// AE-specific <see cref="IOpcServerHost"/> implementation for managed in-process servers.
 /// </summary>
-public sealed class OpcAeServerHost : IOpcServerHost
+public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposable
 {
     private static readonly Action<ILogger, Guid, string, Exception?> StartingHost = LoggerMessage.Define<Guid, string>(
         LogLevel.Information,
         new EventId(1, nameof(StartingHost)),
         "OpcAeServerHost starting: CLSID={Clsid}, ProgId={ProgId}");
 
+    private static readonly Action<ILogger, Guid, EndPoint, Exception?> HostListeningOn = LoggerMessage.Define<Guid, EndPoint>(
+        LogLevel.Information,
+        new EventId(2, nameof(HostListeningOn)),
+        "OpcAeServerHost listening: CLSID={Clsid}, endpoint={Endpoint}");
+
     private static readonly Action<ILogger, Guid, Exception?> StoppingHost = LoggerMessage.Define<Guid>(
         LogLevel.Information,
-        new EventId(2, nameof(StoppingHost)),
+        new EventId(3, nameof(StoppingHost)),
         "OpcAeServerHost stopping: CLSID={Clsid}");
 
     private readonly IOpcAeServer _serverImpl;
     private readonly OpcAeServerOptions _options;
     private readonly ILogger<OpcAeServerHost> _logger;
-    private CancellationTokenSource? _acceptCts;
-    private Task? _acceptTask;
+    private OpcServerListener? _listener;
 
     /// <summary>Initializes a new instance of the <see cref="OpcAeServerHost"/> class.</summary>
     public OpcAeServerHost(
@@ -56,15 +63,31 @@ public sealed class OpcAeServerHost : IOpcServerHost
         TypeName: _serverImpl.GetType().FullName ?? "Unknown",
         FriendlyName: _options.FriendlyName);
 
+    /// <summary>
+    /// Gets the local network endpoint the listener is bound to once
+    /// <see cref="StartAsync"/> has completed.
+    /// </summary>
+    public EndPoint? LocalEndpoint => _listener?.LocalEndpoint;
+
     /// <inheritdoc />
     public Task StartAsync(CancellationToken cancellationToken)
     {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
+        IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
+        var endpoint = new TcpServerEndpoint(listenEndpoint);
         var dispatcher = new IOPCEventServerServerDispatcher(_serverImpl);
-        _acceptCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        _acceptTask = AcceptConnectionsAsync(dispatcher, _acceptCts.Token);
-        return Task.CompletedTask;
+        var processor = new RpcServerConnectionProcessor(
+            new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [IOPCEventServer.InterfaceId] = dispatcher,
+            },
+            _logger);
+        _listener = new OpcServerListener(endpoint, processor, _logger);
+
+        Task started = _listener.StartAsync(cancellationToken);
+        HostListeningOn(_logger, _options.Clsid, _listener.LocalEndpoint, null);
+        return started;
     }
 
     /// <inheritdoc />
@@ -72,37 +95,23 @@ public sealed class OpcAeServerHost : IOpcServerHost
     {
         StoppingHost(_logger, _options.Clsid, null);
 
-        CancellationTokenSource? acceptCts = _acceptCts;
-        Task? acceptTask = _acceptTask;
-        _acceptCts = null;
-        _acceptTask = null;
-
-        if (acceptCts is not null)
+        OpcServerListener? listener = _listener;
+        _listener = null;
+        if (listener is not null)
         {
-            await acceptCts.CancelAsync().ConfigureAwait(false);
+            await listener.DisposeAsync().ConfigureAwait(false);
         }
-
-        if (acceptTask is not null)
-        {
-            try
-            {
-                await acceptTask.WaitAsync(cancellationToken).ConfigureAwait(false);
-            }
-            catch (OperationCanceledException) when (acceptCts?.IsCancellationRequested == true)
-            {
-            }
-        }
-
-        acceptCts?.Dispose();
     }
 
-    private static async Task AcceptConnectionsAsync(
-        IOpcServerDispatcher dispatcher,
-        CancellationToken cancellationToken)
+    /// <inheritdoc />
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Usage", "VSTHRD002:Avoid problematic synchronous waits",
+        Justification = "IDisposable is synchronous; the underlying StopAsync is async.")]
+    public void Dispose()
     {
-        ArgumentNullException.ThrowIfNull(dispatcher);
-
-        await Task.Delay(TimeSpan.Zero, cancellationToken).ConfigureAwait(false);
-        cancellationToken.ThrowIfCancellationRequested();
+        StopAsync(CancellationToken.None).GetAwaiter().GetResult();
     }
+
+    /// <inheritdoc />
+    public ValueTask DisposeAsync() => new(StopAsync(CancellationToken.None));
 }

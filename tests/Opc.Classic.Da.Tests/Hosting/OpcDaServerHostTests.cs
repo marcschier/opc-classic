@@ -82,6 +82,47 @@ public sealed class OpcDaServerHostTests
         await Assert.That(equalOperatorResult).IsTrue();
     }
 
+    [Test]
+    public async Task LocalEndpoint_is_bound_after_StartAsync()
+    {
+        var host = CreateHost(CreateOptions());
+
+        await host.StartAsync(TestContext.Current!.CancellationToken);
+
+        try
+        {
+            await Assert.That(host.LocalEndpoint).IsNotNull();
+            var bound = host.LocalEndpoint as System.Net.IPEndPoint;
+            await Assert.That(bound).IsNotNull();
+            await Assert.That(bound!.Port).IsGreaterThan(0);
+        }
+        finally
+        {
+            await host.StopAsync(TestContext.Current!.CancellationToken);
+        }
+
+        await Assert.That(host.LocalEndpoint).IsNull();
+    }
+
+    [Test]
+    public async Task Real_TCP_client_can_connect_after_StartAsync()
+    {
+        var host = CreateHost(CreateOptions());
+        await host.StartAsync(TestContext.Current!.CancellationToken);
+
+        try
+        {
+            var bound = (System.Net.IPEndPoint)host.LocalEndpoint!;
+            using var client = new System.Net.Sockets.TcpClient();
+            await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.CancellationToken);
+            await Assert.That(client.Connected).IsTrue();
+        }
+        finally
+        {
+            await host.StopAsync(TestContext.Current!.CancellationToken);
+        }
+    }
+
     private static OpcDaServerHost CreateHost(OpcDaServerOptions options) =>
         new(new StubDaServer(), Options.Create(options), NoopLogger<OpcDaServerHost>.Instance);
 
