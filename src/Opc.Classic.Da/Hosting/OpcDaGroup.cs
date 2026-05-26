@@ -4,6 +4,9 @@
 //
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
@@ -12,33 +15,28 @@ using Opc.Classic.Dcom;
 namespace Opc.Classic.Da.Hosting;
 
 /// <summary>
-/// In-memory managed implementation of an OPC DA group exposing the group-level
-/// COM interfaces (<c>IOPCGroupStateMgt</c>, <c>IOPCGroupStateMgt2</c>). The
-/// host wraps the group in source-generated <c>*ServerDispatcher</c> classes
-/// and registers them in the <see cref="Opc.Classic.Dcom.Transport.OpcObjectRegistry"/>
-/// so per-call <c>RequestCoPdu.Object</c> UUIDs route to the correct group
-/// instance.
+/// In-memory managed implementation of an OPC DA group exposing the
+/// group-level COM interfaces. Items live in an internal collection so
+/// callers can <c>AddItems</c>/<c>RemoveItems</c>/<c>Read</c>/<c>Write</c>
+/// through the OPC item-management + sync I/O interfaces.
 /// </summary>
 /// <remarks>
 /// <para>
-/// ocom-3b focuses on the AddGroup → IPID-registration → group-state-routing
-/// loop using only the lightest interface set
-/// (<c>IOPCGroupStateMgt</c> + <c>IOPCGroupStateMgt2</c>). Item management
-/// (<c>IOPCItemMgt</c>), synchronous IO (<c>IOPCSyncIO</c> /
-/// <c>IOPCSyncIO2</c>), asynchronous IO (<c>IOPCAsyncIO2</c> /
-/// <c>IOPCAsyncIO3</c>), and data callbacks (<c>IOPCDataCallback</c>) are
-/// follow-up commits — the additional interfaces plug into the existing
-/// registration shape by adding more dispatchers to the per-object map.
+/// Implements: <c>IOPCGroupStateMgt</c>, <c>IOPCGroupStateMgt2</c>,
+/// <c>IOPCItemMgt</c>, <c>IOPCSyncIO</c>.
 /// </para>
 /// <para>
-/// State is mutated from a single connection thread per call (the
-/// <see cref="Opc.Classic.Dcom.Transport.RpcServerConnectionProcessor"/>'s
-/// request loop). For multi-connection clients sharing a group, callers
-/// must externally synchronize; future work may add a per-group lock.
+/// Async I/O interfaces (<c>IOPCAsyncIO2</c>, <c>IOPCAsyncIO3</c>) and the
+/// max-age sync interface (<c>IOPCSyncIO2</c>) are a follow-up
+/// (ocom-3d). Data-callback subscription (<c>IConnectionPoint</c> +
+/// outbound <c>IOPCDataCallback</c>) is ocom-7b.
 /// </para>
 /// </remarks>
-public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2
+public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO
 {
+    private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
+    private int _nextItemHandle = 1;
+
     /// <summary>Initializes a new group with the supplied creation parameters.</summary>
     public OpcDaGroup(
         string name,
@@ -88,6 +86,18 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2
 
     /// <summary>Keep-alive period in milliseconds (0 = disabled).</summary>
     public int KeepAliveTime { get; private set; }
+
+    /// <summary>Read-only view of the items currently in the group.</summary>
+    public IReadOnlyCollection<OpcDaItem> Items => (IReadOnlyCollection<OpcDaItem>)_items.Values;
+
+    /// <summary>Test helper: returns the number of items currently in the group.</summary>
+    public int ItemCount => _items.Count;
+
+    /// <summary>Returns the item for a given server handle, or <see langword="null"/> if unknown.</summary>
+    public OpcDaItem? GetItem(int serverHandle) =>
+        _items.TryGetValue(serverHandle, out OpcDaItem? item) ? item : null;
+
+    // ----- IOPCGroupStateMgt -----
 
     /// <inheritdoc />
     public Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default)
@@ -140,9 +150,6 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         cancellationToken.ThrowIfCancellationRequested();
-        // Clone is not yet supported - returns an interface ref pointing back
-        // to this group (callers see a usable IPID but the clone is not a
-        // separate object). Real clone semantics arrive in a follow-up.
         return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
             iid: requestedInterfaceId,
             flags: 0,
@@ -153,6 +160,8 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2
             securityOffset: 0,
             resolverBindings: Array.Empty<ushort>()));
     }
+
+    // ----- IOPCGroupStateMgt2 -----
 
     /// <inheritdoc />
     public Task<int> SetKeepAliveAsync(int keepAliveTime, CancellationToken cancellationToken = default)
@@ -168,5 +177,252 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2
     {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(KeepAliveTime);
+    }
+
+    // ----- IOPCItemMgt -----
+
+    /// <inheritdoc />
+    public Task AddItemsAsync(
+        OpcItemDef[] itemDefinitions,
+        out OpcItemResult[] addResults,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(itemDefinitions);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        addResults = new OpcItemResult[itemDefinitions.Length];
+        errors = new int[itemDefinitions.Length];
+
+        for (int i = 0; i < itemDefinitions.Length; i++)
+        {
+            (OpcItemResult result, int hr) = TryAddItem(itemDefinitions[i]);
+            addResults[i] = result;
+            errors[i] = hr;
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task ValidateItemsAsync(
+        OpcItemDef[] itemDefinitions,
+        bool blobUpdate,
+        out OpcItemResult[] validationResults,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(itemDefinitions);
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = blobUpdate;
+
+        validationResults = new OpcItemResult[itemDefinitions.Length];
+        errors = new int[itemDefinitions.Length];
+
+        // Validation does not add; produce a result shape but don't allocate
+        // a real handle. A zero handle means "validation only".
+        for (int i = 0; i < itemDefinitions.Length; i++)
+        {
+            OpcItemDef def = itemDefinitions[i];
+            errors[i] = string.IsNullOrWhiteSpace(def?.ItemId)
+                ? OpcResultId.UnknownItemId.Code
+                : OpcResultId.Ok.Code;
+            validationResults[i] = new OpcItemResult(
+                ServerHandle: 0,
+                CanonicalDataType: def?.RequestedDataType ?? VarType.VT_EMPTY,
+                AccessRights: 0x3,
+                Blob: Array.Empty<byte>());
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            errors[i] = _items.TryRemove(serverHandles[i], out _)
+                ? OpcResultId.Ok.Code
+                : OpcResultId.InvalidHandle.Code;
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                item.Active = active;
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(clientHandles);
+        if (serverHandles.Length != clientHandles.Length)
+        {
+            throw new ArgumentException("serverHandles and clientHandles must have the same length.", nameof(clientHandles));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                item.ClientHandle = clientHandles[i];
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(requestedDataTypes);
+        if (serverHandles.Length != requestedDataTypes.Length)
+        {
+            throw new ArgumentException("serverHandles and requestedDataTypes must have the same length.", nameof(requestedDataTypes));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                item.RequestedDatatype = requestedDataTypes[i];
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        // Real IEnumOPCItemAttributes implementation is ocom-8b; return a
+        // synthetic ref so the dispatch returns something usable.
+        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+            iid: requestedInterfaceId,
+            flags: 0,
+            publicRefs: 1,
+            oxid: 1,
+            oid: unchecked((ulong)ServerHandle),
+            ipid: Guid.CreateVersion7(),
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>()));
+    }
+
+    // ----- IOPCSyncIO -----
+
+    /// <inheritdoc />
+    public Task<OpcItemState[]> ReadAsync(
+        int dataSource,
+        int[] serverHandles,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        _ = dataSource; // OPC_DS_CACHE / OPC_DS_DEVICE -- ignored; in-memory snapshot serves both
+
+        OpcItemState[] states = new OpcItemState[serverHandles.Length];
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                states[i] = item.GetSnapshot();
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                states[i] = new OpcItemState(0, DateTimeOffset.UnixEpoch, default, OpcVariant.Empty);
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(states);
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(values);
+        if (serverHandles.Length != values.Length)
+        {
+            throw new ArgumentException("serverHandles and values must have the same length.", nameof(values));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                item.Update(values[i], OpcDaItemQuality.GoodNonSpecific, now);
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    private (OpcItemResult Result, int Hresult) TryAddItem(OpcItemDef? def)
+    {
+        if (def is null || string.IsNullOrWhiteSpace(def.ItemId))
+        {
+            return (
+                new OpcItemResult(0, def?.RequestedDataType ?? VarType.VT_EMPTY, 0, Array.Empty<byte>()),
+                OpcResultId.UnknownItemId.Code);
+        }
+
+        int handle = Interlocked.Increment(ref _nextItemHandle);
+        var item = new OpcDaItem(
+            serverHandle: handle,
+            itemId: def.ItemId,
+            accessPath: def.AccessPath,
+            clientHandle: def.ClientHandle,
+            active: def.Active,
+            requestedDatatype: (ushort)def.RequestedDataType);
+        _items[handle] = item;
+
+        return (
+            new OpcItemResult(
+                ServerHandle: handle,
+                CanonicalDataType: def.RequestedDataType,
+                AccessRights: 0x3, // OPC_READABLE | OPC_WRITEABLE
+                Blob: Array.Empty<byte>()),
+            OpcResultId.Ok.Code);
     }
 }

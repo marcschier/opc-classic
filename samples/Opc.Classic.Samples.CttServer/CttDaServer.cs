@@ -118,6 +118,8 @@ public sealed class CttDaServer : IOpcDaServer
         {
             [IOPCGroupStateMgt.InterfaceId] = new IOPCGroupStateMgtServerDispatcher(managedGroup),
             [IOPCGroupStateMgt2.InterfaceId] = new IOPCGroupStateMgt2ServerDispatcher(managedGroup),
+            [IOPCItemMgt.InterfaceId] = new IOPCItemMgtServerDispatcher(managedGroup),
+            [IOPCSyncIO.InterfaceId] = new IOPCSyncIOServerDispatcher(managedGroup),
         };
         Guid ipid = _objectRegistry.Register(dispatchers);
 
