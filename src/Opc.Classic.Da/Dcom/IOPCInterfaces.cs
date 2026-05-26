@@ -657,6 +657,7 @@ public partial interface IConnectionPointContainer
 
 /// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
+[OpcGenerateServerDispatch]
 public partial interface IConnectionPoint
 {
     /// <summary>

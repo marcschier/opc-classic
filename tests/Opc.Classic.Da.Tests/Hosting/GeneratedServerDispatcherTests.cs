@@ -169,6 +169,40 @@ public sealed class GeneratedServerDispatcherTests
         await Assert.That(current).IsEqualTo(3500);
     }
 
+    // ===== IConnectionPoint =====
+
+    [Test]
+    public async Task IConnectionPoint_GetConnectionInterface_returns_iid()
+    {
+        Guid expectedIid = Guid.Parse("39C13A70-011E-11D0-9675-0020AFD8ADB3"); // IID_IOPCDataCallback
+        var impl = new StubConnectionPoint { ConnectionIid = expectedIid };
+        var dispatcher = new IConnectionPointServerDispatcher(impl);
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IConnectionPoint.Opnums.GetConnectionInterfaceAsync,
+            ReadOnlyMemory<byte>.Empty,
+            CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        var reader = new NdrReader(result.Payload.Span);
+        Guid returned = reader.ReadGuid();
+        await Assert.That(returned).IsEqualTo(expectedIid);
+    }
+
+    [Test]
+    public async Task IConnectionPoint_Unadvise_dispatches_cookie()
+    {
+        var impl = new StubConnectionPoint();
+        var dispatcher = new IConnectionPointServerDispatcher(impl);
+        byte[] payload = WritePayload((ref NdrWriter writer) => writer.WriteInt32(42));
+
+        DispatchResult result = await dispatcher.DispatchAsync(
+            IConnectionPoint.Opnums.UnadviseAsync, payload, CancellationToken.None);
+
+        await Assert.That(result.IsSuccess).IsTrue();
+        await Assert.That(impl.LastUnadvisedCookie).IsEqualTo(42);
+    }
+
     // ===== helpers =====
 
     private static byte[] WritePayload(NdrWriteAction action)
@@ -258,5 +292,24 @@ public sealed class GeneratedServerDispatcherTests
 
         public Task<int> GetKeepAliveAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(CurrentKeepAlive);
+    }
+
+    private sealed class StubConnectionPoint : IConnectionPoint
+    {
+        public Guid ConnectionIid { get; set; }
+
+        public int LastUnadvisedCookie { get; private set; }
+
+        public Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult(ConnectionIid);
+
+        public Task<int> AdviseAsync(Opc.Classic.Dcom.IOpcInterfaceRef sink, CancellationToken cancellationToken = default) =>
+            Task.FromResult(1);
+
+        public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
+        {
+            LastUnadvisedCookie = cookie;
+            return Task.CompletedTask;
+        }
     }
 }
