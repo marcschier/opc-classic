@@ -9,6 +9,7 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 - [Kerberos in Active Directory](03-kerberos-in-active-directory.md): SPNs, Kerberos/SPNEGO, channel binding, and diagnostics.
 - [Adopt Opc.Classic in OPC NET API projects](04-migrate-from-net-framework-opc-net-api.md): current type and API mappings from OPC NET API concepts to `Opc.Classic.*`.
 - [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md): why `OpcProtectionLevel.Integrity` is the default and when to use `Privacy`.
+- [XML-DA client flows](06-xmlda-client-flows.md): `GetStatus`, read/write calls, and polled subscriptions over HTTP/SOAP.
 
 ## Sample apps referenced
 
