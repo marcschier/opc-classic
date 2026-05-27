@@ -18,4 +18,10 @@ public interface IOpcAeServerDispatcher
         int opnum,
         ReadOnlyMemory<byte> requestPayload,
         CancellationToken cancellationToken);
+
+    /// <summary>Creates a dispatcher for an <c>IOPCEventAreaBrowser</c> instance.</summary>
+    Task<IOpcAeAreaBrowserDispatcher> CreateAreaBrowserAsync(
+        Guid requestedInterfaceId,
+        CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
 }

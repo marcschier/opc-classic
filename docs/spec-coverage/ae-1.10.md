@@ -26,12 +26,12 @@ The previous “opnum mismatch epidemic” and “method not declared” finding
 
 ---
 
-#### 2. Windows CCW `CreateAreaBrowser` remains deferred
+#### 2. Windows CCW `CreateAreaBrowser` returns an area-browser CCW
 
 **Spec**: `IOPCEventServer::CreateAreaBrowser` (opnum 18) returns an `IOPCEventAreaBrowser` interface pointer.
 
 **Cross-platform DCOM status**: ✅ declared (`src/Opc.Classic.Ae/Dcom/IOPCInterfaces.cs:131-136`).
-**Windows CCW status**: ⚠️ `E_NOTIMPL` pending browser CCW support (`src/Opc.Classic.Ae/Hosting/Windows/OpcAeServerCcwMethods.cs:203-210`).
+**Windows CCW status**: ✅ implemented for servers/dispatchers that provide area browsing; unsupported servers still return `E_NOTIMPL` (`src/Opc.Classic.Ae/Hosting/Windows/OpcAeServerCcwMethods.cs:203-237`, `src/Opc.Classic.Ae/Hosting/Windows/OpcAeAreaBrowserCcw.cs`).
 
 ---
 

@@ -13,11 +13,15 @@ namespace Opc.Classic.Ae.Hosting;
 /// <summary>AE dispatcher adapter that delegates to the source-generated IOPCEventServer dispatcher.</summary>
 public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
 {
+    private readonly IOpcAeServer _server;
     private readonly IOPCEventServerServerDispatcher _serverDispatcher;
 
     /// <summary>Initializes a new instance of the <see cref="OpcAeServerDispatcher" /> class.</summary>
-    public OpcAeServerDispatcher(IOpcAeServer server) =>
-        _serverDispatcher = new IOPCEventServerServerDispatcher(server ?? throw new ArgumentNullException(nameof(server)));
+    public OpcAeServerDispatcher(IOpcAeServer server)
+    {
+        _server = server ?? throw new ArgumentNullException(nameof(server));
+        _serverDispatcher = new IOPCEventServerServerDispatcher(server);
+    }
 
     /// <inheritdoc />
     public async Task<NdrCallResult> DispatchAsync(
@@ -33,5 +37,48 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
 
         return (await _serverDispatcher.DispatchAsync(opnum, requestPayload, cancellationToken).ConfigureAwait(false))
             .ToNdrCallResult();
+    }
+
+    /// <inheritdoc />
+    public async Task<IOpcAeAreaBrowserDispatcher> CreateAreaBrowserAsync(
+        Guid requestedInterfaceId,
+        CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        await server.CreateAreaBrowserAsync(requestedInterfaceId, out IOPCEventAreaBrowser areaBrowser, cancellationToken).ConfigureAwait(false);
+        if (areaBrowser is null)
+        {
+            throw new OpcException(OpcResultId.NotImplemented);
+        }
+        return areaBrowser is IOpcAeAreaBrowserDispatcher dispatcher
+            ? dispatcher
+            : new EventAreaBrowserAdapter(areaBrowser);
+    }
+
+    private sealed class EventAreaBrowserAdapter : IOpcAeAreaBrowserDispatcher
+    {
+        private readonly IOPCEventAreaBrowser _browser;
+
+        public EventAreaBrowserAdapter(IOPCEventAreaBrowser browser) =>
+            _browser = browser ?? throw new ArgumentNullException(nameof(browser));
+
+        public Task ChangeBrowsePositionAsync(int browseDirection, string? position, CancellationToken cancellationToken = default) =>
+            _browser.ChangeBrowsePositionAsync(browseDirection, position, cancellationToken);
+
+        public async Task<string[]> BrowseAreasAsync(int browseFilterType, string filterCriteria, CancellationToken cancellationToken = default)
+        {
+            await _browser.BrowseOPCAreasAsync(browseFilterType, filterCriteria, out IEnumString enumString, cancellationToken).ConfigureAwait(false);
+            if (enumString is IOpcAeStringEnumerator stringEnumerator)
+            {
+                return await stringEnumerator.ToArrayAsync(cancellationToken).ConfigureAwait(false);
+            }
+            throw new OpcException(OpcResultId.NotImplemented);
+        }
+
+        public Task<string> GetQualifiedAreaNameAsync(string areaName, CancellationToken cancellationToken = default) =>
+            _browser.GetQualifiedAreaNameAsync(areaName, cancellationToken);
+
+        public Task<string> GetQualifiedSourceNameAsync(string sourceName, CancellationToken cancellationToken = default) =>
+            _browser.GetQualifiedSourceNameAsync(sourceName, cancellationToken);
     }
 }

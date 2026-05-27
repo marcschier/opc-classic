@@ -57,8 +57,44 @@ public static unsafe class OpcAeServerCcw
             return IntPtr.Zero;
         }
 
-        var handle = GCHandle.Alloc(server, GCHandleType.Normal);
-        var session = new CcwSession(handle) { RefCount = 1 };
+        var serverHandle = GCHandle.Alloc(server, GCHandleType.Normal);
+        var dispatcherHandle = GCHandle.Alloc(new OpcAeServerDispatcher(server), GCHandleType.Normal);
+        var session = new CcwSession(serverHandle, dispatcherHandle) { RefCount = 1 };
+
+        IntPtr* unknownVtable = AllocateUnknownVtable();
+        IntPtr* eventServerVtable = AllocateEventServerVtable();
+        IntPtr* subscriptionMgtVtable = AllocateSubscriptionMgtVtable();
+
+        IntPtr unknownTearoff = AllocateTearoff(unknownVtable);
+        IntPtr eventServerTearoff = AllocateTearoff(eventServerVtable);
+        IntPtr subscriptionMgtTearoff = AllocateTearoff(subscriptionMgtVtable);
+
+        session.UnknownTearoff = unknownTearoff;
+        session.UnknownVtable = unknownVtable;
+        session.EventServerTearoff = eventServerTearoff;
+        session.EventServerVtable = eventServerVtable;
+        session.SubscriptionMgtTearoff = subscriptionMgtTearoff;
+        session.SubscriptionMgtVtable = subscriptionMgtVtable;
+
+        s_tearoffs[unknownTearoff] = session;
+        s_tearoffs[eventServerTearoff] = session;
+        s_tearoffs[subscriptionMgtTearoff] = session;
+
+        return ResolveTearoff(session, requestedIid);
+    }
+
+    /// <summary>Builds a dispatcher-backed CCW for tests and hosts that already route AE calls.</summary>
+    /// <returns>A CCW tearoff pointer, or <see cref="IntPtr.Zero"/> if the IID isn't supported.</returns>
+    public static IntPtr Create(IOpcAeServerDispatcher dispatcher, Guid requestedIid)
+    {
+        ArgumentNullException.ThrowIfNull(dispatcher);
+        if (!SupportsInterface(requestedIid))
+        {
+            return IntPtr.Zero;
+        }
+
+        var dispatcherHandle = GCHandle.Alloc(dispatcher, GCHandleType.Normal);
+        var session = new CcwSession(default, dispatcherHandle) { RefCount = 1 };
 
         IntPtr* unknownVtable = AllocateUnknownVtable();
         IntPtr* eventServerVtable = AllocateEventServerVtable();
@@ -100,12 +136,17 @@ public static unsafe class OpcAeServerCcw
             : IntPtr.Zero;
 
     internal static IOpcAeServer? ResolveServer(IntPtr tearoff) =>
-        s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session) && session.ServerHandle.IsAllocated
             ? session.ServerHandle.Target as IOpcAeServer
             : null;
 
+    internal static IOpcAeServerDispatcher? ResolveDispatcher(IntPtr tearoff) =>
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session) && session.DispatcherHandle.IsAllocated
+            ? session.DispatcherHandle.Target as IOpcAeServerDispatcher
+            : null;
+
     internal static IOPCEventSubscriptionMgt? ResolveSubscription(IntPtr tearoff) =>
-        s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session) && session.ServerHandle.IsAllocated
             ? session.ServerHandle.Target as IOPCEventSubscriptionMgt
             : null;
 
@@ -262,6 +303,10 @@ public static unsafe class OpcAeServerCcw
         {
             session.ServerHandle.Free();
         }
+        if (session.DispatcherHandle.IsAllocated)
+        {
+            session.DispatcherHandle.Free();
+        }
     }
 
     private static void FreeTearoffs(CcwSession session)
@@ -299,12 +344,14 @@ public static unsafe class OpcAeServerCcw
     /// <summary>Shared state across all tearoffs of one CCW.</summary>
     internal sealed class CcwSession
     {
-        public CcwSession(GCHandle serverHandle)
+        public CcwSession(GCHandle serverHandle, GCHandle dispatcherHandle)
         {
             ServerHandle = serverHandle;
+            DispatcherHandle = dispatcherHandle;
         }
 
         public GCHandle ServerHandle { get; }
+        public GCHandle DispatcherHandle { get; }
 
         public long RefCount;
         public int Disposed;

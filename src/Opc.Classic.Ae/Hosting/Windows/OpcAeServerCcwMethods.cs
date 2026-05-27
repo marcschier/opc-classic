@@ -201,12 +201,39 @@ internal static unsafe class OpcAeServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int CreateAreaBrowser(IntPtr pThis, Guid* riid, IntPtr* ppUnk)
     {
-        // Returning an iid_is browser interface pointer requires a browser CCW.
-        _ = pThis; _ = riid;
         WriteNull(ppUnk);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (riid == null || ppUnk == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!OpcAeAreaBrowserCcw.SupportsInterface(*riid))
+        {
+            return OpcAeServerCcw.E_NOINTERFACE;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+        try
+        {
+#pragma warning disable VSTHRD002
+            IOpcAeAreaBrowserDispatcher browser = dispatcher!.CreateAreaBrowserAsync(*riid, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            IntPtr browserCcw = OpcAeAreaBrowserCcw.Create(browser, *riid);
+            if (browserCcw == IntPtr.Zero)
+            {
+                return OpcAeServerCcw.E_NOINTERFACE;
+            }
+            *ppUnk = browserCcw;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -350,6 +377,12 @@ internal static unsafe class OpcAeServerCcwMethods
     {
         server = OpcAeServerCcw.ResolveServer(pThis);
         return server is not null;
+    }
+
+    private static bool TryResolveDispatcher(IntPtr pThis, out IOpcAeServerDispatcher? dispatcher)
+    {
+        dispatcher = OpcAeServerCcw.ResolveDispatcher(pThis);
+        return dispatcher is not null;
     }
 
     private static bool TryResolveSubscription(IntPtr pThis, out IOPCEventSubscriptionMgt? subscription)
