@@ -187,13 +187,21 @@ public sealed class Smb2RpcTransportBuilder
 {
     private readonly SmbRpcAddress.Parsed _address;
     private readonly NtlmsspBlobProvider _blobProvider;
+    private readonly Smb2SessionKeyProvider? _sessionKeyProvider;
     private int _port = 445;
 
     /// <summary>Initializes a new builder from a parsed SMB URL.</summary>
-    public Smb2RpcTransportBuilder(SmbRpcAddress.Parsed address, NtlmsspBlobProvider blobProvider)
+    /// <param name="address">Parsed SMB endpoint.</param>
+    /// <param name="blobProvider">Callback that emits NTLMSSP/Kerberos SESSION_SETUP blobs.</param>
+    /// <param name="sessionKeyProvider">Optional callback that exposes the SessionKey for SMB signing; see [MS-SMB2] §3.1.5.1.</param>
+    public Smb2RpcTransportBuilder(
+        SmbRpcAddress.Parsed address,
+        NtlmsspBlobProvider blobProvider,
+        Smb2SessionKeyProvider? sessionKeyProvider = null)
     {
         _address = address ?? throw new ArgumentNullException(nameof(address));
         _blobProvider = blobProvider ?? throw new ArgumentNullException(nameof(blobProvider));
+        _sessionKeyProvider = sessionKeyProvider;
     }
 
     /// <summary>Sets the TCP port for the SMB2 transport (default 445).</summary>
@@ -218,7 +226,7 @@ public sealed class Smb2RpcTransportBuilder
         try
         {
             _ = await conn.NegotiateAsync(cancellationToken).ConfigureAwait(false);
-            await conn.SessionSetupAsync(_blobProvider, cancellationToken).ConfigureAwait(false);
+            await conn.SessionSetupAsync(_blobProvider, _sessionKeyProvider, cancellationToken).ConfigureAwait(false);
             _ = await conn.TreeConnectIpcAsync(cancellationToken).ConfigureAwait(false);
             var pipe = await conn.OpenNamedPipeAsync(_address.PipeName, cancellationToken).ConfigureAwait(false);
             return new Smb2RpcTransportAdapter(conn, pipe);

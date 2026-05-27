@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +20,12 @@ namespace Opc.Classic.Dcom.Smb;
 /// (no further security blob to send).
 /// </remarks>
 public delegate ReadOnlyMemory<byte>? NtlmsspBlobProvider(ReadOnlyMemory<byte> serverBlob);
+
+/// <summary>
+/// Callback that exposes the NTLMSSP/Kerberos SessionKey used to derive SMB2 signing keys; see [MS-SMB2] §3.1.5.1.
+/// </summary>
+/// <returns>The established session key, or <see langword="null" /> if authentication did not produce one.</returns>
+public delegate ReadOnlyMemory<byte>? Smb2SessionKeyProvider();
 
 /// <summary>
 /// Configuration for an outbound SMB2 connection.
@@ -57,6 +64,12 @@ public sealed class Smb2Connection : IAsyncDisposable
     private ulong _sessionId;
     private uint _treeId;
     private Smb2Dialect _negotiatedDialect;
+    private Smb2Signer? _signer;
+    private byte[]? _preauthIntegrityHash;
+    private byte[]? _lastNegotiateRequest;
+    private byte[]? _lastNegotiateResponse;
+    private bool _signingEnabled;
+    private bool _signingRequired;
     private bool _disposed;
 
     /// <summary>Initializes a new SMB2 connection over the supplied transport.</summary>
@@ -76,6 +89,24 @@ public sealed class Smb2Connection : IAsyncDisposable
     public uint TreeId => _treeId;
 
     /// <summary>
+    /// Configures SMB2 signing from the NTLMSSP/Kerberos SessionKey, deriving SMB3 keys per [MS-SMB2] §3.1.5.1.
+    /// </summary>
+    /// <param name="sessionKey">The established authentication SessionKey.</param>
+    public void SetSessionKey(ReadOnlySpan<byte> sessionKey)
+    {
+        ThrowIfDisposed();
+        if (_negotiatedDialect == default)
+        {
+            throw new InvalidOperationException("Call NegotiateAsync before setting the SMB2 session key.");
+        }
+
+        ReadOnlySpan<byte> preauthContext = _negotiatedDialect == Smb2Dialect.Smb311
+            ? GetPreauthIntegrityHash()
+            : default;
+        _signer = Smb2Signer.CreateForDialect(_negotiatedDialect, sessionKey, preauthContext);
+    }
+
+    /// <summary>
     /// Performs the SMB2 NEGOTIATE exchange. The client advertises support for
     /// SMB 2.0.2 through SMB 3.1.1 and accepts the highest dialect the server selects.
     /// </summary>
@@ -93,7 +124,7 @@ public sealed class Smb2Connection : IAsyncDisposable
         ];
 
         var request = new Smb2NegotiateRequest(
-            SecurityMode: 0x0001, // SMB2_NEGOTIATE_SIGNING_ENABLED
+            SecurityMode: Smb2Constants.SecurityModeSigningEnabled,
             Capabilities: 0,
             ClientGuid: Guid.CreateVersion7(),
             Dialects: dialects);
@@ -108,6 +139,10 @@ public sealed class Smb2Connection : IAsyncDisposable
 
         var response = Smb2NegotiateResponse.Read(responseBytes.Span);
         _negotiatedDialect = response.Dialect;
+        _signingRequired = (response.SecurityMode & Smb2Constants.SecurityModeSigningRequired) != 0;
+        _signingEnabled = _signingRequired ||
+            (response.SecurityMode & Smb2Constants.SecurityModeSigningEnabled) != 0;
+        InitializePreauthIntegrityHashIfNeeded();
         return response;
     }
 
@@ -115,8 +150,21 @@ public sealed class Smb2Connection : IAsyncDisposable
     /// Performs the SMB2 SESSION_SETUP exchange, iterating NTLMSSP type-1/2/3
     /// blobs through the supplied <paramref name="blobProvider" />.
     /// </summary>
+    public Task SessionSetupAsync(
+        NtlmsspBlobProvider blobProvider,
+        CancellationToken cancellationToken = default) =>
+        SessionSetupAsync(blobProvider, sessionKeyProvider: null, cancellationToken);
+
+    /// <summary>
+    /// Performs SMB2 SESSION_SETUP and configures SMB signing from the established SessionKey,
+    /// deriving dialect-specific signing material per [MS-SMB2] §3.1.5.1.
+    /// </summary>
+    /// <param name="blobProvider">Callback that emits NTLMSSP/Kerberos security blobs.</param>
+    /// <param name="sessionKeyProvider">Callback that returns the NTLMSSP/Kerberos SessionKey after authentication succeeds.</param>
+    /// <param name="cancellationToken">Cancellation token for the SMB round trips.</param>
     public async Task SessionSetupAsync(
         NtlmsspBlobProvider blobProvider,
+        Smb2SessionKeyProvider? sessionKeyProvider,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(blobProvider);
@@ -162,6 +210,7 @@ public sealed class Smb2Connection : IAsyncDisposable
             if (_lastStatus == NtStatus.Success)
             {
                 _ = blobProvider(response.SecurityBlob);
+                ConfigureSigningAfterSessionSetup(sessionKeyProvider);
                 return;
             }
 
@@ -350,6 +399,12 @@ public sealed class Smb2Connection : IAsyncDisposable
 
         int bodySize = writeBody(packetBuffer.AsSpan(Smb2Constants.PacketHeaderSize));
         int totalSize = Smb2Constants.PacketHeaderSize + bodySize;
+        SignRequestIfNeeded(command, sessionId, packetBuffer.AsSpan(0, totalSize));
+
+        if (command == Smb2Command.Negotiate)
+        {
+            _lastNegotiateRequest = packetBuffer.AsSpan(0, totalSize).ToArray();
+        }
 
         await _transport.SendAsync(packetBuffer.AsMemory(0, totalSize), cancellationToken).ConfigureAwait(false);
 
@@ -359,7 +414,10 @@ public sealed class Smb2Connection : IAsyncDisposable
             throw new Smb2ProtocolException("SMB2 response too short for a header.");
         }
 
+        CaptureSigningState(command, packetBuffer.AsSpan(0, totalSize), responseBuffer.Span);
+
         var responseHeader = Smb2PacketHeader.Read(responseBuffer.Span);
+        VerifyResponseSignatureIfNeeded(command, responseHeader, responseBuffer.Span);
         _lastStatus = responseHeader.Status;
         captureSessionId?.Invoke(responseHeader.SessionId);
         captureTreeId?.Invoke(responseHeader.TreeId);
@@ -376,6 +434,131 @@ public sealed class Smb2Connection : IAsyncDisposable
 
         return responseBuffer[Smb2Constants.PacketHeaderSize..];
     }
+
+    private void CaptureSigningState(
+        Smb2Command command,
+        ReadOnlySpan<byte> requestPacket,
+        ReadOnlySpan<byte> responsePacket)
+    {
+        if (command == Smb2Command.Negotiate)
+        {
+            _lastNegotiateResponse = responsePacket.ToArray();
+        }
+        else if (command == Smb2Command.SessionSetup)
+        {
+            UpdatePreauthIntegrityHashForSessionSetup(requestPacket, responsePacket);
+        }
+    }
+
+    private void ConfigureSigningAfterSessionSetup(Smb2SessionKeyProvider? sessionKeyProvider)
+    {
+        if (!_signingEnabled && !_signingRequired)
+        {
+            return;
+        }
+
+        ReadOnlyMemory<byte>? sessionKey = sessionKeyProvider?.Invoke();
+        if (!sessionKey.HasValue || sessionKey.Value.IsEmpty)
+        {
+            throw new InvalidOperationException(
+                "SMB2 signing was negotiated, but no NTLMSSP/Kerberos SessionKey was provided.");
+        }
+
+        SetSessionKey(sessionKey.Value.Span);
+    }
+
+    private void SignRequestIfNeeded(Smb2Command command, ulong sessionId, Span<byte> packet)
+    {
+        if (!ShouldSign(command, sessionId))
+        {
+            return;
+        }
+
+        if (_signer is null)
+        {
+            throw new InvalidOperationException(
+                "SMB2 signing was negotiated, but no NTLMSSP/Kerberos SessionKey was provided.");
+        }
+
+        packet[16] |= (byte)Smb2Constants.FlagsSigned;
+        _signer.Sign(packet);
+    }
+
+    private void VerifyResponseSignatureIfNeeded(
+        Smb2Command command,
+        Smb2PacketHeader responseHeader,
+        ReadOnlySpan<byte> responsePacket)
+    {
+        if (!ShouldSign(command, responseHeader.SessionId))
+        {
+            return;
+        }
+
+        if ((responseHeader.Flags & Smb2Constants.FlagsSigned) == 0)
+        {
+            throw new Smb2ProtocolException("SMB2 response was not signed after signing was negotiated.");
+        }
+
+        if (_signer is null || !_signer.VerifySignature(responsePacket))
+        {
+            throw new Smb2ProtocolException("SMB2 response signature verification failed.");
+        }
+    }
+
+    private bool ShouldSign(Smb2Command command, ulong sessionId) =>
+        (_signingEnabled || _signingRequired) &&
+        sessionId != 0 &&
+        command != Smb2Command.Negotiate &&
+        command != Smb2Command.SessionSetup;
+
+    private void InitializePreauthIntegrityHashIfNeeded()
+    {
+        if (_negotiatedDialect != Smb2Dialect.Smb311)
+        {
+            _preauthIntegrityHash = null;
+            _lastNegotiateRequest = null;
+            _lastNegotiateResponse = null;
+            return;
+        }
+
+        if (_lastNegotiateRequest is null || _lastNegotiateResponse is null)
+        {
+            throw new Smb2ProtocolException("SMB 3.1.1 preauth hash cannot be initialized without NEGOTIATE messages.");
+        }
+
+        _preauthIntegrityHash = new byte[SHA512.HashSizeInBytes];
+        UpdatePreauthIntegrityHash(_lastNegotiateRequest);
+        UpdatePreauthIntegrityHash(_lastNegotiateResponse);
+        _lastNegotiateRequest = null;
+        _lastNegotiateResponse = null;
+    }
+
+    private void UpdatePreauthIntegrityHashForSessionSetup(
+        ReadOnlySpan<byte> requestPacket,
+        ReadOnlySpan<byte> responsePacket)
+    {
+        if (_negotiatedDialect != Smb2Dialect.Smb311 || _preauthIntegrityHash is null)
+        {
+            return;
+        }
+
+        UpdatePreauthIntegrityHash(requestPacket);
+        UpdatePreauthIntegrityHash(responsePacket);
+    }
+
+    private void UpdatePreauthIntegrityHash(ReadOnlySpan<byte> packet)
+    {
+        byte[] previous = GetPreauthIntegrityHash().ToArray();
+        byte[] input = new byte[previous.Length + packet.Length];
+        previous.CopyTo(input, 0);
+        packet.CopyTo(input.AsSpan(previous.Length));
+        _preauthIntegrityHash = SHA512.HashData(input);
+        CryptographicOperations.ZeroMemory(previous);
+    }
+
+    private ReadOnlySpan<byte> GetPreauthIntegrityHash() =>
+        _preauthIntegrityHash ?? throw new InvalidOperationException(
+            "SMB 3.1.1 signing requires the PreauthIntegrityHashValue before deriving the signing key.");
 
     private void ThrowIfDisposed()
     {

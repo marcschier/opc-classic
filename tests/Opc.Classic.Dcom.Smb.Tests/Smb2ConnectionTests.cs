@@ -49,6 +49,50 @@ public sealed class Smb2ConnectionTests
     }
 
     [Test]
+    public async Task TreeConnectIpcAsync_SignsRequestAndVerifiesResponse_WhenSigningRequired()
+    {
+        byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
+        var signer = new Smb2Signer(sessionKey, Smb2SigningAlgorithm.HmacSha256);
+        var mock = new MockSmb2Transport();
+        mock.OnNegotiate(Smb2Dialect.Smb210, Guid.NewGuid(), securityMode: 0x0002);
+        mock.OnSessionSetupSuccess(sessionId: 0x1122334455667788UL);
+        mock.OnTreeConnectSuccess(treeId: 0xAABBCCDD, signer);
+
+        await using var conn = new Smb2Connection(
+            new Smb2ConnectionOptions("test"), mock);
+        await conn.NegotiateAsync();
+        await conn.SessionSetupAsync(static _ => new byte[] { 0x01, 0x02, 0x03 }, () => sessionKey);
+        _ = await conn.TreeConnectIpcAsync();
+
+        byte[] treeConnectRequest = mock.SentPackets[2];
+        var requestHeader = Smb2PacketHeader.Read(treeConnectRequest);
+        await Assert.That((requestHeader.Flags & 0x00000008) != 0).IsTrue();
+        await Assert.That(signer.VerifySignature(treeConnectRequest)).IsTrue();
+        await Assert.That(conn.TreeId).IsEqualTo(0xAABBCCDDu);
+    }
+
+    [Test]
+    public async Task TreeConnectIpcAsync_RejectsBadResponseSignature_WhenSigningRequired()
+    {
+        byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
+        var signer = new Smb2Signer(sessionKey, Smb2SigningAlgorithm.HmacSha256);
+        var mock = new MockSmb2Transport();
+        mock.OnNegotiate(Smb2Dialect.Smb210, Guid.NewGuid(), securityMode: 0x0002);
+        mock.OnSessionSetupSuccess(sessionId: 0x1122334455667788UL);
+        mock.OnTreeConnectSuccess(treeId: 0xAABBCCDD, signer, tamperAfterSigning: true);
+
+        await using var conn = new Smb2Connection(
+            new Smb2ConnectionOptions("test"), mock);
+        await conn.NegotiateAsync();
+        await conn.SessionSetupAsync(static _ => new byte[] { 0x01, 0x02, 0x03 }, () => sessionKey);
+
+        bool threw = false;
+        try { _ = await conn.TreeConnectIpcAsync(); }
+        catch (Smb2ProtocolException) { threw = true; }
+        await Assert.That(threw).IsTrue();
+    }
+
+    [Test]
     public async Task TreeConnectIpcAsync_RequiresPriorSessionSetup()
     {
         var mock = new MockSmb2Transport();
@@ -69,7 +113,9 @@ public sealed class Smb2ConnectionTests
         private readonly Queue<Func<Smb2PacketHeader, ReadOnlyMemory<byte>>> _responders = new();
         private Smb2PacketHeader _lastRequestHeader;
 
-        public void OnNegotiate(Smb2Dialect dialect, Guid serverGuid)
+        public List<byte[]> SentPackets { get; } = [];
+
+        public void OnNegotiate(Smb2Dialect dialect, Guid serverGuid, ushort securityMode = 0)
         {
             _responders.Enqueue(header =>
             {
@@ -83,7 +129,7 @@ public sealed class Smb2ConnectionTests
 
                 int bodyOffset = 64;
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 65);
-                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 2), 0);
+                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 2), securityMode);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 4), (ushort)dialect);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 6), 0);
                 serverGuid.TryWriteBytes(response.AsSpan(bodyOffset + 8, 16));
@@ -120,9 +166,42 @@ public sealed class Smb2ConnectionTests
             });
         }
 
+        public void OnTreeConnectSuccess(
+            uint treeId,
+            Smb2Signer? signer = null,
+            bool tamperAfterSigning = false)
+        {
+            _responders.Enqueue(header =>
+            {
+                byte[] response = new byte[64 + 16];
+                var responseHeader = header with
+                {
+                    Status = 0,
+                    TreeId = treeId,
+                    Flags = signer is null ? 0x00000001u : 0x00000009u,
+                };
+                responseHeader.Write(response);
+
+                int bodyOffset = 64;
+                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 16);
+                response[bodyOffset + 2] = 0x02;
+                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 4), 0);
+                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 8), 0);
+                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 12), 0x001F01FF);
+
+                signer?.Sign(response);
+                if (tamperAfterSigning)
+                {
+                    response[^1] ^= 0x01;
+                }
+                return response;
+            });
+        }
+
         public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken)
         {
             _lastRequestHeader = Smb2PacketHeader.Read(packet.Span);
+            SentPackets.Add(packet.ToArray());
             return Task.CompletedTask;
         }
 

@@ -20,12 +20,12 @@ Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe op
 | RPC adapter/builder — `Smb2RpcTransportAdapter`, `Smb2RpcTransportBuilder`, `SmbRpcAddress` | ✅ sync bridge for legacy `ITransport` callers |
 | NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `src\Opc.Classic.Dcom\rpc\Auth\` |
 | WINREG replay validation | ✅ captured request/response fixtures under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` |
-| SMB2 signing (HMAC-SHA256 for SMB 3.x / AES-CMAC for 2.x) | ⏳ stubbed (no MAC on outgoing PDUs, ignored on incoming) |
+| SMB2 signing (HMAC-SHA256 for SMB 2.0.2/2.1; AES-CMAC for SMB 3.x) | ✅ signs outgoing PDUs and verifies signed responses when SessionKey is supplied |
 | SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred |
 
 ## Not yet shipping
 
-- SMB 3.0 signing/encryption (will fail against servers with `RequireSecuritySignature=1` until the signing/encryption work lands).
+- SMB 3.x encryption (AES-128-CCM/GCM); signed sessions are supported, but encryption-required servers remain cap-h2 work.
 - Production wire-up into `Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport`; the adapter/builder exists, but the legacy transport still owns the default `ncacn_np` route.
 - Real-server smoke against Samba / Windows servers in CI.
 - Legacy `IActivation::RemoteActivation` over SMB named pipes.
@@ -43,12 +43,14 @@ await using var conn = new Smb2Connection(new Smb2ConnectionOptions("server-host
 // 2. Negotiate the SMB2 dialect
 var negotiate = await conn.NegotiateAsync();
 
-// 3. Authenticate via NTLMSSP (caller supplies the blob iterator)
-await conn.SessionSetupAsync(serverBlob =>
-{
-    // First call: produce Type 1 message; subsequent calls: produce Type 3
-    return YourNtlmsspProvider.Next(serverBlob);
-});
+// 3. Authenticate via NTLMSSP (caller supplies blobs + the exported SessionKey for SMB signing)
+await conn.SessionSetupAsync(
+    serverBlob =>
+    {
+        // First call: produce Type 1 message; subsequent calls: produce Type 3
+        return YourNtlmsspProvider.Next(serverBlob);
+    },
+    () => YourNtlmsspProvider.SessionKey);
 
 // 4. Open the IPC$ tree
 await conn.TreeConnectIpcAsync();
@@ -61,7 +63,7 @@ ReadOnlyMemory<byte> response = await pipe.TransceiveAsync(rpcPduBytes);
 
 // Or build the sync-over-async adapter expected by legacy RPC transports.
 var address = SmbRpcAddress.Parse("smb://server-host/IPC$/winreg");
-var builder = new Smb2RpcTransportBuilder(address, YourNtlmsspProvider.Next);
+var builder = new Smb2RpcTransportBuilder(address, YourNtlmsspProvider.Next, () => YourNtlmsspProvider.SessionKey);
 using Smb2RpcTransportAdapter adapter = await builder.BuildAsync();
 ReadOnlyMemory<byte> rpcResponse = adapter.Transceive(rpcPduBytes);
 ```

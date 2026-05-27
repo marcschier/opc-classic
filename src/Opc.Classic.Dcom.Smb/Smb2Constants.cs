@@ -25,6 +25,12 @@ internal static class Smb2Constants
 
     /// <summary>SMB2 SIGNED flag. See [MS-SMB2] §2.2.1.2.</summary>
     public const uint FlagsSigned = 0x00000008;
+
+    /// <summary>SMB2_NEGOTIATE_SIGNING_ENABLED security-mode bit. See [MS-SMB2] §2.2.3 and §2.2.4.</summary>
+    public const ushort SecurityModeSigningEnabled = 0x0001;
+
+    /// <summary>SMB2_NEGOTIATE_SIGNING_REQUIRED security-mode bit. See [MS-SMB2] §2.2.3 and §2.2.4.</summary>
+    public const ushort SecurityModeSigningRequired = 0x0002;
 }
 
 /// <summary>SMB2 command identifiers. See [MS-SMB2] §2.2.1.</summary>
