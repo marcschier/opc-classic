@@ -1,15 +1,15 @@
 # OPC Security 1.00 Specification Coverage
 
-**Spec**: OPC Security Custom Interface Version 1.0 (October 17, 2000)  
-**Implementation**: `Opc.Classic.Security` namespace  
+**Spec**: OPC Security Custom Interface Version 1.0 (October 17, 2000)
+**Implementation**: `Opc.Classic.Security` namespace
 **Analysis date**: 2026-01-XX
 
 ---
 
 ## Executive Summary
 
-**Coverage**: **100%** of required interfaces and methods  
-**Test coverage**: 5 test classes, ~20 unit tests  
+**Coverage**: **100%** of required interfaces and methods
+**Test coverage**: 5 test classes, ~20 unit tests
 **Gaps**: 0 blocking, 2 minor (error code constants, server-side dispatch scaffolding)
 
 OPC Security 1.00 defines two **optional** interfaces for managing client identity changes within a single OPC server connection:
@@ -64,7 +64,7 @@ public partial interface IOPCSecurityPrivate
 }
 ```
 
-✅ **Status**: **Complete**  
+✅ **Status**: **Complete**
 - IIDs match spec IDL exactly
 - Opnums match spec (3, 4, 5 for both interfaces)
 - Async-first API (returns `Task`/`Task<T>`)
@@ -83,17 +83,17 @@ public interface IOpcSecurity
 {
     bool SupportsWindowsAuthentication { get; }  // maps to IOPCSecurityNT presence
     bool SupportsPrivateAuthentication { get; }  // maps to IOPCSecurityPrivate presence
-    
+
     Task<bool> LoginAsCurrentUserAsync(...);     // wraps ChangeUser
     Task<bool> LoginPrivateAsync(...);           // wraps Logon
     Task LogoutAsync(...);                       // wraps Logoff
-    
+
     bool IsAuthenticated { get; }
     string CurrentIdentity { get; }
 }
 ```
 
-✅ **Status**: **Complete**  
+✅ **Status**: **Complete**
 - Higher-level abstraction over raw DCOM interfaces
 - Maps both authentication models to unified API
 - Client code doesn't need to query for two interfaces separately
@@ -320,7 +320,7 @@ The spec includes extensive **guidelines** (section 6.3) that are **not part of 
 
 ### 1. Add Error Code Constants (Priority: Low)
 
-**File to modify**: `src/Opc.Classic.Core/Errors/OpcErrors.cs`
+**File to modify**: the existing `src/Opc.Classic.Security` project
 
 ```csharp
 /// <summary>OPC Security error codes (OpcErrSec.h).</summary>
@@ -356,7 +356,7 @@ Minimal server demonstrating:
 
 ### 3. Document DCOM-Layer vs. OPC-Layer Security
 
-**File**: `docs/security/README.md`
+**Related docs**: `docs/security/THREAT_MODEL.md`
 
 Clarify distinction:
 - **DCOM Security** (handled by `Opc.Classic.Dcom`, always present): Connection-level authentication (NTLM/Kerberos), packet integrity, packet privacy.
@@ -371,8 +371,8 @@ Clarify distinction:
 | Area | Location | Status |
 |------|----------|--------|
 | DCOM authentication (NTLM/Kerberos) | `src/Opc.Classic.Dcom/rpc/Auth/` | ✅ Implemented (Phase 2/3D) |
-| SPNEGO negotiation | `src/Opc.Classic.Dcom/Spnego/` | ✅ Implemented (Phase 3C) |
-| Channel Binding Token (CBT) | `src/Opc.Classic.Dcom.Crypto/` | ✅ Implemented (Phase 3C) |
+| SPNEGO negotiation | `src/Opc.Classic.Dcom.Kerberos/Spnego/` | ✅ Implemented (Phase 3C) |
+| Channel Binding Token (CBT) | `src/Opc.Classic.Dcom/Crypto/` | ✅ Implemented (Phase 3C) |
 | Packet integrity / privacy | `src/Opc.Classic.Dcom/rpc/Auth/` | ✅ Implemented (NTLM sign/seal, Kerberos sign/seal) |
 
 These are **out of scope** for OPC Security 1.00 (which is a higher-layer, session-level API).
@@ -397,6 +397,6 @@ The `Opc.Classic.Security` implementation is **complete** for client-side usage:
 
 ---
 
-**Generated**: 2026-01-XX  
-**Reviewer**: GitHub Copilot CLI (code-review agent)  
+**Generated**: 2026-01-XX
+**Reviewer**: GitHub Copilot CLI (code-review agent)
 **Next review**: When Phase 3E (Kerberos server-side dispatch) adds OPC Security server samples.

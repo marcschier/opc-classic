@@ -1,10 +1,10 @@
 # OPC XML-DA 1.01 Specification Coverage Analysis
 
-**Specification**: OPC XML-DA 1.01 (October 2003)  
-**Implementation**: `src/Opc.Classic.Xml/` (managed C# client)  
-**Tests**: `tests/Opc.Classic.Xml.Tests/`  
-**Analysis Date**: 2025-01-24  
-**Target Release**: rc.1 (client-only, scalar + array values)
+**Specification**: OPC XML-DA 1.01 (October 2003)
+**Implementation**: `src/Opc.Classic.Xml/` (managed C# client)
+**Tests**: `tests/Opc.Classic.Xml.Tests/`
+**Analysis Date**: 2025-01-24
+**Target Release**: 1.0.0-rc.7 (client-only, scalar + array values)
 
 ---
 
@@ -329,7 +329,7 @@ The spec defines 111 standard property IDs. Implementation **does not** have an 
 
 **NOT FOUND**. No tests against third-party XML-DA servers (e.g., Softing, Kepware, Matrikon).
 
-**Recommendation for rc.1**: Add integration tests against a public XML-DA server or docker-based test server
+**Recommendation before 1.0 GA / post-1.0 hardening**: Add integration tests against a public XML-DA server or docker-based test server
 
 ---
 
@@ -347,11 +347,11 @@ The spec defines 111 standard property IDs. Implementation **does not** have an 
 |-----|--------|----------------|
 | **No SOAP 1.2** | Cannot connect to SOAP 1.2-only servers (rare) | **2.0.0**: Consider if user demand exists |
 | **Generic property ID handling** | No type-safe property accessors | **2.0.0**: Create `XmlDaPropertyId` enum |
-| **No integration tests** | Limited real-world validation | **rc.1**: Add integration tests |
+| **No integration tests** | Limited real-world validation | **1.0 GA / post-1.0**: Add integration tests |
 
 ### 10.3 Coverage Recommendations by Release
 
-#### rc.1 (Client-Only)
+#### 1.0.0-rc.7 (Client-Only)
 - ✅ All 8 operations, scalar values, extended scalar values, array values, base64Binary, type-safe error codes, and SOAP 1.1 complete
 - ⚠️ **Add integration tests** — Validate against real XML-DA servers
 
@@ -400,5 +400,5 @@ None identified. Spec is clear and implementation follows closely.
 
 ---
 
-**Analysis Completed**: 2025-01-24  
+**Analysis Completed**: 2025-01-24
 **Next Review**: After server hosting implementation

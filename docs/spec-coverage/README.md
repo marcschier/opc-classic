@@ -3,69 +3,52 @@
 This directory contains per-spec gap-analysis reviews comparing each OPC specification's protocol surface against the `Opc.Classic.*` implementation. Each review:
 
 - Reads the full spec markdown in `External/Docs/`
-- Cross-references every interface, method, struct, error code, and behavioral requirement against the corresponding `src/Opc.Classic.<spec>/` implementation and `tests/Opc.Classic.<spec>.Tests/` coverage
-- Reports gaps with severity (BLOCKER / HIGH / MEDIUM / LOW), spec section citations, and source file:line references
-- Where the implementation is complete, recommends integration test scenarios to harden coverage
+- Cross-references interfaces, methods, structs, error codes, and behavioral requirements against `src/Opc.Classic.*`
+- Separates cross-platform DCOM/source-generated coverage from Windows CCW/native-hosting coverage
+- Lists source and test file references that exist in the current tree
 
 ## Reviews
 
-| Spec | Doc | Method coverage | Severity breakdown |
+| Spec | Doc | Current implementation coverage | Remaining status notes |
 |---|---|---|---|
-| [OPC AE 1.10](ae-1.10.md) | Alarms & Events | 26/37 declared (70%); only 16/37 with correct opnums (43%) | **10 BLOCKER** / 7 HIGH / 4 MEDIUM / 0 LOW |
-| [OPC Batch 2.00](batch-2.00.md) | Batch | 6/11 declared (55%); 2/2 struct codecs | 1 BLOCKER / 3 HIGH / 1 MEDIUM / 1 LOW |
-| [OPC Common 1.10](common-1.10.md) | Common (locale, shutdown, server-list) | ~92% (5/5 codecs, 48/52 elements) | 0 BLOCKER / 0 HIGH / 1 MEDIUM / 5 LOW |
-| [OPC CPX 1.00](cpx-1.00.md) | Complex Data | 11/11 method projections; 0/2 codec systems | **2 BLOCKER** / 2 HIGH / 1 MEDIUM / 1 LOW |
-| [OPC DA 2.05a](da-2.05a.md) | DA (V20 back-compat) | V20: 3/19 (intentionally minimal); Dcom: 43+ methods | 0 BLOCKER / 1 HIGH / 3 MEDIUM / 0 LOW |
-| [OPC DA 3.00](da-3.00.md) | DA (flagship) | 47 methods declared (post gap-9) | 0 BLOCKER / 8 HIGH / 5 MEDIUM / 3 LOW |
-| [OPC DX 1.00](dx-1.00.md) | Data eXchange | 3/14 methods (codec-blocked); 0/16 structs | 0 BLOCKER / 4 HIGH / 1 MEDIUM / 0 LOW |
-| [OPC HDA 1.20](hda-1.20.md) | Historical Data Access | 56/56 declared (post gap-10); 5/5 codecs | 0 BLOCKER / 0 HIGH / 1 MEDIUM / 0 LOW |
-| [OPC Security 1.00](security-1.00.md) | Security | 6/6 methods (100%); 2/2 interfaces | 0 BLOCKER / 0 HIGH / 0 MEDIUM / 2 LOW |
-| [OPC XML-DA 1.01](xmlda-1.01.md) | XML-DA (SOAP transport) | 8/8 operations; scalar types only | 0 BLOCKER / 1 HIGH / 3 MEDIUM / 0 LOW |
+| [OPC AE 1.10](ae-1.10.md) | Alarms & Events | DCOM declarations, proxies, and dispatchers cover the AE interfaces; CCW has real `GetStatus`, `QueryAvailableFilters`, `GetState`, `SetState`, `Refresh`, and `CancelRefresh` paths. | CCW subscription/browser creation and array-heavy AE query methods still return `E_NOTIMPL`. |
+| [OPC Batch 2.00](batch-2.00.md) | Batch | 4/4 interfaces and 11/11 methods projected; batch summary/filter codecs and Batch error constants are present. | Server namespace/property semantics remain implementation work for Batch servers. |
+| [OPC Common 1.10](common-1.10.md) | Common (locale, shutdown, server-list) | `IOPCCommon`, `IOPCShutdown`, `IOPCServerList(2)`, and `IOPCEnumGUID` are covered by generated or hand-written DCOM projections. | Only public convenience helpers such as a reusable LIKE string-filter utility remain. |
+| [OPC CPX 1.00](cpx-1.00.md) | Complex Data | Interface projections, CPX property IDs, CPX HRESULTs, OPCBinary/XMLSchema parsers, XML serializer, OPCBinary encoder/decoder, and namespace helpers are implemented. | DA server runtime integration, type conversion, data-filter execution, and BitString support remain. |
+| [OPC DA 2.05a](da-2.05a.md) | DA (V20 back-compat + modern DCOM) | V20 remains a minimal compatibility shim; the modern DCOM surface covers DA 2.05a including `IOPCServer`, `IOPCCommon`, group/item management, sync/async I/O, browsing, properties, callbacks, and connection points. | Remaining caveats are mostly V20-scope and CTT/integration coverage, not missing modern DCOM methods. |
+| [OPC DA 3.00](da-3.00.md) | DA (flagship) | DA 3.0 DCOM projections and default hosting helpers cover browse, item I/O, group keep-alive, sync/async VQT and max-age I/O, deadband, sampling, callbacks, and item enumeration. | Default deadband/sampling helpers deliberately report per-handle unsupported/not-set results until a server supplies policy. |
+| [OPC DX 1.00](dx-1.00.md) | Data eXchange | `IOPCConfiguration` has a complete hand-written client proxy backed by DX structure codecs, status records, enums, namespace helpers, and error constants. | DX server runtime/DA bridge, persistence, and live data-transfer state machine are not implemented. |
+| [OPC HDA 1.20](hda-1.20.md) | Historical Data Access | 56/56 methods and 5/5 codecs are declared; CCW implements core `IOPCHDA_Server` metadata/status/handle methods. | CCW `CreateBrowse` and read bodies are still `E_NOTIMPL` pending browser CCW and OPCHDA item/VARIANT allocation support. |
+| [OPC Security 1.00](security-1.00.md) | Security | 6/6 methods across `IOPCSecurityNT` and `IOPCSecurityPrivate` are projected and tested. | Optional server ACL/sample guidance only. |
+| [OPC XML-DA 1.01](xmlda-1.01.md) | XML-DA (SOAP transport) | Client supports all 8 operations, SOAP 1.1, scalar/extended scalar values, array values, base64Binary, quality, errors, and polled subscriptions. | XML-DA server hosting and SOAP 1.2 are not implemented. |
 
 ## Cross-cutting themes
 
-### AE opnum mismatch epidemic
+### Generated and hand-written projections now coexist
 
-The OPC AE review surfaced an `[OpcMethod(opnum)]` mismatch pattern similar to the DA opnum bugs fixed in commit `aaa3ad5`. Of 26 declared AE methods, **only 16 have correct opnums** (43%). Recommendation: dedicated AE opnum-fix wave mirroring gap-15-getstatus-opnum.
+Most OPC Classic DCOM interfaces use `[GenerateOpcProxy]` and `[OpcGenerateServerDispatch]`. A few interface-pointer-heavy surfaces still use hand-written proxies or dispatchers, for example Batch enumerators and DX configuration calls with compound structures.
 
-### Interface-pointer return methods
+### Cross-platform vs Windows CCW coverage differs
 
-Multiple specs (AE `CreateEventSubscription`, Batch `CreateEnumerator`, DA `AddGroup`/`CreateGroupEnumerator`, HDA `IOPCHDA_Browser`) defer methods that return COM interface pointers. The proxy generator gained STDOBJREF/MEOW handle support in commit `cda87ac` (M1); the deferred methods now CAN be implemented but haven't been migrated from hand-written shims yet.
+The cross-platform managed DCOM path usually has broader interface coverage than Windows CCW native hosting. DA has the most complete CCW surface; AE and HDA still expose some native vtable slots as `E_NOTIMPL` where returning interface pointers or native arrays requires more CCW infrastructure.
 
-### Multi-out parameter shapes
+### Runtime semantics are server-specific
 
-DA methods like `IOPCSyncIO::Read`, `IOPCAsyncIO2::Read/Write`, `IOPCBrowse::Browse`, and HDA `IOPCHDA_SyncRead::ReadRaw` use multi-out + continuation-point patterns. The generator gained `[OpcGenerateMultiOutRecord]` support in M1. Several methods remain stubbed with `NotSupportedException` pending migration.
+Several specs define server behavior beyond wire projection: Batch namespace models, CPX type-conversion/data filters, DX runtime transfer state, HDA aggregate calculations, and XML-DA server hosting. The docs mark those separately from client proxy/dispatcher coverage.
 
-### Codec registration gaps
+### Error constants and codecs have moved forward
 
-- CPX: XML Schema and OPCBinary codecs entirely absent (BLOCKER for any real CPX server interop)
-- DX: 0 of 16 DX-specific structs have codecs registered (proxies use empty-payload placeholders)
-
-### Error code coverage
-
-Most specs define spec-specific HRESULT constants (OPCAE_E_*, OPCB_E_NOT_MEANINGFUL, OPCCPX_E_TYPE_CHANGED, etc.). The reviews flagged 100+ missing error constants across the assembly. These are trivial to add but improve adopter ergonomics.
-
-### XML-DA array types
-
-The XML-DA review flagged that scalar values work but **array values are unsupported** (0/10 array data types). This is a real limitation for industrial process-control workloads where multi-sample reads are common.
+Earlier reviews flagged missing CPX, DX, HDA, Batch, XML-DA array, and DA VARIANT/OPCITEM codecs. Those are now implemented where noted in each document; do not carry forward old “codec-blocked” caveats without checking the source.
 
 ## Read order
 
-For the most actionable findings, read in this order:
-
-1. **[da-3.00.md](da-3.00.md)** — flagship spec; biggest implementation surface
-2. **[hda-1.20.md](hda-1.20.md)** — 100% declared post-gap-10; mostly coverage gaps
-3. **[ae-1.10.md](ae-1.10.md)** — opnum bugs need a dedicated fix wave
-4. **[common-1.10.md](common-1.10.md)** — foundational; high coverage already
-5. **[security-1.00.md](security-1.00.md)** — small spec, near-complete
-6. **[batch-2.00.md](batch-2.00.md)** — moderate coverage; codec-ready follow-ups
-7. **[cpx-1.00.md](cpx-1.00.md)** — codec registration is the bottleneck
-8. **[dx-1.00.md](dx-1.00.md)** — deferred by design; codec layer needed for activation
-9. **[da-2.05a.md](da-2.05a.md)** — back-compat shim; minor gaps
-10. **[xmlda-1.01.md](xmlda-1.01.md)** — separate SOAP transport; scalar-only
-
-## How to use these reviews
-
-- **Adopters**: skim the "Gaps in implementation" sections of the specs you care about to understand current capabilities
-- **Contributors**: each gap is sized (effort estimate) and prioritized (severity) — pick a BLOCKER/HIGH from your area of interest
-- **Release-planning**: the cross-cutting themes above shape M11+ work items toward 1.0.0
+1. **[da-3.00.md](da-3.00.md)** — flagship spec and broadest runtime surface
+2. **[da-2.05a.md](da-2.05a.md)** — modern DA 2.x coverage plus V20 compatibility scope
+3. **[hda-1.20.md](hda-1.20.md)** — full DCOM declarations with targeted CCW gaps
+4. **[ae-1.10.md](ae-1.10.md)** — DCOM complete, CCW still partial
+5. **[common-1.10.md](common-1.10.md)** — shared locale, shutdown, and discovery support
+6. **[batch-2.00.md](batch-2.00.md)** — projections complete; server semantics remain
+7. **[cpx-1.00.md](cpx-1.00.md)** — codecs/types complete; runtime integration remains
+8. **[dx-1.00.md](dx-1.00.md)** — configuration client complete; runtime not implemented
+9. **[security-1.00.md](security-1.00.md)** — optional security API coverage
+10. **[xmlda-1.01.md](xmlda-1.01.md)** — XML/SOAP client coverage
