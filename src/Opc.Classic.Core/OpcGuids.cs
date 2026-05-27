@@ -48,6 +48,10 @@ public static class OpcGuids
     public static readonly Guid IID_IUnknown =
         new("00000000-0000-0000-C000-000000000046");
 
+    /// <summary><c>IActivation</c> — legacy DCOM remote activation RPC interface.</summary>
+    public static readonly Guid IID_IActivation =
+        new("4D9F4AB8-7D1C-11CF-861E-0020AF6E7C57");
+
     /// <summary><c>IDispatch</c> — Automation late-binding interface.</summary>
     public static readonly Guid IID_IDispatch =
         new("00020400-0000-0000-C000-000000000046");

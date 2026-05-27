@@ -18,7 +18,7 @@ Reference: `External/Docs/Win/[MS-DCOM].md` sections 3.1.2.5.2.3 (legacy) and
 |---|---|---|
 | `IRemoteSCMActivator::RemoteGetClassObject` over TCP | ✅ Client + server | `src\Opc.Classic.Dcom\Activation\` + `src\Opc.Classic.Discovery\OpcEnumClient.cs` |
 | `IRemoteSCMActivator::RemoteCreateInstance` over TCP | ✅ Client + server | same |
-| `IActivation::RemoteActivation` over TCP | ❌ Not implemented | (would be in `src\Opc.Classic.Dcom\Activation\IActivation*.cs`) |
+| `IActivation::RemoteActivation` over TCP | ✅ Client only | `src\Opc.Classic.Dcom\Activation\ActivationClient.cs` + `IActivationCodec.cs` |
 | `IActivation::RemoteActivation` over SMB (ncacn_np) | ❌ Not implemented | requires SMB transport wire-up (see `docs\architecture\smb-transport.md`) |
 | `IRemoteSCMActivator` over SMB | ❌ Not implemented + not normally used | per [MS-DCOM] the modern activator is registered with `ncacn_ip_tcp` only |
 
