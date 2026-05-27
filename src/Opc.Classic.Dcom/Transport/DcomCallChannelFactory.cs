@@ -43,4 +43,28 @@ public sealed class DcomCallChannelFactory {
         IAsyncTransport transport = await _transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
         return new DcomCallChannel(transport, authContext);
     }
+
+    /// <summary>
+    /// Convenience: opens a TCP connection via <see cref="TcpClientTransport.ConnectAsync(string,int,CancellationToken)" />
+    /// and wraps the transport in a <see cref="DcomCallChannel" />. The
+    /// caller owns the channel's lifetime; disposing the channel also
+    /// disposes the transport.
+    /// </summary>
+    /// <param name="host">DNS name or IP literal.</param>
+    /// <param name="port">TCP port number.</param>
+    /// <param name="authContext">The authentication context for the channel.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The connected call channel.</returns>
+    public static async Task<DcomCallChannel> ConnectTcpAsync(
+        string host,
+        int port,
+        IAuthContext authContext,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(host);
+        ArgumentNullException.ThrowIfNull(authContext);
+
+        TcpClientTransport transport = await TcpClientTransport.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
+        return new DcomCallChannel(transport, authContext);
+    }
 }

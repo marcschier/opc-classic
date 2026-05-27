@@ -213,42 +213,15 @@ public sealed class ManagedClientOverTransportTests
         var bound = (IPEndPoint?)host.LocalEndpoint
             ?? throw new InvalidOperationException("Host did not expose a bound endpoint after StartAsync.");
 
-        var client = new TcpClient();
-        await client.ConnectAsync(bound.Address, bound.Port, TestContext.Current!.CancellationToken);
+        // Uses the public TcpClientTransport (cap-e1) which lifts what used to
+        // be a private test helper into Opc.Classic.Dcom.Transport.
+        Opc.Classic.Dcom.Transport.TcpClientTransport transport =
+            await Opc.Classic.Dcom.Transport.TcpClientTransport.ConnectAsync(
+                bound.Address.ToString(),
+                bound.Port,
+                TestContext.Current!.CancellationToken);
         return new Opc.Classic.Dcom.Transport.DcomCallChannel(
-            new TcpClientTransport(client),
+            transport,
             new Opc.Classic.NoOpAuthContext());
-    }
-
-    private sealed class TcpClientTransport : IAsyncTransport
-    {
-        private readonly TcpClient _client;
-        private readonly NetworkStream _stream;
-
-        public TcpClientTransport(TcpClient client)
-        {
-            _client = client;
-            _stream = client.GetStream();
-            Input = PipeReader.Create(_stream);
-            Output = PipeWriter.Create(_stream);
-            RemoteEndpoint = client.Client.RemoteEndPoint ?? new IPEndPoint(IPAddress.None, 0);
-        }
-
-        public EndPoint RemoteEndpoint { get; }
-
-        public PipeReader Input { get; }
-
-        public PipeWriter Output { get; }
-
-        public async ValueTask FlushAsync(CancellationToken cancellationToken = default) =>
-            await Output.FlushAsync(cancellationToken).ConfigureAwait(false);
-
-        public async ValueTask DisposeAsync()
-        {
-            await Input.CompleteAsync().ConfigureAwait(false);
-            await Output.CompleteAsync().ConfigureAwait(false);
-            await _stream.DisposeAsync().ConfigureAwait(false);
-            _client.Dispose();
-        }
     }
 }
