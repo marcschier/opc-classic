@@ -14,6 +14,14 @@ public static class XmlDaErrorCodes
     public static XmlDaErrorCode ParseResultId(string? resultId) =>
         string.IsNullOrWhiteSpace(resultId) ? XmlDaErrorCode.Ok : Parse(resultId);
 
+    /// <summary>Returns true when <paramref name="code"/> is an XML-DA success result.</summary>
+    public static bool IsSuccess(this XmlDaErrorCode code) => code switch
+    {
+        XmlDaErrorCode.Ok or XmlDaErrorCode.Clamp or XmlDaErrorCode.DataQueueOverflow or
+            XmlDaErrorCode.UnsupportedRate => true,
+        _ => false,
+    };
+
     /// <summary>Parses a SOAP fault code or non-empty <c>ResultID</c>.</summary>
     public static XmlDaErrorCode Parse(string? qualifiedName)
     {

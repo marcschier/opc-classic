@@ -170,9 +170,9 @@ The spec defines standard success/error result codes. Implementation maps SOAP f
 | Code | Spec Section | Meaning | Implementation Status |
 |------|--------------|---------|----------------------|
 | **S_OK** | 3.1.9 | Operation succeeded | ✅ Implicitly handled (no fault) |
-| **S_CLAMP** | 3.1.9 | Value clamped to valid range | ⚠️ No explicit handling (parsed as fault) |
-| **S_DATAQUEUEOVERFLOW** | 3.1.9 | Subscription data queue overflow | ⚠️ No explicit handling (parsed as fault) |
-| **S_UNSUPPORTEDRATE** | 3.1.9 | Subscription rate not supported | ⚠️ No explicit handling (parsed as fault) |
+| **S_CLAMP** | 3.1.9 | Value clamped to valid range | ✅ Parsed as `XmlDaErrorCode.Clamp`; `IsSuccess()` true |
+| **S_DATAQUEUEOVERFLOW** | 3.1.9 | Subscription data queue overflow | ✅ Parsed as `XmlDaErrorCode.DataQueueOverflow`; `IsSuccess()` true |
+| **S_UNSUPPORTEDRATE** | 3.1.9 | Subscription rate not supported | ✅ Parsed as `XmlDaErrorCode.UnsupportedRate`; `IsSuccess()` true |
 
 ### 4.2 Error Codes
 

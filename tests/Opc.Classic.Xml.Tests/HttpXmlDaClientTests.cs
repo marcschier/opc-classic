@@ -227,6 +227,44 @@ public sealed class HttpXmlDaClientTests
     }
 
     [Test]
+    public async Task ReadAsync_TreatsClampResultIdAsSuccess()
+    {
+        var handler = new CapturingHandler
+        {
+            ResponseBody = """
+                <?xml version="1.0"?>
+                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                  <soap:Body>
+                    <ReadResponse xmlns="http://opcfoundation.org/webservices/XMLDA/1.0/"
+                                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                      <ReadResult ServerState="running" />
+                      <RItemList>
+                        <Items ItemName="ClampedTag" ClientItemHandle="h-clamp" ResultID="S_CLAMP">
+                          <Value xsi:type="xsd:double">100</Value>
+                          <Quality QualityField="good" />
+                        </Items>
+                      </RItemList>
+                    </ReadResponse>
+                  </soap:Body>
+                </soap:Envelope>
+                """,
+        };
+        var client = BuildClient(handler);
+
+        var response = await client.ReadAsync(new XmlDaReadRequest(
+            new XmlDaRequestHeader(null, null),
+            new[] { new XmlDaReadItem("ClampedTag", "h-clamp") }));
+
+        await Assert.That(response.Items.Count).IsEqualTo(1);
+        var item = response.Items[0];
+        await Assert.That(item.ResultId).IsEqualTo("S_CLAMP");
+        await Assert.That(item.ResultCode).IsEqualTo(XmlDaErrorCode.Clamp);
+        await Assert.That(item.ResultCode.IsSuccess()).IsTrue();
+        await Assert.That(item.Value!.AsDouble()).IsEqualTo(100d);
+    }
+
+    [Test]
     public async Task GetStatusAsync_HonorsCancellation()
     {
         var handler = new CapturingHandler
