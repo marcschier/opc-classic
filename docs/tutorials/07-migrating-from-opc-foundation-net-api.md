@@ -1,12 +1,12 @@
 # Migrating from the OPC Foundation .NET API
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 Many OPC Classic applications still depend on the OPC Foundation .NET API for .NET Framework. Those applications usually run only on Windows, use synchronous calls, rely on COM registration, and carry types such as `Opc.Da.Server`, `Opc.Da.Subscription`, `Opc.Da.Item`, `Opc.Da.ItemValueResult`, and `Opc.ConnectData`. Opc.Classic keeps the OPC concepts but changes the platform assumptions: namespaces are `Opc.Classic.*`, APIs are async, cancellation is explicit, DCOM is pure managed on the portable path, and NativeAOT/trimming shape the design.
 
 This guide maps OPC Foundation .NET API patterns to Opc.Classic equivalents. Treat migration as a feature-by-feature refactor: keep behavior tests around every OPC operation, move OPC calls behind application-owned interfaces, and apply mechanical namespace edits only after the boundary tests are in place.
 
-For the short version see [../cookbook/04-migrate-from-net-framework-opc-net-api.md](../cookbook/04-migrate-from-net-framework-opc-net-api.md). For architecture, read [../ARCHITECTURE.md](../ARCHITECTURE.md).
+For the short version see [../cookbook/04-migrate-from-net-framework-opc-net-api.md](../cookbook/04-migrate-from-net-framework-opc-net-api.md). For rc-to-1.0 compatibility and preview namespace changes, read [../MIGRATION.md](../MIGRATION.md). For architecture, read [../ARCHITECTURE.md](../ARCHITECTURE.md).
 
 ## Prerequisites
 
@@ -378,7 +378,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 
 - OPC DA 3.00, AE 1.10, and HDA 1.20.
 - [MS-DCOM] for the transport assumptions that replace Windows COM RCWs on the portable path.
-- Repository docs: [../ADOPTION.md](../ADOPTION.md), [../ARCHITECTURE.md](../ARCHITECTURE.md), and [../cookbook/04-migrate-from-net-framework-opc-net-api.md](../cookbook/04-migrate-from-net-framework-opc-net-api.md).
+- Repository docs: [../ADOPTION.md](../ADOPTION.md), [../ARCHITECTURE.md](../ARCHITECTURE.md), [../MIGRATION.md](../MIGRATION.md), and [../cookbook/04-migrate-from-net-framework-opc-net-api.md](../cookbook/04-migrate-from-net-framework-opc-net-api.md).
 
 
 

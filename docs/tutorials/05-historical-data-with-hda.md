@@ -1,10 +1,10 @@
 # Historical data with OPC HDA
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 OPC Historical Data Access is the query side of OPC Classic. Data Access answers "what is the value now?"; HDA answers "what happened over this time range?" A production historian client needs raw reads, processed aggregates, annotations, modified-value audit trails, continuation handling, and careful time semantics. This tutorial shows how to model those scenarios with `Opc.Classic.Hda` and how the sample client and server fit together.
 
-Use `samples\Opc.Classic.Samples.HdaClient\` and `samples\Opc.Classic.Samples.HdaServer\` as bookends. The client sample builds a loopback call path with `LoopbackHdaClient`, `IOPCHDA_ServerClientProxy`, `IOPCHDA_SyncReadClientProxy`, `IOPCHDA_SyncAnnotationsClientProxy`, and `IOPCHDA_AsyncReadClientProxy`. The server sample implements `IOpcHdaServer` over `HistoricalDataStore`. The public application-level contract is `IHdaServer`, which exposes browse, raw reads, processed reads, read-at-time, annotations, and continuation reads.
+Use `samples\Opc.Classic.Samples.HdaClient\` and `samples\Opc.Classic.Samples.HdaServer\` as bookends. The client sample builds a loopback call path with `LoopbackHdaClient`, `IOPCHDA_ServerClientProxy`, `IOPCHDA_SyncReadClientProxy`, `IOPCHDA_SyncAnnotationsClientProxy`, and `IOPCHDA_AsyncReadClientProxy`; when `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set it uses `DcomCallChannelFactory.ConnectTcpAsync` instead of the in-process channel. The server sample implements `IOpcHdaServer` over `HistoricalDataStore` and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51302`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The public application-level contract is `IHdaServer`, which exposes browse, raw reads, processed reads, read-at-time, annotations, and continuation reads.
 
 ## Prerequisites
 
@@ -316,7 +316,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 
 ## Next steps
 
-- Run `samples\Opc.Classic.Samples.HdaServer` and `samples\Opc.Classic.Samples.HdaClient`.
+- Run `samples\Opc.Classic.Samples.HdaServer` and `samples\Opc.Classic.Samples.HdaClient`; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
 - Compare server hosting with [02-host-an-opc-server.md](02-host-an-opc-server.md).
 - Read [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md) for HRESULT and NDR diagnostics.
 - Review [../ARCHITECTURE.md](../ARCHITECTURE.md) for NDR codec and generated proxy flow.

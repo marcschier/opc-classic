@@ -1,10 +1,10 @@
 # Events and alarms with OPC AE
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 OPC Alarms & Events is the event stream for OPC Classic. DA tells you current values, HDA tells you historical values, and AE tells you what happened: a simple notification, an operator tracking event, or a condition event that may require acknowledgement. This tutorial walks through event categories, area browsing, filters, condition acknowledgements, refresh, and server-hosting patterns using `Opc.Classic.Ae`.
 
-The repository samples are the best reference: `samples\Opc.Classic.Samples.AeServer\` hosts `Opc.Classic.Samples.AeServer.1`, while `samples\Opc.Classic.Samples.AeClient\` builds an in-process loopback client over `IOPCEventServerClientProxy`, `InMemoryCallChannel`, `InProcessAeServer`, and `InProcessAeSubscription`. The public application surface is `IAeServer` and `IAeSubscription`.
+The repository samples are the best reference: `samples\Opc.Classic.Samples.AeServer\` hosts `Opc.Classic.Samples.AeServer.1`, while `samples\Opc.Classic.Samples.AeClient\` builds an in-process loopback client over `IOPCEventServerClientProxy`, `InMemoryCallChannel`, `InProcessAeServer`, and `InProcessAeSubscription`. When `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set, the AE client uses `DcomCallChannelFactory.ConnectTcpAsync` against the sample server instead. The AE server reads `OPC_CLASSIC_SAMPLE_PORT` (default `51301`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The public application surface is `IAeServer` and `IAeSubscription`.
 
 ## Prerequisites
 
@@ -225,14 +225,20 @@ public sealed class SampleAeServer : IOpcAeServer
 Hosting registration mirrors DA and HDA:
 
 ```csharp
+int port = int.TryParse(
+    Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
+    out int parsedPort) && parsedPort > 0 ? parsedPort : 51301;
+string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
+    ?? $"0.0.0.0:{port}";
+
 builder.Services.AddClassicServer();
 builder.Services.AddClassicClsidRegistry(builder.Configuration);
-builder.Services.AddOpcAeServer<SampleAeServer>(static options =>
+builder.Services.AddOpcAeServer<SampleAeServer>(options =>
 {
     options.Clsid = Guid.Parse("C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F");
     options.ProgId = "Opc.Classic.Samples.AeServer.1";
     options.FriendlyName = "Opc.Classic Sample AE Server";
-    options.ListenAddress = "127.0.0.1:0";
+    options.ListenAddress = listenAddress;
 });
 ```
 
@@ -319,7 +325,7 @@ Before release, replay the complete AE scenario: browse areas, query categories,
 
 ## Next steps
 
-- Run `samples\Opc.Classic.Samples.AeServer` and `samples\Opc.Classic.Samples.AeClient`.
+- Run `samples\Opc.Classic.Samples.AeServer` and `samples\Opc.Classic.Samples.AeClient`; for container ports and `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT`, see [../../samples/README.docker.md](../../samples/README.docker.md).
 - Deploy AE workloads with [03-cross-platform-deployment.md](03-cross-platform-deployment.md).
 - Harden authentication with [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
 - Diagnose event stream failures with [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md).

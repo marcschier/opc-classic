@@ -2,7 +2,7 @@
 
 ## What this covers
 
-Map common OPC Foundation .NET Framework OPC NET API concepts to current .NET 10 `Opc.Classic.*` APIs.
+Map common OPC Foundation .NET Framework OPC NET API concepts to current .NET 10 `Opc.Classic.*` APIs. For rc-to-1.0 compatibility notes and preview namespace changes, see [../MIGRATION.md](../MIGRATION.md).
 
 Core types:
 

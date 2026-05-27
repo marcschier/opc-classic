@@ -1,10 +1,10 @@
 # Troubleshooting and diagnostics
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 OPC Classic failures often look vague at the top of the stack: "cannot connect", "access denied", "bad quality", "decode failed", or `E_FAIL`. The root cause may be DNS, firewall, endpoint mapper, authentication level, SPN, channel binding, NDR shape, per-item HRESULT, or a server-specific behavior. This tutorial gives you a structured diagnostic workflow for Opc.Classic clients and managed servers.
 
-Use this article with the architecture guide [../ARCHITECTURE.md](../ARCHITECTURE.md), the DCOM hardening cookbook [../cookbook/05-dcom-hardening-pkt-integrity-explainer.md](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md), and the Kerberos tutorial [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
+Use this article with the architecture guide [../ARCHITECTURE.md](../ARCHITECTURE.md), the DCOM hardening cookbook [../cookbook/05-dcom-hardening-pkt-integrity-explainer.md](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md), the Kerberos tutorial [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md), and the NTLMSSP audit prep guide [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).
 
 ## Prerequisites
 
@@ -70,7 +70,7 @@ kvno RPCSS/opc01.plant.example.com
 klist -e
 ```
 
-If external validation fails, fix Kerberos first. Application retries cannot repair a duplicate SPN or expired keytab.
+If external validation fails, fix Kerberos first. Application retries cannot repair a duplicate SPN or expired keytab. For NTLMv2 packet-protection evidence and audit scope, cross-check [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).
 
 ## HRESULT decoding
 

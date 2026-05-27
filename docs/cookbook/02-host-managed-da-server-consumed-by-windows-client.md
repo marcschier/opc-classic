@@ -4,7 +4,7 @@
 
 Run a managed OPC DA server on Linux, macOS, or Windows while Windows DA clients connect through Classic DA COM interfaces.
 
-The reference sample is `samples\Opc.Classic.Samples.DaServer`. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>` and registers `Opc.Classic.Samples.DaServer.1`. Related samples cover AE, HDA, loopback, CTT, and AOT scenarios.
+The reference sample is `samples\Opc.Classic.Samples.DaServer`. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>`, registers `Opc.Classic.Samples.DaServer.1`, and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51300`) or `OPC_CLASSIC_LISTEN_ADDRESS`. Related samples cover AE, HDA, loopback, CTT, and AOT scenarios; container conventions are in [../../samples/README.docker.md](../../samples/README.docker.md).
 
 ## Hosting shape
 
@@ -16,14 +16,20 @@ using Opc.Classic.Hosting;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+int port = int.TryParse(
+    Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
+    out int parsedPort) && parsedPort > 0 ? parsedPort : 51300;
+string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
+    ?? $"0.0.0.0:{port}";
+
 builder.Services.AddClassicServer();
 builder.Services.AddClassicClsidRegistry(builder.Configuration);
-builder.Services.AddOpcDaServer<MyDaServer>(static options =>
+builder.Services.AddOpcDaServer<MyDaServer>(options =>
 {
     options.Clsid = Guid.Parse("7f41b3e9-32ec-40c9-9e42-3e0e0fce5a11");
     options.ProgId = "Contoso.ManagedOpcDa.1";
     options.FriendlyName = "Contoso Managed OPC DA Server";
-    options.ListenAddress = "0.0.0.0:13550";
+    options.ListenAddress = listenAddress;
 });
 
 await builder.Build().RunAsync();
@@ -62,7 +68,7 @@ For Kerberos setup, see [Kerberos in Active Directory](03-kerberos-in-active-dir
 
 ## Windows client side
 
-The Windows client asks for `Contoso.ManagedOpcDa.1`. Registry setup maps that ProgID and CLSID to the managed server endpoint. After activation, `IOPCServer`, `IOPCGroupStateMgt`, and related calls flow to generated server dispatchers.
+The Windows client asks for `Contoso.ManagedOpcDa.1`. Registry setup maps that ProgID and CLSID to the managed server endpoint. After activation, `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)` calls flow to generated server dispatchers or Windows CCW vtables. VARIANT and SAFEARRAY marshaling is implemented for the shipped DA paths, and AE/HDA have corresponding server/subscription/read vtables for their samples.
 
 Native COM clients require normal Windows COM registration, DCOM permissions, firewall rules, and process identity configuration. Use the preserved OPC Foundation C++ sample clients and servers as compatibility references when validating a deployment.
 

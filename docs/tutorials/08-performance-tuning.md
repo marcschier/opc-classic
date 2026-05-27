@@ -1,6 +1,6 @@
 # Performance tuning Opc.Classic applications
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 OPC Classic performance problems often appear in layers: tag batches that are too small, callbacks that allocate per item, historians returning too many samples, authentication signing overhead, and NDR codecs on hot paths. Opc.Classic gives you AOT-friendly primitives, generated proxies, span-based NDR readers/writers, and explicit DTOs. This tutorial shows how to use those primitives without fighting the runtime.
 
@@ -138,7 +138,7 @@ static OpcVariant ToOpcValue(double engineeringValue) => OpcVariant.FromDouble(e
 static double ReadDoubleOrNaN(OpcVariant value) => value.AsDouble() ?? double.NaN;
 ```
 
-For large arrays, prefer SAFEARRAY-aware paths as they land rather than one boxed `OpcVariant` per element.
+For large automation arrays, prefer the shipped `OpcSafeArray` / SAFEARRAY-aware marshaling paths rather than one boxed `OpcVariant` per element.
 
 ## DA batch sizing
 
@@ -213,7 +213,7 @@ Track these metrics before changing code:
 - HDA samples returned per query;
 - CPU split between auth, NDR, and application processing.
 
-Once the repository benchmarks project lands, add microbenchmarks for `NdrWriter`, `NdrReader`, `OpcVariant`, generated proxy encode/decode, and dispatcher response encoding. Keep those benchmarks in CI for regression detection.
+Use the repository benchmark project (`benchmarks\Opc.Classic.Benchmarks`) for microbenchmarks around `NdrWriter`, `NdrReader`, `OpcVariant`, `OpcSafeArray`, codec registries, and call-channel overhead. Keep additional application-specific benchmarks in CI for regression detection.
 
 ## Pitfalls
 
@@ -226,7 +226,7 @@ Once the repository benchmarks project lands, add microbenchmarks for `NdrWriter
 
 ## Building a repeatable benchmark harness
 
-Until the repository benchmark project lands, create a small local harness that uses the same payloads every run. Benchmark three layers separately: pure codec encode/decode, in-memory call-channel round trips, and real server calls. Mixing them together makes results hard to interpret. A codec benchmark should not open sockets; a network benchmark should not allocate random item lists every iteration.
+Start with `benchmarks\Opc.Classic.Benchmarks`, then create a small local harness for payloads unique to your application. Benchmark three layers separately: pure codec encode/decode, in-memory call-channel round trips, and real server calls. Mixing them together makes results hard to interpret. A codec benchmark should not open sockets; a network benchmark should not allocate random item lists every iteration.
 
 Representative payloads are more important than synthetic extremes. Include a DA read of 10 items, 100 items, and 1000 items; an HDA raw response with 100 and 10,000 samples; an AE event burst with simple, tracking, and condition events; and a callback batch with good and failed item rows. Keep payloads in source-controlled fixtures so regressions are comparable.
 

@@ -69,4 +69,4 @@ If negotiation fails, check:
 - packet-integrity policy;
 - whether SPNEGO selected Kerberos or NTLMv2.
 
-Use application logging around the selected `OpcAuthMode` and protection level. For packet-integrity rationale, see [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md).
+Use application logging around the selected `OpcAuthMode` and protection level. For packet-integrity rationale, see [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md); for NTLMv2 audit context and residual-risk tracking, see [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).

@@ -1,6 +1,6 @@
 # AOT and trimming for Opc.Classic applications
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 Opc.Classic is designed for NativeAOT-compatible libraries. That matters for plant gateways, edge containers, and small service deployments where startup time, image size, and predictable dependencies are important. It also means application code must avoid patterns that only work when the full runtime and reflection metadata are available. This tutorial shows how to publish AOT-trimmed binaries, how to use root descriptors when you really need them, and what is safe or unsafe in the Opc.Classic stack.
 
@@ -227,7 +227,7 @@ USER $APP_UID
 ENTRYPOINT ["./MyOpcGateway"]
 ```
 
-Do not copy the SDK into the runtime image. Do not bake Kerberos keytabs into the image; mount them as secrets as described in [03-cross-platform-deployment.md](03-cross-platform-deployment.md).
+Do not copy the SDK into the runtime image. Do not bake Kerberos keytabs into the image; mount them as secrets as described in [03-cross-platform-deployment.md](03-cross-platform-deployment.md). The repository sample Dockerfiles and Compose environment variables are summarized in [../../samples/README.docker.md](../../samples/README.docker.md).
 
 ## AOT troubleshooting
 

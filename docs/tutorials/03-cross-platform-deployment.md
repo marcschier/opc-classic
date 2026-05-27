@@ -1,10 +1,10 @@
 # Cross-platform deployment for OPC Classic clients and servers
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 Opc.Classic is designed for .NET 10, NativeAOT-compatible libraries, and cross-platform operation. That does not make OPC Classic deployment magically simple. DCOM-era servers assume Windows naming, endpoint mapping, authentication levels, and service accounts. Linux and macOS clients bring container packaging, Kerberos files, DNS, time synchronization, and firewall rules into the picture. This tutorial turns the repository's architecture into a production deployment plan for clients and managed servers on Linux, macOS, containers, and Kubernetes.
 
-For a compact Linux recipe see [../cookbook/01-connect-to-matrikon-from-linux.md](../cookbook/01-connect-to-matrikon-from-linux.md). For AOT details see [10-aot-and-trimming.md](10-aot-and-trimming.md). For authentication hardening see [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
+For a compact Linux recipe see [../cookbook/01-connect-to-matrikon-from-linux.md](../cookbook/01-connect-to-matrikon-from-linux.md). For AOT details see [10-aot-and-trimming.md](10-aot-and-trimming.md). For authentication hardening see [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md). For the repository sample Compose topology and exact environment variables, see [../../samples/README.docker.md](../../samples/README.docker.md).
 
 ## Prerequisites
 
@@ -120,6 +120,16 @@ KRB5_CLIENT_KTNAME=/var/run/secrets/opc/opc-client.keytab
 
 If you use `Microsoft.Extensions.Configuration`, double underscores map to sections. Keep the configuration shape close to `OpcConnectData`: URL, authentication mode, protection level, timeout, realm, SPN, and credential source.
 
+## Repository sample container convention
+
+The repository sample containers now exercise DCOM-over-IP between client/server containers. Server samples read `OPC_CLASSIC_SAMPLE_PORT` and default to DA `51300`, AE `51301`, HDA `51302`, and CTT `51303`; `OPC_CLASSIC_LISTEN_ADDRESS` overrides the full bind address when you need more than `0.0.0.0:<port>`. Client samples read `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT`; when both are present they call `DcomCallChannelFactory.ConnectTcpAsync` over `TcpClientTransport`, and when absent they fall back to the in-process `InMemoryCallChannel` path for local development.
+
+```powershell
+docker compose -f samples\docker-compose.yml up
+```
+
+The sample Compose file sets `OPC_CLASSIC_SERVER_HOST` to service DNS names (`daserver`, `aeserver`, `hdaserver`) and ports `51300`-`51302`. See [../../samples/README.docker.md](../../samples/README.docker.md) before copying sample port numbers into production; real Windows DCOM targets may still require endpoint mapper and constrained dynamic RPC ports.
+
 ## Kerberos on Linux
 
 A minimal `/etc/krb5.conf` for an Active Directory realm:
@@ -167,12 +177,18 @@ If `kvno` fails, the application will fail too. Fix realm, DNS, SPN, and key mat
 Managed server hosting does not require the Windows COM runtime for the portable path, but clients still need to discover and activate the server. In production, choose a stable listen address and publish metadata through your deployment system:
 
 ```csharp
-builder.Services.AddOpcDaServer<MyServer>(static options =>
+int port = int.TryParse(
+    Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
+    out int parsedPort) && parsedPort > 0 ? parsedPort : 51300;
+string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
+    ?? $"0.0.0.0:{port}";
+
+builder.Services.AddOpcDaServer<MyServer>(options =>
 {
     options.Clsid = Guid.Parse("4E3F63E7-4CC7-4E77-A59E-6462A1002001");
     options.ProgId = "Contoso.ManagedDa.1";
     options.FriendlyName = "Contoso Managed OPC DA Server";
-    options.ListenAddress = "0.0.0.0:13550";
+    options.ListenAddress = listenAddress;
 });
 ```
 
@@ -361,14 +377,14 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 - Publish an AOT canary with [10-aot-and-trimming.md](10-aot-and-trimming.md).
 - Harden Kerberos and channel binding with [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
 - Diagnose deployment failures with [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md).
-- Review [../ARCHITECTURE.md](../ARCHITECTURE.md) for the transport and hosting layers.
+- Review [../ARCHITECTURE.md](../ARCHITECTURE.md) for the transport and hosting layers, and [../../samples/README.docker.md](../../samples/README.docker.md) for runnable container samples.
 
 ## References
 
 - [MS-DCOM] and [MS-RPCE] for DCOM activation and packet protection.
 - [MS-KILE] for Kerberos behavior in Windows domains.
 - OPC DA 3.00, AE 1.10, and HDA 1.20 for subscription and callback expectations.
-- Repository sample: `samples\Opc.Classic.Samples.AotCanary`.
+- Repository samples: `samples\Opc.Classic.Samples.AotCanary` and [../../samples/README.docker.md](../../samples/README.docker.md).
 
 
 

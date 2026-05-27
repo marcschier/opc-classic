@@ -1,6 +1,6 @@
 # Build your first OPC DA client
 
-Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
+Applies to Opc.Classic 1.0.0-rc.7.
 
 This tutorial builds a complete Data Access client as a .NET 10 worker. It uses the public `Opc.Classic.Da.IDaServer` and `IDaSubscription` contracts, so the application code is the same shape whether the server is an in-process loopback target, a lab server, or a production DCOM-backed adapter. The runnable path below uses a loopback implementation so you can paste the files into a project and run the sequence without a Windows COM server. To connect to a real OPC DA server, keep the worker and replace only the `IDaServer` registration.
 
@@ -59,7 +59,7 @@ Add `appsettings.json` so configuration has a place for real-server settings eve
 }
 ```
 
-`Mode=Loopback` keeps the sample self-contained. For a real server, keep this configuration shape and register the production DCOM-backed `IDaServer` adapter for your deployment. `OpcUrl.Parse`, `OpcConnectData.WithNtlmV2`, and `OpcProtectionLevel.Integrity` are stable connection primitives described in [../ADOPTION.md](../ADOPTION.md).
+`Mode=Loopback` keeps the sample self-contained. The repository sample in `samples\Opc.Classic.Samples.DaClient\Program.cs` keeps the same worker shape but switches from `InMemoryCallChannel` to TCP when `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set. For a real server, keep this configuration shape and register the production DCOM-backed `IDaServer` adapter for your deployment. `OpcUrl.Parse`, `OpcConnectData.WithNtlmV2`, `OpcProtectionLevel.Integrity`, and `DcomCallChannelFactory.ConnectTcpAsync` are stable connection primitives described in [../ADOPTION.md](../ADOPTION.md).
 
 ## Program.cs
 
@@ -519,11 +519,16 @@ Use `CancellationToken` on every call. Network DCOM calls can hang behind firewa
 
 ## From loopback to a real server
 
-The loopback implementation proves your application workflow without network variables. Connecting to a real server should be a dependency-injection change, not a rewrite of the worker. Keep the `DaClientWorker` exactly as it is and replace `LoopbackDaClient` with the adapter that creates a DCOM call channel, activates the configured ProgID/CLSID, and implements `IDaServer`. The connection settings line up with the stable core types:
+The loopback implementation proves your application workflow without network variables. Connecting to a real server should be a dependency-injection change, not a rewrite of the worker. Keep the `DaClientWorker` exactly as it is and replace `LoopbackDaClient` with the adapter that creates a DCOM call channel, activates the configured ProgID/CLSID, and implements `IDaServer`. The repository DA client sample now has both paths: without environment variables it uses `InMemoryCallChannel`; with `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` it calls `DcomCallChannelFactory.ConnectTcpAsync` and wraps the channel in generated DA proxies.
+
+The connection settings line up with the stable core types:
 
 ```csharp
 using System.Net;
 using Opc.Classic;
+using Opc.Classic.Da.Dcom;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Transport;
 
 OpcUrl url = OpcUrl.Parse("opcda://opc01.plant.example.com/Matrikon.OPC.Simulation.1");
 OpcConnectData connectData = OpcConnectData.WithNtlmV2(
@@ -531,7 +536,20 @@ OpcConnectData connectData = OpcConnectData.WithNtlmV2(
     new NetworkCredential("opc-reader", password, "PLANT"),
     OpcProtectionLevel.Integrity,
     TimeSpan.FromSeconds(30));
+
+IAuthContext authContext = NtlmAuthentication.CreateAuthContext(connectData);
+int port = int.TryParse(Environment.GetEnvironmentVariable("OPC_CLASSIC_SERVER_PORT"), out int parsedPort)
+    && parsedPort > 0 ? parsedPort : 51300;
+await using DcomCallChannel channel = await DcomCallChannelFactory.ConnectTcpAsync(
+    url.Host,
+    port,
+    authContext,
+    cancellationToken).ConfigureAwait(false);
+
+var opcServer = new IOPCServerClientProxy(channel);
 ```
+
+For the sample containers, `port` is usually `51300` for DA and comes from `OPC_CLASSIC_SERVER_PORT`; production Windows DCOM deployments may resolve or constrain a different endpoint port.
 
 When you switch to a real server, validate one layer at a time. First parse the URL and log the host and server ID. Next complete authentication and `GetStatusAsync`. Then browse a small branch. Then validate or add one item. Only after those steps work should you enable production subscription rates. This order prevents a bad tag name from being misdiagnosed as a Kerberos or firewall issue.
 
@@ -546,7 +564,7 @@ Finally, treat write operations differently from reads. Writes should carry stro
 ## Next steps
 
 - Host the sample DA server in [02-host-an-opc-server.md](02-host-an-opc-server.md) and point your adapter at `Opc.Classic.Samples.DaServer.1`.
-- Deploy the client on Linux or in containers with [03-cross-platform-deployment.md](03-cross-platform-deployment.md).
+- Deploy the client on Linux or in containers with [03-cross-platform-deployment.md](03-cross-platform-deployment.md), and see [../../samples/README.docker.md](../../samples/README.docker.md) for the sample `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT` convention.
 - Harden authentication with [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md).
 - Use [09-troubleshooting-and-diagnostics.md](09-troubleshooting-and-diagnostics.md) when connection, HRESULT, or callback behavior differs from the loopback run.
 

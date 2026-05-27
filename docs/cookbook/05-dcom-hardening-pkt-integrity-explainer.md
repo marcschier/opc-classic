@@ -50,4 +50,4 @@ Bind-only authentication leaves later PDUs unsigned, exposing reads, writes, cal
 
 Use `OpcAuthMode.NtlmV2` or `OpcAuthMode.Kerberos`. Kerberos/SPNEGO is preferred in Active Directory environments. For TLS-protected endpoints, channel binding / Extended Protection for Authentication includes the `tls-server-end-point` certificate hash in the authentication exchange.
 
-See [Kerberos in Active Directory](03-kerberos-in-active-directory.md) for SPN and channel-binding setup.
+See [Kerberos in Active Directory](03-kerberos-in-active-directory.md) for SPN and channel-binding setup. For the NTLMv2 implementation audit trail, see [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).

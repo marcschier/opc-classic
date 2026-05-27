@@ -1,6 +1,6 @@
 # OPC Classic cookbook
 
-These recipes use the current `Opc.Classic.*` package and namespace names. They are plain GitHub-rendered Markdown and assume the MIT-licensed `0.6.0-alpha.1` source tree.
+These recipes use the current `Opc.Classic.*` package and namespace names. They are plain GitHub-rendered Markdown and assume the MIT-licensed `1.0.0-rc.7` source tree.
 
 ## Recipes
 
@@ -22,4 +22,4 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 - `samples\Opc.Classic.Samples.CttServer` — managed DA CTT workflow target registered as `Opc.Classic.DaSample.1`.
 - `samples\Opc.Classic.Samples.AotCanary` — NativeAOT publish smoke test.
 
-See also [Architecture](../ARCHITECTURE.md) and [Adoption guide](../ADOPTION.md).
+See also [Architecture](../ARCHITECTURE.md), [Adoption guide](../ADOPTION.md), [sample Docker guide](../../samples/README.docker.md), and [1.0.0 release blockers](../release-blockers.md).
