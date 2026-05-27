@@ -30,8 +30,10 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_POINTER = unchecked((int)0x80004003);
 
+    private static readonly Guid s_iidUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;
 
+    private readonly Lock _syncRoot = new();
     private IntPtr _callbackPtr;
 
     /// <summary>
@@ -56,6 +58,16 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
         finally
         {
             InvokeRelease(clientUnknown);
+        }
+    }
+
+    internal IntPtr AddRefCallbackUnknown()
+    {
+        lock (_syncRoot)
+        {
+            IntPtr callbackPtr = _callbackPtr;
+            ObjectDisposedException.ThrowIf(callbackPtr == IntPtr.Zero, this);
+            return QueryInterface(callbackPtr, s_iidUnknown, "Client sink does not expose IUnknown.");
         }
     }
 
@@ -138,7 +150,12 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
     /// <summary>Releases the held <c>IOPCDataCallback</c> interface pointer.</summary>
     public void Dispose()
     {
-        IntPtr callbackPtr = Interlocked.Exchange(ref _callbackPtr, IntPtr.Zero);
+        IntPtr callbackPtr;
+        lock (_syncRoot)
+        {
+            callbackPtr = _callbackPtr;
+            _callbackPtr = IntPtr.Zero;
+        }
         if (callbackPtr != IntPtr.Zero)
         {
             InvokeRelease(callbackPtr);
@@ -146,22 +163,25 @@ public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
         GC.SuppressFinalize(this);
     }
 
-    private static IntPtr QueryDataCallback(IntPtr clientUnknown)
+    private static IntPtr QueryDataCallback(IntPtr clientUnknown) =>
+        QueryInterface(clientUnknown, s_iidDataCallback, "Client sink does not implement IOPCDataCallback.");
+
+    private static IntPtr QueryInterface(IntPtr instance, Guid iid, string failureMessage)
     {
-        IntPtr* vtable = *(IntPtr**)clientUnknown;
+        IntPtr* vtable = *(IntPtr**)instance;
         var queryInterface = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[0];
-        Guid iid = s_iidDataCallback;
-        IntPtr callbackPtr = IntPtr.Zero;
-        int hr = queryInterface(clientUnknown, &iid, &callbackPtr);
+        Guid local = iid;
+        IntPtr returned = IntPtr.Zero;
+        int hr = queryInterface(instance, &local, &returned);
         if (hr < 0)
         {
-            throw new COMException("Client sink does not implement IOPCDataCallback.", hr);
+            throw new COMException(failureMessage, hr);
         }
-        if (callbackPtr == IntPtr.Zero)
+        if (returned == IntPtr.Zero)
         {
-            throw new COMException("Client sink returned a null IOPCDataCallback pointer.", E_NOINTERFACE);
+            throw new COMException(failureMessage, E_NOINTERFACE);
         }
-        return callbackPtr;
+        return returned;
     }
 
     private static void InvokeAddRef(IntPtr unknown)

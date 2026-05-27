@@ -45,7 +45,7 @@ The V20 namespace remains deliberately narrow. Missing V20 declarations are not 
 | `IOPCAsyncIO2` | ✅ 6/6 | ✅ `Read`, `Write`, `Refresh2`, `Cancel2`, `SetEnable`, `GetEnable` real bodies | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:539-590` |
 | `IOPCBrowseServerAddressSpace` | ✅ 5/5, backed by address-space abstractions | usable through default browse services | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:159-199`; `src/Opc.Classic.Da/Hosting/DefaultBrowseServerAddressSpace.cs:1-167` |
 | `IOPCItemProperties` | ✅ 3/3 | default properties include canonical IDs 1-8 | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:201-242`; `src/Opc.Classic.Da/Hosting/DefaultItemProperties.cs:1-106` |
-| `IConnectionPointContainer` / `IConnectionPoint` | ✅ dispatcher coverage; `Advise`/`Unadvise` wired | ✅ group CCW participates in callback fan-out | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:681-727`; `src/Opc.Classic.Da/Hosting/OpcDaGroup.cs:1-1225` |
+| `IConnectionPointContainer` / `IConnectionPoint` | ✅ dispatcher coverage; `Advise`/`Unadvise` wired | ✅ group CCW participates in callback fan-out and exposes `IEnumConnections` / `IEnumConnectionPoints` CCWs | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:681-727`; `src/Opc.Classic.Da/Hosting/Windows/OpcEnumConnectionsCcw.cs`; `src/Opc.Classic.Da/Hosting/Windows/OpcEnumConnectionPointsCcw.cs` |
 | `IOPCDataCallback` | ✅ 4/4 outbound callback projection | ✅ `OpcDataCallbackProxy` marshals `OnDataChange`, `OnReadComplete`, `OnWriteComplete`, `OnCancelComplete` | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:742-797`; `src/Opc.Classic.Da/Hosting/Windows/OpcDataCallbackProxy.cs:1-395` |
 | `IEnumOPCItemAttributes` | ✅ dispatcher + stateful enumerator | ✅ `Next`, `Skip`, `Reset`, `Clone`, including `vEUInfo` VARIANT marshaling | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:651-679`; `src/Opc.Classic.Da/Hosting/Windows/OpcEnumOpcItemAttributesCcw.cs:1-153` |
 
@@ -77,7 +77,7 @@ Current Windows CCW item and I/O tests exercise the marshaling paths that were p
 | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaServerDispatcherTests.cs:1-244` | Server dispatcher routing |
 | `tests/Opc.Classic.Da.Tests/BrowseAndPropertyTests.cs:1-200` | Browse/property defaults |
 | `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDaServerCcwTests.cs:1-559` | Windows server CCW |
-| `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDaGroupCcwTests.cs:1-1815` | Windows group CCW item/I/O/state/callback behavior |
+| `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDaGroupCcwTests.cs` | Windows group CCW item/I/O/state/callback behavior, including connection enumerator CCWs |
 | `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDataCallbackProxyTests.cs:1-781` | Outbound `IOPCDataCallback` VARIANT marshaling |
 | `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcEnumOpcItemAttributesCcwTests.cs:1-247` | Item attribute enumerator CCW |
 

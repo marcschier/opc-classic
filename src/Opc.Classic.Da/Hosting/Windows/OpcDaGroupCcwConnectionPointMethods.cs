@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -130,21 +131,67 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int EnumConnections(IntPtr pThis, IntPtr* ppEnum)
     {
         ZeroOut(ppEnum);
-        _ = pThis;
-        // IEnumConnections CCW infrastructure is intentionally deferred for the MVP.
-        return OpcDaGroupCcw.E_NOTIMPL;
+        if (ppEnum == null)
+        {
+            return OpcDaGroupCcw.E_INVALIDARG;
+        }
+        OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
+        if (session is null)
+        {
+            return OpcDaGroupCcw.E_FAIL;
+        }
+        OpcEnumConnectionsEnumerator? enumerator = null;
+        try
+        {
+            enumerator = CreateConnectionsEnumerator(session);
+            *ppEnum = OpcEnumConnectionsCcw.Create(enumerator);
+            enumerator = null;
+            return OpcDaGroupCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+        finally
+        {
+            enumerator?.Dispose();
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int EnumConnectionPoints(IntPtr pThis, IntPtr* ppEnum)
     {
         ZeroOut(ppEnum);
-        _ = pThis;
-        // IEnumConnectionPoints CCW infrastructure is intentionally deferred for the MVP.
-        return OpcDaGroupCcw.E_NOTIMPL;
+        if (ppEnum == null)
+        {
+            return OpcDaGroupCcw.E_INVALIDARG;
+        }
+        OpcDaGroupCcw.CcwSession? session = OpcDaGroupCcw.ResolveSession(pThis);
+        if (session is null)
+        {
+            return OpcDaGroupCcw.E_FAIL;
+        }
+        OpcEnumConnectionPointsEnumerator? enumerator = null;
+        try
+        {
+            enumerator = CreateConnectionPointsEnumerator(session);
+            *ppEnum = OpcEnumConnectionPointsCcw.Create(enumerator);
+            enumerator = null;
+            return OpcDaGroupCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+        finally
+        {
+            enumerator?.Dispose();
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -213,6 +260,79 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods
             proxy?.Dispose();
             return MapHResult(ex);
         }
+    }
+
+    private static OpcEnumConnectionsEnumerator CreateConnectionsEnumerator(OpcDaGroupCcw.CcwSession session)
+    {
+        KeyValuePair<int, OpcDataCallbackProxy>[] sinks = session.ScmSinks.ToArray();
+        Array.Sort(sinks, static (left, right) => left.Key.CompareTo(right.Key));
+        var snapshot = new List<OpcConnectData>(sinks.Length);
+        try
+        {
+            foreach (KeyValuePair<int, OpcDataCallbackProxy> sink in sinks)
+            {
+                try
+                {
+                    IntPtr unknown = sink.Value.AddRefCallbackUnknown();
+                    snapshot.Add(new OpcConnectData(unknown, unchecked((uint)sink.Key)));
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Concurrent Unadvise disposed this sink after the dictionary snapshot.
+                }
+            }
+            return new OpcEnumConnectionsEnumerator(snapshot.ToArray());
+        }
+        catch
+        {
+            ReleaseConnectionsSnapshot(snapshot);
+            throw;
+        }
+    }
+
+    private static OpcEnumConnectionPointsEnumerator CreateConnectionPointsEnumerator(OpcDaGroupCcw.CcwSession session)
+    {
+        IntPtr connectionPoint = session.ConnectionPointTearoff;
+        AddRefComPointer(connectionPoint);
+        try
+        {
+            return new OpcEnumConnectionPointsEnumerator([connectionPoint]);
+        }
+        catch
+        {
+            ReleaseComPointer(connectionPoint);
+            throw;
+        }
+    }
+
+    private static void ReleaseConnectionsSnapshot(List<OpcConnectData> snapshot)
+    {
+        foreach (OpcConnectData connection in snapshot)
+        {
+            ReleaseComPointer(connection.pUnk);
+        }
+    }
+
+    private static void AddRefComPointer(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero)
+        {
+            throw new COMException("Connection point pointer is null.", OpcDaGroupCcw.E_FAIL);
+        }
+        IntPtr* vtable = *(IntPtr**)pointer;
+        var addRef = (delegate* unmanaged<IntPtr, uint>)vtable[1];
+        _ = addRef(pointer);
+    }
+
+    private static void ReleaseComPointer(IntPtr pointer)
+    {
+        if (pointer == IntPtr.Zero)
+        {
+            return;
+        }
+        IntPtr* vtable = *(IntPtr**)pointer;
+        var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
+        _ = release(pointer);
     }
 
     private static bool TryResolveGroup(IntPtr pThis, out OpcDaGroup? group)

@@ -38,11 +38,11 @@ The earlier DA 3.0 review listed `AddGroup`, `AddItems`, `SetState`, `ReadMaxAge
 | `IOPCSyncIO` | ✅ DA 2.x sync `Read`/`Write`; Windows CCW has real VARIANT bodies | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:473-494` |
 | `IOPCSyncIO2` | ✅ `Read`, `Write`, `ReadMaxAge`, `WriteVQT` | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:496-537` |
 | `IOPCAsyncIO2` | ✅ `Read`, `Write`, `Refresh2`, `Cancel2`, `SetEnable`, `GetEnable` | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:539-590` |
-| `IOPCAsyncIO3` | ✅ DA 3.0 async max-age/VQT extensions | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:592-649` |
+| `IOPCAsyncIO3` | ✅ DA 3.0 async max-age/VQT extensions; Windows CCW `WriteVQT` marshals OPCITEMVQT and fires `OnWriteComplete` | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:592-649`; `src/Opc.Classic.Da/Hosting/Windows/OpcDaGroupCcwAsyncIoMethods.cs:254-295` |
 | `IOPCItemDeadbandMgt` | ✅ 3/3; default returns per-handle not-set/not-supported policy errors | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:244-272`; `src/Opc.Classic.Da/Hosting/DefaultItemDeadbandMgt.cs:1-54` |
 | `IOPCItemSamplingMgt` | ✅ 5/5; default returns per-handle rate/buffering policy errors | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:274-325`; `src/Opc.Classic.Da/Hosting/DefaultItemSamplingMgt.cs:1-83` |
 | `IEnumOPCItemAttributes` | ✅ dispatcher and Windows CCW `Next`/`Skip`/`Reset`/`Clone` | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:651-679`; `src/Opc.Classic.Da/Hosting/Windows/OpcEnumOpcItemAttributesCcw.cs:1-153` |
-| `IConnectionPointContainer` / `IConnectionPoint` | ✅ callback connection routing; `Advise`/`Unadvise` wired | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:681-727`; `src/Opc.Classic.Da/Hosting/OpcDaGroup.cs:1-1225` |
+| `IConnectionPointContainer` / `IConnectionPoint` | ✅ callback connection routing; `Advise`/`Unadvise`, `IEnumConnections`, and `IEnumConnectionPoints` CCWs wired | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:681-727`; `src/Opc.Classic.Da/Hosting/Windows/OpcEnumConnectionsCcw.cs`; `src/Opc.Classic.Da/Hosting/Windows/OpcEnumConnectionPointsCcw.cs` |
 | `IOPCDataCallback` | ✅ callback proxy/dispatcher; Windows CCW outbound proxy handles VARIANT arrays | `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:742-797`; `src/Opc.Classic.Da/Hosting/Windows/OpcDataCallbackProxy.cs:1-395` |
 
 ---
@@ -70,7 +70,7 @@ Current tests cover the major areas that were formerly listed as missing:
 - `tests/Opc.Classic.Da.Tests/Hosting/OpcDaServerDispatcherTests.cs:1-244`
 - `tests/Opc.Classic.Da.Tests/BrowseAndPropertyTests.cs:1-200`
 - `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDaServerCcwTests.cs:1-559`
-- `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDaGroupCcwTests.cs:1-1815`
+- `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDaGroupCcwTests.cs` (including `IEnumConnections` / `IEnumConnectionPoints` CCW coverage)
 - `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcDataCallbackProxyTests.cs:1-781`
 - `tests/Opc.Classic.Da.Tests/Hosting/Windows/OpcEnumOpcItemAttributesCcwTests.cs:1-247`
 

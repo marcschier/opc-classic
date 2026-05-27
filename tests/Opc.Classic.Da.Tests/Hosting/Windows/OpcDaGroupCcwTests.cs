@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
+using Opc.Classic;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
 using Opc.Classic.Da.Hosting.Windows;
@@ -30,7 +31,6 @@ public sealed class OpcDaGroupCcwTests
     private const int S_FALSE = 1;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
-    private const int E_NOTIMPL = unchecked((int)0x80004001);
     private const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
@@ -713,7 +713,145 @@ public sealed class OpcDaGroupCcwTests
     }
 
     [Test]
-    public async Task IOPCAsyncIO3_writevqt_returns_notimpl_for_variant_mvp()
+    public async Task IOPCAsyncIO3_writevqt_writes_three_items_and_fires_onwritecomplete()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B", "Tag.C");
+        OpcDaItem[] items = OrderedItems(group);
+        int[] handles = items.Select(item => item.ServerHandle).ToArray();
+        var timestamp = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.Zero);
+        OpcItemVqt[] values =
+        [
+            new(OpcVariant.FromInt32(101), new OpcQuality(0x00C0), timestamp),
+            new(OpcVariant.FromInt32(202), new OpcQuality(0x00D8), timestamp.AddSeconds(1)),
+            new(OpcVariant.FromInt32(303), new OpcQuality(0x00C0), timestamp.AddSeconds(2)),
+        ];
+        IntPtr stub = Helpers.CreateDataCallbackStub();
+        IntPtr ccw = IntPtr.Zero;
+        IntPtr cpPtr = IntPtr.Zero;
+        IntPtr async3Ptr = IntPtr.Zero;
+        int adviseCookie = 0;
+        try
+        {
+            ccw = OpcDaGroupCcw.Create(group);
+            cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            Helpers.AdviseResult advise = Helpers.InvokeAdvise(cpPtr, stub);
+            adviseCookie = advise.Cookie;
+            async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+
+            Helpers.AsyncErrorsResult result = Helpers.InvokeAsyncWriteVqt(async3Ptr, handles, values, transactionId: 321);
+            Helpers.DataCallbackWriteInvocation invocation = Helpers.GetDataCallbackStubLastWrite(stub);
+
+            await Assert.That(advise.Hr).IsEqualTo(S_OK);
+            await Assert.That(result.Hr).IsEqualTo(S_OK);
+            await Assert.That(result.CancelId).IsNotEqualTo(0);
+            await Assert.That(result.Errors).IsEquivalentTo(new[] { S_OK, S_OK, S_OK });
+            await Assert.That(invocation.Opnum).IsEqualTo(5);
+            await Assert.That(invocation.TransactionId).IsEqualTo(321U);
+            await Assert.That(invocation.GroupHandle).IsEqualTo(unchecked((uint)group.ClientHandle));
+            await Assert.That(invocation.MasterError).IsEqualTo(S_OK);
+            await Assert.That(invocation.Count).IsEqualTo(3U);
+            await Assert.That(invocation.ClientHandles).IsEquivalentTo(new[] { 1, 2, 3 });
+            await Assert.That(invocation.Errors).IsEquivalentTo(new[] { S_OK, S_OK, S_OK });
+            await Assert.That(items[0].GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(101);
+            await Assert.That(items[1].GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(202);
+            await Assert.That(items[2].GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(303);
+            await Assert.That(items[0].GetSnapshot().Timestamp).IsEqualTo(timestamp);
+        }
+        finally
+        {
+            if (adviseCookie != 0 && cpPtr != IntPtr.Zero)
+            {
+                _ = Helpers.InvokeUnadvise(cpPtr, adviseCookie);
+            }
+            if (async3Ptr != IntPtr.Zero)
+            {
+                Helpers.InvokeRelease(async3Ptr);
+            }
+            if (cpPtr != IntPtr.Zero)
+            {
+                Helpers.InvokeRelease(cpPtr);
+            }
+            if (ccw != IntPtr.Zero)
+            {
+                Helpers.InvokeRelease(ccw);
+            }
+            Helpers.DestroyDataCallbackStub(stub);
+        }
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO3_writevqt_cancel_id_can_be_passed_to_cancel2()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A");
+        int handle = OrderedItems(group)[0].ServerHandle;
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+
+        Helpers.AsyncErrorsResult write = Helpers.InvokeAsyncWriteVqt(
+            async3Ptr,
+            [handle],
+            [new OpcItemVqt(OpcVariant.FromInt32(404))],
+            transactionId: 322);
+        int cancelHr = Helpers.InvokeAsyncCancel2(async2Ptr, write.CancelId);
+        Helpers.InvokeRelease(async2Ptr);
+        Helpers.InvokeRelease(async3Ptr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(write.Hr).IsEqualTo(S_OK);
+        await Assert.That(write.CancelId).IsNotEqualTo(0);
+        await Assert.That(cancelHr).IsEqualTo(S_OK);
+        await Assert.That(group.LastCancel2Id).IsEqualTo(write.CancelId);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO3_writevqt_invalid_handle_returns_per_item_error()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem[] items = OrderedItems(group);
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+
+        Helpers.AsyncErrorsResult result = Helpers.InvokeAsyncWriteVqt(
+            async3Ptr,
+            [items[0].ServerHandle, 999_999, items[1].ServerHandle],
+            [
+                new OpcItemVqt(OpcVariant.FromInt32(11)),
+                new OpcItemVqt(OpcVariant.FromInt32(22)),
+                new OpcItemVqt(OpcVariant.FromInt32(33)),
+            ],
+            transactionId: 323);
+        Helpers.InvokeRelease(async3Ptr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[1]).IsEqualTo(OpcResultId.InvalidHandle.Code);
+        await Assert.That(result.Errors[2]).IsEqualTo(S_OK);
+        await Assert.That(items[0].GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(11);
+        await Assert.That(items[1].GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(33);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO3_writevqt_empty_count_returns_invalidarg()
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -722,11 +860,13 @@ public sealed class OpcDaGroupCcwTests
 
         IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
         IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
-        int hr = Helpers.InvokeAsyncWriteVqt(async3Ptr);
+        Helpers.AsyncErrorsResult result = Helpers.InvokeAsyncWriteVqt(async3Ptr, [], [], transactionId: 324);
         Helpers.InvokeRelease(async3Ptr);
         Helpers.InvokeRelease(ccw);
 
-        await Assert.That(hr).IsEqualTo(E_NOTIMPL);
+        await Assert.That(result.Hr).IsEqualTo(E_INVALIDARG);
+        await Assert.That(result.CancelId).IsEqualTo(0);
+        await Assert.That(result.Errors).IsEquivalentTo(Array.Empty<int>());
     }
 
     [Test]
@@ -843,6 +983,241 @@ public sealed class OpcDaGroupCcwTests
     }
 
     [Test]
+    public async Task IConnectionPoint_enumconnections_returns_active_sinks_and_cookies_after_advise()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr stub1 = Helpers.CreateDataCallbackStub();
+        IntPtr stub2 = Helpers.CreateDataCallbackStub();
+        Helpers.AdviseResult advised1 = default;
+        Helpers.AdviseResult advised2 = default;
+        IntPtr ccw = IntPtr.Zero;
+        IntPtr cpPtr = IntPtr.Zero;
+        IntPtr enumPtr = IntPtr.Zero;
+        IntPtr queriedEnumPtr = IntPtr.Zero;
+        Helpers.ConnectionDataResult next = default;
+        try
+        {
+            ccw = OpcDaGroupCcw.Create(NewGroup());
+            cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            advised1 = Helpers.InvokeAdvise(cpPtr, stub1);
+            advised2 = Helpers.InvokeAdvise(cpPtr, stub2);
+            Helpers.PointerResult created = Helpers.InvokeEnumConnections(cpPtr);
+            enumPtr = created.Pointer;
+            queriedEnumPtr = Helpers.InvokeQI(enumPtr, OpcGuids.IID_IEnumConnections);
+
+            next = Helpers.InvokeEnumConnectionsNext(queriedEnumPtr, 3);
+        }
+        finally
+        {
+            Helpers.ReleaseConnections(next.Connections);
+            Helpers.ReleaseIfNonZero(queriedEnumPtr);
+            Helpers.ReleaseIfNonZero(enumPtr);
+            if (advised1.Cookie != 0)
+            {
+                _ = Helpers.InvokeUnadvise(cpPtr, advised1.Cookie);
+            }
+            if (advised2.Cookie != 0)
+            {
+                _ = Helpers.InvokeUnadvise(cpPtr, advised2.Cookie);
+            }
+            Helpers.ReleaseIfNonZero(cpPtr);
+            Helpers.ReleaseIfNonZero(ccw);
+            Helpers.DestroyDataCallbackStub(stub1);
+            Helpers.DestroyDataCallbackStub(stub2);
+        }
+
+        await Assert.That(advised1.Hr).IsEqualTo(S_OK);
+        await Assert.That(advised2.Hr).IsEqualTo(S_OK);
+        await Assert.That(next.Hr).IsEqualTo(S_FALSE);
+        await Assert.That(next.Fetched).IsEqualTo(2u);
+        await Assert.That(next.Connections.Select(static connection => connection.Cookie))
+            .IsEquivalentTo(new[] { advised1.Cookie, advised2.Cookie });
+        await Assert.That(next.Connections.All(connection => connection.Unknown == stub1 || connection.Unknown == stub2)).IsTrue();
+    }
+
+    [Test]
+    public async Task IEnumConnections_skip_reset_and_clone_use_independent_cursors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr stub1 = Helpers.CreateDataCallbackStub();
+        IntPtr stub2 = Helpers.CreateDataCallbackStub();
+        Helpers.AdviseResult advised1 = default;
+        Helpers.AdviseResult advised2 = default;
+        IntPtr ccw = IntPtr.Zero;
+        IntPtr cpPtr = IntPtr.Zero;
+        IntPtr enumPtr = IntPtr.Zero;
+        IntPtr clonePtr = IntPtr.Zero;
+        Helpers.ConnectionDataResult afterSkip = default;
+        Helpers.ConnectionDataResult exhausted = default;
+        Helpers.ConnectionDataResult first = default;
+        Helpers.ConnectionDataResult originalAfterReset = default;
+        Helpers.ConnectionDataResult cloneAtSavedCursor = default;
+        int skipHr = 0;
+        int resetHr = 0;
+        int skipBeyondHr = 0;
+        int cloneHr = 0;
+        try
+        {
+            ccw = OpcDaGroupCcw.Create(NewGroup());
+            cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            advised1 = Helpers.InvokeAdvise(cpPtr, stub1);
+            advised2 = Helpers.InvokeAdvise(cpPtr, stub2);
+            enumPtr = Helpers.InvokeEnumConnections(cpPtr).Pointer;
+
+            skipHr = Helpers.InvokeEnumSkip(enumPtr, 1);
+            afterSkip = Helpers.InvokeEnumConnectionsNext(enumPtr, 1);
+            resetHr = Helpers.InvokeEnumReset(enumPtr);
+            skipBeyondHr = Helpers.InvokeEnumSkip(enumPtr, 99);
+            exhausted = Helpers.InvokeEnumConnectionsNext(enumPtr, 1);
+            _ = Helpers.InvokeEnumReset(enumPtr);
+            first = Helpers.InvokeEnumConnectionsNext(enumPtr, 1);
+            (cloneHr, clonePtr) = Helpers.InvokeEnumClone(enumPtr);
+            _ = Helpers.InvokeEnumReset(enumPtr);
+            originalAfterReset = Helpers.InvokeEnumConnectionsNext(enumPtr, 1);
+            cloneAtSavedCursor = Helpers.InvokeEnumConnectionsNext(clonePtr, 1);
+        }
+        finally
+        {
+            Helpers.ReleaseConnections(afterSkip.Connections);
+            Helpers.ReleaseConnections(exhausted.Connections);
+            Helpers.ReleaseConnections(first.Connections);
+            Helpers.ReleaseConnections(originalAfterReset.Connections);
+            Helpers.ReleaseConnections(cloneAtSavedCursor.Connections);
+            Helpers.ReleaseIfNonZero(clonePtr);
+            Helpers.ReleaseIfNonZero(enumPtr);
+            if (advised1.Cookie != 0)
+            {
+                _ = Helpers.InvokeUnadvise(cpPtr, advised1.Cookie);
+            }
+            if (advised2.Cookie != 0)
+            {
+                _ = Helpers.InvokeUnadvise(cpPtr, advised2.Cookie);
+            }
+            Helpers.ReleaseIfNonZero(cpPtr);
+            Helpers.ReleaseIfNonZero(ccw);
+            Helpers.DestroyDataCallbackStub(stub1);
+            Helpers.DestroyDataCallbackStub(stub2);
+        }
+
+        await Assert.That(skipHr).IsEqualTo(S_OK);
+        await Assert.That(afterSkip.Connections[0].Cookie).IsEqualTo(advised2.Cookie);
+        await Assert.That(resetHr).IsEqualTo(S_OK);
+        await Assert.That(skipBeyondHr).IsEqualTo(S_FALSE);
+        await Assert.That(exhausted.Hr).IsEqualTo(S_FALSE);
+        await Assert.That(exhausted.Fetched).IsEqualTo(0u);
+        await Assert.That(first.Connections[0].Cookie).IsEqualTo(advised1.Cookie);
+        await Assert.That(cloneHr).IsEqualTo(S_OK);
+        await Assert.That(originalAfterReset.Connections[0].Cookie).IsEqualTo(advised1.Cookie);
+        await Assert.That(cloneAtSavedCursor.Connections[0].Cookie).IsEqualTo(advised2.Cookie);
+    }
+
+    [Test]
+    public async Task IConnectionPointContainer_enumconnectionpoints_returns_registered_connection_points()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = IntPtr.Zero;
+        IntPtr cpPtr = IntPtr.Zero;
+        IntPtr cpcPtr = IntPtr.Zero;
+        IntPtr enumPtr = IntPtr.Zero;
+        IntPtr queriedEnumPtr = IntPtr.Zero;
+        Helpers.ConnectionPointsResult next = default;
+        try
+        {
+            ccw = OpcDaGroupCcw.Create(NewGroup());
+            cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
+            Helpers.PointerResult created = Helpers.InvokeEnumConnectionPoints(cpcPtr);
+            enumPtr = created.Pointer;
+            queriedEnumPtr = Helpers.InvokeQI(enumPtr, OpcGuids.IID_IEnumConnectionPoints);
+
+            next = Helpers.InvokeEnumConnectionPointsNext(queriedEnumPtr, 2);
+        }
+        finally
+        {
+            Helpers.ReleasePointers(next.Points);
+            Helpers.ReleaseIfNonZero(queriedEnumPtr);
+            Helpers.ReleaseIfNonZero(enumPtr);
+            Helpers.ReleaseIfNonZero(cpcPtr);
+            Helpers.ReleaseIfNonZero(cpPtr);
+            Helpers.ReleaseIfNonZero(ccw);
+        }
+
+        await Assert.That(next.Hr).IsEqualTo(S_FALSE);
+        await Assert.That(next.Fetched).IsEqualTo(1u);
+        await Assert.That(next.Points[0]).IsEqualTo(cpPtr);
+    }
+
+    [Test]
+    public async Task IEnumConnectionPoints_reset_and_clone_use_independent_cursors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = IntPtr.Zero;
+        IntPtr cpPtr = IntPtr.Zero;
+        IntPtr cpcPtr = IntPtr.Zero;
+        IntPtr enumPtr = IntPtr.Zero;
+        IntPtr clonePtr = IntPtr.Zero;
+        Helpers.ConnectionPointsResult first = default;
+        Helpers.ConnectionPointsResult originalAfterReset = default;
+        Helpers.ConnectionPointsResult cloneAtEnd = default;
+        Helpers.ConnectionPointsResult cloneAfterReset = default;
+        int cloneHr = 0;
+        int resetOriginalHr = 0;
+        int resetCloneHr = 0;
+        try
+        {
+            ccw = OpcDaGroupCcw.Create(NewGroup());
+            cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
+            enumPtr = Helpers.InvokeEnumConnectionPoints(cpcPtr).Pointer;
+
+            first = Helpers.InvokeEnumConnectionPointsNext(enumPtr, 1);
+            (cloneHr, clonePtr) = Helpers.InvokeEnumClone(enumPtr);
+            resetOriginalHr = Helpers.InvokeEnumReset(enumPtr);
+            originalAfterReset = Helpers.InvokeEnumConnectionPointsNext(enumPtr, 1);
+            cloneAtEnd = Helpers.InvokeEnumConnectionPointsNext(clonePtr, 1);
+            resetCloneHr = Helpers.InvokeEnumReset(clonePtr);
+            cloneAfterReset = Helpers.InvokeEnumConnectionPointsNext(clonePtr, 1);
+        }
+        finally
+        {
+            Helpers.ReleasePointers(first.Points);
+            Helpers.ReleasePointers(originalAfterReset.Points);
+            Helpers.ReleasePointers(cloneAtEnd.Points);
+            Helpers.ReleasePointers(cloneAfterReset.Points);
+            Helpers.ReleaseIfNonZero(clonePtr);
+            Helpers.ReleaseIfNonZero(enumPtr);
+            Helpers.ReleaseIfNonZero(cpcPtr);
+            Helpers.ReleaseIfNonZero(cpPtr);
+            Helpers.ReleaseIfNonZero(ccw);
+        }
+
+        await Assert.That(first.Points[0]).IsEqualTo(cpPtr);
+        await Assert.That(cloneHr).IsEqualTo(S_OK);
+        await Assert.That(resetOriginalHr).IsEqualTo(S_OK);
+        await Assert.That(originalAfterReset.Points[0]).IsEqualTo(cpPtr);
+        await Assert.That(cloneAtEnd.Hr).IsEqualTo(S_FALSE);
+        await Assert.That(cloneAtEnd.Fetched).IsEqualTo(0u);
+        await Assert.That(resetCloneHr).IsEqualTo(S_OK);
+        await Assert.That(cloneAfterReset.Points[0]).IsEqualTo(cpPtr);
+    }
+
+    [Test]
     public async Task Release_to_zero_disposes_all_scm_sink_proxies()
     {
         if (!OperatingSystem.IsWindows())
@@ -934,6 +1309,31 @@ public sealed class OpcDaGroupCcwTests
 
         internal readonly record struct AdviseResult(int Hr, int Cookie);
 
+        internal readonly record struct ConnectionDataResult(int Hr, uint Fetched, NativeConnectionData[] Connections);
+
+        internal readonly record struct NativeConnectionData(IntPtr Unknown, int Cookie);
+
+        internal readonly record struct ConnectionPointsResult(int Hr, uint Fetched, IntPtr[] Points);
+
+        internal sealed record DataCallbackWriteInvocation(
+            int Opnum,
+            uint TransactionId,
+            uint GroupHandle,
+            int MasterError,
+            uint Count,
+            int[] ClientHandles,
+            int[] Errors)
+        {
+            internal static DataCallbackWriteInvocation Empty { get; } = new(
+                0,
+                0,
+                0,
+                0,
+                0,
+                Array.Empty<int>(),
+                Array.Empty<int>());
+        }
+
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
         private struct OPCITEMDEF_NATIVE
         {
@@ -978,6 +1378,13 @@ public sealed class OpcDaGroupCcwTests
             public long vEUInfo1;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct CONNECTDATA_NATIVE
+        {
+            public IntPtr pUnk;
+            public uint dwCookie;
+        }
+
         private const int DataCallbackVtableSlotCount = 7;
         private const int OpcItemStateVariantOffset = 16;
         private const int OpcItemVqtTrailerSize = 24;
@@ -1014,6 +1421,38 @@ public sealed class OpcDaGroupCcwTests
             IntPtr* vtable = *(IntPtr**)ccw;
             var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
             release(ccw);
+        }
+
+        internal static void ReleaseIfNonZero(IntPtr ccw)
+        {
+            if (ccw != IntPtr.Zero)
+            {
+                InvokeRelease(ccw);
+            }
+        }
+
+        internal static void ReleaseConnections(NativeConnectionData[]? connections)
+        {
+            if (connections is null)
+            {
+                return;
+            }
+            foreach (NativeConnectionData connection in connections)
+            {
+                ReleaseIfNonZero(connection.Unknown);
+            }
+        }
+
+        internal static void ReleasePointers(IntPtr[]? pointers)
+        {
+            if (pointers is null)
+            {
+                return;
+            }
+            foreach (IntPtr pointer in pointers)
+            {
+                ReleaseIfNonZero(pointer);
+            }
         }
 
         internal static SyncReadResult InvokeSyncRead(IntPtr syncPtr, int[] handles)
@@ -1210,15 +1649,28 @@ public sealed class OpcDaGroupCcwTests
             }
         }
 
-        internal static int InvokeAsyncWriteVqt(IntPtr async3Ptr)
+        internal static AsyncErrorsResult InvokeAsyncWriteVqt(
+            IntPtr async3Ptr,
+            int[] handles,
+            OpcItemVqt[] values,
+            int transactionId)
         {
             IntPtr* vtable = *(IntPtr**)async3Ptr;
-            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[10];
-            uint cancelId;
-            IntPtr ppErrors;
-            int hr = write(async3Ptr, 0, IntPtr.Zero, IntPtr.Zero, 88, &cancelId, &ppErrors);
-            FreeCoTaskMem(ppErrors);
-            return hr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            IntPtr pValues = AllocateOpcItemVqtArrayForCall(values);
+            try
+            {
+                var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[10];
+                uint cancelId;
+                IntPtr ppErrors;
+                int hr = write(async3Ptr, (uint)handles.Length, pHandles, pValues, unchecked((uint)transactionId), &cancelId, &ppErrors);
+                return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                FreeOpcItemVqtArrayForCall(pValues, values.Length);
+                Marshal.FreeCoTaskMem(pHandles);
+            }
         }
 
         internal static CancelResult InvokeAsyncRefreshMaxAge(IntPtr async3Ptr)
@@ -1263,6 +1715,85 @@ public sealed class OpcDaGroupCcwTests
             IntPtr* vtable = *(IntPtr**)cpPtr;
             var unadvise = (delegate* unmanaged<IntPtr, uint, int>)vtable[6];
             return unadvise(cpPtr, unchecked((uint)cookie));
+        }
+
+        internal static PointerResult InvokeEnumConnections(IntPtr cpPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)cpPtr;
+            var enumConnections = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[7];
+            IntPtr pointer;
+            int hr = enumConnections(cpPtr, &pointer);
+            return new PointerResult(hr, pointer);
+        }
+
+        internal static PointerResult InvokeEnumConnectionPoints(IntPtr cpcPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)cpcPtr;
+            var enumConnectionPoints = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[3];
+            IntPtr pointer;
+            int hr = enumConnectionPoints(cpcPtr, &pointer);
+            return new PointerResult(hr, pointer);
+        }
+
+        internal static ConnectionDataResult InvokeEnumConnectionsNext(IntPtr enumPtr, uint count)
+        {
+            IntPtr* vtable = *(IntPtr**)enumPtr;
+            var next = (delegate* unmanaged<IntPtr, uint, CONNECTDATA_NATIVE*, uint*, int>)vtable[3];
+            int elementCount = checked((int)count);
+            int byteCount = checked(elementCount * Marshal.SizeOf<CONNECTDATA_NATIVE>());
+            IntPtr buffer = Marshal.AllocCoTaskMem(byteCount);
+            try
+            {
+                uint fetched;
+                int hr = next(enumPtr, count, (CONNECTDATA_NATIVE*)buffer, &fetched);
+                return new ConnectionDataResult(hr, fetched, ReadConnectionData(buffer, (int)fetched));
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(buffer);
+            }
+        }
+
+        internal static ConnectionPointsResult InvokeEnumConnectionPointsNext(IntPtr enumPtr, uint count)
+        {
+            IntPtr* vtable = *(IntPtr**)enumPtr;
+            var next = (delegate* unmanaged<IntPtr, uint, IntPtr*, uint*, int>)vtable[3];
+            int elementCount = checked((int)count);
+            int byteCount = checked(elementCount * IntPtr.Size);
+            IntPtr buffer = Marshal.AllocCoTaskMem(byteCount);
+            try
+            {
+                uint fetched;
+                int hr = next(enumPtr, count, (IntPtr*)buffer, &fetched);
+                return new ConnectionPointsResult(hr, fetched, ReadConnectionPoints(buffer, (int)fetched));
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(buffer);
+            }
+        }
+
+        internal static int InvokeEnumSkip(IntPtr enumPtr, uint count)
+        {
+            IntPtr* vtable = *(IntPtr**)enumPtr;
+            var skip = (delegate* unmanaged<IntPtr, uint, int>)vtable[4];
+            return skip(enumPtr, count);
+        }
+
+        internal static int InvokeEnumReset(IntPtr enumPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)enumPtr;
+            var reset = (delegate* unmanaged<IntPtr, int>)vtable[5];
+            return reset(enumPtr);
+        }
+
+        internal static (int Hr, IntPtr Pointer) InvokeEnumClone(IntPtr enumPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)enumPtr;
+            var clone = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[6];
+            IntPtr pointer;
+            int hr = clone(enumPtr, &pointer);
+            return (hr, pointer);
         }
 
         internal static GetStateResult InvokeGetState(IntPtr gsmPtr)
@@ -1444,6 +1975,11 @@ public sealed class OpcDaGroupCcwTests
                 ? Interlocked.Read(ref session.RefCount)
                 : -1L;
 
+        internal static DataCallbackWriteInvocation GetDataCallbackStubLastWrite(IntPtr stub) =>
+            s_dataCallbackStubs.TryGetValue(stub, out DataCallbackStubSession? session)
+                ? session.LastWriteInvocation
+                : DataCallbackWriteInvocation.Empty;
+
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
         private static IntPtr* AllocateDataCallbackStubVtable()
         {
@@ -1544,7 +2080,8 @@ public sealed class OpcDaGroupCcwTests
             int masterError,
             uint count,
             IntPtr clientItems,
-            IntPtr errors) => DataCallbackStubRecord(pThis);
+            IntPtr errors) =>
+            DataCallbackStubRecordWriteComplete(pThis, transactionId, groupHandle, masterError, count, clientItems, errors);
 
         [UnmanagedCallersOnly]
         private static int DataCallbackStubOnCancelComplete(IntPtr pThis, uint transactionId, uint groupHandle) =>
@@ -1552,6 +2089,42 @@ public sealed class OpcDaGroupCcwTests
 
         private static int DataCallbackStubRecord(IntPtr pThis) =>
             s_dataCallbackStubs.ContainsKey(pThis) ? S_OK : E_NOINTERFACE;
+
+        private static int DataCallbackStubRecordWriteComplete(
+            IntPtr pThis,
+            uint transactionId,
+            uint groupHandle,
+            int masterError,
+            uint count,
+            IntPtr clientItems,
+            IntPtr errors)
+        {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session))
+            {
+                return E_NOINTERFACE;
+            }
+
+            int itemCount = checked((int)count);
+            session.LastWriteInvocation = new DataCallbackWriteInvocation(
+                5,
+                transactionId,
+                groupHandle,
+                masterError,
+                count,
+                ReadInt32Array(clientItems, itemCount),
+                ReadInt32Array(errors, itemCount));
+            return S_OK;
+        }
+
+        private static int[] ReadInt32Array(IntPtr ptr, int count)
+        {
+            var values = new int[count];
+            if (ptr != IntPtr.Zero && count > 0)
+            {
+                Marshal.Copy(ptr, values, 0, count);
+            }
+            return values;
+        }
 
         [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
         private static IntPtr AllocateInt32ArrayForCall(int[] values)
@@ -1653,6 +2226,7 @@ public sealed class OpcDaGroupCcwTests
         {
             internal readonly IntPtr* Vtable = vtable;
             internal long RefCount = 1;
+            internal DataCallbackWriteInvocation LastWriteInvocation = DataCallbackWriteInvocation.Empty;
         }
 
         private static IntPtr AllocateNativeItemDefs(OpcItemDef[] defs, out IntPtr[] allocations)
@@ -1770,6 +2344,28 @@ public sealed class OpcDaGroupCcwTests
             }
             Marshal.FreeCoTaskMem(ptr);
             return errors;
+        }
+
+        private static NativeConnectionData[] ReadConnectionData(IntPtr ptr, int count)
+        {
+            var connections = new NativeConnectionData[count];
+            int size = Marshal.SizeOf<CONNECTDATA_NATIVE>();
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
+                var native = Marshal.PtrToStructure<CONNECTDATA_NATIVE>(IntPtr.Add(ptr, checked(i * size)));
+                connections[i] = new NativeConnectionData(native.pUnk, unchecked((int)native.dwCookie));
+            }
+            return connections;
+        }
+
+        private static IntPtr[] ReadConnectionPoints(IntPtr ptr, int count)
+        {
+            var points = new IntPtr[count];
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
+                points[i] = Marshal.ReadIntPtr(ptr, checked(i * IntPtr.Size));
+            }
+            return points;
         }
 
         private static string?[] ReadItemIdsAndFree(IntPtr ptr, int count)
