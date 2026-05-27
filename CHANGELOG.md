@@ -7,6 +7,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-rc.3] - 2026-05-27
+
+Third release-candidate. Completes Phase 1 (Windows CCW DA path) and
+Phase 2 (Windows CCW AE/HDA per-method vtables) of the post-rc.2 plan.
+Build green (0/0); DA tests **346 passing** (was 314 at rc.2, +32);
+solution-wide all 17 test projects green.
+
+### Added — Windows CCW DA per-interface vtables (Phase 1)
+
+- `OpcDaGroupCcw` now exposes nine tearoffs (was three at rc.2):
+  IUnknown + IOPCGroupStateMgt(2) + IOPCItemMgt + IOPCSyncIO +
+  IOPCSyncIO2 + IOPCAsyncIO2 + IOPCAsyncIO3 + IConnectionPoint +
+  IConnectionPointContainer. Shared `CcwSession` holds the refcount and
+  all tearoff pointers; QI for IID_IUnknown on any tearoff returns the
+  canonical identity pointer (MS-DCOM §3.2.6). (cap-a3 + cap-a3b + cap-a4)
+- New file `OpcDaGroupCcwMethods.cs` — `AddItems` + `ValidateItems` now
+  have real OPCITEMDEF[] → OPCITEMRESULT[] marshaling (BSTR + DWORD +
+  VARTYPE + BLOB ptr+size fields). `CloneGroup` allocates a fresh
+  `OpcDaGroup` + copies items + wraps in a new CCW. `CreateEnumerator`
+  wraps the existing managed `OpcDaItemAttributesEnumerator` in an
+  `OpcEnumOpcItemAttributesCcw`. (cap-a1 + cap-a2)
+- New file `OpcDaGroupCcwSyncIoMethods.cs` — IOPCSyncIO + IOPCSyncIO2
+  vtables wired with E_NOTIMPL stubs documenting deferred VARIANT[]
+  marshaling. QI succeeds; data path stays cross-platform-only.
+- New file `OpcDaGroupCcwAsyncIoMethods.cs` — IOPCAsyncIO2 + IOPCAsyncIO3
+  real bodies: Read, Refresh2, Cancel2, SetEnable, GetEnable, ReadMaxAge
+  (DA 3.0), RefreshMaxAge (DA 3.0). Write/WriteVqt remain E_NOTIMPL
+  (VARIANT marshaling).
+- New file `OpcDaGroupCcwConnectionPointMethods.cs` — IConnectionPoint
+  Advise/Unadvise wires a per-session `_scmSinks` `ConcurrentDictionary`
+  + `OpcDataCallbackProxy`; CONNECT_E_NOCONNECTION on unknown cookies.
+  FindConnectionPoint for IID_IOPCDataCallback returns the tearoff.
+- New file `OpcEnumOpcItemAttributesCcw.cs` + companion methods file —
+  single-tearoff CCW for IEnumOPCItemAttributes (Next/Skip/Reset/Clone).
+  Real bodies for Skip/Reset/Clone; Next allocates OPCITEMATTRIBUTES[]
+  with VT_EMPTY vEUInfo (full VARIANT marshaling deferred).
+- New file `OpcDataCallbackProxy.cs` — server-side proxy class wrapping a
+  client-supplied IUnknown for outbound IOPCDataCallback callbacks.
+  OnCancelComplete real body (the simplest, no VARIANT marshaling);
+  OnDataChange/OnReadComplete/OnWriteComplete signatures with
+  TODO(cap-a8-followup) marshaling sketches. (cap-a8)
+
+### Added — Windows CCW AE/HDA per-method vtables (Phase 2)
+
+- `OpcAeServerCcw` now multi-tearoff: IUnknown + IOPCEventServer +
+  IOPCEventSubscriptionMgt. Real bodies: GetStatus (allocates
+  OPCEVENTSERVERSTATUS_NATIVE), QueryAvailableFilters, subscription
+  Refresh/CancelRefresh/GetState/SetState. E_NOTIMPL for
+  CreateEventSubscription (interface ptr return) + complex EVENTFILTER
+  marshaling. (cap-a7a + cap-a7b)
+- `OpcHdaServerCcw` now multi-tearoff: IUnknown + IOPCHDA_Server +
+  IOPCHDA_SyncRead + IOPCHDA_AsyncRead. Real bodies on IOPCHDA_Server:
+  GetItemAttributes, GetAggregates, GetHistorianStatus, ValidateItemIDs,
+  GetItemHandles, ReleaseItemHandles. E_NOTIMPL for CreateBrowse +
+  Sync/AsyncRead methods (OPCHDA_ITEM/VARIANT marshaling deferred).
+  (cap-a7c + cap-a7d)
+
+### Tests: +32 in DA, +8 in Ae, +8 in Hda
+
+- DA: 346 passing (was 314 at rc.2). New tests cover every new tearoff's
+  QI / refcount / dispatch behaviour, plus stub-server integration for
+  AddItems/ValidateItems/CloneGroup/CreateEnumerator round-trips.
+- AE: 86 passing (was 78 at rc.2).
+- HDA: 123 passing (was 115 at rc.2).
+- Solution-wide: all 17 test projects green.
+
+### Known gaps deferred to future releases
+
+- Windows CCW IOPCSyncIO/IOPCSyncIO2/IOPCAsyncIO2 Write: VARIANT[] IN
+  marshaling (BSTR + SAFEARRAY + 16/24-byte tagged union).
+- Windows CCW IOPCSyncIO Read: VARIANT[] OUT marshaling for OPCITEMSTATE.
+- Windows CCW IOPCDataCallback.OnDataChange/OnReadComplete/OnWriteComplete
+  outbound: VARIANT[] + FILETIME[] + WORD[] OUT marshaling.
+- Windows CCW IEnumOPCItemAttributes.Next vEUInfo: VARIANT marshaling
+  (currently VT_EMPTY).
+- Windows CCW IOPCEventServer.CreateEventSubscription + EVENTFILTER
+  marshaling.
+- Windows CCW IOPCHDA_SyncRead/AsyncRead.ReadRaw/ReadProcessed:
+  OPCHDA_ITEM[] OUT marshaling (DATE[] + VARIANT[] + QUALITY[]).
+- Cross-platform DCOM ↔ Windows-CCW sink unification: today
+  `OpcDaGroup._sinks` (managed `IOpcInterfaceRef` for cross-platform) and
+  the CCW's `_scmSinks` (`OpcDataCallbackProxy` for Windows SCM) are
+  parallel. A future `IOpcDataCallbackSink` abstraction can unify them.
+- OPC CTT smoke pass (`ocom-9`) — still requires Windows Docker host.
+
 ## [1.0.0-rc.2] - 2026-05-27
 
 Second release-candidate. Substantial wire-server + Windows-CCW work since
