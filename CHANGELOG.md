@@ -7,6 +7,155 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-rc.2] - 2026-05-27
+
+Second release-candidate. Substantial wire-server + Windows-CCW work since
+rc.1; build green (0/0); DA tests 314 passing (was 247 at rc.1, +67 net new).
+Solution-wide test sweep: all 17 test projects green.
+
+### Added — wire-server: cross-platform DCOM listener
+
+- `Opc.Classic.Dcom.Transport.PduCodec` + `OrpcEnvelope` — extracted shared
+  RPC PDU framing primitives. (ocom-1a)
+- `TcpServerEndpoint` + `RpcServerConnectionProcessor` + `OpcServerListener` —
+  cross-platform `ncacn_ip_tcp` listener; binds, accepts, dispatches incoming
+  DCOM PDUs to per-IID `IOpcServerDispatcher`. (ocom-1b)
+- `OpcDaServerHost` / `OpcAeServerHost` / `OpcHdaServerHost` — replaced empty
+  `AcceptConnectionsAsync` stubs with real listener wireup. (ocom-2)
+- `Opc.Classic.Dcom.Transport.OpcObjectRegistry` — per-IPID per-object
+  dispatcher routing so calls on a server-allocated IPID land at the right
+  managed instance (groups, enumerators, subscriptions). (ocom-3a)
+
+### Added — Windows CCW DA path
+
+- `Opc.Classic.Da.Hosting.Windows.OpcDaServerCcw` — AOT-friendly raw COM-vtable
+  CCW for `IOPCServer` with 12-slot vtable (IUnknown + 9 IOPCServer methods).
+  Real method bodies for `GetErrorString`, `GetStatus`, `RemoveGroup`,
+  `AddGroup`, `GetGroupByName`; `CreateGroupEnumerator` returns E_NOTIMPL.
+  (ocom-6 + ocom-6b + ocom-6c + ocom-6d + cap-a5)
+- `Opc.Classic.Da.Hosting.Windows.OpcDaGroupCcw` + `OpcDaGroupCcwMethods` —
+  multi-tearoff CCW for OPC DA groups exposing IUnknown + IOPCGroupStateMgt(2)
+  + IOPCItemMgt. Real method bodies for `GetState/SetState/SetName/SetKeepAlive
+  /GetKeepAlive/RemoveItems/SetActiveState/SetClientHandles/SetDatatypes`.
+  `CloneGroup/AddItems/ValidateItems/CreateEnumerator` return E_NOTIMPL
+  pending OPCITEMDEF/VARIANT/SAFEARRAY marshaling (cap-a1/a2/a3 deferred).
+  Release-to-zero properly frees all tearoffs, vtables, and GCHandle.
+  (ocom-6d + rev-1 + rev-2)
+
+### Added — OPC DA group managed surface
+
+- `Opc.Classic.Da.Hosting.OpcDaGroup` — full managed group implementing:
+  `IOPCGroupStateMgt` + `IOPCGroupStateMgt2` (state, keep-alive),
+  `IOPCItemMgt` (items + enumerator), `IOPCSyncIO` + `IOPCSyncIO2`
+  (Read/Write/MaxAge), `IOPCAsyncIO2` + `IOPCAsyncIO3` (async with cancel),
+  `IConnectionPoint` + `IConnectionPointContainer` (data-callback
+  subscriptions), `IOPCItemDeadbandMgt` (per-item deadband),
+  `IOPCItemSamplingMgt` (per-item sampling rate + buffering).
+  (ocom-3c + ocom-3d + ocom-7b + ocom-8 + ocom-8b + ocom-8d + cap-b4 + cap-b5)
+- `OpcDaItem` — gains `PercentDeadband`, `SamplingRate`, `BufferEnabled`
+  per-item state for DA 3.0 management interfaces. (cap-b4 + cap-b5)
+- `OpcDaItemAttributesEnumerator` — stateful per-cursor enumerator for
+  `IEnumOPCItemAttributes`. Snapshot-at-create semantics per OPC DA 2.05a
+  §4.4.7.2. (ocom-8d)
+- `TriggerDataChangeAsync` + `TriggerCancelCompleteAsync` — caller-supplied
+  outbound callback fan-out for `IOPCDataCallback.OnDataChange` /
+  `OnCancelComplete`. Honors SetEnable. (ocom-7b + rev-11)
+
+### Added — DA address space + DA 3.0 interfaces
+
+- `IOpcAddressSpace` abstraction + `FlatHierarchicalNamespace` +
+  `InMemoryAddressSpace` — hierarchical browse model with empty-flat fallback.
+  (cap-b1)
+- `DefaultBrowseServerAddressSpace` — DA 2.x browse backed by an
+  `IOpcAddressSpace`. Supports ChangeBrowsePosition (UP/DOWN/TO), GetItemID,
+  per-server browse position tracking. (cap-b1)
+- `DefaultBrowse` — DA 3.0 unified browse returning OPCBROWSEELEMENT records
+  with proper branch/item flags and maxElementsReturned pagination. (cap-b3)
+- `DefaultItemProperties` + `OpcStandardProperties` + `IOpcItemPropertyProvider`
+  — DA 2.x item properties publishing the OPC-standard ID set (1-8:
+  CanonicalDataType / Value / Quality / Timestamp / AccessRights / ScanRate
+  / EuType / EuInfo) with pluggable per-item value provider. (cap-b2)
+- `DefaultItemDeadbandMgt` + `DefaultItemSamplingMgt` — DA 3.0 default impls
+  returning OPC_E_DEADBANDNOTSET / OPC_E_RATENOTSET / OPC_E_NOBUFFERING when
+  no per-item override is configured. (cap-b4 + cap-b5)
+
+### Added — Windows CCW AE / HDA parity
+
+- `Opc.Classic.Ae.Hosting.Windows.OpcAeServerCcw` — IUnknown-identity CCW for
+  AE servers (parity with DA SCM activation). Per-method `IOPCEventServer`
+  vtable deferred. (rev-13)
+- `Opc.Classic.Hda.Hosting.Windows.OpcHdaServerCcw` — IUnknown-identity CCW
+  for HDA servers. Per-method `IOPCHDA_Server` vtable deferred. (rev-13)
+
+### Added — Tests (+67 net new in DA)
+
+- 314 DA tests (was 247 at rc.1). New test files:
+  `OpcDaServerListenerTests`, `OpcObjectRegistryTests`, `OpcDaServerDispatcherTests`
+  (and 14 more per-interface dispatcher test files), `OpcDaGroupItemMgtTests`,
+  `OpcDaGroupSubscriptionTests`, `OpcDaGroupAsyncIoTests`,
+  `OpcDaItemAttributesEnumeratorTests`, `OpcDaGroupConcurrencyTests`,
+  `OpcDaGroupItemStateTests`, `OpcAddressSpaceTests`, `DefaultDaInterfacesTests`,
+  Windows-only `OpcDaServerCcwTests` + `OpcDaGroupCcwTests` +
+  `OpcAeServerCcwTests` + `OpcHdaServerCcwTests`.
+
+### Fixed — code-review findings (16 / 16)
+
+- **CRITICAL**: `OpcDaGroupCcw` exposed only IUnknown — real DCOM clients
+  saw E_NOINTERFACE on QI for IOPC* IIDs. Now multi-tearoff with real
+  vtables. (rev-1)
+- **HIGH**: CCW Release-to-zero leaked GCHandle + native memory.
+  Now properly frees on refcount → 0. (rev-2)
+- **HIGH**: CCW used generic E_FAIL where OPC_E_* codes apply.
+  ArgumentException → E_INVALIDARG mapping added across all CCW catch
+  blocks. (rev-4)
+- **HIGH**: Missing `IOPCBrowseServerAddressSpace` + `IOPCItemProperties`
+  managed impls. Now Default* classes auto-wired by OpcDaServerHost. (rev-5)
+- **MED**: `IOPCItemDeadbandMgt`, `IOPCItemSamplingMgt`, `IOPCBrowse` had
+  no host impl. Now wired via OpcDaGroup state + DefaultBrowse. (rev-9)
+- **MED**: `OpcDaServerCcw.AddGroup` could AV on null OUT params.
+  Now validates `phServerGroup` / `pRevisedUpdateRate` / `ppUnk`. (rev-6)
+- **MED**: `GetGroupByName` returned E_NOTIMPL; `dwGroupCount` unwired.
+  Now resolves via `IOpcDaServer.ResolveGroupByNameAsync`. (rev-7 + rev-8)
+- **MED**: `Cancel2Async` was a no-op; no OnCancelComplete delivery.
+  Now records last cancel id; `TriggerCancelCompleteAsync` mirrors
+  TriggerDataChangeAsync for sink fan-out. (rev-11)
+- **MED**: No concurrency tests for OpcDaGroup item collection.
+  New `OpcDaGroupConcurrencyTests` covers enumerator + read under
+  concurrent AddItems/RemoveItems load. (rev-10)
+- **MED**: `TriggerDataChangeAsync` short-circuit on `!_callbacksEnabled`
+  untested. (rev-12)
+- **MED**: AE + HDA had no CCW parity. Now `OpcAeServerCcw` +
+  `OpcHdaServerCcw`. (rev-13)
+- **LOW**: `UnadviseAsync` silently succeeded on unknown cookie. Now
+  throws CONNECT_E_NOCONNECTION (0x80040200) per COM convention. (rev-14)
+- **LOW**: Enumerator snapshot semantics undocumented. (rev-15)
+- **LOW**: `IDataObject` advise IID unhandled. (rev-16)
+- All 16 review findings closed.
+
+### Changed
+
+- `IOpcDaServer` gains default-implemented `ResolveGroupAsync(handle)` +
+  `ResolveGroupByNameAsync(name)` returning null. Implementations that
+  track groups in-process (the reference `CttDaServer`) override these so
+  Windows CCW and cross-platform DCOM paths share the same lookup.
+- `CttDaServer.CreateGroup` registers 11 per-group dispatchers (added
+  IOPCItemDeadbandMgt + IOPCItemSamplingMgt).
+- `OpcDaServerHost` auto-detects `IOPCBrowse` / `IOPCBrowseServerAddressSpace`
+  / `IOPCItemProperties` / `IOPCItemDeadbandMgt` / `IOPCItemSamplingMgt` on
+  the user's `IOpcDaServer` and falls back to default impls when absent.
+
+### Known gaps deferred to future releases
+
+- Windows CCW: `IOPCSyncIO` + `IOPCAsyncIO2/3` per-method vtables
+  (VARIANT marshaling).
+- Windows CCW: `IConnectionPoint` per-method vtable (client-IUnknown
+  sink proxy).
+- Windows CCW: OPCITEMDEF array marshaling for `AddItems` / `ValidateItems`.
+- Windows CCW: Interface-pointer marshaling for `CloneGroup` /
+  `CreateEnumerator` / outbound `IOPCDataCallback` proxy.
+- AE + HDA: per-method vtables beyond IUnknown identity.
+- OPC CTT smoke pass (`ocom-9`) — requires Windows Docker host.
+
 ## [1.0.0-rc.1] - 2026-05-26
 
 Release-candidate cut for `1.0.0`. Build green (0/0); tests green (1418+ passing, 24 skipped, 0 failed); Windows COM registration plumbing for the CTT integration in place.
