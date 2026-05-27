@@ -274,9 +274,20 @@ Kerberos packet protection is implemented by `KerberosSession` (`src\Opc.Classic
 | SR 2.1 Authorization enforcement | Restrict OPC operations to authorized identities. | **PARTIAL**: host applications can enforce policy; common server authorization hooks remain recommended. |
 | SR 3.1 Communication integrity | Detect modified RPC PDUs. | **MITIGATED** for negotiated packet integrity with NTLM or Kerberos. |
 | SR 3.8 Session integrity | Prevent session hijack/replay. | **PARTIAL**: sequence signing exists; replay cache and randomness hardening remain recommendations. |
-| SR 4.1 Information confidentiality | Protect operational data over the network. | **PARTIAL**: privacy mode is available; it is not the default. |
+| SR 4.1 Information confidentiality | Protect operational data over the network. | **PARTIAL**: privacy mode is opt-in today. DCOM uses `OpcProtectionLevel.Privacy` / `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`; XML-DA relies on HTTPS with the caller-supplied `HttpClient`; SMB signing exists while SMB3 encryption remains pending. Privacy SHOULD be enabled for deployments outside hardened local-only loopback. |
 | SR 5.2 Zone boundary protection | Segment OPC Classic traffic. | Deployment responsibility; out of scope for library code. |
 | SR 7.1 Denial-of-service protection | Timeouts, quotas, malformed input handling. | **PARTIAL**: cancellation and bounds checks exist; quotas/fuzzing remain recommendations. |
+
+#### SR 4.1 transport confidentiality posture
+
+| Transport | Current default | Recommended privacy path |
+| --- | --- | --- |
+| DCOM/TCP client | `OpcConnectData` defaults to `OpcAuthMode.NtlmV2` and `OpcProtectionLevel.Integrity`, so PDUs are signed but not encrypted. | Use `OpcConnectData.WithNtlmV2(..., OpcProtectionLevel.Privacy)` or `OpcConnectData.WithKerberos(..., OpcProtectionLevel.Privacy)` so DCE/RPC uses `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`. |
+| DCOM/TCP managed server listener | DA/AE/HDA hosted samples expose `ListenAddress` only; the current `RpcServerConnectionProcessor` is anonymous-only and rejects authenticated PDUs. | Do not expose the managed listener outside local-only or disposable interop rigs until listener authentication/privacy policy is available; production hosts should require packet privacy at the DCOM listener or gateway. |
+| DCOM/SMB named pipe | `ncacn_np` is not wired into the default RPC transport. The SMB2 client signs when signing is negotiated and the caller supplies the NTLM/Kerberos SessionKey; SMB3 encryption is pending. | Require SMB signing in server policy today. Require SMB encryption only after the cap-h2 SMB3 encryption work is available and validated for the target server. |
+| XML-DA/HTTP | `HttpXmlDaClient` uses the caller-owned `HttpClient`; confidentiality depends on the supplied endpoint URI, TLS handler, and SOAP/security configuration. | Use `https://` endpoints, validate TLS, configure client credentials on `HttpClient`, and add WS-Security where the XML-DA server requires message-level security. |
+
+Samples audit: `samples\Opc.Classic.Samples.DaClient`, `AeClient`, and `HdaClient` use `NoOpAuthContext` for their TCP sample path; the DA/AE/HDA managed server samples use the anonymous-only listener above. These are interop/demo defaults, not production defaults. Production deployments should opt into privacy per [cookbook 07](../cookbook/07-enabling-packet-privacy.md).
 
 ### 6.4 Cryptographic and protocol references
 
