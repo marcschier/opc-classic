@@ -94,7 +94,7 @@ Only the connection / session / file / pipe primitives are needed:
 | §3.2.4.8 / §2.2.11-12 | SMB2 TREE_DISCONNECT | Close the tree connection |
 | §3.2.4.9 / §2.2.7-8 | SMB2 LOGOFF | Tear down session |
 | §3.1.5.1 | Signing (HMAC-SHA256 for SMB 2.0.2/2.1; AES-128-CMAC for SMB 3.x) | Implemented for signed request/response verification when the NTLMSSP/Kerberos SessionKey is provided |
-| §3.1.4.3 | Encryption (AES-128-CCM/GCM) | Required by Server 2022 default config (`SMB Encryption Required = 1`). Deferred to cap-h2; not blocking signed WINREG smoke. |
+| §3.1.4.3 | Encryption (AES-128-CCM/GCM) | Implemented with SMB2 TRANSFORM_HEADER, AES-128-CCM for SMB 3.0/3.0.2, and negotiated AES-128-CCM/GCM for SMB 3.1.1. |
 
 ## Implementation status
 
@@ -102,7 +102,7 @@ Only the connection / session / file / pipe primitives are needed:
 |---|---|---|
 | 0 — Architecture docs + ADR | ✅ Done | this document + `docs\decisions\2026-05-smb-implementation.md` |
 | 1 — SMB2 client | ✅ Landed | `src\Opc.Classic.Dcom.Smb\` with SMB2 negotiate/session/tree/pipe primitives, `TcpSmb2Transport`, and `Smb2RpcTransportAdapter` |
-| 1.5 — SMB signing/encryption hardening | 🟡 Partial | SMB2 signing is implemented (HMAC-SHA256/AES-CMAC); SMB3 encryption remains deferred to cap-h2 before encryption-required server smoke |
+| 1.5 — SMB signing/encryption hardening | ✅ Landed | SMB2 signing (HMAC-SHA256/AES-CMAC) and SMB3 encryption (AES-128-CCM/GCM transforms) are implemented for encryption-required server smoke |
 | 2 — Wire SMB into `Ncacn_Np.RpcTransport` | ⏳ Pending | functional `ncacn_np` transport backed by the SMB2 project |
 | 3 — WINREG end-to-end smoke | ⏳ Pending | green CI against Samba/Windows container or recorded PCAP fixtures |
 | 4 — Legacy `IActivation` interface | ⏳ Pending | client + optional server side for pre-XP-SP2 interop |

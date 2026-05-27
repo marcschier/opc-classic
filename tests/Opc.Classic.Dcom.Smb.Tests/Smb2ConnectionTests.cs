@@ -93,6 +93,38 @@ public sealed class Smb2ConnectionTests
     }
 
     [Test]
+    public async Task OpenNamedPipeAsync_EncryptsRequestAndDecryptsResponse_WhenShareRequiresEncryption()
+    {
+        byte[] sessionKey = Convert.FromHexString("000102030405060708090A0B0C0D0E0F");
+        byte[] encryptionKey = Smb2Crypter.DeriveSmb3ClientEncryptionKey(Smb2Dialect.Smb300, sessionKey);
+        byte[] decryptionKey = Smb2Crypter.DeriveSmb3ClientDecryptionKey(Smb2Dialect.Smb300, sessionKey);
+        var requestCrypter = new Smb2Crypter(encryptionKey, Smb2EncryptionAlgorithm.AesCcm);
+        var responseCrypter = new Smb2Crypter(decryptionKey, Smb2EncryptionAlgorithm.AesCcm);
+        var mock = new MockSmb2Transport();
+        mock.OnNegotiate(Smb2Dialect.Smb300, Guid.NewGuid(), capabilities: 0x00000040);
+        mock.OnSessionSetupSuccess(sessionId: 0x1122334455667788UL);
+        mock.OnTreeConnectSuccess(treeId: 0xAABBCCDD, shareFlags: 0x00008000);
+        mock.OnCreateEncryptedSuccess(
+            fileIdPersistent: 0x0102030405060708UL,
+            fileIdVolatile: 0x1112131415161718UL,
+            requestCrypter,
+            responseCrypter);
+        mock.OnEncryptedStatusSuccess(Smb2Command.Close, requestCrypter, responseCrypter);
+
+        await using var conn = new Smb2Connection(
+            new Smb2ConnectionOptions("test"), mock);
+        await conn.NegotiateAsync();
+        await conn.SessionSetupAsync(static _ => new byte[] { 0x01, 0x02, 0x03 }, () => sessionKey);
+        _ = await conn.TreeConnectIpcAsync();
+        await using Smb2NamedPipe pipe = await conn.OpenNamedPipeAsync("winreg");
+
+        byte[] createRequest = mock.SentPackets[3];
+        await Assert.That(Smb2TransformHeader.HasTransformProtocolId(createRequest)).IsTrue();
+        byte[] plaintextCreate = requestCrypter.DecryptMessage(createRequest, 0x1122334455667788UL);
+        await Assert.That(Smb2PacketHeader.Read(plaintextCreate).Command).IsEqualTo(Smb2Command.Create);
+    }
+
+    [Test]
     public async Task TreeConnectIpcAsync_RequiresPriorSessionSetup()
     {
         var mock = new MockSmb2Transport();
@@ -112,14 +144,21 @@ public sealed class Smb2ConnectionTests
     {
         private readonly Queue<Func<Smb2PacketHeader, ReadOnlyMemory<byte>>> _responders = new();
         private Smb2PacketHeader _lastRequestHeader;
+        private byte[] _lastRequestPacket = [];
 
         public List<byte[]> SentPackets { get; } = [];
 
-        public void OnNegotiate(Smb2Dialect dialect, Guid serverGuid, ushort securityMode = 0)
+        public void OnNegotiate(
+            Smb2Dialect dialect,
+            Guid serverGuid,
+            ushort securityMode = 0,
+            uint capabilities = 0,
+            Smb2EncryptionAlgorithm? encryptionAlgorithm = null)
         {
             _responders.Enqueue(header =>
             {
-                byte[] response = new byte[64 + 72];
+                int responseLength = encryptionAlgorithm.HasValue ? 64 + 88 : 64 + 72;
+                byte[] response = new byte[responseLength];
                 var responseHeader = header with
                 {
                     Status = 0,
@@ -131,19 +170,27 @@ public sealed class Smb2ConnectionTests
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 65);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 2), securityMode);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 4), (ushort)dialect);
-                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 6), 0);
+                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 6), encryptionAlgorithm.HasValue ? (ushort)1 : (ushort)0);
                 serverGuid.TryWriteBytes(response.AsSpan(bodyOffset + 8, 16));
-                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 24), 0);
+                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 24), capabilities);
                 BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 28), 0x10000);
                 BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 32), 0x10000);
                 BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 36), 0x10000);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 56), 64 + 64);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 58), 8);
+                if (encryptionAlgorithm.HasValue)
+                {
+                    BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 60), 64 + 72);
+                    BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 72), 0x0002);
+                    BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 74), 4);
+                    BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 80), 1);
+                    BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 82), GetCipherId(encryptionAlgorithm.Value));
+                }
                 return response;
             });
         }
 
-        public void OnSessionSetupSuccess(ulong sessionId)
+        public void OnSessionSetupSuccess(ulong sessionId, ushort sessionFlags = 0)
         {
             _responders.Enqueue(header =>
             {
@@ -158,7 +205,7 @@ public sealed class Smb2ConnectionTests
 
                 int bodyOffset = 64;
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 9);
-                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 2), 0);
+                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 2), sessionFlags);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 4), 64 + 8);
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 6), 8);
                 response[bodyOffset + 8] = 0xAA;
@@ -169,7 +216,8 @@ public sealed class Smb2ConnectionTests
         public void OnTreeConnectSuccess(
             uint treeId,
             Smb2Signer? signer = null,
-            bool tamperAfterSigning = false)
+            bool tamperAfterSigning = false,
+            uint shareFlags = 0)
         {
             _responders.Enqueue(header =>
             {
@@ -185,7 +233,7 @@ public sealed class Smb2ConnectionTests
                 int bodyOffset = 64;
                 BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 16);
                 response[bodyOffset + 2] = 0x02;
-                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 4), 0);
+                BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 4), shareFlags);
                 BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 8), 0);
                 BinaryPrimitives.WriteUInt32LittleEndian(response.AsSpan(bodyOffset + 12), 0x001F01FF);
 
@@ -198,11 +246,89 @@ public sealed class Smb2ConnectionTests
             });
         }
 
+        public void OnCreateEncryptedSuccess(
+            ulong fileIdPersistent,
+            ulong fileIdVolatile,
+            Smb2Crypter requestCrypter,
+            Smb2Crypter responseCrypter)
+        {
+            _responders.Enqueue(_ =>
+            {
+                byte[] plaintextRequest = requestCrypter.DecryptMessage(_lastRequestPacket);
+                var requestHeader = Smb2PacketHeader.Read(plaintextRequest);
+                if (requestHeader.Command != Smb2Command.Create)
+                {
+                    throw new InvalidOperationException("Expected encrypted CREATE request.");
+                }
+
+                byte[] response = new byte[64 + 88];
+                var responseHeader = requestHeader with
+                {
+                    Status = 0,
+                    Flags = 0x00000001,
+                };
+                responseHeader.Write(response);
+                int bodyOffset = 64;
+                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(bodyOffset + 0), 89);
+                BinaryPrimitives.WriteUInt64LittleEndian(response.AsSpan(bodyOffset + 64), fileIdPersistent);
+                BinaryPrimitives.WriteUInt64LittleEndian(response.AsSpan(bodyOffset + 72), fileIdVolatile);
+                return responseCrypter.EncryptMessage(response, CreateNonce(responseCrypter.NonceLength), requestHeader.SessionId);
+            });
+        }
+
+        public void OnEncryptedStatusSuccess(
+            Smb2Command expectedCommand,
+            Smb2Crypter requestCrypter,
+            Smb2Crypter responseCrypter)
+        {
+            _responders.Enqueue(_ =>
+            {
+                byte[] plaintextRequest = requestCrypter.DecryptMessage(_lastRequestPacket);
+                var requestHeader = Smb2PacketHeader.Read(plaintextRequest);
+                if (requestHeader.Command != expectedCommand)
+                {
+                    throw new InvalidOperationException($"Expected encrypted {expectedCommand} request.");
+                }
+
+                byte[] response = new byte[64 + 4];
+                var responseHeader = requestHeader with
+                {
+                    Status = 0,
+                    Flags = 0x00000001,
+                };
+                responseHeader.Write(response);
+                BinaryPrimitives.WriteUInt16LittleEndian(response.AsSpan(64), 4);
+                return responseCrypter.EncryptMessage(response, CreateNonce(responseCrypter.NonceLength), requestHeader.SessionId);
+            });
+        }
+
         public Task SendAsync(ReadOnlyMemory<byte> packet, CancellationToken cancellationToken)
         {
-            _lastRequestHeader = Smb2PacketHeader.Read(packet.Span);
-            SentPackets.Add(packet.ToArray());
+            _lastRequestPacket = packet.ToArray();
+            if (!Smb2TransformHeader.HasTransformProtocolId(packet.Span))
+            {
+                _lastRequestHeader = Smb2PacketHeader.Read(packet.Span);
+            }
+            SentPackets.Add(_lastRequestPacket);
             return Task.CompletedTask;
+        }
+
+        private static ushort GetCipherId(Smb2EncryptionAlgorithm algorithm) => algorithm switch
+        {
+            Smb2EncryptionAlgorithm.AesCcm => 0x0001,
+            Smb2EncryptionAlgorithm.AesGcm => 0x0002,
+            _ => throw new ArgumentOutOfRangeException(nameof(algorithm), algorithm, "Unsupported SMB2 encryption algorithm."),
+        };
+
+        private static byte[] CreateNonce(int length)
+        {
+            byte[] nonce = new byte[length];
+            for (int i = 0; i < nonce.Length; i++)
+            {
+                nonce[i] = (byte)(0x70 + i);
+            }
+
+            return nonce;
         }
 
         public Task<ReadOnlyMemory<byte>> ReceiveAsync(CancellationToken cancellationToken)

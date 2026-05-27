@@ -14,8 +14,14 @@ internal static class Smb2Constants
     /// <summary>SMB2 protocol identifier: <c>0xFE, 'S', 'M', 'B'</c>. See [MS-SMB2] §2.2.1.1.</summary>
     public static readonly byte[] ProtocolId = { 0xFE, (byte)'S', (byte)'M', (byte)'B' };
 
+    /// <summary>SMB2 TRANSFORM_HEADER protocol identifier: <c>0xFD, 'S', 'M', 'B'</c>. See [MS-SMB2] §2.2.41.</summary>
+    public static ReadOnlySpan<byte> TransformProtocolId => [0xFD, (byte)'S', (byte)'M', (byte)'B'];
+
     /// <summary>SMB2 packet header size (synchronous form). See [MS-SMB2] §2.2.1.</summary>
     public const int PacketHeaderSize = 64;
+
+    /// <summary>SMB2 TRANSFORM_HEADER size. See [MS-SMB2] §2.2.41.</summary>
+    public const int TransformHeaderSize = 52;
 
     /// <summary>Maximum NetBIOS-over-TCP frame size (3-byte length field). See [MS-CIFS] §2.2.1.</summary>
     public const int MaxNetBiosFrameSize = 0x1FFFF;
@@ -25,6 +31,33 @@ internal static class Smb2Constants
 
     /// <summary>SMB2 SIGNED flag. See [MS-SMB2] §2.2.1.2.</summary>
     public const uint FlagsSigned = 0x00000008;
+
+    /// <summary>SMB2_GLOBAL_CAP_ENCRYPTION capability. See [MS-SMB2] §2.2.3 and §2.2.4.</summary>
+    public const uint GlobalCapEncryption = 0x00000040;
+
+    /// <summary>SMB2_SESSION_FLAG_ENCRYPT_DATA session flag. See [MS-SMB2] §2.2.6.</summary>
+    public const ushort SessionFlagEncryptData = 0x0004;
+
+    /// <summary>SMB2_SHAREFLAG_ENCRYPT_DATA share flag. See [MS-SMB2] §2.2.10.</summary>
+    public const uint ShareFlagEncryptData = 0x00008000;
+
+    /// <summary>SMB2 TRANSFORM_HEADER Encrypted flag / AES-128-CCM algorithm value. See [MS-SMB2] §2.2.41.</summary>
+    public const ushort TransformFlagsEncrypted = 0x0001;
+
+    /// <summary>SMB2_PREAUTH_INTEGRITY_CAPABILITIES negotiate context. See [MS-SMB2] §2.2.3.1.1.</summary>
+    public const ushort NegotiateContextPreauthIntegrityCapabilities = 0x0001;
+
+    /// <summary>SMB2_ENCRYPTION_CAPABILITIES negotiate context. See [MS-SMB2] §2.2.3.1.2.</summary>
+    public const ushort NegotiateContextEncryptionCapabilities = 0x0002;
+
+    /// <summary>SMB2_PREAUTH_INTEGRITY_SHA512 hash identifier. See [MS-SMB2] §2.2.3.1.1.</summary>
+    public const ushort PreauthHashSha512 = 0x0001;
+
+    /// <summary>SMB2_ENCRYPTION_AES128_CCM cipher identifier. See [MS-SMB2] §2.2.3.1.2.</summary>
+    public const ushort EncryptionCipherAes128Ccm = 0x0001;
+
+    /// <summary>SMB2_ENCRYPTION_AES128_GCM cipher identifier. See [MS-SMB2] §2.2.3.1.2.</summary>
+    public const ushort EncryptionCipherAes128Gcm = 0x0002;
 
     /// <summary>SMB2_NEGOTIATE_SIGNING_ENABLED security-mode bit. See [MS-SMB2] §2.2.3 and §2.2.4.</summary>
     public const ushort SecurityModeSigningEnabled = 0x0001;

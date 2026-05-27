@@ -84,9 +84,9 @@ real-world need.
 ## Open questions (deferred to implementation phases)
 
 - **Signing and encryption**: SMB signing is implemented for HMAC-SHA256
-  (SMB 2.0.2/2.1) and AES-128-CMAC (SMB 3.x) once the NTLMSSP/Kerberos
-  SessionKey is available. SMB 3.x encryption (AES-128-CCM/GCM) remains
-  deferred to cap-h2 before WINREG E2E tests against encryption-required servers.
+  (SMB 2.0.2/2.1) and AES-128-CMAC (SMB 3.x). SMB 3.x encryption is now
+  implemented with AES-128-CCM for SMB 3.0/3.0.2 and negotiated AES-128-CCM/GCM
+  for SMB 3.1.1 once the NTLMSSP/Kerberos SessionKey is available.
 - **Kerberos**: NTLMSSP is sufficient for the smoke phases (WINREG +
   IActivation). Kerberos over SMB2 (mandatory when joined to AD with NTLMv2
   restrictions) can be a follow-on after IActivation client lands; it reuses
