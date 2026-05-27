@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-05-27 *(awaiting CTT smoke green to tag)*
+
+First stable release of the cross-platform .NET 10 OPC Classic stack.
+
+### What's in this release
+
+- **Cross-platform DCOM transport** — managed MS-DCOM/MSRPC client and server
+  transport over `ncacn_ip_tcp`, with NTLMv2, Kerberos (RC4 + AES), SPNEGO,
+  packet integrity/privacy, and RFC 5056/5929 channel binding support.
+- **Windows CCW activation** — SCM-launched servers via raw COM vtables with no
+  `[ComImport]`. DA covers `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`,
+  `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)` with
+  release-scope per-method vtables and VARIANT/SAFEARRAY/BSTR marshaling.
+- **AE + HDA Windows CCWs** — multi-tearoff CCWs for `IOPCEventServer` +
+  `IOPCEventSubscriptionMgt` and `IOPCHDA_Server` + Sync/AsyncRead surfaces.
+- **Source-generated dispatchers** — Roslyn incremental generators emit static
+  client proxies and server dispatchers across the OPC Classic interface set,
+  keeping the runtime NativeAOT- and trim-compatible.
+- **DA address-space model** — `IOpcAddressSpace`, DA 2.x/3.0 browse,
+  `IOPCItemProperties`, `IOPCItemDeadbandMgt`, and `IOPCItemSamplingMgt` backed
+  by managed default implementations.
+- **OPC CTT integration** — Windows COM registration, a managed CTT sample
+  server, vendored CTT installers, and Windows-container Docker fleet
+  scaffolding with managed/native server and client targets.
+- **Wire and conformance fixtures** — WINREG PCAP replay coverage, C-built OPC
+  reference server/client scaffolds, and MS-NLMP/Kerberos/SPNEGO/channel-binding
+  vectors for the security-sensitive transport paths.
+- **Comprehensive test suite** — all 17 .NET test projects green in the rc.5
+  sweep, including DA 385, AE 86, HDA 123, SMB 22, and cryptography/vector
+  coverage.
+
+### Migration from rc.X
+
+See `docs\MIGRATION.md`.
+
+### Known gaps (deferred to future releases)
+
+See `docs\release-blockers.md` for the 3 remaining quality gates before the
+FINAL tag.
+
 ## [Unreleased]
 
 ## [1.0.0-rc.5] - 2026-05-27
