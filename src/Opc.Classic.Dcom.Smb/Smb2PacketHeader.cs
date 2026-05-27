@@ -132,8 +132,19 @@ public static class NetBiosFraming
     }
 
     /// <summary>Parses a NetBIOS frame header and returns the payload length.</summary>
-    public static int ReadPayloadLength(ReadOnlySpan<byte> source)
+    public static int ReadPayloadLength(ReadOnlySpan<byte> source) =>
+        ReadPayloadLength(source, Smb2Constants.MaxNetBiosFrameSize);
+
+    /// <summary>Parses a NetBIOS frame header and enforces a payload quota.</summary>
+    internal static int ReadPayloadLength(ReadOnlySpan<byte> source, int maxPayloadLength)
     {
+        if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxPayloadLength),
+                maxPayloadLength,
+                $"NetBIOS frame payload quota must be 0..{Smb2Constants.MaxNetBiosFrameSize}.");
+        }
         if (source.Length < HeaderSize)
         {
             throw new ArgumentException(
@@ -146,6 +157,13 @@ public static class NetBiosFraming
                 $"Unexpected NetBIOS frame type 0x{source[0]:X2}; expected 0x00 (SMB direct).");
         }
 
-        return (source[1] << 16) | (source[2] << 8) | source[3];
+        int payloadLength = (source[1] << 16) | (source[2] << 8) | source[3];
+        if (payloadLength > maxPayloadLength)
+        {
+            throw new Smb2ProtocolException(
+                $"NetBIOS frame payload length {payloadLength} exceeds the configured SMB2 quota of {maxPayloadLength} bytes.");
+        }
+
+        return payloadLength;
     }
 }

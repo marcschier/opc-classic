@@ -21,6 +21,10 @@ public readonly record struct Smb2TreeConnectRequest(string Path)
 
         const int FixedSize = 8;
         int pathBytes = Encoding.Unicode.GetByteCount(Path);
+        if (pathBytes > ushort.MaxValue)
+        {
+            throw new InvalidOperationException("TREE_CONNECT Path exceeds 65535 bytes when UTF-16LE encoded.");
+        }
         int total = FixedSize + pathBytes;
         if (destination.Length < total)
         {
@@ -48,6 +52,7 @@ public readonly record struct Smb2TreeConnectResponse(
     /// <summary>Parses an SMB2 TREE_CONNECT response body (excluding the 64-byte packet header).</summary>
     public static Smb2TreeConnectResponse Read(ReadOnlySpan<byte> source)
     {
+        Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 TREE_CONNECT response");
         if (source.Length < 16)
         {
             throw new Smb2ProtocolException("SMB2 TREE_CONNECT response too short.");

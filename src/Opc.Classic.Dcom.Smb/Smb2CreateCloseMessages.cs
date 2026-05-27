@@ -27,6 +27,10 @@ internal readonly record struct Smb2CreateRequest(
 
         const int FixedSize = 56;
         int nameBytes = Encoding.Unicode.GetByteCount(Name);
+        if (nameBytes > ushort.MaxValue)
+        {
+            throw new InvalidOperationException("CREATE Name exceeds 65535 bytes when UTF-16LE encoded.");
+        }
 
         // [MS-SMB2] §2.2.13: a zero-length name still has NameOffset set; a one-byte
         // pad ensures FixedSize+nameBytes is at least 1.
@@ -73,6 +77,7 @@ internal readonly record struct Smb2CreateResponse(
 {
     public static Smb2CreateResponse Read(ReadOnlySpan<byte> source)
     {
+        Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 CREATE response");
         if (source.Length < 88)
         {
             throw new Smb2ProtocolException("SMB2 CREATE response too short.");

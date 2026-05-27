@@ -52,8 +52,13 @@ public sealed record KerberosAuthInfo : IKerberosAuthInfo
     public string? Domain { get; init; }
 
     /// <summary>
-    /// Gets the optional password for password-flow authentication.
+    /// Gets the optional plaintext password for password-flow authentication.
     /// </summary>
+    /// <remarks>
+    /// This remains a <see cref="string" /> for API compatibility with .NET credential APIs. The
+    /// library cannot zeroize GC-managed plaintext strings; prefer short-lived instances and
+    /// rotate credentials after suspected exposure.
+    /// </remarks>
     public string? Password { get; init; }
 
     /// <summary>

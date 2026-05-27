@@ -189,6 +189,7 @@ public sealed class Smb2RpcTransportBuilder
     private readonly NtlmsspBlobProvider _blobProvider;
     private readonly Smb2SessionKeyProvider? _sessionKeyProvider;
     private int _port = 445;
+    private int _maxSmb2MessageSize = Smb2Constants.MaxNetBiosFrameSize;
 
     /// <summary>Initializes a new builder from a parsed SMB URL.</summary>
     /// <param name="address">Parsed SMB endpoint.</param>
@@ -215,14 +216,22 @@ public sealed class Smb2RpcTransportBuilder
         return this;
     }
 
+    /// <summary>Sets the maximum SMB2 message size for inbound and outbound frames.</summary>
+    public Smb2RpcTransportBuilder UseMaxSmb2MessageSize(int maxSmb2MessageSize)
+    {
+        _ = new Smb2ConnectionOptions(_address.Host, _port) { MaxSmb2MessageSize = maxSmb2MessageSize };
+        _maxSmb2MessageSize = maxSmb2MessageSize;
+        return this;
+    }
+
     /// <summary>
     /// Opens the SMB2 connection, completes NTLMSSP session setup, connects to IPC$,
     /// opens the named pipe, and returns the adapter.
     /// </summary>
     public async Task<Smb2RpcTransportAdapter> BuildAsync(CancellationToken cancellationToken = default)
     {
-        var tcp = await TcpSmb2Transport.ConnectAsync(_address.Host, _port, cancellationToken).ConfigureAwait(false);
-        var conn = new Smb2Connection(new Smb2ConnectionOptions(_address.Host, _port), tcp);
+        var tcp = await TcpSmb2Transport.ConnectAsync(_address.Host, _port, _maxSmb2MessageSize, cancellationToken).ConfigureAwait(false);
+        var conn = new Smb2Connection(new Smb2ConnectionOptions(_address.Host, _port) { MaxSmb2MessageSize = _maxSmb2MessageSize }, tcp);
         try
         {
             _ = await conn.NegotiateAsync(cancellationToken).ConfigureAwait(false);

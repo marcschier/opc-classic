@@ -20,6 +20,10 @@ internal readonly record struct Smb2SessionSetupRequest(
     public int WriteTo(Span<byte> destination)
     {
         const int FixedSize = 24;
+        if (SecurityBlob.Length > ushort.MaxValue)
+        {
+            throw new InvalidOperationException("SESSION_SETUP SecurityBlob exceeds 65535 bytes.");
+        }
         int total = FixedSize + SecurityBlob.Length;
         if (destination.Length < total)
         {
@@ -51,6 +55,7 @@ internal readonly record struct Smb2SessionSetupResponse(
 {
     public static Smb2SessionSetupResponse Read(ReadOnlySpan<byte> source)
     {
+        Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 SESSION_SETUP response");
         if (source.Length < 8)
         {
             throw new Smb2ProtocolException("SMB2 SESSION_SETUP response too short.");
@@ -73,12 +78,11 @@ internal readonly record struct Smb2SessionSetupResponse(
         }
         else
         {
-            int offset = secBlobOffset - Smb2Constants.PacketHeaderSize;
-            if (offset < 0 || offset + secBlobLength > source.Length)
-            {
-                throw new Smb2ProtocolException("SESSION_SETUP response SecurityBuffer offset out of range.");
-            }
-            securityBlob = source.Slice(offset, secBlobLength).ToArray();
+            securityBlob = Smb2MessageBounds.GetPayloadSlice(
+                source,
+                secBlobOffset,
+                secBlobLength,
+                "SESSION_SETUP response SecurityBuffer").ToArray();
         }
 
         return new Smb2SessionSetupResponse(sessionFlags, securityBlob);

@@ -5,6 +5,7 @@ using Opc.Classic.Dcom.Internal.Ntlm;
 using SharpCifs.Util.Sharpen;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
 /// <summary>
@@ -23,14 +24,21 @@ internal sealed class NTLMKeyFactory {
     /// <returns></returns>
     public byte[] GetNTLMv2UserSessionKey(string target, string user,
         string password, byte[] challenge, byte[] blob) {
-        var key = new byte[16];
         var ntlm2Hash = Responses.Ntlmv2Hash(target, user, password);
-        var data = new byte[challenge.Length + blob.Length];
-        Array.Copy(challenge, 0, data, 0, challenge.Length);
-        Array.Copy(blob, 0, data, challenge.Length, blob.Length);
-        var mac = Responses.HmacMD5(data, ntlm2Hash);
-        key = Responses.HmacMD5(mac, ntlm2Hash);
-        return key;
+        byte[]? data = null;
+        byte[]? mac = null;
+        try {
+            data = new byte[challenge.Length + blob.Length];
+            Array.Copy(challenge, 0, data, 0, challenge.Length);
+            Array.Copy(blob, 0, data, challenge.Length, blob.Length);
+            mac = Responses.HmacMD5(data, ntlm2Hash);
+            return Responses.HmacMD5(mac, ntlm2Hash);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(ntlm2Hash);
+            CryptographicOperations.ZeroMemory(data);
+            CryptographicOperations.ZeroMemory(mac);
+        }
     }
 
     /// <summary>
@@ -42,7 +50,15 @@ internal sealed class NTLMKeyFactory {
     /// <exception cref="SecurityUtilityException"> </exception>
     /// <exception cref="UnsupportedEncodingException"> </exception>
     /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
-    public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce) => Responses.HmacMD5(servernonce, GetNTLMUserSessionKey(password));
+    public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce) {
+        var userSessionKey = GetNTLMUserSessionKey(password);
+        try {
+            return Responses.HmacMD5(servernonce, userSessionKey);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(userSessionKey);
+        }
+    }
 
     /// <summary>
     /// Randomly generated 16 bytes
@@ -94,11 +110,16 @@ internal sealed class NTLMKeyFactory {
         // the NTLMUserSessionKey and the LMv2UserSessionKey...we need more :(
         //         byte key[] = new byte[16];
         var ntlmHash = Responses.NtlmHash(password);
-        var md4 = new MD4Digest();
-        var ret = new byte[md4.GetDigestSize()];
-        md4.BlockUpdate(ntlmHash, 0, ntlmHash.Length);
-        md4.DoFinal(ret, 0);
-        return ret;
+        try {
+            var md4 = new MD4Digest();
+            var ret = new byte[md4.GetDigestSize()];
+            md4.BlockUpdate(ntlmHash, 0, ntlmHash.Length);
+            md4.DoFinal(ret, 0);
+            return ret;
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(ntlmHash);
+        }
     }
 
     /// <summary>
@@ -189,17 +210,24 @@ internal sealed class NTLMKeyFactory {
         var retval = new byte[16];
         retval[0] = 0x01; // Version number LE 1.
 
-        var sign = Responses.HmacMD5(seqNumPlusData, signingKey);
+        byte[]? sign = null;
+        try {
+            sign = Responses.HmacMD5(seqNumPlusData, signingKey);
 
-        for (var i = 0; i < 8; i++) {
-            retval[i + 4] = sign[i];
+            for (var i = 0; i < 8; i++) {
+                retval[i + 4] = sign[i];
+            }
+
+            retval[12] = unchecked((byte)(sequenceNumber & 0xFF));
+            retval[13] = unchecked((byte)((sequenceNumber >> 8) & 0xFF));
+            retval[14] = unchecked((byte)((sequenceNumber >> 16) & 0xFF));
+            retval[15] = unchecked((byte)((sequenceNumber >> 24) & 0xFF));
+            return retval;
         }
-
-        retval[12] = unchecked((byte)(sequenceNumber & 0xFF));
-        retval[13] = unchecked((byte)((sequenceNumber >> 8) & 0xFF));
-        retval[14] = unchecked((byte)((sequenceNumber >> 16) & 0xFF));
-        retval[15] = unchecked((byte)((sequenceNumber >> 24) & 0xFF));
-        return retval;
+        finally {
+            CryptographicOperations.ZeroMemory(seqNumPlusData);
+            CryptographicOperations.ZeroMemory(sign);
+        }
     }
 
 
@@ -260,13 +288,18 @@ internal sealed class NTLMKeyFactory {
 
     private static byte[] GenerateExtendedSessionSecurityKey(byte[] keyMaterial, byte[] magicConstant) {
         var dataforhash = new byte[keyMaterial.Length + magicConstant.Length];
-        Array.Copy(keyMaterial, 0, dataforhash, 0, keyMaterial.Length);
-        Array.Copy(magicConstant, 0, dataforhash, keyMaterial.Length, magicConstant.Length);
-        var md5 = new MD5Digest();
-        var ret = new byte[md5.GetDigestSize()];
-        md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
-        md5.DoFinal(ret, 0);
-        return ret;
+        try {
+            Array.Copy(keyMaterial, 0, dataforhash, 0, keyMaterial.Length);
+            Array.Copy(magicConstant, 0, dataforhash, keyMaterial.Length, magicConstant.Length);
+            var md5 = new MD5Digest();
+            var ret = new byte[md5.GetDigestSize()];
+            md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
+            md5.DoFinal(ret, 0);
+            return ret;
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(dataforhash);
+        }
     }
 
     private static byte[] Left(byte[] value, int length) {

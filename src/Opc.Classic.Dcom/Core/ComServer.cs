@@ -47,6 +47,9 @@ public sealed class ComServer : Stub {
         kDefaults.SetProperty("rpc.ntlm.sso", "false");
         kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
         kDefaults.SetProperty("rpc.socketTimeout", 0.ToString(CultureInfo.InvariantCulture));
+        kDefaults.SetProperty(RpcTransportQuotas.MaxNdrPayloadSizeProperty, RpcTransportQuotas.DefaultMaxNdrPayloadSize.ToString(CultureInfo.InvariantCulture));
+        kDefaults.SetProperty(RpcTransportQuotas.MaxNtlmMessageSizeProperty, RpcTransportQuotas.DefaultMaxNtlmMessageSize.ToString(CultureInfo.InvariantCulture));
+        kDefaults.SetProperty(RpcTransportQuotas.MaxSmb2MessageSizeProperty, RpcTransportQuotas.DefaultMaxSmb2MessageSize.ToString(CultureInfo.InvariantCulture));
         //        rpc.connectionContext = rpc.security.ntlm.NtlmConnectionContext
         //        rpc.ntlm.sign = false
         //        rpc.ntlm.seal = false

@@ -32,26 +32,42 @@ public sealed class TcpSmb2Transport : ISmb2Transport
 {
     private readonly TcpClient _tcp;
     private readonly NetworkStream _stream;
+    private readonly int _maxPayloadLength;
     private bool _disposed;
 
-    private TcpSmb2Transport(TcpClient tcp)
+    private TcpSmb2Transport(TcpClient tcp, int maxPayloadLength)
     {
         _tcp = tcp;
         _stream = tcp.GetStream();
+        _maxPayloadLength = maxPayloadLength;
     }
 
     /// <summary>Opens a TCP connection to <paramref name="host" /> on the SMB port.</summary>
-    public static async Task<TcpSmb2Transport> ConnectAsync(
+    public static Task<TcpSmb2Transport> ConnectAsync(
         string host,
         int port = 445,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default) =>
+        ConnectAsync(host, port, Smb2Constants.MaxNetBiosFrameSize, cancellationToken);
+
+    internal static async Task<TcpSmb2Transport> ConnectAsync(
+        string host,
+        int port,
+        int maxPayloadLength,
+        CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
+        if (maxPayloadLength < 0 || maxPayloadLength > Smb2Constants.MaxNetBiosFrameSize)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxPayloadLength),
+                maxPayloadLength,
+                $"SMB2 payload quota must be 0..{Smb2Constants.MaxNetBiosFrameSize} bytes.");
+        }
         var tcp = new TcpClient();
         try
         {
             await tcp.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
-            return new TcpSmb2Transport(tcp);
+            return new TcpSmb2Transport(tcp, maxPayloadLength);
         }
         catch
         {
@@ -79,7 +95,7 @@ public sealed class TcpSmb2Transport : ISmb2Transport
 
         var header = new byte[NetBiosFraming.HeaderSize];
         await ReadExactlyAsync(header, cancellationToken).ConfigureAwait(false);
-        int payloadLength = NetBiosFraming.ReadPayloadLength(header);
+        int payloadLength = NetBiosFraming.ReadPayloadLength(header, _maxPayloadLength);
         var payload = new byte[payloadLength];
         await ReadExactlyAsync(payload, cancellationToken).ConfigureAwait(false);
         return payload;

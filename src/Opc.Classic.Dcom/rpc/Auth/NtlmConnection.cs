@@ -42,22 +42,30 @@ public class NtlmConnection : DefaultConnection {
 
     /// <inheritdoc/>
     protected internal override void IncomingRebind(AuthenticationVerifier verifier) {
+        var maxNtlmMessageSize = MaxNtlmMessageSize();
+        if (verifier.Body.Length < 12) {
+            throw new IOException("NTLM verifier body is too short for a message header.");
+        }
+        if (verifier.Body.Length > maxNtlmMessageSize) {
+            throw new IOException($"NTLM verifier body length {verifier.Body.Length} exceeds the configured quota of {maxNtlmMessageSize} bytes.");
+        }
+
         switch (verifier.Body[8]) {
             case 1:
                 // server gets negotiate from client
                 // setSecurity(null);
                 _contextId = verifier.ContextId;
                 _authentication.SetNegotiateMessage(verifier.Body);
-                _ntlm = new Type1Message(verifier.Body);
+                _ntlm = new Type1Message(verifier.Body, maxNtlmMessageSize);
                 break;
             case 2:
                 // client gets challenge from server
                 _authentication.SetChallengeMessage(verifier.Body);
-                _ntlm = new Type2Message(verifier.Body);
+                _ntlm = new Type2Message(verifier.Body, maxNtlmMessageSize);
                 break;
             case 3:
                 // server gets authenticate from client
-                _ntlm = new Type3Message(verifier.Body);
+                _ntlm = new Type3Message(verifier.Body, maxNtlmMessageSize);
                 if (UseNtlm2SessionSecurity()) {
                     _authentication.CreateSecurityWhenServerWithMic(_ntlm, verifier.Body);
                     _security = _authentication.Security;
@@ -119,6 +127,12 @@ public class NtlmConnection : DefaultConnection {
         var value = _properties.GetProperty("rpc.ntlm.ntlm2");
         return value == null || Convert.ToBoolean(value);
     }
+
+    private int MaxNtlmMessageSize() => RpcTransportQuotas.GetInt32(
+        _properties,
+        RpcTransportQuotas.MaxNtlmMessageSizeProperty,
+        RpcTransportQuotas.DefaultMaxNtlmMessageSize,
+        RpcTransportQuotas.DefaultMaxNtlmMessageSize);
 
     private static int _contextSerial;
     private readonly PropertyBag _properties;

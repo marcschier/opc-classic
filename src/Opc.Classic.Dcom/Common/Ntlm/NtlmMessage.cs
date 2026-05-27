@@ -11,6 +11,8 @@ public abstract class NtlmMessage {
 
     private static readonly byte[] SignatureBytes = Encoding.ASCII.GetBytes("NTLMSSP\0");
 
+    internal const int DefaultMaxMessageSize = 64 * 1024 - 1;
+
     protected static ReadOnlySpan<byte> DefaultVersion => [10, 0, 0, 0, 0, 0, 0, 15];
 
     public abstract int MessageType { get; }
@@ -89,6 +91,60 @@ public abstract class NtlmMessage {
         }
 
         return raw.Slice((int)offset, length).ToArray();
+    }
+
+    protected static void ValidateMessageLength(ReadOnlySpan<byte> raw, string messageName, int maxMessageSize) {
+        if (maxMessageSize <= 0 || maxMessageSize > DefaultMaxMessageSize) {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxMessageSize),
+                maxMessageSize,
+                $"NTLM message quota must be 1..{DefaultMaxMessageSize} bytes.");
+        }
+
+        if (raw.Length > maxMessageSize) {
+            throw new ArgumentException(
+                $"{messageName} length {raw.Length} exceeds the configured NTLMSSP quota of {maxMessageSize} bytes.",
+                nameof(raw));
+        }
+    }
+
+    protected static void ValidateSecurityBufferLayout(
+        ReadOnlySpan<byte> raw,
+        int headerSize,
+        string messageName,
+        params (ushort Length, uint Offset, string Name)[] fields) {
+        var ranges = new (uint Start, uint End, string Name)[fields.Length];
+        var rangeCount = 0;
+        foreach (var field in fields) {
+            if (field.Length == 0) {
+                continue;
+            }
+
+            if (field.Offset < headerSize) {
+                throw new ArgumentException(
+                    $"{messageName} {field.Name} security buffer overlaps the NTLMSSP header.",
+                    nameof(raw));
+            }
+
+            ulong end = (ulong)field.Offset + field.Length;
+            if (field.Offset > raw.Length || end > (uint)raw.Length) {
+                throw new ArgumentException(
+                    $"{messageName} {field.Name} security buffer points outside the message.",
+                    nameof(raw));
+            }
+
+            ranges[rangeCount++] = (field.Offset, (uint)end, field.Name);
+        }
+
+        for (var i = 0; i < rangeCount; i++) {
+            for (var j = i + 1; j < rangeCount; j++) {
+                if (ranges[i].Start < ranges[j].End && ranges[j].Start < ranges[i].End) {
+                    throw new ArgumentException(
+                        $"{messageName} security buffers {ranges[i].Name} and {ranges[j].Name} overlap.",
+                        nameof(raw));
+                }
+            }
+        }
     }
 
     protected static ushort CheckedLength(int length) {

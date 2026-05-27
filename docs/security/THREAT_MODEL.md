@@ -262,7 +262,7 @@ Kerberos packet protection is implemented by `KerberosSession` (`src\Opc.Classic
 | --- | --- | --- |
 | Verifier impersonation resistance | Kerberos mutual AP-REQ/AP-REP and channel binding. | **PARTIAL**: Kerberos mutual auth and CBT exist; NTLM callers need TLS CBT and deployment policy for comparable resistance. |
 | Replay resistance | NTLMv2 timestamp/client nonce, Kerberos sequence numbers, and GSS token sequencing. | **PARTIAL**: packet sequence checks exist; explicit replay cache and NTLM randomness hardening remain recommendations. |
-| Authenticator secret handling | Passwords, keytabs, session keys. | **PARTIAL**: standard primitives are used, but password lifetime/zeroization gaps remain. |
+| Authenticator secret handling | Passwords, keytabs, session keys. | **PARTIAL**: plaintext credentials remain `string`-typed for API compatibility, but NTLM password-derived pooled buffers are zeroized before release. |
 | Federation assertions | Not applicable. | Identity federation is out of scope; Kerberos realm trust is deployment-managed. |
 
 ### 6.3 IEC 62443 mapping
@@ -276,7 +276,7 @@ Kerberos packet protection is implemented by `KerberosSession` (`src\Opc.Classic
 | SR 3.8 Session integrity | Prevent session hijack/replay. | **PARTIAL**: sequence signing exists; replay cache and randomness hardening remain recommendations. |
 | SR 4.1 Information confidentiality | Protect operational data over the network. | **PARTIAL**: privacy mode is opt-in today. DCOM uses `OpcProtectionLevel.Privacy` / `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`; XML-DA relies on HTTPS with the caller-supplied `HttpClient`; SMB signing exists while SMB3 encryption remains pending. Privacy SHOULD be enabled for deployments outside hardened local-only loopback. |
 | SR 5.2 Zone boundary protection | Segment OPC Classic traffic. | Deployment responsibility; out of scope for library code. |
-| SR 7.1 Denial-of-service protection | Timeouts, quotas, malformed input handling. | **PARTIAL**: cancellation and bounds checks exist; quotas/fuzzing remain recommendations. |
+| SR 7.1 Denial-of-service protection | Timeouts, quotas, malformed input handling. | **PARTIAL**: cancellation, decoder quotas, and malformed-input rejection tests exist; broader coverage-guided fuzzing remains recommended. |
 
 #### SR 4.1 transport confidentiality posture
 

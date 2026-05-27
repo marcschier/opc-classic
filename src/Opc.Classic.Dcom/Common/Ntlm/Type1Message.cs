@@ -15,7 +15,9 @@ public sealed class Type1Message : NtlmMessage {
         SuppliedWorkstation = GetDefaultWorkstation();
     }
 
-    public Type1Message(byte[] raw) => Parse(raw);
+    public Type1Message(byte[] raw) => Parse(raw, DefaultMaxMessageSize);
+
+    internal Type1Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type1Message(NtlmFlags flags, string suppliedDomain, string suppliedWorkstation) {
         Flags = flags;
@@ -86,9 +88,10 @@ public sealed class Type1Message : NtlmMessage {
     public override string ToString() =>
         $"Type1Message[Flags=0x{(uint)Flags:X8}, Domain={SuppliedDomain}, Workstation={SuppliedWorkstation}]";
 
-    private void Parse(byte[] raw) {
+    private void Parse(byte[] raw, int maxMessageSize) {
         ArgumentNullException.ThrowIfNull(raw);
         var span = raw.AsSpan();
+        ValidateMessageLength(span, "NTLM Type 1 message", maxMessageSize);
         if (ReadMessageType(span) != MessageType) {
             throw new ArgumentException("Not a Type 1 message.", nameof(raw));
         }
@@ -100,9 +103,20 @@ public sealed class Type1Message : NtlmMessage {
         Flags = (NtlmFlags)BinaryPrimitives.ReadUInt32LittleEndian(span.Slice(12, 4));
         var (domainLength, domainOffset) = ReadFields(span.Slice(16, 8));
         var (workstationLength, workstationOffset) = ReadFields(span.Slice(24, 8));
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None && span.Length >= 40) {
+        var headerSize = 32;
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None) {
+            if (span.Length < 40) {
+                throw new ArgumentException("NTLM Type 1 message version flag set but version field is truncated.", nameof(raw));
+            }
+            headerSize = 40;
             _version = span.Slice(32, 8).ToArray();
         }
+        ValidateSecurityBufferLayout(
+            span,
+            headerSize,
+            "NTLM Type 1 message",
+            (domainLength, domainOffset, nameof(SuppliedDomain)),
+            (workstationLength, workstationOffset, nameof(SuppliedWorkstation)));
 
         SuppliedDomain = domainLength == 0
             ? string.Empty

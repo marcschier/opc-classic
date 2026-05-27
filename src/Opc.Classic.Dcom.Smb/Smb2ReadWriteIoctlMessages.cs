@@ -45,6 +45,7 @@ internal readonly record struct Smb2ReadResponse(ReadOnlyMemory<byte> Data)
 {
     public static Smb2ReadResponse Read(ReadOnlySpan<byte> source)
     {
+        Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 READ response");
         if (source.Length < 16)
         {
             throw new Smb2ProtocolException("SMB2 READ response too short.");
@@ -63,14 +64,13 @@ internal readonly record struct Smb2ReadResponse(ReadOnlyMemory<byte> Data)
             return new Smb2ReadResponse(ReadOnlyMemory<byte>.Empty);
         }
 
-        int offset = dataOffset - Smb2Constants.PacketHeaderSize;
-        if (offset < 0 || offset + dataLength > source.Length)
-        {
-            throw new Smb2ProtocolException("READ response Data offset out of range.");
-        }
-
-        var data = new byte[dataLength];
-        source.Slice(offset, (int)dataLength).CopyTo(data);
+        var dataSlice = Smb2MessageBounds.GetPayloadSlice(
+            source,
+            dataOffset,
+            dataLength,
+            "READ response Data");
+        var data = new byte[dataSlice.Length];
+        dataSlice.CopyTo(data);
         return new Smb2ReadResponse(data);
     }
 }
@@ -85,6 +85,10 @@ internal readonly record struct Smb2WriteRequest(
     public int WriteTo(Span<byte> destination)
     {
         const int FixedSize = 48;
+        if (Data.Length > Smb2Constants.MaxNetBiosFrameSize - Smb2Constants.PacketHeaderSize - FixedSize)
+        {
+            throw new InvalidOperationException("WRITE Data exceeds the configured SMB2 frame quota.");
+        }
         int total = FixedSize + Data.Length;
         if (destination.Length < total)
         {
@@ -116,6 +120,7 @@ internal readonly record struct Smb2WriteResponse(uint Count)
 {
     public static Smb2WriteResponse Read(ReadOnlySpan<byte> source)
     {
+        Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 WRITE response");
         if (source.Length < 16)
         {
             throw new Smb2ProtocolException("SMB2 WRITE response too short.");
@@ -141,6 +146,10 @@ internal readonly record struct Smb2IoctlRequest(
     public int WriteTo(Span<byte> destination)
     {
         const int FixedSize = 56;
+        if (Input.Length > Smb2Constants.MaxNetBiosFrameSize - Smb2Constants.PacketHeaderSize - FixedSize)
+        {
+            throw new InvalidOperationException("IOCTL Input exceeds the configured SMB2 frame quota.");
+        }
         int total = FixedSize + Input.Length;
         if (destination.Length < total)
         {
@@ -181,6 +190,7 @@ internal readonly record struct Smb2IoctlResponse(
 {
     public static Smb2IoctlResponse Read(ReadOnlySpan<byte> source)
     {
+        Smb2MessageBounds.EnsureBodyWithinDefaultQuota(source, "SMB2 IOCTL response");
         if (source.Length < 48)
         {
             throw new Smb2ProtocolException("SMB2 IOCTL response too short.");
@@ -203,12 +213,11 @@ internal readonly record struct Smb2IoctlResponse(
         }
         else
         {
-            int offset = (int)outputOffset - Smb2Constants.PacketHeaderSize;
-            if (offset < 0 || offset + outputCount > source.Length)
-            {
-                throw new Smb2ProtocolException("IOCTL response Output offset out of range.");
-            }
-            output = source.Slice(offset, (int)outputCount).ToArray();
+            output = Smb2MessageBounds.GetPayloadSlice(
+                source,
+                outputOffset,
+                outputCount,
+                "IOCTL response Output").ToArray();
         }
 
         return new Smb2IoctlResponse(ctlCode, fidPersistent, fidVolatile, output);

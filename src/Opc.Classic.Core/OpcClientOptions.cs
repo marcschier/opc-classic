@@ -23,4 +23,13 @@ public sealed record OpcClientOptions
     /// Off by default; opt-in via DI configuration.
     /// </summary>
     public bool EnableCircuitBreaker { get; init; }
+
+    /// <summary>Maximum decoded NDR payload size in bytes. Defaults to 16 MiB.</summary>
+    public int MaxNdrPayloadSize { get; init; } = 16 * 1024 * 1024;
+
+    /// <summary>Maximum NTLMSSP message size in bytes. Defaults to the 64 KiB security-buffer ceiling.</summary>
+    public int MaxNtlmMessageSize { get; init; } = 64 * 1024 - 1;
+
+    /// <summary>Maximum SMB2 message size in bytes. Defaults to the repository's NetBIOS frame ceiling.</summary>
+    public int MaxSmb2MessageSize { get; init; } = 0x1FFFF;
 }

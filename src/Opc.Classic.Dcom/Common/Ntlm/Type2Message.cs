@@ -17,7 +17,9 @@ public sealed class Type2Message : NtlmMessage {
         TargetInformation = GetDefaultTargetInformation();
     }
 
-    public Type2Message(byte[] raw) => Parse(raw);
+    public Type2Message(byte[] raw) => Parse(raw, DefaultMaxMessageSize);
+
+    internal Type2Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type2Message(NtlmFlags flags, byte[] challenge, string target) {
         Flags = flags;
@@ -135,9 +137,10 @@ public sealed class Type2Message : NtlmMessage {
     public override string ToString() =>
         $"Type2Message[Flags=0x{(uint)Flags:X8}, Target={Target}, Challenge={Convert.ToHexString(GetChallenge())}]";
 
-    private void Parse(byte[] raw) {
+    private void Parse(byte[] raw, int maxMessageSize) {
         ArgumentNullException.ThrowIfNull(raw);
         var span = raw.AsSpan();
+        ValidateMessageLength(span, "NTLM Type 2 message", maxMessageSize);
         if (ReadMessageType(span) != MessageType) {
             throw new ArgumentException("Not a Type 2 message.", nameof(raw));
         }
@@ -151,9 +154,20 @@ public sealed class Type2Message : NtlmMessage {
         Challenge = span.Slice(24, 8).ToArray();
         Context = span.Slice(32, 8).ToArray();
         var (targetInformationLength, targetInformationOffset) = ReadFields(span.Slice(40, 8));
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None && span.Length >= 56) {
+        var headerSize = 48;
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None) {
+            if (span.Length < 56) {
+                throw new ArgumentException("NTLM Type 2 message version flag set but version field is truncated.", nameof(raw));
+            }
+            headerSize = 56;
             _version = span.Slice(48, 8).ToArray();
         }
+        ValidateSecurityBufferLayout(
+            span,
+            headerSize,
+            "NTLM Type 2 message",
+            (targetLength, targetOffset, nameof(Target)),
+            (targetInformationLength, targetInformationOffset, nameof(TargetInformation)));
 
         var encoding = StringEncoding(Flags);
         Target = targetLength == 0

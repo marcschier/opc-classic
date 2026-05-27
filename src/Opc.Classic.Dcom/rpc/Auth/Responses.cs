@@ -1,12 +1,18 @@
+//
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Opc.Classic .NET Contributors
+//
 // Extracted from http://davenport.sourceforge.net/ntlm.html
-// Copyright � 2003, 2006 Eric Glass (eric.glass@gmail.com)
+// Copyright (c) 2003, 2006 Eric Glass (eric.glass@gmail.com)
+//
 
 using Opc.Classic.Dcom.Crypto;
 using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm;
+
 /// <summary>
 /// Calculates the various Type 3 responses.
 /// </summary>
@@ -22,7 +28,12 @@ public static class Responses {
     /// <returns> The LM Response. </returns>
     public static byte[] GetLMResponse(string password, byte[] challenge) {
         var lmHash_Renamed = LmHash(password);
-        return LmResponse(lmHash_Renamed, challenge);
+        try {
+            return LmResponse(lmHash_Renamed, challenge);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(lmHash_Renamed);
+        }
     }
 
     /// <summary>
@@ -35,7 +46,12 @@ public static class Responses {
     /// <returns> The NTLM Response. </returns>
     public static byte[] GetNTLMResponse(string password, byte[] challenge) {
         var ntlmHash_Renamed = NtlmHash(password);
-        return LmResponse(ntlmHash_Renamed, challenge);
+        try {
+            return LmResponse(ntlmHash_Renamed, challenge);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(ntlmHash_Renamed);
+        }
     }
 
     /// <summary>
@@ -56,10 +72,15 @@ public static class Responses {
         byte[] targetInformation, byte[] challenge, byte[] clientNonce) {
         var retval = new byte[2][];
         var ntlmv2Hash_Renamed = Ntlmv2Hash(target, user, password);
-        var blob = CreateBlob(targetInformation, clientNonce);
-        retval[1] = blob;
-        retval[0] = Lmv2Response(ntlmv2Hash_Renamed, blob, challenge);
-        return retval;
+        try {
+            var blob = CreateBlob(targetInformation, clientNonce);
+            retval[1] = blob;
+            retval[0] = Lmv2Response(ntlmv2Hash_Renamed, blob, challenge);
+            return retval;
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(ntlmv2Hash_Renamed);
+        }
     }
 
     /// <summary>
@@ -77,7 +98,12 @@ public static class Responses {
     public static byte[] GetLMv2Response(string target, string user, string password,
         byte[] challenge, byte[] clientNonce) {
         var ntlmv2Hash_Renamed = Ntlmv2Hash(target, user, password);
-        return Lmv2Response(ntlmv2Hash_Renamed, clientNonce, challenge);
+        try {
+            return Lmv2Response(ntlmv2Hash_Renamed, clientNonce, challenge);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(ntlmv2Hash_Renamed);
+        }
     }
 
     /// <summary>
@@ -97,14 +123,23 @@ public static class Responses {
     public static byte[] GetNTLM2SessionResponse(string password,
         byte[] challenge, byte[] clientNonce) {
         var hash = NtlmHash(password);
-        var md5 = DigestUtilities.GetDigest("MD5");
-        md5.BlockUpdate(challenge, 0, challenge.Length);
-        md5.BlockUpdate(clientNonce, 0, clientNonce.Length);
-        var digest = new byte[md5.GetDigestSize()];
-        md5.DoFinal(digest, 0);
-        var sessionHash = new byte[8];
-        Array.Copy(digest, 0, sessionHash, 0, sessionHash.Length);
-        return LmResponse(hash, sessionHash);
+        var digest = Array.Empty<byte>();
+        var sessionHash = Array.Empty<byte>();
+        try {
+            var md5 = DigestUtilities.GetDigest("MD5");
+            md5.BlockUpdate(challenge, 0, challenge.Length);
+            md5.BlockUpdate(clientNonce, 0, clientNonce.Length);
+            digest = new byte[md5.GetDigestSize()];
+            md5.DoFinal(digest, 0);
+            sessionHash = new byte[8];
+            Array.Copy(digest, 0, sessionHash, 0, sessionHash.Length);
+            return LmResponse(hash, sessionHash);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(hash);
+            CryptographicOperations.ZeroMemory(digest);
+            CryptographicOperations.ZeroMemory(sessionHash);
+        }
     }
 
     /// <summary>
@@ -115,22 +150,42 @@ public static class Responses {
     /// <returns> The LM Hash of the given password, used in the calculation
     /// of the LM Response. </returns>
     private static byte[] LmHash(string password) {
-        var oemPassword = Encoding.ASCII.GetBytes(password.ToUpperInvariant());
-        var length = Math.Min(oemPassword.Length, 14);
-        var keyBytes = new byte[14];
-        Array.Copy(oemPassword, 0, keyBytes, 0, length);
-        var lowKey = CreateDESKey(keyBytes, 0);
-        var highKey = CreateDESKey(keyBytes, 7);
-        var magicConstant = Encoding.ASCII.GetBytes("KGS!@#$%");
-        var des = CipherUtilities.GetCipher("DES/ECB/NoPadding");
-        des.Init(true, lowKey);
-        var lowHash = des.DoFinal(magicConstant);
-        des.Init(true, highKey);
-        var highHash = des.DoFinal(magicConstant);
-        var lmHash_Renamed = new byte[16];
-        Array.Copy(lowHash, 0, lmHash_Renamed, 0, 8);
-        Array.Copy(highHash, 0, lmHash_Renamed, 8, 8);
-        return lmHash_Renamed;
+        ArgumentNullException.ThrowIfNull(password);
+        byte[]? oemPassword = null;
+        var oemLength = 0;
+        Span<byte> keyBytes = stackalloc byte[14];
+        byte[]? lowHash = null;
+        byte[]? highHash = null;
+        try {
+            oemLength = Math.Min(password.Length, keyBytes.Length);
+            oemPassword = SensitiveBufferPool.Rent(oemLength);
+            for (var i = 0; i < oemLength; i++) {
+                var ch = char.ToUpperInvariant(password[i]);
+                oemPassword[i] = ch <= 0x7F ? (byte)ch : (byte)'?';
+            }
+            oemPassword.AsSpan(0, oemLength).CopyTo(keyBytes);
+
+            var lowKey = CreateDESKey(keyBytes, 0);
+            var highKey = CreateDESKey(keyBytes, 7);
+            var magicConstant = Encoding.ASCII.GetBytes("KGS!@#$%");
+            using var des = CipherUtilities.GetCipher("DES/ECB/NoPadding");
+            des.Init(true, lowKey);
+            CryptographicOperations.ZeroMemory(lowKey.Key);
+            lowHash = des.DoFinal(magicConstant);
+            des.Init(true, highKey);
+            CryptographicOperations.ZeroMemory(highKey.Key);
+            highHash = des.DoFinal(magicConstant);
+            var lmHash_Renamed = new byte[16];
+            Array.Copy(lowHash, 0, lmHash_Renamed, 0, 8);
+            Array.Copy(highHash, 0, lmHash_Renamed, 8, 8);
+            return lmHash_Renamed;
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(keyBytes);
+            CryptographicOperations.ZeroMemory(lowHash);
+            CryptographicOperations.ZeroMemory(highHash);
+            SensitiveBufferPool.Return("lm-password-oem", oemPassword, oemLength);
+        }
     }
 
     /// <summary>
@@ -141,12 +196,22 @@ public static class Responses {
     /// <returns> The NTLM Hash of the given password, used in the calculation
     /// of the NTLM Response and the NTLMv2 and LMv2 Hashes. </returns>
     internal static byte[] NtlmHash(string password) {
-        var unicodePassword = Encoding.Unicode.GetBytes(password);
-        var md4 = new MD4Digest();
-        var ret = new byte[md4.GetDigestSize()];
-        md4.BlockUpdate(unicodePassword, 0, unicodePassword.Length);
-        md4.DoFinal(ret, 0);
-        return ret;
+        ArgumentNullException.ThrowIfNull(password);
+        byte[]? unicodePassword = null;
+        var bytesWritten = 0;
+        try {
+            var byteCount = Encoding.Unicode.GetByteCount(password);
+            unicodePassword = SensitiveBufferPool.Rent(byteCount);
+            bytesWritten = Encoding.Unicode.GetBytes(password.AsSpan(), unicodePassword.AsSpan(0, byteCount));
+            var md4 = new MD4Digest();
+            var ret = new byte[md4.GetDigestSize()];
+            md4.BlockUpdate(unicodePassword, 0, bytesWritten);
+            md4.DoFinal(ret, 0);
+            return ret;
+        }
+        finally {
+            SensitiveBufferPool.Return("ntlm-password-unicode", unicodePassword, bytesWritten);
+        }
     }
 
     /// <summary>
@@ -161,7 +226,18 @@ public static class Responses {
     internal static byte[] Ntlmv2Hash(string target, string user, string password) {
         var ntlmHash_Renamed = NtlmHash(password);
         var identity = user.ToUpperInvariant() + target;
-        return HmacMD5(Encoding.Unicode.GetBytes(identity), ntlmHash_Renamed);
+        byte[]? identityBytes = null;
+        var bytesWritten = 0;
+        try {
+            var byteCount = Encoding.Unicode.GetByteCount(identity);
+            identityBytes = SensitiveBufferPool.Rent(byteCount);
+            bytesWritten = Encoding.Unicode.GetBytes(identity.AsSpan(), identityBytes.AsSpan(0, byteCount));
+            return HmacMD5(identityBytes.AsSpan(0, bytesWritten), ntlmHash_Renamed);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(ntlmHash_Renamed);
+            SensitiveBufferPool.Return("ntlmv2-identity-unicode", identityBytes, bytesWritten);
+        }
     }
 
     /// <summary>
@@ -176,23 +252,39 @@ public static class Responses {
     /// <exception cref="InvalidKeyException"> </exception>
     /// <exception cref="InvalidOperationException">  </exception>
     private static byte[] LmResponse(byte[] hash, byte[] challenge) {
-        var keyBytes = new byte[21];
-        Array.Copy(hash, 0, keyBytes, 0, 16);
-        var lowKey = CreateDESKey(keyBytes, 0);
-        var middleKey = CreateDESKey(keyBytes, 7);
-        var highKey = CreateDESKey(keyBytes, 14);
-        var des = CipherUtilities.GetCipher("DES/ECB/NoPadding");
-        des.Init(true, lowKey);
-        var lowResponse = des.DoFinal(challenge);
-        des.Init(true, middleKey);
-        var middleResponse = des.DoFinal(challenge);
-        des.Init(true, highKey);
-        var highResponse = des.DoFinal(challenge);
-        var lmResponse_Renamed = new byte[24];
-        Array.Copy(lowResponse, 0, lmResponse_Renamed, 0, 8);
-        Array.Copy(middleResponse, 0, lmResponse_Renamed, 8, 8);
-        Array.Copy(highResponse, 0, lmResponse_Renamed, 16, 8);
-        return lmResponse_Renamed;
+        byte[]? keyBytes = null;
+        byte[]? lowResponse = null;
+        byte[]? middleResponse = null;
+        byte[]? highResponse = null;
+        try {
+            keyBytes = SensitiveBufferPool.Rent(21);
+            keyBytes.AsSpan(0, 21).Clear();
+            Array.Copy(hash, 0, keyBytes, 0, Math.Min(hash.Length, 16));
+            var lowKey = CreateDESKey(keyBytes.AsSpan(0, 21), 0);
+            var middleKey = CreateDESKey(keyBytes.AsSpan(0, 21), 7);
+            var highKey = CreateDESKey(keyBytes.AsSpan(0, 21), 14);
+            using var des = CipherUtilities.GetCipher("DES/ECB/NoPadding");
+            des.Init(true, lowKey);
+            CryptographicOperations.ZeroMemory(lowKey.Key);
+            lowResponse = des.DoFinal(challenge);
+            des.Init(true, middleKey);
+            CryptographicOperations.ZeroMemory(middleKey.Key);
+            middleResponse = des.DoFinal(challenge);
+            des.Init(true, highKey);
+            CryptographicOperations.ZeroMemory(highKey.Key);
+            highResponse = des.DoFinal(challenge);
+            var lmResponse_Renamed = new byte[24];
+            Array.Copy(lowResponse, 0, lmResponse_Renamed, 0, 8);
+            Array.Copy(middleResponse, 0, lmResponse_Renamed, 8, 8);
+            Array.Copy(highResponse, 0, lmResponse_Renamed, 16, 8);
+            return lmResponse_Renamed;
+        }
+        finally {
+            SensitiveBufferPool.Return("lm-response-key-material", keyBytes, 21);
+            CryptographicOperations.ZeroMemory(lowResponse);
+            CryptographicOperations.ZeroMemory(middleResponse);
+            CryptographicOperations.ZeroMemory(highResponse);
+        }
     }
 
     /// <summary>
@@ -207,13 +299,20 @@ public static class Responses {
     /// client data). </returns>
     private static byte[] Lmv2Response(byte[] hash, byte[] clientData, byte[] challenge) {
         var data = new byte[challenge.Length + clientData.Length];
-        Array.Copy(challenge, 0, data, 0, challenge.Length);
-        Array.Copy(clientData, 0, data, challenge.Length, clientData.Length);
-        var mac = HmacMD5(data, hash);
-        var lmv2Response_Renamed = new byte[mac.Length + clientData.Length];
-        Array.Copy(mac, 0, lmv2Response_Renamed, 0, mac.Length);
-        Array.Copy(clientData, 0, lmv2Response_Renamed, mac.Length, clientData.Length);
-        return lmv2Response_Renamed;
+        byte[]? mac = null;
+        try {
+            Array.Copy(challenge, 0, data, 0, challenge.Length);
+            Array.Copy(clientData, 0, data, challenge.Length, clientData.Length);
+            mac = HmacMD5(data, hash);
+            var lmv2Response_Renamed = new byte[mac.Length + clientData.Length];
+            Array.Copy(mac, 0, lmv2Response_Renamed, 0, mac.Length);
+            Array.Copy(clientData, 0, lmv2Response_Renamed, mac.Length, clientData.Length);
+            return lmv2Response_Renamed;
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(data);
+            CryptographicOperations.ZeroMemory(mac);
+        }
     }
 
     /// <summary>
@@ -269,57 +368,37 @@ public static class Responses {
     /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
     /// <returns> The HMAC-MD5 hash of the given data. </returns>
 #pragma warning disable CA5351 // NTLM requires HMAC-MD5 per [MS-NLMP].
-    internal static byte[] HmacMD5(byte[] data, byte[] key) {
+    internal static byte[] HmacMD5(byte[] data, byte[] key) => HmacMD5(data.AsSpan(), key.AsSpan());
 
-        using var hmac = new HMACMD5(key);
-        return hmac.ComputeHash(data);
-
-        //  var ipad = new byte[64];
-        //  var opad = new byte[64];
-        //  for (var i = 0; i < 64; i++) {
-        //      ipad[i] = 0x36;
-        //      opad[i] = 0x5c;
-        //  }
-        //  for (var i = key.Length - 1; i >= 0; i--) {
-        //      ipad[i] ^= key[i];
-        //      opad[i] ^= key[i];
-        //  }
-        //  var content = new byte[data.Length + 64];
-        //  Array.Copy(ipad, 0, content, 0, 64);
-        //  Array.Copy(data, 0, content, 64, data.Length);
-        //
-        //  var md5 = DigestUtilities.GetDigest("MD5");
-        //  data = md5.digest(content);
-        //  content = new byte[data.Length + 64];
-        //  Array.Copy(opad, 0, content, 0, 64);
-        //  Array.Copy(data, 0, content, 64, data.Length);
-        //  return md5.digest(content);
-    }
+    internal static byte[] HmacMD5(ReadOnlySpan<byte> data, ReadOnlySpan<byte> key) => HMACMD5.HashData(key, data);
 #pragma warning restore CA5351
 
     /// <summary>
     /// Creates a DES encryption key from the given key material.
     /// </summary>
-    /// <param name="bytes"> A byte array containing the DES key material. </param>
-    /// <param name="offset"> The offset in the given byte array at which
+    /// <param name="bytes">A span containing the DES key material.</param>
+    /// <param name="offset"> The offset in the given span at which
     /// the 7-byte key material starts.
     /// </param>
     /// <returns> A DES encryption key created from the key material
-    /// starting at the specified offset in the given byte array. </returns>
-    private static KeyParameter CreateDESKey(byte[] bytes, int offset) {
-        var keyBytes = new byte[7];
-        Array.Copy(bytes, offset, keyBytes, 0, 7);
+    /// starting at the specified offset in the given span. </returns>
+    private static KeyParameter CreateDESKey(ReadOnlySpan<byte> bytes, int offset) {
         var material = new byte[8];
-        material[0] = keyBytes[0];
-        material[1] = (byte)((keyBytes[0] << 7) | (int)((uint)(keyBytes[1] & 0xff) >> 1));
-        material[2] = (byte)((keyBytes[1] << 6) | (int)((uint)(keyBytes[2] & 0xff) >> 2));
-        material[3] = (byte)((keyBytes[2] << 5) | (int)((uint)(keyBytes[3] & 0xff) >> 3));
-        material[4] = (byte)((keyBytes[3] << 4) | (int)((uint)(keyBytes[4] & 0xff) >> 4));
-        material[5] = (byte)((keyBytes[4] << 3) | (int)((uint)(keyBytes[5] & 0xff) >> 5));
-        material[6] = (byte)((keyBytes[5] << 2) | (int)((uint)(keyBytes[6] & 0xff) >> 6));
-        material[7] = (byte)(keyBytes[6] << 1);
-        OddParity(material);
-        return new KeyParameter(material); //, "DES");
+        try {
+            material[0] = bytes[offset];
+            material[1] = (byte)((bytes[offset] << 7) | (int)((uint)(bytes[offset + 1] & 0xff) >> 1));
+            material[2] = (byte)((bytes[offset + 1] << 6) | (int)((uint)(bytes[offset + 2] & 0xff) >> 2));
+            material[3] = (byte)((bytes[offset + 2] << 5) | (int)((uint)(bytes[offset + 3] & 0xff) >> 3));
+            material[4] = (byte)((bytes[offset + 3] << 4) | (int)((uint)(bytes[offset + 4] & 0xff) >> 4));
+            material[5] = (byte)((bytes[offset + 4] << 3) | (int)((uint)(bytes[offset + 5] & 0xff) >> 5));
+            material[6] = (byte)((bytes[offset + 5] << 2) | (int)((uint)(bytes[offset + 6] & 0xff) >> 6));
+            material[7] = (byte)(bytes[offset + 6] << 1);
+            OddParity(material);
+            return new KeyParameter(material);
+        }
+        finally {
+            CryptographicOperations.ZeroMemory(material);
+        }
     }
 
     /// <summary>
@@ -327,7 +406,7 @@ public static class Responses {
     /// </summary>
     /// <param name="bytes"> The data whose parity bits are to be adjusted for
     /// odd parity. </param>
-    private static void OddParity(byte[] bytes) {
+    private static void OddParity(Span<byte> bytes) {
         for (var i = 0; i < bytes.Length; i++) {
             var b = bytes[i];
             var needsParity =

@@ -24,7 +24,9 @@ public sealed class Type3Message : NtlmMessage {
         EncryptedRandomSessionKey = Array.Empty<byte>();
     }
 
-    public Type3Message(byte[] raw) => Parse(raw);
+    public Type3Message(byte[] raw) => Parse(raw, DefaultMaxMessageSize);
+
+    internal Type3Message(byte[] raw, int maxMessageSize) => Parse(raw, maxMessageSize);
 
     public Type3Message(NtlmFlags flags, byte[] lmResponse, byte[] ntResponse,
         string domain, string user, string workstation) {
@@ -235,9 +237,10 @@ public sealed class Type3Message : NtlmMessage {
             _ => throw new ArgumentException("Expected an NTLM Type3 message.", nameof(message)),
         };
 
-    private void Parse(byte[] raw) {
+    private void Parse(byte[] raw, int maxMessageSize) {
         ArgumentNullException.ThrowIfNull(raw);
         var span = raw.AsSpan();
+        ValidateMessageLength(span, "NTLM Type 3 message", maxMessageSize);
         if (ReadMessageType(span) != MessageType) {
             throw new ArgumentException("Not a Type 3 message.", nameof(raw));
         }
@@ -256,12 +259,30 @@ public sealed class Type3Message : NtlmMessage {
 
         var minimumPayloadOffset = MinimumPayloadOffset(
             lmFields, ntFields, domainFields, userFields, workstationFields, sessionKeyFields);
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None && span.Length >= 72 && minimumPayloadOffset >= 72) {
-            _version = span.Slice(64, 8).ToArray();
+        var headerSize = 64;
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None) {
+            if (span.Length < 72) {
+                throw new ArgumentException("NTLM Type 3 message version flag set but version field is truncated.", nameof(raw));
+            }
+            headerSize = 72;
+            if (minimumPayloadOffset >= 72) {
+                _version = span.Slice(64, 8).ToArray();
+            }
         }
         if (span.Length >= MicOffset + MicLength && minimumPayloadOffset >= MicOffset + MicLength) {
+            headerSize = MicOffset + MicLength;
             _mic = span.Slice(MicOffset, MicLength).ToArray();
         }
+        ValidateSecurityBufferLayout(
+            span,
+            headerSize,
+            "NTLM Type 3 message",
+            (lmFields.Length, lmFields.Offset, nameof(LmResponse)),
+            (ntFields.Length, ntFields.Offset, nameof(NtResponse)),
+            (domainFields.Length, domainFields.Offset, nameof(Domain)),
+            (userFields.Length, userFields.Offset, nameof(User)),
+            (workstationFields.Length, workstationFields.Offset, nameof(Workstation)),
+            (sessionKeyFields.Length, sessionKeyFields.Offset, nameof(EncryptedRandomSessionKey)));
 
         var encoding = StringEncoding(Flags);
         LmResponse = ReadBytes(span, lmFields.Length, lmFields.Offset);
