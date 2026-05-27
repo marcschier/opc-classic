@@ -21,7 +21,7 @@ public sealed class OpcHdaServerCcwMethodsTests
 {
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
-    private const int E_NOTIMPL = unchecked((int)0x80004001);
+    private const int E_INVALIDARG = unchecked((int)0x80070057);
     private const int E_FAIL = unchecked((int)0x80004005);
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
@@ -159,7 +159,7 @@ public sealed class OpcHdaServerCcwMethodsTests
     }
 
     [Test]
-    public async Task ReadRaw_tearoffs_exist_and_return_E_NOTIMPL_until_complex_marshaling_is_wired()
+    public async Task ReadRaw_tearoffs_exist_and_reject_empty_counts()
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -172,8 +172,8 @@ public sealed class OpcHdaServerCcwMethodsTests
 
         await Assert.That(syncRead).IsNotEqualTo(IntPtr.Zero);
         await Assert.That(asyncRead).IsNotEqualTo(IntPtr.Zero);
-        await Assert.That(Helpers.InvokeSyncReadRaw(syncRead)).IsEqualTo(E_NOTIMPL);
-        await Assert.That(Helpers.InvokeAsyncReadRaw(asyncRead)).IsEqualTo(E_NOTIMPL);
+        await Assert.That(Helpers.InvokeSyncReadRaw(syncRead)).IsEqualTo(E_INVALIDARG);
+        await Assert.That(Helpers.InvokeAsyncReadRaw(asyncRead)).IsEqualTo(E_INVALIDARG);
     }
 
     private sealed class StubHdaServer : IOpcHdaServer

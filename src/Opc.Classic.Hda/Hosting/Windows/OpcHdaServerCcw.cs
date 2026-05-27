@@ -9,6 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
+using Opc.Classic;
 using Opc.Classic.Hda.Dcom;
 
 namespace Opc.Classic.Hda.Hosting.Windows;
@@ -16,16 +17,14 @@ namespace Opc.Classic.Hda.Hosting.Windows;
 /// <summary>
 /// Windows COM-callable wrapper (CCW) over an <see cref="IOpcHdaServer" />.
 /// Exposes separate tearoff vtables for <c>IUnknown</c>, <c>IOPCHDA_Server</c>,
-/// <c>IOPCHDA_SyncRead</c>, and <c>IOPCHDA_AsyncRead</c>.
+/// HDA read interfaces, and the connection-point callback surface.
 /// </summary>
 /// <remarks>
 /// Each supported interface is represented by a native tearoff whose first slot
 /// points at its vtable. <c>QueryInterface(IID_IUnknown)</c> on any tearoff
 /// returns the canonical identity pointer; all tearoffs share a single refcount
 /// and managed <see cref="GCHandle" />. The simple-marshaling HDA server methods
-/// have real bodies in <see cref="OpcHdaServerCcwMethods" />; read methods are
-/// wired as vtable slots and return <c>E_NOTIMPL</c> until native VARIANT and
-/// callback marshaling helpers are available.
+/// and read bodies have real implementations in <see cref="OpcHdaServerCcwMethods" />.
 /// </remarks>
 [SupportedOSPlatform("windows")]
 public static unsafe class OpcHdaServerCcw
@@ -36,6 +35,7 @@ public static unsafe class OpcHdaServerCcw
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
     internal const int E_NOTIMPL = unchecked((int)0x80004001);
     internal const int E_FAIL = unchecked((int)0x80004005);
+    internal const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
@@ -61,7 +61,11 @@ public static unsafe class OpcHdaServerCcw
         iid == IID_IUnknown ||
         iid == IOPCHDA_Server.InterfaceId ||
         iid == IOPCHDA_SyncRead.InterfaceId ||
-        iid == IOPCHDA_AsyncRead.InterfaceId;
+        iid == IOPCHDA_SyncAnnotations.InterfaceId ||
+        iid == IOPCHDA_AsyncRead.InterfaceId ||
+        iid == IOPCHDA_AsyncAnnotations.InterfaceId ||
+        iid == OpcGuids.IID_IConnectionPoint ||
+        iid == OpcGuids.IID_IConnectionPointContainer;
 
     public static long GetReferenceCount(IntPtr tearoff) =>
         s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
@@ -78,17 +82,40 @@ public static unsafe class OpcHdaServerCcw
             ? session.ServerHandle.Target as IOpcHdaServer
             : null;
 
+    internal static CcwSession? ResolveSession(IntPtr tearoff) =>
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session) ? session : null;
+
+    internal static int ReturnTearoff(CcwSession session, IntPtr tearoff, IntPtr* ppv)
+    {
+        if (ppv == null || tearoff == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+
+        *ppv = tearoff;
+        Interlocked.Increment(ref session.RefCount);
+        return S_OK;
+    }
+
     private static void InitializeTearoffs(CcwSession session)
     {
         session.UnknownVtable = AllocateUnknownVtable();
         session.ServerVtable = AllocateServerVtable();
         session.SyncReadVtable = AllocateSyncReadVtable();
+        session.SyncAnnotationsVtable = AllocateSyncAnnotationsVtable();
         session.AsyncReadVtable = AllocateAsyncReadVtable();
+        session.AsyncAnnotationsVtable = AllocateAsyncAnnotationsVtable();
+        session.ConnectionPointVtable = AllocateConnectionPointVtable();
+        session.ConnectionPointContainerVtable = AllocateConnectionPointContainerVtable();
 
         session.UnknownTearoff = AllocateTearoff(session.UnknownVtable);
         session.ServerTearoff = AllocateTearoff(session.ServerVtable);
         session.SyncReadTearoff = AllocateTearoff(session.SyncReadVtable);
+        session.SyncAnnotationsTearoff = AllocateTearoff(session.SyncAnnotationsVtable);
         session.AsyncReadTearoff = AllocateTearoff(session.AsyncReadVtable);
+        session.AsyncAnnotationsTearoff = AllocateTearoff(session.AsyncAnnotationsVtable);
+        session.ConnectionPointTearoff = AllocateTearoff(session.ConnectionPointVtable);
+        session.ConnectionPointContainerTearoff = AllocateTearoff(session.ConnectionPointContainerVtable);
     }
 
     private static void RegisterTearoffs(CcwSession session)
@@ -96,7 +123,11 @@ public static unsafe class OpcHdaServerCcw
         s_tearoffs[session.UnknownTearoff] = session;
         s_tearoffs[session.ServerTearoff] = session;
         s_tearoffs[session.SyncReadTearoff] = session;
+        s_tearoffs[session.SyncAnnotationsTearoff] = session;
         s_tearoffs[session.AsyncReadTearoff] = session;
+        s_tearoffs[session.AsyncAnnotationsTearoff] = session;
+        s_tearoffs[session.ConnectionPointTearoff] = session;
+        s_tearoffs[session.ConnectionPointContainerTearoff] = session;
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
@@ -140,6 +171,18 @@ public static unsafe class OpcHdaServerCcw
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateSyncAnnotationsVtable()
+    {
+        // 3 IUnknown + 3 IOPCHDA_SyncAnnotations methods.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(6 * sizeof(IntPtr)));
+        PopulateIUnknown(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int>)&OpcHdaServerCcwMethods.SyncAnnotationsQueryCapabilities;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, uint, IntPtr, IntPtr*, IntPtr*, int>)&OpcHdaServerCcwMethods.SyncReadAnnotations;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.SyncAnnotationsInsert;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
     private static IntPtr* AllocateAsyncReadVtable()
     {
         // 3 IUnknown + 8 IOPCHDA_AsyncRead methods.
@@ -153,6 +196,44 @@ public static unsafe class OpcHdaServerCcw
         v[8] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.AsyncReadModified;
         v[9] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.AsyncReadAttribute;
         v[10] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcHdaServerCcwMethods.AsyncCancel;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateAsyncAnnotationsVtable()
+    {
+        // 3 IUnknown + 4 IOPCHDA_AsyncAnnotations methods.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
+        PopulateIUnknown(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int>)&OpcHdaServerCcwMethods.AsyncAnnotationsQueryCapabilities;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.AsyncReadAnnotations;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr*, int>)&OpcHdaServerCcwMethods.AsyncAnnotationsInsert;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcHdaServerCcwMethods.AsyncCancel;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointVtable()
+    {
+        // 3 IUnknown + 5 IConnectionPoint methods.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(8 * sizeof(IntPtr)));
+        PopulateIUnknown(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, int>)&OpcHdaServerCcwConnectionPointMethods.GetConnectionInterface;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcHdaServerCcwConnectionPointMethods.GetConnectionPointContainer;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint*, int>)&OpcHdaServerCcwConnectionPointMethods.Advise;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcHdaServerCcwConnectionPointMethods.Unadvise;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcHdaServerCcwConnectionPointMethods.EnumConnections;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointContainerVtable()
+    {
+        // 3 IUnknown + 2 IConnectionPointContainer methods.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
+        PopulateIUnknown(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcHdaServerCcwConnectionPointMethods.EnumConnectionPoints;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&OpcHdaServerCcwConnectionPointMethods.FindConnectionPoint;
         return v;
     }
 
@@ -210,9 +291,25 @@ public static unsafe class OpcHdaServerCcw
         {
             return session.SyncReadTearoff;
         }
+        if (iid == IOPCHDA_SyncAnnotations.InterfaceId)
+        {
+            return session.SyncAnnotationsTearoff;
+        }
         if (iid == IOPCHDA_AsyncRead.InterfaceId)
         {
             return session.AsyncReadTearoff;
+        }
+        if (iid == IOPCHDA_AsyncAnnotations.InterfaceId)
+        {
+            return session.AsyncAnnotationsTearoff;
+        }
+        if (iid == OpcGuids.IID_IConnectionPoint)
+        {
+            return session.ConnectionPointTearoff;
+        }
+        if (iid == OpcGuids.IID_IConnectionPointContainer)
+        {
+            return session.ConnectionPointContainerTearoff;
         }
         return IntPtr.Zero;
     }
@@ -253,20 +350,50 @@ public static unsafe class OpcHdaServerCcw
         s_tearoffs.TryRemove(session.UnknownTearoff, out _);
         s_tearoffs.TryRemove(session.ServerTearoff, out _);
         s_tearoffs.TryRemove(session.SyncReadTearoff, out _);
+        s_tearoffs.TryRemove(session.SyncAnnotationsTearoff, out _);
         s_tearoffs.TryRemove(session.AsyncReadTearoff, out _);
+        s_tearoffs.TryRemove(session.AsyncAnnotationsTearoff, out _);
+        s_tearoffs.TryRemove(session.ConnectionPointTearoff, out _);
+        s_tearoffs.TryRemove(session.ConnectionPointContainerTearoff, out _);
+
+        DisposeSessionState(session);
 
         FreeNative(session.UnknownTearoff);
         FreeNative(session.ServerTearoff);
         FreeNative(session.SyncReadTearoff);
+        FreeNative(session.SyncAnnotationsTearoff);
         FreeNative(session.AsyncReadTearoff);
+        FreeNative(session.AsyncAnnotationsTearoff);
+        FreeNative(session.ConnectionPointTearoff);
+        FreeNative(session.ConnectionPointContainerTearoff);
         FreeNative(session.UnknownVtable);
         FreeNative(session.ServerVtable);
         FreeNative(session.SyncReadVtable);
+        FreeNative(session.SyncAnnotationsVtable);
         FreeNative(session.AsyncReadVtable);
+        FreeNative(session.AsyncAnnotationsVtable);
+        FreeNative(session.ConnectionPointVtable);
+        FreeNative(session.ConnectionPointContainerVtable);
         if (session.ServerHandle.IsAllocated)
         {
             session.ServerHandle.Free();
         }
+    }
+
+    private static void DisposeSessionState(CcwSession session)
+    {
+        foreach (CancellationTokenSource cts in session.PendingOperations.Values)
+        {
+            cts.Cancel();
+            cts.Dispose();
+        }
+        session.PendingOperations.Clear();
+
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            sink.Dispose();
+        }
+        session.ScmSinks.Clear();
     }
 
     private static void FreeNative(IntPtr ptr)
@@ -302,7 +429,19 @@ public static unsafe class OpcHdaServerCcw
         public IntPtr* ServerVtable;
         public IntPtr SyncReadTearoff;
         public IntPtr* SyncReadVtable;
+        public IntPtr SyncAnnotationsTearoff;
+        public IntPtr* SyncAnnotationsVtable;
         public IntPtr AsyncReadTearoff;
         public IntPtr* AsyncReadVtable;
+        public IntPtr AsyncAnnotationsTearoff;
+        public IntPtr* AsyncAnnotationsVtable;
+        public IntPtr ConnectionPointTearoff;
+        public IntPtr* ConnectionPointVtable;
+        public IntPtr ConnectionPointContainerTearoff;
+        public IntPtr* ConnectionPointContainerVtable;
+        public ConcurrentDictionary<int, OpcHdaCallbackProxy> ScmSinks { get; } = new();
+        public ConcurrentDictionary<int, CancellationTokenSource> PendingOperations { get; } = new();
+        public int NextScmSinkCookie;
+        public int NextCancelId;
     }
 }

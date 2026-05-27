@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
+using System.Threading.Tasks;
 using Opc.Classic.Hda.Dcom;
 
 namespace Opc.Classic.Hda.Hosting.Windows;
@@ -279,61 +280,245 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SyncReadRaw(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, uint dwNumValues, int bBounds, uint dwNumItems, IntPtr phServer, IntPtr* ppItemValues, IntPtr* ppErrors)
     {
-        // OPCHDA_ITEM needs nested FILETIME, DWORD and native VARIANT arrays.
-        // Deferred until this assembly has reusable OAUT VARIANT allocation helpers.
-        _ = pThis; _ = htStartTime; _ = htEndTime; _ = dwNumValues; _ = bBounds; _ = dwNumItems; _ = phServer;
-        ZeroOut(ppItemValues);
-        ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        ZeroReadOuts(ppItemValues, ppErrors);
+        if (!HasItemReadArgs(dwNumItems, phServer, ppItemValues, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead))
+        {
+            return HasItemReadArgs(dwNumItems, phServer, ppItemValues, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaItem[] items = syncRead!.ReadRawAsync(startTime, endTime, CountToInt(dwNumValues), bBounds != 0, handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            AssignItemOuts(ppItemValues, ppErrors, NormalizeItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SyncReadProcessed(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, long ftResampleInterval, uint dwNumItems, IntPtr phServer, IntPtr haAggregate, IntPtr* ppItemValues, IntPtr* ppErrors)
     {
-        _ = pThis; _ = htStartTime; _ = htEndTime; _ = ftResampleInterval; _ = dwNumItems; _ = phServer; _ = haAggregate;
-        ZeroOut(ppItemValues);
-        ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        ZeroReadOuts(ppItemValues, ppErrors);
+        if (!HasProcessedReadArgs(dwNumItems, phServer, haAggregate, ppItemValues, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead))
+        {
+            return HasProcessedReadArgs(dwNumItems, phServer, haAggregate, ppItemValues, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+            int[] aggregates = OpcHdaItemMarshaler.ReadInt32Array(haAggregate, count);
+#pragma warning disable VSTHRD002
+            OpcHdaItem[] items = syncRead!.ReadProcessedAsync(startTime, endTime, ftResampleInterval, handles, aggregates, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            AssignItemOuts(ppItemValues, ppErrors, NormalizeItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SyncReadAtTime(IntPtr pThis, uint dwNumTimeStamps, IntPtr ftTimeStamps, uint dwNumItems, IntPtr phServer, IntPtr* ppItemValues, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwNumTimeStamps; _ = ftTimeStamps; _ = dwNumItems; _ = phServer;
-        ZeroOut(ppItemValues);
-        ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        ZeroReadOuts(ppItemValues, ppErrors);
+        if (!HasAtTimeReadArgs(dwNumTimeStamps, ftTimeStamps, dwNumItems, phServer, ppItemValues, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead))
+        {
+            return HasAtTimeReadArgs(dwNumTimeStamps, ftTimeStamps, dwNumItems, phServer, ppItemValues, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            int timestampCount = CountToInt(dwNumTimeStamps);
+            long[] timestamps = OpcHdaItemMarshaler.ReadFileTimeArray(ftTimeStamps, timestampCount);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaItem[] items = syncRead!.ReadAtTimeAsync(timestamps, handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            AssignItemOuts(ppItemValues, ppErrors, NormalizeItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SyncReadModified(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, uint dwNumValues, uint dwNumItems, IntPtr phServer, IntPtr* ppItemValues, IntPtr* ppErrors)
     {
-        _ = pThis; _ = htStartTime; _ = htEndTime; _ = dwNumValues; _ = dwNumItems; _ = phServer;
-        ZeroOut(ppItemValues);
-        ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        ZeroReadOuts(ppItemValues, ppErrors);
+        if (!HasItemReadArgs(dwNumItems, phServer, ppItemValues, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead))
+        {
+            return HasItemReadArgs(dwNumItems, phServer, ppItemValues, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaModifiedItem[] items = syncRead!.ReadModifiedAsync(startTime, endTime, CountToInt(dwNumValues), handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            AssignModifiedOuts(ppItemValues, ppErrors, NormalizeModifiedItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SyncReadAttribute(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, uint hServer, uint dwNumAttributes, IntPtr pdwAttributeIDs, IntPtr* ppAttributeValues, IntPtr* ppErrors)
     {
-        _ = pThis; _ = htStartTime; _ = htEndTime; _ = hServer; _ = dwNumAttributes; _ = pdwAttributeIDs;
-        ZeroOut(ppAttributeValues);
+        ZeroReadOuts(ppAttributeValues, ppErrors);
+        if (!HasAttributeReadArgs(dwNumAttributes, pdwAttributeIDs, ppAttributeValues, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead))
+        {
+            return HasAttributeReadArgs(dwNumAttributes, pdwAttributeIDs, ppAttributeValues, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumAttributes);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] attributeIds = OpcHdaItemMarshaler.ReadInt32Array(pdwAttributeIDs, count);
+#pragma warning disable VSTHRD002
+            OpcHdaAttribute[] attributes = syncRead!.ReadAttributeAsync(startTime, endTime, unchecked((int)hServer), attributeIds, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildAttributeErrors(attributeIds, attributes.Length, count);
+            AssignAttributeOuts(ppAttributeValues, ppErrors, NormalizeAttributes(attributes, attributeIds, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int SyncAnnotationsQueryCapabilities(IntPtr pThis, IntPtr pCapabilities)
+    {
+        if (pCapabilities == IntPtr.Zero)
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveSyncAnnotations(pThis, out IOPCHDA_SyncAnnotations? annotations))
+        {
+            return OpcHdaServerCcw.E_NOTIMPL;
+        }
+
+        try
+        {
+#pragma warning disable VSTHRD002
+            int capabilities = annotations!.QueryCapabilitiesAsync(CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            WriteInt32(pCapabilities, capabilities);
+            return OpcHdaServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int SyncReadAnnotations(IntPtr pThis, IntPtr htStartTime, IntPtr htEndTime, uint dwNumItems, IntPtr phServer, IntPtr* ppAnnotationValues, IntPtr* ppErrors)
+    {
+        ZeroReadOuts(ppAnnotationValues, ppErrors);
+        if (!HasItemReadArgs(dwNumItems, phServer, ppAnnotationValues, ppErrors) || !TryResolveSyncAnnotations(pThis, out IOPCHDA_SyncAnnotations? annotations))
+        {
+            return HasItemReadArgs(dwNumItems, phServer, ppAnnotationValues, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaAnnotation[] values = annotations!.ReadAsync(startTime, endTime, handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(values.Length, count, OpcResultId.InvalidHandle.Code);
+            AssignAnnotationOuts(ppAnnotationValues, ppErrors, NormalizeAnnotations(values, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    public static int SyncAnnotationsInsert(IntPtr pThis, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr pAnnotationValues, IntPtr* ppErrors)
+    {
+        _ = pThis; _ = dwNumItems; _ = phServer; _ = ftTimeStamps; _ = pAnnotationValues;
         ZeroOut(ppErrors);
         return OpcHdaServerCcw.E_NOTIMPL;
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncReadRaw(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, IntPtr htEndTime, uint dwNumValues, int bBounds, uint dwNumItems, IntPtr phServer, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        // Async HDA read completion requires an OPCHDA_HISTORYREADCALLBACK / data
-        // callback sink connection; the in-process server contract does not expose it yet.
-        _ = pThis; _ = dwTransactionID; _ = htStartTime; _ = htEndTime; _ = dwNumValues; _ = bBounds; _ = dwNumItems; _ = phServer;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncItemReadArgs(dwNumItems, phServer, pdwCancelID, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return HasAsyncItemReadArgs(dwNumItems, phServer, pdwCancelID, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaItem[] items = syncRead!.ReadRawAsync(startTime, endTime, CountToInt(dwNumValues), bBounds != 0, handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            int cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueReadComplete(session!, cancelId, unchecked((int)dwTransactionID), NormalizeItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -346,12 +531,36 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncReadProcessed(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, IntPtr htEndTime, long ftResampleInterval, uint dwNumItems, IntPtr phServer, IntPtr haAggregate, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = htStartTime; _ = htEndTime; _ = ftResampleInterval; _ = dwNumItems; _ = phServer; _ = haAggregate;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncProcessedReadArgs(dwNumItems, phServer, haAggregate, pdwCancelID, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return HasAsyncProcessedReadArgs(dwNumItems, phServer, haAggregate, pdwCancelID, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+            int[] aggregates = OpcHdaItemMarshaler.ReadInt32Array(haAggregate, count);
+#pragma warning disable VSTHRD002
+            OpcHdaItem[] items = syncRead!.ReadProcessedAsync(startTime, endTime, ftResampleInterval, handles, aggregates, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            int cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueReadComplete(session!, cancelId, unchecked((int)dwTransactionID), NormalizeItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -364,27 +573,174 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncReadAtTime(IntPtr pThis, uint dwTransactionID, uint dwNumTimeStamps, IntPtr ftTimeStamps, uint dwNumItems, IntPtr phServer, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = dwNumTimeStamps; _ = ftTimeStamps; _ = dwNumItems; _ = phServer;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncAtTimeReadArgs(dwNumTimeStamps, ftTimeStamps, dwNumItems, phServer, pdwCancelID, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return HasAsyncAtTimeReadArgs(dwNumTimeStamps, ftTimeStamps, dwNumItems, phServer, pdwCancelID, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            long[] timestamps = OpcHdaItemMarshaler.ReadFileTimeArray(ftTimeStamps, CountToInt(dwNumTimeStamps));
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaItem[] items = syncRead!.ReadAtTimeAsync(timestamps, handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            int cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueReadComplete(session!, cancelId, unchecked((int)dwTransactionID), NormalizeItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncReadModified(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, IntPtr htEndTime, uint dwNumValues, uint dwNumItems, IntPtr phServer, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = htStartTime; _ = htEndTime; _ = dwNumValues; _ = dwNumItems; _ = phServer;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncItemReadArgs(dwNumItems, phServer, pdwCancelID, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return HasAsyncItemReadArgs(dwNumItems, phServer, pdwCancelID, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaModifiedItem[] items = syncRead!.ReadModifiedAsync(startTime, endTime, CountToInt(dwNumValues), handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(items.Length, count, OpcResultId.InvalidHandle.Code);
+            int cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueReadModifiedComplete(session!, cancelId, unchecked((int)dwTransactionID), NormalizeModifiedItems(items, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncReadAttribute(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, IntPtr htEndTime, uint hServer, uint dwNumAttributes, IntPtr pdwAttributeIDs, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = htStartTime; _ = htEndTime; _ = hServer; _ = dwNumAttributes; _ = pdwAttributeIDs;
+        WriteUInt32(pdwCancelID, 0);
+        ZeroOut(ppErrors);
+        if (!HasAsyncAttributeReadArgs(dwNumAttributes, pdwAttributeIDs, pdwCancelID, ppErrors) || !TryResolveSyncRead(pThis, out IOPCHDA_SyncRead? syncRead) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return HasAsyncAttributeReadArgs(dwNumAttributes, pdwAttributeIDs, pdwCancelID, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumAttributes);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] attributeIds = OpcHdaItemMarshaler.ReadInt32Array(pdwAttributeIDs, count);
+#pragma warning disable VSTHRD002
+            OpcHdaAttribute[] attributes = syncRead!.ReadAttributeAsync(startTime, endTime, unchecked((int)hServer), attributeIds, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildAttributeErrors(attributeIds, attributes.Length, count);
+            OpcHdaAttribute[] normalized = NormalizeAttributes(attributes, attributeIds, count);
+            int cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueReadAttributeComplete(session!, cancelId, unchecked((int)dwTransactionID), GetAttributeClientHandle(normalized), normalized, errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int AsyncAnnotationsQueryCapabilities(IntPtr pThis, IntPtr pCapabilities)
+    {
+        if (pCapabilities == IntPtr.Zero)
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+        try
+        {
+            int capabilities;
+            if (TryResolveAsyncAnnotations(pThis, out IOPCHDA_AsyncAnnotations? annotations))
+            {
+#pragma warning disable VSTHRD002
+                capabilities = annotations!.QueryCapabilitiesAsync(CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            }
+            else if (TryResolveSyncAnnotations(pThis, out IOPCHDA_SyncAnnotations? syncAnnotations))
+            {
+#pragma warning disable VSTHRD002
+                capabilities = syncAnnotations!.QueryCapabilitiesAsync(CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            }
+            else
+            {
+                return OpcHdaServerCcw.E_NOTIMPL;
+            }
+
+            WriteInt32(pCapabilities, capabilities);
+            return OpcHdaServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int AsyncReadAnnotations(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, IntPtr htEndTime, uint dwNumItems, IntPtr phServer, IntPtr pdwCancelID, IntPtr* ppErrors)
+    {
+        WriteUInt32(pdwCancelID, 0);
+        ZeroOut(ppErrors);
+        if (!HasAsyncItemReadArgs(dwNumItems, phServer, pdwCancelID, ppErrors) || !TryResolveSyncAnnotations(pThis, out IOPCHDA_SyncAnnotations? annotations) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return HasAsyncItemReadArgs(dwNumItems, phServer, pdwCancelID, ppErrors) ? OpcHdaServerCcw.E_NOTIMPL : OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            OpcHdaTime endTime = OpcHdaItemMarshaler.ReadHdaTime(htEndTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+#pragma warning disable VSTHRD002
+            OpcHdaAnnotation[] values = annotations!.ReadAsync(startTime, endTime, handles, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            int[] errors = BuildResultErrors(values.Length, count, OpcResultId.InvalidHandle.Code);
+            int cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueReadAnnotationsComplete(session!, cancelId, unchecked((int)dwTransactionID), NormalizeAnnotations(values, count), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    public static int AsyncAnnotationsInsert(IntPtr pThis, uint dwTransactionID, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr pAnnotationValues, IntPtr pdwCancelID, IntPtr* ppErrors)
+    {
+        _ = pThis; _ = dwTransactionID; _ = dwNumItems; _ = phServer; _ = ftTimeStamps; _ = pAnnotationValues;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
         return OpcHdaServerCcw.E_NOTIMPL;
@@ -393,9 +749,309 @@ internal static unsafe class OpcHdaServerCcwMethods
     [UnmanagedCallersOnly]
     public static int AsyncCancel(IntPtr pThis, uint dwCancelID)
     {
-        _ = pThis; _ = dwCancelID;
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+
+        int cancelId = unchecked((int)dwCancelID);
+        if (!session!.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+
+        cts.Cancel();
+        cts.Dispose();
+        FireCancelComplete(session, cancelId);
+        return OpcHdaServerCcw.S_OK;
     }
+
+    private static bool TryResolveSession(IntPtr pThis, out OpcHdaServerCcw.CcwSession? session)
+    {
+        session = OpcHdaServerCcw.ResolveSession(pThis);
+        return session is not null;
+    }
+
+    private static bool TryResolveSyncRead(IntPtr pThis, out IOPCHDA_SyncRead? syncRead)
+    {
+        syncRead = OpcHdaServerCcw.ResolveServer(pThis) as IOPCHDA_SyncRead;
+        return syncRead is not null;
+    }
+
+    private static bool TryResolveSyncAnnotations(IntPtr pThis, out IOPCHDA_SyncAnnotations? annotations)
+    {
+        annotations = OpcHdaServerCcw.ResolveServer(pThis) as IOPCHDA_SyncAnnotations;
+        return annotations is not null;
+    }
+
+    private static bool TryResolveAsyncAnnotations(IntPtr pThis, out IOPCHDA_AsyncAnnotations? annotations)
+    {
+        annotations = OpcHdaServerCcw.ResolveServer(pThis) as IOPCHDA_AsyncAnnotations;
+        return annotations is not null;
+    }
+
+    private static bool HasItemReadArgs(uint count, IntPtr handles, IntPtr* values, IntPtr* errors) =>
+        count is > 0 and <= int.MaxValue && handles != IntPtr.Zero && values != null && errors != null;
+
+    private static bool HasProcessedReadArgs(uint count, IntPtr handles, IntPtr aggregateIds, IntPtr* values, IntPtr* errors) =>
+        HasItemReadArgs(count, handles, values, errors) && aggregateIds != IntPtr.Zero;
+
+    private static bool HasAtTimeReadArgs(uint timestampCount, IntPtr timestamps, uint count, IntPtr handles, IntPtr* values, IntPtr* errors) =>
+        timestampCount is > 0 and <= int.MaxValue && timestamps != IntPtr.Zero && HasItemReadArgs(count, handles, values, errors);
+
+    private static bool HasAttributeReadArgs(uint count, IntPtr attributeIds, IntPtr* values, IntPtr* errors) =>
+        count is > 0 and <= int.MaxValue && attributeIds != IntPtr.Zero && values != null && errors != null;
+
+    private static bool HasAsyncItemReadArgs(uint count, IntPtr handles, IntPtr cancelId, IntPtr* errors) =>
+        count is > 0 and <= int.MaxValue && handles != IntPtr.Zero && cancelId != IntPtr.Zero && errors != null;
+
+    private static bool HasAsyncProcessedReadArgs(uint count, IntPtr handles, IntPtr aggregateIds, IntPtr cancelId, IntPtr* errors) =>
+        HasAsyncItemReadArgs(count, handles, cancelId, errors) && aggregateIds != IntPtr.Zero;
+
+    private static bool HasAsyncAtTimeReadArgs(uint timestampCount, IntPtr timestamps, uint count, IntPtr handles, IntPtr cancelId, IntPtr* errors) =>
+        timestampCount is > 0 and <= int.MaxValue && timestamps != IntPtr.Zero && HasAsyncItemReadArgs(count, handles, cancelId, errors);
+
+    private static bool HasAsyncAttributeReadArgs(uint count, IntPtr attributeIds, IntPtr cancelId, IntPtr* errors) =>
+        count is > 0 and <= int.MaxValue && attributeIds != IntPtr.Zero && cancelId != IntPtr.Zero && errors != null;
+
+    private static void ZeroReadOuts(IntPtr* values, IntPtr* errors)
+    {
+        ZeroOut(values);
+        ZeroOut(errors);
+    }
+
+    private static int[] BuildResultErrors(int resultCount, int expectedCount, int missingError)
+    {
+        var errors = new int[expectedCount];
+        for (int i = 0; i < expectedCount; i++)
+        {
+            errors[i] = i < resultCount ? OpcHdaServerCcw.S_OK : missingError;
+        }
+
+        return errors;
+    }
+
+    private static int[] BuildAttributeErrors(int[] attributeIds, int resultCount, int expectedCount)
+    {
+        var errors = new int[expectedCount];
+        for (int i = 0; i < expectedCount; i++)
+        {
+            errors[i] = attributeIds[i] <= 0
+                ? OpcHdaErrors.OPCHDA_E_INVALIDATTRID
+                : i < resultCount ? OpcHdaServerCcw.S_OK : OpcHdaErrors.OPCHDA_E_UNKNOWNATTRID;
+        }
+
+        return errors;
+    }
+
+    private static OpcHdaItem[] NormalizeItems(OpcHdaItem[] items, int count)
+    {
+        var normalized = new OpcHdaItem[count];
+        for (int i = 0; i < count; i++)
+        {
+            normalized[i] = i < items.Length ? items[i] : new OpcHdaItem(0, 0, [], [], []);
+        }
+
+        return normalized;
+    }
+
+    private static OpcHdaModifiedItem[] NormalizeModifiedItems(OpcHdaModifiedItem[] items, int count)
+    {
+        var normalized = new OpcHdaModifiedItem[count];
+        for (int i = 0; i < count; i++)
+        {
+            normalized[i] = i < items.Length ? items[i] : new OpcHdaModifiedItem(0, [], [], [], [], [], []);
+        }
+
+        return normalized;
+    }
+
+    private static OpcHdaAttribute[] NormalizeAttributes(OpcHdaAttribute[] attributes, int[] attributeIds, int count)
+    {
+        var normalized = new OpcHdaAttribute[count];
+        for (int i = 0; i < count; i++)
+        {
+            normalized[i] = i < attributes.Length ? attributes[i] : new OpcHdaAttribute(0, attributeIds[i], [], []);
+        }
+
+        return normalized;
+    }
+
+    private static OpcHdaAnnotation[] NormalizeAnnotations(OpcHdaAnnotation[] annotations, int count)
+    {
+        var normalized = new OpcHdaAnnotation[count];
+        for (int i = 0; i < count; i++)
+        {
+            normalized[i] = i < annotations.Length ? annotations[i] : new OpcHdaAnnotation(0, [], [], [], []);
+        }
+
+        return normalized;
+    }
+
+    private static void AssignItemOuts(IntPtr* valuesOut, IntPtr* errorsOut, OpcHdaItem[] items, int[] errors)
+    {
+        IntPtr values = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            values = OpcHdaItemMarshaler.AllocateItemArray(items);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            *valuesOut = values;
+            *errorsOut = errorsPtr;
+            values = errorsPtr = IntPtr.Zero;
+        }
+        finally
+        {
+            OpcHdaItemMarshaler.FreeItemArray(values, items.Length);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
+    private static void AssignModifiedOuts(IntPtr* valuesOut, IntPtr* errorsOut, OpcHdaModifiedItem[] items, int[] errors)
+    {
+        IntPtr values = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            values = OpcHdaItemMarshaler.AllocateModifiedItemArray(items);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            *valuesOut = values;
+            *errorsOut = errorsPtr;
+            values = errorsPtr = IntPtr.Zero;
+        }
+        finally
+        {
+            OpcHdaItemMarshaler.FreeModifiedItemArray(values, items.Length);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
+    private static void AssignAttributeOuts(IntPtr* valuesOut, IntPtr* errorsOut, OpcHdaAttribute[] attributes, int[] errors)
+    {
+        IntPtr values = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            values = OpcHdaItemMarshaler.AllocateAttributeArray(attributes);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            *valuesOut = values;
+            *errorsOut = errorsPtr;
+            values = errorsPtr = IntPtr.Zero;
+        }
+        finally
+        {
+            OpcHdaItemMarshaler.FreeAttributeArray(values, attributes.Length);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
+    private static void AssignAnnotationOuts(IntPtr* valuesOut, IntPtr* errorsOut, OpcHdaAnnotation[] annotations, int[] errors)
+    {
+        IntPtr values = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            values = OpcHdaItemMarshaler.AllocateAnnotationArray(annotations);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            *valuesOut = values;
+            *errorsOut = errorsPtr;
+            values = errorsPtr = IntPtr.Zero;
+        }
+        finally
+        {
+            OpcHdaItemMarshaler.FreeAnnotationArray(values, annotations.Length);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
+    private static int RegisterPendingOperation(OpcHdaServerCcw.CcwSession session, IntPtr pdwCancelID)
+    {
+        int cancelId = Interlocked.Increment(ref session.NextCancelId);
+        if (cancelId == 0)
+        {
+            cancelId = Interlocked.Increment(ref session.NextCancelId);
+        }
+
+        var cts = new CancellationTokenSource();
+        if (!session.PendingOperations.TryAdd(cancelId, cts))
+        {
+            cts.Dispose();
+            throw new InvalidOperationException("Unable to register HDA async read operation.");
+        }
+
+        WriteUInt32(pdwCancelID, unchecked((uint)cancelId));
+        return cancelId;
+    }
+
+    private static void QueueReadComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, OpcHdaItem[] items, int[] errors) =>
+        QueueCallback(session, cancelId, sink => sink.OnReadComplete(transactionId, GetMasterHResult(errors), items, errors));
+
+    private static void QueueReadModifiedComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, OpcHdaModifiedItem[] items, int[] errors) =>
+        QueueCallback(session, cancelId, sink => sink.OnReadModifiedComplete(transactionId, GetMasterHResult(errors), items, errors));
+
+    private static void QueueReadAttributeComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, int clientHandle, OpcHdaAttribute[] attributes, int[] errors) =>
+        QueueCallback(session, cancelId, sink => sink.OnReadAttributeComplete(transactionId, GetMasterHResult(errors), clientHandle, attributes, errors));
+
+    private static void QueueReadAnnotationsComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, OpcHdaAnnotation[] annotations, int[] errors) =>
+        QueueCallback(session, cancelId, sink => sink.OnReadAnnotations(transactionId, GetMasterHResult(errors), annotations, errors));
+
+    private static void QueueCallback(OpcHdaServerCcw.CcwSession session, int cancelId, Action<OpcHdaCallbackProxy> callback)
+    {
+        _ = Task.Run(() => CompleteCallback(session, cancelId, callback));
+    }
+
+    private static void CompleteCallback(OpcHdaServerCcw.CcwSession session, int cancelId, Action<OpcHdaCallbackProxy> callback)
+    {
+        if (!session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts))
+        {
+            return;
+        }
+
+        try
+        {
+            if (!cts.IsCancellationRequested)
+            {
+                foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+                {
+                    try
+                    {
+                        callback(sink);
+                    }
+                    catch (COMException)
+                    {
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                    }
+                }
+            }
+        }
+        finally
+        {
+            cts.Dispose();
+        }
+    }
+
+    private static void FireCancelComplete(OpcHdaServerCcw.CcwSession session, int cancelId)
+    {
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            try
+            {
+                sink.OnCancelComplete(cancelId);
+            }
+            catch (COMException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }
+    }
+
+    private static int GetAttributeClientHandle(OpcHdaAttribute[] attributes) => attributes.Length == 0 ? 0 : attributes[0].ClientHandle;
+
+    private static int GetMasterHResult(int[] errors) => HasAnyFailure(errors) ? OpcHdaServerCcw.S_FALSE : OpcHdaServerCcw.S_OK;
 
     private static bool TryResolveServer(IntPtr pThis, out IOpcHdaServer? server)
     {

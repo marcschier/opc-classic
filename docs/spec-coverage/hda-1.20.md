@@ -15,9 +15,9 @@
 **Quality flags**: HDA-specific flags defined
 **Error constants**: HDA Appendix C constants present
 
-**Overall compliance**: **Full DCOM declaration/proxy/dispatcher coverage; Windows CCW remains partial for browser creation and history read payloads**.
+**Overall compliance**: **Full DCOM declaration/proxy/dispatcher coverage; Windows CCW now covers browser creation plus HDA sync/async read payloads; update/playback CCWs remain partial**.
 
-Earlier claims that HDA was fully production-ready through all paths are too broad. The DCOM projection is complete, but the Windows CCW still returns `E_NOTIMPL` for `CreateBrowse` and HDA read bodies that require native `OPCHDA_ITEM[]`/VARIANT allocation.
+Earlier claims that HDA was fully production-ready through all paths are too broad. The DCOM projection is complete, and the Windows CCW now has native `OPCHDA_ITEM[]`/`OPCHDA_ATTRIBUTE[]`/`OPCHDA_MODIFIEDITEM[]`/`OPCHDA_ANNOTATION[]` marshaling for history reads; update and playback CCW paths remain future work.
 
 ---
 
@@ -29,23 +29,23 @@ All HDA service and callback interfaces are declared with opnums matching the sp
 
 | Interface | Methods | Cross-platform DCOM status | Windows CCW status |
 |---|---:|---|---|
-| `IOPCHDA_Server` | 6/6 | ✅ generated proxy + dispatcher | ✅ real `GetItemAttributes`, `GetAggregates`, `GetHistorianStatus`, `ValidateItemIDs`, `GetItemHandles`, `ReleaseItemHandles`; `CreateBrowse` is `E_NOTIMPL` |
+| `IOPCHDA_Server` | 6/6 | ✅ generated proxy + dispatcher | ✅ real `GetItemAttributes`, `GetAggregates`, `GetHistorianStatus`, `ValidateItemIDs`, `GetItemHandles`, `ReleaseItemHandles`, and `CreateBrowse` |
 | `IOPCHDA_Browser` | 4/4 | ✅ generated proxy declaration | ✅ `CreateBrowse` returns a raw-vtable browser CCW with `GetEnum`, `ChangeBrowsePosition`, `GetItemID`, and `GetBranchPosition` |
-| `IOPCHDA_SyncRead` | 5/5 | ✅ generated proxy + dispatcher | ⚠️ tearoff/vtable present; `ReadRaw`, `ReadProcessed`, and related bodies return `E_NOTIMPL` |
+| `IOPCHDA_SyncRead` | 5/5 | ✅ generated proxy + dispatcher | ✅ `ReadRaw`, `ReadProcessed`, `ReadAtTime`, `ReadModified`, and `ReadAttribute` marshal native HDA arrays |
 | `IOPCHDA_SyncUpdate` | 6/6 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |
-| `IOPCHDA_SyncAnnotations` | 3/3 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |
-| `IOPCHDA_AsyncRead` | 8/8 | ✅ generated proxy + dispatcher | ⚠️ tearoff/vtable present; read methods return `E_NOTIMPL` pending callbacks/arrays |
+| `IOPCHDA_SyncAnnotations` | 3/3 | ✅ generated proxy + dispatcher | ✅ `Read` marshals native annotation arrays; query capabilities wired when implemented by the server; insert remains future work |
+| `IOPCHDA_AsyncRead` | 8/8 | ✅ generated proxy + dispatcher | ✅ read methods return cancel IDs/errors and fire `IOPCHDA_DataCallback`; advise methods remain future work |
 | `IOPCHDA_AsyncUpdate` | 7/7 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |
-| `IOPCHDA_AsyncAnnotations` | 4/4 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |
+| `IOPCHDA_AsyncAnnotations` | 4/4 | ✅ generated proxy + dispatcher | ✅ `Read` returns cancel IDs/errors and fires `OnReadAnnotations`; insert remains future work |
 | `IOPCHDA_Playback` | 3/3 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |
 | `IOPCHDA_DataCallback` | 9/9 | ✅ callback projection | native callback lifecycle tests still recommended |
 
 **Key CCW sources**:
 
-- Real `IOPCHDA_Server` methods: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs:20-235`
-- `CreateBrowse` deferred: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs:237-253`
-- Sync read methods deferred: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs:255-299`
-- Async read methods deferred: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs:302-371`
+- Real `IOPCHDA_Server` methods and `CreateBrowse`: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs`
+- Sync read and annotation-read CCW bodies: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs`
+- Async read callback bridge: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaCallbackProxy.cs`
+- Native HDA array/VARIANT marshaling: `src/Opc.Classic.Hda/Hosting/Windows/OpcHdaItemMarshaler.cs`
 
 ---
 
@@ -59,7 +59,7 @@ All HDA service and callback interfaces are declared with opnums matching the sp
 | `OPCHDA_ANNOTATION` | ✅ codec |
 | `OPCHDA_ATTRIBUTE` | ✅ codec |
 
-These codecs support the generated DCOM path. The remaining CCW read gap is native memory allocation and OAUT `VARIANT` array marshaling, not absence of managed codecs.
+These codecs support the generated DCOM path. The Windows CCW now also has native memory allocation and OAUT `VARIANT` array marshaling for read results.
 
 ---
 
@@ -77,17 +77,13 @@ The older recommendation to “add HDA error constants” is stale.
 
 ### HIGH
 
-#### 1. Windows CCW `CreateBrowse`
+#### 1. Windows CCW update/playback bodies
 
-`IOPCHDA_Server::CreateBrowse` returns an `IOPCHDA_Browser` interface pointer and accepts VARIANT filters. The CCW currently returns `E_NOTIMPL` pending browser CCW and native filter support (`src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs:237-253`).
-
-#### 2. Windows CCW history read bodies
-
-`ReadRaw`, `ReadProcessed`, and related sync/async methods are projected and tested through DCOM, but CCW native bodies return `E_NOTIMPL` pending reusable native `OPCHDA_ITEM[]` and VARIANT allocation helpers (`src/Opc.Classic.Hda/Hosting/Windows/OpcHdaServerCcwMethods.cs:255-371`).
+HDA sync/async update, insert-annotation, advise, and playback methods are projected and tested through DCOM, but the Windows CCW still needs native method bodies for those non-read paths.
 
 ### MEDIUM
 
-#### 3. Server-side aggregate/update/annotation semantics
+#### 2. Server-side aggregate/update/annotation semantics
 
 The interfaces and codecs are present, but aggregate calculations, update policies, annotation storage, relative time parsing, and playback behavior are server-specific. A sample/reference HDA server would make those semantics testable.
 
