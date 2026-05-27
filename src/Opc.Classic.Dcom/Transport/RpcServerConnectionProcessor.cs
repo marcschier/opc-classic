@@ -36,12 +36,13 @@ namespace Opc.Classic.Dcom.Transport;
 /// supported — the processor handles inbound requests only.
 /// </para>
 /// <para>
-/// <b>Anonymous-only.</b> Authenticated binds (PDUs carrying an auth
-/// verifier — i.e. <c>AUTH_LENGTH_OFFSET</c> non-zero) are rejected by
-/// closing the connection immediately. The relaxed DCOM ACLs in the
-/// fleet's <c>dcom-test-acls.reg</c> permit anonymous calls for the
-/// CTT-against-managed-server scenarios; NTLM/Kerberos-authenticated
-/// server-side handling is a deliberate follow-up (ocom-7's spike).
+/// Authenticated binds (PDUs carrying an auth verifier — i.e.
+/// <c>AUTH_LENGTH_OFFSET</c> non-zero) are accepted only by dispatchers
+/// that explicitly consume the RPC request context. The relaxed DCOM ACLs
+/// in the fleet's <c>dcom-test-acls.reg</c> still permit anonymous calls
+/// for the CTT-against-managed-server scenarios; full NTLM/Kerberos
+/// server-side verifier validation remains a deliberate follow-up
+/// (ocom-7's spike).
 /// </para>
 /// <para>
 /// <b>Single-object scope.</b> The processor routes by presentation
@@ -60,6 +61,9 @@ namespace Opc.Classic.Dcom.Transport;
 /// </remarks>
 public sealed class RpcServerConnectionProcessor
 {
+    private const int AuthenticationVerifierHeaderLength = 8;
+    private const int E_ACCESSDENIED = unchecked((int)0x80070005u);
+
     private static readonly Action<ILogger, EndPoint, Exception?> ProcessorStarted =
         LoggerMessage.Define<EndPoint>(LogLevel.Debug, new EventId(1, nameof(ProcessorStarted)),
             "RpcServerConnectionProcessor: started for {Remote}");
@@ -70,7 +74,7 @@ public sealed class RpcServerConnectionProcessor
 
     private static readonly Action<ILogger, EndPoint, int, Exception?> AuthRejected =
         LoggerMessage.Define<EndPoint, int>(LogLevel.Warning, new EventId(3, nameof(AuthRejected)),
-            "RpcServerConnectionProcessor: rejecting authenticated PDU from {Remote} (auth_length={AuthLength}); anonymous-only listener");
+            "RpcServerConnectionProcessor: rejecting authenticated PDU from {Remote} (auth_length={AuthLength}); dispatcher does not accept RPC authentication context");
 
     private static readonly Action<ILogger, EndPoint, int, Exception?> UnsupportedPduType =
         LoggerMessage.Define<EndPoint, int>(LogLevel.Warning, new EventId(4, nameof(UnsupportedPduType)),
@@ -158,17 +162,17 @@ public sealed class RpcServerConnectionProcessor
                     return;
                 }
 
-                if (await RejectIfAuthenticatedAsync(transport, frame, cancellationToken).ConfigureAwait(false))
+                if (!TryStripAuthenticationVerifier(transport, frame, out AuthenticationStrippedFrame stripped))
                 {
                     return;
                 }
 
-                if (!TryDecodePdu(transport, frame, out ConnectionOrientedPdu? pdu))
+                if (!TryDecodePdu(transport, stripped.PduBytes, out ConnectionOrientedPdu? pdu))
                 {
                     return;
                 }
 
-                bool keepGoing = await HandlePduAsync(transport, pdu!, contextMap, maxTransmitFragment, cancellationToken)
+                bool keepGoing = await HandlePduAsync(transport, pdu!, stripped.Authentication, contextMap, maxTransmitFragment, cancellationToken)
                     .ConfigureAwait(false);
                 if (!keepGoing)
                 {
@@ -208,25 +212,58 @@ public sealed class RpcServerConnectionProcessor
         }
     }
 
-    private async ValueTask<bool> RejectIfAuthenticatedAsync(
-        IAsyncTransport transport, byte[] frame, CancellationToken cancellationToken)
+    private bool TryStripAuthenticationVerifier(
+        IAsyncTransport transport,
+        byte[] frame,
+        out AuthenticationStrippedFrame stripped)
+    {
+        try
+        {
+            stripped = StripAuthenticationVerifier(frame);
+            return true;
+        }
+        catch (InvalidOperationException ex)
+        {
+            UnsupportedPduType(_logger, transport.RemoteEndpoint, frame[ConnectionOrientedPdu.TYPE_OFFSET], ex);
+            stripped = default;
+            return false;
+        }
+    }
+
+    private static AuthenticationStrippedFrame StripAuthenticationVerifier(byte[] frame)
     {
         int authLength = BinaryPrimitives.ReadUInt16LittleEndian(
             frame.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET));
         if (authLength == 0)
         {
-            return false;
+            return new AuthenticationStrippedFrame(frame, RpcPduAuthentication.None);
         }
 
-        AuthRejected(_logger, transport.RemoteEndpoint, authLength, null);
-        if (frame[ConnectionOrientedPdu.TYPE_OFFSET] == BindPdu.BIND_TYPE)
+        int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
+            frame.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET));
+        int verifierStart = fragmentLength - authLength - AuthenticationVerifierHeaderLength;
+        if (verifierStart < ConnectionOrientedPdu.HEADER_LENGTH
+            || verifierStart + AuthenticationVerifierHeaderLength > frame.Length)
         {
-            int callId = BinaryPrimitives.ReadInt32LittleEndian(
-                frame.AsSpan(ConnectionOrientedPdu.CALL_ID_OFFSET));
-            await WriteBindNakAsync(transport, callId,
-                BindNoAcknowledgeReason.REASON_NOT_SPECIFIED, cancellationToken).ConfigureAwait(false);
+            throw new InvalidOperationException("DCE/RPC authentication verifier is malformed.");
         }
-        return true;
+
+        int padding = frame[verifierStart + 2];
+        int strippedLength = verifierStart - padding;
+        if (strippedLength < ConnectionOrientedPdu.HEADER_LENGTH || strippedLength > frame.Length)
+        {
+            throw new InvalidOperationException("DCE/RPC authentication verifier padding is malformed.");
+        }
+
+        var authentication = new RpcPduAuthentication(
+            true,
+            authLength,
+            ToOpcProtectionLevel((ProtectionLevel)frame[verifierStart + 1]));
+
+        byte[] pduBytes = frame.AsSpan(0, strippedLength).ToArray();
+        BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)strippedLength);
+        BinaryPrimitives.WriteUInt16LittleEndian(pduBytes.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
+        return new AuthenticationStrippedFrame(pduBytes, authentication);
     }
 
     private bool TryDecodePdu(IAsyncTransport transport, byte[] frame, out ConnectionOrientedPdu? pdu)
@@ -247,6 +284,7 @@ public sealed class RpcServerConnectionProcessor
     private async ValueTask<bool> HandlePduAsync(
         IAsyncTransport transport,
         ConnectionOrientedPdu pdu,
+        RpcPduAuthentication authentication,
         Dictionary<int, Guid> contextMap,
         int maxTransmitFragment,
         CancellationToken cancellationToken)
@@ -254,6 +292,14 @@ public sealed class RpcServerConnectionProcessor
         switch (pdu)
         {
             case BindPdu bind:
+                if (authentication.IsAuthenticated && !AuthenticatedBindAllowed(bind))
+                {
+                    AuthRejected(_logger, transport.RemoteEndpoint, authentication.AuthLength, null);
+                    await WriteBindNakAsync(transport, bind.CallId,
+                        BindNoAcknowledgeReason.REASON_NOT_SPECIFIED, cancellationToken).ConfigureAwait(false);
+                    return false;
+                }
+
                 BindAcknowledgePdu ack = BuildBindAck(bind, contextMap);
                 await WritePduAsync(transport, ack, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
                 return true;
@@ -264,7 +310,7 @@ public sealed class RpcServerConnectionProcessor
                 return true;
 
             case RequestCoPdu request:
-                await HandleRequestAsync(transport, request, contextMap, maxTransmitFragment, cancellationToken)
+                await HandleRequestAsync(transport, request, authentication, contextMap, maxTransmitFragment, cancellationToken)
                     .ConfigureAwait(false);
                 return true;
 
@@ -363,6 +409,7 @@ public sealed class RpcServerConnectionProcessor
     private async ValueTask HandleRequestAsync(
         IAsyncTransport transport,
         RequestCoPdu request,
+        RpcPduAuthentication authentication,
         Dictionary<int, Guid> contextMap,
         int maxTransmitFragment,
         CancellationToken cancellationToken)
@@ -391,7 +438,7 @@ public sealed class RpcServerConnectionProcessor
             return;
         }
 
-        DispatchResult? result = await TryDispatchAsync(transport, dispatcher, interfaceId, request, body, cancellationToken)
+        DispatchResult? result = await TryDispatchAsync(transport, dispatcher, interfaceId, request, authentication, body, cancellationToken)
             .ConfigureAwait(false);
         if (result is null)
         {
@@ -427,11 +474,27 @@ public sealed class RpcServerConnectionProcessor
         IOpcServerDispatcher dispatcher,
         Guid interfaceId,
         RequestCoPdu request,
+        RpcPduAuthentication authentication,
         ReadOnlyMemory<byte> body,
         CancellationToken cancellationToken)
     {
         try
         {
+            if (dispatcher is IRpcRequestContextDispatcher contextDispatcher)
+            {
+                var requestContext = new RpcRequestContext(
+                    authentication.IsAuthenticated,
+                    authentication.ProtectionLevel,
+                    transport.RemoteEndpoint);
+                return await contextDispatcher.DispatchAsync(request.Opnum, body, requestContext, cancellationToken).ConfigureAwait(false);
+            }
+
+            if (authentication.IsAuthenticated)
+            {
+                AuthRejected(_logger, transport.RemoteEndpoint, authentication.AuthLength, null);
+                return DispatchResult.Fault(E_ACCESSDENIED);
+            }
+
             return await dispatcher.DispatchAsync(request.Opnum, body, cancellationToken).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -551,6 +614,40 @@ public sealed class RpcServerConnectionProcessor
             .ConfigureAwait(false);
     }
 
+    private bool AuthenticatedBindAllowed(BindPdu bind)
+    {
+        if (bind.ContextList is null || bind.ContextList.Length == 0)
+        {
+            return false;
+        }
+
+        bool hasKnownContext = false;
+        foreach (PresentationContext context in bind.ContextList)
+        {
+            if (TryGuidFromUuid(context.AbstractSyntax?.Uuid, out Guid interfaceId)
+                && _dispatchers.TryGetValue(interfaceId, out IOpcServerDispatcher? dispatcher))
+            {
+                hasKnownContext = true;
+                if (dispatcher is not IRpcRequestContextDispatcher)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return hasKnownContext;
+    }
+
+    private static OpcProtectionLevel ToOpcProtectionLevel(ProtectionLevel protectionLevel) => protectionLevel switch
+    {
+        ProtectionLevel.PROTECTION_LEVEL_CONNECT => OpcProtectionLevel.Connect,
+        ProtectionLevel.PROTECTION_LEVEL_CALL => OpcProtectionLevel.Call,
+        ProtectionLevel.PROTECTION_LEVEL_PACKET => OpcProtectionLevel.Packet,
+        ProtectionLevel.PROTECTION_LEVEL_INTEGRITY => OpcProtectionLevel.Integrity,
+        ProtectionLevel.PROTECTION_LEVEL_PRIVACY => OpcProtectionLevel.Privacy,
+        _ => OpcProtectionLevel.None,
+    };
+
     private static bool TryGuidFromUuid(UUID? uuid, out Guid value)
     {
         if (uuid is null)
@@ -586,4 +683,18 @@ public sealed class RpcServerConnectionProcessor
         }
         return false;
     }
+
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
+    private readonly record struct RpcPduAuthentication(
+        bool IsAuthenticated,
+        int AuthLength,
+        OpcProtectionLevel ProtectionLevel)
+    {
+        public static RpcPduAuthentication None { get; } = new(false, 0, OpcProtectionLevel.None);
+    }
+
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
+    private readonly record struct AuthenticationStrippedFrame(
+        byte[] PduBytes,
+        RpcPduAuthentication Authentication);
 }
