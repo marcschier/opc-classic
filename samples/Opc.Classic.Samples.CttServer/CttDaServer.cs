@@ -212,6 +212,29 @@ public sealed class CttDaServer : IOpcDaServer
             resolverBindings: Array.Empty<ushort>()));
     }
 
+    /// <inheritdoc />
+    public Task<OpcDaGroup?> ResolveGroupAsync(int serverHandle, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult<OpcDaGroup?>(
+            _groups.TryGetValue(serverHandle, out GroupEntry? entry) ? entry.Group : null);
+    }
+
+    /// <inheritdoc />
+    public Task<OpcDaGroup?> ResolveGroupByNameAsync(string name, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        cancellationToken.ThrowIfCancellationRequested();
+        foreach (GroupEntry entry in _groups.Values)
+        {
+            if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
+            {
+                return Task.FromResult<OpcDaGroup?>(entry.Group);
+            }
+        }
+        return Task.FromResult<OpcDaGroup?>(null);
+    }
+
     /// <summary>Test helper: returns the number of currently tracked groups.</summary>
     public int GroupCount => _groups.Count;
 

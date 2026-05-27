@@ -259,12 +259,17 @@ public static unsafe class OpcDaServerCcw
             Marshal.WriteInt32(phServerGroup, serverHandle);
             Marshal.WriteInt32(pRevisedUpdateRate, (int)dwRequestedUpdateRate);
 
-            // Full per-interface vtables for the group (IOPCGroupStateMgt(2),
-            // IOPCItemMgt) are wired in OpcDaGroupCcw; QI on the returned
-            // pointer succeeds for those IIDs and dispatches into the managed
-            // OpcDaGroup. Complex marshaling (AddItems, CloneGroup,
-            // CreateEnumerator) returns E_NOTIMPL until a follow-up.
-            var placeholderGroup = new OpcDaGroup(
+            // Prefer the server-tracked group instance (cap-a6) so the CCW
+            // refers to the same managed OpcDaGroup that the server bookkeeps
+            // — subsequent dispatch via IOPCItemMgt / IOPCSyncIO routes through
+            // the server's authoritative state. Fall back to a placeholder
+            // OpcDaGroup only when the server doesn't track groups in-process
+            // (the default IOpcDaServer.ResolveGroupAsync returns null).
+#pragma warning disable VSTHRD002
+            OpcDaGroup? resolved = server.ResolveGroupAsync(serverHandle, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            OpcDaGroup target = resolved ?? new OpcDaGroup(
                 name: name,
                 serverHandle: serverHandle,
                 clientHandle: (int)hClientGroup,
@@ -273,7 +278,7 @@ public static unsafe class OpcDaServerCcw
                 timeBias: 0,
                 percentDeadband: 0f,
                 localeId: (int)dwLCID);
-            *ppUnk = OpcDaGroupCcw.Create(placeholderGroup);
+            *ppUnk = OpcDaGroupCcw.Create(target);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
@@ -380,12 +385,53 @@ public static unsafe class OpcDaServerCcw
     [UnmanagedCallersOnly]
     private static int GetGroupByName(IntPtr pThis, IntPtr szName, Guid* riid, IntPtr* ppUnk)
     {
-        _ = pThis; _ = szName; _ = riid;
-        if (ppUnk != null)
+        _ = riid;
+        if (ppUnk == null)
         {
-            *ppUnk = IntPtr.Zero;
+            return E_INVALIDARG;
         }
-        return E_NOTIMPL;
+        *ppUnk = IntPtr.Zero;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
+            return E_NOTIMPL;
+        }
+        if (szName == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+
+        try
+        {
+            string name = Marshal.PtrToStringUni(szName) ?? string.Empty;
+#pragma warning disable VSTHRD002
+            OpcDaGroup? group = server.ResolveGroupByNameAsync(name, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            if (group is null)
+            {
+                return Opc.Classic.OpcResultId.UnknownPath.Code;
+            }
+            *ppUnk = OpcDaGroupCcw.Create(group);
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]

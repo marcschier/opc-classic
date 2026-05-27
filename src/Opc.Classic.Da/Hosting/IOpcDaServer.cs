@@ -43,6 +43,36 @@ public interface IOpcDaServer : IOPCServer
         int localeId,
         CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Resolves a server-tracked <see cref="OpcDaGroup"/> instance by its
+    /// server handle. Used by the Windows CCW activation path
+    /// (<c>OpcDaServerCcw</c>) to look up the managed group after
+    /// <c>AddGroup</c>. Returns <see langword="null"/> when the handle is
+    /// unknown or the implementation doesn't track groups in-process.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation returns <see langword="null"/>; only
+    /// implementations that maintain an internal group dictionary
+    /// (e.g. the reference <c>CttDaServer</c>) override it.
+    /// </remarks>
+    Task<OpcDaGroup?> ResolveGroupAsync(int serverHandle, CancellationToken cancellationToken = default) =>
+        Task.FromResult<OpcDaGroup?>(null);
+
+    /// <summary>
+    /// Resolves a server-tracked <see cref="OpcDaGroup"/> instance by its
+    /// name. Used by the Windows CCW activation path
+    /// (<c>OpcDaServerCcw.GetGroupByName</c>) to look up a managed group.
+    /// Returns <see langword="null"/> when the name is unknown or the
+    /// implementation doesn't track groups in-process.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation returns <see langword="null"/>; only
+    /// implementations that maintain an internal group dictionary
+    /// (e.g. the reference <c>CttDaServer</c>) override it.
+    /// </remarks>
+    Task<OpcDaGroup?> ResolveGroupByNameAsync(string name, CancellationToken cancellationToken = default) =>
+        Task.FromResult<OpcDaGroup?>(null);
+
     Task IOPCServer.AddGroupAsync(
         string name,
         bool active,

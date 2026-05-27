@@ -212,8 +212,9 @@ public sealed class OpcDaServerCcwTests
         }
 
         // ocom-6d wires AddGroup to allocate a managed group through the
-        // stub server and return an IUnknown-only OpcDaGroupCcw pointer.
-        // GetGroupByName + CreateGroupEnumerator still return E_NOTIMPL.
+        // stub server and return an OpcDaGroupCcw pointer. cap-a5 wires
+        // GetGroupByName -> ResolveGroupByNameAsync; CreateGroupEnumerator
+        // still returns E_NOTIMPL pending IEnumUnknown CCW infrastructure.
         var stub = new StubDaServer();
         IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
         (int hrAddGroup, IntPtr ppUnkAdd, int hrGetGroupByName, int hrCreateGroupEnumerator) = InvokeRemainingStubs(ccw);
@@ -221,8 +222,40 @@ public sealed class OpcDaServerCcwTests
         await Assert.That(hrAddGroup).IsEqualTo(S_OK);
         await Assert.That(ppUnkAdd).IsNotEqualTo(IntPtr.Zero);
         await Assert.That(stub.AddGroupCallCount).IsEqualTo(1);
-        await Assert.That(hrGetGroupByName).IsEqualTo(E_NOTIMPL);
+        // GetGroupByName receives IntPtr.Zero for szName -> E_INVALIDARG.
+        await Assert.That(hrGetGroupByName).IsEqualTo(E_INVALIDARG);
         await Assert.That(hrCreateGroupEnumerator).IsEqualTo(E_NOTIMPL);
+    }
+
+    [Test]
+    public async Task GetGroupByName_with_unknown_name_returns_OPC_E_UNKNOWNPATH()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new StubDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+        int hr = InvokeGetGroupByName(ccw, "Nope");
+
+        await Assert.That(hr).IsEqualTo(OpcResultId.UnknownPath.Code);
+    }
+
+    [Test]
+    public async Task GetGroupByName_with_resolved_group_returns_OpcDaGroupCcw()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new GroupResolvingDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+        (int hr, IntPtr returned) = InvokeGetGroupByNameWithPointer(ccw, "G1");
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(returned).IsNotEqualTo(IntPtr.Zero);
     }
 
     [Test]
@@ -384,6 +417,41 @@ public sealed class OpcDaServerCcwTests
         return getStatus(ccw, null);
     }
 
+    private static unsafe int InvokeGetGroupByName(IntPtr ccw, string name)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var getByName = (delegate* unmanaged<IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[5];
+        IntPtr namePtr = Marshal.StringToCoTaskMemUni(name);
+        try
+        {
+            IntPtr ppUnk;
+            Guid iid = Guid.Empty;
+            return getByName(ccw, namePtr, &iid, &ppUnk);
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(namePtr);
+        }
+    }
+
+    private static unsafe (int Hr, IntPtr ReturnedCcw) InvokeGetGroupByNameWithPointer(IntPtr ccw, string name)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var getByName = (delegate* unmanaged<IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[5];
+        IntPtr namePtr = Marshal.StringToCoTaskMemUni(name);
+        try
+        {
+            IntPtr ppUnk;
+            Guid iid = Guid.Empty;
+            int hr = getByName(ccw, namePtr, &iid, &ppUnk);
+            return (hr, ppUnk);
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(namePtr);
+        }
+    }
+
     private sealed class RecordingDaServer : IOpcDaServer
     {
         public int RemoveGroupCallCount { get; private set; }
@@ -461,5 +529,31 @@ public sealed class OpcDaServerCcwTests
 
         public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
             throw new ArgumentException("bad");
+    }
+
+    private sealed class GroupResolvingDaServer : IOpcDaServer
+    {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult(new OpcServerStatus { Spec = OpcStatusSpec.Da });
+
+        public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) =>
+            Task.FromResult(1);
+
+        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
+            Task.FromResult("ok");
+
+        public Task<Opc.Classic.Da.Hosting.OpcDaGroup?> ResolveGroupByNameAsync(string name, CancellationToken cancellationToken = default) =>
+            Task.FromResult<Opc.Classic.Da.Hosting.OpcDaGroup?>(new Opc.Classic.Da.Hosting.OpcDaGroup(
+                name: name,
+                serverHandle: 1,
+                clientHandle: 1,
+                active: true,
+                requestedUpdateRate: 1000,
+                timeBias: 0,
+                percentDeadband: 0f,
+                localeId: 1033));
     }
 }
