@@ -43,19 +43,20 @@ public class Ntlm1 : ISecurity {
     public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer) {
 
         Protection = ((flags & NtlmFlags.NtlmsspNegotiateSeal) != NtlmFlags.None) ?
-            ProtectionLevel.PROTECTION_LEVEL_PRIVACY : ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
+            ProtectionLevel.PROTECTION_LEVEL_PRIVACY :
+                ((flags & NtlmFlags.NtlmsspNegotiateSign) != NtlmFlags.None) ?
+                    ProtectionLevel.PROTECTION_LEVEL_INTEGRITY : ProtectionLevel.PROTECTION_LEVEL_CONNECT;
 
         _isServer = isServer;
+        _encryptMessageSignature = (flags & (NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity |
+            NtlmFlags.NtlmsspNegotiateKeyExch)) ==
+            (NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity | NtlmFlags.NtlmsspNegotiateKeyExch);
         _keyFactory = new NTLMKeyFactory();
-        _clientSigningKey = _keyFactory.
-            GenerateClientSigningKeyUsingNegotiatedSecondarySessionKey(sessionKey);
-        var clientSealingKey = _keyFactory.
-            GenerateClientSealingKeyUsingNegotiatedSecondarySessionKey(sessionKey);
+        _clientSigningKey = _keyFactory.GenerateClientSigningKey(flags, sessionKey);
+        var clientSealingKey = _keyFactory.GenerateClientSealingKey(flags, sessionKey);
 
-        _serverSigningKey = _keyFactory.
-            GenerateServerSigningKeyUsingNegotiatedSecondarySessionKey(sessionKey);
-        var serverSealingKey = _keyFactory.
-            GenerateServerSealingKeyUsingNegotiatedSecondarySessionKey(sessionKey);
+        _serverSigningKey = _keyFactory.GenerateServerSigningKey(flags, sessionKey);
+        var serverSealingKey = _keyFactory.GenerateServerSealingKey(flags, sessionKey);
 
 
         // Used by the server to decrypt client messages
@@ -103,7 +104,9 @@ public class Ntlm1 : ISecurity {
 
             var verifier = _keyFactory.SigningPt1(_responseCounter, signingKey,
                 buffer.Buf, verifierIndex);
-            _keyFactory.SigningPt2(verifier, cipher);
+            if (_encryptMessageSignature) {
+                _keyFactory.SigningPt2(verifier, cipher);
+            }
 
             buffer.Index = verifierIndex;
             // now read the next 16 bytes and pass compare them
@@ -163,7 +166,9 @@ public class Ntlm1 : ISecurity {
                 var data2 = _keyFactory.ApplyARCFOUR(cipher, data);
                 Array.Copy(data2, 0, ndr.Buffer.Buf, index, data2.Length);
             }
-            _keyFactory.SigningPt2(verifier, cipher);
+            if (_encryptMessageSignature) {
+                _keyFactory.SigningPt2(verifier, cipher);
+            }
             buffer.Index = verifierIndex;
             buffer.WriteOctetArray(verifier, 0, verifier.Length);
             _requestCounter++;
@@ -179,6 +184,7 @@ public class Ntlm1 : ISecurity {
     private readonly byte[] _serverSigningKey;
     private readonly NTLMKeyFactory _keyFactory;
     private readonly bool _isServer;
+    private readonly bool _encryptMessageSignature;
     private int _requestCounter;
     private int _responseCounter;
 }

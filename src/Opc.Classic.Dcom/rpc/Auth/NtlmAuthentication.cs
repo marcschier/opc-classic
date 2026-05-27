@@ -398,12 +398,16 @@ public class NtlmAuthentication {
 
                 }
                 try {
-                    // now RC4 encrypt a random 16 byte key
-                    var secondayMasterKey = ntlmKeyFactory.SecondarySessionKey;
-                    exportedSessionKey = secondayMasterKey;
-                    type3.SetSessionKey(ntlmKeyFactory.EncryptSecondarySessionKey(secondayMasterKey, userSessionKey));
+                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != NtlmFlags.None) {
+                        // now RC4 encrypt a random 16 byte key
+                        exportedSessionKey = ntlmKeyFactory.SecondarySessionKey;
+                        type3.SetSessionKey(ntlmKeyFactory.EncryptSecondarySessionKey(exportedSessionKey, userSessionKey));
+                    }
+                    else {
+                        exportedSessionKey = userSessionKey;
+                    }
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
-                    Security = new Ntlm1(flags, secondayMasterKey, false);
+                    Security = new Ntlm1(flags, exportedSessionKey, false);
 #pragma warning restore CS0618
                 }
                 catch (Exception e) {
@@ -589,7 +593,8 @@ public class NtlmAuthentication {
         }
 
         try {
-            secondayMasterKey = sessionResponseUserSessionKeyIsSecondaryMasterKey
+            secondayMasterKey = sessionResponseUserSessionKeyIsSecondaryMasterKey ||
+                (flags & NtlmFlags.NtlmsspNegotiateKeyExch) == NtlmFlags.None
                 ? sessionResponseUserSessionKey
                 : ntlmKeyFactory.DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
             VerifyMicIfRequired(type3Message, secondayMasterKey, authenticateMessage);

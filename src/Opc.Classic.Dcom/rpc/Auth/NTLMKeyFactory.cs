@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Crypto;
+using Opc.Classic.Dcom.Internal.Ntlm;
 using SharpCifs.Util.Sharpen;
 using System;
 using System.Linq;
@@ -124,18 +125,10 @@ internal sealed class NTLMKeyFactory {
     /// <param name="secondarySessionKey"></param>
     /// <returns></returns>
     public byte[] GenerateClientSigningKeyUsingNegotiatedSecondarySessionKey(
-        byte[] secondarySessionKey) {
-        // TODO this can be moved out of here...
-        var dataforhash = new byte[secondarySessionKey.Length + kClientSigningMagicConstant.Length];
-        Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-        Array.Copy(kClientSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-            kClientSigningMagicConstant.Length);
-        var md5 = new MD5Digest();
-        var ret = new byte[md5.GetDigestSize()];
-        md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
-        md5.DoFinal(ret, 0);
-        return ret;
-    }
+        byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kClientSigningMagicConstant);
+
+    public byte[] GenerateClientSigningKey(NtlmFlags flags, byte[] exportedSessionKey) =>
+        GenerateSigningKey(flags, exportedSessionKey, kClientSigningMagicConstant);
 
     /// <summary>
     /// Generate sealing key
@@ -143,18 +136,10 @@ internal sealed class NTLMKeyFactory {
     /// <param name="secondarySessionKey"></param>
     /// <returns></returns>
     public byte[] GenerateClientSealingKeyUsingNegotiatedSecondarySessionKey(
-        byte[] secondarySessionKey) {
-        // TODO this can be moved out of here...
-        var dataforhash = new byte[secondarySessionKey.Length + kClientSealingMagicConstant.Length];
-        Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-        Array.Copy(kClientSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-            kClientSealingMagicConstant.Length);
-        var md5 = new MD5Digest();
-        var ret = new byte[md5.GetDigestSize()];
-        md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
-        md5.DoFinal(ret, 0);
-        return ret;
-    }
+        byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kClientSealingMagicConstant);
+
+    public byte[] GenerateClientSealingKey(NtlmFlags flags, byte[] exportedSessionKey) =>
+        GenerateSealingKey(flags, exportedSessionKey, kClientSealingMagicConstant);
 
     /// <summary>
     /// Generate server signing key
@@ -162,18 +147,10 @@ internal sealed class NTLMKeyFactory {
     /// <param name="secondarySessionKey"></param>
     /// <returns></returns>
     public byte[] GenerateServerSigningKeyUsingNegotiatedSecondarySessionKey(
-        byte[] secondarySessionKey) {
-        // TODO this can be moved out of here...
-        var dataforhash = new byte[secondarySessionKey.Length + kServerSigningMagicConstant.Length];
-        Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-        Array.Copy(kServerSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-            kServerSigningMagicConstant.Length);
-        var md5 = new MD5Digest();
-        var ret = new byte[md5.GetDigestSize()];
-        md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
-        md5.DoFinal(ret, 0);
-        return ret;
-    }
+        byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kServerSigningMagicConstant);
+
+    public byte[] GenerateServerSigningKey(NtlmFlags flags, byte[] exportedSessionKey) =>
+        GenerateSigningKey(flags, exportedSessionKey, kServerSigningMagicConstant);
 
     /// <summary>
     /// Generate server sealing key
@@ -181,18 +158,10 @@ internal sealed class NTLMKeyFactory {
     /// <param name="secondarySessionKey"></param>
     /// <returns></returns>
     public byte[] GenerateServerSealingKeyUsingNegotiatedSecondarySessionKey(
-        byte[] secondarySessionKey) {
-        // TODO this can be moved out of here...
-        var dataforhash = new byte[secondarySessionKey.Length + kServerSealingMagicConstant.Length];
-        Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-        Array.Copy(kServerSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-            kServerSealingMagicConstant.Length);
-        var md5 = new MD5Digest();
-        var ret = new byte[md5.GetDigestSize()];
-        md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
-        md5.DoFinal(ret, 0);
-        return ret;
-    }
+        byte[] secondarySessionKey) => GenerateExtendedSessionSecurityKey(secondarySessionKey, kServerSealingMagicConstant);
+
+    public byte[] GenerateServerSealingKey(NtlmFlags flags, byte[] exportedSessionKey) =>
+        GenerateSealingKey(flags, exportedSessionKey, kServerSealingMagicConstant);
 
     /// <summary>
     /// Signing part 1
@@ -254,6 +223,64 @@ internal sealed class NTLMKeyFactory {
     /// <param name="target"></param>
     /// <returns></returns>
     public bool CompareSignature(byte[] src, byte[] target) => src.SequenceEqual(target);
+
+    private static byte[] GenerateSigningKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant) {
+        if ((flags & NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity) == NtlmFlags.None) {
+            return Array.Empty<byte>();
+        }
+
+        return GenerateExtendedSessionSecurityKey(exportedSessionKey, magicConstant);
+    }
+
+    private static byte[] GenerateSealingKey(NtlmFlags flags, byte[] exportedSessionKey, byte[] magicConstant) {
+        if ((flags & NtlmFlags.NtlmsspNegotiateExtendedSessionSecurity) != NtlmFlags.None) {
+            return GenerateExtendedSessionSecurityKey(GetExtendedSessionSecuritySealKeyMaterial(flags, exportedSessionKey), magicConstant);
+        }
+
+        if ((flags & (NtlmFlags.NtlmsspNegotiateLmKey | NtlmFlags.NtlmsspNegotiateDatagram)) != NtlmFlags.None) {
+            if ((flags & NtlmFlags.NtlmsspNegotiate56) != NtlmFlags.None) {
+                return Concatenate(Left(exportedSessionKey, 7), [0xA0]);
+            }
+
+            return Concatenate(Left(exportedSessionKey, 5), [0xE5, 0x38, 0xB0]);
+        }
+
+        return (byte[])exportedSessionKey.Clone();
+    }
+
+    private static byte[] GetExtendedSessionSecuritySealKeyMaterial(NtlmFlags flags, byte[] exportedSessionKey) {
+        if ((flags & NtlmFlags.NtlmsspNegotiate128) != NtlmFlags.None) {
+            return exportedSessionKey;
+        }
+
+        return (flags & NtlmFlags.NtlmsspNegotiate56) != NtlmFlags.None
+            ? Left(exportedSessionKey, 7)
+            : Left(exportedSessionKey, 5);
+    }
+
+    private static byte[] GenerateExtendedSessionSecurityKey(byte[] keyMaterial, byte[] magicConstant) {
+        var dataforhash = new byte[keyMaterial.Length + magicConstant.Length];
+        Array.Copy(keyMaterial, 0, dataforhash, 0, keyMaterial.Length);
+        Array.Copy(magicConstant, 0, dataforhash, keyMaterial.Length, magicConstant.Length);
+        var md5 = new MD5Digest();
+        var ret = new byte[md5.GetDigestSize()];
+        md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
+        md5.DoFinal(ret, 0);
+        return ret;
+    }
+
+    private static byte[] Left(byte[] value, int length) {
+        var copy = new byte[length];
+        Array.Copy(value, 0, copy, 0, Math.Min(value.Length, length));
+        return copy;
+    }
+
+    private static byte[] Concatenate(byte[] first, byte[] second) {
+        var result = new byte[first.Length + second.Length];
+        Array.Copy(first, 0, result, 0, first.Length);
+        Array.Copy(second, 0, result, first.Length, second.Length);
+        return result;
+    }
 
     private readonly Random _random = new Random();
     private static readonly byte[] kClientSigningMagicConstant = {

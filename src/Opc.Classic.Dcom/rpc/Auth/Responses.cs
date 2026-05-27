@@ -100,9 +100,10 @@ public static class Responses {
         var md5 = DigestUtilities.GetDigest("MD5");
         md5.BlockUpdate(challenge, 0, challenge.Length);
         md5.BlockUpdate(clientNonce, 0, clientNonce.Length);
+        var digest = new byte[md5.GetDigestSize()];
+        md5.DoFinal(digest, 0);
         var sessionHash = new byte[8];
-        md5.DoFinal(sessionHash, 0);
-        // was: Array.Copy(md5.digest(), 0, sessionHash, 0, 8);
+        Array.Copy(digest, 0, sessionHash, 0, sessionHash.Length);
         return LmResponse(hash, sessionHash);
     }
 

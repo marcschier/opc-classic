@@ -278,7 +278,8 @@ and HMAC-MD5 checksum.
 `SequenceEqual`; `THREAT_MODEL.md:237-240` calls out replacement with fixed-time
 comparison as an open recommendation.
 TODO(auditor): confirm all negotiated flag combinations that reach `Ntlm1` match
-MS-NLMP §3.4.5, especially sign-only vs seal modes and key-exchange presence.
+MS-NLMP §3.4.5, especially sign-only vs seal modes and key-exchange presence;
+covered by `NtlmNegotiateFlagsTests.cs` for the documented combinations.
 
 ## 6. Test coverage map
 
