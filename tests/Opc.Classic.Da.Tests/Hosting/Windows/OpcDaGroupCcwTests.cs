@@ -398,33 +398,178 @@ public sealed class OpcDaGroupCcwTests
     }
 
     [Test]
-    public async Task IOPCSyncIO_read_and_write_return_notimpl_for_variant_mvp()
+    public async Task SyncIO_Read_returns_OPCITEMSTATE_array_with_values()
     {
         if (!OperatingSystem.IsWindows())
         {
             return;
         }
 
-        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem[] items = OrderedItems(group);
+        int[] handles = items.Select(item => item.ServerHandle).ToArray();
+        await group.WriteAsync(handles, [OpcVariant.FromInt32(11), OpcVariant.FromInt32(22)], TestContext.Current!.CancellationToken);
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
         IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
 
-        await Assert.That(Helpers.InvokeSyncRead(syncPtr)).IsEqualTo(E_NOTIMPL);
-        await Assert.That(Helpers.InvokeSyncWrite(syncPtr)).IsEqualTo(E_NOTIMPL);
+        Helpers.SyncReadResult result = Helpers.InvokeSyncRead(syncPtr, handles);
+        Helpers.InvokeRelease(syncPtr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.States.Length).IsEqualTo(2);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[1]).IsEqualTo(S_OK);
+        await Assert.That(result.States[0].ClientHandle).IsEqualTo(items[0].ClientHandle);
+        await Assert.That(result.States[1].Value.AsInt32().GetValueOrDefault()).IsEqualTo(22);
+        await Assert.That(result.States[0].Value.AsInt32().GetValueOrDefault()).IsEqualTo(11);
     }
 
     [Test]
-    public async Task IOPCSyncIO2_maxage_and_vqt_return_notimpl_for_variant_mvp()
+    public async Task SyncIO_Read_unknown_handle_returns_OPC_E_INVALIDHANDLE_per_handle()
     {
         if (!OperatingSystem.IsWindows())
         {
             return;
         }
 
-        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        int knownHandle = OrderedItems(group)[0].ServerHandle;
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+
+        Helpers.SyncReadResult result = Helpers.InvokeSyncRead(syncPtr, [knownHandle, knownHandle + 1000]);
+        Helpers.InvokeRelease(syncPtr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[1]).IsEqualTo(OpcResultId.InvalidHandle.Code);
+    }
+
+    [Test]
+    public async Task SyncIO_Read_with_null_OUT_returns_E_INVALIDARG()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        int handle = OrderedItems(group)[0].ServerHandle;
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+
+        int hr = Helpers.InvokeSyncReadWithNullOut(syncPtr, handle);
+        Helpers.InvokeRelease(syncPtr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(hr).IsEqualTo(E_INVALIDARG);
+    }
+
+    [Test]
+    public async Task SyncIO_Write_VT_I4_writes_through_to_managed_group()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem item = OrderedItems(group)[0];
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+
+        Helpers.ErrorsResult result = Helpers.InvokeSyncWrite(syncPtr, [item.ServerHandle], [OpcVariant.FromInt32(42)]);
+        Helpers.InvokeRelease(syncPtr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(item.GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(42);
+    }
+
+    [Test]
+    public async Task SyncIO_Write_VT_BSTR_writes_through()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem item = OrderedItems(group)[0];
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+
+        Helpers.ErrorsResult result = Helpers.InvokeSyncWrite(syncPtr, [item.ServerHandle], [OpcVariant.FromString("hello")]);
+        Helpers.InvokeRelease(syncPtr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(item.GetSnapshot().Value.AsString()).IsEqualTo("hello");
+    }
+
+    [Test]
+    public async Task SyncIO2_ReadMaxAge_returns_separate_value_quality_timestamp_arrays()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem[] items = OrderedItems(group);
+        int[] handles = items.Select(item => item.ServerHandle).ToArray();
+        await group.WriteAsync(handles, [OpcVariant.FromInt32(11), OpcVariant.FromInt32(22)], TestContext.Current!.CancellationToken);
+        OpcItemState firstSnapshot = items[0].GetSnapshot();
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
         IntPtr sync2Ptr = Helpers.InvokeQI(ccw, IOPCSyncIO2.InterfaceId);
 
-        await Assert.That(Helpers.InvokeSyncReadMaxAge(sync2Ptr)).IsEqualTo(E_NOTIMPL);
-        await Assert.That(Helpers.InvokeSyncWriteVqt(sync2Ptr)).IsEqualTo(E_NOTIMPL);
+        Helpers.SyncReadMaxAgeResult result = Helpers.InvokeSyncReadMaxAge(sync2Ptr, handles, [0, 0]);
+        Helpers.InvokeRelease(sync2Ptr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Values[0].AsInt32().GetValueOrDefault()).IsEqualTo(11);
+        await Assert.That(result.Values[1].AsInt32().GetValueOrDefault()).IsEqualTo(22);
+        await Assert.That(result.Qualities[0]).IsEqualTo(firstSnapshot.Quality.RawValue);
+        await Assert.That(result.Timestamps[0]).IsEqualTo(firstSnapshot.Timestamp.ToFileTime());
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+    }
+
+    [Test]
+    public async Task SyncIO2_WriteVqt_with_explicit_timestamp_overrides_DateTime_UtcNow()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem item = OrderedItems(group)[0];
+        DateTimeOffset timestamp = new(2024, 1, 2, 3, 4, 5, TimeSpan.Zero);
+        var vqt = new OpcItemVqt(OpcVariant.FromInt32(77), new OpcQuality(0x00C0), timestamp);
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr sync2Ptr = Helpers.InvokeQI(ccw, IOPCSyncIO2.InterfaceId);
+
+        Helpers.ErrorsResult result = Helpers.InvokeSyncWriteVqt(sync2Ptr, [item.ServerHandle], [vqt]);
+        Helpers.InvokeRelease(sync2Ptr);
+        Helpers.InvokeRelease(ccw);
+
+        OpcItemState snapshot = item.GetSnapshot();
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(snapshot.Value.AsInt32().GetValueOrDefault()).IsEqualTo(77);
+        await Assert.That(snapshot.Timestamp).IsEqualTo(timestamp);
     }
 
     [Test]
@@ -544,7 +689,31 @@ public sealed class OpcDaGroupCcwTests
     }
 
     [Test]
-    public async Task IOPCAsyncIO_write_methods_return_notimpl_for_variant_mvp()
+    public async Task AsyncIO2_Write_returns_cancel_id_and_writes_through()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A", "Tag.B");
+        OpcDaItem item = OrderedItems(group)[0];
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+
+        Helpers.AsyncErrorsResult result = Helpers.InvokeAsyncWrite(async2Ptr, [item.ServerHandle], [OpcVariant.FromInt32(123)]);
+        Helpers.InvokeRelease(async2Ptr);
+        Helpers.InvokeRelease(ccw);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.CancelId).IsNotEqualTo(0);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(item.GetSnapshot().Value.AsInt32().GetValueOrDefault()).IsEqualTo(123);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO3_writevqt_returns_notimpl_for_variant_mvp()
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -552,11 +721,12 @@ public sealed class OpcDaGroupCcwTests
         }
 
         IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
-        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
         IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+        int hr = Helpers.InvokeAsyncWriteVqt(async3Ptr);
+        Helpers.InvokeRelease(async3Ptr);
+        Helpers.InvokeRelease(ccw);
 
-        await Assert.That(Helpers.InvokeAsyncWrite(async2Ptr)).IsEqualTo(E_NOTIMPL);
-        await Assert.That(Helpers.InvokeAsyncWriteVqt(async3Ptr)).IsEqualTo(E_NOTIMPL);
+        await Assert.That(hr).IsEqualTo(E_NOTIMPL);
     }
 
     [Test]
@@ -710,6 +880,9 @@ public sealed class OpcDaGroupCcwTests
         await group.AddItemsAsync(defs, out OpcItemResult[] _, out int[] _, TestContext.Current!.CancellationToken);
     }
 
+    private static OpcDaItem[] OrderedItems(OpcDaGroup group) =>
+        group.Items.OrderBy(item => item.ServerHandle).ToArray();
+
     private static OpcDaGroup NewGroup(string name = "TestGroup") => new(
         name: name,
         serverHandle: 1,
@@ -725,6 +898,19 @@ public sealed class OpcDaGroupCcwTests
         internal readonly record struct GetStateResult(int Hr, int UpdateRate, int Active, string? Name, int LocaleId);
 
         internal readonly record struct RemoveItemsResult(int Hr, int[] Errors);
+
+        internal readonly record struct ErrorsResult(int Hr, int[] Errors);
+
+        internal readonly record struct SyncReadResult(int Hr, NativeItemState[] States, int[] Errors);
+
+        internal readonly record struct NativeItemState(int ClientHandle, long Timestamp, ushort Quality, OpcVariant Value);
+
+        internal readonly record struct SyncReadMaxAgeResult(
+            int Hr,
+            OpcVariant[] Values,
+            ushort[] Qualities,
+            long[] Timestamps,
+            int[] Errors);
 
         internal readonly record struct CloneGroupResult(int Hr, IntPtr Pointer);
 
@@ -793,6 +979,12 @@ public sealed class OpcDaGroupCcwTests
         }
 
         private const int DataCallbackVtableSlotCount = 7;
+        private const int OpcItemStateVariantOffset = 16;
+        private const int OpcItemVqtTrailerSize = 24;
+
+        private static int OpcItemStateSize => OpcItemStateVariantOffset + ComVariantMarshaler.VariantSize;
+
+        private static int OpcItemVqtSize => ComVariantMarshaler.VariantSize + OpcItemVqtTrailerSize;
 
         private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;
         private static readonly ConcurrentDictionary<IntPtr, DataCallbackStubSession> s_dataCallbackStubs = new();
@@ -824,48 +1016,109 @@ public sealed class OpcDaGroupCcwTests
             release(ccw);
         }
 
-        internal static int InvokeSyncRead(IntPtr syncPtr)
+        internal static SyncReadResult InvokeSyncRead(IntPtr syncPtr, int[] handles)
         {
             IntPtr* vtable = *(IntPtr**)syncPtr;
-            var read = (delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
-            IntPtr ppValues;
-            IntPtr ppErrors;
-            int hr = read(syncPtr, 1, 0, IntPtr.Zero, &ppValues, &ppErrors);
-            FreeCoTaskMem(ppValues, ppErrors);
-            return hr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            try
+            {
+                var read = (delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
+                IntPtr ppValues;
+                IntPtr ppErrors;
+                int hr = read(syncPtr, 1, (uint)handles.Length, pHandles, &ppValues, &ppErrors);
+                return new SyncReadResult(hr, ReadItemStatesAndFree(ppValues, handles.Length),
+                    ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pHandles);
+            }
         }
 
-        internal static int InvokeSyncWrite(IntPtr syncPtr)
+        internal static int InvokeSyncReadWithNullOut(IntPtr syncPtr, int handle)
         {
             IntPtr* vtable = *(IntPtr**)syncPtr;
-            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[4];
-            IntPtr ppErrors;
-            int hr = write(syncPtr, 0, IntPtr.Zero, IntPtr.Zero, &ppErrors);
-            FreeCoTaskMem(ppErrors);
-            return hr;
+            IntPtr pHandles = AllocateInt32ArrayForCall([handle]);
+            try
+            {
+                var read = (delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
+                return read(syncPtr, 1, 1, pHandles, null, null);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pHandles);
+            }
         }
 
-        internal static int InvokeSyncReadMaxAge(IntPtr sync2Ptr)
+        internal static ErrorsResult InvokeSyncWrite(IntPtr syncPtr, int[] handles, OpcVariant[] values)
+        {
+            IntPtr* vtable = *(IntPtr**)syncPtr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            IntPtr pValues = AllocateVariantArrayForCall(values);
+            try
+            {
+                var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[4];
+                IntPtr ppErrors;
+                int hr = write(syncPtr, (uint)handles.Length, pHandles, pValues, &ppErrors);
+                return new ErrorsResult(hr, ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                FreeVariantArrayForCall(pValues, values.Length);
+                Marshal.FreeCoTaskMem(pHandles);
+            }
+        }
+
+        internal static SyncReadMaxAgeResult InvokeSyncReadMaxAge(IntPtr sync2Ptr, int[] handles, int[] maxAges)
         {
             IntPtr* vtable = *(IntPtr**)sync2Ptr;
-            var read = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, IntPtr*, IntPtr*, IntPtr*, int>)vtable[5];
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            IntPtr pMaxAges = AllocateInt32ArrayForCall(maxAges);
+            try
+            {
+                return InvokeSyncReadMaxAgeCore(sync2Ptr, vtable[5], handles.Length, pHandles, pMaxAges);
+            }
+            finally
+            {
+                FreeCoTaskMem(pHandles, pMaxAges);
+            }
+        }
+
+        internal static ErrorsResult InvokeSyncWriteVqt(IntPtr sync2Ptr, int[] handles, OpcItemVqt[] values)
+        {
+            IntPtr* vtable = *(IntPtr**)sync2Ptr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            IntPtr pValues = AllocateOpcItemVqtArrayForCall(values);
+            try
+            {
+                var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[6];
+                IntPtr ppErrors;
+                int hr = write(sync2Ptr, (uint)handles.Length, pHandles, pValues, &ppErrors);
+                return new ErrorsResult(hr, ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                FreeOpcItemVqtArrayForCall(pValues, values.Length);
+                Marshal.FreeCoTaskMem(pHandles);
+            }
+        }
+
+        private static SyncReadMaxAgeResult InvokeSyncReadMaxAgeCore(
+            IntPtr sync2Ptr,
+            IntPtr method,
+            int count,
+            IntPtr pHandles,
+            IntPtr pMaxAges)
+        {
+            var read = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, IntPtr*, IntPtr*, IntPtr*, int>)method;
             IntPtr values;
             IntPtr qualities;
             IntPtr timestamps;
             IntPtr errors;
-            int hr = read(sync2Ptr, 0, IntPtr.Zero, IntPtr.Zero, &values, &qualities, &timestamps, &errors);
-            FreeCoTaskMem(values, qualities, timestamps, errors);
-            return hr;
-        }
-
-        internal static int InvokeSyncWriteVqt(IntPtr sync2Ptr)
-        {
-            IntPtr* vtable = *(IntPtr**)sync2Ptr;
-            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[6];
-            IntPtr ppErrors;
-            int hr = write(sync2Ptr, 0, IntPtr.Zero, IntPtr.Zero, &ppErrors);
-            FreeCoTaskMem(ppErrors);
-            return hr;
+            int hr = read(sync2Ptr, (uint)count, pHandles, pMaxAges, &values, &qualities, &timestamps, &errors);
+            return new SyncReadMaxAgeResult(hr, ReadVariantArrayAndFree(values, count),
+                ReadUInt16ArrayAndFree(qualities, count), ReadInt64ArrayAndFree(timestamps, count),
+                ReadErrorsAndFree(errors, count));
         }
 
         internal static AsyncErrorsResult InvokeAsyncRead(IntPtr async2Ptr, int[] handles)
@@ -886,15 +1139,24 @@ public sealed class OpcDaGroupCcwTests
             }
         }
 
-        internal static int InvokeAsyncWrite(IntPtr async2Ptr)
+        internal static AsyncErrorsResult InvokeAsyncWrite(IntPtr async2Ptr, int[] handles, OpcVariant[] values)
         {
             IntPtr* vtable = *(IntPtr**)async2Ptr;
-            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[4];
-            uint cancelId;
-            IntPtr ppErrors;
-            int hr = write(async2Ptr, 0, IntPtr.Zero, IntPtr.Zero, 77, &cancelId, &ppErrors);
-            FreeCoTaskMem(ppErrors);
-            return hr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            IntPtr pValues = AllocateVariantArrayForCall(values);
+            try
+            {
+                var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[4];
+                uint cancelId;
+                IntPtr ppErrors;
+                int hr = write(async2Ptr, (uint)handles.Length, pHandles, pValues, 77, &cancelId, &ppErrors);
+                return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                FreeVariantArrayForCall(pValues, values.Length);
+                Marshal.FreeCoTaskMem(pHandles);
+            }
         }
 
         internal static CancelResult InvokeAsyncRefresh2(IntPtr async2Ptr)
@@ -1291,6 +1553,7 @@ public sealed class OpcDaGroupCcwTests
         private static int DataCallbackStubRecord(IntPtr pThis) =>
             s_dataCallbackStubs.ContainsKey(pThis) ? S_OK : E_NOINTERFACE;
 
+        [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
         private static IntPtr AllocateInt32ArrayForCall(int[] values)
         {
             if (values.Length == 0)
@@ -1300,6 +1563,82 @@ public sealed class OpcDaGroupCcwTests
             IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * sizeof(int)));
             Marshal.Copy(values, 0, ptr, values.Length);
             return ptr;
+        }
+
+        [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+        private static IntPtr AllocateVariantArrayForCall(OpcVariant[] values)
+        {
+            if (values.Length == 0)
+            {
+                return IntPtr.Zero;
+            }
+            int variantSize = ComVariantMarshaler.VariantSize;
+            IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * variantSize));
+            for (int i = 0; i < values.Length; i++)
+            {
+                ComVariantMarshaler.WriteVariant(IntPtr.Add(ptr, checked(i * variantSize)), values[i]);
+            }
+            return ptr;
+        }
+
+        [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+        private static IntPtr AllocateOpcItemVqtArrayForCall(OpcItemVqt[] values)
+        {
+            if (values.Length == 0)
+            {
+                return IntPtr.Zero;
+            }
+            int size = OpcItemVqtSize;
+            IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * size));
+            for (int i = 0; i < values.Length; i++)
+            {
+                WriteOpcItemVqtForCall(IntPtr.Add(ptr, checked(i * size)), values[i]);
+            }
+            return ptr;
+        }
+
+        private static void WriteOpcItemVqtForCall(IntPtr slot, OpcItemVqt value)
+        {
+            int variantSize = ComVariantMarshaler.VariantSize;
+            ComVariantMarshaler.WriteVariant(slot, value.Value);
+            bool qualitySpecified = value.Quality.HasValue;
+            ushort quality = qualitySpecified ? value.Quality.GetValueOrDefault().RawValue : (ushort)0;
+            Marshal.WriteInt32(slot, variantSize, qualitySpecified ? -1 : 0);
+            Marshal.WriteInt16(slot, variantSize + 4, unchecked((short)quality));
+            Marshal.WriteInt16(slot, variantSize + 6, 0);
+            bool timestampSpecified = value.Timestamp.HasValue;
+            long fileTime = timestampSpecified ? value.Timestamp.GetValueOrDefault().ToFileTime() : 0L;
+            Marshal.WriteInt32(slot, variantSize + 8, timestampSpecified ? -1 : 0);
+            Marshal.WriteInt32(slot, variantSize + 12, 0);
+            Marshal.WriteInt64(slot, variantSize + 16, fileTime);
+        }
+
+        private static void FreeVariantArrayForCall(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return;
+            }
+            int variantSize = ComVariantMarshaler.VariantSize;
+            for (int i = 0; i < count; i++)
+            {
+                ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * variantSize)));
+            }
+            Marshal.FreeCoTaskMem(ptr);
+        }
+
+        private static void FreeOpcItemVqtArrayForCall(IntPtr ptr, int count)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return;
+            }
+            int size = OpcItemVqtSize;
+            for (int i = 0; i < count; i++)
+            {
+                ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, checked(i * size)));
+            }
+            Marshal.FreeCoTaskMem(ptr);
         }
 
         private static void FreeCoTaskMem(params IntPtr[] pointers)
@@ -1368,6 +1707,58 @@ public sealed class OpcDaGroupCcwTests
             }
             Marshal.FreeCoTaskMem(ptr);
             return results;
+        }
+
+        private static NativeItemState[] ReadItemStatesAndFree(IntPtr ptr, int count)
+        {
+            var states = new NativeItemState[count];
+            int size = OpcItemStateSize;
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
+                IntPtr slot = IntPtr.Add(ptr, checked(i * size));
+                states[i] = new NativeItemState(Marshal.ReadInt32(slot), Marshal.ReadInt64(slot, 4),
+                    unchecked((ushort)Marshal.ReadInt16(slot, 12)),
+                    ComVariantMarshaler.ReadVariant(IntPtr.Add(slot, OpcItemStateVariantOffset)));
+                ComVariantMarshaler.ClearVariant(IntPtr.Add(slot, OpcItemStateVariantOffset));
+            }
+            Marshal.FreeCoTaskMem(ptr);
+            return states;
+        }
+
+        private static OpcVariant[] ReadVariantArrayAndFree(IntPtr ptr, int count)
+        {
+            var values = new OpcVariant[count];
+            int variantSize = ComVariantMarshaler.VariantSize;
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
+                IntPtr slot = IntPtr.Add(ptr, checked(i * variantSize));
+                values[i] = ComVariantMarshaler.ReadVariant(slot);
+                ComVariantMarshaler.ClearVariant(slot);
+            }
+            Marshal.FreeCoTaskMem(ptr);
+            return values;
+        }
+
+        private static ushort[] ReadUInt16ArrayAndFree(IntPtr ptr, int count)
+        {
+            var values = new ushort[count];
+            for (int i = 0; i < count && ptr != IntPtr.Zero; i++)
+            {
+                values[i] = unchecked((ushort)Marshal.ReadInt16(ptr, checked(i * sizeof(ushort))));
+            }
+            Marshal.FreeCoTaskMem(ptr);
+            return values;
+        }
+
+        private static long[] ReadInt64ArrayAndFree(IntPtr ptr, int count)
+        {
+            var values = new long[count];
+            if (ptr != IntPtr.Zero && count > 0)
+            {
+                Marshal.Copy(ptr, values, 0, count);
+            }
+            Marshal.FreeCoTaskMem(ptr);
+            return values;
         }
 
         private static int[] ReadErrorsAndFree(IntPtr ptr, int count)
