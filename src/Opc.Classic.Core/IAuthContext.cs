@@ -37,3 +37,12 @@ public interface IAuthContext
     /// <summary>Gets the negotiated DCE/RPC packet-protection level.</summary>
     OpcProtectionLevel ProtectionLevel { get; }
 }
+
+/// <summary>
+/// Optional authentication context capability for transports that need the established session key.
+/// </summary>
+public interface IAuthSessionKeyProvider
+{
+    /// <summary>Gets the negotiated NTLMSSP/Kerberos session key, if one is established.</summary>
+    ReadOnlyMemory<byte>? GetSessionKey();
+}

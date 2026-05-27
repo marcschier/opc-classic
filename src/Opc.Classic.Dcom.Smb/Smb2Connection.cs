@@ -312,8 +312,8 @@ public sealed class Smb2Connection : IAsyncDisposable
         return new Smb2NamedPipe(this, response.FileIdPersistent, response.FileIdVolatile);
     }
 
-    /// <summary>Issues a raw SMB2 IOCTL with <c>FSCTL_PIPE_TRANSCEIVE</c>.</summary>
-    public async Task<ReadOnlyMemory<byte>> PipeTransceiveAsync(
+    /// <summary>Issues an SMB2 WRITE against the opened named pipe.</summary>
+    public async Task PipeWriteAsync(
         Smb2NamedPipe pipe,
         ReadOnlyMemory<byte> data,
         CancellationToken cancellationToken = default)
@@ -321,12 +321,70 @@ public sealed class Smb2Connection : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(pipe);
         ThrowIfDisposed();
 
+        var request = new Smb2WriteRequest(
+            Offset: 0,
+            FileIdPersistent: pipe.FileIdPersistent,
+            FileIdVolatile: pipe.FileIdVolatile,
+            Data: data);
+
+        var responseBytes = await ExchangeAsync(
+            command: Smb2Command.Write,
+            sessionId: _sessionId,
+            treeId: _treeId,
+            writeBody: (Span<byte> body) => request.WriteTo(body),
+            maxBodySize: 48 + data.Length,
+            cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = Smb2WriteResponse.Read(responseBytes.Span);
+        if (response.Count != data.Length)
+        {
+            throw new Smb2ProtocolException($"SMB2 WRITE acknowledged {response.Count} of {data.Length} bytes.");
+        }
+    }
+
+    /// <summary>Issues an SMB2 READ against the opened named pipe.</summary>
+    public async Task<ReadOnlyMemory<byte>> PipeReadAsync(
+        Smb2NamedPipe pipe,
+        int maxLength,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(pipe);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
+        ThrowIfDisposed();
+
+        var request = new Smb2ReadRequest(
+            Length: checked((uint)maxLength),
+            Offset: 0,
+            FileIdPersistent: pipe.FileIdPersistent,
+            FileIdVolatile: pipe.FileIdVolatile,
+            MinimumCount: 1);
+
+        var responseBytes = await ExchangeAsync(
+            command: Smb2Command.Read,
+            sessionId: _sessionId,
+            treeId: _treeId,
+            writeBody: (Span<byte> body) => request.WriteTo(body),
+            maxBodySize: 49,
+            cancellationToken: cancellationToken).ConfigureAwait(false);
+        return Smb2ReadResponse.Read(responseBytes.Span).Data;
+    }
+
+    /// <summary>Issues a raw SMB2 IOCTL with <c>FSCTL_PIPE_TRANSCEIVE</c>.</summary>
+    public async Task<ReadOnlyMemory<byte>> PipeTransceiveAsync(
+        Smb2NamedPipe pipe,
+        ReadOnlyMemory<byte> data,
+        int maxOutputResponse = 64 * 1024,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(pipe);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxOutputResponse);
+        ThrowIfDisposed();
+
         var request = new Smb2IoctlRequest(
             CtlCode: FsctlCode.PipeTransceive,
             FileIdPersistent: pipe.FileIdPersistent,
             FileIdVolatile: pipe.FileIdVolatile,
             Input: data,
-            MaxOutputResponse: 4096,
+            MaxOutputResponse: checked((uint)maxOutputResponse),
             IsFsctl: true);
 
         var responseBytes = await ExchangeAsync(
@@ -334,7 +392,7 @@ public sealed class Smb2Connection : IAsyncDisposable
             sessionId: _sessionId,
             treeId: _treeId,
             writeBody: (Span<byte> body) => request.WriteTo(body),
-            maxBodySize: 128 + data.Length,
+            maxBodySize: 56 + data.Length,
             cancellationToken: cancellationToken).ConfigureAwait(false);
         return Smb2IoctlResponse.Read(responseBytes.Span).Output;
     }
@@ -777,9 +835,20 @@ public sealed class Smb2NamedPipe : IAsyncDisposable
 
     internal ulong FileIdVolatile { get; }
 
+    /// <summary>Sends data with an SMB2 WRITE request.</summary>
+    public Task WriteAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default) =>
+        _connection.PipeWriteAsync(this, data, cancellationToken);
+
+    /// <summary>Reads data with an SMB2 READ request.</summary>
+    public Task<ReadOnlyMemory<byte>> ReadAsync(int maxLength, CancellationToken cancellationToken = default) =>
+        _connection.PipeReadAsync(this, maxLength, cancellationToken);
+
     /// <summary>Sends data and waits for a response in one round-trip via FSCTL_PIPE_TRANSCEIVE.</summary>
-    public Task<ReadOnlyMemory<byte>> TransceiveAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default) =>
-        _connection.PipeTransceiveAsync(this, data, cancellationToken);
+    public Task<ReadOnlyMemory<byte>> TransceiveAsync(
+        ReadOnlyMemory<byte> data,
+        int maxOutputResponse = 64 * 1024,
+        CancellationToken cancellationToken = default) =>
+        _connection.PipeTransceiveAsync(this, data, maxOutputResponse, cancellationToken);
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()

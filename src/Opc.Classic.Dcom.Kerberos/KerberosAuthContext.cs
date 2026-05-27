@@ -13,7 +13,7 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// <summary>
 /// Kerberos / SPNEGO implementation of the DCOM authentication context abstraction.
 /// </summary>
-public sealed class KerberosAuthContext : IAuthContext
+public sealed class KerberosAuthContext : IAuthContext, IAuthSessionKeyProvider
 {
     private const int Rfc4121WrapHeaderLength = 16;
 
@@ -137,6 +137,9 @@ public sealed class KerberosAuthContext : IAuthContext
 
     private IKerberosSession EstablishedSession => _session ?? throw new InvalidOperationException(
         "Kerberos packet protection is not available until the AP-REQ/AP-REP context is established.");
+
+    /// <inheritdoc />
+    public ReadOnlyMemory<byte>? GetSessionKey() => _kerberosCtx.EstablishedSessionKey?.Key;
 
     /// <inheritdoc />
     public void SignAndSeal(Span<byte> pduBody, out byte[] signature)

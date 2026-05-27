@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace Opc.Classic.Dcom.Smb.Rpc;
 
+/// <summary>Connects the SMB2 state machine to an underlying transport.</summary>
+public delegate Task<ISmb2Transport> Smb2TransportConnector(
+    string host,
+    int port,
+    int maxSmb2MessageSize,
+    CancellationToken cancellationToken);
+
 /// <summary>
 /// Sync-over-async adapter that exposes an SMB2 named pipe as a single-shot
 /// request/response (transceive) endpoint suitable for the legacy
@@ -30,7 +37,7 @@ namespace Opc.Classic.Dcom.Smb.Rpc;
 /// <see cref="Smb2NamedPipe" /> directly.
 /// </para>
 /// </remarks>
-public sealed class Smb2RpcTransportAdapter : IDisposable
+public sealed class Smb2RpcTransportAdapter : IDisposable, IAsyncDisposable
 {
     private readonly Smb2Connection _connection;
     private readonly Smb2NamedPipe _pipe;
@@ -43,6 +50,47 @@ public sealed class Smb2RpcTransportAdapter : IDisposable
         _pipe = pipe ?? throw new ArgumentNullException(nameof(pipe));
     }
 
+    /// <summary>Sends data with an SMB2 WRITE request.</summary>
+    public async Task WriteAsync(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        await _pipe.WriteAsync(request, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>Reads data with an SMB2 READ request.</summary>
+    public async Task<ReadOnlyMemory<byte>> ReadAsync(int maxLength, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        return await _pipe.ReadAsync(maxLength, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Asynchronous round-trip: send <paramref name="request" /> and return the
+    /// server's response in one SMB2 IOCTL transact.
+    /// </summary>
+    public async Task<ReadOnlyMemory<byte>> TransceiveAsync(
+        ReadOnlyMemory<byte> request,
+        int maxOutputResponse = 64 * 1024,
+        CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        return await _pipe.TransceiveAsync(request, maxOutputResponse, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>Synchronous write wrapper for legacy callers.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Usage", "VSTHRD002:Avoid problematic synchronous waits",
+        Justification = "Intentional sync-over-async bridge to the legacy Opc.Classic.Dcom.Rpc.ITransport contract (which is itself synchronous).")]
+    public void Write(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default) =>
+        WriteAsync(request, cancellationToken).GetAwaiter().GetResult();
+
+    /// <summary>Synchronous read wrapper for legacy callers.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Usage", "VSTHRD002:Avoid problematic synchronous waits",
+        Justification = "Intentional sync-over-async bridge to the legacy Opc.Classic.Dcom.Rpc.ITransport contract (which is itself synchronous).")]
+    public ReadOnlyMemory<byte> Read(int maxLength, CancellationToken cancellationToken = default) =>
+        ReadAsync(maxLength, cancellationToken).GetAwaiter().GetResult();
+
     /// <summary>
     /// Synchronous round-trip: send <paramref name="request" /> and return the
     /// server's response in one SMB2 IOCTL transact.
@@ -50,25 +98,32 @@ public sealed class Smb2RpcTransportAdapter : IDisposable
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
         Justification = "Intentional sync-over-async bridge to the legacy Opc.Classic.Dcom.Rpc.ITransport contract (which is itself synchronous). For new code prefer the async API on Smb2NamedPipe directly.")]
-    public ReadOnlyMemory<byte> Transceive(ReadOnlyMemory<byte> request, CancellationToken cancellationToken = default)
-    {
-        ObjectDisposedException.ThrowIf(_disposed, this);
-        return _pipe.TransceiveAsync(request, cancellationToken).GetAwaiter().GetResult();
-    }
+    public ReadOnlyMemory<byte> Transceive(
+        ReadOnlyMemory<byte> request,
+        int maxOutputResponse = 64 * 1024,
+        CancellationToken cancellationToken = default) =>
+        TransceiveAsync(request, maxOutputResponse, cancellationToken).GetAwaiter().GetResult();
 
     /// <inheritdoc />
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Usage", "VSTHRD002:Avoid problematic synchronous waits",
-        Justification = "IDisposable.Dispose is intrinsically synchronous; we delegate to the async DisposeAsync. Callers wanting deterministic async tear-down can call Smb2NamedPipe.DisposeAsync and Smb2Connection.DisposeAsync directly.")]
+        Justification = "IDisposable.Dispose is intrinsically synchronous; we delegate to the async DisposeAsync. Callers wanting deterministic async tear-down can call DisposeAsync directly.")]
     public void Dispose()
+    {
+        DisposeAsync().AsTask().GetAwaiter().GetResult();
+        GC.SuppressFinalize(this);
+    }
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync()
     {
         if (_disposed)
         {
             return;
         }
         _disposed = true;
-        _pipe.DisposeAsync().AsTask().GetAwaiter().GetResult();
-        _connection.DisposeAsync().AsTask().GetAwaiter().GetResult();
+        await _pipe.DisposeAsync().ConfigureAwait(false);
+        await _connection.DisposeAsync().ConfigureAwait(false);
     }
 }
 
@@ -188,6 +243,7 @@ public sealed class Smb2RpcTransportBuilder
     private readonly SmbRpcAddress.Parsed _address;
     private readonly NtlmsspBlobProvider _blobProvider;
     private readonly Smb2SessionKeyProvider? _sessionKeyProvider;
+    private Smb2TransportConnector _transportConnector = ConnectTcpTransportAsync;
     private int _port = 445;
     private int _maxSmb2MessageSize = Smb2Constants.MaxNetBiosFrameSize;
 
@@ -224,13 +280,20 @@ public sealed class Smb2RpcTransportBuilder
         return this;
     }
 
+    /// <summary>Overrides the SMB2 byte transport connector, primarily for tests.</summary>
+    public Smb2RpcTransportBuilder UseTransportConnector(Smb2TransportConnector transportConnector)
+    {
+        _transportConnector = transportConnector ?? throw new ArgumentNullException(nameof(transportConnector));
+        return this;
+    }
+
     /// <summary>
     /// Opens the SMB2 connection, completes NTLMSSP session setup, connects to IPC$,
     /// opens the named pipe, and returns the adapter.
     /// </summary>
     public async Task<Smb2RpcTransportAdapter> BuildAsync(CancellationToken cancellationToken = default)
     {
-        var tcp = await TcpSmb2Transport.ConnectAsync(_address.Host, _port, _maxSmb2MessageSize, cancellationToken).ConfigureAwait(false);
+        ISmb2Transport tcp = await _transportConnector(_address.Host, _port, _maxSmb2MessageSize, cancellationToken).ConfigureAwait(false);
         var conn = new Smb2Connection(new Smb2ConnectionOptions(_address.Host, _port) { MaxSmb2MessageSize = _maxSmb2MessageSize }, tcp);
         try
         {
@@ -246,6 +309,13 @@ public sealed class Smb2RpcTransportBuilder
             throw;
         }
     }
+
+    private static async Task<ISmb2Transport> ConnectTcpTransportAsync(
+        string host,
+        int port,
+        int maxSmb2MessageSize,
+        CancellationToken cancellationToken) =>
+        await TcpSmb2Transport.ConnectAsync(host, port, maxSmb2MessageSize, cancellationToken).ConfigureAwait(false);
 
     /// <summary>Convenience wrapper that runs <see cref="BuildAsync" /> synchronously.</summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(

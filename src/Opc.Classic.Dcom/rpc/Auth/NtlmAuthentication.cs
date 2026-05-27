@@ -151,7 +151,7 @@ public class NtlmAuthentication {
         return properties;
     }
 
-    private sealed class NtlmAuthContext : IAuthContext {
+    private sealed class NtlmAuthContext : IAuthContext, IAuthSessionKeyProvider {
         private readonly NtlmAuthentication _authentication;
 
         public NtlmAuthContext(OpcConnectData connectData) {
@@ -216,6 +216,8 @@ public class NtlmAuthentication {
             return true;
         }
 
+        public ReadOnlyMemory<byte>? GetSessionKey() => _authentication.EstablishedSessionKey;
+
         private ISecurity EstablishedSecurity => _authentication.Security ?? throw new InvalidOperationException(
             "NTLM session security is not established until ProcessChallengeToken completes.");
 
@@ -230,6 +232,9 @@ public class NtlmAuthentication {
     /// Get security object
     /// </summary>
     public ISecurity Security { get; private set; }
+
+    /// <summary>Gets the exported NTLM session key established by the latest type-3 exchange.</summary>
+    public ReadOnlyMemory<byte>? EstablishedSessionKey { get; private set; }
 
     /// <summary>
     /// Create type 1 message
@@ -407,6 +412,7 @@ public class NtlmAuthentication {
                         exportedSessionKey = userSessionKey;
                     }
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
+                    EstablishedSessionKey = exportedSessionKey.ToArray();
                     Security = new Ntlm1(flags, exportedSessionKey, false);
 #pragma warning restore CS0618
                 }
@@ -598,6 +604,7 @@ public class NtlmAuthentication {
                 ? sessionResponseUserSessionKey
                 : ntlmKeyFactory.DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
             VerifyMicIfRequired(type3Message, secondayMasterKey, authenticateMessage);
+            EstablishedSessionKey = secondayMasterKey.ToArray();
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
             Security = new Ntlm1(flags, secondayMasterKey, true);
 #pragma warning restore CS0618
