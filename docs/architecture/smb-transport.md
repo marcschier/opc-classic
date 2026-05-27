@@ -107,7 +107,7 @@ Only the connection / session / file / pipe primitives are needed:
 | 3 — WINREG end-to-end smoke | ⏳ Pending | green CI against Samba/Windows container or recorded PCAP fixtures |
 | 4 — Legacy `IActivation` interface | ⏳ Pending | client + optional server side for pre-XP-SP2 interop |
 | 5 — Cross-platform CI matrix | ✅ Landed | Ubuntu + macOS + Windows restore/build/test matrix in `.github\workflows\build.yml` |
-| 6 — PCAP-based wire fixtures | ⏳ Pending | unit-test gold files captured from real Windows exchanges |
+| 6 — PCAP-based wire fixtures | ✅ Landed | harness shipped; real-world PCAP captures still pending; harness ready to receive them at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\` |
 
 ## See also
 
