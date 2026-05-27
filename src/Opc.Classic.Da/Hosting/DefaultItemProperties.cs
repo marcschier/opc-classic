@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
@@ -12,12 +13,28 @@ namespace Opc.Classic.Da.Hosting;
 
 /// <summary>
 /// Default managed implementation of <see cref="IOPCItemProperties"/>
-/// (DA 2.x). Returns empty property lists / <c>OPC_E_NOTSUPPORTED</c> so
-/// the interface is reachable on the wire even when the server doesn't
-/// expose per-item properties.
+/// (DA 2.x) publishing the OPC-standard property set (IDs 1-8) defined in
+/// <see cref="OpcStandardProperties"/>. Property values are sourced from
+/// an injected <see cref="IOpcItemPropertyProvider"/> so server authors can
+/// customize per-item behaviour; the default provider returns
+/// <c>OPC_E_INVALID_PID</c> for every requested property value.
 /// </summary>
 public sealed class DefaultItemProperties : IOPCItemProperties
 {
+    private readonly IOpcItemPropertyProvider _provider;
+
+    /// <summary>Initializes with the no-op property provider.</summary>
+    public DefaultItemProperties()
+        : this(NullItemPropertyProvider.Instance)
+    {
+    }
+
+    /// <summary>Initializes with the supplied provider.</summary>
+    public DefaultItemProperties(IOpcItemPropertyProvider provider)
+    {
+        _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+    }
+
     /// <inheritdoc />
     public Task QueryAvailablePropertiesAsync(
         string itemId,
@@ -28,9 +45,16 @@ public sealed class DefaultItemProperties : IOPCItemProperties
     {
         ArgumentException.ThrowIfNullOrEmpty(itemId);
         cancellationToken.ThrowIfCancellationRequested();
-        propertyIds = Array.Empty<int>();
-        descriptions = Array.Empty<string>();
-        dataTypes = Array.Empty<ushort>();
+        var properties = OpcStandardProperties.All;
+        propertyIds = new int[properties.Count];
+        descriptions = new string[properties.Count];
+        dataTypes = new ushort[properties.Count];
+        for (int i = 0; i < properties.Count; i++)
+        {
+            propertyIds[i] = properties[i].Id;
+            descriptions[i] = properties[i].Description;
+            dataTypes[i] = (ushort)properties[i].DataType;
+        }
         return Task.CompletedTask;
     }
 
@@ -49,8 +73,9 @@ public sealed class DefaultItemProperties : IOPCItemProperties
         errors = new int[propertyIds.Length];
         for (int i = 0; i < propertyIds.Length; i++)
         {
-            data[i] = OpcVariant.Empty;
-            errors[i] = OpcResultId.InvalidPid.Code;
+            (OpcVariant value, int error) = _provider.TryGetPropertyValue(itemId, propertyIds[i]);
+            data[i] = value;
+            errors[i] = error;
         }
         return Task.CompletedTask;
     }
@@ -71,6 +96,9 @@ public sealed class DefaultItemProperties : IOPCItemProperties
         for (int i = 0; i < propertyIds.Length; i++)
         {
             newItemIds[i] = string.Empty;
+            // Standard properties (1-8) are not indirect. Vendor-defined
+            // properties may resolve to a different item ID; provider can
+            // override this method via subclassing if needed.
             errors[i] = OpcResultId.InvalidPid.Code;
         }
         return Task.CompletedTask;

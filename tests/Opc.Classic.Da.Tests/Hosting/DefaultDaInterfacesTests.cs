@@ -54,7 +54,7 @@ public sealed class DefaultDaInterfacesTests
     }
 
     [Test]
-    public async Task DefaultItemProperties_QueryAvailableProperties_returns_empty()
+    public async Task DefaultItemProperties_QueryAvailableProperties_returns_OPC_standard_set()
     {
         var props = new DefaultItemProperties();
 
@@ -65,9 +65,10 @@ public sealed class DefaultDaInterfacesTests
             out ushort[] types,
             TestContext.Current!.CancellationToken);
 
-        await Assert.That(ids.Length).IsEqualTo(0);
-        await Assert.That(descriptions.Length).IsEqualTo(0);
-        await Assert.That(types.Length).IsEqualTo(0);
+        // cap-b2 now publishes the OPC-standard property set (IDs 1-8).
+        await Assert.That(ids.Length).IsEqualTo(8);
+        await Assert.That(descriptions.Length).IsEqualTo(8);
+        await Assert.That(types.Length).IsEqualTo(8);
     }
 
     [Test]
