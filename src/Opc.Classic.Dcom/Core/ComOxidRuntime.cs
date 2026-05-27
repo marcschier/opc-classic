@@ -62,7 +62,13 @@ internal sealed class ComOxidRuntime : IDisposable {
         _defaults2.SetProperty("rpc.ntlm.seal", "false");
         _defaults2.SetProperty("rpc.ntlm.keyExchange", "false");
         _defaults2.SetProperty("rpc.connectionContext", "Opc.Classic.Dcom.Transport.ComRuntimeNTLMConnectionContext");
+        _defaults2.SetProperty(RpcTransportQuotas.MaxNdrPayloadSizeProperty, RpcTransportQuotas.DefaultMaxNdrPayloadSize);
+        _defaults2.SetProperty(RpcTransportQuotas.MaxNtlmMessageSizeProperty, RpcTransportQuotas.DefaultMaxNtlmMessageSize);
+        _defaults2.SetProperty(RpcTransportQuotas.MaxSmb2MessageSizeProperty, RpcTransportQuotas.DefaultMaxSmb2MessageSize);
         _defaults.SetProperty("rpc.connectionContext", "Opc.Classic.Dcom.Transport.ComRuntimeConnectionContext");
+        _defaults.SetProperty(RpcTransportQuotas.MaxNdrPayloadSizeProperty, RpcTransportQuotas.DefaultMaxNdrPayloadSize);
+        _defaults.SetProperty(RpcTransportQuotas.MaxNtlmMessageSizeProperty, RpcTransportQuotas.DefaultMaxNtlmMessageSize);
+        _defaults.SetProperty(RpcTransportQuotas.MaxSmb2MessageSizeProperty, RpcTransportQuotas.DefaultMaxSmb2MessageSize);
     }
 
     internal static ProtectionLevel ConfigureActivationProtection(

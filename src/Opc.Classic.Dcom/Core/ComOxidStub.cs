@@ -26,6 +26,9 @@ internal sealed class ComOxidStub : Stub {
         kDefaults.SetProperty("rpc.ntlm.seal", "false");
         kDefaults.SetProperty("rpc.ntlm.keyExchange", "false");
         kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
+        kDefaults.SetProperty(RpcTransportQuotas.MaxNdrPayloadSizeProperty, RpcTransportQuotas.DefaultMaxNdrPayloadSize);
+        kDefaults.SetProperty(RpcTransportQuotas.MaxNtlmMessageSizeProperty, RpcTransportQuotas.DefaultMaxNtlmMessageSize);
+        kDefaults.SetProperty(RpcTransportQuotas.MaxSmb2MessageSizeProperty, RpcTransportQuotas.DefaultMaxSmb2MessageSize);
     }
 
     /// <inheritdoc/>

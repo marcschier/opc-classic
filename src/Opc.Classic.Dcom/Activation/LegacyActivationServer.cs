@@ -23,6 +23,7 @@ public sealed class LegacyActivationServer : IActivationServer
 {
     private const uint ModeGetClassObject = 1;
     private const int E_NOINTERFACE = unchecked((int)0x80004002u);
+    private const uint AuthnHintPacketIntegrity = 5;
     private static readonly (ushort Major, ushort Minor) ServerComVersion = (5, 1);
 
     private readonly RemoteSCMActivatorServer _modernActivator;
@@ -64,7 +65,7 @@ public sealed class LegacyActivationServer : IActivationServer
                 Hresult: E_NOINTERFACE,
                 Oxid: Guid.Empty,
                 IpidRemUnknown: Guid.Empty,
-                AuthnHint: 0,
+                AuthnHint: AuthnHintPacketIntegrity,
                 ServerVersion: ServerComVersion,
                 InterfaceResults: Array.Empty<RemoteActivationInterfaceResult>());
         }
@@ -110,9 +111,12 @@ public sealed class LegacyActivationServer : IActivationServer
             Hresult: modern.Hresult,
             Oxid: modern.Oxid,
             IpidRemUnknown: modern.Ipid,
-            AuthnHint: 0,
+            AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
-            InterfaceResults: perIid);
+            InterfaceResults: perIid)
+        {
+            OxidBindings = modern.OxidBindings,
+        };
     }
 
     private static RemoteActivationResponse TranslateGetClassObjectResponse(
@@ -132,8 +136,11 @@ public sealed class LegacyActivationServer : IActivationServer
             Hresult: modern.Hresult,
             Oxid: modern.Oxid,
             IpidRemUnknown: modern.Ipid,
-            AuthnHint: 0,
+            AuthnHint: AuthnHintPacketIntegrity,
             ServerVersion: ServerComVersion,
-            InterfaceResults: perIid);
+            InterfaceResults: perIid)
+        {
+            OxidBindings = modern.OxidBindings,
+        };
     }
 }

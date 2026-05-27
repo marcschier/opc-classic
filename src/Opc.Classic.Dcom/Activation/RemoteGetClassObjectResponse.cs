@@ -17,4 +17,7 @@ public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid I
 
     /// <summary>Encoded activation properties returned to the client.</summary>
     public byte[] EncodedActivationProperties { get; init; } = Array.Empty<byte>();
+
+    /// <summary>Encoded DUALSTRINGARRAY of OXID resolver bindings.</summary>
+    public byte[] OxidBindings { get; init; } = Array.Empty<byte>();
 }

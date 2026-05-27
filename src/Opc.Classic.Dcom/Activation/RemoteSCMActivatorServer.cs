@@ -97,6 +97,7 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
             Oid = exported.Oid,
             ActivationProperties = responseProperties,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
+            OxidBindings = exported.OxidBindings,
         });
     }
 
@@ -128,6 +129,7 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
             Oid = exported.Oid,
             ActivationProperties = responseProperties,
             EncodedActivationProperties = ActivationInfoCodec.Encode(responseProperties),
+            OxidBindings = exported.OxidBindings,
         });
     }
 
@@ -165,11 +167,13 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     private ExportedInterface Export(LocalCoClass localCoClass, Guid requestedIid) {
         Session session = GetOrCreateServerSession();
         InterfacePointer pointer = ComOxidRuntime.Instance.GetInterfacePointer(session, localCoClass);
-        byte[] objRef = EncodeObjRef(pointer, requestedIid == Guid.Empty ? IidIUnknown : requestedIid);
+        byte[] oxidBindings = EncodeDualStringArray(pointer.StringBindings);
+        byte[] objRef = EncodeObjRef(pointer, requestedIid == Guid.Empty ? IidIUnknown : requestedIid, oxidBindings);
         return new ExportedInterface(
             GuidFromEightBytes(pointer.OXID),
             GuidFromEightBytes(pointer.OID),
             Guid.Parse(pointer.IPID),
+            oxidBindings,
             objRef);
     }
 
@@ -185,9 +189,8 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         }
     }
 
-    private static byte[] EncodeObjRef(InterfacePointer pointer, Guid iid) {
+    private static byte[] EncodeObjRef(InterfacePointer pointer, Guid iid, byte[] dualStringArray) {
         var stdObjRef = (StdObjRef)pointer.GetObjectReference(InterfacePointer.OBJREF_STANDARD);
-        byte[] dualStringArray = EncodeDualStringArray(pointer.StringBindings);
         var buffer = new byte[64 + dualStringArray.Length];
         var writer = new NdrWriter(buffer);
         writer.WriteUInt32(0x574F454Du); // MEOW
@@ -231,5 +234,5 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
         return new Guid(guidBytes);
     }
 
-    private sealed record ExportedInterface(Guid Oxid, Guid Oid, Guid Ipid, byte[] ObjRef);
+    private sealed record ExportedInterface(Guid Oxid, Guid Oid, Guid Ipid, byte[] OxidBindings, byte[] ObjRef);
 }
