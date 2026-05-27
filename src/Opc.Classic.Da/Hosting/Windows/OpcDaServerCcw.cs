@@ -239,6 +239,11 @@ public static unsafe class OpcDaServerCcw
         IntPtr pRevisedUpdateRate,
         IntPtr* ppUnk)
     {
+        // OPC DA 2.05a §4.3.2: all required OUT params must be non-NULL.
+        if (phServerGroup == IntPtr.Zero || pRevisedUpdateRate == IntPtr.Zero || ppUnk == null)
+        {
+            return E_INVALIDARG;
+        }
         try
         {
             string name = szName == IntPtr.Zero ? string.Empty : (Marshal.PtrToStringUni(szName) ?? string.Empty);
@@ -251,19 +256,14 @@ public static unsafe class OpcDaServerCcw
                 localeId: (int)dwLCID,
                 CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
-            if (phServerGroup != IntPtr.Zero)
-            {
-                Marshal.WriteInt32(phServerGroup, serverHandle);
-            }
-            if (pRevisedUpdateRate != IntPtr.Zero)
-            {
-                Marshal.WriteInt32(pRevisedUpdateRate, (int)dwRequestedUpdateRate);
-            }
+            Marshal.WriteInt32(phServerGroup, serverHandle);
+            Marshal.WriteInt32(pRevisedUpdateRate, (int)dwRequestedUpdateRate);
 
-            // IUnknown-only CCW; full per-interface vtables for the group
-            // are reached via the cross-platform DCOM transport path through
-            // OpcObjectRegistry. Opcproxy will see E_NOINTERFACE for OPC
-            // interfaces on this CCW until per-interface vtables are added.
+            // Full per-interface vtables for the group (IOPCGroupStateMgt(2),
+            // IOPCItemMgt) are wired in OpcDaGroupCcw; QI on the returned
+            // pointer succeeds for those IIDs and dispatches into the managed
+            // OpcDaGroup. Complex marshaling (AddItems, CloneGroup,
+            // CreateEnumerator) returns E_NOTIMPL until a follow-up.
             var placeholderGroup = new OpcDaGroup(
                 name: name,
                 serverHandle: serverHandle,
@@ -273,16 +273,17 @@ public static unsafe class OpcDaServerCcw
                 timeBias: 0,
                 percentDeadband: 0f,
                 localeId: (int)dwLCID);
-            if (ppUnk != null)
-            {
-                *ppUnk = OpcDaGroupCcw.Create(placeholderGroup);
-            }
+            *ppUnk = OpcDaGroupCcw.Create(placeholderGroup);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
         catch (Opc.Classic.OpcException opcEx)
         {
             return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
         }
         catch (Exception)
         {

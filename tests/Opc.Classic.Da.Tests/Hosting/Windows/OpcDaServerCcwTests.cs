@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
@@ -253,7 +254,11 @@ public sealed class OpcDaServerCcwTests
         var addGroup = (delegate* unmanaged<IntPtr, IntPtr, int, uint, uint, IntPtr, IntPtr, uint, IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[3];
         IntPtr ppUnk1;
         Guid iid = Guid.Empty;
-        int hrAdd = addGroup(ccw, IntPtr.Zero, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero, IntPtr.Zero, &iid, &ppUnk1);
+        IntPtr phServer = Marshal.AllocCoTaskMem(sizeof(int));
+        IntPtr pRevised = Marshal.AllocCoTaskMem(sizeof(int));
+        int hrAdd = addGroup(ccw, IntPtr.Zero, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, 0, phServer, pRevised, &iid, &ppUnk1);
+        Marshal.FreeCoTaskMem(phServer);
+        Marshal.FreeCoTaskMem(pRevised);
 
         var getGroupByName = (delegate* unmanaged<IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[5];
         IntPtr ppUnk2;
