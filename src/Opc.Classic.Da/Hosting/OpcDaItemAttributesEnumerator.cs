@@ -22,10 +22,20 @@ namespace Opc.Classic.Da.Hosting;
 /// of subsequent item additions/removals.
 /// </summary>
 /// <remarks>
+/// <para>
 /// Per-cursor: each <c>CreateEnumerator</c> / <c>Clone</c> allocates a
 /// fresh instance with its own cursor and snapshot. The host registers
 /// each instance in the <see cref="OpcObjectRegistry"/> so the assigned
 /// IPID routes inbound requests to the right cursor.
+/// </para>
+/// <para>
+/// <b>Snapshot semantics (OPC DA 2.05a §4.4.7.2).</b> The OPC DA spec
+/// states "the enumerator reflects the state of the group at the time of
+/// creation." This implementation captures the item array at
+/// construction; subsequent <c>AddItems</c> / <c>RemoveItems</c> calls
+/// on the originating group do NOT affect previously-issued enumerators.
+/// Clients that want fresh data must call <c>CreateEnumerator</c> again.
+/// </para>
 /// </remarks>
 public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
 {

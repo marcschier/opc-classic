@@ -4,6 +4,7 @@
     <Description>OPC Historical Data Access (HDA) 1.20 managed records and NDR wire codecs.</Description>
     <RootNamespace>Opc.Classic.Hda</RootNamespace>
     <AssemblyName>Opc.Classic.Hda</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

@@ -758,6 +758,10 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     public Task<IOpcInterfaceRef> FindConnectionPointAsync(Guid iid, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        // OpcDaGroup only supports IOPCDataCallback subscriptions. IID_IDataObject
+        // (OPC DA 2.05a Appendix B, optional) is intentionally NOT supported;
+        // clients that QI for IDataObject see a clean CONNECT_E_NOCONNECTION
+        // failure rather than a malformed sink.
         if (iid != IOPCDataCallback.InterfaceId)
         {
             throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
