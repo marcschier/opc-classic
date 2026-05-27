@@ -29,12 +29,10 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// <see cref="GCHandle"/> on the managed group.
 /// </para>
 /// <para>
-/// <b>Method coverage.</b> The simple-marshaling methods on
-/// IOPCGroupStateMgt(2) + IOPCItemMgt are wired to real bodies on the
-/// underlying managed group. The complex-marshaling methods (CloneGroup,
-/// AddItems, ValidateItems, CreateEnumerator — all involving OPCITEMDEF or
-/// IUnknown-returning out-params) currently return E_NOTIMPL pending full
-/// COM marshaling. See <see cref="OpcDaGroupCcwMethods"/> for the wired
+/// <b>Method coverage.</b> The IOPCGroupStateMgt(2) + IOPCItemMgt slots
+/// are wired to real method bodies on the underlying managed group,
+/// including OPCITEMDEF arrays and interface-pointer-returning methods.
+/// See <see cref="OpcDaGroupCcwMethods"/> for the native marshaling
 /// bodies.
 /// </para>
 /// <para>

@@ -397,7 +397,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
             resolverBindings: Array.Empty<ushort>()));
     }
 
-    private OpcItemAttributes[] BuildItemAttributesSnapshot()
+    internal OpcItemAttributes[] BuildItemAttributesSnapshot()
     {
         var snapshot = new List<OpcItemAttributes>(_items.Count);
         foreach (OpcDaItem item in _items.Values)
