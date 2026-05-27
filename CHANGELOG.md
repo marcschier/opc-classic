@@ -48,6 +48,151 @@ FINAL tag.
 
 ## [Unreleased]
 
+## [1.0.0-rc.8] - 2026-05-27
+
+Eighth release-candidate. **Spec-coverage completion + transport hardening.**
+Closes the four largest open work-tracks from `docs/ROADMAP.md`:
+remaining AE/HDA Windows-CCW gaps, SMB signing+encryption+ncacn_np
+wire-up, legacy `IActivation` interop, and the threat-model hardening
+items called out in `docs/security/THREAT_MODEL.md`.
+
+### Added — AE Windows CCW completion (Track G)
+
+- `OpcAeAreaBrowserCcw` + real `IOPCEventServer::CreateAreaBrowser` body
+  per OPC AE 1.10 §5.3.2 — `ChangeBrowsePosition`, `BrowseOPCAreas`,
+  `GetQualifiedAreaName`, `GetQualifiedSourceName` (cap-g2b).
+- `OpcAeSubscriptionCcw` + real `CreateEventSubscription` body for the
+  full ~12 methods of `IOPCEventSubscriptionMgt` per §5.4 (cap-g2a).
+- Full `OPCEVENTFILTER` marshaling (event types, categories, severity
+  range, area + source BSTR arrays) + `OpcAeEventSinkProxy` delivering
+  `ONEVENTSTRUCT[]` to client `IOPCEventSink` per §5.5; Refresh
+  fragment fan-out with `bLastRefresh` semantics (cap-g2c).
+- Reusable `OpcEnumStringCcw` raw-vtable CCW for `IEnumString` returns.
+
+### Added — HDA Windows CCW completion (Track G)
+
+- `OpcHdaBrowserCcw` + real `IOPCHDA_Server::CreateBrowse` body per
+  HDA 1.20 §5.4 (cap-g3a).
+- `IOPCHDA_SyncRead` real bodies — `ReadRaw`, `ReadProcessed`,
+  `ReadAttribute`, `ReadModified`, `ReadAtTime`, `ReadAnnotations`
+  with `OPCHDA_ITEM[]` array + VARIANT + FILETIME marshaling (cap-g3b).
+- `IOPCHDA_AsyncRead` real bodies with `OpcHdaCallbackProxy` firing
+  `IOPCHDA_DataCallback::OnDataChange` (cap-g3c).
+- `OpcHdaItemMarshaler` helper.
+
+### Added — DA Windows CCW completion (Track G)
+
+- `IEnumConnections` + `IEnumConnectionPoints` raw-vtable CCW
+  infrastructure with `Next`/`Skip`/`Reset`/`Clone` independent
+  cursors, snapshot semantics; wired into existing connection-point
+  Advise/Unadvise machinery (cap-g4a + cap-g4b).
+- `IOPCAsyncIO3::WriteVqt` real body with `OPCITEMVQT` marshaling,
+  async dispatch, cancellation via `pdwCancelID`, and
+  `OnWriteComplete` callback firing (cap-g5a).
+
+### Added — SMB2 signing, encryption, and `ncacn_np` transport (Track H)
+
+- `Smb2Signer` — HMAC-SHA256 for SMB 2.0.2/2.1; AES-128-CMAC for
+  SMB 3.x with SMB3KDF-derived signing keys per MS-SMB2 §3.1.4.1 +
+  SP800-108 §5.1; inbound verification with constant-time mismatch
+  rejection (cap-h1).
+- `Smb2Crypter` + `Smb2TransformHeader` — AES-128-CCM and AES-128-GCM
+  per MS-SMB2 §3.1.4.3 + §2.2.41; encryption-key derivation per
+  §3.1.5.2; `SMB2_ENCRYPTION_CAPABILITIES` negotiate context for
+  SMB 3.1.1 cipher selection (cap-h2).
+- `NcacnNpTransport` + `NcacnNpTransportFactory` — `IAsyncTransport`
+  backed by `Smb2RpcTransportAdapter`; opens SMB2 connection,
+  negotiates dialect + auth, opens IPC$ tree, opens the named pipe
+  via SMB2 CREATE, routes RPC reads/writes through the adapter; the
+  `RpcTransport` system now routes `protseq=ncacn_np` automatically
+  (cap-h3).
+- `IActivation::RemoteActivation` client over TCP for legacy XP /
+  Server-2003 server interop, plus matching server-side dispatcher
+  for accepting legacy clients with the same authentication policy
+  as `IRemoteSCMActivator` (cap-h4 + cap-h5).
+- `WinRegClient` over `ncacn_np` exercising the new transport against
+  a Samba Linux container fixture (cap-h7).
+
+### Added — wire-fixture infrastructure (Track H)
+
+- PCAP replay harness (`PcapFileReader` + `Smb2PcapReplayer` +
+  `PcapFixtureBase`) supporting both libpcap binary and human-readable
+  hex-dump TXT golden fixtures (cap-h6).
+- Samba container fixture under `docker/samba/` with `Dockerfile`,
+  `smb.conf`, `docker-compose.yml`, and a CI workflow that brings
+  the container up + runs the WINREG smoke (cap-h7).
+
+### Added — XML-DA polish (Track I)
+
+- `XmlDaErrorCode.IsSuccess()` + `XmlDaErrorCodes.IsSuccessResultId()`
+  extensions so callers can distinguish the 3 OPC XML-DA success
+  codes (`S_CLAMP`, `S_DATAQUEUEOVERFLOW`, `S_UNSUPPORTEDRATE`) from
+  `E_*` faults without manual parsing (cap-g1a).
+- `docs/cookbook/06-xmlda-client-flows.md` — concise XML-DA client
+  cookbook covering GetStatus / Read / Write / Subscribe flows
+  (cap-i1).
+- `docs/XMLDA_STATUS.md` "Error and quality codes" section with
+  full enum + quality bit tables verified against source (cap-i2).
+- `docs/cookbook/07-enabling-packet-privacy.md` — opt-in privacy
+  mode cookbook for DCOM/TCP, DCOM/SMB, XML-DA/HTTP (cap-j2).
+
+### Security — threat-model hardening (Track J)
+
+- Password lifetime + zeroization sweep across NTLMv2 / NTLMv1 / LM
+  derivations + Kerberos auth info; `SensitiveBufferPool` helper for
+  pooled buffers with `CryptographicOperations.ZeroMemory` on release;
+  closes the `THREAT_MODEL.md` 6.2 PARTIAL on derived material
+  (cap-j1).
+- Direct `SIGNATURE_BLOCK` formation + mismatch tests against
+  MS-NLMP §3.4.4 / §3.4.5 vectors — 9 cases covering tampered SeqNum,
+  tampered checksum, wrong key, replay, UInt32 wrap (cap-g1d).
+- `Ntlm1` negotiated-flag matrix tests against MS-NLMP §3.4.5 —
+  ESS SIGN/SEAL × KEY_EXCH × 128/56/40 (cap-g1e).
+- `RpcTransportQuotas` — tunable `MaxNdrPayloadSize` (16 MB),
+  `MaxNtlmMessageSize` (64 KB-1), `MaxSmb2MessageSize` (128 KB-1)
+  with property-bag accessors; bounded-input enforcement across
+  NDR + NTLMSSP + SMB2 parsers with 68 new fuzz-test cases (cap-j3).
+- Privacy-mode default review + per-transport opt-in documentation
+  (cap-j2).
+
+### Fixed — NTLMv1 spec violations uncovered while writing tests (cap-g1e)
+
+- `Ntlm1` `ProtectionLevel` now correctly resolves to
+  `CONNECT` (no protection) when neither `NTLMSSP_NEGOTIATE_SIGN` nor
+  `NTLMSSP_NEGOTIATE_SEAL` is negotiated. Previously always returned
+  `INTEGRITY` even with no protection negotiated.
+- `NtlmAuthentication` now only generates + transmits the
+  `EncryptedRandomSessionKey` when `NTLMSSP_NEGOTIATE_KEY_EXCH` is
+  set; otherwise the user session key IS the exported session key
+  per MS-NLMP §3.4.3. Previously always generated a secondary key.
+- `Responses.cs` LM session hash now correctly extracts the first
+  8 bytes of the MD5 digest. Previously passed an undersized buffer
+  to `DoFinal()`.
+- `NTLMKeyFactory` adds `NtlmFlags`-aware key-derivation overloads
+  so the correct derivation function is selected per MS-NLMP §3.4.5.
+
+### Documentation
+
+- Per-spec coverage docs (`docs/spec-coverage/*`) refreshed across
+  AE / HDA / DA / Common / XML-DA / Security for the rc.8 surface.
+- `docs/architecture/smb-transport.md`: Phase 1.5 (signing +
+  encryption), Phase 2 (ncacn_np wireup), Phase 3 (WINREG smoke),
+  and Phase 6 (PCAP fixtures) all marked ✅ Landed.
+- `docs/architecture/activation-transports.md`: legacy IActivation
+  row now ✅ Client + server.
+- `docs/security/THREAT_MODEL.md`: 6.2 (auth secrets), SR 4.1
+  (confidentiality), SR 7.1 (DoS protection) all refreshed.
+- `docs/security/NTLMSSP_AUDIT_GUIDE.md`: test coverage matrix
+  refreshed; `NtlmSignatureBlockTests.cs` and
+  `NtlmNegotiateFlagsTests.cs` are now direct (no longer indirect).
+- `docs/cookbook/`: 2 new entries (06 XML-DA flows, 07 packet privacy).
+
+### Test results
+
+- 1971 passed / 12 skipped / 0 failed across 23 .NET test projects.
+- 0 build warnings / 0 build errors.
+- Cumulative gain from rc.7 (1253 passed): **+718 net new tests**.
+
 ## [1.0.0-rc.7] - 2026-05-27
 
 Seventh release-candidate. **DCOM-over-IP between sample containers is
