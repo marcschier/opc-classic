@@ -27,6 +27,7 @@ public sealed class OpcDaServerCcwTests
     private const int S_OK = 0;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_NOTIMPL = unchecked((int)0x80004001);
+    private const int E_INVALIDARG = unchecked((int)0x80070057);
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid IID_IClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
@@ -225,6 +226,53 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
+    public async Task AddGroup_with_null_phServerGroup_returns_E_INVALIDARG()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new StubDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+        int hr = InvokeAddGroupWithNullOuts(ccw);
+
+        await Assert.That(hr).IsEqualTo(E_INVALIDARG);
+        await Assert.That(stub.AddGroupCallCount).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task GetStatus_with_null_ppServerStatus_returns_E_INVALIDARG()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new RecordingDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+        int hr = InvokeGetStatusWithNullPpStatus(ccw);
+
+        await Assert.That(hr).IsEqualTo(E_INVALIDARG);
+    }
+
+    [Test]
+    public async Task GetErrorString_maps_managed_ArgumentException_to_E_INVALIDARG()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        var stub = new ThrowingArgServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+
+        (int hr, _) = InvokeGetErrorString(ccw, dwError: 0, dwLocale: 0);
+
+        await Assert.That(hr).IsEqualTo(E_INVALIDARG);
+    }
+
+    [Test]
     public async Task SupportsInterface_returns_true_for_known_iids()
     {
         if (!OperatingSystem.IsWindows())
@@ -318,6 +366,24 @@ public sealed class OpcDaServerCcwTests
         return removeGroup(ccw, hServerGroup, bForce);
     }
 
+    private static unsafe int InvokeAddGroupWithNullOuts(IntPtr ccw)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var addGroup = (delegate* unmanaged<IntPtr, IntPtr, int, uint, uint, IntPtr, IntPtr, uint, IntPtr, IntPtr, Guid*, IntPtr*, int>)vtable[3];
+        // pass IntPtr.Zero for phServerGroup and pRevisedUpdateRate -> expect E_INVALIDARG
+        IntPtr ppUnk;
+        Guid iid = Guid.Empty;
+        return addGroup(ccw, IntPtr.Zero, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero, IntPtr.Zero, &iid, &ppUnk);
+    }
+
+    private static unsafe int InvokeGetStatusWithNullPpStatus(IntPtr ccw)
+    {
+        IntPtr* vtable = *(IntPtr**)ccw;
+        var getStatus = (delegate* unmanaged<IntPtr, IntPtr*, int>)vtable[6];
+        // Pass null pointer for the OUT param.
+        return getStatus(ccw, null);
+    }
+
     private sealed class RecordingDaServer : IOpcDaServer
     {
         public int RemoveGroupCallCount { get; private set; }
@@ -380,5 +446,20 @@ public sealed class OpcDaServerCcwTests
 
         public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
             Task.FromResult("ok");
+    }
+
+    private sealed class ThrowingArgServer : IOpcDaServer
+    {
+        public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
+            throw new ArgumentException("bad");
+
+        public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) =>
+            throw new ArgumentException("bad");
+
+        public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) =>
+            throw new ArgumentException("bad");
+
+        public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default) =>
+            throw new ArgumentException("bad");
     }
 }

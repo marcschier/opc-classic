@@ -180,6 +180,69 @@ public sealed class OpcDaGroupSubscriptionTests
         await Assert.That(iref.Ipid).IsNotEqualTo(Guid.Empty);
     }
 
+    [Test]
+    public async Task UnadviseAsync_with_unknown_cookie_throws_CONNECT_E_NOCONNECTION()
+    {
+        var group = CreateGroup();
+        IConnectionPoint cp = group;
+
+        OpcException? ex = await Assert.That(async () =>
+        {
+            await cp.UnadviseAsync(cookie: 99999, TestContext.Current!.CancellationToken);
+        }).Throws<OpcException>();
+        await Assert.That(ex).IsNotNull();
+        await Assert.That(ex!.ResultId.Code).IsEqualTo(unchecked((int)0x80040200));
+    }
+
+    [Test]
+    public async Task Cancel2Async_records_cancel_id_for_subsequent_TriggerCancelComplete()
+    {
+        var group = CreateGroup();
+        IOPCAsyncIO2 async2 = group;
+
+        await async2.Cancel2Async(cancelId: 4242, TestContext.Current!.CancellationToken);
+
+        await Assert.That(group.LastCancel2Id).IsEqualTo(4242);
+    }
+
+    [Test]
+    public async Task TriggerCancelCompleteAsync_invokes_sender_once_per_sink()
+    {
+        var group = CreateGroup();
+        IConnectionPoint cp = group;
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+
+        var payloads = new List<OpcDaGroup.CancelCompletePayload>();
+        await group.TriggerCancelCompleteAsync(
+            transactionId: 99,
+            sender: (_, p, _) => { payloads.Add(p); return Task.CompletedTask; },
+            cancellationToken: TestContext.Current!.CancellationToken);
+
+        await Assert.That(payloads.Count).IsEqualTo(2);
+        await Assert.That(payloads[0].TransactionId).IsEqualTo(99);
+        await Assert.That(payloads[0].GroupHandle).IsEqualTo(7);
+    }
+
+    [Test]
+    public async Task TriggerCancelCompleteAsync_is_noop_when_callbacks_disabled()
+    {
+        var group = CreateGroup();
+        IConnectionPoint cp = group;
+        await cp.AdviseAsync(SampleSink, TestContext.Current!.CancellationToken);
+
+        IOPCAsyncIO2 async2 = group;
+        await async2.SetEnableAsync(false, TestContext.Current!.CancellationToken);
+
+        int callbacks = 0;
+        await group.TriggerCancelCompleteAsync(
+            transactionId: 1,
+            sender: (_, _, _) => { Interlocked.Increment(ref callbacks); return Task.CompletedTask; },
+            cancellationToken: TestContext.Current!.CancellationToken);
+
+        await Assert.That(callbacks).IsEqualTo(0);
+    }
+
     private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId)
     {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };

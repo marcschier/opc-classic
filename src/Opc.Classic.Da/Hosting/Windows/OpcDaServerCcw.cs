@@ -295,10 +295,11 @@ public static unsafe class OpcDaServerCcw
     [UnmanagedCallersOnly]
     private static int GetErrorString(IntPtr pThis, int dwError, uint dwLocale, IntPtr* ppString)
     {
-        if (ppString != null)
+        if (ppString == null)
         {
-            *ppString = IntPtr.Zero;
+            return E_INVALIDARG;
         }
+        *ppString = IntPtr.Zero;
         if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
         {
             return E_NOTIMPL;
@@ -314,16 +315,17 @@ public static unsafe class OpcDaServerCcw
             string text = server.GetErrorStringAsync(dwError, (int)dwLocale, CancellationToken.None)
                 .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
-            if (ppString != null)
-            {
-                *ppString = AllocateLpwStr(text);
-            }
+            *ppString = AllocateLpwStr(text);
             return S_OK;
         }
 #pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
         catch (Opc.Classic.OpcException opcEx)
         {
             return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
         }
         catch (Exception)
         {
@@ -335,10 +337,11 @@ public static unsafe class OpcDaServerCcw
     [UnmanagedCallersOnly]
     private static int GetStatus(IntPtr pThis, IntPtr* ppServerStatus)
     {
-        if (ppServerStatus != null)
+        if (ppServerStatus == null)
         {
-            *ppServerStatus = IntPtr.Zero;
+            return E_INVALIDARG;
         }
+        *ppServerStatus = IntPtr.Zero;
         if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
         {
             return E_NOTIMPL;
@@ -355,16 +358,17 @@ public static unsafe class OpcDaServerCcw
                 .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
 
-            if (ppServerStatus != null)
-            {
-                *ppServerStatus = AllocateOpcServerStatus(status);
-            }
+            *ppServerStatus = AllocateOpcServerStatus(status);
             return S_OK;
         }
 #pragma warning disable CA1031
         catch (Opc.Classic.OpcException opcEx)
         {
             return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
         }
         catch (Exception)
         {
@@ -408,6 +412,10 @@ public static unsafe class OpcDaServerCcw
         catch (Opc.Classic.OpcException opcEx)
         {
             return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
         }
         catch (Exception)
         {

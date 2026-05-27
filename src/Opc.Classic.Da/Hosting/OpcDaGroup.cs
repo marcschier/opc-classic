@@ -43,6 +43,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     private int _nextItemHandle = 1;
     private int _nextCancelId = 1;
     private int _nextSubscriptionCookie = 1;
+    private int _lastCancel2Id;
 
     /// <summary>Async I/O callbacks enabled (the GetEnable/SetEnable state).</summary>
     private bool _callbacksEnabled = true;
@@ -128,6 +129,9 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
 
     /// <summary>Test helper: returns the number of active <c>IOPCDataCallback</c> subscriptions.</summary>
     public int SubscriptionCount => _sinks.Count;
+
+    /// <summary>Test helper: the most recent cancel ID passed to <see cref="Cancel2Async"/>.</summary>
+    public int LastCancel2Id => _lastCancel2Id;
 
     /// <summary>Returns the item for a given server handle, or <see langword="null"/> if unknown.</summary>
     public OpcDaItem? GetItem(int serverHandle) =>
@@ -609,8 +613,10 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     public Task Cancel2Async(int cancelId, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        _ = cancelId;
-        // No in-flight transactions to cancel in this in-memory impl.
+        _lastCancel2Id = cancelId;
+        // OPC DA spec: the server confirms by raising OnCancelComplete on each
+        // subscribed sink. Callers wire that delivery via
+        // <see cref="TriggerCancelCompleteAsync"/>.
         return Task.CompletedTask;
     }
 
@@ -723,7 +729,11 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        _sinks.TryRemove(cookie, out _);
+        // OLE / COM IConnectionPoint convention: unknown cookies return CONNECT_E_NOCONNECTION.
+        if (!_sinks.TryRemove(cookie, out _))
+        {
+            throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
+        }
         return Task.CompletedTask;
     }
 
@@ -802,6 +812,35 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         }
     }
 
+    /// <summary>
+    /// Fans out an <c>OnCancelComplete</c> callback for all active subscriptions
+    /// confirming completion of a prior <see cref="Cancel2Async"/> request.
+    /// Honors <c>SetEnable</c> just like data-change callbacks: when callbacks
+    /// are disabled the trigger short-circuits.
+    /// </summary>
+    /// <param name="transactionId">Transaction id originally cancelled.</param>
+    /// <param name="sender">Delivery callback invoked once per active subscription with the cancel-complete payload.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    public async Task TriggerCancelCompleteAsync(
+        int transactionId,
+        Func<IOpcInterfaceRef, CancelCompletePayload, CancellationToken, Task> sender,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(sender);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (!_callbacksEnabled || _sinks.IsEmpty)
+        {
+            return;
+        }
+
+        var payload = new CancelCompletePayload(transactionId, ClientHandle);
+        foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
+        {
+            await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
     private DataChangePayload BuildDataChangePayload(int transactionId, int[] serverHandles)
     {
         var clientHandles = new List<int>(serverHandles.Length);
@@ -850,6 +889,12 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         ushort[] Qualities,
         long[] Timestamps,
         int[] Errors);
+
+    /// <summary>
+    /// Immutable snapshot of an <c>OnCancelComplete</c> payload delivered to a
+    /// subscribed <c>IOPCDataCallback</c> sink after <see cref="Cancel2Async"/>.
+    /// </summary>
+    public sealed record CancelCompletePayload(int TransactionId, int GroupHandle);
 
     private (OpcItemResult Result, int Hresult) TryAddItem(OpcItemDef? def)
     {
