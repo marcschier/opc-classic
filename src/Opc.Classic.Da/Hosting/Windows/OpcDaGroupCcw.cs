@@ -15,10 +15,10 @@ namespace Opc.Classic.Da.Hosting.Windows;
 
 /// <summary>
 /// Windows COM-callable wrapper (CCW) over an <see cref="OpcDaGroup"/>
-/// instance. Exposes <c>IUnknown</c>, <c>IOPCGroupStateMgt</c>,
-/// <c>IOPCGroupStateMgt2</c>, and <c>IOPCItemMgt</c> vtables allocated in
-/// native memory so SCM-activated DCOM clients can invoke real group
-/// operations after <c>IOPCServer::AddGroup</c>.
+/// instance. Exposes native tearoffs for group state, item management,
+/// synchronous I/O, asynchronous I/O, and connection-point sink binding so
+/// SCM-activated DCOM clients can invoke group operations after
+/// <c>IOPCServer::AddGroup</c>.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -29,16 +29,24 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// <see cref="GCHandle"/> on the managed group.
 /// </para>
 /// <para>
-/// <b>Method coverage.</b> The IOPCGroupStateMgt(2) + IOPCItemMgt slots
-/// are wired to real method bodies on the underlying managed group,
-/// including OPCITEMDEF arrays and interface-pointer-returning methods.
-/// See <see cref="OpcDaGroupCcwMethods"/> for the native marshaling
-/// bodies.
+/// <b>Method coverage.</b> IOPCGroupStateMgt(2), IOPCItemMgt, selected
+/// IOPCAsyncIO2/3 methods, and IConnectionPoint(Container) methods are
+/// wired to real managed bodies. IOPCSyncIO(2) and value-bearing async write
+/// methods deliberately return <c>E_NOTIMPL</c> for this MVP because full
+/// <c>VARIANT</c>, <c>OPCITEMSTATE</c>, and <c>OPCITEMVQT</c> array marshaling
+/// is a follow-up.
+/// </para>
+/// <para>
+/// <b>SCM sinks.</b> Windows connection-point <c>Advise</c> stores
+/// <see cref="OpcDataCallbackProxy"/> instances in <see cref="CcwSession.ScmSinks"/>.
+/// This intentionally coexists with the managed <c>OpcDaGroup</c> DCOM-transport
+/// subscription dictionary; a future sink abstraction can unify the two fan-out
+/// paths without changing the COM vtable contract.
 /// </para>
 /// <para>
 /// <b>Lifetime.</b> When the last <c>Release</c> drops the shared refcount to
-/// zero, all tearoff instances, vtables, and the GCHandle are freed. The
-/// CCW is fully self-contained — no leak-at-exit.
+/// zero, SCM sink proxies are disposed before all tearoff instances, vtables,
+/// and the GCHandle are freed. The CCW is fully self-contained — no leak-at-exit.
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
@@ -49,6 +57,7 @@ public static unsafe class OpcDaGroupCcw
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
     internal const int E_NOTIMPL = unchecked((int)0x80004001);
     internal const int E_FAIL = unchecked((int)0x80004005);
+    internal const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
@@ -62,27 +71,9 @@ public static unsafe class OpcDaGroupCcw
 
         var handle = GCHandle.Alloc(group, GCHandleType.Normal);
         var session = new CcwSession(handle) { RefCount = 1 };
-
-        IntPtr* unknownVtable = AllocateUnknownVtable();
-        IntPtr* gsmVtable = AllocateGroupStateMgt2Vtable();
-        IntPtr* itemMgtVtable = AllocateItemMgtVtable();
-
-        IntPtr unknownTearoff = AllocateTearoff(unknownVtable);
-        IntPtr gsmTearoff = AllocateTearoff(gsmVtable);
-        IntPtr itemMgtTearoff = AllocateTearoff(itemMgtVtable);
-
-        session.UnknownTearoff = unknownTearoff;
-        session.UnknownVtable = unknownVtable;
-        session.GroupStateMgtTearoff = gsmTearoff;
-        session.GroupStateMgtVtable = gsmVtable;
-        session.ItemMgtTearoff = itemMgtTearoff;
-        session.ItemMgtVtable = itemMgtVtable;
-
-        s_tearoffs[unknownTearoff] = session;
-        s_tearoffs[gsmTearoff] = session;
-        s_tearoffs[itemMgtTearoff] = session;
-
-        return unknownTearoff;
+        AllocateSessionTearoffs(session);
+        RegisterSessionTearoffs(session);
+        return session.UnknownTearoff;
     }
 
     /// <summary>Test helper: returns the current refcount, or -1 if the pointer is not a known tearoff.</summary>
@@ -97,10 +88,69 @@ public static unsafe class OpcDaGroupCcw
             ? session.UnknownTearoff
             : IntPtr.Zero;
 
+    /// <summary>Test helper: returns the number of Windows SCM callback sinks held by the CCW session.</summary>
+    public static int GetScmSinkCount(IntPtr anyTearoff) =>
+        s_tearoffs.TryGetValue(anyTearoff, out CcwSession? session)
+            ? session.ScmSinks.Count
+            : -1;
+
     internal static OpcDaGroup? ResolveGroup(IntPtr tearoff) =>
         s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
             ? session.GroupHandle.Target as OpcDaGroup
             : null;
+
+    internal static CcwSession? ResolveSession(IntPtr tearoff) =>
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session) ? session : null;
+
+    internal static int ReturnTearoff(CcwSession session, IntPtr tearoff, IntPtr* ppv)
+    {
+        if (ppv == null || tearoff == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+
+        *ppv = tearoff;
+        Interlocked.Increment(ref session.RefCount);
+        return S_OK;
+    }
+
+    private static void AllocateSessionTearoffs(CcwSession session)
+    {
+        session.UnknownVtable = AllocateUnknownVtable();
+        session.GroupStateMgtVtable = AllocateGroupStateMgt2Vtable();
+        session.ItemMgtVtable = AllocateItemMgtVtable();
+        session.SyncIoVtable = AllocateSyncIoVtable();
+        session.SyncIo2Vtable = AllocateSyncIo2Vtable();
+        session.AsyncIo2Vtable = AllocateAsyncIo2Vtable();
+        session.AsyncIo3Vtable = AllocateAsyncIo3Vtable();
+        session.ConnectionPointVtable = AllocateConnectionPointVtable();
+        session.ConnectionPointContainerVtable = AllocateConnectionPointContainerVtable();
+
+        session.UnknownTearoff = AllocateTearoff(session.UnknownVtable);
+        session.GroupStateMgtTearoff = AllocateTearoff(session.GroupStateMgtVtable);
+        session.ItemMgtTearoff = AllocateTearoff(session.ItemMgtVtable);
+        session.SyncIoTearoff = AllocateTearoff(session.SyncIoVtable);
+        session.SyncIo2Tearoff = AllocateTearoff(session.SyncIo2Vtable);
+        session.AsyncIo2Tearoff = AllocateTearoff(session.AsyncIo2Vtable);
+        session.AsyncIo3Tearoff = AllocateTearoff(session.AsyncIo3Vtable);
+        session.ConnectionPointTearoff = AllocateTearoff(session.ConnectionPointVtable);
+        session.ConnectionPointContainerTearoff = AllocateTearoff(session.ConnectionPointContainerVtable);
+    }
+
+    private static void RegisterSessionTearoffs(CcwSession session)
+    {
+        RegisterTearoff(session.UnknownTearoff, session);
+        RegisterTearoff(session.GroupStateMgtTearoff, session);
+        RegisterTearoff(session.ItemMgtTearoff, session);
+        RegisterTearoff(session.SyncIoTearoff, session);
+        RegisterTearoff(session.SyncIo2Tearoff, session);
+        RegisterTearoff(session.AsyncIo2Tearoff, session);
+        RegisterTearoff(session.AsyncIo3Tearoff, session);
+        RegisterTearoff(session.ConnectionPointTearoff, session);
+        RegisterTearoff(session.ConnectionPointContainerTearoff, session);
+    }
+
+    private static void RegisterTearoff(IntPtr tearoff, CcwSession session) => s_tearoffs[tearoff] = session;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
     private static IntPtr* AllocateUnknownVtable()
@@ -145,6 +195,97 @@ public static unsafe class OpcDaGroupCcw
         v[8] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcDaGroupCcwMethods.SetDatatypes;
         v[9] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&OpcDaGroupCcwMethods.CreateEnumerator;
         return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateSyncIoVtable()
+    {
+        // 3 IUnknown + 2 IOPCSyncIO = 5 slots
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)&OpcDaGroupCcwSyncIoMethods.Read;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcDaGroupCcwSyncIoMethods.Write;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateSyncIo2Vtable()
+    {
+        // 3 IUnknown + 2 IOPCSyncIO + 2 IOPCSyncIO2 = 7 slots
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(7 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)&OpcDaGroupCcwSyncIoMethods.Read;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcDaGroupCcwSyncIoMethods.Write;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, IntPtr*, IntPtr*, IntPtr*, int>)&OpcDaGroupCcwSyncIoMethods.ReadMaxAge;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)&OpcDaGroupCcwSyncIoMethods.WriteVqt;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateAsyncIo2Vtable()
+    {
+        // 3 IUnknown + 6 IOPCAsyncIO2 + one compatibility GetConnectionPointContainer slot = 10 slots
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(10 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        FillAsyncIo2Slots(v);
+        v[9] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.GetConnectionPointContainer;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateAsyncIo3Vtable()
+    {
+        // 3 IUnknown + IOPCAsyncIO2 slots + 3 IOPCAsyncIO3 slots + compatibility slot = 13 slots
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(13 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        FillAsyncIo2Slots(v);
+        v[9] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.ReadMaxAge;
+        v[10] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.WriteVqt;
+        v[11] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, uint*, int>)&OpcDaGroupCcwAsyncIoMethods.RefreshMaxAge;
+        v[12] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.GetConnectionPointContainer;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointVtable()
+    {
+        // 3 IUnknown + 5 IConnectionPoint = 8 slots
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(8 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, int>)&OpcDaGroupCcwConnectionPointMethods.GetConnectionInterface;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcDaGroupCcwConnectionPointMethods.GetConnectionPointContainer;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint*, int>)&OpcDaGroupCcwConnectionPointMethods.Advise;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcDaGroupCcwConnectionPointMethods.Unadvise;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcDaGroupCcwConnectionPointMethods.EnumConnections;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointContainerVtable()
+    {
+        // 3 IUnknown + 2 IConnectionPointContainer = 5 slots
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcDaGroupCcwConnectionPointMethods.EnumConnectionPoints;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&OpcDaGroupCcwConnectionPointMethods.FindConnectionPoint;
+        return v;
+    }
+
+    private static void FillUnknownSlots(IntPtr* v)
+    {
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+    }
+
+    private static void FillAsyncIo2Slots(IntPtr* v)
+    {
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, uint, uint*, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.Read;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)&OpcDaGroupCcwAsyncIoMethods.Write;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, uint*, int>)&OpcDaGroupCcwAsyncIoMethods.Refresh2;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&OpcDaGroupCcwAsyncIoMethods.Cancel2;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, int, int>)&OpcDaGroupCcwAsyncIoMethods.SetEnable;
+        v[8] = (IntPtr)(delegate* unmanaged<IntPtr, int*, int>)&OpcDaGroupCcwAsyncIoMethods.GetEnable;
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
@@ -199,6 +340,30 @@ public static unsafe class OpcDaGroupCcw
         {
             return session.ItemMgtTearoff;
         }
+        if (iid == IOPCSyncIO.InterfaceId)
+        {
+            return session.SyncIoTearoff;
+        }
+        if (iid == IOPCSyncIO2.InterfaceId)
+        {
+            return session.SyncIo2Tearoff;
+        }
+        if (iid == IOPCAsyncIO2.InterfaceId)
+        {
+            return session.AsyncIo2Tearoff;
+        }
+        if (iid == IOPCAsyncIO3.InterfaceId)
+        {
+            return session.AsyncIo3Tearoff;
+        }
+        if (iid == IConnectionPoint.InterfaceId)
+        {
+            return session.ConnectionPointTearoff;
+        }
+        if (iid == IConnectionPointContainer.InterfaceId)
+        {
+            return session.ConnectionPointContainerTearoff;
+        }
         return IntPtr.Zero;
     }
 
@@ -234,37 +399,80 @@ public static unsafe class OpcDaGroupCcw
         {
             return;
         }
-        s_tearoffs.TryRemove(session.UnknownTearoff, out _);
-        s_tearoffs.TryRemove(session.GroupStateMgtTearoff, out _);
-        s_tearoffs.TryRemove(session.ItemMgtTearoff, out _);
 
-        if (session.UnknownTearoff != IntPtr.Zero)
-        {
-            NativeMemory.Free((void*)session.UnknownTearoff);
-        }
-        if (session.GroupStateMgtTearoff != IntPtr.Zero)
-        {
-            NativeMemory.Free((void*)session.GroupStateMgtTearoff);
-        }
-        if (session.ItemMgtTearoff != IntPtr.Zero)
-        {
-            NativeMemory.Free((void*)session.ItemMgtTearoff);
-        }
-        if (session.UnknownVtable != null)
-        {
-            NativeMemory.Free(session.UnknownVtable);
-        }
-        if (session.GroupStateMgtVtable != null)
-        {
-            NativeMemory.Free(session.GroupStateMgtVtable);
-        }
-        if (session.ItemMgtVtable != null)
-        {
-            NativeMemory.Free(session.ItemMgtVtable);
-        }
+        DisposeScmSinks(session);
+        RemoveSessionTearoffs(session);
+        FreeSessionTearoffs(session);
+        FreeSessionVtables(session);
         if (session.GroupHandle.IsAllocated)
         {
             session.GroupHandle.Free();
+        }
+    }
+
+    private static void RemoveSessionTearoffs(CcwSession session)
+    {
+        RemoveTearoff(session.UnknownTearoff);
+        RemoveTearoff(session.GroupStateMgtTearoff);
+        RemoveTearoff(session.ItemMgtTearoff);
+        RemoveTearoff(session.SyncIoTearoff);
+        RemoveTearoff(session.SyncIo2Tearoff);
+        RemoveTearoff(session.AsyncIo2Tearoff);
+        RemoveTearoff(session.AsyncIo3Tearoff);
+        RemoveTearoff(session.ConnectionPointTearoff);
+        RemoveTearoff(session.ConnectionPointContainerTearoff);
+    }
+
+    private static void RemoveTearoff(IntPtr tearoff) => s_tearoffs.TryRemove(tearoff, out _);
+
+    private static void DisposeScmSinks(CcwSession session)
+    {
+        foreach (OpcDataCallbackProxy sink in session.ScmSinks.Values)
+        {
+            sink.Dispose();
+        }
+        session.ScmSinks.Clear();
+    }
+
+    private static void FreeSessionTearoffs(CcwSession session)
+    {
+        FreeTearoff(session.UnknownTearoff);
+        FreeTearoff(session.GroupStateMgtTearoff);
+        FreeTearoff(session.ItemMgtTearoff);
+        FreeTearoff(session.SyncIoTearoff);
+        FreeTearoff(session.SyncIo2Tearoff);
+        FreeTearoff(session.AsyncIo2Tearoff);
+        FreeTearoff(session.AsyncIo3Tearoff);
+        FreeTearoff(session.ConnectionPointTearoff);
+        FreeTearoff(session.ConnectionPointContainerTearoff);
+    }
+
+    private static void FreeSessionVtables(CcwSession session)
+    {
+        FreeVtable(session.UnknownVtable);
+        FreeVtable(session.GroupStateMgtVtable);
+        FreeVtable(session.ItemMgtVtable);
+        FreeVtable(session.SyncIoVtable);
+        FreeVtable(session.SyncIo2Vtable);
+        FreeVtable(session.AsyncIo2Vtable);
+        FreeVtable(session.AsyncIo3Vtable);
+        FreeVtable(session.ConnectionPointVtable);
+        FreeVtable(session.ConnectionPointContainerVtable);
+    }
+
+    private static void FreeTearoff(IntPtr tearoff)
+    {
+        if (tearoff != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)tearoff);
+        }
+    }
+
+    private static void FreeVtable(IntPtr* vtable)
+    {
+        if (vtable != null)
+        {
+            NativeMemory.Free(vtable);
         }
     }
 
@@ -286,5 +494,19 @@ public static unsafe class OpcDaGroupCcw
         public IntPtr* GroupStateMgtVtable;
         public IntPtr ItemMgtTearoff;
         public IntPtr* ItemMgtVtable;
+        public IntPtr SyncIoTearoff;
+        public IntPtr* SyncIoVtable;
+        public IntPtr SyncIo2Tearoff;
+        public IntPtr* SyncIo2Vtable;
+        public IntPtr AsyncIo2Tearoff;
+        public IntPtr* AsyncIo2Vtable;
+        public IntPtr AsyncIo3Tearoff;
+        public IntPtr* AsyncIo3Vtable;
+        public IntPtr ConnectionPointTearoff;
+        public IntPtr* ConnectionPointVtable;
+        public IntPtr ConnectionPointContainerTearoff;
+        public IntPtr* ConnectionPointContainerVtable;
+        public int NextScmSinkCookie;
+        public ConcurrentDictionary<int, OpcDataCallbackProxy> ScmSinks { get; } = new();
     }
 }

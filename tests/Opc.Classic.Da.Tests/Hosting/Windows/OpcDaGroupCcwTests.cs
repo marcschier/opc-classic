@@ -4,9 +4,12 @@
 //
 
 using System;
+using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Da.Hosting;
@@ -27,6 +30,8 @@ public sealed class OpcDaGroupCcwTests
     private const int S_FALSE = 1;
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_INVALIDARG = unchecked((int)0x80070057);
+    private const int E_NOTIMPL = unchecked((int)0x80004001);
+    private const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
@@ -361,6 +366,341 @@ public sealed class OpcDaGroupCcwTests
         await Assert.That(enumPtr).IsNotEqualTo(IntPtr.Zero);
     }
 
+    [Test]
+    public async Task QueryInterface_for_IOPCSyncIO_returns_real_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+
+        await Assert.That(syncPtr).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(syncPtr).IsNotEqualTo(ccw);
+    }
+
+    [Test]
+    public async Task QueryInterface_for_IOPCSyncIO2_returns_distinct_tearoff()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+        IntPtr sync2Ptr = Helpers.InvokeQI(ccw, IOPCSyncIO2.InterfaceId);
+
+        await Assert.That(sync2Ptr).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(sync2Ptr).IsNotEqualTo(syncPtr);
+    }
+
+    [Test]
+    public async Task IOPCSyncIO_read_and_write_return_notimpl_for_variant_mvp()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr syncPtr = Helpers.InvokeQI(ccw, IOPCSyncIO.InterfaceId);
+
+        await Assert.That(Helpers.InvokeSyncRead(syncPtr)).IsEqualTo(E_NOTIMPL);
+        await Assert.That(Helpers.InvokeSyncWrite(syncPtr)).IsEqualTo(E_NOTIMPL);
+    }
+
+    [Test]
+    public async Task IOPCSyncIO2_maxage_and_vqt_return_notimpl_for_variant_mvp()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr sync2Ptr = Helpers.InvokeQI(ccw, IOPCSyncIO2.InterfaceId);
+
+        await Assert.That(Helpers.InvokeSyncReadMaxAge(sync2Ptr)).IsEqualTo(E_NOTIMPL);
+        await Assert.That(Helpers.InvokeSyncWriteVqt(sync2Ptr)).IsEqualTo(E_NOTIMPL);
+    }
+
+    [Test]
+    public async Task QueryInterface_for_IOPCAsyncIO2_and_IOPCAsyncIO3_returns_tearoffs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+        IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+
+        await Assert.That(async2Ptr).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(async3Ptr).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(async3Ptr).IsNotEqualTo(async2Ptr);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO2_read_dispatches_and_returns_cancel_id_and_errors()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A");
+        int knownHandle = group.Items.Single().ServerHandle;
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+        Helpers.AsyncErrorsResult result = Helpers.InvokeAsyncRead(async2Ptr, [knownHandle, knownHandle + 1000]);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.CancelId).IsNotEqualTo(0);
+        await Assert.That(result.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(result.Errors[1]).IsEqualTo(OpcResultId.InvalidHandle.Code);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO2_setenable_getenable_round_trips()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+
+        int setHr = Helpers.InvokeAsyncSetEnable(async2Ptr, enabled: false);
+        Helpers.GetEnableResult enabled = Helpers.InvokeAsyncGetEnable(async2Ptr);
+
+        await Assert.That(setHr).IsEqualTo(S_OK);
+        await Assert.That(enabled.Hr).IsEqualTo(S_OK);
+        await Assert.That(enabled.Enabled).IsFalse();
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO2_cancel2_dispatches_to_managed_group()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+
+        int hr = Helpers.InvokeAsyncCancel2(async2Ptr, 1234);
+
+        await Assert.That(hr).IsEqualTo(S_OK);
+        await Assert.That(group.LastCancel2Id).IsEqualTo(1234);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO2_refresh2_returns_nonzero_cancel_id()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+        Helpers.CancelResult result = Helpers.InvokeAsyncRefresh2(async2Ptr);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.CancelId).IsNotEqualTo(0);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO3_readmaxage_and_refreshmaxage_return_cancel_ids()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        OpcDaGroup group = NewGroup();
+        await AddManagedItems(group, "Tag.A");
+        int knownHandle = group.Items.Single().ServerHandle;
+        IntPtr ccw = OpcDaGroupCcw.Create(group);
+        IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+
+        Helpers.AsyncErrorsResult read = Helpers.InvokeAsyncReadMaxAge(async3Ptr, [knownHandle, knownHandle + 1000], [0, 0]);
+        Helpers.CancelResult refresh = Helpers.InvokeAsyncRefreshMaxAge(async3Ptr);
+
+        await Assert.That(read.Hr).IsEqualTo(S_OK);
+        await Assert.That(read.CancelId).IsNotEqualTo(0);
+        await Assert.That(read.Errors[0]).IsEqualTo(S_OK);
+        await Assert.That(read.Errors[1]).IsEqualTo(OpcResultId.InvalidHandle.Code);
+        await Assert.That(refresh.Hr).IsEqualTo(S_OK);
+        await Assert.That(refresh.CancelId).IsNotEqualTo(0);
+    }
+
+    [Test]
+    public async Task IOPCAsyncIO_write_methods_return_notimpl_for_variant_mvp()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr async2Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO2.InterfaceId);
+        IntPtr async3Ptr = Helpers.InvokeQI(ccw, IOPCAsyncIO3.InterfaceId);
+
+        await Assert.That(Helpers.InvokeAsyncWrite(async2Ptr)).IsEqualTo(E_NOTIMPL);
+        await Assert.That(Helpers.InvokeAsyncWriteVqt(async3Ptr)).IsEqualTo(E_NOTIMPL);
+    }
+
+    [Test]
+    public async Task QueryInterface_for_connection_point_interfaces_returns_tearoffs()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+        IntPtr cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
+
+        await Assert.That(cpPtr).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(cpcPtr).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(cpPtr).IsNotEqualTo(cpcPtr);
+    }
+
+    [Test]
+    public async Task IConnectionPoint_getconnectioninterface_returns_data_callback_iid()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+        Helpers.GuidResult result = Helpers.InvokeGetConnectionInterface(cpPtr);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Value).IsEqualTo(IOPCDataCallback.InterfaceId);
+    }
+
+    [Test]
+    public async Task IConnectionPointContainer_findconnectionpoint_returns_connection_point_for_data_callback()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+        IntPtr cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
+        Helpers.PointerResult result = Helpers.InvokeFindConnectionPoint(cpcPtr, IOPCDataCallback.InterfaceId);
+
+        await Assert.That(result.Hr).IsEqualTo(S_OK);
+        await Assert.That(result.Pointer).IsEqualTo(cpPtr);
+    }
+
+    [Test]
+    public async Task IConnectionPointContainer_findconnectionpoint_for_unknown_iid_returns_no_connection()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr cpcPtr = Helpers.InvokeQI(ccw, IConnectionPointContainer.InterfaceId);
+        Helpers.PointerResult result = Helpers.InvokeFindConnectionPoint(cpcPtr, Guid.NewGuid());
+
+        await Assert.That(result.Hr).IsEqualTo(CONNECT_E_NOCONNECTION);
+        await Assert.That(result.Pointer).IsEqualTo(IntPtr.Zero);
+    }
+
+    [Test]
+    public async Task IConnectionPoint_advise_and_unadvise_manage_scm_sink_dictionary()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr stub = Helpers.CreateDataCallbackStub();
+        try
+        {
+            IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+            IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            Helpers.AdviseResult advised = Helpers.InvokeAdvise(cpPtr, stub);
+
+            await Assert.That(advised.Hr).IsEqualTo(S_OK);
+            await Assert.That(advised.Cookie).IsNotEqualTo(0);
+            await Assert.That(OpcDaGroupCcw.GetScmSinkCount(cpPtr)).IsEqualTo(1);
+
+            int unadviseHr = Helpers.InvokeUnadvise(cpPtr, advised.Cookie);
+
+            await Assert.That(unadviseHr).IsEqualTo(S_OK);
+            await Assert.That(OpcDaGroupCcw.GetScmSinkCount(cpPtr)).IsEqualTo(0);
+            await Assert.That(Helpers.GetDataCallbackStubReferenceCount(stub)).IsEqualTo(1L);
+        }
+        finally
+        {
+            Helpers.DestroyDataCallbackStub(stub);
+        }
+    }
+
+    [Test]
+    public async Task IConnectionPoint_unadvise_unknown_cookie_returns_no_connection()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+        IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+
+        int hr = Helpers.InvokeUnadvise(cpPtr, 999);
+
+        await Assert.That(hr).IsEqualTo(CONNECT_E_NOCONNECTION);
+    }
+
+    [Test]
+    public async Task Release_to_zero_disposes_all_scm_sink_proxies()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
+        IntPtr stub = Helpers.CreateDataCallbackStub();
+        try
+        {
+            IntPtr ccw = OpcDaGroupCcw.Create(NewGroup());
+            IntPtr cpPtr = Helpers.InvokeQI(ccw, IConnectionPoint.InterfaceId);
+            Helpers.AdviseResult advised = Helpers.InvokeAdvise(cpPtr, stub);
+            await Assert.That(advised.Hr).IsEqualTo(S_OK);
+            await Assert.That(Helpers.GetDataCallbackStubReferenceCount(stub)).IsEqualTo(2L);
+
+            Helpers.InvokeRelease(cpPtr);
+            Helpers.InvokeRelease(ccw);
+
+            await Assert.That(Helpers.GetDataCallbackStubReferenceCount(stub)).IsEqualTo(1L);
+            await Assert.That(OpcDaGroupCcw.GetReferenceCount(ccw)).IsEqualTo(-1L);
+        }
+        finally
+        {
+            Helpers.DestroyDataCallbackStub(stub);
+        }
+    }
+
     private static OpcItemDef NewItemDef(string itemId, int clientHandle) =>
         new("", itemId, true, clientHandle, Array.Empty<byte>(), VarType.VT_I4);
 
@@ -395,6 +735,18 @@ public sealed class OpcDaGroupCcwTests
         internal readonly record struct NativeItemResult(int ServerHandle, ushort CanonicalDataType, int AccessRights, int BlobSize);
 
         internal readonly record struct EnumNextResult(int Hr, uint Fetched, string?[] ItemIds);
+
+        internal readonly record struct AsyncErrorsResult(int Hr, int CancelId, int[] Errors);
+
+        internal readonly record struct CancelResult(int Hr, int CancelId);
+
+        internal readonly record struct GetEnableResult(int Hr, bool Enabled);
+
+        internal readonly record struct GuidResult(int Hr, Guid Value);
+
+        internal readonly record struct PointerResult(int Hr, IntPtr Pointer);
+
+        internal readonly record struct AdviseResult(int Hr, int Cookie);
 
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
         private struct OPCITEMDEF_NATIVE
@@ -440,6 +792,11 @@ public sealed class OpcDaGroupCcwTests
             public long vEUInfo1;
         }
 
+        private const int DataCallbackVtableSlotCount = 7;
+
+        private static readonly Guid s_iidDataCallback = IOPCDataCallback.InterfaceId;
+        private static readonly ConcurrentDictionary<IntPtr, DataCallbackStubSession> s_dataCallbackStubs = new();
+
         internal static IntPtr InvokeQI(IntPtr ccw, Guid iid)
         {
             IntPtr* vtable = *(IntPtr**)ccw;
@@ -465,6 +822,185 @@ public sealed class OpcDaGroupCcwTests
             IntPtr* vtable = *(IntPtr**)ccw;
             var release = (delegate* unmanaged<IntPtr, uint>)vtable[2];
             release(ccw);
+        }
+
+        internal static int InvokeSyncRead(IntPtr syncPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)syncPtr;
+            var read = (delegate* unmanaged<IntPtr, uint, uint, IntPtr, IntPtr*, IntPtr*, int>)vtable[3];
+            IntPtr ppValues;
+            IntPtr ppErrors;
+            int hr = read(syncPtr, 1, 0, IntPtr.Zero, &ppValues, &ppErrors);
+            FreeCoTaskMem(ppValues, ppErrors);
+            return hr;
+        }
+
+        internal static int InvokeSyncWrite(IntPtr syncPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)syncPtr;
+            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[4];
+            IntPtr ppErrors;
+            int hr = write(syncPtr, 0, IntPtr.Zero, IntPtr.Zero, &ppErrors);
+            FreeCoTaskMem(ppErrors);
+            return hr;
+        }
+
+        internal static int InvokeSyncReadMaxAge(IntPtr sync2Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)sync2Ptr;
+            var read = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, IntPtr*, IntPtr*, IntPtr*, int>)vtable[5];
+            IntPtr values;
+            IntPtr qualities;
+            IntPtr timestamps;
+            IntPtr errors;
+            int hr = read(sync2Ptr, 0, IntPtr.Zero, IntPtr.Zero, &values, &qualities, &timestamps, &errors);
+            FreeCoTaskMem(values, qualities, timestamps, errors);
+            return hr;
+        }
+
+        internal static int InvokeSyncWriteVqt(IntPtr sync2Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)sync2Ptr;
+            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)vtable[6];
+            IntPtr ppErrors;
+            int hr = write(sync2Ptr, 0, IntPtr.Zero, IntPtr.Zero, &ppErrors);
+            FreeCoTaskMem(ppErrors);
+            return hr;
+        }
+
+        internal static AsyncErrorsResult InvokeAsyncRead(IntPtr async2Ptr, int[] handles)
+        {
+            IntPtr* vtable = *(IntPtr**)async2Ptr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            try
+            {
+                var read = (delegate* unmanaged<IntPtr, uint, IntPtr, uint, uint*, IntPtr*, int>)vtable[3];
+                uint cancelId;
+                IntPtr ppErrors;
+                int hr = read(async2Ptr, (uint)handles.Length, pHandles, 77, &cancelId, &ppErrors);
+                return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pHandles);
+            }
+        }
+
+        internal static int InvokeAsyncWrite(IntPtr async2Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)async2Ptr;
+            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[4];
+            uint cancelId;
+            IntPtr ppErrors;
+            int hr = write(async2Ptr, 0, IntPtr.Zero, IntPtr.Zero, 77, &cancelId, &ppErrors);
+            FreeCoTaskMem(ppErrors);
+            return hr;
+        }
+
+        internal static CancelResult InvokeAsyncRefresh2(IntPtr async2Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)async2Ptr;
+            var refresh = (delegate* unmanaged<IntPtr, uint, uint, uint*, int>)vtable[5];
+            uint cancelId;
+            int hr = refresh(async2Ptr, 1, 99, &cancelId);
+            return new CancelResult(hr, unchecked((int)cancelId));
+        }
+
+        internal static int InvokeAsyncCancel2(IntPtr async2Ptr, int cancelId)
+        {
+            IntPtr* vtable = *(IntPtr**)async2Ptr;
+            var cancel = (delegate* unmanaged<IntPtr, uint, int>)vtable[6];
+            return cancel(async2Ptr, unchecked((uint)cancelId));
+        }
+
+        internal static int InvokeAsyncSetEnable(IntPtr async2Ptr, bool enabled)
+        {
+            IntPtr* vtable = *(IntPtr**)async2Ptr;
+            var setEnable = (delegate* unmanaged<IntPtr, int, int>)vtable[7];
+            return setEnable(async2Ptr, enabled ? 1 : 0);
+        }
+
+        internal static GetEnableResult InvokeAsyncGetEnable(IntPtr async2Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)async2Ptr;
+            var getEnable = (delegate* unmanaged<IntPtr, int*, int>)vtable[8];
+            int enabled;
+            int hr = getEnable(async2Ptr, &enabled);
+            return new GetEnableResult(hr, enabled != 0);
+        }
+
+        internal static AsyncErrorsResult InvokeAsyncReadMaxAge(IntPtr async3Ptr, int[] handles, int[] maxAges)
+        {
+            IntPtr* vtable = *(IntPtr**)async3Ptr;
+            IntPtr pHandles = AllocateInt32ArrayForCall(handles);
+            IntPtr pMaxAges = AllocateInt32ArrayForCall(maxAges);
+            try
+            {
+                var read = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[9];
+                uint cancelId;
+                IntPtr ppErrors;
+                int hr = read(async3Ptr, (uint)handles.Length, pHandles, pMaxAges, 88, &cancelId, &ppErrors);
+                return new AsyncErrorsResult(hr, unchecked((int)cancelId), ReadErrorsAndFree(ppErrors, handles.Length));
+            }
+            finally
+            {
+                FreeCoTaskMem(pHandles, pMaxAges);
+            }
+        }
+
+        internal static int InvokeAsyncWriteVqt(IntPtr async3Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)async3Ptr;
+            var write = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, uint, uint*, IntPtr*, int>)vtable[10];
+            uint cancelId;
+            IntPtr ppErrors;
+            int hr = write(async3Ptr, 0, IntPtr.Zero, IntPtr.Zero, 88, &cancelId, &ppErrors);
+            FreeCoTaskMem(ppErrors);
+            return hr;
+        }
+
+        internal static CancelResult InvokeAsyncRefreshMaxAge(IntPtr async3Ptr)
+        {
+            IntPtr* vtable = *(IntPtr**)async3Ptr;
+            var refresh = (delegate* unmanaged<IntPtr, uint, uint, uint*, int>)vtable[11];
+            uint cancelId;
+            int hr = refresh(async3Ptr, 0, 88, &cancelId);
+            return new CancelResult(hr, unchecked((int)cancelId));
+        }
+
+        internal static GuidResult InvokeGetConnectionInterface(IntPtr cpPtr)
+        {
+            IntPtr* vtable = *(IntPtr**)cpPtr;
+            var getInterface = (delegate* unmanaged<IntPtr, Guid*, int>)vtable[3];
+            Guid iid;
+            int hr = getInterface(cpPtr, &iid);
+            return new GuidResult(hr, iid);
+        }
+
+        internal static PointerResult InvokeFindConnectionPoint(IntPtr cpcPtr, Guid iid)
+        {
+            IntPtr* vtable = *(IntPtr**)cpcPtr;
+            var find = (delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)vtable[4];
+            Guid local = iid;
+            IntPtr pointer;
+            int hr = find(cpcPtr, &local, &pointer);
+            return new PointerResult(hr, pointer);
+        }
+
+        internal static AdviseResult InvokeAdvise(IntPtr cpPtr, IntPtr sink)
+        {
+            IntPtr* vtable = *(IntPtr**)cpPtr;
+            var advise = (delegate* unmanaged<IntPtr, IntPtr, uint*, int>)vtable[5];
+            uint cookie;
+            int hr = advise(cpPtr, sink, &cookie);
+            return new AdviseResult(hr, unchecked((int)cookie));
+        }
+
+        internal static int InvokeUnadvise(IntPtr cpPtr, int cookie)
+        {
+            IntPtr* vtable = *(IntPtr**)cpPtr;
+            var unadvise = (delegate* unmanaged<IntPtr, uint, int>)vtable[6];
+            return unadvise(cpPtr, unchecked((uint)cookie));
         }
 
         internal static GetStateResult InvokeGetState(IntPtr gsmPtr)
@@ -620,6 +1156,164 @@ public sealed class OpcDaGroupCcwTests
             }
             var validate = (delegate* unmanaged<IntPtr, uint, IntPtr, int, IntPtr*, IntPtr*, int>)method;
             return validate(itemMgtPtr, (uint)count, pItems, blobUpdate, ppResults, ppErrors);
+        }
+
+        internal static IntPtr CreateDataCallbackStub()
+        {
+            IntPtr* vtable = AllocateDataCallbackStubVtable();
+            IntPtr instance = AllocateDataCallbackStubInstance(vtable);
+            s_dataCallbackStubs[instance] = new DataCallbackStubSession(vtable);
+            return instance;
+        }
+
+        internal static void DestroyDataCallbackStub(IntPtr stub)
+        {
+            if (!s_dataCallbackStubs.TryRemove(stub, out DataCallbackStubSession? session))
+            {
+                return;
+            }
+
+            NativeMemory.Free((void*)stub);
+            NativeMemory.Free(session.Vtable);
+        }
+
+        internal static long GetDataCallbackStubReferenceCount(IntPtr stub) =>
+            s_dataCallbackStubs.TryGetValue(stub, out DataCallbackStubSession? session)
+                ? Interlocked.Read(ref session.RefCount)
+                : -1L;
+
+        [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+        private static IntPtr* AllocateDataCallbackStubVtable()
+        {
+            IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(DataCallbackVtableSlotCount * sizeof(IntPtr)));
+            vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&DataCallbackStubQueryInterface;
+            vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&DataCallbackStubAddRef;
+            vtable[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&DataCallbackStubRelease;
+            vtable[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, int, int, uint, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)&DataCallbackStubOnDataChange;
+            vtable[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, int, int, uint, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)&DataCallbackStubOnReadComplete;
+            vtable[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, int, uint, IntPtr, IntPtr, int>)&DataCallbackStubOnWriteComplete;
+            vtable[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, uint, int>)&DataCallbackStubOnCancelComplete;
+            return vtable;
+        }
+
+        [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+        private static IntPtr AllocateDataCallbackStubInstance(IntPtr* vtable)
+        {
+            IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
+            instance[0] = (IntPtr)vtable;
+            return (IntPtr)instance;
+        }
+
+        [UnmanagedCallersOnly]
+        private static int DataCallbackStubQueryInterface(IntPtr pThis, Guid* riid, IntPtr* ppv)
+        {
+            if (ppv == null)
+            {
+                return E_INVALIDARG;
+            }
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session) || riid == null)
+            {
+                *ppv = IntPtr.Zero;
+                return E_NOINTERFACE;
+            }
+            if (*riid == IID_IUnknown || *riid == s_iidDataCallback)
+            {
+                *ppv = pThis;
+                Interlocked.Increment(ref session.RefCount);
+                return S_OK;
+            }
+            *ppv = IntPtr.Zero;
+            return E_NOINTERFACE;
+        }
+
+        [UnmanagedCallersOnly]
+        private static uint DataCallbackStubAddRef(IntPtr pThis)
+        {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session))
+            {
+                return 1;
+            }
+            return (uint)Interlocked.Increment(ref session.RefCount);
+        }
+
+        [UnmanagedCallersOnly]
+        private static uint DataCallbackStubRelease(IntPtr pThis)
+        {
+            if (!s_dataCallbackStubs.TryGetValue(pThis, out DataCallbackStubSession? session))
+            {
+                return 0;
+            }
+            return (uint)Interlocked.Decrement(ref session.RefCount);
+        }
+
+        [UnmanagedCallersOnly]
+        private static int DataCallbackStubOnDataChange(
+            IntPtr pThis,
+            uint transactionId,
+            uint groupHandle,
+            int masterQuality,
+            int masterError,
+            uint count,
+            IntPtr clientItems,
+            IntPtr values,
+            IntPtr qualities,
+            IntPtr timestamps,
+            IntPtr errors) => DataCallbackStubRecord(pThis);
+
+        [UnmanagedCallersOnly]
+        private static int DataCallbackStubOnReadComplete(
+            IntPtr pThis,
+            uint transactionId,
+            uint groupHandle,
+            int masterQuality,
+            int masterError,
+            uint count,
+            IntPtr clientItems,
+            IntPtr values,
+            IntPtr qualities,
+            IntPtr timestamps,
+            IntPtr errors) => DataCallbackStubRecord(pThis);
+
+        [UnmanagedCallersOnly]
+        private static int DataCallbackStubOnWriteComplete(
+            IntPtr pThis,
+            uint transactionId,
+            uint groupHandle,
+            int masterError,
+            uint count,
+            IntPtr clientItems,
+            IntPtr errors) => DataCallbackStubRecord(pThis);
+
+        [UnmanagedCallersOnly]
+        private static int DataCallbackStubOnCancelComplete(IntPtr pThis, uint transactionId, uint groupHandle) =>
+            DataCallbackStubRecord(pThis);
+
+        private static int DataCallbackStubRecord(IntPtr pThis) =>
+            s_dataCallbackStubs.ContainsKey(pThis) ? S_OK : E_NOINTERFACE;
+
+        private static IntPtr AllocateInt32ArrayForCall(int[] values)
+        {
+            if (values.Length == 0)
+            {
+                return IntPtr.Zero;
+            }
+            IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * sizeof(int)));
+            Marshal.Copy(values, 0, ptr, values.Length);
+            return ptr;
+        }
+
+        private static void FreeCoTaskMem(params IntPtr[] pointers)
+        {
+            foreach (IntPtr pointer in pointers)
+            {
+                Marshal.FreeCoTaskMem(pointer);
+            }
+        }
+
+        private sealed class DataCallbackStubSession(IntPtr* vtable)
+        {
+            internal readonly IntPtr* Vtable = vtable;
+            internal long RefCount = 1;
         }
 
         private static IntPtr AllocateNativeItemDefs(OpcItemDef[] defs, out IntPtr[] allocations)
