@@ -4,6 +4,8 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Hda.Dcom;
@@ -43,6 +45,19 @@ public interface IOpcHdaServer : IOPCHDA_Server
         aggregateNames = [];
         aggregateDescriptions = [];
         throw NotImplemented();
+    }
+
+    /// <summary>Browses the HDA address space at the supplied branch position.</summary>
+    async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
+        string branchPosition,
+        HdaBrowseType browseType,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        _ = branchPosition;
+        _ = browseType;
+        cancellationToken.ThrowIfCancellationRequested();
+        await Task.CompletedTask.ConfigureAwait(false);
+        yield break;
     }
 
     private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);

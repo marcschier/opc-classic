@@ -235,6 +235,7 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int CreateBrowse(
         IntPtr pThis,
         uint dwCount,
@@ -244,12 +245,37 @@ internal static unsafe class OpcHdaServerCcwMethods
         IntPtr* pphBrowser,
         IntPtr* ppErrors)
     {
-        // CreateBrowse returns an IOPCHDA_Browser interface pointer and accepts
-        // VARIANT filters; defer until native VARIANT and browser CCW support exist.
-        _ = pThis; _ = dwCount; _ = pdwAttrID; _ = pOperator; _ = vFilter;
         ZeroOut(pphBrowser);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!TryResolveServer(pThis, out IOpcHdaServer? server))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+        if (pphBrowser == null || ppErrors == null || !HasBrowseFilterPointers(dwCount, pdwAttrID, pOperator, vFilter))
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        try
+        {
+            int count = CountToInt(dwCount);
+            OpcHdaBrowseFilter[] filters = ReadBrowseFilters(count, pdwAttrID, pOperator, vFilter, out int[] localErrors);
+            var dispatcher = new OpcHdaServerDispatcher(server!);
+#pragma warning disable VSTHRD002
+            int[] dispatcherErrors = dispatcher.ValidateBrowseFiltersAsync(filters, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ValidateLength(count, dispatcherErrors.Length, nameof(dispatcherErrors));
+
+            int[] errors = MergeBrowseFilterErrors(localErrors, dispatcherErrors);
+            *ppErrors = AllocateInt32Array(errors);
+            *pphBrowser = OpcHdaBrowserCcw.Create(dispatcher, FilterSuccessfulBrowseFilters(filters, errors));
+            return HasAnyFailure(errors) ? OpcHdaServerCcw.S_FALSE : OpcHdaServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -391,6 +417,100 @@ internal static unsafe class OpcHdaServerCcwMethods
     {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(count, (uint)int.MaxValue);
         return (int)count;
+    }
+
+    private static bool HasBrowseFilterPointers(uint count, IntPtr pdwAttrID, IntPtr pOperator, IntPtr vFilter) =>
+        count == 0 || (pdwAttrID != IntPtr.Zero && pOperator != IntPtr.Zero && vFilter != IntPtr.Zero);
+
+    private static OpcHdaBrowseFilter[] ReadBrowseFilters(
+        int count,
+        IntPtr pdwAttrID,
+        IntPtr pOperator,
+        IntPtr vFilter,
+        out int[] errors)
+    {
+        var filters = new OpcHdaBrowseFilter[count];
+        errors = new int[count];
+        for (int i = 0; i < count; i++)
+        {
+            int attributeId = Marshal.ReadInt32(pdwAttrID, checked(i * sizeof(int)));
+            int operatorCode = Marshal.ReadInt32(pOperator, checked(i * sizeof(int)));
+            IntPtr variantSlot = IntPtr.Add(vFilter, checked(i * NativeHdaVariantReader.VariantSize));
+            if (!NativeHdaVariantReader.TryRead(variantSlot, out OpcVariant value))
+            {
+                errors[i] = OpcHdaErrors.OPCHDA_E_INVALIDDATATYPE;
+            }
+            else
+            {
+                errors[i] = ValidateBrowseFilterShape(attributeId, operatorCode);
+            }
+
+            filters[i] = new OpcHdaBrowseFilter(attributeId, operatorCode, value);
+        }
+
+        return filters;
+    }
+
+    private static int ValidateBrowseFilterShape(int attributeId, int operatorCode)
+    {
+        if (attributeId <= 0)
+        {
+            return OpcHdaErrors.OPCHDA_E_INVALIDATTRID;
+        }
+        if (operatorCode is < 1 or > 6)
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+
+        return OpcHdaServerCcw.S_OK;
+    }
+
+    private static int[] MergeBrowseFilterErrors(int[] localErrors, int[] dispatcherErrors)
+    {
+        var errors = new int[localErrors.Length];
+        for (int i = 0; i < errors.Length; i++)
+        {
+            errors[i] = localErrors[i] != OpcHdaServerCcw.S_OK ? localErrors[i] : dispatcherErrors[i];
+        }
+
+        return errors;
+    }
+
+    private static OpcHdaBrowseFilter[] FilterSuccessfulBrowseFilters(OpcHdaBrowseFilter[] filters, int[] errors)
+    {
+        int validCount = 0;
+        for (int i = 0; i < errors.Length; i++)
+        {
+            if (errors[i] == OpcHdaServerCcw.S_OK)
+            {
+                validCount++;
+            }
+        }
+
+        var validFilters = new OpcHdaBrowseFilter[validCount];
+        int target = 0;
+        for (int i = 0; i < filters.Length; i++)
+        {
+            if (errors[i] == OpcHdaServerCcw.S_OK)
+            {
+                validFilters[target++] = filters[i];
+            }
+        }
+
+        return validFilters;
+    }
+
+    private static bool HasAnyFailure(int[] errors)
+    {
+        for (int i = 0; i < errors.Length; i++)
+        {
+            if (errors[i] != OpcHdaServerCcw.S_OK)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void ValidateAttributeLengths(int[] ids, string[] names, string[] descriptions, int[] dataTypes)

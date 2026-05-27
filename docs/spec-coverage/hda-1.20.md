@@ -30,7 +30,7 @@ All HDA service and callback interfaces are declared with opnums matching the sp
 | Interface | Methods | Cross-platform DCOM status | Windows CCW status |
 |---|---:|---|---|
 | `IOPCHDA_Server` | 6/6 | ✅ generated proxy + dispatcher | ✅ real `GetItemAttributes`, `GetAggregates`, `GetHistorianStatus`, `ValidateItemIDs`, `GetItemHandles`, `ReleaseItemHandles`; `CreateBrowse` is `E_NOTIMPL` |
-| `IOPCHDA_Browser` | 4/4 | ✅ generated proxy declaration | ⚠️ no browser CCW from `CreateBrowse` yet |
+| `IOPCHDA_Browser` | 4/4 | ✅ generated proxy declaration | ✅ `CreateBrowse` returns a raw-vtable browser CCW with `GetEnum`, `ChangeBrowsePosition`, `GetItemID`, and `GetBranchPosition` |
 | `IOPCHDA_SyncRead` | 5/5 | ✅ generated proxy + dispatcher | ⚠️ tearoff/vtable present; `ReadRaw`, `ReadProcessed`, and related bodies return `E_NOTIMPL` |
 | `IOPCHDA_SyncUpdate` | 6/6 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |
 | `IOPCHDA_SyncAnnotations` | 3/3 | ✅ generated proxy + dispatcher | not yet a full CCW runtime path |

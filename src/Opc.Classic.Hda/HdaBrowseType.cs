@@ -16,4 +16,6 @@ public enum HdaBrowseType
     Leaf = 2,
     /// <summary>A flat-namespace item (HDA allows non-hierarchical layouts).</summary>
     Flat = 3,
+    /// <summary>All item names visible at the current browse position.</summary>
+    Items = 4,
 }
