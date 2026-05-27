@@ -106,7 +106,7 @@ Only the connection / session / file / pipe primitives are needed:
 | 2 — Wire SMB into `Ncacn_Np.RpcTransport` | ⏳ Pending | functional `ncacn_np` transport backed by the SMB2 project |
 | 3 — WINREG end-to-end smoke | ⏳ Pending | green CI against Samba/Windows container or recorded PCAP fixtures |
 | 4 — Legacy `IActivation` interface | ⏳ Pending | client + optional server side for pre-XP-SP2 interop |
-| 5 — Cross-platform CI matrix | ⏳ Pending | Ubuntu + macOS + Windows entries in `.github\workflows\build.yml` |
+| 5 — Cross-platform CI matrix | ✅ Landed | Ubuntu + macOS + Windows restore/build/test matrix in `.github\workflows\build.yml` |
 | 6 — PCAP-based wire fixtures | ⏳ Pending | unit-test gold files captured from real Windows exchanges |
 
 ## See also
