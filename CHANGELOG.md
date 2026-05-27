@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-rc.5] - 2026-05-27
+
+Fifth release-candidate. Closes the last 3 sandbox-feasible items
+(smb-3 WINREG PCAP, docker-2 + docker-3 hand-rolled C MVPs). All
+remaining 3 todos are external/environment-blocked (live Win Server,
+third-party audit, CTT smoke on Windows Docker).
+
+### Added — WINREG end-to-end coverage (smb-3-winreg-e2e)
+
+- 5 binary PCAP fixtures in `tests/Opc.Classic.Dcom.Smb.Tests/Fixtures/Winreg/`
+  capturing real MS-RPCE WINREG bind + OPNUM 2 (OpenLocalMachine) + OPNUM
+  15 (BaseRegEnumKey) request/response bytes.
+- `MockWinregServer`: in-memory RPC transport that replays the captured
+  bytes and validates the inbound bytes match the canonical fixture.
+- `WinregFixtureReplayTests`: 5 wire-replay tests covering OpenHKLM
+  request/response and EnumKey response decode paths.
+- SMB test project: 22 tests (was 17, +5).
+
+### Added — C-built reference server + client Dockerfiles (docker-2 + docker-3)
+
+- `docker/opc-c-server/build/opc-sample-server.cpp` (NEW, ~300 lines):
+  hand-rolled MVP native OPC DA server implementing IOPCServer +
+  IOPCCommon + IOPCGroupStateMgt + IOPCItemMgt + IOPCSyncIO. Exposes 3
+  sample tags (Sin VT_R8, Square VT_BOOL, Random VT_I4) with a 100ms
+  background-thread tag-update loop. Real bodies for activation,
+  /RegServer + /UnregServer, group state, item add/validate/remove,
+  sync read/write. E_NOTIMPL for clone / browse / async / subscriptions.
+- `docker/opc-c-client/build/opc-test.cpp` (NEW, ~190 lines): hand-rolled
+  MVP OPC DA client. CoCreateInstanceEx remote activation +
+  IOPCItemMgt.AddItems + IOPCSyncIO.Read. Exit codes 2-6 identify the
+  failing stage; HRESULT printed to stderr.
+- Matching `.vcxproj` + `.sln` files for both targets.
+- Dockerfiles for both containers updated to wire the MSBuild step
+  (no longer placeholders).
+
+### Status
+
+Validation deferred to CI: the C++ artifacts can only be compiled +
+containerized on a Windows host with Docker Desktop in Windows-container
+mode. Source-level checks (cl.exe + standard COM headers) clean.
+
+`dotnet build Opc.Classic.slnx`: 0 errors / 0 warnings. Solution-wide
+all 17 .NET test projects green; DA 385 + SMB 22 + AE 86 + HDA 123 +
+the rest.
+
+### Remaining open todos (3, all environment-blocked)
+
+- `release-100-tag` — blocked on CTT smoke green (Windows Docker host
+  CI execution).
+- `rw-e1-ntlmv2-realserver` — needs live Windows Server with domain
+  credentials.
+- `rw-e4-ntlm-audit` — external third-party crypto/security audit.
+
 ## [1.0.0-rc.4] - 2026-05-27
 
 Fourth release-candidate. Track A (VARIANT marshaling + data path
