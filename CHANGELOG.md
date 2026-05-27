@@ -47,6 +47,60 @@ FINAL tag.
 
 ## [Unreleased]
 
+## [1.0.0-rc.6] - 2026-05-27
+
+Sixth release-candidate. Closes the last three sandbox-feasible Track D
+prep items (NTLMSSP wire fixtures + audit-prep guide + 1.0.0 release-prep
+package). The remaining 3 todos all formally require external/
+environment-dependent steps; see [docs/release-blockers.md](docs/release-blockers.md).
+
+### Added — NTLMSSP wire-fixture replay (cap-d1)
+
+- 3 binary fixtures in `tests/Opc.Classic.Dcom.Crypto.Tests/Fixtures/Ntlm/`
+  capturing NEGOTIATE_MESSAGE (46 B), CHALLENGE_MESSAGE (104 B), and
+  AUTHENTICATE_MESSAGE (232 B) bytes anchored to MS-NLMP §4.2.4 sample
+  inputs.
+- `NtlmHandshakeFixtureTests`: 5 replay tests covering encode-to-fixture +
+  decode-from-fixture round-trips. Sandbox-feasible coverage for the
+  encoder/decoder; the live-AD round-trip remains the
+  `rw-e1-ntlmv2-realserver` gate.
+
+### Added — NTLMSSP audit-prep guide (cap-d2)
+
+- `docs/security/NTLMSSP_AUDIT_GUIDE.md` (572 lines, 10 sections):
+  comprehensive enumeration of NTLMSSP code surface, cryptographic
+  primitives in use (with RFC references), test coverage map,
+  threat-model addendum, known limitations, and audit-scope
+  recommendations. Enables external `rw-e4-ntlm-audit` engagement
+  to start without further dev-side prep work.
+
+### Added — 1.0.0 release-prep package (cap-d3)
+
+- Consolidated `[1.0.0]` CHANGELOG section narrating the rc.1..rc.5
+  delivery as a single coherent release with an "awaiting CTT smoke
+  green" marker.
+- `docs/release-blockers.md` (107 lines): one-page document naming the
+  three remaining gates with owner + status + estimated-effort lines.
+- `docs/MIGRATION.md` (69 lines): adopter migration guide for the
+  preview-namespace → 1.0.0 cutover.
+- Root `README.md` refreshed: version badge bump (0.6.0-alpha.1 →
+  1.0.0-rc.5), honest "release candidate" status, hub-style links to
+  subfolder READMEs, and the trademark disclaimer.
+
+### Tests
+
+- Crypto: 36 passing (was 31, +5).
+- Solution-wide: all 17 test projects green; 0 build errors / 0 warnings.
+
+### Remaining open todos (3, all environment-blocked)
+
+- `release-100-tag` — blocked on CTT smoke green (Windows Docker host CI).
+- `rw-e1-ntlmv2-realserver` — needs live Windows Server with domain creds.
+- `rw-e4-ntlm-audit` — external third-party crypto/security audit.
+
+See [docs/release-blockers.md](docs/release-blockers.md) for owner +
+remediation details on each gate.
+
 ## [1.0.0-rc.5] - 2026-05-27
 
 Fifth release-candidate. Closes the last 3 sandbox-feasible items
