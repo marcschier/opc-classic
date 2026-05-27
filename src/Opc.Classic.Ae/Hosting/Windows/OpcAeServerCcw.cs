@@ -14,31 +14,41 @@ using Opc.Classic.Ae.Dcom;
 namespace Opc.Classic.Ae.Hosting.Windows;
 
 /// <summary>
-/// Minimal Windows COM-callable wrapper (CCW) over an
-/// <see cref="IOpcAeServer"/>. Exposes <c>IUnknown</c> + supports QI for
-/// <c>IID_IOPCEventServer</c> (returns the same CCW pointer).
+/// Windows COM-callable wrapper (CCW) over an <see cref="IOpcAeServer"/>.
+/// Exposes separate tearoff vtables for <c>IUnknown</c>,
+/// <c>IOPCEventServer</c>, and <c>IOPCEventSubscriptionMgt</c>.
 /// </summary>
 /// <remarks>
-/// This is parity infrastructure for SCM activation. Per-method dispatch
-/// for IOPCEventServer is provided by the cross-platform DCOM transport
-/// (<c>OpcServerListener</c>); the Windows CCW path supplies the
-/// COM identity contract so opcproxy + ole32 can hand the CCW to clients
-/// after activation. Real per-method vtables are a future workstream
-/// mirroring the OpcDaGroupCcw pattern.
+/// <para>
+/// <b>Identity.</b> Each supported interface is a separate native tearoff
+/// pointer. <c>QueryInterface(IID_IUnknown)</c> on any tearoff returns the
+/// canonical identity pointer. All tearoffs share one <see cref="CcwSession"/>
+/// holding the refcount and managed server <see cref="GCHandle"/>.
+/// </para>
+/// <para>
+/// <b>Subscription tearoff.</b> AE clients normally receive
+/// <c>IOPCEventSubscriptionMgt</c> from <c>CreateEventSubscription</c>. That
+/// method still returns <c>E_NOTIMPL</c> until interface-pointer marshaling is
+/// wired, so the subscription tearoff is reachable only by direct QI for tests
+/// or for managed servers that also implement <see cref="IOPCEventSubscriptionMgt"/>.
+/// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
 public static unsafe class OpcAeServerCcw
 {
-    private const int S_OK = 0;
-    private const int E_NOINTERFACE = unchecked((int)0x80004002);
-    private const int E_INVALIDARG = unchecked((int)0x80070057);
+    internal const int S_OK = 0;
+    internal const int E_NOINTERFACE = unchecked((int)0x80004002);
+    internal const int E_INVALIDARG = unchecked((int)0x80070057);
+    internal const int E_NOTIMPL = unchecked((int)0x80004001);
+    internal const int E_FAIL = unchecked((int)0x80004005);
 
-    private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
+    internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
-    private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_ccws = new();
+    // Tearoff pointer -> session. Multiple tearoffs map to the same session.
+    internal static readonly ConcurrentDictionary<IntPtr, CcwSession> s_tearoffs = new();
 
-    /// <summary>Builds an IUnknown-identity CCW around <paramref name="server"/> for the requested IID.</summary>
-    /// <returns>A CCW pointer with refcount = 1, or <see cref="IntPtr.Zero"/> if the IID isn't supported.</returns>
+    /// <summary>Builds a CCW around <paramref name="server"/> for the requested IID with refcount = 1.</summary>
+    /// <returns>A CCW tearoff pointer, or <see cref="IntPtr.Zero"/> if the IID isn't supported.</returns>
     public static IntPtr Create(IOpcAeServer server, Guid requestedIid)
     {
         ArgumentNullException.ThrowIfNull(server);
@@ -46,31 +56,118 @@ public static unsafe class OpcAeServerCcw
         {
             return IntPtr.Zero;
         }
-        IntPtr* vtable = AllocateVtable();
-        IntPtr instance = AllocateInstance(vtable);
+
         var handle = GCHandle.Alloc(server, GCHandleType.Normal);
-        s_ccws[instance] = new CcwEntry(handle, vtable) { RefCount = 1 };
-        return instance;
+        var session = new CcwSession(handle) { RefCount = 1 };
+
+        IntPtr* unknownVtable = AllocateUnknownVtable();
+        IntPtr* eventServerVtable = AllocateEventServerVtable();
+        IntPtr* subscriptionMgtVtable = AllocateSubscriptionMgtVtable();
+
+        IntPtr unknownTearoff = AllocateTearoff(unknownVtable);
+        IntPtr eventServerTearoff = AllocateTearoff(eventServerVtable);
+        IntPtr subscriptionMgtTearoff = AllocateTearoff(subscriptionMgtVtable);
+
+        session.UnknownTearoff = unknownTearoff;
+        session.UnknownVtable = unknownVtable;
+        session.EventServerTearoff = eventServerTearoff;
+        session.EventServerVtable = eventServerVtable;
+        session.SubscriptionMgtTearoff = subscriptionMgtTearoff;
+        session.SubscriptionMgtVtable = subscriptionMgtVtable;
+
+        s_tearoffs[unknownTearoff] = session;
+        s_tearoffs[eventServerTearoff] = session;
+        s_tearoffs[subscriptionMgtTearoff] = session;
+
+        return ResolveTearoff(session, requestedIid);
     }
 
     public static bool SupportsInterface(Guid iid) =>
-        iid == IID_IUnknown || iid == IOPCEventServer.InterfaceId;
+        iid == IID_IUnknown ||
+        iid == IOPCEventServer.InterfaceId ||
+        iid == IOPCEventSubscriptionMgt.InterfaceId;
 
-    public static long GetReferenceCount(IntPtr ccw) =>
-        s_ccws.TryGetValue(ccw, out CcwEntry? entry) ? Interlocked.Read(ref entry.RefCount) : -1L;
+    /// <summary>Test helper: returns the current refcount, or -1 if the pointer is not a known tearoff.</summary>
+    public static long GetReferenceCount(IntPtr tearoff) =>
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
+            ? Interlocked.Read(ref session.RefCount)
+            : -1L;
+
+    /// <summary>Test helper: looks up the canonical IUnknown tearoff for a CCW pointer.</summary>
+    public static IntPtr GetUnknownTearoff(IntPtr anyTearoff) =>
+        s_tearoffs.TryGetValue(anyTearoff, out CcwSession? session)
+            ? session.UnknownTearoff
+            : IntPtr.Zero;
+
+    internal static IOpcAeServer? ResolveServer(IntPtr tearoff) =>
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
+            ? session.ServerHandle.Target as IOpcAeServer
+            : null;
+
+    internal static IOPCEventSubscriptionMgt? ResolveSubscription(IntPtr tearoff) =>
+        s_tearoffs.TryGetValue(tearoff, out CcwSession? session)
+            ? session.ServerHandle.Target as IOPCEventSubscriptionMgt
+            : null;
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateVtable()
+    private static IntPtr* AllocateUnknownVtable()
     {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(3 * sizeof(IntPtr)));
-        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
-        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
-        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        FillUnknownSlots(v);
         return v;
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr AllocateInstance(IntPtr* vtable)
+    private static IntPtr* AllocateEventServerVtable()
+    {
+        // 3 IUnknown + 16 IOPCEventServer methods (opnums 3..18) = 19 slots.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(19 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.GetStatus;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, int, int, int, int, Guid*, IntPtr*, IntPtr, IntPtr, int>)&OpcAeServerCcwMethods.CreateEventSubscription;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int>)&OpcAeServerCcwMethods.QueryAvailableFilters;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, IntPtr*, IntPtr*, int>)&OpcAeServerCcwMethods.QueryEventCategories;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.QueryConditionNames;
+        v[8] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.QuerySubConditionNames;
+        v[9] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.QuerySourceConditions;
+        v[10] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, IntPtr*, IntPtr*, IntPtr*, int>)&OpcAeServerCcwMethods.QueryEventAttributes;
+        v[11] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int, IntPtr, IntPtr, int, IntPtr, IntPtr*, IntPtr*, IntPtr*, int>)&OpcAeServerCcwMethods.TranslateToItemIDs;
+        v[12] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, int, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.GetConditionState;
+        v[13] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, int>)&OpcAeServerCcwMethods.EnableConditionByArea;
+        v[14] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, int>)&OpcAeServerCcwMethods.EnableConditionBySource;
+        v[15] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, int>)&OpcAeServerCcwMethods.DisableConditionByArea;
+        v[16] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, int>)&OpcAeServerCcwMethods.DisableConditionBySource;
+        v[17] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.AckCondition;
+        v[18] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&OpcAeServerCcwMethods.CreateAreaBrowser;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateSubscriptionMgtVtable()
+    {
+        // 3 IUnknown + 8 IOPCEventSubscriptionMgt methods (opnums 3..10) = 11 slots.
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(11 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, int, int, IntPtr, int, int, int, IntPtr, int, IntPtr, int>)&OpcAeServerCcwMethods.SetFilter;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr*, IntPtr, IntPtr, IntPtr, IntPtr*, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.GetFilter;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int, int, IntPtr, int>)&OpcAeServerCcwMethods.SetReturnedAttributes;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr, IntPtr*, int>)&OpcAeServerCcwMethods.GetReturnedAttributes;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, int, int>)&OpcAeServerCcwMethods.Refresh;
+        v[8] = (IntPtr)(delegate* unmanaged<IntPtr, int, int>)&OpcAeServerCcwMethods.CancelRefresh;
+        v[9] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)&OpcAeServerCcwMethods.GetState;
+        v[10] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr, int, IntPtr, IntPtr, int>)&OpcAeServerCcwMethods.SetState;
+        return v;
+    }
+
+    private static void FillUnknownSlots(IntPtr* v)
+    {
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr AllocateTearoff(IntPtr* vtable)
     {
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
@@ -89,76 +186,133 @@ public static unsafe class OpcAeServerCcw
             *ppv = IntPtr.Zero;
             return E_INVALIDARG;
         }
-        if (SupportsInterface(*riid))
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
         {
-            *ppv = pThis;
-            if (s_ccws.TryGetValue(pThis, out CcwEntry? entry))
-            {
-                Interlocked.Increment(ref entry.RefCount);
-            }
-            return S_OK;
+            *ppv = IntPtr.Zero;
+            return E_NOINTERFACE;
         }
-        *ppv = IntPtr.Zero;
-        return E_NOINTERFACE;
+
+        IntPtr target = ResolveTearoff(session, *riid);
+        if (target == IntPtr.Zero)
+        {
+            *ppv = IntPtr.Zero;
+            return E_NOINTERFACE;
+        }
+
+        *ppv = target;
+        Interlocked.Increment(ref session.RefCount);
+        return S_OK;
+    }
+
+    private static IntPtr ResolveTearoff(CcwSession session, Guid iid)
+    {
+        if (iid == IID_IUnknown)
+        {
+            return session.UnknownTearoff;
+        }
+        if (iid == IOPCEventServer.InterfaceId)
+        {
+            return session.EventServerTearoff;
+        }
+        if (iid == IOPCEventSubscriptionMgt.InterfaceId)
+        {
+            return session.SubscriptionMgtTearoff;
+        }
+        return IntPtr.Zero;
     }
 
     [UnmanagedCallersOnly]
     private static uint AddRef(IntPtr pThis)
     {
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
         {
             return 1;
         }
-        return (uint)Interlocked.Increment(ref entry.RefCount);
+        return (uint)Interlocked.Increment(ref session.RefCount);
     }
 
     [UnmanagedCallersOnly]
     private static uint Release(IntPtr pThis)
     {
-        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        if (!s_tearoffs.TryGetValue(pThis, out CcwSession? session))
         {
             return 0;
         }
-        long next = Interlocked.Decrement(ref entry.RefCount);
+        long next = Interlocked.Decrement(ref session.RefCount);
         if (next > 0)
         {
             return (uint)next;
         }
-        DisposeEntry(pThis, entry);
+        DisposeSession(session);
         return 0;
     }
 
-    private static void DisposeEntry(IntPtr ccw, CcwEntry entry)
+    private static void DisposeSession(CcwSession session)
     {
-        if (Interlocked.Exchange(ref entry.Disposed, 1) != 0)
+        if (Interlocked.Exchange(ref session.Disposed, 1) != 0)
         {
             return;
         }
-        s_ccws.TryRemove(ccw, out _);
-        NativeMemory.Free((void*)ccw);
-        if (entry.Vtable != null)
+        s_tearoffs.TryRemove(session.UnknownTearoff, out _);
+        s_tearoffs.TryRemove(session.EventServerTearoff, out _);
+        s_tearoffs.TryRemove(session.SubscriptionMgtTearoff, out _);
+        FreeTearoffs(session);
+        FreeVtables(session);
+        if (session.ServerHandle.IsAllocated)
         {
-            NativeMemory.Free(entry.Vtable);
-        }
-        if (entry.ServerHandle.IsAllocated)
-        {
-            entry.ServerHandle.Free();
+            session.ServerHandle.Free();
         }
     }
 
-    private sealed class CcwEntry
+    private static void FreeTearoffs(CcwSession session)
     {
-        public CcwEntry(GCHandle serverHandle, IntPtr* vtable)
+        if (session.UnknownTearoff != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)session.UnknownTearoff);
+        }
+        if (session.EventServerTearoff != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)session.EventServerTearoff);
+        }
+        if (session.SubscriptionMgtTearoff != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)session.SubscriptionMgtTearoff);
+        }
+    }
+
+    private static void FreeVtables(CcwSession session)
+    {
+        if (session.UnknownVtable != null)
+        {
+            NativeMemory.Free(session.UnknownVtable);
+        }
+        if (session.EventServerVtable != null)
+        {
+            NativeMemory.Free(session.EventServerVtable);
+        }
+        if (session.SubscriptionMgtVtable != null)
+        {
+            NativeMemory.Free(session.SubscriptionMgtVtable);
+        }
+    }
+
+    /// <summary>Shared state across all tearoffs of one CCW.</summary>
+    internal sealed class CcwSession
+    {
+        public CcwSession(GCHandle serverHandle)
         {
             ServerHandle = serverHandle;
-            Vtable = vtable;
         }
 
         public GCHandle ServerHandle { get; }
 
-        public IntPtr* Vtable { get; }
-
         public long RefCount;
         public int Disposed;
+        public IntPtr UnknownTearoff;
+        public IntPtr* UnknownVtable;
+        public IntPtr EventServerTearoff;
+        public IntPtr* EventServerVtable;
+        public IntPtr SubscriptionMgtTearoff;
+        public IntPtr* SubscriptionMgtVtable;
     }
 }
