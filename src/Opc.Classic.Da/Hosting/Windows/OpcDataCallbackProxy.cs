@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -19,10 +20,9 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// This proxy is used by the Windows SCM-activated hosting path, where clients
 /// hand the server an <c>IUnknown</c> through <c>IConnectionPoint::Advise</c>.
 /// The constructor takes ownership of one queried <c>IOPCDataCallback</c>
-/// reference and <see cref="Dispose"/> releases it. The MVP wires the
-/// simple <c>OnCancelComplete</c> callback fully; value-bearing callbacks keep
-/// the vtable signatures and native-buffer cleanup skeletons but defer full
-/// <c>VARIANT</c> array marshaling to cap-a8-followup.
+/// reference and <see cref="Dispose"/> releases it. The proxy invokes the
+/// callback vtable synchronously and owns cleanup of all temporary native IN
+/// buffers after the callback returns.
 /// </remarks>
 [SupportedOSPlatform("windows")]
 public sealed unsafe class OpcDataCallbackProxy : IDisposable
@@ -68,8 +68,11 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         IntPtr* vtable = *(IntPtr**)callbackPtr;
         var onDataChange =
             (delegate* unmanaged<IntPtr, uint, uint, int, int, uint, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)vtable[3];
-        _ = onDataChange;
-        MarshalDataValuePayload(payload);
+        InvokeDataValueCallback(
+            callbackPtr,
+            onDataChange,
+            payload,
+            "IOPCDataCallback::OnDataChange");
     }
 
     /// <summary>Calls <c>IOPCDataCallback::OnReadComplete</c> (opnum 4).</summary>
@@ -81,8 +84,11 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         IntPtr* vtable = *(IntPtr**)callbackPtr;
         var onReadComplete =
             (delegate* unmanaged<IntPtr, uint, uint, int, int, uint, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)vtable[4];
-        _ = onReadComplete;
-        MarshalDataValuePayload(payload);
+        InvokeDataValueCallback(
+            callbackPtr,
+            onReadComplete,
+            payload,
+            "IOPCDataCallback::OnReadComplete");
     }
 
     /// <summary>Calls <c>IOPCDataCallback::OnWriteComplete</c> (opnum 5).</summary>
@@ -104,8 +110,14 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         IntPtr* vtable = *(IntPtr**)callbackPtr;
         var onWriteComplete =
             (delegate* unmanaged<IntPtr, uint, uint, int, uint, IntPtr, IntPtr, int>)vtable[5];
-        _ = onWriteComplete;
-        MarshalWriteCompletePayload(transactionId, groupHandle, masterError, clientHandles, errors);
+        InvokeWriteCompleteCallback(
+            callbackPtr,
+            onWriteComplete,
+            transactionId,
+            groupHandle,
+            masterError,
+            clientHandles,
+            errors);
     }
 
     /// <summary>Calls <c>IOPCDataCallback::OnCancelComplete</c> (opnum 6).</summary>
@@ -173,8 +185,13 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         return callbackPtr;
     }
 
-    private static void MarshalDataValuePayload(OpcDaGroup.DataChangePayload payload)
+    private static void InvokeDataValueCallback(
+        IntPtr callbackPtr,
+        delegate* unmanaged<IntPtr, uint, uint, int, int, uint, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int> callback,
+        OpcDaGroup.DataChangePayload payload,
+        string method)
     {
+        int count = ValidateDataValuePayload(payload);
         IntPtr clientItems = IntPtr.Zero;
         IntPtr values = IntPtr.Zero;
         IntPtr qualities = IntPtr.Zero;
@@ -182,37 +199,57 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         IntPtr errors = IntPtr.Zero;
         try
         {
-            clientItems = AllocInt32Array(payload.ClientHandles);
-            qualities = AllocUInt16Array(payload.Qualities);
-            timestamps = AllocInt64Array(payload.Timestamps);
-            errors = AllocInt32Array(payload.Errors);
-            // TODO(cap-a8-followup): allocate VARIANT* pvValues from payload.Values,
-            // then invoke opnum 3/4. Native layout is OPCHANDLE*, VARIANT*, WORD*,
-            // FILETIME* (64-bit little-endian file times), and HRESULT* arrays.
-            _ = values;
+            clientItems = AllocateUInt32Array(payload.ClientHandles);
+            values = AllocateVariantArray(payload.Values);
+            qualities = AllocateUInt16Array(payload.Qualities);
+            timestamps = AllocateInt64Array(payload.Timestamps);
+            errors = AllocateInt32Array(payload.Errors);
+            int hr = callback(
+                callbackPtr,
+                unchecked((uint)payload.TransactionId),
+                unchecked((uint)payload.GroupHandle),
+                payload.MasterQuality,
+                payload.MasterError,
+                (uint)count,
+                clientItems,
+                values,
+                qualities,
+                timestamps,
+                errors);
+            ThrowIfFailed(hr, method);
         }
         finally
         {
-            FreeCoTaskMem(clientItems, values, qualities, timestamps, errors);
+            FreeVariantArray(values, count);
+            FreeCoTaskMem(clientItems, qualities, timestamps, errors);
         }
     }
 
-    private static void MarshalWriteCompletePayload(
+    private static void InvokeWriteCompleteCallback(
+        IntPtr callbackPtr,
+        delegate* unmanaged<IntPtr, uint, uint, int, uint, IntPtr, IntPtr, int> callback,
         int transactionId,
         int groupHandle,
         int masterError,
         int[] clientHandles,
         int[] errors)
     {
+        int count = ValidateWriteCompletePayload(clientHandles, errors);
         IntPtr handlesPtr = IntPtr.Zero;
         IntPtr errorsPtr = IntPtr.Zero;
         try
         {
-            handlesPtr = AllocInt32Array(clientHandles);
-            errorsPtr = AllocInt32Array(errors);
-            // TODO(cap-a8-followup): invoke opnum 5 with dwTransid, hGroup,
-            // hrMastererr, dwCount, OPCHANDLE* phClientItems, HRESULT* pErrors.
-            _ = (transactionId, groupHandle, masterError, handlesPtr, errorsPtr);
+            handlesPtr = AllocateUInt32Array(clientHandles);
+            errorsPtr = AllocateInt32Array(errors);
+            int hr = callback(
+                callbackPtr,
+                unchecked((uint)transactionId),
+                unchecked((uint)groupHandle),
+                masterError,
+                (uint)count,
+                handlesPtr,
+                errorsPtr);
+            ThrowIfFailed(hr, "IOPCDataCallback::OnWriteComplete");
         }
         finally
         {
@@ -220,8 +257,39 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         }
     }
 
-    private static IntPtr AllocInt32Array(int[] values)
+    private static int ValidateDataValuePayload(OpcDaGroup.DataChangePayload payload)
     {
+        ArgumentNullException.ThrowIfNull(payload.ClientHandles);
+        ArgumentNullException.ThrowIfNull(payload.Values);
+        ArgumentNullException.ThrowIfNull(payload.Qualities);
+        ArgumentNullException.ThrowIfNull(payload.Timestamps);
+        ArgumentNullException.ThrowIfNull(payload.Errors);
+        int count = payload.ClientHandles.Length;
+        if (payload.Values.Length != count || payload.Qualities.Length != count ||
+            payload.Timestamps.Length != count || payload.Errors.Length != count)
+        {
+            throw new ArgumentException("Data callback payload array lengths must match.", nameof(payload));
+        }
+        return count;
+    }
+
+    private static int ValidateWriteCompletePayload(int[] clientHandles, int[] errors)
+    {
+        ArgumentNullException.ThrowIfNull(clientHandles);
+        ArgumentNullException.ThrowIfNull(errors);
+        if (errors.Length != clientHandles.Length)
+        {
+            throw new ArgumentException("Write callback array lengths must match.", nameof(errors));
+        }
+        return clientHandles.Length;
+    }
+
+    private static IntPtr AllocateUInt32Array(int[] values) => AllocateInt32Array(values);
+
+    [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+    private static IntPtr AllocateInt32Array(int[] values)
+    {
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length == 0)
         {
             return IntPtr.Zero;
@@ -231,7 +299,8 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         return ptr;
     }
 
-    private static IntPtr AllocUInt16Array(ushort[] values)
+    [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+    private static IntPtr AllocateUInt16Array(ushort[] values)
     {
         ArgumentNullException.ThrowIfNull(values);
         if (values.Length == 0)
@@ -247,7 +316,8 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
         return ptr;
     }
 
-    private static IntPtr AllocInt64Array(long[] values)
+    [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+    private static IntPtr AllocateInt64Array(long[] values)
     {
         ArgumentNullException.ThrowIfNull(values);
         if (values.Length == 0)
@@ -255,12 +325,53 @@ public sealed unsafe class OpcDataCallbackProxy : IDisposable
             return IntPtr.Zero;
         }
         IntPtr ptr = Marshal.AllocCoTaskMem(checked(values.Length * sizeof(long)));
-        long* target = (long*)ptr;
-        for (int i = 0; i < values.Length; i++)
-        {
-            target[i] = values[i];
-        }
+        Marshal.Copy(values, 0, ptr, values.Length);
         return ptr;
+    }
+
+    [SuppressMessage("Reliability", "CA2018", Justification = "Explicit byte size.")]
+    private static IntPtr AllocateVariantArray(OpcVariant[] values)
+    {
+        ArgumentNullException.ThrowIfNull(values);
+        if (values.Length == 0)
+        {
+            return IntPtr.Zero;
+        }
+        int variantSize = ComVariantMarshaler.VariantSize;
+        int byteCount = checked(values.Length * variantSize);
+        IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
+        NativeMemory.Clear((void*)ptr, (nuint)byteCount);
+        bool completed = false;
+        try
+        {
+            for (int i = 0; i < values.Length; i++)
+            {
+                ComVariantMarshaler.WriteVariant(ptr + (i * variantSize), values[i]);
+            }
+            completed = true;
+            return ptr;
+        }
+        finally
+        {
+            if (!completed)
+            {
+                FreeVariantArray(ptr, values.Length);
+            }
+        }
+    }
+
+    private static void FreeVariantArray(IntPtr ptr, int count)
+    {
+        if (ptr == IntPtr.Zero)
+        {
+            return;
+        }
+        int variantSize = ComVariantMarshaler.VariantSize;
+        for (int i = 0; i < count; i++)
+        {
+            ComVariantMarshaler.ClearVariant(ptr + (i * variantSize));
+        }
+        Marshal.FreeCoTaskMem(ptr);
     }
 
     private static void FreeCoTaskMem(params IntPtr[] pointers)
