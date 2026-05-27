@@ -1,7 +1,9 @@
 # Docker test fleet — adopter cookbook
 
 How to use the `docker/` fleet for end-to-end DCOM testing of the managed
-implementation. For the architectural overview see `docker/README.md`.
+implementation. For the architectural overview see [`docker/README.md`](../docker/README.md).
+The fleet contains four Windows-container targets from `docker/docker-compose.test.yml`:
+`c-server`, `managed-server`, `ctt`, and `c-client`.
 
 ## Common workflows
 
@@ -15,13 +17,14 @@ docker/run-matrix.ps1 -OnlyManaged
 ```
 
 Result: `docker/results/ctt-managed.xml` — open in a text viewer or the CTT
-report viewer. Until the managed `IOPCServer` dispatch lands, every CTT test
-will fail with `E_NOINTERFACE`; the workflow proves the registration
-plumbing, not conformance.
+report viewer. This is the `release-100-tag` gate tracked in
+[`docs/release-blockers.md`](release-blockers.md): the source/build wiring is
+in place, but the report still needs to run green on a Windows Docker host.
 
 ### 2. Drive the managed server from a native C client
 
-(Pending Phase 3 build wiring.)
+The `opc-c-client` image builds the hand-rolled DA client MVP from
+`docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
 
 ```pwsh
 docker compose --file docker/docker-compose.test.yml up -d managed-server
@@ -30,14 +33,17 @@ docker compose --file docker/docker-compose.test.yml run --rm c-client `
     -TargetHost opc-classic-managed
 ```
 
-### 3. Smoke the managed client against a native C server
+### 3. Smoke the native C server/client MVPs
 
-(Pending Phase 2 build wiring.)
+The `opc-c-server` image builds the hand-rolled DA server MVP from
+`docker/opc-c-server/build/opc-sample-server.cpp`; the `opc-c-client` image can
+be pointed at it on the same `opc-test-net` l2bridge network.
 
 ```pwsh
 docker compose --file docker/docker-compose.test.yml up -d c-server
-# From the host (or another container), run the managed Discovery sample
-# pointed at opc-classic-c-server:51303
+docker compose --file docker/docker-compose.test.yml run --rm c-client `
+    -ProgId Opc.SampleServer.1 `
+    -TargetHost opc-classic-c-server
 ```
 
 ## Debugging
@@ -51,8 +57,8 @@ Causes / fixes:
 
 1. **Registry view mismatch**: the CTT is 32-bit on a 64-bit Windows host,
    so it reads from `HKLM\Software\Wow6432Node\Classes\CLSID`. Confirm the
-   managed server was registered with `--registry-view=both` (the default
-   in `ctt-2-registration`) so both views see the CLSID.
+   managed server was registered with `--registry-view=both` (the default)
+   so both views see the CLSID.
 2. **OPCEnum not running**: `docker exec opc-classic-managed Get-Service OpcEnum`
    should show `Running`. If not, restart the container.
 3. **Network isolation**: the containers must be on the SAME `l2bridge`
@@ -103,7 +109,8 @@ docker exec opc-classic-managed netstat -ano | findstr LISTEN
 ## CI integration
 
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
-`windows-2022`. Inspect runs via:
+`windows-2022` and can also be started manually with `workflow_dispatch`. Inspect
+runs via:
 
 ```pwsh
 gh run list --workflow=docker-test-fleet.yml
@@ -118,10 +125,9 @@ gh run download <run-id> --name docker-test-fleet-results
 - **CTT MSI redistribution**: the vendored CTT installers are OPC Foundation
   member-only. The `opc-classic/ctt` image bakes them in; don't publish to
   a public registry without OPC Foundation approval.
-- **Build artifacts are not cached**: each CI run rebuilds the ~3 GB images
+- **Build artifacts are not cached**: each CI run rebuilds the multi-GB images
   from scratch. Mitigation paths include GHCR layer caching, but this is
   not yet wired.
-- **`docker-2` and `docker-3` are scaffolds**: the C-source builds are NOT
-  wired up. The `opc-c-server` and `opc-c-client` containers run but their
-  exes are placeholders that exit immediately (or idle for `docker exec`
-  with `-Interactive`).
+- **Validation is environment-blocked**: `docker-2-cserver` and
+  `docker-3-cclient` now have C++ MVP source and project files wired into the
+  Dockerfiles, but compiling/running them still requires a Windows Docker host.

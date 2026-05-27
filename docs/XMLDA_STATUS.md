@@ -25,30 +25,30 @@
 
 ## Value and quality coverage
 
-`XmlDaValue` supports the scalar XML Schema types used by common XML-DA servers: `string`, signed and unsigned integer widths, `float`, `double`, `boolean`, and `dateTime`. Unknown value types preserve raw text for diagnostics. `OpcQuality` maps the DA packed quality bits exposed by XML-DA item values.
+`XmlDaValue` supports the XML Schema scalar types used by common XML-DA servers: `string`, signed and unsigned integer widths, `float`, `double`, `decimal`, `boolean`, `dateTime`, `time`, `date`, `duration`, `QName`, and `base64Binary`. It also supports XML-DA array carriers for byte, short, int, long, float, double, string, boolean, and dateTime values. Unknown value types preserve raw text for diagnostics. `OpcQuality` maps the DA packed quality bits exposed by XML-DA item values.
 
 ## Not supported
 
 - Hosting an XML-DA server endpoint.
 - SOAP 1.2 bindings.
-- XML-DA array values, BSTR variants, and vendor-specific value carriers beyond raw-text preservation.
+- BSTR variants and vendor-specific value carriers beyond raw-text preservation.
 - Generated SOAP proxy types or reflection-based XML serialization.
 - Built-in WS-Security policy; use the supplied `HttpClient` for authentication and transport security.
 
 ## Verification
 
-`tests\Opc.Classic.Xml.Tests` covers the HTTP client path and per-operation serializers. The project participates in the repository build and test gates, which currently complete with 0 build warnings and a green test suite.
+`tests\Opc.Classic.Xml.Tests` covers the HTTP client path and per-operation serializers. The project participates in the repository build and test gates; the rc.7 validation sweep has 0 build warnings and all 17 .NET test projects green.
 
 ## Roadmap
 
-For `1.0.0-rc.1`:
+Before `1.0.0` FINAL:
 
-- complete XML-DA interop runs against representative third-party servers;
+- complete XML-DA interop runs against representative third-party servers when access is available;
 - expand error-code and quality-code coverage examples;
-- add a compact client cookbook for read/write/subscribe flows.
+- add a compact client cookbook for read/write/subscribe flows if time allows.
 
 For `2.0.0`:
 
 - evaluate XML-DA server hosting;
-- add array and vendor-specific value carriers where interop demand justifies them;
+- add vendor-specific value carriers where interop demand justifies them;
 - consider optional SOAP security helpers layered on top of `HttpClient`.

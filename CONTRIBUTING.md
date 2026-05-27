@@ -26,6 +26,7 @@ dotnet test Opc.Classic.slnx
 | `tests\` | TUnit and Microsoft.Testing.Platform test projects, including unit, property, snapshot, generator, logging, conformance, and integration scaffolds. |
 | `samples\` | Nine runnable samples for DA/AE/HDA clients and servers, loopback, CTT, and AOT publishing. |
 | `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, diagrams, conformance, release, and roadmap docs. |
+| `docker\` | Windows-container test fleet for CTT, managed server, and native C server/client interop. |
 | `COM\` | OPC Foundation native C++ sample servers used as conformance references. Do not casually rewrite or relicense them. |
 | `External\` | OPC Foundation redistributables, IDL, headers, and specification assets used as conformance inputs. |
 
@@ -173,14 +174,14 @@ Use clear commit messages. Do not use PowerShell here-strings for commit message
 
 ## Windows and OPC conformance jobs
 
-The CI matrix includes Windows conformance scaffolding that can:
+The CI matrix includes Windows conformance coverage that can:
 
 1. install OPC Foundation Core Components,
 2. build preserved native C++ OPC sample servers under `COM\`,
 3. register them via `COM\regserver.cmd`,
 4. run managed native-conformance subsets against those servers.
 
-The separate `.github\workflows\opc-ctt.yml` workflow scaffolds official OPC Foundation Compliance Test Tool runs for managed server conformance. It is gated on OPC Foundation membership and the `OPC_CTT_INSTALLER_URL` secret. See `docs\OPC_CTT_CONFORMANCE.md` for prerequisites, triggers, result artifacts, and release-gating status.
+The `.github\workflows\opc-ctt.yml` workflow installs the vendored CTT MSIs from `External\CTT\`, registers `samples\Opc.Classic.Samples.CttServer`, and uploads `opc-ctt-results`. The `.github\workflows\docker-test-fleet.yml` workflow builds the Windows-container fleet under `docker\` and runs the managed CTT smoke when a Windows-container host is available. See `docs\OPC_CTT_CONFORMANCE.md`, `docs\test-fleet.md`, and `docs\release-blockers.md` for prerequisites, result artifacts, and release-gating status.
 
 ## License
 

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2026-05-27 *(awaiting CTT smoke green to tag)*
+## [1.0.0] - 2026-05-27 *(awaiting release-blocker gates to tag)*
 
 First stable release of the cross-platform .NET 10 OPC Classic stack.
 
@@ -27,13 +27,14 @@ First stable release of the cross-platform .NET 10 OPC Classic stack.
   `IOPCItemProperties`, `IOPCItemDeadbandMgt`, and `IOPCItemSamplingMgt` backed
   by managed default implementations.
 - **OPC CTT integration** — Windows COM registration, a managed CTT sample
-  server, vendored CTT installers, and Windows-container Docker fleet
-  scaffolding with managed/native server and client targets.
+  server, vendored CTT installers, and Windows-container Docker fleet wiring
+  with managed/native server and client targets.
 - **Wire and conformance fixtures** — WINREG PCAP replay coverage, C-built OPC
-  reference server/client scaffolds, and MS-NLMP/Kerberos/SPNEGO/channel-binding
+  reference server/client MVPs, and MS-NLMP/Kerberos/SPNEGO/channel-binding
   vectors for the security-sensitive transport paths.
-- **Comprehensive test suite** — all 17 .NET test projects green in the rc.5
-  sweep, including DA 385, AE 86, HDA 123, SMB 22, and cryptography/vector
+- **Comprehensive test suite** — all 17 .NET test projects green in the rc.7
+  sweep, including DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22,
+  Integration 94, and the rest of the generator/discovery/property/snapshot
   coverage.
 
 ### Migration from rc.X

@@ -6,7 +6,9 @@ suite for OPC Classic servers. This document describes how to validate an
 workstation.
 
 For the CI workflow's internal architecture (install order, registry hive
-choice, scope-boundary rationale), see `docs/ctt/CI_DESIGN.md`.
+choice, scope-boundary rationale), see `docs/ctt/CI_DESIGN.md`. For the
+Windows-container fleet that runs managed/native combinations, see
+[`docker/README.md`](../docker/README.md) and [test-fleet.md](test-fleet.md).
 
 ## Scope of this gate
 
@@ -14,8 +16,8 @@ choice, scope-boundary rationale), see `docs/ctt/CI_DESIGN.md`.
 |---|---|
 | ProgID | `Opc.Classic.DaSample.1` |
 | CLSID | `{8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A}` |
-| CI workflow | `.github/workflows/opc-ctt.yml` |
-| Artifact | `opc-ctt-results` |
+| CI workflows | `.github/workflows/opc-ctt.yml`, `.github/workflows/docker-test-fleet.yml` |
+| Artifacts | `opc-ctt-results`, `docker-test-fleet-results` |
 
 ## Prerequisites
 
@@ -29,6 +31,8 @@ choice, scope-boundary rationale), see `docs/ctt/CI_DESIGN.md`.
    CTT runs). Per-user HKCU registration is supported for developer
    workflows without elevation but only the calling user can then discover
    the server.
+5. **Windows Docker host** for the release-gating fleet smoke. Create the
+   `opc-test-net` l2bridge network as described in `docker/README.md`.
 
 ## CI flow
 
@@ -40,11 +44,14 @@ choice, scope-boundary rationale), see `docs/ctt/CI_DESIGN.md`.
 3. Publishes `Opc.Classic.Samples.CttServer` Release
 4. Registers the managed server under HKLM via the `--register` CLI
 5. Locates `OpcCtt.exe` and dumps its `/?` help output as a diagnostic
-6. Runs CTT against `Opc.Classic.DaSample.1` (`continue-on-error: true`)
+6. Runs CTT against `Opc.Classic.DaSample.1`
 7. Unregisters the server
 8. Uploads `ctt-results.xml` + the CLI help dump as `opc-ctt-results`
 
-The workflow runs weekly on Sundays at 03:00 UTC and on `workflow_dispatch`.
+`.github/workflows/docker-test-fleet.yml` builds the Windows-container fleet and
+runs the managed CTT smoke through `docker/run-matrix.ps1 -OnlyManaged`. The CTT
+release gate remains open until that report is green on a Windows Docker host;
+see [release-blockers.md](release-blockers.md).
 
 ## Local-run cookbook
 
@@ -95,33 +102,38 @@ $exe = 'samples/Opc.Classic.Samples.CttServer/bin/Release/net10.0/publish/Opc.Cl
 
 ## Current state
 
-`Opc.Classic.Samples.CttServer`'s `IClassFactory.CreateInstance` returns
-`E_NOINTERFACE` for any IID besides `IID_IUnknown`. This means:
+`Opc.Classic.Samples.CttServer` now has the release-scope Windows CCW and managed
+DCOM paths wired:
 
-- ✅ The CTT **discovers** the server through OPCEnum or direct CLSID lookup
-- ✅ The CTT **launches** the server EXE through `CoCreateInstance` / SCM
-- ❌ Every CTT conformance test that binds to `IOPCServer`, `IOPCBrowse`,
-  `IOPCItemMgt`, etc. **fails immediately** with `E_NOINTERFACE`
+- ✅ OPCEnum/direct CLSID discovery and SCM launch/registration plumbing
+- ✅ `IClassFactory` + `IOPCServer` raw-vtable CCW (`OpcDaServerCcw`) with real
+  per-method bodies for the release scope
+- ✅ `OpcDaGroupCcw` multi-tearoff coverage for group state, item management,
+  sync/async I/O, and connection points
+- ✅ real `OPCITEMDEF` / `OPCITEMRESULT`, `VARIANT`, `SAFEARRAY`, `BSTR`,
+  `FILETIME`, and callback marshaling where needed for the DA path
+- ✅ DA address-space browse/properties/default deadband/sampling support through
+  `IOpcAddressSpace` and default implementations
 
-The CI workflow's `continue-on-error: true` reflects this: the workflow today
-proves the **registration plumbing** (install → register → launch → unregister),
-not the conformance result. Full IOPCServer dispatch via the managed DCOM
-listener (`OpcDaServerHost`) is the next workstream — once it lands the
-`continue-on-error` is dropped and a passing `ctt-results.xml` becomes a
-release gate.
+The remaining blocker is not a known `E_NOINTERFACE` implementation stub; it is
+Windows Docker / CTT execution and triage. The final tag requires a green CTT
+smoke report archived with the release artifacts.
 
 ## Release gates
 
 | Tag | Gate |
 |---|---|
-| `1.0.0-rc.1` | Build 0/0 + tests passing + CTT plumbing smoke green |
-| `1.0.0` (FINAL) | CTT conformance PASS on `Opc.Classic.DaSample.1` (no failing tests in `ctt-results.xml`) |
+| `1.0.0-rc.7` | Build 0/0 + all 17 .NET test projects green + Docker/native C/server-client wiring present |
+| `1.0.0` (FINAL) | CTT smoke green for `Opc.Classic.DaSample.1` on the Windows Docker fleet, plus the other gates in `docs/release-blockers.md` |
 
 The XML report is kept alongside the release artifacts for auditability.
 
 ## Related documentation
 
 - `docs/ctt/CI_DESIGN.md` — CI workflow internals
+- `docker/README.md` — Windows Docker test fleet overview
+- `docs/test-fleet.md` — adopter cookbook for the Docker fleet
+- `docs/release-blockers.md` — remaining 1.0.0 FINAL gates
 - `samples/Opc.Classic.Samples.CttServer/README.md` — sample-level CLI documentation
 - `src/Opc.Classic.Hosting/Windows/README.md` — Windows COM registration internals
 - `External/CTT/readme.txt` — original OPC Foundation CTT inventory

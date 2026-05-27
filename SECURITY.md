@@ -37,13 +37,13 @@ Please avoid destructive proof-of-concept payloads, attacks against third-party 
 
 The project is a pure-managed OPC Classic stack with DCOM and MSRPC components under `src\Opc.Classic.Dcom\`. Its security-sensitive surface includes authentication, authorization, channel protection, NDR marshalling, and server callback dispatch.
 
-The active roadmap includes NTLMv2, Kerberos/SPNEGO, and DCOM authentication hardening across Phase 2 and Phase 3. Findings against those areas are welcome, including protocol downgrade issues, replay weaknesses, signing or sealing mistakes, credential handling bugs, and interoperability behavior that weakens expected DCOM security.
+NTLMv2, Kerberos/SPNEGO, channel binding, and DCOM authentication hardening are implemented in the current rc.7 tree. Findings against those areas are welcome, including protocol downgrade issues, replay weaknesses, signing or sealing mistakes, credential handling bugs, and interoperability behavior that weakens expected DCOM security. The remaining pre-1.0 security gates are the live Windows Server NTLMv2 wire test and the external NTLMSSP audit tracked in `docs\release-blockers.md`.
 
-Cryptanalysis findings against the in-tree authentication implementations are especially valuable. Please include test vectors, traces, or references to protocol specifications when available.
+Cryptanalysis findings against the in-tree authentication implementations are especially valuable. The audit-prep inventory in `docs\security\NTLMSSP_AUDIT_GUIDE.md` lists the NTLMSSP code surface, fixtures, and residual risks. Please include test vectors, traces, or references to protocol specifications when available.
 
 ## In-Tree Cryptographic Implementations
 
-The project intentionally contains in-tree cryptographic code for OPC Classic interoperability. NTLMv2, RC4, and MD4 are hand-rolled in `src\Opc.Classic.Dcom\Crypto\` as part of Phase 2E rather than delegated entirely to BCL-backed implementations.
+The project intentionally contains in-tree cryptographic code for OPC Classic interoperability. NTLMv2, RC4, and MD4 are hand-rolled in `src\Opc.Classic.Dcom\Crypto\` rather than delegated entirely to BCL-backed implementations.
 
 This code exists to support protocol compatibility, not to introduce new cryptographic designs. Responsible disclosure is particularly important for:
 

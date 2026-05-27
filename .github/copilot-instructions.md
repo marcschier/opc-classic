@@ -16,6 +16,7 @@ opc-classic/
 ├── tests/                        TUnit projects on Microsoft.Testing.Platform
 ├── samples/                      9 sample apps: 3 servers, 3 clients, LoopbackDemo, CttServer, AotCanary
 ├── docs/                         plain Markdown documentation hub and topic pages
+├── docker/                       Windows-container CTT + managed/native interop test fleet
 ├── COM/                          OPC Foundation native C++ sample servers used as conformance references
 ├── External/                     OPC Foundation IDL, headers, redistributables, and spec assets
 ├── .github/workflows/            build, CTT, release, and conformance workflows
@@ -49,7 +50,7 @@ Publish the NativeAOT canary:
 dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 ```
 
-The expected baseline is 0 build warnings and 0 build errors. Tests currently pass with 1253 passed / 24 skipped / 0 failed.
+The expected baseline is 0 build warnings and 0 build errors. The rc.7 validation sweep has all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus the remaining suites).
 
 ## NativeAOT requirements
 

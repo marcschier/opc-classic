@@ -3,12 +3,12 @@
 [![Build](https://github.com/marcschier/opc-classic/actions/workflows/build.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/build.yml)
 [![Docker test fleet](https://github.com/marcschier/opc-classic/actions/workflows/docker-test-fleet.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/docker-test-fleet.yml)
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
-[![Version](https://img.shields.io/badge/version-1.0.0--rc.5-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.0.0--rc.7-blue)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for clients and servers. Managed DCOM/MSRPC with no Windows COM runtime interop, XML-DA over HTTP, source-generated proxies and dispatchers, and self-contained NTLMv2 / Kerberos / SPNEGO authentication.
 
-> **Status — release candidate.** Currently tagged `1.0.0-rc.5` locally. The 1.0.0 FINAL tag is gated on three remaining items tracked in [`docs/release-blockers.md`](docs/release-blockers.md): OPC CTT smoke green on Windows Docker, NTLMv2 wire test against a live Windows Server, and an external third-party NTLMSSP audit. Everything except those three gates is shipping today.
+> **Status — release candidate.** Currently tagged `1.0.0-rc.7` locally (rc.1 through rc.7 tags exist locally; none have been pushed to origin yet). The 1.0.0 FINAL tag is gated on three remaining items tracked in [`docs/release-blockers.md`](docs/release-blockers.md): OPC CTT smoke green on Windows Docker, NTLMv2 wire test against a live Windows Server, and an external third-party NTLMSSP audit. Everything except those three gates is shipping today.
 
 ## What you get
 
@@ -18,7 +18,7 @@ A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic
 - **Source-generated proxies and dispatchers** — Roslyn `IIncrementalGenerator` emits a client proxy and a server dispatcher for every OPC interface marked `[OpcInterface]`. No reflection at runtime; AOT-clean and trim-safe.
 - **Windows COM-callable wrappers** — when running on Windows, SCM-activated servers are exposed through raw-vtable CCWs (also `[ComImport]`-free). Full per-method vtables for `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, `IConnectionPoint(Container)` plus AE `IOPCEventServer` and HDA `IOPCHDA_Server`.
 - **NativeAOT + trimming compatible** across every runtime project, enforced by `IsAotCompatible`, `EnableTrimAnalyzer`, `EnableAotAnalyzer`, and an explicit [`BannedSymbols.txt`](src/BannedSymbols.txt).
-- **Validation baseline** — 0 build warnings, 0 build errors, ~1,500 tests across 17 test projects (DA 385, AE 86, HDA 123, SMB 22, plus discovery, generators, integration, property-based, snapshot, crypto, and more).
+- **Validation baseline** — 0 build warnings, 0 build errors, all 17 test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus discovery, generators, property-based, snapshot, and more).
 
 ## Quick start
 
@@ -60,7 +60,7 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 
 ## Samples
 
-Each sample folder ships its own README with run instructions. See [`samples/`](samples/) for the complete list. Quick map:
+Each sample folder ships its own README with run instructions. DA/AE/HDA/CTT sample servers bind `OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` by default, and the DA/AE/HDA sample clients dial TCP when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set (otherwise they keep the in-process fallback). See [`samples/`](samples/) for the complete list. Quick map:
 
 | Folder | What it demonstrates |
 | --- | --- |
@@ -122,7 +122,7 @@ The expected baseline at every commit on `master`: **0 build warnings, 0 build e
 
 ## What's still in flight
 
-The rc.* series ships the entire stack. The three items that stand between rc.5 and `1.0.0` FINAL are all infrastructure-bound:
+The rc.* series ships the stack through rc.7, including Track E sample DCOM-over-IP. The three items that stand between rc.7 and `1.0.0` FINAL are all infrastructure-bound:
 
 1. **OPC CTT smoke green** — requires a Windows host with Docker Desktop in Windows-container mode to execute the [test fleet](docker/README.md) and triage results.
 2. **NTLMv2 wire test against a real Windows Server** — requires a live Active Directory lab; the [audit guide](docs/security/NTLMSSP_AUDIT_GUIDE.md) and [wire fixture replay tests](tests/Opc.Classic.Dcom.Crypto.Tests/) document the sandbox-feasible coverage available today.

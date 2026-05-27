@@ -2,7 +2,7 @@
 
 This guide is the practical starting point for adding `Opc.Classic` to an application, test suite, gateway, or managed OPC Classic server. It focuses on current APIs and current repository capabilities. For deeper design details, see [ARCHITECTURE.md](ARCHITECTURE.md). For task-oriented walkthroughs, see [cookbook](cookbook/README.md).
 
-The current package version is `0.6.0-alpha.1`. The next release train targets `1.0.0-rc.1`. Package IDs, namespaces, project names, and examples use the `Opc.Classic.*` root. The project is MIT licensed.
+The current repository state is tagged `1.0.0-rc.7` locally. The `1.0.0` FINAL tag is gated on the three infrastructure/security items in [release-blockers.md](release-blockers.md). Package IDs, namespaces, project names, and examples use the `Opc.Classic.*` root. The project is MIT licensed.
 
 ## 1. When to use Opc.Classic
 
@@ -22,14 +22,14 @@ OPC UA is the preferred protocol for new device models and new plant systems. `O
 Install only the areas you need:
 
 ```bash
-dotnet add package Opc.Classic.Core
-dotnet add package Opc.Classic.Da
-dotnet add package Opc.Classic.Ae
-dotnet add package Opc.Classic.Hda
-dotnet add package Opc.Classic.Hosting
+dotnet add package Opc.Classic.Core --prerelease
+dotnet add package Opc.Classic.Da --prerelease
+dotnet add package Opc.Classic.Ae --prerelease
+dotnet add package Opc.Classic.Hda --prerelease
+dotnet add package Opc.Classic.Hosting --prerelease
 ```
 
-For source builds of `0.6.0-alpha.1`, use one of these approaches:
+For source builds from the rc.7 checkout, use one of these approaches:
 
 1. reference the projects directly in a repo-local solution;
 2. publish packages to a local folder feed from CI;
@@ -287,6 +287,8 @@ Typical deployment:
 3. connect through the managed DCOM channel;
 4. expose values, events, or HDA data through the application.
 
+The DA/AE/HDA sample servers can bind a real TCP listener by setting `OPC_CLASSIC_SAMPLE_PORT` (or `OPC_CLASSIC_LISTEN_ADDRESS`), and the sample clients dial that listener when `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT` are set. Without those variables, the clients keep the in-process loopback path for local development.
+
 ### Windows-specific integration
 
 Windows-only integration is guarded with `[SupportedOSPlatform("windows")]`. Examples include registry enumeration and `WindowsRegistryClsidWriter`, which writes `HKLM\SOFTWARE\Classes\CLSID` registrations for native COM client activation compatibility.
@@ -317,7 +319,7 @@ Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispat
 
 | Area | What you get |
 | --- | --- |
-| DA | Client/server contracts, generated proxies and dispatchers, hosting, subscriptions, browse, read/write, callbacks, DA client/server samples. |
+| DA | Client/server contracts, generated proxies and dispatchers, hosting, subscriptions, `IOpcAddressSpace`-backed browse/properties, read/write, callbacks, DA client/server samples. |
 | AE | Event server/client contracts, categories, filters, subscriptions, generated projections, AE client/server samples. |
 | HDA | Historical read/update/annotation/playback contracts, generated projections, HDA client/server samples. |
 | Batch | Batch summaries, state/type models, filters, enumerations, generated projections. |
@@ -327,7 +329,7 @@ Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispat
 | Security | OPC Security projections plus DCOM authentication and packet-protection integration. |
 | Discovery | Local, remote-registry, and OPCEnum discovery strategies. |
 
-The generated DCOM surface contains 47 dispatchers and 127 opnums. The tests currently report 1253 passed / 24 skipped / 0 failed.
+The generated DCOM surface contains 47 dispatchers and 127 opnums. The rc.7 validation sweep has 0 build errors / 0 warnings and all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus the remaining suites).
 
 ## 11. Adoption from OPC NET API projects
 
@@ -442,10 +444,10 @@ An OPC URL can identify a server by ProgID or CLSID. Discovery results and serve
 
 ## 14. Roadmap for release adoption
 
-The `1.0.0-rc.1` release train focuses on release qualification:
+The `1.0.0-rc.7` release candidate is feature-complete for sandbox-feasible work. Final adoption is gated on the three items tracked in [release-blockers.md](release-blockers.md):
 
-- compatibility matrix validation against native OPC Foundation samples and representative external servers;
-- OPC CTT workflows where installer access is available;
-- public API and package metadata stabilization;
-- continued AOT canary and cross-platform CI coverage;
-- external security review inputs for authentication and packet protection.
+- OPC CTT smoke green on a Windows Docker host;
+- NTLMv2 wire verification against a live Windows Server / AD lab;
+- external NTLMSSP crypto/security audit sign-off.
+
+The rc.7 tree keeps public API/package metadata, AOT canary coverage, samples, and cross-platform CI green while those environment-bound gates complete.
