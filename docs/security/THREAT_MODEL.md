@@ -12,7 +12,7 @@
 The threat model covers the security-sensitive Opc.Classic stack identified by the security policy: authentication, authorization, channel protection, NDR marshalling, activation, discovery, and server callback dispatch in the managed DCOM/MSRPC code (`SECURITY.md`). The in-scope components are:
 
 - Client proxy stack and generated call shims.
-- Server hosting, source-generated dispatch, and IRemoteSCMActivator v5.6 hosting.
+- Server hosting, source-generated dispatch, IRemoteSCMActivator v5.6 hosting, and the Windows SCM CCW activation/vtable path.
 - Self-contained NTLMv2; Kerberos RC4-HMAC and AES128/256; SPNEGO with `mechListMIC`.
 - DCE/RPC and ORPC envelope handling, fragmentation, packet integrity, packet privacy, and RFC 5056/RFC 5929 channel binding tokens.
 - NDR marshaling / unmarshaling, including full OAUT VARIANT and SAFEARRAY handling.
@@ -304,4 +304,4 @@ Kerberos packet protection is implemented by `KerberosSession` (`src\Opc.Classic
 
 - STRIDE flow rows: **7 MITIGATED**, **17 PARTIAL**, **0 NOT MITIGATED**.
 - Highest-priority open recommendations: server authorization policy (R1), secret lifetime/zeroization (R3), NTLM randomness (R4), constant-time comparisons (R5), and independent crypto review (R9).
-- Security posture: NTLMv2, Kerberos/SPNEGO, CBT, NTLM MIC, SPNEGO `mechListMIC`, ORPC envelope handling, full VARIANT handling, IRemoteSCMActivator v5.6 hosting, OPCEnum discovery, and Kerberos GSS packet protection are present; deployment policy and audit controls remain the main hardening work.
+- Security posture: NTLMv2, Kerberos/SPNEGO, CBT, NTLM MIC, SPNEGO `mechListMIC`, ORPC envelope handling, full VARIANT handling, IRemoteSCMActivator v5.6 hosting, Windows SCM CCW activation, OPCEnum discovery, and Kerberos GSS packet protection are present; deployment policy and audit controls remain the main hardening work.

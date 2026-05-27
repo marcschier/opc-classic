@@ -4,7 +4,7 @@ This sequence follows one outbound generated-proxy call, using `IOPCServer::GetS
 
 The generated proxy body is emitted at compile time. It rents a buffer, writes request parameters with the generator codec table, calls `ICallChannel.InvokeAsync`, checks the returned HRESULT, and decodes response bytes through `NdrReader` before returning a managed `OpcServerStatus`.
 
-`DcomCallChannel` owns the transport side of the call. It ensures a presentation context for the interface, builds a `RequestCoPdu`, writes it to the connected transport, reads one or more response fragments, and returns an `NdrCallResult` to the generated shim.
+`DcomCallChannel` owns the transport side of the call. It ensures a presentation context for the interface, builds a `RequestCoPdu`, writes it to the connected `IAsyncTransport` (commonly the public `TcpClientTransport` returned by `DcomCallChannelFactory.ConnectTcpAsync`), reads one or more response fragments, and returns an `NdrCallResult` to the generated shim.
 
 ## ORPC envelope
 
@@ -26,7 +26,8 @@ sequenceDiagram
     participant Ndr as NDR writer reader
     participant Channel as ICallChannel
     participant Dcom as DcomCallChannel
-    participant Rpc as RPC PDU transport
+    participant Transport as TcpClientTransport
+    participant Rpc as RPC PDU stream
     participant Server as OPC DA server
 
     App->>Proxy: GetStatusAsync()
@@ -35,10 +36,12 @@ sequenceDiagram
     Proxy->>Channel: InvokeAsync(interfaceId, opnum 6, payload)
     Channel->>Dcom: Dispatch call to DCOM channel
     Dcom->>Dcom: Ensure presentation context
-    Dcom->>Rpc: Send RequestCoPdu with NDR stub
+    Dcom->>Transport: Write RequestCoPdu with NDR stub
+    Transport->>Rpc: Send ncacn_ip_tcp bytes
     Rpc->>Server: Deliver IOPCServer GetStatus request
     Server-->>Rpc: ResponseCoPdu with status stub
-    Rpc-->>Dcom: Read response fragments
+    Rpc-->>Transport: Return response fragments
+    Transport-->>Dcom: Read response fragments
     Dcom-->>Channel: NdrCallResult HRESULT plus payload
     Channel-->>Proxy: Return result
     Proxy->>Ndr: Decode OpcServerStatus
@@ -52,4 +55,5 @@ sequenceDiagram
 - [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:692`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L692-L760) emits codec writes and response reads from the generator codec table.
 - [`src\Opc.Classic.Core\ICallChannel.cs:45`](../../src/Opc.Classic.Core/ICallChannel.cs#L45-L49) is the generated-shim call seam.
 - [`src\Opc.Classic.Dcom\Transport\DcomCallChannel.cs:55`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs#L55-L94) sends the DCE/RPC request and maps response or fault PDUs into `NdrCallResult`.
+- [`src\Opc.Classic.Dcom\Transport\TcpClientTransport.cs:95`](../../src/Opc.Classic.Dcom/Transport/TcpClientTransport.cs#L95-L117) and [`DcomCallChannelFactory.cs:58`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannelFactory.cs#L58-L69) are the direct TCP transport entry points.
 - See also [`docs\ARCHITECTURE.md:157`](../ARCHITECTURE.md#L157-L168) and [`docs\ADOPTION.md:39`](../ADOPTION.md#L39-L79).

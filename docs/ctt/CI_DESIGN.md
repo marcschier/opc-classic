@@ -1,11 +1,14 @@
 # OPC CTT CI design
 
-This document describes how the `.github/workflows/opc-ctt.yml` workflow is
+This document describes how the `.github\workflows\opc-ctt.yml` workflow is
 wired up to run the OPC Compliance Test Tool (CTT) against
-`samples/Opc.Classic.Samples.CttServer` on a Windows GitHub Actions runner.
+`samples\Opc.Classic.Samples.CttServer` on a Windows GitHub Actions runner.
+It also records how that diagnostic runner relates to the Windows Docker test
+fleet used for the release smoke gate.
 
 For adopter-facing usage (how to register the server, how to run CTT
-locally), see `docs/OPC_CTT_CONFORMANCE.md`.
+locally), see `docs\OPC_CTT_CONFORMANCE.md`. For release-blocker tracking, see
+`docs\release-blockers.md` Gate 1: OPC CTT smoke green.
 
 ## CTT version + provenance
 
@@ -62,24 +65,28 @@ any 64-bit OPC client can discover the server.
 For local developer runs the trade-off inverts:
 `--register --registry-hive=hkcu` does not require elevation but only the
 calling user's session can use the registration. See
-`docs/OPC_CTT_CONFORMANCE.md` for the local-run cookbook.
+`docs\OPC_CTT_CONFORMANCE.md` for the local-run cookbook.
 
-## Current scope: registration smoke, not full conformance
+## Current scope: diagnostic runner vs release gate
 
-`samples/Opc.Classic.Samples.CttServer`'s `IClassFactory.CreateInstance`
-returns `E_NOINTERFACE` for every IID other than `IID_IUnknown` (see
-`src/Opc.Classic.Hosting/Windows/ComClassObjectRegistrar.cs`). This is the
-documented scope of the `ctt-2-registration` todo: COM SCM is satisfied that
-the server exposes a class object (so the EXE is launched and the workflow
-exercises the registration / launch / unregistration pipeline), but every
-CTT conformance test that attempts to bind to `IOPCServer`, `IOPCBrowse`,
-`IOPCItemMgt`, etc. will fail.
+The standalone `.github\workflows\opc-ctt.yml` workflow remains a non-blocking
+diagnostic runner. It installs CTT, publishes and registers the sample server,
+launches `OpcCtt.exe`, uploads the help/results artifacts, and always
+unregisters the server.
 
-The workflow therefore marks the CTT step as `continue-on-error: true` and
-treats the uploaded `ctt-results.xml` as a diagnostic artifact, not a pass/fail
-gate. The actual pass/fail gate is enabled in a follow-up workstream once the
-managed dispatch via the managed DCOM listener (`OpcDaServerHost`) replaces
-the IUnknown-only stub.
+`CttServer` no longer uses the original IUnknown-only class-factory smoke. On
+`-Embedding`, it registers `ComClassObjectRegistrar.RegisterClassObject` with a
+`CreateInstance` callback that returns `OpcDaServerCcw` for `IID_IUnknown` and
+`IOPCServer`; DA group, callback, and enumerator CCWs cover the expanded
+Windows activation path. Unsupported interfaces or incomplete methods still
+surface as `E_NOINTERFACE` or `E_NOTIMPL` until the remaining DA surface is
+completed.
+
+The release blocker is tracked separately as `docs\release-blockers.md` Gate 1:
+OPC CTT smoke green. That gate runs through `docker\run-matrix.ps1 -OnlyManaged`
+and `docker\docker-compose.test.yml` under
+`.github\workflows\docker-test-fleet.yml`; only a green
+`docker\results\ctt-managed.xml` should satisfy the gate.
 
 ## Unknowns / TBDs
 
@@ -112,7 +119,10 @@ MSIs are vendored.
 
 ## Related files
 
-- `.github/workflows/opc-ctt.yml` — the workflow itself
-- `samples/Opc.Classic.Samples.CttServer/README.md` — sample-level CLI docs
-- `src/Opc.Classic.Hosting/Windows/README.md` — registration plumbing reference
-- `docs/OPC_CTT_CONFORMANCE.md` — adopter-facing usage docs
+- `.github\workflows\opc-ctt.yml` — standalone diagnostic workflow
+- `.github\workflows\docker-test-fleet.yml` — Windows-container CTT smoke matrix
+- `docker\docker-compose.test.yml` and `docker\run-matrix.ps1` — four-container fleet orchestration
+- `docs\release-blockers.md` — Gate 1 release-smoke status
+- `samples\Opc.Classic.Samples.CttServer\README.md` — sample-level CLI docs
+- `src\Opc.Classic.Hosting\Windows\README.md` — registration plumbing reference
+- `docs\OPC_CTT_CONFORMANCE.md` — adopter-facing usage docs

@@ -1,6 +1,6 @@
 # Opc.Classic Architecture
 
-Opc.Classic is a cross-platform, NativeAOT-compatible .NET 10 implementation of the OPC Classic protocol family. The current package version is `0.6.0-alpha.1`; the next release train targets `1.0.0-rc.1`. Runtime packages and namespaces are rooted at `Opc.Classic.*`, and the project is MIT licensed.
+Opc.Classic is a cross-platform, NativeAOT-compatible .NET 10 implementation of the OPC Classic protocol family. The current repository state is tagged `1.0.0-rc.7` locally; the `1.0.0` FINAL tag is gated on the infrastructure/security items in [release-blockers.md](release-blockers.md). Runtime packages and namespaces are rooted at `Opc.Classic.*`, and the project is MIT licensed.
 
 The architecture is designed around three constraints:
 
@@ -34,12 +34,12 @@ The portable runtime is pure managed code. Windows-specific features, such as lo
 | License | MIT |
 | Public namespace root | `Opc.Classic.*` |
 | OPC areas | DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery |
-| DCOM stack | Managed MSRPC/DCOM over async transports with v5.6 activation support |
+| DCOM stack | Managed MSRPC/DCOM over async transports with v5.6 activation, `OpcServerListener`, per-connection PDU processing, and per-IPID object routing |
 | Authentication | Self-contained NTLMv2, Kerberos, SPNEGO, channel binding, RFC 5056 / RFC 5929 helpers |
 | Generation | Source-generated client proxies and server dispatchers: 47 dispatchers, 127 opnums |
 | AOT stance | Runtime libraries are trimmable; `Opc.Classic.Dcom` runs with strict AOT/trimming analyzers enabled |
-| Samples | 9 sample apps: DA/AE/HDA server+client, LoopbackDemo, CttServer, AotCanary |
-| Verification | 1253 passed / 24 skipped / 0 failed |
+| Samples | 9 sample apps: DA/AE/HDA server+client, LoopbackDemo, CttServer, AotCanary; sample containers now exchange DCOM-over-IP |
+| Verification | 0 build errors / 0 warnings; all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94) |
 
 ## 2. Assembly layout
 
@@ -60,7 +60,7 @@ Runtime source is organized by protocol boundary rather than by sample scenario.
 | `Opc.Classic.Security` | OPC Security abstractions plus channel-binding helpers. |
 | `Opc.Classic.Discovery` | Local configuration, Windows registry, remote registry, and OPCEnum discovery strategies. |
 | `Opc.Classic.Hosting` | Microsoft.Extensions.Hosting integration and CLSID/ProgID registry abstractions. |
-| `Opc.Classic.Xml` | XML-DA HTTP/SOAP DTOs, serializers, and client/server transport shape. |
+| `Opc.Classic.Xml` | XML-DA HTTP/SOAP DTOs, serializers, and client transport shape. |
 | `Opc.Classic.Generators` | Build-time Roslyn generators for metadata, client proxies, and server dispatchers. |
 
 ## 3. Transport model
@@ -108,13 +108,13 @@ Tests and loopback samples use `InMemoryCallChannel` to exercise the exact gener
 
 ### DCOM over `ncacn_ip_tcp`
 
-`Opc.Classic.Dcom` implements the managed MSRPC/DCOM path for cross-machine Classic endpoints. The channel handles:
+`Opc.Classic.Dcom` implements the managed MSRPC/DCOM path for cross-machine Classic endpoints. The transport stack includes:
 
+- `TcpClientTransport` and `DcomCallChannelFactory.ConnectTcpAsync(...)` for outbound TCP clients;
+- `OpcServerListener` for TCP/ncacn_ip_tcp server accept loops;
+- `RpcServerConnectionProcessor` for bind, alter-context, request, response, shutdown, fragmentation, ORPC envelope, and authentication-trailer PDU handling;
+- `OpcObjectRegistry` for per-IPID routing so server-created groups, enumerators, and subscriptions receive calls on the right managed object;
 - endpoint mapper and activation flows;
-- DCE/RPC bind and alter-context negotiation;
-- request/response PDU encoding;
-- fragmentation and reassembly;
-- ORPC `this` / `that` envelopes;
 - OBJREF and OXID runtime structures;
 - packet signing and sealing according to the negotiated protection level.
 
@@ -126,7 +126,7 @@ Generated proxies do not depend on the concrete channel. The same proxy can targ
 
 ## 4. Activation and object lifetime
 
-Managed activation is centered on DCOM v5.6 `IRemoteSCMActivator`.
+Managed activation has two complementary paths: portable DCOM activation over the managed MSRPC stack, and Windows SCM activation through raw-vtable COM-callable wrappers (CCWs) for native OPC clients.
 
 | Component | Role |
 | --- | --- |
@@ -134,9 +134,11 @@ Managed activation is centered on DCOM v5.6 `IRemoteSCMActivator`.
 | `RemoteSCMActivatorServer` | Server-side v5.6 activation implementation for managed class factories and object export. |
 | `ClassFactoryRegistry` | Maps CLSIDs and ProgIDs to managed factories. |
 | `LocalCoClass` / OXID runtime | Exports managed objects as DCOM object references and maintains object lifetime. |
+| `OpcServerListener` + `OpcObjectRegistry` | Accept inbound TCP DCOM calls and route each IPID to the exported server, group, enumerator, or subscription object. |
+| Windows CCWs | `OpcDaServerCcw`, `OpcDaGroupCcw`, `OpcEnumOpcItemAttributesCcw`, `OpcAeServerCcw`, and `OpcHdaServerCcw` expose raw vtables without `[ComImport]` or RCWs. DA includes real `IOPCServer`, group state, item management, sync/async I/O, connection point, callback, VARIANT, SAFEARRAY, BSTR, and item-attribute enumerator bodies; AE/HDA include the release-scope server/subscription/status and handle-management bodies. |
 | Ping support | Implements DCOM keepalive semantics for exported objects and client sessions. |
 
-This path lets managed processes host DCOM clients. Windows native clients still require appropriate CLSID/ProgID registration and platform setup, while the managed server implementation remains portable.
+The portable path is the normal cross-platform route. Windows native clients still require appropriate CLSID/ProgID registration and platform setup, but the implementation behind the CCW remains managed and AOT-oriented.
 
 ## 5. NDR, VARIANT, and SAFEARRAY
 
@@ -241,8 +243,10 @@ await builder.Build().RunAsync();
 | --- | --- |
 | `IClsidRegistry` | Resolves CLSID, ProgID, friendly name, assembly/type, and registration metadata. |
 | `ClassicHostedService` | Starts and stops registered `IOpcServerHost` instances with the application lifetime. |
-| `OpcDaServerHost` / AE / HDA hosts | Bind managed implementations to generated dispatchers and runtime endpoints. |
+| `OpcDaServerHost` / AE / HDA hosts | Bind managed implementations to generated dispatchers, `OpcServerListener`, and runtime endpoints. |
 | `IOpcDaServer` | Managed DA server contract implemented by application code. |
+| `IOpcAddressSpace` | DA browse/property abstraction implemented by `FlatHierarchicalNamespace`, `InMemoryAddressSpace`, `DefaultBrowseServerAddressSpace`, `DefaultBrowse`, and `DefaultItemProperties`. |
+| `IOpcDataCallbackSink` | Unified outbound callback abstraction used by both cross-platform `IOpcInterfaceRef` sinks and Windows `OpcDataCallbackProxy` sinks. |
 | Data-change publishers | Bridge managed subscription updates to `IOPCDataCallback` callbacks. |
 
 AE and HDA hosting use the same pattern with their per-spec server contracts and sample applications.
@@ -283,7 +287,7 @@ All nine OPC Classic areas targeted by the repository are implemented in the cur
 
 | Area | Current support |
 | --- | --- |
-| DA | Managed client/server contracts, generated DCOM projections, hosting, subscriptions, browse, read/write, data-change callbacks, DA client/server samples, CTT server. |
+| DA | Managed client/server contracts, generated DCOM projections, hosting, subscriptions, `IOpcAddressSpace`-backed browse/properties, read/write, data-change callbacks, Windows CCWs, DA client/server samples, CTT server. |
 | AE | Managed event server/client contracts, generated projections, subscriptions, event categories, condition/event models, AE client/server samples. |
 | HDA | Managed historical APIs, generated projections, sync/async read/update/annotation/playback surfaces, HDA client/server samples. |
 | Batch | Batch summaries, filters, state/type models, enumerations, generated projections. |
@@ -336,7 +340,7 @@ dotnet build Opc.Classic.slnx
 dotnet test Opc.Classic.slnx
 ```
 
-Tests use TUnit on Microsoft.Testing.Platform, property-based tests for codec/security invariants, Verify snapshots for wire-format regressions, in-memory generated-proxy tests, integration tests, and conformance-oriented fixtures. The current result set is 1253 passed / 24 skipped / 0 failed.
+Tests use TUnit on Microsoft.Testing.Platform, property-based tests for codec/security invariants, Verify snapshots for wire-format regressions, in-memory generated-proxy tests, integration tests, and conformance-oriented fixtures. The rc.7 sweep has 0 build errors / 0 warnings and all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus the remaining suites).
 
 Release notes live in `CHANGELOG.md`. Package metadata is centralized in the source directory build props files. Public package IDs and namespaces use the `Opc.Classic.*` root.
 
@@ -358,8 +362,8 @@ Preserve original notices in `COM/` and `External/`; those folders are conforman
 
 The remaining 1.0.0 work is release qualification, not an architectural dependency cleanup:
 
-1. keep the Windows compatibility matrix green across native sample servers and representative external DA/AE/HDA servers;
-2. run OPC CTT workflows for managed DA server coverage where installer access is available;
-3. stabilize public connection bootstrap APIs and package metadata for `1.0.0-rc.1`;
-4. keep AOT canary, CTT server, and DA/AE/HDA samples aligned with the public API;
-5. complete external security review inputs for authentication and packet-protection code.
+1. run the Windows Docker OPC CTT smoke to green and archive the report;
+2. complete the NTLMv2 wire test against a live Windows Server / AD lab;
+3. complete external NTLMSSP security audit sign-off.
+
+The details, owners, and remediation paths are tracked in [release-blockers.md](release-blockers.md).

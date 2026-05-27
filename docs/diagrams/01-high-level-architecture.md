@@ -4,7 +4,7 @@ This diagram shows the portable OPC Classic path at the level most adopters enco
 
 The facade delegates DCOM-shaped calls to generator-emitted proxies such as `IOPCServerClientProxy`. Those proxies use compile-time interface IDs, opnums, and codec emitters to produce NDR request payloads and decode NDR response payloads. Server hosting uses generated dispatchers for the matching interface/opnum tables.
 
-`ICallChannel` is the seam between generated call shims and transport. Its implementations include `DcomCallChannel` for DCE/RPC over a pipelines-backed `IAsyncTransport` and `InMemoryCallChannel` for managed loopback. The DCOM channel binds to an interface, wraps payloads in DCE/RPC PDUs, applies channel-level authentication protection, and exchanges frames over `ncacn_ip_tcp` transport.
+`ICallChannel` is the seam between generated call shims and transport. Its implementations include `DcomCallChannel` for DCE/RPC over a pipelines-backed `IAsyncTransport` and `InMemoryCallChannel` for managed loopback. The DCOM channel binds to an interface, wraps payloads in DCE/RPC PDUs, applies channel-level authentication protection, and exchanges frames over `ncacn_ip_tcp`. Direct TCP callers use `DcomCallChannelFactory.ConnectTcpAsync`, which opens a `TcpClientTransport`; managed servers accept the peer connection with `OpcServerListener`.
 
 ```mermaid
 flowchart TB
@@ -14,18 +14,24 @@ flowchart TB
     Channel["ICallChannel.InvokeAsync<br/>Dcom or InMemory"]
     Dcom["DcomCallChannel"]
     Ndr["NDR encoder and decoder<br/>NdrWriter and NdrReader"]
-    Tcp["TCP transport<br/>IAsyncTransport over ncacn_ip_tcp"]
-    Server["OPC Classic server<br/>all sub-spec projections"]
+    TcpClient["TcpClientTransport<br/>IAsyncTransport"]
+    Tcp["ncacn_ip_tcp bytes"]
+    Listener["OpcServerListener<br/>RpcServerConnectionProcessor"]
+    Server["OPC Classic server<br/>generated dispatchers"]
 
     App --> Facade
     Facade --> Proxy
     Proxy --> Channel
     Channel --> Dcom
     Dcom --> Ndr
-    Ndr --> Tcp
-    Tcp --> Server
-    Server --> Tcp
-    Tcp --> Ndr
+    Ndr --> TcpClient
+    TcpClient --> Tcp
+    Tcp --> Listener
+    Listener --> Server
+    Server --> Listener
+    Listener --> Tcp
+    Tcp --> TcpClient
+    TcpClient --> Ndr
     Ndr --> Dcom
     Dcom --> Channel
     Channel --> Proxy
@@ -41,4 +47,6 @@ flowchart TB
 - [`src\Opc.Classic.Core\Testing\InMemoryCallChannel.cs:22`](../../src/Opc.Classic.Core/Testing/InMemoryCallChannel.cs#L22-L55) implements the managed loopback channel.
 - [`src\Opc.Classic.Core\Ndr\NdrWriter.cs:36`](../../src/Opc.Classic.Core/Ndr/NdrWriter.cs#L36-L59) and [`src\Opc.Classic.Core\Ndr\NdrReader.cs:17`](../../src/Opc.Classic.Core/Ndr/NdrReader.cs#L17-L40) are the span-based NDR primitives.
 - [`src\Opc.Classic.Core\Transport\IAsyncTransport.cs:14`](../../src/Opc.Classic.Core/Transport/IAsyncTransport.cs#L14-L34) describes the pipelines-backed transport contract.
+- [`src\Opc.Classic.Dcom\Transport\TcpClientTransport.cs:35`](../../src/Opc.Classic.Dcom/Transport/TcpClientTransport.cs#L35-L117) and [`DcomCallChannelFactory.cs:58`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannelFactory.cs#L58-L69) implement the direct TCP client path.
+- [`src\Opc.Classic.Dcom\Transport\OpcServerListener.cs:41`](../../src/Opc.Classic.Dcom/Transport/OpcServerListener.cs#L41-L114) and [`RpcServerConnectionProcessor.cs:61`](../../src/Opc.Classic.Dcom/Transport/RpcServerConnectionProcessor.cs#L61-L120) implement the managed listener path.
 - See also [`docs\ARCHITECTURE.md:35`](../ARCHITECTURE.md#L35-L63) and [`docs\ADOPTION.md:37`](../ADOPTION.md#L37-L79).

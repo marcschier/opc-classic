@@ -2,6 +2,8 @@
 
 The `Opc.Classic.Generators` package reports these diagnostics while validating `[OpcInterface]`, `[OpcMethod]`, `[GenerateOpcProxy]`, and `[OpcGenerateServerDispatch]` declarations. The diagnostic category is `Opc.Classic.Generators`, and each descriptor links back to this file.
 
+Release tracking note: `OPCGEN001`-`OPCGEN010` are listed in `src\Opc.Classic.Generators\AnalyzerReleases.Shipped.md`. `OPCGEN101`-`OPCGEN105` are implemented server-dispatch diagnostics and are currently listed in `src\Opc.Classic.Generators\AnalyzerReleases.Unshipped.md` until the next analyzer release.
+
 ## Interface contract diagnostics
 
 | ID | Severity | Meaning |

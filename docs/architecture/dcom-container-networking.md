@@ -49,8 +49,23 @@ docker network create `
     opc-test-net
 ```
 
-Containers are assigned fixed IPs in `docker-compose.test.yml` so the DCOM
-bindings advertise stable, peer-routable addresses.
+Containers are assigned fixed IPs in `docker\docker-compose.test.yml` so the
+DCOM bindings advertise stable, peer-routable addresses.
+
+### Functional managed DCOM-over-IP sample path (Track E)
+
+The sample DA, AE, HDA, and CTT servers now support direct DCOM-over-IP between
+containers without Windows SCM endpoint mapping. Server samples bind
+`OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` (defaults 51300-51303), and client
+samples dial `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT` through
+`DcomCallChannelFactory.ConnectTcpAsync` and `TcpClientTransport`. When those
+environment variables are absent, clients keep their original in-process
+`InMemoryCallChannel` fallback for local development.
+
+This Track E path is separate from the Windows COM/OXID dynamic-port path below:
+it uses a known TCP port on the managed listener instead of SCM activation plus
+endpoint-mapper-discovered object bindings. See `samples\README.docker.md` for
+the compose topology and port table.
 
 ### Trade-offs
 
@@ -119,8 +134,8 @@ Setting up gMSA-enabled Windows containers requires:
 2. `New-CredentialSpec` against the gMSA account → bind into each container.
 3. Adjust the DCOM ACLs to grant the gMSA SID instead of `Everyone`.
 
-Not in scope for the initial fleet but the natural follow-up once the
-Phase 5 anonymous-access path is proven.
+gMSA is outside the anonymous test fleet but remains the natural follow-up
+when the fleet needs production-style authenticated DCOM.
 
 ## Troubleshooting matrix
 
@@ -135,6 +150,8 @@ Phase 5 anonymous-access path is proven.
 
 - [MS-DCOM] §2.2.19 — DUALSTRINGARRAY format
 - [MS-RPCE] §3.1.1.5 — ncacn_ip_tcp endpoint allocation
-- `docker/opc-ctt/dcom-test-acls.reg` — the source of truth for our ACL relaxations
+- `docker\opc-ctt\dcom-test-acls.reg` — the source of truth for our ACL relaxations
+- `samples\README.docker.md` — functional managed DCOM-over-IP sample topology
+- `src\Opc.Classic.Dcom\Transport\DcomCallChannelFactory.cs` — direct TCP client helper used by the samples
 - [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample) — reference repo
 - [windows-containers-AD](https://github.com/plooploops/windows-containers-AD) — gMSA setup for the production-style path

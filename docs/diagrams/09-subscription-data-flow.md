@@ -4,7 +4,7 @@ This sequence shows the OPC DA subscription lifecycle. A client creates a group 
 
 The managed public model names the server-side group as an `IDaSubscription`. Its `AddItemsAsync`, `SetActiveStateAsync`, `RefreshAsync`, and `DataChanges` stream map the COM subscription pattern into async .NET shapes.
 
-On the hosting side, user code produces `OpcDaDataChange` batches and `OpcDaDataChangePublisher` fans those batches out to advised callback subscribers. The DCOM projection for `IOPCDataCallback` defines the wire-facing `OnDataChangeAsync` callback with transaction ID, group handle, values, qualities, timestamps, and per-item HRESULTs.
+On the hosting side, user code produces `OpcDaDataChange` batches and `OpcDaDataChangePublisher` fans those batches out to advised callback subscribers. `IOpcDataCallbackSink` is the unified server-side callback abstraction: cross-platform DCOM sinks marshal the payload back over the managed transport, while the Windows SCM CCW path uses `OpcDataCallbackProxy` to invoke the client-supplied COM vtable. The DCOM projection for `IOPCDataCallback` defines the wire-facing `OnDataChangeAsync` callback with transaction ID, group handle, values, qualities, timestamps, and per-item HRESULTs.
 
 ```mermaid
 sequenceDiagram
@@ -15,6 +15,7 @@ sequenceDiagram
     participant Items as IOPCItemMgt
     participant Sampler as Server sampling loop
     participant Publisher as OpcDaDataChangePublisher
+    participant Sink as IOpcDataCallbackSink
     participant Callback as IOPCDataCallback
 
     App->>Server: AddGroup or CreateSubscriptionAsync
@@ -25,9 +26,16 @@ sequenceDiagram
     App->>Sub: SetActiveStateAsync(handles, true)
     Sub->>Items: IOPCItemMgt SetActiveState
     Items-->>Sub: Per item HRESULTs
+    App->>Sub: Advise callback sink
+    Sub->>Sink: Register IOpcDataCallbackSink
     Sampler->>Sampler: Poll or sample active items
     Sampler->>Publisher: PublishAsync(OpcDaDataChange)
-    Publisher->>Callback: OnDataChangeAsync(batch)
+    Publisher->>Sink: OnDataChange(payload)
+    alt Cross-platform DCOM sink
+        Sink->>Callback: OnDataChangeAsync over managed transport
+    else Windows SCM CCW sink
+        Sink->>Callback: OpcDataCallbackProxy invokes COM vtable
+    end
     Callback-->>App: Deliver DataChange stream item
     App->>Sub: RefreshAsync(optional)
     Sub->>Publisher: Force OnDataChange for active items
@@ -41,3 +49,5 @@ sequenceDiagram
 - [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:277`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L277-L334) defines item management methods including `SetActiveState`.
 - [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:575`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L575-L625) defines `IOPCDataCallback::OnDataChange`.
 - [`src\Opc.Classic.Da\Hosting\IOpcDaDataChangePublisher.cs:11`](../../src/Opc.Classic.Da/Hosting/IOpcDaDataChangePublisher.cs#L11-L22) and [`OpcDaDataChangePublisher.cs:19`](../../src/Opc.Classic.Da/Hosting/OpcDaDataChangePublisher.cs#L19-L83) implement callback fan-out.
+- [`src\Opc.Classic.Da\Hosting\IOpcDataCallbackSink.cs:37`](../../src/Opc.Classic.Da/Hosting/IOpcDataCallbackSink.cs#L37-L55) is the unified callback sink abstraction.
+- [`src\Opc.Classic.Da\Hosting\Windows\OpcDataCallbackProxy.cs:28`](../../src/Opc.Classic.Da/Hosting/Windows/OpcDataCallbackProxy.cs#L28-L76) implements the Windows CCW callback sink.

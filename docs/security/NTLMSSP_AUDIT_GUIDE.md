@@ -314,6 +314,7 @@ Test files of interest:
 - `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs:34-134`.
 - `tests\Opc.Classic.Dcom.Kerberos.Tests\SpnegoTests.cs:15-75`.
 - `tests\Opc.Classic.Dcom.Kerberos.Tests\SpnegoNegTokenRespTests.cs:22-146`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\Fixtures\Ntlm\NtlmHandshakeFixtureTests.cs:44-97` plus `negotiate.bin`, `challenge.bin`, and `authenticate.bin` provide byte-exact MS-NLMP §4.2 fixture replay coverage.
 
 ## 7. Threat model addendum
 

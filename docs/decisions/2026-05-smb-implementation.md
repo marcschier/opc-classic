@@ -1,8 +1,8 @@
 # ADR-2026-05 — SMB transport implementation strategy
 
-**Status**: Proposed
+**Status**: Accepted — Phase 1 (`src\Opc.Classic.Dcom.Smb\`) has landed; `ncacn_np` wire-up remains pending.
 **Date**: 2026-05-26
-**Decider**: project maintainer (pending sign-off)
+**Decider**: project maintainer
 
 ## Context
 
@@ -14,16 +14,17 @@ The `ncacn_np` (RPC over SMB) transport is required to:
 3. Support DCOM-over-firewall scenarios where TCP port 135 is blocked but
    SMB (445) is open.
 
-The repository currently scaffolds `ncacn_np` but the underlying SMB layer is
-a stub (`Opc.Classic.Dcom/Common/Ntlm/SmbNamedPipe.cs` wraps two
-`MemoryStream`s). Consumers (`RemoteRegistryEnum`, `RegistryStub`) log
-failures and recommend the TCP-based `OpcEnumClient` alternative.
+The legacy `src\Opc.Classic.Dcom` `ncacn_np` path still uses the stub
+`Opc.Classic.Dcom\Common\Ntlm\SmbNamedPipe.cs` wrapper and is not wired to a
+real SMB transport. A focused SMB2 client now exists in
+`src\Opc.Classic.Dcom.Smb\`, but consumers such as `RemoteRegistryEnum` still
+fall back to the TCP-based `OpcEnumClient` alternative until the wire-up lands.
 
 ## Decision
 
 **Hand-roll a focused SMB2-only client** (option B in
-`docs/architecture/smb-transport.md`) in a new `src/Opc.Classic.Dcom.Smb/`
-project under the repo's standard MIT + AOT-clean conventions.
+`docs\architecture\smb-transport.md`) in `src\Opc.Classic.Dcom.Smb\` under
+the repo's standard MIT + AOT-clean conventions.
 
 ## Rationale
 
@@ -33,7 +34,7 @@ project under the repo's standard MIT + AOT-clean conventions.
 | AOT compatibility | Designed AOT-clean from day one | Likely OK but unverified for our trimming profile |
 | Surface | Tightly scoped to named-pipe primitives | Full SMB1/2/3 client + server + DFS + RDMA — large unused surface |
 | Auditability | All wire-format code grounded in vendored `[MS-SMB2]` spec; easy to review per-PDU | External dependency; auditing requires shadowing the upstream commit log |
-| Reuse of existing crypto | NTLMSSP Type 1/2/3 already implemented in `src/Opc.Classic.Dcom/rpc/Auth/` — fits naturally into SMB2_SESSION_SETUP security blob | Likely duplicates managed NTLM logic |
+| Reuse of existing crypto | NTLMSSP Type 1/2/3 already implemented in `src\Opc.Classic.Dcom\rpc\Auth\` — fits naturally into SMB2_SESSION_SETUP security blob | Likely duplicates managed NTLM logic |
 
 Hand-rolling is the larger upfront cost (~4-5 days) but produces a focused
 asset (~4000-5000 LOC) with no third-party license entanglement and minimal
@@ -82,20 +83,20 @@ real-world need.
 
 ## Open questions (deferred to implementation phases)
 
-- **Encryption**: SMB 3.0 encryption (AES-128-CCM/GCM) is required by
-  Server 2022 default policy (`EncryptData=1`). Phase 1 of the SMB2 client
-  ships signing only; encryption lands in Phase 1.5 before WINREG E2E tests.
+- **Signing and encryption**: SMB signing is currently stubbed and SMB 3.0
+  encryption (AES-128-CCM/GCM) is still deferred. Phase 1.5 must add both
+  before WINREG E2E tests against servers that require signing or encryption.
 - **Kerberos**: NTLMSSP is sufficient for the smoke phases (WINREG +
   IActivation). Kerberos over SMB2 (mandatory when joined to AD with NTLMv2
   restrictions) can be a follow-on after IActivation client lands; it reuses
-  `src/Opc.Classic.Dcom.Kerberos/`.
+  `src\Opc.Classic.Dcom.Kerberos\`.
 - **Server-side ncacn_np**: ACCEPTING SMB-tunneled DCOM activations into our
   own managed server is out of initial scope. The IActivation server can be
   added later if adopters demand legacy-client interop.
 
 ## References
 
-- `docs/architecture/smb-transport.md` — phased implementation plan
-- `docs/architecture/activation-transports.md` — TCP vs SMB activation paths
-- `External/Docs/Win/[MS-SMB2].md` — protocol spec
-- `plan.md` "NEW PLAN — WINREG discovery + SMB activation on Linux/macOS"
+- `docs\architecture\smb-transport.md` — phased implementation plan
+- `docs\architecture\activation-transports.md` — TCP vs SMB activation paths
+- `src\Opc.Classic.Dcom.Smb\README.md` — current SMB2 client status
+- `External\Docs\Win\[MS-SMB2].md` — protocol spec
