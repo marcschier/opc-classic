@@ -47,6 +47,90 @@ FINAL tag.
 
 ## [Unreleased]
 
+## [1.0.0-rc.7] - 2026-05-27
+
+Seventh release-candidate. **DCOM-over-IP between sample containers is
+now functional.** Track E closes the long-standing "not functional yet"
+caveat in `samples/README.docker.md` — `docker compose -f samples/docker-compose.yml up`
+now exchanges real OPC calls over TCP between the daserver/aeserver/hdaserver
+and their dialing clients.
+
+### Added — public `TcpClientTransport` + `ConnectTcpAsync` helper (cap-e1)
+
+- New `src/Opc.Classic.Dcom/Transport/TcpClientTransport.cs` — public
+  `IAsyncTransport` over a connected `TcpClient`, with the static
+  `ConnectAsync(host, port, ct)` convenience helper. Lifted from
+  test-private code in `ManagedClientOverTransportTests`.
+- New `DcomCallChannelFactory.ConnectTcpAsync(host, port, authContext, ct)`
+  static helper that dials a host:port and wraps the transport in a
+  `DcomCallChannel`. The most common adopter entry point for managed
+  DCOM-over-IP clients.
+
+### Changed — sample servers bind env port on `0.0.0.0` (cap-e2)
+
+- `samples/Opc.Classic.Samples.DaServer`, `AeServer`, `HdaServer`,
+  `CttServer` each read `OPC_CLASSIC_SAMPLE_PORT` (defaults
+  DA=51300 / AE=51301 / HDA=51302 / CTT=51303) and bind
+  `0.0.0.0:<port>` instead of the previous `127.0.0.1:0`.
+- Optional `OPC_CLASSIC_LISTEN_ADDRESS` env var fully overrides the bind
+  address (e.g. `192.168.1.10:51300`).
+- **Behavior change**: `dotnet run --project samples/...DaServer` now
+  binds to `0.0.0.0:51300` instead of `127.0.0.1` ephemeral. Documented
+  in each sample's README.md as a release note.
+
+### Added — sample clients dial TCP when env vars are set (cap-e3)
+
+- `samples/Opc.Classic.Samples.DaClient`, `AeClient`, `HdaClient` each
+  detect `OPC_CLASSIC_SERVER_HOST` + `OPC_CLASSIC_SERVER_PORT`. When
+  both are set, the call channel becomes a `DcomCallChannel` built from
+  `ConnectTcpAsync(...)`; the proxies wire to it transparently.
+- When env vars are unset, the existing in-process
+  `InMemoryCallChannel` + `Loopback*Server` path is preserved for
+  local-dev (`dotnet run` outside Docker).
+- Each client logs which path is active at startup (visible via
+  `docker compose logs`).
+- DA + AE clients gain new `DcomDaSubscription.cs` /
+  `RemoteAeSubscription.cs` files; HDA client's `LoopbackHdaClient`
+  refactored to accept either an in-process or proxy-supplied
+  `IOpcHdaServer`.
+
+### Added — public-API unit + smoke tests (cap-e5)
+
+- `tests/Opc.Classic.Dcom.Tests/Tests/TcpClientTransportTests.cs` (+8 tests):
+  argument validation, loopback round-trip through a `TcpListener`,
+  `ConnectTcpAsync` returns a `DcomCallChannel`, `DisposeAsync`
+  idempotency.
+
+### Changed — `samples/README.docker.md` (cap-e4)
+
+- "Not functional yet" caveat removed.
+- Mermaid diagram updated: dashed "future DCOM-over-IP" arrows are now
+  solid "DCOM-over-IP" connections. In-process channel boxes removed.
+- Image table updated: notes column now states the real bind / dial
+  addresses instead of "documentary".
+- New optional overrides section documenting `OPC_CLASSIC_LISTEN_ADDRESS`
+  and the no-env-vars local-dev fallback.
+- New implementation-references section linking to the relevant source
+  files.
+
+### Tests
+
+- Dcom: 123 (was 115, +8 from cap-e1/e5).
+- Integration: 94 passing (existing
+  `ManagedClientOverTransportTests` now routed through the new public
+  surface; behavior unchanged).
+- Solution-wide: all 17 test projects green; 0 build errors / 0
+  warnings.
+
+### Notes
+
+- The sample compose deployment uses a `NoOpAuthContext` — no NTLM /
+  Kerberos handshake. Documented in the updated README; production
+  deployments would layer real auth on top of the same transport.
+- The Windows CCW activation path (`OpcDaServerCcw`,
+  `OpcDataCallbackProxy`) is unaffected by this track; CCW remains the
+  SCM-launched-server path.
+
 ## [1.0.0-rc.6] - 2026-05-27
 
 Sixth release-candidate. Closes the last three sandbox-feasible Track D

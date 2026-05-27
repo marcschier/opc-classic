@@ -16,43 +16,46 @@ Loopback-only demo:
 docker compose -f samples/docker-compose.loopback.yml up
 ```
 
-> Caveat: clients talking to server containers over DCOM-over-IP is **not functional yet**. The current DA/AE/HDA client samples use an in-process `InMemoryCallChannel` and do not consume the server containers. The Compose topology, service DNS names, and published ports are illustrative for the future DCOM-over-IP transport.
+The compose topology runs three OPC-spec pairs (DA, AE, HDA) on a shared bridge network. Each client dials its peer server over **TCP** (DCOM-over-IP) at the docker service-DNS name + the configured port. The client samples log which transport they are using at startup so it's easy to confirm in `docker compose logs`.
+
+> **Authentication note**: the sample compose deployment uses a `NoOpAuthContext` for the call channel — no NTLM/Kerberos handshake. This is intentional for the sample's interop demo. Production deployments would layer real auth on top of the same transport (`Opc.Classic.Dcom.Auth.*`).
 
 ## Architecture
 
 ```mermaid
 flowchart LR
     subgraph net[opcclassic-demo bridge network]
-        daserver["daserver<br/>future endpoint: daserver:51300"]
+        daserver["daserver<br/>listens on 0.0.0.0:51300"]
         daclient[daclient]
-        aeserver["aeserver<br/>future endpoint: aeserver:51301"]
+        aeserver["aeserver<br/>listens on 0.0.0.0:51301"]
         aeclient[aeclient]
-        hdaserver["hdaserver<br/>future endpoint: hdaserver:51302"]
+        hdaserver["hdaserver<br/>listens on 0.0.0.0:51302"]
         hdaclient[hdaclient]
-        daclient -. future DCOM-over-IP .-> daserver
-        aeclient -. future DCOM-over-IP .-> aeserver
-        hdaclient -. future DCOM-over-IP .-> hdaserver
+        daclient -- DCOM-over-IP --> daserver
+        aeclient -- DCOM-over-IP --> aeserver
+        hdaclient -- DCOM-over-IP --> hdaserver
     end
-
-    daclient --> daInProc["DA InMemoryCallChannel<br/>inside client container"]
-    aeclient --> aeInProc["AE InMemoryCallChannel<br/>inside client container"]
-    hdaclient --> hdaInProc["HDA InMemoryCallChannel<br/>inside client container"]
 ```
+
+For an in-process variant of the same architecture (single container, no network), see [`Opc.Classic.Samples.LoopbackDemo`](Opc.Classic.Samples.LoopbackDemo/README.md).
 
 ## Images, ports, and environment
 
 | Service/image | Dockerfile | Published port | Environment | Notes |
 | --- | --- | --- | --- | --- |
-| `opcclassic/daserver:local` | `samples/Opc.Classic.Samples.DaServer/Dockerfile` | `51300/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51300` | DA server container; port is reserved/documentary until DCOM-over-IP is wired up. |
-| `opcclassic/daclient:local` | `samples/Opc.Classic.Samples.DaClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=daserver`, `OPC_CLASSIC_SERVER_PORT=51300` | Runs the DA read/browse/subscription demo in-process. |
-| `opcclassic/aeserver:local` | `samples/Opc.Classic.Samples.AeServer/Dockerfile` | `51301/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51301` | AE server container; port is reserved/documentary. |
-| `opcclassic/aeclient:local` | `samples/Opc.Classic.Samples.AeClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=aeserver`, `OPC_CLASSIC_SERVER_PORT=51301` | Runs the AE event/ack demo in-process. |
-| `opcclassic/hdaserver:local` | `samples/Opc.Classic.Samples.HdaServer/Dockerfile` | `51302/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51302` | HDA server container; port is reserved/documentary. |
-| `opcclassic/hdaclient:local` | `samples/Opc.Classic.Samples.HdaClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=hdaserver`, `OPC_CLASSIC_SERVER_PORT=51302` | Runs the HDA historical read demo in-process. |
+| `opcclassic/daserver:local` | `samples/Opc.Classic.Samples.DaServer/Dockerfile` | `51300/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51300` | DA server binds `0.0.0.0:51300`. |
+| `opcclassic/daclient:local` | `samples/Opc.Classic.Samples.DaClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=daserver`, `OPC_CLASSIC_SERVER_PORT=51300` | DA client dials `daserver:51300` over TCP. |
+| `opcclassic/aeserver:local` | `samples/Opc.Classic.Samples.AeServer/Dockerfile` | `51301/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51301` | AE server binds `0.0.0.0:51301`. |
+| `opcclassic/aeclient:local` | `samples/Opc.Classic.Samples.AeClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=aeserver`, `OPC_CLASSIC_SERVER_PORT=51301` | AE client dials `aeserver:51301` over TCP. |
+| `opcclassic/hdaserver:local` | `samples/Opc.Classic.Samples.HdaServer/Dockerfile` | `51302/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51302` | HDA server binds `0.0.0.0:51302`. |
+| `opcclassic/hdaclient:local` | `samples/Opc.Classic.Samples.HdaClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=hdaserver`, `OPC_CLASSIC_SERVER_PORT=51302` | HDA client dials `hdaserver:51302` over TCP. |
 | `opcclassic/cttserver:local` | `samples/Opc.Classic.Samples.CttServer/Dockerfile` | `51303/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51303` | Manual CTT-compatible DA server image; not included in the multi-container Compose file. |
-| `opcclassic/loopbackdemo:local` | `samples/Opc.Classic.Samples.LoopbackDemo/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production` | Single-container DA loopback demo. |
+| `opcclassic/loopbackdemo:local` | `samples/Opc.Classic.Samples.LoopbackDemo/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production` | Single-container DA loopback demo (in-process, no network). |
 
-The `OPC_CLASSIC_*` variables document the intended future network wiring. Current sample code still uses hard-coded loopback/in-memory channels.
+### Optional overrides
+
+- `OPC_CLASSIC_LISTEN_ADDRESS` — server-side full bind override (e.g. `192.168.1.10:51300`). Takes precedence over `OPC_CLASSIC_SAMPLE_PORT`.
+- Running a client outside Docker without setting `OPC_CLASSIC_SERVER_HOST` falls back to the original in-process `InMemoryCallChannel` + `LoopbackDaServer` path. This keeps `dotnet run --project samples/Opc.Classic.Samples.DaClient` working for local-dev with no compose.
 
 ## Build manually
 
@@ -82,3 +85,12 @@ Replace the Dockerfile path and tag for the other samples.
 ## CI consideration
 
 A future `.github/workflows/docker-build.yml` workflow could run `docker buildx build --platform linux/amd64,linux/arm64` for these Dockerfiles and publish images to GitHub Container Registry (GHCR). The Dockerfiles already include `org.opencontainers.image.source=https://github.com/marcschier/opc-classic` for GHCR linkage.
+
+## Implementation references
+
+- [`Opc.Classic.Dcom.Transport.TcpClientTransport`](../src/Opc.Classic.Dcom/Transport/TcpClientTransport.cs) — the pipe-backed TCP transport the clients use.
+- [`Opc.Classic.Dcom.Transport.DcomCallChannelFactory.ConnectTcpAsync`](../src/Opc.Classic.Dcom/Transport/DcomCallChannelFactory.cs) — the convenience helper sample `Program.cs` files call.
+- [`Opc.Classic.Da.Hosting.OpcDaServerHost`](../src/Opc.Classic.Da/Hosting/OpcDaServerHost.cs) — DA server-side listener wireup (analogous for AE/HDA).
+- [`tests/Opc.Classic.Dcom.Tests/Tests/TcpClientTransportTests.cs`](../tests/Opc.Classic.Dcom.Tests/Tests/TcpClientTransportTests.cs) — unit tests pinning the public surface.
+- [`tests/Opc.Classic.Integration.Tests/CompatMatrix/ManagedClientOverTransportTests.cs`](../tests/Opc.Classic.Integration.Tests/CompatMatrix/ManagedClientOverTransportTests.cs) — end-to-end integration smoke through the same transport classes.
+
