@@ -53,15 +53,51 @@ internal static unsafe class OpcAeServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int CreateEventSubscription(IntPtr pThis, int active, int bufferTime, int maxSize, int clientSubscription, Guid* riid, IntPtr* ppUnk, IntPtr pRevisedBufferTime, IntPtr pRevisedMaxSize)
     {
-        // Returning an iid_is interface pointer requires creating a dedicated
-        // subscription CCW and COM-marshaling the requested tearoff.
-        _ = pThis; _ = active; _ = bufferTime; _ = maxSize; _ = clientSubscription; _ = riid;
         WriteNull(ppUnk);
         WriteInt32(pRevisedBufferTime, 0);
         WriteInt32(pRevisedMaxSize, 0);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (riid == null || ppUnk == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!OpcAeSubscriptionCcw.SupportsInterface(*riid))
+        {
+            return OpcAeServerCcw.E_NOINTERFACE;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+        try
+        {
+#pragma warning disable VSTHRD002
+            IOPCEventSubscriptionMgt subscription = dispatcher!.CreateEventSubscriptionAsync(
+                active != 0,
+                bufferTime,
+                maxSize,
+                clientSubscription,
+                *riid,
+                out int revisedBufferTime,
+                out int revisedMaxSize,
+                CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            IntPtr subscriptionCcw = OpcAeSubscriptionCcw.Create(subscription, *riid, dispatcher);
+            if (subscriptionCcw == IntPtr.Zero)
+            {
+                return OpcAeServerCcw.E_NOINTERFACE;
+            }
+            *ppUnk = subscriptionCcw;
+            WriteInt32(pRevisedBufferTime, revisedBufferTime);
+            WriteInt32(pRevisedMaxSize, revisedMaxSize);
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]

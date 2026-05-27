@@ -16,7 +16,7 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 /// <summary>
 /// Windows COM-callable wrapper (CCW) over an <see cref="IOpcAeServer"/>.
 /// Exposes separate tearoff vtables for <c>IUnknown</c>,
-/// <c>IOPCEventServer</c>, and <c>IOPCEventSubscriptionMgt</c>.
+/// <c>IOPCEventServer</c>, and a legacy direct <c>IOPCEventSubscriptionMgt</c> tearoff.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -27,10 +27,10 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 /// </para>
 /// <para>
 /// <b>Subscription tearoff.</b> AE clients normally receive
-/// <c>IOPCEventSubscriptionMgt</c> from <c>CreateEventSubscription</c>. That
-/// method still returns <c>E_NOTIMPL</c> until interface-pointer marshaling is
-/// wired, so the subscription tearoff is reachable only by direct QI for tests
-/// or for managed servers that also implement <see cref="IOPCEventSubscriptionMgt"/>.
+/// <c>IOPCEventSubscriptionMgt</c> from <c>CreateEventSubscription</c>, which
+/// returns a dedicated <see cref="OpcAeSubscriptionCcw" />. The legacy direct
+/// subscription tearoff remains reachable by direct QI for tests or for managed
+/// servers that also implement <see cref="IOPCEventSubscriptionMgt"/>.
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
