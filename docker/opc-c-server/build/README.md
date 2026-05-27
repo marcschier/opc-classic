@@ -1,22 +1,21 @@
-# `opc-c-server` build assets (PHASE-2 SCAFFOLD)
+# `opc-c-server` build assets
 
-This folder will contain the modern Visual Studio project files that compile
-the OPC Batch 2.0 Sample Server sources (vendored at
-`External/OPC Batch 2.00 Sample Code/Sample Server/`, 66 C++ source files +
-the vendored IDL-generated `*_i.c` / `*_p.c` files) into `opc_exe.exe` and
-`opc_dll.dll`.
+This folder contains the modern Visual Studio project files that compile the
+hand-rolled native OPC DA smoke server into `opc_exe.exe`.
 
-## Current status: build is NOT wired up
+## Current status: hand-rolled MVP is wired up
 
-The Dockerfile at `docker/opc-c-server/Dockerfile` currently emits a
-placeholder `opc_exe.exe` because the `.vcxproj` / `.sln` files in this folder
-are not yet authored. `docker build` will succeed but the runtime container
-will not be functional (server-init.ps1 logs a warning and idles).
+A hand-rolled ~500-line MVP is shipped at `opc-sample-server.cpp` with matching
+`opc-sample-server.vcxproj` and `opc-sample-server.sln`. The Dockerfile now
+builds it with MSBuild and emits `C:/out/opc_exe.exe`; use
+`docker compose up c-server` on a Windows Docker host for smoke validation.
 
-## Conversion checklist
+## TODO: full Batch sample conversion
 
-The vendored `.dsp` files (`opc_exe.dsp`, `opc_dll.dsp`) are Visual Studio 6
-project files; `msbuild` cannot consume them directly. Conversion path:
+The original full-sample route remains useful if the native image needs Batch
+coverage beyond the DA smoke server. The vendored `.dsp` files (`opc_exe.dsp`,
+`opc_dll.dsp`) are Visual Studio 6 project files; `msbuild` cannot consume them
+directly. Conversion path:
 
 1. **Inventory**: list all `.cpp` / `.c` / `.h` sources referenced by each
    `.dsp` (66 sources for `opc_exe.dsp`; ~50 for `opc_dll.dsp`).
@@ -40,16 +39,15 @@ project files; `msbuild` cannot consume them directly. Conversion path:
    `opcbc_i.c`, `opcda_i.c`, etc. from an older MIDL. They likely compile
    under modern MSVC as-is; if not, regenerate from the matching `.idl`
    files vendored at `External/Include/`.
-4. **Author `opc-c-server.sln`** referencing the two `.vcxproj` files.
-5. **Test locally** with
-   `msbuild docker/opc-c-server/build/opc-c-server.sln /p:Configuration=Release /p:Platform=x64`
-   on a Windows dev box with VS Build Tools 2022 installed.
-6. **Uncomment the MSBuild invocation** in `docker/opc-c-server/Dockerfile`.
-7. **Run smoke test**: `docker compose up c-server` followed by
+4. **Author a separate full-sample `.sln`** referencing the converted
+   `.vcxproj` files.
+5. **Test locally** with MSBuild on a Windows dev box with VS Build Tools 2022
+   installed.
+6. **Run smoke test**: `docker compose up c-server` followed by
    `docker exec opc-classic-c-server reg query "HKLM\Software\Classes\CLSID"`
    should list the OPC.SampleServer CLSID.
 
-## Build risks (per the plan in `plan.md`)
+## Build risks for the full Batch sample route
 
 | Risk | Mitigation |
 |---|---|
@@ -59,23 +57,20 @@ project files; `msbuild` cannot consume them directly. Conversion path:
 | Sample uses `#pragma optimize("",off)` | Modern MSVC honors these, but they slow the build; consider removing for Release |
 | EXE main loop uses `MessageBox` for fatal errors | Patch to log-and-exit via `OutputDebugString` for headless container use |
 
-## Alternative: build a smaller hand-rolled server
+## Shipped MVP scope
 
-If the Batch sample's MFC dependency proves too expensive to strip, consider
-authoring a fresh ~500-line `opc-sample-server.cpp` that:
+`opc-sample-server.cpp` implements `IOPCServer`, `IOPCCommon`,
+`IOPCGroupStateMgt`, `IOPCItemMgt`, and `IOPCSyncIO` on top of
+`External/Include/opcda.h` / `opccomn.h`. It uses `CoRegisterClassObject` for
+out-of-process activation, self-registers `OPC.SampleServer.1`, and exposes the
+`Sin`, `Square`, and `Random` sample tags for CTT smoke.
 
-- Implements `IOPCServer` + `IOPCGroupStateMgt` + `IOPCItemMgt` + `IOPCSyncIO`
-  on top of `External/Include/opcda.h`.
-- Uses `CoRegisterClassObject` for self-registration.
-- Exposes 2-3 sample tags (`Sin`, `Square`, `Random`) for CTT smoke.
-
-This is the same approach OPC Foundation uses for the smallest demo servers.
-~500 lines is cheaper to author than reconstructing the build of 66 vendored
-files with possibly-missing toolchain support.
+Browsing, async I/O, subscriptions, and item/group enumerators intentionally
+return `E_NOTIMPL` in this MVP.
 
 ## See also
 
-- `docker/opc-c-server/Dockerfile` — current image definition (build stage stubbed)
+- `docker/opc-c-server/Dockerfile` — current image definition
 - `docker/opc-c-server/server-init.ps1` — runtime entrypoint
 - `External/OPC Batch 2.00 Sample Code/Sample Server/opc_exe.dsp` — original VS6 project
 - `External/OPC Batch 2.00 Sample Code/Sample Server/README.TXT` — OPC Foundation sample notes
