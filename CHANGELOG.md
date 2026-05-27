@@ -7,6 +7,95 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-rc.4] - 2026-05-27
+
+Fourth release-candidate. Track A (VARIANT marshaling + data path
+completion) of the post-rc.3 plan is **complete**. Windows CCW now
+carries data via real OPCITEMSTATE / VARIANT / OPCITEMVQT marshaling on
+the inbound + outbound paths.
+
+DA tests: **385 passing** (was 346 at rc.3, +39); solution-wide all
+17 test projects green; build 0/0.
+
+### Added — VARIANT + SAFEARRAY + BSTR marshaling foundation (cap-c1)
+
+- `Opc.Classic.Da.Hosting.Windows.ComVariantMarshaler` — read/write the
+  COM VARIANT 16/24-byte tagged-union struct in native memory. Covers
+  every scalar VARTYPE (VT_I1-VT_UI8, VT_R4/R8, VT_DATE, VT_ERROR,
+  VT_BOOL, VT_BSTR) plus 1-D SAFEARRAY (VT_ARRAY|*) with proper x86/x64
+  descriptor alignment. BSTR alloc/free helpers; VariantClear-equivalent
+  to release heap allocations.
+
+### Added — IOPCSyncIO / IOPCSyncIO2 / IOPCAsyncIO2 real method bodies (cap-c2 + cap-c3)
+
+- `IOPCSyncIO.Read` (slot 3): allocates OPCITEMSTATE[] OUT via
+  CoTaskMemAlloc with per-item VARIANT marshaling.
+- `IOPCSyncIO.Write` (slot 4): reads VARIANT[] IN.
+- `IOPCSyncIO2.ReadMaxAge` (slot 5): separate VARIANT[] / WORD[] /
+  FILETIME[] / HRESULT[] OUT arrays.
+- `IOPCSyncIO2.WriteVqt` (slot 6): reads OPCITEMVQT[] via offset
+  arithmetic.
+- `IOPCAsyncIO2.Write` (slot 4): VARIANT[] IN + cancel ID OUT.
+- Deferred (documented): `IOPCAsyncIO3.WriteVqt` remains E_NOTIMPL.
+
+### Added — Outbound IOPCDataCallback payloads (cap-c4)
+
+- `OpcDataCallbackProxy.OnDataChange` (vtable slot 3): allocates
+  OPCHANDLE[] + VARIANT[] + WORD[] + FILETIME[] + HRESULT[] arrays via
+  CoTaskMemAlloc, marshals payload fields through, invokes client's
+  vtable slot, and frees all allocations (ClearVariant per-element for
+  BSTR/SAFEARRAY cleanup) after the call returns.
+- `OpcDataCallbackProxy.OnReadComplete` (slot 4): same shape.
+- `OpcDataCallbackProxy.OnWriteComplete` (slot 5): handle + HRESULT
+  array marshaling.
+
+### Added — OPCITEMATTRIBUTES.vEUInfo real VARIANT marshaling (cap-c5)
+
+- `OpcEnumOpcItemAttributesCcw.Next` writes real VARIANT vEUInfo (was
+  VT_EMPTY). Enumerated item attributes now carry actual EU info
+  (VT_BSTR for enum labels; VT_R8 SAFEARRAY for analog bounds) to COM
+  clients.
+
+### Added — IOpcDataCallbackSink abstraction (cap-c8)
+
+- New `IOpcDataCallbackSink` interface unifies callback delivery between
+  the cross-platform DCOM transport path (IOpcInterfaceRef-based) and
+  the Windows SCM-activated CCW path. `OpcDataCallbackProxy` now
+  implements the interface.
+- New `OpcDaGroup.AdviseAsync(IOpcDataCallbackSink)` overload stores
+  sinks in a parallel `_directSinks` dictionary; `UnadviseAsync` removes
+  from both dictionaries.
+- `TriggerDataChangeAsync` and `TriggerCancelCompleteAsync` fan-out
+  iterates both dictionaries so Windows-CCW clients receive the same
+  callbacks as cross-platform-transport clients.
+- Windows CCW `IConnectionPoint::Advise` now also registers the proxy
+  with `OpcDaGroup.AdviseAsync(IOpcDataCallbackSink)`; shared cookie
+  space between `_directSinks` (managed) and `CcwSession.ScmSinks`
+  (CCW lifecycle).
+
+### Tests: +39 in DA (now 385)
+
+- ComVariantMarshalerTests (+21): scalar round-trips for all VARTYPEs,
+  BSTR round-trip with FreeBSTR, SAFEARRAY of I4/R8/BSTR, ClearVariant.
+- OpcDaGroupCcwTests (+6): SyncIO Read returns OPCITEMSTATE matching
+  managed group, Write through VT_I4/VT_BSTR, ReadMaxAge separate
+  output arrays, WriteVqt timestamp override, AsyncIO2 Write cancel id.
+- OpcDataCallbackProxyTests (+7): OnDataChange/OnReadComplete/
+  OnWriteComplete payload marshaling against stub native CCWs.
+- OpcEnumOpcItemAttributesCcwTests (+1): VT_BSTR vEUInfo round-trip.
+- OpcDaGroupSubscriptionTests (+4): IOpcDataCallbackSink Advise overload,
+  TriggerDataChange/CancelComplete fan-out to direct sinks,
+  Unadvise removes from direct-sinks, null-sink guard.
+
+### Known gaps still deferred to future releases
+
+- IOPCAsyncIO3.WriteVqt: VQT marshaling (deferred from cap-c3).
+- IOPCEventServer.CreateEventSubscription + EVENTFILTER marshaling
+  (AE; not yet a cap-c-* todo).
+- IOPCHDA_SyncRead/AsyncRead.ReadRaw/ReadProcessed: OPCHDA_ITEM[] +
+  DATE[] + VARIANT[] marshaling (HDA; not yet a cap-c-* todo).
+- OPC CTT smoke pass: still requires Windows Docker host.
+
 ## [1.0.0-rc.3] - 2026-05-27
 
 Third release-candidate. Completes Phase 1 (Windows CCW DA path) and
