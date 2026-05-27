@@ -1,61 +1,58 @@
-# `opc-c-client` build assets (PHASE-3 SCAFFOLD)
+# `opc-c-client` build assets (hand-rolled MVP)
 
-This folder will contain the modern Visual Studio project files that compile
-the OPC Security 1.0 Sample Client's headless console programs:
+This folder ships a small native C++ OPC DA client (`opc-test.cpp`, ~190
+lines) that compiles via MSBuild/MSVC into `opc-test.exe`. The container
+ENTRYPOINT (`docker/opc-c-client/client.ps1`) invokes the binary with
+`<prog-id>` + `<target-host>` arguments forwarded from `docker compose`
+or `docker run`.
 
-| Source | Output | Purpose |
-|---|---|---|
-| `OPCTEST.cpp` + `OPCCOMN_i.c` + `OPCDA_i.c` | `opc-test.exe` | Single-shot DA smoke (connect, AddGroup, AddItem, Read, Release) |
-| `OPCSPEED.cpp` + same IDL outputs | `opc-speed.exe` | Throughput driver — measures items-per-second over a sustained loop |
+## What `opc-test.exe` does
 
-Located in: `External/OPC Security 1.00 Sample Code/Sample Client/`
+1. `CoInitializeEx(MULTITHREADED)`
+2. `CLSIDFromProgID` resolves the server's CLSID
+3. `CoCreateInstanceEx(CLSCTX_REMOTE_SERVER, COSERVERINFO{pwszName=<host>})`
+   returns an `IOPCServer*`
+4. `IOPCServer::AddGroup` allocates "opc-test-group" + 1s update rate
+5. `IOPCItemMgt::AddItems` adds one item (default ID = `Sin`)
+6. `IOPCSyncIO::Read(OPC_DS_CACHE)` and prints quality + VARTYPE
+7. RemoveGroup + Release + CoUninitialize
 
-## Current status: build is NOT wired up
+Exits 0 on full success; non-zero exit code identifies which stage
+failed (2=CLSIDFromProgID, 3=CoCreateInstanceEx, 4=AddGroup, 5=AddItems,
+6=Read). HRESULT printed to stderr on failure.
 
-The Dockerfile at `docker/opc-c-client/Dockerfile` currently emits placeholder
-exes. `docker build` will succeed but the runtime container's `client.ps1`
-ENTRYPOINT will log a warning and either idle (with `-Interactive`) or exit 1.
+## Coverage vs the OPC Security sample sources
 
-## Conversion checklist
-
-These samples are SMALLER and SIMPLER than the Batch server (4-5 source
-files vs 66), AND non-MFC. The `.vcxproj` author should be straightforward:
-
-1. **`opc-c-client.vcxproj` (opc-test.exe)**:
-   - Sources: `OPCTEST.cpp`, `OPCCOMN_i.c`, `OPCDA_i.c`, `WCSUTIL.cpp`
-   - `<ConfigurationType>Application</ConfigurationType>`
-   - `<CharacterSet>Unicode</CharacterSet>`
-   - Include paths: `External/Include`, the sample directory
-   - Link: `ole32.lib`, `oleaut32.lib`, `advapi32.lib`, `uuid.lib`
-2. **`opc-c-speed.vcxproj` (opc-speed.exe)**:
-   - Same as above but substitute `OPCTEST.cpp` with `OPCSPEED.cpp`
-3. **`opc-c-client.sln`** referencing both `.vcxproj` files
-4. **Test locally** with msbuild on a Windows dev box with VS Build Tools
-   2022 (no MFC workload required for these samples)
-5. **Uncomment the MSBuild invocation** in `docker/opc-c-client/Dockerfile`
+| Want | Status |
+|---|---|
+| Single-shot DA smoke | ✅ `opc-test.exe` |
+| Sustained throughput driver (`OPCSPEED.cpp`) | ⏳ Future; the OPC Security 1.00 Sample Client `.dsp`-to-`.vcxproj` route is still documented below for anyone who wants the richer driver |
 
 ## Smoke usage (post-build)
 
 ```pwsh
-# Single-shot DA smoke against the managed server
 docker run --rm --network opc-test-net opc-classic/c-client `
     -ProgId Opc.Classic.DaSample.1 `
     -TargetHost opc-classic-managed
-
-# Throughput driver against the native C server
-docker run --rm --network opc-test-net opc-classic/c-client `
-    -Speed `
-    -ProgId OPC.SampleServer.1 `
-    -TargetHost opc-classic-c-server
-
-# Interactive shell for ad-hoc debugging
-docker run --rm -it --network opc-test-net opc-classic/c-client -Interactive
-# then: docker exec -it <container> powershell
 ```
+
+## Future: wrap the OPC Security sample sources
+
+The original VS6 `.dsp` files live in
+`External/OPC Security 1.00 Sample Code/Sample Client/`. If sustained
+throughput or interactive UI features are wanted, author a sister
+`opc-speed.vcxproj` covering:
+
+| Source | Output | Purpose |
+|---|---|---|
+| `OPCSPEED.CPP` + `OPCCOMN_i.c` + `OPCDA_i.c` + `WCSUTIL.CPP` | `opc-speed.exe` | Throughput measurement |
+
+The 4-5 files are non-MFC; the vcxproj pattern matches `opc-test.vcxproj`.
 
 ## See also
 
-- `docker/opc-c-client/Dockerfile` — current image definition (build stage stubbed)
+- `docker/opc-c-client/Dockerfile` — current image definition (build wired)
 - `docker/opc-c-client/client.ps1` — runtime entrypoint
-- `External/OPC Security 1.00 Sample Code/Sample Client/OPCSPEED.DSP` — original VS6 project
-- `docker/opc-c-server/build/README.md` — sister scaffold for the server side
+- `docker/opc-c-client/build/opc-test.cpp` — MVP client source
+- `docker/opc-c-client/build/opc-test.vcxproj` — MSBuild project
+- `docker/opc-c-server/build/README.md` — sister build for the server side

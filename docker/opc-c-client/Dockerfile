@@ -2,14 +2,14 @@
 
 # opc-classic/c-client — native C-built OPC DA reference client (headless)
 #
-# Builds the OPC Security 1.0 Sample Client's non-MFC console programs
-# (External/OPC Security 1.00 Sample Code/Sample Client/OPCTEST.cpp +
-# OPCSPEED.cpp). Container ENTRYPOINT accepts ProgID + TargetHost and
-# performs a CoCreateInstanceEx(CLSCTX_REMOTE_SERVER) connect + smoke ops.
+# Compiles the hand-rolled opc-test.exe (~190 lines) from
+# docker/opc-c-client/build/opc-test.cpp via MSBuild/MSVC. The build/README.md
+# documents the alternative path of wrapping the OPC Security 1.00 Sample
+# Client's OPCTEST.cpp + OPCSPEED.cpp — kept as a future option for a richer
+# throughput driver.
 #
-# **PHASE-3 SCAFFOLD**: like opc-c-server, the build stage is currently a
-# placeholder. See docker/opc-c-client/build/README.md for the .vcxproj
-# authoring checklist.
+# Container ENTRYPOINT: client.ps1 invokes opc-test.exe with the ProgID +
+# TargetHost forwarded from docker compose env / run args.
 
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-windowsservercore-ltsc2022 AS build
 
@@ -19,18 +19,14 @@ WORKDIR C:/build
 
 COPY External/Include C:/build/External/Include
 COPY "External/OPC Security 1.00 Sample Code/Sample Client" "C:/build/sample-client"
-COPY docker/opc-c-client/build C:/build/build
+COPY docker/opc-c-client/build C:/build/docker/opc-c-client/build
 
-# TODO(docker-3-cclient): wire MSBuild to the hand-rolled vcxproj.
-#
-# RUN msbuild C:/build/build/opc-c-client.sln `
-#         /p:Configuration=Release `
-#         /p:Platform=x64 `
-#         /m
-
-# Placeholder
-RUN New-Item -ItemType Directory -Path C:/out -Force | Out-Null; `
-    Set-Content -Path C:/out/opc-test.exe -Value 'PLACEHOLDER' -Encoding ASCII
+RUN msbuild C:/build/docker/opc-c-client/build/opc-test.sln `
+        /p:Configuration=Release `
+        /p:Platform=x64 `
+        /m; `
+    New-Item -ItemType Directory -Path C:/out -Force | Out-Null; `
+    Copy-Item C:/build/docker/opc-c-client/build/bin/x64/Release/opc-test.exe C:/out/opc-test.exe
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS runtime
 
