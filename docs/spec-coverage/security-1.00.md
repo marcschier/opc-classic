@@ -1,7 +1,7 @@
 # OPC Security 1.00 Specification Coverage
 
 **Spec**: OPC Security Custom Interface Version 1.0 (October 17, 2000)
-**Implementation**: `Opc.Classic.Security` namespace
+**Implementation**: `Opc.Classic.Security` namespace + `OpcSecurityErrors` in `Opc.Classic.Core`
 **Analysis date**: 2026-01-XX
 
 ---
@@ -9,8 +9,8 @@
 ## Executive Summary
 
 **Coverage**: **100%** of required interfaces and methods
-**Test coverage**: 5 test classes, ~20 unit tests
-**Gaps**: 0 blocking, 2 minor (error code constants, server-side dispatch scaffolding)
+**Test coverage**: 6 test classes, ~19 unit tests
+**Gaps**: 0 blocking, 1 minor (server-side reference sample)
 
 OPC Security 1.00 defines two **optional** interfaces for managing client identity changes within a single OPC server connection:
 
@@ -106,6 +106,7 @@ public interface IOpcSecurity
 |------|------|----------------|--------|
 | `OpcImpersonationLevel` | `OpcImpersonationLevel.cs` | Section 4.3.2 (QueryMinImpersonationLevel return values) | ✅ Complete |
 | `OpcLogonRequest` | `OpcLogonRequest.cs` | Section 4.4.2 (Logon parameters) | ✅ Complete |
+| `OpcSecurityErrors` | `src/Opc.Classic.Core/Errors/OpcSecurityErrors.cs` | Section 6.2 (`OpcErrSec.h` HRESULTs) | ✅ Complete |
 
 **`OpcImpersonationLevel`** enum:
 ```csharp
@@ -174,18 +175,20 @@ public async Task SecurityNT_IsAvailable_decodes_boolean()
 | `OpcImpersonationLevelTests` | Enum values | ✅ ~5 tests |
 | `OpcLogonRequestTests` | Record validation | ✅ ~3 tests |
 | `DcomInterfaceIdTests` | IID correctness | ✅ 2 tests |
+| `OpcSecurityErrorsTests` | HRESULT constants | ✅ 1 test |
 
-✅ **Total**: ~18 unit tests covering:
+✅ **Total**: ~19 unit tests covering:
 - Interface presence detection
 - Authentication state transitions
 - DCOM wire-level encoding/decoding
 - Enum/type correctness
+- OPC Security HRESULT constants
 
 ---
 
 ## Gap Analysis
 
-### ❌ **Gap 1**: OPC Security Error Code Constants
+### ✅ **Status**: OPC Security Error Code Constants
 
 **Spec reference**: Section 6.2 (OpcErrSec.h)
 
@@ -196,23 +199,15 @@ The spec defines 3 HRESULTs:
 #define OPC_S_LOW_AUTHN_LEVEL    0x00040303L  // Server expected higher packet privacy
 ```
 
-**Missing in codebase**: These constants are not defined in `Opc.Classic.Security` or `Opc.Classic.Core`.
+**Implementation**: `src/Opc.Classic.Core/Errors/OpcSecurityErrors.cs` defines all three constants with the spec values.
 
-**Impact**: **Minor** — Client code can still catch `COMException` with numeric HRESULT. Server code must manually return these values.
+**Tests**: `tests/Opc.Classic.Core.Tests/OpcSecurityErrorsTests.cs` asserts the numeric values match `OpcErrSec.h`.
 
-**Recommendation**: Add to `Opc.Classic.Core/Errors/OpcErrors.cs`:
-```csharp
-public static class OpcSecurityErrors
-{
-    public const int OPC_E_PRIVATE_ACTIVE = unchecked((int)0xC0040301);
-    public const int OPC_E_LOW_IMPERS_LEVEL = unchecked((int)0xC0040302);
-    public const int OPC_S_LOW_AUTHN_LEVEL = 0x00040303;
-}
-```
+✅ **No gap** — Client and server code can use named constants for these OPC Security HRESULTs.
 
 ---
 
-### ⚠️ **Gap 2**: Server-Side Implementation Scaffold
+### ⚠️ **Gap 1**: Server-Side Implementation Scaffold
 
 **Spec reference**: Sections 4.3.3 (ChangeUser), 4.4.2 (Logon), 4.5.1 (NT Credential Approach)
 
@@ -308,7 +303,7 @@ The spec includes extensive **guidelines** (section 6.3) that are **not part of 
 | **Method signatures** | 6 methods total | ✅ 6/6 | None |
 | **IID correctness** | 2 GUIDs | ✅ 2/2 | None |
 | **Opnum correctness** | 3-5 for each interface | ✅ 6/6 | None |
-| **Error codes** | 3 HRESULTs | ❌ 0/3 | Minor (constants missing) |
+| **Error codes** | 3 HRESULTs | ✅ 3/3 | None |
 | **Client proxy generation** | Implicit | ✅ Yes | None |
 | **Server dispatch generation** | Implicit | ✅ Yes (scaffolded) | Minor (no sample server) |
 
@@ -318,30 +313,7 @@ The spec includes extensive **guidelines** (section 6.3) that are **not part of 
 
 ## Recommendations
 
-### 1. Add Error Code Constants (Priority: Low)
-
-**File to modify**: the existing `src/Opc.Classic.Security` project
-
-```csharp
-/// <summary>OPC Security error codes (OpcErrSec.h).</summary>
-public static class OpcSecurityErrors
-{
-    /// <summary>A session using private OPC credentials is already active.</summary>
-    public const int OPC_E_PRIVATE_ACTIVE = unchecked((int)0xC0040301);
-
-    /// <summary>Server requires higher impersonation level to access secured data.</summary>
-    public const int OPC_E_LOW_IMPERS_LEVEL = unchecked((int)0xC0040302);
-
-    /// <summary>Server expected higher level of package privacy (success code).</summary>
-    public const int OPC_S_LOW_AUTHN_LEVEL = 0x00040303;
-}
-```
-
-**Benefit**: Client code can compare HRESULTs against named constants.
-
----
-
-### 2. Add Reference Server Sample (Priority: Low, Optional)
+### 1. Add Reference Server Sample (Priority: Low, Optional)
 
 **New file**: `samples/Opc.Classic.Samples.OpcSecurityServer/Program.cs`
 
@@ -354,7 +326,7 @@ Minimal server demonstrating:
 
 ---
 
-### 3. Document DCOM-Layer vs. OPC-Layer Security
+### 2. Document DCOM-Layer vs. OPC-Layer Security
 
 **Related docs**: `docs/security/THREAT_MODEL.md`
 
@@ -387,13 +359,12 @@ The `Opc.Classic.Security` implementation is **complete** for client-side usage:
 - ✅ Both interfaces declared with correct IIDs and opnums
 - ✅ Source-generated client proxies tested and working
 - ✅ Unified `IOpcSecurity` API for ease of use
-- ✅ Supporting types (`OpcImpersonationLevel`, `OpcLogonRequest`) present
+- ✅ Supporting types (`OpcImpersonationLevel`, `OpcLogonRequest`, `OpcSecurityErrors`) present
 
-**Minor gaps** (non-blocking):
-- Missing error code constants (3 HRESULTs) — trivial to add
+**Minor gap** (non-blocking):
 - No reference server implementation — not required for client usage, OPC Security is rarely implemented by servers
 
-**Recommendation**: Mark as **COMPLETE**. Gaps are documentation/sample-level only and do not affect client functionality.
+**Recommendation**: Mark as **COMPLETE**. The remaining gap is sample-level only and does not affect client functionality.
 
 ---
 
