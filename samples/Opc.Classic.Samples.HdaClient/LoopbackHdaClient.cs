@@ -2,34 +2,36 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
 using System.Runtime.CompilerServices;
+using Opc.Classic;
 using Opc.Classic.Hda;
 using Opc.Classic.Hda.Dcom;
-using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 
 namespace Opc.Classic.Samples.HdaClient;
 
 internal sealed class LoopbackHdaClient : IAsyncDisposable
 {
-    private const int GetHistorianStatusOpnum = 5;
-    private const long FileTimeEpochOffsetTicks = 504911232000000000L;
-
-    private readonly LoopbackHdaCallRouter _router;
-    private readonly InMemoryCallChannel _channel;
+    private readonly LoopbackHdaCallRouter? _router;
+    private readonly ICallChannel _channel;
     private readonly IOPCHDA_ServerClientProxy _server;
     private readonly IOPCHDA_SyncReadClientProxy _syncRead;
     private readonly IOPCHDA_SyncAnnotationsClientProxy _syncAnnotations;
     private readonly IOPCHDA_AsyncReadClientProxy _asyncRead;
     private bool _connected;
 
-    public LoopbackHdaClient(LoopbackHdaCallRouter router)
+    public LoopbackHdaClient(ICallChannel channel)
     {
-        _router = router ?? throw new ArgumentNullException(nameof(router));
-        _channel = new InMemoryCallChannel(router.DispatchAsync);
+        _channel = channel ?? throw new ArgumentNullException(nameof(channel));
         _server = new IOPCHDA_ServerClientProxy(_channel);
         _syncRead = new IOPCHDA_SyncReadClientProxy(_channel);
         _syncAnnotations = new IOPCHDA_SyncAnnotationsClientProxy(_channel);
         _asyncRead = new IOPCHDA_AsyncReadClientProxy(_channel);
+    }
+
+    public LoopbackHdaClient(LoopbackHdaCallRouter router, InMemoryCallChannel channel)
+        : this(channel)
+    {
+        _router = router ?? throw new ArgumentNullException(nameof(router));
     }
 
     public ValueTask ConnectAsync(CancellationToken cancellationToken = default)
@@ -49,13 +51,7 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
     public async Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default)
     {
         EnsureConnected();
-        NdrCallResult result = await _channel.InvokeAsync(
-            IOPCHDA_Server.InterfaceId,
-            GetHistorianStatusOpnum,
-            ReadOnlyMemory<byte>.Empty,
-            cancellationToken).ConfigureAwait(false);
-        ThrowIfFailure(result);
-        return DecodeHistorianStatus(result.ResponsePayload);
+        return await _server.GetStatusAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async IAsyncEnumerable<HdaBrowseElement> BrowseAsync(
@@ -65,7 +61,10 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
     {
         EnsureConnected();
         await Task.Yield();
-        foreach (HdaBrowseElement element in _router.Browse(itemIdPrefix, browseType))
+        IEnumerable<HdaBrowseElement> elements = _router is not null
+            ? _router.Browse(itemIdPrefix, browseType)
+            : BrowseFallback(itemIdPrefix, browseType);
+        foreach (HdaBrowseElement element in elements)
         {
             cancellationToken.ThrowIfCancellationRequested();
             yield return element;
@@ -147,7 +146,9 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         cancellationToken.ThrowIfCancellationRequested();
         _ = startTime;
         _ = endTime;
-        return Task.FromResult(_router.ReadAnnotations(itemIds));
+        return Task.FromResult(_router is not null
+            ? _router.ReadAnnotations(itemIds)
+            : itemIds.Select(static itemId => new HdaAnnotationResult { ItemId = itemId }).ToArray());
     }
 
     public Task<int> BeginAsyncReadRawAsync(
@@ -181,53 +182,38 @@ internal sealed class LoopbackHdaClient : IAsyncDisposable
         }
     }
 
+    private static IEnumerable<HdaBrowseElement> BrowseFallback(string itemIdPrefix, HdaBrowseType browseType)
+    {
+        if (string.IsNullOrWhiteSpace(itemIdPrefix))
+        {
+            if (browseType is HdaBrowseType.Branch or HdaBrowseType.Flat)
+            {
+                yield return new HdaBrowseElement { Name = "Sensor", ItemId = "Sensor", BrowseType = HdaBrowseType.Branch };
+            }
+
+            if (browseType is HdaBrowseType.Leaf or HdaBrowseType.Flat)
+            {
+                yield return CreateLeaf("Sensor.Temperature");
+            }
+
+            yield break;
+        }
+
+        if (itemIdPrefix.Equals("Sensor", StringComparison.OrdinalIgnoreCase) && browseType != HdaBrowseType.Branch)
+        {
+            yield return CreateLeaf("Sensor.Temperature");
+        }
+    }
+
+    private static HdaBrowseElement CreateLeaf(string itemId) => new()
+    {
+        Name = itemId[(itemId.LastIndexOf('.') + 1)..],
+        ItemId = itemId,
+        BrowseType = HdaBrowseType.Leaf,
+    };
+
     private static OpcHdaTime ToOpcHdaTime(HdaTime time) => time.IsRelative
         ? OpcHdaTime.FromString(time.Expression ?? "NOW")
         : OpcHdaTime.FromTimestamp(time.ResolveAt(DateTimeOffset.UtcNow));
 
-    private static OpcServerStatus DecodeHistorianStatus(ReadOnlyMemory<byte> payload)
-    {
-        var reader = new NdrReader(payload.Span);
-        uint historianStatus = reader.ReadUInt32();
-        DateTimeOffset currentTime = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset startTime = FromFileTime(reader.ReadFileTime());
-        ushort major = reader.ReadUInt16();
-        ushort minor = reader.ReadUInt16();
-        ushort build = reader.ReadUInt16();
-        _ = reader.ReadUInt16();
-        uint maxReturnValues = reader.ReadUInt32();
-        _ = reader.ReadUnicodeStringPtr();
-        string vendorInfo = reader.ReadUnicodeStringPtr() ?? string.Empty;
-
-        return new OpcServerStatus
-        {
-            Spec = OpcStatusSpec.Hda,
-            StartTime = startTime,
-            CurrentTime = currentTime,
-            LastUpdateTime = currentTime,
-            State = FromHistorianStatus(historianStatus),
-            ServerVersion = new Version(major, minor, build),
-            MaxReturnValues = checked((int)maxReturnValues),
-            VendorInfo = vendorInfo,
-        };
-    }
-
-    private static OpcServerState FromHistorianStatus(uint historianStatus) => historianStatus switch
-    {
-        1u => OpcServerState.Running,
-        2u => OpcServerState.Failed,
-        3u => OpcServerState.NoConfig,
-        _ => OpcServerState.Unknown,
-    };
-
-    private static DateTimeOffset FromFileTime(long fileTime) =>
-        new(fileTime + FileTimeEpochOffsetTicks, TimeSpan.Zero);
-
-    private static void ThrowIfFailure(NdrCallResult result)
-    {
-        if (result.IsFailure)
-        {
-            throw new OpcException(new OpcResultId(result.Hresult, null));
-        }
-    }
 }
