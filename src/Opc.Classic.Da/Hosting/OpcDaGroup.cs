@@ -35,7 +35,8 @@ namespace Opc.Classic.Da.Hosting;
 /// </para>
 /// </remarks>
 public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
-    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint, IConnectionPointContainer
+    IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint, IConnectionPointContainer,
+    IOPCItemDeadbandMgt, IOPCItemSamplingMgt
 {
     private readonly OpcObjectRegistry? _objectRegistry;
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
@@ -705,6 +706,238 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
 
     Task<int[]> IOPCSyncIO2.WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken) =>
         WriteAsync(serverHandles, values, cancellationToken);
+
+    // ----- IOPCItemDeadbandMgt (DA 3.0 per-item deadband) -----
+
+    /// <inheritdoc />
+    public Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(percentDeadbands);
+        if (serverHandles.Length != percentDeadbands.Length)
+        {
+            throw new ArgumentException("serverHandles and percentDeadbands must have the same length.", nameof(percentDeadbands));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                float pd = percentDeadbands[i];
+                if (pd < 0f || pd > 100f)
+                {
+                    errors[i] = OpcResultId.Range.Code;
+                    continue;
+                }
+                item.PercentDeadband = pd;
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task GetItemDeadbandAsync(int[] serverHandles, out float[] percentDeadbands, out int[] errors, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        percentDeadbands = new float[serverHandles.Length];
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.PercentDeadband is { } pd)
+                {
+                    percentDeadbands[i] = pd;
+                    errors[i] = OpcResultId.Ok.Code;
+                }
+                else
+                {
+                    errors[i] = OpcResultId.DeadbandNotSet.Code;
+                }
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.PercentDeadband is null)
+                {
+                    errors[i] = OpcResultId.DeadbandNotSet.Code;
+                }
+                else
+                {
+                    item.PercentDeadband = null;
+                    errors[i] = OpcResultId.Ok.Code;
+                }
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    // ----- IOPCItemSamplingMgt (DA 3.0 per-item sampling rate + buffering) -----
+
+    /// <inheritdoc />
+    public Task SetItemSamplingRateAsync(
+        int[] serverHandles,
+        int[] requestedSamplingRates,
+        out int[] revisedSamplingRates,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(requestedSamplingRates);
+        if (serverHandles.Length != requestedSamplingRates.Length)
+        {
+            throw new ArgumentException("serverHandles and requestedSamplingRates must have the same length.", nameof(requestedSamplingRates));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        revisedSamplingRates = new int[serverHandles.Length];
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                int rate = Math.Max(0, requestedSamplingRates[i]);
+                item.SamplingRate = rate;
+                revisedSamplingRates[i] = rate;
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task GetItemSamplingRateAsync(int[] serverHandles, out int[] samplingRates, out int[] errors, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        samplingRates = new int[serverHandles.Length];
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.SamplingRate is { } rate)
+                {
+                    samplingRates[i] = rate;
+                    errors[i] = OpcResultId.Ok.Code;
+                }
+                else
+                {
+                    errors[i] = OpcResultId.RateNotSet.Code;
+                }
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                if (item.SamplingRate is null)
+                {
+                    errors[i] = OpcResultId.RateNotSet.Code;
+                }
+                else
+                {
+                    item.SamplingRate = null;
+                    errors[i] = OpcResultId.Ok.Code;
+                }
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        ArgumentNullException.ThrowIfNull(enabled);
+        if (serverHandles.Length != enabled.Length)
+        {
+            throw new ArgumentException("serverHandles and enabled must have the same length.", nameof(enabled));
+        }
+        cancellationToken.ThrowIfCancellationRequested();
+        int[] errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                item.BufferEnabled = enabled[i];
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.FromResult(errors);
+    }
+
+    /// <inheritdoc />
+    public Task GetItemBufferEnableAsync(int[] serverHandles, out bool[] enabled, out int[] errors, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(serverHandles);
+        cancellationToken.ThrowIfCancellationRequested();
+        enabled = new bool[serverHandles.Length];
+        errors = new int[serverHandles.Length];
+        for (int i = 0; i < serverHandles.Length; i++)
+        {
+            if (_items.TryGetValue(serverHandles[i], out OpcDaItem? item))
+            {
+                enabled[i] = item.BufferEnabled;
+                errors[i] = OpcResultId.Ok.Code;
+            }
+            else
+            {
+                errors[i] = OpcResultId.InvalidHandle.Code;
+            }
+        }
+        return Task.CompletedTask;
+    }
 
     // ----- IConnectionPoint (subscription sink-binding) -----
 

@@ -88,6 +88,8 @@ public sealed class OpcDaGroupConcurrencyTests
 
         Task remover = Task.Run(async () =>
         {
+            // Small initial delay so the reader gets at least one iteration in.
+            await Task.Delay(50, cts.Token);
             foreach (int handle in handles)
             {
                 if (cts.Token.IsCancellationRequested)
@@ -120,7 +122,9 @@ public sealed class OpcDaGroupConcurrencyTests
         cts.Cancel();
         int totalReads = await reader;
 
-        await Assert.That(totalReads).IsGreaterThan(0);
+        // Reader must have completed at least one ReadAsync without throwing,
+        // proving that concurrent RemoveItems doesn't corrupt the read path.
+        await Assert.That(totalReads).IsGreaterThanOrEqualTo(1);
     }
 
     private static OpcDaGroup CreateGroup() => new(

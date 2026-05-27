@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading;
+using Opc.Classic.Da.Dcom;
 
 namespace Opc.Classic.Da.Hosting;
 
@@ -23,6 +24,9 @@ public sealed class OpcDaItem
     private bool _active;
     private int _clientHandle;
     private ushort _requestedDatatype;
+    private float? _percentDeadband;
+    private int? _samplingRate;
+    private bool _bufferEnabled;
 
     /// <summary>Initializes a new item.</summary>
     public OpcDaItem(
@@ -73,6 +77,37 @@ public sealed class OpcDaItem
     {
         get { lock (_lock) { return _requestedDatatype; } }
         set { lock (_lock) { _requestedDatatype = value; } }
+    }
+
+    /// <summary>
+    /// Per-item deadband override percentage (<see cref="IOPCItemDeadbandMgt"/>), or <see langword="null"/>
+    /// if the group's <see cref="OpcDaGroup.PercentDeadband"/> applies. <c>SetItemDeadband</c> sets;
+    /// <c>ClearItemDeadband</c> returns to null. Per OPC DA 3.0 §5.8.
+    /// </summary>
+    public float? PercentDeadband
+    {
+        get { lock (_lock) { return _percentDeadband; } }
+        set { lock (_lock) { _percentDeadband = value; } }
+    }
+
+    /// <summary>
+    /// Per-item sampling rate override in milliseconds (<see cref="IOPCItemSamplingMgt"/>), or
+    /// <see langword="null"/> if the group's update rate applies. <c>SetItemSamplingRate</c> sets;
+    /// <c>ClearItemSamplingRate</c> returns to null. Per OPC DA 3.0 §5.9.
+    /// </summary>
+    public int? SamplingRate
+    {
+        get { lock (_lock) { return _samplingRate; } }
+        set { lock (_lock) { _samplingRate = value; } }
+    }
+
+    /// <summary>
+    /// Whether per-item value buffering is enabled (<see cref="IOPCItemSamplingMgt"/>). Default false.
+    /// </summary>
+    public bool BufferEnabled
+    {
+        get { lock (_lock) { return _bufferEnabled; } }
+        set { lock (_lock) { _bufferEnabled = value; } }
     }
 
     /// <summary>Gets a snapshot of the current value+quality+timestamp.</summary>
