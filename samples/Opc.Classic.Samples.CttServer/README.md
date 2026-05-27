@@ -11,8 +11,10 @@ dotnet run --project samples/Opc.Classic.Samples.CttServer
 
 The server registers as `Opc.Classic.DaSample.1` (CLSID
 `8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A`) and listens on
-`127.0.0.1:0` (port chosen at startup). The CttDaServer
-returns minimal responses for the IOpcDaServer surface:
+`0.0.0.0:51303` by default. The CttDaServer returns minimal responses for the IOpcDaServer surface:
+
+Release note: with no environment variables set, the server listens on all interfaces instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
+
 
 - GetStatus -> Running, vendor "Opc.Classic .NET CTT Sample"
 - AddGroup -> echoes client handle + 1000 as server handle

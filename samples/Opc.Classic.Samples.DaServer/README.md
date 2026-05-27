@@ -19,3 +19,5 @@ dotnet run --project .\samples\Opc.Classic.Samples.DaServer\Opc.Classic.Samples.
 ```
 
 The sample registers as ProgID `Opc.Classic.Samples.DaServer.1` with CLSID `B3AE5D6F-2A91-4F8B-9D2C-7E5B0C8F1A3E`. It is intentionally buildable by direct project path and is not listed in `Opc.Classic.slnx` yet.
+
+Release note: with no environment variables set, the server listens on `0.0.0.0:51300` instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.

@@ -29,6 +29,12 @@ internal static class Program
         }
 
         bool embedded = HasEmbeddingFlag(args);
+        int port = int.TryParse(
+            Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
+            out int parsed) && parsed > 0 ? parsed : 51303;
+        string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
+            ?? $"0.0.0.0:{port}";
+        Console.WriteLine($"Listening on {listenAddress}");
 
         var builder = Host.CreateApplicationBuilder(args);
 
@@ -46,7 +52,7 @@ internal static class Program
             opt.Clsid = SampleClsid;
             opt.ProgId = SampleProgId;
             opt.FriendlyName = SampleFriendlyName;
-            opt.ListenAddress = "127.0.0.1:0";
+            opt.ListenAddress = listenAddress;
         });
 
         var host = builder.Build();

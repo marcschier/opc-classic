@@ -16,7 +16,9 @@ dotnet run --project samples/Opc.Classic.Samples.HdaServer
 ```
 
 The server registers as `Opc.Classic.Samples.HdaServer.1` (CLSID
-`A2BBEA4E-F1C6-469B-8D71-89767DCD2D48`) and listens on `127.0.0.1:0`.
+`A2BBEA4E-F1C6-469B-8D71-89767DCD2D48`) and listens on `0.0.0.0:51302` by default.
+
+Release note: with no environment variables set, the server listens on all interfaces instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
 
 ## Raw read example
 

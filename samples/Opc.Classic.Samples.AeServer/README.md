@@ -16,7 +16,9 @@ The current emitter logs events only. Phase 7F-followup wires these events into 
 dotnet run --project samples\Opc.Classic.Samples.AeServer
 ```
 
-The server registers as `Opc.Classic.Samples.AeServer.1` (CLSID `C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F`) and listens on `127.0.0.1:0`.
+The server registers as `Opc.Classic.Samples.AeServer.1` (CLSID `C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F`) and listens on `0.0.0.0:51301` by default.
+
+Release note: with no environment variables set, the server listens on all interfaces instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
 
 ## Status
 
