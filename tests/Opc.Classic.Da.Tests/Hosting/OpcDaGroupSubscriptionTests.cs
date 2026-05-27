@@ -243,6 +243,112 @@ public sealed class OpcDaGroupSubscriptionTests
         await Assert.That(callbacks).IsEqualTo(0);
     }
 
+    [Test]
+    public async Task AdviseAsync_IOpcDataCallbackSink_overload_adds_to_directSinks_and_TriggerDataChange_invokes_OnDataChange()
+    {
+        // cap-c8: TriggerDataChangeAsync fans out to both _sinks (IOpcInterfaceRef
+        // path) and _directSinks (IOpcDataCallbackSink path) so the Windows
+        // CCW's OpcDataCallbackProxy participates in the same fan-out.
+        var group = CreateGroup();
+        int handle = await AddSingleItem(group, "Tag.A");
+        await group.WriteAsync([handle], [new OpcVariant(VarType.VT_I4, 42)], TestContext.Current!.CancellationToken);
+
+        var directSink = new RecordingDataCallbackSink();
+        int directCookie = await group.AdviseAsync(directSink, TestContext.Current.CancellationToken);
+
+        await group.TriggerDataChangeAsync(
+            transactionId: 5,
+            serverHandles: [handle],
+            sender: (_, _, _) => Task.CompletedTask,
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        await Assert.That(directCookie).IsGreaterThan(0);
+        await Assert.That(directSink.DataChangeCount).IsEqualTo(1);
+        await Assert.That(directSink.LastDataChange!.TransactionId).IsEqualTo(5);
+    }
+
+    [Test]
+    public async Task TriggerCancelCompleteAsync_invokes_OnCancelComplete_on_direct_sinks()
+    {
+        var group = CreateGroup();
+        var directSink = new RecordingDataCallbackSink();
+        await group.AdviseAsync(directSink, TestContext.Current!.CancellationToken);
+
+        await group.TriggerCancelCompleteAsync(
+            transactionId: 99,
+            sender: (_, _, _) => Task.CompletedTask,
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        await Assert.That(directSink.CancelCompleteCount).IsEqualTo(1);
+        await Assert.That(directSink.LastCancelComplete!.TransactionId).IsEqualTo(99);
+    }
+
+    [Test]
+    public async Task UnadviseAsync_removes_direct_sink_so_subsequent_TriggerDataChange_does_not_invoke_it()
+    {
+        var group = CreateGroup();
+        var directSink = new RecordingDataCallbackSink();
+        int cookie = await group.AdviseAsync(directSink, TestContext.Current!.CancellationToken);
+
+        IConnectionPoint cp = group;
+        await cp.UnadviseAsync(cookie, TestContext.Current.CancellationToken);
+
+        await group.TriggerDataChangeAsync(
+            transactionId: 1,
+            serverHandles: [],
+            sender: (_, _, _) => Task.CompletedTask,
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        await Assert.That(directSink.DataChangeCount).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task AdviseAsync_IOpcDataCallbackSink_with_null_throws_ArgumentNullException()
+    {
+        var group = CreateGroup();
+        await Assert.That(async () => await group.AdviseAsync(
+            (IOpcDataCallbackSink)null!,
+            TestContext.Current!.CancellationToken))
+            .Throws<ArgumentNullException>();
+    }
+
+    private sealed class RecordingDataCallbackSink : IOpcDataCallbackSink
+    {
+        public int DataChangeCount { get; private set; }
+
+        public int ReadCompleteCount { get; private set; }
+
+        public int WriteCompleteCount { get; private set; }
+
+        public int CancelCompleteCount { get; private set; }
+
+        public OpcDaGroup.DataChangePayload? LastDataChange { get; private set; }
+
+        public OpcDaGroup.CancelCompletePayload? LastCancelComplete { get; private set; }
+
+        public void OnDataChange(OpcDaGroup.DataChangePayload payload)
+        {
+            DataChangeCount++;
+            LastDataChange = payload;
+        }
+
+        public void OnReadComplete(OpcDaGroup.DataChangePayload payload) => ReadCompleteCount++;
+
+        public void OnWriteComplete(int transactionId, int groupHandle, int masterError, int[] clientHandles, int[] errors) =>
+            WriteCompleteCount++;
+
+        public void OnCancelComplete(OpcDaGroup.CancelCompletePayload payload)
+        {
+            CancelCompleteCount++;
+            LastCancelComplete = payload;
+        }
+
+        public void Dispose()
+        {
+            // Recording sink owns no native resources.
+        }
+    }
+
     private static async Task<int> AddSingleItem(OpcDaGroup group, string itemId)
     {
         var defs = new[] { new OpcItemDef("", itemId, true, 1, null, VarType.VT_I4) };

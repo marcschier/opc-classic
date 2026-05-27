@@ -25,7 +25,7 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// buffers after the callback returns.
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public sealed unsafe class OpcDataCallbackProxy : IDisposable
+public sealed unsafe class OpcDataCallbackProxy : IOpcDataCallbackSink
 {
     private const int E_NOINTERFACE = unchecked((int)0x80004002);
     private const int E_POINTER = unchecked((int)0x80004003);

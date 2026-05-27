@@ -41,6 +41,17 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     private readonly OpcObjectRegistry? _objectRegistry;
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
     private readonly ConcurrentDictionary<int, IOpcInterfaceRef> _sinks = new();
+
+    /// <summary>
+    /// IOpcDataCallbackSink subscriptions registered via the
+    /// <see cref="AdviseAsync(IOpcDataCallbackSink, CancellationToken)"/>
+    /// overload. Keyed by the same cookie space as <see cref="_sinks"/>.
+    /// Used by the Windows-CCW path so its <c>OpcDataCallbackProxy</c>
+    /// participates in the trigger fan-out alongside the cross-platform
+    /// DCOM transport sinks. (cap-c8)
+    /// </summary>
+    private readonly ConcurrentDictionary<int, IOpcDataCallbackSink> _directSinks = new();
+
     private int _nextItemHandle = 1;
     private int _nextCancelId = 1;
     private int _nextSubscriptionCookie = 1;
@@ -958,12 +969,38 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         return Task.FromResult(cookie);
     }
 
+    /// <summary>
+    /// Registers an <see cref="IOpcDataCallbackSink"/> for direct in-process
+    /// callback delivery. Used by the Windows SCM-activated CCW path; the
+    /// returned cookie can be passed to <see cref="UnadviseAsync"/> to
+    /// remove the subscription. (cap-c8)
+    /// </summary>
+    /// <remarks>
+    /// The OpcDaGroup does NOT own the sink lifecycle — callers (typically
+    /// the CCW's CcwSession) own + dispose the sink. OpcDaGroup just
+    /// tracks the sink for trigger fan-out.
+    /// </remarks>
+    public Task<int> AdviseAsync(IOpcDataCallbackSink sink, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(sink);
+        cancellationToken.ThrowIfCancellationRequested();
+        int cookie = Interlocked.Increment(ref _nextSubscriptionCookie);
+        _directSinks[cookie] = sink;
+        return Task.FromResult(cookie);
+    }
+
     /// <inheritdoc />
     public Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        // Check both subscription dictionaries before deciding CONNECT_E_NOCONNECTION.
+        bool removedAny = _sinks.TryRemove(cookie, out _);
+        if (_directSinks.TryRemove(cookie, out _))
+        {
+            removedAny = true;
+        }
         // OLE / COM IConnectionPoint convention: unknown cookies return CONNECT_E_NOCONNECTION.
-        if (!_sinks.TryRemove(cookie, out _))
+        if (!removedAny)
         {
             throw new OpcException(new OpcResultId(unchecked((int)0x80040200), "CONNECT_E_NOCONNECTION"));
         }
@@ -1023,6 +1060,16 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     /// <c>DcomCallChannel</c> + <c>IOPCDataCallbackClientProxy</c> and invokes
     /// <c>OnDataChangeAsync</c> on it.
     /// </summary>
+    /// <remarks>
+    /// In addition to the <see cref="IOpcInterfaceRef"/> sinks, this also
+    /// invokes <see cref="IOpcDataCallbackSink.OnDataChange"/> on every
+    /// sink registered via the
+    /// <see cref="AdviseAsync(IOpcDataCallbackSink, CancellationToken)"/>
+    /// overload (cap-c8). The CCW path's <c>OpcDataCallbackProxy</c>
+    /// receives the same payload synchronously after the
+    /// <paramref name="sender"/> delegate has been invoked for all
+    /// cross-platform sinks.
+    /// </remarks>
     /// <param name="transactionId">Transaction id echoed in the callback payload.</param>
     /// <param name="serverHandles">Server handles for the items whose values changed; unknown handles are skipped.</param>
     /// <param name="sender">Delivery callback invoked once per active subscription with the change payload.</param>
@@ -1037,7 +1084,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         ArgumentNullException.ThrowIfNull(sender);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!_callbacksEnabled || _sinks.IsEmpty)
+        if (!_callbacksEnabled || (_sinks.IsEmpty && _directSinks.IsEmpty))
         {
             return;
         }
@@ -1047,6 +1094,10 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         {
             await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
         }
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
+        {
+            entry.Value.OnDataChange(payload);
+        }
     }
 
     /// <summary>
@@ -1055,6 +1106,12 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     /// Honors <c>SetEnable</c> just like data-change callbacks: when callbacks
     /// are disabled the trigger short-circuits.
     /// </summary>
+    /// <remarks>
+    /// Like <see cref="TriggerDataChangeAsync"/>, this also invokes
+    /// <see cref="IOpcDataCallbackSink.OnCancelComplete"/> on every
+    /// <see cref="IOpcDataCallbackSink"/> registered via the direct-sink
+    /// overload (cap-c8).
+    /// </remarks>
     /// <param name="transactionId">Transaction id originally cancelled.</param>
     /// <param name="sender">Delivery callback invoked once per active subscription with the cancel-complete payload.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
@@ -1066,7 +1123,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         ArgumentNullException.ThrowIfNull(sender);
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!_callbacksEnabled || _sinks.IsEmpty)
+        if (!_callbacksEnabled || (_sinks.IsEmpty && _directSinks.IsEmpty))
         {
             return;
         }
@@ -1075,6 +1132,10 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         foreach (KeyValuePair<int, IOpcInterfaceRef> entry in _sinks)
         {
             await sender(entry.Value, payload, cancellationToken).ConfigureAwait(false);
+        }
+        foreach (KeyValuePair<int, IOpcDataCallbackSink> entry in _directSinks)
+        {
+            entry.Value.OnCancelComplete(payload);
         }
     }
 

@@ -104,6 +104,22 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods
             {
                 return OpcDaGroupCcw.CONNECT_E_NOCONNECTION;
             }
+            // cap-c8: also remove from the managed OpcDaGroup's _directSinks
+            // so trigger fan-out stops invoking the disposed proxy.
+            OpcDaGroup? group = session.GroupHandle.Target as OpcDaGroup;
+            if (group is not null)
+            {
+                try
+                {
+#pragma warning disable VSTHRD002
+                    group.UnadviseAsync(cookie, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+                }
+                catch (OpcException)
+                {
+                    // Already unregistered (e.g. group disposed) — proceed with proxy.Dispose anyway.
+                }
+            }
             proxy.Dispose();
             return OpcDaGroupCcw.S_OK;
         }
@@ -165,7 +181,24 @@ internal static unsafe class OpcDaGroupCcwConnectionPointMethods
         try
         {
             proxy = new OpcDataCallbackProxy(pUnk);
-            int cookie = Interlocked.Increment(ref session.NextScmSinkCookie);
+            // cap-c8: register the proxy with the managed OpcDaGroup as an
+            // IOpcDataCallbackSink so TriggerDataChangeAsync /
+            // TriggerCancelCompleteAsync fan-out reaches the SCM-activated
+            // client. Use the cookie returned by the group; share between
+            // _directSinks (managed) and CcwSession.ScmSinks (CCW lifecycle).
+            OpcDaGroup? group = session.GroupHandle.Target as OpcDaGroup;
+            int cookie;
+            if (group is not null)
+            {
+#pragma warning disable VSTHRD002
+                cookie = group.AdviseAsync((IOpcDataCallbackSink)proxy, CancellationToken.None)
+                    .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            }
+            else
+            {
+                cookie = Interlocked.Increment(ref session.NextScmSinkCookie);
+            }
             if (!session.ScmSinks.TryAdd(cookie, proxy))
             {
                 proxy.Dispose();
