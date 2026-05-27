@@ -586,7 +586,7 @@ public sealed class OpcAeSubscriptionCcwTests
             IntPtr ptr = Marshal.AllocCoTaskMem(values.Length * IntPtr.Size);
             for (int i = 0; i < values.Length; i++)
             {
-                Marshal.WriteIntPtr(ptr, i * IntPtr.Size, Marshal.StringToCoTaskMemUni(values[i]));
+                Marshal.WriteIntPtr(ptr, i * IntPtr.Size, Marshal.StringToBSTR(values[i]));
             }
             return ptr;
         }
@@ -617,7 +617,7 @@ public sealed class OpcAeSubscriptionCcwTests
             for (int i = 0; i < values.Length; i++)
             {
                 IntPtr valuePtr = Marshal.ReadIntPtr(ptr, i * IntPtr.Size);
-                values[i] = Marshal.PtrToStringUni(valuePtr) ?? string.Empty;
+                values[i] = Marshal.PtrToStringBSTR(valuePtr) ?? string.Empty;
             }
             return values;
         }
@@ -655,7 +655,7 @@ public sealed class OpcAeSubscriptionCcwTests
             for (int i = 0; i < count; i++)
             {
                 IntPtr valuePtr = Marshal.ReadIntPtr(ptr, i * IntPtr.Size);
-                Marshal.FreeCoTaskMem(valuePtr);
+                Marshal.FreeBSTR(valuePtr);
             }
             Marshal.FreeCoTaskMem(ptr);
         }

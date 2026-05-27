@@ -273,18 +273,93 @@ internal static unsafe class OpcAeServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SetFilter(IntPtr pThis, int eventType, int categoryCount, IntPtr eventCategories, int lowSeverity, int highSeverity, int areaCount, IntPtr areas, int sourceCount, IntPtr sources)
     {
-        // Requires EVENTFILTER-style arrays of category IDs and LPWSTR area/source names.
-        _ = pThis; _ = eventType; _ = categoryCount; _ = eventCategories; _ = lowSeverity; _ = highSeverity; _ = areaCount; _ = areas; _ = sourceCount; _ = sources;
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+        try
+        {
+            int[] categoryIds = OpcAeSubscriptionCcw.ReadInt32Array(categoryCount, eventCategories);
+            string[] areaNames = OpcAeSubscriptionCcw.ReadStringPointerArray(areaCount, areas);
+            string[] sourceNames = OpcAeSubscriptionCcw.ReadStringPointerArray(sourceCount, sources);
+#pragma warning disable VSTHRD002
+            subscription!.SetFilterAsync(eventType, categoryIds, lowSeverity, highSeverity, areaNames, sourceNames, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int GetFilter(IntPtr pThis, IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList)
     {
-        // Requires allocating filter arrays for categories, areas, and sources.
-        _ = pThis;
+        InitializeGetFilterOutputs(pEventType, pCategoryCount, ppEventCategories, pLowSeverity, pHighSeverity, pAreaCount, ppAreaList, pSourceCount, ppSourceList);
+        if (IsInvalidGetFilterArgs(pEventType, pCategoryCount, ppEventCategories, pLowSeverity, pHighSeverity, pAreaCount, ppAreaList, pSourceCount, ppSourceList))
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr categoriesPtr = IntPtr.Zero;
+        IntPtr areasPtr = IntPtr.Zero;
+        IntPtr sourcesPtr = IntPtr.Zero;
+        try
+        {
+#pragma warning disable VSTHRD002
+            subscription!.GetFilterAsync(out int eventType, out int[] categories, out int lowSeverity, out int highSeverity, out string[] areas, out string[] sources, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            categories ??= Array.Empty<int>();
+            areas ??= Array.Empty<string>();
+            sources ??= Array.Empty<string>();
+            categoriesPtr = OpcAeSubscriptionCcw.AllocateInt32Array(categories);
+            areasPtr = OpcAeSubscriptionCcw.AllocateStringPointerArray(areas);
+            sourcesPtr = OpcAeSubscriptionCcw.AllocateStringPointerArray(sources);
+            AssignGetFilterOutputs(
+                eventType,
+                categories,
+                categoriesPtr,
+                lowSeverity,
+                highSeverity,
+                areas,
+                areasPtr,
+                sources,
+                sourcesPtr,
+                pEventType,
+                pCategoryCount,
+                ppEventCategories,
+                pLowSeverity,
+                pHighSeverity,
+                pAreaCount,
+                ppAreaList,
+                pSourceCount,
+                ppSourceList);
+            categoriesPtr = IntPtr.Zero;
+            areasPtr = IntPtr.Zero;
+            sourcesPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeSubscriptionCcw.FreeCoTaskMem(categoriesPtr);
+            OpcAeSubscriptionCcw.FreeStringPointerArray(areasPtr);
+            OpcAeSubscriptionCcw.FreeStringPointerArray(sourcesPtr);
+            return MapHResult(ex);
+        }
+    }
+
+    private static void InitializeGetFilterOutputs(IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList)
+    {
         WriteInt32(pEventType, 0);
         WriteInt32(pCategoryCount, 0);
         WriteNull(ppEventCategories);
@@ -294,7 +369,48 @@ internal static unsafe class OpcAeServerCcwMethods
         WriteNull(ppAreaList);
         WriteInt32(pSourceCount, 0);
         WriteNull(ppSourceList);
-        return OpcAeServerCcw.E_NOTIMPL;
+    }
+
+    private static bool IsInvalidGetFilterArgs(IntPtr pEventType, IntPtr pCategoryCount, IntPtr* ppEventCategories, IntPtr pLowSeverity, IntPtr pHighSeverity, IntPtr pAreaCount, IntPtr* ppAreaList, IntPtr pSourceCount, IntPtr* ppSourceList) =>
+        pEventType == IntPtr.Zero ||
+        pCategoryCount == IntPtr.Zero ||
+        ppEventCategories == null ||
+        pLowSeverity == IntPtr.Zero ||
+        pHighSeverity == IntPtr.Zero ||
+        pAreaCount == IntPtr.Zero ||
+        ppAreaList == null ||
+        pSourceCount == IntPtr.Zero ||
+        ppSourceList == null;
+
+    private static void AssignGetFilterOutputs(
+        int eventType,
+        int[] categories,
+        IntPtr categoriesPtr,
+        int lowSeverity,
+        int highSeverity,
+        string[] areas,
+        IntPtr areasPtr,
+        string[] sources,
+        IntPtr sourcesPtr,
+        IntPtr pEventType,
+        IntPtr pCategoryCount,
+        IntPtr* ppEventCategories,
+        IntPtr pLowSeverity,
+        IntPtr pHighSeverity,
+        IntPtr pAreaCount,
+        IntPtr* ppAreaList,
+        IntPtr pSourceCount,
+        IntPtr* ppSourceList)
+    {
+        WriteInt32(pEventType, eventType);
+        WriteInt32(pCategoryCount, categories.Length);
+        *ppEventCategories = categoriesPtr;
+        WriteInt32(pLowSeverity, lowSeverity);
+        WriteInt32(pHighSeverity, highSeverity);
+        WriteInt32(pAreaCount, areas.Length);
+        *ppAreaList = areasPtr;
+        WriteInt32(pSourceCount, sources.Length);
+        *ppSourceList = sourcesPtr;
     }
 
     [UnmanagedCallersOnly]
@@ -429,8 +545,10 @@ internal static unsafe class OpcAeServerCcwMethods
 
     private static int MapHResult(Exception ex) => ex switch
     {
+        COMException comEx => comEx.ErrorCode,
         OpcException opcEx => opcEx.ResultId.Code,
         ArgumentNullException => OpcAeServerCcw.E_INVALIDARG,
+        ArgumentOutOfRangeException => OpcAeServerCcw.E_INVALIDARG,
         ArgumentException => OpcAeServerCcw.E_INVALIDARG,
         _ => OpcAeServerCcw.E_FAIL,
     };

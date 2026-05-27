@@ -4,6 +4,8 @@
     <Description>TUnit-based unit tests for Opc.Classic.Ae managed types.</Description>
     <RootNamespace>Opc.Classic.Ae.Tests</RootNamespace>
     <AssemblyName>Opc.Classic.Ae.Tests</AssemblyName>
+    <!-- Windows CCW callback tests build raw unmanaged vtable stubs. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

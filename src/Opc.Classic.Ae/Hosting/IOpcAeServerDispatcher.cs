@@ -38,6 +38,27 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw NotImplemented(out revisedBufferTime, out revisedMaxSize);
 
+    /// <summary>Registers a client <c>IOPCEventSink</c> for a subscription connection point.</summary>
+    Task<int> AdviseEventSinkAsync(IOPCEventSubscriptionMgt subscription, IOPCEventSink sink, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(subscription);
+        ArgumentNullException.ThrowIfNull(sink);
+        cancellationToken.ThrowIfCancellationRequested();
+        return subscription is IOpcAeEventSinkRegistration registration
+            ? registration.AdviseEventSinkAsync(sink, cancellationToken)
+            : throw new OpcException(OpcResultId.NotImplemented);
+    }
+
+    /// <summary>Unregisters a client <c>IOPCEventSink</c> from a subscription connection point.</summary>
+    Task UnadviseEventSinkAsync(IOPCEventSubscriptionMgt subscription, int connection, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(subscription);
+        cancellationToken.ThrowIfCancellationRequested();
+        return subscription is IOpcAeEventSinkRegistration registration
+            ? registration.UnadviseEventSinkAsync(connection, cancellationToken)
+            : throw new OpcException(OpcResultId.NotImplemented);
+    }
+
     /// <summary>Removes a subscription created by <see cref="CreateEventSubscriptionAsync" />.</summary>
     Task RemoveSubscriptionAsync(IOPCEventSubscriptionMgt subscription, CancellationToken cancellationToken = default)
     {

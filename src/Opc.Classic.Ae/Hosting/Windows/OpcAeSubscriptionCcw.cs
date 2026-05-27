@@ -13,7 +13,7 @@ using Opc.Classic.Ae.Dcom;
 
 namespace Opc.Classic.Ae.Hosting.Windows;
 
-/// <summary>Single-tearoff Windows CCW for <see cref="IOPCEventSubscriptionMgt" />.</summary>
+/// <summary>Windows CCW for <see cref="IOPCEventSubscriptionMgt" /> and its event-sink connection point.</summary>
 [SupportedOSPlatform("windows")]
 public static unsafe class OpcAeSubscriptionCcw
 {
@@ -22,6 +22,7 @@ public static unsafe class OpcAeSubscriptionCcw
     internal const int E_INVALIDARG = unchecked((int)0x80070057);
     internal const int E_NOTIMPL = unchecked((int)0x80004001);
     internal const int E_FAIL = unchecked((int)0x80004005);
+    internal const int CONNECT_E_NOCONNECTION = unchecked((int)0x80040200);
 
     internal static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly ConcurrentDictionary<IntPtr, CcwEntry> s_entries = new();
@@ -40,15 +41,18 @@ public static unsafe class OpcAeSubscriptionCcw
 
         var subscriptionHandle = GCHandle.Alloc(subscription, GCHandleType.Normal);
         GCHandle dispatcherHandle = ownerDispatcher is null ? default : GCHandle.Alloc(ownerDispatcher, GCHandleType.Normal);
-        IntPtr* vtable = AllocateVtable();
-        IntPtr instance = AllocateInstance(vtable);
-        s_entries[instance] = new CcwEntry(subscriptionHandle, dispatcherHandle, vtable) { RefCount = 1 };
-        return instance;
+        var entry = new CcwEntry(subscriptionHandle, dispatcherHandle) { RefCount = 1 };
+        AllocateEntryTearoffs(entry);
+        RegisterEntryTearoffs(entry);
+        return ResolveTearoff(entry, requestedIid);
     }
 
     /// <summary>Returns whether this CCW supports <paramref name="iid" />.</summary>
     public static bool SupportsInterface(Guid iid) =>
-        iid == IID_IUnknown || iid == IOPCEventSubscriptionMgt.InterfaceId;
+        iid == IID_IUnknown ||
+        iid == IOPCEventSubscriptionMgt.InterfaceId ||
+        iid == OpcGuids.IID_IConnectionPoint ||
+        iid == OpcGuids.IID_IConnectionPointContainer;
 
     /// <summary>Test helper: returns the current refcount, or -1 if unknown.</summary>
     public static long GetReferenceCount(IntPtr instance) =>
@@ -56,18 +60,39 @@ public static unsafe class OpcAeSubscriptionCcw
             ? Interlocked.Read(ref entry.RefCount)
             : -1L;
 
+    /// <summary>Test helper: returns the number of advised Windows callback sinks.</summary>
+    public static int GetScmSinkCount(IntPtr instance) =>
+        s_entries.TryGetValue(instance, out CcwEntry? entry)
+            ? entry.ScmSinks.Count
+            : -1;
+
     internal static IOPCEventSubscriptionMgt? ResolveSubscription(IntPtr instance) =>
         s_entries.TryGetValue(instance, out CcwEntry? entry)
             ? entry.SubscriptionHandle.Target as IOPCEventSubscriptionMgt
             : null;
 
+    private static void AllocateEntryTearoffs(CcwEntry entry)
+    {
+        entry.SubscriptionMgtVtable = AllocateSubscriptionMgtVtable();
+        entry.ConnectionPointVtable = AllocateConnectionPointVtable();
+        entry.ConnectionPointContainerVtable = AllocateConnectionPointContainerVtable();
+        entry.SubscriptionMgtTearoff = AllocateInstance(entry.SubscriptionMgtVtable);
+        entry.ConnectionPointTearoff = AllocateInstance(entry.ConnectionPointVtable);
+        entry.ConnectionPointContainerTearoff = AllocateInstance(entry.ConnectionPointContainerVtable);
+    }
+
+    private static void RegisterEntryTearoffs(CcwEntry entry)
+    {
+        s_entries[entry.SubscriptionMgtTearoff] = entry;
+        s_entries[entry.ConnectionPointTearoff] = entry;
+        s_entries[entry.ConnectionPointContainerTearoff] = entry;
+    }
+
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
-    private static IntPtr* AllocateVtable()
+    private static IntPtr* AllocateSubscriptionMgtVtable()
     {
         IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(11 * sizeof(IntPtr)));
-        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
-        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
-        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        FillUnknownSlots(v);
         v[3] = (IntPtr)(delegate* unmanaged<IntPtr, int, int, IntPtr, int, int, int, IntPtr, int, IntPtr, int>)&SetFilter;
         v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr*, IntPtr, IntPtr, IntPtr, IntPtr*, IntPtr, IntPtr*, int>)&GetFilter;
         v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int, int, IntPtr, int>)&SelectReturnedAttributes;
@@ -77,6 +102,36 @@ public static unsafe class OpcAeSubscriptionCcw
         v[9] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, int>)&GetState;
         v[10] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr, int, IntPtr, IntPtr, int>)&SetState;
         return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(8 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, int>)&GetConnectionInterface;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&GetConnectionPointContainer;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint*, int>)&Advise;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&Unadvise;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&EnumConnections;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
+    private static IntPtr* AllocateConnectionPointContainerVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(5 * sizeof(IntPtr)));
+        FillUnknownSlots(v);
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr*, int>)&EnumConnectionPoints;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&FindConnectionPoint;
+        return v;
+    }
+
+    private static void FillUnknownSlots(IntPtr* v)
+    {
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
     }
 
     [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte size.")]
@@ -99,14 +154,37 @@ public static unsafe class OpcAeSubscriptionCcw
         {
             return E_INVALIDARG;
         }
-        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry) || !SupportsInterface(*riid))
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
         {
             return E_NOINTERFACE;
         }
 
-        *ppv = pThis;
+        IntPtr target = ResolveTearoff(entry, *riid);
+        if (target == IntPtr.Zero)
+        {
+            return E_NOINTERFACE;
+        }
+
+        *ppv = target;
         Interlocked.Increment(ref entry.RefCount);
         return S_OK;
+    }
+
+    private static IntPtr ResolveTearoff(CcwEntry entry, Guid iid)
+    {
+        if (iid == IID_IUnknown || iid == IOPCEventSubscriptionMgt.InterfaceId)
+        {
+            return entry.SubscriptionMgtTearoff;
+        }
+        if (iid == OpcGuids.IID_IConnectionPoint)
+        {
+            return entry.ConnectionPointTearoff;
+        }
+        if (iid == OpcGuids.IID_IConnectionPointContainer)
+        {
+            return entry.ConnectionPointContainerTearoff;
+        }
+        return IntPtr.Zero;
     }
 
     [UnmanagedCallersOnly]
@@ -131,8 +209,201 @@ public static unsafe class OpcAeSubscriptionCcw
         {
             return (uint)next;
         }
-        DisposeEntry(pThis, entry);
+        DisposeEntry(entry);
         return 0;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int GetConnectionInterface(IntPtr pThis, Guid* piid)
+    {
+        _ = pThis;
+        if (piid == null)
+        {
+            return E_INVALIDARG;
+        }
+        *piid = IOPCEventSink.InterfaceId;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int GetConnectionPointContainer(IntPtr pThis, IntPtr* ppCpc)
+    {
+        WriteNull(ppCpc);
+        if (ppCpc == null)
+        {
+            return E_INVALIDARG;
+        }
+        return s_entries.TryGetValue(pThis, out CcwEntry? entry)
+            ? ReturnTearoff(entry, entry.ConnectionPointContainerTearoff, ppCpc)
+            : E_FAIL;
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    private static int Advise(IntPtr pThis, IntPtr pUnk, uint* pdwCookie)
+    {
+        if (pdwCookie != null)
+        {
+            *pdwCookie = 0;
+        }
+        if (pdwCookie == null || pUnk == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        return AdviseCore(entry, pUnk, pdwCookie);
+    }
+
+    [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    private static int Unadvise(IntPtr pThis, uint dwCookie)
+    {
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        int cookie = unchecked((int)dwCookie);
+        if (!entry.ScmSinks.TryRemove(cookie, out ScmSinkEntry? sinkEntry))
+        {
+            return CONNECT_E_NOCONNECTION;
+        }
+        try
+        {
+            if (sinkEntry.RegistrationTarget != SinkRegistrationTarget.Local)
+            {
+                UnregisterSink(entry, cookie, sinkEntry.RegistrationTarget);
+            }
+            sinkEntry.Proxy.Dispose();
+            return S_OK;
+        }
+        catch (Exception ex)
+        {
+            sinkEntry.Proxy.Dispose();
+            return MapHResult(ex);
+        }
+    }
+
+    [UnmanagedCallersOnly]
+    private static int EnumConnections(IntPtr pThis, IntPtr* ppEnum)
+    {
+        _ = pThis;
+        WriteNull(ppEnum);
+        return ppEnum == null ? E_INVALIDARG : E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int EnumConnectionPoints(IntPtr pThis, IntPtr* ppEnum)
+    {
+        _ = pThis;
+        WriteNull(ppEnum);
+        return ppEnum == null ? E_INVALIDARG : E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int FindConnectionPoint(IntPtr pThis, Guid* riid, IntPtr* ppCp)
+    {
+        WriteNull(ppCp);
+        if (riid == null || ppCp == null)
+        {
+            return E_INVALIDARG;
+        }
+        if (!s_entries.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_FAIL;
+        }
+        return *riid == IOPCEventSink.InterfaceId
+            ? ReturnTearoff(entry, entry.ConnectionPointTearoff, ppCp)
+            : E_NOINTERFACE;
+    }
+
+    private static int ReturnTearoff(CcwEntry entry, IntPtr tearoff, IntPtr* ppv)
+    {
+        if (ppv == null || tearoff == IntPtr.Zero)
+        {
+            return E_INVALIDARG;
+        }
+        *ppv = tearoff;
+        Interlocked.Increment(ref entry.RefCount);
+        return S_OK;
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    private static int AdviseCore(CcwEntry entry, IntPtr pUnk, uint* pdwCookie)
+    {
+        OpcAeEventSinkProxy? proxy = null;
+        try
+        {
+            proxy = new OpcAeEventSinkProxy(pUnk);
+            SinkRegistrationTarget registrationTarget = RegisterSink(entry, proxy, out int cookie);
+            if (!entry.ScmSinks.TryAdd(cookie, new ScmSinkEntry(proxy, registrationTarget)))
+            {
+                if (registrationTarget != SinkRegistrationTarget.Local)
+                {
+                    UnregisterSink(entry, cookie, registrationTarget);
+                }
+                proxy.Dispose();
+                return E_FAIL;
+            }
+            proxy = null;
+            *pdwCookie = unchecked((uint)cookie);
+            return S_OK;
+        }
+        catch (Exception ex)
+        {
+            proxy?.Dispose();
+            return MapHResult(ex);
+        }
+    }
+
+    private static SinkRegistrationTarget RegisterSink(CcwEntry entry, IOPCEventSink proxy, out int cookie)
+    {
+        IOPCEventSubscriptionMgt? subscription = entry.SubscriptionHandle.Target as IOPCEventSubscriptionMgt;
+        IOpcAeServerDispatcher? dispatcher = entry.DispatcherHandle.IsAllocated
+            ? entry.DispatcherHandle.Target as IOpcAeServerDispatcher
+            : null;
+        if (dispatcher is not null && subscription is not null)
+        {
+            try
+            {
+#pragma warning disable VSTHRD002
+                cookie = dispatcher.AdviseEventSinkAsync(subscription, proxy, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+                return SinkRegistrationTarget.Dispatcher;
+            }
+            catch (OpcException ex) when (ex.ResultId.Code == OpcResultId.NotImplemented.Code)
+            {
+            }
+        }
+        if (subscription is IOpcAeEventSinkRegistration registration)
+        {
+#pragma warning disable VSTHRD002
+            cookie = registration.AdviseEventSinkAsync(proxy, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return SinkRegistrationTarget.Subscription;
+        }
+        cookie = Interlocked.Increment(ref entry.NextScmSinkCookie);
+        return SinkRegistrationTarget.Local;
+    }
+
+    private static void UnregisterSink(CcwEntry entry, int cookie, SinkRegistrationTarget registrationTarget)
+    {
+        IOPCEventSubscriptionMgt? subscription = entry.SubscriptionHandle.Target as IOPCEventSubscriptionMgt;
+        if (registrationTarget == SinkRegistrationTarget.Dispatcher && subscription is not null && entry.DispatcherHandle.IsAllocated && entry.DispatcherHandle.Target is IOpcAeServerDispatcher dispatcher)
+        {
+#pragma warning disable VSTHRD002
+            dispatcher.UnadviseEventSinkAsync(subscription, cookie, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return;
+        }
+        if (registrationTarget == SinkRegistrationTarget.Subscription && subscription is IOpcAeEventSinkRegistration registration)
+        {
+#pragma warning disable VSTHRD002
+            registration.UnadviseEventSinkAsync(cookie, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -367,11 +638,13 @@ public static unsafe class OpcAeSubscriptionCcw
 
     private static int MapHResult(Exception ex) => ex switch
     {
+        COMException comEx => comEx.ErrorCode,
         OpcException opcEx => opcEx.ResultId.Code,
         NotImplementedException => E_NOTIMPL,
         ArgumentNullException => E_INVALIDARG,
         ArgumentOutOfRangeException => E_INVALIDARG,
         ArgumentException => E_INVALIDARG,
+        ObjectDisposedException => E_FAIL,
         _ => E_FAIL,
     };
 
@@ -399,7 +672,7 @@ public static unsafe class OpcAeSubscriptionCcw
         }
     }
 
-    private static int[] ReadInt32Array(int count, IntPtr values)
+    internal static int[] ReadInt32Array(int count, IntPtr values)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
         if (count == 0)
@@ -419,7 +692,7 @@ public static unsafe class OpcAeSubscriptionCcw
         return result;
     }
 
-    private static string[] ReadStringPointerArray(int count, IntPtr values)
+    internal static string[] ReadStringPointerArray(int count, IntPtr values)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
         if (count == 0)
@@ -435,12 +708,12 @@ public static unsafe class OpcAeSubscriptionCcw
         for (int i = 0; i < result.Length; i++)
         {
             IntPtr valuePtr = Marshal.ReadIntPtr(values, i * IntPtr.Size);
-            result[i] = valuePtr == IntPtr.Zero ? string.Empty : Marshal.PtrToStringUni(valuePtr) ?? string.Empty;
+            result[i] = valuePtr == IntPtr.Zero ? string.Empty : Marshal.PtrToStringBSTR(valuePtr) ?? string.Empty;
         }
         return result;
     }
 
-    private static IntPtr AllocateInt32Array(int[] values)
+    internal static IntPtr AllocateInt32Array(int[] values)
     {
         if (values.Length == 0)
         {
@@ -455,7 +728,7 @@ public static unsafe class OpcAeSubscriptionCcw
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cleanup and rethrow after partial native allocation.")]
-    private static IntPtr AllocateStringPointerArray(string[] values)
+    internal static IntPtr AllocateStringPointerArray(string[] values)
     {
         if (values.Length == 0)
         {
@@ -472,7 +745,7 @@ public static unsafe class OpcAeSubscriptionCcw
         {
             for (int i = 0; i < values.Length; i++)
             {
-                IntPtr valuePtr = Marshal.StringToCoTaskMemUni(values[i] ?? string.Empty);
+                IntPtr valuePtr = Marshal.StringToBSTR(values[i] ?? string.Empty);
                 Marshal.WriteIntPtr(arrayPtr, i * IntPtr.Size, valuePtr);
             }
             return arrayPtr;
@@ -500,7 +773,7 @@ public static unsafe class OpcAeSubscriptionCcw
         }
     }
 
-    private static void FreeCoTaskMem(IntPtr ptr)
+    internal static void FreeCoTaskMem(IntPtr ptr)
     {
         if (ptr != IntPtr.Zero)
         {
@@ -508,7 +781,7 @@ public static unsafe class OpcAeSubscriptionCcw
         }
     }
 
-    private static void FreeStringPointerArray(IntPtr arrayPtr)
+    internal static void FreeStringPointerArray(IntPtr arrayPtr)
     {
         if (arrayPtr == IntPtr.Zero)
         {
@@ -523,14 +796,14 @@ public static unsafe class OpcAeSubscriptionCcw
             {
                 break;
             }
-            Marshal.FreeCoTaskMem(valuePtr);
+            Marshal.FreeBSTR(valuePtr);
             offset += IntPtr.Size;
         }
         Marshal.FreeCoTaskMem(arrayPtr);
     }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Release must free native state even if managed cleanup fails.")]
-    private static void DisposeEntry(IntPtr instance, CcwEntry entry)
+    private static void DisposeEntry(CcwEntry entry)
     {
         if (Interlocked.Exchange(ref entry.Disposed, 1) != 0)
         {
@@ -545,9 +818,10 @@ public static unsafe class OpcAeSubscriptionCcw
         {
         }
 
-        s_entries.TryRemove(instance, out _);
-        NativeMemory.Free((void*)instance);
-        NativeMemory.Free(entry.Vtable);
+        DisposeScmSinks(entry);
+        RemoveEntryTearoffs(entry);
+        FreeEntryTearoffs(entry);
+        FreeEntryVtables(entry);
         if (entry.SubscriptionHandle.IsAllocated)
         {
             entry.SubscriptionHandle.Free();
@@ -555,6 +829,52 @@ public static unsafe class OpcAeSubscriptionCcw
         if (entry.DispatcherHandle.IsAllocated)
         {
             entry.DispatcherHandle.Free();
+        }
+    }
+
+    private static void DisposeScmSinks(CcwEntry entry)
+    {
+        foreach (ScmSinkEntry sink in entry.ScmSinks.Values)
+        {
+            sink.Proxy.Dispose();
+        }
+        entry.ScmSinks.Clear();
+    }
+
+    private static void RemoveEntryTearoffs(CcwEntry entry)
+    {
+        s_entries.TryRemove(entry.SubscriptionMgtTearoff, out _);
+        s_entries.TryRemove(entry.ConnectionPointTearoff, out _);
+        s_entries.TryRemove(entry.ConnectionPointContainerTearoff, out _);
+    }
+
+    private static void FreeEntryTearoffs(CcwEntry entry)
+    {
+        FreeNative(entry.SubscriptionMgtTearoff);
+        FreeNative(entry.ConnectionPointTearoff);
+        FreeNative(entry.ConnectionPointContainerTearoff);
+    }
+
+    private static void FreeEntryVtables(CcwEntry entry)
+    {
+        FreeNative(entry.SubscriptionMgtVtable);
+        FreeNative(entry.ConnectionPointVtable);
+        FreeNative(entry.ConnectionPointContainerVtable);
+    }
+
+    private static void FreeNative(IntPtr ptr)
+    {
+        if (ptr != IntPtr.Zero)
+        {
+            NativeMemory.Free((void*)ptr);
+        }
+    }
+
+    private static void FreeNative(IntPtr* ptr)
+    {
+        if (ptr != null)
+        {
+            NativeMemory.Free(ptr);
         }
     }
 
@@ -590,17 +910,42 @@ public static unsafe class OpcAeSubscriptionCcw
 
     private sealed class CcwEntry
     {
-        public CcwEntry(GCHandle subscriptionHandle, GCHandle dispatcherHandle, IntPtr* vtable)
+        public CcwEntry(GCHandle subscriptionHandle, GCHandle dispatcherHandle)
         {
             SubscriptionHandle = subscriptionHandle;
             DispatcherHandle = dispatcherHandle;
-            Vtable = vtable;
         }
 
         public GCHandle SubscriptionHandle { get; }
         public GCHandle DispatcherHandle { get; }
-        public IntPtr* Vtable { get; }
         public long RefCount;
         public int Disposed;
+        public IntPtr SubscriptionMgtTearoff;
+        public IntPtr* SubscriptionMgtVtable;
+        public IntPtr ConnectionPointTearoff;
+        public IntPtr* ConnectionPointVtable;
+        public IntPtr ConnectionPointContainerTearoff;
+        public IntPtr* ConnectionPointContainerVtable;
+        public int NextScmSinkCookie;
+        public ConcurrentDictionary<int, ScmSinkEntry> ScmSinks { get; } = new();
+    }
+
+    private sealed class ScmSinkEntry
+    {
+        public ScmSinkEntry(OpcAeEventSinkProxy proxy, SinkRegistrationTarget registrationTarget)
+        {
+            Proxy = proxy;
+            RegistrationTarget = registrationTarget;
+        }
+
+        public OpcAeEventSinkProxy Proxy { get; }
+        public SinkRegistrationTarget RegistrationTarget { get; }
+    }
+
+    private enum SinkRegistrationTarget
+    {
+        Local,
+        Dispatcher,
+        Subscription,
     }
 }
