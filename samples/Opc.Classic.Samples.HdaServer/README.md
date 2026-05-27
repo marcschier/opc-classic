@@ -1,7 +1,6 @@
 # Opc.Classic Sample HDA Server
 
-Managed in-process OPC HDA sample server mirroring the native
-`COM/Sample Server/Hda` historian shape with a small synthetic tag tree.
+Managed OPC HDA sample server mirroring the native `COM\Sample Server\Hda` historian shape with a small synthetic tag tree.
 
 ## Tags
 
@@ -11,14 +10,13 @@ Managed in-process OPC HDA sample server mirroring the native
 
 ## Run
 
-```bash
-dotnet run --project samples/Opc.Classic.Samples.HdaServer
+```powershell
+dotnet run --project samples\Opc.Classic.Samples.HdaServer
 ```
 
-The server registers as `Opc.Classic.Samples.HdaServer.1` (CLSID
-`A2BBEA4E-F1C6-469B-8D71-89767DCD2D48`) and listens on `0.0.0.0:51302` by default.
+The server registers as `Opc.Classic.Samples.HdaServer.1` (CLSID `A2BBEA4E-F1C6-469B-8D71-89767DCD2D48`) and listens on `0.0.0.0:51302` by default.
 
-Release note: with no environment variables set, the server listens on all interfaces instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
+Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
 
 ## Raw read example
 
@@ -42,3 +40,11 @@ OpcHdaItem[] averages = await server.ReadProcessedAsync(
     HdaAggregate.Average,
     ct);
 ```
+
+## Source files
+
+- `Program.cs` — host setup, registry options, and listen-address selection.
+- `SampleHdaServer.cs` — managed HDA server status, validation, raw read, and processed read implementation.
+- `HistoricalDataStore.cs` — seeded one-day historian data set.
+
+For the compose-orchestrated container demo, see `samples\README.docker.md`.

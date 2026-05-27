@@ -8,7 +8,7 @@ Managed OPC AE sample server mirroring the native `COM\Sample Server\Ae` simulat
 - `Server.Errors` - periodic simple simulated error event every 15 seconds, severity `700`.
 - `Demo.Conditions` - tracking condition `DemoCondition`, toggling `Active` / `Inactive` every 10 seconds.
 
-The current emitter logs events only. Phase 7F-followup wires these events into `IOpcAeEventPublisher` and AE subscriptions.
+The current emitter logs events only. Follow-up server work wires these events into remote AE subscriptions.
 
 ## Run
 
@@ -18,8 +18,16 @@ dotnet run --project samples\Opc.Classic.Samples.AeServer
 
 The server registers as `Opc.Classic.Samples.AeServer.1` (CLSID `C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F`) and listens on `0.0.0.0:51301` by default.
 
-Release note: with no environment variables set, the server listens on all interfaces instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
+Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
 
 ## Status
 
-Scaffold-grade. `SampleAeServer` implements the initial `IOpcAeServer.GetStatusAsync` surface while subscription management, area browsing, condition enablement, acknowledgements, and event fan-out remain Phase 7F-followup work.
+Scaffold-grade. `SampleAeServer` implements `GetStatusAsync` and `QueryAvailableFiltersAsync`; remote subscription management, area browsing, condition enablement, acknowledgements, and event fan-out remain follow-up work. The AE client sample's default in-process path uses its own in-process area/condition model to demonstrate those flows today.
+
+## Source files
+
+- `Program.cs` — host setup, registry options, and listen-address selection.
+- `SampleAeServer.cs` — managed AE server status/filter surface.
+- `EventEmitter.cs` — logged synthetic event loop.
+
+For the compose-orchestrated container demo, see `samples\README.docker.md`.

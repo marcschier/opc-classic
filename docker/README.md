@@ -5,10 +5,8 @@ implementation against:
 
 - The **OPC Compliance Test Tool (CTT)** v2.0.15 + 5 plugins (DA 2.05a, DA 3.0,
   AE, HDA, XML-DA) — installed from the six vendored MSIs in `External/CTT/`.
-- A **native (C-built) OPC DA / Batch reference server** — compiled from the
-  OPC Foundation Sample Code at `External/OPC Batch 2.00 Sample Code/Sample Server/`.
-- A **native (C-built) OPC DA reference client** (OPCTEST + OPCSPEED) —
-  compiled from `External/OPC Security 1.00 Sample Code/Sample Client/`.
+- A **native (C-built) OPC DA smoke server** — hand-rolled in `docker\opc-c-server\build\` with OPC Foundation headers; the full OPC Batch sample conversion remains a future richer route.
+- A **native (C-built) OPC DA smoke client** — hand-rolled in `docker\opc-c-client\build\` with OPC Foundation headers; OPCTEST/OPCSPEED wrapping remains a future richer route.
 
 The managed `Opc.Classic.Samples.CttServer` runs in a fourth container so all
 combinations of {managed, native} × {client, server} can be cross-tested on
@@ -18,40 +16,30 @@ a single Windows host.
 
 | Container | Status |
 |---|---|
-| `opc-classic/ctt` | ✅ Ready (Phase 1 — `docker-1-ctt` done) |
-| `opc-classic/managed` | ✅ Ready (Phase 4 — `docker-4-managed` done) |
-| `opc-classic/c-server` | ⏳ Scaffold only (Phase 2 — `docker-2-cserver` pending; VS6 `.dsp` → modern `.vcxproj` not yet authored — see `opc-c-server/build/README.md`) |
-| `opc-classic/c-client` | ⏳ Scaffold only (Phase 3 — `docker-3-cclient` pending; same build-tool gap as c-server) |
-| `docker-compose.test.yml` | ✅ Ready (Phase 5 — `docker-5-compose` done) |
-| `.github/workflows/docker-test-fleet.yml` | ✅ Ready (Phase 6 — `docker-6-ci` done) |
+| `opc-classic/ctt` | ✅ Ready — installs CTT v2.0.15 + plugins and runs `run-ctt.ps1` |
+| `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
+| `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
+| `opc-classic/c-client` | ✅ Ready — builds the hand-rolled native DA smoke client (`opc-test.exe`) from `opc-test.cpp` |
+| `docker-compose.test.yml` | ✅ Ready — orchestrates all four images on `opc-test-net` |
+| `.github/workflows/docker-test-fleet.yml` | ✅ Ready — CI entry point for the fleet |
 
-The two scaffold containers compile their Dockerfiles but emit a placeholder
-EXE; `server-init.ps1` / `client.ps1` detect this and idle so you can
-`docker exec` in for debugging.
+The native C server/client images now build real MVP binaries. Their entrypoint scripts still retain missing-binary checks so failed local builds are easy to debug with `docker exec`.
 
-## Managed-server state (ocom dispatch sweep — 2026-05-26)
+## Managed-server state
 
-The `opc-classic/managed` container now runs a managed CttServer with the
-full server-side dispatch sweep wired in:
+The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with the current managed DCOM server stack:
 
-| Piece | Source commit | What ships |
-|---|---|---|
-| Cross-platform RPC listener (`OpcServerListener` + `TcpServerEndpoint` + `RpcServerConnectionProcessor`) | `6823f5a` (ocom-1b) | Real TCP accept + DCE/RPC bind/alter/request/shutdown PDU handling |
-| DA/AE/HDA hosts wired to the listener | `a689fbd` (ocom-2) | Managed servers physically accept inbound DCOM calls |
-| IPID per-object dispatch routing (`OpcObjectRegistry`) | `b42a127` (ocom-3a) | `RequestCoPdu.Object` UUIDs resolve to per-group dispatchers |
-| `OpcDaGroup` + CttDaServer real group tracking | `b201173` (ocom-3b) | `AddGroup` returns a real IPID; `IOPCGroupStateMgt(2)` routes to the managed group |
-| Windows CCW factory + SCM wireup | `c4b0800` (ocom-6) + `Program.cs` rev | `IClassFactory::CreateInstance` returns a real `IOPCServer` CCW backed by `CttDaServer` |
-| `IConnectionPoint` server dispatch | `ce7186d` (ocom-8) | Server-side dispatch of `Advise`/`Unadvise`/`GetConnectionInterface` |
-| Outbound `IOPCDataCallback` (server→client) | `1723d11` (ocom-7) | Symmetric listener model proves callbacks compose |
+| Piece | What ships |
+|---|---|
+| Cross-platform RPC listener (`OpcServerListener` + `TcpServerEndpoint` + `RpcServerConnectionProcessor`) | Real TCP accept + DCE/RPC bind/alter/request/shutdown PDU handling |
+| DA/AE/HDA hosts wired to the listener | Managed servers physically accept inbound DCOM calls |
+| IPID per-object dispatch routing (`OpcObjectRegistry`) | `RequestCoPdu.Object` UUIDs resolve to per-group dispatchers |
+| `CttDaServer` group tracking | `AddGroup` creates an `OpcDaGroup`, returns a real IPID, and unregisters it on `RemoveGroup` |
+| Group dispatchers | `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, `IConnectionPoint`, deadband, and sampling dispatch through `OpcDaGroup` |
+| Windows CCW factory + SCM wireup | `IClassFactory::CreateInstance` returns a NativeAOT-friendly `IOPCServer` CCW backed by `CttDaServer` |
+| Outbound callback infrastructure | Listener + generated `IOPCDataCallback` proxy/dispatcher paths are available for callback composition |
 
-What's still stubbed (will surface as `E_NOTIMPL` in CTT):
-
-- All 9 `IOPCServer` vtable methods in the Windows CCW (`OpcDaServerCcw`) return `E_NOTIMPL`. The cross-platform transport path serves IOPCServer fully; the Windows-CCW path is the one a real OPC client (via opcproxy.dll) currently sees.
-- `OpcDaGroup` only implements `IOPCGroupStateMgt(2)`. `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3` are mechanical follow-ups to add to the dispatcher set at AddGroup time.
-- The `IConnectionPoint.Advise` payload (the sink ref) is decoded but the application-level "store sink + invoke OnDataChange on data update" wiring is a follow-up.
-
-The first real CTT run from this state should establish a baseline of what's
-covered vs not; the rest is incremental.
+Known remaining CTT gaps are narrower than the old scaffold state: `CreateGroupEnumerator` is still `E_NOTIMPL`, some callback trigger/application-level wiring remains incremental, and CTT CLI flag validation is still tracked below / in `docs\release-blockers.md`.
 
 ## Prerequisites
 
@@ -104,25 +92,15 @@ See `docker/opc-ctt/README.md` for details.
 
 ### `opc-classic/managed`
 
-The managed `Opc.Classic.Samples.CttServer`, registered under
-`HKLM\Software\Classes\CLSID\{...}` on container startup via the
-`--register --registry-hive=hklm` CLI from `ctt-2-registration`. The
-class-object stub from `Opc.Classic.Hosting.Windows.ComClassObjectRegistrar`
-satisfies COM SCM's class-object expectation but returns `E_NOINTERFACE` for
-any IID besides `IID_IUnknown` until the managed `IOPCServer` dispatch lands.
+The managed `Opc.Classic.Samples.CttServer`, registered under `HKLM\Software\Classes\CLSID\{...}` on container startup via `--register --registry-hive=hklm`. When SCM launches the EXE with `-Embedding`, `ComClassObjectRegistrar` delegates `IClassFactory::CreateInstance` to `OpcDaServerCcw.Create`, so supported activations receive a real `IOPCServer` CCW backed by `CttDaServer`.
 
-### `opc-classic/c-server` (PHASE-2 SCAFFOLD)
+### `opc-classic/c-server`
 
-Will host the C-built OPC Batch 2.0 sample server (`opc_exe.exe`). The
-`Dockerfile` is in place but the build stage is stubbed pending the
-`.dsp → .vcxproj` conversion documented at
-`docker/opc-c-server/build/README.md`.
+Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from `docker\opc-c-server\build\opc-sample-server.cpp`. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces needed for CTT smoke. The full OPC Foundation Batch sample conversion remains documented as a future richer route in `docker\opc-c-server\build\README.md`.
 
-### `opc-classic/c-client` (PHASE-3 SCAFFOLD)
+### `opc-classic/c-client`
 
-Will host the C-built OPCTEST / OPCSPEED console clients. Same scaffold
-state as `c-server`; conversion checklist at
-`docker/opc-c-client/build/README.md`.
+Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from `docker\opc-c-client\build\opc-test.cpp`. It resolves a ProgID on a target host, calls `AddGroup`, `AddItems`, `Read`, then removes the group. The original OPCTEST/OPCSPEED sample-source wrapping remains a future richer route in `docker\opc-c-client\build\README.md`.
 
 ## Networking
 
@@ -172,13 +150,14 @@ disposable test rig but **must never be applied to a production host**.
   the v2.0.15 help output (also a known TODO in `.github/workflows/opc-ctt.yml`).
 - **DcomContainerSample's open issue**: even the simplest reference example
   in [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample)
-  has unresolved cross-container `access denied` errors. We may hit the same
-  during Phase 5 smoke; mitigation paths are documented in
-  `docs/architecture/dcom-container-networking.md`.
+  has unresolved cross-container `access denied` errors. If the fleet hits the
+  same condition, mitigation paths are documented in
+  `docs\architecture\dcom-container-networking.md`.
 
 ## Related documentation
 
-- `docs/test-fleet.md` — adopter cookbook (debugging, capture, common errors)
-- `docs/architecture/dcom-container-networking.md` — l2bridge / transparent / NAT trade-offs
-- `docs/ctt/CI_DESIGN.md` — CI workflow internals (sister doc for the non-fleet CTT job)
-- `plan.md` "NEW PLAN — Windows Docker test fleet" — phase breakdown + open risks
+- `docs\test-fleet.md` — adopter cookbook (debugging, capture, common errors)
+- `docs\architecture\dcom-container-networking.md` — l2bridge / transparent / NAT trade-offs
+- `docs\ctt\CI_DESIGN.md` — CI workflow internals (sister doc for the non-fleet CTT job)
+- `docs\MIGRATION.md` — adopter notes for moving across release candidates
+- `docs\release-blockers.md` — current release gates and remaining conformance work

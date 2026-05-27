@@ -21,7 +21,7 @@ SampleDaServer callbacks
 
 `InMemoryCallChannel` is the test-double equivalent of the DCOM call channel: generated DA proxies still NDR-encode requests, the channel still dispatches by interface IID and opnum, and the dispatcher returns HRESULT + NDR response payloads. This makes the full client-to-server shape visible without needing a network listener.
 
-The current generated DA surface intentionally defers a few COM-pointer and multi-output methods. This demo keeps those calls in the same architectural path by using small loopback shims for `AddGroup`, `AddItems`, `Read`, and browse enumeration, while using generated proxies for implemented calls such as `GetStatus`, `Write`, `Refresh2`, `SetEnable`, and `IOPCDataCallback::OnDataChange`.
+The demo keeps COM-pointer and multi-output calls in the same architectural path with loopback shims for `AddGroup`, `AddItems`, `Read`, and browse enumeration, while using generated proxies for implemented calls such as `GetStatus`, `Write`, `Refresh2`, `SetEnable`, and `IOPCDataCallback::OnDataChange`.
 
 ## Run
 
@@ -38,3 +38,13 @@ Expected output shows:
 - written values;
 - `OnDataChange` notifications streamed for about five seconds;
 - clean callback unadvise and group removal.
+
+## Source files
+
+- `Program.cs` — host setup.
+- `LoopbackDemoService.cs` — orchestrates the client/server demo.
+- `LoopbackDaClient.cs` / `LoopbackDaRuntime.cs` — loopback client and runtime plumbing.
+- `SampleDaServer.cs` / `LoopbackTagStore.cs` — in-process DA server and tag data.
+- `LoopbackModels.cs` / `LoopbackNdr.cs` — DTOs and NDR helpers used by the demo.
+
+For the compose-orchestrated multi-container sample flow, see `samples\README.docker.md`.

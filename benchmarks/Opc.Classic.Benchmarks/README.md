@@ -14,6 +14,15 @@ dotnet run -c Release --project benchmarks/Opc.Classic.Benchmarks -- --filter "*
 dotnet run -c Release --project benchmarks/Opc.Classic.Benchmarks -- --filter "*NdrWriter*"
 ```
 
+Current benchmark classes:
+
+- `CodecRegistryBenchmarks`
+- `DcomCallChannelBenchmarks`
+- `NdrReaderBenchmarks`
+- `NdrWriterBenchmarks`
+- `OpcSafeArrayBenchmarks`
+- `OpcVariantBenchmarks`
+
 ## Results
 
 BenchmarkDotNet writes reports, logs, and exported data under `BenchmarkDotNet.Artifacts/` in the working directory. Use the generated markdown, CSV, HTML, and JSON exports for comparisons.

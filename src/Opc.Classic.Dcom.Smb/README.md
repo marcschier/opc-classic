@@ -1,16 +1,13 @@
 # Opc.Classic.Dcom.Smb
 
-Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe
-operations required by OPC Classic's `ncacn_np` (RPC over SMB) transport — see
-`docs/architecture/smb-transport.md` and `docs/decisions/2026-05-smb-implementation.md`
-for the project-wide rationale.
+Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe operations required by OPC Classic's `ncacn_np` (RPC over SMB) transport — see `docs\architecture\smb-transport.md` and `docs\decisions\2026-05-smb-implementation.md` for the project-wide rationale.
 
-## Scope (Phase 1 — what ships in commit `*`)
+## Scope
 
 | Component | Status |
 |---|---|
 | SMB2 packet header (synchronous form) — `Smb2PacketHeader` | ✅ Read + Write |
-| NetBIOS-over-TCP framing (4-byte length prefix) — `NetBiosFraming` | ✅ Read + Write |
+| NetBIOS-over-TCP framing (4-byte length prefix) — `TcpSmb2Transport` | ✅ Read + Write |
 | SMB2 NEGOTIATE (request + response) | ✅ |
 | SMB2 SESSION_SETUP (request + response, NTLMSSP blob carrier) | ✅ |
 | SMB2 TREE_CONNECT (request + response) | ✅ |
@@ -19,26 +16,25 @@ for the project-wide rationale.
 | SMB2 IOCTL with FSCTL_PIPE_TRANSCEIVE (per `[MS-RPCE] §2.1.1.2`) | ✅ |
 | SMB2 TREE_DISCONNECT / LOGOFF (teardown) | ✅ |
 | Connection state machine — `Smb2Connection` | ✅ |
-| TCP transport (`TcpSmb2Transport`) — port 445 + NetBIOS framing | ✅ |
-| Named-pipe handle — `Smb2NamedPipe` (TransceiveAsync API) | ✅ |
+| Named-pipe handle — `Smb2NamedPipe` (`TransceiveAsync`) | ✅ |
+| RPC adapter/builder — `Smb2RpcTransportAdapter`, `Smb2RpcTransportBuilder`, `SmbRpcAddress` | ✅ sync bridge for legacy `ITransport` callers |
+| NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `src\Opc.Classic.Dcom\rpc\Auth\` |
+| WINREG replay validation | ✅ captured request/response fixtures under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` |
 | SMB2 signing (HMAC-SHA256 for SMB 3.x / AES-CMAC for 2.x) | ⏳ stubbed (no MAC on outgoing PDUs, ignored on incoming) |
-| SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred to Phase 1.5 |
-| NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `src/Opc.Classic.Dcom/rpc/Auth/` |
+| SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred |
 
 ## Not yet shipping
 
-- SMB 3.0 signing/encryption (will fail against servers with `RequireSecuritySignature=1` until Phase 1.5)
-- End-to-end smoke against real Samba / Windows servers (Phase 3)
-- Wire-up into `Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport` (Phase 2 — `smb-2-ncacn-np-wireup` todo)
-- WINREG client validation (Phase 3 — `smb-3-winreg-e2e` todo)
-- Legacy `IActivation::RemoteActivation` interface (Phase 4 — `smb-4-iactivation-legacy` todo)
-- Cross-platform CI (Phase 5 — `smb-5-ci-matrix` todo)
-- PCAP-recorded wire fixtures (Phase 6 — `smb-6-wire-fixtures` todo)
+- SMB 3.0 signing/encryption (will fail against servers with `RequireSecuritySignature=1` until the signing/encryption work lands).
+- Production wire-up into `Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport`; the adapter/builder exists, but the legacy transport still owns the default `ncacn_np` route.
+- Real-server smoke against Samba / Windows servers in CI.
+- Legacy `IActivation::RemoteActivation` over SMB named pipes.
 
-## Public surface (consumed by Phase 2)
+## Public surface
 
 ```csharp
 using Opc.Classic.Dcom.Smb;
+using Opc.Classic.Dcom.Smb.Rpc;
 
 // 1. Establish a TCP connection on port 445
 await using var tcp = await TcpSmb2Transport.ConnectAsync("server-host");
@@ -62,27 +58,31 @@ await using var pipe = await conn.OpenNamedPipeAsync("winreg");
 
 // 6. Transact: send DCE/RPC PDU, receive response, in one round-trip
 ReadOnlyMemory<byte> response = await pipe.TransceiveAsync(rpcPduBytes);
+
+// Or build the sync-over-async adapter expected by legacy RPC transports.
+var address = SmbRpcAddress.Parse("smb://server-host/IPC$/winreg");
+var builder = new Smb2RpcTransportBuilder(address, YourNtlmsspProvider.Next);
+using Smb2RpcTransportAdapter adapter = await builder.BuildAsync();
+ReadOnlyMemory<byte> rpcResponse = adapter.Transceive(rpcPduBytes);
 ```
 
 ## Specifications referenced
 
-All section references in source-file comments target the vendored Microsoft
-Open Specifications under `External/Docs/Win/`:
+All section references in source-file comments target the vendored Microsoft Open Specifications under `External\Docs\Win\`:
 
 - `[MS-SMB2].md` — SMB 2.0/2.1/3.0/3.1.1 wire format
 - `[MS-CIFS].md` — NetBIOS-over-TCP framing
 - `[MS-RPCE].md §2.1.1.2` — RPC over SMB framing rules
 - `[MS-FSCC].md` — FSCTL codes
-- `[MS-NLMP].md` — NTLMSSP (consumed indirectly via `src/Opc.Classic.Dcom/rpc/Auth/`)
+- `[MS-NLMP].md` — NTLMSSP (consumed indirectly via `src\Opc.Classic.Dcom\rpc\Auth\`)
 - `[MS-ERREF].md` — NTSTATUS values
 
-## Testing
+## Testing and fixtures
 
-- `tests/Opc.Classic.Dcom.Smb.Tests/` — codec round-trip + state-machine tests using a hand-built mock transport (no network I/O).
-- Real-server smoke tests land in Phase 3 (Samba container in CI + scheduled Windows VM run).
+- `tests\Opc.Classic.Dcom.Smb.Tests\` — codec round-trip, state-machine, address parser, adapter, and mock-transport tests.
+- `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` — captured WINREG bind/open/enumerate request-response fixtures replayed by `WinregFixtureReplayTests`.
+- `FIXTURES.md` — fixture capture/redaction guidance and current fixture inventory.
 
 ## License
 
-MIT, same as the rest of the repository. No LGPL or other reciprocal-license
-dependencies; see `docs/decisions/2026-05-smb-implementation.md` for the
-licensing rationale.
+MIT, same as the rest of the repository. No LGPL or other reciprocal-license dependencies; see `docs\decisions\2026-05-smb-implementation.md` for the licensing rationale.

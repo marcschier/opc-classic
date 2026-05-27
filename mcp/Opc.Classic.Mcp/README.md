@@ -2,7 +2,7 @@
 
 `Opc.Classic.Mcp` is the stdio Model Context Protocol server for Opc.Classic. It exposes the managed OPC Classic client stack as MCP tools so AI agents can discover servers, manage sessions, browse DA/AE/HDA models, read and write values, poll events and subscriptions, inspect Batch/Commands/Cpx metadata, manage DX configuration, use OPC Security, and call XML-DA endpoints.
 
-For the full user guide, tool catalog, architecture diagram, authentication notes, and client-specific setup snippets, see [docs/mcp/README.md](https://github.com/marcschier/opc-classic/blob/master/docs/mcp/README.md).
+For the full user guide, architecture diagram, authentication notes, and client-specific setup snippets, see [docs/mcp/README.md](https://github.com/marcschier/opc-classic/blob/master/docs/mcp/README.md). For the generated 93-tool catalog, see `docs\mcp\tools.md`.
 
 ## Install from NuGet
 

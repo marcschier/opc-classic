@@ -18,6 +18,14 @@ Managed OPC DA sample server that mirrors the well-known Matrikon Simulation-sty
 dotnet run --project .\samples\Opc.Classic.Samples.DaServer\Opc.Classic.Samples.DaServer.csproj
 ```
 
-The sample registers as ProgID `Opc.Classic.Samples.DaServer.1` with CLSID `B3AE5D6F-2A91-4F8B-9D2C-7E5B0C8F1A3E`. It is intentionally buildable by direct project path and is not listed in `Opc.Classic.slnx` yet.
+The sample registers as ProgID `Opc.Classic.Samples.DaServer.1` with CLSID `B3AE5D6F-2A91-4F8B-9D2C-7E5B0C8F1A3E` and is included in `Opc.Classic.slnx`.
 
-Release note: with no environment variables set, the server listens on `0.0.0.0:51300` instead of loopback-only ephemeral binding. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
+With no environment variables set, the server listens on `0.0.0.0:51300`. Set `OPC_CLASSIC_SAMPLE_PORT` to change the default port or `OPC_CLASSIC_LISTEN_ADDRESS` to override the full bind address.
+
+## Source files
+
+- `Program.cs` — host setup, registry options, and listen-address selection.
+- `SampleDaServer.cs` — managed `IOpcDaServer` implementation.
+- `TagTree.cs` — Matrikon-style sample tag catalog and value simulation.
+
+For the compose-orchestrated container demo, see `samples\README.docker.md`.
