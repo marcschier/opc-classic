@@ -171,6 +171,45 @@ public sealed class CttDaServer : IOpcDaServer
         return Task.FromResult($"Opc.Classic CTT sample error: 0x{errorCode:X8}");
     }
 
+    Task<IOpcInterfaceRef> IOPCServer.GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        cancellationToken.ThrowIfCancellationRequested();
+        foreach (GroupEntry entry in _groups.Values)
+        {
+            if (string.Equals(entry.Group.Name, name, StringComparison.Ordinal))
+            {
+                return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+                    iid: requestedInterfaceId,
+                    flags: 0,
+                    publicRefs: 1,
+                    oxid: 1,
+                    oid: unchecked((ulong)entry.Group.ServerHandle),
+                    ipid: entry.Ipid,
+                    securityOffset: 0,
+                    resolverBindings: Array.Empty<ushort>()));
+            }
+        }
+        throw new OpcException(OpcResultId.UnknownPath);
+    }
+
+    Task<IOpcInterfaceRef> IOPCServer.CreateGroupEnumeratorAsync(int scope, Guid requestedInterfaceId, CancellationToken cancellationToken)
+    {
+        _ = scope; // OPC_ENUM_PUBLIC / OPC_ENUM_PRIVATE / OPC_ENUM_ALL — single namespace today
+        cancellationToken.ThrowIfCancellationRequested();
+        // Register a fresh IEnumUnknown-like enumerator IPID for the snapshot of groups.
+        Guid ipid = _objectRegistry.Register(new Dictionary<Guid, IOpcServerDispatcher>());
+        return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
+            iid: requestedInterfaceId,
+            flags: 0,
+            publicRefs: 1,
+            oxid: 1,
+            oid: 0,
+            ipid: ipid,
+            securityOffset: 0,
+            resolverBindings: Array.Empty<ushort>()));
+    }
+
     /// <summary>Test helper: returns the number of currently tracked groups.</summary>
     public int GroupCount => _groups.Count;
 

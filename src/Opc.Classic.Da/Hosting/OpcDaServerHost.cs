@@ -80,12 +80,9 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
-        var dispatcher = new IOPCServerServerDispatcher(_serverImpl);
+        var serverDispatchers = BuildServerDispatchers();
         var processor = new RpcServerConnectionProcessor(
-            new Dictionary<Guid, IOpcServerDispatcher>
-            {
-                [IOPCServer.InterfaceId] = dispatcher,
-            },
+            serverDispatchers,
             _objectRegistry,
             _logger);
         _listener = new OpcServerListener(endpoint, processor, _logger);
@@ -93,6 +90,30 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         Task started = _listener.StartAsync(cancellationToken);
         HostListeningOn(_logger, _options.Clsid, _listener.LocalEndpoint, null);
         return started;
+    }
+
+    private Dictionary<Guid, IOpcServerDispatcher> BuildServerDispatchers()
+    {
+        // Always register IOPCServer + the DA 2.x/3.0 default browse/property
+        // dispatchers so a conformant DA server presents reachable interfaces
+        // for namespace browsing even when the user's IOpcDaServer doesn't
+        // explicitly override them. Implementations that want richer behaviour
+        // can subclass the default classes.
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [IOPCServer.InterfaceId] = new IOPCServerServerDispatcher(_serverImpl),
+        };
+        var browseV2 = (_serverImpl as IOPCBrowseServerAddressSpace) ?? new DefaultBrowseServerAddressSpace();
+        dispatchers[IOPCBrowseServerAddressSpace.InterfaceId] = new IOPCBrowseServerAddressSpaceServerDispatcher(browseV2);
+        var browseV3 = (_serverImpl as IOPCBrowse) ?? new DefaultBrowse();
+        dispatchers[IOPCBrowse.InterfaceId] = new IOPCBrowseServerDispatcher(browseV3);
+        var props = (_serverImpl as IOPCItemProperties) ?? new DefaultItemProperties();
+        dispatchers[IOPCItemProperties.InterfaceId] = new IOPCItemPropertiesServerDispatcher(props);
+        var deadband = (_serverImpl as IOPCItemDeadbandMgt) ?? new DefaultItemDeadbandMgt();
+        dispatchers[IOPCItemDeadbandMgt.InterfaceId] = new IOPCItemDeadbandMgtServerDispatcher(deadband);
+        var sampling = (_serverImpl as IOPCItemSamplingMgt) ?? new DefaultItemSamplingMgt();
+        dispatchers[IOPCItemSamplingMgt.InterfaceId] = new IOPCItemSamplingMgtServerDispatcher(sampling);
+        return dispatchers;
     }
 
     /// <inheritdoc />
