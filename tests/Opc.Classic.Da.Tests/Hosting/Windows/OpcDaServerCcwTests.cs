@@ -202,21 +202,23 @@ public sealed class OpcDaServerCcwTests
     }
 
     [Test]
-    public async Task IOPCServer_unimplemented_pointer_returning_vtable_slots_return_E_NOTIMPL()
+    public async Task IOPCServer_AddGroup_returns_ccw_pointer_via_OpcDaGroupCcw()
     {
         if (!OperatingSystem.IsWindows())
         {
             return;
         }
 
-        // ocom-6c implemented GetErrorString + GetStatus + RemoveGroup with real bodies;
-        // the remaining IOPCServer slots that return interface pointers
-        // (AddGroup, GetGroupByName, CreateGroupEnumerator) still return E_NOTIMPL
-        // pending follow-up COM marshaling work.
-        IntPtr ccw = OpcDaServerCcw.Create(new StubDaServer(), IOPCServer.InterfaceId);
-        (int hrAddGroup, int hrGetGroupByName, int hrCreateGroupEnumerator) = InvokeRemainingStubs(ccw);
+        // ocom-6d wires AddGroup to allocate a managed group through the
+        // stub server and return an IUnknown-only OpcDaGroupCcw pointer.
+        // GetGroupByName + CreateGroupEnumerator still return E_NOTIMPL.
+        var stub = new StubDaServer();
+        IntPtr ccw = OpcDaServerCcw.Create(stub, IOPCServer.InterfaceId);
+        (int hrAddGroup, IntPtr ppUnkAdd, int hrGetGroupByName, int hrCreateGroupEnumerator) = InvokeRemainingStubs(ccw);
 
-        await Assert.That(hrAddGroup).IsEqualTo(E_NOTIMPL);
+        await Assert.That(hrAddGroup).IsEqualTo(S_OK);
+        await Assert.That(ppUnkAdd).IsNotEqualTo(IntPtr.Zero);
+        await Assert.That(stub.AddGroupCallCount).IsEqualTo(1);
         await Assert.That(hrGetGroupByName).IsEqualTo(E_NOTIMPL);
         await Assert.That(hrCreateGroupEnumerator).IsEqualTo(E_NOTIMPL);
     }
@@ -243,7 +245,7 @@ public sealed class OpcDaServerCcwTests
         uint After1stAddRef, uint After2ndAddRef,
         uint After1stRelease, uint After2ndRelease);
 
-    private static unsafe (int HrAddGroup, int HrGetGroupByName, int HrCreateGroupEnumerator) InvokeRemainingStubs(IntPtr ccw)
+    private static unsafe (int HrAddGroup, IntPtr PpUnkAdd, int HrGetGroupByName, int HrCreateGroupEnumerator) InvokeRemainingStubs(IntPtr ccw)
     {
         IntPtr* vtable = *(IntPtr**)ccw;
 
@@ -261,7 +263,7 @@ public sealed class OpcDaServerCcwTests
         IntPtr ppUnk3;
         int hrEnum = createGroupEnumerator(ccw, 0, &iid, &ppUnk3);
 
-        return (hrAdd, hrByName, hrEnum);
+        return (hrAdd, ppUnk1, hrByName, hrEnum);
     }
 
     private static unsafe QueryInterfaceResult InvokeQueryInterface(IntPtr ccw, Guid iid)
@@ -348,6 +350,8 @@ public sealed class OpcDaServerCcwTests
 
     private sealed class StubDaServer : IOpcDaServer
     {
+        public int AddGroupCallCount { get; private set; }
+
         public Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(new OpcServerStatus
             {
@@ -360,8 +364,11 @@ public sealed class OpcDaServerCcwTests
                 VendorInfo = "ccw-test",
             });
 
-        public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default) =>
-            Task.FromResult(1);
+        public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken cancellationToken = default)
+        {
+            AddGroupCallCount++;
+            return Task.FromResult(1);
+        }
 
         public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;

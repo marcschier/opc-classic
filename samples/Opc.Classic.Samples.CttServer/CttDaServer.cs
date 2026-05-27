@@ -107,7 +107,6 @@ public sealed class CttDaServer : IOpcDaServer
             name, clientGroupHandle, active, requestedUpdateRate, timeBias, percentDeadband, localeId);
         serverGroupHandle = managedGroup.ServerHandle;
         revisedUpdateRate = managedGroup.UpdateRate;
-
         // Register the managed group in the IPID registry so subsequent calls
         // (IOPCGroupStateMgt etc.) carrying the assigned IPID route to this
         // group instance. The dispatcher set is built from the source-generated
@@ -197,7 +196,8 @@ public sealed class CttDaServer : IOpcDaServer
             requestedUpdateRate: requestedUpdateRate,
             timeBias: timeBias,
             percentDeadband: percentDeadband,
-            localeId: localeId);
+            localeId: localeId,
+            objectRegistry: _objectRegistry);
     }
 
     private sealed class GroupEntry

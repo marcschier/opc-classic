@@ -648,6 +648,36 @@ public partial interface IOPCAsyncIO3
     Task<int> RefreshMaxAgeAsync(int maxAge, int transactionId, CancellationToken cancellationToken = default);
 }
 
+/// <summary><c>IEnumOPCItemAttributes</c> — enumerates items in a DA group with their full attribute set (IID_IEnumOPCItemAttributes).</summary>
+[OpcInterface("39C13A55-011E-11D0-9675-0020AFD8ADB3")]
+[OpcGenerateServerDispatch]
+public partial interface IEnumOPCItemAttributes
+{
+    /// <summary>
+    /// <c>IEnumOPCItemAttributes::Next</c> (opnum 3). Returns up to <paramref name="count"/> item attributes; an empty array signals end of enumeration.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<OpcItemAttributes[]> NextAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IEnumOPCItemAttributes::Skip</c> (opnum 4). Skips <paramref name="count"/> items in the enumeration.
+    /// </summary>
+    [OpcMethod(4)]
+    Task SkipAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IEnumOPCItemAttributes::Reset</c> (opnum 5). Resets the cursor to the start of the enumeration.
+    /// </summary>
+    [OpcMethod(5)]
+    Task ResetAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IEnumOPCItemAttributes::Clone</c> (opnum 6). Returns a new enumerator initialized to the current cursor position.
+    /// </summary>
+    [OpcMethod(6)]
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
+}
+
 /// <summary><c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).</summary>
 [OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
 [OpcGenerateServerDispatch]

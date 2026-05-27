@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Transport;
+using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Da.Hosting;
 
@@ -35,6 +37,7 @@ namespace Opc.Classic.Da.Hosting;
 public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItemMgt, IOPCSyncIO,
     IOPCSyncIO2, IOPCAsyncIO2, IOPCAsyncIO3, IConnectionPoint, IConnectionPointContainer
 {
+    private readonly OpcObjectRegistry? _objectRegistry;
     private readonly ConcurrentDictionary<int, OpcDaItem> _items = new();
     private readonly ConcurrentDictionary<int, IOpcInterfaceRef> _sinks = new();
     private int _nextItemHandle = 1;
@@ -54,6 +57,25 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         int timeBias,
         float percentDeadband,
         int localeId)
+        : this(name, serverHandle, clientHandle, active, requestedUpdateRate, timeBias, percentDeadband, localeId, objectRegistry: null)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new group with an attached <see cref="OpcObjectRegistry"/>
+    /// for registering per-cursor enumerators created via
+    /// <see cref="CreateEnumeratorAsync"/>.
+    /// </summary>
+    public OpcDaGroup(
+        string name,
+        int serverHandle,
+        int clientHandle,
+        bool active,
+        int requestedUpdateRate,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        OpcObjectRegistry? objectRegistry)
     {
         ArgumentNullException.ThrowIfNull(name);
         Name = name;
@@ -65,6 +87,7 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
         PercentDeadband = percentDeadband;
         LocaleId = localeId;
         KeepAliveTime = 0;
+        _objectRegistry = objectRegistry;
     }
 
     /// <summary>Server-assigned group handle.</summary>
@@ -340,17 +363,54 @@ public sealed class OpcDaGroup : IOPCGroupStateMgt, IOPCGroupStateMgt2, IOPCItem
     public Task<IOpcInterfaceRef> CreateEnumeratorAsync(Guid requestedInterfaceId, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        // Real IEnumOPCItemAttributes implementation is ocom-8b; return a
-        // synthetic ref so the dispatch returns something usable.
+
+        OpcItemAttributes[] snapshot = BuildItemAttributesSnapshot();
+        var enumerator = new OpcDaItemAttributesEnumerator(snapshot, _objectRegistry);
+
+        Guid ipid;
+        if (_objectRegistry is not null)
+        {
+            var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [IEnumOPCItemAttributes.InterfaceId] = new IEnumOPCItemAttributesServerDispatcher(enumerator),
+            };
+            ipid = _objectRegistry.Register(dispatchers);
+        }
+        else
+        {
+            ipid = Guid.CreateVersion7();
+        }
+
         return Task.FromResult<IOpcInterfaceRef>(new OpcInterfaceRef(
             iid: requestedInterfaceId,
             flags: 0,
             publicRefs: 1,
             oxid: 1,
             oid: unchecked((ulong)ServerHandle),
-            ipid: Guid.CreateVersion7(),
+            ipid: ipid,
             securityOffset: 0,
             resolverBindings: Array.Empty<ushort>()));
+    }
+
+    private OpcItemAttributes[] BuildItemAttributesSnapshot()
+    {
+        var snapshot = new List<OpcItemAttributes>(_items.Count);
+        foreach (OpcDaItem item in _items.Values)
+        {
+            snapshot.Add(new OpcItemAttributes(
+                AccessPath: item.AccessPath,
+                ItemId: item.ItemId,
+                Active: item.Active,
+                ClientHandle: item.ClientHandle,
+                ServerHandle: item.ServerHandle,
+                AccessRights: 0x3,
+                Blob: Array.Empty<byte>(),
+                RequestedDataType: (VarType)item.RequestedDatatype,
+                CanonicalDataType: (VarType)item.RequestedDatatype,
+                EUType: 0,
+                EUInfo: OpcVariant.Empty));
+        }
+        return snapshot.ToArray();
     }
 
     // ----- IOPCSyncIO -----

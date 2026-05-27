@@ -211,14 +211,84 @@ public static unsafe class OpcDaServerCcw
         Guid* riid,
         IntPtr* ppUnk)
     {
-        _ = pThis; _ = szName; _ = bActive; _ = dwRequestedUpdateRate;
-        _ = hClientGroup; _ = pTimeBias; _ = pPercentDeadband; _ = dwLCID;
-        _ = phServerGroup; _ = pRevisedUpdateRate; _ = riid;
         if (ppUnk != null)
         {
             *ppUnk = IntPtr.Zero;
         }
-        return E_NOTIMPL;
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+        if (entry.ServerHandle.Target is not IOpcDaServer server)
+        {
+            return E_NOTIMPL;
+        }
+        _ = riid; _ = pTimeBias; _ = pPercentDeadband;
+        return AddGroupCore(server, szName, bActive, dwRequestedUpdateRate, hClientGroup,
+            dwLCID, phServerGroup, pRevisedUpdateRate, ppUnk);
+    }
+
+    private static int AddGroupCore(
+        IOpcDaServer server,
+        IntPtr szName,
+        int bActive,
+        uint dwRequestedUpdateRate,
+        uint hClientGroup,
+        uint dwLCID,
+        IntPtr phServerGroup,
+        IntPtr pRevisedUpdateRate,
+        IntPtr* ppUnk)
+    {
+        try
+        {
+            string name = szName == IntPtr.Zero ? string.Empty : (Marshal.PtrToStringUni(szName) ?? string.Empty);
+#pragma warning disable VSTHRD002 // Sync bridge across the COM ABI.
+            int serverHandle = server.AddGroupAsync(
+                name,
+                active: bActive != 0,
+                requestedUpdateRate: (int)dwRequestedUpdateRate,
+                clientHandle: (int)hClientGroup,
+                localeId: (int)dwLCID,
+                CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            if (phServerGroup != IntPtr.Zero)
+            {
+                Marshal.WriteInt32(phServerGroup, serverHandle);
+            }
+            if (pRevisedUpdateRate != IntPtr.Zero)
+            {
+                Marshal.WriteInt32(pRevisedUpdateRate, (int)dwRequestedUpdateRate);
+            }
+
+            // IUnknown-only CCW; full per-interface vtables for the group
+            // are reached via the cross-platform DCOM transport path through
+            // OpcObjectRegistry. Opcproxy will see E_NOINTERFACE for OPC
+            // interfaces on this CCW until per-interface vtables are added.
+            var placeholderGroup = new OpcDaGroup(
+                name: name,
+                serverHandle: serverHandle,
+                clientHandle: (int)hClientGroup,
+                active: bActive != 0,
+                requestedUpdateRate: (int)dwRequestedUpdateRate,
+                timeBias: 0,
+                percentDeadband: 0f,
+                localeId: (int)dwLCID);
+            if (ppUnk != null)
+            {
+                *ppUnk = OpcDaGroupCcw.Create(placeholderGroup);
+            }
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     [UnmanagedCallersOnly]
