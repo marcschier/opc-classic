@@ -289,7 +289,7 @@ MS-NLMP §3.4.5, especially sign-only vs seal modes and key-exchange presence.
 | `Responses.cs` NTLMv2 derivation | ✅ partial | ✅ MS-NLMP §4.2.4.1 | ❌ | Covered by `NtlmV2ServerKeyDerivationTests.cs`. |
 | `Responses.cs` LM/NTLMv1 | ❌ | ❌ | ❌ | Deferred because NTLMv1/LM are disabled by default. |
 | `NTLMKeyFactory.cs` session-key derivation | ✅ partial | ✅ MS-NLMP vector | ❌ | Signing-key equality covered; random/session-key quality not directly tested. |
-| `NTLMKeyFactory.cs` packet signatures | ⚠️ indirect | ❌ | ❌ | Needs direct SIGNATURE_BLOCK and mismatch tests. |
+| `NTLMKeyFactory.cs` packet signatures | ✅ direct | ✅ MS-NLMP §3.4.4/§3.4.5 SIGNATURE_BLOCK vectors | ❌ | `NtlmSignatureBlockTests.cs` covers direct formation, mismatch rejection, replay, and wrap-boundary sequence handling. |
 | `NtlmAuthentication.cs` default policy | ✅ | ❌ | ❌ | `NtlmDefaultsTests.cs` covers NTLMv2 defaults and NTLMv1 opt-in guard. |
 | `NtlmAuthentication.cs` Type1/2/3 round trip | ✅ | ⚠️ partial | ❌ blocked by `rw-e1` live interop | Client/server in-memory round trips exist. |
 | `NtlmAuthentication.cs` MIC | ✅ | ⚠️ synthetic vectors | ❌ | `NtlmMicTests.cs` covers compute, verify, tamper, fixed-time source check. |
@@ -298,7 +298,7 @@ MS-NLMP §3.4.5, especially sign-only vs seal modes and key-exchange presence.
 | `Type2Message.cs` | ⚠️ indirect | ❌ | ❌ | Needs malformed target-info/fuzz coverage. |
 | `Type3Message.cs` | ✅ partial | ⚠️ MS-NLMP fixture through Type3 construction | ❌ | MIC offset and parser paths tested; fuzz gaps remain. |
 | `NtlmAvPairs.cs` | ✅ indirect | ❌ | ❌ | Covered through MIC/CBT tests; direct invalid-length tests recommended. |
-| `NtlmMessageSignature.cs` | ✅ indirect | ❌ | ❌ | Covered through SPNEGO NTLM MIC provider; direct vectors recommended. |
+| `NtlmMessageSignature.cs` | ✅ direct | ✅ MS-NLMP §3.4.4/§3.4.5 SIGNATURE_BLOCK vectors | ❌ | Covered directly by `NtlmSignatureBlockTests.cs` plus SPNEGO NTLM MIC provider paths. |
 | `NtlmConnection.cs` / `NtlmConnectionContext.cs` | ❌ | ❌ | ❌ | Needs bind/auth verifier state-machine tests. |
 | `AuthenticationSource.cs` / `NullAuthenticationSource.cs` | ❌ | ❌ | ❌ | Contract is fail-closed but should get server-host tests. |
 | `KerberosAuthContext.cs` | ✅ | ⚠️ synthetic | ⚠️ integration KDC | Companion coverage under Kerberos test project. |
