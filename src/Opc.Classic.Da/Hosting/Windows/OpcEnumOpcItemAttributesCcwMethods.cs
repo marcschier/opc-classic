@@ -132,31 +132,30 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    private struct OPCITEMATTRIBUTES_NATIVE
-    {
-        public IntPtr szAccessPath;
-        public IntPtr szItemID;
-        public int bActive;
-        public uint hClient;
-        public uint hServer;
-        public uint dwAccessRights;
-        public uint dwBlobSize;
-        public IntPtr pBlob;
-        public ushort vtRequestedDataType;
-        public ushort vtCanonicalDataType;
-        public ushort wReserved1;
-        public ushort wReserved2;
-        public uint dwEUType;
-        public VARIANT_EMPTY_NATIVE vEUInfo;
-    }
+    private const int Int32Size = 4;
+    private const int UInt16Size = 2;
+    private const int VariantSlotStride = 16;
+    private const int SzAccessPathOffset = 0;
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    private struct VARIANT_EMPTY_NATIVE
-    {
-        public long Part0;
-        public long Part1;
-    }
+    private static readonly int s_pointerSize = IntPtr.Size;
+    private static readonly int s_szItemIdOffset = SzAccessPathOffset + s_pointerSize;
+    private static readonly int s_bActiveOffset = s_szItemIdOffset + s_pointerSize;
+    private static readonly int s_hClientOffset = s_bActiveOffset + Int32Size;
+    private static readonly int s_hServerOffset = s_hClientOffset + Int32Size;
+    private static readonly int s_dwAccessRightsOffset = s_hServerOffset + Int32Size;
+    private static readonly int s_dwBlobSizeOffset = s_dwAccessRightsOffset + Int32Size;
+    private static readonly int s_pBlobOffset = s_dwBlobSizeOffset + Int32Size;
+    private static readonly int s_vtRequestedDataTypeOffset = s_pBlobOffset + s_pointerSize;
+    private static readonly int s_vtCanonicalDataTypeOffset = s_vtRequestedDataTypeOffset + UInt16Size;
+    private static readonly int s_wReserved1Offset = s_vtCanonicalDataTypeOffset + UInt16Size;
+    private static readonly int s_wReserved2Offset = s_wReserved1Offset + UInt16Size;
+    private static readonly int s_dwEUTypeOffset = s_wReserved2Offset + UInt16Size;
+    private static readonly int s_vEUInfoOffset = s_dwEUTypeOffset + Int32Size;
+    private static readonly int s_opcItemAttributesSize = s_vEUInfoOffset + VariantSlotStride;
+    // WriteVariant emits the platform VARIANT size; pad the final packed slot for the x64 tail bytes.
+    private static readonly int s_variantTailPadding = ComVariantMarshaler.VariantSize > VariantSlotStride
+        ? ComVariantMarshaler.VariantSize - VariantSlotStride
+        : 0;
 
     private static bool TryResolve(IntPtr pThis, out OpcDaItemAttributesEnumerator? enumerator)
     {
@@ -192,33 +191,60 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         {
             return IntPtr.Zero;
         }
-        int size = Marshal.SizeOf<OPCITEMATTRIBUTES_NATIVE>();
-        IntPtr ptr = Marshal.AllocCoTaskMem(checked(attributes.Length * size));
-        for (int i = 0; i < attributes.Length; i++)
+        int byteCount = checked((attributes.Length * s_opcItemAttributesSize) + s_variantTailPadding);
+        IntPtr ptr = Marshal.AllocCoTaskMem(byteCount);
+        NativeMemory.Clear((void*)ptr, (nuint)byteCount);
+
+        int slotsTouched = 0;
+        try
         {
-            Marshal.StructureToPtr(ToNative(attributes[i]), IntPtr.Add(ptr, i * size), fDeleteOld: false);
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                slotsTouched = i + 1;
+                WriteNativeAttribute(IntPtr.Add(ptr, i * s_opcItemAttributesSize), attributes[i]);
+            }
+            return ptr;
         }
-        return ptr;
+        catch
+        {
+            FreeNativeAttributesArray(ptr, slotsTouched);
+            throw;
+        }
     }
 
-    private static OPCITEMATTRIBUTES_NATIVE ToNative(OpcItemAttributes attributes)
+    private static void WriteNativeAttribute(IntPtr destination, OpcItemAttributes attributes)
     {
         byte[] blob = attributes.Blob ?? Array.Empty<byte>();
-        return new OPCITEMATTRIBUTES_NATIVE
+
+        Marshal.WriteIntPtr(destination, SzAccessPathOffset, AllocateLpwStr(attributes.AccessPath));
+        Marshal.WriteIntPtr(destination, s_szItemIdOffset, AllocateLpwStr(attributes.ItemId));
+        Marshal.WriteInt32(destination, s_bActiveOffset, attributes.Active ? 1 : 0);
+        Marshal.WriteInt32(destination, s_hClientOffset, attributes.ClientHandle);
+        Marshal.WriteInt32(destination, s_hServerOffset, attributes.ServerHandle);
+        Marshal.WriteInt32(destination, s_dwAccessRightsOffset, attributes.AccessRights);
+        Marshal.WriteInt32(destination, s_dwBlobSizeOffset, blob.Length);
+        Marshal.WriteIntPtr(destination, s_pBlobOffset, AllocateBlob(blob));
+        Marshal.WriteInt16(destination, s_vtRequestedDataTypeOffset, unchecked((short)(ushort)attributes.RequestedDataType));
+        Marshal.WriteInt16(destination, s_vtCanonicalDataTypeOffset, unchecked((short)(ushort)attributes.CanonicalDataType));
+        Marshal.WriteInt32(destination, s_dwEUTypeOffset, attributes.EUType);
+        ComVariantMarshaler.WriteVariant(IntPtr.Add(destination, s_vEUInfoOffset), attributes.EUInfo);
+    }
+
+    private static void FreeNativeAttributesArray(IntPtr ptr, int count)
+    {
+        for (int i = 0; i < count; i++)
         {
-            szAccessPath = AllocateLpwStr(attributes.AccessPath),
-            szItemID = AllocateLpwStr(attributes.ItemId),
-            bActive = attributes.Active ? 1 : 0,
-            hClient = unchecked((uint)attributes.ClientHandle),
-            hServer = unchecked((uint)attributes.ServerHandle),
-            dwAccessRights = unchecked((uint)attributes.AccessRights),
-            dwBlobSize = unchecked((uint)blob.Length),
-            pBlob = AllocateBlob(blob),
-            vtRequestedDataType = (ushort)attributes.RequestedDataType,
-            vtCanonicalDataType = (ushort)attributes.CanonicalDataType,
-            dwEUType = unchecked((uint)attributes.EUType),
-            vEUInfo = default,
-        };
+            IntPtr slot = IntPtr.Add(ptr, i * s_opcItemAttributesSize);
+            Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, SzAccessPathOffset));
+            Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, s_szItemIdOffset));
+            Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(slot, s_pBlobOffset));
+        }
+        // Clear variants after pointer fields so x64 VARIANT tail bytes cannot hide a later slot allocation.
+        for (int i = 0; i < count; i++)
+        {
+            ComVariantMarshaler.ClearVariant(IntPtr.Add(ptr, (i * s_opcItemAttributesSize) + s_vEUInfoOffset));
+        }
+        Marshal.FreeCoTaskMem(ptr);
     }
 
     private static IntPtr AllocateLpwStr(string? value)
