@@ -108,7 +108,7 @@ The generated declaration in `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:799-824`
 | # | Feature | Status | Priority | Recommendation |
 |---|---|---|---|---|
 | 1 | `SetClientName` high-level convenience API | ✅ DCOM, ⚠️ not on `IDaServer` | Low | Add only if application code needs typed access outside raw DCOM. |
-| 2 | Appendix B string filter utility | ⚠️ No shared public helper | Medium | Consider a reusable `OpcStringFilter.MatchPattern(...)` helper for server implementers. |
+| 2 | Appendix B string filter utility | ✅ `Opc.Classic.OpcStringFilter.MatchPattern(...)` in `src/Opc.Classic.Core/OpcStringFilter.cs` | Medium | Use the existing public helper for server implementers. |
 | 3 | Property ID range enforcement | Informational | Low | Keep as documentation; runtime enforcement is not required by OPC Common. |
 
 ---
@@ -118,6 +118,7 @@ The generated declaration in `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:799-824`
 | Test File | Scope |
 |---|---|
 | `tests/Opc.Classic.Core.Tests/OpcGuidsTests.cs:1-154` | IID/CLSID/CATID registry and category arrays |
+| `tests/Opc.Classic.Core.Tests/OpcStringFilterTests.cs:1-58` | OPC Common Appendix B string-filter helper coverage |
 | `tests/Opc.Classic.Discovery.Tests/OpcEnumClientTests.cs:1-325` | OPCEnum enumeration, category merging, and error mapping |
 | `tests/Opc.Classic.Da.Tests/Hosting/OpcDaServerDispatcherTests.cs:1-244` | Server dispatcher coverage that includes common DA hosting paths |
 
