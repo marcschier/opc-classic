@@ -104,7 +104,7 @@ Only the connection / session / file / pipe primitives are needed:
 | 1 — SMB2 client | ✅ Landed | `src\Opc.Classic.Dcom.Smb\` with SMB2 negotiate/session/tree/pipe primitives, `TcpSmb2Transport`, and `Smb2RpcTransportAdapter` |
 | 1.5 — SMB signing/encryption hardening | ✅ Landed | SMB2 signing (HMAC-SHA256/AES-CMAC) and SMB3 encryption (AES-128-CCM/GCM transforms) are implemented for encryption-required server smoke |
 | 2 — Wire SMB into `Ncacn_Np.RpcTransport` | ✅ Landed | functional `ncacn_np` transport backed by `src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs` |
-| 3 — WINREG end-to-end smoke | ⏳ Pending | green CI against Samba/Windows container or recorded PCAP fixtures |
+| 3 — WINREG end-to-end smoke | ✅ Landed | Samba container fixture, no-env soft-skip TUnit smoke, and CI workflow prove SMB ↔ ncacn_np ↔ WINREG RPC |
 | 4 — Legacy `IActivation` interface | ⏳ Pending | client + optional server side for pre-XP-SP2 interop |
 | 5 — Cross-platform CI matrix | ✅ Landed | Ubuntu + macOS + Windows restore/build/test matrix in `.github\workflows\build.yml` |
 | 6 — PCAP-based wire fixtures | ✅ Landed | harness shipped; real-world PCAP captures still pending; harness ready to receive them at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\` |

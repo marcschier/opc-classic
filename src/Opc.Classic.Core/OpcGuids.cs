@@ -52,6 +52,10 @@ public static class OpcGuids
     public static readonly Guid IID_IActivation =
         new("4D9F4AB8-7D1C-11CF-861E-0020AF6E7C57");
 
+    /// <summary><c>winreg</c> — MS-RRP remote registry RPC interface.</summary>
+    public static readonly Guid IID_WINREG =
+        new("338CD001-2244-31F1-AAAA-900038001003");
+
     /// <summary><c>IDispatch</c> — Automation late-binding interface.</summary>
     public static readonly Guid IID_IDispatch =
         new("00020400-0000-0000-C000-000000000046");

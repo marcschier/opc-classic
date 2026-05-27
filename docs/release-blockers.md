@@ -32,6 +32,7 @@ surface follow-up defects.
 ### See also
 
 - `docker\README.md` — fleet overview
+- `docker\samba\README.md` — Linux Samba WINREG smoke fixture for SMB/ncacn_np validation
 - `docs\test-fleet.md` — adopter cookbook
 - `samples\Opc.Classic.Samples.CttServer\README.md` — CTT SUT
 
