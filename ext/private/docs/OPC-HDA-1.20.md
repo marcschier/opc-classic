@@ -1,4 +1,4 @@
-<!-- Errata notes: historical-dataaccess-1.20-errata.zip extracted to ext/private/docs/OPC-HDA-1.20-ERRATA-NOTES.md; table-heavy errata retained verbatim because automatic in-place application was unreliable. -->
+<!-- Errata: historical-dataaccess-1.20-errata.zip (April 15, 2004) is now merged. Structured Errata 2.0 through 7.0 are applied inline in their target sections (marked with "Errata X.0 clarification (applied inline)" blockquotes). Table-heavy worked-example corrections (sections 2.8 / 2.9.2.x) are appended verbatim as the final appendix because their tabular layout could not be safely substituted in-place. -->
 
 F O U N D A T I O N
 
@@ -6188,6 +6188,12 @@ If the last subinterval computed is not a complete subinterval (the time domain 
 evenly divisible by the resample interval), the last aggregate returned shall be based upon that
 incomplete subinterval, and the quality of the aggregate shall be OPCHDA_PARTIAL.
 
+> **Errata 7.0 clarification (applied inline):** The PARTIAL quality should only be used for
+> aggregates that would otherwise return a quality of CALCULATED. Aggregates that return a quality
+> of RAW should not return the PARTIAL quality. In addition, the server should return PARTIAL for
+> any interval that begins before the first good useable value in the historian. Note that the first
+> useable value for an item may be different than the first value for an item.
+
 For MinimumActualTime and MaximumActualTime, if more than one instance of the value exists
 within a subinterval, which instance (time stamp) of the value returned is server dependent.  In any
 case, the server may set the OPCHDA_EXTRADATA quality flag to let the caller know that there are
@@ -6316,6 +6322,7 @@ ppError Codes
 
 Return Code
 S_OK
+OPC_S_NODATA
 OPC_E_BADRIGHTS
 OPC_E_INVALIDHANDLE
 OPC_S_NODATA
@@ -6323,6 +6330,7 @@ E_FAIL
 
 Description
 The item was read successfully.
+No data was found in the specified time range. (Errata 2.0: applied inline.)
 Insufficient rights for this operation.
 The handle is invalid.
 No data was found for the item.
@@ -6336,6 +6344,10 @@ request.
 When no value exists for a specified timestamp, a value shall be interpolated from the surrounding
 values to represent the value at the specified timestamp.  The interpolation will follow the same rules
 as the standard Intpolated aggregate as outlined in Section 2.9
+
+> **Errata 2.0 clarification (applied inline):** If the value cannot be interpolated when no data
+> exists for a given Item in any subinterval in the time domain, the server shall return
+> OPC_S_NODATA in the ppErrors array for that Item.
 
 The OPCHDA_ITEM structure will return OPCHDA_NOAGGREGATE in the haAggregate field.
 
@@ -6435,6 +6447,7 @@ Return Code
 S_OK
 S_FALSE
 
+OPC_E_MAXEXCEEDED
 E_INVALIDARG
 E_NOTIMPL
 E_FAIL
@@ -6443,6 +6456,7 @@ Description
 The function was successful.
 The function was partially successful. See the ppErrors
 to determine what  happened.
+The maximum number of values returnable by the server was exceeded. (Errata 4.0: applied inline.)
 An Invalid parameter was passed.
 This server does not support this function.
 The function was unsuccessful.
@@ -6617,6 +6631,21 @@ Note that while the client can query the server for the native datatype of an It
 assume that all data sent from the server will be that datatype.  The datatype of a given ItemID may
 have changed over the life of the Item, and thus clients should be able to handle receiving data of a
 different datatype than that returned from this call.
+
+> **Errata 5.0 clarification (applied inline):** An attribute may be added to an item after it is
+> created, therefore it is possible to request a history for an attribute prior to the time when there
+> was any data. Two cases must be handled:
+>
+> a) The client specifies a time range where the start time is earlier than the first historical value
+>    for an attribute but the end time is after that value.
+>
+> b) The client specifies a time range where both the start and end time are earlier than the first
+>    historical value.
+>
+> In both cases the server should return a single value with a quality of NODATA and a timestamp of
+> StartTime; the HRESULT associated with the attribute should be S_OK. (Note: the upstream errata
+> mislabels this clarification as applying to 4.4.1.1 GetItemAttributes; by content it clearly applies
+> to ReadAttribute.)
 
 
 
@@ -7454,6 +7483,12 @@ Insufficient rights for this operation.
 The handle is invalid.
 The item insert was unsuccessful.
 
+> **Errata 6.0 clarification (applied inline):** When using IOPCHDA_SyncAnnotations::Insert the
+> ftTimestamps array of the OPCHDA_ANNOTATION structure is redundant — the effective per-annotation
+> timestamps are the ones passed via the function's ftTimeStamps parameter. The client must still
+> provide a valid array of length dwNumItems for the OPCHDA_ANNOTATION.ftTimestamps field as per
+> DCOM rules; however this array will be ignored by the server.
+
 ### 4.5 Asynchronous Interfaces
 
 Asynchronous operations allow a client to send a request to a server without waiting for the server to
@@ -7868,11 +7903,13 @@ The function was unsuccessful.
 
 Return Code
 S_OK
+OPC_S_NODATA
 OPC_E_BADRIGHTS
 OPC_E_INVALIDHANDLE
 
 Description
 The item was read successfully.
+No data was found in the specified time range. (Errata 2.0: applied inline.)
 Insufficient rights for this operation.
 The handle is invalid.
 
@@ -8008,11 +8045,13 @@ ppError Codes
 
 Return Code
 S_OK
+OPC_S_NODATA
 OPC_E_BADRIGHTS
 OPC_E_INVALIDHANDLE
 
 Description
 The item was read successfully.
+No data was found in the specified time range. (Errata 2.0: applied inline.)
 Insufficient rights for this operation.
 The handle is invalid.
 
@@ -8237,6 +8276,7 @@ Return Code
 S_OK
 S_FALSE
 
+OPC_E_MAXEXCEEDED
 E_NOTIMPL
 E_INVALIDARG
 E_FAIL
@@ -8245,6 +8285,7 @@ Description
 The function was successful.
 The function was partially successful. See the ppErrors
 to determine what  happened.
+The maximum number of values returnable by the server was exceeded. (Errata 4.0: applied inline.)
 This server does not support this function.
 An invalid parameter was passed.
 The function was unsuccessful.
@@ -9368,6 +9409,12 @@ The annotation was inserted successfully.
 An Invalid parameter was passed.
 Insufficient rights for this operation.
 The handle is invalid.
+
+> **Errata 6.0 clarification (applied inline):** When using IOPCHDA_AsyncAnnotations::Insert the
+> ftTimestamps array of the OPCHDA_ANNOTATION structure is redundant — the effective per-annotation
+> timestamps are the ones passed via the function's ftTimeStamps parameter. The client must still
+> provide a valid array of length dwNumItems for the OPCHDA_ANNOTATION.ftTimestamps field as per
+> DCOM rules; however this array will be ignored by the server.
 
 
 
@@ -11683,17 +11730,20 @@ Description
 
 The client provided handle for this item
 Count of the number of data items returned for the item.
-UTC TimeStamps for this item’s values. This field may be
-NULL if timestamps were not requested in the call.
+UTC TimeStamps for this item’s values.
 The qualities of the data for this item.
 The values for the item.
 The time the modification was made.  Support for this field
-is optional.  A NULL pointer shall be returned if it is not
-implemented.
+is optional.
 The modification type for the item.
 The name of the user that made the modification. Support
-for this field is optional.  A NULL pointer shall be returned
-if it is not implemented.
+for this field is optional.
+
+> **Errata 3.0 clarification (applied inline):** Optional fields in OPCHDA_MODIFIEDITEM are not
+> allowed to be NULL pointers; DCOM requires all members to be valid arrays with a length equal to
+> dwNumValues. "Support for this field is optional" means the server may populate the array with
+> sentinel values when the corresponding feature is not implemented, but the array itself must always
+> be present and correctly sized.
 
 #### 5.3.7 OPCHDA_ANNOTATION
 
@@ -13783,3 +13833,356 @@ Released
 
 150
 
+## Appendix: Errata Reference Tables (verbatim)
+
+This appendix preserves the table-heavy portions of the upstream
+`Historical DataAccess 1.20 Errata.docx` (April 15, 2004) that could not
+be applied in-place because their layout is tightly coupled to the source
+Word tables. They are reproduced verbatim from the upstream errata
+package below, and they correct the worked examples in sections 2.8 and
+2.9.2.x of this specification.
+
+The structured behavioural errata (Errata 2.0 through 7.0) from the same
+upstream document have already been applied inline in the appropriate
+sections above; each is marked with an "Errata X.0 clarification (applied
+inline)" blockquote at the point of application.
+
+Original errata source URL noted on the cover page:
+<http://groups.yahoo.com/group/opc-hda/files/HDA%201.2%20Errata/OPC_HIST_Cust1.2_ERRATA.pdf>
+(Yahoo Groups was discontinued in 2020; the upstream PDF is preserved in
+`ext/Spec/historical-dataaccess-1.20-errata.zip` in this repository's
+spec inputs.)
+
+---
+
+OPC Historical Data Access
+
+Specification
+
+Errata
+
+Release 1.20
+
+April 15, 2004
+
+A document outlining the latest errata for the HDA 1.2 specification has been posted to the HDA yahoo group
+
+<http://groups.yahoo.com/group/opc-hda/files/HDA%201.2%20Errata/OPC_HIST_Cust1.2_ERRATA.pdf>
+
+**Modified sections of the table/specification in bold.**
+
+2.8 Bounding values and Time Domain
+
+**Start Time End Time dwNumValues Bounds Data Returned**
+
+4:59 4.:59 0 Yes OPC\_S\_NODATA
+
+4:59 4.:59 0 No OPC\_S\_NODATA
+
+5:01 5:01 0 Yes OPC\_S\_NODATA
+
+5:01 5:01 0 No OPC\_S\_NODATA
+
+5:07 5:07 0 Yes OPC\_S\_NODATA
+
+5:07 5:07 0 No OPC\_S\_NODATA
+
+4:57 4.:59 0 Yes FIRST, 5:00
+
+4:57 4.:59 0 No OPC\_S\_NODATA
+
+5:01 5:02 0 Yes 5:00, 5:02
+
+5:01 5:02 0 No OPC\_S\_NODATA
+
+5:07 5:09 0 Yes 5:06, LAST
+
+5:07 5:09 0 No OPC\_S\_NODATA
+
+5:00 5:05 0 Yes 5:00, 5:02, 5:03, 5:05
+
+5:00 5:05 0 No 5:00, 5:02, 5:03
+
+5:01 5:04 0 Yes 5:00, 5:02, 5:03, 5:05
+
+5:01 5:04 0 No 5:02, 5:03
+
+5:05 5:00 0 Yes 5:05, 5:03, 5:02, 5:00
+
+5:05 5:00 0 No 5:05, 5:03, 5:02
+
+5:04 5:01 0 Yes 5:05, 5:03, 5:02, 5:00
+
+5:04 5:01 0 No 5:03, 5:02
+
+4:59 5:05 0 Yes FIRST, 5:00, 5:02, 5:03, 5:05
+
+4:59 5:05 0 No 5:00, 5:02, 5:03
+
+5:01 5:07 0 Yes 5:00, 5:02, 5:03, 5:05, 5:06, LAST
+
+5:01 5:07 0 No 5:02, 5:03, 5:05, 5:06
+
+5:00 5:05 3 Yes 5:00, 5:02, 5:03
+
+5:00 5:05 3 No 5:00, 5:02, 5:03
+
+5:01 5:04 3 Yes 5:00, 5:02, 5:03
+
+5:01 5:04 3 No 5:02, 5:03
+
+5:05 5:00 3 Yes 5:05, 5:03, 5:02
+
+5:05 5:00 3 No 5:05, 5:03, 5:02
+
+5:04 5:01 3 Yes 5:05, 5:03, 5:02
+
+5:04 5:01 3 No 5:03, 5:02
+
+4:59 5:05 3 Yes FIRST, 5:00, 5:02
+
+4:59 5:05 3 No 5:00, 5:02, 5:03
+
+5:01 5:07 3 Yes 5:00, 5:02, 5:03
+
+5:01 5:07 3 No 5:02, 5:03, 5:05
+
+5:00 NULL 3 Yes 5:00, 5:02, 5:03
+
+5:00 NULL 3 No 5:00, 5:02, 5:03
+
+5:00 NULL 6 Yes 5:00, 5:02, 5:03, 5:05, 5:06
+
+5:00 NULL 6 No 5:00, 5:02, 5:03, 5:05, 5:06
+
+NULL 5:06 3 Yes 5:06, 5:05, 5:03
+
+NULL 5:06 3 No 5:06, 5:05, 5:03
+
+NULL 5:06 6 Yes 5:06, 5:05, 5:03, 5:02, 5:00
+
+NULL 5:06 6 No 5:06, 5:05, 5:03, 5:02, 5:00
+
+**2.9.2.4 INTERPOLATIVE**
+
+**Case 4.1 Requesting data with good bounding value.**
+
+Start: Jan-01-2002 12:00:10 End: Jan-01-2002 12:00:20 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-02 12:00:10 10 Raw, Good 13.478 Interpolated, Good Value2 –Interpolated between values at 12:00:02 and 12:00:25
+
+Jan-01-02 12:00:15 15 Interpolated, Good 15.652 Interpolated, Good Value2 –Interpolated between values at 12:00:02 and 12:00:25
+
+**Case 4.2 Requesting data with good bounding value with bad data in the interval.**
+
+Start: Jan-01-2002 12:00:35 End: Jan-01-2002 12:01:00 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-02 12:00:35 35 Interpolated, Uncertain 28.182 Interpolated, Good Value2 –Interpolated between values at 12:00:28 and 12:00:39
+
+Jan-01-02 12:00:40 40 Interpolated, Uncertain 31.111 Interpolated, Uncertain Raw value is Bad, Value2 –Interpolated between values at 12:00:39 and 12:00:48
+
+Jan-01-02 12:00:45 45 Interpolated, Uncertain 36.667 Interpolated, Uncertain Bounding value Bad, Value2 –Interpolated between values at 12:00:39 and 12:00:48
+
+Jan-01-02 12:00:50 50 Raw, Good 45.000 Interpolated, Good
+
+Jan-01-02 12:00:55 55 Interpolated, Good 51.500 Interpolated, Good
+
+**Case 4.3 Requesting data with no good end bounding value.**
+
+Start: Jan-01-2002 12:01:20 End: Jan-01-2002 12:01:40 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-02 12:01:20 80 Raw, Good 67.273\* Interpolated, Uncertain Uncertain values excluded.Value2 –Interpolated between values at 12:00:12 and 12:01:23
+
+Jan-01-02 12:01:25 85 Interpolated, Good 76.667 Interpolated, Good
+
+Jan-01-02 12:01:30 90 Raw, Good 90 Raw, Good
+
+Jan-01-02 12:01:35 90 Interpolated, Uncertain 90 Interpolated, Uncertain Bounding value at 12:01:30, Extrapolated using stepped method
+
+\* If Historian 2 had treated Uncertian values as Good. The value would be 70, interpolated between 12:00:17 and 12:00:23.
+
+**Case 4.4 Requesting data with no good start bounding value.**
+
+Start: Jan-01-2002 12:00:00 End: Jan-01-2002 12:00:20 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-2002 12:00:00 - No Data, Bad - No Data, Bad No bounding value, do not extrapolate
+
+Jan-01-2002 12:00:05 - No Data, Bad 11.304 Interpolated, Good Value 1 - No bounding value, do not extrapolateValue2 –Interpolated between values at 12:00:02 and 12:00:25
+
+Jan-01-2002 12:00:10 10 Raw, Good 13.478 Interpolated, Good Value2 –Interpolated between values at 12:00:02 and 12:00:25
+
+Jan-01-2002 12:00:15 15 Interpolated, Good 15.652 Interpolated, Good Value2 –Interpolated between values at 12:00:02 and 12:00:25
+
+**2.9.2.5 TIMEAVERAGE**
+
+**Case 5.1 Requesting data with good bounding value.**
+
+Start: Jan-01-2002 12:00:10 End: Jan-01-2002 12:00:20 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-2002 12:00:10 12.5 Calculated, Good 14.565 Calculated, Good Area under the line between 12:00:10 and 12:00:15 divided by interval length of 5
+
+Jan-01-2002 12:00:15 17.5 Calculated, Good 16.739 Calculated, Good
+
+**Case 5.2 Requesting data with good bounding value with bad data in the interval.**
+
+Start: Jan-01-2002 12:00:35 End: Jan-01-2002 12:01:00 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-2002 12:00:35 37.5 Calculated, Uncertain 29.384 Calculated, Uncertain Value1– Interpolate values at :35 and :40 using bounds at :30 and :50Value2– Interpolate values at :35 and :40 using bounds at :28 and :48Uncertain means Bad value ignored
+
+Jan-01-2002 12:00:40 42.5 Calculated, Uncertain 33.889 Calculated Uncertain Value1– Interpolate values at :40 and :45 using bounds at :30 and :50Value2– Interpolate values at :40 and :45 using bounds at :39 and :48Uncertain means Bad value ignored
+
+Jan-01-2002 12:00:45 47.5 Calculated, Uncertain 40.000 Calculated Uncertain Value1– Interpolate value at :45 using bounds at :30 and :50Value2– Interpolate value at :45 using bounds at :39 and :48Interpolate value at :50 using bounds at :48 and :52Uncertain means Bad value ignored
+
+Jan-01-2002 12:00:50 52.5 Calculated, Good 49.450 Calculated, Good Value1– Interpolate value at :55 using bounds at :50 and 01:00Value2– Interpolate value at :50 using bounds at :48 and :52Interpolate value at :55 using bounds at :52 and :01:12
+
+Jan-01-2002 12:00:55 57.5 Calculated, Good 52.750 Calculated, Good Value1– Interpolate value at :55 using bounds at :50 and 01:00Value2– Interpolate value at :50 using bounds at :48 and :52Interpolate value at :55 using bounds at :52 and :01:12
+
+**Case 5.3 Requesting data with no good end bounding value.**
+
+Start: Jan-01-2002 12:01:20 End: Jan-01-2002 12:01:40 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-2002 12:01:20 82.5 Calculated, Good 70.515 Calculated Uncertain Value1– Interpolate value at :25 using bounds at :20 and :30Value2– Interpolate value at :20 using bounds at :12 and :23 (Uncertain value at :17 is ignored by this historian)Interpolate value at :25 using bounds at :23 and :26
+
+Jan-01-2002 12:01:25 87.5 Calculated, Good 83.667 Calculated, Good Value1– Interpolate value at :25 using bounds at :20 and :30Value2– Interpolate value at :25 using bounds at :23 and :26
+
+Jan-01-2002 12:01:30 90\* Calculated, Uncertain 90\* Calculated, Uncertain Extrapolate value at :35 using value at :30
+
+Jan-01-2002 12:01:35 90\* Calculated, Uncertain 90\* Calculated, Uncertain Extrapolate values at :35 and :40 using value at :30
+
+\* Stepped extrapolation is used at the boundary. Servers may opt to extrapolate data based on the previous slope.
+
+**Case 5.4 Requesting data with no good start bounding value.**
+
+Start: Jan-01-2002 12:00:00 End: Jan-01-2002 12:00:20 Interval: 00:00:05
+
+Timestamp Historian 1 Historian 2 Notes
+
+Value Quality Value Quality
+
+Jan-01-2002 12:00:00 0 No Data, Bad 10.652 Partial, Uncertain Value1-No bounding value, do not extrapolate. No data in the intervalValue2- Interpolate value at :05 using bounds at :02 and :25Use partial interval :02 to :05, with interval of 3.
+
+Jan-01-2002 12:00:05 0 No Data, Bad 12.391 Calculated, Good Value1-No bounding value, do not extrapolate. No data in the intervalValue2- Interpolate values at :05 and 10 using bounds at :02 and :25
+
+Jan-01-2002 12:00:10 12.5 Calculated, Good 14.565 Calculated, Good Value
+
+**2.9.2.7. AVERAGE**
+
+**2.9.2.11. MINIMUM ACTUAL TIME**
+
+**2.9.2.12. MINIMUM**
+
+**2.9.2.13. MAXIMUM ACTUAL TIME**
+
+**2.9.2.14. MAXIMUM**
+
+Replaced all Bad, No Data values to be ‘-‘ instead of 0.
+
+**2.9.2.15. START**
+
+Case 15.2 Requesting data with good bounding value with bad data in the interval.
+
+Start: Jan-01-2002 12:00:35 End: Jan-01-2002 12:01:00 Interval: 00:00:05
+
+Timestamp Historian 1 Notes
+
+Value Quality
+
+Jan-01-2002 12:00:35 - No Data, Bad
+
+Jan-01-2002 12:00:40 40 Raw, Bad Raw value (If Bad values are stored)
+
+Jan-01-2002 12:00:45 - No Data, Bad
+
+Jan-01-2002 12:00:50 50 Raw, Good
+
+Jan-01-2002 12:00:55 - No Data, Bad
+
+Start: Jan-01-2002 12:00:35 End: Jan-01-2002 12:01:00 Interval: 00:00:05
+
+Timestamp Historian 2 Notes
+
+Value Quality
+
+Jan-01-2002 12:00:39 30 Raw, Good First raw in :35-:40 at :39
+
+Jan-01-2002 12:00:42 40 Raw, Bad Raw value (If Bad values are stored)
+
+Jan-01-2002 12:00:48 40 Raw, Good First raw in :45-:50 at :48
+
+Jan-01-2002 12:00:52 50 Raw, Good First raw in :50-:55 at :52
+
+Jan-01-2002 12:00:55 - No Data, Bad
+
+Case 15.3 Partial Intervals.
+
+Start: Jan-01-2002 12:00:05 End: Jan-01-2002 12:00:35 Interval: 00:00:16
+
+Timestamp Historian 1 Notes
+
+Value Quality
+
+Jan-01-2002 12:00:10 10 Raw, Good First raw in :05-:21 at :10
+
+Jan-01-2002 12:00:30 30 Partial, Good First raw in :21-:35 at :30
+
+Start: Jan-01-2002 12:00:05 End: Jan-01-2002 12:00:35 Interval: 00:00:16
+
+Timestamp Historian 2 Notes
+
+Value Quality
+
+Jan-01-2002 12:00:05 - No Data, Bad No raw data in :05-:21
+
+Jan-01-2002 12:00:25 20 Raw, Good First raw in :21-:35 at :25
+
+**2.9.2.16. END**
+
+Case 16.3 Partial Intervals.
+
+Start: Jan-01-2002 12:00:05 End: Jan-01-2002 12:00:35 Interval: 00:00:16
+
+Timestamp Historian 1 Notes
+
+Value Quality
+
+Jan-01-2002 12:00:10 10 Raw, Good Last raw in :05-:21 at :10
+
+Jan-01-2002 12:00:30 30 Partial, Good Last raw in :21-:35 at :30
+
+Start: Jan-01-2002 12:00:05 End: Jan-01-2002 12:00:35 Interval: 00:00:16
+
+Timestamp Historian 2 Notes
+
+Value Quality
+
+Jan-01-2002 12:00:21 - No Data, Bad No raw data in :05-:21
+
+Jan-01-2002 12:00:28 25 Raw, Good Last raw in :21-:35 at :28
