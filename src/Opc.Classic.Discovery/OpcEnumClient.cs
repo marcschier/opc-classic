@@ -341,7 +341,18 @@ public sealed class OpcEnumClient : IOpcDiscovery
         ThrowIfFailed(result.Hresult, "IRemoteSCMActivator::RemoteCreateInstance");
         if (result.ResponsePayload.IsEmpty)
         {
-            throw new InvalidOperationException("RemoteCreateInstance did not return an OPCEnum OBJREF.");
+            // Empty payload after RPC success usually means the call surfaced an RPC
+            // fault PDU whose status code DcomCallChannel placed in result.Hresult.
+            // Surface a clearer error so operators don't chase an OBJREF-format issue
+            // when the real problem is anonymous activation being refused.
+            int rpcFault = result.Hresult;
+            string hint = rpcFault switch
+            {
+                0 => "no RPC fault status; the SCM may have returned an empty activation result.",
+                0x00000005 => "rpc_s_access_denied (0x05) - supply NTLMv2/Kerberos credentials with sufficient DCOM Launch/Access permission for OPCEnum (the OPC.ServerList AppID).",
+                _ => $"RPC fault status 0x{rpcFault:X8}.",
+            };
+            throw new InvalidOperationException("IRemoteSCMActivator::RemoteCreateInstance returned no OPCEnum OBJREF: " + hint);
         }
 
         ReadOnlySpan<byte> response = result.ResponsePayload.Span;
