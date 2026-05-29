@@ -98,6 +98,7 @@ public class NtlmAuthentication {
                 channelBindings: connectData.ChannelBindings,
                 protectionLevel: connectData.ProtectionLevel),
             OpcAuthMode.NtlmV2 => new NtlmAuthContext(connectData),
+            OpcAuthMode.WindowsSso => new WindowsSsoAuthContext(connectData),
             _ => throw new NotSupportedException($"Auth mode {connectData.AuthMode} not supported")
         };
     }
@@ -161,6 +162,9 @@ public class NtlmAuthentication {
         }
 
         public OpcProtectionLevel ProtectionLevel { get; }
+
+        /// <summary>NTLMSSP auth-service code (MS-RPCE §2.2.1.1.7).</summary>
+        public byte AuthenticationServiceCode => 0x0A;
 
         public byte[] BuildInitialToken() {
             var type1 = _authentication.CreateType1();

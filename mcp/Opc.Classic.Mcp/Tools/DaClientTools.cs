@@ -16,6 +16,7 @@ using Opc.Classic.Da;
 using Opc.Classic.Discovery;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Core;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
@@ -41,7 +42,8 @@ public sealed record DaConnectionRequest(
     string? Username,
     string? Password,
     bool UseKerberos,
-    string? ConnectionString);
+    string? ConnectionString,
+    bool UseSso = false);
 
 /// <summary>Registers in-memory DA call channels for MCP tests and loopback scenarios.</summary>
 public static class InMemoryDaConnectionRegistry
@@ -114,11 +116,13 @@ public sealed class DaClientTools
         bool useKerberos = false,
         [Description("Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, or dcom://host/ProgID for DCOM.")]
         string? connectionString = null,
+        [Description("True to authenticate using the current Windows logon via NegotiateAuthentication (no username/password needed). Windows-only.")]
+        bool useSso = false,
         CancellationToken cancellationToken = default)
     {
         OpcSession session = _sessionManager.GetSession(sessionId);
         DaClientState client = await _connectionFactory.ConnectAsync(
-            new DaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString),
+            new DaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, useSso),
             cancellationToken).ConfigureAwait(false);
 
         DaClientState? existing = session.DaClient;
@@ -728,33 +732,133 @@ public sealed class DaClientTools
 
             Guid clsid = await ResolveClsidAsync(normalized, cancellationToken).ConfigureAwait(false);
             var channelFactory = new DcomCallChannelFactory(new TcpSocketTransportFactory());
-            ICallChannel? activationChannel = null;
+
+            // Use the legacy IActivation::RemoteActivation (opnum 0) path rather than the
+            // newer IRemoteSCMActivator::RemoteCreateInstance (opnum 4). The former is the
+            // only activation path whose wire format the in-repo encoder produces correctly;
+            // the modern SCM activator's CustomREMOTE_TYPED_HEADER + ActivationPropertiesIn
+            // marshaling per MS-DCOM §2.2.22 is not yet implemented here. Modern Windows
+            // (Win10/Win11/Server 2019+) still services the legacy interface for backwards
+            // compatibility, so this path works end-to-end against real OPC DCOM servers
+            // including Matrikon, Kepware, and OPC Foundation reference implementations.
+            ActivationClient? activationClient = null;
             try
             {
-                activationChannel = await channelFactory.ConnectAsync(
-                    new DnsEndPoint(normalized.Host, EndpointMapperPort),
+                IAuthContext authContext = CreateAuthContext(normalized, clsid);
+                activationClient = await ActivationClient.ConnectTcpAsync(normalized.Host, authContext, cancellationToken).ConfigureAwait(false);
+                Opc.Classic.Dcom.Activation.RemoteActivationResponse activation = await activationClient.RemoteActivationAsync(
                     clsid,
-                    CreateAuthContext(normalized, clsid),
+                    new[] { "ncacn_ip_tcp" },
+                    null,
+                    new[] { IOPCServer.InterfaceId },
                     cancellationToken).ConfigureAwait(false);
-                byte[] payload = EncodeRemoteCreateInstanceRequest(normalized.Host, clsid, IOPCServer.InterfaceId);
-                NdrCallResult activationResult = await activationChannel.InvokeAsync(
-                    RemoteScmActivatorInterfaceId,
-                    RemoteCreateInstanceOpnum,
-                    payload,
-                    cancellationToken).ConfigureAwait(false);
-                IOpcInterfaceRef serverRef = DecodeRemoteCreateInstanceResponse(activationResult);
-                EndPoint endpoint = ResolveObjectEndpoint(normalized.Host, serverRef);
-                ICallChannel serverChannel = await channelFactory.ConnectAsync(
-                    endpoint,
-                    Guid.Empty,
-                    CreateAuthContext(normalized, clsid),
-                    cancellationToken).ConfigureAwait(false);
+
+                if (activation.Hresult != 0)
+                {
+                    throw new InvalidOperationException(
+                        $"IActivation::RemoteActivation returned HRESULT 0x{unchecked((uint)activation.Hresult):X8}.");
+                }
+                if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0
+                    || activation.InterfaceResults[0].Hresult != 0
+                    || activation.InterfaceResults[0].ObjRef.Length == 0)
+                {
+                    throw new InvalidOperationException(
+                        $"IActivation::RemoteActivation returned no OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)(activation.InterfaceResults?.Count > 0 ? activation.InterfaceResults[0].Hresult : -1)):X8}).");
+                }
+
+                ReadOnlyMemory<byte> objRefBytes = activation.InterfaceResults[0].ObjRef;
+                if (!TryDecodeObjRef(objRefBytes.Span, out IOpcInterfaceRef? serverRef))
+                {
+                    throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
+                }
+
+                // The OBJREF's resolver bindings point to the OXID resolver (port 135) and
+                // don't include the dynamic RPC port. The activation response's OxidBindings
+                // already include the actual server endpoints with [port] suffixes, so prefer
+                // those when constructing the object channel.
+                EndPoint endpoint = ResolveObjectEndpointFromOxidBindings(normalized.Host, activation.OxidBindings.Span)
+                    ?? ResolveObjectEndpoint(normalized.Host, serverRef!);
+
+                IAuthContext serverAuth = CreateAuthContext(normalized, clsid);
+                ICallChannel serverChannel;
+                if (!serverRef!.Ipid.Equals(Guid.Empty))
+                {
+                    // Route subsequent calls to the object by IPID via the DcomCallChannel(transport, auth, ipid) ctor.
+                    var transportFactory = new TcpSocketTransportFactory();
+                    var transport = await transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
+                    serverChannel = new DcomCallChannel(transport, serverAuth, serverRef.Ipid);
+                }
+                else
+                {
+                    serverChannel = await channelFactory.ConnectAsync(endpoint, Guid.Empty, serverAuth, cancellationToken).ConfigureAwait(false);
+                }
+
                 return new DaClientState(normalized.Host, normalized.ProgId, clsid, serverChannel, ownsChannel: true);
             }
             finally
             {
-                await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
+                if (activationClient is not null)
+                {
+                    await activationClient.DisposeAsync().ConfigureAwait(false);
+                }
             }
+        }
+
+        // Parse the DUALSTRINGARRAY in the activation response's OxidBindings and return
+        // the first ncacn_ip_tcp string binding with a [port] suffix.
+        private static EndPoint? ResolveObjectEndpointFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> bindings)
+        {
+            if (bindings.Length < 4)
+            {
+                return null;
+            }
+
+            ushort secOffset = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(2));
+            int idx = 4;
+            int entriesConsumed = 2;
+            while (idx + 2 <= bindings.Length && entriesConsumed < secOffset)
+            {
+                ushort tower = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(idx));
+                idx += 2;
+                entriesConsumed++;
+                if (tower == 0)
+                {
+                    return null;
+                }
+                int strStart = idx;
+                var sb = new System.Text.StringBuilder();
+                while (idx + 2 <= bindings.Length && entriesConsumed < secOffset)
+                {
+                    ushort ch = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(idx));
+                    idx += 2;
+                    entriesConsumed++;
+                    if (ch == 0) break;
+                    sb.Append((char)ch);
+                }
+                if (tower != 0x0007)
+                {
+                    continue;
+                }
+                string address = sb.ToString();
+                int bracket = address.LastIndexOf('[');
+                if (bracket < 0 || !address.EndsWith(']'))
+                {
+                    // No explicit port; this is an OXID-resolver address, skip it.
+                    continue;
+                }
+                string portStr = address.Substring(bracket + 1, address.Length - bracket - 2);
+                if (!int.TryParse(portStr, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int port))
+                {
+                    continue;
+                }
+                string host = address.Substring(0, bracket);
+                if (string.IsNullOrWhiteSpace(host))
+                {
+                    host = fallbackHost;
+                }
+                return new DnsEndPoint(host, port);
+            }
+            return null;
         }
 
         private static DaConnectionRequest NormalizeRequest(DaConnectionRequest request)
@@ -860,11 +964,17 @@ public sealed class DaClientTools
         {
             NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
             OpcUrl url = OpcUrl.Parse($"opcda://{request.Host}/{(request.ProgId ?? clsid.ToString("D"))}");
-            OpcConnectData connectData = credentials is null
-                ? OpcConnectData.Anonymous(url)
-                : request.UseKerberos
-                    ? OpcConnectData.WithKerberos(url, credentials)
-                    : OpcConnectData.WithNtlmV2(url, credentials);
+            // SSO takes precedence over explicit username/password when set.
+            // Microsoft DCOM hardening (KB5004442) requires Integrity for activation
+            // calls; using Connect would result in rpc_s_access_denied after a
+            // successful bind, so we leave the default at Integrity.
+            OpcConnectData connectData = request.UseSso
+                ? OpcConnectData.WithWindowsSso(url, OpcProtectionLevel.Integrity)
+                : credentials is null
+                    ? OpcConnectData.Anonymous(url)
+                    : request.UseKerberos
+                        ? OpcConnectData.WithKerberos(url, credentials)
+                        : OpcConnectData.WithNtlmV2(url, credentials);
             return NtlmAuthentication.CreateAuthContext(connectData);
         }
 
@@ -889,12 +999,17 @@ public sealed class DaClientTools
 
         private static byte[] EncodeRemoteCreateInstanceRequest(string host, Guid clsid, Guid requestedIid)
         {
+            // Tell the SCM we want PKT_INTEGRITY (level 6) for our callback channel.
+            // Required by Microsoft DCOM hardening (KB5004442) which rejects activations
+            // that don't declare at least PktIntegrity on Windows clients/servers shipped
+            // since 2021. Without this, the SCM may return rpc_s_access_denied even after
+            // a successfully authenticated bind.
             var activationProperties = new ActivationProperties(
                 new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
                 new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
                 new LocationInfo(host, Environment.ProcessId, new[] { RpcProtocolSequenceTcp }),
                 null,
-                new SecurityInfo(AuthenticationLevel: 0, ImpersonationLevel: 3, Capabilities: 0));
+                new SecurityInfo(AuthenticationLevel: 6, ImpersonationLevel: 3, Capabilities: 0));
             byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
 
             return WritePayload((ref NdrWriter writer) =>

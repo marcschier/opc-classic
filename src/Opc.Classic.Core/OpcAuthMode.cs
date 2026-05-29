@@ -37,4 +37,15 @@ public enum OpcAuthMode
     /// phase ships, choosing this throws <see cref="OpcPlatformNotSupportedException"/>.
     /// </summary>
     Kerberos = 3,
+
+    /// <summary>
+    /// Windows single sign-on via <see cref="System.Net.Security.NegotiateAuthentication"/>
+    /// with the current process identity (<see cref="System.Net.CredentialCache.DefaultNetworkCredentials"/>).
+    /// SPNEGO over NTLM or Kerberos depending on what the target server supports.
+    /// Windows-only — fails fast on Linux/macOS where there is no platform SSO
+    /// identity to inherit. Use this when the MCP server runs on Windows and
+    /// the calling user already has DCOM Launch/Access permission on the
+    /// target AppID.
+    /// </summary>
+    WindowsSso = 4,
 }

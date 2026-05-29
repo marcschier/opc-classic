@@ -36,4 +36,13 @@ public interface IAuthContext
 
     /// <summary>Gets the negotiated DCE/RPC packet-protection level.</summary>
     OpcProtectionLevel ProtectionLevel { get; }
+
+    /// <summary>
+    /// Gets the DCE/RPC AUTHENTICATION_SERVICE code that identifies which
+    /// authentication service the auth verifier carries (per MS-RPCE
+    /// §2.2.1.1.7). Defaults to <c>0</c> (no authentication); concrete
+    /// implementations override for NTLMSSP (<c>0x0A</c>), Kerberos
+    /// (<c>0x10</c>), or SPNEGO/Negotiate (<c>0x09</c>).
+    /// </summary>
+    byte AuthenticationServiceCode => 0;
 }

@@ -243,10 +243,47 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         if (_authContext.ProtectionLevel < OpcProtectionLevel.Integrity) {
             return pduBytes;
         }
+        return ApplyPacketProtectionCore(pduBytes);
+    }
 
-        Span<byte> pduBody = pduBytes.AsSpan(ConnectionOrientedPdu.HEADER_LENGTH);
-        _authContext.SignAndSeal(pduBody, out byte[] signature);
-        return signature.Length == 0 ? pduBytes : AttachAuthenticationVerifier(pduBytes, signature);
+    private byte[] ApplyPacketProtectionCore(byte[] pduBytes) {
+        // Per MS-RPCE §3.3.1.5.2.2 the signature covers the entire PDU EXCEPT
+        // the auth_value field. Build the full PDU with a zeroed auth_value
+        // placeholder and final frag_length/auth_length headers; hand the
+        // signed-region span to the auth context; then copy the returned
+        // signature into the placeholder.
+        const int authValueLength = 16;
+        int padding = PaddingTo(pduBytes.Length, 4);
+        int verifierStart = pduBytes.Length + padding;
+        int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength + authValueLength;
+        if (fragmentLength > ushort.MaxValue) {
+            throw new InvalidOperationException("DCE/RPC fragment length exceeds the 16-bit PDU limit.");
+        }
+
+        byte[] protectedPdu = new byte[fragmentLength];
+        pduBytes.CopyTo(protectedPdu, 0);
+
+        Span<byte> verifier = protectedPdu.AsSpan(verifierStart, AuthenticationVerifierHeaderLength);
+        verifier[0] = _authContext.AuthenticationServiceCode;
+        verifier[1] = (byte)ToRpcProtectionLevel(_authContext.ProtectionLevel);
+        verifier[2] = (byte)padding;
+        verifier[3] = 0;
+        BinaryPrimitives.WriteInt32LittleEndian(verifier[4..], 0);
+
+        BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)fragmentLength);
+        BinaryPrimitives.WriteUInt16LittleEndian(protectedPdu.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), (ushort)authValueLength);
+
+        Span<byte> signedRegion = protectedPdu.AsSpan(0, verifierStart + AuthenticationVerifierHeaderLength);
+        _authContext.SignAndSeal(signedRegion, out byte[] signature);
+        if (signature is null || signature.Length == 0) {
+            return pduBytes;
+        }
+        if (signature.Length != authValueLength) {
+            throw new InvalidOperationException(
+                $"Auth context returned a {signature.Length}-byte signature; DCE/RPC expects {authValueLength}.");
+        }
+        signature.CopyTo(protectedPdu.AsSpan(verifierStart + AuthenticationVerifierHeaderLength, authValueLength));
+        return protectedPdu;
     }
 
     private byte[] AttachAuthenticationVerifier(byte[] pduBytes, ReadOnlyMemory<byte> body) {
@@ -266,7 +303,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         body.Span.CopyTo(protectedPdu.AsSpan(verifierStart + AuthenticationVerifierHeaderLength));
 
         Span<byte> verifier = protectedPdu.AsSpan(verifierStart, AuthenticationVerifierHeaderLength);
-        verifier[0] = (byte)Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE;
+        verifier[0] = _authContext.AuthenticationServiceCode;
         verifier[1] = (byte)ToRpcProtectionLevel(_authContext.ProtectionLevel);
         verifier[2] = (byte)padding;
         verifier[3] = 0;

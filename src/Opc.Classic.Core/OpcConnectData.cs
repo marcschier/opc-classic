@@ -56,7 +56,13 @@ public sealed class OpcConnectData
                 "OpcAuthMode.Anonymous is incompatible with non-null credentials.",
                 nameof(authMode));
         }
-        if (authMode != OpcAuthMode.Anonymous && credentials is null)
+        if (authMode == OpcAuthMode.WindowsSso && credentials is not null)
+        {
+            throw new ArgumentException(
+                "OpcAuthMode.WindowsSso uses CredentialCache.DefaultNetworkCredentials and must be constructed with null credentials.",
+                nameof(authMode));
+        }
+        if (authMode != OpcAuthMode.Anonymous && authMode != OpcAuthMode.WindowsSso && credentials is null)
         {
             throw new ArgumentException(
                 $"OpcAuthMode.{authMode} requires non-null credentials.",
@@ -123,4 +129,18 @@ public sealed class OpcConnectData
         ArgumentNullException.ThrowIfNull(credentials);
         return new OpcConnectData(url, credentials, OpcAuthMode.Kerberos, protectionLevel, operationTimeout, channelBindings);
     }
+
+    /// <summary>
+    /// Construct Windows-SSO connection data that authenticates as the current
+    /// Windows logon via <see cref="System.Net.Security.NegotiateAuthentication"/>
+    /// and <see cref="System.Net.CredentialCache.DefaultNetworkCredentials"/>.
+    /// Windows-only. Default protection level is <see cref="OpcProtectionLevel.Integrity"/>
+    /// because Microsoft DCOM hardening (KB5004442) rejects activation calls below that.
+    /// </summary>
+    public static OpcConnectData WithWindowsSso(
+        OpcUrl url,
+        OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
+        TimeSpan? operationTimeout = null,
+        ChannelBindings? channelBindings = null)
+        => new(url, credentials: null, authMode: OpcAuthMode.WindowsSso, protectionLevel: protectionLevel, operationTimeout: operationTimeout, channelBindings: channelBindings);
 }
