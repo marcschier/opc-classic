@@ -378,7 +378,7 @@ public sealed class RpcServerConnectionProcessor
         {
             PresentationContext proposal = proposedContexts[i];
             if (!TryGuidFromUuid(proposal.AbstractSyntax?.Uuid, out Guid interfaceId)
-                || !_dispatchers.ContainsKey(interfaceId))
+                || !SupportsInterface(interfaceId))
             {
                 // PresentationResult.Read always reads a TransferSyntax, so we
                 // always include one on rejection too (otherwise the peer's
@@ -532,6 +532,9 @@ public sealed class RpcServerConnectionProcessor
         };
         await WritePduAsync(transport, response, maxTransmitFragment, cancellationToken).ConfigureAwait(false);
     }
+
+    private bool SupportsInterface(Guid interfaceId) =>
+        _dispatchers.ContainsKey(interfaceId) || (_objectRegistry?.ContainsInterface(interfaceId) ?? false);
 
     private IOpcServerDispatcher? ResolveDispatcher(RequestCoPdu request, Guid interfaceId)
     {

@@ -126,6 +126,78 @@ public sealed unsafe class OpcHdaCallbackProxy : IDisposable
         }
     }
 
+    public void OnInsertAnnotations(int transactionId, int status, int[] clientHandles, int[] errors)
+    {
+        ArgumentNullException.ThrowIfNull(clientHandles);
+        ArgumentNullException.ThrowIfNull(errors);
+        IntPtr callbackPtr = GetCallbackPtr();
+        IntPtr* vtable = *(IntPtr**)callbackPtr;
+        var callback = (delegate* unmanaged<IntPtr, uint, int, uint, IntPtr, IntPtr, int>)vtable[8];
+        IntPtr handlesPtr = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            handlesPtr = OpcHdaItemMarshaler.AllocateInt32Array(clientHandles);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            int hr = callback(callbackPtr, unchecked((uint)transactionId), status, unchecked((uint)clientHandles.Length), handlesPtr, errorsPtr);
+            ThrowIfFailed(hr, "IOPCHDA_DataCallback::OnInsertAnnotations");
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(handlesPtr);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
+    public void OnPlayback(int transactionId, int status, OpcHdaItem[] itemValues, int[] errors)
+    {
+        ArgumentNullException.ThrowIfNull(itemValues);
+        ArgumentNullException.ThrowIfNull(errors);
+        IntPtr callbackPtr = GetCallbackPtr();
+        IntPtr* vtable = *(IntPtr**)callbackPtr;
+        var callback = (delegate* unmanaged<IntPtr, uint, int, uint, IntPtr, IntPtr, int>)vtable[9];
+        IntPtr valuesPtr = IntPtr.Zero;
+        IntPtr itemPointersPtr = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            valuesPtr = OpcHdaItemMarshaler.AllocateItemArray(itemValues);
+            itemPointersPtr = AllocateItemPointerArray(valuesPtr, itemValues.Length);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            int hr = callback(callbackPtr, unchecked((uint)transactionId), status, unchecked((uint)itemValues.Length), itemPointersPtr, errorsPtr);
+            ThrowIfFailed(hr, "IOPCHDA_DataCallback::OnPlayback");
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(itemPointersPtr);
+            OpcHdaItemMarshaler.FreeItemArray(valuesPtr, itemValues.Length);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
+    public void OnUpdateComplete(int transactionId, int status, int[] clientHandles, int[] errors)
+    {
+        ArgumentNullException.ThrowIfNull(clientHandles);
+        ArgumentNullException.ThrowIfNull(errors);
+        IntPtr callbackPtr = GetCallbackPtr();
+        IntPtr* vtable = *(IntPtr**)callbackPtr;
+        var callback = (delegate* unmanaged<IntPtr, uint, int, uint, IntPtr, IntPtr, int>)vtable[10];
+        IntPtr handlesPtr = IntPtr.Zero;
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            handlesPtr = OpcHdaItemMarshaler.AllocateInt32Array(clientHandles);
+            errorsPtr = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            int hr = callback(callbackPtr, unchecked((uint)transactionId), status, unchecked((uint)clientHandles.Length), handlesPtr, errorsPtr);
+            ThrowIfFailed(hr, "IOPCHDA_DataCallback::OnUpdateComplete");
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(handlesPtr);
+            Marshal.FreeCoTaskMem(errorsPtr);
+        }
+    }
+
     public void OnCancelComplete(int cancelId)
     {
         IntPtr callbackPtr = GetCallbackPtr();
@@ -173,6 +245,22 @@ public sealed unsafe class OpcHdaCallbackProxy : IDisposable
             OpcHdaItemMarshaler.FreeItemArray(valuesPtr, itemValues.Length);
             Marshal.FreeCoTaskMem(errorsPtr);
         }
+    }
+
+    private static IntPtr AllocateItemPointerArray(IntPtr itemValues, int count)
+    {
+        if (count == 0)
+        {
+            return IntPtr.Zero;
+        }
+
+        IntPtr ptr = Marshal.AllocCoTaskMem(checked(count * IntPtr.Size));
+        for (int i = 0; i < count; i++)
+        {
+            Marshal.WriteIntPtr(ptr, checked(i * IntPtr.Size), IntPtr.Add(itemValues, checked(i * OpcHdaItemMarshaler.ItemSize)));
+        }
+
+        return ptr;
     }
 
     private static IntPtr QueryInterface(IntPtr instance, Guid iid, string failureMessage)

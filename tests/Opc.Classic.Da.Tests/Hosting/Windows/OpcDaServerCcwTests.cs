@@ -315,6 +315,7 @@ public sealed class OpcDaServerCcwTests
 
         await Assert.That(OpcDaServerCcw.SupportsInterface(IID_IUnknown)).IsTrue();
         await Assert.That(OpcDaServerCcw.SupportsInterface(IOPCServer.InterfaceId)).IsTrue();
+        await Assert.That(OpcDaServerCcw.SupportsInterface(IOPCCommon.InterfaceId)).IsTrue();
         await Assert.That(OpcDaServerCcw.SupportsInterface(IID_IClassFactory)).IsFalse();
         await Assert.That(OpcDaServerCcw.SupportsInterface(Guid.NewGuid())).IsFalse();
     }

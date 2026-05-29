@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
   </ItemGroup>
 
 </Project>

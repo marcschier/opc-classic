@@ -1,7 +1,5 @@
 # Build your first OPC DA client
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 This tutorial builds a complete Data Access client as a .NET 10 worker. It uses the public `Opc.Classic.Da.IDaServer` and `IDaSubscription` contracts, so the application code is the same shape whether the server is an in-process loopback target, a lab server, or a production DCOM-backed adapter. The runnable path below uses a loopback implementation so you can paste the files into a project and run the sequence without a Windows COM server. To connect to a real OPC DA server, keep the worker and replace only the `IDaServer` registration.
 
 The sequence mirrors OPC DA 3.00: retrieve server status, browse the namespace, validate/add items to a group, read a snapshot, request a refresh, process `IOPCDataCallback::OnDataChange` batches, and remove the group on shutdown. For the shorter Linux recipe see [../cookbook/01-connect-to-matrikon-from-linux.md](../cookbook/01-connect-to-matrikon-from-linux.md); for the architectural call-channel view see [../ARCHITECTURE.md](../ARCHITECTURE.md).
@@ -9,7 +7,6 @@ The sequence mirrors OPC DA 3.00: retrieve server status, browse the namespace, 
 ## Prerequisites
 
 - .NET 10 SDK from `global.json`.
-- A checkout of `marcschier/opc-classic`, or packages from your local feed once packages are published.
 - Basic familiarity with OPC DA item IDs, quality words, and groups.
 - Optional: a real DA server such as Matrikon OPC Simulation Server. The tutorial runs without it by using a loopback client.
 
@@ -23,7 +20,7 @@ The sequence mirrors OPC DA 3.00: retrieve server status, browse the namespace, 
 
 ## Project setup
 
-Create a folder named `FirstDaClient` beside the repository or inside a scratch workspace. If you are working directly in the repository, project references are convenient. If you consume packages, replace the `ProjectReference` entries with `PackageReference Include="Opc.Classic.Core"` and `PackageReference Include="Opc.Classic.Da"`.
+Create a folder named `FirstDaClient` beside the repository or inside a scratch workspace. If you are working directly in the repository, project references are convenient. 
 
 `FirstDaClient.csproj`:
 
@@ -38,8 +35,8 @@ Create a folder named `FirstDaClient` beside the repository or inside a scratch 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
-    <ProjectReference Include="..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
-    <ProjectReference Include="..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+    <PackageReference Include="Opc.Classic.Core" />
+    <PackageReference Include="Classic.Da" />
   </ItemGroup>
 </Project>
 ```
@@ -573,4 +570,3 @@ Finally, treat write operations differently from reads. Writes should carry stro
 - OPC Data Access 3.00: `IOPCServer`, `IOPCItemMgt`, `IOPCSyncIO`, `IOPCAsyncIO2`, `IOPCDataCallback`.
 - [MS-DCOM] and [MS-RPCE] for activation, bind, request, response, fragmentation, and packet protection.
 - Repository samples: `samples\Opc.Classic.Samples.DaClient` and `samples\Opc.Classic.Samples.DaServer`.
-

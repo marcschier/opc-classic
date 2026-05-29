@@ -3,7 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 // Wire constants for [MS-SMB2]. Section references in comments target the
-// vendored spec under External/Docs/Win/[MS-SMB2].md.
+// vendored spec under ext/private/docs/MS-SMB2.md.
 //
 
 namespace Opc.Classic.Dcom.Smb;

@@ -24,11 +24,11 @@ dotnet test Opc.Classic.slnx
 | --- | --- |
 | `src\` | Production libraries and generators. `src\Directory.Build.props` applies .NET 10, nullable, analyzer, package, NativeAOT, and trimming settings. |
 | `tests\` | TUnit and Microsoft.Testing.Platform test projects, including unit, property, snapshot, generator, logging, conformance, and integration scaffolds. |
-| `samples\` | Nine runnable samples for DA/AE/HDA clients and servers, loopback, CTT, and AOT publishing. |
-| `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, diagrams, conformance, release, and roadmap docs. |
+| `samples\` | Ten runnable samples for DA/AE/HDA clients and servers, loopback, CTT, OPC Security, and AOT publishing. |
+| `docs\` | Plain Markdown architecture, adoption, cookbook, tutorials, security, migration, architecture diagrams, conformance, release, and roadmap docs. |
 | `docker\` | Windows-container test fleet for CTT, managed server, and native C server/client interop. |
-| `COM\` | OPC Foundation native C++ sample servers used as conformance references. Do not casually rewrite or relicense them. |
-| `External\` | OPC Foundation redistributables, IDL, headers, and specification assets used as conformance inputs. |
+| `ext\samples\` | OPC Foundation native C++ sample servers used as conformance references. Do not casually rewrite or relicense them. |
+| `ext\` | OPC Foundation redistributables, IDL, headers, CTT installers, `ext\private\docs`, and native sample assets used as conformance inputs. |
 
 The portable stack must not introduce Windows-only COM runtime dependencies such as `[ComImport]`, RCW activation, or `ole32.dll` P/Invoke.
 
@@ -142,6 +142,7 @@ Use samples to demonstrate public APIs, not test-only shortcuts.
 | `samples\Opc.Classic.Samples.HdaClient\` | Managed HDA client. |
 | `samples\Opc.Classic.Samples.LoopbackDemo\` | In-process client/server loopback. |
 | `samples\Opc.Classic.Samples.CttServer\` | CTT-oriented managed DA server. |
+| `samples\Opc.Classic.Samples.OpcSecurityServer\` | Managed OPC Security reference server. |
 | `samples\Opc.Classic.Samples.AotCanary\` | NativeAOT publish canary. |
 
 Build or run a sample with the XML solution restored:
@@ -162,6 +163,8 @@ Documentation is plain Markdown under `docs\`. Start at `docs\README.md` and kee
 
 ## Build quality gates
 
+Current rc.10 validation baseline: **0 build warnings, 0 build errors, 2113 passed / 12 skipped / 0 failed across 23 .NET test projects**.
+
 Before opening a pull request:
 
 1. Keep the change small and focused.
@@ -177,15 +180,15 @@ Use clear commit messages. Do not use PowerShell here-strings for commit message
 The CI matrix includes Windows conformance coverage that can:
 
 1. install OPC Foundation Core Components,
-2. build preserved native C++ OPC sample servers under `COM\`,
-3. register them via `COM\regserver.cmd`,
+2. build preserved native C++ OPC sample servers under `ext\samples\`,
+3. register them via `ext\samples\regserver.cmd`,
 4. run managed native-conformance subsets against those servers.
 
-The `.github\workflows\opc-ctt.yml` workflow installs the vendored CTT MSIs from `External\CTT\`, registers `samples\Opc.Classic.Samples.CttServer`, and uploads `opc-ctt-results`. The `.github\workflows\docker-test-fleet.yml` workflow builds the Windows-container fleet under `docker\` and runs the managed CTT smoke when a Windows-container host is available. See `docs\OPC_CTT_CONFORMANCE.md`, `docs\test-fleet.md`, and `docs\release-blockers.md` for prerequisites, result artifacts, and release-gating status.
+The `.github\workflows\opc-ctt.yml` workflow installs the vendored CTT MSIs from `ext\private\ctt\`, registers `samples\Opc.Classic.Samples.CttServer`, and uploads `opc-ctt-results`. The `.github\workflows\docker-test-fleet.yml` workflow builds the Windows-container fleet under `docker\` and runs the managed CTT smoke when a Windows-container host is available.
 
 ## License
 
-This project is licensed under MIT. Preserved OPC Foundation material under `COM\` and `External\` keeps its original notices.
+This project is licensed under MIT. Preserved OPC Foundation material under `ext\` keeps its original notices.
 
 Every new project source file should include:
 

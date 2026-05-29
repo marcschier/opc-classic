@@ -1,7 +1,5 @@
 # Troubleshooting and diagnostics
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 OPC Classic failures often look vague at the top of the stack: "cannot connect", "access denied", "bad quality", "decode failed", or `E_FAIL`. The root cause may be DNS, firewall, endpoint mapper, authentication level, SPN, channel binding, NDR shape, per-item HRESULT, or a server-specific behavior. This tutorial gives you a structured diagnostic workflow for Opc.Classic clients and managed servers.
 
 Use this article with the architecture guide [../ARCHITECTURE.md](../ARCHITECTURE.md), the DCOM hardening cookbook [../cookbook/05-dcom-hardening-pkt-integrity-explainer.md](../cookbook/05-dcom-hardening-pkt-integrity-explainer.md), the Kerberos tutorial [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md), and the NTLMSSP audit prep guide [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).
@@ -27,6 +25,7 @@ Before changing code, capture the envelope:
 
 - target URL (`opcda://host/ProgId`, `opcae://...`, or `opchda://...`);
 - client OS, container image, and runtime identifier;
+- client name sent with `IDaServer.SetClientNameAsync`, if your app sets one;
 - server vendor/version from a successful or previous `GetStatus`;
 - authentication mode and protection level;
 - exact HRESULT and text;
@@ -72,6 +71,8 @@ klist -e
 
 If external validation fails, fix Kerberos first. Application retries cannot repair a duplicate SPN or expired keytab. For NTLMv2 packet-protection evidence and audit scope, cross-check [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).
 
+Before creating groups, managed DA clients can call `IDaServer.SetClientNameAsync("Gateway-A", ct)`. Managed servers surface the value through `IOPCCommon::SetClientName` handling and logs, which helps distinguish identical service accounts during incidents. Treat it as a diagnostic label, not an authorization boundary.
+
 ## HRESULT decoding
 
 `OpcResultId` wraps HRESULTs and exposes `IsFailure`, `Facility`, and `CodePart`. Use it in logs:
@@ -113,7 +114,7 @@ NDR mismatches usually mean the client and server disagree about the IDL shape, 
 Checklist:
 
 - Verify the interface IID and opnum.
-- Compare the method signature with `External\Include\*.idl` and the `Dcom\IOPCInterfaces.cs` projection.
+- Compare the method signature with `ext\inc\*.idl` and the `Dcom\IOPCInterfaces.cs` projection.
 - Confirm conformant array counts match the number of elements decoded.
 - Check whether a string is `LPWSTR`, `BSTR`, or an array of string pointers.
 - Confirm `FILETIME` is two 32-bit halves, not an aligned 64-bit integer.

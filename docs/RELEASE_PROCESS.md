@@ -1,12 +1,12 @@
 # Release process
 
-This repository publishes MIT-licensed `Opc.Classic.*` NuGet packages from plain Markdown documentation and the .NET 10 XML solution. The current release-candidate state is `1.0.0-rc.7`; `1.0.0-rc.1` through `1.0.0-rc.7` are annotated local tags and have not been pushed to origin. Stable `1.0.0` is gated by [release-blockers.md](release-blockers.md).
+This repository publishes MIT-licensed `Opc.Classic.*` NuGet packages from plain Markdown documentation and the .NET 10 XML solution. 
 
 ## Versioning and cadence
 
 - Use SemVer: `<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`.
 - Use prerelease labels in the order `alpha`, `beta`, then `rc`.
-- Current rc tags are bare version tags such as `1.0.0-rc.7` (no leading `v`) and lowercase prerelease labels.
+- Current rc tags are bare version tags such as `1.0.0-rc.10` (no leading `v`) and lowercase prerelease labels.
 - Do not reuse release tags. If a package must be replaced, cut a higher version.
 - Package IDs and namespaces remain under `Opc.Classic.*`.
 - Stable `1.0.0` follows the release-candidate soak only after CI, package install, OPC CTT, live NTLMv2, and external audit gates are green or explicitly waived by maintainers.
@@ -39,15 +39,14 @@ Before tagging, verify:
 1. Move the relevant `CHANGELOG.md` entries from `Unreleased` into a section named for the release version.
 2. Confirm `src\Directory.Build.props` contains the intended default package version for package builds or pass `-p:Version=<version>` consistently.
 3. Confirm the release workflow can derive the same package version from the tag you intend to publish.
-4. Confirm `docs\release-blockers.md` is updated for any remaining or waived gates.
-5. Create the release-prep Git change on the release branch.
+4. Create the release-prep Git change on the release branch.
 
 ## Tag and publish
 
-Use the exact version string, including any prerelease suffix. The rc.1..rc.7 tags in this checkout are annotated and local:
+Use the exact version string, including any prerelease suffix. The rc.1..rc.10 tags in this checkout are annotated and local:
 
 ```powershell
-$version = "1.0.0-rc.7"
+$version = "1.0.0-rc.10"
 git tag -a $version -m "Opc.Classic $version"
 ```
 
@@ -79,17 +78,17 @@ The manual input must match an existing release tag and the tag format accepted 
 ## Required secrets
 
 | Secret | Purpose |
-|---|---|
+| --- | --- |
 | `NUGET_API_KEY` | nuget.org API key used by `dotnet nuget push`; when absent, package artifacts are still uploaded for review. |
 
-The CTT workflows use vendored installers from `External\CTT\`; no `OPC_CTT_INSTALLER_URL` secret is required in the current tree.
+The CTT workflows use vendored installers from `ext\private\ctt\`; no `OPC_CTT_INSTALLER_URL` secret is required in the current tree.
 
 ## Package install smoke checks
 
 After packages are available, verify install and build with the published version:
 
 ```powershell
-$version = "1.0.0-rc.7"
+$version = "1.0.0-rc.10"
 dotnet new console -n PackageSmoke
 Set-Location PackageSmoke
 dotnet add package Opc.Classic.Core --version $version

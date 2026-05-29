@@ -2,7 +2,8 @@
 
 This guide is the practical starting point for adding `Opc.Classic` to an application, test suite, gateway, or managed OPC Classic server. It focuses on current APIs and current repository capabilities. For deeper design details, see [ARCHITECTURE.md](ARCHITECTURE.md). For task-oriented walkthroughs, see [cookbook](cookbook/README.md).
 
-The current repository state is tagged `1.0.0-rc.7` locally. The `1.0.0` FINAL tag is gated on the three infrastructure/security items in [release-blockers.md](release-blockers.md). Package IDs, namespaces, project names, and examples use the `Opc.Classic.*` root. The project is MIT licensed.
+Package IDs, namespaces, project names, and examples use the `Opc.Classic.*` root. 
+The project is MIT licensed.
 
 ## 1. When to use Opc.Classic
 
@@ -29,7 +30,7 @@ dotnet add package Opc.Classic.Hda --prerelease
 dotnet add package Opc.Classic.Hosting --prerelease
 ```
 
-For source builds from the rc.7 checkout, use one of these approaches:
+For source builds from the rc.10 checkout, use one of these approaches:
 
 1. reference the projects directly in a repo-local solution;
 2. publish packages to a local folder feed from CI;
@@ -113,6 +114,12 @@ await foreach (DataChange change in group.DataChanges.WithCancellation(cancellat
         Console.WriteLine($"{item.ItemName}: {item.Value} {item.Quality}");
     }
 }
+```
+
+Set the OPC Common client name through the high-level convenience helper when servers or audits expect it:
+
+```csharp
+await server.SetClientNameAsync("ContosoGateway", ct);
 ```
 
 Generated DCOM proxies are available when you work directly at the IDL projection layer:
@@ -329,7 +336,7 @@ Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispat
 | Security | OPC Security projections plus DCOM authentication and packet-protection integration. |
 | Discovery | Local, remote-registry, and OPCEnum discovery strategies. |
 
-The generated DCOM surface contains 47 dispatchers and 127 opnums. The rc.7 validation sweep has 0 build errors / 0 warnings and all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus the remaining suites).
+The generated DCOM surface contains 47 dispatchers and 127 opnums. The rc.10 validation sweep has 0 build errors / 0 warnings and 2113 passed / 12 skipped / 0 failed across 23 .NET test projects (DA 396, AE 110, HDA 164, DCOM 181, Crypto 65, Kerberos 48, SMB 61, Integration 107, plus the remaining suites).
 
 ## 11. Adoption from OPC NET API projects
 
@@ -430,6 +437,8 @@ An OPC URL can identify a server by ProgID or CLSID. Discovery results and serve
 
 ## 13. Samples to start from
 
+The sample suite contains 10 runnable apps.
+
 | Sample | Start here when you need |
 | --- | --- |
 | `samples/Opc.Classic.Samples.DaClient` | DA reads, browse, subscriptions, and generated proxy wiring. |
@@ -440,14 +449,5 @@ An OPC URL can identify a server by ProgID or CLSID. Discovery results and serve
 | `samples/Opc.Classic.Samples.HdaServer` | Managed HDA historical server hosting. |
 | `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback. |
 | `samples/Opc.Classic.Samples.CttServer` | DA server shape for OPC CTT workflows. |
+| `samples/Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
 | `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish validation. |
-
-## 14. Roadmap for release adoption
-
-The `1.0.0-rc.7` release candidate is feature-complete for sandbox-feasible work. Final adoption is gated on the three items tracked in [release-blockers.md](release-blockers.md):
-
-- OPC CTT smoke green on a Windows Docker host;
-- NTLMv2 wire verification against a live Windows Server / AD lab;
-- external NTLMSSP crypto/security audit sign-off.
-
-The rc.7 tree keeps public API/package metadata, AOT canary coverage, samples, and cross-platform CI green while those environment-bound gates complete.

@@ -1,6 +1,6 @@
 # Opc.Classic Sample AE Server
 
-Managed OPC AE sample server mirroring the native `COM\Sample Server\Ae` simulation loop with a small synthetic event tree.
+Managed OPC AE sample server mirroring the native `ext\samples\Sample Server\Ae` simulation loop with a small synthetic event tree.
 
 ## Event tree
 

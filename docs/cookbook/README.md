@@ -1,6 +1,6 @@
 # OPC Classic cookbook
 
-These recipes use the current `Opc.Classic.*` package and namespace names. They are plain GitHub-rendered Markdown and assume the MIT-licensed `1.0.0-rc.7` source tree.
+These recipes use the current `Opc.Classic.*` package and namespace names. They are plain GitHub-rendered Markdown and assume the MIT-licensed `1.0.0-rc.10` source tree.
 
 ## Recipes
 
@@ -11,10 +11,12 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 - [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md): why `OpcProtectionLevel.Integrity` is the default and when to use `Privacy`.
 - [XML-DA client flows](06-xmlda-client-flows.md): `GetStatus`, read/write calls, and polled subscriptions over HTTP/SOAP.
 - [Enabling packet privacy](07-enabling-packet-privacy.md): DCOM `Privacy`, XML-DA over HTTPS, SMB signing, and sample-default caveats.
+- [Implementing OPC Security](08-implementing-opc-security.md): server-side `IOPCSecurityNT` / `IOPCSecurityPrivate` wiring and production ACL guidance.
 
 ## Sample apps referenced
 
 - `samples\Opc.Classic.Samples.DaServer` — managed DA server registered as `Opc.Classic.Samples.DaServer.1`.
+- `samples\Opc.Classic.Samples.OpcSecurityServer` — DA reference server that publishes OPC Security 1.00 interfaces.
 - `samples\Opc.Classic.Samples.DaClient` — DA client flow with browse, read, subscription, and generated proxy wiring.
 - `samples\Opc.Classic.Samples.AeServer` — managed AE sample server.
 - `samples\Opc.Classic.Samples.AeClient` — AE client/subscription flow.
@@ -24,4 +26,4 @@ These recipes use the current `Opc.Classic.*` package and namespace names. They 
 - `samples\Opc.Classic.Samples.CttServer` — managed DA CTT workflow target registered as `Opc.Classic.DaSample.1`.
 - `samples\Opc.Classic.Samples.AotCanary` — NativeAOT publish smoke test.
 
-See also [Architecture](../ARCHITECTURE.md), [Adoption guide](../ADOPTION.md), [sample Docker guide](../../samples/README.docker.md), and [1.0.0 release blockers](../release-blockers.md).
+See also [Architecture](../ARCHITECTURE.md), [Adoption guide](../ADOPTION.md) and [sample Docker guide](../../samples/README.docker.md).

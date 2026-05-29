@@ -17,7 +17,7 @@ namespace Opc.Classic;
 /// <c>IOPCBrowse</c> is a DA code. Surfaces in this static class are
 /// labelled with their AE meaning.
 /// <para>
-/// Values sourced from <c>External/Include/opcae_er.h</c>.
+/// Values sourced from <c>ext/inc/opcae_er.h</c>.
 /// </para>
 /// </remarks>
 public static class OpcAeResultId

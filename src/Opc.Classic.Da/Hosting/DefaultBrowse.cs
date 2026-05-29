@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Da.Dcom;
@@ -94,7 +95,7 @@ public sealed class DefaultBrowse : IOPCBrowse
         {
             elements.Add(new OpcBrowseElementResult(
                 Name: branch,
-                ItemId: string.IsNullOrEmpty(itemId) ? branch : $"{itemId}.{branch}",
+                ItemId: CombineItemId(itemId, branch),
                 FlagValue: 1,
                 Properties: new OpcItemProperties(OpcResultId.Ok.Code, Array.Empty<OpcItemPropertyResult>())));
         }
@@ -102,22 +103,55 @@ public sealed class DefaultBrowse : IOPCBrowse
         {
             elements.Add(new OpcBrowseElementResult(
                 Name: item,
-                ItemId: string.IsNullOrEmpty(itemId) ? item : $"{itemId}.{item}",
+                ItemId: CombineItemId(itemId, item),
                 FlagValue: 2,
                 Properties: new OpcItemProperties(OpcResultId.Ok.Code, Array.Empty<OpcItemPropertyResult>())));
         }
 
-        if (maxElementsReturned > 0 && elements.Count > maxElementsReturned)
+        var offset = GetContinuationOffset(continuationPoint);
+        if (offset > elements.Count)
         {
-            browseElements = elements.GetRange(0, maxElementsReturned).ToArray();
-            moreElements = true;
+            throw new OpcException(OpcResultId.InvalidContinuationPoint);
         }
-        else
-        {
-            browseElements = elements.ToArray();
-            moreElements = false;
-        }
-        continuationPoint = null;
+
+        var remaining = elements.Count - offset;
+        var count = maxElementsReturned > 0 && remaining > maxElementsReturned ? maxElementsReturned : remaining;
+        browseElements = count == 0 ? Array.Empty<OpcBrowseElementResult>() : elements.GetRange(offset, count).ToArray();
+        moreElements = maxElementsReturned > 0 && offset + count < elements.Count;
+        continuationPoint = moreElements ? CreateContinuationPoint(offset + count) : string.Empty;
         return Task.CompletedTask;
+    }
+
+    private static string CreateContinuationPoint(int offset) =>
+        string.Create(CultureInfo.InvariantCulture, $"opc-da-browse:{offset}");
+
+    private static int GetContinuationOffset(string? continuationPoint)
+    {
+        if (string.IsNullOrEmpty(continuationPoint))
+        {
+            return 0;
+        }
+
+        const string prefix = "opc-da-browse:";
+        if (!continuationPoint.StartsWith(prefix, StringComparison.Ordinal)
+            || !int.TryParse(continuationPoint.AsSpan(prefix.Length), NumberStyles.None, CultureInfo.InvariantCulture, out var offset)
+            || offset < 0)
+        {
+            throw new OpcException(OpcResultId.InvalidContinuationPoint);
+        }
+
+        return offset;
+    }
+
+    private static string CombineItemId(string itemId, string child)
+    {
+        if (string.IsNullOrEmpty(itemId))
+        {
+            return child;
+        }
+
+        return itemId.Contains('/', StringComparison.Ordinal)
+            ? $"{itemId.TrimEnd('/')}/{child}"
+            : $"{itemId}.{child}";
     }
 }

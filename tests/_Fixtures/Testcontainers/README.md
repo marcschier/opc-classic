@@ -8,7 +8,7 @@ Cross-process integration tests use Testcontainers to spin up dependencies in di
 
 ## Requirements
 
-Docker must be running locally. CI runs on a Linux runner with Docker preinstalled. Kerberos tests are gated by `OPC_CLASSIC_RUN_KDC_TESTS=1` so ordinary local test runs do not require Docker.
+Docker must be running locally. CI runs on a Linux runner with Docker preinstalled. Kerberos tests are gated by `OPC_CLASSIC_RUN_KDC_TESTS=1` so ordinary local test runs do not require Docker. The Samba WINREG smoke uses `docker\samba\docker-compose.yml` directly rather than a Testcontainers fixture.
 
 ## Adding a fixture
 

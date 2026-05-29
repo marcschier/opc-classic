@@ -14,4 +14,4 @@ using OpcRcw.Da;
 using Opc.Classic.Da;
 ```
 
-Add the appropriate `Opc.Classic.*` NuGet package to the consuming project, then resolve type-level API differences with the DA, AE, HDA, and Core diagnostic pages.
+Add the appropriate `Opc.Classic.*` NuGet package to the consuming project, then resolve type-level API differences with the DA, AE, HDA, and Core diagnostic pages. If the rewrite exposes legacy Batch DA property constants, use `OpcBatchPropertyId` from `Opc.Classic.Batch`.

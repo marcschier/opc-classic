@@ -29,7 +29,7 @@ This is the same issue documented in the
 ## Windows Docker network drivers
 
 | Driver | When to use | DCOM-friendly? |
-|---|---|---|
+| --- | --- | --- |
 | `nat` (default) | Single-container Linux-style isolation | ❌ Breaks OXID resolution |
 | `transparent` | Container gets a routable IP on the host's physical network | ⚠️ Works in some configurations; reported flaky in `DcomContainerSample` |
 | `l2bridge` | Containers share L2 with the host but get distinct IPs via static assignment | ✅ Recommended for our fleet |
@@ -54,10 +54,11 @@ DCOM bindings advertise stable, peer-routable addresses.
 
 ### Functional managed DCOM-over-IP sample path (Track E)
 
-The sample DA, AE, HDA, and CTT servers now support direct DCOM-over-IP between
-containers without Windows SCM endpoint mapping. Server samples bind
-`OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` (defaults 51300-51303), and client
-samples dial `OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT` through
+The sample DA, AE, HDA, CTT, and OPC Security servers support direct
+DCOM-over-IP listeners without Windows SCM endpoint mapping. Server samples bind
+`OPC_CLASSIC_SAMPLE_PORT` on `0.0.0.0` (defaults DA=51300, AE=51301,
+HDA=51302, CTT=51303, Security=51304), and DA/AE/HDA client samples dial
+`OPC_CLASSIC_SERVER_HOST` / `OPC_CLASSIC_SERVER_PORT` through
 `DcomCallChannelFactory.ConnectTcpAsync` and `TcpClientTransport`. When those
 environment variables are absent, clients keep their original in-process
 `InMemoryCallChannel` fallback for local development.
@@ -65,12 +66,12 @@ environment variables are absent, clients keep their original in-process
 This Track E path is separate from the Windows COM/OXID dynamic-port path below:
 it uses a known TCP port on the managed listener instead of SCM activation plus
 endpoint-mapper-discovered object bindings. See `samples\README.docker.md` for
-the compose topology and port table.
+the DA/AE/HDA compose topology and `samples\README.md` for the full sample port table.
 
 ### Trade-offs
 
 | Pro | Con |
-|---|---|
+| --- | --- |
 | Containers can reach each other directly | Containers share L2 with the host network; not a strong isolation boundary |
 | DCOM OXID bindings work as published by the server | Requires the host's physical NIC to support L2 forwarding (most do) |
 | No `EXPOSE -P` port translation required between containers | Containers are reachable from the host LAN by IP — appropriate only for an isolated test LAN |
@@ -140,7 +141,7 @@ when the fleet needs production-style authenticated DCOM.
 ## Troubleshooting matrix
 
 | Symptom | Likely cause | Where to look |
-|---|---|---|
+| --- | --- | --- |
 | `0x80070005 (E_ACCESSDENIED)` from CoCreateInstance | DCOM ACLs not applied / wrong reg view | `reg query "HKLM\SOFTWARE\Microsoft\Ole" /v EnableDCOM` |
 | `0x80004005 (E_FAIL)` on the resolved binding | OXID resolver returned an unreachable IP (NAT) | `docker network inspect opc-test-net` — verify driver is `l2bridge` |
 | Client hangs after CoCreateInstance | EPMapper port 135 blocked | `Test-NetConnection -ComputerName <peer> -Port 135` |

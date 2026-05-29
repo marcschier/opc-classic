@@ -14,8 +14,8 @@ public sealed class OpcSampleHdaServerConformanceTests
 {
     private const string SampleProgId = "OPCSample.OpcHdaServer.1";
     private static readonly Guid SampleClsid = new("6A5EEDEC-1509-4627-997F-993CCB65AB7C");
-    // ProgID is derived by COM/Sample Server/Hda/Server/OpcHdaServer.cpp registration macros.
-    // CLSID is the coclass OpcHdaServer uuid in COM/Sample Server/Hda/Server/OpcHdaServer.idl.
+    // ProgID is derived by ext/samples/Sample Server/Hda/Server/OpcHdaServer.cpp registration macros.
+    // CLSID is the coclass OpcHdaServer uuid in ext/samples/Sample Server/Hda/Server/OpcHdaServer.idl.
 
     [Test]
     [Category("NativeConformance")]

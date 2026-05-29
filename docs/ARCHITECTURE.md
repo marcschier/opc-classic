@@ -1,6 +1,6 @@
 # Opc.Classic Architecture
 
-Opc.Classic is a cross-platform, NativeAOT-compatible .NET 10 implementation of the OPC Classic protocol family. The current repository state is tagged `1.0.0-rc.7` locally; the `1.0.0` FINAL tag is gated on the infrastructure/security items in [release-blockers.md](release-blockers.md). Runtime packages and namespaces are rooted at `Opc.Classic.*`, and the project is MIT licensed.
+Opc.Classic is a cross-platform, NativeAOT-compatible .NET 10 implementation of the OPC Classic protocol family. Runtime packages and namespaces are rooted at `Opc.Classic.*`, and the project is MIT licensed.
 
 The architecture is designed around three constraints:
 
@@ -26,7 +26,7 @@ The architecture is designed around three constraints:
 +------------------------------------------------------------------------+
 ```
 
-The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `COM/` and redistributable inputs in `External/` as conformance assets; they are not part of the portable runtime libraries.
+The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `ext/samples/` and redistributable inputs in `ext/redist/` and spec/reference material in `ext/private/docs/` as conformance assets; they are not part of the portable runtime libraries.
 
 | Area | Current state |
 | --- | --- |
@@ -34,34 +34,36 @@ The portable runtime is pure managed code. Windows-specific features, such as lo
 | License | MIT |
 | Public namespace root | `Opc.Classic.*` |
 | OPC areas | DA, AE, HDA, Batch, Commands, Cpx, DX, Security, Discovery |
-| DCOM stack | Managed MSRPC/DCOM over async transports with v5.6 activation, `OpcServerListener`, per-connection PDU processing, and per-IPID object routing |
-| Authentication | Self-contained NTLMv2, Kerberos, SPNEGO, channel binding, RFC 5056 / RFC 5929 helpers |
+| DCOM stack | Managed MSRPC/DCOM over async transports with v5.6 activation, `OpcServerListener`, per-connection PDU processing, and per-IPID object routing; cross-platform `ncacn_ip_tcp` and `ncacn_np` (RPC over SMB2) |
+| Authentication | Self-contained NTLMv2, Kerberos, SPNEGO, channel binding, RFC 5056 / RFC 5929 helpers; SMB2 signing (HMAC-SHA256 / AES-CMAC) and SMB 3.x encryption (AES-128-CCM / GCM) for the SMB transport |
 | Generation | Source-generated client proxies and server dispatchers: 47 dispatchers, 127 opnums |
 | AOT stance | Runtime libraries are trimmable; `Opc.Classic.Dcom` runs with strict AOT/trimming analyzers enabled |
-| Samples | 9 sample apps: DA/AE/HDA server+client, LoopbackDemo, CttServer, AotCanary; sample containers now exchange DCOM-over-IP |
-| Verification | 0 build errors / 0 warnings; all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94) |
+| Samples | 10 sample apps: DA/AE/HDA server+client, LoopbackDemo, CttServer, OpcSecurityServer, AotCanary; sample containers now exchange DCOM-over-IP |
+| Verification | 0 build errors / 0 warnings; rc.10 sweep has 2113 passed / 12 skipped / 0 failed across 23 .NET test projects |
 
 ## 2. Assembly layout
 
-Runtime source is organized by protocol boundary rather than by sample scenario.
+Runtime source is organized by protocol boundary rather than by sample scenario. Every project under `src/` is listed below.
 
 | Assembly | Role |
 | --- | --- |
-| `Opc.Classic.Core` | Common contracts, URLs, connection data, NDR, OAUT, `OpcVariant`, `OpcSafeArray`, HRESULT/result identifiers, testing transports. |
-| `Opc.Classic.Dcom` | Managed MSRPC/DCOM channel, activation, OBJREF/OXID handling, NTLMv2, packet protection, ping, and server object export. |
+| `Opc.Classic.Core` | Common contracts, URLs, connection data, NDR, OAUT, `OpcVariant`, `OpcSafeArray`, HRESULT/result identifiers, testing transports, `IAuthContext`. |
+| `Opc.Classic.Dcom` | Managed MSRPC/DCOM channel, activation (`IRemoteSCMActivator` + legacy `IActivation` client/server), OBJREF/OXID handling, NTLMv2, packet protection, ping, server object export, `ncacn_np` transport that wraps `Opc.Classic.Dcom.Smb`. |
 | `Opc.Classic.Dcom.Kerberos` | Kerberos/SPNEGO token flow and packet protection integration. |
-| `Opc.Classic.Da` | Data Access managed APIs, DCOM projections, generated proxies/dispatchers, hosting, subscriptions, item/value models. |
-| `Opc.Classic.Ae` | Alarms & Events managed APIs, event categories, subscriptions, condition/event models, DCOM projections. |
-| `Opc.Classic.Hda` | Historical Data Access APIs, time ranges, attributes, aggregates, annotations, playback/update projections. |
+| `Opc.Classic.Dcom.Smb` | Minimal AOT-clean SMB2 client scoped to the named-pipe operations required by `ncacn_np`: NEGOTIATE/SESSION_SETUP/TREE_CONNECT/CREATE/READ/WRITE/IOCTL/CLOSE; SMB2 signing (HMAC-SHA256, AES-CMAC) and SMB 3.x encryption (AES-128-CCM/GCM with `TRANSFORM_HEADER`). |
+| `Opc.Classic.Da` | Data Access managed APIs, DCOM projections, generated proxies/dispatchers, hosting, subscriptions, item/value models, Windows CCWs (`OpcDaServerCcw`, `OpcDaGroupCcw`, `OpcEnumConnectionsCcw`, `OpcEnumConnectionPointsCcw`, `OpcEnumOpcItemAttributesCcw`, `OpcDataCallbackProxy`). |
+| `Opc.Classic.Ae` | Alarms & Events managed APIs, event categories, subscriptions, condition/event models, DCOM projections, array-heavy CCW marshaling helpers, Windows CCWs (`OpcAeServerCcw`, `OpcAeSubscriptionCcw`, `OpcAeAreaBrowserCcw`, `OpcAeEventSinkProxy`, `OpcEnumStringCcw`). |
+| `Opc.Classic.Hda` | Historical Data Access APIs, time ranges, attributes, aggregates, annotations, playback/update projections, Windows CCWs (`OpcHdaServerCcw`, `OpcHdaBrowserCcw`, `OpcHdaCallbackProxy`, `OpcHdaItemMarshaler`) including sync/async update, advise, annotation, and playback surfaces. |
 | `Opc.Classic.Batch` | Batch summary, filtering, enumeration, and batch-state models. |
 | `Opc.Classic.Commands` | OPC Commands metadata, state, invocation, and callback surfaces. |
-| `Opc.Classic.Cpx` | Complex Data dictionaries, fields, type descriptions, and OPC Binary-style values. |
+| `Opc.Classic.Cpx` | Complex Data dictionaries, fields, type descriptions, OPC Binary-style values, BitString codecs, and DA address-space/property integration helpers. |
 | `Opc.Classic.Dx` | Data eXchange configuration, source server, and connection models. |
-| `Opc.Classic.Security` | OPC Security abstractions plus channel-binding helpers. |
+| `Opc.Classic.Security` | OPC Security abstractions plus channel-binding helpers and sample-server-facing ACL semantics. |
 | `Opc.Classic.Discovery` | Local configuration, Windows registry, remote registry, and OPCEnum discovery strategies. |
-| `Opc.Classic.Hosting` | Microsoft.Extensions.Hosting integration and CLSID/ProgID registry abstractions. |
+| `Opc.Classic.Hosting` | Microsoft.Extensions.Hosting integration, CLSID/ProgID registry abstractions, and Windows COM registration. |
 | `Opc.Classic.Xml` | XML-DA HTTP/SOAP DTOs, serializers, and client transport shape. |
-| `Opc.Classic.Generators` | Build-time Roslyn generators for metadata, client proxies, and server dispatchers. |
+| `Opc.Classic.Generators` | Build-time Roslyn incremental generators for `[OpcInterface]`/`[OpcMethod]` metadata, client proxies, server dispatchers, and codec tables. |
+| `Opc.Classic.MigrationAnalyzer` | Roslyn analyzer that emits porting diagnostics for legacy `.NET Framework OPC .NET API` consumers migrating to `Opc.Classic.*`. |
 
 ## 3. Transport model
 
@@ -78,12 +80,13 @@ Transport is below the OPC semantic surface. Spec assemblies expose managed asyn
 +-------------------------------+-------------------------------+
 | ICallChannel.InvokeAsync(iid, opnum, request, cancellation)   |
 +-------------------------------+-------------------------------+
-        |                                                |
-        v                                                v
-+--------------------------+                    +------------------------+
-| DCOM ncacn_ip_tcp        |                    | XML-DA HTTP/SOAP       |
-| bind / request / resp    |                    | HttpClient serializers |
-+--------------------------+                    +------------------------+
+        |                              |                                |
+        v                              v                                v
++--------------------------+  +--------------------------+   +------------------------+
+| DCOM ncacn_ip_tcp        |  | DCOM ncacn_np (SMB)      |   | XML-DA HTTP/SOAP       |
+| bind / request / resp    |  | SMB2 NEGOTIATE+SESSION+  |   | HttpClient serializers |
+|                          |  | TREE+CREATE pipe+R/W     |   |                        |
++--------------------------+  +--------------------------+   +------------------------+
 ```
 
 ### `ICallChannel`
@@ -114,11 +117,24 @@ Tests and loopback samples use `InMemoryCallChannel` to exercise the exact gener
 - `OpcServerListener` for TCP/ncacn_ip_tcp server accept loops;
 - `RpcServerConnectionProcessor` for bind, alter-context, request, response, shutdown, fragmentation, ORPC envelope, and authentication-trailer PDU handling;
 - `OpcObjectRegistry` for per-IPID routing so server-created groups, enumerators, and subscriptions receive calls on the right managed object;
-- endpoint mapper and activation flows;
+- endpoint mapper and activation flows (`IRemoteSCMActivator` + legacy `IActivation` per MS-DCOM §2.2.18 / §3.1.2.5);
 - OBJREF and OXID runtime structures;
 - packet signing and sealing according to the negotiated protection level.
 
 Generated proxies do not depend on the concrete channel. The same proxy can target an in-memory loopback channel, a test fixture, or a TCP-backed DCOM channel.
+
+### DCOM over `ncacn_np` (RPC over SMB2)
+
+`Opc.Classic.Dcom.Smb` implements a minimal AOT-clean SMB2 client targeting the named-pipe operations required for RPC-over-SMB transport per [MS-RPCE] §2.1.1.1: NEGOTIATE → SESSION_SETUP → TREE_CONNECT (IPC$) → CREATE (open pipe) → READ/WRITE/IOCTL with `FSCTL_PIPE_TRANSCEIVE` → CLOSE. `Opc.Classic.Dcom/Transport/NcacnNpTransport` wraps this stack behind the standard `IAsyncTransport` so any ncacn_np interface (e.g., WINREG per MS-RRP) is dialable from Linux/macOS.
+
+Wire protection:
+
+- **Signing**: HMAC-SHA256 (SMB 2.0.2 / 2.1) or AES-128-CMAC (SMB 3.x); signing keys derived via SMB3KDF (NIST SP800-108 counter mode).
+- **Encryption**: AES-128-CCM or AES-128-GCM (SMB 3.x), negotiated via the `SMB2_ENCRYPTION_CAPABILITIES` context per MS-SMB2 §2.2.3.1.2; the encrypted message uses the 52-byte `SMB2 TRANSFORM_HEADER` per §2.2.41.
+
+Quotas (`MaxSmb2MessageSize`, `MaxNdrPayloadSize`, `MaxNtlmMessageSize`) are exposed by `RpcTransportQuotas` for tunable bounds on inbound parsers.
+
+See [architecture/smb-transport.md](architecture/smb-transport.md) and [architecture/activation-transports.md](architecture/activation-transports.md) for the detailed phase ledger.
 
 ### XML-DA over HTTP/SOAP
 
@@ -132,10 +148,11 @@ Managed activation has two complementary paths: portable DCOM activation over th
 | --- | --- |
 | `IRemoteSCMActivator` | Source-generated DCOM projection for `RemoteGetClassObject` and `RemoteCreateInstance`. |
 | `RemoteSCMActivatorServer` | Server-side v5.6 activation implementation for managed class factories and object export. |
+| `IActivation` (legacy) | Shipped client + server implementation of MS-DCOM §2.2.18.3 `RemoteActivation` for XP / Server-2003 / pre-W2K3-SP1 interop, sharing the authentication policy of the modern activator. |
 | `ClassFactoryRegistry` | Maps CLSIDs and ProgIDs to managed factories. |
 | `LocalCoClass` / OXID runtime | Exports managed objects as DCOM object references and maintains object lifetime. |
 | `OpcServerListener` + `OpcObjectRegistry` | Accept inbound TCP DCOM calls and route each IPID to the exported server, group, enumerator, or subscription object. |
-| Windows CCWs | `OpcDaServerCcw`, `OpcDaGroupCcw`, `OpcEnumOpcItemAttributesCcw`, `OpcAeServerCcw`, and `OpcHdaServerCcw` expose raw vtables without `[ComImport]` or RCWs. DA includes real `IOPCServer`, group state, item management, sync/async I/O, connection point, callback, VARIANT, SAFEARRAY, BSTR, and item-attribute enumerator bodies; AE/HDA include the release-scope server/subscription/status and handle-management bodies. |
+| Windows CCWs | Raw-vtable CCWs without `[ComImport]` or RCWs. DA covers `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3` (including `WriteVqt`), `IConnectionPoint(Container)` with `IEnumConnections` + `IEnumConnectionPoints`, callback + item-attribute enumerators, and VARIANT/SAFEARRAY/BSTR marshaling. AE covers `IOPCEventServer`, `IOPCEventSubscriptionMgt` (filter set/get + state + refresh + returned attributes), `IOPCEventAreaBrowser`, `IOPCEventSink` callback delivery with `ONEVENTSTRUCT[]`, array-heavy query/translate/state/condition operations, and a reusable `IEnumString`. HDA covers `IOPCHDA_Server`, `IOPCHDA_Browser` from `CreateBrowse`, `IOPCHDA_SyncRead` / `IOPCHDA_AsyncRead` read methods, sync/async update, annotation insert, advise, playback, and `IOPCHDA_DataCallback`. |
 | Ping support | Implements DCOM keepalive semantics for exported objects and client sessions. |
 
 The portable path is the normal cross-platform route. Windows native clients still require appropriate CLSID/ProgID registration and platform setup, but the implementation behind the CCW remains managed and AOT-oriented.
@@ -253,19 +270,23 @@ AE and HDA hosting use the same pattern with their per-spec server contracts and
 
 ## 8. Authentication and packet protection
 
-Authentication is behind the `IAuthContext` abstraction so transports and generated code do not depend on a concrete security mechanism.
+Authentication is behind the `IAuthContext` abstraction so transports and generated code do not depend on a concrete security mechanism. Transports that need the negotiated session key (e.g., SMB2 signing/encryption) consume `IAuthSessionKeyProvider` as an optional capability.
 
 | Mechanism | Current state |
 | --- | --- |
-| NTLMv2 | Self-contained implementation with MIC handling, extended session security, signing, and sealing. |
+| NTLMv2 | Self-contained implementation with MIC handling, extended session security, signing, and sealing. Direct `SIGNATURE_BLOCK` formation and mismatch tests against MS-NLMP §3.4.4 / §3.4.5 vectors. |
 | Kerberos | Kerberos AP-REQ/AP-REP and packet protection for supported encryption types. |
 | SPNEGO | RFC 4178 / [MS-SPNG] negotiation wrapper for Kerberos and NTLM tokens. |
 | Channel binding | RFC 5056 and RFC 5929 helpers, including `tls-server-end-point` binding material. |
+| SMB2 signing | HMAC-SHA256 (SMB 2.0.2/2.1) or AES-128-CMAC (SMB 3.x); session keys derived via SMB3KDF per MS-SMB2 §3.1.4.1 + §3.1.5.1. |
+| SMB 3.x encryption | AES-128-CCM or AES-128-GCM per MS-SMB2 §3.1.4.3 + §2.2.41 `TRANSFORM_HEADER`. |
 | DCOM hardening | Defaults align with KB5004442: NTLMv2 or Kerberos plus packet integrity. |
+| Decoder bounds | `RpcTransportQuotas` exposes tunable maximums for NDR / NTLMSSP / SMB2 messages, with fuzz-tested rejection of oversized or malformed input. |
+| Secret hygiene | Password-derived intermediate buffers go through `SensitiveBufferPool` with `CryptographicOperations.ZeroMemory` on release. |
 
 `OpcConnectData` expands `OpcProtectionLevel.Default` to `Integrity`. Use `Privacy` when you need confidentiality in addition to integrity. Use `Connect` only for isolated compatibility exceptions where the target cannot accept packet integrity.
 
-The security implementation follows the relevant wire specifications: [MS-DCOM], [MS-RPCE], [MS-NLMP], [MS-KILE], [MS-SPNG], RFC 4178, RFC 5056, RFC 5929, RFC 4121, RFC 4757, RFC 3962, and RFC 8009.
+The security implementation follows the relevant wire specifications: [MS-DCOM], [MS-RPCE], [MS-NLMP], [MS-KILE], [MS-SPNG], [MS-SMB2], RFC 4178, RFC 5056, RFC 5929, RFC 4121, RFC 4757, RFC 3962, RFC 8009, and NIST SP800-108.
 
 ## 9. Discovery
 
@@ -301,7 +322,7 @@ XML-DA support is available through the HTTP/SOAP assembly for deployments that 
 
 ## 11. Samples
 
-The sample suite contains nine apps:
+The sample suite contains 10 apps:
 
 | Sample | Purpose |
 | --- | --- |
@@ -313,57 +334,30 @@ The sample suite contains nine apps:
 | `samples/Opc.Classic.Samples.HdaClient` | HDA query and playback client pattern. |
 | `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback for DA. |
 | `samples/Opc.Classic.Samples.CttServer` | DA server shape for OPC CTT workflows. |
+| `samples/Opc.Classic.Samples.OpcSecurityServer` | OPC Security reference server and ACL semantics. |
 | `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish smoke test for consumer applications. |
 
-## 12. AOT and trimming
+## 12. Related architecture documents
 
-AOT compatibility is a source-library contract. Runtime projects use strict .NET 10 analyzer settings, trimming analyzers, AOT analyzers, and warnings-as-errors. `Opc.Classic.Dcom` participates in the same strict mode.
+The `docs/architecture/` folder contains the diagram suite and topic-deep narratives that support this overview. GitHub renders Mermaid fenced blocks directly in Markdown; keep diagrams small, prefer short labels, use `<br/>` for label line breaks, and use standard Mermaid arrows such as `-->`, `->>`, and `-->>`.
 
-Runtime code avoids:
+### Topic-deep architecture notes
 
-- `System.Reflection.Emit`;
-- runtime proxy generation;
-- `Expression<T>.Compile()`;
-- reflection invocation for dispatch;
-- runtime string-to-type activation;
-- Windows COM RCWs in portable paths.
+- [`architecture/activation-transports.md`](architecture/activation-transports.md) — TCP vs SMB activation paths; legacy `IActivation` interop matrix; client/server status per transport.
+- [`architecture/smb-transport.md`](architecture/smb-transport.md) — SMB2 connection lifecycle, `ncacn_np` wire-up, signing, encryption, PCAP fixtures, and phase ledger.
+- [`architecture/dcom-container-networking.md`](architecture/dcom-container-networking.md) — container-network considerations for DCOM-over-IP between sample servers and clients.
 
-The source-generator model is the primary mechanism for keeping DCOM projections static and trim-safe. The `Opc.Classic.Samples.AotCanary` sample is the consumer-level publish check.
+### Diagram suite
 
-## 13. Build, test, and release references
+The diagrams describe the current `Opc.Classic.*` architecture: source-generated client proxies and server dispatchers, `ICallChannel` with in-memory and DCOM implementations, channel-level NTLM/Kerberos/SPNEGO/CBT, NativeAOT-compatible libraries, and coverage across DA, AE, HDA, Batch, Commands, Security, DX, Cpx, and Discovery.
 
-Local commands use the XML solution file:
-
-```powershell
-dotnet restore Opc.Classic.slnx
-dotnet build Opc.Classic.slnx
-dotnet test Opc.Classic.slnx
-```
-
-Tests use TUnit on Microsoft.Testing.Platform, property-based tests for codec/security invariants, Verify snapshots for wire-format regressions, in-memory generated-proxy tests, integration tests, and conformance-oriented fixtures. The rc.7 sweep has 0 build errors / 0 warnings and all 17 .NET test projects green (DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22, Integration 94, plus the remaining suites).
-
-Release notes live in `CHANGELOG.md`. Package metadata is centralized in the source directory build props files. Public package IDs and namespaces use the `Opc.Classic.*` root.
-
-## 14. License and governance
-
-Opc.Classic is MIT licensed. Contributor-facing files:
-
-| File | Role |
-| --- | --- |
-| `LICENSE` | MIT license text. |
-| `SECURITY.md` | Vulnerability reporting and supported versions. |
-| `CONTRIBUTING.md` | Build, test, style, sample, and conformance guidance. |
-| `CHANGELOG.md` | Release notes. |
-| `THIRD-PARTY-NOTICES.md` | Notices for third-party and OPC Foundation material. |
-
-Preserve original notices in `COM/` and `External/`; those folders are conformance and redistribution assets.
-
-## 15. Roadmap
-
-The remaining 1.0.0 work is release qualification, not an architectural dependency cleanup:
-
-1. run the Windows Docker OPC CTT smoke to green and archive the report;
-2. complete the NTLMv2 wire test against a live Windows Server / AD lab;
-3. complete external NTLMSSP security audit sign-off.
-
-The details, owners, and remediation paths are tracked in [release-blockers.md](release-blockers.md).
+1. [`architecture/01-high-level-architecture.md`](architecture/01-high-level-architecture.md) — top-level client, generated proxy, `ICallChannel`, DCOM/in-memory channels, NDR, `TcpClientTransport`, and managed listener shape.
+2. [`architecture/02-call-shim-flow.md`](architecture/02-call-shim-flow.md) — outbound generated proxy call sequence for `IOPCServer::GetStatus`.
+3. [`architecture/03-server-dispatch-flow.md`](architecture/03-server-dispatch-flow.md) — inbound TCP listener, `RpcServerConnectionProcessor`, optional `OpcObjectRegistry`, `OpcDaServerDispatcher`, and `IOpcDaServer` routing.
+4. [`architecture/04-ntlm-handshake.md`](architecture/04-ntlm-handshake.md) — NTLMSSP NEGOTIATE, CHALLENGE, AUTHENTICATE, and CBT computation.
+5. [`architecture/05-kerberos-handshake.md`](architecture/05-kerberos-handshake.md) — Kerberos AP-REQ/AP-REP mutual authentication and GSS-API protection seam.
+6. [`architecture/06-spnego-negotiation.md`](architecture/06-spnego-negotiation.md) — NegTokenInit, NegTokenResp, mechanism selection, and MIC handling.
+7. [`architecture/07-discovery-flow.md`](architecture/07-discovery-flow.md) — OPCEnum / `IOPCServerList` and remote-registry discovery strategies.
+8. [`architecture/08-source-generator-pipeline.md`](architecture/08-source-generator-pipeline.md) — attributes, Roslyn generators, codec table, and emitted proxies and dispatchers.
+9. [`architecture/09-subscription-data-flow.md`](architecture/09-subscription-data-flow.md) — DA group, item activation, sampling, `IOpcDataCallbackSink`, and callback delivery.
+10. [`architecture/10-aot-trimming-shape.md`](architecture/10-aot-trimming-shape.md) — AOT-visible static code, analyzers, banned APIs, DCOM channel shape, and canary publish.

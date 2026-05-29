@@ -1,6 +1,6 @@
 # OCMDA003 — OPC DA synchronous Read
 
-`OCMDA003` reports synchronous `group.Read(items)` usage. The `Opc.Classic.Da` replacement is an async read abstraction such as `IOpcDaSyncIO.ReadAsync(items, ct)` so polling loops and UI applications do not block while waiting for DA values.
+`OCMDA003` reports synchronous `group.Read(items)` usage. The current `Opc.Classic.Da` replacements are `IDaServer.ReadAsync(items, ct)` for one-shot reads or `IDaSubscription.ReadAsync(serverHandles, fromCache, ct)` for subscription-bound group reads.
 
 ## Before
 
@@ -11,7 +11,7 @@ var values = group.Read(items);
 ## After
 
 ```csharp
-var values = await syncIo.ReadAsync(items, ct);
+var values = await subscription.ReadAsync(serverHandles, fromCache: true, ct);
 ```
 
-The code fix updates the containing method to `async` and adds a cancellation token parameter when needed. After applying it, thread the token from the caller or use your existing operation timeout policy.
+The code fix updates the containing method to `async` and adds a cancellation token parameter when needed. After applying it, choose `IDaServer.ReadAsync` or `IDaSubscription.ReadAsync`, thread the token from the caller, and keep any client-name setup on `IDaServer.SetClientNameAsync`.

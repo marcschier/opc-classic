@@ -17,10 +17,8 @@ namespace Opc.Classic.Ae.Hosting.Windows;
 /// into the <see cref="OpcAeServerCcw"/> vtables.
 /// </summary>
 /// <remarks>
-/// Simple scalar methods dispatch to the managed server/subscription. Methods
-/// involving interface-pointer returns or CoTaskMem arrays of strings, CLSIDs,
-/// attributes, filters, or condition structs return <c>E_NOTIMPL</c> until full
-/// COM marshaling is wired.
+/// Scalar and array-heavy methods dispatch to the managed server/subscription
+/// and marshal OPC AE native CoTaskMem/BSTR payloads at the COM boundary.
 /// </remarks>
 [SupportedOSPlatform("windows")]
 internal static unsafe class OpcAeServerCcwMethods
@@ -123,117 +121,365 @@ internal static unsafe class OpcAeServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int QueryEventCategories(IntPtr pThis, int eventType, IntPtr pCount, IntPtr* ppEventCategories, IntPtr* ppEventCategoryDescs)
     {
-        // Requires paired CoTaskMem arrays of DWORDs and LPWSTRs.
-        _ = pThis; _ = eventType;
         WriteInt32(pCount, 0);
         WriteNull(ppEventCategories);
         WriteNull(ppEventCategoryDescs);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (pCount == IntPtr.Zero || ppEventCategories == null || ppEventCategoryDescs == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr categoriesPtr = IntPtr.Zero;
+        IntPtr descriptionsPtr = IntPtr.Zero;
+        int count = 0;
+        try
+        {
+#pragma warning disable VSTHRD002
+            dispatcher!.QueryEventCategoriesAsync(eventType, out int[] categories, out string[] descriptions, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            categories ??= [];
+            descriptions ??= [];
+            EnsureSameLength(categories.Length, descriptions.Length, nameof(descriptions));
+            OpcAeArrayMarshaler.AllocateDwordArray(categories, out count, out categoriesPtr);
+            OpcAeArrayMarshaler.AllocateBstrArray(descriptions, out int descriptionCount, out descriptionsPtr);
+            EnsureSameLength(count, descriptionCount, nameof(descriptions));
+            WriteInt32(pCount, count);
+            *ppEventCategories = categoriesPtr;
+            *ppEventCategoryDescs = descriptionsPtr;
+            categoriesPtr = IntPtr.Zero;
+            descriptionsPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeCoTaskMem(categoriesPtr);
+            OpcAeArrayMarshaler.FreeBstrArray(descriptionsPtr, count);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int QueryConditionNames(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppConditionNames)
     {
-        // Requires a CoTaskMem array of LPWSTR pointers.
-        _ = pThis; _ = eventCategory;
         WriteInt32(pCount, 0);
         WriteNull(ppConditionNames);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (pCount == IntPtr.Zero || ppConditionNames == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr namesPtr = IntPtr.Zero;
+        int count = 0;
+        try
+        {
+#pragma warning disable VSTHRD002
+            string[] names = dispatcher!.QueryConditionNamesAsync(eventCategory, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            names ??= [];
+            OpcAeArrayMarshaler.AllocateBstrArray(names, out count, out namesPtr);
+            WriteInt32(pCount, count);
+            *ppConditionNames = namesPtr;
+            namesPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeBstrArray(namesPtr, count);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int QuerySubConditionNames(IntPtr pThis, IntPtr conditionName, IntPtr pCount, IntPtr* ppSubConditionNames)
     {
-        // Requires a CoTaskMem array of LPWSTR pointers.
-        _ = pThis; _ = conditionName;
         WriteInt32(pCount, 0);
         WriteNull(ppSubConditionNames);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (pCount == IntPtr.Zero || ppSubConditionNames == null || conditionName == IntPtr.Zero)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr namesPtr = IntPtr.Zero;
+        int count = 0;
+        try
+        {
+            string name = Marshal.PtrToStringUni(conditionName) ?? string.Empty;
+#pragma warning disable VSTHRD002
+            string[] names = dispatcher!.QuerySubConditionNamesAsync(name, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            names ??= [];
+            OpcAeArrayMarshaler.AllocateBstrArray(names, out count, out namesPtr);
+            WriteInt32(pCount, count);
+            *ppSubConditionNames = namesPtr;
+            namesPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeBstrArray(namesPtr, count);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int QuerySourceConditions(IntPtr pThis, IntPtr source, IntPtr pCount, IntPtr* ppConditionNames)
     {
-        // Requires a CoTaskMem array of LPWSTR pointers.
-        _ = pThis; _ = source;
         WriteInt32(pCount, 0);
         WriteNull(ppConditionNames);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (pCount == IntPtr.Zero || ppConditionNames == null || source == IntPtr.Zero)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr namesPtr = IntPtr.Zero;
+        int count = 0;
+        try
+        {
+            string sourceName = Marshal.PtrToStringUni(source) ?? string.Empty;
+#pragma warning disable VSTHRD002
+            string[] names = dispatcher!.QuerySourceConditionsAsync(sourceName, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            names ??= [];
+            OpcAeArrayMarshaler.AllocateBstrArray(names, out count, out namesPtr);
+            WriteInt32(pCount, count);
+            *ppConditionNames = namesPtr;
+            namesPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeBstrArray(namesPtr, count);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int QueryEventAttributes(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppAttrIds, IntPtr* ppAttrDescs, IntPtr* ppAttrTypes)
     {
-        // Requires three correlated CoTaskMem arrays: DWORDs, LPWSTRs, VARTYPEs.
-        _ = pThis; _ = eventCategory;
         WriteInt32(pCount, 0);
         WriteNull(ppAttrIds);
         WriteNull(ppAttrDescs);
         WriteNull(ppAttrTypes);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (pCount == IntPtr.Zero || ppAttrIds == null || ppAttrDescs == null || ppAttrTypes == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr idsPtr = IntPtr.Zero;
+        IntPtr descriptionsPtr = IntPtr.Zero;
+        IntPtr typesPtr = IntPtr.Zero;
+        int count = 0;
+        try
+        {
+#pragma warning disable VSTHRD002
+            dispatcher!.QueryEventAttributesAsync(eventCategory, out int[] ids, out string[] descriptions, out ushort[] types, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ids ??= [];
+            descriptions ??= [];
+            types ??= [];
+            EnsureSameLength(ids.Length, descriptions.Length, nameof(descriptions));
+            EnsureSameLength(ids.Length, types.Length, nameof(types));
+            OpcAeArrayMarshaler.AllocateDwordArray(ids, out count, out idsPtr);
+            OpcAeArrayMarshaler.AllocateBstrArray(descriptions, out int descriptionCount, out descriptionsPtr);
+            OpcAeArrayMarshaler.AllocateUInt16Array(types, out int typeCount, out typesPtr);
+            EnsureSameLength(count, descriptionCount, nameof(descriptions));
+            EnsureSameLength(count, typeCount, nameof(types));
+            WriteInt32(pCount, count);
+            *ppAttrIds = idsPtr;
+            *ppAttrDescs = descriptionsPtr;
+            *ppAttrTypes = typesPtr;
+            idsPtr = IntPtr.Zero;
+            descriptionsPtr = IntPtr.Zero;
+            typesPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeCoTaskMem(idsPtr);
+            OpcAeArrayMarshaler.FreeBstrArray(descriptionsPtr, count);
+            OpcAeArrayMarshaler.FreeCoTaskMem(typesPtr);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int TranslateToItemIDs(IntPtr pThis, IntPtr source, int eventCategory, IntPtr conditionName, IntPtr subconditionName, int count, IntPtr assocAttrIds, IntPtr* ppAttrItemIds, IntPtr* ppNodeNames, IntPtr* ppClsids)
     {
-        // Requires CoTaskMem arrays of LPWSTRs and CLSIDs sized by an input count.
-        _ = pThis; _ = source; _ = eventCategory; _ = conditionName; _ = subconditionName; _ = count; _ = assocAttrIds;
         WriteNull(ppAttrItemIds);
         WriteNull(ppNodeNames);
         WriteNull(ppClsids);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (source == IntPtr.Zero || conditionName == IntPtr.Zero || subconditionName == IntPtr.Zero || count <= 0 || assocAttrIds == IntPtr.Zero || ppAttrItemIds == null || ppNodeNames == null || ppClsids == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr itemIdsPtr = IntPtr.Zero;
+        IntPtr nodeNamesPtr = IntPtr.Zero;
+        IntPtr clsidsPtr = IntPtr.Zero;
+        try
+        {
+            string sourceName = Marshal.PtrToStringUni(source) ?? string.Empty;
+            string condition = Marshal.PtrToStringUni(conditionName) ?? string.Empty;
+            string subcondition = Marshal.PtrToStringUni(subconditionName) ?? string.Empty;
+            int[] attributeIds = OpcAeArrayMarshaler.ReadDwordArray(assocAttrIds, count);
+#pragma warning disable VSTHRD002
+            dispatcher!.TranslateToItemIDsAsync(sourceName, eventCategory, condition, subcondition, attributeIds, out string[] itemIds, out string[] nodeNames, out Guid[] clsids, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            itemIds ??= [];
+            nodeNames ??= [];
+            clsids ??= [];
+            EnsureSameLength(count, itemIds.Length, nameof(itemIds));
+            EnsureSameLength(count, nodeNames.Length, nameof(nodeNames));
+            EnsureSameLength(count, clsids.Length, nameof(clsids));
+            OpcAeArrayMarshaler.AllocateBstrArray(itemIds, out _, out itemIdsPtr);
+            OpcAeArrayMarshaler.AllocateBstrArray(nodeNames, out _, out nodeNamesPtr);
+            OpcAeArrayMarshaler.AllocateGuidArray(clsids, out _, out clsidsPtr);
+            *ppAttrItemIds = itemIdsPtr;
+            *ppNodeNames = nodeNamesPtr;
+            *ppClsids = clsidsPtr;
+            itemIdsPtr = IntPtr.Zero;
+            nodeNamesPtr = IntPtr.Zero;
+            clsidsPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeBstrArray(itemIdsPtr, count);
+            OpcAeArrayMarshaler.FreeBstrArray(nodeNamesPtr, count);
+            OpcAeArrayMarshaler.FreeCoTaskMem(clsidsPtr);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int GetConditionState(IntPtr pThis, IntPtr source, IntPtr conditionName, int eventAttrCount, IntPtr attributeIds, IntPtr* ppConditionState)
     {
-        // OPCCONDITIONSTATE contains nested LPWSTR, VARIANT, and HRESULT arrays.
-        _ = pThis; _ = source; _ = conditionName; _ = eventAttrCount; _ = attributeIds;
         WriteNull(ppConditionState);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (source == IntPtr.Zero || conditionName == IntPtr.Zero || eventAttrCount < 0 || (eventAttrCount > 0 && attributeIds == IntPtr.Zero) || ppConditionState == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr statePtr = IntPtr.Zero;
+        try
+        {
+            string sourceName = Marshal.PtrToStringUni(source) ?? string.Empty;
+            string condition = Marshal.PtrToStringUni(conditionName) ?? string.Empty;
+            int[] ids = OpcAeArrayMarshaler.ReadDwordArray(attributeIds, eventAttrCount);
+#pragma warning disable VSTHRD002
+            OpcConditionState state = dispatcher!.GetConditionStateAsync(sourceName, condition, ids, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            statePtr = OpcAeArrayMarshaler.AllocateConditionState(state);
+            *ppConditionState = statePtr;
+            statePtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeCoTaskMem(statePtr);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
-    public static int EnableConditionByArea(IntPtr pThis, int areaCount, IntPtr areas)
-    {
-        // Requires LPWSTR array input marshaling.
-        _ = pThis; _ = areaCount; _ = areas;
-        return OpcAeServerCcw.E_NOTIMPL;
-    }
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int EnableConditionByArea(IntPtr pThis, int areaCount, IntPtr areas) =>
+        DispatchConditionNameArray(pThis, areaCount, areas, static (dispatcher, names) => dispatcher.EnableConditionByAreaAsync(names, CancellationToken.None));
 
     [UnmanagedCallersOnly]
-    public static int EnableConditionBySource(IntPtr pThis, int sourceCount, IntPtr sources)
-    {
-        // Requires LPWSTR array input marshaling.
-        _ = pThis; _ = sourceCount; _ = sources;
-        return OpcAeServerCcw.E_NOTIMPL;
-    }
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int EnableConditionBySource(IntPtr pThis, int sourceCount, IntPtr sources) =>
+        DispatchConditionNameArray(pThis, sourceCount, sources, static (dispatcher, names) => dispatcher.EnableConditionBySourceAsync(names, CancellationToken.None));
 
     [UnmanagedCallersOnly]
-    public static int DisableConditionByArea(IntPtr pThis, int areaCount, IntPtr areas)
-    {
-        // Requires LPWSTR array input marshaling.
-        _ = pThis; _ = areaCount; _ = areas;
-        return OpcAeServerCcw.E_NOTIMPL;
-    }
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int DisableConditionByArea(IntPtr pThis, int areaCount, IntPtr areas) =>
+        DispatchConditionNameArray(pThis, areaCount, areas, static (dispatcher, names) => dispatcher.DisableConditionByAreaAsync(names, CancellationToken.None));
 
     [UnmanagedCallersOnly]
-    public static int DisableConditionBySource(IntPtr pThis, int sourceCount, IntPtr sources)
-    {
-        // Requires LPWSTR array input marshaling.
-        _ = pThis; _ = sourceCount; _ = sources;
-        return OpcAeServerCcw.E_NOTIMPL;
-    }
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    public static int DisableConditionBySource(IntPtr pThis, int sourceCount, IntPtr sources) =>
+        DispatchConditionNameArray(pThis, sourceCount, sources, static (dispatcher, names) => dispatcher.DisableConditionBySourceAsync(names, CancellationToken.None));
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AckCondition(IntPtr pThis, int count, IntPtr acknowledgerId, IntPtr comment, IntPtr sources, IntPtr conditionNames, IntPtr activeTimes, IntPtr cookies, IntPtr* ppErrors)
     {
-        // Requires multiple correlated arrays including FILETIME values and per-call HRESULTs.
-        _ = pThis; _ = count; _ = acknowledgerId; _ = comment; _ = sources; _ = conditionNames; _ = activeTimes; _ = cookies;
         WriteNull(ppErrors);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (count <= 0 || acknowledgerId == IntPtr.Zero || comment == IntPtr.Zero || sources == IntPtr.Zero || conditionNames == IntPtr.Zero || activeTimes == IntPtr.Zero || cookies == IntPtr.Zero || ppErrors == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr errorsPtr = IntPtr.Zero;
+        try
+        {
+            string acknowledger = Marshal.PtrToStringUni(acknowledgerId) ?? string.Empty;
+            string ackComment = Marshal.PtrToStringUni(comment) ?? string.Empty;
+            string[] sourceNames = OpcAeArrayMarshaler.ReadBstrArray(sources, count);
+            string[] conditionNameValues = OpcAeArrayMarshaler.ReadBstrArray(conditionNames, count);
+            long[] activeTimeValues = OpcAeArrayMarshaler.ReadFileTimeArray(activeTimes, count);
+            int[] cookieValues = OpcAeArrayMarshaler.ReadDwordArray(cookies, count);
+#pragma warning disable VSTHRD002
+            int[] errors = dispatcher!.AckConditionAsync(acknowledger, ackComment, activeTimeValues, cookieValues, sourceNames, conditionNameValues, CancellationToken.None)
+                .GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            errors ??= [];
+            EnsureSameLength(count, errors.Length, nameof(errors));
+            OpcAeArrayMarshaler.AllocateHResultArray(errors, out _, out errorsPtr);
+            *ppErrors = errorsPtr;
+            errorsPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeCoTaskMem(errorsPtr);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -414,21 +660,65 @@ internal static unsafe class OpcAeServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SetReturnedAttributes(IntPtr pThis, int eventCategory, int count, IntPtr attributeIds)
     {
-        // Requires DWORD array input marshaling.
-        _ = pThis; _ = eventCategory; _ = count; _ = attributeIds;
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (count < 0 || (count > 0 && attributeIds == IntPtr.Zero))
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        try
+        {
+            int[] ids = OpcAeArrayMarshaler.ReadDwordArray(attributeIds, count);
+#pragma warning disable VSTHRD002
+            subscription!.SetReturnedAttributesAsync(eventCategory, ids, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int GetReturnedAttributes(IntPtr pThis, int eventCategory, IntPtr pCount, IntPtr* ppAttributeIds)
     {
-        // Requires allocating a CoTaskMem DWORD array.
-        _ = pThis; _ = eventCategory;
         WriteInt32(pCount, 0);
         WriteNull(ppAttributeIds);
-        return OpcAeServerCcw.E_NOTIMPL;
+        if (pCount == IntPtr.Zero || ppAttributeIds == null)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveSubscription(pThis, out IOPCEventSubscriptionMgt? subscription))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        IntPtr attributeIdsPtr = IntPtr.Zero;
+        try
+        {
+#pragma warning disable VSTHRD002
+            int[] ids = subscription!.GetReturnedAttributesAsync(eventCategory, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ids ??= [];
+            OpcAeArrayMarshaler.AllocateDwordArray(ids, out int count, out attributeIdsPtr);
+            WriteInt32(pCount, count);
+            *ppAttributeIds = attributeIdsPtr;
+            attributeIdsPtr = IntPtr.Zero;
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            OpcAeArrayMarshaler.FreeCoTaskMem(attributeIdsPtr);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -522,6 +812,45 @@ internal static unsafe class OpcAeServerCcwMethods
         catch (Exception ex)
         {
             return MapHResult(ex);
+        }
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
+    private static int DispatchConditionNameArray(
+        IntPtr pThis,
+        int count,
+        IntPtr names,
+        Func<IOpcAeServerDispatcher, string[], Task> dispatchAsync)
+    {
+        ArgumentNullException.ThrowIfNull(dispatchAsync);
+        if (count <= 0 || names == IntPtr.Zero)
+        {
+            return OpcAeServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcAeServerDispatcher? dispatcher))
+        {
+            return OpcAeServerCcw.E_FAIL;
+        }
+
+        try
+        {
+            string[] nameValues = OpcAeArrayMarshaler.ReadBstrArray(names, count);
+#pragma warning disable VSTHRD002
+            dispatchAsync(dispatcher!, nameValues).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            return OpcAeServerCcw.S_OK;
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
+    }
+
+    private static void EnsureSameLength(int expected, int actual, string arrayName)
+    {
+        if (actual != expected)
+        {
+            throw new ArgumentException($"{arrayName} length {actual} must equal {expected}.", arrayName);
         }
     }
 

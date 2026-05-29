@@ -323,7 +323,7 @@ namespace Opc.Classic.Generators
         sb.Append(indent).Append(accessibility).Append(" partial class ").Append(dispatcherName).Append(model.TypeParameterList)
             .Append(" : global::Opc.Classic.Hosting.IOpcServerDispatcher").Append(model.TypeParameterConstraints).AppendLine();
         sb.Append(indent).AppendLine("{");
-        sb.Append(indent).AppendLine("    private const int InitialResponseBufferSize = 1024;");
+        sb.Append(indent).AppendLine("    private const int InitialResponseBufferSize = 64 * 1024;");
         sb.Append(indent).Append("    private readonly ").Append(model.FullyQualifiedName).AppendLine(" _impl;");
         sb.AppendLine();
         sb.Append(indent).Append("    public ").Append(dispatcherName).Append('(').Append(model.FullyQualifiedName).AppendLine(" impl)");

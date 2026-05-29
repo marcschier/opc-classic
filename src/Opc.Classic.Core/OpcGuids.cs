@@ -8,7 +8,7 @@
 //
 // Identifier naming preserves the OPC Foundation IDL convention exactly
 // (IID_*, CLSID_*, CATID_*) — consumers grep / cross-reference these against
-// the canonical OPC specs and the native C++ samples preserved under COM/.
+// the canonical OPC specs and the native C++ samples preserved under ext/samples/.
 // CA1707 (no underscores) is suppressed for this file only.
 //
 

@@ -5,7 +5,7 @@
 This checklist covers the `src\Opc.Classic.Dcom\Common\` compatibility wrappers only. All tracked wrappers are self-contained and the transitional package reference has been removed.
 
 | Wrapper | Status |
-|---|---|
+| --- | --- |
 | LegacyNdr.NdrException | ✅ self-contained |
 | LegacyNdr.NdrFormat | ✅ self-contained |
 | LegacyNdr.NdrCodec (NetworkDataRepresentation equivalent) | ✅ self-contained |

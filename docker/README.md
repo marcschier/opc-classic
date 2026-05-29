@@ -4,18 +4,19 @@ Windows containers for end-to-end DCOM interop testing of the managed
 implementation against:
 
 - The **OPC Compliance Test Tool (CTT)** v2.0.15 + 5 plugins (DA 2.05a, DA 3.0,
-  AE, HDA, XML-DA) — installed from the six vendored MSIs in `External/CTT/`.
-- A **native (C-built) OPC DA smoke server** — hand-rolled in `docker\opc-c-server\build\` with OPC Foundation headers; the full OPC Batch sample conversion remains a future richer route.
-- A **native (C-built) OPC DA smoke client** — hand-rolled in `docker\opc-c-client\build\` with OPC Foundation headers; OPCTEST/OPCSPEED wrapping remains a future richer route.
+  AE, HDA, XML-DA) — installed from the six vendored MSIs in `ext/private/ctt/`.
+- A **native (C-built) OPC DA smoke server** — hand-rolled in `docker\opc-c-server\build\` with OPC Foundation headers.
+- A **native (C-built) OPC DA smoke client** — hand-rolled in `docker\opc-c-client\build\` with OPC Foundation headers.
 
 The managed `Opc.Classic.Samples.CttServer` runs in a fourth container so all
 combinations of {managed, native} × {client, server} can be cross-tested on
-a single Windows host.
+a single Windows host. The rc.10 baseline is 0 build warnings/errors and
+2113 passed / 12 skipped / 0 failed across 23 .NET test projects.
 
 ## Status
 
 | Container | Status |
-|---|---|
+| --- | --- |
 | `opc-classic/ctt` | ✅ Ready — installs CTT v2.0.15 + plugins and runs `run-ctt.ps1` |
 | `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
 | `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
@@ -25,21 +26,23 @@ a single Windows host.
 
 The native C server/client images now build real MVP binaries. Their entrypoint scripts still retain missing-binary checks so failed local builds are easy to debug with `docker exec`.
 
+## Sample roster
+
+The repository now carries 10 sample apps: DaServer, DaClient, AeServer, AeClient, HdaServer, HdaClient, LoopbackDemo, CttServer, AotCanary, and OpcSecurityServer. The Docker fleet uses CttServer for managed DA/CTT coverage; the Linux sample Compose files cover the DA/AE/HDA pairs plus LoopbackDemo, while OpcSecurityServer runs from source on port 51304.
+
 ## Managed-server state
 
 The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with the current managed DCOM server stack:
 
 | Piece | What ships |
-|---|---|
+| --- | --- |
 | Cross-platform RPC listener (`OpcServerListener` + `TcpServerEndpoint` + `RpcServerConnectionProcessor`) | Real TCP accept + DCE/RPC bind/alter/request/shutdown PDU handling |
 | DA/AE/HDA hosts wired to the listener | Managed servers physically accept inbound DCOM calls |
 | IPID per-object dispatch routing (`OpcObjectRegistry`) | `RequestCoPdu.Object` UUIDs resolve to per-group dispatchers |
 | `CttDaServer` group tracking | `AddGroup` creates an `OpcDaGroup`, returns a real IPID, and unregisters it on `RemoveGroup` |
 | Group dispatchers | `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, `IConnectionPoint`, deadband, and sampling dispatch through `OpcDaGroup` |
-| Windows CCW factory + SCM wireup | `IClassFactory::CreateInstance` returns a NativeAOT-friendly `IOPCServer` CCW backed by `CttDaServer` |
+| Windows CCW factory + SCM wireup | `IClassFactory::CreateInstance` returns a NativeAOT-friendly `IOPCServer` CCW backed by `CttDaServer`; AE array CCWs and HDA Update/Playback/Annotations CCWs are covered by the rc.10 Windows tests |
 | Outbound callback infrastructure | Listener + generated `IOPCDataCallback` proxy/dispatcher paths are available for callback composition |
-
-Known remaining CTT gaps are narrower than the old scaffold state: `CreateGroupEnumerator` is still `E_NOTIMPL`, some callback trigger/application-level wiring remains incremental, and CTT CLI flag validation is still tracked below / in `docs\release-blockers.md`.
 
 ## Prerequisites
 
@@ -96,11 +99,11 @@ The managed `Opc.Classic.Samples.CttServer`, registered under `HKLM\Software\Cla
 
 ### `opc-classic/c-server`
 
-Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from `docker\opc-c-server\build\opc-sample-server.cpp`. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces needed for CTT smoke. The full OPC Foundation Batch sample conversion remains documented as a future richer route in `docker\opc-c-server\build\README.md`.
+Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from `docker\opc-c-server\build\opc-sample-server.cpp`. It self-registers `OPC.SampleServer.1`, exposes `Sin`, `Square`, and `Random`, and implements the DA root/group interfaces needed for CTT smoke.
 
 ### `opc-classic/c-client`
 
-Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from `docker\opc-c-client\build\opc-test.cpp`. It resolves a ProgID on a target host, calls `AddGroup`, `AddItems`, `Read`, then removes the group. The original OPCTEST/OPCSPEED sample-source wrapping remains a future richer route in `docker\opc-c-client\build\README.md`.
+Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from `docker\opc-c-client\build\opc-test.cpp`. It resolves a ProgID on a target host, calls `AddGroup`, `AddItems`, `Read`, then removes the group.
 
 ## Networking
 
@@ -119,7 +122,7 @@ docker network create --driver l2bridge `
 Containers get fixed IPs:
 
 | Container | Static IP |
-|---|---|
+| --- | --- |
 | `opc-classic-c-server` | 10.0.1.10 |
 | `opc-classic-managed` | 10.0.1.11 |
 | `opc-classic-ctt` | 10.0.1.20 |
@@ -159,5 +162,3 @@ disposable test rig but **must never be applied to a production host**.
 - `docs\test-fleet.md` — adopter cookbook (debugging, capture, common errors)
 - `docs\architecture\dcom-container-networking.md` — l2bridge / transparent / NAT trade-offs
 - `docs\ctt\CI_DESIGN.md` — CI workflow internals (sister doc for the non-fleet CTT job)
-- `docs\MIGRATION.md` — adopter notes for moving across release candidates
-- `docs\release-blockers.md` — current release gates and remaining conformance work

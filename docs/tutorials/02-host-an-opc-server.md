@@ -1,15 +1,12 @@
 # Host an OPC DA server with Opc.Classic.Hosting
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 This tutorial walks through hosting a managed OPC Data Access server. The canonical repository example is `samples\Opc.Classic.Samples.DaServer\`, which registers `Opc.Classic.Samples.DaServer.1`, wires a `TagTree`, and exposes a small `IOpcDaServer` implementation through `Opc.Classic.Hosting`. Here we build the same production shape from scratch and explain the pieces you need to keep stable when a legacy Windows DA client connects through `IOPCServer`, `IOPCGroupStateMgt`, and subscription callbacks.
 
-The server-hosting surface keeps protocol hosting separate from business state: `IOpcDaServer` provides status, group lifecycle, and localized error strings, while generated dispatchers and callback publishers route protocol calls through the common host infrastructure. Design your server with tag storage separate from group lifecycle, explicit HRESULT mapping, data-change publishing as a server-side stream, and stable CLSID/ProgID metadata. The concepts in this article match OPC DA 3.00 and the IDL terminology in `External\Include\opcda.idl`.
+The server-hosting surface keeps protocol hosting separate from business state: `IOpcDaServer` provides status, group lifecycle, and localized error strings, while generated dispatchers and callback publishers route protocol calls through the common host infrastructure. Design your server with tag storage separate from group lifecycle, explicit HRESULT mapping, data-change publishing as a server-side stream, and stable CLSID/ProgID metadata. The concepts in this article match OPC DA 3.00 and the IDL terminology in `ext\inc\opcda.idl`.
 
 ## Prerequisites
 
 - .NET 10 SDK.
-- A local checkout or package feed for `Opc.Classic.Core`, `Opc.Classic.Da`, and `Opc.Classic.Hosting`.
 - Familiarity with Windows OPC DA clients and ProgID/CLSID registration.
 - Optional Windows client for interoperability tests. The tutorial code runs as a managed host without requiring a COM client.
 
@@ -39,6 +36,8 @@ OpcDaServerHost -> OpcDaServerDispatcher -> your IOpcDaServer
 
 This split matters in production. The host owns network, activation, and callback plumbing. Your server implementation owns business state: which tags exist, which groups have been added, what error text means, and which values should be emitted.
 
+Managed DA clients can call `IDaServer.SetClientNameAsync("Gateway-A", ct)` after connecting. Hosting maps the underlying `IOPCCommon::SetClientName` value into dispatcher state and optional server overrides, which gives logs a useful diagnostic hint without treating the name as authentication.
+
 ## Project file
 
 Create a console project and reference the hosting libraries:
@@ -54,9 +53,9 @@ Create a console project and reference the hosting libraries:
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
-    <ProjectReference Include="..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
-    <ProjectReference Include="..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
-    <ProjectReference Include="..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+    <PackageReference Include="Opc.Classic.Core" />
+    <PackageReference Include="Opc.Classic.Da" />
+    <PackageReference Include="Opc.Classic.Hosting" />
   </ItemGroup>
 </Project>
 ```
@@ -327,7 +326,7 @@ public sealed record TagNode(
 
 That record is not part of the library; it is your domain model. Keeping it small makes it easy to unit test validation and error mapping without opening DCOM sockets.
 
-If you prefer a library-owned browse projection, populate an `InMemoryAddressSpace` or implement `IOpcAddressSpace` over your catalog, then delegate DA 2.x browse to `DefaultBrowseServerAddressSpace` and DA 3.0 browse to `DefaultBrowse`. `DefaultItemProperties` publishes the standard property set returned by `OpcStandardProperties.All` (canonical IDs 1-8) and can use an `IOpcItemPropertyProvider` for per-item values.
+If you prefer a library-owned browse projection, populate an `InMemoryAddressSpace` or implement `IOpcAddressSpace` over your catalog, then delegate DA 2.x browse to `DefaultBrowseServerAddressSpace` and DA 3.0 browse to `DefaultBrowse`. `DefaultItemProperties` publishes the standard property set returned by `OpcStandardProperties.All` (canonical IDs 1-8) and can use an `IOpcItemPropertyProvider` for per-item values. For OPC Complex Data metadata, `OpcCpxAddressSpace` and `OpcCpxItemProperties` in `Opc.Classic.Cpx.Hosting` add the CPX address-space and property projections without hand-encoding those DA properties.
 
 ## Group lifecycle
 
@@ -376,7 +375,7 @@ Test negative cases too. Browse or validate an unknown item and verify the clien
 
 Use packet-integrity settings that match production from the beginning. A server tested with anonymous or connect-level authentication may fail the first time a hardened Windows client attempts packet integrity. DCOM hardening changed the default reality for OPC Classic; make the secure path the normal path, not a late-stage toggle.
 
-The Windows CCW interop path is no longer limited to `IUnknown` scaffolding. DA now has per-method vtables for `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)`, with VARIANT/SAFEARRAY marshaling in place. AE and HDA have matching server/subscription/read vtables for their sample paths, so include a strict Windows client in the matrix rather than treating native COM interop as future work.
+The Windows CCW interop path is no longer limited to `IUnknown` scaffolding. DA now has per-method vtables for `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)`, with VARIANT/SAFEARRAY marshaling in place. AE now covers its shipped array-marshaled CCW methods, and HDA covers sync read/update, async update, playback, annotation insert, and async advise sample paths, so include a strict Windows client in the matrix rather than treating native COM interop as future work.
 
 ## Designing the tag catalog for change
 

@@ -1,8 +1,8 @@
-# Native COM conformance (Phase 14B)
+# Native COM conformance
 
 Tests under this folder connect from the managed .NET 10 client (via
 OpcProxyGenerator-emitted shims) against the C++ OPC Foundation Sample
-Servers preserved under `COM/`.
+Servers preserved under `ext/samples/`.
 
 ## Loopback equivalent
 
@@ -19,10 +19,11 @@ in-process before a real native DCOM endpoint is available.
 
 2. Locally on Windows, install the OPC Foundation Core Components
    (places `opcproxy.dll` etc.), build the native `.vcxproj` sample servers
-   as documented in `COM/README.md`, and register them:
+   as documented in `ext/samples/README.md`, and register them:
    ```cmd
-   .\External\Bin\OpcCoreComponents.exe /S
-   .\COM\regserver.cmd
+   msiexec /i ".\ext\redist\OPC Core Components Redistributable (x86) 3.00.107.msi" /quiet /norestart
+   msiexec /i ".\ext\redist\OPC Core Components Redistributable (x64) 3.00.107.msi" /quiet /norestart
+   .\ext\samples\regserver.cmd
    ```
 
 3. Run only the conformance subset:
@@ -32,13 +33,13 @@ in-process before a real native DCOM endpoint is available.
 
 4. Tests soft-skip when the native servers aren't registered (with a
    message logged via the test framework). When the servers are registered
-   but the real listener-side DCOM channel is not injected yet, the tests
-   assert the generated proxy, dispatcher, probe, and category-tag plumbing.
+   but no real `DcomCallChannel` factory is injected, the tests assert the
+   generated proxy, dispatcher, probe, and category-tag plumbing.
 
 ## Verified native server identifiers
 
 | Sample | ProgID | CLSID |
-|---|---|---|
+| --- | --- | --- |
 | DA | `OPCSample.OpcDaServer.1` | `{625C49A1-BE1C-45D7-9A8A-14BEDCF5CE6C}` |
 | AE | `OPCSample.OPCEventServer.1` | `{65168852-5783-11D1-84A0-00608CB8A7E9}` |
 | HDA | `OPCSample.OpcHdaServer.1` | `{6A5EEDEC-1509-4627-997F-993CCB65AB7C}` |

@@ -20,8 +20,8 @@ This document does not replace the repository-wide threat model.
 Use `docs\security\THREAT_MODEL.md` as the parent STRIDE assessment.
 Use `docs\security\CHANNEL_BINDING.md` for the channel-binding design that
 feeds NTLMv2 and Kerberos/SPNEGO.
-Line references are inclusive and reflect the current checkout when this file
-was authored.
+Line references are guideposts from the current checkout and should be
+revalidated before an audit report cites exact ranges.
 The legacy NTLM auth subdirectory mentioned in the task is not present as
 a directory in this checkout.
 The namespace is `Opc.Classic.Dcom.Rpc.Auth.ntlm`, but the files live directly
@@ -78,21 +78,21 @@ HMAC-MD5, MD5 wrappers, DES, SHA-256/SHA-384, and certificate handling.
 | --- | ---: | --- | --- |
 | `src\Opc.Classic.Dcom\rpc\Auth\AuthenticationSource.cs` | 1-79 | Pluggable server-side credential source contract and default registration API. | Server process to credential store. |
 | `src\Opc.Classic.Dcom\rpc\Auth\NullAuthenticationSource.cs` | 1-35 | Fail-closed placeholder when no credential source is registered. | Server process configuration boundary. |
-| `src\Opc.Classic.Dcom\rpc\Auth\NtlmAuthentication.cs` | 1-843 | Main NTLMSSP orchestrator: properties, Type1/2/3, MIC, CBT, proof verification, session key setup. | Client/server auth handshake over network. |
-| `src\Opc.Classic.Dcom\rpc\Auth\NtlmConnection.cs` | 1-127 | Legacy DCE/RPC bind/rebind state machine for NTLM tokens. | DCE/RPC auth verifier boundary. |
+| `src\Opc.Classic.Dcom\rpc\Auth\NtlmAuthentication.cs` | 1-855 | Main NTLMSSP orchestrator: properties, Type1/2/3, MIC, CBT, proof verification, session key setup. | Client/server auth handshake over network. |
+| `src\Opc.Classic.Dcom\rpc\Auth\NtlmConnection.cs` | 1-141 | Legacy DCE/RPC bind/rebind state machine for NTLM tokens. | DCE/RPC auth verifier boundary. |
 | `src\Opc.Classic.Dcom\rpc\Auth\NtlmConnectionContext.cs` | 1-141 | Client bind/alter-context context and bind-ack validation. | Network PDU to connection state. |
-| `src\Opc.Classic.Dcom\rpc\Auth\Ntlm1.cs` | 1-184 | DCE/RPC packet integrity/privacy using NTLM signing and RC4 sealing keys. | Protected RPC PDU body and verifier. |
-| `src\Opc.Classic.Dcom\rpc\Auth\NTLMKeyFactory.cs` | 1-295 | Session key derivation, RC4 key wrapping, signing/sealing key derivation, SIGNATURE_BLOCK generation. | Password-derived keys to packet protection. |
-| `src\Opc.Classic.Dcom\rpc\Auth\Responses.cs` | 1-348 | LM/NTLM/NTLMv2 response functions, NTOWFv1/v2, blob creation, HMAC-MD5, DES key expansion. | Password material to wire challenge response. |
+| `src\Opc.Classic.Dcom\rpc\Auth\Ntlm1.cs` | 1-190 | DCE/RPC packet integrity/privacy using NTLM signing and RC4 sealing keys. | Protected RPC PDU body and verifier. |
+| `src\Opc.Classic.Dcom\rpc\Auth\NTLMKeyFactory.cs` | 1-355 | Session key derivation, RC4 key wrapping, signing/sealing key derivation, SIGNATURE_BLOCK generation. | Password-derived keys to packet protection. |
+| `src\Opc.Classic.Dcom\rpc\Auth\Responses.cs` | 1-428 | LM/NTLM/NTLMv2 response functions, NTOWFv1/v2, blob creation, HMAC-MD5, DES key expansion, and sensitive-buffer cleanup hooks. | Password material to wire challenge response. |
 
 ### 3.2 NTLM message DTOs and helpers
 
 | File | Lines | Purpose | Trust boundary |
 | --- | ---: | --- | --- |
-| `src\Opc.Classic.Dcom\Common\Ntlm\NtlmMessage.cs` | 1-104 | Shared NTLMSSP signature, message type, flags, security-buffer bounds, string encoding. | Untrusted token bytes to typed messages. |
-| `src\Opc.Classic.Dcom\Common\Ntlm\Type1Message.cs` | 1-114 | NEGOTIATE encode/decode, supplied domain/workstation, optional version. | Client-supplied Type1 token. |
-| `src\Opc.Classic.Dcom\Common\Ntlm\Type2Message.cs` | 1-179 | CHALLENGE encode/decode, challenge, target, target-info AV pairs. | Server-supplied Type2 token. |
-| `src\Opc.Classic.Dcom\Common\Ntlm\Type3Message.cs` | 1-300 | AUTHENTICATE encode/decode, LM/NT responses, identity fields, session key, MIC. | Client-supplied Type3 token. |
+| `src\Opc.Classic.Dcom\Common\Ntlm\NtlmMessage.cs` | 1-160 | Shared NTLMSSP signature, message type, flags, security-buffer bounds, string encoding. | Untrusted token bytes to typed messages. |
+| `src\Opc.Classic.Dcom\Common\Ntlm\Type1Message.cs` | 1-128 | NEGOTIATE encode/decode, supplied domain/workstation, optional version. | Client-supplied Type1 token. |
+| `src\Opc.Classic.Dcom\Common\Ntlm\Type2Message.cs` | 1-193 | CHALLENGE encode/decode, challenge, target, target-info AV pairs. | Server-supplied Type2 token. |
+| `src\Opc.Classic.Dcom\Common\Ntlm\Type3Message.cs` | 1-321 | AUTHENTICATE encode/decode, LM/NT responses, identity fields, session key, MIC. | Client-supplied Type3 token. |
 | `src\Opc.Classic.Dcom\Common\Ntlm\NtlmFlags.cs` | 1-38 | MS-NLMP negotiate flag constants used by the message classes. | Negotiated protocol-policy input. |
 | `src\Opc.Classic.Dcom\Common\Ntlm\NtlmAvPairs.cs` | 1-107 | Target-info AV_PAIR add/replace/read helpers, MIC flag, CBT AV ID. | Type2/Type3 target-info boundary. |
 | `src\Opc.Classic.Dcom\Common\Ntlm\NtlmMic.cs` | 1-44 | AUTHENTICATE MIC compute/verify with fixed-time comparison. | Handshake transcript integrity. |
@@ -287,7 +287,7 @@ covered by `NtlmNegotiateFlagsTests.cs` for the documented combinations.
 | --- | --- | --- | --- | --- |
 | `Crypto\Md4.cs`, `Md4State.cs`, `MD4Digest.cs` | ✅ | ✅ RFC 1320 Appendix A.5 | ❌ N/A | Good primitive vectors and incremental-state tests. |
 | `Crypto\Rc4.cs`, `RC4Engine.cs` | ✅ | ✅ RFC 6229 §2.1 | ❌ N/A | Good KSA/PRGA and wrapper compatibility tests. |
-| `Responses.cs` NTLMv2 derivation | ✅ partial | ✅ MS-NLMP §4.2.4.1 | ❌ | Covered by `NtlmV2ServerKeyDerivationTests.cs`. |
+| `Responses.cs` NTLMv2 derivation | ✅ partial | ✅ MS-NLMP §4.2.4.1 | ❌ | Covered by `NtlmV2ServerKeyDerivationTests.cs`; `PasswordZeroizationTests.cs` verifies password-derived pooled buffers are cleared before return. |
 | `Responses.cs` LM/NTLMv1 | ❌ | ❌ | ❌ | Deferred because NTLMv1/LM are disabled by default. |
 | `NTLMKeyFactory.cs` session-key derivation | ✅ partial | ✅ MS-NLMP vector | ❌ | Signing-key equality covered; random/session-key quality not directly tested. |
 | `NTLMKeyFactory.cs` packet signatures | ✅ direct | ✅ MS-NLMP §3.4.4/§3.4.5 SIGNATURE_BLOCK vectors | ❌ | `NtlmSignatureBlockTests.cs` covers direct formation, mismatch rejection, replay, and wrap-boundary sequence handling. |
@@ -295,9 +295,9 @@ covered by `NtlmNegotiateFlagsTests.cs` for the documented combinations.
 | `NtlmAuthentication.cs` Type1/2/3 round trip | ✅ | ⚠️ partial | ❌ blocked by `rw-e1` live interop | Client/server in-memory round trips exist. |
 | `NtlmAuthentication.cs` MIC | ✅ | ⚠️ synthetic vectors | ❌ | `NtlmMicTests.cs` covers compute, verify, tamper, fixed-time source check. |
 | `NtlmAuthentication.cs` CBT | ✅ | ⚠️ synthetic TLS cert vectors | ❌ | `ChannelBindingTlsTests.cs` covers AV_PAIR insertion and matching server verification. |
-| `Type1Message.cs` | ⚠️ indirect | ❌ | ❌ | Needs malformed security-buffer/fuzz coverage. |
-| `Type2Message.cs` | ⚠️ indirect | ❌ | ❌ | Needs malformed target-info/fuzz coverage. |
-| `Type3Message.cs` | ✅ partial | ⚠️ MS-NLMP fixture through Type3 construction | ❌ | MIC offset and parser paths tested; fuzz gaps remain. |
+| `Type1Message.cs` | ✅ bounds | ⚠️ malformed synthetic corpus | ❌ | `DecoderBoundsFuzzTests.cs` covers truncated, bad-signature, wrong-type, oversized, out-of-range, overlapping, and version-truncated cases. |
+| `Type2Message.cs` | ✅ bounds | ⚠️ malformed synthetic corpus | ❌ | `DecoderBoundsFuzzTests.cs` covers truncated, wrong-type, oversized, target, target-info, and overlap cases. |
+| `Type3Message.cs` | ✅ partial | ⚠️ MS-NLMP fixture plus malformed synthetic corpus | ❌ | MIC offset, parser paths, bounded malformed inputs, and fixture replay are covered; broader structure-aware fuzzing remains recommended. |
 | `NtlmAvPairs.cs` | ✅ indirect | ❌ | ❌ | Covered through MIC/CBT tests; direct invalid-length tests recommended. |
 | `NtlmMessageSignature.cs` | ✅ direct | ✅ MS-NLMP §3.4.4/§3.4.5 SIGNATURE_BLOCK vectors | ❌ | Covered directly by `NtlmSignatureBlockTests.cs` plus SPNEGO NTLM MIC provider paths. |
 | `NtlmConnection.cs` / `NtlmConnectionContext.cs` | ❌ | ❌ | ❌ | Needs bind/auth verifier state-machine tests. |
@@ -307,15 +307,20 @@ covered by `NtlmNegotiateFlagsTests.cs` for the documented combinations.
 | `SpnegoEncoder.cs` / `SpnegoDecoder.cs` | ✅ | ✅ known DER fragments | ❌ | `SpnegoTests.cs` and `SpnegoNegTokenRespTests.cs`. |
 | `SpnegoTokenBuilder.cs` | ✅ | ✅ OID constants | ❌ | Confirms Kerberos-first, NTLMSSP-fallback mech list. |
 Test files of interest:
-- `tests\Opc.Classic.Dcom.Crypto.Tests\Md4Tests.cs:18-103`.
-- `tests\Opc.Classic.Dcom.Crypto.Tests\Rc4Tests.cs:17-125`.
-- `tests\Opc.Classic.Dcom.Crypto.Tests\NtlmV2ServerKeyDerivationTests.cs:51-109`.
-- `tests\Opc.Classic.Dcom.Crypto.Tests\NtlmMicTests.cs:24-116`.
-- `tests\Opc.Classic.Dcom.Tests\Tests\NtlmDefaultsTests.cs:18-56`.
-- `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs:34-134`.
-- `tests\Opc.Classic.Dcom.Kerberos.Tests\SpnegoTests.cs:15-75`.
-- `tests\Opc.Classic.Dcom.Kerberos.Tests\SpnegoNegTokenRespTests.cs:22-146`.
-- `tests\Opc.Classic.Dcom.Crypto.Tests\Fixtures\Ntlm\NtlmHandshakeFixtureTests.cs:44-97` plus `negotiate.bin`, `challenge.bin`, and `authenticate.bin` provide byte-exact MS-NLMP §4.2 fixture replay coverage.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\Md4Tests.cs:27-103`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\Rc4Tests.cs:26-125`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\NtlmV2ServerKeyDerivationTests.cs:52-190`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\NtlmMicTests.cs:25-183`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\NtlmSignatureBlockTests.cs:26-156`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\PasswordZeroizationTests.cs:37-120`.
+- `tests\Opc.Classic.Dcom.Tests\Tests\NtlmDefaultsTests.cs:19-78`.
+- `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs:35-270`.
+- `tests\Opc.Classic.Dcom.Tests\Fuzz\DecoderBoundsFuzzTests.cs:40-250`.
+- `tests\Opc.Classic.Dcom.Kerberos.Tests\SpnegoTests.cs:16-126`.
+- `tests\Opc.Classic.Dcom.Kerberos.Tests\SpnegoNegTokenRespTests.cs:23-147`.
+- `tests\Opc.Classic.Dcom.Kerberos.Tests\KerberosChannelBindingChecksumTests.cs:19-67`.
+- `tests\Opc.Classic.Dcom.Kerberos.Tests\KerberosKdcIntegrationTests.cs:39-234`.
+- `tests\Opc.Classic.Dcom.Crypto.Tests\Fixtures\Ntlm\NtlmHandshakeFixtureTests.cs:44-216` plus `negotiate.bin`, `challenge.bin`, and `authenticate.bin` provide byte-exact MS-NLMP §4.2 fixture replay coverage.
 
 ## 7. Threat model addendum
 
@@ -449,15 +454,17 @@ Residual risk:
   `NtlmAuthentication.cs:694` uses a fixed challenge for the current server
   helper, and `NtlmAuthentication.cs:842` / `NTLMKeyFactory.cs:258` use
   `Random`.
-- Secrets are not zeroized.
-  Public credentials are strings/`NetworkCredential`, and derived byte arrays
-  are not consistently cleared after use.
+- Secrets are not completely zeroized.
+  Public credentials are strings/`NetworkCredential`; password-derived pooled
+  buffers are tested for zeroization, but not every derived byte array has a
+  documented cleanup path.
 - Packet-signature comparison is not consistently fixed-time.
   `NtlmMic.cs:42`, `NtlmMessageSignature.cs:69`, and the NTLMv2 proof verifier
   use fixed-time comparison; `NTLMKeyFactory.cs:256` still uses `SequenceEqual`.
 - Token-size ceilings and fuzzing gates are not release blockers.
-  `NtlmMessage.cs:82-99` bounds security buffers, but aggregate authentication
-  token size, AV_PAIR count, and malformed PDU fuzzing should be added.
+  `NtlmMessage.cs` bounds security buffers and `DecoderBoundsFuzzTests.cs`
+  covers malformed NDR and NTLM message inputs, but aggregate authentication
+  token size, AV_PAIR count, and coverage-guided PDU fuzzing should expand.
 - CBT is opt-in per connection.
   If callers do not provide `OpcConnectData.ChannelBindings`, NTLM channel
   bindings are omitted or treated as no-TLS behavior.

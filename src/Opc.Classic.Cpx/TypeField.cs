@@ -13,7 +13,7 @@ namespace Opc.Classic.Cpx;
 /// <param name="Name">Field name. Empty when the OPCBinary field is anonymous.</param>
 /// <param name="Kind">OPCBinary field kind.</param>
 /// <param name="TypeId">Referenced type identifier for <see cref="TypeKind.StructReference"/> fields.</param>
-/// <param name="Length">Fixed field length, in bytes or characters depending on <paramref name="Kind"/>.</param>
+/// <param name="Length">Fixed field length, in bits, bytes, or characters depending on <paramref name="Kind"/>.</param>
 /// <param name="ElementCount">Fixed element count for array fields.</param>
 /// <param name="ElementCountFieldName">Sibling field that supplies a variable element count.</param>
 /// <param name="FieldTerminator">Hex-encoded field terminator for terminated arrays.</param>
@@ -43,7 +43,7 @@ public sealed record TypeField(
     /// <summary>Referenced type identifier for <see cref="TypeKind.StructReference"/> fields.</summary>
     public string? TypeId { get; init; } = Normalize(TypeId);
 
-    /// <summary>Fixed field length, in bytes or characters depending on <see cref="Kind"/>.</summary>
+    /// <summary>Fixed field length, in bits, bytes, or characters depending on <see cref="Kind"/>.</summary>
     public int? Length { get; init; } = ValidateNonNegative(Length, nameof(Length));
 
     /// <summary>Fixed element count for array fields.</summary>

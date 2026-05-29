@@ -1,11 +1,11 @@
 # Opc.Classic.Dcom.Smb
 
-Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe operations required by OPC Classic's `ncacn_np` (RPC over SMB) transport — see `docs\architecture\smb-transport.md` and `docs\decisions\2026-05-smb-implementation.md` for the project-wide rationale.
+Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe operations required by OPC Classic's `ncacn_np` (RPC over SMB) transport — see `docs\architecture\smb-transport.md` for the project-wide rationale.
 
 ## Scope
 
 | Component | Status |
-|---|---|
+| --- | --- |
 | SMB2 packet header (synchronous form) — `Smb2PacketHeader` | ✅ Read + Write |
 | NetBIOS-over-TCP framing (4-byte length prefix) — `TcpSmb2Transport` | ✅ Read + Write |
 | SMB2 NEGOTIATE (request + response) | ✅ |
@@ -20,6 +20,7 @@ Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe op
 | RPC adapter/builder — `Smb2RpcTransportAdapter`, `Smb2RpcTransportBuilder`, `SmbRpcAddress` | ✅ sync bridge for legacy `ITransport` callers |
 | NTLMSSP blob threading into SESSION_SETUP | ✅ Carrier API (`NtlmsspBlobProvider`) — actual NTLM Type 1/2/3 generation comes from `src\Opc.Classic.Dcom\rpc\Auth\` |
 | WINREG replay validation | ✅ captured request/response fixtures under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` |
+| Samba WINREG smoke | ✅ `docker\samba` fixture + `.github\workflows\samba-smoke.yml` gated by `OPC_CLASSIC_INTEGRATION_SAMBA=1` |
 | SMB2 signing (HMAC-SHA256 for SMB 2.0.2/2.1; AES-CMAC for SMB 3.x) | ✅ signs outgoing PDUs and verifies signed responses when SessionKey is supplied |
 | SMB2 encryption (AES-128-CCM/GCM for SMB 3.x) | ⏳ deferred |
 
@@ -27,7 +28,7 @@ Minimal, MIT-licensed, AOT-clean SMB2 client tightly scoped to the named-pipe op
 
 - SMB 3.x encryption (AES-128-CCM/GCM); signed sessions are supported, but encryption-required servers remain cap-h2 work.
 - Production wire-up into `Opc.Classic.Dcom.Rpc.Ncacn_Np.RpcTransport`; the adapter/builder exists, but the legacy transport still owns the default `ncacn_np` route.
-- Real-server smoke against Samba / Windows servers in CI.
+- Windows Server SMB/WINREG smoke in CI; the Samba fixture is covered by the dedicated smoke workflow.
 - Legacy `IActivation::RemoteActivation` over SMB named pipes.
 
 ## Public surface
@@ -70,21 +71,22 @@ ReadOnlyMemory<byte> rpcResponse = adapter.Transceive(rpcPduBytes);
 
 ## Specifications referenced
 
-All section references in source-file comments target the vendored Microsoft Open Specifications under `External\Docs\Win\`:
+All section references in source-file comments target the vendored Microsoft Open Specifications under `ext\private\docs\`:
 
-- `[MS-SMB2].md` — SMB 2.0/2.1/3.0/3.1.1 wire format
-- `[MS-CIFS].md` — NetBIOS-over-TCP framing
-- `[MS-RPCE].md §2.1.1.2` — RPC over SMB framing rules
-- `[MS-FSCC].md` — FSCTL codes
-- `[MS-NLMP].md` — NTLMSSP (consumed indirectly via `src\Opc.Classic.Dcom\rpc\Auth\`)
-- `[MS-ERREF].md` — NTSTATUS values
+- `MS-SMB2.md` — SMB 2.0/2.1/3.0/3.1.1 wire format
+- `MS-CIFS.md` — NetBIOS-over-TCP framing
+- `MS-RPCE.md §2.1.1.2` — RPC over SMB framing rules
+- `MS-FSCC.md` — FSCTL codes
+- `MS-NLMP.md` — NTLMSSP (consumed indirectly via `src\Opc.Classic.Dcom\rpc\Auth\`)
+- `MS-ERREF.md` — NTSTATUS values
 
 ## Testing and fixtures
 
 - `tests\Opc.Classic.Dcom.Smb.Tests\` — codec round-trip, state-machine, address parser, adapter, and mock-transport tests.
 - `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\` — captured WINREG bind/open/enumerate request-response fixtures replayed by `WinregFixtureReplayTests`.
+- `tests\Opc.Classic.Integration.Tests\Winreg\WinRegSambaSmokeTests.cs` — opt-in Samba real-server smoke used by `.github\workflows\samba-smoke.yml`.
 - `FIXTURES.md` — fixture capture/redaction guidance and current fixture inventory.
 
 ## License
 
-MIT, same as the rest of the repository. No LGPL or other reciprocal-license dependencies; see `docs\decisions\2026-05-smb-implementation.md` for the licensing rationale.
+MIT, same as the rest of the repository. No LGPL or other reciprocal-license dependencies.

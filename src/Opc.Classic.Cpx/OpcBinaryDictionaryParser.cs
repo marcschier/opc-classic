@@ -173,7 +173,7 @@ public static class OpcBinaryDictionaryParser
             "Ascii" => TypeKind.String,
             "Unicode" => TypeKind.String,
             "Boolean" => TypeKind.Boolean,
-            "BitString" => TypeKind.Blob,
+            "BitString" => TypeKind.BitString,
             "Blob" => TypeKind.Blob,
             "Guid" => TypeKind.Guid,
             "GUID" => TypeKind.Guid,

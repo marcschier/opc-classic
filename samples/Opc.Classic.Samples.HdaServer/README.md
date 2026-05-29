@@ -1,6 +1,6 @@
 # Opc.Classic Sample HDA Server
 
-Managed OPC HDA sample server mirroring the native `COM\Sample Server\Hda` historian shape with a small synthetic tag tree.
+Managed OPC HDA sample server mirroring the native `ext\samples\Sample Server\Hda` historian shape with a small synthetic tag tree.
 
 ## Tags
 

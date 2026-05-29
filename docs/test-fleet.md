@@ -12,14 +12,12 @@ The fleet contains four Windows-container targets from `docker/docker-compose.te
 ```pwsh
 # From the repo root, on a Windows host with Docker Desktop in Windows mode:
 docker network create --driver l2bridge --subnet 10.0.1.0/24 --gateway 10.0.1.1 opc-test-net
-docker compose --file docker/docker-compose.test.yml --profile interactive build
-docker/run-matrix.ps1 -OnlyManaged
+docker compose --file docker\docker-compose.test.yml --profile interactive build
+docker\run-matrix.ps1 -OnlyManaged
 ```
 
 Result: `docker/results/ctt-managed.xml` — open in a text viewer or the CTT
-report viewer. This is the `release-100-tag` gate tracked in
-[`docs/release-blockers.md`](release-blockers.md): the source/build wiring is
-in place, but the report still needs to run green on a Windows Docker host.
+report viewer.
 
 ### 2. Drive the managed server from a native C client
 
@@ -27,8 +25,8 @@ The `opc-c-client` image builds the hand-rolled DA client MVP from
 `docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
 
 ```pwsh
-docker compose --file docker/docker-compose.test.yml up -d managed-server
-docker compose --file docker/docker-compose.test.yml run --rm c-client `
+docker compose --file docker\docker-compose.test.yml up -d managed-server
+docker compose --file docker\docker-compose.test.yml run --rm c-client `
     -ProgId Opc.Classic.DaSample.1 `
     -TargetHost opc-classic-managed
 ```
@@ -40,8 +38,8 @@ The `opc-c-server` image builds the hand-rolled DA server MVP from
 be pointed at it on the same `opc-test-net` l2bridge network.
 
 ```pwsh
-docker compose --file docker/docker-compose.test.yml up -d c-server
-docker compose --file docker/docker-compose.test.yml run --rm c-client `
+docker compose --file docker\docker-compose.test.yml up -d c-server
+docker compose --file docker\docker-compose.test.yml run --rm c-client `
     -ProgId Opc.SampleServer.1 `
     -TargetHost opc-classic-c-server
 ```
@@ -108,6 +106,8 @@ docker exec opc-classic-managed netstat -ano | findstr LISTEN
 
 ## CI integration
 
+The rc.10 repository baseline outside the Windows-container gate is **0 build warnings / 0 build errors** and **2113 passed / 12 skipped / 0 failed** across 23 .NET test projects.
+
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. Inspect
 runs via:
@@ -128,6 +128,4 @@ gh run download <run-id> --name docker-test-fleet-results
 - **Build artifacts are not cached**: each CI run rebuilds the multi-GB images
   from scratch. Mitigation paths include GHCR layer caching, but this is
   not yet wired.
-- **Validation is environment-blocked**: `docker-2-cserver` and
-  `docker-3-cclient` now have C++ MVP source and project files wired into the
-  Dockerfiles, but compiling/running them still requires a Windows Docker host.
+- **Validation is environment-blocked**: the managed CTT smoke and native C server/client interop paths have source, project files, and Dockerfiles wired, but compiling/running them still requires a Windows Docker host.

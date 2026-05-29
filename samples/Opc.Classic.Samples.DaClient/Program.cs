@@ -172,6 +172,7 @@ public sealed class LoopbackDaClient : IDaServer
 
     private readonly IOPCServer _serverProxy;
     private readonly IOPCBrowseClientProxy _browseProxy;
+    private readonly IOPCCommonClientProxy _commonProxy;
     private readonly IOPCItemIOClientProxy _itemIoProxy;
     private readonly IOPCItemMgtClientProxy _itemMgtProxy;
     private readonly IOPCSyncIOClientProxy _syncIoProxy;
@@ -186,6 +187,7 @@ public sealed class LoopbackDaClient : IDaServer
         _serverProxy = serverProxy ?? throw new ArgumentNullException(nameof(serverProxy));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _browseProxy = new IOPCBrowseClientProxy(channel);
+        _commonProxy = new IOPCCommonClientProxy(channel);
         _itemIoProxy = new IOPCItemIOClientProxy(channel);
         _itemMgtProxy = new IOPCItemMgtClientProxy(channel);
         _syncIoProxy = new IOPCSyncIOClientProxy(channel);
@@ -224,6 +226,9 @@ public sealed class LoopbackDaClient : IDaServer
 
     public async Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default) =>
         await _serverProxy.GetErrorStringAsync(resultId.Code, LocaleId, cancellationToken).ConfigureAwait(false);
+
+    public Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default) =>
+        _commonProxy.SetClientNameAsync(clientName, cancellationToken);
 
     public async IAsyncEnumerable<BrowseElement> BrowseAsync(
         string itemPath,

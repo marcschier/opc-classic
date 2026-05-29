@@ -16,7 +16,7 @@ The threat model covers the security-sensitive Opc.Classic stack identified by t
 - Self-contained NTLMv2; Kerberos RC4-HMAC and AES128/256; SPNEGO with `mechListMIC`.
 - DCE/RPC and ORPC envelope handling, fragmentation, packet integrity, packet privacy, and RFC 5056/RFC 5929 channel binding tokens.
 - NDR marshaling / unmarshaling, including full OAUT VARIANT and SAFEARRAY handling.
-- OPCEnum discovery through `OpcEnumClient`.
+- OPCEnum discovery through `OpcEnumClient` and remote-registry discovery through WINREG over SMB/ncacn_np.
 
 The managed components are NativeAOT-compatible, MIT licensed, and exposed through `Opc.Classic.*` namespaces.
 
@@ -25,7 +25,7 @@ The managed components are NativeAOT-compatible, MIT licensed, and exposed throu
 - User application code that consumes or implements OPC interfaces.
 - The underlying TLS stack and certificate validation path, delegated to .NET and the hosting application.
 - Network infrastructure: routing, firewalling, KDC placement, DNS, and NTP.
-- Native OPC Foundation sample servers under `COM\` and redistributable inputs under `External\`; they are conformance references, not portable runtime surface.
+- Native OPC Foundation sample servers under `ext\samples\` and redistributable inputs under `ext\redist\`; they are conformance references, not portable runtime surface.
 
 ### 1.3 Trust boundaries
 
@@ -274,7 +274,7 @@ Kerberos packet protection is implemented by `KerberosSession` (`src\Opc.Classic
 | SR 2.1 Authorization enforcement | Restrict OPC operations to authorized identities. | **PARTIAL**: host applications can enforce policy; common server authorization hooks remain recommended. |
 | SR 3.1 Communication integrity | Detect modified RPC PDUs. | **MITIGATED** for negotiated packet integrity with NTLM or Kerberos. |
 | SR 3.8 Session integrity | Prevent session hijack/replay. | **PARTIAL**: sequence signing exists; replay cache and randomness hardening remain recommendations. |
-| SR 4.1 Information confidentiality | Protect operational data over the network. | **PARTIAL**: privacy mode is opt-in today. DCOM uses `OpcProtectionLevel.Privacy` / `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`; XML-DA relies on HTTPS with the caller-supplied `HttpClient`; SMB signing exists while SMB3 encryption remains pending. Privacy SHOULD be enabled for deployments outside hardened local-only loopback. |
+| SR 4.1 Information confidentiality | Protect operational data over the network. | **PARTIAL**: privacy mode is opt-in today. DCOM uses `OpcProtectionLevel.Privacy` / `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`; XML-DA relies on HTTPS with the caller-supplied `HttpClient`; SMB3 encryption is implemented for encrypted named-pipe sessions. Privacy SHOULD be enabled for deployments outside hardened local-only loopback. |
 | SR 5.2 Zone boundary protection | Segment OPC Classic traffic. | Deployment responsibility; out of scope for library code. |
 | SR 7.1 Denial-of-service protection | Timeouts, quotas, malformed input handling. | **PARTIAL**: cancellation, decoder quotas, and malformed-input rejection tests exist; broader coverage-guided fuzzing remains recommended. |
 
@@ -283,11 +283,11 @@ Kerberos packet protection is implemented by `KerberosSession` (`src\Opc.Classic
 | Transport | Current default | Recommended privacy path |
 | --- | --- | --- |
 | DCOM/TCP client | `OpcConnectData` defaults to `OpcAuthMode.NtlmV2` and `OpcProtectionLevel.Integrity`, so PDUs are signed but not encrypted. | Use `OpcConnectData.WithNtlmV2(..., OpcProtectionLevel.Privacy)` or `OpcConnectData.WithKerberos(..., OpcProtectionLevel.Privacy)` so DCE/RPC uses `RPC_C_AUTHN_LEVEL_PKT_PRIVACY`. |
-| DCOM/TCP managed server listener | DA/AE/HDA hosted samples expose `ListenAddress` only; the current `RpcServerConnectionProcessor` is anonymous-only and rejects authenticated PDUs. | Do not expose the managed listener outside local-only or disposable interop rigs until listener authentication/privacy policy is available; production hosts should require packet privacy at the DCOM listener or gateway. |
-| DCOM/SMB named pipe | `ncacn_np` is not wired into the default RPC transport. The SMB2 client signs when signing is negotiated and the caller supplies the NTLM/Kerberos SessionKey; SMB3 encryption is pending. | Require SMB signing in server policy today. Require SMB encryption only after the cap-h2 SMB3 encryption work is available and validated for the target server. |
+| DCOM/TCP managed server listener | DA/AE/HDA/CTT/Security hosted samples expose `ListenAddress`; `RpcServerConnectionProcessor` accepts authenticated PDUs only for dispatchers that consume `RpcRequestContext` and otherwise rejects them. | Do not expose the managed listener outside local-only or disposable interop rigs until listener authentication/privacy policy is available; production hosts should require packet privacy at the DCOM listener or gateway. |
+| DCOM/SMB named pipe | `ncacn_np` is available through `NcacnNpTransport` and the focused SMB2 client. The SMB2 client signs when signing is negotiated and the caller supplies the NTLM/Kerberos SessionKey; SMB3 AES-128-CCM/GCM encryption is implemented for encrypted sessions. | Require SMB signing in server policy and require SMB encryption for confidentiality-sensitive named-pipe deployments after validating the target server's dialect and encryption policy. |
 | XML-DA/HTTP | `HttpXmlDaClient` uses the caller-owned `HttpClient`; confidentiality depends on the supplied endpoint URI, TLS handler, and SOAP/security configuration. | Use `https://` endpoints, validate TLS, configure client credentials on `HttpClient`, and add WS-Security where the XML-DA server requires message-level security. |
 
-Samples audit: `samples\Opc.Classic.Samples.DaClient`, `AeClient`, and `HdaClient` use `NoOpAuthContext` for their TCP sample path; the DA/AE/HDA managed server samples use the anonymous-only listener above. These are interop/demo defaults, not production defaults. Production deployments should opt into privacy per [cookbook 07](../cookbook/07-enabling-packet-privacy.md).
+Samples audit: `samples\Opc.Classic.Samples.DaClient`, `AeClient`, and `HdaClient` use `NoOpAuthContext` for their TCP sample path; the DA/AE/HDA/CTT managed server samples and the shipped OPC Security reference sample (`samples\Opc.Classic.Samples.OpcSecurityServer`) use the demo managed listener posture above. These are interop/demo defaults, not production defaults. Production deployments should opt into privacy per [cookbook 07](../cookbook/07-enabling-packet-privacy.md).
 
 ### 6.4 Cryptographic and protocol references
 
@@ -315,4 +315,4 @@ Samples audit: `samples\Opc.Classic.Samples.DaClient`, `AeClient`, and `HdaClien
 
 - STRIDE flow rows: **7 MITIGATED**, **17 PARTIAL**, **0 NOT MITIGATED**.
 - Highest-priority open recommendations: server authorization policy (R1), secret lifetime/zeroization (R3), NTLM randomness (R4), constant-time comparisons (R5), and independent crypto review (R9).
-- Security posture: NTLMv2, Kerberos/SPNEGO, CBT, NTLM MIC, SPNEGO `mechListMIC`, ORPC envelope handling, full VARIANT handling, IRemoteSCMActivator v5.6 hosting, Windows SCM CCW activation, OPCEnum discovery, and Kerberos GSS packet protection are present; deployment policy and audit controls remain the main hardening work.
+- Security posture: NTLMv2, Kerberos/SPNEGO, CBT, NTLM MIC, SPNEGO `mechListMIC`, ORPC envelope handling, full VARIANT handling, IRemoteSCMActivator v5.6 hosting, legacy IActivation, Windows SCM CCW activation, OPCEnum and WINREG discovery, SMB signing/encryption, object-IPID dispatch, and Kerberos GSS packet protection are present; deployment policy and audit controls remain the main hardening work.

@@ -48,9 +48,14 @@ public static class OpcBinaryDecoder
     private static ComplexValue DecodeValue(ref OpcBinarySpanReader reader, TypeDescription type, TypeDictionary? dictionary)
     {
         var fields = new Dictionary<string, object?>(StringComparer.Ordinal);
-        foreach (var field in type.Fields)
+        for (var i = 0; i < type.Fields.Count; i++)
         {
+            var field = type.Fields[i];
             fields[field.Name] = DecodeField(ref reader, type, field, dictionary, fields);
+            if (field.Kind == TypeKind.BitString && (i == type.Fields.Count - 1 || type.Fields[i + 1].Kind != TypeKind.BitString))
+            {
+                reader.AlignToByte();
+            }
         }
 
         return new ComplexValue
@@ -70,6 +75,11 @@ public static class OpcBinaryDecoder
         if (field.Kind == TypeKind.String)
         {
             return DecodeString(ref reader, type, field, dictionary, decodedFields);
+        }
+
+        if (field.Kind == TypeKind.BitString)
+        {
+            return DecodeBitString(ref reader, field, decodedFields);
         }
 
         if (field.Kind == TypeKind.Blob)
@@ -161,6 +171,12 @@ public static class OpcBinaryDecoder
         return (int)DecodePrimitive(ref reader, TypeKind.Int32, OpcBinaryCodecUtilities.GetByteOrder(type, lengthField, dictionary))!;
     }
 
+    private static byte[] DecodeBitString(
+        ref OpcBinarySpanReader reader,
+        TypeField field,
+        IReadOnlyDictionary<string, object?> decodedFields) =>
+        reader.ReadBits(GetBitCount(field, decodedFields));
+
     private static byte[] DecodeBlob(
         ref OpcBinarySpanReader reader,
         TypeDescription type,
@@ -187,6 +203,17 @@ public static class OpcBinaryDecoder
         var byteOrder = OpcBinaryCodecUtilities.GetByteOrder(type, field, dictionary);
         var length = (int)DecodePrimitive(ref reader, TypeKind.Int32, byteOrder)!;
         return reader.Read(length).ToArray();
+    }
+
+    private static int GetBitCount(TypeField field, IReadOnlyDictionary<string, object?> decodedFields)
+    {
+        if (field.Length is not { } bitLength)
+        {
+            throw new InvalidOperationException($"BitString field '{field.Name}' must declare a Length in bits.");
+        }
+
+        var elementCount = OpcBinaryCodecUtilities.GetElementCount(field, decodedFields) ?? 1;
+        return checked(bitLength * elementCount);
     }
 
     private static object DecodePrimitive(ref OpcBinarySpanReader reader, TypeKind kind, ByteOrder byteOrder) =>
@@ -226,19 +253,39 @@ public static class OpcBinaryDecoder
             _ => throw new NotSupportedException($"Type kind '{kind}' is not supported by the OPCBinary decoder."),
         };
 
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
     private ref struct OpcBinarySpanReader
     {
         private ReadOnlySpan<byte> _remaining;
+        private int _bitOffset;
 
         public OpcBinarySpanReader(ReadOnlySpan<byte> data)
         {
             _remaining = data;
+            _bitOffset = 0;
         }
 
-        public bool End => _remaining.IsEmpty;
+        public bool End => _remaining.IsEmpty && _bitOffset == 0;
+
+        public void AlignToByte()
+        {
+            if (_bitOffset == 0)
+            {
+                return;
+            }
+
+            if (_remaining.IsEmpty)
+            {
+                throw new FormatException("Unexpected end of OPCBinary payload.");
+            }
+
+            _remaining = _remaining[1..];
+            _bitOffset = 0;
+        }
 
         public byte ReadByte()
         {
+            EnsureByteAligned();
             if (_remaining.IsEmpty)
             {
                 throw new FormatException("Unexpected end of OPCBinary payload.");
@@ -251,6 +298,7 @@ public static class OpcBinaryDecoder
 
         public ReadOnlySpan<byte> Read(int byteCount)
         {
+            EnsureByteAligned();
             if (byteCount < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(byteCount), byteCount, "Byte count cannot be negative.");
@@ -266,8 +314,41 @@ public static class OpcBinaryDecoder
             return value;
         }
 
+        public byte[] ReadBits(int bitCount)
+        {
+            if (bitCount < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bitCount), bitCount, "Bit count cannot be negative.");
+            }
+
+            var bytes = new byte[(bitCount + 7) / 8];
+            for (var bitIndex = 0; bitIndex < bitCount; bitIndex++)
+            {
+                if (_remaining.IsEmpty)
+                {
+                    throw new FormatException("Unexpected end of OPCBinary payload.");
+                }
+
+                var bit = (_remaining[0] >> (7 - _bitOffset)) & 1;
+                if (bit != 0)
+                {
+                    bytes[bitIndex / 8] |= (byte)(1 << (7 - (bitIndex % 8)));
+                }
+
+                _bitOffset++;
+                if (_bitOffset == 8)
+                {
+                    _remaining = _remaining[1..];
+                    _bitOffset = 0;
+                }
+            }
+
+            return bytes;
+        }
+
         public ReadOnlySpan<byte> ReadUntil(ReadOnlySpan<byte> terminator, bool consumeTerminator)
         {
+            EnsureByteAligned();
             if (terminator.IsEmpty)
             {
                 throw new FormatException("Field terminator cannot be empty.");
@@ -282,6 +363,14 @@ public static class OpcBinaryDecoder
             var value = _remaining[..index];
             _remaining = _remaining[(index + (consumeTerminator ? terminator.Length : 0))..];
             return value;
+        }
+
+        private readonly void EnsureByteAligned()
+        {
+            if (_bitOffset != 0)
+            {
+                throw new FormatException("OPCBinary byte-aligned field encountered before BitString padding was consumed.");
+            }
         }
     }
 }

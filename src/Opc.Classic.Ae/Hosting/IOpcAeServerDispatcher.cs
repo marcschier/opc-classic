@@ -38,6 +38,79 @@ public interface IOpcAeServerDispatcher
         CancellationToken cancellationToken = default) =>
         throw NotImplemented(out revisedBufferTime, out revisedMaxSize);
 
+    /// <summary>Returns event category IDs and descriptions.</summary>
+    Task QueryEventCategoriesAsync(
+        int eventType,
+        out int[] eventCategories,
+        out string[] eventCategoryDescriptions,
+        CancellationToken cancellationToken = default) =>
+        throw NotImplemented(out eventCategories, out eventCategoryDescriptions);
+
+    /// <summary>Returns condition names for an event category.</summary>
+    Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Returns sub-condition names for a condition.</summary>
+    Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Returns condition names for a source.</summary>
+    Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Returns event attribute IDs, descriptions, and VARIANT types.</summary>
+    Task QueryEventAttributesAsync(
+        int eventCategory,
+        out int[] attributeIds,
+        out string[] attributeDescriptions,
+        out ushort[] attributeTypes,
+        CancellationToken cancellationToken = default) =>
+        throw NotImplemented(out attributeIds, out attributeDescriptions, out attributeTypes);
+
+    /// <summary>Maps event attributes to DA item identifiers.</summary>
+    Task TranslateToItemIDsAsync(
+        string source,
+        int eventCategory,
+        string conditionName,
+        string subconditionName,
+        int[] associatedAttributeIds,
+        out string[] attributeItemIds,
+        out string[] nodeNames,
+        out Guid[] classIds,
+        CancellationToken cancellationToken = default) =>
+        throw NotImplemented(out attributeItemIds, out nodeNames, out classIds);
+
+    /// <summary>Returns a condition-state snapshot.</summary>
+    Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Enables conditions by area.</summary>
+    Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Enables conditions by source.</summary>
+    Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Disables conditions by area.</summary>
+    Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Disables conditions by source.</summary>
+    Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
+    /// <summary>Acknowledges conditions and returns per-event HRESULTs.</summary>
+    Task<int[]> AckConditionAsync(
+        string acknowledgerId,
+        string comment,
+        long[] activeTimes,
+        int[] cookies,
+        string[] sources,
+        string[] conditionNames,
+        CancellationToken cancellationToken = default) =>
+        throw new OpcException(OpcResultId.NotImplemented);
+
     /// <summary>Registers a client <c>IOPCEventSink</c> for a subscription connection point.</summary>
     Task<int> AdviseEventSinkAsync(IOPCEventSubscriptionMgt subscription, IOPCEventSink sink, CancellationToken cancellationToken = default)
     {
@@ -79,6 +152,14 @@ public interface IOpcAeServerDispatcher
     {
         value1 = default!;
         value2 = default!;
+        return new OpcException(OpcResultId.NotImplemented);
+    }
+
+    private static OpcException NotImplemented<T1, T2, T3>(out T1 value1, out T2 value2, out T3 value3)
+    {
+        value1 = default!;
+        value2 = default!;
+        value3 = default!;
         return new OpcException(OpcResultId.NotImplemented);
     }
 }

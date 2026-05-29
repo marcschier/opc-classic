@@ -8,7 +8,7 @@
 namespace Opc.Classic.Hda;
 
 /// <summary>
-/// OPC HDA 1.x HRESULT constants from Appendix C / <c>External\Include\OpcHda_Error.h</c>.
+/// OPC HDA 1.x HRESULT constants from Appendix C / <c>ext\inc\OpcHda_Error.h</c>.
 /// </summary>
 /// <remarks>
 /// The OPC Foundation header names these <c>OPC_E_*</c>/<c>OPC_S_*</c>. This type exposes

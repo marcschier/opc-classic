@@ -39,14 +39,19 @@ public static class OpcBinaryEncoder
 
     private static void EncodeValue(OpcBinaryBufferWriter writer, ComplexValue value, TypeDescription type, TypeDictionary? dictionary)
     {
-        foreach (var field in type.Fields)
+        for (var i = 0; i < type.Fields.Count; i++)
         {
+            var field = type.Fields[i];
             if (!value.Fields.TryGetValue(field.Name, out var rawValue))
             {
                 throw new KeyNotFoundException($"Complex value is missing field '{field.Name}'.");
             }
 
             EncodeField(writer, rawValue, value.Fields, type, field, dictionary);
+            if (field.Kind == TypeKind.BitString && (i == type.Fields.Count - 1 || type.Fields[i + 1].Kind != TypeKind.BitString))
+            {
+                writer.AlignToByte();
+            }
         }
     }
 
@@ -61,6 +66,12 @@ public static class OpcBinaryEncoder
         if (field.Kind == TypeKind.String)
         {
             EncodeString(writer, rawValue, containingFields, type, field, dictionary);
+            return;
+        }
+
+        if (field.Kind == TypeKind.BitString)
+        {
+            EncodeBitString(writer, rawValue, containingFields, field);
             return;
         }
 
@@ -142,6 +153,16 @@ public static class OpcBinaryEncoder
         writer.Write(bytes);
     }
 
+    private static void EncodeBitString(
+        OpcBinaryBufferWriter writer,
+        object? rawValue,
+        IReadOnlyDictionary<string, object?> containingFields,
+        TypeField field)
+    {
+        var bytes = ToByteArray(rawValue, field.Name);
+        writer.WriteBits(bytes, GetBitCount(field, containingFields), field.Name);
+    }
+
     private static void EncodeBlob(
         OpcBinaryBufferWriter writer,
         object? rawValue,
@@ -150,13 +171,7 @@ public static class OpcBinaryEncoder
         TypeField field,
         TypeDictionary? dictionary)
     {
-        var bytes = rawValue switch
-        {
-            byte[] typed => typed,
-            ReadOnlyMemory<byte> typed => typed.ToArray(),
-            Memory<byte> typed => typed.ToArray(),
-            _ => throw new InvalidCastException($"Field '{field.Name}' cannot be converted to a byte array."),
-        };
+        var bytes = ToByteArray(rawValue, field.Name);
 
         if (field.Length is { } fixedByteLength)
         {
@@ -180,6 +195,26 @@ public static class OpcBinaryEncoder
         EncodePrimitive(writer, TypeKind.Int32, bytes.Length, OpcBinaryCodecUtilities.GetByteOrder(type, field, dictionary));
         writer.Write(bytes);
     }
+
+    private static int GetBitCount(TypeField field, IReadOnlyDictionary<string, object?> containingFields)
+    {
+        if (field.Length is not { } bitLength)
+        {
+            throw new InvalidOperationException($"BitString field '{field.Name}' must declare a Length in bits.");
+        }
+
+        var elementCount = OpcBinaryCodecUtilities.GetElementCount(field, containingFields) ?? 1;
+        return checked(bitLength * elementCount);
+    }
+
+    private static byte[] ToByteArray(object? rawValue, string fieldName) =>
+        rawValue switch
+        {
+            byte[] typed => typed,
+            ReadOnlyMemory<byte> typed => typed.ToArray(),
+            Memory<byte> typed => typed.ToArray(),
+            _ => throw new InvalidCastException($"Field '{fieldName}' cannot be converted to a byte array."),
+        };
 
     private static void EncodePrimitive(OpcBinaryBufferWriter writer, TypeKind kind, object? value, ByteOrder byteOrder)
     {
@@ -428,19 +463,63 @@ public static class OpcBinaryEncoder
     private sealed class OpcBinaryBufferWriter
     {
         private readonly List<byte> _bytes = new();
+        private int _bitOffset;
 
-        public void WriteByte(byte value) => _bytes.Add(value);
+        public void AlignToByte() => _bitOffset = 0;
+
+        public void WriteByte(byte value)
+        {
+            EnsureByteAligned();
+            _bytes.Add(value);
+        }
 
         public void Write(ReadOnlySpan<byte> bytes)
         {
+            EnsureByteAligned();
             foreach (var value in bytes)
             {
                 _bytes.Add(value);
             }
         }
 
+        public void WriteBits(ReadOnlySpan<byte> bytes, int bitCount, string fieldName)
+        {
+            if (bitCount < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bitCount), bitCount, "Bit count cannot be negative.");
+            }
+
+            var requiredBytes = (bitCount + 7) / 8;
+            if (bytes.Length > requiredBytes)
+            {
+                throw new InvalidOperationException($"Encoded value for field '{fieldName}' exceeds its fixed bit length.");
+            }
+
+            for (var bitIndex = 0; bitIndex < bitCount; bitIndex++)
+            {
+                if (_bitOffset == 0)
+                {
+                    _bytes.Add(0);
+                }
+
+                var sourceByte = bitIndex / 8 < bytes.Length ? bytes[bitIndex / 8] : (byte)0;
+                var bit = (sourceByte >> (7 - (bitIndex % 8))) & 1;
+                if (bit != 0)
+                {
+                    _bytes[^1] |= (byte)(1 << (7 - _bitOffset));
+                }
+
+                _bitOffset++;
+                if (_bitOffset == 8)
+                {
+                    _bitOffset = 0;
+                }
+            }
+        }
+
         public void WriteZeros(int count)
         {
+            EnsureByteAligned();
             for (var i = 0; i < count; i++)
             {
                 _bytes.Add(0);
@@ -448,5 +527,13 @@ public static class OpcBinaryEncoder
         }
 
         public byte[] ToArray() => _bytes.ToArray();
+
+        private void EnsureByteAligned()
+        {
+            if (_bitOffset != 0)
+            {
+                throw new InvalidOperationException("OPCBinary byte-aligned field was written before BitString padding was completed.");
+            }
+        }
     }
 }

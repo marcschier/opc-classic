@@ -8,8 +8,7 @@
 #   2. runtime stage: servercore + the built binary + /RegServer on boot
 #
 # The build stage compiles a hand-rolled native OPC DA smoke server from
-# docker/opc-c-server/build/opc-sample-server.cpp. The older OPC Foundation
-# Batch sample conversion remains documented as a future full-sample route.
+# docker/opc-c-server/build/opc-sample-server.cpp.
 
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-windowsservercore-ltsc2022 AS build
 
@@ -17,7 +16,7 @@ SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';
 
 WORKDIR C:/build
 
-COPY External/Include C:/build/External/Include
+COPY ext/inc C:/build/ext/inc
 COPY docker/opc-c-server/build C:/build/build
 
 RUN New-Item -ItemType Directory -Path C:/out -Force | Out-Null; `

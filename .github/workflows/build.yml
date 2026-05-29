@@ -179,7 +179,7 @@ jobs:
         run: |
           # The OPC Foundation Core Components installer is a separately downloaded prerequisite.
           # When present, it installs opcproxy.dll/opcenum.exe for OPC Classic COM marshalling.
-          $installer = "$env:GITHUB_WORKSPACE\External\Bin\OpcCoreComponents.exe"
+          $installer = "$env:GITHUB_WORKSPACE\ext\Bin\OpcCoreComponents.exe"
           if (Test-Path $installer) {
             Start-Process -FilePath $installer -ArgumentList "/S" -Wait -NoNewWindow
             Write-Host "OPC Foundation Core Components installed"
@@ -195,11 +195,11 @@ jobs:
           $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
           if (-not $msbuild) { Write-Warning "MSBuild missing"; exit 0 }
 
-          $solutionDir = "$env:GITHUB_WORKSPACE\COM\"
+          $solutionDir = "$env:GITHUB_WORKSPACE\ext\samples\"
           $projects = @(
-            "$env:GITHUB_WORKSPACE\COM\Sample Server\Da\Server\OpcDaServer.vcxproj",
-            "$env:GITHUB_WORKSPACE\COM\Sample Server\Ae\OpcAeServer.vcxproj",
-            "$env:GITHUB_WORKSPACE\COM\Sample Server\Hda\Server\OpcHdaServer.vcxproj"
+            "$env:GITHUB_WORKSPACE\ext\samples\Sample Server\Da\Server\OpcDaServer.vcxproj",
+            "$env:GITHUB_WORKSPACE\ext\samples\Sample Server\Ae\OpcAeServer.vcxproj",
+            "$env:GITHUB_WORKSPACE\ext\samples\Sample Server\Hda\Server\OpcHdaServer.vcxproj"
           )
 
           foreach ($project in $projects) {
@@ -224,11 +224,11 @@ jobs:
       - name: Register native COM sample servers
         shell: pwsh
         run: |
-          $regCmd = "$env:GITHUB_WORKSPACE\COM\regserver.cmd"
+          $regCmd = "$env:GITHUB_WORKSPACE\ext\samples\regserver.cmd"
           if (Test-Path $regCmd) {
             & cmd /c $regCmd
           } else {
-            Write-Warning "COM/regserver.cmd not found - skipping registration"
+            Write-Warning "ext/samples/regserver.cmd not found - skipping registration"
           }
         if: success()
 

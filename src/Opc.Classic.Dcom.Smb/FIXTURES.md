@@ -4,7 +4,7 @@ This directory's tests validate the SMB2 codec byte-for-byte against the publish
 
 ## (1) Synthetic fixtures — `Smb2WireFixtureTests.cs`
 
-Hand-built byte sequences derived from the field layout tables in `External\Docs\Win\[MS-SMB2].md` and `External\Docs\Win\[MS-CIFS].md`. Each test asserts that the codec produces (or accepts) the exact byte layout documented by the spec. These tests have no external infrastructure dependency and run on every CI matrix entry (Ubuntu / macOS / Windows).
+Hand-built byte sequences derived from the field layout tables in `ext\private\docs\MS-SMB2.md` and `ext\private\docs\MS-CIFS.md`. Each test asserts that the codec produces (or accepts) the exact byte layout documented by the spec. These tests have no external infrastructure dependency and run on every CI matrix entry (Ubuntu / macOS / Windows).
 
 ## (2) Captured WINREG fixtures — capture and replay
 
@@ -15,6 +15,8 @@ Captured DCE/RPC-over-named-pipe bytes live under `tests\Opc.Classic.Dcom.Smb.Te
 - `openlocalmachine_response.bin`
 - `enumkey_request.bin`
 - `enumkey_response.bin`
+
+A readable SMB2 negotiate golden fixture also lives at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\negotiate-smb2-1.txt` for the PCAP replay harness.
 
 `WinregFixtureReplayTests` loads these files through `MockWinregServer.ReadFixture(...)`, replays the bind/request/response sequence, canonicalizes call IDs and NDR referents, and asserts that the managed `RegistryStub` marshals/unmarshals the same bytes.
 

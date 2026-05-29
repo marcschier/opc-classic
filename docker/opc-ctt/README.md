@@ -1,6 +1,6 @@
 # `opc-classic/ctt` — OPC Compliance Test Tool container
 
-Bakes the six vendored OPC CTT MSIs (`External/CTT/`, ~13 MB total) into a
+Bakes the six vendored OPC CTT MSIs (`ext/private/ctt/`, ~13 MB total) into a
 Windows Server Core 2022 image. The container's `ENTRYPOINT` is a small
 PowerShell shim (`run-ctt.ps1`) that invokes `OpcCtt.exe` against a target
 ProgID + remote host and emits an XML conformance report.
@@ -12,7 +12,7 @@ cd <repo-root>
 docker build --file docker/opc-ctt/Dockerfile --tag opc-classic/ctt .
 ```
 
-The build copies `External/CTT/` into the image (~13 MB MSIs), runs six
+The build copies `ext/private/ctt/` into the image (~13 MB MSIs), runs six
 `msiexec /quiet /norestart` installs in spec-mandated order (Common Modules
 first, then DA 2.05a → DA 3.0 → AE → HDA → XML-DA), imports
 [`dcom-test-acls.reg`](dcom-test-acls.reg) to relax DCOM ACLs for anonymous
@@ -61,7 +61,7 @@ in the shim is currently the best-guess invocation).
 ## Configuration knobs
 
 | Parameter | Default | Notes |
-|---|---|---|
+| --- | --- | --- |
 | `-ProgId` | _required_ | e.g. `Opc.Classic.DaSample.1` |
 | `-TargetHost` | (local) | Hostname or IP of the container hosting the server |
 | `-ScriptPath` | (none) | Path to a CTT script bundle (XML) |

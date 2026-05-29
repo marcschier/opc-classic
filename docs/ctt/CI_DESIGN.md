@@ -6,22 +6,20 @@ wired up to run the OPC Compliance Test Tool (CTT) against
 It also records how that diagnostic runner relates to the Windows Docker test
 fleet used for the release smoke gate.
 
-For adopter-facing usage (how to register the server, how to run CTT
-locally), see `docs\OPC_CTT_CONFORMANCE.md`. For release-blocker tracking, see
-`docs\release-blockers.md` Gate 1: OPC CTT smoke green.
+rc.10 validation baseline: `dotnet build Opc.Classic.slnx` is 0 warnings / 0 errors, and the 23 .NET test projects are green at 2113 passed / 12 skipped / 0 failed.
 
 ## CTT version + provenance
 
 | Component | Version | Source |
-|---|---|---|
-| OPC CTT Common Modules (Test Tool shell) | v2.0.15 | `External/CTT/Test Tool v2.0.15/` |
-| OPC CTT DataAccess 2.05a Plugin | v2.0.22 | `External/CTT/Data Access 2.05a Plugin v2.0.22/` |
-| OPC CTT DataAccess 3.0 Plugin | v1.0.18 | `External/CTT/Data Access 3.0 Plugin v1.0.18/` |
-| OPC CTT Alarms & Events Plugin | v1.0.14 | `External/CTT/Alarm and Events Plugin v1.0.14/` |
-| OPC CTT Historical Data Plugin | v1.0.8 | `External/CTT/Historical Data Plugin v1.0.8/` |
-| OPC CTT XML-DA Plugin | v1.0.8 | `External/CTT/XML-DA Plugin v1.0.8/` |
+| --- | --- | --- |
+| OPC CTT Common Modules (Test Tool shell) | v2.0.15 | `ext/private/ctt/` |
+| OPC CTT DataAccess 2.05a Plugin | v2.0.22 | `ext/private/ctt/` |
+| OPC CTT DataAccess 3.0 Plugin | v1.0.18 | `ext/private/ctt/` |
+| OPC CTT Alarms & Events Plugin | v1.0.14 | `ext/private/ctt/` |
+| OPC CTT Historical Data Plugin | v1.0.8 | `ext/private/ctt/` |
+| OPC CTT XML-DA Plugin | v1.0.8 | `ext/private/ctt/` |
 
-All six MSIs are vendored in the repository (`External/CTT/`, ~13 MB total)
+All six MSIs are vendored in the repository (`ext/private/ctt/`, ~13 MB total)
 and tracked in git. No external download is required at CI time.
 
 ## Install order
@@ -65,7 +63,7 @@ any 64-bit OPC client can discover the server.
 For local developer runs the trade-off inverts:
 `--register --registry-hive=hkcu` does not require elevation but only the
 calling user's session can use the registration. See
-`docs\OPC_CTT_CONFORMANCE.md` for the local-run cookbook.
+`docs\CONFORMANCE.md#opc-ctt-conformance` for the local-run cookbook.
 
 ## Current scope: diagnostic runner vs release gate
 
@@ -78,15 +76,16 @@ unregisters the server.
 `-Embedding`, it registers `ComClassObjectRegistrar.RegisterClassObject` with a
 `CreateInstance` callback that returns `OpcDaServerCcw` for `IID_IUnknown` and
 `IOPCServer`; DA group, callback, and enumerator CCWs cover the expanded
-Windows activation path. Unsupported interfaces or incomplete methods still
-surface as `E_NOINTERFACE` or `E_NOTIMPL` until the remaining DA surface is
-completed.
+Windows activation path. rc.10 DA integration coverage includes full lifecycle,
+VEU-info enumerator attributes, and browse continuation points, so remaining
+CTT gaps should be treated as diagnostic findings rather than the original stub
+limitation.
 
-The release blocker is tracked separately as `docs\release-blockers.md` Gate 1:
-OPC CTT smoke green. That gate runs through `docker\run-matrix.ps1 -OnlyManaged`
-and `docker\docker-compose.test.yml` under
-`.github\workflows\docker-test-fleet.yml`; only a green
-`docker\results\ctt-managed.xml` should satisfy the gate.
+## Related release gates
+
+`.github\workflows\build.yml` is the primary build/test gate. It restores and builds `Opc.Classic.slnx` on Ubuntu, macOS, and Windows for Debug and Release, runs each `tests\**\*.csproj` with coverage, verifies coverage thresholds, runs `dotnet format --verify-no-changes`, publishes the NativeAOT canary on Ubuntu and Windows, and runs the Windows conformance job on `main` or manual dispatch.
+
+`.github\workflows\docker-test-fleet.yml` is a Windows-container smoke. It runs manually or monthly, switches the runner to Windows containers, executes `docker\run-matrix.ps1 -SkipBuild:$false -OnlyManaged`, and uploads `docker\results\*.xml`.
 
 ## Unknowns / TBDs
 
@@ -120,9 +119,9 @@ MSIs are vendored.
 ## Related files
 
 - `.github\workflows\opc-ctt.yml` — standalone diagnostic workflow
+- `.github\workflows\build.yml` — cross-platform build/test/coverage, format, AOT canary, and Windows conformance gate
 - `.github\workflows\docker-test-fleet.yml` — Windows-container CTT smoke matrix
 - `docker\docker-compose.test.yml` and `docker\run-matrix.ps1` — four-container fleet orchestration
-- `docs\release-blockers.md` — Gate 1 release-smoke status
 - `samples\Opc.Classic.Samples.CttServer\README.md` — sample-level CLI docs
 - `src\Opc.Classic.Hosting\Windows\README.md` — registration plumbing reference
-- `docs\OPC_CTT_CONFORMANCE.md` — adopter-facing usage docs
+- `docs\CONFORMANCE.md#opc-ctt-conformance` — adopter-facing usage docs

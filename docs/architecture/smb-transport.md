@@ -5,66 +5,57 @@ sequences interchangeably depending on the era of the client and the available
 server:
 
 | Sequence | Carrier | Endpoint | Used by |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `ncacn_ip_tcp` | TCP/IP | Port 135 (endpoint mapper) + dynamic | Modern `IRemoteSCMActivator` (DCOM v5.6+, XP SP2+) |
-| `ncacn_np` | SMB | `\PIPE\<name>` | Legacy `IActivation`, all `[MS-RRP]` WINREG (`\PIPE\winreg`), `[MS-EVEN]` event log (`\PIPE\eventlog`), etc. |
+| `ncacn_np` | SMB | `\PIPE\<name>` | Legacy `IActivation`, all `[MS-RRP]` WINREG (`\PIPE\winreg`), event-log / print-spooler / SAM / workstation named-pipe RPC services, etc. |
 
-This repository implements `ncacn_ip_tcp` end-to-end. The legacy
-`ncacn_np` path under `src\Opc.Classic.Dcom\rpc\ncacn_np\RpcTransport.cs`
-remains **scaffolded but inert** on every platform:
+This repository implements `ncacn_ip_tcp` end-to-end and now ships the focused
+`ncacn_np` client path required by OPC Classic discovery and legacy activation.
+The legacy `src\Opc.Classic.Dcom\rpc\ncacn_np\RpcTransport.cs` and local
+SharpCifs compatibility shims still exist for older call sites, but the active
+wire path is `src\Opc.Classic.Dcom.Smb\` plus
+`src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs`.
 
-- It parses `ncacn_np:host[\PIPE\name]` addresses correctly.
-- `src\Opc.Classic.Dcom\Common\Ntlm\SmbNamedPipe.cs` is a stub: it wraps two
-  `MemoryStream`s and performs no network I/O.
-- `src\Opc.Classic.Dcom\Common\Ntlm\SmbSession.cs::Logon` is a no-op.
-- The local `SharpCifs.*` namespace types are minimal compile-time shims left
-  over from the original JCIFS/SharpCifs.Std port. The protocol layer was
-  intentionally removed during the AOT migration (see
-  `src\Opc.Classic.Dcom\Common\SharpCifsBoundary.md`).
+The SMB path includes `Smb2Connection`, `TcpSmb2Transport`, `Smb2NamedPipe`,
+`Smb2RpcTransportAdapter`, SMB2 signing (`Smb2Signer`), SMB 3.x encryption
+(`Smb2Crypter`), WINREG client coverage, and the `ncacn_np` transport wire-up.
+WINREG round-trips against a Samba container are covered end-to-end in
+`tests\Opc.Classic.Integration.Tests\Winreg\`, and byte-level fixture replay
+lives under `tests\Opc.Classic.Dcom.Smb.Tests\Fixtures\Winreg\`.
 
-In parallel, Phase 1 of the chosen replacement now exists in
-`src\Opc.Classic.Dcom.Smb\`: `Smb2Connection`, `TcpSmb2Transport`,
-`Smb2NamedPipe`, and `Smb2RpcTransportAdapter` implement the focused SMB2
-client surface and the sync bridge needed by the legacy RPC transport. That
-project is not yet wired into `RpcTransport`, and SMB signing/encryption plus
-real-server WINREG smoke coverage remain follow-up work.
+Consumers still handle remote-registry failures gracefully:
+`src\Opc.Classic.Discovery\RemoteRegistryEnum.cs` logs `"Remote-registry
+enumeration failed for host {Host}; returning no OPC servers. Consider using
+OpcEnumClient (OPC.ServerList.1) instead."` and returns an empty list.
 
-Consumers handle the stub gracefully: `src\Opc.Classic.Discovery\RemoteRegistryEnum.cs`
-logs `"Remote-registry enumeration failed for host {Host}; returning no OPC
-servers. Consider using OpcEnumClient (OPC.ServerList.1) instead."` and returns
-an empty list.
+## Remaining limits
 
-## What is NOT supported today
-
-- **WINREG-based discovery** (browsing a remote host's
-  `HKLM\SOFTWARE\Classes` to find OPC servers, used by `RemoteRegistryEnum`).
-- **Legacy DCOM activation** through `IActivation::RemoteActivation`
-  (UUID `4d9f4ab8-7d1c-11cf-861e-0020af6e7c57`) over `ncacn_np`. The codebase
-  does not implement the `IActivation` interface even on the TCP path.
-- Any other named-pipe RPC service (`[MS-EVEN]`, `[MS-RPRN]`, `[MS-WKST]`,
-  `[MS-SAMR]`, etc.). None of these are required by OPC Classic but a wired
-  `ncacn_np` transport would make them addressable.
+- OPC Classic uses WINREG and legacy activation; other named-pipe RPC services
+  (eventlog, print spooler, workstation, SAM, etc.) are not modeled.
+- The PCAP replay harness is shipped, but real-world redacted PCAP captures are
+  still pending.
+- This is a named-pipe RPC client surface, not a general SMB file-share client.
 
 ## Microsoft specifications driving the design
 
 The repository vendors the relevant Microsoft Open Specifications in
-`External/Docs/Win/`:
+`ext/private/docs/`:
 
 | Spec | Relevance |
-|---|---|
-| `[MS-CIFS].md` | SMB v1 wire format (mostly informational; we target SMB2+) |
-| `[MS-SMB2].md` | SMB 2.0.2 / 2.1 / 3.0 / 3.1.1 wire format — the implementation target |
-| `[MS-RPCE].md §2.1.1.2` | RPC over SMB framing: same DCE/RPC PDUs sent as named-pipe writes / received as reads, with optional transact for synchronous calls |
-| `[MS-DCOM].md §3.1.2.5.2.3` | Legacy `IActivation::RemoteActivation` opnum 0 |
-| `[MS-RRP].md §2.1.2` | WINREG client guidance: SHOULD use `ncacn_np` on `\PIPE\winreg` |
-| `[MS-NLMP].md` | NTLMSSP — already implemented in `Opc.Classic.Dcom\rpc\Auth\` for the TCP path, can be reused inside the SMB2 SESSION_SETUP security blob |
+| --- | --- |
+| `MS-CIFS.md` | SMB v1 wire format (mostly informational; we target SMB2+) |
+| `MS-SMB2.md` | SMB 2.0.2 / 2.1 / 3.0 / 3.1.1 wire format — the implementation target |
+| `MS-RPCE.md §2.1.1.2` | RPC over SMB framing: same DCE/RPC PDUs sent as named-pipe writes / received as reads, with optional transact for synchronous calls |
+| `MS-DCOM.md §3.1.2.5.2.3` | Legacy `IActivation::RemoteActivation` opnum 0 |
+| `MS-RRP.md §2.1.2` | WINREG client guidance: SHOULD use `ncacn_np` on `\PIPE\winreg` |
+| `MS-NLMP.md` | NTLMSSP — already implemented in `Opc.Classic.Dcom\rpc\Auth\` for the TCP path, can be reused inside the SMB2 SESSION_SETUP security blob |
 
 ## Cross-platform implementation options
 
 The hard problem is the SMB protocol itself. The options below were considered:
 
 | Option | License | AOT-clean | Lines of code | SMB versions | Recommendation |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | **(A) SMBLibrary** (TalAloni/SMBLibrary on NuGet) | LGPL-3.0 | likely (pure C#) | 0 (consume) | SMB1/2/3 | Subject to license review; consult counsel. If approved, fastest to ship but creates dynamic-link / disclosure obligations atypical for an MIT repo. |
 | **(B) Hand-roll SMB2 client** ⭐ recommended | MIT (ours) | ✅ | ~4000-5000 | SMB 2.0.2 + 2.1 + 3.0 / 3.1.1 with negotiation | Modern Windows (Win10+, Server 2016+) disables SMB1 by default; SMB2 is sufficient for all targets we care about. NTLMSSP wire-up reuses existing managed NTLM impl. |
 | (C) Hand-roll SMB1 client | MIT | ✅ | ~3000 | SMB1 only | Does NOT work against default Windows 10+/Server 2016+. Useful only against legacy XP / Server 2003 / old Samba. |
@@ -74,15 +65,16 @@ The hard problem is the SMB protocol itself. The options below were considered:
 
 The recommended path is **option B** — a hand-rolled, AOT-clean, MIT-licensed
 SMB2 client tightly scoped to the named-pipe operations OPC Classic needs.
-Phase 1 of that path has landed in `src\Opc.Classic.Dcom.Smb\`; the remaining
-work is integration, signing/encryption hardening, and end-to-end validation.
+The SMB2 client surface, `ncacn_np` wire-up, signing, encryption, and Samba
+end-to-end smoke are all implemented in `src\Opc.Classic.Dcom.Smb\` and
+`src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs`.
 
 ## Sub-protocol surface required from SMB2
 
 Only the connection / session / file / pipe primitives are needed:
 
 | `[MS-SMB2]` § | Command | Use |
-|---|---|---|
+| --- | --- | --- |
 | §3.2.4.2 / §2.2.3-4 | SMB2 NEGOTIATE | Pick dialect (0x0202 / 0x0210 / 0x0300 / 0x0311) |
 | §3.2.4.3 / §2.2.5-6 | SMB2 SESSION_SETUP | Carry the NTLMSSP Type 1 / 2 / 3 GSS-API blobs (already implemented in `Opc.Classic.Dcom/rpc/Auth/`) |
 | §3.2.4.4 / §2.2.9-10 | SMB2 TREE_CONNECT | Open `\\host\IPC$` |
@@ -98,21 +90,20 @@ Only the connection / session / file / pipe primitives are needed:
 
 ## Implementation status
 
-| Phase | Status | Output |
-|---|---|---|
-| 0 — Architecture docs + ADR | ✅ Done | this document + `docs\decisions\2026-05-smb-implementation.md` |
-| 1 — SMB2 client | ✅ Landed | `src\Opc.Classic.Dcom.Smb\` with SMB2 negotiate/session/tree/pipe primitives, `TcpSmb2Transport`, and `Smb2RpcTransportAdapter` |
-| 1.5 — SMB signing/encryption hardening | ✅ Landed | SMB2 signing (HMAC-SHA256/AES-CMAC) and SMB3 encryption (AES-128-CCM/GCM transforms) are implemented for encryption-required server smoke |
-| 2 — Wire SMB into `Ncacn_Np.RpcTransport` | ✅ Landed | functional `ncacn_np` transport backed by `src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs` |
-| 3 — WINREG end-to-end smoke | ✅ Landed | Samba container fixture, no-env soft-skip TUnit smoke, and CI workflow prove SMB ↔ ncacn_np ↔ WINREG RPC |
-| 4 — Legacy `IActivation` interface | ⏳ Pending | client + optional server side for pre-XP-SP2 interop |
-| 5 — Cross-platform CI matrix | ✅ Landed | Ubuntu + macOS + Windows restore/build/test matrix in `.github\workflows\build.yml` |
-| 6 — PCAP-based wire fixtures | ✅ Landed | harness shipped; real-world PCAP captures still pending; harness ready to receive them at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\` |
+| Component | Status | Output |
+| --- | --- | --- |
+| Architecture docs | ✅ Done | this document |
+| SMB2 client | ✅ Landed | `src\Opc.Classic.Dcom.Smb\` with SMB2 negotiate/session/tree/pipe primitives, `TcpSmb2Transport`, and `Smb2RpcTransportAdapter` |
+| SMB signing + encryption | ✅ Landed | SMB2 signing (HMAC-SHA256/AES-CMAC) and SMB3 encryption (AES-128-CCM/GCM transforms) are implemented for encryption-required server smoke |
+| `ncacn_np` transport | ✅ Landed | functional `ncacn_np` transport backed by `src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs` |
+| WINREG end-to-end smoke | ✅ Landed | Samba container fixture, no-env soft-skip TUnit smoke (`WinRegSambaSmokeTests`), fixture replay (`WinregFixtureReplayTests`), and CI coverage prove SMB ↔ ncacn_np ↔ WINREG RPC |
+| Legacy `IActivation` interface | ✅ Landed | client + server-side dispatcher for pre-XP-SP2 interop in `src\Opc.Classic.Dcom\Activation\` |
+| Cross-platform CI matrix | ✅ Landed | Ubuntu + macOS + Windows restore/build/test matrix in `.github\workflows\build.yml` |
+| PCAP-based wire fixtures | ⚠️ Harness landed | replay harness shipped; real-world redacted PCAP captures are still pending at `tests\Opc.Classic.Dcom.Smb.Tests\Pcap\Fixtures\` |
 
 ## See also
 
 - `docs\architecture\activation-transports.md` — TCP vs SMB activation paths
-- `docs\decisions\2026-05-smb-implementation.md` — ADR: chose option B
-- `src\Opc.Classic.Dcom.Smb\README.md` — current SMB2 project status and public surface
+- `src\Opc.Classic.Dcom.Smb\README.md` — SMB2 project public surface
 - `samples\Opc.Classic.Samples.CttServer\README.md` — current Windows-only registration cookbook
-- `External\Docs\Win\[MS-SMB2].md` etc. — vendored Microsoft specs
+- `ext\private\docs\MS-SMB2.md` etc. — vendored Microsoft specs

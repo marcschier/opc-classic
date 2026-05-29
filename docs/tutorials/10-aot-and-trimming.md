@@ -1,7 +1,5 @@
 # AOT and trimming for Opc.Classic applications
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 Opc.Classic is designed for NativeAOT-compatible libraries. That matters for plant gateways, edge containers, and small service deployments where startup time, image size, and predictable dependencies are important. It also means application code must avoid patterns that only work when the full runtime and reflection metadata are available. This tutorial shows how to publish AOT-trimmed binaries, how to use root descriptors when you really need them, and what is safe or unsafe in the Opc.Classic stack.
 
 The repository's canary is `samples\Opc.Classic.Samples.AotCanary\`. It references `Opc.Classic.Core` and `Opc.Classic.Da`, creates `OpcUrl`, `OpcVariant`, `OpcItemState`, and round-trips `NdrOpcItemStateCodec`. The CI contract is zero AOT/trimming warnings for the canary.

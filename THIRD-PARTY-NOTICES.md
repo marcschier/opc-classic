@@ -111,12 +111,18 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ## Reference / Conformance Assets (NOT redistributed in built packages)
 
-### COM/ (native C++ OPC Foundation sample servers)
+### ext/samples/ (native C++ OPC Foundation sample servers)
 - Source: OPC Foundation
 - License: OPC Foundation sample license — preserved verbatim in the original files
 - Status: Used only as a conformance reference; no redistribution
 
-### External/Include/ and External/CTT/
+### ext/ (OPC Foundation reference + redistributable assets)
 - Source: OPC Foundation
 - License: OPC Foundation specification, sample, and CTT installer terms preserved in-place
-- Status: Used for IDL definitions, redistributable inputs, and conformance validation; do not redistribute outside the rights granted by the OPC Foundation
+- Subfolders:
+  - `ext/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
+  - `ext/private/ctt/` — vendored OPC Compliance Test Tool installers
+  - `ext/redist/` — OPC COM Core Components redistributable + Proxy/Stub merge modules
+  - `ext/private/docs/` — spec markdown (auto-generated from PDFs) and Microsoft Open Specifications used for cross-reference
+  - `ext/samples/` — OPC Foundation native C++ sample servers used by conformance validation
+- Status: Used for IDL definitions, redistributable inputs, conformance validation, and developer reference; do not redistribute outside the rights granted by the OPC Foundation

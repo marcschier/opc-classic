@@ -2,7 +2,7 @@
 
 # opc-classic/ctt — OPC Compliance Test Tool in a Windows container
 #
-# Bakes the six vendored CTT MSIs (~13 MB total, all under External/CTT/)
+# Bakes the six vendored CTT MSIs (~13 MB total, all under ext/private/ctt/)
 # into a windows/servercore:ltsc2022 image. The container's ENTRYPOINT is
 # a PowerShell shim (run-ctt.ps1) that locates OpcCtt.exe and runs it against
 # a target ProgID + remote host, emitting an XML conformance report.
@@ -14,7 +14,7 @@
 #
 # Build:
 #   docker build --file docker/opc-ctt/Dockerfile --tag opc-classic/ctt .
-# (run from the repository root so External/CTT/ is on the build context)
+# (run from the repository root so ext/private/ctt/ is on the build context)
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
@@ -32,7 +32,7 @@ WORKDIR C:/
 # Exit codes 0 (success) and 3010 (reboot pending; harmless in CI) are
 # acceptable; anything else is fatal.
 # ----------------------------------------------------------------------------
-COPY ["External/CTT", "C:/ctt-msi/"]
+COPY ["ext/private/ctt", "C:/ctt-msi/"]
 
 RUN $msiOrder = @( `
         'Test Tool v2.0.15\OPC CTT Common Modules 2.0.15.msi', `

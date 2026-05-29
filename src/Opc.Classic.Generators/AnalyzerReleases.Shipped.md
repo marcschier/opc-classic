@@ -6,7 +6,7 @@
 ### New Rules
 
 Rule ID  | Category                  | Severity | Notes
----------|---------------------------|----------|------------------------------------------------------------------
+---------|---------------------------|---|---
 OPCGEN001| Opc.Classic.Generators     | Error    | OpcInterface attribute carries an invalid GUID.
 OPCGEN002| Opc.Classic.Generators     | Error    | OpcInterface target must be partial.
 OPCGEN003| Opc.Classic.Generators     | Error    | Duplicate OpcMethod opnum on the same interface.

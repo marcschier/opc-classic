@@ -1,10 +1,8 @@
 # Events and alarms with OPC AE
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 OPC Alarms & Events is the event stream for OPC Classic. DA tells you current values, HDA tells you historical values, and AE tells you what happened: a simple notification, an operator tracking event, or a condition event that may require acknowledgement. This tutorial walks through event categories, area browsing, filters, condition acknowledgements, refresh, and server-hosting patterns using `Opc.Classic.Ae`.
 
-The repository samples are the best reference: `samples\Opc.Classic.Samples.AeServer\` hosts `Opc.Classic.Samples.AeServer.1`, while `samples\Opc.Classic.Samples.AeClient\` builds an in-process loopback client over `IOPCEventServerClientProxy`, `InMemoryCallChannel`, `InProcessAeServer`, and `InProcessAeSubscription`. When `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set, the AE client uses `DcomCallChannelFactory.ConnectTcpAsync` against the sample server instead. The AE server reads `OPC_CLASSIC_SAMPLE_PORT` (default `51301`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The public application surface is `IAeServer` and `IAeSubscription`.
+The repository samples are the best reference: `samples\Opc.Classic.Samples.AeServer\` hosts `Opc.Classic.Samples.AeServer.1`, while `samples\Opc.Classic.Samples.AeClient\` builds an in-process loopback client over `IOPCEventServerClientProxy`, `InMemoryCallChannel`, `InProcessAeServer`, and `InProcessAeSubscription`. When `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set, the AE client uses `DcomCallChannelFactory.ConnectTcpAsync` against the sample server instead. The AE server reads `OPC_CLASSIC_SAMPLE_PORT` (default `51301`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The Windows CCW path has full array marshaling for the shipped AE server, subscription, browse/filter, condition, acknowledgement, and callback methods. The public application surface is `IAeServer` and `IAeSubscription`.
 
 ## Prerequisites
 

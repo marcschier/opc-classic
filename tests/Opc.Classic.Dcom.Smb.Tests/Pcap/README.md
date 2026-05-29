@@ -5,7 +5,7 @@ Copyright (c) 2026 Opc.Classic .NET Contributors
 
 # SMB2 PCAP replay fixtures
 
-Drop classic libpcap captures in `Fixtures\` with a `.pcap` extension. The reader supports basic libpcap (`0xA1B2C3D4`) with `LINKTYPE_ETHERNET` or `LINKTYPE_NULL`, TCP/IP traffic on port 445, and strips the NetBIOS-over-TCP header before replaying SMB2 messages.
+Drop classic libpcap captures in `Fixtures\` with a `.pcap` extension, or use the committed readable golden fixture `Fixtures\negotiate-smb2-1.txt` as a template. The reader supports basic libpcap (`0xA1B2C3D4`) with `LINKTYPE_ETHERNET` or `LINKTYPE_NULL`, TCP/IP traffic on port 445, and strips the NetBIOS-over-TCP header before replaying SMB2 messages.
 
 Readable golden fixtures may use `.txt` instead:
 

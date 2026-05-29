@@ -55,7 +55,8 @@ public static unsafe class OpcDaServerCcw
     private const int E_NOTIMPL = unchecked((int)0x80004001);
     private const int E_FAIL = unchecked((int)0x80004005);
 
-    private const int VtableSlotCount = 12; // 3 IUnknown + 9 IOPCServer
+    private const int ServerVtableSlotCount = 12; // 3 IUnknown + 9 IOPCServer
+    private const int CommonVtableSlotCount = 8; // 3 IUnknown + 5 IOPCCommon
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
@@ -85,13 +86,16 @@ public static unsafe class OpcDaServerCcw
             return IntPtr.Zero;
         }
 
-        IntPtr* vtable = AllocateVtable();
-        IntPtr instance = AllocateInstance(vtable);
+        IntPtr* serverVtable = AllocateServerVtable();
+        IntPtr serverInstance = AllocateInstance(serverVtable);
+        IntPtr* commonVtable = AllocateCommonVtable();
+        IntPtr commonInstance = AllocateInstance(commonVtable);
         var handle = GCHandle.Alloc(server, GCHandleType.Normal);
-        var entry = new CcwEntry(handle);
+        var entry = new CcwEntry(handle, serverInstance, commonInstance);
         entry.RefCount = 1;
-        s_ccws[instance] = entry;
-        return instance;
+        s_ccws[serverInstance] = entry;
+        s_ccws[commonInstance] = entry;
+        return entry.GetInterfacePointer(requestedIid);
     }
 
     /// <summary>
@@ -99,7 +103,7 @@ public static unsafe class OpcDaServerCcw
     /// COM interfaces this CCW exposes.
     /// </summary>
     public static bool SupportsInterface(Guid iid) =>
-        iid == IID_IUnknown || iid == Dcom.IOPCServer.InterfaceId;
+        iid == IID_IUnknown || iid == Dcom.IOPCServer.InterfaceId || iid == Dcom.IOPCCommon.InterfaceId;
 
     /// <summary>
     /// Test helper: returns the current reference count for a CCW pointer, or
@@ -111,9 +115,9 @@ public static unsafe class OpcDaServerCcw
     [SuppressMessage(
         "Reliability", "CA2018:Buffer size argument matches element count",
         Justification = "Allocating IntPtr-sized native vtable with explicit byte count.")]
-    private static IntPtr* AllocateVtable()
+    private static IntPtr* AllocateServerVtable()
     {
-        IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(VtableSlotCount * sizeof(IntPtr)));
+        IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(ServerVtableSlotCount * sizeof(IntPtr)));
         // IUnknown
         vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
         vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
@@ -127,10 +131,29 @@ public static unsafe class OpcDaServerCcw
         vtable[8] = (IntPtr)(delegate* unmanaged<IntPtr, uint, Guid*, IntPtr*, int>)&CreateGroupEnumerator;
         // Remaining slots are reserved; zero them so a misdirected dispatch
         // crashes loudly instead of into arbitrary memory.
-        for (int i = 9; i < VtableSlotCount; i++)
+        for (int i = 9; i < ServerVtableSlotCount; i++)
         {
             vtable[i] = IntPtr.Zero;
         }
+        return vtable;
+    }
+
+    [SuppressMessage(
+        "Reliability", "CA2018:Buffer size argument matches element count",
+        Justification = "Allocating IntPtr-sized native vtable with explicit byte count.")]
+    private static IntPtr* AllocateCommonVtable()
+    {
+        IntPtr* vtable = (IntPtr*)NativeMemory.Alloc((nuint)(CommonVtableSlotCount * sizeof(IntPtr)));
+        // IUnknown
+        vtable[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        vtable[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        vtable[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        // IOPCCommon (canonical opnum order per OPC Common 1.10 spec)
+        vtable[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, int>)&CommonSetLocaleId;
+        vtable[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint*, int>)&CommonGetLocaleId;
+        vtable[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint*, IntPtr*, int>)&CommonQueryAvailableLocaleIds;
+        vtable[6] = (IntPtr)(delegate* unmanaged<IntPtr, int, IntPtr*, int>)&CommonGetErrorString;
+        vtable[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, int>)&CommonSetClientName;
         return vtable;
     }
 
@@ -157,13 +180,11 @@ public static unsafe class OpcDaServerCcw
             return E_INVALIDARG;
         }
 
-        if (SupportsInterface(*riid))
+        Guid requestedIid = *riid;
+        if (SupportsInterface(requestedIid) && s_ccws.TryGetValue(pThis, out CcwEntry? entry))
         {
-            *ppv = pThis;
-            if (s_ccws.TryGetValue(pThis, out CcwEntry? entry))
-            {
-                Interlocked.Increment(ref entry.RefCount);
-            }
+            *ppv = entry.GetInterfacePointer(requestedIid);
+            Interlocked.Increment(ref entry.RefCount);
             return S_OK;
         }
 
@@ -192,6 +213,88 @@ public static unsafe class OpcDaServerCcw
         long next = Interlocked.Decrement(ref entry.RefCount);
         // CCWs are never freed (leak-at-exit); see class remarks.
         return next < 0 ? 0 : (uint)next;
+    }
+
+    // ===== IOPCCommon stubs =====
+
+    [UnmanagedCallersOnly]
+    private static int CommonSetLocaleId(IntPtr pThis, uint dwLcid)
+    {
+        _ = pThis; _ = dwLcid;
+        return E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonGetLocaleId(IntPtr pThis, uint* pdwLcid)
+    {
+        _ = pThis;
+        if (pdwLcid != null)
+        {
+            *pdwLcid = 0;
+        }
+        return E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonQueryAvailableLocaleIds(IntPtr pThis, uint* pdwCount, IntPtr* ppdwLcid)
+    {
+        _ = pThis;
+        if (pdwCount != null)
+        {
+            *pdwCount = 0;
+        }
+        if (ppdwLcid != null)
+        {
+            *ppdwLcid = IntPtr.Zero;
+        }
+        return E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonGetErrorString(IntPtr pThis, int dwError, IntPtr* ppString)
+    {
+        _ = pThis; _ = dwError;
+        if (ppString != null)
+        {
+            *ppString = IntPtr.Zero;
+        }
+        return E_NOTIMPL;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int CommonSetClientName(IntPtr pThis, IntPtr szName)
+    {
+        if (!s_ccws.TryGetValue(pThis, out CcwEntry? entry))
+        {
+            return E_NOTIMPL;
+        }
+
+        try
+        {
+            string clientName = szName == IntPtr.Zero ? string.Empty : (Marshal.PtrToStringUni(szName) ?? string.Empty);
+            entry.ClientName = clientName;
+            if (entry.ServerHandle.Target is IDaServer daServer)
+            {
+#pragma warning disable VSTHRD002 // Synchronous bridge across the COM ABI.
+                daServer.SetClientNameAsync(clientName, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            }
+            return S_OK;
+        }
+#pragma warning disable CA1031 // Cross-unmanaged-boundary catch.
+        catch (Opc.Classic.OpcException opcEx)
+        {
+            return opcEx.ResultId.Code;
+        }
+        catch (ArgumentException)
+        {
+            return E_INVALIDARG;
+        }
+        catch (Exception)
+        {
+            return E_FAIL;
+        }
+#pragma warning restore CA1031
     }
 
     // ===== IOPCServer stubs (E_NOTIMPL until ocom-3b/follow-up wires real impls) =====
@@ -483,14 +586,25 @@ public static unsafe class OpcDaServerCcw
 
     private sealed class CcwEntry
     {
-        public CcwEntry(GCHandle serverHandle)
+        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer)
         {
             ServerHandle = serverHandle;
+            ServerPointer = serverPointer;
+            CommonPointer = commonPointer;
         }
 
         public GCHandle ServerHandle { get; }
 
+        public IntPtr ServerPointer { get; }
+
+        public IntPtr CommonPointer { get; }
+
+        public string ClientName { get; set; } = string.Empty;
+
         public long RefCount;
+
+        public IntPtr GetInterfacePointer(Guid iid) =>
+            iid == Dcom.IOPCCommon.InterfaceId ? CommonPointer : ServerPointer;
     }
 
     // ----- COM allocation helpers -----

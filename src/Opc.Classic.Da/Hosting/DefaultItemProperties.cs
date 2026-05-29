@@ -45,7 +45,24 @@ public sealed class DefaultItemProperties : IOPCItemProperties
     {
         ArgumentException.ThrowIfNullOrEmpty(itemId);
         cancellationToken.ThrowIfCancellationRequested();
-        var properties = OpcStandardProperties.All;
+        var properties = new List<OpcStandardProperty>(OpcStandardProperties.All);
+        if (_provider is IOpcItemPropertyMetadataProvider metadataProvider)
+        {
+            var seen = new HashSet<int>();
+            foreach (var property in properties)
+            {
+                seen.Add(property.Id);
+            }
+
+            foreach (var property in metadataProvider.GetAvailableProperties(itemId))
+            {
+                if (seen.Add(property.Id))
+                {
+                    properties.Add(property);
+                }
+            }
+        }
+
         propertyIds = new int[properties.Count];
         descriptions = new string[properties.Count];
         dataTypes = new ushort[properties.Count];
@@ -93,12 +110,18 @@ public sealed class DefaultItemProperties : IOPCItemProperties
         cancellationToken.ThrowIfCancellationRequested();
         newItemIds = new string[propertyIds.Length];
         errors = new int[propertyIds.Length];
+        var metadataProvider = _provider as IOpcItemPropertyMetadataProvider;
         for (int i = 0; i < propertyIds.Length; i++)
         {
+            if (metadataProvider is not null)
+            {
+                (string resolvedItemId, int error) = metadataProvider.TryGetPropertyItemId(itemId, propertyIds[i]);
+                newItemIds[i] = resolvedItemId;
+                errors[i] = error;
+                continue;
+            }
+
             newItemIds[i] = string.Empty;
-            // Standard properties (1-8) are not indirect. Vendor-defined
-            // properties may resolve to a different item ID; provider can
-            // override this method via subclassing if needed.
             errors[i] = OpcResultId.InvalidPid.Code;
         }
         return Task.CompletedTask;

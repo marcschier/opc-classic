@@ -1,4 +1,4 @@
-# Matrikon OPC Simulation conformance (Phase 14C)
+# Matrikon OPC Simulation conformance
 
 Tests under this folder target the Matrikon OPC Simulation Server -
 the canonical Windows DCOM OPC reference implementation used by every
@@ -28,7 +28,7 @@ catalog assumptions.
 Matrikon Simulation Server is distributed by Matrikon (now Honeywell).
 Free download requires registration at matrikonopc.com.
 
-The Phase 14A `windows-conformance` CI job does NOT install Matrikon
+The `windows-conformance` CI job does NOT install Matrikon
 (would require a CI secret holding the installer URL). To enable
 matrikon-conformance in CI, add a `matrikon-installer-url` secret and
 update the workflow to download + install before running the
@@ -40,11 +40,11 @@ dotnet test --filter "Category=MatrikonConformance"
 ```
 
 Tests soft-skip when Matrikon isn't installed. When Matrikon is present but
-real DCOM transport is not wired, the tests assert the generated proxy,
-probe, category-tag, and tag-tree plumbing.
+no real `DcomCallChannel` factory is injected, the tests assert the generated
+proxy, probe, category-tag, and tag-tree plumbing.
 
 ## Status
 
 The folder now has loopback-backed assertions for the generated proxy and DA
 server dispatcher. Full Matrikon end-to-end tests still require the installer,
-license/registration, and a real `DcomCallChannel` connection to the server.
+license/registration, and an injected real `DcomCallChannel` connection to the server.

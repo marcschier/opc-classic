@@ -18,7 +18,7 @@ Writes the standard Windows COM registry tree for an out-of-process server:
 ### Choosing a hive
 
 | Hive | Subtree | Privilege | Visible to |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `RegistryHive.LocalMachine` | `HKLM\Software\Classes` | Administrator | All users of the machine, including service principals (production) |
 | `RegistryHive.CurrentUser` | `HKCU\Software\Classes` | Standard user | The calling user only (tests and developer workstations) |
 
@@ -27,7 +27,7 @@ Writes the standard Windows COM registry tree for an out-of-process server:
 ### Choosing a registry view
 
 | View | Use |
-|---|---|
+| --- | --- |
 | `RegistryView.Registry32` | 32-bit (WoW6432Node) clients on 64-bit Windows |
 | `RegistryView.Registry64` | 64-bit clients |
 
@@ -47,6 +47,10 @@ P/Invoke wrappers around `ole32.dll` for registering a managed class object with
 The exposed `IClassFactory` is built from raw `[UnmanagedCallersOnly]` vtable entries (no reflection-based COM). The callback overload receives the requested IID and returns a CCW pointer, or `IntPtr.Zero` to surface `E_NOINTERFACE`.
 
 `Opc.Classic.Samples.CttServer` uses the callback overload for SCM activation: `Program.cs` resolves the managed `IOpcDaServer` from DI and passes `requestedIid => OpcDaServerCcw.Create(serverImpl, requestedIid)`. This lets Windows COM clients receive a real `IOPCServer` CCW for supported IIDs while preserving the parameterless overload for registration smoke tests.
+
+## CCW coverage
+
+The rc.10 Windows hosting tests cover DA SCM activation, all AE array-returning server CCW methods, and HDA Sync/Async Update, Playback, Sync/Async Annotations, annotation insert/read, and async advise callback paths.
 
 ## Sample integration
 

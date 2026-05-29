@@ -1,6 +1,6 @@
 # Test projects and categories
 
-The repository uses TUnit on Microsoft.Testing.Platform. Run the full solution with:
+The repository uses TUnit on Microsoft.Testing.Platform. The rc.10 baseline is 2113 passed / 12 skipped / 0 failed across 23 .NET test projects. Run the full solution with:
 
 ```powershell
 dotnet test Opc.Classic.slnx
@@ -19,7 +19,7 @@ Support folders:
 - `_Fixtures` — shared fixture infrastructure; `Testcontainers\` contains `KerberosKdcFixture`.
 - `_TestDoubles` — policy docs for shared hand-written doubles.
 
-TUnit projects:
+TUnit projects (23):
 
 - `Opc.Classic.Ae.Tests`
 - `Opc.Classic.Batch.Tests`
@@ -50,8 +50,10 @@ This list matches the current `tests\` top-level project directories.
 ## Environment-dependent categories
 
 - `Kerberos` — Docker/Testcontainers-backed MIT krb5 KDC integration tests. They are skipped unless Docker is running and `OPC_CLASSIC_RUN_KDC_TESTS=1` is set.
-- `NativeConformance` — tests that need the OPC Foundation native sample servers built/registered from `COM\`.
+- `NativeConformance` — tests that need the OPC Foundation native sample servers built/registered from `ext\samples\`.
 - `MatrikonConformance` — tests that need Matrikon OPC Simulation Server installed/registered.
 - `CompatMatrix` — compatibility-matrix and native-client/server orchestration tests.
+- `WinRegSambaSmoke` — opt-in Samba WINREG smoke; requires `docker\samba` and `OPC_CLASSIC_INTEGRATION_SAMBA=1`.
+- `Da.FullLifecycle` / `Da.Loopback` — loopback TCP DA integration coverage for object-IPID group dispatch, item attributes, callbacks, and namespaced browse continuation tokens (`opc-da-browse:N`).
 
 Folder-specific details live under `tests\Opc.Classic.Integration.Tests\Native\README.md`, `tests\Opc.Classic.Integration.Tests\Matrikon\README.md`, and `tests\Opc.Classic.Integration.Tests\CompatMatrix\README.md`.

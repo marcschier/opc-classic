@@ -1,15 +1,12 @@
 # Historical data with OPC HDA
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 OPC Historical Data Access is the query side of OPC Classic. Data Access answers "what is the value now?"; HDA answers "what happened over this time range?" A production historian client needs raw reads, processed aggregates, annotations, modified-value audit trails, continuation handling, and careful time semantics. This tutorial shows how to model those scenarios with `Opc.Classic.Hda` and how the sample client and server fit together.
 
-Use `samples\Opc.Classic.Samples.HdaClient\` and `samples\Opc.Classic.Samples.HdaServer\` as bookends. The client sample builds a loopback call path with `LoopbackHdaClient`, `IOPCHDA_ServerClientProxy`, `IOPCHDA_SyncReadClientProxy`, `IOPCHDA_SyncAnnotationsClientProxy`, and `IOPCHDA_AsyncReadClientProxy`; when `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set it uses `DcomCallChannelFactory.ConnectTcpAsync` instead of the in-process channel. The server sample implements `IOpcHdaServer` over `HistoricalDataStore` and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51302`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The public application-level contract is `IHdaServer`, which exposes browse, raw reads, processed reads, read-at-time, annotations, and continuation reads.
+Use `samples\Opc.Classic.Samples.HdaClient\` and `samples\Opc.Classic.Samples.HdaServer\` as bookends. The client sample builds a loopback call path with `LoopbackHdaClient`, `IOPCHDA_ServerClientProxy`, `IOPCHDA_SyncReadClientProxy`, `IOPCHDA_SyncAnnotationsClientProxy`, and `IOPCHDA_AsyncReadClientProxy`; when `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT` are set it uses `DcomCallChannelFactory.ConnectTcpAsync` instead of the in-process channel. The server sample implements `IOpcHdaServer` over `HistoricalDataStore` and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51302`) or `OPC_CLASSIC_LISTEN_ADDRESS`. The Windows CCW path also covers SyncUpdate, AsyncUpdate, Playback, annotation insert, and async advise vtables for native-client validation. The public application-level contract is `IHdaServer`, which exposes browse, raw reads, processed reads, read-at-time, annotations, and continuation reads.
 
 ## Prerequisites
 
 - .NET 10 SDK.
-- A repository checkout or packages for `Opc.Classic.Core` and `Opc.Classic.Hda`.
 - Familiarity with UTC timestamps and historian bucket queries.
 - Optional: a production HDA server or the repository HDA sample.
 
@@ -323,7 +320,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 
 ## References
 
-- OPC HDA 1.20: `IOPCHDA_Server`, `IOPCHDA_SyncRead`, `IOPCHDA_SyncAnnotations`, `IOPCHDA_AsyncRead`.
+- OPC HDA 1.20: `IOPCHDA_Server`, `IOPCHDA_SyncRead`, `IOPCHDA_SyncUpdate`, `IOPCHDA_SyncAnnotations`, `IOPCHDA_AsyncRead`, `IOPCHDA_AsyncUpdate`, and `IOPCHDA_Playback`.
 - OPC HDA aggregate definitions for Average, TimeAverage, Minimum, Maximum, Total, Count, and StandardDeviation.
 - Repository: `src\Opc.Classic.Hda\`, `samples\Opc.Classic.Samples.HdaClient\`, and `samples\Opc.Classic.Samples.HdaServer\`.
 

@@ -3,7 +3,10 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
+#pragma warning disable MA0048 // Server CCW method bodies and async callback pump share session internals.
+
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -482,11 +485,36 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int SyncAnnotationsInsert(IntPtr pThis, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr pAnnotationValues, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwNumItems; _ = phServer; _ = ftTimeStamps; _ = pAnnotationValues;
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAnnotationInsertArgs(dwNumItems, phServer, ftTimeStamps, pAnnotationValues, ppErrors))
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+            long[] timestamps = OpcHdaItemMarshaler.ReadFileTimeArray(ftTimeStamps, count);
+            OpcHdaAnnotation[] annotations = ReadAnnotationInputArray(pAnnotationValues, count);
+#pragma warning disable VSTHRD002
+            int[] errors = dispatcher!.InsertAnnotationsAsync(handles, timestamps, annotations, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ValidateLength(count, errors.Length, nameof(errors));
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -522,12 +550,42 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncAdviseRaw(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, long ftUpdateInterval, uint dwNumItems, IntPtr phServer, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = htStartTime; _ = ftUpdateInterval; _ = dwNumItems; _ = phServer;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncAdviseRawArgs(dwNumItems, htStartTime, ftUpdateInterval, phServer, pdwCancelID, ppErrors))
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+
+        int cancelId = 0;
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+            cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            CancellationToken cancellationToken = GetPendingCancellationToken(session!, cancelId);
+#pragma warning disable VSTHRD002
+            OpcHdaAdviseSubscription subscription = dispatcher!.AdviseRawAsync(handles, startTime, ftUpdateInterval, cancellationToken).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ValidateLength(count, subscription.Errors.Length, nameof(subscription.Errors));
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(subscription.Errors);
+            QueueDataChangeStream(session!, cancelId, unchecked((int)dwTransactionID), subscription.Updates);
+            return GetMasterHResult(subscription.Errors);
+        }
+        catch (Exception ex)
+        {
+            RemovePendingOperation(session!, cancelId);
+            WriteUInt32(pdwCancelID, 0);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -564,12 +622,43 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncAdviseProcessed(IntPtr pThis, uint dwTransactionID, IntPtr htStartTime, long ftResampleInterval, uint dwNumItems, IntPtr phServer, IntPtr haAggregate, uint dwNumIntervals, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = htStartTime; _ = ftResampleInterval; _ = dwNumItems; _ = phServer; _ = haAggregate; _ = dwNumIntervals;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncAdviseProcessedArgs(dwNumItems, htStartTime, ftResampleInterval, phServer, haAggregate, dwNumIntervals, pdwCancelID, ppErrors))
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+
+        int cancelId = 0;
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            OpcHdaTime startTime = OpcHdaItemMarshaler.ReadHdaTime(htStartTime);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+            int[] aggregates = OpcHdaItemMarshaler.ReadInt32Array(haAggregate, count);
+            cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            CancellationToken cancellationToken = GetPendingCancellationToken(session!, cancelId);
+#pragma warning disable VSTHRD002
+            OpcHdaAdviseSubscription subscription = dispatcher!.AdviseProcessedAsync(handles, startTime, ftResampleInterval, aggregates, CountToInt(dwNumIntervals), cancellationToken).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ValidateLength(count, subscription.Errors.Length, nameof(subscription.Errors));
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(subscription.Errors);
+            QueueDataChangeStream(session!, cancelId, unchecked((int)dwTransactionID), subscription.Updates);
+            return GetMasterHResult(subscription.Errors);
+        }
+        catch (Exception ex)
+        {
+            RemovePendingOperation(session!, cancelId);
+            WriteUInt32(pdwCancelID, 0);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -738,12 +827,42 @@ internal static unsafe class OpcHdaServerCcwMethods
     }
 
     [UnmanagedCallersOnly]
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Cross-unmanaged-boundary catch.")]
     public static int AsyncAnnotationsInsert(IntPtr pThis, uint dwTransactionID, uint dwNumItems, IntPtr phServer, IntPtr ftTimeStamps, IntPtr pAnnotationValues, IntPtr pdwCancelID, IntPtr* ppErrors)
     {
-        _ = pThis; _ = dwTransactionID; _ = dwNumItems; _ = phServer; _ = ftTimeStamps; _ = pAnnotationValues;
         WriteUInt32(pdwCancelID, 0);
         ZeroOut(ppErrors);
-        return OpcHdaServerCcw.E_NOTIMPL;
+        if (!HasAsyncAnnotationInsertArgs(dwNumItems, phServer, ftTimeStamps, pAnnotationValues, pdwCancelID, ppErrors))
+        {
+            return OpcHdaServerCcw.E_INVALIDARG;
+        }
+        if (!TryResolveDispatcher(pThis, out IOpcHdaServerDispatcher? dispatcher) || !TryResolveSession(pThis, out OpcHdaServerCcw.CcwSession? session))
+        {
+            return OpcHdaServerCcw.E_FAIL;
+        }
+
+        int cancelId = 0;
+        try
+        {
+            int count = CountToInt(dwNumItems);
+            int[] handles = OpcHdaItemMarshaler.ReadInt32Array(phServer, count);
+            long[] timestamps = OpcHdaItemMarshaler.ReadFileTimeArray(ftTimeStamps, count);
+            OpcHdaAnnotation[] annotations = ReadAnnotationInputArray(pAnnotationValues, count);
+#pragma warning disable VSTHRD002
+            int[] errors = dispatcher!.InsertAnnotationsAsync(handles, timestamps, annotations, CancellationToken.None).GetAwaiter().GetResult();
+#pragma warning restore VSTHRD002
+            ValidateLength(count, errors.Length, nameof(errors));
+            cancelId = RegisterPendingOperation(session!, pdwCancelID);
+            *ppErrors = OpcHdaItemMarshaler.AllocateInt32Array(errors);
+            QueueInsertAnnotationsComplete(session!, cancelId, unchecked((int)dwTransactionID), GetAnnotationClientHandles(annotations), errors);
+            return GetMasterHResult(errors);
+        }
+        catch (Exception ex)
+        {
+            RemovePendingOperation(session!, cancelId);
+            WriteUInt32(pdwCancelID, 0);
+            return MapHResult(ex);
+        }
     }
 
     [UnmanagedCallersOnly]
@@ -790,6 +909,13 @@ internal static unsafe class OpcHdaServerCcwMethods
         return annotations is not null;
     }
 
+    private static bool TryResolveDispatcher(IntPtr pThis, out IOpcHdaServerDispatcher? dispatcher)
+    {
+        IOpcHdaServer? server = OpcHdaServerCcw.ResolveServer(pThis);
+        dispatcher = server as IOpcHdaServerDispatcher ?? (server is null ? null : new OpcHdaServerDispatcher(server));
+        return dispatcher is not null;
+    }
+
     private static bool HasItemReadArgs(uint count, IntPtr handles, IntPtr* values, IntPtr* errors) =>
         count is > 0 and <= int.MaxValue && handles != IntPtr.Zero && values != null && errors != null;
 
@@ -813,6 +939,18 @@ internal static unsafe class OpcHdaServerCcwMethods
 
     private static bool HasAsyncAttributeReadArgs(uint count, IntPtr attributeIds, IntPtr cancelId, IntPtr* errors) =>
         count is > 0 and <= int.MaxValue && attributeIds != IntPtr.Zero && cancelId != IntPtr.Zero && errors != null;
+
+    private static bool HasAnnotationInsertArgs(uint count, IntPtr handles, IntPtr timestamps, IntPtr annotations, IntPtr* errors) =>
+        count is > 0 and <= int.MaxValue && handles != IntPtr.Zero && timestamps != IntPtr.Zero && annotations != IntPtr.Zero && errors != null;
+
+    private static bool HasAsyncAnnotationInsertArgs(uint count, IntPtr handles, IntPtr timestamps, IntPtr annotations, IntPtr cancelId, IntPtr* errors) =>
+        HasAnnotationInsertArgs(count, handles, timestamps, annotations, errors) && cancelId != IntPtr.Zero;
+
+    private static bool HasAsyncAdviseRawArgs(uint count, IntPtr startTime, long updateInterval, IntPtr handles, IntPtr cancelId, IntPtr* errors) =>
+        HasAsyncItemReadArgs(count, handles, cancelId, errors) && startTime != IntPtr.Zero && updateInterval > 0;
+
+    private static bool HasAsyncAdviseProcessedArgs(uint count, IntPtr startTime, long resampleInterval, IntPtr handles, IntPtr aggregateIds, uint intervalCount, IntPtr cancelId, IntPtr* errors) =>
+        HasAsyncAdviseRawArgs(count, startTime, resampleInterval, handles, cancelId, errors) && aggregateIds != IntPtr.Zero && intervalCount is > 0 and <= int.MaxValue;
 
     private static void ZeroReadOuts(IntPtr* values, IntPtr* errors)
     {
@@ -983,6 +1121,19 @@ internal static unsafe class OpcHdaServerCcwMethods
         return cancelId;
     }
 
+    private static CancellationToken GetPendingCancellationToken(OpcHdaServerCcw.CcwSession session, int cancelId) =>
+        session.PendingOperations.TryGetValue(cancelId, out CancellationTokenSource? cts)
+            ? cts.Token
+            : CancellationToken.None;
+
+    private static void RemovePendingOperation(OpcHdaServerCcw.CcwSession session, int cancelId)
+    {
+        if (cancelId != 0 && session.PendingOperations.TryRemove(cancelId, out CancellationTokenSource? cts))
+        {
+            cts.Dispose();
+        }
+    }
+
     private static void QueueReadComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, OpcHdaItem[] items, int[] errors) =>
         QueueCallback(session, cancelId, sink => sink.OnReadComplete(transactionId, GetMasterHResult(errors), items, errors));
 
@@ -994,6 +1145,12 @@ internal static unsafe class OpcHdaServerCcwMethods
 
     private static void QueueReadAnnotationsComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, OpcHdaAnnotation[] annotations, int[] errors) =>
         QueueCallback(session, cancelId, sink => sink.OnReadAnnotations(transactionId, GetMasterHResult(errors), annotations, errors));
+
+    private static void QueueInsertAnnotationsComplete(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, int[] clientHandles, int[] errors) =>
+        QueueCallback(session, cancelId, sink => sink.OnInsertAnnotations(transactionId, GetMasterHResult(errors), clientHandles, errors));
+
+    private static void QueueDataChangeStream(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, IAsyncEnumerable<OpcHdaDataUpdate> updates) =>
+        _ = Task.Run(() => PumpDataChangeStreamAsync(session, cancelId, transactionId, updates));
 
     private static void QueueCallback(OpcHdaServerCcw.CcwSession session, int cancelId, Action<OpcHdaCallbackProxy> callback)
     {
@@ -1029,6 +1186,27 @@ internal static unsafe class OpcHdaServerCcwMethods
         finally
         {
             cts.Dispose();
+        }
+    }
+
+    private static Task PumpDataChangeStreamAsync(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, IAsyncEnumerable<OpcHdaDataUpdate> updates) =>
+        OpcHdaServerCcwDataChangePump.PumpAsync(session, cancelId, transactionId, updates);
+
+    private static void FireDataChange(OpcHdaServerCcw.CcwSession session, int transactionId, OpcHdaDataUpdate update)
+    {
+        int status = GetMasterHResult(update.Errors);
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            try
+            {
+                sink.OnDataChange(transactionId, status, update.ItemValues, update.Errors);
+            }
+            catch (COMException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
     }
 
@@ -1227,6 +1405,78 @@ internal static unsafe class OpcHdaServerCcwMethods
         return values;
     }
 
+    private static OpcHdaAnnotation[] ReadAnnotationInputArray(IntPtr ptr, int count)
+    {
+        var annotations = new OpcHdaAnnotation[count];
+        for (int i = 0; i < count; i++)
+        {
+            annotations[i] = ReadAnnotationInput(IntPtr.Add(ptr, checked(i * AnnotationInputSize)));
+        }
+
+        return annotations;
+    }
+
+    private static OpcHdaAnnotation ReadAnnotationInput(IntPtr slot)
+    {
+        int clientHandle = Marshal.ReadInt32(slot);
+        int valueCount = CountToInt(unchecked((uint)Marshal.ReadInt32(slot, sizeof(int))));
+        int offset = PointerAlignedAfterTwoDwords;
+        DateTimeOffset[] timestamps = ReadAnnotationFileTimes(Marshal.ReadIntPtr(slot, offset), valueCount);
+        string?[] annotationValues = ReadStringPointerValues(Marshal.ReadIntPtr(slot, offset + IntPtr.Size), valueCount);
+        DateTimeOffset[] annotationTimes = ReadAnnotationFileTimes(Marshal.ReadIntPtr(slot, offset + (2 * IntPtr.Size)), valueCount);
+        string?[] users = ReadStringPointerValues(Marshal.ReadIntPtr(slot, offset + (3 * IntPtr.Size)), valueCount);
+        return new OpcHdaAnnotation(clientHandle, timestamps, annotationValues, annotationTimes, users);
+    }
+
+    private static DateTimeOffset[] ReadAnnotationFileTimes(IntPtr ptr, int count)
+    {
+        if (count > 0 && ptr == IntPtr.Zero)
+        {
+            throw new ArgumentException("FILETIME array pointer is null.", nameof(ptr));
+        }
+
+        var values = new DateTimeOffset[count];
+        for (int i = 0; i < count; i++)
+        {
+            values[i] = DateTimeOffset.FromFileTime(Marshal.ReadInt64(ptr, checked(i * sizeof(long))));
+        }
+
+        return values;
+    }
+
+    private static string?[] ReadStringPointerValues(IntPtr ptr, int count)
+    {
+        if (count > 0 && ptr == IntPtr.Zero)
+        {
+            throw new ArgumentException("String pointer array is null.", nameof(ptr));
+        }
+
+        var values = new string?[count];
+        for (int i = 0; i < count; i++)
+        {
+            values[i] = Marshal.PtrToStringUni(Marshal.ReadIntPtr(ptr, checked(i * IntPtr.Size)));
+        }
+
+        return values;
+    }
+
+    private static int[] GetAnnotationClientHandles(OpcHdaAnnotation[] annotations)
+    {
+        var handles = new int[annotations.Length];
+        for (int i = 0; i < annotations.Length; i++)
+        {
+            handles[i] = annotations[i].ClientHandle;
+        }
+
+        return handles;
+    }
+
+    private static int AnnotationInputSize => PointerAlignedAfterTwoDwords + (4 * IntPtr.Size);
+
+    private static int PointerAlignedAfterTwoDwords => Align(2 * sizeof(int), IntPtr.Size);
+
+    private static int Align(int value, int alignment) => (value + alignment - 1) & ~(alignment - 1);
+
     private static IntPtr AllocateSucceededErrors(int count)
     {
         var errors = new int[count];
@@ -1310,6 +1560,27 @@ internal static unsafe class OpcHdaServerCcwMethods
         }
     }
 
+    internal static void FireDataChangeCallback(OpcHdaServerCcw.CcwSession session, int transactionId, OpcHdaDataUpdate update)
+    {
+        int status = GetMasterHResult(update.Errors);
+        foreach (OpcHdaCallbackProxy sink in session.ScmSinks.Values)
+        {
+            try
+            {
+                sink.OnDataChange(transactionId, status, update.ItemValues, update.Errors);
+            }
+            catch (COMException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }
+    }
+
+    internal static void RemovePendingOperationForPump(OpcHdaServerCcw.CcwSession session, int cancelId) =>
+        RemovePendingOperation(session, cancelId);
+
     private static void WriteInt32(IntPtr p, int value)
     {
         if (p != IntPtr.Zero)
@@ -1331,6 +1602,46 @@ internal static unsafe class OpcHdaServerCcwMethods
         if (pp != null)
         {
             *pp = IntPtr.Zero;
+        }
+    }
+}
+
+[SupportedOSPlatform("windows")]
+internal static class OpcHdaServerCcwDataChangePump
+{
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Background callback pump must clean up pending operations.")]
+    public static async Task PumpAsync(OpcHdaServerCcw.CcwSession session, int cancelId, int transactionId, IAsyncEnumerable<OpcHdaDataUpdate> updates)
+    {
+        if (!session.PendingOperations.TryGetValue(cancelId, out CancellationTokenSource? cts))
+        {
+            return;
+        }
+
+        CancellationToken cancellationToken = cts.Token;
+        try
+        {
+            await foreach (OpcHdaDataUpdate update in updates.WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                OpcHdaServerCcwMethods.FireDataChangeCallback(session, transactionId, update);
+            }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
+        catch (ObjectDisposedException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
+        catch (Exception)
+        {
+        }
+        finally
+        {
+            OpcHdaServerCcwMethods.RemovePendingOperationForPump(session, cancelId);
         }
     }
 }

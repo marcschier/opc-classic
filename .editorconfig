@@ -372,7 +372,7 @@ indent_size = 2
 end_of_line = crlf
 
 # Reference folders — preserve upstream style and analyzer behavior
-[{COM,External}/**.cs]
+[{COM,ext}/**.cs]
 csharp_style_namespace_declarations = block_scoped:silent
 csharp_using_directive_placement = inside_namespace:silent
 dotnet_diagnostic.IL2026.severity = silent

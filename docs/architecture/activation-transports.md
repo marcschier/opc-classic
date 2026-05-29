@@ -5,21 +5,21 @@ in-process equivalent) on a registered CLSID. On the wire this translates to a
 DCOM activation RPC against one of two interfaces:
 
 | Interface | UUID | Opnum | Modern? | RPC seq |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | `IActivation` (legacy) | `4d9f4ab8-7d1c-11cf-861e-0020af6e7c57` | 0 `RemoteActivation` | Pre-XP-SP2 | `ncacn_np` (SMB) on `\PIPE\epmapper` OR `ncacn_ip_tcp` on `[135]` |
 | `IRemoteSCMActivator` (modern) | `000001A0-0000-0000-C000-000000000046` | 3 `RemoteGetClassObject`, 4 `RemoteCreateInstance` | XP SP2+ / Vista+ / 2008+ | `ncacn_ip_tcp` on `[135]` |
 
-Reference: `External/Docs/Win/[MS-DCOM].md` sections 3.1.2.5.2.3 (legacy) and
+Reference: `ext/private/docs/MS-DCOM.md` sections 3.1.2.5.2.3 (legacy) and
 3.1.2.5.2.4-5 (modern).
 
 ## What this codebase supports today
 
 | Path | Status | Implemented in |
-|---|---|---|
+| --- | --- | --- |
 | `IRemoteSCMActivator::RemoteGetClassObject` over TCP | ✅ Client + server | `src\Opc.Classic.Dcom\Activation\` + `src\Opc.Classic.Discovery\OpcEnumClient.cs` |
 | `IRemoteSCMActivator::RemoteCreateInstance` over TCP | ✅ Client + server | same |
 | `IActivation::RemoteActivation` over TCP | ✅ Client + server | `src\Opc.Classic.Dcom\Activation\ActivationClient.cs` + `IActivationCodec.cs` + `ActivationServer.cs` |
-| `IActivation::RemoteActivation` over SMB (ncacn_np) | ❌ Not implemented | requires SMB transport wire-up (see `docs\architecture\smb-transport.md`) |
+| `IActivation::RemoteActivation` over SMB (ncacn_np) | ✅ Client + server | channel-pluggable `ActivationClient`/`ActivationServer` over `src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs` |
 | `IRemoteSCMActivator` over SMB | ❌ Not implemented + not normally used | per [MS-DCOM] the modern activator is registered with `ncacn_ip_tcp` only |
 
 The Windows SCM path is also wired for local/native client activation.
@@ -40,12 +40,12 @@ processes PDUs through `RpcServerConnectionProcessor`, and uses
 ## When to use which
 
 | Scenario | Recommended path |
-|---|---|
+| --- | --- |
 | Modern Windows server (Vista+, Server 2008+) | `IRemoteSCMActivator` over TCP — what we implement today |
 | Windows XP / Server 2003 / older Samba-DCE-RPC bridge | `IActivation` over TCP if available, otherwise `IActivation` over SMB |
-| Server with TCP port 135 blocked but SMB (445) open | `IActivation` over SMB (the typical "firewall-friendly" DCOM scenario described in Microsoft's MSDN archives) |
+| Server with TCP port 135 blocked but SMB (445) open | `IActivation` over SMB via `ncacn_np` / `NcacnNpTransport` (the typical "firewall-friendly" DCOM scenario described in Microsoft's MSDN archives) |
 | Linux/macOS client talking to Windows | TCP-based modern path (works today; no platform OS dependency in our code) |
-| Linux/macOS client talking to legacy Windows (XP / 2003) with TCP blocked | Requires SMB wire-up and legacy activation work (Phase 2-4 of `docs\architecture\smb-transport.md`) |
+| Linux/macOS client talking to legacy Windows (XP / 2003) with TCP blocked | Now supported via the `ncacn_np` transport (`src\Opc.Classic.Dcom\Transport\NcacnNpTransport.cs`) + the legacy `IActivation` client/server in `src\Opc.Classic.Dcom\Activation\` |
 
 ## Activation property surface
 
@@ -66,26 +66,26 @@ The response carries `OXID`, `DUALSTRINGARRAY` (object bindings), `IPID`,
 `pAuthnHint`, `COMVERSION`, and the per-IID activation results
 (`MInterfacePointer[]` + HRESULT[]).
 
-Because the two interfaces share so much structure, a future Phase 4 (`IActivation`
-legacy support) can largely reuse the existing `ActivationProperties` / NDR
-codec under `src\Opc.Classic.Dcom\Activation\`. The work is mostly an
+Because the two interfaces share so much structure, the legacy `IActivation`
+support reuses the existing `ActivationProperties` / NDR codec under
+`src\Opc.Classic.Dcom\Activation\`. The legacy entry point is mostly an
 additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 (slightly different field ordering per [MS-DCOM] §8200-8240) to the modern
 `ClassFactoryRegistry` + `IClassFactory.CreateInstance` plumbing.
 
-## Decision matrix for future work
+## Status matrix
 
-| Goal | Required work |
-|---|---|
-| Talk to a legacy XP/Server-2003 server over TCP | `IActivation` client implementation (~1 day; reuse activation NDR codec) |
-| Talk to a legacy server over SMB (firewall scenario) | Existing SMB2 project + pending `ncacn_np` wire-up (Phase 2 in `smb-transport.md`) + `IActivation` client |
-| Accept legacy clients into our managed server | `IActivation` server-side dispatcher (mirror of `RemoteSCMActivatorServer.cs`) |
-| Cross-platform WINREG discovery | Existing WINREG opnums + pending SMB transport wire-up / smoke (Phase 2-3 in `smb-transport.md`) |
+| Goal | Status |
+| --- | --- |
+| Talk to a legacy XP/Server-2003 server over TCP | ✅ Shipped via `ActivationClient` and the shared activation NDR codec. |
+| Talk to a legacy server over SMB (firewall scenario) | ✅ Shipped via the SMB2 client, `ncacn_np` transport, and channel-pluggable `ActivationClient`; real-world SMB activation captures remain useful validation inputs. |
+| Accept legacy clients into our managed server | ✅ Shipped via `ActivationServer`, which adapts legacy activation to the same class-factory registry as `RemoteSCMActivatorServer`. |
+| Cross-platform WINREG discovery | ✅ Shipped via WINREG opnums, `ncacn_np`, fixture replay, and Samba smoke coverage. |
 
 ## References
 
-- `External/Docs/Win/[MS-DCOM].md` — DCOM Remote Protocol
-- `External/Docs/Win/[MS-RPCE].md` — RPC Protocol Extensions
+- `ext/private/docs/MS-DCOM.md` — DCOM Remote Protocol
+- `ext/private/docs/MS-RPCE.md` — RPC Protocol Extensions
 - `src\Opc.Classic.Dcom\Activation\IRemoteSCMActivator.cs` — modern activator definition
 - `src\Opc.Classic.Dcom\Activation\RemoteSCMActivatorServer.cs` — modern activator server
 - `src\Opc.Classic.Dcom\Activation\ActivationProperties.cs` — shared activation-property carrier

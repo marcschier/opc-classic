@@ -4,7 +4,7 @@
 
 Run a managed OPC DA server on Linux, macOS, or Windows while Windows DA clients connect through Classic DA COM interfaces.
 
-The reference sample is `samples\Opc.Classic.Samples.DaServer`. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>`, registers `Opc.Classic.Samples.DaServer.1`, and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51300`) or `OPC_CLASSIC_LISTEN_ADDRESS`. Related samples cover AE, HDA, loopback, CTT, and AOT scenarios; container conventions are in [../../samples/README.docker.md](../../samples/README.docker.md).
+The reference sample is `samples\Opc.Classic.Samples.DaServer`. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>`, registers `Opc.Classic.Samples.DaServer.1`, and reads `OPC_CLASSIC_SAMPLE_PORT` (default `51300`) or `OPC_CLASSIC_LISTEN_ADDRESS`. Related samples cover AE, HDA, loopback, CTT, OPC Security, and AOT scenarios; container conventions are in [../../samples/README.docker.md](../../samples/README.docker.md).
 
 ## Hosting shape
 
@@ -68,7 +68,7 @@ For Kerberos setup, see [Kerberos in Active Directory](03-kerberos-in-active-dir
 
 ## Windows client side
 
-The Windows client asks for `Contoso.ManagedOpcDa.1`. Registry setup maps that ProgID and CLSID to the managed server endpoint. After activation, `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)` calls flow to generated server dispatchers or Windows CCW vtables. VARIANT and SAFEARRAY marshaling is implemented for the shipped DA paths, and AE/HDA have corresponding server/subscription/read vtables for their samples.
+The Windows client asks for `Contoso.ManagedOpcDa.1`. Registry setup maps that ProgID and CLSID to the managed server endpoint. After activation, `IOPCServer`, `IOPCGroupStateMgt(2)`, `IOPCItemMgt`, `IOPCSyncIO(2)`, `IOPCAsyncIO2/3`, and `IConnectionPoint(Container)` calls flow to generated server dispatchers or Windows CCW vtables. VARIANT and SAFEARRAY marshaling is implemented for the shipped DA paths; AE has full array marshaling for its shipped CCW methods, and HDA covers sync read/update, async update, playback, annotation insert, and async advise sample paths.
 
 Native COM clients require normal Windows COM registration, DCOM permissions, firewall rules, and process identity configuration. Use the preserved OPC Foundation C++ sample clients and servers as compatibility references when validating a deployment.
 

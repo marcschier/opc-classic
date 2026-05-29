@@ -650,6 +650,7 @@ public partial interface IOPCAsyncIO3
 
 /// <summary><c>IEnumOPCItemAttributes</c> — enumerates items in a DA group with their full attribute set (IID_IEnumOPCItemAttributes).</summary>
 [OpcInterface("39C13A55-011E-11D0-9675-0020AFD8ADB3")]
+[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IEnumOPCItemAttributes
 {

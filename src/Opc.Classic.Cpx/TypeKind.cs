@@ -47,6 +47,8 @@ public enum TypeKind
     Guid = 14,
     /// <summary>Length-prefixed byte blob.</summary>
     Blob = 15,
+    /// <summary>Bit-packed sequence of bits.</summary>
+    BitString = 16,
     /// <summary>Reference to a struct defined in the same dictionary.</summary>
-    StructReference = 16,
+    StructReference = 17,
 }

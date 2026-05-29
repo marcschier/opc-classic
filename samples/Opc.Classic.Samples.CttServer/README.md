@@ -81,7 +81,3 @@ The Windows CCW path now returns real `IOPCServer` pointers for supported IIDs a
 
 - `Program.cs` — listen-address selection, COM registration CLI, and SCM `-Embedding` integration.
 - `CttDaServer.cs` — managed DA server and group registry used by the CTT workflow.
-
-## Status
-
-Conformance-harness grade. The server has real DA root/group dispatch for smoke and CTT-baseline runs, while full CTT green status still depends on the remaining release-blocker work tracked in `docs\release-blockers.md`.

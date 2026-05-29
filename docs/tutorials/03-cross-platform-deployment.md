@@ -1,7 +1,5 @@
 # Cross-platform deployment for OPC Classic clients and servers
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 Opc.Classic is designed for .NET 10, NativeAOT-compatible libraries, and cross-platform operation. That does not make OPC Classic deployment magically simple. DCOM-era servers assume Windows naming, endpoint mapping, authentication levels, and service accounts. Linux and macOS clients bring container packaging, Kerberos files, DNS, time synchronization, and firewall rules into the picture. This tutorial turns the repository's architecture into a production deployment plan for clients and managed servers on Linux, macOS, containers, and Kubernetes.
 
 For a compact Linux recipe see [../cookbook/01-connect-to-matrikon-from-linux.md](../cookbook/01-connect-to-matrikon-from-linux.md). For AOT details see [10-aot-and-trimming.md](10-aot-and-trimming.md). For authentication hardening see [04-security-with-kerberos-and-channel-binding.md](04-security-with-kerberos-and-channel-binding.md). For the repository sample Compose topology and exact environment variables, see [../../samples/README.docker.md](../../samples/README.docker.md).
@@ -122,13 +120,13 @@ If you use `Microsoft.Extensions.Configuration`, double underscores map to secti
 
 ## Repository sample container convention
 
-The repository sample containers now exercise DCOM-over-IP between client/server containers. Server samples read `OPC_CLASSIC_SAMPLE_PORT` and default to DA `51300`, AE `51301`, HDA `51302`, and CTT `51303`; `OPC_CLASSIC_LISTEN_ADDRESS` overrides the full bind address when you need more than `0.0.0.0:<port>`. Client samples read `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT`; when both are present they call `DcomCallChannelFactory.ConnectTcpAsync` over `TcpClientTransport`, and when absent they fall back to the in-process `InMemoryCallChannel` path for local development.
+The repository samples use one TCP environment convention. Containerized DA/AE/HDA pairs exercise DCOM-over-IP between client/server containers. Server samples read `OPC_CLASSIC_SAMPLE_PORT` and default to DA `51300`, AE `51301`, HDA `51302`, CTT `51303`, and OpcSecurityServer `51304`; `OPC_CLASSIC_LISTEN_ADDRESS` overrides the full bind address when you need more than `0.0.0.0:<port>`. Client samples read `OPC_CLASSIC_SERVER_HOST` and `OPC_CLASSIC_SERVER_PORT`; when both are present they call `DcomCallChannelFactory.ConnectTcpAsync` over `TcpClientTransport`, and when absent they fall back to the in-process `InMemoryCallChannel` path for local development.
 
 ```powershell
 docker compose -f samples\docker-compose.yml up
 ```
 
-The sample Compose file sets `OPC_CLASSIC_SERVER_HOST` to service DNS names (`daserver`, `aeserver`, `hdaserver`) and ports `51300`-`51302`. See [../../samples/README.docker.md](../../samples/README.docker.md) before copying sample port numbers into production; real Windows DCOM targets may still require endpoint mapper and constrained dynamic RPC ports.
+The sample Compose file sets `OPC_CLASSIC_SERVER_HOST` to service DNS names (`daserver`, `aeserver`, `hdaserver`) and ports `51300`-`51302`. CTT and OpcSecurityServer use the same server port convention when run directly, but they are not part of that multi-container client/server Compose topology. See [../../samples/README.docker.md](../../samples/README.docker.md) before copying sample port numbers into production; real Windows DCOM targets may still require endpoint mapper and constrained dynamic RPC ports.
 
 ## Kerberos on Linux
 

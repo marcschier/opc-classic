@@ -17,8 +17,8 @@ opc-classic/
 ├── samples/                      9 sample apps: 3 servers, 3 clients, LoopbackDemo, CttServer, AotCanary
 ├── docs/                         plain Markdown documentation hub and topic pages
 ├── docker/                       Windows-container CTT + managed/native interop test fleet
-├── COM/                          OPC Foundation native C++ sample servers used as conformance references
-├── External/                     OPC Foundation IDL, headers, redistributables, and spec assets
+├── ext/                          OPC Foundation IDL (`ext/inc`), redistributables (`ext/redist`), CTT installers (`ext/private/ctt`), spec reference (`ext/private/docs`), and native C++ sample servers (`ext/samples`) used as conformance references
+├── ext/                     OPC Foundation IDL, headers, redistributables, and spec assets
 ├── .github/workflows/            build, CTT, release, and conformance workflows
 ├── Opc.Classic.slnx              .NET 10 XML solution format
 ├── global.json                   pins .NET 10 SDK >= 10.0.100
@@ -26,7 +26,7 @@ opc-classic/
 └── README.md
 ```
 
-`COM/` and `External/` retain their upstream notices and are used for conformance validation. Project source is MIT licensed.
+`ext/` retains its upstream notices and is used for conformance validation. Project source is MIT licensed.
 
 ## Build / test / run
 

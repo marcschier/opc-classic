@@ -1,10 +1,8 @@
 # Opc.Classic long-form tutorials
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 These tutorials are deeper than the short recipes in [../cookbook/README.md](../cookbook/README.md). They walk through complete production scenarios, explain the sequence of calls, and call out the platform, security, and diagnostics traps that appear in production OPC Classic deployments. Opc.Classic implements all nine OPC Classic sub-specifications under MIT licensing, uses the `Opc.Classic.*` namespace family, provides self-contained NTLMv2/Kerberos/SPNEGO with channel binding, and keeps proxies and dispatchers source-generated for NativeAOT compatibility.
 
-## Start here: new adopters
+## Start here
 
 1. [Build your first DA client](01-build-your-first-da-client.md) — create a .NET 10 hosted service that browses tags, reads values, subscribes to changes, handles OPC HRESULTs, and shuts down cleanly.
 2. [Host an OPC DA server](02-host-an-opc-server.md) — implement a managed `IOpcDaServer`, register it with `Opc.Classic.Hosting`, model a tag tree, and preserve DA group/HRESULT semantics.
@@ -26,4 +24,4 @@ These tutorials are deeper than the short recipes in [../cookbook/README.md](../
 9. [Performance tuning](08-performance-tuning.md) — tune NDR hot paths, ArrayPool usage, codec choice, `OpcVariant` boxing, async I/O pipelining, and DA batch sizes.
 10. [AOT and trimming](10-aot-and-trimming.md) — publish NativeAOT binaries safely, understand what is trimming-safe, and use the AOT canary sample as a deployment gate.
 
-For architectural background, read [../ARCHITECTURE.md](../ARCHITECTURE.md). For adoption and package guidance, read [../ADOPTION.md](../ADOPTION.md). For compact production recipes, use [../cookbook/README.md](../cookbook/README.md). For the sample container topology, TCP environment variables, and Docker Compose commands, see [../../samples/README.docker.md](../../samples/README.docker.md). For remaining gates before the final 1.0.0 tag, see [../release-blockers.md](../release-blockers.md).
+For architectural background, read [../ARCHITECTURE.md](../ARCHITECTURE.md). For adoption and package guidance, read [../ADOPTION.md](../ADOPTION.md). For compact production recipes, use [../cookbook/README.md](../cookbook/README.md). For the sample container topology, TCP environment variables, and Docker Compose commands, see [../../samples/README.docker.md](../../samples/README.docker.md). 

@@ -24,7 +24,7 @@ Write-Host '-- Registering OPC.SampleServer.1 via -RegServer'
 & C:/server/opc_exe.exe -RegServer
 
 try {
-    Write-Host '-- Starting OPC Batch sample server (headless console)'
+    Write-Host '-- Starting OPC sample server (headless console)'
     & C:/server/opc_exe.exe
 }
 finally {

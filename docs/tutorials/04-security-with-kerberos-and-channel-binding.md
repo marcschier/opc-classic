@@ -1,7 +1,5 @@
 # Security with Kerberos and channel binding
 
-Applies to Opc.Classic 1.0.0-rc.7.
-
 OPC Classic security is mostly DCOM security. Modern deployments must account for Microsoft DCOM hardening, NTLM relay risk, Kerberos service-principal identity, SPNEGO negotiation, channel binding, and operational realities such as keytab rotation. This tutorial shows how to move a production Opc.Classic client or managed server from the safe NTLMv2 baseline to Kerberos/SPNEGO with channel binding.
 
 Opc.Classic provides self-contained NTLMv2, Kerberos, SPNEGO, and channel-binding token support through `OpcConnectData.WithKerberos`, `KerberosAuthInfo`, `KerberosAuthContext`, `ChannelBindings`, `ChannelBindingsFactory`, and `ChannelBindingsHash`. Validate the exact package version, realm configuration, and protection level before enabling Kerberos for production traffic. The deployment and troubleshooting guidance applies because SPN, KDC, and channel-binding errors are independent of application code. For a compact recipe see [../cookbook/03-kerberos-in-active-directory.md](../cookbook/03-kerberos-in-active-directory.md); for NTLMv2 audit context see [../security/NTLMSSP_AUDIT_GUIDE.md](../security/NTLMSSP_AUDIT_GUIDE.md).

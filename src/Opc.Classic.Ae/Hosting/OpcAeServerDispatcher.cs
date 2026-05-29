@@ -43,6 +43,115 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
     }
 
     /// <inheritdoc />
+    public Task QueryEventCategoriesAsync(
+        int eventType,
+        out int[] eventCategories,
+        out string[] eventCategoryDescriptions,
+        CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.QueryEventCategoriesAsync(eventType, out eventCategories, out eventCategoryDescriptions, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<string[]> QueryConditionNamesAsync(int eventCategory, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.QueryConditionNamesAsync(eventCategory, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<string[]> QuerySubConditionNamesAsync(string conditionName, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.QuerySubConditionNamesAsync(conditionName, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<string[]> QuerySourceConditionsAsync(string source, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.QuerySourceConditionsAsync(source, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task QueryEventAttributesAsync(
+        int eventCategory,
+        out int[] attributeIds,
+        out string[] attributeDescriptions,
+        out ushort[] attributeTypes,
+        CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.QueryEventAttributesAsync(eventCategory, out attributeIds, out attributeDescriptions, out attributeTypes, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task TranslateToItemIDsAsync(
+        string source,
+        int eventCategory,
+        string conditionName,
+        string subconditionName,
+        int[] associatedAttributeIds,
+        out string[] attributeItemIds,
+        out string[] nodeNames,
+        out Guid[] classIds,
+        CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.TranslateToItemIDsAsync(source, eventCategory, conditionName, subconditionName, associatedAttributeIds, out attributeItemIds, out nodeNames, out classIds, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<OpcConditionState> GetConditionStateAsync(string source, string conditionName, int[] attributeIds, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.GetConditionStateAsync(source, conditionName, attributeIds, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.EnableConditionByAreaAsync(areas, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.EnableConditionBySourceAsync(sources, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.DisableConditionByAreaAsync(areas, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.DisableConditionBySourceAsync(sources, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<int[]> AckConditionAsync(
+        string acknowledgerId,
+        string comment,
+        long[] activeTimes,
+        int[] cookies,
+        string[] sources,
+        string[] conditionNames,
+        CancellationToken cancellationToken = default)
+    {
+        IOPCEventServer server = _server;
+        return server.AckConditionAsync(acknowledgerId, comment, activeTimes, cookies, sources, conditionNames, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public async Task<IOpcAeAreaBrowserDispatcher> CreateAreaBrowserAsync(
         Guid requestedInterfaceId,
         CancellationToken cancellationToken = default)

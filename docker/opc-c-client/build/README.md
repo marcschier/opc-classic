@@ -21,13 +21,6 @@ Exits 0 on full success; non-zero exit code identifies which stage
 failed (2=CLSIDFromProgID, 3=CoCreateInstanceEx, 4=AddGroup, 5=AddItems,
 6=Read). HRESULT printed to stderr on failure.
 
-## Coverage vs the OPC Security sample sources
-
-| Want | Status |
-|---|---|
-| Single-shot DA smoke | ✅ `opc-test.exe` |
-| Sustained throughput driver (`OPCSPEED.cpp`) | ⏳ Future; the OPC Security 1.00 Sample Client `.dsp`-to-`.vcxproj` route is still documented below for anyone who wants the richer driver |
-
 ## Smoke usage (post-build)
 
 ```pwsh
@@ -35,19 +28,6 @@ docker run --rm --network opc-test-net opc-classic/c-client `
     -ProgId Opc.Classic.DaSample.1 `
     -TargetHost opc-classic-managed
 ```
-
-## Future: wrap the OPC Security sample sources
-
-The original VS6 `.dsp` files live in
-`External/OPC Security 1.00 Sample Code/Sample Client/`. If sustained
-throughput or interactive UI features are wanted, author a sister
-`opc-speed.vcxproj` covering:
-
-| Source | Output | Purpose |
-|---|---|---|
-| `OPCSPEED.CPP` + `OPCCOMN_i.c` + `OPCDA_i.c` + `WCSUTIL.CPP` | `opc-speed.exe` | Throughput measurement |
-
-The 4-5 files are non-MFC; the vcxproj pattern matches `opc-test.vcxproj`.
 
 ## See also
 

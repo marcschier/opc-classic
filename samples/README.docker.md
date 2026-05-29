@@ -16,7 +16,7 @@ Loopback-only demo:
 docker compose -f samples/docker-compose.loopback.yml up
 ```
 
-The compose topology runs three OPC-spec pairs (DA, AE, HDA) on a shared bridge network. Each client dials its peer server over **TCP** (DCOM-over-IP) at the docker service-DNS name + the configured port. The client samples log which transport they are using at startup so it's easy to confirm in `docker compose logs`.
+The compose topology runs three OPC-spec pairs (DA, AE, HDA) on a shared bridge network. Each client dials its peer server over **TCP** (DCOM-over-IP) at the docker service-DNS name + the configured port. The client samples log which transport they are using at startup so it's easy to confirm in `docker compose logs`. The OPC Security sample server follows the same port convention (`51304`) when run from source, but is not part of the current Compose file.
 
 > **Authentication note**: the sample compose deployment uses a `NoOpAuthContext` for the call channel — no NTLM/Kerberos handshake. This is intentional for the sample's interop demo. Production deployments would layer real auth on top of the same transport (`Opc.Classic.Dcom.Auth.*`).
 
@@ -50,6 +50,7 @@ For an in-process variant of the same architecture (single container, no network
 | `opcclassic/hdaserver:local` | `samples/Opc.Classic.Samples.HdaServer/Dockerfile` | `51302/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51302` | HDA server binds `0.0.0.0:51302`. |
 | `opcclassic/hdaclient:local` | `samples/Opc.Classic.Samples.HdaClient/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SERVER_HOST=hdaserver`, `OPC_CLASSIC_SERVER_PORT=51302` | HDA client dials `hdaserver:51302` over TCP. |
 | `opcclassic/cttserver:local` | `samples/Opc.Classic.Samples.CttServer/Dockerfile` | `51303/tcp` | `DOTNET_ENVIRONMENT=Production`, `OPC_CLASSIC_SAMPLE_PORT=51303` | Manual CTT-compatible DA server image; not included in the multi-container Compose file. |
+| source-only `OpcSecurityServer` | none | `51304/tcp` when run manually | `OPC_CLASSIC_SAMPLE_PORT=51304` | OPC Security 1.00 reference DA server; no Dockerfile yet. |
 | `opcclassic/loopbackdemo:local` | `samples/Opc.Classic.Samples.LoopbackDemo/Dockerfile` | none | `DOTNET_ENVIRONMENT=Production` | Single-container DA loopback demo (in-process, no network). |
 
 ### Optional overrides
@@ -66,6 +67,7 @@ docker build -t opcclassic/daserver -f samples/Opc.Classic.Samples.DaServer/Dock
 docker build -t opcclassic/aeserver -f samples/Opc.Classic.Samples.AeServer/Dockerfile .
 docker build -t opcclassic/hdaserver -f samples/Opc.Classic.Samples.HdaServer/Dockerfile .
 docker build -t opcclassic/cttserver -f samples/Opc.Classic.Samples.CttServer/Dockerfile .
+# OpcSecurityServer is source-only today: dotnet run --project samples\Opc.Classic.Samples.OpcSecurityServer
 docker build -t opcclassic/daclient -f samples/Opc.Classic.Samples.DaClient/Dockerfile .
 docker build -t opcclassic/aeclient -f samples/Opc.Classic.Samples.AeClient/Dockerfile .
 docker build -t opcclassic/hdaclient -f samples/Opc.Classic.Samples.HdaClient/Dockerfile .

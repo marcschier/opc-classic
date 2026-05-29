@@ -53,6 +53,14 @@ public interface IDaServer : IAsyncDisposable
     /// <summary>Resolve an OPC HRESULT to the server's human-readable text in the current locale.</summary>
     Task<string> GetErrorTextAsync(OpcResultId resultId, CancellationToken cancellationToken = default);
 
+    /// <summary>Supply a client name that servers may use for diagnostics and logging.</summary>
+    Task SetClientNameAsync(string clientName, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(clientName);
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.CompletedTask;
+    }
+
     /// <summary>
     /// Browse the server's address space starting at <paramref name="itemPath"/>
     /// (use empty string for the root). Implementations stream results;

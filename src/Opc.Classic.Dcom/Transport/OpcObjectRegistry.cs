@@ -106,6 +106,23 @@ public sealed class OpcObjectRegistry
     }
 
     /// <summary>
+    /// Returns <see langword="true"/> when any registered object exposes
+    /// the supplied interface identifier.
+    /// </summary>
+    public bool ContainsInterface(Guid interfaceId)
+    {
+        foreach (IReadOnlyDictionary<Guid, IOpcServerDispatcher> interfaceMap in _objects.Values)
+        {
+            if (interfaceMap.ContainsKey(interfaceId))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// Returns <see langword="true"/> when the given IPID is currently
     /// registered (regardless of which interface).
     /// </summary>

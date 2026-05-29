@@ -31,6 +31,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
 
     private readonly IAsyncTransport _transport;
     private readonly IAuthContext _authContext;
+    private readonly Guid? _objectIpid;
     private readonly SemaphoreSlim _callLock = new(1, 1);
     private readonly Dictionary<Guid, int> _contextIds = new();
     private int _associationGroupId;
@@ -43,12 +44,31 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// <summary>Initializes a new instance of the <see cref="DcomCallChannel" /> class.</summary>
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
-    public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext) {
+    public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext)
+        : this(transport, authContext, objectIpid: null)
+    {
+    }
+
+    /// <summary>Initializes a channel that routes calls to a specific DCOM object IPID.</summary>
+    /// <param name="transport">The connected async transport.</param>
+    /// <param name="authContext">The authentication context for bind and packet protection.</param>
+    /// <param name="objectIpid">The object IPID to place in request PDUs.</param>
+    public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext, Guid objectIpid)
+        : this(transport, authContext, (Guid?)objectIpid)
+    {
+        if (objectIpid == Guid.Empty)
+        {
+            throw new ArgumentException("Object IPID must not be empty.", nameof(objectIpid));
+        }
+    }
+
+    private DcomCallChannel(IAsyncTransport transport, IAuthContext authContext, Guid? objectIpid) {
         ArgumentNullException.ThrowIfNull(transport);
         ArgumentNullException.ThrowIfNull(authContext);
 
         _transport = transport;
         _authContext = authContext;
+        _objectIpid = objectIpid;
     }
 
     /// <inheritdoc />
@@ -74,8 +94,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
                 Opnum = opnum,
                 Stub = requestStub,
                 CallId = NextCallId(),
+                Object = _objectIpid.HasValue ? new UUID(_objectIpid.Value.ToString("D")) : null,
             };
-
             await WritePduAsync(request, cancellationToken).ConfigureAwait(false);
 
             ConnectionOrientedPdu reply = await ReadFragmentedPduAsync(cancellationToken).ConfigureAwait(false);

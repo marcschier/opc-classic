@@ -40,6 +40,9 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
     private readonly OpcDaServerOptions _options;
     private readonly OpcObjectRegistry _objectRegistry;
     private readonly ILogger<OpcDaServerHost> _logger;
+    private readonly IOpcAddressSpace? _addressSpace;
+    private readonly IOpcItemPropertyProvider? _itemPropertyProvider;
+    private readonly IOPCItemProperties? _itemProperties;
     private OpcServerListener? _listener;
 
     /// <summary>Initializes a new instance of the <see cref="OpcDaServerHost"/> class.</summary>
@@ -47,12 +50,18 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         IOpcDaServer serverImpl,
         IOptions<OpcDaServerOptions> options,
         OpcObjectRegistry objectRegistry,
-        ILogger<OpcDaServerHost> logger)
+        ILogger<OpcDaServerHost> logger,
+        IOpcAddressSpace? addressSpace = null,
+        IOpcItemPropertyProvider? itemPropertyProvider = null,
+        IOPCItemProperties? itemProperties = null)
     {
         _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
         _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         _objectRegistry = objectRegistry ?? throw new ArgumentNullException(nameof(objectRegistry));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _addressSpace = addressSpace;
+        _itemPropertyProvider = itemPropertyProvider;
+        _itemProperties = itemProperties;
     }
 
     /// <inheritdoc />
@@ -99,15 +108,18 @@ public sealed class OpcDaServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
         // for namespace browsing even when the user's IOpcDaServer doesn't
         // explicitly override them. Implementations that want richer behaviour
         // can subclass the default classes.
+        var daDispatcher = new OpcDaServerDispatcher(_serverImpl, _logger);
         var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
         {
-            [IOPCServer.InterfaceId] = new IOPCServerServerDispatcher(_serverImpl),
+            [IOPCServer.InterfaceId] = daDispatcher.ServerDispatcher,
+            [IOPCCommon.InterfaceId] = daDispatcher.CommonDispatcher,
         };
-        var browseV2 = (_serverImpl as IOPCBrowseServerAddressSpace) ?? new DefaultBrowseServerAddressSpace();
+        var addressSpace = _addressSpace ?? (_serverImpl as IOpcAddressSpace) ?? new FlatHierarchicalNamespace();
+        var browseV2 = (_serverImpl as IOPCBrowseServerAddressSpace) ?? new DefaultBrowseServerAddressSpace(addressSpace);
         dispatchers[IOPCBrowseServerAddressSpace.InterfaceId] = new IOPCBrowseServerAddressSpaceServerDispatcher(browseV2);
-        var browseV3 = (_serverImpl as IOPCBrowse) ?? new DefaultBrowse();
+        var browseV3 = (_serverImpl as IOPCBrowse) ?? new DefaultBrowse(addressSpace);
         dispatchers[IOPCBrowse.InterfaceId] = new IOPCBrowseServerDispatcher(browseV3);
-        var props = (_serverImpl as IOPCItemProperties) ?? new DefaultItemProperties();
+        var props = (_serverImpl as IOPCItemProperties) ?? _itemProperties ?? new DefaultItemProperties(_itemPropertyProvider ?? NullItemPropertyProvider.Instance);
         dispatchers[IOPCItemProperties.InterfaceId] = new IOPCItemPropertiesServerDispatcher(props);
         var deadband = (_serverImpl as IOPCItemDeadbandMgt) ?? new DefaultItemDeadbandMgt();
         dispatchers[IOPCItemDeadbandMgt.InterfaceId] = new IOPCItemDeadbandMgtServerDispatcher(deadband);

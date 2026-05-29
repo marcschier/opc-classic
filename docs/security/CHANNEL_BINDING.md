@@ -63,4 +63,4 @@ Source: `src\Opc.Classic.Dcom.Kerberos\KerberosChannelBindingChecksum.cs`, `src\
 
 ## Tests
 
-Coverage lives in `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs` and `tests\Opc.Classic.Dcom.Kerberos.Tests\KerberosChannelBindingChecksumTests.cs`. It covers fixed SHA-256/SHA-384 certificate vectors, `SslStream` loopback extraction, NTLM AUTHENTICATE AV_PAIR insertion and no-TLS behavior, NTLM server verification, and Kerberos GSS checksum encoding.
+Coverage lives in `tests\Opc.Classic.Core.Tests\Security\ChannelBindingsTests.cs`, `tests\Opc.Classic.Dcom.Tests\ChannelBindingTlsTests.cs`, `tests\Opc.Classic.Dcom.Kerberos.Tests\KerberosChannelBindingChecksumTests.cs`, `KerberosAuthContextTests.cs`, and `KerberosKdcIntegrationTests.cs`. It covers fixed SHA-256/SHA-384 certificate vectors, `SslStream` loopback extraction, NTLM AUTHENTICATE AV_PAIR insertion and no-TLS behavior, NTLM server verification, Kerberos GSS checksum encoding, and KDC-backed CBT tamper rejection.

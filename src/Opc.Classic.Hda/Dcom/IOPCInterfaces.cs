@@ -4,7 +4,7 @@
 //
 // OPC HDA DCOM-projection interfaces. [GenerateOpcProxy] and
 // [OpcGenerateServerDispatch] are applied broadly; [OpcMethod] opnums
-// follow External\Include\opchda.idl exactly (IUnknown slots 0-2).
+// follow ext\inc\opchda.idl exactly (IUnknown slots 0-2).
 //
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCHDA_Server with underscore)

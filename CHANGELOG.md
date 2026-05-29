@@ -32,14 +32,9 @@ First stable release of the cross-platform .NET 10 OPC Classic stack.
 - **Wire and conformance fixtures** — WINREG PCAP replay coverage, C-built OPC
   reference server/client MVPs, and MS-NLMP/Kerberos/SPNEGO/channel-binding
   vectors for the security-sensitive transport paths.
-- **Comprehensive test suite** — all 17 .NET test projects green in the rc.7
-  sweep, including DA 385, AE 86, HDA 123, DCOM 123, Crypto 36, SMB 22,
-  Integration 94, and the rest of the generator/discovery/property/snapshot
-  coverage.
-
-### Migration from rc.X
-
-See `docs\MIGRATION.md`.
+- **Comprehensive test suite** — the rc.10 sweep has 2113 passed / 12
+  skipped / 0 failed across 23 .NET test projects, with 0 build errors and
+  0 build warnings.
 
 ### Known gaps (deferred to future releases)
 
@@ -47,6 +42,134 @@ See `docs\release-blockers.md` for the 3 remaining quality gates before the
 FINAL tag.
 
 ## [Unreleased]
+
+## [1.0.0-rc.10] - 2026-05-28
+
+Tenth release-candidate. **Spec-coverage gap closure across AE, HDA,
+CPX, Security, Common, Batch, and DA**, plus a repo reorganization
+landed in `1.0.0-rc.9`.
+
+### Added — AE Windows CCW array-marshaling completion (Track O1)
+
+All 14 previously-`E_NOTIMPL` array-heavy methods now have real bodies
+on the Windows CCW path:
+
+- `IOPCEventServer::QueryEventCategories` / `QueryConditionNames` /
+  `QuerySubConditionNames` / `QuerySourceConditions` /
+  `QueryEventAttributes` — `LPWSTR[]` + `DWORD[]` + `VARTYPE[]` arrays
+- `IOPCEventServer::TranslateToItemIDs` — 3 parallel arrays
+  (`LPWSTR[]` + `LPWSTR[]` + `CLSID[]`)
+- `IOPCEventServer::GetConditionState` — `OPCCONDITIONSTATE*` struct
+- `IOPCEventServer::EnableConditionByArea` / `BySource`,
+  `DisableConditionByArea` / `BySource`, `AckCondition` — per-item
+  `HRESULT[]` arrays
+- `IOPCEventSubscriptionMgt::SetReturnedAttributes` /
+  `GetReturnedAttributes` — per-category `DWORD[]` attribute IDs
+
+New helper: `src/Opc.Classic.Ae/Hosting/Windows/OpcAeArrayMarshaler.cs`
+ships shared COM-task-alloc / free-on-failure utilities for the 14
+methods.
+
+### Added — HDA Windows CCW update + playback + advise (Track O2)
+
+- `IOPCHDA_SyncUpdate` raw-vtable CCW (6 methods): `QueryCapabilities`,
+  `Insert`, `Replace`, `InsertReplace`, `DeleteRaw`, `DeleteAtTime`.
+- `IOPCHDA_AsyncUpdate` raw-vtable CCW (7 methods) firing
+  `OnInsert`/`OnReplace`/`OnInsertReplace`/`OnDelete` callbacks.
+- `IOPCHDA_Playback` raw-vtable CCW (3 methods): `ReadRawWithUpdate`,
+  `ReadProcessedWithUpdate`, `Cancel` — streaming history reads.
+- `SyncAnnotationsInsert` + `AsyncAnnotationsInsert` real bodies.
+- `AsyncAdviseRaw` + `AsyncAdviseProcessed` periodic-update bodies.
+
+### Added — CPX DA-server integration helpers (Track O3)
+
+- `src/Opc.Classic.Cpx/Hosting/OpcCpxAddressSpace.cs`: managed
+  decorator that exposes `/CPX/{TypeSystem}/{Dictionary}/{TypeID}`
+  browse branches via the DA hosting path.
+- `src/Opc.Classic.Cpx/Hosting/OpcCpxItemProperties.cs`: publishes CPX
+  properties 600-609 on complex DA items (TypeSystemId, DictionaryId,
+  TypeId, UnconvertedItemId, UnfilteredItemId, DataFilterValue).
+- `AddOpcCpxAddressSpace` + `AddOpcCpxItemProperties` DI hooks.
+- BitString completion in `OpcBinaryDecoder` / `OpcBinaryEncoder` for
+  non-byte-aligned fields per CPX 1.00 §6.2.4.2.1.
+
+### Added — Security reference sample server (Track O4)
+
+- `samples/Opc.Classic.Samples.OpcSecurityServer/` — runnable managed
+  sample demonstrating `IOPCSecurityNT` + `IOPCSecurityPrivate` stub
+  ACL semantics + cross-platform identity tracking.
+- `docs/cookbook/08-implementing-opc-security.md` — DCOM-layer vs
+  OPC-layer security distinction + production-replacement guidance.
+
+### Added — Common + Batch convenience helpers (Track O5a + O6)
+
+- `IDaServer.SetClientNameAsync(string, CancellationToken)` —
+  high-level wrapper for `IOPCCommon::SetClientName` opnum.
+- `OpcBatchPropertyId` typed helper covering 79 spec-defined Batch
+  property IDs (400-478) per OPC Batch 2.00 Appendix A; `GetDescription`
+  and `GetExpectedVarType` static accessors.
+
+### Added — DA integration test coverage (Track O5b + O5c)
+
+- `DaFullLifecycleTests.cs` — CTT-style end-to-end test against
+  `OpcDaServerHost` over loopback TCP: AddGroup → AddItems → sync
+  read/write → async callback (Refresh2 → OnDataChange) → RemoveGroup
+  → Shutdown.
+- `DaEnumOpcItemAttributesVeuInfoTests.cs` — vEUInfo VARIANT round-trip
+  for VT_ARRAY|VT_BSTR (discrete enum), VT_ARRAY|VT_R8 (analog range),
+  and VT_EMPTY via `CreateEnumerator(IID_IEnumOPCItemAttributes)`.
+- `DaBrowseContinuationPointTests.cs` — IOPCBrowse continuation-point
+  scenarios across flat + 3-level hierarchical address spaces:
+  paged browse, hierarchy-boundary crossing, opaque-token preservation,
+  invalid-token rejection (`E_INVALIDCONTINUATIONPOINT`).
+
+### Changed — DA browse continuation tokens are namespaced (Track O5c)
+
+`DefaultBrowse` now emits `"opc-da-browse:N"` style continuation
+tokens instead of bare `"N"`; tokens from one browse context can no
+longer be confused with tokens from another. The CPX `OpcCpxAddressSpace`
+test was updated to match.
+
+### Added — Object-IPID dispatch infrastructure (Track O5c, supporting)
+
+The continuation-point integration test surfaced that the managed DCOM
+loopback transport needed object-IPID dispatch support for per-call
+object routing. `DcomCallChannel`, `OpcObjectRegistry`,
+`RpcServerConnectionProcessor`, and the generator
+`OpcServerDispatchGenerator` all gained object-IPID hooks.
+
+### Documentation
+
+- `docs/CONFORMANCE.md` — all 11 docs refreshed for the post-Track-O
+  state. The README matrix table now shows the correct "Remaining
+  status notes" per spec. 2.0-scope items (XML-DA hosting, SOAP 1.2,
+  DX runtime, Batch generic runtime, CPX conversion/filter engines)
+  are explicitly preserved as gaps.
+
+### Test results
+
+- **2113 passed / 12 skipped / 0 failed** across 23 .NET test projects.
+- 0 build warnings / 0 build errors.
+- Cumulative gain from rc.9 baseline (1971 passed): **+142 net new tests**.
+
+## [1.0.0-rc.9] - 2026-05-28
+
+Ninth release-candidate. Repository reorganization (no functional code
+changes):
+
+- `External/` → `ext/` (with `ref/docs` and `redist/` subfolders)
+- `docs/diagrams/` merged into `docs/architecture/`
+- `docs/decisions/` removed (single ADR file)
+- Samples section split from root `README.md` to `samples/README.md`
+- `ARCHITECTURE.md` refreshed for full `src/` assembly coverage + SMB
+- `Phase N` labels replaced with concrete feature wording across all
+  repo markdown
+- `COM/` → `ext/samples/` (OPC Foundation native C++ sample servers)
+- `ext/Include/` → `ext/inc/`; `COM/Include/` consolidated into `ext/inc/`
+- Unused folders (OPC Batch Sample Code, OPC Security Sample Code) and
+  unused proxy/stub DLLs deleted (~3 MB freed)
+
+Test results unchanged: 1971 passed / 12 skipped / 0 failed.
 
 ## [1.0.0-rc.8] - 2026-05-27
 
@@ -131,7 +254,7 @@ items called out in `docs/security/THREAT_MODEL.md`.
 - `docs/cookbook/06-xmlda-client-flows.md` — concise XML-DA client
   cookbook covering GetStatus / Read / Write / Subscribe flows
   (cap-i1).
-- `docs/XMLDA_STATUS.md` "Error and quality codes" section with
+- `docs/CONFORMANCE.md#opc-xml-da-101` "Error and quality codes" section with
   full enum + quality bit tables verified against source (cap-i2).
 - `docs/cookbook/07-enabling-packet-privacy.md` — opt-in privacy
   mode cookbook for DCOM/TCP, DCOM/SMB, XML-DA/HTTP (cap-j2).
@@ -173,11 +296,11 @@ items called out in `docs/security/THREAT_MODEL.md`.
 
 ### Documentation
 
-- Per-spec coverage docs (`docs/spec-coverage/*`) refreshed across
+- Per-spec coverage docs (`docs/CONFORMANCE.md`) refreshed across
   AE / HDA / DA / Common / XML-DA / Security for the rc.8 surface.
-- `docs/architecture/smb-transport.md`: Phase 1.5 (signing +
-  encryption), Phase 2 (ncacn_np wireup), Phase 3 (WINREG smoke),
-  and Phase 6 (PCAP fixtures) all marked ✅ Landed.
+- `docs/architecture/smb-transport.md`: signing + encryption,
+  ncacn_np wire-up, WINREG smoke, and PCAP fixtures all marked
+  ✅ Landed.
 - `docs/architecture/activation-transports.md`: legacy IActivation
   row now ✅ Client + server.
 - `docs/security/THREAT_MODEL.md`: 6.2 (auth secrets), SR 4.1
@@ -311,8 +434,6 @@ environment-dependent steps; see [docs/release-blockers.md](docs/release-blocker
   green" marker.
 - `docs/release-blockers.md` (107 lines): one-page document naming the
   three remaining gates with owner + status + estimated-effort lines.
-- `docs/MIGRATION.md` (69 lines): adopter migration guide for the
-  preview-namespace → 1.0.0 cutover.
 - Root `README.md` refreshed: version badge bump (0.6.0-alpha.1 →
   1.0.0-rc.5), honest "release candidate" status, hub-style links to
   subfolder READMEs, and the trademark disclaimer.
@@ -475,12 +596,12 @@ DA tests: **385 passing** (was 346 at rc.3, +39); solution-wide all
 
 ## [1.0.0-rc.3] - 2026-05-27
 
-Third release-candidate. Completes Phase 1 (Windows CCW DA path) and
-Phase 2 (Windows CCW AE/HDA per-method vtables) of the post-rc.2 plan.
+Third release-candidate. Completes the Windows CCW DA path and the
+Windows CCW AE/HDA per-method vtables.
 Build green (0/0); DA tests **346 passing** (was 314 at rc.2, +32);
 solution-wide all 17 test projects green.
 
-### Added — Windows CCW DA per-interface vtables (Phase 1)
+### Added — Windows CCW DA per-interface vtables
 
 - `OpcDaGroupCcw` now exposes nine tearoffs (was three at rc.2):
   IUnknown + IOPCGroupStateMgt(2) + IOPCItemMgt + IOPCSyncIO +
@@ -515,7 +636,7 @@ solution-wide all 17 test projects green.
   OnDataChange/OnReadComplete/OnWriteComplete signatures with
   TODO(cap-a8-followup) marshaling sketches. (cap-a8)
 
-### Added — Windows CCW AE/HDA per-method vtables (Phase 2)
+### Added — Windows CCW AE/HDA per-method vtables
 
 - `OpcAeServerCcw` now multi-tearoff: IUnknown + IOPCEventServer +
   IOPCEventSubscriptionMgt. Real bodies: GetStatus (allocates
@@ -714,11 +835,11 @@ Release-candidate cut for `1.0.0`. Build green (0/0); tests green (1418+ passing
 ### Added
 
 - `Opc.Classic.Hosting.Windows.WindowsComRegistration` — Windows COM registration shim that writes the full out-of-process server tree (`HKCR\CLSID\{x}` with `LocalServer32`, `AppID` as a named value, `ProgID`, `VersionIndependentProgID`, `Implemented Categories`, `Component Categories\{catid}\409` for LCID 1033) under HKLM or HKCU, in both `Registry32` and `Registry64` views by default.
-- `Opc.Classic.Hosting.OpcComponentCategories` — the nine standard OPC Classic CATIDs (DA 1.0 / 2.0 / 3.0, AE 1.0, HDA 1.0, XML-DA 1.0, DX 1.0, Batch 1.0 / 2.0) sourced from the OPC Foundation IDL headers vendored in `External/Include/`.
+- `Opc.Classic.Hosting.OpcComponentCategories` — the nine standard OPC Classic CATIDs (DA 1.0 / 2.0 / 3.0, AE 1.0, HDA 1.0, XML-DA 1.0, DX 1.0, Batch 1.0 / 2.0) sourced from the OPC Foundation IDL headers vendored in `ext/inc/`.
 - `Opc.Classic.Hosting.Windows.ComClassObjectRegistrar` — AOT-friendly raw COM-vtable bridge that registers a managed `IClassFactory` with `ole32!CoRegisterClassObject` so Windows COM SCM can launch the sample EXE via `LocalServer32`.
 - `samples/Opc.Classic.Samples.CttServer` — `--register` / `--unregister` / `--registry-hive=hklm|hkcu` / `--registry-view=32|64|both` / `-Embedding` (case-insensitive) CLI for OPC CTT integration.
 - `tests/Opc.Classic.Hosting.Tests/Windows/WindowsComRegistrationTests.cs` — 7 HKCU-isolated, parallel-serialized tests covering every documented registry shape including an explicit AppID-as-named-value-not-subkey guard.
-- `External/CTT/` — six OPC Compliance Test Tool MSIs (~13 MB total) vendored into the repository for the CI workflow.
+- `ext/private/ctt/` — six OPC Compliance Test Tool MSIs (~13 MB total) vendored into the repository for the CI workflow.
 - `docs/ctt/CI_DESIGN.md` — CI flow architecture for the OPC CTT workflow (install order, hive choice rationale, scope boundary, unknowns).
 - `samples/Opc.Classic.Samples.CttServer/README.md` + `src/Opc.Classic.Hosting/Windows/README.md` — CLI and registration-plumbing usage docs.
 - Added `Opc.Classic.Mcp` documentation, sample configuration, and AI-agent integration snippets for Claude Desktop, Cursor, VS Code Copilot Chat, and GitHub Copilot CLI.

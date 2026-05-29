@@ -2,12 +2,13 @@
 
 ## What this covers
 
-Map common OPC Foundation .NET Framework OPC NET API concepts to current .NET 10 `Opc.Classic.*` APIs. For rc-to-1.0 compatibility notes and preview namespace changes, see [../MIGRATION.md](../MIGRATION.md).
+Map common OPC Foundation .NET Framework OPC NET API concepts to current .NET 10 `Opc.Classic.*` APIs. 
 
 Core types:
 
 - `OpcUrl` and `OpcConnectData` are in `Opc.Classic`.
 - `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, `DataChange`, and `SubscriptionState` are in `Opc.Classic.Da`.
+- `OpcBatchPropertyId` in `Opc.Classic.Batch` provides typed OPC Batch property IDs 400-478 for Batch property porting.
 - Generated DCOM projections such as `IOPCServerClientProxy` are in `Opc.Classic.Da.Dcom`.
 
 ## Project file
