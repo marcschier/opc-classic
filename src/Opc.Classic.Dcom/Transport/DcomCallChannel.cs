@@ -34,6 +34,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private readonly Guid? _objectIpid;
     private readonly SemaphoreSlim _callLock = new(1, 1);
     private readonly Dictionary<Guid, int> _contextIds = new();
+    private readonly Dictionary<Guid, Guid> _interfaceIpids = new();
     private int _associationGroupId;
     private int _maxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE;
     private int _maxReceiveFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE;
@@ -71,6 +72,26 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         _objectIpid = objectIpid;
     }
 
+    /// <summary>
+    /// Registers an interface-specific IPID so that subsequent calls to a
+    /// different IID than the channel's default object route to the correct
+    /// object instance. This is the QueryInterface-without-RemUnknown path: the
+    /// caller obtains additional IPIDs via DCOM activation with multiple
+    /// requested IIDs, then calls this to associate each IID with its IPID.
+    /// </summary>
+    public void RegisterInterfaceIpid(Guid interfaceId, Guid ipid)
+    {
+        if (interfaceId == Guid.Empty)
+        {
+            throw new ArgumentException("InterfaceId must not be empty.", nameof(interfaceId));
+        }
+        if (ipid == Guid.Empty)
+        {
+            throw new ArgumentException("IPID must not be empty.", nameof(ipid));
+        }
+        _interfaceIpids[interfaceId] = ipid;
+    }
+
     /// <inheritdoc />
     public async Task<NdrCallResult> InvokeAsync(
         Guid interfaceId,
@@ -88,13 +109,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             int contextId = await EnsurePresentationContextAsync(interfaceId, cancellationToken).ConfigureAwait(false);
             Guid causalityId = CausalityContext.Current.Value.GetValueOrDefault();
             byte[] requestStub = OrpcEnvelope.BuildRequestStub(requestPayload, causalityId);
+            Guid? routedIpid = _interfaceIpids.TryGetValue(interfaceId, out Guid mapped) ? mapped : _objectIpid;
             var request = new RequestCoPdu {
                 AllocationHint = requestStub.Length,
                 ContextId = contextId,
                 Opnum = opnum,
                 Stub = requestStub,
                 CallId = NextCallId(),
-                Object = _objectIpid.HasValue ? new UUID(_objectIpid.Value.ToString("D")) : null,
+                Object = routedIpid.HasValue ? new UUID(routedIpid.Value.ToString("D")) : null,
             };
             await WritePduAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -126,14 +148,45 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             return contextId;
         }
 
-        if (_contextIds.Count != 0) {
-            throw new NotSupportedException("DcomCallChannel currently supports one presentation context per connection.");
-        }
-
         contextId = _nextContextId++;
-        await BindAsync(interfaceId, contextId, cancellationToken).ConfigureAwait(false);
+        if (_contextIds.Count == 0) {
+            // First-ever bind: full BIND/BIND_ACK handshake including auth.
+            await BindAsync(interfaceId, contextId, cancellationToken).ConfigureAwait(false);
+        }
+        else {
+            // Additional presentation context on the already-authenticated channel:
+            // send ALTER_CONTEXT (MS-RPCE §3.3.1.5.3) and wait for ALTER_CONTEXT_RESPONSE.
+            await AlterContextAsync(interfaceId, contextId, cancellationToken).ConfigureAwait(false);
+        }
         _contextIds.Add(interfaceId, contextId);
         return contextId;
+    }
+
+    private async ValueTask AlterContextAsync(Guid interfaceId, int contextId, CancellationToken cancellationToken) {
+        var alter = new AlterContextPdu {
+            AssociationGroupId = _associationGroupId,
+            ContextList = [CreatePresentationContext(interfaceId, contextId)],
+            MaxReceiveFragment = _maxReceiveFragment,
+            MaxTransmitFragment = _maxTransmitFragment,
+            CallId = NextCallId(),
+        };
+        await WritePduAsync(alter, cancellationToken).ConfigureAwait(false);
+
+        DecodedPdu decoded = await ReadSinglePduAsync(cancellationToken).ConfigureAwait(false);
+        if (decoded.Pdu is not AlterContextResponsePdu alterAck) {
+            if (decoded.Pdu is FaultCoPdu fault) {
+                throw new InvalidOperationException($"AlterContext failed with fault 0x{unchecked((int)fault.Status):X8}.");
+            }
+            throw new InvalidOperationException($"Expected alter_context_response PDU, received type {decoded.Pdu.Type}.");
+        }
+        if (alterAck.ResultList is null || alterAck.ResultList.Length == 0) {
+            throw new InvalidOperationException("AlterContext response had no presentation results.");
+        }
+        foreach (PresentationResult result in alterAck.ResultList) {
+            if (result.Result != PresentationResultCode.ACCEPTANCE) {
+                throw new InvalidOperationException($"AlterContext presentation context rejected: {result}.");
+            }
+        }
     }
 
     private async ValueTask BindAsync(Guid interfaceId, int contextId, CancellationToken cancellationToken) {
@@ -193,6 +246,13 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         if (!authenticationBody.IsEmpty) {
             bytes = AttachAuthenticationVerifier(bytes, authenticationBody);
         }
+        else if (pdu.Type == AlterContextPdu.ALTER_CONTEXT_TYPE
+            && _authContext.ProtectionLevel >= OpcProtectionLevel.Integrity) {
+            // Per MS-RPCE §3.3.1.5.3.1: alter_context at PKT_INTEGRITY/PRIVACY
+            // carries a verifier header with auth_type/auth_level but a zero-length
+            // auth_value (no signature, no token). Use AttachEmptyAuthVerifier.
+            bytes = AttachEmptyAuthVerifier(bytes);
+        }
         else {
             bytes = ApplyPacketProtection(bytes);
         }
@@ -201,6 +261,30 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         bytes.AsSpan().CopyTo(output.Span);
         _transport.Output.Advance(bytes.Length);
         await _transport.FlushAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private byte[] AttachEmptyAuthVerifier(byte[] pduBytes) {
+        // Emit an 8-byte auth verifier header with our current auth_type/auth_level
+        // and a zero-length auth_value, per MS-RPCE §3.3.1.5.3.1 for alter_context.
+        int padding = PaddingTo(pduBytes.Length, 4);
+        int verifierStart = pduBytes.Length + padding;
+        int fragmentLength = verifierStart + AuthenticationVerifierHeaderLength;
+        if (fragmentLength > ushort.MaxValue) {
+            throw new InvalidOperationException("DCE/RPC fragment length exceeds the 16-bit PDU limit.");
+        }
+
+        byte[] result = new byte[fragmentLength];
+        pduBytes.CopyTo(result, 0);
+        Span<byte> verifier = result.AsSpan(verifierStart, AuthenticationVerifierHeaderLength);
+        verifier[0] = _authContext.AuthenticationServiceCode;
+        verifier[1] = (byte)ToRpcProtectionLevel(_authContext.ProtectionLevel);
+        verifier[2] = (byte)padding;
+        verifier[3] = 0;
+        BinaryPrimitives.WriteInt32LittleEndian(verifier[4..], 0);
+
+        BinaryPrimitives.WriteUInt16LittleEndian(result.AsSpan(ConnectionOrientedPdu.FRAG_LENGTH_OFFSET), (ushort)fragmentLength);
+        BinaryPrimitives.WriteUInt16LittleEndian(result.AsSpan(ConnectionOrientedPdu.AUTH_LENGTH_OFFSET), 0);
+        return result;
     }
 
     private async ValueTask<ConnectionOrientedPdu> ReadFragmentedPduAsync(CancellationToken cancellationToken) {

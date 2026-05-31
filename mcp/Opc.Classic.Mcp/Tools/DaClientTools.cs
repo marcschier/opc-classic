@@ -746,11 +746,27 @@ public sealed class DaClientTools
             {
                 IAuthContext authContext = CreateAuthContext(normalized, clsid);
                 activationClient = await ActivationClient.ConnectTcpAsync(normalized.Host, authContext, cancellationToken).ConfigureAwait(false);
+
+                // Request all the IIDs the DA proxy chain may need. Activation gives us a
+                // distinct OBJREF (with its own IPID) for each that the target object
+                // implements; we register each IPID with the channel so per-call routing
+                // sends to the right interface pointer. Servers that don't implement an
+                // optional interface return E_NOINTERFACE for that IID's slot and we just
+                // skip it (operations on that interface will fail at call time).
+                Guid[] requestedIids =
+                {
+                    IOPCServer.InterfaceId,
+                    IOPCCommon.InterfaceId,
+                    IOPCBrowse.InterfaceId,
+                    IOPCBrowseServerAddressSpace.InterfaceId,
+                    IOPCItemProperties.InterfaceId,
+                    IOPCItemIO.InterfaceId,
+                };
                 Opc.Classic.Dcom.Activation.RemoteActivationResponse activation = await activationClient.RemoteActivationAsync(
                     clsid,
                     new[] { "ncacn_ip_tcp" },
                     null,
-                    new[] { IOPCServer.InterfaceId },
+                    requestedIids,
                     cancellationToken).ConfigureAwait(false);
 
                 if (activation.Hresult != 0)
@@ -758,12 +774,14 @@ public sealed class DaClientTools
                     throw new InvalidOperationException(
                         $"IActivation::RemoteActivation returned HRESULT 0x{unchecked((uint)activation.Hresult):X8}.");
                 }
-                if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0
-                    || activation.InterfaceResults[0].Hresult != 0
-                    || activation.InterfaceResults[0].ObjRef.Length == 0)
+                if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0)
+                {
+                    throw new InvalidOperationException("IActivation::RemoteActivation returned no per-IID results.");
+                }
+                if (activation.InterfaceResults[0].Hresult != 0 || activation.InterfaceResults[0].ObjRef.Length == 0)
                 {
                     throw new InvalidOperationException(
-                        $"IActivation::RemoteActivation returned no OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)(activation.InterfaceResults?.Count > 0 ? activation.InterfaceResults[0].Hresult : -1)):X8}).");
+                        $"IActivation::RemoteActivation did not return an OBJREF for IOPCServer (per-IID HRESULT 0x{unchecked((uint)activation.InterfaceResults[0].Hresult):X8}).");
                 }
 
                 ReadOnlyMemory<byte> objRefBytes = activation.InterfaceResults[0].ObjRef;
@@ -772,10 +790,6 @@ public sealed class DaClientTools
                     throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
                 }
 
-                // The OBJREF's resolver bindings point to the OXID resolver (port 135) and
-                // don't include the dynamic RPC port. The activation response's OxidBindings
-                // already include the actual server endpoints with [port] suffixes, so prefer
-                // those when constructing the object channel.
                 EndPoint endpoint = ResolveObjectEndpointFromOxidBindings(normalized.Host, activation.OxidBindings.Span)
                     ?? ResolveObjectEndpoint(normalized.Host, serverRef!);
 
@@ -783,7 +797,6 @@ public sealed class DaClientTools
                 ICallChannel serverChannel;
                 if (!serverRef!.Ipid.Equals(Guid.Empty))
                 {
-                    // Route subsequent calls to the object by IPID via the DcomCallChannel(transport, auth, ipid) ctor.
                     var transportFactory = new TcpSocketTransportFactory();
                     var transport = await transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
                     serverChannel = new DcomCallChannel(transport, serverAuth, serverRef.Ipid);
@@ -791,6 +804,25 @@ public sealed class DaClientTools
                 else
                 {
                     serverChannel = await channelFactory.ConnectAsync(endpoint, Guid.Empty, serverAuth, cancellationToken).ConfigureAwait(false);
+                }
+
+                // Register per-IID IPID routes for the optional interfaces returned by activation.
+                // Index 0 is IOPCServer (the channel default); register slots 1.. as per-interface IPIDs.
+                if (serverChannel is DcomCallChannel routableChannel)
+                {
+                    for (int i = 0; i < activation.InterfaceResults.Count && i < requestedIids.Length; i++)
+                    {
+                        var ir = activation.InterfaceResults[i];
+                        if (ir.Hresult != 0 || ir.ObjRef.Length == 0)
+                        {
+                            continue;
+                        }
+                        if (!TryDecodeObjRef(ir.ObjRef.Span, out IOpcInterfaceRef? ifaceRef) || ifaceRef!.Ipid.Equals(Guid.Empty))
+                        {
+                            continue;
+                        }
+                        routableChannel.RegisterInterfaceIpid(requestedIids[i], ifaceRef.Ipid);
+                    }
                 }
 
                 return new DaClientState(normalized.Host, normalized.ProgId, clsid, serverChannel, ownsChannel: true);

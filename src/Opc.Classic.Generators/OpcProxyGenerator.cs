@@ -817,6 +817,18 @@ namespace Opc.Classic.Generators
                 return;
             }
 
+            // Per MS-RPCE NDR, an [out] pointer-to-struct on the response wire is
+            // prefixed by a 4-byte unique-pointer referent ID. Inline-emit a referent
+            // skip before struct codec reads so the decoder lines up with what real
+            // DCOM servers emit (Windows SCM, OPC Foundation reference servers,
+            // Matrikon, Kepware, etc.). Skip only for "{class}Codec.Read(ref ...)"
+            // patterns; primitive read expressions like "{reader}.ReadInt32()" do
+            // not have a pointer prefix on the wire.
+            bool isClassCodecRead = codec.ReadExpression.Contains("Codec.Read(ref ", StringComparison.Ordinal);
+            if (isClassCodecRead)
+            {
+                sb.Append(statementIndent).Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
+            }
             sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ")
                 .Append(FormatReadExpression(codec, readerLocal)).AppendLine(";");
             return;
