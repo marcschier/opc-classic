@@ -361,3 +361,4 @@ The diagrams describe the current `Opc.Classic.*` architecture: source-generated
 8. [`architecture/08-source-generator-pipeline.md`](architecture/08-source-generator-pipeline.md) — attributes, Roslyn generators, codec table, and emitted proxies and dispatchers.
 9. [`architecture/09-subscription-data-flow.md`](architecture/09-subscription-data-flow.md) — DA group, item activation, sampling, `IOpcDataCallbackSink`, and callback delivery.
 10. [`architecture/10-aot-trimming-shape.md`](architecture/10-aot-trimming-shape.md) — AOT-visible static code, analyzers, banned APIs, DCOM channel shape, and canary publish.
+11. [`architecture/ndr-pointer-marshaling.md`](architecture/ndr-pointer-marshaling.md) — NDR unique-pointer shape model, `[OpcUniquePointer]` and `[return: OpcUniquePointer]`, real-DCOM wire compatibility.
