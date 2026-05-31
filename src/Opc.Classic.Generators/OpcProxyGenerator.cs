@@ -783,6 +783,14 @@ namespace Opc.Classic.Generators
         //     state representable in C#), emit referent + value unconditionally.
         if (parameter.IsUniquePointer)
         {
+            // [in, unique, iid_is(riid)] LPUNKNOWN — wrap the OBJREF in
+            // MInterfacePointer when sending an interface pointer over the wire.
+            if (string.Equals(parameter.MarshallingType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
+            {
+                sb.Append(statementIndent).Append("global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Write(ref ").Append(writerLocal).Append(", ").Append(parameter.Name).AppendLine(");");
+                return;
+            }
+
             string codecKey = parameter.UnderlyingValueType ?? parameter.MarshallingType;
             if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray)
             {
@@ -906,8 +914,16 @@ namespace Opc.Classic.Generators
     {
         if (isOpcInterface || IsOpcInterfaceRefType(marshallingType))
         {
-            sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ")
-                .Append(FormatInterfaceReadExpression(readerLocal, declaredType)).AppendLine(";");
+            // [out, iid_is(riid)] LPUNKNOWN *ppUnk: a unique pointer to an
+            // MInterfacePointer wrapper (MS-DCOM §2.2.1.10) containing an
+            // OBJREF. Opt-in via [OpcUniquePointer] on the out/return symbol so
+            // legacy "raw OBJREF on the wire" call paths (e.g. inside our
+            // loopback path which doesn't yet round-trip the wrapper) continue
+            // to use the unwrapped codec.
+            string interfaceRead = isUniquePointer
+                ? FormatMInterfacePointerReadExpression(readerLocal, declaredType)
+                : FormatInterfaceReadExpression(readerLocal, declaredType);
+            sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(interfaceRead).AppendLine(";");
             return;
         }
 
@@ -1147,6 +1163,23 @@ namespace Opc.Classic.Generators
     private static string FormatInterfaceReadExpression(string readerLocal, string declaredType)
     {
         string readExpression = "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref " + readerLocal + ")";
+        if (IsOpcInterfaceRefType(declaredType))
+        {
+            return readExpression;
+        }
+
+        return "(" + declaredType + ")(object)" + readExpression;
+    }
+
+    private static string FormatMInterfacePointerReadExpression(string readerLocal, string declaredType)
+    {
+        // OpcMInterfacePointerCodec.Read returns IOpcInterfaceRef? (null when the
+        // server emits a NULL pointer). The generated proxy assigns it into an
+        // IOpcInterfaceRef-typed local; the bang preserves the existing non-null
+        // contract for callers (the runtime will surface a NullReferenceException
+        // for NULL pointers, matching pre-Y9 behavior for IOpcInterfaceRef out
+        // parameters).
+        string readExpression = "global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Read(ref " + readerLocal + ")!";
         if (IsOpcInterfaceRefType(declaredType))
         {
             return readExpression;

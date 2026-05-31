@@ -611,6 +611,16 @@ namespace Opc.Classic.Generators
         // expect when calling into our managed server.
         if (isUniquePointer)
         {
+            // [out, iid_is(riid)] LPUNKNOWN *ppUnk is wire-encoded as a unique
+            // pointer to MInterfacePointer (MS-DCOM §2.2.1.10). Route through
+            // OpcMInterfacePointerCodec which emits referent + cbData + OBJREF
+            // (vs. OpcInterfaceRefCodec which writes only the OBJREF bytes).
+            if (string.Equals(marshallingType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
+            {
+                sb.Append(statementIndent).Append("global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Write(ref ").Append(writerLocal).Append(", ").Append(valueExpression).AppendLine(");");
+                return;
+            }
+
             string codecKey = underlyingValueType ?? marshallingType;
             if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray)
             {
@@ -663,8 +673,10 @@ namespace Opc.Classic.Generators
     {
         if (isOpcInterface)
         {
-            sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ")
-                .Append(FormatInterfaceReadExpression(readerLocal, declaredType)).AppendLine(";");
+            string interfaceRead = isUniquePointer
+                ? FormatMInterfacePointerReadExpression(readerLocal, declaredType)
+                : FormatInterfaceReadExpression(readerLocal, declaredType);
+            sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(interfaceRead).AppendLine(";");
             return;
         }
 
@@ -961,6 +973,17 @@ namespace Opc.Classic.Generators
     private static string FormatInterfaceReadExpression(string readerLocal, string declaredType)
     {
         string readExpression = "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref " + readerLocal + ")";
+        if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
+        {
+            return readExpression;
+        }
+
+        return "(" + declaredType + ")(object)" + readExpression;
+    }
+
+    private static string FormatMInterfacePointerReadExpression(string readerLocal, string declaredType)
+    {
+        string readExpression = "global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Read(ref " + readerLocal + ")!";
         if (string.Equals(declaredType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
         {
             return readExpression;

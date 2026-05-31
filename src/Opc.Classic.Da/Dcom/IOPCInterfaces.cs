@@ -36,6 +36,14 @@ public partial interface IOPCServer
     /// <summary>
     /// <c>IOPCServer::AddGroup</c> (opnum 3). Creates a group and returns the requested group interface pointer.
     /// </summary>
+    /// <remarks>
+    /// IDL: <c>[out, iid_is(riid)] LPUNKNOWN *ppUnk</c>. The double-star with
+    /// <c>iid_is</c> is wire-encoded as a unique pointer to an MInterfacePointer
+    /// (MS-DCOM §2.2.1.10) wrapping the OBJREF. <see cref="OpcUniquePointerAttribute"/>
+    /// on the out parameter directs the generator to use
+    /// <c>OpcMInterfacePointerCodec</c> (referent + cbData + OBJREF) instead of
+    /// the bare <c>OpcInterfaceRefCodec</c>.
+    /// </remarks>
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
     Task AddGroupAsync(
@@ -49,7 +57,7 @@ public partial interface IOPCServer
         Guid requestedInterfaceId,
         out int serverGroupHandle,
         out int revisedUpdateRate,
-        out IOpcInterfaceRef group,
+        [OpcUniquePointer] out IOpcInterfaceRef group,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -61,7 +69,12 @@ public partial interface IOPCServer
     /// <summary>
     /// <c>IOPCServer::GetGroupByName</c> (opnum 5). Returns the requested interface for a named group.
     /// </summary>
+    /// <remarks>
+    /// IDL: <c>[out, iid_is(riid)] LPUNKNOWN *ppUnk</c>; wrapped in MInterfacePointer
+    /// on the wire (see <see cref="AddGroupAsync"/> for the same shape).
+    /// </remarks>
     [OpcMethod(5)]
+    [return: OpcUniquePointer]
     Task<IOpcInterfaceRef> GetGroupByNameAsync(string name, Guid requestedInterfaceId, CancellationToken cancellationToken = default);
 
     /// <summary>
