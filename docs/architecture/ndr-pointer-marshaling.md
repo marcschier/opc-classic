@@ -80,6 +80,29 @@ writer.WriteInt32(value);
 Used for OPC's `[in, unique] LONG *pTimeBias` and
 `[in, unique] FLOAT *pPercentDeadband` on `IOPCServer::AddGroup`.
 
+### `[OpcUniquePointer]` on an `IOpcInterfaceRef` (interface-pointer wrapping)
+
+For IDL parameters declared `[in, unique, iid_is(riid)] LPUNKNOWN` or
+`[out, iid_is(riid)] LPUNKNOWN *ppUnk` (e.g.
+`IOPCServer::AddGroup`'s `ppUnk` and
+`IOPCServer::GetGroupByName`'s return value), the wire shape is a
+**MInterfacePointer** (MS-DCOM §2.2.1.10) behind a unique-pointer
+referent:
+
+```
+uint  referent_id;          // 0 if NULL, non-zero otherwise
+{if non-null:}
+  uint  ulCntData;          // size of the OBJREF body in bytes
+  ulCntData bytes of OBJREF (MEOW + STDOBJREF + DUALSTRINGARRAY)
+```
+
+Tag the relevant `IOpcInterfaceRef` parameter or return value with
+`[OpcUniquePointer]` (or `[return: OpcUniquePointer]`) and the
+generator routes the read/write through `OpcMInterfacePointerCodec`
+instead of the bare `OpcInterfaceRefCodec`. Without the wrapper, the
+decoder reads `ulCntData` as the start of the MEOW signature and
+throws.
+
 ### `[return: OpcUniquePointer]` on a method
 
 Place `[return: OpcUniquePointer]` on a `Task<T>` method whose IDL
@@ -95,13 +118,6 @@ of which declare `[out] OPCSERVERSTATUS **ppServerStatus`.
 Scope-limited to keep this commit reviewable; tracked as follow-up
 work in `plan.md` under Track Y:
 
-- **MInterfacePointer wrapping for `[out, iid_is] LPUNKNOWN*`.**
-  The current `OpcInterfaceRefCodec.Read` decodes a raw OBJREF that
-  starts with the MEOW signature. Real DCOM wraps the OBJREF in a
-  `MInterfacePointer` (4-byte `ulCntData` + OBJREF bytes) behind a
-  unique-pointer referent. `IOPCServer::AddGroup`'s `ppUnk` requires
-  this wrapping to decode against Matrikon.
-
 - **Deferred unique pointers inside conformant-array struct elements.**
   Spec structs like `OPCBROWSEELEMENT` carry embedded `[unique] LPWSTR`
   fields that, per C706 §14.3.12.3, must be marshaled as referents
@@ -109,6 +125,15 @@ work in `plan.md` under Track Y:
   emitted after the whole struct. The generator currently emits flat
   fields. Affects `IOPCBrowse::Browse`'s `[out, size_is(,*pdwCount)]
   OPCBROWSEELEMENT** ppBrowseElements`.
+
+- **`IRemUnknown::RemQueryInterface` client.** To navigate from one
+  interface IPID to another on the same OXID (e.g. from
+  `IOPCGroupStateMgt` to `IOPCSyncIO` after `AddGroup`), the client
+  must call `IRemUnknown` opnum 3 with the source IPID + target IIDs
+  and parse the returned `REMQIRESULT` array (MS-DCOM §2.2.19). Today
+  the client uses `IActivation::RemoteActivation`'s multi-IID request
+  to get the most common interfaces at construction time; QI-at-runtime
+  is not yet implemented.
 
 - **Explicit NDR alignment in the emitter.** Today, every scalar codec
   call relies on the underlying `NdrWriter`/`NdrReader` to maintain
@@ -148,9 +173,13 @@ against the IDL signature:
 2. For every `[in, unique]` scalar: use `int?` / `float?` / `Guid?` or
    tag with `[OpcUniquePointer]`.
 3. For every `[out] T**`: tag the return value with
-   `[return: OpcUniquePointer]`.
-4. For every `[out, iid_is] LPUNKNOWN*`: NOT yet supported — track
-   separately until MInterfacePointer wrapping lands.
+   `[return: OpcUniquePointer]` (single-result methods) or the out
+   parameter with `[OpcUniquePointer]` (multi-out methods).
+4. For every `[out, iid_is(riid)] LPUNKNOWN*` or
+   `[in, unique, iid_is(riid)] LPUNKNOWN`: tag the
+   `IOpcInterfaceRef`-typed parameter/return with
+   `[OpcUniquePointer]` so the generator routes through
+   `OpcMInterfacePointerCodec`.
 5. For every `[size_is(N)] T*` array: ensure `N` is a sibling
    parameter declared earlier in the method signature.
 
