@@ -31,6 +31,8 @@ public sealed class OpcAeServerDispatcherTests
             CancellationToken.None);
 
         var reader = new NdrReader(result.ResponsePayload.Span);
+        // Server emits OPCEVENTSERVERSTATUS as a unique pointer (referent + struct).
+        _ = reader.ReadUInt32();
         OpcServerStatus status = NdrOpcEventServerStatusCodec.Read(ref reader);
         await Assert.That(result.Hresult).IsEqualTo(OpcResultId.Ok.Code);
         await Assert.That(server.GetStatusCallCount).IsEqualTo(1);

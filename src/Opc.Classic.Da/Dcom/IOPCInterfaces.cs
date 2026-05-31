@@ -43,8 +43,8 @@ public partial interface IOPCServer
         bool active,
         int requestedUpdateRate,
         int clientGroupHandle,
-        int timeBias,
-        float percentDeadband,
+        [OpcUniquePointer] int timeBias,
+        [OpcUniquePointer] float percentDeadband,
         int localeId,
         Guid requestedInterfaceId,
         out int serverGroupHandle,
@@ -67,7 +67,15 @@ public partial interface IOPCServer
     /// <summary>
     /// <c>IOPCServer::GetStatus</c> (opnum 6). Returns the server's run-state snapshot.
     /// </summary>
+    /// <remarks>
+    /// IDL signature: <c>[out] OPCSERVERSTATUS **ppServerStatus</c>. The double-star
+    /// shape is a NDR unique pointer (DCE 1.1 §14.3.10): a 4-byte referent ID
+    /// precedes the struct on the wire. <see cref="OpcUniquePointerAttribute"/>
+    /// instructs the proxy decoder to skip the referent before invoking the
+    /// struct codec.
+    /// </remarks>
     [OpcMethod(6)]
+    [return: OpcUniquePointer]
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>

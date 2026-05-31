@@ -110,7 +110,13 @@ public sealed class ErrorPathTests
             GroupCount = 0,
             BandWidth = 0,
         };
-        return EndToEndNdr.Write((ref NdrWriter writer) => NdrOpcServerStatusCodec.Write(ref writer, status));
+        return EndToEndNdr.Write((ref NdrWriter writer) =>
+        {
+            // [out] OPCSERVERSTATUS **ppServerStatus is wire-encoded as a NDR unique
+            // pointer (MS-RPCE §14.3.10): 4-byte referent ID + struct.
+            writer.WriteUInt32(0x00020000u);
+            NdrOpcServerStatusCodec.Write(ref writer, status);
+        });
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)

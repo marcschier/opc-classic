@@ -392,7 +392,11 @@ internal sealed class DaEndToEndPipeline
             bool active = requestReader.ReadInt32() != 0;
             int requestedUpdateRate = requestReader.ReadInt32();
             int clientHandle = requestReader.ReadInt32();
+            // timeBias and percentDeadband are [OpcUniquePointer]: 4-byte referent
+            // ID (always 0x00020000 for non-nullable C# scalars) + inline value.
+            _ = requestReader.ReadUInt32();
             _ = requestReader.ReadInt32();
+            _ = requestReader.ReadUInt32();
             _ = requestReader.ReadSingle();
             int localeId = requestReader.ReadInt32();
 

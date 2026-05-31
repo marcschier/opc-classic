@@ -36,7 +36,12 @@ public sealed class IOPCEventProxyTests
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
-            NdrOpcEventServerStatusCodec.Write(ref writer, expected));
+        {
+            // [out] OPCEVENTSERVERSTATUS **ppEventServerStatus is wire-encoded as
+            // an NDR unique pointer (referent + struct).
+            writer.WriteUInt32(0x00020000u);
+            NdrOpcEventServerStatusCodec.Write(ref writer, expected);
+        });
         var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
         {
             observedIid = iid;

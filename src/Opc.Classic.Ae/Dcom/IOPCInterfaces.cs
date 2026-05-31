@@ -27,7 +27,13 @@ namespace Opc.Classic.Ae.Dcom;
 public partial interface IOPCEventServer
 {
     /// <summary><c>IOPCEventServer::GetStatus</c> (opnum 3). Returns the AE server runtime state.</summary>
+    /// <remarks>
+    /// IDL: <c>[out] OPCEVENTSERVERSTATUS **ppEventServerStatus</c>. The double-star
+    /// shape is NDR unique-pointer; <see cref="OpcUniquePointerAttribute"/> instructs
+    /// the proxy to skip the 4-byte referent before invoking the struct codec.
+    /// </remarks>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::CreateEventSubscription</c> (opnum 4). Creates a subscription object.</summary>

@@ -148,6 +148,9 @@ public sealed class OpcDaServerDispatcherTests
     private static OpcServerStatus ReadStatus(ReadOnlyMemory<byte> payload)
     {
         var reader = new NdrReader(payload.Span);
+        // Server emits OPCSERVERSTATUS as a unique pointer (referent + struct) per
+        // IDL [out] T**; skip the referent before invoking the struct codec.
+        _ = reader.ReadUInt32();
         return NdrOpcServerStatusCodec.Read(ref reader);
     }
 

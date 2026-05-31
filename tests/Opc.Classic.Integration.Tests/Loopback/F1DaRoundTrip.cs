@@ -95,6 +95,12 @@ public sealed class F1DaRoundTrip
     {
         var buffer = new byte[512];
         var writer = new NdrWriter(buffer);
+        // IOPCServer::GetStatus declares [out] OPCSERVERSTATUS **ppServerStatus,
+        // a NDR unique pointer (MS-RPCE §14.3.10). The wire layout is:
+        //   [4-byte referent ID][OPCSERVERSTATUS struct]
+        // Use a non-zero referent so the proxy decoder treats the pointer as
+        // non-null and reads the struct that follows.
+        writer.WriteUInt32(0x00020000u);
         NdrOpcServerStatusCodec.Write(ref writer, status);
         return buffer.AsMemory(0, writer.Position).ToArray();
     }
