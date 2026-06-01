@@ -27,6 +27,37 @@ public static class NdrVariantExtensions
     public static void WriteVariant(this ref NdrWriter writer, OpcVariant value) =>
         WriteVariantCore(ref writer, value, depth: 0);
 
+    /// <summary>
+    /// Encodes a single VARIANT element inside an NDR conformant array of
+    /// VARIANTs (MS-OAUT §2.2.29.2 transmission form). The body matches the
+    /// standard wireVARIANT; an outer pad-to-8 follows so the next element
+    /// starts on an 8-byte boundary (longest arm type — VT_R8/I8/UI8/DATE
+    /// — has 8-byte alignment).
+    /// </summary>
+    public static void WriteVariantElement(this ref NdrWriter writer, OpcVariant value)
+    {
+        int startPos = writer.Position;
+        WriteVariantCore(ref writer, value, depth: 0);
+        int written = writer.Position - startPos;
+        int padTo = (written + 7) & ~7;
+        for (int i = written; i < padTo; i++) { writer.WriteByte(0); }
+    }
+
+    /// <summary>
+    /// Decodes a single VARIANT element from an NDR conformant array (mirror
+    /// of <see cref="WriteVariantElement"/>): reads the standard wireVARIANT
+    /// and then advances past the trailing pad to the next 8-byte boundary.
+    /// </summary>
+    public static OpcVariant ReadVariantElement(this ref NdrReader reader)
+    {
+        int startPos = reader.Position;
+        OpcVariant value = ReadVariantCore(ref reader, depth: 0);
+        int read = reader.Position - startPos;
+        int padTo = (read + 7) & ~7;
+        for (int i = read; i < padTo; i++) { _ = reader.ReadByte(); }
+        return value;
+    }
+
     private static void WriteVariantCore(ref NdrWriter writer, OpcVariant value, int depth)
     {
         ThrowIfDepthExceeded(depth);

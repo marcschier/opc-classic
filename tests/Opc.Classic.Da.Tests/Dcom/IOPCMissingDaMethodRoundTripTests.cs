@@ -525,12 +525,16 @@ public sealed class IOPCMissingDaMethodRoundTripTests
                 return WritePayload((ref NdrWriter writer) =>
                 {
                     // Each [out] T** is unique-pointer-prefixed (referent + array).
+                    // VARIANT elements use the MS-OAUT 2.2.29.2 transmission form
+                    // (WriteVariantElement pads to 8-byte trailer); WORD/FILETIME/HRESULT
+                    // elements use the inline conformant-array codec.
                     writer.WriteUInt32(0x00020000u);
-                    WriteArray(ref writer, new[] { OpcVariant.FromInt32(12) }, NdrVariantExtensions.WriteVariant);
+                    writer.WriteUInt32(1);
+                    NdrVariantExtensions.WriteVariantElement(ref writer, OpcVariant.FromInt32(12));
                     writer.WriteUInt32(0x00020000u);
                     WriteUInt16Array(ref writer, 192);
                     writer.WriteUInt32(0x00020000u);
-                    WriteInt64Array(ref writer, 123456789L);
+                    writer.WriteConformantFileTimeArray(new[] { 123456789L });
                     writer.WriteUInt32(0x00020000u);
                     WriteInt32Array(ref writer, 0);
                 });

@@ -375,7 +375,7 @@ public partial interface IOPCItemIO
     Task ReadAsync(
         [OpcEmitArrayCount, OpcDeferredElements] string[] itemIds,
         int[] maxAges,
-        [OpcUniquePointer] out OpcVariant[] values,
+        [OpcUniquePointer, OpcVariantElements] out OpcVariant[] values,
         [OpcUniquePointer] out ushort[] qualities,
         [OpcUniquePointer, OpcFileTimeElements] out long[] timestamps,
         [OpcUniquePointer] out int[] errors,
