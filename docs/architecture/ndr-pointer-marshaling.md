@@ -126,15 +126,6 @@ work in `plan.md` under Track Y:
   fields. Affects `IOPCBrowse::Browse`'s `[out, size_is(,*pdwCount)]
   OPCBROWSEELEMENT** ppBrowseElements`.
 
-- **`IRemUnknown::RemQueryInterface` client.** To navigate from one
-  interface IPID to another on the same OXID (e.g. from
-  `IOPCGroupStateMgt` to `IOPCSyncIO` after `AddGroup`), the client
-  must call `IRemUnknown` opnum 3 with the source IPID + target IIDs
-  and parse the returned `REMQIRESULT` array (MS-DCOM §2.2.19). Today
-  the client uses `IActivation::RemoteActivation`'s multi-IID request
-  to get the most common interfaces at construction time; QI-at-runtime
-  is not yet implemented.
-
 - **Explicit NDR alignment in the emitter.** Today, every scalar codec
   call relies on the underlying `NdrWriter`/`NdrReader` to maintain
   alignment internally. The generator does not yet emit
@@ -149,6 +140,41 @@ work in `plan.md` under Track Y:
   parameter, the wire carries two copies of `N` (the standalone scalar
   and the array's max\_count). The generator already emits both; this
   note is just a reminder that this is correct per spec, not redundant.
+
+## Available runtime-navigation primitives
+
+- **`IRemUnknown::RemQueryInterface`** (Track Y7a) — `IID 00000131-…`,
+  opnum 3. Use to obtain new IPIDs on an existing OXID (e.g. QI from
+  `IOPCGroupStateMgt` to `IOPCSyncIO`/`IOPCItemMgt` after `AddGroup`).
+  Generated proxy lives in `src/Opc.Classic.Dcom/Remoting/IRemUnknown.cs`;
+  returned `OpcRemQIResult[]` carries the per-IID HRESULT + STDOBJREF
+  (flags + cPublicRefs + OXID + OID + IPID) per MS-DCOM §2.2.19. The
+  `ipidRemUnknown` value to use for the call is returned by
+  `IActivation::RemoteActivation` in the activation response.
+
+## Wire-format regression net (Track Y6, Y7a, Y10)
+
+`tests/Opc.Classic.Da.Tests/Wire/` pins byte-shape fixtures for the
+methods we've already shipped:
+
+- `NdrOpcServerStatusWireFixtures` — OPCSERVERSTATUS layout and the
+  unique-pointer LPWSTR VendorInfo (referent + max\_count + offset +
+  actual\_count + WCHAR[]).
+- `OpcMInterfacePointerCodecWireFixtures` — referent + cbData + OBJREF
+  wrapping; null-pointer path (single zero referent).
+- `IOPCServerAddGroupWireFixtures` — full AddGroup request encoding
+  (including `[OpcUniquePointer]` referent prefix on `pTimeBias` and
+  `pPercentDeadband`) and response decode through the MInterfacePointer
+  codec.
+- `NdrOpcVariantWireFixtures` — _wireVARIANT layout per MS-OAUT §2.2.29
+  for VT_I4, VT_R4, VT_R8, VT_BOOL, VT_BSTR, VT_UI1.
+
+`tests/Opc.Classic.Dcom.Tests/Remoting/IRemUnknownProxyTests.cs` does
+the same for IRemUnknown::RemQueryInterface request body + REMQIRESULT
+array response.
+
+These fixtures must fail loudly if any future generator/codec refactor
+silently changes the wire shape.
 
 ## Loopback-vs-real-wire reconciliation
 
