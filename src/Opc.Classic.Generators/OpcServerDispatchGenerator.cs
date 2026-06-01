@@ -777,6 +777,13 @@ namespace Opc.Classic.Generators
             sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(" is not null)");
             sb.Append(statementIndent).AppendLine("{");
             sb.Append(statementIndent).Append("    ").Append(writerLocal).Append(".WriteUInt32((uint)").Append(valueExpression).AppendLine(".Length);");
+            // Per DCE 1.1 §14.3.12.3 deferred pile: emit N per-element unique-pointer
+            // referents inline, then align to 8 and emit the bodies in order.
+            sb.Append(statementIndent).Append("    for (int __opcRefIdx = 0; __opcRefIdx < ").Append(valueExpression).AppendLine(".Length; __opcRefIdx++)");
+            sb.Append(statementIndent).AppendLine("    {");
+            sb.Append(statementIndent).Append("        ").Append(writerLocal).AppendLine(".WriteUInt32(0x00020000u);");
+            sb.Append(statementIndent).AppendLine("    }");
+            sb.Append(statementIndent).Append("    ").Append(writerLocal).AppendLine(".AlignTo(8);");
             sb.Append(statementIndent).Append("    foreach (var __opcV in ").Append(valueExpression).AppendLine(")");
             sb.Append(statementIndent).AppendLine("    {");
             sb.Append(statementIndent).Append("        global::Opc.Classic.Ndr.NdrVariantExtensions.WriteVariantElement(ref ").Append(writerLocal).AppendLine(", __opcV);");
@@ -787,6 +794,11 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32((uint)(").Append(valueExpression).AppendLine("?.Length ?? 0));");
         sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(" is not null)");
         sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    for (int __opcRefIdx = 0; __opcRefIdx < ").Append(valueExpression).AppendLine(".Length; __opcRefIdx++)");
+        sb.Append(statementIndent).AppendLine("    {");
+        sb.Append(statementIndent).Append("        ").Append(writerLocal).AppendLine(".WriteUInt32(0x00020000u);");
+        sb.Append(statementIndent).AppendLine("    }");
+        sb.Append(statementIndent).Append("    ").Append(writerLocal).AppendLine(".AlignTo(8);");
         sb.Append(statementIndent).Append("    foreach (var __opcV in ").Append(valueExpression).AppendLine(")");
         sb.Append(statementIndent).AppendLine("    {");
         sb.Append(statementIndent).Append("        global::Opc.Classic.Ndr.NdrVariantExtensions.WriteVariantElement(ref ").Append(writerLocal).AppendLine(", __opcV);");

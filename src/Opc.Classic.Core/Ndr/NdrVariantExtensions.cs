@@ -29,54 +29,205 @@ public static class NdrVariantExtensions
 
     /// <summary>
     /// Encodes a single VARIANT element inside an NDR conformant array of
-    /// VARIANTs (MS-OAUT §2.2.29.2 transmission form). The body matches the
-    /// standard wireVARIANT; an outer pad-to-8 follows so the next element
-    /// starts on an 8-byte boundary (longest arm type — VT_R8/I8/UI8/DATE
-    /// — has 8-byte alignment).
+    /// VARIANT pointers (DCE 1.1 §14.3.12.3 deferred pointer pile). The body
+    /// layout is the canonical wireVARIANT (MS-OAUT §2.2.29.2) — clSize +
+    /// rpcReserved + vt + 3 reserved USHORTs — followed by the [switch_is(vt)]
+    /// union which is emitted with its duplicated discriminator USHORT,
+    /// natural-alignment padding for the arm, and a trailing pad to 8 bytes so
+    /// the next element starts at an 8-byte boundary. The per-element
+    /// unique-pointer referent + inline-pad-to-8 are emitted by the caller
+    /// (the generated proxy/dispatcher), not by this helper.
     /// </summary>
     public static void WriteVariantElement(this ref NdrWriter writer, OpcVariant value)
     {
         int startPos = writer.Position;
-        WriteVariantHeader(ref writer, value.Type, ComputeVariantBodySize(value, depth: 0));
-        writer.WriteUInt32((uint)value.Type);
-        writer.WriteUInt32(0u);
-        WriteVariantBody(ref writer, value, depth: 0);
+        WriteVariantElementBody(ref writer, value);
         int written = writer.Position - startPos;
         int padTo = (written + 7) & ~7;
         for (int i = written; i < padTo; i++) { writer.WriteByte(0); }
     }
 
+    /// <summary>
+    /// Decodes a single VARIANT element inside an NDR conformant array of
+    /// VARIANT pointers. The per-element referent and inline-pad-to-8 must
+    /// have been consumed by the caller; this reader handles the canonical
+    /// wireVARIANT body, the duplicated [switch_is(vt)] union discriminator,
+    /// natural-alignment padding, the arm, and a trailing pad to 8 bytes.
+    /// </summary>
     public static OpcVariant ReadVariantElement(this ref NdrReader reader)
     {
         int startPos = reader.Position;
-        reader.AlignTo(4);
-        _ = reader.ReadUInt32();
-        _ = reader.ReadUInt32();
-        ushort vtRaw = reader.ReadUInt16();
-        _ = reader.ReadUInt16();
-        _ = reader.ReadUInt16();
-        _ = reader.ReadUInt16();
-        _ = reader.ReadUInt32();
-        _ = reader.ReadUInt32();
-        var vt = (VarType)vtRaw;
-        OpcVariant value;
-        if (VarTypeMask.IsByRef(vt))
-        {
-            value = ReadByRefVariant(ref reader, vt, depth: 0);
-        }
-        else if (VarTypeMask.IsArray(vt))
-        {
-            value = ReadSafeArrayVariant(ref reader, vt);
-        }
-        else
-        {
-            value = ReadBody(ref reader, vt, depth: 0);
-        }
+        OpcVariant value = ReadVariantElementBody(ref reader);
         int read = reader.Position - startPos;
         int padTo = (read + 7) & ~7;
         for (int i = read; i < padTo; i++) { _ = reader.ReadByte(); }
         return value;
     }
+
+    private static void WriteVariantElementBody(ref NdrWriter writer, OpcVariant value)
+    {
+        var vt = value.Type;
+        // Canonical 16-byte wireVARIANT header: clSize + rpcReserved + vt + 3 reserved USHORTs.
+        // clSize is conventionally a small per-VARTYPE constant used by Matrikon (3 for 4-byte arms,
+        // 4 for 8-byte arms, etc.); we mirror what we observe on real wire traces.
+        int clSize = vt switch
+        {
+            VarType.VT_R8 or VarType.VT_I8 or VarType.VT_UI8 or VarType.VT_DATE or VarType.VT_CY or VarType.VT_FILETIME => 4,
+            VarType.VT_BSTR or VarType.VT_DISPATCH or VarType.VT_UNKNOWN or VarType.VT_VARIANT => 6,
+            _ => 3,
+        };
+        writer.WriteUInt32((uint)clSize);
+        writer.WriteUInt32(0u);
+        writer.WriteUInt16((ushort)vt);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        // Duplicated discriminator USHORT for the [switch_is(vt)] non-encapsulated union
+        // (DCE 1.1 §14.3.7.2 NDR rule: the discriminator is always written to the wire,
+        // even when switch_is references a struct field already encoded).
+        writer.WriteUInt16((ushort)vt);
+        WriteVariantElementArm(ref writer, value);
+    }
+
+    private static OpcVariant ReadVariantElementBody(ref NdrReader reader)
+    {
+        reader.AlignTo(4);
+        _ = reader.ReadUInt32();          // clSize
+        uint rpcReserved = reader.ReadUInt32();
+        if (rpcReserved != 0u)
+        {
+            throw new InvalidDataException(
+                $"NDR VARIANT element rpcReserved must be 0 but was 0x{rpcReserved:X8} at buffer offset {reader.Position - 4}. " +
+                "Wire layout does not match expected wireVARIANT — capture a Wireshark trace from a Windows OPC client " +
+                "for the same method to confirm the per-element envelope.");
+        }
+        ushort vtRaw = reader.ReadUInt16();
+        _ = reader.ReadUInt16();
+        _ = reader.ReadUInt16();
+        _ = reader.ReadUInt16();
+        ushort discRaw = reader.ReadUInt16();
+        if (discRaw != vtRaw)
+        {
+            throw new InvalidDataException(
+                $"NDR VARIANT element discriminator (0x{discRaw:X4}) does not match vt (0x{vtRaw:X4}) " +
+                $"at buffer offset {reader.Position - 2}.");
+        }
+        var vt = (VarType)vtRaw;
+        return ReadVariantElementArm(ref reader, vt);
+    }
+
+    private static void WriteVariantElementArm(ref NdrWriter writer, OpcVariant value)
+    {
+        var vt = value.Type;
+        if (VarTypeMask.IsArray(vt))
+        {
+            writer.AlignTo(8);
+            WriteSafeArrayValue(ref writer, vt, value.Boxed);
+            return;
+        }
+        if (WriteScalarVariantArm(ref writer, vt, value.Boxed)) { return; }
+        throw new InvalidOperationException(
+            $"NDR VARIANT element wire encoding is not yet supported for type {vt}.");
+    }
+
+    private static bool WriteScalarVariantArm(ref NdrWriter writer, VarType vt, object? boxed)
+    {
+        switch (vt)
+        {
+            case VarType.VT_EMPTY: case VarType.VT_NULL: return true;
+            case VarType.VT_I1: writer.WriteByte(unchecked((byte)((sbyte)boxed!))); return true;
+            case VarType.VT_UI1: writer.WriteByte((byte)boxed!); return true;
+            case VarType.VT_I2: writer.WriteInt16((short)boxed!); return true;
+            case VarType.VT_UI2: writer.WriteUInt16((ushort)boxed!); return true;
+            case VarType.VT_BOOL: writer.WriteUInt16(((bool)boxed!) ? BoolTrueWire : BoolFalseWire); return true;
+            case VarType.VT_I4: case VarType.VT_INT: case VarType.VT_ERROR: case VarType.VT_HRESULT:
+                writer.AlignTo(4); writer.WriteInt32((int)boxed!); return true;
+            case VarType.VT_UI4: case VarType.VT_UINT:
+                writer.AlignTo(4); writer.WriteUInt32((uint)boxed!); return true;
+            case VarType.VT_R4: writer.AlignTo(4); writer.WriteSingle((float)boxed!); return true;
+            case VarType.VT_I8: writer.AlignTo(8); writer.WriteInt64((long)boxed!); return true;
+            case VarType.VT_UI8: writer.AlignTo(8); writer.WriteUInt64((ulong)boxed!); return true;
+            case VarType.VT_R8: writer.AlignTo(8); writer.WriteDouble((double)boxed!); return true;
+            case VarType.VT_DATE: writer.AlignTo(8); writer.WriteDouble(((DateTime)boxed!).ToOADate()); return true;
+            case VarType.VT_FILETIME: writer.AlignTo(8); writer.WriteFileTime((long)boxed!); return true;
+            case VarType.VT_BSTR: writer.AlignTo(4); WriteBstrBody(ref writer, (string?)boxed); return true;
+            default: return false;
+        }
+    }
+
+    private static OpcVariant ReadVariantElementArm(ref NdrReader reader, VarType vt)
+    {
+        if (VarTypeMask.IsArray(vt))
+        {
+            reader.AlignTo(8);
+            return ReadSafeArrayVariant(ref reader, vt);
+        }
+        switch (vt)
+        {
+            case VarType.VT_EMPTY: return OpcVariant.Empty;
+            case VarType.VT_NULL: return OpcVariant.Null;
+            case VarType.VT_I1: return OpcVariant.FromInt8(unchecked((sbyte)reader.ReadByte()));
+            case VarType.VT_UI1: return OpcVariant.FromUInt8(reader.ReadByte());
+            case VarType.VT_I2: return OpcVariant.FromInt16(reader.ReadInt16());
+            case VarType.VT_UI2: return OpcVariant.FromUInt16(reader.ReadUInt16());
+            case VarType.VT_BOOL: return OpcVariant.FromBoolean(reader.ReadUInt16() != 0);
+            case VarType.VT_I4: reader.AlignTo(4); return OpcVariant.FromInt32(reader.ReadInt32());
+            case VarType.VT_UI4: reader.AlignTo(4); return OpcVariant.FromUInt32(reader.ReadUInt32());
+            case VarType.VT_INT: reader.AlignTo(4); return OpcVariant.FromInt32(reader.ReadInt32());
+            case VarType.VT_UINT: reader.AlignTo(4); return OpcVariant.FromUInt32(reader.ReadUInt32());
+            case VarType.VT_ERROR: reader.AlignTo(4); return OpcVariant.FromError(reader.ReadInt32());
+            case VarType.VT_HRESULT: reader.AlignTo(4); return new OpcVariant(VarType.VT_HRESULT, reader.ReadInt32());
+            case VarType.VT_R4: reader.AlignTo(4); return OpcVariant.FromSingle(reader.ReadSingle());
+            case VarType.VT_I8: reader.AlignTo(8); return OpcVariant.FromInt64(reader.ReadInt64());
+            case VarType.VT_UI8: reader.AlignTo(8); return OpcVariant.FromUInt64(reader.ReadUInt64());
+            case VarType.VT_R8: reader.AlignTo(8); return OpcVariant.FromDouble(reader.ReadDouble());
+            case VarType.VT_DATE: reader.AlignTo(8); return OpcVariant.FromDate(DateTime.FromOADate(reader.ReadDouble()));
+            case VarType.VT_FILETIME: reader.AlignTo(8); return OpcVariant.FromFileTime(reader.ReadFileTime());
+            case VarType.VT_BSTR:
+                reader.AlignTo(4);
+                {
+                    string? s = ReadElementBstr(ref reader);
+                    return s is null ? new OpcVariant(VarType.VT_BSTR, null) : OpcVariant.FromString(s);
+                }
+            default:
+                throw new InvalidDataException(
+                    $"NDR VARIANT element wire decoding is not yet supported for type {vt}.");
+        }
+    }
+
+    /// <summary>
+    /// Reads a BSTR as encoded inside a VARIANT element arm (MS-OAUT
+    /// FLAGGED_WORD_BLOB). Layout: referent + max_count + fFlags + clSize +
+    /// USHORT[clSize] chars. The fFlags field is informational (set to 8 by
+    /// Matrikon, 0 by some other servers); it is read but not validated.
+    /// </summary>
+    private static string? ReadElementBstr(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return null;
+        }
+        uint maxCount = reader.ReadUInt32();
+        _ = reader.ReadUInt32();           // fFlags — informational, not validated
+        uint clSize = reader.ReadUInt32();
+        if (clSize != maxCount)
+        {
+            throw new InvalidDataException(
+                $"NDR FLAGGED_WORD_BLOB max_count ({maxCount}) does not match clSize ({clSize}).");
+        }
+        if (clSize == 0u)
+        {
+            return string.Empty;
+        }
+        var chars = new char[clSize];
+        for (uint i = 0; i < clSize; i++)
+        {
+            chars[i] = (char)reader.ReadUInt16();
+        }
+        return new string(chars);
+    }
+
+    private delegate OpcVariant NdrReadFunc(ref NdrReader reader);
 
     private static void WriteVariantCore(ref NdrWriter writer, OpcVariant value, int depth)
     {

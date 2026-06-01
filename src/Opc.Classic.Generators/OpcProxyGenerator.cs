@@ -1085,6 +1085,8 @@ namespace Opc.Classic.Generators
         string indexLocal = UniqueLocalName(parameterNames, targetLocal + "Idx", readerLocal, targetLocal, countLocal);
         sb.Append(statementIndent).Append("var ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
         sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = new global::Opc.Classic.OpcVariant[").Append(countLocal).AppendLine("];");
+        sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++) { _ = ").Append(readerLocal).AppendLine(".ReadUInt32(); }");
+        sb.Append(statementIndent).Append(readerLocal).AppendLine(".AlignTo(8);");
         sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
         sb.Append(statementIndent).AppendLine("{");
         sb.Append(statementIndent).Append("    ").Append(targetLocal).Append('[').Append(indexLocal).Append("] = global::Opc.Classic.Ndr.NdrVariantExtensions.ReadVariantElement(ref ").Append(readerLocal).AppendLine(");");

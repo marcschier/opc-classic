@@ -525,11 +525,15 @@ public sealed class IOPCMissingDaMethodRoundTripTests
                 return WritePayload((ref NdrWriter writer) =>
                 {
                     // Each [out] T** is unique-pointer-prefixed (referent + array).
-                    // VARIANT elements use the MS-OAUT 2.2.29.2 transmission form
-                    // (WriteVariantElement pads to 8-byte trailer); WORD/FILETIME/HRESULT
-                    // elements use the inline conformant-array codec.
+                    // For [OpcVariantElements] arrays we follow DCE 1.1 §14.3.12.3:
+                    // top referent + max_count + N per-element referents + AlignTo(8) +
+                    // N VARIANT bodies. Each VARIANT body is the canonical wireVARIANT
+                    // (clSize + rpcReserved + vt + 3 reserved USHORTs + duplicated
+                    // [switch_is(vt)] discriminator + natural-aligned arm + pad-to-8).
                     writer.WriteUInt32(0x00020000u);
                     writer.WriteUInt32(1);
+                    writer.WriteUInt32(0x00020000u);
+                    writer.AlignTo(8);
                     NdrVariantExtensions.WriteVariantElement(ref writer, OpcVariant.FromInt32(12));
                     writer.WriteUInt32(0x00020000u);
                     WriteUInt16Array(ref writer, 192);
