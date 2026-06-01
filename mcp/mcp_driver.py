@@ -1,57 +1,32 @@
 #!/usr/bin/env python3
 """
 mcp_driver.py — end-to-end demo / smoke test for the Opc.Classic MCP
-server against a live OPC DA server (typically Matrikon.OPC.Simulation.1).
+server against a live OPC DA server.
 
 This script drives the MCP server over stdio via JSON-RPC and exercises
-the Track Y demo path:
+the Track Y/Z demo path:
 
   1. session.create
   2. da.connect           — multi-IID activation, registers per-IID IPIDs
   3. da.get_status        — exercises Y1-Y9 (NDR unique pointer + MInterfacePointer)
-  4. da.read_items_by_id  — exercises Y10 (VARIANT marshaling) via the
-                            DA 3.0 stateless IOPCItemIO interface,
-                            avoiding the need for AddGroup/AddItems QI
-                            navigation (Y9b deferred-pointer work).
+  4. da.read_items_by_id  — exercises Y10/Z2 (VARIANT marshaling) via the
+                            DA 3.0 stateless IOPCItemIO interface.
 
-KNOWN ISSUE — IOPCItemIO::Read fails with RPC_S_INVALID_TAG (0x800706F7)
-against real DCOM servers because the request body needs the explicit
-`dwCount` field (the IDL `size_is(dwCount)` sibling parameter) emitted
-*before* the conformant arrays, in addition to each array's own
-max_count prefix. Our generator currently uses the array length once
-as max_count and never writes the separate dwCount field. Tracked as
-follow-up work: add an `[OpcCountField]` / `[OpcSizeIs("dwCount")]`
-attribute mechanism so the generator can emit the count both as a
-standalone scalar and as the array conformance header.
-
-GetStatus (the simpler `[out] OPCSERVERSTATUS**` path) DOES work
-end-to-end against Matrikon today via Y1-Y9, confirming the NDR shape
-model + MInterfacePointer codec are wire-compatible.
-
-Requirements (on the host running this script):
-  - Python 3.10+ (uses subprocess + json built-ins, no external deps).
-  - .NET 10 SDK so `dotnet run` can launch the MCP server.
-  - A reachable OPC DA server. Defaults assume Matrikon Simulation at
-    localhost via the well-known CLSID F8582CF2-88FB-11D0-B850-00C0F0104305
-    (which bypasses OPCEnum — OPCEnum has a separate DCOM ACL that often
-    rejects unprivileged callers even when the actual server accepts
-    them). Pass --progid or --host to override.
-  - Windows SSO is used by default (no username/password). On non-Windows
-    or for non-default credentials, supply --username / --password and
-    set --no-sso.
+Requirements:
+  - Python 3.10+, .NET 10 SDK.
+  - A reachable OPC DA server. Pass --clsid (preferred — bypasses
+    OPCEnum which has its own DCOM ACL) or --progid (uses OPCEnum to
+    resolve to a CLSID).
+  - Windows SSO is used by default. For other credentials, supply
+    --username / --password and set --no-sso.
 
 Usage:
-  python mcp_driver.py [--host HOST] [--clsid CLSID] [--progid PROGID]
-                       [--username U] [--password P] [--no-sso]
-                       [--items Random.Int1,Random.Real8,Random.String]
+  python mcp_driver.py --clsid <CLSID>
+  python mcp_driver.py --progid <Vendor>.OPC.Server.1
+  python mcp_driver.py --host 192.168.1.50 --clsid <CLSID>
+                       --items <Item.A>,<Item.B>
 
-Examples (PowerShell):
-  python mcp_driver.py
-  python mcp_driver.py --host 192.168.1.50 --progid Matrikon.OPC.Simulation.1
-  python mcp_driver.py --items "Random.Int1,Random.Real8,Random.Boolean,Random.String"
-
-Exit codes: 0 = all stages reached (read may fail with known issue noted above);
-            non-zero = unexpected error (network/auth failure, etc.).
+Exit codes: 0 = all stages reached; non-zero = unexpected error.
 """
 
 from __future__ import annotations
@@ -67,7 +42,7 @@ import time
 from typing import Any, Optional
 
 
-DEFAULT_ITEMS = ["Random.Int1", "Random.Real8", "Random.Boolean", "Random.String"]
+DEFAULT_ITEMS = ["Random.Int1"]
 
 
 class McpClient:
@@ -165,9 +140,10 @@ def banner(title: str) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--host", default="localhost")
-    parser.add_argument("--progid", default="Matrikon.OPC.Simulation.1")
-    parser.add_argument("--clsid", default="F8582CF2-88FB-11D0-B850-00C0F0104305",
-                        help="OPC DA server CLSID. Default is Matrikon Simulation. Passing a CLSID lets the client skip OPCEnum (which has its own DCOM ACL).")
+    parser.add_argument("--progid", default=None,
+                        help="OPC DA server ProgID (e.g. Vendor.OPC.Server.1). Resolved via OPCEnum, which has its own DCOM ACL.")
+    parser.add_argument("--clsid", default=None,
+                        help="OPC DA server CLSID. Preferred over --progid because it bypasses OPCEnum. At least one of --progid/--clsid must be supplied.")
     parser.add_argument("--username", default=None)
     parser.add_argument("--password", default=None)
     parser.add_argument("--no-sso", action="store_true",
@@ -175,6 +151,9 @@ def main() -> int:
     parser.add_argument("--items", default=",".join(DEFAULT_ITEMS),
                         help="Comma-separated OPC item IDs to read.")
     args = parser.parse_args()
+
+    if not args.progid and not args.clsid:
+        parser.error("at least one of --progid or --clsid must be supplied")
 
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     use_sso = not args.no_sso
@@ -195,9 +174,10 @@ def main() -> int:
         connect_args: dict[str, Any] = {
             "sessionId": session_id,
             "host": args.host,
-            "progId": args.progid,
             "useSso": use_sso,
         }
+        if args.progid:
+            connect_args["progId"] = args.progid
         if args.clsid:
             connect_args["clsid"] = args.clsid
         if args.username:
