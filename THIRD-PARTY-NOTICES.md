@@ -113,8 +113,13 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ### ext/samples/ (native C++ OPC Foundation sample servers)
 - Source: OPC Foundation
-- License: OPC Foundation sample license (older Sample Server SDK) or OPC Foundation MIT License 1.00 (`ext/samples/Test/`, vendored from [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) `Source/Test/`) — both preserved verbatim in the original files
+- License: OPC Foundation sample license (older Sample Server SDK) — preserved verbatim in the original files
 - Status: Used only as a conformance reference; no redistribution
+
+### ext/CoreComponents/ (vendored OPC-Classic-CoreComponents snapshot)
+- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (verbatim mirror; see `ext/CoreComponents/VENDORED.md` for snapshot freshness + re-sync workflow)
+- License: OPC Foundation MIT License 1.00 (per-source-file headers); `LICENSE.md` at the vendor root is the umbrella OPC Foundation specification license
+- Status: Vendored so the native C++ DA 2.05a TestServer + proxy/stub DLLs can be built without an external clone (see `docs/interop/testserver.md`). Not redistributed in the published Opc.Classic NuGet packages.
 
 ### ext/ (OPC Foundation reference + redistributable assets)
 - Source: OPC Foundation
@@ -125,4 +130,5 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
   - `ext/redist/` — OPC COM Core Components redistributable + Proxy/Stub merge modules
   - `ext/private/docs/` — spec markdown (auto-generated from PDFs) and Microsoft Open Specifications used for cross-reference
   - `ext/samples/` — OPC Foundation native C++ sample servers used by conformance validation
+  - `ext/CoreComponents/` — vendored snapshot of the OPC-Classic-CoreComponents repository (MIT-licensed); see entry above
 - Status: Used for IDL definitions, redistributable inputs, conformance validation, and developer reference; do not redistribute outside the rights granted by the OPC Foundation

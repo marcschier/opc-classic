@@ -16,7 +16,8 @@
 
 .PARAMETER ExePath
     Full path to OpcTestServer_x64.exe (default: looks for it under
-    ..\..\OPC-Classic-CoreComponents\build\x64\Release\).
+    ext\CoreComponents\build\x64\Release\, the vendored CMake output
+    produced by tools\build-testserver.ps1).
 
 .PARAMETER Unregister
     Remove the HKLM entries instead of adding them.
@@ -49,11 +50,11 @@ $Catid10   = '{63D5F430-CFE4-11D1-B2C8-0060083BA1FB}'
 
 if (-not $ExePath) {
     $repoRoot = Split-Path -Parent $PSScriptRoot
-    $candidate = Join-Path (Split-Path -Parent $repoRoot) 'OPC-Classic-CoreComponents\build\x64\Release\OpcTestServer_x64.exe'
+    $candidate = Join-Path $repoRoot 'ext\CoreComponents\build\x64\Release\OpcTestServer_x64.exe'
     if (Test-Path $candidate) { $ExePath = $candidate }
 }
 if (-not $ExePath -or -not (Test-Path $ExePath)) {
-    Write-Error 'Cannot find OpcTestServer_x64.exe. Pass -ExePath explicitly or build it first (docs/interop/testserver.md).'
+    Write-Error 'Cannot find OpcTestServer_x64.exe. Run tools\build-testserver.ps1 first, or pass -ExePath explicitly.'
     exit 1
 }
 $ExePath = (Resolve-Path $ExePath).Path

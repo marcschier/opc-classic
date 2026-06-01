@@ -30,3 +30,8 @@
 /**/BuildOutput/**
 # Ignore editor backup files
 *~
+
+# Vendored CoreComponents CMake build outputs (do not commit binaries)
+/ext/CoreComponents/build/**
+/ext/CoreComponents/out/**
+/ext/CoreComponents/.vs/**
