@@ -96,12 +96,15 @@ public sealed class IOPCServerAddGroupWireFixtures
         await Assert.That(WireAssert.ReadUInt32At(wireBytes, 28)).IsEqualTo(1u);
 
         // pTimeBias is [OpcUniquePointer] non-nullable Int32 → referent + value.
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 32)).IsEqualTo(0x00020000u);
+        // Referent IDs auto-increment per NdrWriter (DCE 1.1 §14.3.10) — this
+        // is the 2nd unique referent in the request (after szName at index 0,
+        // counter advances by 4 each non-null pointer).
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 32)).IsEqualTo(0x00020004u);
         // -300 = 0xFFFFFED4 as Int32 little-endian.
         await Assert.That(WireAssert.ReadUInt32At(wireBytes, 36)).IsEqualTo(0xFFFFFED4u);
 
         // pPercentDeadband is [OpcUniquePointer] non-nullable Single → referent + value.
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 40)).IsEqualTo(0x00020000u);
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 40)).IsEqualTo(0x00020008u);
         // 1.5f IEEE-754 single = 0x3FC00000.
         await Assert.That(WireAssert.ReadUInt32At(wireBytes, 44)).IsEqualTo(0x3FC00000u);
 

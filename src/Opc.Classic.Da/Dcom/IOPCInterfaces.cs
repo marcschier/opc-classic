@@ -152,9 +152,9 @@ public partial interface IOPCBrowse
     /// </summary>
     [OpcMethod(3)]
     Task<OpcItemProperties[]> GetPropertiesAsync(
-        string[] itemIds,
+        [OpcEmitArrayCount, OpcDeferredElements] string[] itemIds,
         bool returnPropertyValues,
-        int[] propertyIds,
+        [OpcEmitArrayCount] int[] propertyIds,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -163,15 +163,15 @@ public partial interface IOPCBrowse
     [OpcMethod(4)]
     [OpcGenerateMultiOutRecord]
     Task BrowseAsync(
-        string itemId,
+        [OpcRefString] string itemId,
         ref string? continuationPoint,
         int maxElementsReturned,
         int browseFilter,
-        string elementNameFilter,
-        string vendorFilter,
+        [OpcRefString] string elementNameFilter,
+        [OpcRefString] string vendorFilter,
         bool returnAllProperties,
         bool returnPropertyValues,
-        int[] propertyIds,
+        [OpcEmitArrayCount] int[] propertyIds,
         out bool moreElements,
         out OpcBrowseElementResult[] browseElements,
         CancellationToken cancellationToken = default);

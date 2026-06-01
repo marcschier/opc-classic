@@ -211,6 +211,24 @@ def main() -> int:
                     flush=True,
                 )
 
+        banner("da.browse (root)")
+        try:
+            browse = client.call_tool("opcclassic.da.browse", {
+                "sessionId": session_id,
+                "itemId": "",
+                "browseFilter": "all",
+            })
+            if isinstance(browse, list):
+                print(f"  found {len(browse)} root branches/leaves:", flush=True)
+                for b in browse[:10]:
+                    print(f"    {b.get('name'):<32s}  itemId={b.get('itemId','')}", flush=True)
+                if len(browse) > 10:
+                    print(f"    ... and {len(browse)-10} more", flush=True)
+            else:
+                print(f"  browse returned: {browse!r}", flush=True)
+        except Exception as ex:
+            print(f"  browse failed: {ex}", flush=True)
+
         banner("da.disconnect")
         client.call_tool("opcclassic.da.disconnect", {"sessionId": session_id})
         print("Done. All Track Y NDR/MInterfacePointer paths exercised against the live server.", flush=True)

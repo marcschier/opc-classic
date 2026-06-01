@@ -248,6 +248,25 @@ public ref struct NdrWriter
     public void WriteNullReferent() => WriteUInt32(0u);
 
     /// <summary>
+    /// Writes a 4-byte unique-pointer referent: 0 when <paramref name="nonNull"/>
+    /// is false (NULL pointer), otherwise an auto-incremented non-zero referent
+    /// ID per DCE 1.1 §14.3.10. This is the preferred entry point for generator
+    /// emission so that multiple sibling unique pointers don't share the same
+    /// referent ID (the receiver would otherwise treat them as aliases).
+    /// </summary>
+    public void WriteUniquePointerReferent(bool nonNull)
+    {
+        if (nonNull)
+        {
+            _ = WriteReferentId();
+        }
+        else
+        {
+            WriteUInt32(0u);
+        }
+    }
+
+    /// <summary>
     /// Writes a span of raw bytes verbatim (no alignment, no length prefix).
     /// </summary>
     public void WriteRawBytes(ReadOnlySpan<byte> source)

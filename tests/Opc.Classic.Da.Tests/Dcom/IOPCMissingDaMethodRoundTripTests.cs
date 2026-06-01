@@ -26,14 +26,15 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         bool serverObservedArgs = false;
         var channel = Channel(IOPCBrowse.InterfaceId, IOPCBrowse.Opnums.BrowseAsync, (ref NdrReader reader) =>
         {
-            string? itemId = reader.ReadUnicodeStringPtr();
+            string? itemId = reader.ReadUnicodeString();
             string? continuation = reader.ReadUnicodeStringPtr();
             int maxElements = reader.ReadInt32();
             int browseFilter = reader.ReadInt32();
-            string? elementFilter = reader.ReadUnicodeStringPtr();
-            string? vendorFilter = reader.ReadUnicodeStringPtr();
+            string? elementFilter = reader.ReadUnicodeString();
+            string? vendorFilter = reader.ReadUnicodeString();
             bool allProperties = reader.ReadInt32() != 0;
             bool propertyValues = reader.ReadInt32() != 0;
+            _ = reader.ReadInt32();   // dwPropertyCount sibling (consumed; the conformant array carries its own max_count)
             int[] propertyIds = ReadInt32Array(ref reader);
 
             serverObservedArgs = itemId == "Area" &&
@@ -56,7 +57,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
             {
                 writer.WriteUnicodeStringPtr("next");
                 writer.WriteInt32(-1);
-                WriteArray(ref writer, new[] { element }, NdrOpcBrowseElementCodec.Write);
+                NdrOpcBrowseResponseDecoder.WriteConformantArrayWithReferent(ref writer, new[] { element });
             });
         });
 
