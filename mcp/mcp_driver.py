@@ -143,17 +143,31 @@ def main() -> int:
     parser.add_argument("--progid", default=None,
                         help="OPC DA server ProgID (e.g. Vendor.OPC.Server.1). Resolved via OPCEnum, which has its own DCOM ACL.")
     parser.add_argument("--clsid", default=None,
-                        help="OPC DA server CLSID. Preferred over --progid because it bypasses OPCEnum. At least one of --progid/--clsid must be supplied.")
+                        help="OPC DA server CLSID. Preferred over --progid because it bypasses OPCEnum. At least one of --progid/--clsid/--testserver must be supplied.")
+    parser.add_argument("--testserver", action="store_true",
+                        help="Shortcut: target the OPC Foundation DA 2.05a TestServer (x64) at "
+                             "CLSID F8582CF9-88FB-11DA-A5ED-0060B0692061. Install via the upstream "
+                             "OPC Classic Core Components MSI - see docs/interop/testserver.md.")
     parser.add_argument("--username", default=None)
     parser.add_argument("--password", default=None)
     parser.add_argument("--no-sso", action="store_true",
                         help="Disable Windows SSO (use explicit --username/--password).")
-    parser.add_argument("--items", default=",".join(DEFAULT_ITEMS),
-                        help="Comma-separated OPC item IDs to read.")
+    parser.add_argument("--items", default=None,
+                        help="Comma-separated OPC item IDs to read. Defaults to TestServer items "
+                             "when --testserver is set, otherwise a generic Random.* read set.")
     args = parser.parse_args()
 
+    if args.testserver:
+        if not args.clsid:
+            args.clsid = "F8582CF9-88FB-11DA-A5ED-0060B0692061"
+        if args.items is None:
+            args.items = "Test.Int32,Test.Float,Test.String"
+
     if not args.progid and not args.clsid:
-        parser.error("at least one of --progid or --clsid must be supplied")
+        parser.error("at least one of --progid, --clsid or --testserver must be supplied")
+
+    if args.items is None:
+        args.items = ",".join(DEFAULT_ITEMS)
 
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     use_sso = not args.no_sso

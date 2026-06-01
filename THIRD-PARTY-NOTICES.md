@@ -113,7 +113,7 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ### ext/samples/ (native C++ OPC Foundation sample servers)
 - Source: OPC Foundation
-- License: OPC Foundation sample license — preserved verbatim in the original files
+- License: OPC Foundation sample license (older Sample Server SDK) or OPC Foundation MIT License 1.00 (`ext/samples/Test/`, vendored from [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) `Source/Test/`) — both preserved verbatim in the original files
 - Status: Used only as a conformance reference; no redistribution
 
 ### ext/ (OPC Foundation reference + redistributable assets)
