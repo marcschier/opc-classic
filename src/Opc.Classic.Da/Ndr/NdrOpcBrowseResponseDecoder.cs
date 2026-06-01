@@ -113,7 +113,12 @@ public static class NdrOpcBrowseResponseDecoder
         writer.WriteUInt32(unchecked((uint)prop.PropertyId));
         writer.WriteUniquePointerReferent(prop.ItemId is not null);
         writer.WriteUniquePointerReferent(prop.Description is not null);
-        writer.WriteVariant(prop.Value);
+        // Mirror of ReadItemPropertyInline — embedded VARIANT uses the
+        // per-element envelope (referent + pad-to-8 + wireVARIANT-with-
+        // duplicated-discriminator).
+        writer.WriteUniquePointerReferent(true);
+        writer.AlignTo(8);
+        NdrVariantExtensions.WriteVariantElement(ref writer, prop.Value);
         writer.WriteInt32(prop.ErrorId);
         writer.WriteUInt32(0u);
     }
@@ -274,12 +279,15 @@ public static class NdrOpcBrowseResponseDecoder
         uint propertyId = reader.ReadUInt32();
         uint itemIdRef = reader.ReadUInt32();
         uint descriptionRef = reader.ReadUInt32();
-        // Embedded VARIANT inside a struct uses the top-level wireVARIANT
-        // layout (clSize + rpcReserved + vt + 3 reserved + arm) WITHOUT the
-        // duplicated [switch_is(vt)] discriminator that per-element VARIANTs
-        // carry — the struct field is a single embedded value, not an array
-        // element with deferred-pile-style alignment.
-        OpcVariant value = reader.ReadVariant();
+        // Per live-Matrikon wire capture: the embedded VARIANT inside
+        // OPCITEMPROPERTY uses the per-element envelope (per-element unique-
+        // pointer referent + pad-to-8 + canonical wireVARIANT including the
+        // duplicated [switch_is(vt)] discriminator). This matches the layout
+        // VARIANT array elements use, even though the IDL declares vValue as
+        // an embedded value-type field.
+        _ = reader.ReadUInt32();
+        reader.AlignTo(8);
+        OpcVariant value = NdrVariantExtensions.ReadVariantElement(ref reader);
         int hrErrorId = reader.ReadInt32();
         _ = reader.ReadUInt32();
         return new ItemPropertyInline(vt, unchecked((int)propertyId), itemIdRef, descriptionRef, value, hrErrorId);

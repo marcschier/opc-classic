@@ -221,7 +221,33 @@ def main() -> int:
             if isinstance(browse, list):
                 print(f"  found {len(browse)} root branches/leaves:", flush=True)
                 for b in browse[:10]:
-                    print(f"    {b.get('name'):<32s}  itemId={b.get('itemId','')}", flush=True)
+                    name = b.get('name', '')
+                    item_id = b.get('itemName', '')
+                    is_item = b.get('isItem', False)
+                    has_kids = b.get('hasChildren', False)
+                    print(f"    {name:<28s}  itemId={item_id:<32s}  isItem={is_item}  hasChildren={has_kids}", flush=True)
+                if len(browse) > 10:
+                    print(f"    ... and {len(browse)-10} more", flush=True)
+            else:
+                print(f"  browse returned: {browse!r}", flush=True)
+        except Exception as ex:
+            print(f"  browse failed: {ex}", flush=True)
+
+        banner("da.browse (Simulation Items)")
+        try:
+            browse = client.call_tool("opcclassic.da.browse", {
+                "sessionId": session_id,
+                "itemId": "Simulation Items",
+                "browseFilter": "all",
+            })
+            if isinstance(browse, list):
+                print(f"  found {len(browse)} children of Simulation Items:", flush=True)
+                for b in browse[:10]:
+                    name = b.get('name', '')
+                    item_id = b.get('itemName', '')
+                    is_item = b.get('isItem', False)
+                    has_kids = b.get('hasChildren', False)
+                    print(f"    {name:<28s}  itemId={item_id:<32s}  isItem={is_item}  hasChildren={has_kids}", flush=True)
                 if len(browse) > 10:
                     print(f"    ... and {len(browse)-10} more", flush=True)
             else:

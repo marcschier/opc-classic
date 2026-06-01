@@ -185,7 +185,7 @@ public sealed class DaClientTools
                 ParseBrowseFilter(browseFilter),
                 elementNameFilter ?? string.Empty,
                 vendorFilter ?? string.Empty,
-                returnAllProperties: propertyIds is null || propertyIds.Length == 0,
+                returnAllProperties: propertyIds is not null && propertyIds.Length > 0 && returnPropertyValues,
                 returnPropertyValues,
                 propertyIds ?? [],
                 out moreElements,
