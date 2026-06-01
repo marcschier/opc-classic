@@ -113,7 +113,7 @@ public static class NdrOpcBrowseResponseDecoder
         writer.WriteUInt32(unchecked((uint)prop.PropertyId));
         writer.WriteUniquePointerReferent(prop.ItemId is not null);
         writer.WriteUniquePointerReferent(prop.Description is not null);
-        NdrVariantExtensions.WriteVariantElement(ref writer, prop.Value);
+        writer.WriteVariant(prop.Value);
         writer.WriteInt32(prop.ErrorId);
         writer.WriteUInt32(0u);
     }
@@ -274,11 +274,12 @@ public static class NdrOpcBrowseResponseDecoder
         uint propertyId = reader.ReadUInt32();
         uint itemIdRef = reader.ReadUInt32();
         uint descriptionRef = reader.ReadUInt32();
-        // Embedded VARIANT uses the canonical wireVARIANT layout (MS-OAUT
-        // §2.2.29.2) including the duplicated [switch_is(vt)] discriminator
-        // (DCE 1.1 §14.3.7.2). Match the same encoding used for VARIANT
-        // array elements.
-        OpcVariant value = NdrVariantExtensions.ReadVariantElement(ref reader);
+        // Embedded VARIANT inside a struct uses the top-level wireVARIANT
+        // layout (clSize + rpcReserved + vt + 3 reserved + arm) WITHOUT the
+        // duplicated [switch_is(vt)] discriminator that per-element VARIANTs
+        // carry — the struct field is a single embedded value, not an array
+        // element with deferred-pile-style alignment.
+        OpcVariant value = reader.ReadVariant();
         int hrErrorId = reader.ReadInt32();
         _ = reader.ReadUInt32();
         return new ItemPropertyInline(vt, unchecked((int)propertyId), itemIdRef, descriptionRef, value, hrErrorId);
