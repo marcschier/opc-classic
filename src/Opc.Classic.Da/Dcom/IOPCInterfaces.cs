@@ -356,21 +356,29 @@ public partial interface IOPCItemIO
     /// </summary>
     /// <remarks>
     /// IDL signature: <c>[in] DWORD dwCount, [in, size_is(dwCount)] LPCWSTR *pszItemIDs,
-    /// [in, size_is(dwCount)] DWORD *pdwMaxAge, ...</c>. The standalone
-    /// <c>dwCount</c> field is emitted before the conformant arrays via
-    /// <see cref="OpcEmitArrayCountAttribute"/> on <paramref name="itemIds"/>
-    /// (which also implicitly counts the parallel <paramref name="maxAges"/>
-    /// array, as per the size_is sharing pattern).
+    /// [in, size_is(dwCount)] DWORD *pdwMaxAge,
+    /// [out, size_is(,dwCount)] VARIANT **ppvValues,
+    /// [out, size_is(,dwCount)] WORD **ppwQualities,
+    /// [out, size_is(,dwCount)] FILETIME **ppftTimeStamps,
+    /// [out, size_is(,dwCount)] HRESULT **ppErrors</c>.
+    /// Request inputs: <see cref="OpcEmitArrayCountAttribute"/> emits the
+    /// standalone <c>dwCount</c>; <see cref="OpcDeferredElementsAttribute"/>
+    /// on the LPCWSTR array uses the C706 §14.3.12.3 deferred-pointer layout
+    /// (per-element referents first, then per-element string bodies).
+    /// Response outputs: each <c>[out] T**</c> is a unique pointer to a
+    /// conformant array — <see cref="OpcUniquePointerAttribute"/> on each
+    /// directs the decoder to skip the 4-byte referent before reading the
+    /// array max_count and elements.
     /// </remarks>
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
     Task ReadAsync(
-        [OpcEmitArrayCount] string[] itemIds,
+        [OpcEmitArrayCount, OpcDeferredElements] string[] itemIds,
         int[] maxAges,
-        out OpcVariant[] values,
-        out ushort[] qualities,
-        out long[] timestamps,
-        out int[] errors,
+        [OpcUniquePointer] out OpcVariant[] values,
+        [OpcUniquePointer] out ushort[] qualities,
+        [OpcUniquePointer] out long[] timestamps,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -380,10 +388,12 @@ public partial interface IOPCItemIO
     /// IDL: <c>[in] DWORD dwCount, [in, size_is(dwCount)] LPCWSTR *pszItemIDs,
     /// [in, size_is(dwCount)] OPCITEMVQT *pItemVQT</c>. The standalone
     /// <c>dwCount</c> field is emitted before the arrays via
-    /// <see cref="OpcEmitArrayCountAttribute"/> on <paramref name="itemIds"/>.
+    /// <see cref="OpcEmitArrayCountAttribute"/> on <paramref name="itemIds"/>;
+    /// the LPCWSTR* elements use the deferred-pointer layout via
+    /// <see cref="OpcDeferredElementsAttribute"/>.
     /// </remarks>
     [OpcMethod(4)]
-    Task<int[]> WriteVqtAsync([OpcEmitArrayCount] string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
+    Task<int[]> WriteVqtAsync([OpcEmitArrayCount, OpcDeferredElements] string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).</summary>
