@@ -511,6 +511,11 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int writeCalls = 0;
         var channel = Channel(IOPCItemIO.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
+            // IOPCItemIO::Read/WriteVQT have [OpcEmitArrayCount] on itemIds — the
+            // proxy emits a standalone dwCount before the conformant array header
+            // per the IDL [in] DWORD dwCount, [in, size_is(dwCount)] LPCWSTR*
+            // shape. Skip the sibling count before reading the array body.
+            _ = reader.ReadUInt32();
             string?[] itemIds = ReadStringArray(ref reader);
             Ensure(itemIds[0] == "Random.Int4");
             if (opnum == IOPCItemIO.Opnums.ReadAsync)

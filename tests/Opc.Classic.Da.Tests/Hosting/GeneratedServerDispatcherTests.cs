@@ -212,6 +212,9 @@ public sealed class GeneratedServerDispatcherTests
         var dispatcher = new IOPCItemIOServerDispatcher(impl);
         byte[] payload = WritePayload((ref NdrWriter writer) =>
         {
+            // [in] DWORD dwCount = 1 (sibling count for itemIds, emitted before
+            // the conformant array via [OpcEmitArrayCount]).
+            writer.WriteInt32(1);
             // string[] itemIds = ["Item.A"]
             writer.WriteInt32(1);
             writer.WriteUnicodeStringPtr("Item.A");

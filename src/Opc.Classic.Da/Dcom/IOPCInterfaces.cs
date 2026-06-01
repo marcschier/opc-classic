@@ -354,10 +354,18 @@ public partial interface IOPCItemIO
     /// <summary>
     /// <c>IOPCItemIO::Read</c> (opnum 3). Reads item values by item ID and max age.
     /// </summary>
+    /// <remarks>
+    /// IDL signature: <c>[in] DWORD dwCount, [in, size_is(dwCount)] LPCWSTR *pszItemIDs,
+    /// [in, size_is(dwCount)] DWORD *pdwMaxAge, ...</c>. The standalone
+    /// <c>dwCount</c> field is emitted before the conformant arrays via
+    /// <see cref="OpcEmitArrayCountAttribute"/> on <paramref name="itemIds"/>
+    /// (which also implicitly counts the parallel <paramref name="maxAges"/>
+    /// array, as per the size_is sharing pattern).
+    /// </remarks>
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
     Task ReadAsync(
-        string[] itemIds,
+        [OpcEmitArrayCount] string[] itemIds,
         int[] maxAges,
         out OpcVariant[] values,
         out ushort[] qualities,
@@ -368,8 +376,14 @@ public partial interface IOPCItemIO
     /// <summary>
     /// <c>IOPCItemIO::WriteVQT</c> (opnum 4). Writes value/quality/timestamp tuples by item ID.
     /// </summary>
+    /// <remarks>
+    /// IDL: <c>[in] DWORD dwCount, [in, size_is(dwCount)] LPCWSTR *pszItemIDs,
+    /// [in, size_is(dwCount)] OPCITEMVQT *pItemVQT</c>. The standalone
+    /// <c>dwCount</c> field is emitted before the arrays via
+    /// <see cref="OpcEmitArrayCountAttribute"/> on <paramref name="itemIds"/>.
+    /// </remarks>
     [OpcMethod(4)]
-    Task<int[]> WriteVqtAsync(string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
+    Task<int[]> WriteVqtAsync([OpcEmitArrayCount] string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).</summary>
