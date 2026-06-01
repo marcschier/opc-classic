@@ -59,11 +59,16 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
 
         ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
         {
-            writer.WriteConformantInt32Array(serverHandles);
-            writer.WriteUInt32((uint)values.Length);
+            // IOPCSyncIO::Write IDL: [in] DWORD dwCount, [in, size_is(dwCount)]
+            // OPCHANDLE *phServer, [in, size_is(dwCount)] VARIANT *pItemValues.
+            // Wire layout matches the generator's [OpcEmitArrayCount] +
+            // [OpcVariantElements] emission so dispatcher and client agree.
+            writer.WriteUInt32((uint)serverHandles.Length);   // dwCount sibling
+            writer.WriteConformantInt32Array(serverHandles);  // max_count + DWORDs
+            writer.WriteUInt32((uint)values.Length);          // max_count for VARIANT[]
             foreach (OpcVariant value in values)
             {
-                NdrVariantExtensions.WriteVariant(ref writer, value);
+                NdrVariantExtensions.WriteVariantElement(ref writer, value);
             }
         });
         NdrCallResult result = await _channel.InvokeAsync(

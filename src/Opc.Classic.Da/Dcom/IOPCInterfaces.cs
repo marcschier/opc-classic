@@ -535,7 +535,10 @@ public partial interface IOPCSyncIO
     /// <c>IOPCSyncIO::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(4)]
-    Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default);
+    Task<int[]> WriteAsync(
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcVariantElements] OpcVariant[] values,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCSyncIO2</c> — DA 3.0 max-age synchronous I/O (IID_IOPCSyncIO2).</summary>

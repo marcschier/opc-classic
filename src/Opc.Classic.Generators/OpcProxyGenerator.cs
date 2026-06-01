@@ -932,6 +932,16 @@ namespace Opc.Classic.Generators
             return;
         }
 
+        // [OpcVariantElements] on a request parameter: emit max_count + N
+        // per-element wireVARIANT bodies (MS-OAUT §2.2.29.2). Matches the
+        // wire format real DCOM peers expect for IDL signatures like
+        // [in, size_is(N)] VARIANT* pItemValues (IOPCSyncIO::Write).
+        if (parameter.VariantElements && IsVariantArrayMarshallingType(parameter.MarshallingType))
+        {
+            EmitProxyVariantElementsArrayWrite(sb, statementIndent, writerLocal, parameter.Name);
+            return;
+        }
+
         if (TryGetCodec(parameter.MarshallingType, method.DeclaringNamespace, out var codec))
         {
             if (codec.IsArray)
@@ -1049,6 +1059,18 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append("    foreach (var ").Append(itemLocal).Append(" in ").Append(parameterName).AppendLine(")");
         sb.Append(statementIndent).AppendLine("    {");
         sb.Append(statementIndent).Append("        ").Append(FormatWriteExpression(codec, writerLocal, itemLocal)).AppendLine(";");
+        sb.Append(statementIndent).AppendLine("    }");
+        sb.Append(statementIndent).AppendLine("}");
+    }
+
+    private static void EmitProxyVariantElementsArrayWrite(StringBuilder sb, string statementIndent, string writerLocal, string parameterName)
+    {
+        sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32((uint)(").Append(parameterName).AppendLine("?.Length ?? 0));");
+        sb.Append(statementIndent).Append("if (").Append(parameterName).AppendLine(" is not null)");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    foreach (var __opcV in ").Append(parameterName).AppendLine(")");
+        sb.Append(statementIndent).AppendLine("    {");
+        sb.Append(statementIndent).AppendLine("        global::Opc.Classic.Ndr.NdrVariantExtensions.WriteVariantElement(ref " + writerLocal + ", __opcV);");
         sb.Append(statementIndent).AppendLine("    }");
         sb.Append(statementIndent).AppendLine("}");
     }

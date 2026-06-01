@@ -255,6 +255,65 @@ def main() -> int:
         except Exception as ex:
             print(f"  browse failed: {ex}", flush=True)
 
+        banner("da.browse (Random — names only)")
+        try:
+            browse = client.call_tool("opcclassic.da.browse", {
+                "sessionId": session_id,
+                "itemId": "Random",
+                "browseFilter": "leaf",
+            })
+            if isinstance(browse, list):
+                print(f"  found {len(browse)} Random leaf items:", flush=True)
+                for b in browse[:5]:
+                    name = b.get('name', '')
+                    item_id = b.get('itemName', '')
+                    print(f"    {name:<28s}  itemId={item_id}", flush=True)
+            else:
+                print(f"  browse returned: {browse!r}", flush=True)
+        except Exception as ex:
+            print(f"  browse Random failed: {ex}", flush=True)
+
+        banner("da.add_group + add_items + write_sync + read_sync (Bucket Brigade)")
+        try:
+            grp = client.call_tool("opcclassic.da.add_group", {
+                "sessionId": session_id,
+                "name": "BB",
+                "active": True,
+                "updateRateMillis": 500,
+            })
+            group_handle = grp.get('serverHandle')
+            print(f"  group handle: {group_handle}", flush=True)
+
+            adds = client.call_tool("opcclassic.da.add_items", {
+                "sessionId": session_id,
+                "groupHandle": group_handle,
+                "items": [
+                    {"itemId": "Bucket Brigade.Int4", "clientHandle": 1},
+                    {"itemId": "Bucket Brigade.String", "clientHandle": 2},
+                ],
+            })
+            handles = [a.get('serverHandle') for a in adds]
+            print(f"  added handles: {handles}", flush=True)
+
+            write_results = client.call_tool("opcclassic.da.write_sync", {
+                "sessionId": session_id,
+                "groupHandle": group_handle,
+                "serverHandles": handles,
+                "values": [12345, "hello-from-managed"],
+            })
+            print(f"  write results: {write_results}", flush=True)
+
+            read_results = client.call_tool("opcclassic.da.read_sync", {
+                "sessionId": session_id,
+                "groupHandle": group_handle,
+                "serverHandles": handles,
+                "fromCache": False,
+            })
+            for r in read_results:
+                print(f"    read: {r}", flush=True)
+        except Exception as ex:
+            print(f"  group write/read failed: {ex}", flush=True)
+
         banner("da.disconnect")
         client.call_tool("opcclassic.da.disconnect", {"sessionId": session_id})
         print("Done. All Track Y NDR/MInterfacePointer paths exercised against the live server.", flush=True)

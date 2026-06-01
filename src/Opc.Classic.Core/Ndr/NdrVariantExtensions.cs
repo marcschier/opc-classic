@@ -150,8 +150,33 @@ public static class NdrVariantExtensions
             case VarType.VT_R8: writer.AlignTo(8); writer.WriteDouble((double)boxed!); return true;
             case VarType.VT_DATE: writer.AlignTo(8); writer.WriteDouble(((DateTime)boxed!).ToOADate()); return true;
             case VarType.VT_FILETIME: writer.AlignTo(8); writer.WriteFileTime((long)boxed!); return true;
-            case VarType.VT_BSTR: writer.AlignTo(4); WriteBstrBody(ref writer, (string?)boxed); return true;
+            case VarType.VT_BSTR: writer.AlignTo(4); WriteElementBstrBody(ref writer, (string?)boxed); return true;
             default: return false;
+        }
+    }
+
+    /// <summary>
+    /// Writes a BSTR in the canonical FLAGGED_WORD_BLOB wire layout used
+    /// inside VARIANT array elements (mirror of <c>ReadElementBstr</c>):
+    /// referent + max_count + fFlags + clSize + USHORT[clSize]. Distinct
+    /// from the legacy <c>NdrWriter.WriteBstr</c> which omits max_count
+    /// for loopback-only compatibility.
+    /// </summary>
+    private static void WriteElementBstrBody(ref NdrWriter writer, string? text)
+    {
+        if (text is null)
+        {
+            writer.WriteNullReferent();
+            return;
+        }
+        _ = writer.WriteReferentId();
+        uint clSize = unchecked((uint)text.Length);
+        writer.WriteUInt32(clSize);         // max_count (= clSize per spec)
+        writer.WriteUInt32(0u);             // fFlags (informational; 0 for our emit, server may use 8)
+        writer.WriteUInt32(clSize);         // clSize (char count, no nul)
+        for (int i = 0; i < text.Length; i++)
+        {
+            writer.WriteUInt16((ushort)text[i]);
         }
     }
 

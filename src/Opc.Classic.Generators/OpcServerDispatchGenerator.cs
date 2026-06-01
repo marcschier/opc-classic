@@ -563,6 +563,21 @@ namespace Opc.Classic.Generators
                     sb.Append(indent).Append("        var ").Append(parameter.Name).Append(" = ").Append(readerLocal).AppendLine(".ReadUnicodeString();");
                     continue;
                 }
+                // [OpcVariantElements] on a request parameter: read max_count
+                // + N per-element wireVARIANT bodies. Mirror of the proxy
+                // request encoder for IDL [in, size_is(N)] VARIANT*.
+                if (parameter.VariantElements && IsVariantArrayMarshallingType(parameter.MarshallingType))
+                {
+                    string countLocal = parameter.Name + "Count";
+                    string idxLocal = parameter.Name + "Idx";
+                    sb.Append(indent).Append("        int ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
+                    sb.Append(indent).Append("        var ").Append(parameter.Name).Append(" = new global::Opc.Classic.OpcVariant[").Append(countLocal).AppendLine("];");
+                    sb.Append(indent).Append("        for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
+                    sb.Append(indent).AppendLine("        {");
+                    sb.Append(indent).Append("            ").Append(parameter.Name).Append('[').Append(idxLocal).Append("] = global::Opc.Classic.Ndr.NdrVariantExtensions.ReadVariantElement(ref ").Append(readerLocal).AppendLine(");");
+                    sb.Append(indent).AppendLine("        }");
+                    continue;
+                }
                 EmitCodecReadLocal(sb, indent + "        ", readerLocal, method, parameter.DeclaredType, parameter.MarshallingType, parameter.IsOpcInterface, parameter.IsUniquePointer, parameter.UnderlyingValueType, parameter.Name);
             }
         }
