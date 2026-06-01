@@ -37,21 +37,41 @@ public static class NdrVariantExtensions
     public static void WriteVariantElement(this ref NdrWriter writer, OpcVariant value)
     {
         int startPos = writer.Position;
-        WriteVariantCore(ref writer, value, depth: 0);
+        WriteVariantHeader(ref writer, value.Type, ComputeVariantBodySize(value, depth: 0));
+        writer.WriteUInt32((uint)value.Type);
+        writer.WriteUInt32(0u);
+        WriteVariantBody(ref writer, value, depth: 0);
         int written = writer.Position - startPos;
         int padTo = (written + 7) & ~7;
         for (int i = written; i < padTo; i++) { writer.WriteByte(0); }
     }
 
-    /// <summary>
-    /// Decodes a single VARIANT element from an NDR conformant array (mirror
-    /// of <see cref="WriteVariantElement"/>): reads the standard wireVARIANT
-    /// and then advances past the trailing pad to the next 8-byte boundary.
-    /// </summary>
     public static OpcVariant ReadVariantElement(this ref NdrReader reader)
     {
         int startPos = reader.Position;
-        OpcVariant value = ReadVariantCore(ref reader, depth: 0);
+        reader.AlignTo(4);
+        _ = reader.ReadUInt32();
+        _ = reader.ReadUInt32();
+        ushort vtRaw = reader.ReadUInt16();
+        _ = reader.ReadUInt16();
+        _ = reader.ReadUInt16();
+        _ = reader.ReadUInt16();
+        _ = reader.ReadUInt32();
+        _ = reader.ReadUInt32();
+        var vt = (VarType)vtRaw;
+        OpcVariant value;
+        if (VarTypeMask.IsByRef(vt))
+        {
+            value = ReadByRefVariant(ref reader, vt, depth: 0);
+        }
+        else if (VarTypeMask.IsArray(vt))
+        {
+            value = ReadSafeArrayVariant(ref reader, vt);
+        }
+        else
+        {
+            value = ReadBody(ref reader, vt, depth: 0);
+        }
         int read = reader.Position - startPos;
         int padTo = (read + 7) & ~7;
         for (int i = read; i < padTo; i++) { _ = reader.ReadByte(); }
