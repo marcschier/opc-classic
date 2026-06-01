@@ -334,6 +334,61 @@ public sealed class DaClientTools
         return results;
     }
 
+    /// <summary>Synchronously reads OPC DA item values by item ID via IOPCItemIO (stateless, no group required).</summary>
+    [McpServerTool(Name = "opcclassic.da.read_items_by_id", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
+    [Description("Reads OPC DA item values by item ID using the DA 3.0 stateless IOPCItemIO interface — no AddGroup/AddItems required. Recommended for quick reads against well-known item IDs.")]
+    public async Task<IReadOnlyList<OpcItemValueDto>> ReadItemsById(
+        [Description("The connected OPC Classic sessionId.")]
+        string sessionId,
+        [Description("OPC DA item IDs to read (e.g. \"Random.Int1\", \"Random.Real8\").")]
+        string[] itemIds,
+        [Description("Per-item max-age in milliseconds. 0 = no cache constraint (server returns whatever is fresh).")]
+        int[]? maxAges = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(itemIds);
+        DaClientState client = GetDaClient(sessionId);
+
+        int[] effectiveMaxAges;
+        if (maxAges is null || maxAges.Length == 0)
+        {
+            effectiveMaxAges = new int[itemIds.Length];
+        }
+        else if (maxAges.Length == itemIds.Length)
+        {
+            effectiveMaxAges = maxAges;
+        }
+        else
+        {
+            throw new ArgumentException("maxAges must be empty or have the same length as itemIds.", nameof(maxAges));
+        }
+
+        await client.ItemIo.ReadAsync(
+            itemIds,
+            effectiveMaxAges,
+            out OpcVariant[] values,
+            out ushort[] qualities,
+            out long[] timestamps,
+            out int[] errors,
+            cancellationToken).ConfigureAwait(false);
+
+        var results = new List<OpcItemValueDto>(itemIds.Length);
+        for (int i = 0; i < itemIds.Length; i++)
+        {
+            OpcVariant value = i < values.Length ? values[i] : default;
+            ushort quality = i < qualities.Length ? qualities[i] : (ushort)0;
+            long timestamp = i < timestamps.Length ? timestamps[i] : 0L;
+            int error = i < errors.Length ? errors[i] : OpcResultId.Fail.Code;
+            var state = new OpcItemState(
+                ClientHandle: i + 1,
+                Timestamp: timestamp == 0L ? DateTimeOffset.UnixEpoch : DateTimeOffset.FromFileTime(timestamp),
+                Quality: new OpcQuality(quality),
+                Value: value);
+            results.Add(ToValueDto(itemIds[i], itemPath: null, serverHandle: null, state, error));
+        }
+        return results;
+    }
+
     /// <summary>Synchronously reads OPC DA item values by group server handle.</summary>
     [McpServerTool(Name = "opcclassic.da.read_sync", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = true)]
     [Description("Synchronously reads item values from an OPC DA group by server handles.")]
