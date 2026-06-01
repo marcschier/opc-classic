@@ -28,6 +28,18 @@ documenting the divergence — patches we apply locally belong in a
 separate `tools/coreComponents-patches/` folder so the snapshot
 remains a clean upstream mirror.
 
+### Local divergences from upstream
+
+The following deliberate patches diverge from upstream and must be
+re-applied after every `robocopy /MIR` re-sync. Each is tagged with
+the originating Track ID and documented in-place via comments.
+
+| File | Track | What changed |
+|------|-------|--------------|
+| `Source/Test/TestServer/COpcTestServer.h` | AB5 | Added `OPC_INTERFACE_ENTRY(IOPCBrowse)` and `OPC_INTERFACE_ENTRY(IOPCItemIO)` so the managed Opc.Classic client can exercise DA 3.0 against TestServer (the base class `COpcDaServer` implements both — upstream just doesn't expose them in TestServer's interface table). |
+| `Source/Test/TestServer/OpcTestServer.cpp` | AB5 | Added `OPC_CATEGORY_TABLE_ENTRY(..., CATID_OPCDAServer30, OPC_CATEGORY_DESCRIPTION_DA30)` for both the x64 and x86 entry points so OPCEnum / discovery tools list TestServer as DA 3.0-capable. |
+| `Source/Test/TestClient/OpcTestClient.cpp` | AB6 | Added `RunLifecycle()` + `ConnectAndExercise()` so the native client mirrors the managed `mcp_driver.py --testserver` flow (`AddGroup` → `AddItems(Test.Int32, Test.Float, Test.String)` → `SyncRead` → `SyncWrite Test.Int32=100` → verify → `RemoveItems` → `RemoveGroup`). TestServer + TestClient now form an in-tree symmetric loopback. |
+
 ## What's in here
 
 | Path | Purpose |

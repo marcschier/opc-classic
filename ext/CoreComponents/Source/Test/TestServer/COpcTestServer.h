@@ -55,6 +55,14 @@ class COpcTestServer :
         OPC_INTERFACE_ENTRY(IOPCServer)
         OPC_INTERFACE_ENTRY(IOPCBrowseServerAddressSpace)
         OPC_INTERFACE_ENTRY(IOPCItemProperties)
+        // Opc.Classic divergence (Track AB5): expose DA 3.0 interfaces so
+        // the managed Opc.Classic stack can exercise IOPCBrowse/IOPCItemIO
+        // against TestServer (the upstream COpcDaServer base class implements
+        // both; upstream COpcTestServer just doesn't list them here).
+        // Re-syncing with upstream OPC-Classic-CoreComponents requires
+        // re-applying this divergence — see ext/CoreComponents/VENDORED.md.
+        OPC_INTERFACE_ENTRY(IOPCBrowse)
+        OPC_INTERFACE_ENTRY(IOPCItemIO)
     OPC_END_INTERFACE_TABLE()
 
 public:
