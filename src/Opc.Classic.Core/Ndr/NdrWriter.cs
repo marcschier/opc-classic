@@ -402,6 +402,27 @@ public ref struct NdrWriter
         }
     }
 
+    /// <summary>
+    /// Writes a conformant array of Windows FILETIME values. Unlike Int64,
+    /// FILETIME is two consecutive 32-bit halves (low, high) per element with
+    /// 4-byte alignment — NOT 8-byte-aligned Int64. Used for IDL
+    /// <c>[size_is(N)] FILETIME *p</c> arrays in IOPCItemIO::Read,
+    /// IOPCSyncIO::Read, etc.
+    /// </summary>
+    public void WriteConformantFileTimeArray(ReadOnlySpan<long> values)
+    {
+        WriteConformanceHeader(values.Length);
+        EnsureCapacity(values.Length * 8);
+        for (int i = 0; i < values.Length; i++)
+        {
+            uint low = unchecked((uint)(values[i] & 0xFFFFFFFFu));
+            uint high = unchecked((uint)((values[i] >> 32) & 0xFFFFFFFFu));
+            BinaryPrimitives.WriteUInt32LittleEndian(_buffer.Slice(_position, 4), low);
+            BinaryPrimitives.WriteUInt32LittleEndian(_buffer.Slice(_position + 4, 4), high);
+            _position += 8;
+        }
+    }
+
     /// <summary>Writes a conformant array of Single (float) values.</summary>
     public void WriteConformantSingleArray(ReadOnlySpan<float> values)
     {

@@ -406,6 +406,27 @@ public ref struct NdrReader
         return result;
     }
 
+    /// <summary>
+    /// Reads a conformant array of Windows FILETIME values. Each element is
+    /// two consecutive 32-bit halves (low, high) with 4-byte alignment — the
+    /// element layout matches <see cref="ReadFileTime"/>, NOT 8-byte-aligned
+    /// Int64. Used for IDL <c>[out, size_is(N)] FILETIME *p</c> arrays.
+    /// </summary>
+    public long[] ReadConformantFileTimeArray()
+    {
+        int count = ReadBoundedConformanceCount(sizeof(long), "NDR conformant FILETIME array");
+        EnsureAvailable(count * sizeof(long));
+        var result = new long[count];
+        for (int i = 0; i < count; i++)
+        {
+            uint low = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position, 4));
+            uint high = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position + 4, 4));
+            result[i] = unchecked((long)(((ulong)high << 32) | low));
+            _position += 8;
+        }
+        return result;
+    }
+
     /// <summary>Reads a conformant array of Single (float) values.</summary>
     public float[] ReadConformantSingleArray()
     {

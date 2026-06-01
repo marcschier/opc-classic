@@ -377,7 +377,7 @@ public partial interface IOPCItemIO
         int[] maxAges,
         [OpcUniquePointer] out OpcVariant[] values,
         [OpcUniquePointer] out ushort[] qualities,
-        [OpcUniquePointer] out long[] timestamps,
+        [OpcUniquePointer, OpcFileTimeElements] out long[] timestamps,
         [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 

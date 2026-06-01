@@ -524,9 +524,14 @@ public sealed class IOPCMissingDaMethodRoundTripTests
                 Ensure(ReadInt32Array(ref reader)[0] == 0);
                 return WritePayload((ref NdrWriter writer) =>
                 {
+                    // Each [out] T** is unique-pointer-prefixed (referent + array).
+                    writer.WriteUInt32(0x00020000u);
                     WriteArray(ref writer, new[] { OpcVariant.FromInt32(12) }, NdrVariantExtensions.WriteVariant);
+                    writer.WriteUInt32(0x00020000u);
                     WriteUInt16Array(ref writer, 192);
+                    writer.WriteUInt32(0x00020000u);
                     WriteInt64Array(ref writer, 123456789L);
+                    writer.WriteUInt32(0x00020000u);
                     WriteInt32Array(ref writer, 0);
                 });
             }

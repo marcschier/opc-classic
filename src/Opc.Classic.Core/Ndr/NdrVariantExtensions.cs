@@ -289,12 +289,16 @@ public static class NdrVariantExtensions
         ThrowIfDepthExceeded(depth);
 
         reader.AlignTo(4);
+        int headerStart = reader.Position;
         _ = reader.ReadUInt32();
         uint rpcReserved = reader.ReadUInt32();
         if (rpcReserved != 0u)
         {
             throw new InvalidDataException(
-                $"NDR VARIANT rpcReserved must be 0 but was {rpcReserved}.");
+                $"NDR VARIANT rpcReserved must be 0 but was 0x{rpcReserved:X8} (decimal {rpcReserved}) " +
+                $"at buffer offset {headerStart + 4}. The byte sequence likely reflects misalignment " +
+                $"(e.g. a missing referent prefix or unexpected ORPCTHAT extension) rather than a " +
+                $"genuine VARIANT — compare a Wireshark capture of an equivalent Windows DCOM call.");
         }
         ushort vtRaw = reader.ReadUInt16();
         _ = reader.ReadUInt16();

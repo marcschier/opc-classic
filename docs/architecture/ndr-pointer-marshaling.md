@@ -126,6 +126,20 @@ work in `plan.md` under Track Y:
   fields. Affects `IOPCBrowse::Browse`'s `[out, size_is(,*pdwCount)]
   OPCBROWSEELEMENT** ppBrowseElements`.
 
+- **MS-OAUT `_wireVARIANT` array element envelope.** Wire dump of
+  `IOPCItemIO::Read` against Matrikon shows each VARIANT array element
+  is 32 bytes (e.g. for VT_I4 the visible layout is
+  `[4 bytes 0x72657355][4 bytes 0][4 bytes vt=3][4 bytes 0][4 bytes 0x10]
+  [4 bytes Int32 value][4 bytes 0x10][4 bytes 0x2E]`). This does not
+  match our top-level `_wireVARIANT` layout
+  (`clSize + rpcReserved + vt + 3xUSHORT reserved + body`). MIDL emits a
+  different envelope (likely `BRECORD` or NDR2 union with discriminator)
+  for VARIANTs in arrays vs top-level. Needs byte-exact alignment with
+  MIDL `/server stub`-generated output to fully decode. The diagnostic
+  helper `OPC_CLASSIC_DCOM_WIRE_DUMP=1` env var on `DcomCallChannel`
+  enables hex dump of request/response bytes for further reverse
+  engineering against captured Windows DCOM traces.
+
 - **Explicit NDR alignment in the emitter.** Today, every scalar codec
   call relies on the underlying `NdrWriter`/`NdrReader` to maintain
   alignment internally. The generator does not yet emit
