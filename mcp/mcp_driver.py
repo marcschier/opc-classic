@@ -293,20 +293,24 @@ def main() -> int:
                 "sessionId": session_id,
                 "name": "BB",
                 "active": True,
-                "updateRateMillis": 500,
+                "updateRateMs": 500,
             })
-            group_handle = grp.get('serverHandle')
+            # AddGroup returns OpcGroupStateDto whose handle field is `serverGroupHandle`.
+            group_handle = grp.get('serverGroupHandle') if isinstance(grp, dict) else None
             print(f"  group handle: {group_handle}", flush=True)
+            if group_handle is None:
+                print(f"  add_group response: {grp!r}", flush=True)
+                raise RuntimeError("AddGroup did not return a serverGroupHandle.")
 
+            # AddItems takes itemIds: string[] plus optional clientHandles: int[].
+            item_ids = ["Bucket Brigade.Int4", "Bucket Brigade.String"]
             adds = client.call_tool("opcclassic.da.add_items", {
                 "sessionId": session_id,
                 "groupHandle": group_handle,
-                "items": [
-                    {"itemId": "Bucket Brigade.Int4", "clientHandle": 1},
-                    {"itemId": "Bucket Brigade.String", "clientHandle": 2},
-                ],
+                "itemIds": item_ids,
+                "clientHandles": [1, 2],
             })
-            handles = [a.get('serverHandle') for a in adds]
+            handles = [a.get('serverHandle') for a in adds if isinstance(a, dict)]
             print(f"  added handles: {handles}", flush=True)
 
             write_results = client.call_tool("opcclassic.da.write_sync", {
