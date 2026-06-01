@@ -69,6 +69,7 @@ namespace Opc.Classic.Generators
             { "global::System.Boolean", new CodecEmitter("{Writer}.WriteInt32({Param} ? -1 : 0)", "({Reader}.ReadInt32() != 0)") },
             { "global::System.Guid", new CodecEmitter("{Writer}.WriteGuid({Param})", "{Reader}.ReadGuid()") },
             { "global::Opc.Classic.Dcom.IOpcInterfaceRef", new CodecEmitter("global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Write(ref {Writer}, {Param})", "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref {Reader})") },
+            { "global::Opc.Classic.Dcom.OpcRemQIResult", StaticCodec("global::Opc.Classic.Dcom.NdrRemQIResultCodec") },
             { "global::System.String", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
             { "global::System.String?", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()") },
             { "string", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
@@ -645,6 +646,17 @@ namespace Opc.Classic.Generators
         {
             if (codec.IsArray)
             {
+                // [out] T** unique-pointer-prefixed conformant array. Emit
+                // referent + (max_count + elements) so the proxy can decode it.
+                if (isUniquePointer)
+                {
+                    sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32(").Append(valueExpression).AppendLine(" is null ? 0u : 0x00020000u);");
+                    sb.Append(statementIndent).Append("if (").Append(valueExpression).AppendLine(" is not null)");
+                    sb.Append(statementIndent).AppendLine("{");
+                    EmitArrayCodecWrite(sb, statementIndent + "    ", writerLocal, valueExpression, codec, method.ParameterNames);
+                    sb.Append(statementIndent).AppendLine("}");
+                    return;
+                }
                 EmitArrayCodecWrite(sb, statementIndent, writerLocal, valueExpression, codec, method.ParameterNames);
                 return;
             }
@@ -710,6 +722,12 @@ namespace Opc.Classic.Generators
         {
             if (codec.IsArray)
             {
+                // [in] T** unique-pointer-prefixed conformant array. Skip the
+                // 4-byte referent before reading the array header + elements.
+                if (isUniquePointer)
+                {
+                    sb.Append(statementIndent).Append("_ = ").Append(readerLocal).AppendLine(".ReadUInt32();");
+                }
                 EmitArrayCodecReadLocal(sb, statementIndent, readerLocal, codec, method.ParameterNames, targetLocal);
                 return;
             }

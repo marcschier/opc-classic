@@ -87,6 +87,7 @@ namespace Opc.Classic.Generators
             { "global::System.Boolean", new CodecEmitter("{Writer}.WriteInt32({Param} ? -1 : 0)", "({Reader}.ReadInt32() != 0)") },
             { "global::System.Guid", new CodecEmitter("{Writer}.WriteGuid({Param})", "{Reader}.ReadGuid()") },
             { "global::Opc.Classic.Dcom.IOpcInterfaceRef", new CodecEmitter("global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Write(ref {Writer}, {Param})", "global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref {Reader})") },
+            { "global::Opc.Classic.Dcom.OpcRemQIResult", StaticCodec("global::Opc.Classic.Dcom.NdrRemQIResultCodec") },
             { "global::System.String", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
             { "global::System.String?", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
             { "string", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
@@ -774,49 +775,24 @@ namespace Opc.Classic.Generators
     {
         string statementIndent = indent + "                ";
 
-        // NDR unique pointer (DCE 1.1 §14.3.10): emit 4-byte referent ID before the
-        // value. The 0x00020000 referent matches what Windows DCOM emits for non-null
-        // arguments; 0 indicates a NULL pointer.
-        //   - Nullable<T> parameters: HasValue determines referent/null and gates the
-        //     inner value write.
-        //   - Non-nullable parameters with [OpcUniquePointer]: always present (no null
-        //     state representable in C#), emit referent + value unconditionally.
-        if (parameter.IsUniquePointer)
+        if (parameter.IsUniquePointer && TryEmitUniquePointerWrite(sb, statementIndent, writerLocal, parameter, method))
         {
-            // [in, unique, iid_is(riid)] LPUNKNOWN — wrap the OBJREF in
-            // MInterfacePointer when sending an interface pointer over the wire.
-            if (string.Equals(parameter.MarshallingType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
-            {
-                sb.Append(statementIndent).Append("global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Write(ref ").Append(writerLocal).Append(", ").Append(parameter.Name).AppendLine(");");
-                return;
-            }
-
-            string codecKey = parameter.UnderlyingValueType ?? parameter.MarshallingType;
-            if (TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) && !underlyingCodec.IsArray)
-            {
-                if (parameter.UnderlyingValueType is not null)
-                {
-                    // Nullable<T> shape: HasValue gates the value write.
-                    sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32(").Append(parameter.Name).AppendLine(".HasValue ? 0x00020000u : 0u);");
-                    sb.Append(statementIndent).Append("if (").Append(parameter.Name).AppendLine(".HasValue)");
-                    sb.Append(statementIndent).AppendLine("{");
-                    sb.Append(statementIndent).Append("    ").Append(FormatWriteExpression(underlyingCodec, writerLocal, parameter.Name + ".Value")).AppendLine(";");
-                    sb.Append(statementIndent).AppendLine("}");
-                }
-                else
-                {
-                    // Non-nullable with [OpcUniquePointer]: always present on the wire.
-                    sb.Append(statementIndent).Append(writerLocal).AppendLine(".WriteUInt32(0x00020000u);");
-                    sb.Append(statementIndent).Append(FormatWriteExpression(underlyingCodec, writerLocal, parameter.Name)).AppendLine(";");
-                }
-                return;
-            }
+            return;
         }
 
         if (TryGetCodec(parameter.MarshallingType, method.DeclaringNamespace, out var codec))
         {
             if (codec.IsArray)
             {
+                if (parameter.IsUniquePointer)
+                {
+                    sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32(").Append(parameter.Name).AppendLine(" is null ? 0u : 0x00020000u);");
+                    sb.Append(statementIndent).Append("if (").Append(parameter.Name).AppendLine(" is not null)");
+                    sb.Append(statementIndent).AppendLine("{");
+                    EmitArrayCodecWrite(sb, statementIndent + "    ", writerLocal, parameter.Name, codec, method.ParameterNames);
+                    sb.Append(statementIndent).AppendLine("}");
+                    return;
+                }
                 EmitArrayCodecWrite(sb, statementIndent, writerLocal, parameter.Name, codec, method.ParameterNames);
                 return;
             }
@@ -826,6 +802,50 @@ namespace Opc.Classic.Generators
         }
 
         sb.Append(statementIndent).Append(writerLocal).AppendLine(".WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
+    }
+
+    /// <summary>
+    /// Emits the NDR unique-pointer wire prefix + value for a parameter tagged
+    /// with [OpcUniquePointer] (per DCE 1.1 §14.3.10). Handles three shapes:
+    ///   - IOpcInterfaceRef → MInterfacePointer wrapping (MS-DCOM §2.2.1.10).
+    ///   - Nullable&lt;T&gt; → HasValue gates the value write.
+    ///   - non-nullable scalar with explicit [OpcUniquePointer] → always present.
+    /// Returns true if it handled the parameter; false if no matching codec
+    /// shape was found (caller falls back to the array/inline path).
+    /// </summary>
+    private static bool TryEmitUniquePointerWrite(
+        StringBuilder sb,
+        string statementIndent,
+        string writerLocal,
+        ParameterModel parameter,
+        MethodModel method)
+    {
+        if (string.Equals(parameter.MarshallingType, "global::Opc.Classic.Dcom.IOpcInterfaceRef", System.StringComparison.Ordinal))
+        {
+            sb.Append(statementIndent).Append("global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Write(ref ").Append(writerLocal).Append(", ").Append(parameter.Name).AppendLine(");");
+            return true;
+        }
+
+        string codecKey = parameter.UnderlyingValueType ?? parameter.MarshallingType;
+        if (!TryGetCodec(codecKey, method.DeclaringNamespace, out var underlyingCodec) || underlyingCodec.IsArray)
+        {
+            return false;
+        }
+
+        if (parameter.UnderlyingValueType is not null)
+        {
+            sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32(").Append(parameter.Name).AppendLine(".HasValue ? 0x00020000u : 0u);");
+            sb.Append(statementIndent).Append("if (").Append(parameter.Name).AppendLine(".HasValue)");
+            sb.Append(statementIndent).AppendLine("{");
+            sb.Append(statementIndent).Append("    ").Append(FormatWriteExpression(underlyingCodec, writerLocal, parameter.Name + ".Value")).AppendLine(";");
+            sb.Append(statementIndent).AppendLine("}");
+        }
+        else
+        {
+            sb.Append(statementIndent).Append(writerLocal).AppendLine(".WriteUInt32(0x00020000u);");
+            sb.Append(statementIndent).Append(FormatWriteExpression(underlyingCodec, writerLocal, parameter.Name)).AppendLine(";");
+        }
+        return true;
     }
 
     private static void EmitArrayCodecWrite(
@@ -931,6 +951,14 @@ namespace Opc.Classic.Generators
         {
             if (codec.IsArray)
             {
+                // [out] T** with size_is(,cIids) — unique pointer to a conformant
+                // array. Wire is [referent][max_count][elements...]. The array
+                // helper handles max_count + elements; emit the referent skip
+                // here when the parameter/return carries [OpcUniquePointer].
+                if (isUniquePointer)
+                {
+                    sb.Append(statementIndent).Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
+                }
                 EmitArrayCodecReadLocal(
                     sb,
                     statementIndent,
