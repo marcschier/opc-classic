@@ -42,21 +42,24 @@ public sealed class OpcMInterfacePointerCodecWireFixtures
         IOpcInterfaceRef iref = BuildFixture();
         byte[] wire = WriteOne((ref NdrWriter w) => OpcMInterfacePointerCodec.Write(ref w, iref));
 
-        // [0..3]   referent_id     = 0x00020000 (matches Windows DCOM convention).
-        // [4..7]   ulCntData       = length of OBJREF payload (Y9 sentinel: non-zero).
-        // [8..11]  OBJREF.MEOW     = 0x574F454D ("MEOW" little-endian).
-        // [12..15] OBJREF.objref_type = 0x00000001 (OBJREF_STANDARD).
-        // [16..31] OBJREF.iid      = SampleIid (in NDR layout).
-        // [32..]   OBJREF.flags + publicRefs + oxid + oid + ipid + DUALSTRINGARRAY.
+        // [0..3]    referent_id         = 0x00020000 (matches Windows DCOM convention).
+        // [4..7]    max_count           = length of OBJREF payload (NDR conformance header).
+        // [8..11]   ulCntData           = length of OBJREF payload (struct field).
+        // [12..15]  OBJREF.MEOW         = 0x574F454D ("MEOW" little-endian).
+        // [16..19]  OBJREF.objref_type  = 0x00000001 (OBJREF_STANDARD).
+        // [20..35]  OBJREF.iid          = SampleIid (in NDR layout).
+        // [36..]    OBJREF.flags + publicRefs + oxid + oid + ipid + DUALSTRINGARRAY.
         await Assert.That(WireAssert.ReadUInt32At(wire, 0)).IsEqualTo(0x00020000u);
-        uint cbData = WireAssert.ReadUInt32At(wire, 4);
+        uint maxCount = WireAssert.ReadUInt32At(wire, 4);
+        uint cbData = WireAssert.ReadUInt32At(wire, 8);
+        await Assert.That(maxCount).IsEqualTo(cbData);
         await Assert.That(cbData).IsGreaterThan(0u);
-        // Total wire length = 4 (referent) + 4 (cbData) + cbData bytes of OBJREF.
-        await Assert.That(wire.Length).IsEqualTo(8 + (int)cbData);
+        // Total wire length = 4 (referent) + 4 (max_count) + 4 (ulCntData) + cbData bytes of OBJREF.
+        await Assert.That(wire.Length).IsEqualTo(12 + (int)cbData);
         // MEOW magic at start of OBJREF body.
-        await Assert.That(WireAssert.ReadUInt32At(wire, 8)).IsEqualTo(0x574F454Du);
+        await Assert.That(WireAssert.ReadUInt32At(wire, 12)).IsEqualTo(0x574F454Du);
         // OBJREF_STANDARD discriminator.
-        await Assert.That(WireAssert.ReadUInt32At(wire, 12)).IsEqualTo(0x00000001u);
+        await Assert.That(WireAssert.ReadUInt32At(wire, 16)).IsEqualTo(0x00000001u);
     }
 
     [Test]

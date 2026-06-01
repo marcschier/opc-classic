@@ -72,47 +72,45 @@ public sealed class IOPCServerAddGroupWireFixtures
 
         ReadOnlySpan<byte> wire = captured.ToArray();
 
-        // szName = "G\0" → unique-string at [0..]:
-        //   referent (0x00020000) + max_count(2) + offset(0) + actual_count(2) + WCHAR[2] ('G'\0)
+        // szName = "G\0" → bare conformant-varying string at [0..]
+        //   (per DCE 1.1 §4.2.2.7 top-level [ref] LPCWSTR has no referent prefix):
+        //   max_count(2) + offset(0) + actual_count(2) + WCHAR[2] ('G'\0)
         var wireBytes = captured.ToArray();
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 0)).IsEqualTo(0x00020000u);
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 4)).IsEqualTo(2u);   // max_count
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 8)).IsEqualTo(0u);   // offset
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 12)).IsEqualTo(2u);  // actual_count
-        await Assert.That(wireBytes[16]).IsEqualTo((byte)'G');
-        await Assert.That(wireBytes[17]).IsEqualTo((byte)0);
-        await Assert.That(wireBytes[18]).IsEqualTo((byte)0);
-        await Assert.That(wireBytes[19]).IsEqualTo((byte)0);
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 0)).IsEqualTo(2u);   // max_count
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 4)).IsEqualTo(0u);   // offset
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 8)).IsEqualTo(2u);   // actual_count
+        await Assert.That(wireBytes[12]).IsEqualTo((byte)'G');
+        await Assert.That(wireBytes[13]).IsEqualTo((byte)0);
+        await Assert.That(wireBytes[14]).IsEqualTo((byte)0);
+        await Assert.That(wireBytes[15]).IsEqualTo((byte)0);
 
-        // bActive=true → -1 at [20..23] (current codec emits VARIANT_BOOL TRUE = 0xFFFFFFFF).
-        // NOTE: Per Win32 convention BOOL TRUE should be 1; our shared bool codec
-        // emits -1 to remain VARIANT_BOOL-compatible. Matrikon accepts any non-zero
-        // value but a stricter peer might reject -1 for BOOL. Tracked for separate
-        // codec audit; pinned here so a future fix has to update this fixture.
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 20)).IsEqualTo(0xFFFFFFFFu);
-        // dwRequestedUpdateRate=1000 → 0x3E8 at [24..27]
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 24)).IsEqualTo(1000u);
-        // hClientGroup=1 → [28..31]
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 28)).IsEqualTo(1u);
+        // bActive=true → -1 at [16..19] (current codec emits VARIANT_BOOL TRUE = 0xFFFFFFFF).
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 16)).IsEqualTo(0xFFFFFFFFu);
+        // dwRequestedUpdateRate=1000 → 0x3E8 at [20..23]
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 20)).IsEqualTo(1000u);
+        // hClientGroup=1 → [24..27]
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 24)).IsEqualTo(1u);
 
         // pTimeBias is [OpcUniquePointer] non-nullable Int32 → referent + value.
-        // Referent IDs auto-increment per NdrWriter (DCE 1.1 §14.3.10) — this
-        // is the 2nd unique referent in the request (after szName at index 0,
-        // counter advances by 4 each non-null pointer).
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 32)).IsEqualTo(0x00020004u);
+        // Referent IDs auto-increment per NdrWriter (DCE 1.1 §14.3.10) — szName
+        // no longer takes a referent slot ([OpcRefString]), so pTimeBias is the
+        // 1st unique referent.
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 28)).IsEqualTo(0x00020000u);
         // -300 = 0xFFFFFED4 as Int32 little-endian.
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 36)).IsEqualTo(0xFFFFFED4u);
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 32)).IsEqualTo(0xFFFFFED4u);
 
         // pPercentDeadband is [OpcUniquePointer] non-nullable Single → referent + value.
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 40)).IsEqualTo(0x00020008u);
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 36)).IsEqualTo(0x00020004u);
         // 1.5f IEEE-754 single = 0x3FC00000.
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 44)).IsEqualTo(0x3FC00000u);
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 40)).IsEqualTo(0x3FC00000u);
 
         // dwLCID=0x0409 → [48..51]
-        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 48)).IsEqualTo(0x0409u);
+        // dwLCID=0x0409 → [44..47]
+        await Assert.That(WireAssert.ReadUInt32At(wireBytes, 44)).IsEqualTo(0x0409u);
 
-        // REFIID at [52..67] (16-byte Guid).
-        await Assert.That(wireBytes.Length).IsEqualTo(68);
+        // REFIID at [48..63] (16-byte Guid). Total request = 64 bytes (was 68 before
+        // [OpcRefString] removed szName's 4-byte referent slot).
+        await Assert.That(wireBytes.Length).IsEqualTo(64);
     }
 
     [Test]

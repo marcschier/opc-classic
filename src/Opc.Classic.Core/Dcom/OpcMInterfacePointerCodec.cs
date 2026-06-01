@@ -46,18 +46,33 @@ public static class OpcMInterfacePointerCodec
             return null;
         }
 
-        uint cbData = reader.ReadUInt32();
+        // MInterfacePointer is a CONFORMANT struct (MS-DCOM §2.2.1.10):
+        //     ULONG ulCntData;
+        //     [size_is(ulCntData), ref] BYTE abData[];
+        // NDR encoding adds the max_count DWORD before the struct fields.
+        // Wire: max_count + ulCntData + abData[ulCntData]. Both counters
+        // carry the OBJREF byte length; only the second (ulCntData) is the
+        // actual struct field — the first is the conformance header.
+        _ = reader.ReadUInt32();           // max_count (= ulCntData per spec)
+        uint cbData = reader.ReadUInt32(); // ulCntData
         if (cbData == 0u)
         {
             return null;
         }
 
-        // The OBJREF starts immediately after ulCntData per MS-DCOM §2.2.1.10.
-        // OpcInterfaceRefCodec consumes the OBJREF in full; cbData is informational
-        // for buffer sizing on the wire and is not re-validated here because the
-        // OBJREF codec itself bounds-checks against the remaining payload.
-        _ = cbData;
-        return OpcInterfaceRefCodec.Read(ref reader);
+        // The OBJREF is opaque bytes per MS-DCOM §2.2.1.10 — abData[] is a
+        // raw byte array, NOT a sub-stream that inherits the outer NDR
+        // alignment. Decode it through a fresh NdrReader so embedded
+        // ReadUInt64/Guid alignments are computed relative to the OBJREF's
+        // own offset 0 (matching how Write composes the OBJREF via an inner
+        // NdrWriter starting at its own offset 0). Without this isolation,
+        // 8-byte aligned reads (Oxid/Oid) drift when MInterfacePointer
+        // happens to land at a non-8-aligned outer offset (e.g. directly
+        // after the 12-byte referent+max_count+cbData header at outer
+        // offset 20).
+        ReadOnlySpan<byte> objrefBytes = reader.ReadRawBytes((int)cbData);
+        var innerReader = new NdrReader(objrefBytes);
+        return OpcInterfaceRefCodec.Read(ref innerReader);
     }
 
     /// <summary>
@@ -85,6 +100,7 @@ public static class OpcMInterfacePointerCodec
             int objrefLength = innerWriter.Position;
 
             writer.WriteUInt32(0x00020000u);            // referent
+            writer.WriteUInt32((uint)objrefLength);     // max_count (conformant struct)
             writer.WriteUInt32((uint)objrefLength);     // ulCntData
             writer.WriteRawBytes(scratch.AsSpan(0, objrefLength));
         }

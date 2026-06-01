@@ -47,7 +47,7 @@ public partial interface IOPCServer
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
     Task AddGroupAsync(
-        string name,
+        [OpcRefString] string name,
         bool active,
         int requestedUpdateRate,
         int clientGroupHandle,

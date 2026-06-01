@@ -388,7 +388,10 @@ internal sealed class DaEndToEndPipeline
         if (opnum == IOPCServer.Opnums.AddGroupAsync && result.IsSuccess)
         {
             var requestReader = new NdrReader(requestPayload.Span);
-            string name = requestReader.ReadUnicodeStringPtr() ?? "EndToEnd";
+            // [OpcRefString] on AddGroup.name → bare conformant-varying
+            // string (no referent prefix) per DCE 1.1 §4.2.2.7 top-level
+            // [ref] LPCWSTR semantics.
+            string name = requestReader.ReadUnicodeString();
             bool active = requestReader.ReadInt32() != 0;
             int requestedUpdateRate = requestReader.ReadInt32();
             int clientHandle = requestReader.ReadInt32();
