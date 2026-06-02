@@ -59,7 +59,7 @@ Fix surface: extend DcomCallChannel to: (a) precompute the full IID set for the 
 
 ### Issue B: TestServer activation fails (CO_E_SERVER_EXEC_FAILURE)
 
-Locally built TestServer EXE registered via tools/register-testserver.ps1 fails DCOM SCM activation with HRESULT 0x80080005. DCOM event log 10010: "server did not register with DCOM within the required timeout". Diagnosed extensively in prior session - root cause is that DCOM SCM in modern Windows requires the proxy/stub DLLs (opccomn_ps.dll, opcproxy.dll) to be in %SystemRoot%\System32 (provided by the OPC Foundation MSI), not just regsvr32-ed from a user-writable directory. Documented in docs/interop/testserver.md as the canonical install path.
+This probe was captured before Track AD: locally built TestServer EXE activation failed with HRESULT 0x80080005 and DCOM event log 10010 ("server did not register with DCOM within the required timeout") because the ad-hoc registration path only wrote HKLM entries. `tools/register-testserver.ps1` now performs the no-MSI setup that DCOM SCM needs: copy `opccomn_ps.dll` and `opcproxy.dll` to `%SystemRoot%\System32`, register those copies with native `regsvr32.exe`, and run `OpcTestServer_x64.exe /regserver` from the System32 working directory. Re-run the probe after elevated registration to refresh this report.
 
 ### Issue C: OPCEnum activation fails (rpc_s_access_denied)
 

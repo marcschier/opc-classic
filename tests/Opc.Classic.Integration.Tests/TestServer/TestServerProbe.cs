@@ -33,7 +33,7 @@ internal static class TestServerProbe
         if (!string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_LIVE_TESTSERVER"), "1", StringComparison.Ordinal))
         {
             reason = "Set OPC_CLASSIC_LIVE_TESTSERVER=1 to opt into live TestServer activation tests (default off because " +
-                     "DCOM SCM activation requires MSI-installed proxy/stub DLLs — see docs/interop/testserver.md).";
+                     "DCOM SCM activation requires elevated TestServer and proxy/stub registration — see docs/interop/testserver.md).";
             return true;
         }
 

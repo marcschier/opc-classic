@@ -88,7 +88,7 @@ artifacts as the native build to the `out/` directory.
 After building, you have two options to register the TestServer
 with DCOM so the managed Opc.Classic client can activate it:
 
-### Option A — full MSI install (recommended for full lifecycle testing)
+### Option A — full MSI install (canonical Core Components install)
 
 `ext\CoreComponents\build.ps1` (or option 3 above) produces an MSI
 under `out\x64\`. Install it:
@@ -97,30 +97,60 @@ under `out\x64\`. Install it:
 msiexec /i ext\CoreComponents\out\x64\OpcClassicCoreComponents-x64-*.msi /qn
 ```
 
-This registers OpcEnum, the proxy/stub DLLs system-wide (into
-`%SystemRoot%\System32`), and both TestServer flavors. The x64 MSI
-bundles all x86 components — only one installer is required on
-64-bit systems.
+This registers OpcEnum, the proxy/stub DLLs, the x64 category manager,
+and both TestServer flavors. Use this path when validating OpcEnum,
+discovery, or mixed x86/x64 installs.
 
-### Option B — `tools\register-testserver.ps1` (ad-hoc, no MSI)
+### Option B — `tools\register-testserver.ps1` (local x64, no MSI)
 
 ```powershell
-# From an ELEVATED PowerShell window:
+# From an ELEVATED 64-bit PowerShell window:
 .\tools\register-testserver.ps1
 ```
 
-Writes the minimum HKLM entries (CLSID + LocalServer32 + ProgID +
-Implemented Categories for DA 1.0 + DA 2.0) to activate the locally
-built EXE. Defaults to looking for the EXE under
+The script performs the no-MSI setup needed for x64 DCOM activation:
+
+1. Copies `opccomn_ps.dll` and `opcproxy.dll` from the build output to
+   `%SystemRoot%\System32`.
+2. Registers those System32 copies with the native `regsvr32.exe`.
+3. Runs `OpcTestServer_x64.exe /regserver` with `%SystemRoot%\System32`
+   as the working directory.
+4. Writes compatibility HKLM entries (CLSID + LocalServer32 + ProgIDs +
+   AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
+
+Defaults to looking for the EXE and sibling proxy/stub DLLs under
 `ext\CoreComponents\build\x64\Release\`; pass `-ExePath` to override.
 
-> **Note**: Option B does **not** install the proxy/stub DLLs
-> system-wide. DCOM SCM may fail to launch the TestServer with
-> `CO_E_SERVER_EXEC_FAILURE` (0x80080005) until `opccomn_ps.dll` and
-> `opcproxy.dll` are findable on the LoadLibrary search path.
-> Prefer Option A for repeatable interop testing.
+To remove the TestServer entries and the System32 proxy/stub DLLs
+copied by this script: `.\tools\register-testserver.ps1 -Unregister`.
+Missing files are skipped; mismatched files without this script's install
+marker are left in place to avoid removing an unrelated MSI install.
 
-To remove: `.\tools\register-testserver.ps1 -Unregister`.
+Validate from a fresh elevated 64-bit PowerShell, then probe from a
+non-elevated shell:
+
+```powershell
+# Elevated
+.\tools\build-testserver.ps1
+.\tools\register-testserver.ps1
+Test-Path "$env:SystemRoot\System32\opccomn_ps.dll"
+Test-Path "$env:SystemRoot\System32\opcproxy.dll"
+
+# Non-elevated
+python tools\probe_servers.py --da-clsid F8582CF9-88FB-11DA-A5ED-0060B0692061 --request-timeout 30 > .\testsvr.json
+python tools\probe_report.py .\testsvr.json | Select-Object -First 30
+```
+
+Expected probe results: `opcclassic.da.connect` succeeds and
+`opcclassic.da.get_status` reports `Running`.
+
+If `opcclassic.da.connect` times out and the System event log contains
+DistributedCOM event 10010 (`The server {F8582CF9-88FB-11DA-A5ED-0060B0692061}
+did not register with DCOM within the required timeout.`), first verify
+that the elevated registration actually completed and that both DLLs are
+present in `%SystemRoot%\System32`. If an elevation prompt was canceled
+(or the script was run from non-elevated PowerShell), the HKLM entries may
+exist while the required System32 proxy/stub DLLs are still missing.
 
 ### DCOM ACL
 
