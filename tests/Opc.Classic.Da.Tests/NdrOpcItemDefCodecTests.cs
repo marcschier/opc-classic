@@ -100,7 +100,7 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
-    public async Task ActiveTrue_EmitsWin32BoolMinusOne_OnWire()
+    public async Task ActiveTrue_EmitsWin32BoolOne_OnWire()
     {
         var input = new OpcItemDef(
             AccessPath: string.Empty,
@@ -110,9 +110,11 @@ public sealed class NdrOpcItemDefCodecTests
             Blob: Array.Empty<byte>(),
             RequestedDataType: VarType.VT_I4);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcItemDefCodec.Write(ref w, input), capacity: 256);
-        // Find the bActive Int32 — it's after two LPWSTRs (referent + string body).
-        // Simplest verification: round-trip should preserve the bool correctly.
-        await Assert.That(ReadOne(bytes).Active).IsTrue();
+        var reader = new NdrReader(bytes);
+        _ = reader.ReadUnicodeStringPtr();
+        _ = reader.ReadUnicodeStringPtr();
+
+        await Assert.That(reader.ReadInt32()).IsEqualTo(1);
     }
 
     [Test]

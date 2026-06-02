@@ -18,7 +18,7 @@ namespace Opc.Classic.Da.Ndr;
 /// <code>
 ///     LPWSTR   szAccessPath           - unique-pointer LPWSTR
 ///     LPWSTR   szItemID               - unique-pointer LPWSTR
-///     INT32    bActive                - Win32 BOOL (-1 = TRUE, 0 = FALSE)
+///     INT32    bActive                - Win32 BOOL (1 = TRUE, 0 = FALSE)
 ///     UINT32   hClient
 ///     UINT32   dwBlobSize             - conformance count for blob
 ///     BYTE[dwBlobSize] pBlob

@@ -170,10 +170,11 @@ public sealed class IOPCAdditionalDaProxyTests
             0);
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
         {
+            writer.WriteUniquePointerReferent(true);
             writer.WriteUInt32(1);
             writer.WriteInt32(0);
             writer.WriteUInt32(0);
-            writer.WriteUInt32(14);
+            writer.WriteUniquePointerReferent(true);
             writer.WriteUInt32(0);
             writer.WriteUInt32(1);
             NdrOpcItemPropertyCodec.Write(ref writer, property);
