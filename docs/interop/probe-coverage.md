@@ -76,3 +76,17 @@ Server-object level interfaces work end-to-end: connect, get_status, browse, rea
 Group-object level interfaces (add_items, read_sync, write_sync, subscribe, get_properties) require AlterContext for new IIDs; Matrikon rejects with ABSTRACT_SYNTAX_NOT_SUPPORTED. Fix requires Issue A above.
 
 TestServer end-to-end activation requires the upstream MSI (Issue B). All non-DA specs (HDA / AE / Batch / Commands / DX) require installing matching servers; Matrikon Simulation does not provide them.
+
+## Post-fix delta (commit 2d96d8f9, 2026-06-02)
+
+After Tracks AC + AD + AE landed, re-ran Matrikon probe (full JSON: docs/interop/probe-matrikon-post-ac.json).
+
+Matrikon: 21/95 OK (was 19/95). Newly working: opcclassic.da.write_sync, opcclassic.da.subscribe.
+
+Still failing (residual follow-ups):
+- opcclassic.da.add_items: server fault 0x80010105 (RPC_E_SERVERFAULT) - wire-format issue in OPCITEMDEF array encoding
+- opcclassic.da.read_sync: dependent on add_items
+- opcclassic.da.get_properties: LPWSTR/VARIANT decode offset issue revealed after AlterContext was unblocked
+- opcclassic.da.poll_subscription: depends on item handles from add_items
+- opcclassic.cpx.get_complex_type / get_dictionary: shared codec path with get_properties
+- opcclassic.discovery.enumerate_servers: OPCEnum activation still rejected (0x000006F7) under default Windows-SSO; needs DCOM AppID ACL tweak per docs/interop/opcenum-auth.md
