@@ -1031,6 +1031,13 @@ namespace Opc.Classic.Generators
         // (no body), then per-element conformant-varying string body. This
         // is the wire shape real Windows DCOM peers expect for IDL
         // [in, size_is(N)] LPCWSTR* arrays under pointer_default(unique).
+        string? deferredPileWriteHelper = TryGetDeferredPileArrayHelperWrite(codec.ArrayElementType);
+        if (deferredPileWriteHelper is not null)
+        {
+            sb.Append(statementIndent).Append(deferredPileWriteHelper).Append("(ref ").Append(writerLocal).Append(", ").Append(parameterName).AppendLine(");");
+            return;
+        }
+
         if (deferredElements && IsStringElementCodec(codec))
         {
             string idxLocal = UniqueLocalName(parameterNames, "__opcIdx", writerLocal, parameterName);
@@ -1062,6 +1069,13 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("    }");
         sb.Append(statementIndent).AppendLine("}");
     }
+
+    private static string? TryGetDeferredPileArrayHelperWrite(string? arrayElementType) => arrayElementType switch
+    {
+        "global::Opc.Classic.Da.OpcItemDef" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemDefCodec.WriteConformantArray",
+        _ => null,
+    };
 
     private static void EmitProxyVariantElementsArrayWrite(StringBuilder sb, string statementIndent, string writerLocal, string parameterName)
     {
@@ -1281,6 +1295,8 @@ namespace Opc.Classic.Generators
     {
         "global::Opc.Classic.Da.OpcBrowseElementResult" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.ReadConformantArrayWithReferent",
+        "global::Opc.Classic.Da.OpcItemProperties" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.ReadItemPropertiesConformantArray",
         _ => null,
     };
 

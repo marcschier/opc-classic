@@ -112,7 +112,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int validateCalls = 0;
         var channel = Channel(IOPCItemMgt.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
-            OpcItemDef[] definitions = ReadArray(ref reader, NdrOpcItemDefCodec.Read);
+            OpcItemDef[] definitions = NdrOpcItemDefCodec.ReadConformantArray(ref reader);
             if (opnum == IOPCItemMgt.Opnums.AddItemsAsync)
             {
                 addCalls++;

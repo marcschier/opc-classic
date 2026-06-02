@@ -49,6 +49,25 @@ public sealed class NdrOpcItemDefCodecTests
     }
 
     [Test]
+    public async Task ConformantArray_RoundTripsDeferredPointerPile()
+    {
+        OpcItemDef[] input =
+        [
+            new OpcItemDef(null, "Bucket Brigade.Int4", true, 1, [], VarType.VT_EMPTY),
+            new OpcItemDef(null, "Bucket Brigade.String", true, 2, [], VarType.VT_EMPTY),
+        ];
+        byte[] bytes = WriteOne((ref NdrWriter w) => NdrOpcItemDefCodec.WriteConformantArray(ref w, input), capacity: 1024);
+        var reader = new NdrReader(bytes);
+
+        OpcItemDef[] back = NdrOpcItemDefCodec.ReadConformantArray(ref reader);
+
+        await Assert.That(back.Length).IsEqualTo(2);
+        await Assert.That(back[0].ItemId).IsEqualTo("Bucket Brigade.Int4");
+        await Assert.That(back[1].ItemId).IsEqualTo("Bucket Brigade.String");
+        await Assert.That(back[1].ClientHandle).IsEqualTo(2);
+    }
+
+    [Test]
     public async Task RoundTrip_NullAccessPath()
     {
         var input = new OpcItemDef(

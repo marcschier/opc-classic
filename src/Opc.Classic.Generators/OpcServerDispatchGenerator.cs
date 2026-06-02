@@ -803,6 +803,8 @@ namespace Opc.Classic.Generators
     {
         "global::Opc.Classic.Da.OpcBrowseElementResult" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.WriteConformantArrayWithReferent",
+        "global::Opc.Classic.Da.OpcItemProperties" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.WriteItemPropertiesConformantArray",
         _ => null,
     };
 
@@ -927,6 +929,13 @@ namespace Opc.Classic.Generators
         string countLocal = UniqueLocalName(parameterNames, targetLocal + "Count", readerLocal, targetLocal);
         string arrayLocal = UniqueLocalName(parameterNames, targetLocal + "Array", readerLocal, targetLocal, countLocal);
         string indexLocal = UniqueLocalName(parameterNames, targetLocal + "Index", readerLocal, targetLocal, countLocal, arrayLocal);
+        string? deferredPileReadHelper = TryGetDeferredPileArrayHelperRead(codec.ArrayElementType);
+        if (deferredPileReadHelper is not null)
+        {
+            sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(deferredPileReadHelper).Append("(ref ").Append(readerLocal).AppendLine(");");
+            return;
+        }
+
         sb.Append(statementIndent).Append("var ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
         sb.Append(statementIndent).Append("var ").Append(arrayLocal).Append(" = new ").Append(codec.ArrayElementType).Append('[').Append(countLocal).AppendLine("]; ");
         sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
@@ -935,6 +944,13 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("}");
         sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
     }
+
+    private static string? TryGetDeferredPileArrayHelperRead(string? arrayElementType) => arrayElementType switch
+    {
+        "global::Opc.Classic.Da.OpcItemDef" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemDefCodec.ReadConformantArray",
+        _ => null,
+    };
 
     private static bool HasRequestValues(MethodModel method)
     {

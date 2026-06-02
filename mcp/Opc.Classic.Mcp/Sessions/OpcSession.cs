@@ -255,7 +255,18 @@ public sealed class DaClientState : IAsyncDisposable
 public sealed class DaGroupContext
 {
     /// <summary>Creates a group context.</summary>
-    public DaGroupContext(int serverGroupHandle, string? name, int clientHandle, bool active, int updateRateMs, int revisedUpdateRateMs, int timeBiasMinutes, float deadbandPercent, int localeId, int keepAliveMs)
+    public DaGroupContext(
+        int serverGroupHandle,
+        string? name,
+        int clientHandle,
+        bool active,
+        int updateRateMs,
+        int revisedUpdateRateMs,
+        int timeBiasMinutes,
+        float deadbandPercent,
+        int localeId,
+        int keepAliveMs,
+        IReadOnlyDictionary<Guid, Guid>? interfaceIpids = null)
     {
         ServerGroupHandle = serverGroupHandle;
         Name = name;
@@ -267,6 +278,9 @@ public sealed class DaGroupContext
         DeadbandPercent = deadbandPercent;
         LocaleId = localeId;
         KeepAliveMs = keepAliveMs;
+        InterfaceIpids = interfaceIpids is null
+            ? new Dictionary<Guid, Guid>()
+            : new Dictionary<Guid, Guid>(interfaceIpids);
     }
 
     /// <summary>Server-assigned group handle.</summary>
@@ -298,6 +312,9 @@ public sealed class DaGroupContext
 
     /// <summary>Keep-alive interval.</summary>
     public int KeepAliveMs { get; }
+
+    /// <summary>Per-interface IPIDs returned for this group object.</summary>
+    internal IReadOnlyDictionary<Guid, Guid> InterfaceIpids { get; }
 
     /// <summary>Known items in the group by server handle.</summary>
     public ConcurrentDictionary<int, DaItemBindingContext> Items { get; } = new();

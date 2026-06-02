@@ -86,6 +86,55 @@ public static class NdrOpcBrowseResponseDecoder
     }
 
     /// <summary>
+    /// Writes the <c>IOPCBrowse::GetProperties</c> response array:
+    /// <c>[out, size_is(,dwItemCount)] OPCITEMPROPERTIES **ppItemProperties</c>.
+    /// </summary>
+    public static void WriteItemPropertiesConformantArray(ref NdrWriter writer, OpcItemProperties[]? itemProperties)
+    {
+        if (itemProperties is null || itemProperties.Length == 0)
+        {
+            writer.WriteNullReferent();
+            return;
+        }
+
+        writer.WriteUniquePointerReferent(true);
+        writer.WriteUInt32((uint)itemProperties.Length);
+        foreach (OpcItemProperties item in itemProperties)
+        {
+            WriteItemPropertiesInline(ref writer, item);
+        }
+        foreach (OpcItemProperties item in itemProperties)
+        {
+            WriteItemPropertiesDeferred(ref writer, item);
+        }
+    }
+
+    private static void WriteItemPropertiesInline(ref NdrWriter writer, OpcItemProperties itemProperties)
+    {
+        writer.WriteInt32(itemProperties.ErrorId);
+        writer.WriteUInt32((uint)itemProperties.Properties.Length);
+        writer.WriteUniquePointerReferent(itemProperties.Properties.Length > 0);
+        writer.WriteUInt32(0u);
+    }
+
+    private static void WriteItemPropertiesDeferred(ref NdrWriter writer, OpcItemProperties itemProperties)
+    {
+        if (itemProperties.Properties.Length > 0)
+        {
+            WriteItemPropertyFlatConformantArray(ref writer, itemProperties.Properties);
+        }
+    }
+
+    private static void WriteItemPropertyFlatConformantArray(ref NdrWriter writer, OpcItemPropertyResult[] properties)
+    {
+        writer.WriteUInt32((uint)properties.Length);
+        foreach (OpcItemPropertyResult property in properties)
+        {
+            NdrOpcItemPropertyCodec.Write(ref writer, property);
+        }
+    }
+
+    /// <summary>
     /// Writes a conformant array of <c>OPCITEMPROPERTY</c> structs in
     /// deferred-pile layout (max_count + N inline + N deferred). Used both
     /// for the top-level <c>IOPCBrowse::GetProperties</c> response and as
@@ -246,6 +295,69 @@ public static class NdrOpcBrowseResponseDecoder
             : ReadItemPropertyConformantArray(ref reader);
         var props = new OpcItemProperties(inlinePart.Properties.ErrorId, properties);
         return new OpcBrowseElementResult(name, itemId, inlinePart.FlagValue, props);
+    }
+
+    /// <summary>
+    /// Reads the <c>IOPCBrowse::GetProperties</c> response array starting with
+    /// the array <c>max_count</c> followed by N <c>OPCITEMPROPERTIES</c> inline
+    /// parts and their deferred <c>pItemProperties</c> arrays.
+    /// </summary>
+    public static OpcItemProperties[] ReadItemPropertiesConformantArray(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
+
+        uint maxCount = reader.ReadUInt32();
+        int count = unchecked((int)maxCount);
+        if (count <= 0) { return []; }
+
+        var inlineParts = new ItemPropertiesInline[count];
+        for (int i = 0; i < count; i++)
+        {
+            inlineParts[i] = ReadItemPropertiesInline(ref reader);
+        }
+
+        var result = new OpcItemProperties[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = ApplyItemPropertiesDeferred(ref reader, inlineParts[i]);
+        }
+
+        return result;
+    }
+
+    private static ItemPropertiesInline ReadItemPropertiesInline(ref NdrReader reader)
+    {
+        int hrErrorId = reader.ReadInt32();
+        uint dwNumProperties = reader.ReadUInt32();
+        uint pItemPropertiesRef = reader.ReadUInt32();
+        _ = reader.ReadUInt32();
+        return new ItemPropertiesInline(hrErrorId, unchecked((int)dwNumProperties), pItemPropertiesRef);
+    }
+
+    private static OpcItemProperties ApplyItemPropertiesDeferred(ref NdrReader reader, ItemPropertiesInline inlinePart)
+    {
+        OpcItemPropertyResult[] properties = inlinePart.PropertiesRef == 0u
+            ? []
+            : ReadItemPropertyFlatConformantArray(ref reader);
+        return new OpcItemProperties(inlinePart.ErrorId, properties);
+    }
+
+    private static OpcItemPropertyResult[] ReadItemPropertyFlatConformantArray(ref NdrReader reader)
+    {
+        uint maxCount = reader.ReadUInt32();
+        int count = unchecked((int)maxCount);
+        if (count <= 0) { return []; }
+
+        var result = new OpcItemPropertyResult[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = NdrOpcItemPropertyCodec.Read(ref reader);
+        }
+
+        return result;
     }
 
     /// <summary>

@@ -104,6 +104,32 @@ public sealed class NdrOpcItemPropertiesCodecTests
     }
 
     [Test]
+    public async Task Read_UsesPItemPropertiesConformanceCount_WhenDwNumPropertiesDiffers()
+    {
+        OpcItemPropertyResult property = new(
+            DataType: VarType.VT_I4,
+            PropertyId: 100,
+            ItemId: null,
+            Description: null,
+            Value: OpcVariant.FromInt32(88),
+            ErrorId: 0);
+        byte[] bytes = WriteOne((ref NdrWriter w) =>
+        {
+            w.WriteInt32(0);
+            w.WriteUInt32(0);
+            w.WriteUInt32(1);
+            NdrOpcItemPropertyCodec.Write(ref w, property);
+            w.WriteUInt32(0);
+        }, capacity: 2048);
+
+        OpcItemProperties back = ReadOne(bytes);
+
+        await Assert.That(back.Properties.Length).IsEqualTo(1);
+        await Assert.That(back.Properties[0].PropertyId).IsEqualTo(100);
+        await Assert.That(back.Properties[0].Value.AsInt32()).IsEqualTo(88);
+    }
+
+    [Test]
     public async Task RoundTrip_MixedPerElementErrorCodes()
     {
         int invalidPropertyId = unchecked((int)0xC0040203u);

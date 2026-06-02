@@ -13,12 +13,14 @@ using System.Text.Json;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
 using Opc.Classic;
+using Opc.Classic.Cpx.Dcom;
 using Opc.Classic.Da;
 using Opc.Classic.Discovery;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Activation;
 using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Remoting;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Mcp.Dtos;
@@ -86,6 +88,47 @@ public static class InMemoryDaConnectionRegistry
 /// <summary>MCP tools for OPC DA client operations.</summary>
 public sealed class DaClientTools
 {
+    private static readonly IReadOnlyList<Guid> DaSessionPreBindIids = BuildDaSessionPreBindIids();
+
+    private static readonly Guid[] GroupInterfaceIds =
+    {
+        IOPCItemMgt.InterfaceId,
+        IOPCSyncIO.InterfaceId,
+        IOPCSyncIO2.InterfaceId,
+        IOPCAsyncIO2.InterfaceId,
+        IOPCAsyncIO3.InterfaceId,
+        IOPCGroupStateMgt.InterfaceId,
+        IOPCGroupStateMgt2.InterfaceId,
+        IConnectionPoint.InterfaceId,
+        IConnectionPointContainer.InterfaceId,
+    };
+
+    private static IReadOnlyList<Guid> BuildDaSessionPreBindIids()
+    {
+        var iids = new List<Guid>(OpcSpecCatalog.Da.Count + 3);
+        AddPreBindIid(iids, OpcSpecCatalog.Da);
+        AddPreBindIid(iids, IOPCComplexDataItem.InterfaceId);
+        AddPreBindIid(iids, IOPCComplexDataItem2.InterfaceId);
+        AddPreBindIid(iids, IOPCTypeLibrary.InterfaceId);
+        return iids;
+    }
+
+    private static void AddPreBindIid(List<Guid> iids, IReadOnlyList<Guid> values)
+    {
+        for (int i = 0; i < values.Count; i++)
+        {
+            AddPreBindIid(iids, values[i]);
+        }
+    }
+
+    private static void AddPreBindIid(List<Guid> iids, Guid value)
+    {
+        if (value != Guid.Empty && !iids.Contains(value))
+        {
+            iids.Add(value);
+        }
+    }
+
     private readonly IOpcSessionManager _sessionManager;
     private readonly IOpcDaConnectionFactory _connectionFactory;
 
@@ -276,14 +319,28 @@ public sealed class DaClientTools
             out int revisedUpdateRate,
             out IOpcInterfaceRef groupRef,
             cancellationToken).ConfigureAwait(false);
-        _ = groupRef;
+        IReadOnlyDictionary<Guid, Guid> groupInterfaceIpids = await ResolveGroupInterfaceIpidsAsync(
+            client,
+            groupRef,
+            cancellationToken).ConfigureAwait(false);
 
         if (keepAliveMs > 0)
         {
             keepAliveMs = await client.GroupState2.SetKeepAliveAsync(keepAliveMs, cancellationToken).ConfigureAwait(false);
         }
 
-        var group = new DaGroupContext(serverGroupHandle, name, clientHandle, active, updateRateMs, revisedUpdateRate, timeBiasMinutes, deadbandPercent, localeId, keepAliveMs);
+        var group = new DaGroupContext(
+            serverGroupHandle,
+            name,
+            clientHandle,
+            active,
+            updateRateMs,
+            revisedUpdateRate,
+            timeBiasMinutes,
+            deadbandPercent,
+            localeId,
+            keepAliveMs,
+            groupInterfaceIpids);
         client.Groups[serverGroupHandle] = group;
         return ToGroupDto(group);
     }
@@ -309,6 +366,7 @@ public sealed class DaClientTools
         ArgumentNullException.ThrowIfNull(itemIds);
         DaClientState client = GetDaClient(sessionId);
         DaGroupContext group = GetGroup(client, groupHandle);
+        ApplyGroupInterfaceRoutes(client, group);
         OpcItemDef[] definitions = new OpcItemDef[itemIds.Length];
         for (int i = 0; i < definitions.Length; i++)
         {
@@ -406,6 +464,7 @@ public sealed class DaClientTools
     {
         DaClientState client = GetDaClient(sessionId);
         DaGroupContext group = GetGroup(client, groupHandle);
+        ApplyGroupInterfaceRoutes(client, group);
         int[] handles;
         if (serverHandles is null || serverHandles.Length == 0)
         {
@@ -443,6 +502,7 @@ public sealed class DaClientTools
 
         DaClientState client = GetDaClient(sessionId);
         DaGroupContext group = GetGroup(client, groupHandle);
+        ApplyGroupInterfaceRoutes(client, group);
         OpcVariant[] variants = values.Select(ToVariant).ToArray();
         int[] errors = await client.SyncIo.WriteAsync(serverHandles, variants, cancellationToken).ConfigureAwait(false);
         var results = new List<OpcResultDto>(serverHandles.Length);
@@ -474,7 +534,8 @@ public sealed class DaClientTools
         CancellationToken cancellationToken = default)
     {
         DaClientState client = GetDaClient(sessionId);
-        _ = GetGroup(client, groupHandle);
+        DaGroupContext group = GetGroup(client, groupHandle);
+        ApplyGroupInterfaceRoutes(client, group);
         string subscriptionId = Guid.NewGuid().ToString("N");
         int transactionId = Environment.TickCount & int.MaxValue;
         int? cancelId = null;
@@ -511,6 +572,7 @@ public sealed class DaClientTools
         }
 
         DaGroupContext group = GetGroup(client, subscription.GroupHandle);
+        ApplyGroupInterfaceRoutes(client, group);
         int[] handles = NormalizeHandles(null, group);
         if (maxNotifications > 0)
         {
@@ -593,6 +655,59 @@ public sealed class DaClientTools
         client.Groups.TryGetValue(groupHandle, out DaGroupContext? group)
             ? group
             : throw new McpException($"DA group handle {groupHandle} was not found in this session.");
+
+    private static async Task<IReadOnlyDictionary<Guid, Guid>> ResolveGroupInterfaceIpidsAsync(
+        DaClientState client,
+        IOpcInterfaceRef groupRef,
+        CancellationToken cancellationToken)
+    {
+        var routes = new Dictionary<Guid, Guid>();
+        if (client.CallChannel is not DcomCallChannel channel || groupRef.Ipid.Equals(Guid.Empty))
+        {
+            return routes;
+        }
+
+        routes[groupRef.Iid] = groupRef.Ipid;
+        Guid[] queryIids = GroupInterfaceIds.Where(static iid => iid != Guid.Empty).ToArray();
+        if (queryIids.Length > 0)
+        {
+            var remUnknown = new IRemUnknownClientProxy(client.CallChannel);
+            OpcRemQIResult[] results = await remUnknown.RemQueryInterfaceAsync(
+                groupRef.Ipid,
+                cRefs: 5,
+                cIids: checked((ushort)queryIids.Length),
+                queryIids,
+                cancellationToken).ConfigureAwait(false);
+
+            for (int i = 0; i < results.Length && i < queryIids.Length; i++)
+            {
+                OpcRemQIResult result = results[i];
+                if (result.Hresult == 0 && !result.Ipid.Equals(Guid.Empty))
+                {
+                    routes[queryIids[i]] = result.Ipid;
+                }
+            }
+        }
+
+        RegisterInterfaceRoutes(channel, routes);
+        return routes;
+    }
+
+    private static void ApplyGroupInterfaceRoutes(DaClientState client, DaGroupContext group)
+    {
+        if (client.CallChannel is DcomCallChannel channel)
+        {
+            RegisterInterfaceRoutes(channel, group.InterfaceIpids);
+        }
+    }
+
+    private static void RegisterInterfaceRoutes(DcomCallChannel channel, IReadOnlyDictionary<Guid, Guid> routes)
+    {
+        foreach (KeyValuePair<Guid, Guid> route in routes)
+        {
+            channel.RegisterInterfaceIpid(route.Key, route.Value);
+        }
+    }
 
     private static int[] NormalizeHandles(int[]? serverHandles, DaGroupContext group)
     {
@@ -859,7 +974,7 @@ public sealed class DaClientTools
                         transport,
                         serverAuth,
                         serverRef.Ipid,
-                        OpcSpecCatalog.Da);
+                        DaSessionPreBindIids);
                 }
                 else
                 {
@@ -867,7 +982,7 @@ public sealed class DaClientTools
                         endpoint,
                         Guid.Empty,
                         serverAuth,
-                        OpcSpecCatalog.Da,
+                        DaSessionPreBindIids,
                         cancellationToken).ConfigureAwait(false);
                 }
 
@@ -875,6 +990,11 @@ public sealed class DaClientTools
                 // Index 0 is IOPCServer (the channel default); register slots 1.. as per-interface IPIDs.
                 if (serverChannel is DcomCallChannel routableChannel)
                 {
+                    if (!activation.IpidRemUnknown.Equals(Guid.Empty))
+                    {
+                        routableChannel.RegisterInterfaceIpid(IRemUnknown.InterfaceId, activation.IpidRemUnknown);
+                    }
+
                     for (int i = 0; i < activation.InterfaceResults.Count && i < requestedIids.Length; i++)
                     {
                         var ir = activation.InterfaceResults[i];

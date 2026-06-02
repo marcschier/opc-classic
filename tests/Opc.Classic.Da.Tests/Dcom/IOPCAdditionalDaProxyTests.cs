@@ -123,8 +123,17 @@ public sealed class IOPCAdditionalDaProxyTests
         int observedOpnum = -1;
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
         {
-            writer.WriteUInt32(1);
-            NdrOpcItemPropertiesCodec.Write(ref writer, new OpcItemProperties(0, Array.Empty<OpcItemPropertyResult>()));
+            NdrOpcBrowseResponseDecoder.WriteItemPropertiesConformantArray(
+                ref writer,
+                [new OpcItemProperties(0, [
+                    new OpcItemPropertyResult(
+                        VarType.VT_I4,
+                        100,
+                        "Random.Int4",
+                        "Value",
+                        OpcVariant.FromInt32(88),
+                        0),
+                ])]);
         });
         var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
         {
@@ -144,6 +153,43 @@ public sealed class IOPCAdditionalDaProxyTests
         await Assert.That(observedIid).IsEqualTo(IOPCBrowse.InterfaceId);
         await Assert.That(observedOpnum).IsEqualTo(IOPCBrowse.Opnums.GetPropertiesAsync);
         await Assert.That(actualLength).IsEqualTo(1);
+        await Assert.That(actual[0].Properties.Length).IsEqualTo(1);
+        await Assert.That(actual[0].Properties[0].PropertyId).IsEqualTo(100);
+        await Assert.That(actual[0].Properties[0].Value.AsInt32()).IsEqualTo(88);
+    }
+
+    [Test]
+    public async Task Browse_GetProperties_decodes_non_null_property_pointer_when_num_properties_is_zero()
+    {
+        OpcItemPropertyResult property = new(
+            VarType.VT_I4,
+            100,
+            "Random.Int4",
+            "Value",
+            OpcVariant.FromInt32(88),
+            0);
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
+        {
+            writer.WriteUInt32(1);
+            writer.WriteInt32(0);
+            writer.WriteUInt32(0);
+            writer.WriteUInt32(14);
+            writer.WriteUInt32(0);
+            writer.WriteUInt32(1);
+            NdrOpcItemPropertyCodec.Write(ref writer, property);
+        });
+        var channel = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(new NdrCallResult(0, responsePayload)));
+        var proxy = new IOPCBrowseClientProxy(channel);
+
+        OpcItemProperties[] actual = await proxy.GetPropertiesAsync(
+            new[] { "Random.Int4" },
+            returnPropertyValues: true,
+            propertyIds: [],
+            CancellationToken.None);
+
+        await Assert.That(actual[0].Properties.Length).IsEqualTo(1);
+        await Assert.That(actual[0].Properties[0].PropertyId).IsEqualTo(100);
+        await Assert.That(actual[0].Properties[0].Value.AsInt32()).IsEqualTo(88);
     }
 
     [Test]

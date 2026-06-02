@@ -148,6 +148,7 @@ public sealed class DcomCallChannelTests
     public async Task InvokeAsync_reuses_predeclared_context_without_alter_context()
     {
         await using var transport = new InMemoryAsyncTransport();
+        Guid routedIpid = new("44444444-4444-4444-4444-444444444444");
         await transport.WriteInboundAsync(CreateBindAckBytes(PreBindIids.Count));
         await transport.WriteInboundAsync(CreateResponseBytes([]));
         await transport.WriteInboundAsync(CreateResponseBytes([]));
@@ -157,12 +158,14 @@ public sealed class DcomCallChannelTests
             PreBindIids);
 
         _ = await channel.InvokeAsync(FirstInterfaceId, 6, ReadOnlyMemory<byte>.Empty);
+        channel.RegisterInterfaceIpid(SecondInterfaceId, routedIpid);
         _ = await channel.InvokeAsync(SecondInterfaceId, 3, ReadOnlyMemory<byte>.Empty);
 
         IReadOnlyList<ConnectionOrientedPdu> outbound = await ReadOutboundPdusAsync(transport);
         await Assert.That(ContainsPdu<AlterContextPdu>(outbound)).IsFalse();
         var secondRequest = (RequestCoPdu)outbound[2];
         await Assert.That(secondRequest.ContextId).IsEqualTo(IndexOf(PreBindIids, SecondInterfaceId));
+        await Assert.That(Guid.Parse(secondRequest.Object!.ToString())).IsEqualTo(routedIpid);
     }
 
     [Test]

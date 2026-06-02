@@ -19,7 +19,7 @@ namespace Opc.Classic.Da.Ndr;
 ///     INT32    hrErrorID
 ///     UINT32   dwNumProperties
 ///     UINT32   conformance count for pItemProperties
-///     OPCITEMPROPERTY[dwNumProperties] pItemProperties
+///     OPCITEMPROPERTY[pItemProperties count] pItemProperties
 ///     UINT32   dwReserved (0)
 /// </code>
 /// </remarks>
@@ -46,20 +46,11 @@ public static class NdrOpcItemPropertiesCodec
     public static OpcItemProperties Read(ref NdrReader reader)
     {
         int hrErrorId = reader.ReadInt32();
-        uint dwNumProperties = reader.ReadUInt32();
+        _ = reader.ReadUInt32();
         uint arrayCount = reader.ReadUInt32();
-        if (dwNumProperties > (uint)int.MaxValue)
-        {
-            throw new InvalidDataException($"OPCITEMPROPERTIES dwNumProperties {dwNumProperties} too large.");
-        }
         if (arrayCount > (uint)int.MaxValue)
         {
             throw new InvalidDataException($"OPCITEMPROPERTIES pItemProperties conformance count {arrayCount} too large.");
-        }
-        if (arrayCount != dwNumProperties)
-        {
-            throw new InvalidDataException(
-                $"OPCITEMPROPERTIES count mismatch: dwNumProperties={dwNumProperties}, pItemProperties={arrayCount}.");
         }
 
         int count = (int)arrayCount;
