@@ -160,6 +160,55 @@ machine's DCOM defaults are more restrictive, grant the
 `Distributed COM Users` group launch + access on the TestServer
 AppID via `dcomcnfg.exe`.
 
+### Known residual blocker: `CO_E_SERVER_EXEC_FAILURE` after no-MSI registration
+
+Even when `tools/register-testserver.ps1` completes successfully — proxy/stub
+DLLs are copied into `%SystemRoot%\System32`, `regsvr32` reports no error,
+`OpcTestServer_x64.exe /regserver` exits 0, and the HKLM CLSID/AppID/Implemented
+Categories entries exist — DCOM SCM can still time out with
+`CO_E_SERVER_EXEC_FAILURE (0x80080005)` plus event log entry **DistributedCOM
+10010** when the managed `opcclassic.da.connect` activates the local CLSID.
+
+This is the OPC Foundation's canonical "registered but the SCM cannot launch
+it" failure mode. It happens because the SCM runs as `SYSTEM`, launches the
+EXE as the calling user's interactive desktop process (per the AppID's
+RunAs/InteractiveUser semantics), but the launched EXE has 60 seconds to
+call `CoRegisterClassObject` for the CLSID before the SCM gives up. If the
+EXE crashes or returns before registering (because of a missing proxy/stub
+DLL, a hung COM initialization, or a service-side ACL that blocks the
+process from registering its class object), the timeout fires.
+
+Investigation paths (in increasing complexity):
+
+1. **Watch the EXE launch interactively.** Run `OpcTestServer_x64.exe` (no
+   args, no `/regserver`) from an elevated shell to see if it opens its
+   own console / window without crashing. If it crashes immediately, the
+   stub-resolution path is broken — re-verify the System32 proxy/stub
+   copies match the EXE build flavor and bitness.
+
+2. **Add the calling identity to the AppID's RunAs.** Use `dcomcnfg.exe`
+   → Component Services → My Computer → DCOM Config → find the TestServer
+   AppID `{F8582CF9-88FB-11DA-A5ED-0060B0692061}` → Identity tab → set
+   "The interactive user". If the AppID is set to "The launching user"
+   (default) and the launching user is the calling SSO identity, this
+   should already work — but explicit "interactive user" can resolve
+   service-context launch failures.
+
+3. **Build and install the upstream WiX MSI.** `ext/CoreComponents/build.ps1`
+   produces an `.msi` under `ext/CoreComponents/WiX/`. The MSI sets
+   AppID Launch/Activation/Access ACLs, RunAs identity, and registers
+   the proxy/stub DLLs to their canonical install location. This is the
+   OPC Foundation's tested install path and bypasses every no-MSI quirk.
+
+4. **Capture the EXE's stderr at SCM launch.** Use
+   `procmon.exe` filtered to `Process Name = OpcTestServer_x64.exe` to
+   see exactly which file/registry access fails during startup.
+
+Once one of these resolves the activation, all of the AddItems / SyncIO /
+WriteSync / Subscribe flows that work against Matrikon should also work
+against TestServer because the wire format is identical (both are MIDL-
+generated DCOM endpoints implementing the same OPC IDL).
+
 ## Running against the managed Opc.Classic stack
 
 Once the TestServer is registered, the same `mcp/mcp_driver.py`
