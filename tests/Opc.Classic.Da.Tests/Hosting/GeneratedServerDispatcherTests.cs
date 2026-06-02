@@ -506,5 +506,23 @@ public sealed class GeneratedServerDispatcherTests
             LastProgId = progId;
             return Task.FromResult(LookupResult);
         }
+
+        public Task<global::Opc.Classic.Dcom.IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
+            Guid[] implementedCategories,
+            Guid[] requiredCategories,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<global::Opc.Classic.Dcom.IOpcInterfaceRef>(
+                new global::Opc.Classic.Dcom.OpcInterfaceRef(Guid.Empty, 0, 0, 0, 0, Guid.Empty, 0, Array.Empty<ushort>()));
+
+        public Task GetClassDetailsAsync(
+            Guid clsid,
+            out string progId,
+            out string userType,
+            CancellationToken cancellationToken = default)
+        {
+            progId = "Stub.ProgId";
+            userType = "Stub.UserType";
+            return Task.CompletedTask;
+        }
     }
 }

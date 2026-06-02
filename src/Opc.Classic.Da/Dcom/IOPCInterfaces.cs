@@ -903,12 +903,46 @@ public partial interface IOPCEnumGUID
 public partial interface IOPCServerList
 {
     /// <summary>
+    /// <c>IOPCServerList::EnumClassesOfCategories</c> (opnum 3). Returns an enumerator
+    /// (<c>IEnumGUID</c>) over server CLSIDs that implement <paramref name="implementedCategories"/>
+    /// and (optionally) require <paramref name="requiredCategories"/>.
+    /// </summary>
+    /// <remarks>
+    /// IDL: <c>[in] ULONG cImplemented, [in, size_is(cImplemented)] CATID rgcatidImpl[],
+    /// [in] ULONG cRequired, [in, size_is(cRequired)] CATID rgcatidReq[],
+    /// [out] IEnumGUID **ppenumClsid</c>. Each <c>ULONG</c> count is the sibling for the
+    /// conformant CATID array that follows; the proxy emits the standalone count via
+    /// <see cref="OpcEmitArrayCountAttribute"/> on the first such array, then a bare
+    /// <c>max_count</c> for the second.
+    /// </remarks>
+    [OpcMethod(3)]
+    Task<IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
+        [OpcEmitArrayCount] Guid[] implementedCategories,
+        [OpcEmitArrayCount] Guid[] requiredCategories,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCServerList::GetClassDetails</c> (opnum 4). Returns ProgID and friendly name
+    /// for a registered OPC server CLSID.
+    /// </summary>
+    /// <remarks>
+    /// IDL: <c>[in] REFCLSID clsid, [out] LPOLESTR *ppszProgID, [out] LPOLESTR *ppszUserType</c>.
+    /// Each <c>LPOLESTR*</c> out parameter is a unique pointer to a conformant Unicode string;
+    /// the generator emits the referent read + string body using the codec for <c>string</c>.
+    /// </remarks>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task GetClassDetailsAsync(
+        Guid clsid,
+        out string progId,
+        out string userType,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCServerList::CLSIDFromProgID</c> (opnum 5). Resolves a ProgID to a class ID.
     /// </summary>
     [OpcMethod(5)]
     Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default);
-
-    // EnumClassesOfCategories returns an enumerator interface; GetClassDetails returns multiple strings.
 }
 
 /// <summary><c>IOPCServerList2</c> — OPC Discovery 2.0 server list (IID_IOPCServerList2).</summary>
@@ -918,10 +952,39 @@ public partial interface IOPCServerList
 public partial interface IOPCServerList2
 {
     /// <summary>
+    /// <c>IOPCServerList2::EnumClassesOfCategories</c> (opnum 3). Returns an enumerator
+    /// (<c>IOPCEnumGUID</c>) over server CLSIDs that implement
+    /// <paramref name="implementedCategories"/> and (optionally) require
+    /// <paramref name="requiredCategories"/>.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<IOpcInterfaceRef> EnumClassesOfCategoriesAsync(
+        [OpcEmitArrayCount] Guid[] implementedCategories,
+        [OpcEmitArrayCount] Guid[] requiredCategories,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCServerList2::GetClassDetails</c> (opnum 4). Returns ProgID, friendly name,
+    /// and version-independent ProgID for a registered OPC server CLSID.
+    /// </summary>
+    /// <remarks>
+    /// Named with the V2 suffix to keep the auto-generated multi-out record type
+    /// (<c>GetClassDetailsV2AsyncResult</c>) distinct from the V1 version emitted for
+    /// <see cref="IOPCServerList"/>; the wire opnum (4) and IDL semantics still match
+    /// <c>IOPCServerList2::GetClassDetails</c>.
+    /// </remarks>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task GetClassDetailsV2Async(
+        Guid clsid,
+        out string progId,
+        out string userType,
+        out string versionIndependentProgId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCServerList2::CLSIDFromProgID</c> (opnum 5). Resolves a ProgID to a class ID.
     /// </summary>
     [OpcMethod(5)]
     Task<Guid> ClsidFromProgIdAsync(string progId, CancellationToken cancellationToken = default);
-
-    // EnumClassesOfCategories returns an OPC enumerator interface; GetClassDetails returns multiple strings.
 }
