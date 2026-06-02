@@ -1,0 +1,1180 @@
+[
+  {
+    "tool": "opcclassic.session.create",
+    "args": {},
+    "success": true,
+    "error": null,
+    "summary": "sessionId=8f80e04c47004a5a92772447416cfb8c daConnected=False"
+  },
+  {
+    "tool": "opcclassic.session.list",
+    "args": {},
+    "success": true,
+    "error": null,
+    "summary": "count=1 firstKeys=sessionId,createdAt,lastUsedAt,expiresAt,idleExpirySeconds,daConnected"
+  },
+  {
+    "tool": "opcclassic.discovery.enumerate_servers",
+    "args": {
+      "host": "localhost"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.discovery.enumerate_servers'.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "host": "localhost",
+      "clsid": "F8582CF9-88FB-11DA-A5ED-0060B0692061",
+      "useSso": true
+    },
+    "success": false,
+    "error": "tools/call timed out after 15s",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.browse",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemId": "",
+      "browseFilter": "all"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.browse': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.browse",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemId": "Random",
+      "browseFilter": "leaf"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.browse': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.get_properties",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemIds": [
+        "Random.Int4"
+      ],
+      "returnValues": true
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.get_properties': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.read_items_by_id",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemIds": [
+        "Random.Int4"
+      ],
+      "maxAges": [
+        0
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.read_items_by_id': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.add_group",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "name": "BB",
+      "active": true,
+      "updateRateMs": 500
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.add_group': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.add_items",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "groupHandle": 0,
+      "itemIds": [
+        "Bucket Brigade.Int4",
+        "Bucket Brigade.String"
+      ],
+      "clientHandles": [
+        1,
+        2
+      ],
+      "active": true
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.add_items': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.read_sync",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "groupHandle": 0,
+      "serverHandles": [],
+      "fromCache": false
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.read_sync': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.write_sync",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "groupHandle": 0,
+      "serverHandles": [],
+      "values": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.write_sync': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.subscribe",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "groupHandle": 0,
+      "fromCache": true
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.subscribe': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.poll_subscription",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "subscriptionId": "",
+      "maxNotifications": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.poll_subscription': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.get_error_string",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "hresult": 0,
+      "localeId": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.get_error_string': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.security.is_available_nt",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.security.is_available_nt': OPC Security tools require an existing DCOM client in the session. Connect DA first or register IOpcSecurityClientFactory.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.security.is_available_private",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.security.is_available_private': OPC Security tools require an existing DCOM client in the session. Connect DA first or register IOpcSecurityClientFactory.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.security.logon",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "username": "mcp_probe",
+      "password": "***"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.security.logon': OPC Security tools require an existing DCOM client in the session. Connect DA first or register IOpcSecurityClientFactory.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.security.logoff",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.security.logoff': OPC Security tools require an existing DCOM client in the session. Connect DA first or register IOpcSecurityClientFactory.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.cpx.get_type_system",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "typeSystemId": "OPCBinary"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.cpx.get_type_system': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect before using CPX tools.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.cpx.get_complex_type",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemId": "Random.Int4"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.cpx.get_complex_type': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect before using CPX tools.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.cpx.get_dictionary",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "dictionaryId": "OPCBinary"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.cpx.get_dictionary': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect before using CPX tools.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.remove_group",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "groupHandle": 0,
+      "force": true
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.da.remove_group': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DA server. Call opcclassic.da.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.da.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "DA client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.hda.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "host": "localhost"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.connect': Provide an OPC server ProgID, CLSID, or connectionString.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.browse",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemIdPrefix": "",
+      "browseType": "leaf"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.browse': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.validate_items",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemIds": [
+        "Random.Int4"
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.validate_items': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.get_item_handles",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemIds": [
+        "Random.Int4"
+      ],
+      "clientHandles": [
+        1
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.get_item_handles': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.read_raw",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "startTime": "NOW-1H",
+      "endTime": "NOW",
+      "maxValuesPerItem": 10,
+      "includeBounds": false,
+      "itemIds": [
+        "Random.Int4"
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.read_raw': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.read_processed",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "startTime": "NOW-1H",
+      "endTime": "NOW",
+      "resampleIntervalSeconds": 60,
+      "aggregate": "Average",
+      "itemIds": [
+        "Random.Int4"
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.read_processed': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.read_at_time",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "timestamps": [
+        "1970-01-01T00:00:00Z"
+      ],
+      "itemIds": [
+        "Random.Int4"
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.read_at_time': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.read_modified",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "startTime": "NOW-1H",
+      "endTime": "NOW",
+      "maxValuesPerItem": 10,
+      "itemIds": [
+        "Random.Int4"
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.read_modified': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.read_attribute",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandle": 0,
+      "attributeIds": [
+        1,
+        2
+      ],
+      "startTime": "NOW-1H",
+      "endTime": "NOW"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.read_attribute': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.read_annotations",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "startTime": "NOW-1H",
+      "endTime": "NOW",
+      "itemIds": [
+        "Random.Int4"
+      ]
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.read_annotations': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.get_aggregates",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.get_aggregates': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.insert_data",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandles": [],
+      "timestamps": [],
+      "values": [],
+      "qualities": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.insert_data': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.replace_data",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandles": [],
+      "timestamps": [],
+      "values": [],
+      "qualities": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.replace_data': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.insert_replace_data",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandles": [],
+      "timestamps": [],
+      "values": [],
+      "qualities": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.insert_replace_data': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.delete_raw",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "startTime": "NOW-1H",
+      "endTime": "NOW",
+      "serverHandles": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.delete_raw': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.delete_at_time",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandles": [],
+      "timestamps": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.delete_at_time': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.insert_annotations",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandles": [],
+      "timestamps": [],
+      "annotationTexts": [],
+      "users": [],
+      "annotationTimes": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.insert_annotations': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.release_item_handles",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverHandles": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.hda.release_item_handles': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.hda.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "HDA client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.ae.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "host": "localhost"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.connect': Provide an OPC server ProgID, CLSID, or connectionString.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.browse_areas",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "areaQualifiedName": ""
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.browse_areas': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.query_event_categories",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "eventTypes": "all"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.query_event_categories': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.query_event_attributes",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "eventCategory": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.query_event_attributes': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.create_subscription",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "active": true,
+      "bufferTimeMs": 1000,
+      "maxBufferSize": 0,
+      "clientSubscription": 1
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.create_subscription': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.set_filter",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "subscriptionId": "",
+      "eventTypes": "all",
+      "eventCategories": [],
+      "minSeverity": 0,
+      "maxSeverity": 1000,
+      "areas": [],
+      "sources": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.set_filter': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.poll_events",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "subscriptionId": "",
+      "maxNotifications": 10,
+      "waitMilliseconds": 100
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.poll_events': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.refresh_subscription",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "subscriptionId": ""
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.refresh_subscription': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.get_condition_state",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "source": "Random.Int4",
+      "conditionName": "Condition",
+      "attributeIds": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.get_condition_state': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.ack_condition",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "source": "Random.Int4",
+      "conditionName": "Condition",
+      "actor": "mcp-probe",
+      "comment": "probe",
+      "cookie": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.ack_condition': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.cancel_subscription",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "subscriptionId": ""
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.ae.cancel_subscription': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.ae.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "AE client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.batch.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "host": "localhost"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.batch.connect': Provide an OPC Batch server ProgID, CLSID, or connectionString.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.batch.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.batch.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.batch.query_batch_summaries",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "model": "OPCBBatchModel",
+      "maxResults": 10
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.batch.query_batch_summaries': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.batch.query_enumeration_sets",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration_sets': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.batch.query_enumeration",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "enumerationSetId": 0,
+      "enumerationValue": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.batch.query_enumeration_list",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "enumerationSetId": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration_list': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.batch.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "Batch client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.commands.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "host": "localhost"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.commands.connect': Provide an OPC Commands server ProgID, CLSID, or connectionString.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.commands.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.commands.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.commands.get_command_descriptions",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "commandNamespace": "",
+      "commandNames": []
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.commands.get_command_descriptions': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.commands.invoke_command",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "commandName": "__mcp_probe_noop__",
+      "commandNamespace": "",
+      "targetId": "",
+      "arguments": [],
+      "filters": [],
+      "asynchronous": true,
+      "updateFrequencyMs": 1000,
+      "keepAliveTimeMs": 30000
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.commands.invoke_command': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.commands.poll_command_state",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "invocationId": "__mcp_probe_noop__",
+      "waitTimeMs": 0
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.commands.poll_command_state': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.commands.cancel_command",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "invocationId": "__mcp_probe_noop__"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.commands.cancel_command': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.commands.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "Commands client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.dx.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "host": "localhost"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.connect': No OPC DX connection factory is registered for DCOM connections. Register IOpcDxConnectionFactory or use connectionString=inmemory://name.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.query_connections",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "browsePath": "",
+      "connectionMasks": [],
+      "recursive": false
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.query_connections': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.query_source_servers",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.query_source_servers': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "DX client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.dx.add_source_server",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "sourceServer": {
+        "name": "__mcp_probe_source__",
+        "serverUrl": "opcda://localhost/probe",
+        "description": "MCP probe source",
+        "serverType": "OPC DA",
+        "itemPath": "",
+        "itemName": "Bucket Brigade.Int4",
+        "version": "probe",
+        "defaultConnected": false,
+        "mask": 0,
+        "reserved": 0
+      }
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.add_source_server': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.modify_source_server",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "sourceServer": {
+        "name": "__mcp_probe_source__",
+        "serverUrl": "opcda://localhost/probe",
+        "description": "MCP probe source",
+        "serverType": "OPC DA",
+        "itemPath": "",
+        "itemName": "Bucket Brigade.Int4",
+        "version": "probe",
+        "defaultConnected": false,
+        "mask": 0,
+        "reserved": 0
+      }
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.modify_source_server': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.add_connection",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "connection": {
+        "name": "__mcp_probe_connection__",
+        "description": "MCP probe connection",
+        "itemPath": "",
+        "itemName": "Bucket Brigade.Int4",
+        "version": "probe",
+        "browsePaths": [],
+        "keyword": "probe",
+        "defaultSourceItemConnected": false,
+        "defaultTargetItemConnected": false,
+        "targetItemPath": "",
+        "targetItemName": "Bucket Brigade.Int4",
+        "sourceServerName": "__mcp_probe_source__",
+        "sourceItemPath": "",
+        "sourceItemName": "Bucket Brigade.Int4",
+        "sourceItemQueueSize": 1,
+        "updateRateMilliseconds": 1000,
+        "deadbandPercent": 0,
+        "vendorData": "probe",
+        "mask": 0
+      }
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.add_connection': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.modify_connection",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "connection": {
+        "name": "__mcp_probe_connection__",
+        "description": "MCP probe connection",
+        "itemPath": "",
+        "itemName": "Bucket Brigade.Int4",
+        "version": "probe",
+        "browsePaths": [],
+        "keyword": "probe",
+        "defaultSourceItemConnected": false,
+        "defaultTargetItemConnected": false,
+        "targetItemPath": "",
+        "targetItemName": "Bucket Brigade.Int4",
+        "sourceServerName": "__mcp_probe_source__",
+        "sourceItemPath": "",
+        "sourceItemName": "Bucket Brigade.Int4",
+        "sourceItemQueueSize": 1,
+        "updateRateMilliseconds": 1000,
+        "deadbandPercent": 0,
+        "vendorData": "probe",
+        "mask": 0
+      }
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.modify_connection': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.update_connection",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "connectionName": "__mcp_probe_connection__",
+      "connection": {
+        "name": "__mcp_probe_connection__",
+        "description": "MCP probe connection",
+        "itemPath": "",
+        "itemName": "Bucket Brigade.Int4",
+        "version": "probe",
+        "browsePaths": [],
+        "keyword": "probe",
+        "defaultSourceItemConnected": false,
+        "defaultTargetItemConnected": false,
+        "targetItemPath": "",
+        "targetItemName": "Bucket Brigade.Int4",
+        "sourceServerName": "__mcp_probe_source__",
+        "sourceItemPath": "",
+        "sourceItemName": "Bucket Brigade.Int4",
+        "sourceItemQueueSize": 1,
+        "updateRateMilliseconds": 1000,
+        "deadbandPercent": 0,
+        "vendorData": "probe",
+        "mask": 0
+      },
+      "browsePath": "",
+      "recursive": false
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.update_connection': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.delete_connection",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "connectionName": "__mcp_probe_connection__",
+      "browsePath": "",
+      "recursive": false
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.delete_connection': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.dx.reset_configuration",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "configurationVersion": ""
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.dx.reset_configuration': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.connect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "endpointUrl": "inmemory://probe-missing"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.connect': No in-memory XML-DA client is registered for 'probe-missing'.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.get_status",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "clientRequestHandle": "probe-status"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.get_status': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.browse",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemName": "",
+      "itemPath": "",
+      "continuationPoint": "",
+      "maxElementsReturned": 0,
+      "browseFilter": "all",
+      "elementNameFilter": "",
+      "clientRequestHandle": "probe-browse"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.browse': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.get_properties",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "itemNames": [
+        "Random.Int4"
+      ],
+      "itemPath": "",
+      "propertyNames": [],
+      "returnAllProperties": true,
+      "returnPropertyValues": false,
+      "returnErrorText": true,
+      "clientRequestHandle": "probe-properties"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.get_properties': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.read",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "items": [
+        {
+          "itemName": "Random.Int4",
+          "clientItemHandle": "read-1",
+          "maxAge": 0
+        }
+      ],
+      "returnErrorText": true,
+      "clientRequestHandle": "probe-read"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.read': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.write",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "items": [
+        {
+          "itemName": "Bucket Brigade.Int4",
+          "value": 12345,
+          "clientItemHandle": "write-1"
+        }
+      ],
+      "returnValuesOnReply": false,
+      "returnErrorText": true,
+      "clientRequestHandle": "probe-write"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.write': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.subscribe",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "items": [
+        {
+          "itemName": "Random.Int4",
+          "clientItemHandle": "sub-1",
+          "requestedSamplingRate": 1000,
+          "deadband": 0
+        }
+      ],
+      "itemPath": "",
+      "requestedSamplingRate": 1000,
+      "subscriptionPingRate": 10000,
+      "returnValuesOnReply": false,
+      "returnErrorText": true,
+      "enableBuffering": false,
+      "clientRequestHandle": "probe-subscribe"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.subscribe': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.poll_subscription",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverSubHandles": [],
+      "waitTime": 0,
+      "returnAllItems": true,
+      "returnErrorText": true,
+      "clientRequestHandle": "probe-poll"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.poll_subscription': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.cancel_subscription",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c",
+      "serverSubHandle": "probe",
+      "clientRequestHandle": "probe-cancel"
+    },
+    "success": false,
+    "error": "An error occurred invoking 'opcclassic.xmlda.cancel_subscription': Session '8f80e04c47004a5a92772447416cfb8c' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "summary": ""
+  },
+  {
+    "tool": "opcclassic.xmlda.disconnect",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "XML-DA client was not connected. succeeded=False hResult=0x00000001"
+  },
+  {
+    "tool": "opcclassic.session.close",
+    "args": {
+      "sessionId": "8f80e04c47004a5a92772447416cfb8c"
+    },
+    "success": true,
+    "error": null,
+    "summary": "Session '8f80e04c47004a5a92772447416cfb8c' closed. succeeded=True hResult=0x00000000"
+  }
+]
