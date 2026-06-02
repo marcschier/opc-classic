@@ -102,7 +102,7 @@ public sealed class IOPCAdditionalDaProxyTests
         {
             observedIid = iid;
             observedOpnum = opnum;
-            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+            return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
         });
 
         var proxy = new IOPCItemIOClientProxy(channel);
@@ -222,7 +222,7 @@ public sealed class IOPCAdditionalDaProxyTests
         {
             observedIid = iid;
             observedOpnum = opnum;
-            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+            return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
         });
 
         var proxy = new IOPCItemMgtClientProxy(channel);
@@ -243,7 +243,7 @@ public sealed class IOPCAdditionalDaProxyTests
         {
             observedIid = iid;
             observedOpnum = opnum;
-            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+            return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
         });
 
         var proxy = new IOPCSyncIOClientProxy(channel);
@@ -264,7 +264,7 @@ public sealed class IOPCAdditionalDaProxyTests
         {
             observedIid = iid;
             observedOpnum = opnum;
-            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+            return Task.FromResult(new NdrCallResult(0, EncodeUniqueInt32Array(0)));
         });
 
         var proxy = new IOPCSyncIO2ClientProxy(channel);
@@ -629,6 +629,20 @@ public sealed class IOPCAdditionalDaProxyTests
     private static ReadOnlyMemory<byte> EncodeInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) =>
     {
         writer.WriteUInt32((uint)values.Length);
+        foreach (int value in values)
+        {
+            writer.WriteInt32(value);
+        }
+    });
+
+    /// <summary>
+    /// Encodes a unique-pointer-prefixed conformant Int32 array for <c>[out, size_is(,N)] HRESULT**</c> wire shape.
+    /// Use for response payloads where the C# proxy carries <c>[OpcUniquePointer]</c> on the array.
+    /// </summary>
+    private static ReadOnlyMemory<byte> EncodeUniqueInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) =>
+    {
+        writer.WriteUniquePointerReferent(true);    // unique-pointer referent (non-null)
+        writer.WriteUInt32((uint)values.Length);    // max_count
         foreach (int value in values)
         {
             writer.WriteInt32(value);

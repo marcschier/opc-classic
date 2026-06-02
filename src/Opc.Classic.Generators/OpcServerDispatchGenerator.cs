@@ -805,6 +805,10 @@ namespace Opc.Classic.Generators
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.WriteConformantArrayWithReferent",
         "global::Opc.Classic.Da.OpcItemProperties" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.WriteItemPropertiesConformantArray",
+        "global::Opc.Classic.Da.OpcItemResult" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemResultCodec.WriteConformantArray",
+        "global::Opc.Classic.Da.OpcItemAttributes" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemAttributesCodec.WriteConformantArray",
         _ => null,
     };
 
@@ -949,6 +953,10 @@ namespace Opc.Classic.Generators
     {
         "global::Opc.Classic.Da.OpcItemDef" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcItemDefCodec.ReadConformantArray",
+        "global::Opc.Classic.Da.OpcItemResult" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemResultCodec.ReadConformantArray",
+        "global::Opc.Classic.Da.OpcItemAttributes" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemAttributesCodec.ReadConformantArray",
         _ => null,
     };
 

@@ -112,6 +112,9 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int validateCalls = 0;
         var channel = Channel(IOPCItemMgt.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
+            // AddItems/ValidateItems IDL: [in] DWORD dwCount, [in, size_is(dwCount)] OPCITEMDEF*.
+            // After AF1, proxy emits dwCount before the array's max_count.
+            _ = reader.ReadUInt32();
             OpcItemDef[] definitions = NdrOpcItemDefCodec.ReadConformantArray(ref reader);
             if (opnum == IOPCItemMgt.Opnums.AddItemsAsync)
             {
@@ -173,6 +176,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         var syncChannel = Channel(IOPCSyncIO.InterfaceId, IOPCSyncIO.Opnums.ReadAsync, (ref NdrReader reader) =>
         {
             Ensure(reader.ReadInt32() == 1);
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling for serverHandles
             Ensure(ReadInt32Array(ref reader)[0] == 500);
             return EncodeItemStates(state, 0);
         });
@@ -182,6 +186,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         var sync2Channel = Channel(IOPCSyncIO2.InterfaceId, IOPCSyncIO2.Opnums.ReadAsync, (ref NdrReader reader) =>
         {
             Ensure(reader.ReadInt32() == 2);
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling for serverHandles
             Ensure(ReadInt32Array(ref reader)[0] == 501);
             return EncodeItemStates(state with { ClientHandle = 12 }, 1);
         });
@@ -199,13 +204,18 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     {
         var channel = Channel(IOPCSyncIO2.InterfaceId, IOPCSyncIO2.Opnums.ReadMaxAgeAsync, (ref NdrReader reader) =>
         {
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling
             Ensure(ReadInt32Array(ref reader)[0] == 777);
             Ensure(ReadInt32Array(ref reader)[0] == 250);
             return WritePayload((ref NdrWriter writer) =>
             {
-                WriteArray(ref writer, new[] { OpcVariant.FromString("fresh") }, NdrVariantExtensions.WriteVariant);
+                // [out, size_is(,N)] VARIANT** values — [OpcUniquePointer, OpcVariantElements] layout
+                writer.WriteUniquePointerReferent(true);
+                WriteVariantElementsArray(ref writer, OpcVariant.FromString("fresh"));
                 WriteUInt16Array(ref writer, 192);
-                WriteInt64Array(ref writer, 1234L);
+                // [out, size_is(,N)] FILETIME** timestamps — [OpcUniquePointer, OpcFileTimeElements]
+                writer.WriteUniquePointerReferent(true);
+                writer.WriteConformantFileTimeArray(new[] { 1234L });
                 WriteInt32Array(ref writer, 0);
             });
         });
@@ -226,6 +236,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int writeCalls = 0;
         var channel = Channel(IOPCAsyncIO2.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling for serverHandles
             int[] handles = ReadInt32Array(ref reader);
             if (opnum == IOPCAsyncIO2.Opnums.ReadAsync)
             {
@@ -238,8 +249,12 @@ public sealed class IOPCMissingDaMethodRoundTripTests
             Ensure(opnum == IOPCAsyncIO2.Opnums.WriteAsync);
             writeCalls++;
             Ensure(handles[0] == 101);
-            OpcVariant[] values = ReadArray(ref reader, NdrVariantExtensions.ReadVariant);
-            Ensure(values[0].Equals(OpcVariant.FromInt32(7)));
+            // After AF4, IOPCAsyncIO2.Write values is [OpcVariantElements]; proxy emits
+            // canonical wireVARIANT elements (with duplicated discriminator). Read accordingly.
+            int valuesCount = (int)reader.ReadUInt32();
+            Ensure(valuesCount == 1);
+            OpcVariant value = NdrVariantExtensions.ReadVariantElement(ref reader);
+            Ensure(value.Equals(OpcVariant.FromInt32(7)));
             Ensure(reader.ReadInt32() == 0x11);
             return EncodeCancelAndErrors(0xCB, 1);
         });
@@ -263,6 +278,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int writeCalls = 0;
         var channel = Channel(IOPCAsyncIO3.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling for serverHandles
             int[] handles = ReadInt32Array(ref reader);
             if (opnum == IOPCAsyncIO3.Opnums.ReadMaxAgeAsync)
             {
@@ -366,13 +382,17 @@ public sealed class IOPCMissingDaMethodRoundTripTests
                 });
             }
 
+            // GetItemProperties / LookupItemIDs: [OpcEmitArrayCount] on propertyIds emits dwCount sibling
+            _ = reader.ReadUInt32();
             int[] ids = ReadInt32Array(ref reader);
             Ensure(ids[0] == 1);
             if (opnum == IOPCItemProperties.Opnums.GetItemPropertiesAsync)
             {
                 return WritePayload((ref NdrWriter writer) =>
                 {
-                    WriteArray(ref writer, new[] { OpcVariant.FromInt32(88) }, NdrVariantExtensions.WriteVariant);
+                    // [out, size_is(,N)] VARIANT** ppvData — [OpcUniquePointer, OpcVariantElements] layout
+                    writer.WriteUniquePointerReferent(true);
+                    WriteVariantElementsArray(ref writer, OpcVariant.FromInt32(88));
                     WriteInt32Array(ref writer, 0);
                 });
             }
@@ -406,6 +426,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int calls = 0;
         var channel = Channel(IOPCItemDeadbandMgt.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling for serverHandles
             int[] handles = ReadInt32Array(ref reader);
             Ensure(handles[0] == 300);
             calls++;
@@ -446,6 +467,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
         int calls = 0;
         var channel = Channel(IOPCItemSamplingMgt.InterfaceId, (int opnum, ref NdrReader reader) =>
         {
+            _ = reader.ReadUInt32();  // [OpcEmitArrayCount] dwCount sibling for serverHandles
             int[] handles = ReadInt32Array(ref reader);
             Ensure(handles[0] == 400);
             calls++;
@@ -525,22 +547,17 @@ public sealed class IOPCMissingDaMethodRoundTripTests
                 Ensure(ReadInt32Array(ref reader)[0] == 0);
                 return WritePayload((ref NdrWriter writer) =>
                 {
-                    // Each [out] T** is unique-pointer-prefixed (referent + array).
-                    // For [OpcVariantElements] arrays we follow DCE 1.1 §14.3.12.3:
-                    // top referent + max_count + N per-element referents + AlignTo(8) +
-                    // N VARIANT bodies. Each VARIANT body is the canonical wireVARIANT
-                    // (clSize + rpcReserved + vt + 3 reserved USHORTs + duplicated
-                    // [switch_is(vt)] discriminator + natural-aligned arm + pad-to-8).
-                    writer.WriteUInt32(0x00020000u);
-                    writer.WriteUInt32(1);
-                    writer.WriteUInt32(0x00020000u);
+                    // [out, size_is(,N)] VARIANT** values — [OpcUniquePointer, OpcVariantElements]
+                    writer.WriteUniquePointerReferent(true);  // outer referent for values
+                    writer.WriteUInt32(1);                     // max_count
+                    writer.WriteUniquePointerReferent(true);  // per-element referent
                     writer.AlignTo(8);
                     NdrVariantExtensions.WriteVariantElement(ref writer, OpcVariant.FromInt32(12));
-                    writer.WriteUInt32(0x00020000u);
+                    // qualities, timestamps, errors — helpers emit their own outer referent
                     WriteUInt16Array(ref writer, 192);
-                    writer.WriteUInt32(0x00020000u);
+                    // [out, size_is(,N)] FILETIME** timestamps — [OpcUniquePointer, OpcFileTimeElements]
+                    writer.WriteUniquePointerReferent(true);
                     writer.WriteConformantFileTimeArray(new[] { 123456789L });
-                    writer.WriteUInt32(0x00020000u);
                     WriteInt32Array(ref writer, 0);
                 });
             }
@@ -604,13 +621,17 @@ public sealed class IOPCMissingDaMethodRoundTripTests
     private static ReadOnlyMemory<byte> EncodeItemResults(int serverHandle, int error) =>
         WritePayload((ref NdrWriter writer) =>
         {
-            WriteArray(ref writer, new[] { new OpcItemResult(serverHandle, VarType.VT_I4, 3, Array.Empty<byte>()) }, NdrOpcItemResultCodec.Write);
+            // [out, size_is(,N)] OPCITEMRESULT** ppAddResults — self-contained helper emits
+            // outer unique-pointer referent + max_count + inline + deferred.
+            NdrOpcItemResultCodec.WriteConformantArray(ref writer, [new OpcItemResult(serverHandle, VarType.VT_I4, 3, Array.Empty<byte>())]);
             WriteInt32Array(ref writer, error);
         });
 
     private static ReadOnlyMemory<byte> EncodeItemStates(OpcItemState state, int error) =>
         WritePayload((ref NdrWriter writer) =>
         {
+            // [out, size_is(,N)] OPCITEMSTATE** ppItemValues — unique-pointer referent + max_count + inline.
+            writer.WriteUniquePointerReferent(true);
             WriteArray(ref writer, new[] { state }, NdrOpcItemStateCodec.Write);
             WriteInt32Array(ref writer, error);
         });
@@ -674,6 +695,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
 
     private static void WriteBooleanArray(ref NdrWriter writer, params bool[] values)
     {
+        writer.WriteUniquePointerReferent(true);  // [out, size_is(,N)] BOOL** outer referent
         writer.WriteUInt32((uint)values.Length);
         foreach (bool value in values)
         {
@@ -683,6 +705,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
 
     private static void WriteInt32Array(ref NdrWriter writer, params int[] values)
     {
+        writer.WriteUniquePointerReferent(true);  // [out, size_is(,N)] HRESULT** / DWORD** outer referent
         writer.WriteUInt32((uint)values.Length);
         foreach (int value in values)
         {
@@ -701,6 +724,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
 
     private static void WriteSingleArray(ref NdrWriter writer, params float[] values)
     {
+        writer.WriteUniquePointerReferent(true);  // [out, size_is(,N)] float** outer referent
         writer.WriteUInt32((uint)values.Length);
         foreach (float value in values)
         {
@@ -710,6 +734,7 @@ public sealed class IOPCMissingDaMethodRoundTripTests
 
     private static void WriteStringArray(ref NdrWriter writer, params string[] values)
     {
+        writer.WriteUniquePointerReferent(true);  // [out, size_is(,N)] LPWSTR** outer referent
         writer.WriteUInt32((uint)values.Length);
         foreach (string value in values)
         {
@@ -719,10 +744,31 @@ public sealed class IOPCMissingDaMethodRoundTripTests
 
     private static void WriteUInt16Array(ref NdrWriter writer, params ushort[] values)
     {
+        writer.WriteUniquePointerReferent(true);  // [out, size_is(,N)] WORD** / VARTYPE** outer referent
         writer.WriteUInt32((uint)values.Length);
         foreach (ushort value in values)
         {
             writer.WriteUInt16(value);
+        }
+    }
+
+    /// <summary>
+    /// Writes a VARIANT conformant array in the C706 §14.3.12.3 deferred-pointer pile layout
+    /// expected by the proxy decoder under <c>[OpcVariantElements]</c>: max_count, N per-element
+    /// referents, AlignTo(8), then N VARIANT bodies. Caller must have already emitted the outer
+    /// unique-pointer referent when the parameter carries <c>[OpcUniquePointer]</c>.
+    /// </summary>
+    private static void WriteVariantElementsArray(ref NdrWriter writer, params OpcVariant[] values)
+    {
+        writer.WriteUInt32((uint)values.Length);
+        for (int i = 0; i < values.Length; i++)
+        {
+            writer.WriteUniquePointerReferent(true);
+        }
+        writer.AlignTo(8);
+        foreach (OpcVariant value in values)
+        {
+            NdrVariantExtensions.WriteVariantElement(ref writer, value);
         }
     }
 

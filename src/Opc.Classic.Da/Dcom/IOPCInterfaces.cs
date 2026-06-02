@@ -232,9 +232,9 @@ public partial interface IOPCItemProperties
     [OpcGenerateMultiOutRecord]
     Task QueryAvailablePropertiesAsync(
         string itemId,
-        out int[] propertyIds,
-        out string[] descriptions,
-        out ushort[] dataTypes,
+        [OpcUniquePointer] out int[] propertyIds,
+        [OpcUniquePointer] out string[] descriptions,
+        [OpcUniquePointer] out ushort[] dataTypes,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -244,9 +244,9 @@ public partial interface IOPCItemProperties
     [OpcGenerateMultiOutRecord]
     Task GetItemPropertiesAsync(
         string itemId,
-        int[] propertyIds,
-        out OpcVariant[] data,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] propertyIds,
+        [OpcUniquePointer, OpcVariantElements] out OpcVariant[] data,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -256,9 +256,9 @@ public partial interface IOPCItemProperties
     [OpcGenerateMultiOutRecord]
     Task LookupItemIdsAsync(
         string itemId,
-        int[] propertyIds,
-        out string[] newItemIds,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] propertyIds,
+        [OpcUniquePointer] out string[] newItemIds,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 }
 
@@ -272,7 +272,8 @@ public partial interface IOPCItemDeadbandMgt
     /// <c>IOPCItemDeadbandMgt::SetItemDeadband</c> (opnum 3). Sets per-item percent deadbands.
     /// </summary>
     [OpcMethod(3)]
-    Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> SetItemDeadbandAsync([OpcEmitArrayCount] int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemDeadbandMgt::GetItemDeadband</c> (opnum 4). Reads per-item percent deadbands.
@@ -280,16 +281,17 @@ public partial interface IOPCItemDeadbandMgt
     [OpcMethod(4)]
     [OpcGenerateMultiOutRecord]
     Task GetItemDeadbandAsync(
-        int[] serverHandles,
-        out float[] percentDeadbands,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcUniquePointer] out float[] percentDeadbands,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemDeadbandMgt::ClearItemDeadband</c> (opnum 5). Clears per-item percent deadbands.
     /// </summary>
     [OpcMethod(5)]
-    Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> ClearItemDeadbandAsync([OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCItemSamplingMgt</c> — per-item sampling-rate/buffer management (IID_IOPCItemSamplingMgt).</summary>
@@ -304,10 +306,10 @@ public partial interface IOPCItemSamplingMgt
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
     Task SetItemSamplingRateAsync(
-        int[] serverHandles,
+        [OpcEmitArrayCount] int[] serverHandles,
         int[] requestedSamplingRates,
-        out int[] revisedSamplingRates,
-        out int[] errors,
+        [OpcUniquePointer] out int[] revisedSamplingRates,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -316,22 +318,24 @@ public partial interface IOPCItemSamplingMgt
     [OpcMethod(4)]
     [OpcGenerateMultiOutRecord]
     Task GetItemSamplingRateAsync(
-        int[] serverHandles,
-        out int[] samplingRates,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcUniquePointer] out int[] samplingRates,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemSamplingMgt::ClearItemSamplingRate</c> (opnum 5). Clears per-item sampling rates.
     /// </summary>
     [OpcMethod(5)]
-    Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> ClearItemSamplingRateAsync([OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemSamplingMgt::SetItemBufferEnable</c> (opnum 6). Enables or disables per-item buffering.
     /// </summary>
     [OpcMethod(6)]
-    Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> SetItemBufferEnableAsync([OpcEmitArrayCount] int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemSamplingMgt::GetItemBufferEnable</c> (opnum 7). Reads per-item buffering flags.
@@ -339,9 +343,9 @@ public partial interface IOPCItemSamplingMgt
     [OpcMethod(7)]
     [OpcGenerateMultiOutRecord]
     Task GetItemBufferEnableAsync(
-        int[] serverHandles,
-        out bool[] enabled,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcUniquePointer] out bool[] enabled,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 }
 
@@ -386,13 +390,17 @@ public partial interface IOPCItemIO
     /// </summary>
     /// <remarks>
     /// IDL: <c>[in] DWORD dwCount, [in, size_is(dwCount)] LPCWSTR *pszItemIDs,
-    /// [in, size_is(dwCount)] OPCITEMVQT *pItemVQT</c>. The standalone
-    /// <c>dwCount</c> field is emitted before the arrays via
-    /// <see cref="OpcEmitArrayCountAttribute"/> on <paramref name="itemIds"/>;
-    /// the LPCWSTR* elements use the deferred-pointer layout via
-    /// <see cref="OpcDeferredElementsAttribute"/>.
+    /// [in, size_is(dwCount)] OPCITEMVQT *pItemVQT, [out, size_is(,dwCount)]
+    /// HRESULT **ppErrors</c>. The standalone <c>dwCount</c> field is emitted
+    /// before the arrays via <see cref="OpcEmitArrayCountAttribute"/> on
+    /// <paramref name="itemIds"/>; the LPCWSTR* elements use the deferred-pointer
+    /// layout via <see cref="OpcDeferredElementsAttribute"/>. The response
+    /// HRESULT array is a unique pointer to a conformant array — the return
+    /// value carries <see cref="OpcUniquePointerAttribute"/> so the proxy
+    /// consumes the outer referent before reading max_count.
     /// </remarks>
     [OpcMethod(4)]
+    [return: OpcUniquePointer]
     Task<int[]> WriteVqtAsync([OpcEmitArrayCount, OpcDeferredElements] string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
@@ -408,9 +416,9 @@ public partial interface IOPCItemMgt
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
     Task AddItemsAsync(
-        OpcItemDef[] itemDefinitions,
-        out OpcItemResult[] addResults,
-        out int[] errors,
+        [OpcEmitArrayCount] OpcItemDef[] itemDefinitions,
+        [OpcUniquePointer] out OpcItemResult[] addResults,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -419,35 +427,39 @@ public partial interface IOPCItemMgt
     [OpcMethod(4)]
     [OpcGenerateMultiOutRecord]
     Task ValidateItemsAsync(
-        OpcItemDef[] itemDefinitions,
+        [OpcEmitArrayCount] OpcItemDef[] itemDefinitions,
         bool blobUpdate,
-        out OpcItemResult[] validationResults,
-        out int[] errors,
+        [OpcUniquePointer] out OpcItemResult[] validationResults,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::RemoveItems</c> (opnum 5). Removes server handles and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(5)]
-    Task<int[]> RemoveItemsAsync(int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> RemoveItemsAsync([OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::SetActiveState</c> (opnum 6). Sets active state and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(6)]
-    Task<int[]> SetActiveStateAsync(int[] serverHandles, bool active, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> SetActiveStateAsync([OpcEmitArrayCount] int[] serverHandles, bool active, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::SetClientHandles</c> (opnum 7). Rebinds client handles and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(7)]
-    Task<int[]> SetClientHandlesAsync(int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> SetClientHandlesAsync([OpcEmitArrayCount] int[] serverHandles, int[] clientHandles, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::SetDatatypes</c> (opnum 8). Sets requested VARTYPEs and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(8)]
-    Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> SetDatatypesAsync([OpcEmitArrayCount] int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCItemMgt::CreateEnumerator</c> (opnum 9). Returns an <c>IEnumOPCItemAttributes</c> enumerator.
@@ -525,16 +537,18 @@ public partial interface IOPCSyncIO
     /// </summary>
     [OpcMethod(3)]
     [OpcGenerateMultiOutRecord]
+    [return: OpcUniquePointer]
     Task<OpcItemState[]> ReadAsync(
         int dataSource,
-        int[] serverHandles,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCSyncIO::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(4)]
+    [return: OpcUniquePointer]
     Task<int[]> WriteAsync(
         [OpcEmitArrayCount] int[] serverHandles,
         [OpcVariantElements] OpcVariant[] values,
@@ -551,17 +565,19 @@ public partial interface IOPCSyncIO2
     /// <c>IOPCSyncIO2::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<OpcItemState[]> ReadAsync(
         int dataSource,
-        int[] serverHandles,
-        out int[] errors,
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCSyncIO2::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(4)]
-    Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> WriteAsync([OpcEmitArrayCount] int[] serverHandles, [OpcVariantElements] OpcVariant[] values, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCSyncIO2::ReadMaxAge</c> (opnum 5). Reads values with per-item max-age semantics.
@@ -569,19 +585,20 @@ public partial interface IOPCSyncIO2
     [OpcMethod(5)]
     [OpcGenerateMultiOutRecord]
     Task ReadMaxAgeAsync(
-        int[] serverHandles,
+        [OpcEmitArrayCount] int[] serverHandles,
         int[] maxAges,
-        out OpcVariant[] values,
-        out ushort[] qualities,
-        out long[] timestamps,
-        out int[] errors,
+        [OpcUniquePointer, OpcVariantElements] out OpcVariant[] values,
+        [OpcUniquePointer] out ushort[] qualities,
+        [OpcUniquePointer, OpcFileTimeElements] out long[] timestamps,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCSyncIO2::WriteVQT</c> (opnum 6). Writes value/quality/timestamp tuples and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(6)]
-    Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> WriteVqtAsync([OpcEmitArrayCount] int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCAsyncIO2</c> — DA 2.05a asynchronous I/O (IID_IOPCAsyncIO2).</summary>
@@ -595,9 +612,9 @@ public partial interface IOPCAsyncIO2
     /// </summary>
     [OpcMethod(3)]
     Task<int> ReadAsync(
-        int[] serverHandles,
+        [OpcEmitArrayCount] int[] serverHandles,
         int transactionId,
-        out int[] errors,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -605,10 +622,10 @@ public partial interface IOPCAsyncIO2
     /// </summary>
     [OpcMethod(4)]
     Task<int> WriteAsync(
-        int[] serverHandles,
-        OpcVariant[] values,
+        [OpcEmitArrayCount] int[] serverHandles,
+        [OpcVariantElements] OpcVariant[] values,
         int transactionId,
-        out int[] errors,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -672,10 +689,10 @@ public partial interface IOPCAsyncIO3
     /// </summary>
     [OpcMethod(9)]
     Task<int> ReadMaxAgeAsync(
-        int[] serverHandles,
+        [OpcEmitArrayCount] int[] serverHandles,
         int[] maxAges,
         int transactionId,
-        out int[] errors,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -683,10 +700,10 @@ public partial interface IOPCAsyncIO3
     /// </summary>
     [OpcMethod(10)]
     Task<int> WriteVqtAsync(
-        int[] serverHandles,
+        [OpcEmitArrayCount] int[] serverHandles,
         OpcItemVqt[] values,
         int transactionId,
-        out int[] errors,
+        [OpcUniquePointer] out int[] errors,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -705,7 +722,14 @@ public partial interface IEnumOPCItemAttributes
     /// <summary>
     /// <c>IEnumOPCItemAttributes::Next</c> (opnum 3). Returns up to <paramref name="count"/> item attributes; an empty array signals end of enumeration.
     /// </summary>
+    /// <remarks>
+    /// IDL: <c>[in] ULONG celt, [out, size_is(,*pceltFetched)] OPCITEMATTRIBUTES **ppItemArray, [out] ULONG *pceltFetched</c>.
+    /// <see cref="OpcUniquePointerAttribute"/> on the return value directs the decoder to consume the
+    /// outer unique-pointer referent and treat a null referent as an empty array (end of enumeration).
+    /// The trailing <c>pceltFetched</c> out parameter is not surfaced — the array's own max_count is authoritative.
+    /// </remarks>
     [OpcMethod(3)]
+    [return: OpcUniquePointer]
     Task<OpcItemAttributes[]> NextAsync(int count, CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -1132,7 +1132,18 @@ namespace Opc.Classic.Generators
         {
             if (parameter.IsUniquePointer)
             {
-                sb.Append(statementIndent).Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
+                // [out, size_is(,N)] FILETIME** under pointer_default(unique).
+                // Null referent → empty array (must not read max_count).
+                sb.Append(statementIndent).Append("long[] ").Append(targetLocal).AppendLine(";");
+                sb.Append(statementIndent).Append("if (").Append(readerLocal).Append(".TryReadReferentId(out _))");
+                sb.Append(statementIndent).AppendLine("{");
+                sb.Append(statementIndent).Append("    ").Append(targetLocal).Append(" = ").Append(readerLocal).AppendLine(".ReadConformantFileTimeArray();");
+                sb.Append(statementIndent).AppendLine("}");
+                sb.Append(statementIndent).AppendLine("else");
+                sb.Append(statementIndent).AppendLine("{");
+                sb.Append(statementIndent).Append("    ").Append(targetLocal).AppendLine(" = global::System.Array.Empty<long>();");
+                sb.Append(statementIndent).AppendLine("}");
+                return;
             }
             sb.Append(statementIndent).Append("var ").Append(targetLocal)
                 .Append(" = ").Append(readerLocal).AppendLine(".ReadConformantFileTimeArray();");
@@ -1158,12 +1169,32 @@ namespace Opc.Classic.Generators
 
     private static void EmitVariantElementsArrayRead(StringBuilder sb, string statementIndent, string readerLocal, ImmutableArray<string> parameterNames, string targetLocal, bool isUniquePointer)
     {
-        if (isUniquePointer)
-        {
-            sb.Append(statementIndent).Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
-        }
         string countLocal = UniqueLocalName(parameterNames, targetLocal + "Count", readerLocal, targetLocal);
         string indexLocal = UniqueLocalName(parameterNames, targetLocal + "Idx", readerLocal, targetLocal, countLocal);
+        if (isUniquePointer)
+        {
+            // [out, size_is(,N)] VARIANT** under pointer_default(unique). Wire is
+            // [referent][max_count][N inline][N deferred]. A null referent means
+            // empty array — must NOT continue reading max_count or we drift the
+            // wire cursor and corrupt subsequent out parameters (e.g. ppErrors).
+            sb.Append(statementIndent).Append("global::Opc.Classic.OpcVariant[] ").Append(targetLocal).AppendLine(";");
+            sb.Append(statementIndent).Append("if (").Append(readerLocal).Append(".TryReadReferentId(out _))");
+            sb.Append(statementIndent).AppendLine("{");
+            sb.Append(statementIndent).Append("    var ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
+            sb.Append(statementIndent).Append("    ").Append(targetLocal).Append(" = new global::Opc.Classic.OpcVariant[").Append(countLocal).AppendLine("];");
+            sb.Append(statementIndent).Append("    for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++) { _ = ").Append(readerLocal).AppendLine(".ReadUInt32(); }");
+            sb.Append(statementIndent).Append("    ").Append(readerLocal).AppendLine(".AlignTo(8);");
+            sb.Append(statementIndent).Append("    for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
+            sb.Append(statementIndent).AppendLine("    {");
+            sb.Append(statementIndent).Append("        ").Append(targetLocal).Append('[').Append(indexLocal).Append("] = global::Opc.Classic.Ndr.NdrVariantExtensions.ReadVariantElement(ref ").Append(readerLocal).AppendLine(");");
+            sb.Append(statementIndent).AppendLine("    }");
+            sb.Append(statementIndent).AppendLine("}");
+            sb.Append(statementIndent).AppendLine("else");
+            sb.Append(statementIndent).AppendLine("{");
+            sb.Append(statementIndent).Append("    ").Append(targetLocal).AppendLine(" = global::System.Array.Empty<global::Opc.Classic.OpcVariant>();");
+            sb.Append(statementIndent).AppendLine("}");
+            return;
+        }
         sb.Append(statementIndent).Append("var ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
         sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = new global::Opc.Classic.OpcVariant[").Append(countLocal).AppendLine("];");
         sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++) { _ = ").Append(readerLocal).AppendLine(".ReadUInt32(); }");
@@ -1206,23 +1237,7 @@ namespace Opc.Classic.Generators
         {
             if (codec.IsArray)
             {
-                // [out] T** with size_is(,cIids) — unique pointer to a conformant
-                // array. Wire is [referent][max_count][elements...]. The array
-                // helper handles max_count + elements; emit the referent skip
-                // here when the parameter/return carries [OpcUniquePointer].
-                if (isUniquePointer)
-                {
-                    sb.Append(statementIndent).Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
-                }
-                EmitArrayCodecReadLocal(
-                    sb,
-                    statementIndent,
-                    readerLocal,
-                    codec,
-                    method.ParameterNames,
-                    targetLocal,
-                    responsePayloadLocal,
-                    responseSpanLocal);
+                EmitArrayCodecReadLocalDispatch(sb, statementIndent, readerLocal, codec, method.ParameterNames, targetLocal, responsePayloadLocal, responseSpanLocal, isUniquePointer);
                 return;
             }
 
@@ -1244,6 +1259,46 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append(declaredType).Append(' ').Append(targetLocal).AppendLine(" = default!;");
     }
 
+    private static void EmitArrayCodecReadLocalDispatch(
+        StringBuilder sb,
+        string statementIndent,
+        string readerLocal,
+        CodecEmitter codec,
+        ImmutableArray<string> parameterNames,
+        string targetLocal,
+        string responsePayloadLocal,
+        string responseSpanLocal,
+        bool isUniquePointer)
+    {
+        // [out] T** with size_is(,cIids) — unique pointer to a conformant
+        // array. Wire is [referent][max_count][elements...]. When the
+        // parameter/return carries [OpcUniquePointer] we branch on the
+        // referent: a null referent means an empty array — must NOT
+        // continue reading max_count or we drift the wire cursor and
+        // corrupt subsequent out parameters.
+        //
+        // Deferred-pile helpers in TryGetDeferredPileArrayHelper are
+        // self-contained: they read the outer referent themselves and
+        // return [] when null. The generator therefore must NOT pre-read
+        // the referent — doing so would double-consume 4 bytes. For codecs
+        // without a registered helper we emit the inline if/else branch.
+        bool hasHelper = TryGetDeferredPileArrayHelper(codec.ArrayElementType) is not null;
+        if (!isUniquePointer || hasHelper)
+        {
+            EmitArrayCodecReadLocal(sb, statementIndent, readerLocal, codec, parameterNames, targetLocal, responsePayloadLocal, responseSpanLocal, declareTarget: true);
+            return;
+        }
+        sb.Append(statementIndent).Append(codec.ArrayElementType!).Append("[] ").Append(targetLocal).AppendLine(";");
+        sb.Append(statementIndent).Append("if (").Append(readerLocal).Append(".TryReadReferentId(out _))");
+        sb.Append(statementIndent).AppendLine("{");
+        EmitArrayCodecReadLocal(sb, statementIndent + "    ", readerLocal, codec, parameterNames, targetLocal, responsePayloadLocal, responseSpanLocal, declareTarget: false);
+        sb.Append(statementIndent).AppendLine("}");
+        sb.Append(statementIndent).AppendLine("else");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    ").Append(targetLocal).Append(" = global::System.Array.Empty<").Append(codec.ArrayElementType!).AppendLine(">();");
+        sb.Append(statementIndent).AppendLine("}");
+    }
+
     private static void EmitArrayCodecReadLocal(
         StringBuilder sb,
         string statementIndent,
@@ -1252,11 +1307,13 @@ namespace Opc.Classic.Generators
         ImmutableArray<string> parameterNames,
         string targetLocal,
         string responsePayloadLocal,
-        string responseSpanLocal)
+        string responseSpanLocal,
+        bool declareTarget = true)
     {
         string countLocal = UniqueLocalName(parameterNames, targetLocal + "Count", readerLocal, responsePayloadLocal, responseSpanLocal, targetLocal);
         string arrayLocal = UniqueLocalName(parameterNames, targetLocal + "Array", readerLocal, responsePayloadLocal, responseSpanLocal, targetLocal, countLocal);
         string indexLocal = UniqueLocalName(parameterNames, targetLocal + "Index", readerLocal, responsePayloadLocal, responseSpanLocal, targetLocal, countLocal, arrayLocal);
+        string assignKeyword = declareTarget ? "var " : string.Empty;
 
         // Codecs whose elements contain nested [unique] pointers (e.g.
         // OPCBROWSEELEMENT with LPWSTR fields + nested OPCITEMPROPERTIES)
@@ -1269,7 +1326,7 @@ namespace Opc.Classic.Generators
         if (deferredHelper is not null)
         {
             sb.Append(statementIndent).Append("var ").Append(arrayLocal).Append(" = ").Append(deferredHelper).Append("(ref ").Append(readerLocal).AppendLine(");");
-            sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
+            sb.Append(statementIndent).Append(assignKeyword).Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
             return;
         }
 
@@ -1280,7 +1337,7 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("{");
         sb.Append(statementIndent).Append("    ").Append(arrayLocal).Append('[').Append(indexLocal).Append("] = ").Append(FormatReadExpression(codec, readerLocal)).AppendLine(";");
         sb.Append(statementIndent).AppendLine("}");
-        sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
+        sb.Append(statementIndent).Append(assignKeyword).Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
     }
 
     /// <summary>
@@ -1297,6 +1354,10 @@ namespace Opc.Classic.Generators
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.ReadConformantArrayWithReferent",
         "global::Opc.Classic.Da.OpcItemProperties" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcBrowseResponseDecoder.ReadItemPropertiesConformantArray",
+        "global::Opc.Classic.Da.OpcItemResult" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemResultCodec.ReadConformantArray",
+        "global::Opc.Classic.Da.OpcItemAttributes" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemAttributesCodec.ReadConformantArray",
         _ => null,
     };
 

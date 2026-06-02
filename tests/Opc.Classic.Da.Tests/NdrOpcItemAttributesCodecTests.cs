@@ -194,9 +194,11 @@ public sealed class NdrOpcItemAttributesCodecTests
 
     private static (int ActiveWire, uint ClientHandleWire) ReadActiveAndClientHandleAfterStrings(byte[] bytes)
     {
+        // OPCITEMATTRIBUTES inline layout (post-AG2): two 4-byte unique-pointer
+        // referents (szAccessPath, szItemID) then INT32 bActive then UINT32 hClient.
         var r = new NdrReader(bytes);
-        _ = r.ReadUnicodeStringPtr();
-        _ = r.ReadUnicodeStringPtr();
+        _ = r.ReadUInt32();   // szAccessPath referent
+        _ = r.ReadUInt32();   // szItemID referent
         int activeWire = r.ReadInt32();
         uint clientHandleWire = r.ReadUInt32();
         return (activeWire, clientHandleWire);
@@ -204,15 +206,17 @@ public sealed class NdrOpcItemAttributesCodecTests
 
     private static (ushort Requested, ushort Canonical, int RequestedOffset, int CanonicalOffset) ReadDataTypeVtypes(byte[] bytes)
     {
+        // OPCITEMATTRIBUTES inline layout: 2 string refs + bActive + hClient + hServer
+        // + dwAccessRights + dwBlobSize + pBlob_ref + vtRequested + vtCanonical (+ dwEUType + VARIANT).
         var r = new NdrReader(bytes);
-        _ = r.ReadUnicodeStringPtr();
-        _ = r.ReadUnicodeStringPtr();
-        _ = r.ReadInt32();
-        _ = r.ReadUInt32();
-        _ = r.ReadUInt32();
-        _ = r.ReadUInt32();
-        _ = r.ReadConformantByteArray();
-        r.AlignTo(2);
+        _ = r.ReadUInt32();   // szAccessPath referent
+        _ = r.ReadUInt32();   // szItemID referent
+        _ = r.ReadInt32();    // bActive
+        _ = r.ReadUInt32();   // hClient
+        _ = r.ReadUInt32();   // hServer
+        _ = r.ReadUInt32();   // dwAccessRights
+        _ = r.ReadUInt32();   // dwBlobSize
+        _ = r.ReadUInt32();   // pBlob referent
         int requestedOffset = r.Position;
         ushort requested = r.ReadUInt16();
         int canonicalOffset = r.Position;

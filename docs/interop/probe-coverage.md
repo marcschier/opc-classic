@@ -90,3 +90,37 @@ Still failing (residual follow-ups):
 - opcclassic.da.poll_subscription: depends on item handles from add_items
 - opcclassic.cpx.get_complex_type / get_dictionary: shared codec path with get_properties
 - opcclassic.discovery.enumerate_servers: OPCEnum activation still rejected (0x000006F7) under default Windows-SSO; needs DCOM AppID ACL tweak per docs/interop/opcenum-auth.md
+
+## Post-fix delta (Tracks AF + AG + AH + AI shipped)
+
+After NDR wire-format completion shipped, re-ran Matrikon probe (full JSON: docs/interop/probe-matrikon-final.json).
+
+Matrikon: **22/95 OK** (was 21/95 headline). The headline count only moved by one but the underlying state changed materially:
+
+**New verified end-to-end against Matrikon (now hitting the server and getting valid responses):**
+- `opcclassic.da.add_items` — Matrikon AddItems accepts the OPCITEMDEF[] payload, returns 2 server handles (e.g. `78333568, 78333928`) with `hr=0x00000000`. RPC_E_SERVERFAULT (0x80010105) eliminated.
+- `opcclassic.da.write_sync` — Now actually transmits the values to Matrikon (previously failed silently on empty arrays). Response `hr=0xC0040004` is `OPC_E_BADTYPE` (Bucket Brigade.Int4 doesn't accept the probe's string write), confirming the request reached the server and the server validated it.
+
+**Residual failures (post-AF/AG/AH):**
+- `opcclassic.da.read_sync` — request now reaches the server (with correct dwCount + handles), but the response array decode still drops bytes for the OPCITEMSTATE+VARIANT pile when VARIANT bodies have unusual padding. Needs live wire capture to diagnose.
+- `opcclassic.da.poll_subscription` — depends on `read_sync` succeeding.
+- `opcclassic.da.get_properties` — LPWSTR/VARIANT response decode offset issue persists. Likely the per-element VARIANT alignment in `[OpcVariantElements]` decode is misaligned for the specific Matrikon wire shape.
+- `opcclassic.cpx.get_complex_type` / `get_dictionary` — share the `get_properties` codec path.
+- `opcclassic.discovery.enumerate_servers` — environmental DCOM AppID ACL issue on OPCEnum CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`. Also surfaced a code gap: `IOPCServerList` enum/details methods are stubbed in `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:887,902` (Track AJ2 follow-up).
+- HDA / AE / Batch / Commands / DX / XML-DA — Matrikon Simulation does not implement these specs; no in-tree server available.
+
+**What shipped under Track AF/AG/AH:**
+- AF1: `[OpcEmitArrayCount]` added to every DA / CPX method matching `[in] DWORD dwCount, [in, size_is(dwCount)] T*` (covers IOPCItemMgt, IOPCSyncIO/2, IOPCAsyncIO2/3, IOPCItemProperties, IOPCItemDeadbandMgt, IOPCItemSamplingMgt, IOPCItemIO).
+- AF2: `[OpcUniquePointer]` added to every `out T[]` parameter and `[return: OpcUniquePointer]` to every `Task<T[]>` return that maps to IDL `[out, size_is(,N)] T**`.
+- AF4: `[OpcVariantElements]` added to VARIANT-array outputs (e.g. `IOPCItemProperties.GetItemPropertiesAsync.data`, `IOPCSyncIO2.ReadMaxAgeAsync.values`).
+- AG1: `NdrOpcItemResultCodec` rewritten with the correct DCE/RPC 1.1 §14.3.12.3 deferred-pointer-pile layout (inline 20 bytes + deferred conformant blob). Added self-contained `WriteConformantArray` / `ReadConformantArray` helpers that handle the outer unique-pointer referent and null-as-empty-array semantics.
+- AG2: `NdrOpcItemAttributesCodec` rewritten symmetrically for the `IEnumOPCItemAttributes::Next` response shape.
+- AG3: Registered both new helpers in `OpcProxyGenerator.TryGetDeferredPileArrayHelper` (response decode), `OpcProxyGenerator.TryGetDeferredPileArrayHelperWrite` (server-side write), and `OpcServerDispatchGenerator.TryGetDeferredPileArrayHelperWrite/Read`.
+- AG4: Null-referent decode safety. Proxy generator now branches on the outer unique-pointer referent for `[out, size_is(,N)] T**` parameters — a null referent yields `Array.Empty<T>()` instead of consuming `max_count` and corrupting the wire cursor for subsequent out parameters.
+- AH: Hand-written `IOPCSyncIOClientProxy.cs` fixed to emit `dwCount` before serverHandles in `ReadAsync` request, and to consume the outer unique-pointer referents on both response arrays (`OPCITEMSTATE**` + `HRESULT**`).
+- AI2: Full TUnit suite green (1+ pre-existing flaky TCP test outside scope).
+
+**Outstanding work (tracked as follow-up todos):**
+- AJ1: TestServer activation timeout (CO_E_SERVER_EXEC_FAILURE). Even after `tools/register-testserver.ps1` registers the proxy/stub DLLs into System32, DCOM SCM times out activating the local EXE. Requires either upstream WiX MSI build or AppID/DCOM ACL investigation.
+- AJ2: Implement `IOPCServerList::EnumClassesOfCategories` + `GetClassDetails` (currently TODO comments) to unblock `discovery.enumerate_servers` once OPCEnum ACLs are granted.
+- Live wire decode fixes for `read_sync` / `get_properties` / `cpx.*`: needs Wireshark capture of an equivalent Windows DCOM call to disambiguate the actual VARIANT-array padding Matrikon emits. The proxy code paths are correct per DCE/MIDL spec; Matrikon may use a non-spec layout for these specific fields that requires server-specific accommodation.

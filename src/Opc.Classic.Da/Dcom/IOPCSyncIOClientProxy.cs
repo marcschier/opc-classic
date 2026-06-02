@@ -27,8 +27,13 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
 
         ReadOnlyMemory<byte> payload = WritePayload((ref NdrWriter writer) =>
         {
+            // IOPCSyncIO::Read IDL: [in] OPCDATASOURCE dwSource, [in] DWORD dwCount,
+            // [in, size_is(dwCount)] OPCHANDLE *phServer. Both the explicit dwCount
+            // AND the array's own NDR max_count must be written (the array is a
+            // top-level [ref] under DCE 1.1 §14.3.10.3, so no outer referent).
             writer.WriteInt32(dataSource);
-            writer.WriteConformantInt32Array(serverHandles);
+            writer.WriteUInt32((uint)serverHandles.Length);   // dwCount sibling
+            writer.WriteConformantInt32Array(serverHandles);  // max_count + DWORDs
         });
 #pragma warning disable VSTHRD103 // Matches generated out-parameter proxy pattern: out values must be assigned before returning Task.
         ReadResult decoded = InvokeReadAsync(payload, cancellationToken).GetAwaiter().GetResult();
@@ -47,8 +52,11 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
 
         ThrowIfFailed(result);
         var reader = new NdrReader(result.ResponsePayload.Span);
-        OpcItemState[] states = ReadArray(ref reader, NdrOpcItemStateCodec.Read);
-        int[] errors = reader.ReadConformantInt32Array();
+        // Response IDL: [out, size_is(,dwCount)] OPCITEMSTATE **ppItemValues,
+        // [out, size_is(,dwCount)] HRESULT **ppErrors. Both T** are unique
+        // pointers; consume the outer referent before max_count.
+        OpcItemState[] states = ReadUniqueArray(ref reader, NdrOpcItemStateCodec.Read);
+        int[] errors = ReadUniqueInt32Array(ref reader);
         return new ReadResult(states, errors);
     }
 
@@ -79,21 +87,36 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
 
         ThrowIfFailed(result);
         var reader = new NdrReader(result.ResponsePayload.Span);
-        return reader.ReadConformantInt32Array();
+        // Response IDL: [out, size_is(,dwCount)] HRESULT **ppErrors.
+        // Unique pointer to a conformant array — consume the referent.
+        return ReadUniqueInt32Array(ref reader);
     }
 
     private sealed record ReadResult(OpcItemState[] States, int[] Errors);
 
-    private static T[] ReadArray<T>(ref NdrReader reader, NdrReadFunc<T> read)
+    private static T[] ReadUniqueArray<T>(ref NdrReader reader, NdrReadFunc<T> read)
     {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
         int count = reader.ReadInt32();
+        if (count <= 0) { return []; }
         var values = new T[count];
         for (int i = 0; i < values.Length; i++)
         {
             values[i] = read(ref reader);
         }
-
         return values;
+    }
+
+    private static int[] ReadUniqueInt32Array(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
+        return reader.ReadConformantInt32Array();
     }
 
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write)
