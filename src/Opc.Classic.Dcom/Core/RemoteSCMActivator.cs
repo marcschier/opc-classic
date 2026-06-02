@@ -28,6 +28,7 @@ internal sealed class RemoteSCMActivator {
     internal sealed class RemoteCreateInstance : NdrOp, IServerActivation {
         private readonly string _targetClsid;
         private readonly string _targetServer;
+        private readonly int _activationAuthenticationLevel;
 #pragma warning disable IDE0052 // Remove unread private members
         private byte[] _oxid;
         private int _authenticationHint = -1;
@@ -40,9 +41,10 @@ internal sealed class RemoteSCMActivator {
         /// </summary>
         /// <param name="targetServer"></param>
         /// <param name="clsid"></param>
-        public RemoteCreateInstance(string targetServer, string clsid) {
+        public RemoteCreateInstance(string targetServer, string clsid, int activationAuthenticationLevel = 5) {
             _targetClsid = clsid;
             _targetServer = targetServer;
+            _activationAuthenticationLevel = activationAuthenticationLevel < 5 ? 5 : activationAuthenticationLevel;
         }
 
         /// <inheritdoc/>
@@ -474,7 +476,7 @@ internal sealed class RemoteSCMActivator {
                     strukt.AddMember(0x00000000);
                     strukt.AddMember(0x00000000);
                     strukt.AddMember(0x00000000);
-                    strukt.AddMember(0x00000001); // auth level none ? Why ?
+                    strukt.AddMember(_activationAuthenticationLevel);
                     strukt.AddMember(new UUID(UUID.NIL_UUID));
                     strukt.AddMember(0x00000000);
                     strukt.AddMember(0x14);

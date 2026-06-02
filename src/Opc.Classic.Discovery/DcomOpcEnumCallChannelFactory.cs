@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Transport;
 
@@ -30,7 +31,19 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
 
     /// <summary>Creates a default unauthenticated DCOM channel factory.</summary>
     public DcomOpcEnumCallChannelFactory()
-        : this(new DcomCallChannelFactory(new TcpSocketTransportFactory()), static () => NoOpAuthContext.Instance)
+        : this(
+            new DcomCallChannelFactory(new TcpSocketTransportFactory()),
+            static () => NoOpAuthContext.Instance,
+            OpcProtectionLevel.Integrity)
+    {
+    }
+
+    /// <summary>Creates a DCOM channel factory from OPC connection authentication settings.</summary>
+    public DcomOpcEnumCallChannelFactory(OpcConnectData connectData)
+        : this(
+            new DcomCallChannelFactory(new TcpSocketTransportFactory()),
+            CreateAuthContextFactory(connectData),
+            NormalizeActivationProtection(connectData.ProtectionLevel))
     {
     }
 
@@ -38,13 +51,26 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     public DcomOpcEnumCallChannelFactory(
         DcomCallChannelFactory channelFactory,
         Func<IAuthContext> authContextFactory)
+        : this(channelFactory, authContextFactory, OpcProtectionLevel.Integrity)
+    {
+    }
+
+    /// <summary>Creates a DCOM channel factory with injectable transport, authentication, and activation protection.</summary>
+    public DcomOpcEnumCallChannelFactory(
+        DcomCallChannelFactory channelFactory,
+        Func<IAuthContext> authContextFactory,
+        OpcProtectionLevel activationProtectionLevel)
     {
         ArgumentNullException.ThrowIfNull(channelFactory);
         ArgumentNullException.ThrowIfNull(authContextFactory);
 
         _channelFactory = channelFactory;
         _authContextFactory = authContextFactory;
+        ActivationProtectionLevel = NormalizeActivationProtection(activationProtectionLevel);
     }
+
+    /// <inheritdoc />
+    public OpcProtectionLevel ActivationProtectionLevel { get; }
 
     /// <inheritdoc />
     public ValueTask<ICallChannel> CreateActivationChannelAsync(
@@ -72,6 +98,30 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
 
     private Task<ICallChannel> ConnectAsync(EndPoint endpoint, Guid clsidToActivate, CancellationToken cancellationToken) =>
         _channelFactory.ConnectAsync(endpoint, clsidToActivate, _authContextFactory(), cancellationToken);
+
+    private static Func<IAuthContext> CreateAuthContextFactory(OpcConnectData connectData)
+    {
+        ArgumentNullException.ThrowIfNull(connectData);
+        OpcConnectData activationConnectData = NormalizeConnectData(connectData);
+        return () => NtlmAuthentication.CreateAuthContext(activationConnectData);
+    }
+
+    private static OpcConnectData NormalizeConnectData(OpcConnectData connectData)
+    {
+        OpcProtectionLevel activationProtection = NormalizeActivationProtection(connectData.ProtectionLevel);
+        return activationProtection == connectData.ProtectionLevel
+            ? connectData
+            : new OpcConnectData(
+                connectData.Url,
+                connectData.Credentials,
+                connectData.AuthMode,
+                activationProtection,
+                connectData.OperationTimeout,
+                connectData.ChannelBindings);
+    }
+
+    private static OpcProtectionLevel NormalizeActivationProtection(OpcProtectionLevel protectionLevel) =>
+        protectionLevel == OpcProtectionLevel.Privacy ? OpcProtectionLevel.Privacy : OpcProtectionLevel.Integrity;
 
     private static DnsEndPoint ResolveObjectEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef)
     {

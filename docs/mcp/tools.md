@@ -65,6 +65,11 @@ Enumerates OPC Classic server registrations on a host through OPCEnum / OPC.Serv
 | --- | --- | --- | --- |
 | `host` | `string` | `"localhost"` | Host name or IP address to query. Use localhost for the local machine. |
 | `categoryIds` | `string[]?` | `null` | Optional OPC category GUID strings to filter, such as CATID_OPCDAServer20 or CATID_OPCDAServer30. Omit for the default OPCEnum categories. |
+| `username` | `string?` | `null` | Optional user name for NTLMv2 or Kerberos authentication. Use DOMAIN\\user when a Windows domain is required. |
+| `password` | `string?` | `null` | Optional password for NTLMv2 or Kerberos authentication. Omit only for anonymous discovery. |
+| `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
+| `useSso` | `bool` | `false` | True to authenticate using the current Windows logon via NegotiateAuthentication (no username/password needed). Windows-only. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<IReadOnlyList<OpcServerDescriptorDto>>`
 
@@ -86,6 +91,8 @@ Connects an existing MCP session to an OPC DA server using DCOM or an in-memory 
 | `password` | `string?` | `null` | Optional password for NTLMv2 or Kerberos authentication. Omit only for anonymous or in-memory connections. |
 | `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
 | `connectionString` | `string?` | `null` | Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, or dcom://host/ProgID for DCOM. |
+| `useSso` | `bool` | `false` | True to authenticate using the current Windows logon via NegotiateAuthentication (no username/password needed). Windows-only. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<OpcSessionDto>`
 
@@ -288,6 +295,7 @@ Connects an existing MCP session to an OPC AE server using DCOM or an in-memory 
 | `password` | `string?` | `null` | Optional password for NTLMv2 or Kerberos authentication. Omit only for anonymous or in-memory connections. |
 | `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
 | `connectionString` | `string?` | `null` | Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, or opcae://host/ProgID for DCOM. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<OpcResultDto>`
 
@@ -481,6 +489,7 @@ Connects an existing MCP session to an OPC HDA server using DCOM or an in-memory
 | `password` | `string?` | `null` | Optional password for NTLMv2 or Kerberos authentication. Omit only for anonymous or in-memory connections. |
 | `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
 | `connectionString` | `string?` | `null` | Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, or opchda://host/ProgID for DCOM. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<OpcResultDto>`
 
@@ -786,6 +795,7 @@ Connects an existing MCP session to an OPC Batch server using DCOM or an in-memo
 | `password` | `string?` | `null` | Optional password for NTLMv2 or Kerberos authentication. Omit only for anonymous or in-memory connections. |
 | `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
 | `connectionString` | `string?` | `null` | Optional connection string. Use inmemory://name for a registered InMemoryBatchConnectionRegistry channel, or dcom://host/ProgID for DCOM. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<OpcResultDto>`
 
@@ -897,6 +907,7 @@ Connects an existing MCP session to an OPC Commands server using DCOM or an in-m
 | `password` | `string?` | `null` | Optional password for NTLMv2 or Kerberos authentication. Omit only for anonymous or in-memory connections. |
 | `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
 | `connectionString` | `string?` | `null` | Optional connection string. Use inmemory://name for a registered InMemoryCommandsConnectionRegistry channel, or dcom://host/ProgID for DCOM. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<OpcResultDto>`
 
@@ -1044,6 +1055,7 @@ Connects an existing MCP session to an OPC DX server. Use connectionString=inmem
 | `password` | `string?` | `null` | Optional password for DCOM authentication. |
 | `useKerberos` | `bool` | `false` | True to request Kerberos/SPNEGO authentication instead of NTLMv2 when credentials are supplied. |
 | `connectionString` | `string?` | `null` | Optional connection string. Use inmemory://name for a registered in-memory DX client. |
+| `authLevel` | `string?` | `null` | Optional DCOM RPC authentication level: default, connect, call, packet, pkt_integrity, or pkt_privacy. Use pkt_integrity for hardened Windows DCOM. |
 
 **Returns:** `Task<OpcSessionDto>`
 

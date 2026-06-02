@@ -24,6 +24,7 @@ namespace Opc.Classic.Discovery;
 public sealed class OpcEnumClient : IOpcDiscovery
 {
     private const int RemoteCreateInstanceOpnum = 4;
+    private const int LegacyRemoteActivationOpnum = 0;
     private const int EnumerationBatchSize = 64;
     private const int DefaultPayloadSize = 4096;
     private const int MaximumPayloadSize = 65536;
@@ -33,6 +34,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private const uint ObjRefSignature = 0x574F454D;
 
     private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
+    private static readonly Guid LegacyActivationInterfaceId = new(Interfaces.IID_IActivation);
     private static readonly Guid[] DefaultCategoryIdsArray =
     {
         OpcGuids.CATID_OPCDAServer20,
@@ -43,6 +45,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
     private readonly IOpcEnumCallChannelFactory _channelFactory;
     private readonly Guid[] _categoryIds;
+    private readonly OpcProtectionLevel _activationProtectionLevel;
 
     private delegate void NdrWriteAction(ref NdrWriter writer);
 
@@ -65,6 +68,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         Host = NormalizeHost(serverListUrl.Host);
         _channelFactory = channelFactory;
         _categoryIds = NormalizeCategories(categoryIds);
+        _activationProtectionLevel = NormalizeActivationProtection(channelFactory.ActivationProtectionLevel);
     }
 
     /// <summary>Initializes an OPCEnum client for a host and injectable DCOM channel factory.</summary>
@@ -288,13 +292,46 @@ public sealed class OpcEnumClient : IOpcDiscovery
         try
         {
             activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
-            byte[] payload = EncodeRemoteCreateInstanceRequest(host, OpcGuids.CLSID_OpcEnum, requestedIid);
+            byte[] payload = EncodeRemoteCreateInstanceRequest(host, OpcGuids.CLSID_OpcEnum, requestedIid, _activationProtectionLevel);
             NdrCallResult result = await activationChannel.InvokeAsync(
                 RemoteScmActivatorInterfaceId,
                 RemoteCreateInstanceOpnum,
                 payload,
                 cancellationToken).ConfigureAwait(false);
             return DecodeRemoteCreateInstanceResponse(result);
+        }
+        catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex))
+        {
+            return await LegacyRemoteActivationAsync(host, requestedIid, cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<IOpcInterfaceRef> LegacyRemoteActivationAsync(
+        string host,
+        Guid requestedIid,
+        CancellationToken cancellationToken)
+    {
+        ICallChannel? activationChannel = null;
+        try
+        {
+            activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
+            var request = new Opc.Classic.Dcom.Activation.RemoteActivationRequest(
+                OpcGuids.CLSID_OpcEnum,
+                new[] { requestedIid },
+                ClientImpLevel: 3,
+                Mode: 0,
+                RequestedProtocolSequences: new[] { (ushort)RpcProtocolSequenceTcp });
+            byte[] payload = Opc.Classic.Dcom.Activation.IActivationCodec.EncodeRemoteActivationRequest(request);
+            NdrCallResult result = await activationChannel.InvokeAsync(
+                LegacyActivationInterfaceId,
+                LegacyRemoteActivationOpnum,
+                payload,
+                cancellationToken).ConfigureAwait(false);
+            return DecodeLegacyRemoteActivationResponse(result);
         }
         finally
         {
@@ -315,14 +352,18 @@ public sealed class OpcEnumClient : IOpcDiscovery
             string.IsNullOrWhiteSpace(verIndProgId) ? null : verIndProgId,
             new ReadOnlyCollection<Guid>(CopyCategories(categories)));
 
-    private static byte[] EncodeRemoteCreateInstanceRequest(string host, Guid clsid, Guid requestedIid)
+    private static byte[] EncodeRemoteCreateInstanceRequest(
+        string host,
+        Guid clsid,
+        Guid requestedIid,
+        OpcProtectionLevel activationProtectionLevel)
     {
         var activationProperties = new ActivationProperties(
             new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
             new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
             new LocationInfo(host, Environment.ProcessId, new[] { RpcProtocolSequenceTcp }),
             null,
-            new SecurityInfo(AuthenticationLevel: 0, ImpersonationLevel: 3, Capabilities: 0));
+            new SecurityInfo(ToActivationAuthenticationLevel(activationProtectionLevel), ImpersonationLevel: 3, Capabilities: 0));
         byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
 
         return WritePayload((ref NdrWriter writer) =>
@@ -335,6 +376,42 @@ public sealed class OpcEnumClient : IOpcDiscovery
             writer.WriteRawBytes(encodedProperties);
         });
     }
+
+    private static OpcProtectionLevel NormalizeActivationProtection(OpcProtectionLevel protectionLevel) =>
+        protectionLevel == OpcProtectionLevel.Privacy ? OpcProtectionLevel.Privacy : OpcProtectionLevel.Integrity;
+
+    private static int ToActivationAuthenticationLevel(OpcProtectionLevel protectionLevel) =>
+        (int)NormalizeActivationProtection(protectionLevel);
+
+    private static IOpcInterfaceRef DecodeLegacyRemoteActivationResponse(NdrCallResult result)
+    {
+        ThrowIfFailed(result.Hresult, "IActivation::RemoteActivation");
+        var response = Opc.Classic.Dcom.Activation.IActivationCodec.DecodeRemoteActivationResponse(
+            result.ResponsePayload.Span,
+            expectedInterfaceCount: 1);
+        ThrowIfFailed(response.Hresult, "IActivation::RemoteActivation");
+        if (response.InterfaceResults.Count == 0)
+        {
+            throw new InvalidOperationException("IActivation::RemoteActivation returned no OPCEnum interface results.");
+        }
+
+        Opc.Classic.Dcom.Activation.RemoteActivationInterfaceResult interfaceResult = response.InterfaceResults[0];
+        ThrowIfFailed(interfaceResult.Hresult, "IActivation::RemoteActivation");
+        if (interfaceResult.ObjRef.IsEmpty)
+        {
+            throw new InvalidOperationException("IActivation::RemoteActivation returned no OPCEnum OBJREF.");
+        }
+
+        if (TryDecodeObjRef(interfaceResult.ObjRef.Span, out IOpcInterfaceRef? objRef))
+        {
+            return objRef!;
+        }
+
+        throw new InvalidOperationException("IActivation::RemoteActivation returned an invalid OPCEnum OBJREF.");
+    }
+
+    private static bool ShouldFallbackToLegacyActivation(InvalidOperationException exception) =>
+        exception.Message.Contains("IRemoteSCMActivator::RemoteCreateInstance", StringComparison.Ordinal);
 
     private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result)
     {

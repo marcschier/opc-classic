@@ -32,7 +32,8 @@ public sealed record HdaConnectionRequest(
     string? Username,
     string? Password,
     bool UseKerberos,
-    string? ConnectionString);
+    string? ConnectionString,
+    string? AuthLevel = null);
 
 /// <summary>Registers in-memory HDA call channels for MCP tests and loopback scenarios.</summary>
 public static class InMemoryHdaConnectionRegistry
@@ -108,11 +109,13 @@ public sealed class HdaClientTools
         bool useKerberos = false,
         [Description("Optional connection string. Use inmemory://name for a registered InMemoryCallChannel, or opchda://host/ProgID for DCOM.")]
         string? connectionString = null,
+        [Description(OpcMcpAuthLevel.Description)]
+        string? authLevel = null,
         CancellationToken cancellationToken = default)
     {
         OpcSession session = _sessionManager.GetSession(sessionId);
         HdaClientState client = await _connectionFactory.ConnectAsync(
-            new HdaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString),
+            new HdaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
             cancellationToken).ConfigureAwait(false);
 
         HdaClientState? existing = session.HdaClient;
@@ -881,6 +884,7 @@ public sealed class HdaClientTools
                 request.Password,
                 request.UseKerberos,
                 request.ConnectionString,
+                request.AuthLevel,
                 "opchda");
 
             string? inMemoryKey = OpcMcpDcomConnectionHelper.TryGetInMemoryKey(normalized.ConnectionString);

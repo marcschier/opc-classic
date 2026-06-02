@@ -6,10 +6,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic;
 using Opc.Classic.Dcom;
+using Opc.Classic.Dcom.Core;
 using Opc.Classic.Ndr;
 using Opc.Classic.Testing;
 using TUnit.Core;
@@ -105,6 +107,46 @@ public sealed class OpcEnumClientTests
         await Assert.That(entries[0].Host).IsEqualTo("opc-host");
     }
 
+    [Test]
+    public async Task RemoteCreateInstance_declares_packet_integrity_activation_authentication()
+    {
+        var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000037");
+        var server = new SyntheticOpcEnumServer()
+            .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Auth.1", "Vendor Auth", "Vendor.Auth");
+        var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
+
+        _ = await client.EnumerateAsync(CancellationToken.None);
+
+        await Assert.That(server.ActivationRequests.Count).IsGreaterThan(0);
+        await Assert.That(server.ActivationRequests[0].SecurityInfo).IsNotNull();
+        await Assert.That(server.ActivationRequests[0].SecurityInfo!.AuthenticationLevel).IsEqualTo((int)OpcProtectionLevel.Integrity);
+        await Assert.That(server.ActivationRequests[0].SecurityInfo!.ImpersonationLevel).IsEqualTo(3);
+    }
+
+    [Test]
+    public async Task RemoteCreateInstance_preserves_packet_privacy_activation_authentication()
+    {
+        var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000038");
+        var server = new SyntheticOpcEnumServer { ActivationProtectionLevel = OpcProtectionLevel.Privacy }
+            .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Privacy.1", "Vendor Privacy", "Vendor.Privacy");
+        var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
+
+        _ = await client.EnumerateAsync(CancellationToken.None);
+
+        await Assert.That(server.ActivationRequests.Count).IsGreaterThan(0);
+        await Assert.That(server.ActivationRequests[0].SecurityInfo!.AuthenticationLevel).IsEqualTo((int)OpcProtectionLevel.Privacy);
+    }
+
+    [Test]
+    public async Task DcomOpcEnumCallChannelFactory_upgrades_weak_activation_protection_to_integrity()
+    {
+        OpcUrl url = OpcUrl.Parse("opcda://opc-host/OPC.ServerList.1");
+        var connectData = OpcConnectData.WithNtlmV2(url, new NetworkCredential("user", "p"), OpcProtectionLevel.Connect);
+        var factory = new DcomOpcEnumCallChannelFactory(connectData);
+
+        await Assert.That(factory.ActivationProtectionLevel).IsEqualTo(OpcProtectionLevel.Integrity);
+    }
+
     [Test, Skip("Requires reachable OPCEnum.exe host")]
     public async Task OpcEnum_real_network_enumerates_reachable_host()
     {
@@ -157,6 +199,10 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         _channel = new InMemoryCallChannel(HandleCallAsync);
 
     public int GetClassDetailsHresult { get; init; }
+
+    public OpcProtectionLevel ActivationProtectionLevel { get; init; } = OpcProtectionLevel.Integrity;
+
+    public List<ActivationProperties> ActivationRequests { get; } = new();
 
     public IReadOnlyList<InMemoryCall> Calls => _channel.CallLog;
 
@@ -214,6 +260,7 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
 
         if (interfaceId == RemoteScmActivatorInterfaceId && opnum == 4)
         {
+            ActivationRequests.Add(DecodeActivationProperties(requestPayload));
             return Task.FromResult(new NdrCallResult(0, EncodeObjRef(OpcGuids.IID_IOPCServerList2)));
         }
 
@@ -276,6 +323,21 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         Guid[] implementedCategories = reader.ReadConformantGuidArray();
         _ = reader.ReadConformantGuidArray();
         return implementedCategories.Length == 0 ? Guid.Empty : implementedCategories[0];
+    }
+
+    private static ActivationProperties DecodeActivationProperties(ReadOnlyMemory<byte> requestPayload)
+    {
+        var reader = new NdrReader(requestPayload.Span);
+        _ = reader.ReadGuid();
+        _ = reader.ReadGuid();
+        uint protocolSequenceCount = reader.ReadUInt32();
+        for (uint i = 0; i < protocolSequenceCount; i++)
+        {
+            _ = reader.ReadInt32();
+        }
+
+        uint activationPropertiesLength = reader.ReadUInt32();
+        return ActivationInfoCodec.Decode(reader.ReadRawBytes((int)activationPropertiesLength));
     }
 
     private static Guid DecodeClassId(ReadOnlyMemory<byte> requestPayload)

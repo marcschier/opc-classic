@@ -47,7 +47,7 @@ Matrikon OPC Simulation Server only implements OPC DA. Probing the HDA/AE/Batch/
 - opcclassic.{hda,ae,batch,commands,dx}.connect -> FAIL with "Provide an OPC server ProgID, CLSID, or connectionString." (probe sent no spec-specific clsid).
 - All read/write/browse tools downstream of those connects -> FAIL ("session is not connected").
 - opcclassic.{hda,ae,batch,commands,dx}.disconnect -> OK (no-op success).
-opcclassic.discovery.enumerate_servers | FAIL | IRemoteSCMActivator::RemoteCreateInstance returned rpc_s_access_denied (0x05). Requires NTLMv2/Kerberos credentials with rights against the remote machines IRemoteSCMActivator; default Windows-SSO probe lacks those rights against the OpcEnum service.
+opcclassic.discovery.enumerate_servers | FAIL | IRemoteSCMActivator::RemoteCreateInstance returned rpc_s_access_denied (0x05). Discovery now sends supplied NTLMv2/Kerberos/Windows-SSO credentials at packet-integrity (or privacy) activation level; the account still needs DCOM Launch/Activation and Access rights on the OPCEnum / OPC.ServerList AppID.
 
 ## Root causes (3 distinct issues)
 
@@ -63,7 +63,9 @@ This probe was captured before Track AD: locally built TestServer EXE activation
 
 ### Issue C: OPCEnum activation fails (rpc_s_access_denied)
 
-opcclassic.discovery.enumerate_servers and progID-based connect paths use IRemoteSCMActivator::RemoteCreateInstance, which returns rpc_s_access_denied (0x05) under default Windows-SSO. Workaround: pass CLSID directly via --da-clsid (bypasses OPCEnum). Fix surface would be to ensure the auth context for activator calls negotiates higher integrity / impersonation level.
+opcclassic.discovery.enumerate_servers and ProgID-based connect paths use IRemoteSCMActivator::RemoteCreateInstance. The activator path now reuses the same OPC connection credentials used for the target server and upgrades weak activation protection to RPC_C_AUTHN_LEVEL_PKT_INTEGRITY (or preserves PKT_PRIVACY). Operators must still grant the calling identity DCOM Launch/Activation and Access permissions on the OPCEnum / OPC.ServerList AppID (CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`) in Component Services; otherwise Windows will continue to return rpc_s_access_denied (0x05).
+
+Workaround: pass a CLSID directly to connect tools (for example `--da-clsid`) to bypass OPCEnum, or call discovery/ProgID connect with NTLMv2/Kerberos/Windows-SSO credentials that have OPCEnum Launch/Activation and Access permissions. The probe driver also accepts `--auth-level pkt_integrity` or `--auth-level pkt_privacy` and forwards it to MCP discovery/connect tools. If a hardened host returns `RPC fault status 0x000006F7` for IRemoteSCMActivator or rejects legacy IActivation with `ABSTRACT_SYNTAX_NOT_SUPPORTED`, re-check OPCEnum DCOM security/registration on the server and continue using direct CLSID until the host accepts OPCEnum activation.
 
 ## What works today (Matrikon DA)
 

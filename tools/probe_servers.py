@@ -225,17 +225,27 @@ class ProbeRunner:
             result["progId"] = prog_id
         if clsid:
             result["clsid"] = clsid
+        self.add_auth_args(result, include_sso)
+        if connection_string:
+            result["connectionString"] = connection_string
+        return result
+
+    def discovery_args(self) -> dict[str, Any]:
+        result: dict[str, Any] = {"host": self.args.host}
+        self.add_auth_args(result, include_sso=True)
+        return result
+
+    def add_auth_args(self, result: dict[str, Any], include_sso: bool) -> None:
         if self.args.username:
             result["username"] = self.args.username
         if self.args.password is not None:
             result["password"] = self.args.password
         if self.args.use_kerberos:
             result["useKerberos"] = True
-        if connection_string:
-            result["connectionString"] = connection_string
+        if self.args.auth_level:
+            result["authLevel"] = self.args.auth_level
         if include_sso:
             result["useSso"] = self.args.use_sso
-        return result
 
     def hda_handles_or_items(self) -> dict[str, Any]:
         if self.hda_item_handles:
@@ -300,6 +310,8 @@ class ProbeRunner:
                 arguments[name] = self.args.username
             elif name == "password":
                 arguments[name] = self.args.password or ""
+            elif name == "authLevel":
+                arguments[name] = self.args.auth_level
             elif name in ("itemIds", "itemNames"):
                 arguments[name] = [self.args.da_read_item]
             elif name.endswith("Handle"):
@@ -315,7 +327,7 @@ def probe_specs() -> list[ProbeSpec]:
     return [
         ProbeSpec("opcclassic.session.create", lambda r: {}, after_session_create),
         ProbeSpec("opcclassic.session.list", lambda r: {}),
-        ProbeSpec("opcclassic.discovery.enumerate_servers", lambda r: {"host": r.args.host}),
+        ProbeSpec("opcclassic.discovery.enumerate_servers", lambda r: r.discovery_args()),
 
         ProbeSpec("opcclassic.da.connect", lambda r: r.dcom_args("da", include_sso=True)),
         ProbeSpec("opcclassic.da.get_status", sid),
@@ -621,6 +633,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--username", default=None)
     parser.add_argument("--password", default=None)
     parser.add_argument("--use-kerberos", action="store_true")
+    parser.add_argument("--auth-level", default=None, choices=["default", "none", "connect", "call", "packet", "pkt_integrity", "pkt_privacy"], help="DCOM RPC authentication level to send to MCP connect/discovery tools. Use pkt_integrity for hardened Windows DCOM.")
     parser.add_argument("--no-sso", action="store_true", help="Disable DA Windows SSO. SSO is also disabled when explicit credentials are supplied.")
     parser.add_argument("--request-timeout", type=float, default=60.0)
     parser.add_argument("--server-start-delay", type=float, default=2.0)

@@ -46,7 +46,8 @@ public sealed record DaConnectionRequest(
     string? Password,
     bool UseKerberos,
     string? ConnectionString,
-    bool UseSso = false);
+    bool UseSso = false,
+    string? AuthLevel = null);
 
 /// <summary>Registers in-memory DA call channels for MCP tests and loopback scenarios.</summary>
 public static class InMemoryDaConnectionRegistry
@@ -162,11 +163,13 @@ public sealed class DaClientTools
         string? connectionString = null,
         [Description("True to authenticate using the current Windows logon via NegotiateAuthentication (no username/password needed). Windows-only.")]
         bool useSso = false,
+        [Description(OpcMcpAuthLevel.Description)]
+        string? authLevel = null,
         CancellationToken cancellationToken = default)
     {
         OpcSession session = _sessionManager.GetSession(sessionId);
         DaClientState client = await _connectionFactory.ConnectAsync(
-            new DaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, useSso),
+            new DaConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, useSso, authLevel),
             cancellationToken).ConfigureAwait(false);
 
         DaClientState? existing = session.DaClient;
@@ -1167,10 +1170,18 @@ public sealed class DaClientTools
                 throw new McpException("Provide a DA server ProgID, CLSID, or connectionString.");
             }
 
-            OpcServerDescriptor[] servers = await Opc.Classic.Discovery.OpcDiscovery.EnumerateAsync(
-                request.Host,
-                new[] { OpcGuids.CATID_OPCDAServer20, OpcGuids.CATID_OPCDAServer30 },
-                cancellationToken).ConfigureAwait(false);
+            Guid[] categories = [OpcGuids.CATID_OPCDAServer20, OpcGuids.CATID_OPCDAServer30];
+            OpcConnectData? discoveryConnectData = CreateDiscoveryConnectData(request);
+            OpcServerDescriptor[] servers = discoveryConnectData is null
+                ? await OpcDiscovery.EnumerateAsync(
+                    request.Host,
+                    categories,
+                    cancellationToken).ConfigureAwait(false)
+                : await OpcDiscovery.EnumerateAsync(
+                    request.Host,
+                    discoveryConnectData,
+                    categories,
+                    cancellationToken).ConfigureAwait(false);
             OpcServerDescriptor? match = servers.FirstOrDefault(server =>
                 string.Equals(server.ProgId, request.ProgId, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(server.VerIndProgId, request.ProgId, StringComparison.OrdinalIgnoreCase));
@@ -1185,14 +1196,37 @@ public sealed class DaClientTools
             // Microsoft DCOM hardening (KB5004442) requires Integrity for activation
             // calls; using Connect would result in rpc_s_access_denied after a
             // successful bind, so we leave the default at Integrity.
+            OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
             OpcConnectData connectData = request.UseSso
-                ? OpcConnectData.WithWindowsSso(url, OpcProtectionLevel.Integrity)
+                ? OpcConnectData.WithWindowsSso(url, protectionLevel)
                 : credentials is null
-                    ? OpcConnectData.Anonymous(url)
+                    ? new OpcConnectData(url, credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
                     : request.UseKerberos
-                        ? OpcConnectData.WithKerberos(url, credentials)
-                        : OpcConnectData.WithNtlmV2(url, credentials);
+                        ? OpcConnectData.WithKerberos(url, credentials, protectionLevel)
+                        : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
             return NtlmAuthentication.CreateAuthContext(connectData);
+        }
+
+        private static OpcConnectData? CreateDiscoveryConnectData(DaConnectionRequest request)
+        {
+            OpcUrl url = OpcUrl.Parse($"opcda://{request.Host}/OPC.ServerList.1");
+            OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
+            if (request.UseSso)
+            {
+                return OpcConnectData.WithWindowsSso(url, protectionLevel);
+            }
+
+            NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
+            if (credentials is null)
+            {
+                return OpcMcpAuthLevel.IsSpecified(request.AuthLevel)
+                    ? new OpcConnectData(url, credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
+                    : null;
+            }
+
+            return request.UseKerberos
+                ? OpcConnectData.WithKerberos(url, credentials, protectionLevel)
+                : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
         }
 
         private static NetworkCredential? CreateCredential(string? username, string? password)
@@ -1216,7 +1250,7 @@ public sealed class DaClientTools
 
         private static byte[] EncodeRemoteCreateInstanceRequest(string host, Guid clsid, Guid requestedIid)
         {
-            // Tell the SCM we want PKT_INTEGRITY (level 6) for our callback channel.
+            // Tell the SCM we want PKT_PRIVACY (level 6) for our callback channel.
             // Required by Microsoft DCOM hardening (KB5004442) which rejects activations
             // that don't declare at least PktIntegrity on Windows clients/servers shipped
             // since 2021. Without this, the SCM may return rpc_s_access_denied even after

@@ -30,7 +30,8 @@ public sealed record DxConnectionRequest(
     string? Username,
     string? Password,
     bool UseKerberos,
-    string? ConnectionString);
+    string? ConnectionString,
+    string? AuthLevel = null);
 
 /// <summary>Registers in-memory DX clients for MCP tests and loopback scenarios.</summary>
 public static class InMemoryDxConnectionRegistry
@@ -103,11 +104,13 @@ public sealed class DxTools
         bool useKerberos = false,
         [Description("Optional connection string. Use inmemory://name for a registered in-memory DX client.")]
         string? connectionString = null,
+        [Description(OpcMcpAuthLevel.Description)]
+        string? authLevel = null,
         CancellationToken cancellationToken = default)
     {
         OpcSession session = _sessionManager.GetSession(sessionId);
         DxClientState client = await _connectionFactory.ConnectAsync(
-            new DxConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString),
+            new DxConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
             cancellationToken).ConfigureAwait(false);
 
         DxClientState? existing = session.DxClient;

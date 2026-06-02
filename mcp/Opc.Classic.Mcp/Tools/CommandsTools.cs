@@ -27,7 +27,8 @@ public sealed record CommandsConnectionRequest(
     string? Username,
     string? Password,
     bool UseKerberos,
-    string? ConnectionString);
+    string? ConnectionString,
+    string? AuthLevel = null);
 
 /// <summary>Registers in-memory Commands call channels for MCP tests and loopback scenarios.</summary>
 public static class InMemoryCommandsConnectionRegistry
@@ -100,11 +101,13 @@ public sealed class CommandsTools
         bool useKerberos = false,
         [Description("Optional connection string. Use inmemory://name for a registered InMemoryCommandsConnectionRegistry channel, or dcom://host/ProgID for DCOM.")]
         string? connectionString = null,
+        [Description(OpcMcpAuthLevel.Description)]
+        string? authLevel = null,
         CancellationToken cancellationToken = default)
     {
         OpcSession session = _sessionManager.GetSession(sessionId);
         CommandsClientState client = await _connectionFactory.ConnectAsync(
-            new CommandsConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString),
+            new CommandsConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
             cancellationToken).ConfigureAwait(false);
 
         CommandsClientState? existing = session.CommandsClient;
@@ -330,7 +333,7 @@ public sealed class CommandsTools
         {
             ArgumentNullException.ThrowIfNull(request);
             return OpcClassicDcomConnectionFactory.ConnectAsync(
-                new OpcClassicConnectionRequest(request.Host, request.ProgId, request.Clsid, request.Username, request.Password, request.UseKerberos, request.ConnectionString),
+                new OpcClassicConnectionRequest(request.Host, request.ProgId, request.Clsid, request.Username, request.Password, request.UseKerberos, request.ConnectionString, request.AuthLevel),
                 IOPCCommandInformation.InterfaceId,
                 OpcGuids.CommandsCategoryIds,
                 static (host, progId, clsid, channel, ownsChannel) => new CommandsClientState(host, progId, clsid, channel, ownsChannel),

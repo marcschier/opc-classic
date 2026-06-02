@@ -40,7 +40,8 @@ public sealed record BatchConnectionRequest(
     string? Username,
     string? Password,
     bool UseKerberos,
-    string? ConnectionString);
+    string? ConnectionString,
+    string? AuthLevel = null);
 
 /// <summary>Registers in-memory Batch call channels for MCP tests and loopback scenarios.</summary>
 public static class InMemoryBatchConnectionRegistry
@@ -113,11 +114,13 @@ public sealed class BatchTools
         bool useKerberos = false,
         [Description("Optional connection string. Use inmemory://name for a registered InMemoryBatchConnectionRegistry channel, or dcom://host/ProgID for DCOM.")]
         string? connectionString = null,
+        [Description(OpcMcpAuthLevel.Description)]
+        string? authLevel = null,
         CancellationToken cancellationToken = default)
     {
         OpcSession session = _sessionManager.GetSession(sessionId);
         BatchClientState client = await _connectionFactory.ConnectAsync(
-            new BatchConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString),
+            new BatchConnectionRequest(host, progId, clsid, username, password, useKerberos, connectionString, authLevel),
             cancellationToken).ConfigureAwait(false);
 
         BatchClientState? existing = session.BatchClient;
@@ -344,7 +347,7 @@ public sealed class BatchTools
         {
             ArgumentNullException.ThrowIfNull(request);
             return OpcClassicDcomConnectionFactory.ConnectAsync(
-                new OpcClassicConnectionRequest(request.Host, request.ProgId, request.Clsid, request.Username, request.Password, request.UseKerberos, request.ConnectionString),
+                new OpcClassicConnectionRequest(request.Host, request.ProgId, request.Clsid, request.Username, request.Password, request.UseKerberos, request.ConnectionString, request.AuthLevel),
                 IOPCBatchServer.InterfaceId,
                 OpcGuids.BatchCategoryIds,
                 static (host, progId, clsid, channel, ownsChannel) => new BatchClientState(host, progId, clsid, channel, ownsChannel),
@@ -362,7 +365,8 @@ internal sealed record OpcClassicConnectionRequest(
     string? Username,
     string? Password,
     bool UseKerberos,
-    string? ConnectionString);
+    string? ConnectionString,
+    string? AuthLevel = null);
 
 internal delegate bool TryGetOpcClassicInMemoryChannel(string name, out ICallChannel channel);
 
@@ -404,12 +408,13 @@ internal static class OpcClassicDcomConnectionFactory
         ICallChannel? activationChannel = null;
         try
         {
+            IAuthContext activationAuth = CreateAuthContext(normalized, clsid);
             activationChannel = await channelFactory.ConnectAsync(
                 new DnsEndPoint(normalized.Host, EndpointMapperPort),
                 clsid,
-                CreateAuthContext(normalized, clsid),
+                activationAuth,
                 cancellationToken).ConfigureAwait(false);
-            byte[] payload = EncodeRemoteCreateInstanceRequest(normalized.Host, clsid, requestedInterfaceId);
+            byte[] payload = EncodeRemoteCreateInstanceRequest(normalized.Host, clsid, requestedInterfaceId, activationAuth.ProtectionLevel);
             NdrCallResult activationResult = await activationChannel.InvokeAsync(
                 RemoteScmActivatorInterfaceId,
                 RemoteCreateInstanceOpnum,
@@ -522,10 +527,17 @@ internal static class OpcClassicDcomConnectionFactory
             throw new McpException($"Provide an OPC {specName} server ProgID, CLSID, or connectionString.");
         }
 
-        OpcServerDescriptor[] servers = await OpcDiscovery.EnumerateAsync(
-            request.Host,
-            categoryIds,
-            cancellationToken).ConfigureAwait(false);
+        OpcConnectData? discoveryConnectData = CreateDiscoveryConnectData(request);
+        OpcServerDescriptor[] servers = discoveryConnectData is null
+            ? await OpcDiscovery.EnumerateAsync(
+                request.Host,
+                categoryIds,
+                cancellationToken).ConfigureAwait(false)
+            : await OpcDiscovery.EnumerateAsync(
+                request.Host,
+                discoveryConnectData,
+                categoryIds,
+                cancellationToken).ConfigureAwait(false);
         OpcServerDescriptor? match = servers.FirstOrDefault(server =>
             string.Equals(server.ProgId, request.ProgId, StringComparison.OrdinalIgnoreCase)
             || string.Equals(server.VerIndProgId, request.ProgId, StringComparison.OrdinalIgnoreCase));
@@ -536,12 +548,30 @@ internal static class OpcClassicDcomConnectionFactory
     {
         NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
         OpcUrl url = OpcUrl.Parse($"opcda://{request.Host}/{(request.ProgId ?? clsid.ToString("D"))}");
+        OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
         OpcConnectData connectData = credentials is null
-            ? OpcConnectData.Anonymous(url)
+            ? new OpcConnectData(url, credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
             : request.UseKerberos
-                ? OpcConnectData.WithKerberos(url, credentials)
-                : OpcConnectData.WithNtlmV2(url, credentials);
+                ? OpcConnectData.WithKerberos(url, credentials, protectionLevel)
+                : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
         return NtlmAuthentication.CreateAuthContext(connectData);
+    }
+
+    private static OpcConnectData? CreateDiscoveryConnectData(OpcClassicConnectionRequest request)
+    {
+        NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
+        OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
+        if (credentials is null)
+        {
+            return OpcMcpAuthLevel.IsSpecified(request.AuthLevel)
+                ? new OpcConnectData(OpcUrl.Parse($"opcda://{request.Host}/OPC.ServerList.1"), credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
+                : null;
+        }
+
+        OpcUrl url = OpcUrl.Parse($"opcda://{request.Host}/OPC.ServerList.1");
+        return request.UseKerberos
+            ? OpcConnectData.WithKerberos(url, credentials, protectionLevel)
+            : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
     }
 
     private static NetworkCredential? CreateCredential(string? username, string? password)
@@ -563,14 +593,18 @@ internal static class OpcClassicDcomConnectionFactory
         return new NetworkCredential(user, password ?? string.Empty, domain);
     }
 
-    private static byte[] EncodeRemoteCreateInstanceRequest(string host, Guid clsid, Guid requestedIid)
+    private static byte[] EncodeRemoteCreateInstanceRequest(
+        string host,
+        Guid clsid,
+        Guid requestedIid,
+        OpcProtectionLevel activationProtectionLevel)
     {
         var activationProperties = new ActivationProperties(
             new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
             new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
             new LocationInfo(host, Environment.ProcessId, new[] { RpcProtocolSequenceTcp }),
             null,
-            new SecurityInfo(AuthenticationLevel: 0, ImpersonationLevel: 3, Capabilities: 0));
+            new SecurityInfo(ToActivationAuthenticationLevel(activationProtectionLevel), ImpersonationLevel: 3, Capabilities: 0));
         byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
 
         return WritePayload((ref NdrWriter writer) =>
@@ -583,6 +617,12 @@ internal static class OpcClassicDcomConnectionFactory
             writer.WriteRawBytes(encodedProperties);
         });
     }
+
+    private static OpcProtectionLevel NormalizeActivationProtection(OpcProtectionLevel protectionLevel) =>
+        protectionLevel == OpcProtectionLevel.Privacy ? OpcProtectionLevel.Privacy : OpcProtectionLevel.Integrity;
+
+    private static int ToActivationAuthenticationLevel(OpcProtectionLevel protectionLevel) =>
+        (int)NormalizeActivationProtection(protectionLevel);
 
     private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result)
     {

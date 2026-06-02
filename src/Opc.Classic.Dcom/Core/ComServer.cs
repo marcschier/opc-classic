@@ -403,6 +403,13 @@ public sealed class ComServer : Stub {
             Properties.SetProperty("rpc.ntlm.domain", session.Domain);
         }
 
+        ProtectionLevel activationProtectionLevel = ComOxidRuntime.ConfigureActivationProtection(
+            Properties,
+            session.SessionSecurityEnabled,
+            session.SessionSecurityEnabled ? session.UserName : null,
+            session.SessionSecurityEnabled ? session.Password : null);
+        _activationAuthenticationLevel = (int)activationProtectionLevel;
+
         if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
             Interop.Internal_dumpMap();
         }
@@ -560,7 +567,7 @@ public sealed class ComServer : Stub {
                 Endpoint.Syntax.Uuid = new UUID(Interfaces.IID_IRemoteSCMActivator);
                 Endpoint.Syntax.Version = 0;
                 ((ComEndpoint)Endpoint).RebindEndPoint();
-                _serverActivation = new RemoteSCMActivator.RemoteCreateInstance(_session.TargetServer, _clsid);
+                _serverActivation = new RemoteSCMActivator.RemoteCreateInstance(_session.TargetServer, _clsid, _activationAuthenticationLevel);
                 Call(Semantics.IDEMPOTENT, (RemoteSCMActivator.RemoteCreateInstance)_serverActivation);
             }
             else {
@@ -931,6 +938,7 @@ public sealed class ComServer : Stub {
     private IServerActivation _serverActivation;
     private readonly OxidResolver _oxidResolver;
     private string _clsid;
+    private int _activationAuthenticationLevel = (int)ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
     private Session _session;
     private bool _serverInstantiated;
     private string _remunknownIPID;
