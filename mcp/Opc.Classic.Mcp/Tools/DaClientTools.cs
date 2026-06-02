@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Text.Json;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
+using Opc.Classic;
 using Opc.Classic.Da;
 using Opc.Classic.Discovery;
 using Opc.Classic.Da.Dcom;
@@ -854,11 +855,20 @@ public sealed class DaClientTools
                 {
                     var transportFactory = new TcpSocketTransportFactory();
                     var transport = await transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
-                    serverChannel = new DcomCallChannel(transport, serverAuth, serverRef.Ipid);
+                    serverChannel = new DcomCallChannel(
+                        transport,
+                        serverAuth,
+                        serverRef.Ipid,
+                        OpcSpecCatalog.Da);
                 }
                 else
                 {
-                    serverChannel = await channelFactory.ConnectAsync(endpoint, Guid.Empty, serverAuth, cancellationToken).ConfigureAwait(false);
+                    serverChannel = await channelFactory.ConnectAsync(
+                        endpoint,
+                        Guid.Empty,
+                        serverAuth,
+                        OpcSpecCatalog.Da,
+                        cancellationToken).ConfigureAwait(false);
                 }
 
                 // Register per-IID IPID routes for the optional interfaces returned by activation.

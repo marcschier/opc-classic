@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,17 +32,34 @@ public sealed class DcomCallChannelFactory {
     /// <param name="authContext">The authentication context for the channel.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The connected call channel.</returns>
+    public Task<ICallChannel> ConnectAsync(
+        EndPoint endpoint,
+        Guid clsidToActivate,
+        IAuthContext authContext,
+        CancellationToken cancellationToken = default) =>
+        ConnectAsync(endpoint, clsidToActivate, authContext, preBindIids: null, cancellationToken);
+
+    /// <summary>Connects to a DCOM endpoint and pre-declares presentation contexts in the initial bind.</summary>
+    /// <param name="endpoint">The remote ncacn_ip_tcp endpoint.</param>
+    /// <param name="clsidToActivate">CLSID reserved for the activation path; use <see cref="Guid.Empty" /> for already-activated channels.</param>
+    /// <param name="authContext">The authentication context for the channel.</param>
+    /// <param name="preBindIids">Interface IIDs to include in the first DCE bind PDU.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The connected call channel.</returns>
     public async Task<ICallChannel> ConnectAsync(
         EndPoint endpoint,
         Guid clsidToActivate,
         IAuthContext authContext,
+        IReadOnlyList<Guid>? preBindIids,
         CancellationToken cancellationToken = default) {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(authContext);
         _ = clsidToActivate;
 
         IAsyncTransport transport = await _transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
-        return new DcomCallChannel(transport, authContext);
+        return preBindIids is null
+            ? new DcomCallChannel(transport, authContext)
+            : new DcomCallChannel(transport, authContext, preBindIids);
     }
 
     /// <summary>
@@ -55,16 +73,35 @@ public sealed class DcomCallChannelFactory {
     /// <param name="authContext">The authentication context for the channel.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The connected call channel.</returns>
+    public static Task<DcomCallChannel> ConnectTcpAsync(
+        string host,
+        int port,
+        IAuthContext authContext,
+        CancellationToken cancellationToken = default) =>
+        ConnectTcpAsync(host, port, authContext, preBindIids: null, cancellationToken);
+
+    /// <summary>
+    /// Convenience TCP connector that pre-declares presentation contexts in the first bind.
+    /// </summary>
+    /// <param name="host">DNS name or IP literal.</param>
+    /// <param name="port">TCP port number.</param>
+    /// <param name="authContext">The authentication context for the channel.</param>
+    /// <param name="preBindIids">Interface IIDs to include in the first DCE bind PDU.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The connected call channel.</returns>
     public static async Task<DcomCallChannel> ConnectTcpAsync(
         string host,
         int port,
         IAuthContext authContext,
+        IReadOnlyList<Guid>? preBindIids,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(host);
         ArgumentNullException.ThrowIfNull(authContext);
 
         TcpClientTransport transport = await TcpClientTransport.ConnectAsync(host, port, cancellationToken).ConfigureAwait(false);
-        return new DcomCallChannel(transport, authContext);
+        return preBindIids is null
+            ? new DcomCallChannel(transport, authContext)
+            : new DcomCallChannel(transport, authContext, preBindIids);
     }
 }

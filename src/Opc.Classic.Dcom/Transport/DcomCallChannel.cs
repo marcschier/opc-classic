@@ -32,6 +32,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private readonly IAsyncTransport _transport;
     private readonly IAuthContext _authContext;
     private readonly Guid? _objectIpid;
+    private readonly Guid[] _preBindIids;
     private readonly SemaphoreSlim _callLock = new(1, 1);
     private readonly Dictionary<Guid, int> _contextIds = new();
     private readonly Dictionary<Guid, Guid> _interfaceIpids = new();
@@ -40,13 +41,26 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     private int _maxReceiveFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE;
     private int _nextCallId = 1;
     private int _nextContextId;
+    private bool _bound;
     private bool _disposed;
 
     /// <summary>Initializes a new instance of the <see cref="DcomCallChannel" /> class.</summary>
     /// <param name="transport">The connected async transport.</param>
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext)
-        : this(transport, authContext, objectIpid: null)
+        : this(transport, authContext, objectIpid: null, preBindIids: null)
+    {
+    }
+
+    /// <summary>Initializes a new instance with presentation contexts to include in the first bind.</summary>
+    /// <param name="transport">The connected async transport.</param>
+    /// <param name="authContext">The authentication context for bind and packet protection.</param>
+    /// <param name="preBindIids">Interface IIDs to pre-declare in the initial DCE bind.</param>
+    public DcomCallChannel(
+        IAsyncTransport transport,
+        IAuthContext authContext,
+        IReadOnlyList<Guid> preBindIids)
+        : this(transport, authContext, objectIpid: null, preBindIids)
     {
     }
 
@@ -55,7 +69,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     /// <param name="authContext">The authentication context for bind and packet protection.</param>
     /// <param name="objectIpid">The object IPID to place in request PDUs.</param>
     public DcomCallChannel(IAsyncTransport transport, IAuthContext authContext, Guid objectIpid)
-        : this(transport, authContext, (Guid?)objectIpid)
+        : this(transport, authContext, (Guid?)objectIpid, preBindIids: null)
     {
         if (objectIpid == Guid.Empty)
         {
@@ -63,13 +77,36 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         }
     }
 
-    private DcomCallChannel(IAsyncTransport transport, IAuthContext authContext, Guid? objectIpid) {
+    /// <summary>Initializes an object-routed channel with presentation contexts to include in the first bind.</summary>
+    /// <param name="transport">The connected async transport.</param>
+    /// <param name="authContext">The authentication context for bind and packet protection.</param>
+    /// <param name="objectIpid">The object IPID to place in request PDUs.</param>
+    /// <param name="preBindIids">Interface IIDs to pre-declare in the initial DCE bind.</param>
+    public DcomCallChannel(
+        IAsyncTransport transport,
+        IAuthContext authContext,
+        Guid objectIpid,
+        IReadOnlyList<Guid> preBindIids)
+        : this(transport, authContext, (Guid?)objectIpid, preBindIids)
+    {
+        if (objectIpid == Guid.Empty)
+        {
+            throw new ArgumentException("Object IPID must not be empty.", nameof(objectIpid));
+        }
+    }
+
+    private DcomCallChannel(
+        IAsyncTransport transport,
+        IAuthContext authContext,
+        Guid? objectIpid,
+        IReadOnlyList<Guid>? preBindIids) {
         ArgumentNullException.ThrowIfNull(transport);
         ArgumentNullException.ThrowIfNull(authContext);
 
         _transport = transport;
         _authContext = authContext;
         _objectIpid = objectIpid;
+        _preBindIids = NormalizePreBindIids(preBindIids);
     }
 
     /// <summary>
@@ -157,16 +194,24 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             return contextId;
         }
 
+        if (!_bound) {
+            PendingPresentationContext[] initialContexts = CreateInitialPresentationContexts(interfaceId);
+            PresentationResult[] bindResults = await BindAsync(initialContexts, cancellationToken).ConfigureAwait(false);
+            _bound = true;
+            if (_contextIds.TryGetValue(interfaceId, out contextId)) {
+                return contextId;
+            }
+
+            PresentationResult? result = FindPresentationResult(initialContexts, bindResults, interfaceId);
+            if (result is not null) {
+                throw new InvalidOperationException($"Presentation context rejected: {result}.");
+            }
+
+            throw new InvalidOperationException($"Bind acknowledge did not accept presentation context for IID {interfaceId:D}.");
+        }
+
         contextId = _nextContextId++;
-        if (_contextIds.Count == 0) {
-            // First-ever bind: full BIND/BIND_ACK handshake including auth.
-            await BindAsync(interfaceId, contextId, cancellationToken).ConfigureAwait(false);
-        }
-        else {
-            // Additional presentation context on the already-authenticated channel:
-            // send ALTER_CONTEXT (MS-RPCE §3.3.1.5.3) and wait for ALTER_CONTEXT_RESPONSE.
-            await AlterContextAsync(interfaceId, contextId, cancellationToken).ConfigureAwait(false);
-        }
+        await AlterContextAsync(interfaceId, contextId, cancellationToken).ConfigureAwait(false);
         _contextIds.Add(interfaceId, contextId);
         return contextId;
     }
@@ -188,21 +233,15 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             }
             throw new InvalidOperationException($"Expected alter_context_response PDU, received type {decoded.Pdu.Type}.");
         }
-        if (alterAck.ResultList is null || alterAck.ResultList.Length == 0) {
-            throw new InvalidOperationException("AlterContext response had no presentation results.");
-        }
-        foreach (PresentationResult result in alterAck.ResultList) {
-            if (result.Result != PresentationResultCode.ACCEPTANCE) {
-                throw new InvalidOperationException($"AlterContext presentation context rejected: {result}.");
-            }
-        }
+
+        ValidatePresentationResults(alterAck.ResultList, "AlterContext response had no presentation results.", "AlterContext presentation context rejected");
     }
 
-    private async ValueTask BindAsync(Guid interfaceId, int contextId, CancellationToken cancellationToken) {
+    private async ValueTask<PresentationResult[]> BindAsync(PendingPresentationContext[] contexts, CancellationToken cancellationToken) {
         byte[] initialToken = _authContext.BuildInitialToken();
         var bind = new BindPdu {
             AssociationGroupId = _associationGroupId,
-            ContextList = [CreatePresentationContext(interfaceId, contextId)],
+            ContextList = ToPresentationContexts(contexts),
             MaxReceiveFragment = _maxReceiveFragment,
             MaxTransmitFragment = _maxTransmitFragment,
             CallId = NextCallId(),
@@ -219,7 +258,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             throw new InvalidOperationException($"Expected bind_ack PDU, received type {decoded.Pdu.Type}.");
         }
 
-        ValidateBindAcknowledge(bindAck);
+        PresentationResult[] results = GetPresentationResults(bindAck.ResultList, "Bind acknowledge did not include presentation results.");
         _associationGroupId = bindAck.AssociationGroupId;
         _maxTransmitFragment = bindAck.MaxReceiveFragment;
         _maxReceiveFragment = bindAck.MaxTransmitFragment;
@@ -229,6 +268,9 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             var auth3 = new Auth3Pdu { CallId = NextCallId() };
             await WritePduAsync(auth3, cancellationToken, nextToken).ConfigureAwait(false);
         }
+
+        RegisterAcceptedPresentationContexts(contexts, results);
+        return results;
     }
 
     private async ValueTask WritePduAsync(
@@ -436,20 +478,97 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         return new AuthenticationStrippedFrame(pduBytes, authenticationBody);
     }
 
-    private static PresentationContext CreatePresentationContext(Guid interfaceId, int contextId) =>
-        new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0));
-
-    private static void ValidateBindAcknowledge(BindAcknowledgePdu bindAck) {
-        if (bindAck.ResultList is null || bindAck.ResultList.Length == 0) {
-            throw new InvalidOperationException("Bind acknowledge did not include presentation results.");
+    private PendingPresentationContext[] CreateInitialPresentationContexts(Guid interfaceId) {
+        List<Guid> interfaceIds = BuildInitialInterfaceList(interfaceId);
+        var contexts = new PendingPresentationContext[interfaceIds.Count];
+        for (int i = 0; i < contexts.Length; i++) {
+            int contextId = _nextContextId++;
+            contexts[i] = new PendingPresentationContext(interfaceIds[i], CreatePresentationContext(interfaceIds[i], contextId));
         }
 
-        foreach (PresentationResult result in bindAck.ResultList) {
-            if (result.Result != PresentationResultCode.ACCEPTANCE) {
-                throw new InvalidOperationException($"Presentation context rejected: {result}.");
+        return contexts;
+    }
+
+    private List<Guid> BuildInitialInterfaceList(Guid interfaceId) {
+        var interfaceIds = new List<Guid>(_preBindIids.Length + 1) { interfaceId };
+        foreach (Guid preBindIid in _preBindIids) {
+            if (!interfaceIds.Contains(preBindIid)) {
+                interfaceIds.Add(preBindIid);
+            }
+        }
+
+        return interfaceIds;
+    }
+
+    private static Guid[] NormalizePreBindIids(IReadOnlyList<Guid>? interfaceIds) {
+        if (interfaceIds is null || interfaceIds.Count == 0) {
+            return [];
+        }
+
+        var normalized = new List<Guid>(interfaceIds.Count);
+        for (int i = 0; i < interfaceIds.Count; i++) {
+            Guid interfaceId = interfaceIds[i];
+            if (interfaceId != Guid.Empty && !normalized.Contains(interfaceId)) {
+                normalized.Add(interfaceId);
+            }
+        }
+
+        return normalized.ToArray();
+    }
+
+    private static PresentationContext[] ToPresentationContexts(PendingPresentationContext[] contexts) {
+        var presentationContexts = new PresentationContext[contexts.Length];
+        for (int i = 0; i < contexts.Length; i++) {
+            presentationContexts[i] = contexts[i].Context;
+        }
+
+        return presentationContexts;
+    }
+
+    private void RegisterAcceptedPresentationContexts(PendingPresentationContext[] contexts, PresentationResult[] results) {
+        int count = Math.Min(contexts.Length, results.Length);
+        for (int i = 0; i < count; i++) {
+            if (results[i].Result == PresentationResultCode.ACCEPTANCE) {
+                _contextIds[contexts[i].InterfaceId] = contexts[i].Context.ContextId;
             }
         }
     }
+
+    private static PresentationResult? FindPresentationResult(
+        PendingPresentationContext[] contexts,
+        PresentationResult[] results,
+        Guid interfaceId) {
+        int count = Math.Min(contexts.Length, results.Length);
+        for (int i = 0; i < count; i++) {
+            if (contexts[i].InterfaceId == interfaceId) {
+                return results[i];
+            }
+        }
+
+        return null;
+    }
+
+    private static PresentationResult[] GetPresentationResults(PresentationResult[]? results, string emptyMessage) {
+        if (results is null || results.Length == 0) {
+            throw new InvalidOperationException(emptyMessage);
+        }
+
+        return results;
+    }
+
+    private static void ValidatePresentationResults(
+        PresentationResult[]? results,
+        string emptyMessage,
+        string rejectionMessagePrefix) {
+        foreach (PresentationResult result in GetPresentationResults(results, emptyMessage)) {
+            if (result.Result != PresentationResultCode.ACCEPTANCE) {
+                throw new InvalidOperationException($"{rejectionMessagePrefix}: {result}.");
+            }
+        }
+    }
+
+    private static PresentationContext CreatePresentationContext(Guid interfaceId, int contextId) =>
+        new(contextId, new PresentationSyntax(new UUID(interfaceId.ToString("D")), 0, 0));
 
     private static bool IsPacketProtectedPdu(byte pduType) =>
         pduType is RequestCoPdu.REQUEST_TYPE or ResponseCoPdu.RESPONSE_TYPE or FaultCoPdu.FAULT_TYPE;
@@ -470,6 +589,8 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     };
 
     private int NextCallId() => _nextCallId++;
+
+    private readonly record struct PendingPresentationContext(Guid InterfaceId, PresentationContext Context);
 
     private readonly record struct DecodedPdu(ConnectionOrientedPdu Pdu, byte[] AuthenticationBody);
 

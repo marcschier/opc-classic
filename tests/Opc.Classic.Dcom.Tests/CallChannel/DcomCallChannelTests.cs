@@ -4,9 +4,14 @@
 //
 
 using System;
+using System.Buffers;
+using System.Buffers.Binary;
+using System.Collections.Generic;
+using System.IO.Pipelines;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Testing;
@@ -20,6 +25,11 @@ namespace Opc.Classic.Dcom.Tests;
 
 public sealed class DcomCallChannelTests
 {
+    private static readonly IReadOnlyList<Guid> PreBindIids = OpcSpecCatalog.Da;
+    private static readonly Guid FirstInterfaceId = PreBindIids[0];
+    private static readonly Guid SecondInterfaceId = PreBindIids[1];
+    private static readonly Guid RejectedOptionalInterfaceId = IOPCAsyncIO3.InterfaceId;
+
     [Test]
     public async Task InvokeAsync_via_InMemoryAsyncTransport_round_trips()
     {
@@ -72,6 +82,90 @@ public sealed class DcomCallChannelTests
     }
 
     [Test]
+    public async Task InvokeAsync_predeclares_Da_contexts_in_initial_bind_order()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes(PreBindIids.Count));
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance,
+            PreBindIids);
+
+        _ = await channel.InvokeAsync(FirstInterfaceId, 6, ReadOnlyMemory<byte>.Empty);
+
+        IReadOnlyList<ConnectionOrientedPdu> outbound = await ReadOutboundPdusAsync(transport);
+        var bind = (BindPdu)outbound[0];
+        await Assert.That(bind.ContextList.Length).IsEqualTo(PreBindIids.Count);
+        for (int i = 0; i < PreBindIids.Count; i++)
+        {
+            await Assert.That(bind.ContextList[i].ContextId).IsEqualTo(i);
+            Guid actualInterfaceId = Guid.Parse(bind.ContextList[i].AbstractSyntax.Uuid.ToString());
+            await Assert.That(actualInterfaceId).IsEqualTo(PreBindIids[i]);
+        }
+    }
+
+    [Test]
+    public async Task InvokeAsync_keeps_first_call_iid_at_context_zero()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes(PreBindIids.Count));
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance,
+            PreBindIids);
+
+        _ = await channel.InvokeAsync(SecondInterfaceId, 3, ReadOnlyMemory<byte>.Empty);
+
+        IReadOnlyList<ConnectionOrientedPdu> outbound = await ReadOutboundPdusAsync(transport);
+        var bind = (BindPdu)outbound[0];
+        await Assert.That(bind.ContextList[0].ContextId).IsEqualTo(0);
+        Guid actualInterfaceId = Guid.Parse(bind.ContextList[0].AbstractSyntax.Uuid.ToString());
+        await Assert.That(actualInterfaceId).IsEqualTo(SecondInterfaceId);
+    }
+
+    [Test]
+    public async Task InvokeAsync_allows_optional_predeclared_context_rejection()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        int rejectedIndex = IndexOf(PreBindIids, RejectedOptionalInterfaceId);
+        await transport.WriteInboundAsync(CreateBindAckBytes(
+            PreBindIids.Count,
+            rejectedIndex));
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance,
+            PreBindIids);
+
+        NdrCallResult result = await channel.InvokeAsync(FirstInterfaceId, 6, ReadOnlyMemory<byte>.Empty);
+
+        await Assert.That(result.Hresult).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task InvokeAsync_reuses_predeclared_context_without_alter_context()
+    {
+        await using var transport = new InMemoryAsyncTransport();
+        await transport.WriteInboundAsync(CreateBindAckBytes(PreBindIids.Count));
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        await transport.WriteInboundAsync(CreateResponseBytes([]));
+        var channel = new DcomCallChannel(
+            transport,
+            NoOpAuthContext.Instance,
+            PreBindIids);
+
+        _ = await channel.InvokeAsync(FirstInterfaceId, 6, ReadOnlyMemory<byte>.Empty);
+        _ = await channel.InvokeAsync(SecondInterfaceId, 3, ReadOnlyMemory<byte>.Empty);
+
+        IReadOnlyList<ConnectionOrientedPdu> outbound = await ReadOutboundPdusAsync(transport);
+        await Assert.That(ContainsPdu<AlterContextPdu>(outbound)).IsFalse();
+        var secondRequest = (RequestCoPdu)outbound[2];
+        await Assert.That(secondRequest.ContextId).IsEqualTo(IndexOf(PreBindIids, SecondInterfaceId));
+    }
+
+    [Test]
     public async Task InvokeAsync_cancellation_token_propagates()
     {
         await using var transport = new InMemoryAsyncTransport();
@@ -106,7 +200,9 @@ public sealed class DcomCallChannelTests
         await Assert.That(transportFactory.Transport.IsDisposed).IsTrue();
     }
 
-    private static byte[] CreateBindAckBytes()
+    private static byte[] CreateBindAckBytes() => CreateBindAckBytes(resultCount: 1);
+
+    private static byte[] CreateBindAckBytes(int resultCount, int rejectedIndex = -1)
     {
         var bindAck = new BindAcknowledgePdu
         {
@@ -114,11 +210,27 @@ public sealed class DcomCallChannelTests
             CallId = 1,
             MaxReceiveFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
             MaxTransmitFragment = ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
-            ResultList = [new PresentationResult()],
+            ResultList = CreatePresentationResults(resultCount, rejectedIndex),
             SecondaryAddress = new Port(),
         };
 
         return EncodePdu(bindAck);
+    }
+
+    private static PresentationResult[] CreatePresentationResults(int count, int rejectedIndex)
+    {
+        var results = new PresentationResult[count];
+        for (int i = 0; i < results.Length; i++)
+        {
+            results[i] = i == rejectedIndex
+                ? new PresentationResult(
+                    PresentationResultCode.PROVIDER_REJECTION,
+                    PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
+                    new PresentationSyntax(NdrCodec.NDR_SYNTAX))
+                : new PresentationResult();
+        }
+
+        return results;
     }
 
     private static byte[] CreateResponseBytes(byte[] responsePayload) =>
@@ -158,6 +270,53 @@ public sealed class DcomCallChannelTests
         byte[] stub = new byte[8 + responsePayload.Length];
         responsePayload.CopyTo(stub.AsSpan(8));
         return stub;
+    }
+
+    private static async Task<IReadOnlyList<ConnectionOrientedPdu>> ReadOutboundPdusAsync(InMemoryAsyncTransport transport)
+    {
+        ReadResult result = await transport.ReadOutbound.ReadAsync();
+        byte[] outbound = result.Buffer.ToArray();
+        transport.ReadOutbound.AdvanceTo(result.Buffer.End);
+
+        var pdus = new List<ConnectionOrientedPdu>();
+        int offset = 0;
+        while (offset < outbound.Length)
+        {
+            int fragmentLength = BinaryPrimitives.ReadUInt16LittleEndian(
+                outbound.AsSpan(offset + ConnectionOrientedPdu.FRAG_LENGTH_OFFSET, sizeof(ushort)));
+            byte[] frame = outbound.AsSpan(offset, fragmentLength).ToArray();
+            pdus.Add(PduCodec.DecodePdu(frame));
+            offset += fragmentLength;
+        }
+
+        return pdus;
+    }
+
+    private static bool ContainsPdu<T>(IReadOnlyList<ConnectionOrientedPdu> pdus)
+        where T : ConnectionOrientedPdu
+    {
+        for (int i = 0; i < pdus.Count; i++)
+        {
+            if (pdus[i] is T)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static int IndexOf(IReadOnlyList<Guid> values, Guid value)
+    {
+        for (int i = 0; i < values.Count; i++)
+        {
+            if (values[i] == value)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private static byte[] EncodePdu(ConnectionOrientedPdu pdu)
