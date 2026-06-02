@@ -121,7 +121,10 @@ public static class NdrOpcBrowseResponseDecoder
     {
         if (itemProperties.Properties.Length > 0)
         {
-            WriteItemPropertyFlatConformantArray(ref writer, itemProperties.Properties);
+            // Match the reader (ApplyItemPropertiesDeferred -> ReadItemPropertyConformantArray):
+            // emit per-element inline parts (with string referents) then per-element deferred
+            // bodies (string contents). This is the live Matrikon DCE/RPC §14.3.12.3 layout.
+            WriteItemPropertyConformantArray(ref writer, itemProperties.Properties);
         }
     }
 
@@ -162,12 +165,13 @@ public static class NdrOpcBrowseResponseDecoder
         writer.WriteUInt32(unchecked((uint)prop.PropertyId));
         writer.WriteUniquePointerReferent(prop.ItemId is not null);
         writer.WriteUniquePointerReferent(prop.Description is not null);
-        // Mirror of ReadItemPropertyInline — embedded VARIANT uses the
-        // per-element envelope (referent + pad-to-8 + wireVARIANT-with-
-        // duplicated-discriminator).
-        writer.WriteUniquePointerReferent(true);
+        // Per live-Matrikon wire capture: the embedded VARIANT field inside
+        // OPCITEMPROPERTY uses the canonical wireVARIANT layout (clSize +
+        // rpcReserved + vt + 3 reserved USHORTs + body) without the
+        // duplicated [switch_is(vt)] discriminator that VARIANT-array
+        // elements carry. The VARIANT is 8-byte aligned within the struct.
         writer.AlignTo(8);
-        NdrVariantExtensions.WriteVariantElement(ref writer, prop.Value);
+        NdrVariantExtensions.WriteVariant(ref writer, prop.Value);
         writer.WriteInt32(prop.ErrorId);
         writer.WriteUInt32(0u);
     }
@@ -339,9 +343,14 @@ public static class NdrOpcBrowseResponseDecoder
 
     private static OpcItemProperties ApplyItemPropertiesDeferred(ref NdrReader reader, ItemPropertiesInline inlinePart)
     {
+        // Matrikon Simulation Server's GetProperties response uses the
+        // deferred-pointer-pile layout for each OPCITEMPROPERTY (per-element
+        // inline parts with string referents, then deferred string bodies),
+        // not the flat one used by our older loopback fixtures. Route through
+        // the deferred-pile reader so live wire decoding works.
         OpcItemPropertyResult[] properties = inlinePart.PropertiesRef == 0u
             ? []
-            : ReadItemPropertyFlatConformantArray(ref reader);
+            : ReadItemPropertyConformantArray(ref reader);
         return new OpcItemProperties(inlinePart.ErrorId, properties);
     }
 
@@ -391,15 +400,13 @@ public static class NdrOpcBrowseResponseDecoder
         uint propertyId = reader.ReadUInt32();
         uint itemIdRef = reader.ReadUInt32();
         uint descriptionRef = reader.ReadUInt32();
-        // Per live-Matrikon wire capture: the embedded VARIANT inside
-        // OPCITEMPROPERTY uses the per-element envelope (per-element unique-
-        // pointer referent + pad-to-8 + canonical wireVARIANT including the
-        // duplicated [switch_is(vt)] discriminator). This matches the layout
-        // VARIANT array elements use, even though the IDL declares vValue as
-        // an embedded value-type field.
-        _ = reader.ReadUInt32();
+        // Embedded VARIANT field uses the canonical wireVARIANT (clSize +
+        // rpcReserved + vt + 3 reserved + body) with 8-byte struct alignment.
+        // No per-element referent wrap, no duplicated discriminator — those
+        // belong to the VARIANT-array element envelope used by [size_is]
+        // VARIANT** parameters, not by struct-embedded VARIANT fields.
         reader.AlignTo(8);
-        OpcVariant value = NdrVariantExtensions.ReadVariantElement(ref reader);
+        OpcVariant value = NdrVariantExtensions.ReadVariant(ref reader);
         int hrErrorId = reader.ReadInt32();
         _ = reader.ReadUInt32();
         return new ItemPropertyInline(vt, unchecked((int)propertyId), itemIdRef, descriptionRef, value, hrErrorId);

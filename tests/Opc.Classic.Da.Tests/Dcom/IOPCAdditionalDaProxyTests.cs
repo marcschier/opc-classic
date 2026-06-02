@@ -170,14 +170,17 @@ public sealed class IOPCAdditionalDaProxyTests
             0);
         ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
         {
-            writer.WriteUniquePointerReferent(true);
-            writer.WriteUInt32(1);
-            writer.WriteInt32(0);
-            writer.WriteUInt32(0);
-            writer.WriteUniquePointerReferent(true);
-            writer.WriteUInt32(0);
-            writer.WriteUInt32(1);
-            NdrOpcItemPropertyCodec.Write(ref writer, property);
+            writer.WriteUniquePointerReferent(true);     // ppItemProperties outer referent
+            writer.WriteUInt32(1);                        // max_count of OPCITEMPROPERTIES array
+            writer.WriteInt32(0);                         // hrErrorId
+            writer.WriteUInt32(0);                        // dwNumProperties = 0
+            writer.WriteUniquePointerReferent(true);     // pItemProperties non-null pointer
+            writer.WriteUInt32(0);                        // reserved
+            // Deferred body: emit the conformant array of OPCITEMPROPERTY in the
+            // C706 §14.3.12.3 deferred-pile shape (per-element inline parts with
+            // string referents, then per-element deferred string/variant bodies).
+            // This matches the live-Matrikon layout the reader now expects.
+            NdrOpcBrowseResponseDecoder.WriteItemPropertyConformantArray(ref writer, [property]);
         });
         var channel = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(new NdrCallResult(0, responsePayload)));
         var proxy = new IOPCBrowseClientProxy(channel);

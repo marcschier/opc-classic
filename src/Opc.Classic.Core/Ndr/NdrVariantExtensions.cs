@@ -93,14 +93,10 @@ public static class NdrVariantExtensions
     {
         reader.AlignTo(4);
         _ = reader.ReadUInt32();          // clSize
-        uint rpcReserved = reader.ReadUInt32();
-        if (rpcReserved != 0u)
-        {
-            throw new InvalidDataException(
-                $"NDR VARIANT element rpcReserved must be 0 but was 0x{rpcReserved:X8} at buffer offset {reader.Position - 4}. " +
-                "Wire layout does not match expected wireVARIANT — capture a Wireshark trace from a Windows OPC client " +
-                "for the same method to confirm the per-element envelope.");
-        }
+        // rpcReserved per MS-OAUT §2.2.29.2: SHOULD be 0 by the sender but
+        // receivers MUST tolerate any value. Matrikon Simulation sends
+        // non-zero rpcReserved bytes for embedded VARIANT element envelopes.
+        _ = reader.ReadUInt32();
         ushort vtRaw = reader.ReadUInt16();
         _ = reader.ReadUInt16();
         _ = reader.ReadUInt16();
@@ -516,17 +512,11 @@ public static class NdrVariantExtensions
         ThrowIfDepthExceeded(depth);
 
         reader.AlignTo(4);
-        int headerStart = reader.Position;
         _ = reader.ReadUInt32();
-        uint rpcReserved = reader.ReadUInt32();
-        if (rpcReserved != 0u)
-        {
-            throw new InvalidDataException(
-                $"NDR VARIANT rpcReserved must be 0 but was 0x{rpcReserved:X8} (decimal {rpcReserved}) " +
-                $"at buffer offset {headerStart + 4}. The byte sequence likely reflects misalignment " +
-                $"(e.g. a missing referent prefix or unexpected ORPCTHAT extension) rather than a " +
-                $"genuine VARIANT — compare a Wireshark capture of an equivalent Windows DCOM call.");
-        }
+        // rpcReserved per MS-OAUT §2.2.29.2: SHOULD be 0 by the sender but receivers
+        // MUST tolerate any value. Matrikon Simulation observed sending non-zero
+        // rpcReserved (e.g. 2) for VARIANT fields embedded in OPCITEMSTATE results.
+        _ = reader.ReadUInt32();
         ushort vtRaw = reader.ReadUInt16();
         _ = reader.ReadUInt16();
         _ = reader.ReadUInt16();

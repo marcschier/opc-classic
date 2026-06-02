@@ -255,15 +255,18 @@ public sealed class NdrVariantTests
     }
 
     [Test]
-    public async Task Reader_RejectsNonZeroRpcReserved()
+    public async Task Reader_TolerantToNonZeroRpcReserved()
     {
+        // Per MS-OAUT §2.2.29.2, rpcReserved SHOULD be 0 but receivers MUST
+        // tolerate any value. Matrikon Simulation has been observed sending
+        // non-zero rpcReserved bytes in OPCITEMSTATE.vDataValue, so the reader
+        // must accept them and continue with the wire body that follows.
         var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(OpcVariant.FromInt32(42)));
-        // Corrupt rpcReserved (bytes 4..7)
+        // Corrupt rpcReserved (bytes 4..7) — should not affect decode.
         bytes[4] = 0xFF;
-        bool threw = false;
-        try { ReadOne(bytes); }
-        catch (System.IO.InvalidDataException) { threw = true; }
-        await Assert.That(threw).IsTrue();
+        OpcVariant decoded = ReadOne(bytes);
+        await Assert.That(decoded.Type).IsEqualTo(VarType.VT_I4);
+        await Assert.That((int?)decoded.Boxed).IsEqualTo(42);
     }
 
     [Test]
