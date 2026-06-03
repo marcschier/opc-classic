@@ -32,6 +32,55 @@ On the OPCEnum host:
 
 Do not rely on disabling DCOM hardening. Configure AppID permissions and use packet integrity/privacy instead.
 
+## Grant OPCEnum ACLs without `dcomcnfg`
+
+`tools/grant-opcenum-acl.ps1` automates the manual steps above by reading
+the OPCEnum AppID's existing `AccessPermission` and `LaunchPermission`
+REG_BINARY security descriptors, appending an
+`(A;;CCDCLCSWRP;;;<SID>)` ACE for the supplied account, and writing the
+merged descriptors back. Idempotent — re-running with the same `-Account`
+is a no-op once the ACE is present. Requires elevated 64-bit PowerShell.
+
+```powershell
+# Grant the current user (default):
+.\tools\grant-opcenum-acl.ps1
+
+# Grant a specific account:
+.\tools\grant-opcenum-acl.ps1 -Account "CORP\opcprobe"
+
+# Grant the standard DCOM users group:
+.\tools\grant-opcenum-acl.ps1 -Account "BUILTIN\Distributed COM Users"
+
+# Remove the ACE (rollback):
+.\tools\grant-opcenum-acl.ps1 -Unregister
+```
+
+### What the script does
+
+For each of `HKLM:\SOFTWARE\Classes\AppID\{13486D51-...}` →
+`AccessPermission` and `LaunchPermission`:
+
+1. Reads the existing REG_BINARY security descriptor (or seeds a
+   minimal default with `BUILTIN\Administrators`, `NT AUTHORITY\SYSTEM`,
+   and `INTERACTIVE` granted if no descriptor exists yet).
+2. Parses to SDDL form for human-readable manipulation.
+3. Appends `(A;;CCDCLCSWRP;;;<SID>)` to the DACL where `CCDCLCSWRP` =
+   `COM_RIGHTS_EXECUTE` + `COM_RIGHTS_EXECUTE_LOCAL` +
+   `COM_RIGHTS_EXECUTE_REMOTE` + `COM_RIGHTS_ACTIVATE_LOCAL` +
+   `COM_RIGHTS_ACTIVATE_REMOTE`. This matches what dcomcnfg writes when
+   you tick all six boxes (Local/Remote Access + Local/Remote Launch +
+   Local/Remote Activation).
+4. Serializes back to binary and writes it under the same registry value.
+
+Audit the resulting SDDL with:
+
+```powershell
+$reg = Get-Item 'HKLM:\SOFTWARE\Classes\AppID\{13486D51-4821-11D2-A494-3CB306C10000}'
+$bytes = $reg.GetValue('AccessPermission')
+$sd = New-Object System.Security.AccessControl.RawSecurityDescriptor($bytes, 0)
+$sd.GetSddlForm('All')
+```
+
 ## Troubleshooting
 
 - `rpc_s_access_denied (0x05)`: the identity lacks OPCEnum Launch/Activation or Access permission.
