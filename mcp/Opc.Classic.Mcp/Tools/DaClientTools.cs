@@ -1013,7 +1013,7 @@ public sealed class DaClientTools
                     }
                 }
 
-                return new DaClientState(normalized.Host, normalized.ProgId, clsid, serverChannel, ownsChannel: true);
+                return new DaClientState(normalized.Host, normalized.ProgId, clsid, OpcWireCaptureWrap(serverChannel, normalized, clsid), ownsChannel: true);
             }
             finally
             {
@@ -1022,6 +1022,16 @@ public sealed class DaClientTools
                     await activationClient.DisposeAsync().ConfigureAwait(false);
                 }
             }
+        }
+
+        // Wraps the active call channel in an OPCCLASSIC_WIRE_CAPTURE_DIR-driven
+        // diagnostic decorator when the env var is set; returns the channel unchanged
+        // otherwise. Tag mixes ProgID + CLSID + host so multi-session probes produce
+        // self-describing artifacts on disk.
+        private static ICallChannel OpcWireCaptureWrap(ICallChannel channel, DaConnectionRequest normalized, Guid clsid)
+        {
+            string tag = $"da-{normalized.Host}-{(normalized.ProgId ?? clsid.ToString("N", System.Globalization.CultureInfo.InvariantCulture))}";
+            return global::Opc.Classic.Diagnostics.OpcWireCapture.Wrap(channel, tag);
         }
 
         // Parse the DUALSTRINGARRAY in the activation response's OxidBindings and return

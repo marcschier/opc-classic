@@ -198,7 +198,7 @@ public ref struct NdrReader
         uint value = ReadUInt32();
         if (value > int.MaxValue)
         {
-            throw new InvalidOperationException($"NDR conformance header {value} exceeds Int32.MaxValue.");
+            throw new InvalidOperationException($"NDR conformance header {value} exceeds Int32.MaxValue." + FormatContext());
         }
         return unchecked((int)value);
     }
@@ -230,12 +230,12 @@ public ref struct NdrReader
         uint offset = ReadUInt32();        // offset
         if (offset != 0u)
         {
-            throw new InvalidOperationException($"NDR LPWSTR offset must be 0 but was {offset}.");
+            throw new InvalidOperationException($"NDR LPWSTR offset must be 0 but was {offset}." + FormatContext());
         }
         uint actualCount = ReadUInt32();   // actual_count (includes the NUL)
         if (actualCount > maxCount)
         {
-            throw new InvalidOperationException($"NDR LPWSTR actual_count {actualCount} exceeds max_count {maxCount}.");
+            throw new InvalidOperationException($"NDR LPWSTR actual_count {actualCount} exceeds max_count {maxCount}." + FormatContext());
         }
         EnsureBoundedPayloadBytes(actualCount, sizeof(char), "NDR LPWSTR actual_count");
 
@@ -279,7 +279,7 @@ public ref struct NdrReader
         if (fFlags != 0u)
         {
             throw new InvalidOperationException(
-                $"NDR BSTR fFlags must be 0 but was {fFlags}.");
+                $"NDR BSTR fFlags must be 0 but was {fFlags}." + FormatContext());
         }
         uint clSize = ReadUInt32();
         EnsureBoundedPayloadBytes(clSize, sizeof(char), "NDR BSTR clSize");
@@ -485,12 +485,12 @@ public ref struct NdrReader
         if (byteCount > (uint)_maxPayloadSize)
         {
             throw new InvalidOperationException(
-                $"{context} requires {byteCount} bytes, which exceeds the configured NDR quota of {_maxPayloadSize} bytes.");
+                $"{context} requires {byteCount} bytes, which exceeds the configured NDR quota of {_maxPayloadSize} bytes." + FormatContext());
         }
 
         if (byteCount > int.MaxValue)
         {
-            throw new InvalidOperationException($"{context} requires {byteCount} bytes, which exceeds Int32.MaxValue.");
+            throw new InvalidOperationException($"{context} requires {byteCount} bytes, which exceeds Int32.MaxValue." + FormatContext());
         }
     }
 
@@ -500,7 +500,78 @@ public ref struct NdrReader
         if (requiredBytes < 0 || _position > _buffer.Length - requiredBytes)
         {
             throw new InvalidOperationException(
-                $"NdrReader past end-of-buffer: need {requiredBytes} bytes at position {_position} but only {_buffer.Length - _position} remain.");
+                $"NdrReader past end-of-buffer: need {requiredBytes} bytes at position {_position} but only {_buffer.Length - _position} remain." + FormatContext());
         }
+    }
+
+    /// <summary>
+    /// Formats a hex window around <see cref="Position"/> for use in decode-failure
+    /// exception messages. Renders up to <paramref name="contextBytes"/> bytes on either
+    /// side, marks the failure offset with <c>>></c>, and includes an ASCII gutter so a
+    /// developer can eyeball the bytes when comparing against a Wireshark capture or a
+    /// canonical MIDL layout.
+    /// </summary>
+    /// <remarks>
+    /// Returns a leading newline + multi-line block when context is available, or an
+    /// empty string when the buffer is empty / quota-violating writes have not yet
+    /// produced wire bytes. Callers concatenate the result onto the base failure
+    /// message so single-line tooling output still renders cleanly when no context
+    /// is available.
+    /// </remarks>
+    public string FormatContext(int contextBytes = 16) =>
+        FormatHexContext(_buffer, _position, contextBytes);
+
+    /// <summary>
+    /// Static helper that formats a hex window around the supplied offset. Exposed so
+    /// codecs (e.g. <c>NdrVariantExtensions</c>) that hold their own reference to the
+    /// buffer can produce identically-shaped diagnostic blocks.
+    /// </summary>
+    public static string FormatHexContext(ReadOnlySpan<byte> buffer, int position, int contextBytes = 16)
+    {
+        if (buffer.IsEmpty || contextBytes <= 0)
+        {
+            return string.Empty;
+        }
+        int start = Math.Max(0, position - contextBytes);
+        int end = Math.Min(buffer.Length, position + contextBytes);
+        if (end <= start)
+        {
+            return string.Empty;
+        }
+
+        var sb = new System.Text.StringBuilder(160);
+        sb.Append("\nWire context (bytes ").Append(start).Append("..").Append(end)
+            .Append(", >> marks position ").Append(position).AppendLine("):");
+        const int RowBytes = 16;
+        int rowStart = start - (start % RowBytes);
+        for (int row = rowStart; row < end; row += RowBytes)
+        {
+            sb.Append("  ").Append(row.ToString("X4", System.Globalization.CultureInfo.InvariantCulture)).Append(": ");
+            var hex = new System.Text.StringBuilder(48);
+            var ascii = new System.Text.StringBuilder(16);
+            for (int col = 0; col < RowBytes; col++)
+            {
+                int idx = row + col;
+                if (idx < start || idx >= end || idx >= buffer.Length)
+                {
+                    hex.Append("   ");
+                    ascii.Append(' ');
+                    continue;
+                }
+                if (idx == position)
+                {
+                    hex.Append(">>");
+                }
+                else
+                {
+                    hex.Append(' ');
+                }
+                byte b = buffer[idx];
+                hex.Append(b.ToString("x2", System.Globalization.CultureInfo.InvariantCulture));
+                ascii.Append(b >= 0x20 && b < 0x7F ? (char)b : '.');
+            }
+            sb.Append(hex).Append("  ").Append(ascii).AppendLine();
+        }
+        return sb.ToString();
     }
 }

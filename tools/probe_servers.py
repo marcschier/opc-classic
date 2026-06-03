@@ -148,19 +148,25 @@ def unwrap_tool_result(envelope: Any) -> Any:
     return envelope
 
 
-def launch_server(repo_root: str) -> subprocess.Popen[bytes]:
+def launch_server(repo_root: str, capture_dir: Optional[str] = None) -> subprocess.Popen[bytes]:
     dotnet = shutil.which("dotnet")
     if dotnet is None:
         raise RuntimeError("`dotnet` not found in PATH. Install the .NET 10 SDK.")
     csproj = os.path.join(repo_root, "mcp", "Opc.Classic.Mcp", "Opc.Classic.Mcp.csproj")
     if not os.path.exists(csproj):
         raise RuntimeError(f"MCP project not found at {csproj}.")
+    env = os.environ.copy()
+    if capture_dir:
+        absolute = os.path.abspath(capture_dir)
+        os.makedirs(absolute, exist_ok=True)
+        env["OPCCLASSIC_WIRE_CAPTURE_DIR"] = absolute
     return subprocess.Popen(
         [dotnet, "run", "--project", csproj, "--no-build", "-c", "Debug"],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=repo_root,
+        env=env,
     )
 
 
@@ -637,6 +643,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--no-sso", action="store_true", help="Disable DA Windows SSO. SSO is also disabled when explicit credentials are supplied.")
     parser.add_argument("--request-timeout", type=float, default=60.0)
     parser.add_argument("--server-start-delay", type=float, default=2.0)
+    parser.add_argument(
+        "--save-wire-payloads",
+        default=None,
+        help="Directory to write per-call NDR request+response hex dumps. "
+             "Sets OPCCLASSIC_WIRE_CAPTURE_DIR on the spawned MCP server. "
+             "See docs/interop/wire-captures/README.md.",
+    )
 
     parser.add_argument("--da-browse-branch", default="Random")
     parser.add_argument("--da-read-item", default="Random.Int4")
@@ -676,7 +689,7 @@ def main() -> int:
     proc: Optional[subprocess.Popen[bytes]] = None
     results: list[dict[str, Any]] = []
     try:
-        proc = launch_server(repo_root)
+        proc = launch_server(repo_root, capture_dir=getattr(args, "save_wire_payloads", None))
         time.sleep(args.server_start_delay)
         client = McpClient(proc, args.request_timeout)
         client.initialize()

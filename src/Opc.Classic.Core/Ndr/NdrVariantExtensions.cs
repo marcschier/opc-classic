@@ -106,7 +106,7 @@ public static class NdrVariantExtensions
         {
             throw new InvalidDataException(
                 $"NDR VARIANT element discriminator (0x{discRaw:X4}) does not match vt (0x{vtRaw:X4}) " +
-                $"at buffer offset {reader.Position - 2}.");
+                $"at buffer offset {reader.Position - 2}." + reader.FormatContext());
         }
         var vt = (VarType)vtRaw;
         return ReadVariantElementArm(ref reader, vt);
@@ -212,7 +212,7 @@ public static class NdrVariantExtensions
                 }
             default:
                 throw new InvalidDataException(
-                    $"NDR VARIANT element wire decoding is not yet supported for type {vt}.");
+                    $"NDR VARIANT element wire decoding is not yet supported for type {vt}." + reader.FormatContext());
         }
     }
 
@@ -234,7 +234,7 @@ public static class NdrVariantExtensions
         if (clSize != maxCount)
         {
             throw new InvalidDataException(
-                $"NDR FLAGGED_WORD_BLOB max_count ({maxCount}) does not match clSize ({clSize}).");
+                $"NDR FLAGGED_WORD_BLOB max_count ({maxCount}) does not match clSize ({clSize})." + reader.FormatContext());
         }
         if (clSize == 0u)
         {
@@ -606,7 +606,7 @@ public static class NdrVariantExtensions
         VarType.VT_VARIANT => OpcVariant.FromVariant(ReadVariantCore(ref reader, depth + 1)),
         VarType.VT_RECORD => new OpcVariant(VarType.VT_RECORD, ReadRecordPayload(ref reader, depth)),
         _ => throw new InvalidDataException(
-            $"NDR VARIANT wire decoding is not supported for type {vt}."),
+            $"NDR VARIANT wire decoding is not supported for type {vt}." + reader.FormatContext()),
     };
 
     private static object? ReadScalarValue(ref NdrReader reader, VarType vt) => vt switch
@@ -628,7 +628,7 @@ public static class NdrVariantExtensions
         VarType.VT_FILETIME => reader.ReadFileTime(),
         VarType.VT_CLSID => reader.ReadGuid(),
         _ => throw new InvalidDataException(
-            $"NDR VARIANT wire decoding is not supported for type {vt}."),
+            $"NDR VARIANT wire decoding is not supported for type {vt}." + reader.FormatContext()),
     };
 
     private static OpcRecordValue? ReadRecordPayload(ref NdrReader reader, int depth)
