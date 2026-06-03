@@ -316,10 +316,15 @@ public ref struct NdrWriter
     /// </summary>
     public void WriteBstr(ReadOnlySpan<char> value)
     {
-        uint referent = WriteReferentId();        // never null in this overload
-        _ = referent;                              // discard return — already written
-        WriteUInt32(0u);                           // fFlags
-        WriteUInt32(unchecked((uint)value.Length));// clSize — char count, no nul
+        uint referent = WriteReferentId();
+        _ = referent;
+        // FLAGGED_WORD_BLOB per MS-OAUT 2.2.23: max_count (conformant array
+        // prefix) + cBytes + clSize + WCHAR[clSize]. max_count and clSize
+        // both equal the char count; cBytes is the byte count.
+        uint clSize = unchecked((uint)value.Length);
+        WriteUInt32(clSize);
+        WriteUInt32(clSize * 2u);  // cBytes — informational byte count
+        WriteUInt32(clSize);
         EnsureCapacity(value.Length * 2);
         for (int i = 0; i < value.Length; i++)
         {

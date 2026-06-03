@@ -269,19 +269,32 @@ public ref struct NdrReader
     /// followed by a FLAGGED_WORD_BLOB. Returns <see langword="null"/>
     /// when the referent is zero (null BSTR).
     /// </summary>
+    /// <summary>Reads a [unique] BSTR (FLAGGED_WORD_BLOB) per MS-OAUT 2.2.23.</summary>
+    /// <remarks>
+    /// Wire layout: <c>referent + max_count + cBytes + clSize + char[clSize]</c>.
+    /// max_count is the implicit conformant-array prefix (always equals clSize
+    /// here per <c>[size_is(clSize)] asData[]</c>); cBytes is the byte count
+    /// including any 4-byte padding; clSize is the character count without the
+    /// trailing NUL. Older versions of this method omitted the max_count read,
+    /// which broke interop with real OPC servers (Matrikon emits the spec
+    /// layout). Symmetric loopback continued to work because the writer had the
+    /// same bug — see Track AY+ NDR variant codec sweep.
+    /// </remarks>
     public string? ReadBstr()
     {
         if (!TryReadReferentId(out _))
         {
             return null;
         }
-        uint fFlags = ReadUInt32();
-        if (fFlags != 0u)
+        uint maxCount = ReadUInt32();
+        uint cBytes = ReadUInt32();
+        uint clSize = ReadUInt32();
+        if (clSize > maxCount)
         {
             throw new InvalidOperationException(
-                $"NDR BSTR fFlags must be 0 but was {fFlags}." + FormatContext());
+                $"NDR BSTR clSize ({clSize}) exceeds max_count ({maxCount})." + FormatContext());
         }
-        uint clSize = ReadUInt32();
+        _ = cBytes; // informational; bounds enforced via clSize
         EnsureBoundedPayloadBytes(clSize, sizeof(char), "NDR BSTR clSize");
         int charCount = (int)clSize;
         EnsureAvailable(charCount * sizeof(char));

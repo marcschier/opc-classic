@@ -88,12 +88,12 @@ public sealed class NdrOpcItemVqtCodecTests
     {
         var input = new OpcItemVqt(OpcVariant.FromInt32(1), Quality: OpcQuality.Good);
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcItemVqtCodec.Write(ref w, input));
-        // VARIANT for VT_I4 is 20 bytes (16 header + 4 body).
-        // After 20 bytes, the bQualitySpecified Int32 begins. It should be 0xFFFFFFFF (-1).
-        await Assert.That(bytes[20]).IsEqualTo((byte)0xFF);
-        await Assert.That(bytes[21]).IsEqualTo((byte)0xFF);
-        await Assert.That(bytes[22]).IsEqualTo((byte)0xFF);
-        await Assert.That(bytes[23]).IsEqualTo((byte)0xFF);
+        // wireVARIANT for VT_I4 = 16 hdr + 4 ULONG discriminator + 4 body = 24 bytes.
+        // After 24 bytes, the bQualitySpecified Int32 begins. It should be 0xFFFFFFFF (-1).
+        await Assert.That(bytes[24]).IsEqualTo((byte)0xFF);
+        await Assert.That(bytes[25]).IsEqualTo((byte)0xFF);
+        await Assert.That(bytes[26]).IsEqualTo((byte)0xFF);
+        await Assert.That(bytes[27]).IsEqualTo((byte)0xFF);
     }
 
     [Test]
@@ -101,13 +101,14 @@ public sealed class NdrOpcItemVqtCodecTests
     {
         var input = new OpcItemVqt(OpcVariant.FromInt32(1));
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcItemVqtCodec.Write(ref w, input));
-        // bQualitySpecified at byte 20 should be 0
-        await Assert.That(bytes[20]).IsEqualTo((byte)0);
-        await Assert.That(bytes[21]).IsEqualTo((byte)0);
-        await Assert.That(bytes[22]).IsEqualTo((byte)0);
-        await Assert.That(bytes[23]).IsEqualTo((byte)0);
-        // wQuality (bytes 24-25) also 0
+        // wireVARIANT for VT_I4 = 24 bytes (header + discriminator + body).
+        // bQualitySpecified at byte 24 should be 0
         await Assert.That(bytes[24]).IsEqualTo((byte)0);
+        await Assert.That(bytes[25]).IsEqualTo((byte)0);
+        await Assert.That(bytes[26]).IsEqualTo((byte)0);
+        await Assert.That(bytes[27]).IsEqualTo((byte)0);
+        // wQuality (bytes 28-29) also 0
+        await Assert.That(bytes[28]).IsEqualTo((byte)0);
         await Assert.That(bytes[25]).IsEqualTo((byte)0);
     }
 }

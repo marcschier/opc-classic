@@ -254,20 +254,42 @@ public static class NdrVariantExtensions
     {
         ThrowIfDepthExceeded(depth);
 
+        writer.AlignTo(8);
+
         int bodyBytes = ComputeVariantBodySize(value, depth);
-        WriteVariantHeader(ref writer, value.Type, bodyBytes);
+        // clSize is in quad-words per MS-OAUT §2.2.29.1 — Matrikon emits this
+        // as a rounded-up byte count but does NOT actually pad the wire to a
+        // multiple of 8. Match that: emit ceiling-clSize, write body without
+        // trailing pad. Receivers that compute consumed bytes from header +
+        // discriminator + body (not from clSize) land on the right offset.
+        const int HeaderWithDiscriminator = VariantHeaderBytes + 4;
+        int actualWireBytes = HeaderWithDiscriminator + bodyBytes;
+        int clSize = (actualWireBytes + 7) / 8;
+        writer.WriteUInt32(unchecked((uint)clSize));
+        writer.WriteUInt32(0u);
+        writer.WriteUInt16((ushort)value.Type);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        // Duplicated discriminator (see ReadVariantCore comment on switch_type).
+        writer.WriteUInt32((uint)value.Type);
+
         WriteVariantBody(ref writer, value, depth);
     }
 
     private static void WriteVariantHeader(ref NdrWriter writer, VarType vt, int bodyBytes)
     {
-        writer.AlignTo(4);
-        writer.WriteUInt32(unchecked((uint)(VariantHeaderBytes - 8 + bodyBytes)));
+        writer.AlignTo(8);
+        const int HeaderWithDiscriminator = VariantHeaderBytes + 4;
+        int actualWireBytes = HeaderWithDiscriminator + bodyBytes;
+        int clSize = (actualWireBytes + 7) / 8;
+        writer.WriteUInt32(unchecked((uint)clSize));
         writer.WriteUInt32(0u);
         writer.WriteUInt16((ushort)vt);
         writer.WriteUInt16(0);
         writer.WriteUInt16(0);
         writer.WriteUInt16(0);
+        writer.WriteUInt32((uint)vt);
     }
 
     private static void WriteVariantBody(ref NdrWriter writer, OpcVariant value, int depth)
@@ -511,8 +533,8 @@ public static class NdrVariantExtensions
     {
         ThrowIfDepthExceeded(depth);
 
-        reader.AlignTo(4);
-        _ = reader.ReadUInt32();
+        reader.AlignTo(8);
+        _ = reader.ReadUInt32();   // clSize (upper-bound hint; we trust body layout instead)
         // rpcReserved per MS-OAUT §2.2.29.2: SHOULD be 0 by the sender but receivers
         // MUST tolerate any value. Matrikon Simulation observed sending non-zero
         // rpcReserved (e.g. 2) for VARIANT fields embedded in OPCITEMSTATE results.
@@ -521,6 +543,13 @@ public static class NdrVariantExtensions
         _ = reader.ReadUInt16();
         _ = reader.ReadUInt16();
         _ = reader.ReadUInt16();
+        // [switch_type(ULONG), switch_is(vt)] non-encapsulated union: because
+        // switch_type (ULONG) differs from the type of the switch_is field
+        // (USHORT vt), NDR (C706 §14.4.1) writes the discriminator on the
+        // wire explicitly with the switch_type. So a 4-byte ULONG vt copy
+        // sits between the 16-byte wireVARIANT header and the union body.
+        // Missing this is the root cause of the Track AY GetProperties drift.
+        _ = reader.ReadUInt32();
 
         var vt = (VarType)vtRaw;
         if (VarTypeMask.IsByRef(vt))
@@ -531,7 +560,6 @@ public static class NdrVariantExtensions
         {
             return ReadSafeArrayVariant(ref reader, vt);
         }
-
         return ReadBody(ref reader, vt, depth);
     }
 

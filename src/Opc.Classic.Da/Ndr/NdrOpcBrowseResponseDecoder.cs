@@ -165,13 +165,14 @@ public static class NdrOpcBrowseResponseDecoder
         writer.WriteUInt32(unchecked((uint)prop.PropertyId));
         writer.WriteUniquePointerReferent(prop.ItemId is not null);
         writer.WriteUniquePointerReferent(prop.Description is not null);
-        // Per live-Matrikon wire capture: the embedded VARIANT field inside
-        // OPCITEMPROPERTY uses the canonical wireVARIANT layout (clSize +
-        // rpcReserved + vt + 3 reserved USHORTs + body) without the
-        // duplicated [switch_is(vt)] discriminator that VARIANT-array
-        // elements carry. The VARIANT is 8-byte aligned within the struct.
-        writer.AlignTo(8);
-        NdrVariantExtensions.WriteVariant(ref writer, prop.Value);
+        // VARIANT vValue is a [unique] pointer to wireVARIANT per MS-OAUT 2.2.29.2
+        // (typedef [unique] struct _wireVARIANT * VARIANT). MIDL emits it as
+        // FC_USER_MARSHAL with USER_MARSHAL_UNIQUE (flags=0x83, bit 0x80) so the
+        // inline part carries a 4-byte referent and the wireVARIANT body lives
+        // in the deferred pile AFTER szItemID and szDescription. Confirmed by
+        // live Matrikon Simulation Server wire capture (Track AY+, fixture
+        // matrikon-getproperties-random-int4.hex).
+        writer.WriteUniquePointerReferent(true);
         writer.WriteInt32(prop.ErrorId);
         writer.WriteUInt32(0u);
     }
@@ -180,6 +181,7 @@ public static class NdrOpcBrowseResponseDecoder
     {
         if (prop.ItemId is not null) { writer.WriteUnicodeString(prop.ItemId); }
         if (prop.Description is not null) { writer.WriteUnicodeString(prop.Description); }
+        NdrVariantExtensions.WriteVariant(ref writer, prop.Value);
     }
 
     /// <summary>
@@ -256,20 +258,20 @@ public static class NdrOpcBrowseResponseDecoder
     [StructLayout(LayoutKind.Auto)]
     private readonly struct ItemPropertyInline
     {
-        public ItemPropertyInline(ushort dataType, int propertyId, uint itemIdRef, uint descriptionRef, OpcVariant value, int errorId)
+        public ItemPropertyInline(ushort dataType, int propertyId, uint itemIdRef, uint descriptionRef, uint valueRef, int errorId)
         {
             DataType = dataType;
             PropertyId = propertyId;
             ItemIdRef = itemIdRef;
             DescriptionRef = descriptionRef;
-            Value = value;
+            ValueRef = valueRef;
             ErrorId = errorId;
         }
         public ushort DataType { get; }
         public int PropertyId { get; }
         public uint ItemIdRef { get; }
         public uint DescriptionRef { get; }
-        public OpcVariant Value { get; }
+        public uint ValueRef { get; }
         public int ErrorId { get; }
     }
 
@@ -400,28 +402,29 @@ public static class NdrOpcBrowseResponseDecoder
         uint propertyId = reader.ReadUInt32();
         uint itemIdRef = reader.ReadUInt32();
         uint descriptionRef = reader.ReadUInt32();
-        // Embedded VARIANT field uses the canonical wireVARIANT (clSize +
-        // rpcReserved + vt + 3 reserved + body) with 8-byte struct alignment.
-        // No per-element referent wrap, no duplicated discriminator — those
-        // belong to the VARIANT-array element envelope used by [size_is]
-        // VARIANT** parameters, not by struct-embedded VARIANT fields.
-        reader.AlignTo(8);
-        OpcVariant value = NdrVariantExtensions.ReadVariant(ref reader);
+        // VARIANT vValue: 4-byte unique-pointer referent (FC_USER_MARSHAL flags=0x83,
+        // USER_MARSHAL_UNIQUE). The actual wireVARIANT body is deferred AFTER the
+        // szItemID / szDescription strings. Confirmed by live Matrikon Simulation
+        // Server wire capture (Track AY+).
+        uint valueRef = reader.ReadUInt32();
         int hrErrorId = reader.ReadInt32();
         _ = reader.ReadUInt32();
-        return new ItemPropertyInline(vt, unchecked((int)propertyId), itemIdRef, descriptionRef, value, hrErrorId);
+        return new ItemPropertyInline(vt, unchecked((int)propertyId), itemIdRef, descriptionRef, valueRef, hrErrorId);
     }
 
     private static OpcItemPropertyResult ApplyItemPropertyDeferred(ref NdrReader reader, ItemPropertyInline inlinePart)
     {
         string? itemId = inlinePart.ItemIdRef == 0u ? null : reader.ReadUnicodeString();
         string? description = inlinePart.DescriptionRef == 0u ? null : reader.ReadUnicodeString();
+        OpcVariant value = inlinePart.ValueRef == 0u
+            ? OpcVariant.Empty
+            : NdrVariantExtensions.ReadVariant(ref reader);
         return new OpcItemPropertyResult(
             DataType: (VarType)inlinePart.DataType,
             PropertyId: inlinePart.PropertyId,
             ItemId: itemId,
             Description: description,
-            Value: inlinePart.Value,
+            Value: value,
             ErrorId: inlinePart.ErrorId);
     }
 }

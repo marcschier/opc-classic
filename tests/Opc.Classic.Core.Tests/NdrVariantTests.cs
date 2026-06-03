@@ -35,8 +35,8 @@ public sealed class NdrVariantTests
     public async Task Empty_RoundTrips()
     {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(OpcVariant.Empty));
-        // Header (16 bytes) + 0 body = 16 bytes total
-        await Assert.That(bytes.Length).IsEqualTo(16);
+        // Header (16) + ULONG discriminator (4) + 0 body = 20 bytes total
+        await Assert.That(bytes.Length).IsEqualTo(20);
         await Assert.That(ReadOne(bytes)).IsEqualTo(OpcVariant.Empty);
     }
 
@@ -97,9 +97,9 @@ public sealed class NdrVariantTests
     public async Task Boolean_WireForm_IsMinusOne_ForTrue()
     {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(OpcVariant.FromBoolean(true)));
-        // VARIANT_BOOL TRUE is -1 (0xFFFF as USHORT)
-        await Assert.That(bytes[16]).IsEqualTo((byte)0xFF);
-        await Assert.That(bytes[17]).IsEqualTo((byte)0xFF);
+        // 16 hdr + 4 ULONG discriminator + 2 VARIANT_BOOL body. TRUE = 0xFFFF.
+        await Assert.That(bytes[20]).IsEqualTo((byte)0xFF);
+        await Assert.That(bytes[21]).IsEqualTo((byte)0xFF);
     }
 
     [Test]
@@ -238,10 +238,10 @@ public sealed class NdrVariantTests
     public async Task Header_Layout_HasExpectedFixedBytes()
     {
         var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(OpcVariant.FromInt32(0x12345678)));
-        // Header (16) + Int32 body (4) = 20
-        await Assert.That(bytes.Length).IsEqualTo(20);
-        // cbSize = remaining bytes after cbSize itself = 16 + 4 - 8 = 12
-        await Assert.That(BitConverter.ToUInt32(bytes, 0)).IsEqualTo(12u);
+        // 16 hdr + 4 ULONG discriminator + 4 Int32 body = 24 bytes total
+        await Assert.That(bytes.Length).IsEqualTo(24);
+        // clSize in quad-words (8-byte units) = ceil(24/8) = 3
+        await Assert.That(BitConverter.ToUInt32(bytes, 0)).IsEqualTo(3u);
         // rpcReserved = 0
         await Assert.That(BitConverter.ToUInt32(bytes, 4)).IsEqualTo(0u);
         // vt = VT_I4 (3)
@@ -250,8 +250,10 @@ public sealed class NdrVariantTests
         await Assert.That(BitConverter.ToUInt16(bytes, 10)).IsEqualTo((ushort)0);
         await Assert.That(BitConverter.ToUInt16(bytes, 12)).IsEqualTo((ushort)0);
         await Assert.That(BitConverter.ToUInt16(bytes, 14)).IsEqualTo((ushort)0);
+        // switch_type(ULONG) discriminator = vt as ULONG (per MS-OAUT non-encapsulated union)
+        await Assert.That(BitConverter.ToUInt32(bytes, 16)).IsEqualTo(3u);
         // body
-        await Assert.That(BitConverter.ToInt32(bytes, 16)).IsEqualTo(0x12345678);
+        await Assert.That(BitConverter.ToInt32(bytes, 20)).IsEqualTo(0x12345678);
     }
 
     [Test]

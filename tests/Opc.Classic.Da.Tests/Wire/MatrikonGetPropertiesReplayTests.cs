@@ -30,28 +30,46 @@ public sealed class MatrikonGetPropertiesReplayTests
     }
 
     /// <summary>
-    /// Pinned regression marker for <c>ag-get-properties-decode</c>: replays the
-    /// live Matrikon Simulation Server <c>IOPCBrowse::GetProperties</c> response
-    /// through our spec-compliant decoder and asserts that it currently throws
-    /// the expected NDR drift exception. Matrikon's proxy emits a non-standard
-    /// 28-byte inline OPCITEMPROPERTY layout (see Track AY notes in
-    /// <c>docs/interop/unblocking-get-properties-decode.md</c>) instead of the
-    /// 40+ byte spec layout MIDL would produce.
+    /// Replays the live Matrikon Simulation Server <c>IOPCBrowse::GetProperties</c>
+    /// response through the decoder and verifies it produces the OPC DA 3.00 §A.1
+    /// standard + recommended property set for <c>Random.Int4</c> (Track AY+).
     /// </summary>
-    /// <remarks>
-    /// When the Matrikon-shape decoder lands, this test MUST be flipped to
-    /// assert on the decoded property values (count = 14, propIds 1..8 + 101 +
-    /// the five vendor-private IDs). Until then, keeping the assertion on the
-    /// EXPECTED failure keeps CI green while documenting that the fixture is
-    /// being exercised.
-    /// </remarks>
     [Test]
-    public async Task Replay_throws_expected_drift_until_matrikon_shape_decoder_lands()
+    public async Task Replay_decodes_response_through_browse_decoder()
     {
         WireCaptureFile capture = WireCaptureFile.Load(FixturePath());
+        OpcItemProperties[] items = DecodeCaptured(capture.ResponsePayload);
 
-        var ex = Assert.Throws<InvalidDataException>(() => DecodeCaptured(capture.ResponsePayload));
-        await Assert.That(ex.Message).Contains("NDR VARIANT wire decoding is not supported for type");
+        await Assert.That(items.Length).IsEqualTo(1);
+        await Assert.That(items[0].ErrorId).IsEqualTo(0);
+        await Assert.That(items[0].Properties.Length).IsEqualTo(14);
+
+        // Standard property set 1..8 + recommended Item Description (101) +
+        // five Matrikon-private wave-form properties (-5..-1).
+        int[] expectedIds = [1, 2, 3, 4, 5, 6, 7, 8, 101, -5, -4, -3, -2, -1];
+        for (int i = 0; i < expectedIds.Length; i++)
+        {
+            await Assert.That(items[0].Properties[i].PropertyId).IsEqualTo(expectedIds[i]);
+            await Assert.That(items[0].Properties[i].ItemId).IsEqualTo("Random.Int4");
+            await Assert.That(items[0].Properties[i].ErrorId).IsEqualTo(0);
+        }
+
+        // Spec-mandated vtDataType for the standard set (OPC DA 3.00 §A.1).
+        await Assert.That(items[0].Properties[0].DataType).IsEqualTo(VarType.VT_I2);          // canonical type
+        await Assert.That(items[0].Properties[2].DataType).IsEqualTo(VarType.VT_I2);          // quality
+        await Assert.That(items[0].Properties[4].DataType).IsEqualTo(VarType.VT_I4);          // access rights
+        await Assert.That(items[0].Properties[5].DataType).IsEqualTo(VarType.VT_R4);          // scan rate
+        await Assert.That(items[0].Properties[6].DataType).IsEqualTo(VarType.VT_I4);          // EU type
+
+        // Standard property descriptions (proves itemId + description pile alignment).
+        await Assert.That(items[0].Properties[0].Description).IsEqualTo("Item Canonical DataType");
+        await Assert.That(items[0].Properties[1].Description).IsEqualTo("Item Value");
+        await Assert.That(items[0].Properties[2].Description).IsEqualTo("Item Quality");
+        await Assert.That(items[0].Properties[3].Description).IsEqualTo("Item Timestamp");
+        await Assert.That(items[0].Properties[4].Description).IsEqualTo("Item Access Rights");
+        await Assert.That(items[0].Properties[5].Description).IsEqualTo("Server Scan Rate");
+        await Assert.That(items[0].Properties[6].Description).IsEqualTo("Item EU Type");
+        await Assert.That(items[0].Properties[7].Description).IsEqualTo("Item EUInfo");
     }
 
     private static OpcItemProperties[] DecodeCaptured(byte[] response)

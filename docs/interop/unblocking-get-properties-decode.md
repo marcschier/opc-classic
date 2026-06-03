@@ -226,7 +226,95 @@ The next iteration (automated) will:
 | Steps 1–6 | ~7–8 min on a working dev box |
 | **Total active work** | **~15 min** |
 
-## Track AY — wire-replay findings (live Matrikon capture)
+## Track AY+ — FULLY RESOLVED (Matrikon wire is spec-compliant; our codec had 3 stacking bugs)
+
+**Status: ✅ CLOSED.** The user was right — Matrikon is not incompatible. The
+live Matrikon Simulation Server emits a fully spec-compliant
+`IOPCBrowse::GetProperties` response per MS-OAUT and DCE/RPC. **Our codec had
+three stacking bugs** that all compounded to make the wire look "vendor-shaped":
+
+### Bug 1 — embedded VARIANT was treated as inline struct instead of [unique] pointer
+
+`OPCITEMPROPERTY.vValue` is typed `VARIANT` in the IDL, but MS-OAUT 2.2.29.2
+defines `typedef [unique] struct _wireVARIANT * VARIANT` — so it's
+fundamentally a unique pointer at NDR level. MIDL emits the field as
+`FC_USER_MARSHAL` with flags byte `0x83`: the high nibble `0x80` is
+`USER_MARSHAL_UNIQUE`. That means:
+
+- The **inline** OPCITEMPROPERTY part carries just a **4-byte VARIANT
+  referent** (alongside vt/wRes/propId/itemIdRef/descRef/hrError/dwReserved =
+  28 bytes total per inline part).
+- The actual **wireVARIANT body** lives in the **deferred-pile** AFTER
+  szItemID and szDescription for each property.
+
+Our codec was reading the wireVARIANT INLINE between the string referents and
+the trailing hrError. That over-consumed bytes for every property, causing
+catastrophic drift on the second inline part.
+
+### Bug 2 — missing `[switch_type(ULONG)]` discriminator on the wire
+
+MS-OAUT 2.2.29.1 wireVARIANT has:
+`[switch_type(ULONG), switch_is(vt)] union { ... } _varUnion;`
+
+Per C706 §14.4.1 (non-encapsulated unions), when `switch_type` differs from
+the type of the `switch_is` field — here ULONG vs USHORT — NDR writes the
+discriminator **explicitly** on the wire. So a 4-byte ULONG copy of `vt`
+sits between the 16-byte wireVARIANT header and the union body.
+
+Our `ReadVariantCore` / `WriteVariantCore` were skipping this discriminator,
+causing per-variant 4-byte drift on top of bug 1.
+
+### Bug 3 — FLAGGED_WORD_BLOB (BSTR) missing max_count prefix
+
+MS-OAUT 2.2.23 defines:
+```idl
+typedef struct _FLAGGED_WORD_BLOB {
+    unsigned long cBytes;
+    unsigned long clSize;
+    [size_is(clSize)] unsigned short asData[];
+} FLAGGED_WORD_BLOB;
+```
+
+The `[size_is(clSize)] asData[]` conformant array carries an implicit
+**max_count prefix** at the START of the struct per NDR rules. So the wire
+layout is `referent + max_count + cBytes + clSize + WCHAR[clSize]`.
+
+Our `NdrReader.ReadBstr` / `NdrWriter.WriteBstr` were writing
+`referent + fFlags + clSize + chars` (no max_count, and misnaming cBytes as
+fFlags). Loopback tests passed because reader and writer were symmetrically
+wrong.
+
+### clSize is in quadwords, not bytes
+
+MS-OAUT 2.2.29.1 specifies `clSize` "MUST be set to the size, in quad words
+(64 bits), of the structure". Our writer emitted clSize in BYTES. Matrikon
+reads clSize as quadwords (rounded up); our spec-correct write now emits
+ceiling-clSize and our reader treats clSize as an upper-bound hint (it trusts
+header + discriminator + body for actual position advancement, since some
+senders, including Matrikon, do not pad the wire to a multiple of 8).
+
+### Verification
+
+The replay test now passes against the live Matrikon Simulation Server
+capture (`matrikon-getproperties-random-int4.hex`):
+
+- 14 properties decoded
+- vtDataType + dwPropertyID + szItemID + szDescription + value + hrErrorID
+  all match OPC DA 3.00 §A.1 standard + recommended set:
+  - #1 Item Canonical DataType = VT_I2 holding VT_I4=3
+  - #2 Item Value = VT_I4 (random int)
+  - #3 Item Quality = VT_I2 = 192 (OPC_QUALITY_GOOD)
+  - #4 Item Timestamp = VT_DATE (current timestamp)
+  - #5 Item Access Rights = VT_I4 = 1 (OPC_READABLE)
+  - #6 Server Scan Rate = VT_R4 = 100
+  - #7 Item EU Type = VT_I4 = 0 (OPC_NO_ENUM)
+  - #8 Item EUInfo = VT_EMPTY (non-enumerated)
+  - #9 Item Description (BSTR)
+  - #10-14 Matrikon-private waveform properties
+
+Full solution test sweep: **all green** (0 failures across 17 test projects).
+
+## Track AY — original wire-replay findings (preserved for history)
 
 The first live capture against Matrikon OPC Simulation Server was
 landed as
