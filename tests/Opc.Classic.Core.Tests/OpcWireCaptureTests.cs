@@ -15,9 +15,11 @@ using Opc.Classic;
 using Opc.Classic.Diagnostics;
 using Opc.Classic.Testing;
 using TUnit.Core;
+using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Tests;
 
+[NotInParallel(nameof(OpcWireCaptureTests))]
 public sealed class OpcWireCaptureTests
 {
     private static readonly Guid SampleIid = new("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
@@ -76,5 +78,61 @@ public sealed class OpcWireCaptureTests
         NdrCallResult result = await capturing.InvokeAsync(SampleIid, 3, ReadOnlyMemory<byte>.Empty, CancellationToken.None);
 
         await Assert.That(result.Hresult).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task Wrap_WhenEnvVarSet_ReturnsWireCapturingDecorator()
+    {
+        string dir = Path.Combine(Path.GetTempPath(), "opc-wire-test-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        Environment.SetEnvironmentVariable("OPCCLASSIC_WIRE_CAPTURE_DIR", dir);
+        try
+        {
+            var inner = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
+
+            ICallChannel wrapped = OpcWireCapture.Wrap(inner, "tag");
+
+            await Assert.That(ReferenceEquals(wrapped, inner)).IsFalse();
+            await Assert.That(wrapped).IsTypeOf<WireCapturingCallChannel>();
+            await Assert.That(OpcWireCapture.IsEnabled).IsTrue();
+            await Assert.That(OpcWireCapture.CaptureDirectory).IsEqualTo(dir);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("OPCCLASSIC_WIRE_CAPTURE_DIR", null);
+            try { Directory.Delete(dir, recursive: true); } catch { /* best-effort */ }
+        }
+    }
+
+    [Test]
+    public async Task Wrap_WhenEnvVarWhitespaceOnly_TreatsAsDisabled()
+    {
+        Environment.SetEnvironmentVariable("OPCCLASSIC_WIRE_CAPTURE_DIR", "   ");
+        try
+        {
+            var inner = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
+
+            ICallChannel wrapped = OpcWireCapture.Wrap(inner, "tag");
+
+            await Assert.That(ReferenceEquals(wrapped, inner)).IsTrue();
+            await Assert.That(OpcWireCapture.IsEnabled).IsFalse();
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("OPCCLASSIC_WIRE_CAPTURE_DIR", null);
+        }
+    }
+
+    [Test]
+    public async Task Wrap_NullChannel_Throws()
+    {
+        await Assert.That(() => { _ = OpcWireCapture.Wrap(null!, "tag"); }).Throws<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task Wrap_NullContextTag_Throws()
+    {
+        var inner = new InMemoryCallChannel((_, _, _, _) => Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
+        await Assert.That(() => { _ = OpcWireCapture.Wrap(inner, null!); }).Throws<ArgumentNullException>();
     }
 }
