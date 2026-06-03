@@ -236,6 +236,12 @@ public sealed class DaClientState : IAsyncDisposable
         }
 
         _disposed = true;
+        foreach (DaSubscriptionContext subscription in Subscriptions.Values)
+        {
+            subscription.Sink.Dispose();
+        }
+
+        Subscriptions.Clear();
         if (_ownsChannel)
         {
             switch (_channel)
@@ -324,7 +330,50 @@ public sealed class DaGroupContext
 public sealed record DaItemBindingContext(string ItemName, string? ItemPath, int ClientHandle, int ServerHandle);
 
 /// <summary>Tracks a poll-based DA subscription.</summary>
-public sealed record DaSubscriptionContext(string SubscriptionId, int GroupHandle, bool FromCache, int TransactionId, int? CancelId);
+/// <remarks>
+/// The <see cref="Sink"/> is constructed eagerly even though the production
+/// callback bind path (Track AP1/AP2) is not yet wired. This makes the
+/// queue-drain contract used by <c>opcclassic.da.poll_subscription</c>
+/// testable in isolation and a no-op for live polling until a sink producer
+/// is plumbed.
+/// </remarks>
+public sealed class DaSubscriptionContext
+{
+    /// <summary>Creates a new subscription context with a fresh callback sink.</summary>
+    public DaSubscriptionContext(
+        string subscriptionId,
+        int groupHandle,
+        bool fromCache,
+        int transactionId,
+        int? cancelId)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(subscriptionId);
+        SubscriptionId = subscriptionId;
+        GroupHandle = groupHandle;
+        FromCache = fromCache;
+        TransactionId = transactionId;
+        CancelId = cancelId;
+        Sink = new Tools.DaDataCallbackSink();
+    }
+
+    /// <summary>Opaque subscription identifier returned to the caller.</summary>
+    public string SubscriptionId { get; }
+
+    /// <summary>Server-assigned group handle this subscription targets.</summary>
+    public int GroupHandle { get; }
+
+    /// <summary>True when the subscription polls from the server cache; false for device reads.</summary>
+    public bool FromCache { get; }
+
+    /// <summary>Transaction identifier used for refresh callbacks.</summary>
+    public int TransactionId { get; }
+
+    /// <summary>Cancel identifier returned by <c>IOPCAsyncIO2::Refresh2</c>, if any.</summary>
+    public int? CancelId { get; }
+
+    /// <summary>Sink that receives <c>IOPCDataCallback</c> push notifications for this subscription.</summary>
+    public Tools.DaDataCallbackSink Sink { get; }
+}
 
 /// <summary>Operations required by MCP DX tools.</summary>
 public interface IOpcDxClient : IAsyncDisposable

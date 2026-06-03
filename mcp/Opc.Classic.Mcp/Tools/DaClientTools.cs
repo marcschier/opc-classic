@@ -558,7 +558,7 @@ public sealed class DaClientTools
 
     /// <summary>Polls a DA subscription queue for new notifications.</summary>
     [McpServerTool(Name = "opcclassic.da.poll_subscription", ReadOnly = true, Idempotent = false, Destructive = false, OpenWorld = true)]
-    [Description("Polls a DA subscription for values. The initial implementation uses a pull model and returns current values for known group items.")]
+    [Description("Polls a DA subscription for values. When IOPCDataCallback push notifications have been received they are returned first; otherwise a synchronous pull read of the group is performed as a fallback.")]
     public async Task<IReadOnlyList<OpcItemValueDto>> PollSubscription(
         [Description("The connected OPC Classic sessionId.")]
         string sessionId,
@@ -576,6 +576,17 @@ public sealed class DaClientTools
 
         DaGroupContext group = GetGroup(client, subscription.GroupHandle);
         ApplyGroupInterfaceRoutes(client, group);
+
+        // Prefer push notifications when the sink has any data; otherwise
+        // fall back to a synchronous pull read of the group. The pull
+        // fallback preserves the existing MCP behavior for the (current)
+        // case where Track AP1/AP2 callback bind is not yet wired up.
+        IReadOnlyList<DataChangeItem> pushed = subscription.Sink.DrainItems(maxNotifications);
+        if (pushed.Count > 0)
+        {
+            return ToValueDtosFromPush(group, pushed);
+        }
+
         int[] handles = NormalizeHandles(null, group);
         if (maxNotifications > 0)
         {
@@ -603,9 +614,9 @@ public sealed class DaClientTools
         client.Groups.TryRemove(groupHandle, out _);
         foreach (KeyValuePair<string, DaSubscriptionContext> pair in client.Subscriptions)
         {
-            if (pair.Value.GroupHandle == groupHandle)
+            if (pair.Value.GroupHandle == groupHandle && client.Subscriptions.TryRemove(pair.Key, out DaSubscriptionContext? removed))
             {
-                client.Subscriptions.TryRemove(pair.Key, out _);
+                removed.Sink.Dispose();
             }
         }
 
@@ -731,6 +742,33 @@ public sealed class DaClientTools
             int error = i < errors.Count ? errors[i] : OpcResultId.Fail.Code;
             DaItemBindingContext? binding = group.Items.GetValueOrDefault(handles[i]);
             results.Add(ToValueDto(binding?.ItemName ?? $"#{handles[i]}", binding?.ItemPath, binding?.ServerHandle ?? handles[i], state, error));
+        }
+
+        return results;
+    }
+
+    private static IReadOnlyList<OpcItemValueDto> ToValueDtosFromPush(DaGroupContext group, IReadOnlyList<DataChangeItem> items)
+    {
+        // IOPCDataCallback delivers values keyed by client handle, not server
+        // handle. Reverse-index the group's items once so we resolve names +
+        // server handles in O(N) rather than O(N*M).
+        var byClientHandle = new Dictionary<int, DaItemBindingContext>(group.Items.Count);
+        foreach (DaItemBindingContext binding in group.Items.Values)
+        {
+            byClientHandle[binding.ClientHandle] = binding;
+        }
+
+        var results = new List<OpcItemValueDto>(items.Count);
+        foreach (DataChangeItem item in items)
+        {
+            DaItemBindingContext? binding = byClientHandle.GetValueOrDefault(item.ClientHandle);
+            var state = new OpcItemState(item.ClientHandle, item.Timestamp, item.Quality, item.Value);
+            results.Add(ToValueDto(
+                binding?.ItemName ?? $"client#{item.ClientHandle}",
+                binding?.ItemPath,
+                binding?.ServerHandle,
+                state,
+                item.HResult));
         }
 
         return results;
