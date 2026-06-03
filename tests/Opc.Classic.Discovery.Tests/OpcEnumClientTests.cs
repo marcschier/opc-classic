@@ -147,6 +147,27 @@ public sealed class OpcEnumClientTests
         await Assert.That(factory.ActivationProtectionLevel).IsEqualTo(OpcProtectionLevel.Integrity);
     }
 
+    [Test]
+    public async Task EnumerateAsync_downgrades_to_IOPCServerList_when_IOPCServerList2_bind_is_rejected()
+    {
+        // Regression: some OPCEnum installs (older OPC Core Components, certain
+        // vendor SDKs) marshal an OBJREF claiming IOPCServerList2 support but
+        // the underlying RPC server only speaks IOPCServerList (DA 2.0) over
+        // the wire — the bind PDU returns PROVIDER_REJECTION /
+        // ABSTRACT_SYNTAX_NOT_SUPPORTED. The client must downgrade silently to
+        // IOPCServerList rather than bubble the rejection to the caller.
+        var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000099");
+        var server = new SyntheticOpcEnumServer { RejectServerList2Bind = true }
+            .AddServer(OpcGuids.CATID_OPCDAServer20, classId, "Vendor.Downgrade.1", "Vendor Downgrade", "Vendor.Downgrade");
+        var client = new OpcEnumClient("opc-host", server, new[] { OpcGuids.CATID_OPCDAServer20 });
+
+        OpcServerDescriptor[] descriptors = await client.EnumerateAsync(CancellationToken.None);
+
+        await Assert.That(descriptors.Length).IsEqualTo(1);
+        await Assert.That(descriptors[0].ClassId).IsEqualTo(classId);
+        await Assert.That(descriptors[0].ProgId).IsEqualTo("Vendor.Downgrade.1");
+    }
+
     [Test, Skip("Requires reachable OPCEnum.exe host")]
     public async Task OpcEnum_real_network_enumerates_reachable_host()
     {
@@ -201,6 +222,17 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
     public int GetClassDetailsHresult { get; init; }
 
     public OpcProtectionLevel ActivationProtectionLevel { get; init; } = OpcProtectionLevel.Integrity;
+
+    /// <summary>
+    /// When true, the synthetic channel throws the same
+    /// <c>InvalidOperationException("Presentation context rejected: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.")</c>
+    /// that <c>DcomCallChannel.EnsurePresentationContextAsync</c> produces when an
+    /// OPCEnum host returns an OBJREF claiming <c>IOPCServerList2</c> support but
+    /// the underlying RPC server only speaks <c>IOPCServerList</c> (DA 2.0).
+    /// Exercises the downgrade-on-bind-rejection fallback in
+    /// <c>OpcEnumClient.EnumerateAsync</c>.
+    /// </summary>
+    public bool RejectServerList2Bind { get; init; }
 
     public List<ActivationProperties> ActivationRequests { get; } = new();
 
@@ -264,7 +296,16 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
             return Task.FromResult(new NdrCallResult(0, EncodeObjRef(OpcGuids.IID_IOPCServerList2)));
         }
 
-        if (interfaceId == OpcGuids.IID_IOPCServerList2 && opnum == 3)
+        if (interfaceId == OpcGuids.IID_IOPCServerList2 && RejectServerList2Bind)
+        {
+            // Simulate the bind-time PROVIDER_REJECTION that DcomCallChannel surfaces
+            // when an OPCEnum host's RPC server doesn't actually speak IOPCServerList2
+            // despite the activator returning an OBJREF claiming the IID.
+            throw new InvalidOperationException(
+                "Presentation context rejected: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.");
+        }
+
+        if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 3)
         {
             Guid categoryId = DecodeFirstImplementedCategory(requestPayload);
             _pendingEnums.Enqueue(_categoryClasses.TryGetValue(categoryId, out List<Guid>? classIds)
@@ -278,7 +319,7 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
             return Task.FromResult(HandleNext(requestPayload));
         }
 
-        if (interfaceId == OpcGuids.IID_IOPCServerList2 && opnum == 4)
+        if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 4)
         {
             if (GetClassDetailsHresult != 0)
             {

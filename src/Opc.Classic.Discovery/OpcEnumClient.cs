@@ -117,14 +117,46 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 serverListIid,
                 cancellationToken).ConfigureAwait(false);
 
-            return activated.SupportsServerList2
-                ? await EnumerateWithServerList2Async(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false)
-                : await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+            if (activated.SupportsServerList2)
+            {
+                try
+                {
+                    return await EnumerateWithServerList2Async(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+                }
+                catch (InvalidOperationException ex) when (IsBindRejectionForUnsupportedAbstractSyntax(ex))
+                {
+                    // OPCEnum's activator marshaled an OBJREF claiming IOPCServerList2
+                    // support, but the underlying RPC server rejects the bind for that
+                    // IID (common with older OPC Core Components installs that only
+                    // ship IOPCServerList). Discard the IOPCServerList2 channel and
+                    // re-bind against IOPCServerList (DA 2.0).
+                    await DisposeChannelAsync(serverListChannel).ConfigureAwait(false);
+                    serverListChannel = await _channelFactory.CreateObjectChannelAsync(
+                        targetHost,
+                        activated.InterfaceRef,
+                        OpcGuids.IID_IOPCServerList,
+                        cancellationToken).ConfigureAwait(false);
+                    return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
         }
         finally
         {
             await DisposeChannelAsync(serverListChannel).ConfigureAwait(false);
         }
+    }
+
+    private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex)
+    {
+        // BindAck for an unsupported IID surfaces as
+        // 'Presentation context rejected: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.'
+        // from DcomCallChannel.EnsurePresentationContextAsync. Match by substring so we
+        // don't accidentally downgrade on unrelated InvalidOperationException paths.
+        string message = ex.Message ?? string.Empty;
+        return message.Contains("Presentation context rejected", StringComparison.Ordinal)
+            && message.Contains("ABSTRACT_SYNTAX_NOT_SUPPORTED", StringComparison.Ordinal);
     }
 
     /// <inheritdoc />
