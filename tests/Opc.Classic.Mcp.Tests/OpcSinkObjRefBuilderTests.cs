@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Opc.Classic;
 using Opc.Classic.Da.Dcom;
@@ -108,8 +109,34 @@ public sealed class OpcSinkObjRefBuilderTests
         await Assert.That(decoded.Ipid).IsEqualTo(built.Ipid);
         await Assert.That(decoded.Oxid).IsEqualTo(built.Oxid);
         await Assert.That(decoded.Oid).IsEqualTo(built.Oid);
+        await Assert.That(decoded.Flags).IsEqualTo(built.Flags);
+        await Assert.That(decoded.PublicRefs).IsEqualTo(built.PublicRefs);
         await Assert.That(decoded.SecurityOffset).IsEqualTo(built.SecurityOffset);
         await Assert.That(decoded.ResolverBindings.Count).IsEqualTo(built.ResolverBindings.Count);
+        // Element-by-element binding comparison so silent ushort drift is caught.
+        for (int i = 0; i < built.ResolverBindings.Count; i++)
+        {
+            await Assert.That(decoded.ResolverBindings[i]).IsEqualTo(built.ResolverBindings[i]);
+        }
+    }
+
+    [Test]
+    public async Task Build_GeneratesDistinctOxidAndOid_AcrossManyCalls()
+    {
+        // N=2 sampling masks generators with substantial collision rates.
+        // Generate 256 ObjRefs and assert per-field uniqueness via HashSet.Count.
+        const int N = 256;
+        Guid ipid = Guid.NewGuid();
+        var oxids = new HashSet<ulong>(N);
+        var oids = new HashSet<ulong>(N);
+        for (int i = 0; i < N; i++)
+        {
+            IOpcInterfaceRef objref = OpcSinkObjRefBuilder.Build(SampleIid, ipid, SampleEndpoint);
+            oxids.Add(objref.Oxid);
+            oids.Add(objref.Oid);
+        }
+        await Assert.That(oxids.Count).IsEqualTo(N);
+        await Assert.That(oids.Count).IsEqualTo(N);
     }
 
     [Test]

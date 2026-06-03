@@ -200,8 +200,8 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         int[] errors,
         CancellationToken cancellationToken = default)
     {
-        Interlocked.Increment(ref _onDataChangeCount);
         EnqueueBatch(transactionId, groupHandle, masterQuality, masterError, clientHandles, values, qualities, timestamps, errors);
+        Interlocked.Increment(ref _onDataChangeCount);
         return Task.CompletedTask;
     }
 
@@ -218,8 +218,8 @@ public sealed class DaDataCallbackSink : IOPCDataCallback, IDisposable
         int[] errors,
         CancellationToken cancellationToken = default)
     {
-        Interlocked.Increment(ref _onReadCompleteCount);
         EnqueueBatch(transactionId, groupHandle, masterQuality, masterError, clientHandles, values, qualities, timestamps, errors);
+        Interlocked.Increment(ref _onReadCompleteCount);
         return Task.CompletedTask;
     }
 

@@ -123,7 +123,7 @@ internal sealed class McpTestServer : IAsyncDisposable
         if (result.IsError == true)
         {
             string error = string.Join("\n", result.Content.OfType<TextContentBlock>().Select(static content => content.Text));
-            throw new InvalidOperationException(error);
+            throw new InvalidOperationException("Tool '" + toolName + "' returned an error: " + error);
         }
 
         TextContentBlock text = result.Content.OfType<TextContentBlock>().Single();

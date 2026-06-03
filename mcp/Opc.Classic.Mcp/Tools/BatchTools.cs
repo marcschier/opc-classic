@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Sockets;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
+using Opc.Classic;
 using Opc.Classic.Batch;
 using Opc.Classic.Batch.Dcom;
 using Opc.Classic.Dcom;
@@ -205,6 +206,11 @@ public sealed class BatchTools
         CancellationToken cancellationToken = default)
     {
         BatchClientState client = GetBatchClient(sessionId);
+        // Unbounded-min defaults use FileTimeHelper.Epoch (1601-01-01) because
+        // DateTimeOffset.MinValue (year 0001) would encode as a negative FILETIME
+        // which is invalid per the Windows FILETIME spec and rejected by the
+        // strict decode path (Track AW). Unbounded-max stays at DateTimeOffset.MaxValue
+        // (year 9999) which is the upper bound of the valid FILETIME range.
         OpcBatchSummaryFilter filter = new(
             Normalize(id),
             Normalize(description),
@@ -215,9 +221,9 @@ public sealed class BatchTools
             Normalize(engineeringUnits),
             Normalize(executionState),
             Normalize(executionMode),
-            minStartTime ?? DateTimeOffset.MinValue,
+            minStartTime ?? FileTimeHelper.Epoch,
             maxStartTime ?? DateTimeOffset.MaxValue,
-            minEndTime ?? DateTimeOffset.MinValue,
+            minEndTime ?? FileTimeHelper.Epoch,
             maxEndTime ?? DateTimeOffset.MaxValue);
 
         IEnumOPCBatchSummary enumerator = await CreateSummaryEnumeratorAsync(client, filter, model, cancellationToken).ConfigureAwait(false);

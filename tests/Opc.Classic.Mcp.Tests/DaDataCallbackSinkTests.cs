@@ -108,7 +108,11 @@ public sealed class DaDataCallbackSinkTests
             errors: [0, 0],
             cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
 
-        await Assert.That(sink.OnDataChangeCount).IsEqualTo(1L);
+        // Counter must remain 0 — a failed (validation-throwing) call must NOT be
+        // counted as a successful OnDataChange invocation. Otherwise monitoring
+        // can't distinguish "received N valid batches" from "received N attempts,
+        // some of which were rejected as malformed".
+        await Assert.That(sink.OnDataChangeCount).IsEqualTo(0L);
         await Assert.That(sink.DrainItems(0).Count).IsEqualTo(0);
     }
 
@@ -186,7 +190,8 @@ public sealed class DaDataCallbackSinkTests
         await PushAsync(3, 300).ConfigureAwait(false);
         await PushAsync(4, 400).ConfigureAwait(false);
 
-        await Assert.That(sink.DroppedNotifications).IsGreaterThanOrEqualTo(2L);
+        // Capacity 2, 4 pushes -> exactly 2 dropped (deterministic with DropOldest).
+        await Assert.That(sink.DroppedNotifications).IsEqualTo(2L);
 
         IReadOnlyList<DataChangeItem> drained = sink.DrainItems(maxItems: 0);
         await Assert.That(drained.Count).IsEqualTo(2);

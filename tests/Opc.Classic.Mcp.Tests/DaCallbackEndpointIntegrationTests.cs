@@ -181,7 +181,13 @@ public sealed class DaCallbackEndpointIntegrationTests
         channel.RegisterInterfaceIpid(IOPCDataCallback.InterfaceId, sinkIpid);
         var proxy = new IOPCDataCallbackClientProxy(channel);
 
-        long ts = DateTimeOffset.UtcNow.ToFileTime();
+        DateTimeOffset expectedTimestamp = new(2026, 1, 15, 12, 0, 0, TimeSpan.Zero);
+        long ts = expectedTimestamp.ToFileTime();
+        const ushort GoodQuality = 0xC0;
+        const ushort BadQuality = 0x00;
+        const int Success = 0;
+        int Failure = unchecked((int)0x80070005u);
+
         await proxy.OnDataChangeAsync(
             transactionId: 0x42,
             groupHandle: 0xCAFE,
@@ -189,17 +195,27 @@ public sealed class DaCallbackEndpointIntegrationTests
             masterError: 0,
             clientHandles: [10, 20],
             values: [OpcVariant.FromInt32(123), OpcVariant.FromDouble(2.71)],
-            qualities: [(ushort)0xC0, (ushort)0xC0],
+            qualities: [GoodQuality, BadQuality],
             timestamps: [ts, ts],
-            errors: [0, 0],
+            errors: [Success, Failure],
             cancellationToken: TestContext.Current!.CancellationToken).ConfigureAwait(false);
 
         IReadOnlyList<DataChangeItem> drained = sink.DrainItems(maxItems: 0);
         await Assert.That(drained.Count).IsEqualTo(2);
+
+        // Per-item ClientHandle / Value already covered above; G6 extends to
+        // assert Quality, HResult, and Timestamp also survive the wire round-trip.
         await Assert.That(drained[0].ClientHandle).IsEqualTo(10);
         await Assert.That(drained[0].Value.Boxed).IsEqualTo(123);
+        await Assert.That(drained[0].Quality.RawValue).IsEqualTo(GoodQuality);
+        await Assert.That(drained[0].HResult).IsEqualTo(Success);
+        await Assert.That(drained[0].Timestamp).IsEqualTo(expectedTimestamp);
+
         await Assert.That(drained[1].ClientHandle).IsEqualTo(20);
         await Assert.That(drained[1].Value.Boxed).IsEqualTo(2.71);
+        await Assert.That(drained[1].Quality.RawValue).IsEqualTo(BadQuality);
+        await Assert.That(drained[1].HResult).IsEqualTo(Failure);
+        await Assert.That(drained[1].Timestamp).IsEqualTo(expectedTimestamp);
 
         await Assert.That(endpoint.UnregisterSink(sinkIpid)).IsTrue();
     }

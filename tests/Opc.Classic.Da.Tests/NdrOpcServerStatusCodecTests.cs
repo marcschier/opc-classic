@@ -159,6 +159,44 @@ public sealed class NdrOpcServerStatusCodecTests
         await Assert.That(thrown.Message).DoesNotContain("ftCurrentTime");
     }
 
+    [Test]
+    public async Task Decode_FileTime_NamesFailingField_StartTime()
+    {
+        // Symmetric coverage for the FIRST field: only ftStartTime is corrupt;
+        // exception must name it (not the unread later fields).
+        byte[] wire = WireWithRawFileTimes(rawStartFileTime: long.MaxValue, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
+
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftStartTime");
+        await Assert.That(thrown.Message).DoesNotContain("ftCurrentTime");
+        await Assert.That(thrown.Message).DoesNotContain("ftLastUpdateTime");
+    }
+
+    [Test]
+    public async Task Decode_FileTime_NamesFailingField_CurrentTime()
+    {
+        // Symmetric coverage for the MIDDLE field: ftStartTime valid, ftCurrentTime corrupt.
+        byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: -1L, rawLastUpdateFileTime: 0L);
+
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftCurrentTime");
+        await Assert.That(thrown.Message).DoesNotContain("ftStartTime");
+        await Assert.That(thrown.Message).DoesNotContain("ftLastUpdateTime");
+    }
+
+    [Test]
+    public async Task Decode_FileTime_MaxValid_DecodesToYear9999()
+    {
+        // Positive boundary test: the max FILETIME that still fits in DateTimeOffset
+        // must decode cleanly, not be over-zealously rejected by the strict guard.
+        const long FileTimeEpochOffsetTicks = 504911232000000000L;
+        long maxRaw = DateTimeOffset.MaxValue.UtcTicks - FileTimeEpochOffsetTicks;
+
+        byte[] wire = WireWithRawFileTimes(rawStartFileTime: maxRaw, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
+        OpcServerStatus back = ReadOne(wire);
+        await Assert.That(back.StartTime.Year).IsEqualTo(9999);
+    }
+
     /// <summary>
     /// Builds a synthetic OPCSERVERSTATUS wire payload where the three FILETIME fields hold
     /// arbitrary <see langword="long"/> values (bypassing the codec's writer-side validation).
