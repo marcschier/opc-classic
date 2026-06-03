@@ -101,7 +101,8 @@ public sealed class OpcServerListener : IAsyncDisposable
 
         ListenerStarting(_logger, _endpoint.LocalEndpoint, null);
         _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        _acceptLoop = Task.Run(() => AcceptLoopAsync(_cts.Token), CancellationToken.None);
+        CancellationToken loopToken = _cts.Token;
+        _acceptLoop = Task.Run(() => AcceptLoopAsync(loopToken), CancellationToken.None);
         return Task.CompletedTask;
     }
 
@@ -165,13 +166,13 @@ public sealed class OpcServerListener : IAsyncDisposable
             return;
         }
 
-        _disposed = true;
         try
         {
             await StopAsync(CancellationToken.None).ConfigureAwait(false);
         }
         finally
         {
+            _disposed = true;
             await _endpoint.DisposeAsync().ConfigureAwait(false);
         }
     }

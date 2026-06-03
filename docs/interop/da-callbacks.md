@@ -48,17 +48,56 @@ deferred, and what the production callback-bind path requires.
 
 | Subtrack | Description | Status |
 |---------|-------------|--------|
-| AP1 | `OpcServerListener` startup on MCP host bound to dynamic TCP port + IOPCDataCallback dispatcher registration | **Deferred** — requires live Matrikon verification |
-| AP2 | Construct `IOpcInterfaceRef` for sink (TCP string binding + fresh IPID/OXID/OID) + pass to `IConnectionPointClientProxy.Advise(sink)` + track cookie | **Deferred** — requires live Matrikon verification |
+| AP1 | `OpcServerListener` startup on MCP host bound to dynamic TCP port + IOPCDataCallback dispatcher registration | **Partial (AU)** — loopback-only scaffold shipped via `DaCallbackEndpoint`; production startup integrated into `DaClientTools.Subscribe` still deferred |
+| AP2 | Construct `IOpcInterfaceRef` for sink (TCP string binding + fresh IPID/OXID/OID) + pass to `IConnectionPointClientProxy.Advise(sink)` + track cookie | **Partial (AU)** — `OpcSinkObjRefBuilder` ships the OBJREF construction (verified to round-trip through `OpcInterfaceRefCodec`); production `Advise(sink)`/cookie tracking from inside the MCP `Subscribe` tool still deferred |
 | AP3 | `DataChangeNotification` queue + bounded `Channel<T>` sink + `poll_subscription` drain-first-then-pull | **Done** |
-| AP4 | Accept Matrikon callback-bind PDU auth via existing `RpcServerConnectionProcessor` + `Spnego` | **Mostly done** — the loopback test proves the auth path; production OBJREF routing still needs AP1+AP2 |
+| AP4 | Accept Matrikon callback-bind PDU auth via existing `RpcServerConnectionProcessor` + `Spnego` | **Mostly done** — the loopback test proves the auth path; production OBJREF routing still needs AP1+AP2 + `IObjectExporter` OXID resolver |
 | AP5 | Synthetic in-process test of sink + queue + drain mapping | **Done** (`tests/Opc.Classic.Mcp.Tests/DaDataCallbackSinkTests.cs`) |
+| AP5b | In-process loopback Advise / OnDataChange integration test (Track AU) | **Done** (`tests/Opc.Classic.Mcp.Tests/DaCallbackEndpointIntegrationTests.cs`) |
 | AP6 | Documentation | **This document** |
 
-`poll_subscription` already prefers push notifications when the sink has
-data and falls back to a synchronous `IOPCSyncIO::Read` when the queue is
-empty. Until AP1/AP2 land, no production code feeds the sink, so the
-fallback path matches existing pull behavior bit-for-bit.
+## Track AU loopback scaffold
+
+The wire-side infrastructure for AP1/AP2/AP4 is exposed as
+**internal scaffolding** behind a deliberate API — production
+`DaClientTools.Subscribe` does **not** auto-bind a listener or call
+`Advise`. The hand-off points are:
+
+- [`DaCallbackEndpoint`](../../mcp/Opc.Classic.Mcp/Tools/DaCallbackEndpoint.cs)
+  — loopback-only inbound listener (`IPAddress.Loopback` bind; no
+  environment-variable override). `StartAsync` lazily binds to a dynamic
+  TCP port. `RegisterSink(IOPCDataCallback)` returns a fresh IPID;
+  `UnregisterSink(ipid)` rolls back. `BuildSinkObjRef(ipid)` returns
+  the `IOpcInterfaceRef` to hand to
+  `IConnectionPoint::Advise`. All public methods serialize lifecycle
+  changes through a `SemaphoreSlim`.
+- [`OpcSinkObjRefBuilder`](../../mcp/Opc.Classic.Mcp/Tools/OpcSinkObjRefBuilder.cs)
+  — constructs the `OBJREF_STANDARD` interface pointer: caller-supplied
+  IID + IPID, fresh OXID + OID, a single TCP DUALSTRINGARRAY string
+  binding (`"host[port]"`, tower id `0x07`), and a single WinNT NTLM
+  security binding (auth service `0x000A`, authz service
+  `RPC_C_AUTHZ_NONE = 0xFFFF`).
+- [`DaClientState.GetOrCreateCallbackEndpointAsync`](../../mcp/Opc.Classic.Mcp/Sessions/OpcSession.cs)
+  — race-safe lazy accessor that returns one started endpoint per
+  client; the endpoint is disposed by `DaClientState.DisposeAsync`.
+
+### Production callback bring-up gap
+
+What still blocks AP1/AP2/AP4 going user-visible:
+
+1. **`IObjectExporter` OXID resolver** — a real OPC server doing
+   `Advise(sink)` will issue an `IObjectExporter::ResolveOxid2` against
+   the OBJREF's resolver bindings BEFORE it dials the callback
+   transport. Our listener currently has no `IObjectExporter`
+   dispatcher; the AU scaffold proves the dispatch path AFTER OXID
+   resolution would have succeeded.
+2. **`Subscribe`-time wiring** — `DaClientTools.Subscribe` would need
+   to start the endpoint, register the sink, build the OBJREF, call
+   `AdviseAsync`, and store the returned cookie on
+   `DaSubscriptionContext`. Today these are deliberate no-ops to keep
+   the (unverified-against-Matrikon) inbound flow off by default.
+3. **Live Matrikon verification** — needed to validate any of the
+   above end-to-end before flipping AP1/AP2/AP4 to "Done".
 
 ## Sink contract
 

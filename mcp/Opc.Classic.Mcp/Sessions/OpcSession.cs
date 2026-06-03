@@ -227,6 +227,51 @@ public sealed class DaClientState : IAsyncDisposable
     /// <summary>Known poll-based subscriptions by identifier.</summary>
     public ConcurrentDictionary<string, DaSubscriptionContext> Subscriptions { get; } = new(StringComparer.Ordinal);
 
+    /// <summary>
+    /// Loopback inbound <c>IOPCDataCallback</c> endpoint (Track AU scaffold).
+    /// Lazily created on first use via <see cref="GetOrCreateCallbackEndpointAsync"/>.
+    /// Disposed by <see cref="DisposeAsync"/>. Not auto-started by Subscribe;
+    /// production callback bring-up against real OPC servers needs
+    /// <c>IObjectExporter</c> OXID-resolution support which is tracked under
+    /// AP1/AP2/AP4 — see <c>docs/interop/da-callbacks.md</c>.
+    /// </summary>
+    public Tools.DaCallbackEndpoint? CallbackEndpoint { get; private set; }
+
+    /// <summary>
+    /// Lazily creates and starts a loopback <see cref="Tools.DaCallbackEndpoint"/>
+    /// for this client. Subsequent calls return the same instance. Concurrent
+    /// callers race-safely; only one endpoint is ever created per client.
+    /// </summary>
+    public async Task<Tools.DaCallbackEndpoint> GetOrCreateCallbackEndpointAsync(System.Threading.CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        Tools.DaCallbackEndpoint? existing = CallbackEndpoint;
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        await _callbackEndpointLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (CallbackEndpoint is null)
+            {
+                var endpoint = new Tools.DaCallbackEndpoint();
+                await endpoint.StartAsync(cancellationToken).ConfigureAwait(false);
+                CallbackEndpoint = endpoint;
+            }
+
+            return CallbackEndpoint;
+        }
+        finally
+        {
+            _callbackEndpointLock.Release();
+        }
+    }
+
+    private readonly System.Threading.SemaphoreSlim _callbackEndpointLock = new(1, 1);
+
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
@@ -235,13 +280,36 @@ public sealed class DaClientState : IAsyncDisposable
             return;
         }
 
-        _disposed = true;
         foreach (DaSubscriptionContext subscription in Subscriptions.Values)
         {
             subscription.Sink.Dispose();
         }
 
         Subscriptions.Clear();
+
+        // Serialize disposal with concurrent GetOrCreateCallbackEndpointAsync —
+        // otherwise a creator inside the lock could publish a freshly-started
+        // endpoint into a disposed DaClientState. We deliberately do NOT
+        // dispose the semaphore: outstanding waiters may still need to
+        // Release on it after their startup raced with disposal.
+        await _callbackEndpointLock.WaitAsync().ConfigureAwait(false);
+        Tools.DaCallbackEndpoint? callbackEndpoint;
+        try
+        {
+            _disposed = true;
+            callbackEndpoint = CallbackEndpoint;
+            CallbackEndpoint = null;
+        }
+        finally
+        {
+            _callbackEndpointLock.Release();
+        }
+
+        if (callbackEndpoint is not null)
+        {
+            await callbackEndpoint.DisposeAsync().ConfigureAwait(false);
+        }
+
         if (_ownsChannel)
         {
             switch (_channel)
