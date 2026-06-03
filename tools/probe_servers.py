@@ -193,16 +193,34 @@ class ProbeRunner:
         exposed_set = set(exposed)
         covered: list[str] = []
 
+        # --probe filter restricts the sweep to specific MCP tool names.
+        # Always include opcclassic.session.create + opcclassic.<spec>.connect
+        # implicitly because every other tool requires a session + a connected
+        # client, so they must run first regardless of filter.
+        probe_filter: set[str] | None = None
+        if getattr(self.args, "probe", None):
+            requested = set(self.args.probe)
+            probe_filter = set(requested)
+            probe_filter.add("opcclassic.session.create")
+            for kind in ("da", "hda", "ae", "batch", "commands", "dx"):
+                probe_filter.add(f"opcclassic.{kind}.connect")
+
         for spec in probe_specs():
+            if probe_filter is not None and spec.name not in probe_filter:
+                continue
             if spec.name in exposed_set:
                 covered.append(spec.name)
                 self.probe(spec)
 
-        known = set(covered)
-        schema_by_name = {tool.get("name"): tool.get("inputSchema") for tool in tools if isinstance(tool, dict)}
-        for name in exposed:
-            if name not in known:
-                self.probe(ProbeSpec(name, lambda runner, tool_name=name: runner.auto_args(schema_by_name.get(tool_name))))
+        # The schema-driven auto-probe loop is the safety net for tools that
+        # don't have a curated spec. Skip it when --probe was supplied so the
+        # filter actually means "only these tools".
+        if probe_filter is None:
+            known = set(covered)
+            schema_by_name = {tool.get("name"): tool.get("inputSchema") for tool in tools if isinstance(tool, dict)}
+            for name in exposed:
+                if name not in known:
+                    self.probe(ProbeSpec(name, lambda runner, tool_name=name: runner.auto_args(schema_by_name.get(tool_name))))
 
         return self.results
 
@@ -649,6 +667,17 @@ def parse_args() -> argparse.Namespace:
         help="Directory to write per-call NDR request+response hex dumps. "
              "Sets OPCCLASSIC_WIRE_CAPTURE_DIR on the spawned MCP server. "
              "See docs/interop/wire-captures/README.md.",
+    )
+
+    parser.add_argument(
+        "--probe",
+        action="append",
+        default=None,
+        metavar="TOOL_NAME",
+        help="Restrict the probe sweep to specific MCP tool names. May be "
+             "repeated. When omitted, every probe spec exposed by the server "
+             "is executed. Example: --probe opcclassic.da.get_status "
+             "--probe opcclassic.da.get_properties.",
     )
 
     parser.add_argument("--da-browse-branch", default="Random")
