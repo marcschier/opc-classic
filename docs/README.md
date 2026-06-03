@@ -36,6 +36,7 @@ Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 fa
 - [`IOPCDataCallback` push delivery](interop/da-callbacks.md) — server→client subscription callback architecture (Track AP)
 - [TestServer activation residual](interop/testserver.md) — known SCM-activation blocker for the OPC Foundation managed TestServer
 - [Wire captures](interop/wire-captures/README.md) — opt-in NDR diagnostic dumps via `OPCCLASSIC_WIRE_CAPTURE_DIR`
+- [Unblocking `da.get_properties` decode](interop/unblocking-get-properties-decode.md) — step-by-step procedure to capture the live Matrikon exchange needed to close `ag-get-properties-decode`
 
 ## Security
 
