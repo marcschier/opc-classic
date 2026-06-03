@@ -63,7 +63,7 @@ This probe was captured before Track AD: locally built TestServer EXE activation
 
 ### Issue C: OPCEnum activation fails (rpc_s_access_denied)
 
-opcclassic.discovery.enumerate_servers and ProgID-based connect paths use IRemoteSCMActivator::RemoteCreateInstance. The activator path now reuses the same OPC connection credentials used for the target server and upgrades weak activation protection to RPC_C_AUTHN_LEVEL_PKT_INTEGRITY (or preserves PKT_PRIVACY). Operators must still grant the calling identity DCOM Launch/Activation and Access permissions on the OPCEnum / OPC.ServerList AppID (CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`) in Component Services; otherwise Windows will continue to return rpc_s_access_denied (0x05).
+opcclassic.discovery.enumerate_servers and ProgID-based connect paths use IRemoteSCMActivator::RemoteCreateInstance. The activator path now reuses the same OPC connection credentials used for the target server and upgrades weak activation protection to RPC_C_AUTHN_LEVEL_PKT_INTEGRITY (or preserves PKT_PRIVACY). Operators must still grant the calling identity DCOM Launch/Activation and Access permissions on the OPCEnum / OPC.ServerList AppID `{13486D44-4821-11D2-A494-3CB306C10000}` (note: AppID is distinct from the CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`, differing in one hex digit) in Component Services; otherwise Windows will continue to return rpc_s_access_denied (0x05).
 
 Workaround: pass a CLSID directly to connect tools (for example `--da-clsid`) to bypass OPCEnum, or call discovery/ProgID connect with NTLMv2/Kerberos/Windows-SSO credentials that have OPCEnum Launch/Activation and Access permissions. The probe driver also accepts `--auth-level pkt_integrity` or `--auth-level pkt_privacy` and forwards it to MCP discovery/connect tools. If a hardened host returns `RPC fault status 0x000006F7` for IRemoteSCMActivator or rejects legacy IActivation with `ABSTRACT_SYNTAX_NOT_SUPPORTED`, re-check OPCEnum DCOM security/registration on the server and continue using direct CLSID until the host accepts OPCEnum activation. See `docs/interop/opcenum-auth.md`.
 
@@ -106,7 +106,7 @@ Matrikon: **22/95 OK** (was 21/95 headline). The headline count only moved by on
 - `opcclassic.da.poll_subscription` — depends on `read_sync` succeeding.
 - `opcclassic.da.get_properties` — LPWSTR/VARIANT response decode offset issue persists. Likely the per-element VARIANT alignment in `[OpcVariantElements]` decode is misaligned for the specific Matrikon wire shape.
 - `opcclassic.cpx.get_complex_type` / `get_dictionary` — share the `get_properties` codec path.
-- `opcclassic.discovery.enumerate_servers` — environmental DCOM AppID ACL issue on OPCEnum CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`. Also surfaced a code gap: `IOPCServerList` enum/details methods are stubbed in `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:887,902` (Track AJ2 follow-up).
+- `opcclassic.discovery.enumerate_servers` — environmental DCOM AppID ACL issue on OPCEnum AppID `{13486D44-4821-11D2-A494-3CB306C10000}` (CLSID `{13486D51-...}`). Also surfaced a code gap: `IOPCServerList` enum/details methods are stubbed in `src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs:887,902` (Track AJ2 follow-up).
 - HDA / AE / Batch / Commands / DX / XML-DA — Matrikon Simulation does not implement these specs; no in-tree server available.
 
 **What shipped under Track AF/AG/AH:**

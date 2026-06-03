@@ -1,6 +1,6 @@
 # OPCEnum DCOM authentication
 
-OPCEnum (`OPC.ServerList.1`, CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`) is used by discovery and by ProgID-based connect flows. On hardened Windows hosts (KB5004442 and follow-ups), activation must use at least `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`. The client now raises OPCEnum activation to packet integrity by default, preserves packet privacy when requested, and exposes the probe/MCP `authLevel` option.
+OPCEnum (`OPC.ServerList.1`, CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`, AppID `{13486D44-4821-11D2-A494-3CB306C10000}`) is used by discovery and by ProgID-based connect flows. On hardened Windows hosts (KB5004442 and follow-ups), activation must use at least `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`. The client now raises OPCEnum activation to packet integrity by default, preserves packet privacy when requested, and exposes the probe/MCP `authLevel` option.
 
 ## Client options
 
@@ -57,7 +57,7 @@ is a no-op once the ACE is present. Requires elevated 64-bit PowerShell.
 
 ### What the script does
 
-For each of `HKLM:\SOFTWARE\Classes\AppID\{13486D51-...}` →
+For each of `HKLM:\SOFTWARE\Classes\AppID\{13486D44-...}` →
 `AccessPermission` and `LaunchPermission`:
 
 1. Reads the existing REG_BINARY security descriptor (or seeds a
@@ -75,7 +75,7 @@ For each of `HKLM:\SOFTWARE\Classes\AppID\{13486D51-...}` →
 Audit the resulting SDDL with:
 
 ```powershell
-$reg = Get-Item 'HKLM:\SOFTWARE\Classes\AppID\{13486D51-4821-11D2-A494-3CB306C10000}'
+$reg = Get-Item 'HKLM:\SOFTWARE\Classes\AppID\{13486D44-4821-11D2-A494-3CB306C10000}'
 $bytes = $reg.GetValue('AccessPermission')
 $sd = New-Object System.Security.AccessControl.RawSecurityDescriptor($bytes, 0)
 $sd.GetSddlForm('All')

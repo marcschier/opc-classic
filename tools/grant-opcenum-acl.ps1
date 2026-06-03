@@ -6,7 +6,10 @@
     and ProgID-based connect flows succeed without per-call -username / -password.
 
 .DESCRIPTION
-    OPCEnum (`OPC.ServerList.1`, CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`)
+    OPCEnum (`OPC.ServerList.1`, CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`,
+    AppID `{13486D44-4821-11D2-A494-3CB306C10000}` — note that CLSID and AppID
+    differ in one hex digit; both come from the same OPC Foundation Core
+    Components install)
     is used by every discovery and ProgID-based connect tool. On hardened
     Windows hosts (KB5004442+) DCOM activation requires both:
 
@@ -53,12 +56,13 @@
 [CmdletBinding()]
 param(
     [string]$Account,
-    [switch]$Unregister
+    [switch]$Unregister,
+    [string]$AppIdOverride
 )
 
 $ErrorActionPreference = 'Stop'
 
-$script:OpcEnumAppId = '{13486D51-4821-11D2-A494-3CB306C10000}'
+$script:OpcEnumAppId = if ($AppIdOverride) { $AppIdOverride } else { '{13486D44-4821-11D2-A494-3CB306C10000}' }
 $script:OpcEnumAppIdRegPath = "HKLM:\SOFTWARE\Classes\AppID\$script:OpcEnumAppId"
 
 function Test-IsAdministrator {
@@ -185,7 +189,29 @@ if (-not [Environment]::Is64BitProcess) {
 }
 
 if (-not (Test-Path -LiteralPath $script:OpcEnumAppIdRegPath)) {
-    Write-Error "OPCEnum AppID key not found at $script:OpcEnumAppIdRegPath. Is OPCEnum installed?"
+    Write-Error @"
+OPCEnum AppID key not found at $script:OpcEnumAppIdRegPath.
+
+Common causes:
+  1. OPCEnum / OPC Core Components is not installed on this host.
+     Install from https://opcfoundation.org/ (or vendor your OPC server
+     setup, which usually bundles Core Components).
+     Verify with: Get-Service OpcEnum
+
+  2. Partial install: OPCEnum.exe + the OPC.ServerList.1 ProgID + the
+     CLSID {13486D51-...} are registered, but the AppID key was skipped.
+     Confirm CLSID->AppID linkage with:
+         reg query "HKLM\SOFTWARE\Classes\CLSID\{13486D51-4821-11D2-A494-3CB306C10000}" /reg:32
+
+     The 'AppID' named value under the CLSID points at the AppID GUID
+     that THIS script expects ($script:OpcEnumAppId). If it differs,
+     pass the right GUID via -AppIdOverride.
+
+Note: the OPCEnum CLSID ({13486D51-...}) and AppID ({13486D44-...}) differ
+in one hex digit. Both come from the same install but live under different
+registry keys (CLSID under HKLM\SOFTWARE\Classes\CLSID, AppID under
+HKLM\SOFTWARE\Classes\AppID).
+"@
     exit 1
 }
 
