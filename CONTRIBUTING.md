@@ -113,7 +113,13 @@ Verify.TUnit golden files live alongside tests under `tests\<ProjectName>.Tests\
 
 ## Coverage
 
-CI gates code coverage at **70% line / 60% branch**. Exclusions must be narrow and documented.
+CI gates code coverage at **70% line / 50% branch** (workspace-wide aggregate
+across all `tests/**/coverage.cobertura.xml`, after the ReportGenerator
+exclusion of `Opc.Classic.Dcom*`/`Opc.Classic.Generators*`/`*Tests*`). The
+branch floor was lifted in step with the actual aggregate as Tracks AR + BD
+raised coverage on the new sink + listener + element-VARIANT surfaces;
+tighten further in proportion to future targeted coverage work. Exclusions
+must be narrow and documented.
 
 Run coverage locally for a targeted project:
 
