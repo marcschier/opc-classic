@@ -1,9 +1,9 @@
 name: Samba WINREG smoke
 
+# Only on PR + manual: master push already had the smoke run during PR
+# review, so re-running post-merge is redundant CI spend.
 on:
   pull_request:
-  push:
-    branches: [master, main]
   workflow_dispatch:
 
 permissions:
