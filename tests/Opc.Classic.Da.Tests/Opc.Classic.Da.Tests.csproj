@@ -17,4 +17,8 @@
     <PackageReference Include="Verify.TUnit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Wire\Fixtures\*.hex" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

@@ -226,6 +226,106 @@ The next iteration (automated) will:
 | Steps 1–6 | ~7–8 min on a working dev box |
 | **Total active work** | **~15 min** |
 
+## Track AY — wire-replay findings (live Matrikon capture)
+
+The first live capture against Matrikon OPC Simulation Server was
+landed as
+[`tests/Opc.Classic.Da.Tests/Wire/Fixtures/matrikon-getproperties-random-int4.hex`](../../tests/Opc.Classic.Da.Tests/Wire/Fixtures/matrikon-getproperties-random-int4.hex).
+The `MatrikonGetPropertiesReplayTests.Replay_decodes_response_through_browse_decoder`
+test reproduces the failure deterministically off-line:
+
+```
+NDR VARIANT wire decoding is not supported for type 57.
+Wire context (bytes 184..216, >> marks position 200):
+  00B0:                          55 73 65 72 00 00 00 00          User....
+  00C0:  39 00 2e 00 03 00 35 00>>07 00 00 00 38 00 02 00  9.....5.....8...
+```
+
+What a programmatic walk of the response payload revealed:
+
+1. **Per-property inline stride is exactly 28 bytes**, not the 40+
+   bytes a spec-compliant `OPCITEMPROPERTY` would produce. The
+   `"User\0\0\0\0"` 8-byte marker appears at offsets 44, 72, 100, 128,
+   156, 184, 212, 240, 268, 296, 324, 352, 380, 408 — once per
+   property, exactly 28 bytes apart. Decoding 14 inline parts × 28
+   bytes places the deferred conformant string section at offset 432,
+   which lines up byte-perfect with `UTF16 @432: Random.Int4`.
+2. **`dwPropertyID` values DO check out at 28-byte stride** for the
+   first nine properties — 1, 2, 3, 4, 5, 6, 7, 8, 101 (matching the
+   OPC DA 3.00 §A.1 standard + recommended set Item Description = 101).
+   Properties 10–14 carry the 0xFFFFFFFB…0xFFFFFFFF range (vendor /
+   Matrikon-private property IDs for the Random / Triangle / Square /
+   Saw / Bucket Brigade simulated waveforms).
+3. **The codec drift starts at the very first property**, not deep into
+   the array. After reading the 16-byte header (vt, wReserved, propId,
+   szItemID ref, szDescription ref) at bytes 28..43, the codec does
+   `AlignTo(8)` (consuming "User") then reads a wireVARIANT at offset
+   48 — but the bytes there don't shape like a wireVARIANT (clSize=0,
+   rpcReserved=0x0031002E, vt=0x0003, but the body decode of 4 bytes
+   bleeds into what should be the next property's header). The codec
+   "consumes" 48 bytes for the first inline part instead of 28, and
+   the 20-byte over-read cascades.
+4. **`OPCITEMPROPERTY` IDL is identical** between
+   `ext/inc/opcda.idl`, `ext/inc/opcda.h`, and
+   `ext/CoreComponents/Source/DataAccess/ProxyStub/opcda.idl` — so the
+   layout difference is not an IDL-level vendor extension. Matrikon
+   ships their own proxy/stub DLL alongside the simulation server; the
+   wire shape produced by that proxy is what we are observing.
+5. **`OPCITEMPROPERTIES` (outer wrapper) wire shape DOES match the
+   Foundation custom proxy/stub** — the trailing `dwReserved` DWORD
+   the codec already reads (line 117 of `NdrOpcBrowseResponseDecoder`)
+   is present at offset 20 and is zero. So the discrepancy is purely
+   in the per-element `OPCITEMPROPERTY`, not the array wrapper.
+
+### What is still unknown
+
+The 12-byte trailer per inline (offsets +16..+27 of each 28-byte slot)
+encodes:
+
+- 8 bytes of constant `"User\0\0\0\0"` (the 0x72657355 magic) — present
+  in every property, regardless of vtDataType or value
+- 4 trailing bytes that vary per property (looks like uninitialized
+  stack memory or fragments of UTF-16 strings; values like `2E 00 31 00`
+  / `36 00 38 00` / `8B 0A 52 35` don't match any obvious VARIANT body
+  or HRESULT shape)
+
+There is **no separate deferred VARIANT pile** in the response — the
+strings section starts at byte 432 immediately after the 14 × 28-byte
+inline parts, and the trailing 32 bytes after the strings (1900..1932)
+contain only `00 00 00 00 03 00 00 00 …` patterns that don't fit 14
+mixed-type variant bodies.
+
+This shape is **not standard MS-OAUT wireVARIANT** marshalling and is
+not produced by stock MIDL. Two plausible next-step hypotheses:
+
+- **Matrikon ships a hand-rolled proxy/stub** that compresses the
+  embedded `vValue` into a fixed 12-byte slot (with `"User"` as a
+  literal magic tag), trusting the recipient's matching proxy to know
+  the convention. Confirming this would require disassembling the
+  Matrikon proxy DLL.
+- **The `"User"` bytes are leaked stack/heap memory from a marshalling
+  buffer that the Matrikon server fills but never zeroes**, and the
+  variant body is actually elsewhere (perhaps the per-property
+  `hrErrorID`/`dwReserved` are deferred to the trailing 32 bytes after
+  the strings). This would explain why
+  `"User\0\0\0\0"` is constant across all 14 — it's the same scratch
+  buffer reused per property.
+
+### Recommended next step
+
+Run the OPC Foundation's stock reference proxy (from
+`ext/redist/OPC Core Components Redistributable (x86) 3.00.107.msi`)
+against the same Matrikon item and capture the response. If the wire
+bytes match what we captured, the layout IS Matrikon's documented
+proxy convention and we can model it. If they differ, our managed
+proxy must be sending something subtly wrong in the request (e.g. a
+context ID mismatch) that's triggering Matrikon to fall back to a
+custom response shape.
+
+Until that comparison is done, **do not change the codec** — the
+in-tree synthetic fixtures all pass and adding a Matrikon-shaped
+decoder branch without ground truth risks shipping a guess.
+
 ## Related
 
 - [Probe coverage](probe-coverage.md) — full MCP tool-by-tool status
