@@ -60,6 +60,7 @@ public sealed class OpcServerListener : IAsyncDisposable
     private readonly RpcServerConnectionProcessor _processor;
     private readonly ILogger _logger;
     private readonly ConcurrentDictionary<Task, byte> _inFlight = new();
+    private readonly SemaphoreSlim _lifecycleLock = new(1, 1);
     private CancellationTokenSource? _cts;
     private Task? _acceptLoop;
     private bool _disposed;
@@ -91,19 +92,28 @@ public sealed class OpcServerListener : IAsyncDisposable
     /// background task until <see cref="StopAsync"/> or the
     /// <paramref name="cancellationToken"/> fires.
     /// </summary>
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (_acceptLoop is not null)
-        {
-            throw new InvalidOperationException("OpcServerListener is already started.");
-        }
 
-        ListenerStarting(_logger, _endpoint.LocalEndpoint, null);
-        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        CancellationToken loopToken = _cts.Token;
-        _acceptLoop = Task.Run(() => AcceptLoopAsync(loopToken), CancellationToken.None);
-        return Task.CompletedTask;
+        await _lifecycleLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_acceptLoop is not null)
+            {
+                throw new InvalidOperationException("OpcServerListener is already started.");
+            }
+
+            ListenerStarting(_logger, _endpoint.LocalEndpoint, null);
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            CancellationToken loopToken = _cts.Token;
+            _acceptLoop = Task.Run(() => AcceptLoopAsync(loopToken), CancellationToken.None);
+        }
+        finally
+        {
+            _lifecycleLock.Release();
+        }
     }
 
     /// <summary>
@@ -118,13 +128,37 @@ public sealed class OpcServerListener : IAsyncDisposable
             return;
         }
 
-        ListenerStopping(_logger, _endpoint.LocalEndpoint, null);
+        // Lifecycle-bound critical section: snapshot + null out the cancellation
+        // source and accept loop under the lock so a concurrent StartAsync /
+        // StopAsync cannot observe a partially-mutated state. The actual
+        // await-on-drain happens OUTSIDE the lock so a slow drain doesn't
+        // deadlock a parallel Start.
+        CancellationTokenSource? cts;
+        Task? acceptLoop;
+        await _lifecycleLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (_disposed)
+            {
+                return;
+            }
 
-        CancellationTokenSource? cts = _cts;
-        Task? acceptLoop = _acceptLoop;
-        _cts = null;
-        _acceptLoop = null;
+            ListenerStopping(_logger, _endpoint.LocalEndpoint, null);
+            cts = _cts;
+            acceptLoop = _acceptLoop;
+            _cts = null;
+            _acceptLoop = null;
+        }
+        finally
+        {
+            _lifecycleLock.Release();
+        }
 
+        await DrainAfterStopAsync(cts, acceptLoop, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task DrainAfterStopAsync(CancellationTokenSource? cts, Task? acceptLoop, CancellationToken cancellationToken)
+    {
         if (cts is not null)
         {
             await cts.CancelAsync().ConfigureAwait(false);
@@ -174,6 +208,11 @@ public sealed class OpcServerListener : IAsyncDisposable
         {
             _disposed = true;
             await _endpoint.DisposeAsync().ConfigureAwait(false);
+            // Lifecycle lock intentionally NOT disposed: a lifecycle-bound
+            // waiter (StartAsync / StopAsync racing with DisposeAsync) may
+            // still need to Release() after observing _disposed=true. Leaving
+            // the semaphore alive avoids a SemaphoreFullException on Release
+            // and matches the same pattern used by DaCallbackEndpoint.
         }
     }
 
