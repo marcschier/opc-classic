@@ -60,6 +60,50 @@ public static class FileTimeHelper
     }
 
     /// <summary>
+    /// Attempts to convert a 64-bit Windows <c>FILETIME</c> to
+    /// <see cref="DateTimeOffset"/>. Returns false (without throwing) when the
+    /// value is negative or would exceed <see cref="DateTimeOffset.MaxValue"/>.
+    /// </summary>
+    /// <remarks>
+    /// Use this overload at decode boundaries where the wire input is
+    /// untrusted — e.g. an OPC server returning a sentinel
+    /// <c>FILETIME</c> for "not yet known" timestamps. Callers can substitute
+    /// a default value or raise a structured decode failure with surrounding
+    /// wire context.
+    /// </remarks>
+    public static bool TryFromFileTime(long fileTime, out DateTimeOffset value)
+    {
+        if (fileTime < 0)
+        {
+            value = default;
+            return false;
+        }
+
+        try
+        {
+            long ticks = checked(fileTime + Epoch.Ticks);
+            if (ticks < 0L || ticks > DateTimeOffset.MaxValue.UtcTicks)
+            {
+                value = default;
+                return false;
+            }
+
+            value = new DateTimeOffset(ticks, TimeSpan.Zero);
+            return true;
+        }
+        catch (OverflowException)
+        {
+            value = default;
+            return false;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            value = default;
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Convert the (low, high) word pair as transmitted on the wire to <see cref="DateTimeOffset"/>.
     /// </summary>
     public static DateTimeOffset FromFileTime(uint dwLowDateTime, uint dwHighDateTime)

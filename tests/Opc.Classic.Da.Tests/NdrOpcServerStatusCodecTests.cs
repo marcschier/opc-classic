@@ -8,6 +8,7 @@ using Opc.Classic;
 using Opc.Classic.Da.Ndr;
 using Opc.Classic.Ndr;
 using TUnit.Core;
+using TUnit.Assertions.AssertConditions.Throws;
 
 namespace Opc.Classic.Da.Tests;
 
@@ -117,5 +118,69 @@ public sealed class NdrOpcServerStatusCodecTests
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcServerStatusCodec.Write(ref w, input), capacity: 512);
         var back = ReadOne(bytes);
         await Assert.That(back.Spec).IsEqualTo(OpcStatusSpec.Da);
+    }
+
+    // -- Track AS: FILETIME decode hypothesis matrix (x3-mcp-e2e-test blocker investigation) --
+
+    [Test]
+    public async Task Decode_FileTime_Zero_Yields1601Epoch()
+    {
+        byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
+        OpcServerStatus back = ReadOne(wire);
+        var epoch = new DateTimeOffset(1601, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        await Assert.That(back.StartTime).IsEqualTo(epoch);
+        await Assert.That(back.CurrentTime).IsEqualTo(epoch);
+        await Assert.That(back.LastUpdateTime).IsEqualTo(epoch);
+    }
+
+    [Test]
+    [Arguments(long.MinValue)]
+    [Arguments(-1L)]
+    [Arguments(long.MaxValue)]
+    public async Task Decode_FileTime_OutOfRange_ThrowsInvalidDataException_WithContext(long bogusFileTime)
+    {
+        byte[] wire = WireWithRawFileTimes(rawStartFileTime: bogusFileTime, rawCurrentFileTime: 0L, rawLastUpdateFileTime: 0L);
+
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftStartTime");
+        await Assert.That(thrown.Message).Contains("FILETIME value");
+        await Assert.That(thrown.Message).Contains("Wire context");
+    }
+
+    [Test]
+    public async Task Decode_FileTime_NamesFailingField()
+    {
+        // Cause the LAST field (ftLastUpdateTime) to overflow; verify the exception names that field, not the earlier two.
+        byte[] wire = WireWithRawFileTimes(rawStartFileTime: 0L, rawCurrentFileTime: 0L, rawLastUpdateFileTime: long.MaxValue);
+
+        var thrown = await Assert.ThrowsAsync<System.IO.InvalidDataException>(() => Task.FromResult(ReadOne(wire)));
+        await Assert.That(thrown.Message).Contains("OPCSERVERSTATUS.ftLastUpdateTime");
+        await Assert.That(thrown.Message).DoesNotContain("ftStartTime");
+        await Assert.That(thrown.Message).DoesNotContain("ftCurrentTime");
+    }
+
+    /// <summary>
+    /// Builds a synthetic OPCSERVERSTATUS wire payload where the three FILETIME fields hold
+    /// arbitrary <see langword="long"/> values (bypassing the codec's writer-side validation).
+    /// Used to exercise decode-side edge cases that the writer's <c>DateTimeOffset</c>
+    /// roundtrip would never produce.
+    /// </summary>
+    private static byte[] WireWithRawFileTimes(long rawStartFileTime, long rawCurrentFileTime, long rawLastUpdateFileTime)
+    {
+        return WriteOne(
+            (ref NdrWriter w) =>
+            {
+                w.WriteFileTime(rawStartFileTime);
+                w.WriteFileTime(rawCurrentFileTime);
+                w.WriteFileTime(rawLastUpdateFileTime);
+                w.WriteUInt32((uint)OpcServerState.Running);
+                w.WriteUInt32(0u);   // GroupCount
+                w.WriteUInt32(0u);   // BandWidth
+                w.WriteUInt16(1);    // Major
+                w.WriteUInt16(0);    // Minor
+                w.WriteUInt16(0);    // Build
+                w.WriteUInt16(0);    // Reserved
+                w.WriteUnicodeStringPtr("test");
+            }, capacity: 512);
     }
 }

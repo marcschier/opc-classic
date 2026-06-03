@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.IO;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Da.Ndr;
@@ -53,9 +54,9 @@ public static class NdrOpcServerStatusCodec
     /// <summary>Decodes an OPCSERVERSTATUS from NDR (DA variant).</summary>
     public static OpcServerStatus Read(ref NdrReader reader)
     {
-        DateTimeOffset start = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset current = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset lastUpdate = FromFileTime(reader.ReadFileTime());
+        DateTimeOffset start = ReadAndDecodeFileTime(ref reader, "ftStartTime");
+        DateTimeOffset current = ReadAndDecodeFileTime(ref reader, "ftCurrentTime");
+        DateTimeOffset lastUpdate = ReadAndDecodeFileTime(ref reader, "ftLastUpdateTime");
         var state = (OpcServerState)reader.ReadUInt32();
         int groupCount = unchecked((int)reader.ReadUInt32());
         uint bandWidth = reader.ReadUInt32();
@@ -82,6 +83,15 @@ public static class NdrOpcServerStatusCodec
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset FromFileTime(long fileTimeTicks) =>
-        new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
+        long raw = reader.ReadFileTime();
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
+            return value;
+        }
+
+        throw new InvalidDataException(
+            $"OPCSERVERSTATUS.{fieldName} FILETIME value 0x{raw:X16} ({raw}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
+    }
 }

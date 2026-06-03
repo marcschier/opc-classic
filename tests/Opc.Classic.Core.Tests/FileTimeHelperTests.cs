@@ -118,4 +118,48 @@ public sealed class FileTimeHelperTests
         var decoded = FileTimeHelper.FromFileTime(low, high);
         await Assert.That(decoded).IsEqualTo(original);
     }
+
+    [Test]
+    public async Task TryFromFileTime_Zero_IsEpoch()
+    {
+        bool ok = FileTimeHelper.TryFromFileTime(0L, out DateTimeOffset value);
+        await Assert.That(ok).IsTrue();
+        await Assert.That(value).IsEqualTo(FileTimeHelper.Epoch);
+    }
+
+    [Test]
+    public async Task TryFromFileTime_OneSecond_AdvancesByOneSecond()
+    {
+        bool ok = FileTimeHelper.TryFromFileTime(FileTimeHelper.TicksPerSecond, out DateTimeOffset value);
+        await Assert.That(ok).IsTrue();
+        await Assert.That(value).IsEqualTo(FileTimeHelper.Epoch.AddSeconds(1));
+    }
+
+    [Test]
+    [Arguments(long.MinValue)]
+    [Arguments(-1L)]
+    [Arguments(long.MaxValue)]
+    public async Task TryFromFileTime_OutOfRange_ReturnsFalse(long fileTime)
+    {
+        bool ok = FileTimeHelper.TryFromFileTime(fileTime, out DateTimeOffset value);
+        await Assert.That(ok).IsFalse();
+        await Assert.That(value).IsEqualTo(default(DateTimeOffset));
+    }
+
+    [Test]
+    public async Task TryFromFileTime_MaxRepresentable_IsAccepted()
+    {
+        long maxRaw = DateTimeOffset.MaxValue.UtcTicks - FileTimeHelper.Epoch.UtcTicks;
+        bool ok = FileTimeHelper.TryFromFileTime(maxRaw, out DateTimeOffset value);
+        await Assert.That(ok).IsTrue();
+        await Assert.That(value.Year).IsEqualTo(9999);
+    }
+
+    [Test]
+    public async Task TryFromFileTime_OneTickOverMax_ReturnsFalse()
+    {
+        long oneTickOver = DateTimeOffset.MaxValue.UtcTicks - FileTimeHelper.Epoch.UtcTicks + 1;
+        bool ok = FileTimeHelper.TryFromFileTime(oneTickOver, out _);
+        await Assert.That(ok).IsFalse();
+    }
 }
