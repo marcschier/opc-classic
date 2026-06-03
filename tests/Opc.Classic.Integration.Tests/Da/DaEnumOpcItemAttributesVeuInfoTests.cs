@@ -93,13 +93,18 @@ public sealed class DaEnumOpcItemAttributesVeuInfoTests
         var attributes = new List<OpcItemAttributes>();
         while (true)
         {
-            OpcItemAttributes[] batch = await enumerator.NextAsync(2, cancellationToken);
-            if (batch.Length == 0)
+            await enumerator.NextAsync(2, out OpcItemAttributes[] batch, out int fetched, cancellationToken);
+            if (fetched == 0)
             {
                 return attributes;
             }
 
-            attributes.AddRange(batch);
+            // Only include the actual fetched slice — Track AM surfaces pceltFetched so
+            // a server pre-allocating to `celt` length doesn't confuse the consumer.
+            for (int i = 0; i < fetched && i < batch.Length; i++)
+            {
+                attributes.Add(batch[i]);
+            }
         }
     }
 

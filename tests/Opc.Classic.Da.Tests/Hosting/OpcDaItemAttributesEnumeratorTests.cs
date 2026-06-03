@@ -28,16 +28,19 @@ public sealed class OpcDaItemAttributesEnumeratorTests
         OpcItemAttributes[] snapshot = BuildSnapshot(5);
         var enumerator = new OpcDaItemAttributesEnumerator(snapshot);
 
-        OpcItemAttributes[] first = await enumerator.NextAsync(3, TestContext.Current!.CancellationToken);
-        OpcItemAttributes[] second = await enumerator.NextAsync(3, TestContext.Current!.CancellationToken);
-        OpcItemAttributes[] third = await enumerator.NextAsync(3, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(3, out OpcItemAttributes[] first, out int firstFetched, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(3, out OpcItemAttributes[] second, out int secondFetched, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(3, out OpcItemAttributes[] third, out int thirdFetched, TestContext.Current!.CancellationToken);
 
         await Assert.That(first.Length).IsEqualTo(3);
+        await Assert.That(firstFetched).IsEqualTo(3);
         await Assert.That(first[0].ItemId).IsEqualTo("Tag.0");
         await Assert.That(first[2].ItemId).IsEqualTo("Tag.2");
         await Assert.That(second.Length).IsEqualTo(2);
+        await Assert.That(secondFetched).IsEqualTo(2);
         await Assert.That(second[0].ItemId).IsEqualTo("Tag.3");
         await Assert.That(third.Length).IsEqualTo(0); // exhausted
+        await Assert.That(thirdFetched).IsEqualTo(0);
     }
 
     [Test]
@@ -45,11 +48,13 @@ public sealed class OpcDaItemAttributesEnumeratorTests
     {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(2));
 
-        OpcItemAttributes[] zero = await enumerator.NextAsync(0, TestContext.Current!.CancellationToken);
-        OpcItemAttributes[] neg = await enumerator.NextAsync(-1, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(0, out OpcItemAttributes[] zero, out int zeroFetched, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(-1, out OpcItemAttributes[] neg, out int negFetched, TestContext.Current!.CancellationToken);
 
         await Assert.That(zero.Length).IsEqualTo(0);
         await Assert.That(neg.Length).IsEqualTo(0);
+        await Assert.That(zeroFetched).IsEqualTo(0);
+        await Assert.That(negFetched).IsEqualTo(0);
         await Assert.That(enumerator.Position).IsEqualTo(0);
     }
 
@@ -59,7 +64,7 @@ public sealed class OpcDaItemAttributesEnumeratorTests
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(5));
 
         await enumerator.SkipAsync(2, TestContext.Current!.CancellationToken);
-        OpcItemAttributes[] next = await enumerator.NextAsync(1, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(1, out OpcItemAttributes[] next, out int _, TestContext.Current!.CancellationToken);
 
         await Assert.That(enumerator.Position).IsEqualTo(3);
         await Assert.That(next[0].ItemId).IsEqualTo("Tag.2");
@@ -71,23 +76,36 @@ public sealed class OpcDaItemAttributesEnumeratorTests
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
 
         await enumerator.SkipAsync(99, TestContext.Current!.CancellationToken);
-        OpcItemAttributes[] next = await enumerator.NextAsync(5, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(5, out OpcItemAttributes[] next, out int fetched, TestContext.Current!.CancellationToken);
 
         await Assert.That(enumerator.Position).IsEqualTo(3);
         await Assert.That(next.Length).IsEqualTo(0);
+        await Assert.That(fetched).IsEqualTo(0);
     }
 
     [Test]
     public async Task ResetAsync_returns_cursor_to_zero()
     {
         var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
-        await enumerator.NextAsync(2, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(2, out OpcItemAttributes[] _, out int _, TestContext.Current!.CancellationToken);
 
         await enumerator.ResetAsync(TestContext.Current!.CancellationToken);
 
         await Assert.That(enumerator.Position).IsEqualTo(0);
-        OpcItemAttributes[] next = await enumerator.NextAsync(1, TestContext.Current!.CancellationToken);
+        await enumerator.NextAsync(1, out OpcItemAttributes[] next, out int _, TestContext.Current!.CancellationToken);
         await Assert.That(next[0].ItemId).IsEqualTo("Tag.0");
+    }
+
+    [Test]
+    public async Task NextAsync_LastBatchReportsTrueFetchedCount()
+    {
+        // Snapshot size 3, request 5 → fetched=3, array length=3.
+        var enumerator = new OpcDaItemAttributesEnumerator(BuildSnapshot(3));
+
+        await enumerator.NextAsync(5, out OpcItemAttributes[] batch, out int fetched, TestContext.Current!.CancellationToken);
+
+        await Assert.That(batch.Length).IsEqualTo(3);
+        await Assert.That(fetched).IsEqualTo(3);
     }
 
     [Test]

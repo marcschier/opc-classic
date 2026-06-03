@@ -61,25 +61,35 @@ public sealed class OpcDaItemAttributesEnumerator : IEnumOPCItemAttributes
     public int Position => _cursor;
 
     /// <inheritdoc />
-    public Task<OpcItemAttributes[]> NextAsync(int count, CancellationToken cancellationToken = default)
+    public Task NextAsync(
+        int count,
+        out OpcItemAttributes[] attributes,
+        out int fetchedCount,
+        CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         if (count <= 0)
         {
-            return Task.FromResult(Array.Empty<OpcItemAttributes>());
+            attributes = Array.Empty<OpcItemAttributes>();
+            fetchedCount = 0;
+            return Task.CompletedTask;
         }
 
         int available = Math.Max(0, _snapshot.Length - _cursor);
         int take = Math.Min(count, available);
         if (take == 0)
         {
-            return Task.FromResult(Array.Empty<OpcItemAttributes>());
+            attributes = Array.Empty<OpcItemAttributes>();
+            fetchedCount = 0;
+            return Task.CompletedTask;
         }
 
         var batch = new OpcItemAttributes[take];
         Array.Copy(_snapshot, _cursor, batch, 0, take);
         _cursor += take;
-        return Task.FromResult(batch);
+        attributes = batch;
+        fetchedCount = take;
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc />

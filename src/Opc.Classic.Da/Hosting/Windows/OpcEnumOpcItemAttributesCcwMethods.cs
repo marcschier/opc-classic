@@ -43,14 +43,14 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         {
             int requested = dwNumAttributes > int.MaxValue ? int.MaxValue : (int)dwNumAttributes;
 #pragma warning disable VSTHRD002
-            OpcItemAttributes[] attributes = enumerator!.NextAsync(requested, CancellationToken.None).GetAwaiter().GetResult();
+            enumerator!.NextAsync(requested, out OpcItemAttributes[] attributes, out int fetched, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             *ppItemArray = AllocateOpcItemAttributesArray(attributes);
             if (pdwNumAttributes != null)
             {
-                *pdwNumAttributes = (uint)attributes.Length;
+                *pdwNumAttributes = (uint)fetched;
             }
-            return attributes.Length == requested ? OpcEnumOpcItemAttributesCcw.S_OK : OpcEnumOpcItemAttributesCcw.S_FALSE;
+            return fetched == requested ? OpcEnumOpcItemAttributesCcw.S_OK : OpcEnumOpcItemAttributesCcw.S_FALSE;
         }
         catch (Exception ex)
         {
@@ -176,7 +176,7 @@ internal static unsafe class OpcEnumOpcItemAttributesCcwMethods
         int position = enumerator.Position;
 #pragma warning disable VSTHRD002
         enumerator.ResetAsync(CancellationToken.None).GetAwaiter().GetResult();
-        OpcItemAttributes[] snapshot = enumerator.NextAsync(enumerator.Length, CancellationToken.None).GetAwaiter().GetResult();
+        enumerator.NextAsync(enumerator.Length, out OpcItemAttributes[] snapshot, out _, CancellationToken.None).GetAwaiter().GetResult();
         enumerator.ResetAsync(CancellationToken.None).GetAwaiter().GetResult();
         enumerator.SkipAsync(position, CancellationToken.None).GetAwaiter().GetResult();
         var clone = new OpcDaItemAttributesEnumerator(snapshot);

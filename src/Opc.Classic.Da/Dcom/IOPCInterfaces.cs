@@ -720,17 +720,26 @@ public partial interface IOPCAsyncIO3
 public partial interface IEnumOPCItemAttributes
 {
     /// <summary>
-    /// <c>IEnumOPCItemAttributes::Next</c> (opnum 3). Returns up to <paramref name="count"/> item attributes; an empty array signals end of enumeration.
+    /// <c>IEnumOPCItemAttributes::Next</c> (opnum 3). Returns up to <paramref name="count"/>
+    /// item attributes plus the actual count fetched. <c>fetchedCount == 0</c> signals
+    /// end of enumeration; <c>fetchedCount &lt; count</c> with a non-empty array signals the
+    /// last batch.
     /// </summary>
     /// <remarks>
-    /// IDL: <c>[in] ULONG celt, [out, size_is(,*pceltFetched)] OPCITEMATTRIBUTES **ppItemArray, [out] ULONG *pceltFetched</c>.
-    /// <see cref="OpcUniquePointerAttribute"/> on the return value directs the decoder to consume the
-    /// outer unique-pointer referent and treat a null referent as an empty array (end of enumeration).
-    /// The trailing <c>pceltFetched</c> out parameter is not surfaced — the array's own max_count is authoritative.
+    /// IDL: <c>[in] ULONG celt, [out, size_is(,*pceltFetched)] OPCITEMATTRIBUTES **ppItemArray,
+    /// [out] ULONG *pceltFetched</c>. <see cref="OpcUniquePointerAttribute"/> on
+    /// <paramref name="attributes"/> directs the decoder to consume the outer unique-pointer
+    /// referent and treat a null referent as an empty array. The trailing pceltFetched
+    /// out parameter is surfaced so callers can detect end-of-enumeration even when the
+    /// server pre-allocates the array to <paramref name="count"/> length.
     /// </remarks>
     [OpcMethod(3)]
-    [return: OpcUniquePointer]
-    Task<OpcItemAttributes[]> NextAsync(int count, CancellationToken cancellationToken = default);
+    [OpcGenerateMultiOutRecord]
+    Task NextAsync(
+        int count,
+        [OpcUniquePointer] out OpcItemAttributes[] attributes,
+        out int fetchedCount,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IEnumOPCItemAttributes::Skip</c> (opnum 4). Skips <paramref name="count"/> items in the enumeration.
