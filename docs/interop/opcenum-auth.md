@@ -86,3 +86,9 @@ $sd.GetSddlForm('All')
 - `rpc_s_access_denied (0x05)`: the identity lacks OPCEnum Launch/Activation or Access permission.
 - `RPC fault status 0x000006F7`: the hardened SCM rejected activation before an OPCEnum OBJREF was returned; re-check auth level, credentials, and AppID permissions.
 - `ABSTRACT_SYNTAX_NOT_SUPPORTED` on legacy `IActivation`: the host does not support the fallback activation interface; fix OPCEnum AppID permissions or use direct CLSID connect.
+
+## Related
+
+- [`IOPCDataCallback` push delivery](da-callbacks.md) — the inbound-callback path has the same DCOM AppID / firewall / ACL prerequisites as OPCEnum, applied to the MCP host's listener.
+- [Wire captures](wire-captures/README.md) — when authentication fails, enable the wire-capture diagnostic to inspect the actual bind PDU + fault payload.
+- [Probe coverage](probe-coverage.md) — tool-by-tool status against Matrikon + TestServer, with OPCEnum-blocked tools called out.

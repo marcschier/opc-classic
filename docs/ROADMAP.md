@@ -12,10 +12,18 @@ This document tracks what's planned beyond the current release. For implemented 
 - [x] NTLMSSP audit-prep guide, NTLM wire fixtures, WINREG fixtures, and Docker native C server/client MVP source/build wiring.
 - [x] Sample DCOM-over-IP path: sample servers bind configurable TCP ports and sample clients dial TCP from environment variables.
 - [x] OPC Security reference sample and cookbook guidance.
-- [x] Release-candidate administration through `1.0.0-rc.10`; `[Unreleased]` in `CHANGELOG.md` is intentionally empty.
+- [x] Release-candidate administration through `1.0.0-rc.10`; `[Unreleased]` in `CHANGELOG.md` tracks post-rc.10 NDR completeness work (Tracks AF/AG/AH/AI/AJ/AK/AL/AM/AN/AP).
+- [x] NDR wire-format completeness for Matrikon DA (Tracks AF/AG/AH/AI — `dfbf234b`, `3a1ba9c3`).
+- [x] Pre-bind IID set + AlterContext for the full DA spec (Track AC — `2d96d8f9`).
+- [x] OPCEnum activation auth (Track AE — `ee2425c2`) + AppID ACL helper (Track AN — `1a1de5db`).
+- [x] NDR wire-trace diagnostic infrastructure (Track AK1 hex-context + AK2 wire capture + AK3 replay parser).
+- [x] Byte-exact request/response/server-dispatch wire fixtures (Track AL).
+- [x] `IEnumOPCItemAttributes::Next` `pceltFetched` correctness (Track AM — `1b059d0a`).
+- [x] `IOPCDataCallback` subscription queue surface + bounded sink + drain-or-pull (Track AP3/AP5/AP6 — `083c5437`).
 - [ ] OPC CTT smoke green on a Windows Docker host (`release-100-tag`).
 - [ ] NTLMv2 wire verification against a live Windows Server / AD lab (`rw-e1-ntlmv2-realserver`).
 - [ ] External third-party NTLMSSP crypto/security audit (`rw-e4-ntlm-audit`).
+- [ ] Production inbound `IOPCDataCallback` listener bring-up (Track AP1/AP2/AP4) — requires Matrikon-reachable verification environment.
 
 ## Known coverage gaps
 

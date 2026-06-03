@@ -29,6 +29,14 @@ Current rc.10 baseline: **10 sample apps** and **2113 passed / 12 skipped / 0 fa
 
 - [Opc.Classic.Mcp](mcp/README.md) — stdio MCP server for Claude Desktop, Cursor, VS Code Copilot Chat, GitHub Copilot CLI, and other AI agents
 
+## Interop with native OPC servers
+
+- [Probe coverage](interop/probe-coverage.md) — MCP tool-by-tool status against Matrikon Simulation Server + OPC Foundation TestServer
+- [OPCEnum DCOM authentication](interop/opcenum-auth.md) — auth-level requirements + `tools/grant-opcenum-acl.ps1` AppID ACL helper
+- [`IOPCDataCallback` push delivery](interop/da-callbacks.md) — server→client subscription callback architecture (Track AP)
+- [TestServer activation residual](interop/testserver.md) — known SCM-activation blocker for the OPC Foundation managed TestServer
+- [Wire captures](interop/wire-captures/README.md) — opt-in NDR diagnostic dumps via `OPCCLASSIC_WIRE_CAPTURE_DIR`
+
 ## Security
 
 - [Threat model](security/THREAT_MODEL.md)

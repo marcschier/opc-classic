@@ -55,3 +55,9 @@ typically contain server-specific data (item IDs, values) that should not
 land in version control. Commit a specific capture only when it is needed
 as a regression fixture; when doing so, scrub server-identifying data
 first.
+
+## Related
+
+- [`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs) — the round-trip parser that turns a `.hex` capture back into a `byte[]` for replay-style regression tests (Track AK3).
+- [`IOPCDataCallback` push delivery](../da-callbacks.md) — when callbacks are wired up, both request AND inbound callback PDUs land here.
+- [OPCEnum DCOM auth](../opcenum-auth.md) — the most common source of "interesting" wire captures during initial bring-up.

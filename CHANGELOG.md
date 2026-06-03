@@ -43,6 +43,91 @@ FINAL tag.
 
 ## [Unreleased]
 
+Post-`1.0.0-rc.10` work focused on Matrikon DA interop completeness, wire-trace diagnostics,
+and MCP-side IOPCDataCallback queue plumbing. The 1.0.0 release-blocker gates
+(`release-100-tag`, `rw-e1-ntlmv2-realserver`, `rw-e4-ntlm-audit`) remain open.
+
+### Added
+
+- **Track AK1** — `NdrReader.FormatHexContext` decorates every decode-fail throw with a
+  hex window centered on `_position` (16 bytes before/after, `>>` marker on the failing
+  byte, ASCII gutter). Every `InvalidOperationException` / `InvalidDataException` in
+  `NdrReader.cs` + `NdrVariantExtensions.cs` now appends this context.
+- **Track AK2** — Opt-in NDR wire capture: `OpcWireCapture` + `WireCapturingCallChannel`
+  decorator write per-call `.hex` dumps when `OPCCLASSIC_WIRE_CAPTURE_DIR` is set.
+  `tools/probe_servers.py --save-wire-payloads <dir>` plumbs the env var into the
+  spawned MCP server. New `docs/interop/wire-captures/` landing page with `.gitignore`.
+- **Track AK3** — `tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs` parses the
+  `.hex` format back into a `byte[]` for replay-style regression tests.
+- **Track AL** — Byte-exact wire fixture tests for request encoding (`SyncIO::Write`,
+  `SyncIO::Read`, `ItemMgt::AddItems`), response decoding (the same trio plus a
+  null-referent-to-empty-array safety case from Track AG4), and server-side dispatch
+  (`ConnectionPoint::GetConnectionInterface`).
+- **Track AN** — `tools/grant-opcenum-acl.ps1` reads the OPCEnum AppID's
+  `AccessPermission` + `LaunchPermission` REG_BINARY security descriptors, appends a
+  `CCDCLCSWRP` ACE for the calling user (or `-Account`), and writes the merged
+  descriptor back. Idempotent + `-Unregister` for rollback. Documented in
+  `docs/interop/opcenum-auth.md`.
+- **Track AP3** — MCP `DaSubscriptionContext` gained a `DaDataCallbackSink` backed by
+  a bounded `Channel<DataChangeNotification>` (capacity 1024, drop-oldest with drop
+  counter). Implements the full `IOPCDataCallback` interface.
+- **Track AP5** — 10 synthetic tests in `DaDataCallbackSinkTests` covering enqueue,
+  per-call counters, drain cap + requeue, multi-batch FIFO order, bounded-queue
+  drop-oldest, Dispose lifecycle, FILETIME decode, and mismatched-array-length
+  rejection.
+- **Track AP6** — `docs/interop/da-callbacks.md` documents the architecture (host
+  listener + sink OBJREF + Advise + push), the AP status table, the sink contract, the
+  production callback-bind path AP1/AP2/AP4 will need, firewall / DCOM ACL prerequisites,
+  and the synthetic test coverage.
+
+### Changed
+
+- **Tracks AF/AG/AH/AI** (`dfbf234b`, `3a1ba9c3`) — NDR wire-format completeness sweep
+  across ~20 DA/CPX methods: `[OpcEmitArrayCount]` on every sibling-count IDL pattern,
+  null-referent-to-empty-array safety on `[out] T**` arrays, relaxed `rpcReserved`
+  acceptance, and `OPCITEMPROPERTY` embedded VARIANT shape fixes.
+- **Track AJ2** (`d913bb50`) — `IOPCServerList::EnumClassesOfCategories` +
+  `GetClassDetails` server-side implementations.
+- **Track AM** (`1b059d0a`) — `IEnumOPCItemAttributes::NextAsync` signature changed
+  from `Task<OpcItemAttributes[]>` to `Task` + `out OpcItemAttributes[] elements`
+  + `out int fetchedCount`. Surfaces the IDL `pceltFetched` correctly so callers can
+  detect the last batch (`fetched < celt` or `fetched == 0`) instead of guessing from
+  array length. Hosting + CCW + 7 unit tests + integration test updated.
+- **Track AP3** — `opcclassic.da.poll_subscription` MCP tool now drains the
+  subscription's callback queue first via `Sink.DrainItems(maxNotifications)` before
+  falling back to the existing synchronous pull. Client-handle→item-name resolution
+  uses a one-shot reverse index over `DaGroupContext.Items` to match the OPC DA wire
+  contract (`IOPCDataCallback` delivers values keyed by client handle, not server
+  handle). Behavior unchanged when no callbacks are wired (today's default).
+- **Track AP3** — `DaSubscriptionContext` changed from positional record to sealed class
+  to hold the eagerly-constructed sink. `DaClientState.DisposeAsync` and
+  `DaClientTools.RemoveGroup` now dispose orphaned sinks.
+
+### Documentation
+
+- `docs/interop/opcenum-auth.md` gained a "Grant OPCEnum ACLs without dcomcnfg" section
+  with usage examples + a "What the script does" subsection explaining the `CCDCLCSWRP`
+  rights mask + an audit one-liner.
+- `docs/interop/wire-captures/README.md` added with capture format documentation, enable
+  steps, and cross-references to the replay parser + da-callbacks + opcenum-auth.
+- `docs/interop/da-callbacks.md` documents the AP1-AP6 status table, production
+  enablement prerequisites, and the synthetic test coverage.
+- `docs/README.md` gained an "Interop with native OPC servers" index section.
+- `docs/ROADMAP.md` 1.0.0 checklist reconciled to mark Tracks AC/AE/AF/AG/AH/AI/AK/AL/AM/AN/AP3
+  shipped.
+- `docs/interop/testserver.md` (Track AJ1) — documents the residual TestServer SCM
+  activation blocker as environmental.
+
+### Closed (no user-visible effect; tracked for completeness)
+
+- **Track AC** (`2d96d8f9`) — Pre-declared the full DA IID set in the initial BindPdu;
+  unblocked subscribe end-to-end against Matrikon.
+- **Track AD** (`ffcc1514`) — `tools/register-testserver.ps1` no-MSI registration of the
+  OPC Foundation TestServer; activation still gated by environmental blocker.
+- **Track AE** (`ee2425c2`) — `IRemoteSCMActivator::RemoteCreateInstance` raised to
+  `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` (unblocks OPCEnum discovery + ProgID connect).
+- **Track AJ1** (`1191e315`) — TestServer activation residual blocker documented.
+
 ## [1.0.0-rc.10] - 2026-05-28
 
 Tenth release-candidate. **Spec-coverage gap closure across AE, HDA,
