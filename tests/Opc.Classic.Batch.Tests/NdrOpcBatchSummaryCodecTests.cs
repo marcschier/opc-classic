@@ -52,6 +52,10 @@ public sealed class NdrOpcBatchSummaryCodecTests
     [Test]
     public async Task RoundTrip_AllNullStringFields_DefaultScalars()
     {
+        // FILETIME = 0 (Epoch) is the natural "zero" wire value for OPC Batch
+        // timestamp fields. DateTimeOffset.MinValue (year 0001) would round-trip
+        // through a negative FILETIME which the strict decode (Track AW) rejects
+        // as out-of-range per the FILETIME spec.
         var input = new OpcBatchSummary(
             Id: null,
             Description: null,
@@ -61,8 +65,8 @@ public sealed class NdrOpcBatchSummaryCodecTests
             EngineeringUnits: null,
             ExecutionState: null,
             ExecutionMode: null,
-            ActualStartTime: default,
-            ActualEndTime: default);
+            ActualStartTime: FileTimeHelper.Epoch,
+            ActualEndTime: FileTimeHelper.Epoch);
 
         var bytes = WriteOne((ref NdrWriter w) => NdrOpcBatchSummaryCodec.Write(ref w, input));
         var back = ReadOne(bytes);

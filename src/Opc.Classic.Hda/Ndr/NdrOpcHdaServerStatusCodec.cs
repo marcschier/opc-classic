@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.IO;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Hda.Ndr;
@@ -34,8 +35,8 @@ public static class NdrOpcHdaServerStatusCodec
     public static OpcServerStatus Read(ref NdrReader reader)
     {
         OpcServerState state = FromHistorianStatus(reader.ReadUInt32());
-        DateTimeOffset current = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset start = FromFileTime(reader.ReadFileTime());
+        DateTimeOffset current = ReadAndDecodeFileTime(ref reader, "ftCurrentTime");
+        DateTimeOffset start = ReadAndDecodeFileTime(ref reader, "ftStartTime");
         ushort major = reader.ReadUInt16();
         ushort minor = reader.ReadUInt16();
         ushort build = reader.ReadUInt16();
@@ -73,6 +74,14 @@ public static class NdrOpcHdaServerStatusCodec
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset FromFileTime(long fileTimeTicks) =>
-        new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
+        long raw = reader.ReadFileTime();
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
+            return value;
+        }
+        throw new InvalidDataException(
+            $"OPCHDA_SERVERSTATUS.{fieldName} FILETIME value 0x{raw:X16} ({raw}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
+    }
 }

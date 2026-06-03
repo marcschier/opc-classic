@@ -6,6 +6,7 @@
 //
 
 using System;
+using System.IO;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Da.Ndr;
@@ -69,9 +70,20 @@ public static class NdrOpcItemVqtCodec
         long fileTimeTicks = reader.ReadFileTime();
 
         OpcQuality? quality = bQuality != 0 ? new OpcQuality(wQuality) : null;
-        DateTimeOffset? timestamp = bTimestamp != 0
-            ? FromFileTime(fileTimeTicks)
-            : null;
+        DateTimeOffset? timestamp;
+        if (bTimestamp != 0)
+        {
+            if (!FileTimeHelper.TryFromFileTime(fileTimeTicks, out DateTimeOffset decoded))
+            {
+                throw new InvalidDataException(
+                    $"OPCITEMVQT.ftTimeStamp FILETIME value 0x{fileTimeTicks:X16} ({fileTimeTicks}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
+            }
+            timestamp = decoded;
+        }
+        else
+        {
+            timestamp = null;
+        }
 
         return new OpcItemVqt(value, quality, timestamp);
     }
@@ -81,11 +93,5 @@ public static class NdrOpcItemVqtCodec
         // FILETIME is 100-ns intervals since 1601-01-01 UTC.
         long utcTicks = value.UtcTicks;
         return utcTicks - FileTimeEpochOffsetTicks;
-    }
-
-    private static DateTimeOffset FromFileTime(long fileTimeTicks)
-    {
-        long utcTicks = fileTimeTicks + FileTimeEpochOffsetTicks;
-        return new DateTimeOffset(utcTicks, TimeSpan.Zero);
     }
 }

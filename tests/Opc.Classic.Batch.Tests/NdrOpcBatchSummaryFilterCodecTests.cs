@@ -115,6 +115,10 @@ public sealed class NdrOpcBatchSummaryFilterCodecTests
     [Test]
     public async Task RoundTrip_AllEmptyStrings()
     {
+        // FILETIME = Epoch (1601-01-01 UTC) is the natural "zero" wire value
+        // for OPC Batch timestamp fields. DateTimeOffset.MinValue would round-trip
+        // through a negative FILETIME which the strict decode (Track AW) rejects
+        // as out-of-range per the FILETIME spec.
         var input = new OpcBatchSummaryFilter(
             Id: string.Empty,
             Description: string.Empty,
@@ -125,10 +129,10 @@ public sealed class NdrOpcBatchSummaryFilterCodecTests
             EngineeringUnits: string.Empty,
             ExecutionState: string.Empty,
             ExecutionMode: string.Empty,
-            MinStartTime: default,
-            MaxStartTime: default,
-            MinEndTime: default,
-            MaxEndTime: default);
+            MinStartTime: FileTimeHelper.Epoch,
+            MaxStartTime: FileTimeHelper.Epoch,
+            MinEndTime: FileTimeHelper.Epoch,
+            MaxEndTime: FileTimeHelper.Epoch);
 
         var back = RoundTrip(input);
 

@@ -50,7 +50,7 @@ public static class NdrOpcEventNotificationCodec
         ushort changeMask = reader.ReadUInt16();
         ushort newState = reader.ReadUInt16();
         string? source = reader.ReadUnicodeStringPtr();
-        DateTimeOffset time = FromFileTime(reader.ReadFileTime());
+        DateTimeOffset time = ReadAndDecodeFileTime(ref reader, "ftTime");
         string? message = reader.ReadUnicodeStringPtr();
         uint eventType = reader.ReadUInt32();
         uint eventCategory = reader.ReadUInt32();
@@ -60,7 +60,7 @@ public static class NdrOpcEventNotificationCodec
         var quality = new OpcQuality(reader.ReadUInt16());
         _ = reader.ReadUInt16();
         bool ackRequired = reader.ReadInt32() != 0;
-        DateTimeOffset activeTime = FromFileTime(reader.ReadFileTime());
+        DateTimeOffset activeTime = ReadAndDecodeFileTime(ref reader, "ftActiveTime");
         uint cookie = reader.ReadUInt32();
         OpcVariant[] eventAttributes = ReadEventAttributes(ref reader);
         string? actorId = reader.ReadUnicodeStringPtr();
@@ -125,6 +125,14 @@ public static class NdrOpcEventNotificationCodec
 
     private static long ToFileTime(DateTimeOffset value) => value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset FromFileTime(long fileTimeTicks) =>
-        new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
+        long raw = reader.ReadFileTime();
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
+            return value;
+        }
+        throw new InvalidDataException(
+            $"ONEVENTSTRUCT.{fieldName} FILETIME value 0x{raw:X16} ({raw}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
+    }
 }

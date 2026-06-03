@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.IO;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Batch.Ndr;
@@ -66,10 +67,10 @@ public static class NdrOpcBatchSummaryFilterCodec
         string? engineeringUnits = reader.ReadUnicodeStringPtr();
         string? executionState = reader.ReadUnicodeStringPtr();
         string? executionMode = reader.ReadUnicodeStringPtr();
-        DateTimeOffset minStartTime = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset maxStartTime = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset minEndTime = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset maxEndTime = FromFileTime(reader.ReadFileTime());
+        DateTimeOffset minStartTime = ReadAndDecodeFileTime(ref reader, "ftMinStartTime");
+        DateTimeOffset maxStartTime = ReadAndDecodeFileTime(ref reader, "ftMaxStartTime");
+        DateTimeOffset minEndTime = ReadAndDecodeFileTime(ref reader, "ftMinEndTime");
+        DateTimeOffset maxEndTime = ReadAndDecodeFileTime(ref reader, "ftMaxEndTime");
 
         return new OpcBatchSummaryFilter(
             Id: id,
@@ -90,6 +91,14 @@ public static class NdrOpcBatchSummaryFilterCodec
     private static long ToFileTime(DateTimeOffset value) =>
         value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset FromFileTime(long fileTimeTicks) =>
-        new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
+        long raw = reader.ReadFileTime();
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
+            return value;
+        }
+        throw new InvalidDataException(
+            $"OPCBATCHSUMMARYFILTER.{fieldName} FILETIME value 0x{raw:X16} ({raw}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
+    }
 }

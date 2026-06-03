@@ -47,10 +47,10 @@ public static class NdrOpcConditionStateCodec
         string? activeDescription = reader.ReadUnicodeStringPtr();
         var quality = new OpcQuality(reader.ReadUInt16());
         _ = reader.ReadUInt16();
-        DateTimeOffset lastAckTime = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset subConditionLastActive = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset conditionLastActive = FromFileTime(reader.ReadFileTime());
-        DateTimeOffset conditionLastInactive = FromFileTime(reader.ReadFileTime());
+        DateTimeOffset lastAckTime = ReadAndDecodeFileTime(ref reader, "ftLastAckTime");
+        DateTimeOffset subConditionLastActive = ReadAndDecodeFileTime(ref reader, "ftSubCondLastActive");
+        DateTimeOffset conditionLastActive = ReadAndDecodeFileTime(ref reader, "ftCondLastActive");
+        DateTimeOffset conditionLastInactive = ReadAndDecodeFileTime(ref reader, "ftCondLastInactive");
         string? acknowledgerId = reader.ReadUnicodeStringPtr();
         string? comment = reader.ReadUnicodeStringPtr();
         var subConditions = ReadSubConditions(ref reader);
@@ -193,6 +193,14 @@ public static class NdrOpcConditionStateCodec
 
     private static long ToFileTime(DateTimeOffset value) => value.UtcTicks - FileTimeEpochOffsetTicks;
 
-    private static DateTimeOffset FromFileTime(long fileTimeTicks) =>
-        new(fileTimeTicks + FileTimeEpochOffsetTicks, TimeSpan.Zero);
+    private static DateTimeOffset ReadAndDecodeFileTime(ref NdrReader reader, string fieldName)
+    {
+        long raw = reader.ReadFileTime();
+        if (FileTimeHelper.TryFromFileTime(raw, out DateTimeOffset value))
+        {
+            return value;
+        }
+        throw new InvalidDataException(
+            $"OPCCONDITIONSTATE.{fieldName} FILETIME value 0x{raw:X16} ({raw}) cannot be expressed as a DateTimeOffset (out of range 1601-01-01..9999-12-31)." + reader.FormatContext());
+    }
 }
