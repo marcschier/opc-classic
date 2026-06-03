@@ -122,15 +122,27 @@ Each filename encodes
 LAST file** (highest sequence number) where the response payload is
 non-empty AND the request was for one of:
 
-- `IOPCBrowse` (IID `39227004-A18F-4B57-8B0A-5235670F4468`) opnum 6 —
-  `GetProperties`.
+- `IOPCBrowse` (IID `39227004-A18F-4B57-8B0A-5235670F4468`) opnum **3** —
+  `GetProperties` (DA 3.0 unified browse).
 - `IOPCItemProperties` (IID `39C13A72-011E-11D0-9675-0020AFD8ADB3`)
-  opnum 4 — `GetItemProperties`.
+  opnum **4** — `GetItemProperties` (DA 2.0 property interface).
 
 The file we want will look like:
 
 ```text
-20260603T182300.456_000019_da-localhost-Matrikon_iid-39227004-a18f-4b57-8b0a-5235670f4468_op-6.hex
+20260603T182300.456_000019_da-localhost-Matrikon_iid-39227004-a18f-4b57-8b0a-5235670f4468_op-3.hex
+```
+
+Quick find via PowerShell:
+
+```powershell
+# Pick the most recent GetProperties capture (DA 3.0 path):
+Get-ChildItem $captureDir -Filter "*39227004*op-3.hex" |
+  Sort-Object Name -Descending | Select-Object -First 1 -ExpandProperty FullName
+
+# Or the DA 2.0 path if the DA 3.0 one is absent:
+Get-ChildItem $captureDir -Filter "*39c13a72*op-4.hex" |
+  Sort-Object Name -Descending | Select-Object -First 1 -ExpandProperty FullName
 ```
 
 ## Step 4 — Sanity-check the capture file (~30 sec)
