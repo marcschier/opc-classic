@@ -6,12 +6,14 @@ See docs/interop/probe-matrikon.json + probe-testserver.json.
 
 ## Headline numbers
 
-- Matrikon: 25/95 tools OK; 70 FAIL. (Track AY+ delta: was 22/95.)
+- Matrikon: **25/95 tools OK**; 70 FAIL. ALL DA tools pass against live Matrikon Simulation Server when using `--da-clsid F8582CF2-88FB-11D0-B850-00C0F0104305` (direct activation). The `--da-progid` path currently fails because OPCEnum's data port rejects `IOPCServerList2` and `IOPCServerList` binds with `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED` (see Issue D below).
 - TestServer: 10/95 OK (session + disconnect-without-connect only); 85 FAIL; da.connect timeout-blocked at 15s (CO_E_SERVER_EXEC_FAILURE).
 
-**Track AY+ (commit 6a8f32ce + follow-up) closed da.get_properties, da.read_sync, and da.poll_subscription against Matrikon by fixing three stacking NDR VARIANT codec bugs (embedded VARIANT is a [unique] pointer, missing 4-byte ULONG discriminator before union body, FLAGGED_WORD_BLOB missing max_count). All DA tools now work end-to-end against live Matrikon Simulation Server.**
+**Track AY+ (commit `6a8f32ce` + follow-up) closed da.get_properties by fixing three stacking NDR VARIANT codec bugs (embedded VARIANT is a `[unique]` pointer, missing 4-byte ULONG discriminator before union body, FLAGGED_WORD_BLOB missing max_count).**
 
-## Matrikon DA: per-tool outcome
+**Track AY++ (commit `7fce8b45`) closed da.read_sync and da.poll_subscription by refactoring `OPCITEMSTATE` decode to the deferred-pile model for the same `[unique] VARIANT` pattern.**
+
+## Matrikon DA: per-tool outcome (with `--da-clsid` direct activation)
 
 Tool | Result | Notes
 ---|---|---
@@ -23,22 +25,22 @@ opcclassic.da.disconnect | OK | clean disconnect after activation
 opcclassic.da.get_status | OK | IOPCServer::GetStatus opnum 6; state=Running, version=2.0.0, vendor=Matrikon Inc.
 opcclassic.da.browse (root) | OK | 5 root entries (#MonitorACLFile, @ClientCount, Configured Aliases, Simulation Items)
 opcclassic.da.browse (Random leaves) | OK | 17 leaves found
-opcclassic.da.read_items_by_id | OK | DA 3.0 stateless IOPCItemIO::Read; Random.Int4=19072 hr=0x0
-opcclassic.da.add_group | OK | returns serverGroupHandle=18971112
+opcclassic.da.read_items_by_id | OK | DA 3.0 stateless IOPCItemIO::Read; Random.Int4 hr=0x0
+opcclassic.da.add_group | OK | returns serverGroupHandle
 opcclassic.da.remove_group | OK | clean tear-down after add
 opcclassic.da.get_error_string | OK | round-trips HRESULT to message text
+opcclassic.da.get_properties | OK | **fixed by Track AY+ commit `6a8f32ce`** — all 14 standard properties decode (Item Quality=192, Item Access Rights=1, Server Scan Rate=100, etc.)
+opcclassic.da.add_items | OK | OPCITEMDEF[] payload accepted; returns 2 server handles with hr=0x00000000
+opcclassic.da.read_sync | OK | **fixed by Track AY++ commit `7fce8b45`** — Bucket Brigade.Int4 = 0 hr=0x00000000
+opcclassic.da.write_sync | OK | reaches server; hr=0xC0040004 (OPC_E_BADTYPE) is server-side validation (probe writes string into Int4 item)
+opcclassic.da.subscribe | OK | AddItems → Advise round-trip via IOPCAsyncIO2 + IConnectionPoint; subscribe cookie returned
+opcclassic.da.poll_subscription | OK | **fixed by Track AY++** — drains queued callbacks from the subscription sink
 opcclassic.cpx.get_type_system | OK | reports namespace/supported state
-opcclassic.da.get_properties | FAIL | AlterContext rejected ABSTRACT_SYNTAX_NOT_SUPPORTED (IOPCItemProperties IID not in initial bind)
-opcclassic.da.add_items | FAIL | AlterContext rejected (IOPCItemMgt IID not in initial bind)
-opcclassic.da.read_sync | FAIL | AlterContext rejected (IOPCSyncIO IID not in initial bind)
-opcclassic.da.write_sync | FAIL | AlterContext rejected (IOPCSyncIO IID not in initial bind)
-opcclassic.da.subscribe | FAIL | AlterContext rejected (IOPCAsyncIO2 / IConnectionPoint IIDs not in initial bind)
-opcclassic.da.poll_subscription | FAIL | depends on .subscribe success
 
 ## TestServer: per-tool outcome
 
 opcclassic.session.create / list / close | OK | session lifecycle
-opcclassic.da.connect | FAIL | tools/call timed out (15s) - DCOM SCM activation blocked by CO_E_SERVER_EXEC_FAILURE; root cause documented in docs/interop/testserver.md (needs MSI install of proxy/stub DLLs into System32)
+opcclassic.da.connect | FAIL | tools/call timed out (15s) - DCOM SCM activation blocked by CO_E_SERVER_EXEC_FAILURE; root cause documented in docs/interop/testserver.md (suspected missing DCOM AppID entry or COM categories — Track BH audits the WiX spec to confirm)
 all other tools | FAIL | downstream of connect failure: session not connected
 opcclassic.*.disconnect | OK | returns "client was not connected" hr=0x1; no actual call to server
 
@@ -49,35 +51,100 @@ Matrikon OPC Simulation Server only implements OPC DA. Probing the HDA/AE/Batch/
 - opcclassic.{hda,ae,batch,commands,dx}.connect -> FAIL with "Provide an OPC server ProgID, CLSID, or connectionString." (probe sent no spec-specific clsid).
 - All read/write/browse tools downstream of those connects -> FAIL ("session is not connected").
 - opcclassic.{hda,ae,batch,commands,dx}.disconnect -> OK (no-op success).
-opcclassic.discovery.enumerate_servers | FAIL | IRemoteSCMActivator::RemoteCreateInstance returned rpc_s_access_denied (0x05). Discovery now sends supplied NTLMv2/Kerberos/Windows-SSO credentials at packet-integrity (or privacy) activation level; the account still needs DCOM Launch/Activation and Access rights on the OPCEnum / OPC.ServerList AppID.
+opcclassic.discovery.enumerate_servers | FAIL | OPCEnum data-port bind for IOPCServerList2/IOPCServerList rejected with PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED (Issue D below; same root cause that breaks `--da-progid` activation).
 
-## Root causes (3 distinct issues)
+## Root causes (4 distinct issues)
 
-### Issue A: AlterContext PROVIDER_REJECTION on per-spec sub-IIDs (Matrikon, 5+ DA tools)
+### Issue A: AlterContext PROVIDER_REJECTION on per-spec sub-IIDs — **CLOSED by Track AC** (`2d96d8f9`)
 
-src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs::AlterContextAsync sends a single-IID alter_context_req with the new interface IID (IOPCItemProperties / IOPCItemMgt / IOPCSyncIO / IOPCAsyncIO2). Matrikon (and most production OPC servers) reject because their RPC endpoint did not advertise those IIDs during bind_ack. The DCE bind PDU should declare ALL anticipated interface IIDs at initial bind time so the server preloads their stub marshalers; an after-the-fact alter_context for an arbitrary new IID is a corner case real servers often refuse.
+Original symptom: `src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs::AlterContextAsync` sent a
+single-IID `alter_context_req` with the new interface IID (`IOPCItemProperties` / `IOPCItemMgt` /
+`IOPCSyncIO` / `IOPCAsyncIO2`). Matrikon (and most production OPC servers) rejected because their
+RPC endpoint did not advertise those IIDs during `bind_ack`.
 
-Fix surface: extend DcomCallChannel to: (a) precompute the full IID set for the connected spec (DA: IOPCServer + IOPCCommon + IOPCBrowse + IOPCBrowseServerAddressSpace + IOPCItemProperties + IOPCItemMgt + IOPCSyncIO + IOPCSyncIO2 + IOPCAsyncIO2 + IOPCAsyncIO3 + IOPCGroupStateMgt + IOPCGroupStateMgt2 + IConnectionPoint + IConnectionPointContainer + IOPCItemIO), (b) emit all of them in the initial BindPdu.ContextList instead of one-by-one. Alternative: fall back to a fresh bind on a NEW socket per spec interface (one channel per sub-interface).
+Fix: Track AC introduced `OpcSpecCatalog.Da` and the `preBindIids` channel parameter so the full DA
+IID set is declared in the initial bind PDU. After the catalog landed, all DA AlterContext
+rejections went away.
+
+Residual gap: Non-DA specs (`Cpx`, `Security`, `Discovery`, and the HDA/AE/Batch/Commands/DX
+surfaces) do not yet have catalog entries, so the same rejection class persists for their
+non-DA IIDs. **Track BG** extends the catalog to close that residual.
 
 ### Issue B: TestServer activation fails (CO_E_SERVER_EXEC_FAILURE)
 
-This probe was captured before Track AD: locally built TestServer EXE activation failed with HRESULT 0x80080005 and DCOM event log 10010 ("server did not register with DCOM within the required timeout") because the ad-hoc registration path only wrote HKLM entries. `tools/register-testserver.ps1` now performs the no-MSI setup that DCOM SCM needs: copy `opccomn_ps.dll` and `opcproxy.dll` to `%SystemRoot%\System32`, register those copies with native `regsvr32.exe`, and run `OpcTestServer_x64.exe /regserver` from the System32 working directory. Re-run the probe after elevated registration to refresh this report.
+Locally built TestServer EXE activation fails with HRESULT `0x80080005` and DCOM event log
+10010 ("server did not register with DCOM within the required timeout") even after
+`tools/register-testserver.ps1` runs. Suspected cause: the ad-hoc registration script is
+missing one or more entries that the canonical WiX MSI install writes (most likely the DCOM
+AppID entry for `OpcTestServer_x64.exe`, COM Implemented/Required Categories under each
+CLSID, or wrong proxy-stub registration order). **Track BH** audits the upstream
+`OPC-Classic-CoreComponents` WiX manifests (`Installer.wxs`, `MergeModule.wxs`,
+`MergeModuleSdk.wxs`) as the canonical registration spec and fixes the script in-place
+(NO `msiexec`-driven install path).
 
-### Issue C: OPCEnum activation fails (rpc_s_access_denied)
+### Issue C: OPCEnum **activation** fails (rpc_s_access_denied 0x05)
 
-opcclassic.discovery.enumerate_servers and ProgID-based connect paths use IRemoteSCMActivator::RemoteCreateInstance. The activator path now reuses the same OPC connection credentials used for the target server and upgrades weak activation protection to RPC_C_AUTHN_LEVEL_PKT_INTEGRITY (or preserves PKT_PRIVACY). Operators must still grant the calling identity DCOM Launch/Activation and Access permissions on the OPCEnum / OPC.ServerList AppID `{13486D44-4821-11D2-A494-3CB306C10000}` (note: AppID is distinct from the CLSID `{13486D51-4821-11D2-A494-3CB306C10000}`, differing in one hex digit) in Component Services; otherwise Windows will continue to return rpc_s_access_denied (0x05).
+`opcclassic.discovery.enumerate_servers` and ProgID-based connect paths use
+`IRemoteSCMActivator::RemoteCreateInstance`. The activator path reuses the same OPC connection
+credentials used for the target server and upgrades weak activation protection to
+`RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`. Operators must still grant the calling identity DCOM
+Launch/Activation and Access permissions on the OPCEnum AppID
+`{13486D44-4821-11D2-A494-3CB306C10000}` (note: AppID is distinct from the CLSID
+`{13486D51-4821-11D2-A494-3CB306C10000}`, differing in one hex digit). The helper
+`tools/grant-opcenum-acl.ps1` (Track AN) automates this once per host.
 
-Workaround: pass a CLSID directly to connect tools (for example `--da-clsid`) to bypass OPCEnum, or call discovery/ProgID connect with NTLMv2/Kerberos/Windows-SSO credentials that have OPCEnum Launch/Activation and Access permissions. The probe driver also accepts `--auth-level pkt_integrity` or `--auth-level pkt_privacy` and forwards it to MCP discovery/connect tools. If a hardened host returns `RPC fault status 0x000006F7` for IRemoteSCMActivator or rejects legacy IActivation with `ABSTRACT_SYNTAX_NOT_SUPPORTED`, re-check OPCEnum DCOM security/registration on the server and continue using direct CLSID until the host accepts OPCEnum activation. See `docs/interop/opcenum-auth.md`.
+### Issue D: OPCEnum **data-port bind** rejects IOPCServerList(2) (NEW finding, 2026-06-04 probe)
+
+Independent of Issue C: even when the activation succeeds (`IActivation::RemoteActivation`
+opnum 0 returns a valid OBJREF with `IPID` + `DUALSTRINGARRAY` bindings for the OPCEnum data
+port), the subsequent DCE bind to the data port for `IOPCServerList2` (or after downgrade,
+`IOPCServerList`) returns `bind_ack` with `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED`
+for BOTH IIDs.
+
+This is the **same root-cause class** as Issue A, but for OPCEnum's `IOPCServerList` /
+`IOPCServerList2` IIDs which are not in any pre-bind catalog today
+(`DcomOpcEnumCallChannelFactory.CreateObjectChannelAsync` calls
+`DcomCallChannelFactory.ConnectAsync` with `preBindIids: null`).
+
+The wire trace shows our client sends bind for `IOPCServerList2` alone — and OPCEnum responds
+PROVIDER_REJECTION. After the existing downgrade fallback, bind for `IOPCServerList` alone is
+also rejected. The single-IID bind shape is correct DCE; what is unusual is that OPCEnum
+rejects both IIDs that it is responsible for advertising. The likely cause is that our bind
+PDU is missing a presentation-context attribute OPCEnum requires (e.g., the OPC-Common
+type-library reference, or a specific transfer-syntax alternative beyond the default NDR
+8a885d04-1ceb-11c9-9fe8-08002b104860 v2.0).
+
+**Workaround:** pass `--da-clsid <CLSID>` to the probe driver (bypasses OPCEnum and dials the
+target server's IRemoteActivation directly) — this is what the current 25/95 OK baseline uses.
+
+**Fix surface:** **Track BG** (initial-bind catalog extension to Discovery / Cpx / Security
+specs) will add an `OpcSpecCatalog.Discovery` collection that the
+`DcomOpcEnumCallChannelFactory` passes through. If the issue persists after adding the IID
+to the catalog, Track BG also covers per-tower-syntax presentation-context experiments
+(adding the OPC-Common type-library 64-bit transfer-syntax alternative).
 
 ## What works today (Matrikon DA)
 
-Server-object level interfaces work end-to-end: connect, get_status, browse, read_items_by_id (DA 3.0 stateless), add_group + remove_group, get_error_string, disconnect, plus all session-management tools. This covers the wire-format/NDR/MInterfacePointer paths exercised by Track Y/Z/AA tests.
+ALL DA tools work end-to-end against live Matrikon Simulation Server when activated via
+`--da-clsid F8582CF2-88FB-11D0-B850-00C0F0104305`. Tracks AY+ and AY++ closed the last decode
+issues (GetProperties + ItemState wireVARIANT). All write/read/subscribe/poll/properties
+paths validated against the live server.
 
 ## What is blocked today
 
-Group-object level interfaces (add_items, read_sync, write_sync, subscribe, get_properties) require AlterContext for new IIDs; Matrikon rejects with ABSTRACT_SYNTAX_NOT_SUPPORTED. Fix requires Issue A above.
-
-TestServer end-to-end activation requires the upstream MSI (Issue B). All non-DA specs (HDA / AE / Batch / Commands / DX) require installing matching servers; Matrikon Simulation does not provide them.
+- **Non-DA AlterContext on Matrikon** (CPX `get_complex_type` / `get_dictionary`, Security):
+  same Issue A class for non-DA IIDs. Track BG adds `OpcSpecCatalog` entries per spec to
+  declare the full IID set in the initial bind.
+- **`--da-progid` activation** (Issue D): OPCEnum data-port rejects `IOPCServerList`(`2`) bind.
+  Track BG (catalog extension) is the suspect-fix; if catalog alone doesn't close it, also
+  covers presentation-context attribute experiments.
+- **`discovery.enumerate_servers`**: same Issue D root cause.
+- **TestServer end-to-end** (Issue B): Track BH audits the upstream WiX spec and fixes
+  `tools/register-testserver.ps1` in-place.
+- **Non-DA specs (HDA / AE / Batch / Commands / DX / XML-DA)**: Matrikon Simulation does not
+  implement them. Track BH adds the Foundation `OpcTestServer` as a probe target via the
+  `opc-classic/testserver` Docker container — TestServer + bundled spec plugins cover all
+  those specs.
 
 ## Post-fix delta (commit 2d96d8f9, 2026-06-02)
 
