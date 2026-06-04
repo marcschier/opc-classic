@@ -58,6 +58,7 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
     private readonly ConcurrentDictionary<Guid, IOPCDataCallback> _sinksByIpid = new();
     private readonly SemaphoreSlim _lifecycleLock = new(1, 1);
     private OpcServerListener? _listener;
+    private IObjectExporterDispatcher? _objectExporter;
     private bool _disposed;
 
     /// <summary>Creates an unstarted endpoint.</summary>
@@ -75,6 +76,13 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
     /// <summary>Number of currently-registered sink IPIDs.</summary>
     public int RegisteredSinkCount => _sinksByIpid.Count;
 
+    /// <summary>
+    /// IPID this listener reports as its <c>IRemUnknown</c> via
+    /// <c>IObjectExporter::ResolveOxid2</c>. Stable across the listener
+    /// lifetime; <see cref="Guid.Empty"/> when the listener is not started.
+    /// </summary>
+    public Guid IRemUnknownIpid => _objectExporter?.IRemUnknownIpid ?? Guid.Empty;
+
     /// <summary>Starts the loopback listener. Idempotent — calling again is a no-op.</summary>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -89,13 +97,28 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
             }
 
             var endpoint = new TcpServerEndpoint(new IPEndPoint(IPAddress.Loopback, 0));
+            // Register IObjectExporter at its well-known IID in the root
+            // dispatcher map so a remote OPC server's ResolveOxid2 /
+            // ServerAlive2 / SimplePing probes against our listener
+            // (typically issued before delivering inbound IOPCDataCallback
+            // calls) are answered with the listener's actual TCP bindings
+            // and a synthetic IRemUnknown IPID. Without this, the
+            // server's Advise call appears to succeed but the subsequent
+            // probe times out and the callback channel is abandoned.
+            var objectExporter = new IObjectExporterDispatcher(
+                endpointProvider: () => _listener?.LocalEndpoint as IPEndPoint);
+            var rootDispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+            {
+                [IObjectExporterDispatcher.InterfaceId] = objectExporter,
+            };
             var processor = new RpcServerConnectionProcessor(
-                dispatchers: new Dictionary<Guid, IOpcServerDispatcher>(),
+                dispatchers: rootDispatchers,
                 objectRegistry: _registry,
                 logger: _logger);
             var listener = new OpcServerListener(endpoint, processor, _logger);
             await listener.StartAsync(cancellationToken).ConfigureAwait(false);
             _listener = listener;
+            _objectExporter = objectExporter;
 
             EndpointStarted(_logger, listener.LocalEndpoint, null);
         }
@@ -215,6 +238,7 @@ public sealed class DaCallbackEndpoint : IAsyncDisposable
             }
 
             _listener = null;
+            _objectExporter = null;
             await listener.StopAsync(cancellationToken).ConfigureAwait(false);
             await listener.DisposeAsync().ConfigureAwait(false);
             EndpointStopped(_logger, listener.LocalEndpoint, null);

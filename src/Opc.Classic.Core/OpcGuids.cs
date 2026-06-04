@@ -104,6 +104,17 @@ public static class OpcGuids
     public static readonly Guid IID_IRemUnknown2 =
         new("00000143-0000-0000-C000-000000000046");
 
+    /// <summary>
+    /// <c>IObjectExporter</c> — the OXID-resolver / liveness-ping interface that every
+    /// DCOM endpoint exposes at the well-known IPID equal to its IID
+    /// (<c>99FCFEC4-5260-101B-BBCB-00AA0021347A</c>, MS-DCOM 3.1.2.5.1.1).
+    /// Servers call this on a client-hosted endpoint (for example a callback sink
+    /// listener) to resolve the OXID's data-port bindings and the IPID of its
+    /// <c>IRemUnknown</c> before delivering inbound invocations.
+    /// </summary>
+    public static readonly Guid IID_IObjectExporter =
+        new("99FCFEC4-5260-101B-BBCB-00AA0021347A");
+
     // ============================================================
     // OpcEnum — server discovery (the well-known component-category manager)
     // ============================================================

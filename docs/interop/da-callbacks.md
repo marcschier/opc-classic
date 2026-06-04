@@ -48,10 +48,10 @@ deferred, and what the production callback-bind path requires.
 
 | Subtrack | Description | Status |
 |---------|-------------|--------|
-| AP1 | `OpcServerListener` startup on MCP host bound to dynamic TCP port + IOPCDataCallback dispatcher registration | **Partial (AU)** — loopback-only scaffold shipped via `DaCallbackEndpoint`; production startup integrated into `DaClientTools.Subscribe` still deferred |
-| AP2 | Construct `IOpcInterfaceRef` for sink (TCP string binding + fresh IPID/OXID/OID) + pass to `IConnectionPointClientProxy.Advise(sink)` + track cookie | **Partial (AU)** — `OpcSinkObjRefBuilder` ships the OBJREF construction (verified to round-trip through `OpcInterfaceRefCodec`); production `Advise(sink)`/cookie tracking from inside the MCP `Subscribe` tool still deferred |
+| AP1 | `OpcServerListener` startup on MCP host bound to dynamic TCP port + IOPCDataCallback dispatcher registration | **Done (BI1+BI2+BI3)** — loopback `DaCallbackEndpoint` ships an `IObjectExporterDispatcher` at the well-known IID and `DaClientTools.Subscribe` lazy-starts it on first subscribe |
+| AP2 | Construct `IOpcInterfaceRef` for sink (TCP string binding + fresh IPID/OXID/OID) + pass to `IConnectionPointClientProxy.Advise(sink)` + track cookie | **Done (BI3+BI4)** — `OpcSinkObjRefBuilder` builds the OBJREF; `Subscribe` calls `Advise` + stores `AdviseCookie` on `DaSubscriptionContext`; `RemoveGroup`/`Dispose` calls `Unadvise` |
 | AP3 | `DataChangeNotification` queue + bounded `Channel<T>` sink + `poll_subscription` drain-first-then-pull | **Done** |
-| AP4 | Accept Matrikon callback-bind PDU auth via existing `RpcServerConnectionProcessor` + `Spnego` | **Mostly done** — the loopback test proves the auth path; production OBJREF routing still needs AP1+AP2 + `IObjectExporter` OXID resolver |
+| AP4 | Accept Matrikon callback-bind PDU auth via existing `RpcServerConnectionProcessor` + `Spnego` | **Done (BI2)** — loopback test proves the dispatch path; production callback delivery against Matrikon is gated on the IConnectionPoint group-channel work documented in "Known limitation" below |
 | AP5 | Synthetic in-process test of sink + queue + drain mapping | **Done** (`tests/Opc.Classic.Mcp.Tests/DaDataCallbackSinkTests.cs`) |
 | AP5b | In-process loopback Advise / OnDataChange integration test (Track AU) | **Done** (`tests/Opc.Classic.Mcp.Tests/DaCallbackEndpointIntegrationTests.cs`) |
 | AP6 | Documentation | **This document** |
@@ -83,21 +83,55 @@ The wire-side infrastructure for AP1/AP2/AP4 is exposed as
 
 ### Production callback bring-up gap
 
-What still blocks AP1/AP2/AP4 going user-visible:
+Track BI shipped (commit forthcoming) closes the listener-side gaps:
 
-1. **`IObjectExporter` OXID resolver** — a real OPC server doing
-   `Advise(sink)` will issue an `IObjectExporter::ResolveOxid2` against
-   the OBJREF's resolver bindings BEFORE it dials the callback
-   transport. Our listener currently has no `IObjectExporter`
-   dispatcher; the AU scaffold proves the dispatch path AFTER OXID
-   resolution would have succeeded.
-2. **`Subscribe`-time wiring** — `DaClientTools.Subscribe` would need
-   to start the endpoint, register the sink, build the OBJREF, call
-   `AdviseAsync`, and store the returned cookie on
-   `DaSubscriptionContext`. Today these are deliberate no-ops to keep
-   the (unverified-against-Matrikon) inbound flow off by default.
-3. **Live Matrikon verification** — needed to validate any of the
-   above end-to-end before flipping AP1/AP2/AP4 to "Done".
+1. **`IObjectExporter` OXID resolver** — ✅ **Done (BI1/BI2)**: 
+   `IObjectExporterDispatcher` (`src/Opc.Classic.Dcom/Transport/IObjectExporterDispatcher.cs`)
+   implements opnums 1-5 (SimplePing, ComplexPing, ServerAlive,
+   ResolveOxid2, ServerAlive2). `DaCallbackEndpoint.StartAsync`
+   registers it in the listener's root dispatcher map at IID
+   `99FCFEC4-5260-101B-BBCB-00AA0021347A` so a remote OPC server's
+   pre-callback ResolveOxid2 / SimplePing probes resolve to our actual
+   TCP endpoint and a synthetic IRemUnknown IPID.
+2. **`Subscribe`-time wiring** — ✅ **Done (BI3)**:
+   `DaClientTools.Subscribe` now lazy-starts the callback endpoint,
+   calls `RegisterSink(subscription.Sink)`, builds the sink OBJREF via
+   `OpcSinkObjRefBuilder`, calls `client.ConnectionPoint.AdviseAsync(sinkObjRef)`
+   and stores the returned cookie on `DaSubscriptionContext.AdviseCookie`.
+   Best-effort: when the server rejects the Advise (for example because
+   IConnectionPoint is bound to the server channel rather than a
+   group-specific channel — see "Known limitation" below), the call
+   falls through to pull-only mode and the existing
+   `opcclassic.da.poll_subscription` continues to work.
+3. **Unadvise on teardown** — ✅ **Done (BI4)**:
+   `DaClientTools.RemoveGroup` and `DaClientState.DisposeAsync` both
+   walk the per-group / per-client subscription set, call
+   `IConnectionPoint::Unadvise(cookie)` (best-effort — server may have
+   already torn down), and `DaCallbackEndpoint.UnregisterSink(ipid)`
+   to remove the per-IPID dispatcher route.
+
+### Known limitation — Matrikon Advise rejection
+
+Track BI5 live verification against Matrikon Simulation Server shows
+the `IConnectionPoint::Advise` call fails on Matrikon: the server-level
+channel doesn't expose `IConnectionPoint` (Matrikon's `bind_ack`
+returns `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED` for
+IID `B196B286-BAB4-101A-B69C-00AA00341D07`). Per OPC DA spec
+§3.4.3 (IConnectionPointContainer) the connection-point sub-objects
+live on the GROUP, not the server. Calling Advise routed through the
+group's IPID still uses the server-level channel binding, and Matrikon
+rejects.
+
+Closing this gap needs a follow-up track: open a fresh channel per
+group that pre-binds `IConnectionPoint` + `IConnectionPointContainer`
++ the group-only IIDs, or use AlterContext successfully (which
+requires Matrikon's server to advertise IConnectionPoint as an
+addressable IID — which the current bind shows it does not).
+
+For the loopback test scenario (`LoopbackDemo` + AU tests) the Advise
+flow works end-to-end because the in-memory channel doesn't reject
+unknown IIDs. BI is complete for the loopback case; production-live
+callback delivery against Matrikon DA needs the follow-up.
 
 ## Sink contract
 

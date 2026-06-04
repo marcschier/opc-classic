@@ -552,7 +552,51 @@ public sealed class DaClientTools
             cancelId = null;
         }
 
-        client.Subscriptions[subscriptionId] = new DaSubscriptionContext(subscriptionId, groupHandle, fromCache, transactionId, cancelId);
+        var subscription = new DaSubscriptionContext(subscriptionId, groupHandle, fromCache, transactionId, cancelId);
+
+        // Track BI: lazily bring up the loopback IOPCDataCallback endpoint,
+        // register the subscription's sink, build a sink OBJREF, and call
+        // IConnectionPoint::Advise so the OPC server pushes data-change
+        // notifications back over the listener. The endpoint hosts an
+        // IObjectExporter dispatcher so the server's pre-callback
+        // ResolveOxid2 / ServerAlive2 / SimplePing probes resolve to our
+        // actual TCP endpoint.
+        //
+        // Best-effort: Advise failures degrade to pull-only behavior so
+        // the existing poll-based opcclassic.da.poll_subscription tool
+        // still works against servers that reject the callback OBJREF
+        // (for example air-gapped test scaffolds).
+        try
+        {
+            Tools.DaCallbackEndpoint endpoint = await client.GetOrCreateCallbackEndpointAsync(cancellationToken).ConfigureAwait(false);
+            Guid sinkIpid = endpoint.RegisterSink(subscription.Sink);
+            try
+            {
+                IOpcInterfaceRef sinkObjRef = endpoint.BuildSinkObjRef(sinkIpid);
+                int cookie = await client.ConnectionPoint.AdviseAsync(sinkObjRef, cancellationToken).ConfigureAwait(false);
+                subscription.SinkIpid = sinkIpid;
+                subscription.AdviseCookie = cookie;
+            }
+            catch
+            {
+                endpoint.UnregisterSink(sinkIpid);
+                throw;
+            }
+        }
+        catch (OpcException)
+        {
+            // Server rejected the Advise; fall through to poll-only.
+            subscription.SinkIpid = Guid.Empty;
+            subscription.AdviseCookie = null;
+        }
+        catch (InvalidOperationException)
+        {
+            // Endpoint or OBJREF wiring failed; fall through to poll-only.
+            subscription.SinkIpid = Guid.Empty;
+            subscription.AdviseCookie = null;
+        }
+
+        client.Subscriptions[subscriptionId] = subscription;
         return new OpcResultDto(0, $"Subscription '{subscriptionId}' created. Poll for values with opcclassic.da.poll_subscription.", Succeeded: true, SubscriptionId: subscriptionId, TransactionId: transactionId, CancelId: cancelId);
     }
 
@@ -610,6 +654,21 @@ public sealed class DaClientTools
         CancellationToken cancellationToken = default)
     {
         DaClientState client = GetDaClient(sessionId);
+        // Track BI: unwind every subscription Advise/sink registration on
+        // this group BEFORE asking the server to remove it. Unadvise +
+        // UnregisterSink failures are non-fatal — the server-side state is
+        // about to be torn down by RemoveGroupAsync anyway, and the
+        // listener-side registry is purged when we explicitly unregister.
+        foreach (KeyValuePair<string, DaSubscriptionContext> pair in client.Subscriptions)
+        {
+            if (pair.Value.GroupHandle != groupHandle)
+            {
+                continue;
+            }
+
+            await TryUnadviseSubscriptionAsync(client, pair.Value, cancellationToken).ConfigureAwait(false);
+        }
+
         await client.Server.RemoveGroupAsync(groupHandle, force, cancellationToken).ConfigureAwait(false);
         client.Groups.TryRemove(groupHandle, out _);
         foreach (KeyValuePair<string, DaSubscriptionContext> pair in client.Subscriptions)
@@ -621,6 +680,36 @@ public sealed class DaClientTools
         }
 
         return new OpcResultDto(0, $"Group {groupHandle} removed.", Succeeded: true, ServerHandle: groupHandle);
+    }
+
+    private static async Task TryUnadviseSubscriptionAsync(DaClientState client, DaSubscriptionContext subscription, CancellationToken cancellationToken)
+    {
+        if (subscription.AdviseCookie is int cookie)
+        {
+            try
+            {
+                await client.ConnectionPoint.UnadviseAsync(cookie, cancellationToken).ConfigureAwait(false);
+            }
+            catch (OpcException)
+            {
+                // Server already released the connection or doesn't care; proceed.
+            }
+            catch (InvalidOperationException)
+            {
+                // Transport tear-down race; proceed with local cleanup.
+            }
+            finally
+            {
+                subscription.AdviseCookie = null;
+            }
+        }
+
+        if (subscription.SinkIpid != Guid.Empty)
+        {
+            Tools.DaCallbackEndpoint? endpoint = client.CallbackEndpoint;
+            endpoint?.UnregisterSink(subscription.SinkIpid);
+            subscription.SinkIpid = Guid.Empty;
+        }
     }
 
     /// <summary>Translates an HRESULT to an OPC DA server-localized message.</summary>

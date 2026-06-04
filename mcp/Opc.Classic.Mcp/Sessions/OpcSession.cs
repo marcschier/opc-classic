@@ -280,8 +280,36 @@ public sealed class DaClientState : IAsyncDisposable
             return;
         }
 
+        // Track BI: tear down each Advise cookie + sink registration before
+        // disposing the underlying sinks. Best-effort: the channel may be
+        // already half-closed (connection dropped, server crashed) so we
+        // swallow OpcException / InvalidOperationException and proceed to
+        // local cleanup. The sink Dispose() loop below still runs even if
+        // remote Unadvise fails.
         foreach (DaSubscriptionContext subscription in Subscriptions.Values)
         {
+            if (subscription.AdviseCookie is int cookie)
+            {
+                try
+                {
+                    await ConnectionPoint.UnadviseAsync(cookie).ConfigureAwait(false);
+                }
+                catch (OpcException)
+                {
+                }
+                catch (InvalidOperationException)
+                {
+                }
+
+                subscription.AdviseCookie = null;
+            }
+
+            if (subscription.SinkIpid != Guid.Empty)
+            {
+                CallbackEndpoint?.UnregisterSink(subscription.SinkIpid);
+                subscription.SinkIpid = Guid.Empty;
+            }
+
             subscription.Sink.Dispose();
         }
 
@@ -441,6 +469,25 @@ public sealed class DaSubscriptionContext
 
     /// <summary>Sink that receives <c>IOPCDataCallback</c> push notifications for this subscription.</summary>
     public Tools.DaDataCallbackSink Sink { get; }
+
+    /// <summary>
+    /// IPID under which <see cref="Sink"/> is registered with the
+    /// <c>DaCallbackEndpoint</c> object registry. <see cref="Guid.Empty"/>
+    /// when the subscription has not yet completed
+    /// <c>IConnectionPoint::Advise</c> (loopback-only test mode or
+    /// pre-Track-BI fallback).
+    /// </summary>
+    public Guid SinkIpid { get; set; }
+
+    /// <summary>
+    /// Cookie returned by <c>IConnectionPoint::Advise</c> when the
+    /// subscription's <see cref="Sink"/> was registered with the OPC
+    /// server. Null when no successful Advise call has been made
+    /// (sink not yet advised, or pre-Track-BI poll-only path). Used by
+    /// <c>RemoveGroup</c> / <c>DisposeAsync</c> to call
+    /// <c>IConnectionPoint::Unadvise(cookie)</c>.
+    /// </summary>
+    public int? AdviseCookie { get; set; }
 }
 
 /// <summary>Operations required by MCP DX tools.</summary>
