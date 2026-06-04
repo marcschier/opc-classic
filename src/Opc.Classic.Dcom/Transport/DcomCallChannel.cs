@@ -138,12 +138,14 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         ArgumentOutOfRangeException.ThrowIfNegative(opnum);
         cancellationToken.ThrowIfCancellationRequested();
 
+        bool diag = string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal);
         using IDisposable causalityScope = CausalityContext.BeginCall();
         await _callLock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try {
             ObjectDisposedException.ThrowIf(_disposed, this);
 
             int contextId = await EnsurePresentationContextAsync(interfaceId, cancellationToken).ConfigureAwait(false);
+            await BindTraceAsync(diag, $"InvokeAsync: iid={interfaceId:D} opnum={opnum} ctx={contextId} payload={requestPayload.Length}b").ConfigureAwait(false);
             Guid causalityId = CausalityContext.Current.Value.GetValueOrDefault();
             byte[] requestStub = OrpcEnvelope.BuildRequestStub(requestPayload, causalityId);
             Guid? routedIpid = _interfaceIpids.TryGetValue(interfaceId, out Guid mapped) ? mapped : _objectIpid;
@@ -155,9 +157,12 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
                 CallId = NextCallId(),
                 Object = routedIpid.HasValue ? new UUID(routedIpid.Value.ToString("D")) : null,
             };
+            await BindTraceAsync(diag, $"InvokeAsync: writing REQUEST PDU stub={requestStub.Length}b ipid={(routedIpid.HasValue ? routedIpid.Value.ToString("D") : "<none>")}").ConfigureAwait(false);
             await WritePduAsync(request, cancellationToken).ConfigureAwait(false);
+            await BindTraceAsync(diag, "InvokeAsync: REQUEST written; awaiting response PDU...").ConfigureAwait(false);
 
             ConnectionOrientedPdu reply = await ReadFragmentedPduAsync(cancellationToken).ConfigureAwait(false);
+            await BindTraceAsync(diag, $"InvokeAsync: received reply PDU type={reply.Type}").ConfigureAwait(false);
             NdrCallResult result = reply switch {
                 ResponseCoPdu response => new NdrCallResult(0, OrpcEnvelope.ExtractResponseBody(response.Stub)),
                 FaultCoPdu fault => new NdrCallResult(unchecked((int)fault.Status), ReadOnlyMemory<byte>.Empty),
@@ -166,7 +171,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             // Optional diagnostic hex-dump: set OPC_CLASSIC_DCOM_WIRE_DUMP=1 to log
             // request and response bytes to stderr. Useful for byte-exact wire-format
             // debugging against captured Wireshark traces from Windows OPC clients.
-            if (string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal)) {
+            if (diag) {
                 await System.Console.Error.WriteLineAsync($"[wire] iid={interfaceId:D} opnum={opnum} hresult=0x{result.Hresult:X8}").ConfigureAwait(false);
                 await System.Console.Error.WriteLineAsync($"[wire] request  ({requestPayload.Length}b): {System.Convert.ToHexString(requestPayload.Span)}").ConfigureAwait(false);
                 await System.Console.Error.WriteLineAsync($"[wire] response ({result.ResponsePayload.Length}b): {System.Convert.ToHexString(result.ResponsePayload.Span)}").ConfigureAwait(false);
@@ -247,7 +252,10 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
     }
 
     private async ValueTask<PresentationResult[]> BindAsync(PendingPresentationContext[] contexts, CancellationToken cancellationToken) {
+        bool diag = string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal);
+        await BindTraceAsync(diag, $"BindAsync entered: ctx_count={contexts.Length} auth_ctx={_authContext.GetType().Name} protection={_authContext.ProtectionLevel}").ConfigureAwait(false);
         byte[] initialToken = _authContext.BuildInitialToken();
+        await BindTraceAsync(diag, $"initial_token: {initialToken.Length} bytes").ConfigureAwait(false);
         var bind = new BindPdu {
             AssociationGroupId = _associationGroupId,
             ContextList = ToPresentationContexts(contexts),
@@ -255,31 +263,39 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             MaxTransmitFragment = _maxTransmitFragment,
             CallId = NextCallId(),
         };
-
+        await BindTraceAsync(diag, "writing BIND PDU...").ConfigureAwait(false);
         await WritePduAsync(bind, cancellationToken, initialToken).ConfigureAwait(false);
-
+        await BindTraceAsync(diag, "BIND PDU written; awaiting BIND_ACK...").ConfigureAwait(false);
         DecodedPdu decoded = await ReadSinglePduAsync(cancellationToken).ConfigureAwait(false);
+        await BindTraceAsync(diag, $"received PDU type={decoded.Pdu.Type} auth_body_len={decoded.AuthenticationBody.Length}").ConfigureAwait(false);
         if (decoded.Pdu is not BindAcknowledgePdu bindAck) {
             if (decoded.Pdu is FaultCoPdu fault) {
                 throw new InvalidOperationException($"Bind failed with fault 0x{unchecked((int)fault.Status):X8}.");
             }
-
             throw new InvalidOperationException($"Expected bind_ack PDU, received type {decoded.Pdu.Type}.");
         }
-
         PresentationResult[] results = GetPresentationResults(bindAck.ResultList, "Bind acknowledge did not include presentation results.");
         _associationGroupId = bindAck.AssociationGroupId;
         _maxTransmitFragment = bindAck.MaxReceiveFragment;
         _maxReceiveFragment = bindAck.MaxTransmitFragment;
-
+        await BindTraceAsync(diag, "processing challenge token...").ConfigureAwait(false);
         byte[] nextToken = _authContext.ProcessChallengeToken(decoded.AuthenticationBody);
+        await BindTraceAsync(diag, $"next_token: {nextToken.Length} bytes (will {(nextToken.Length > 0 ? "send AUTH3" : "skip AUTH3")})").ConfigureAwait(false);
         if (nextToken.Length > 0) {
             var auth3 = new Auth3Pdu { CallId = NextCallId() };
             await WritePduAsync(auth3, cancellationToken, nextToken).ConfigureAwait(false);
+            await BindTraceAsync(diag, "AUTH3 PDU written").ConfigureAwait(false);
         }
-
         RegisterAcceptedPresentationContexts(contexts, results);
+        await BindTraceAsync(diag, $"BindAsync complete: accepted {results.Length} presentation contexts").ConfigureAwait(false);
         return results;
+    }
+
+    private static async ValueTask BindTraceAsync(bool enabled, string message) {
+        if (!enabled) {
+            return;
+        }
+        await System.Console.Error.WriteLineAsync($"[bind-trace] {message}").ConfigureAwait(false);
     }
 
     private async ValueTask WritePduAsync(

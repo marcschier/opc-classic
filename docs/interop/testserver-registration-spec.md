@@ -269,3 +269,75 @@ machines. The BH2 fixes above bring it to functional parity with the
 MSI for the **TestServer-only DA case**; full multi-spec marshalling
 would also require the additional proxy/stub registrations from the
 table.
+
+## Verified live findings (2026-06-04, post-DR1)
+
+Live diagnostic instrumentation (`OPC_CLASSIC_DCOM_WIRE_DUMP=1`,
+`DcomCallChannel.cs` bind+invoke tracing) against a partially-registered
+TestServer revealed the actual symptom chain:
+
+1. **MCP `da.connect` opens TCP to localhost:135** (RPCSS). ✅
+2. **NTLM SPNEGO bind succeeds**: BIND PDU written, BIND_ACK received
+   (238-byte auth body), AUTH3 written, IActivation presentation
+   context accepted. ✅
+3. **IActivation::RemoteActivation REQUEST written** (opnum 0,
+   150-byte payload, 182-byte signed stub). ✅
+4. **SCM launches TestServer** — process appears in Task Manager
+   listening for the SCM's class-factory registration callback. ✅
+5. **TestServer never calls `CoRegisterClassObject`** within the
+   SCM timeout window (~2 minutes). The Windows Event Log shows
+   recurring `Microsoft-Windows-DistributedCOM` event:
+   > `The server {F8582CF9-88FB-11DA-A5ED-0060B0692061} did not
+   > register with DCOM within the required timeout.`
+6. **SCM eventually returns `CO_E_SERVER_EXEC_FAILURE` (0x80080005)**
+   to our managed activation client (~180s after the request was
+   sent). Our MCP probe times out before this response arrives
+   (default 60s).
+
+### Why TestServer fails to register
+
+Registry audit after the failing run shows several entries the EXE's
+`/RegServer` should have written are missing:
+
+- `HKLM\SOFTWARE\Classes\CLSID\{F8582CF9-...}\TypeLib` — absent
+- `HKLM\SOFTWARE\Classes\TypeLib\{F8582CF7-...}` — absent (neither
+  64-bit nor 32-bit WoW64 view)
+
+Without its TypeLib registered, TestServer aborts during
+`OPC_DECLARE_APPLICATION` macro initialization (resolving the
+TypeLib-referenced IIDs) and never reaches `CoRegisterClassObject`.
+
+The CLSID/ProgID/LocalServer32 entries ARE present — likely written
+by an ad-hoc `reg add` rather than the EXE's own `/RegServer`. Only
+`/RegServer` writes the TypeLib registration as a side-effect.
+
+### Fix
+
+Run `tools\register-testserver.ps1` **elevated** on the dev host. It:
+
+- Copies the full proxy/stub DLL set to `%SystemRoot%\System32` and
+  registers each via `regsvr32`.
+- Copies `OpcTestServer_x64.config.xml` alongside the EXE.
+- Runs `OpcCategoryManager.exe /RegServer` for x64 category enumeration.
+- Runs `OpcTestServer_x64.exe /regserver` which writes the missing
+  TypeLib + IID registrations.
+
+After running it, re-running the matrix should drop the cascade to
+zero (or surface a different root cause if one exists).
+
+### Diagnostic helper: `OPC_CLASSIC_DCOM_WIRE_DUMP=1`
+
+`src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs` honors the
+`OPC_CLASSIC_DCOM_WIRE_DUMP=1` environment variable. When set on the
+MCP process, every DCE/RPC BIND, ALTER_CONTEXT, and REQUEST/RESPONSE
+exchange writes a `[bind-trace]` or `[wire]` line to stderr, including
+HRESULTs and full request/response hex. Use this when diagnosing
+opaque DCOM hangs — it surfaces the exact opnum + IID + byte counts
+the channel saw, which is otherwise invisible to the MCP framework's
+own log.
+
+```powershell
+$env:OPC_CLASSIC_DCOM_WIRE_DUMP = '1'
+.\tools\run-cross-impl-matrix.ps1 -Profile testserver
+```
+
