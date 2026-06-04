@@ -47,7 +47,87 @@ Post-`1.0.0-rc.10` work focused on Matrikon DA interop completeness, wire-trace 
 and MCP-side IOPCDataCallback queue plumbing. The 1.0.0 release-blocker gates
 (`release-100-tag`, `rw-e1-ntlmv2-realserver`, `rw-e4-ntlm-audit`) remain open.
 
-### Added
+### Added (Tracks AY+/AY++/BF/BG/BH/BI — 2026-06-04 sweep)
+
+- **Track BG — OPCEnum bind regression closed (Issue D, commit `74eba65d`).**
+  New `OpcDiscoverySpecCatalog` declares the full Discovery IID set
+  (`IOPCServerList(2)`, `IOPCEnumGUID`, `IEnumGUID`, `IRemUnknown(2)`)
+  in the initial DCE bind PDU. `DcomOpcEnumCallChannelFactory` now
+  consumes the OXID-level `DUALSTRINGARRAY` from the activation
+  response to resolve the actual OPCEnum data-port (the per-interface
+  OBJREF ResolverBindings carry only OXID-resolver addresses without
+  port info, so dialing them landed on RPCSS / port 135). New
+  `DcomCallChannelFactory.ConnectActivatedAsync` overload constructs a
+  channel routed to the activated object's IPID. `OpcEnumProxyCodec`
+  fixed to emit both the explicit `cImplemented` / `cRequired` ULONGs
+  AND the conformant array `max_count` prefix per DCE/RPC §14.3.4.
+  `DecodeInterfaceRefResponse` handles the `MInterfacePointer` wrapper
+  (`referent + ulCntData + max_count + OBJREF`) per MS-DCOM 2.2.18.7
+  for `[out] IUnknown**` returns. `NdrReader.ReadVaryingConformantGuidArray`
+  decodes `[out, size_is(N), length_is(*pceltFetched)] GUID* rgelt`
+  (`IEnumGUID::Next`). Bind-rejection downgrade catch is now IID-specific
+  so downstream IEnumGUID rejections don't trigger spurious
+  IOPCServerList fallback.
+- **Track BH — TestServer registration script aligned to upstream WiX (commit `9d6ed944`).**
+  Audited every file copy, registry entry, COM CLSID/AppID/category,
+  and self-registration step in
+  `D:\git\marcschier\OPC-Classic-CoreComponents\WiX\Installer.wxs` +
+  `MergeModule.wxs` + `MergeModuleSdk.wxs`. Output:
+  `docs/interop/testserver-registration-spec.md`. `tools/register-testserver.ps1`
+  now registers the full 8-DLL proxy/stub set (`opccomn_ps`,
+  `opcproxy`, `opc_aeps`, `opcbc_ps`, `OpcCmdPs`, `OpcDxPs`,
+  `opchda_ps`, `opcsec_ps`) in dependency order, copies
+  `OpcTestServer_x64.config.xml` alongside the EXE, and runs
+  `OpcCategoryManager.exe /RegServer`. Live test identified the actual
+  `CO_E_SERVER_EXEC_FAILURE` cause: DCOM AppID has no explicit
+  Launch/Access ACL, so SCM denies non-admin callers. New
+  `tools/grant-testserver-acl.ps1` (delegates to `grant-opcenum-acl.ps1`
+  with the TestServer AppID) automates the SD merge.
+- **Track BI — `IObjectExporter` dispatcher + Subscribe Advise/Unadvise wireup (commit `41e30ca7`, AP1/AP2/AP4 closed).**
+  Manual `IObjectExporterDispatcher` implements MS-DCOM 3.1.2.5.1.1
+  opnums 1-5 (SimplePing, ComplexPing, ServerAlive, ResolveOxid2,
+  ServerAlive2). `DaCallbackEndpoint.StartAsync` registers it at the
+  well-known IID `99FCFEC4-5260-101B-BBCB-00AA0021347A` so a remote
+  OPC server's pre-callback ResolveOxid2 / SimplePing probes resolve
+  to the listener's actual TCP endpoint + a synthetic IRemUnknown
+  IPID. `DaClientTools.Subscribe` lazy-starts the endpoint, calls
+  `RegisterSink` + `BuildSinkObjRef`, invokes
+  `IConnectionPoint::Advise(sink)`, and stores the cookie +
+  `SinkIpid` on `DaSubscriptionContext`. `RemoveGroup` +
+  `DaClientState.DisposeAsync` walk subscriptions and call
+  `Unadvise(cookie)` + `UnregisterSink(ipid)` for cleanup
+  (best-effort; tolerates server-side teardown races).
+- **Track AY++ — `OPCITEMSTATE` `[unique] VARIANT` codec fix (commit `7fce8b45`).**
+  `NdrOpcItemStateCodec` refactored to the deferred-pile model:
+  20-byte inline part (`hClient + filetime + wQuality + wReserved +
+  variantRef`) followed by deferred wireVARIANT body. New
+  `WriteConformantArray` / `ReadConformantArray` for N-element bulk.
+  `IOPCSyncIOClientProxy.InvokeReadAsync` rewired through the new
+  helper. Closes `opcclassic.da.read_sync` + `opcclassic.da.poll_subscription`
+  against live Matrikon.
+- **Track AY+ — Three stacking NDR VARIANT codec bugs fixed (commit `6a8f32ce`).**
+  Closes `opcclassic.da.get_properties` against live Matrikon: embedded
+  `VARIANT` is a `[unique]` pointer (FC_USER_MARSHAL flags=0x83 sets
+  `USER_MARSHAL_UNIQUE` per MS-OAUT 2.2.29.2 — wireVARIANT body lives
+  in the deferred pile AFTER string referents); `wireVARIANT` has a
+  4-byte ULONG discriminator before the union body (was being skipped);
+  `FLAGGED_WORD_BLOB` (BSTR) needs a `max_count` prefix per MS-OAUT
+  2.2.23 (`referent + max_count + cBytes + clSize + WCHAR[clSize]`);
+  `clSize` is quadwords per MS-OAUT 2.2.29.1, not bytes.
+- **Track BF — Probe refresh + Issue D documentation (commit `24e89b4d`).**
+  Stable Matrikon probe baseline restored at **25/95 OK with
+  `--da-clsid`** / **26/95 OK with `--da-progid` after Track BG**
+  (zero DA failures, `discovery.enumerate_servers` and all DA tools
+  pass). Updated `docs/interop/probe-coverage.md` table rows + headline.
+  New "Issue D" section documents the OPCEnum data-port bind
+  rejection class and its root cause (OXID resolution + IPID routing).
+- **Probe headline (post-BG)**: **26/95 tools OK** against live
+  Matrikon Simulation Server, up from the 19/95 starting baseline at
+  rc.10. The 69 remaining FAILs are: missing matching servers
+  (HDA / AE / Batch / Commands / DX / XML-DA = 63 of the 69) +
+  CPX/security item-specific args (6).
+
+### Original Unreleased entries
 
 - **Track AK1** — `NdrReader.FormatHexContext` decorates every decode-fail throw with a
   hex window centered on `_position` (16 bytes before/after, `>>` marker on the failing
