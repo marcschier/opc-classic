@@ -199,16 +199,29 @@ def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str
         cmd += ["--save-wire-payloads", cap_dir]
 
     print(f"==> running profile '{profile}' ({clsid if args.use_clsid else target['progid']})", file=sys.stderr)
-    result = subprocess.run(cmd, cwd=_REPO, capture_output=True, text=True, check=False)
+    # Capture stdout (for the JSON result) but PASS THROUGH stderr in real
+    # time. The MCP server's diagnostic logs go to stderr and we want them
+    # visible while the probe runs so that activation hangs / auth failures
+    # surface live instead of being buried in a post-run dump.
+    result = subprocess.run(
+        cmd,
+        cwd=_REPO,
+        stdout=subprocess.PIPE,
+        stderr=None,  # inherit parent stderr -> visible in real time
+        text=True,
+        check=False,
+    )
     try:
         payload = json.loads(result.stdout)
     except json.JSONDecodeError as ex:
+        # stderr was streamed live; we don't have it to include in the
+        # fatal record, but the operator saw it on their terminal.
         return {
             "profile": profile,
             "clsid": clsid,
             "totals": {},
             "regressions": [],
-            "fatal": f"non-JSON probe output: {ex}; stderr={result.stderr[-400:]!r}",
+            "fatal": f"non-JSON probe output: {ex}. See the live stderr above for details.",
         }
 
     totals = probe_matrix.summarize_verdicts(payload)

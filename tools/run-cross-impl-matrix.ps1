@@ -135,8 +135,15 @@ try {
     & python @args
     $matrixExit = $LASTEXITCODE
     if ($matrixExit -ne 0) {
-        Write-Host "" 
+        Write-Host ""
         Write-Host "Cross-impl matrix reported regressions (exit $matrixExit)" -ForegroundColor Red
+        if (-not $WireCapture) {
+            Write-Host ""
+            Write-Host "Tip: re-run with -WireCapture to capture per-tool .hex wire dumps" -ForegroundColor Yellow
+            Write-Host "    (artifacts land under $OutputDir\wire-captures\<profile>\) so" -ForegroundColor Yellow
+            Write-Host "    failures can be diagnosed offline via opcclassic.capture.decode_pdu" -ForegroundColor Yellow
+            Write-Host "    or replayed through the test fixtures." -ForegroundColor Yellow
+        }
     } else {
         Write-Host ""
         Write-Host "Cross-impl matrix completed cleanly (exit 0)" -ForegroundColor Green
