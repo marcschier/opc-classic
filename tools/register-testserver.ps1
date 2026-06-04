@@ -4,12 +4,31 @@
     Register the OPC Foundation TestServer for DCOM activation.
 
 .DESCRIPTION
-    Installs the locally built x64 OPC DA/Common proxy-stub DLLs into
-    the native Windows System32 directory, registers those System32
-    copies with regsvr32, runs OpcTestServer_x64.exe /regserver with
-    System32 as the working directory, and writes compatibility CLSID,
-    ProgID, LocalServer32, and DA category entries under
-    HKLM\SOFTWARE\Classes.
+    Performs the no-MSI registration steps that DCOM SCM needs to activate
+    the OPC Foundation TestServer x64. The canonical reference is the
+    upstream OPC-Classic-CoreComponents WiX manifests
+    (Installer.wxs + MergeModule.wxs); this script mirrors what the MSI
+    would do without requiring msiexec. See
+    docs/interop/testserver-registration-spec.md for the full audit.
+
+    Concretely the script:
+      1. Copies the full proxy/stub DLL set (opccomn_ps, opcproxy,
+         opc_aeps, opcbc_ps, OpcCmdPs, OpcDxPs, opchda_ps, opcsec_ps)
+         into %SystemRoot%\System32 and registers each with regsvr32.
+         Registration order matters: opccomn_ps must come first so the
+         dependent DLLs can resolve its TypeLib references.
+      2. Copies OpcTestServer_x64.config.xml alongside the EXE
+         (the TestServer reads it on startup; absence triggers
+         CO_E_SERVER_EXEC_FAILURE during DCOM activation).
+      3. Runs OpcCategoryManager.exe /RegServer for x64 category
+         enumeration (used by CLSID-to-category resolvers).
+      4. Runs OpcTestServer_x64.exe /regserver from %SystemRoot%\System32
+         to write the EXE's own CLSID/ProgID/LocalServer32/TypeLib/
+         AppID/Implemented-Categories entries.
+      5. Writes compatibility CLSID, ProgID, LocalServer32, and DA
+         category entries directly under HKLM\SOFTWARE\Classes to ensure
+         a clean post-install state regardless of OPC_* macro
+         expansion variations.
 
     The DCOM Service Control Manager runs as SYSTEM and does NOT honor
     per-user HKCU registrations for LocalServer32 activation — only
@@ -19,13 +38,14 @@
 .PARAMETER ExePath
     Full path to OpcTestServer_x64.exe (default: looks for it under
     ext\CoreComponents\build\x64\Release\, the vendored CMake output
-    produced by tools\build-testserver.ps1). The sibling
-    opccomn_ps.dll and opcproxy.dll files are also required.
+    produced by tools\build-testserver.ps1). The sibling proxy/stub
+    DLLs and OpcTestServer_x64.config.xml are expected alongside.
 
 .PARAMETER Unregister
     Run OpcTestServer_x64.exe /unregserver when the EXE is available,
-    remove the TestServer HKLM entries, unregister the copied
-    proxy-stub DLLs from System32, and delete them if present.
+    remove the TestServer HKLM entries, unregister OpcCategoryManager.exe,
+    unregister the copied proxy-stub DLLs from System32, and delete them
+    if present.
 
 .EXAMPLE
     .\tools\register-testserver.ps1                  # register
@@ -181,13 +201,28 @@ function Install-ProxyStubDlls {
         [string]$RegistrationDirectory
     )
 
-    $dllNames = @('opccomn_ps.dll', 'opcproxy.dll')
+    # Register the FULL canonical proxy/stub DLL set per the upstream WiX
+    # MergeModule.wxs (x64 path, lines 156-219). Order matters: opccomn_ps must
+    # be registered first because the other DLLs reference its IOPCCommon/
+    # IOPCShutdown IIDs via TypeLib imports. See:
+    # docs/interop/testserver-registration-spec.md
+    $dllNames = @(
+        'opccomn_ps.dll',
+        'opcproxy.dll',
+        'opc_aeps.dll',
+        'opcbc_ps.dll',
+        'OpcCmdPs.dll',
+        'OpcDxPs.dll',
+        'opchda_ps.dll',
+        'opcsec_ps.dll'
+    )
     $installedDlls = @()
 
     foreach ($dllName in $dllNames) {
         $source = Join-Path $ArtifactDirectory $dllName
         if (-not (Test-Path -LiteralPath $source)) {
-            throw "Cannot find $dllName beside $ExePath. Run tools\build-testserver.ps1 first, or pass -ExePath pointing at a complete build output directory."
+            Write-Warning "Skipping $dllName; not present in $ArtifactDirectory. Re-run tools\build-testserver.ps1 to produce the full proxy/stub set; DA-only marshalling needs opccomn_ps + opcproxy at a minimum."
+            continue
         }
 
         $source = (Resolve-Path -LiteralPath $source).Path
@@ -214,7 +249,22 @@ function Uninstall-ProxyStubDlls {
         [string]$RegistrationDirectory
     )
 
-    foreach ($dllName in @('opccomn_ps.dll', 'opcproxy.dll')) {
+    # Unregister in reverse install order. See Install-ProxyStubDlls for the
+    # rationale: dependent DLLs must come down before the foundational
+    # opccomn_ps so the TypeLib references are still resolvable until each
+    # DllUnregisterServer call completes.
+    $dllNames = @(
+        'opcsec_ps.dll',
+        'opchda_ps.dll',
+        'OpcDxPs.dll',
+        'OpcCmdPs.dll',
+        'opcbc_ps.dll',
+        'opc_aeps.dll',
+        'opcproxy.dll',
+        'opccomn_ps.dll'
+    )
+
+    foreach ($dllName in $dllNames) {
         $destination = Join-Path $SystemDirectory $dllName
         $registrationPath = Join-Path $RegistrationDirectory $dllName
 
@@ -244,6 +294,97 @@ function Uninstall-ProxyStubDlls {
 
         Write-Host "  Deleting $registrationPath"
         Remove-Item -LiteralPath $destination -Force -ErrorAction Stop
+    }
+}
+
+function Copy-TestServerConfig {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ArtifactDirectory,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ExeDirectory
+    )
+
+    # The upstream WiX (Installer.wxs:85-90, comp_OpcTestServerConfig) deploys
+    # OpcTestServer_x64.config.xml alongside the EXE. The TestServer reads this
+    # file on startup (loaded by COpcTestServer init); absence may cause the
+    # EXE to fail before it registers a class factory, producing
+    # CO_E_SERVER_EXEC_FAILURE during DCOM activation.
+    #
+    # The CMake build only copies/renames this file via `cmake --install` (rule
+    # at ext/CoreComponents/CMakeLists.txt:444); a plain `cmake --build` step
+    # leaves the source file at ext/CoreComponents/Source/Test/TestServer/
+    # OpcTestServer.config.xml. Look for it in both locations.
+    $configName = 'OpcTestServer_x64.config.xml'
+    $destination = Join-Path $ExeDirectory $configName
+
+    $candidates = @(
+        Join-Path $ArtifactDirectory $configName,
+        Join-Path $PSScriptRoot '..\ext\CoreComponents\Source\Test\TestServer\OpcTestServer.config.xml'
+    )
+
+    foreach ($candidate in $candidates) {
+        if (Test-Path -LiteralPath $candidate) {
+            $resolved = (Resolve-Path -LiteralPath $candidate).Path
+            if ($resolved -ieq (Resolve-Path -LiteralPath $destination -ErrorAction SilentlyContinue).Path) {
+                Write-Host "  $configName already in place beside the EXE."
+                return
+            }
+
+            Write-Host "  Copying $configName from $resolved to $ExeDirectory"
+            Copy-Item -LiteralPath $resolved -Destination $destination -Force
+            return
+        }
+    }
+
+    Write-Warning "Skipping $configName; not present in $ArtifactDirectory or the vendored source tree. Without it, the TestServer may fail to initialize on activation (CO_E_SERVER_EXEC_FAILURE)."
+}
+
+function Register-OpcCategoryManager {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ArtifactDirectory
+    )
+
+    # Upstream WiX (MergeModule.wxs:233-253) registers OpcCategoryManager.exe
+    # as a COM local server via /RegServer. It handles x64 category-presence
+    # enumeration (CATID_OPCDAServer*) that some clients rely on when
+    # resolving CLSID-to-category mappings.
+    $exeName = 'OpcCategoryManager.exe'
+    $exePath = Join-Path $ArtifactDirectory $exeName
+
+    if (-not (Test-Path -LiteralPath $exePath)) {
+        Write-Warning "Skipping $exeName /RegServer; not present in $ArtifactDirectory."
+        return
+    }
+
+    try {
+        Invoke-CheckedCommand -FilePath $exePath -ArgumentList @('/RegServer') -Description "Running $exeName /RegServer"
+    }
+    catch {
+        Write-Warning $_.Exception.Message
+    }
+}
+
+function Unregister-OpcCategoryManager {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ArtifactDirectory
+    )
+
+    $exeName = 'OpcCategoryManager.exe'
+    $exePath = Join-Path $ArtifactDirectory $exeName
+
+    if (-not (Test-Path -LiteralPath $exePath)) {
+        return
+    }
+
+    try {
+        Invoke-CheckedCommand -FilePath $exePath -ArgumentList @('/UnRegServer') -Description "Running $exeName /UnRegServer"
+    }
+    catch {
+        Write-Warning $_.Exception.Message
     }
 }
 
@@ -363,6 +504,9 @@ if ($Unregister) {
     }
 
     Uninstall-ProxyStubDlls -SystemDirectory $nativeSystemDirectory -RegistrationDirectory $system32Directory
+    if ($ExePath) {
+        Unregister-OpcCategoryManager -ArtifactDirectory (Split-Path -Parent $ExePath)
+    }
     Remove-RegKey -KeyPath $script:InstallMarkerRegPath
 
     Write-Host 'Done. Removed TestServer entries and any copied proxy-stub DLLs found in System32.'
@@ -380,6 +524,8 @@ Write-Host "  CLSID:  $script:Clsid"
 Write-Host "  ProgID: $script:ProgId"
 
 Install-ProxyStubDlls -ArtifactDirectory $artifactDirectory -SystemDirectory $nativeSystemDirectory -RegistrationDirectory $system32Directory
+Copy-TestServerConfig -ArtifactDirectory $artifactDirectory -ExeDirectory $artifactDirectory
+Register-OpcCategoryManager -ArtifactDirectory $artifactDirectory
 Invoke-CheckedCommand -FilePath $ExePath -ArgumentList @('/regserver') -WorkingDirectory $nativeSystemDirectory -Description 'Running OpcTestServer_x64.exe /regserver'
 Set-TestServerRegistryEntries -ResolvedExePath $ExePath
 

@@ -7,12 +7,14 @@
 .DESCRIPTION
     Wraps the upstream OPC-Classic-CoreComponents CMake harness so the
     native TestServer + supporting proxy/stub DLLs can be built without
-    an external clone. Produces:
-      ext/CoreComponents/build/x64/Release/OpcTestServer_x64.exe
-      ext/CoreComponents/build/x64/Release/opccomn_ps.dll
-      ext/CoreComponents/build/x64/Release/opcproxy.dll
-      ext/CoreComponents/build/x64/Release/OpcCategoryManager.exe
-      ext/CoreComponents/build/x64/Release/OpcTestClient_x64.exe
+    an external clone.     Produces (under ext/CoreComponents/build/x64/Release/):
+      OpcTestServer_x64.exe + OpcTestServer_x64.config.xml
+      OpcTestClient_x64.exe
+      OpcCategoryManager.exe
+      opccomn_ps.dll, opcproxy.dll, opc_aeps.dll, opcbc_ps.dll,
+      OpcCmdPs.dll, OpcDxPs.dll, opchda_ps.dll, opcsec_ps.dll
+      (matches the full proxy/stub set that the upstream WiX MSI deploys;
+      see docs\interop\testserver-registration-spec.md)
 
     Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
     C++ + ATL) and CMake 3.20+. CMake is shipped with VS - the script
@@ -78,7 +80,12 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "cmake configure failed (exit $LASTEXITCODE)" }
 
     Write-Host "Building CMake project ($Configuration) ..."
-    & $cmake --build $buildDir --config $Configuration --target OpcTestServer OpcTestClient OpcCategoryManager opccomn_ps opcproxy
+    # Build the full proxy/stub set so the tools\register-testserver.ps1 script
+    # has all 8 DLLs available to register (matches what the upstream WiX MSI
+    # would deploy; see docs\interop\testserver-registration-spec.md).
+    & $cmake --build $buildDir --config $Configuration --target `
+        OpcTestServer OpcTestClient OpcCategoryManager `
+        opccomn_ps opcproxy opc_aeps opcbc_ps OpcCmdPs OpcDxPs opchda_ps opcsec_ps
     if ($LASTEXITCODE -ne 0) { throw "cmake build failed (exit $LASTEXITCODE)" }
 
     $exe = Join-Path $buildDir "$Configuration\OpcTestServer_x64.exe"
