@@ -49,5 +49,6 @@
     <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Mcp.Capture\Opc.Classic.Mcp.Capture.csproj" />
   </ItemGroup>
 </Project>

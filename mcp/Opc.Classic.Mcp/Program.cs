@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 
+using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Opc.Classic.Mcp.Capture;
 using Opc.Classic.Mcp.Sessions;
 using Opc.Classic.Mcp.Tools;
 
@@ -17,6 +19,9 @@ builder.Logging.AddConsole(static o =>
 });
 
 builder.Services.AddSingleton<IOpcSessionManager, OpcSessionManager>();
+builder.Services.AddSingleton(sp => new CaptureSessionManager(
+    scratchRoot: Path.Combine(Path.GetTempPath(), "opc.classic.mcp.capture"),
+    logger: sp.GetService<ILoggerFactory>()?.CreateLogger<CaptureSessionManager>()));
 
 builder.Services
     .AddMcpServer()
@@ -31,6 +36,7 @@ builder.Services
     .WithTools<CpxTools>()
     .WithTools<DxTools>()
     .WithTools<SecurityTools>()
-    .WithTools<XmlDaTools>();
+    .WithTools<XmlDaTools>()
+    .WithTools<CaptureTools>();
 
 await builder.Build().RunAsync().ConfigureAwait(false);

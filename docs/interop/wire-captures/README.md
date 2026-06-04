@@ -61,3 +61,4 @@ first.
 - [`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs) — the round-trip parser that turns a `.hex` capture back into a `byte[]` for replay-style regression tests (Track AK3).
 - [`IOPCDataCallback` push delivery](../da-callbacks.md) — when callbacks are wired up, both request AND inbound callback PDUs land here.
 - [OPCEnum DCOM auth](../opcenum-auth.md) — the most common source of "interesting" wire captures during initial bring-up.
+- [Network packet capture](../network-capture.md) — Track CA adds an `opcclassic.capture.*` MCP tool surface that captures live OPC DCOM traffic at the network layer (Wireshark-compatible `.pcap` + decoded DCE/RPC PDU view). Capture-derived ORPC pairs are written into this directory as `live-<sessionId>/<file>.hex` so they flow into the same replay harness.
