@@ -69,7 +69,7 @@ PROFILE_TARGETS: dict[str, dict[str, str]] = {
     "testserver": {
         "kind": "da",
         "clsid": "F8582CF9-88FB-11DA-A5ED-0060B0692061",
-        "progid": "OPC.TestServer.1",
+        "progid": "OpcTestServer_x64.1",
     },
     "matrikon": {
         "kind": "da",

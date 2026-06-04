@@ -190,6 +190,8 @@ class ProbeRunner:
         self.batch_enum_set_id = 0
         self.command_invocation_id = ""
         self.xmlda_subscription_handle = ""
+        self.capture_interface_name = ""
+        self.capture_session_id = ""
 
     def run(self, tools: list[dict[str, Any]]) -> list[dict[str, Any]]:
         exposed = [tool.get("name") for tool in tools if isinstance(tool.get("name"), str)]
@@ -355,6 +357,23 @@ def probe_specs() -> list[ProbeSpec]:
         ProbeSpec("opcclassic.session.create", lambda r: {}, after_session_create),
         ProbeSpec("opcclassic.session.list", lambda r: {}),
         ProbeSpec("opcclassic.discovery.enumerate_servers", lambda r: r.discovery_args()),
+
+        # --- capture tools (Track CA) ----------------------------------
+        # These tools don't take a sessionId; they own their own lifecycle.
+        # capture.start needs an interfaceName -- we resolve it lazily from
+        # capture.list_interfaces (run during the probe sweep). The probe
+        # captures for 1 second with a 1-packet cap to keep the sweep
+        # fast. Downstream tools reuse the returned captureSessionId
+        # via the after_capture_start hook (stores it on runner.capture_session_id).
+        ProbeSpec("opcclassic.capture.list_interfaces", lambda r: {}, after_capture_interfaces),
+        ProbeSpec("opcclassic.capture.start", capture_start_args, after_capture_start),
+        ProbeSpec("opcclassic.capture.list", lambda r: {}),
+        ProbeSpec("opcclassic.capture.stop", capture_session_args),
+        ProbeSpec("opcclassic.capture.get", lambda r: {**capture_session_args(r), "format": "json", "maxPdus": 50}),
+        ProbeSpec("opcclassic.capture.summarize", lambda r: {**capture_session_args(r), "top": 5}),
+        ProbeSpec("opcclassic.capture.replay", capture_session_args),
+        ProbeSpec("opcclassic.capture.decode_pdu", lambda r: {"hex": _SAMPLE_PDU_HEX}),
+        ProbeSpec("opcclassic.capture.remove", capture_session_args),
 
         ProbeSpec("opcclassic.da.connect", lambda r: r.dcom_args("da", include_sso=True)),
         ProbeSpec("opcclassic.da.get_status", sid),
@@ -523,6 +542,59 @@ def after_command_invocation(runner: ProbeRunner, value: Any) -> None:
 def after_xmlda_subscription(runner: ProbeRunner, value: Any) -> None:
     if isinstance(value, dict):
         runner.xmlda_subscription_handle = str(value.get("serverSubHandle") or "")
+
+
+def after_capture_interfaces(runner: ProbeRunner, value: Any) -> None:
+    # Capture the first non-loopback interface name. The MCP tool returns
+    # a list of CaptureInterfaceDto with at least a 'name' field.
+    if isinstance(value, list):
+        for entry in value:
+            if not isinstance(entry, dict):
+                continue
+            name = entry.get("name") or entry.get("friendlyName")
+            if not isinstance(name, str):
+                continue
+            # Skip the loopback adapter -- traffic on it isn't visible via pcap
+            # on Windows (Npcap doesn't ship a loopback driver unless explicitly
+            # selected at install). Prefer a real adapter.
+            if "loop" in name.lower():
+                continue
+            runner.capture_interface_name = name
+            return
+        # Fall back to the very first entry if every adapter "looks loopback".
+        first = value[0] if value and isinstance(value[0], dict) else None
+        if first is not None:
+            runner.capture_interface_name = str(first.get("name") or first.get("friendlyName") or "")
+
+
+def capture_start_args(runner: ProbeRunner) -> dict[str, Any]:
+    # Use a TINY trace -- 1 packet OR 1 second, whichever comes first.
+    # The probe is validating tool plumbing, not capturing real traffic.
+    return {
+        "interfaceName": runner.capture_interface_name or "any",
+        "promiscuous": False,
+        "maxPackets": 1,
+        "maxDurationSeconds": 1,
+    }
+
+
+def after_capture_start(runner: ProbeRunner, value: Any) -> None:
+    if isinstance(value, dict):
+        runner.capture_session_id = str(value.get("sessionId") or value.get("id") or "")
+
+
+def capture_session_args(runner: ProbeRunner) -> dict[str, Any]:
+    return {"sessionId": runner.capture_session_id or "__missing__"}
+
+
+# A real captured DA `WriteVQT` response PDU (truncated DCE/RPC header +
+# stub body) used as a benign decode_pdu probe payload. Decoded by
+# OpcDcomDecoder unconditionally -- a zero-byte input or null-padded
+# input would fail at the codec layer. This is a real frame from
+# docs/interop/wire-captures/.
+_SAMPLE_PDU_HEX = (
+    "0500020310000000180000000100000000000000000000000000000000000000"
+)
 
 
 def handles_from_results(value: Any) -> list[int]:

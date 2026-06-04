@@ -176,6 +176,21 @@ def _all(names: tuple[str, ...], outcome: str) -> dict[str, str]:
     return {name: outcome for name in names}
 
 
+# Disconnect tools are marked Idempotent=true in the MCP server and no-op
+# gracefully when no connection exists for the session. They always succeed
+# regardless of whether the server profile implements that spec, so they
+# never belong in the NOT_APPLICABLE bucket -- they always classify as PASS.
+DISCONNECT_TOOLS_ALWAYS_PASS = {
+    "opcclassic.da.disconnect": "PASS",
+    "opcclassic.hda.disconnect": "PASS",
+    "opcclassic.ae.disconnect": "PASS",
+    "opcclassic.batch.disconnect": "PASS",
+    "opcclassic.commands.disconnect": "PASS",
+    "opcclassic.dx.disconnect": "PASS",
+    "opcclassic.xmlda.disconnect": "PASS",
+}
+
+
 # -- per-profile matrices ------------------------------------------------------
 
 
@@ -263,6 +278,12 @@ PROFILES: dict[str, dict[str, str]] = {
     "samples-ae": _ae_matrix(),
     "security-da": _security_da_matrix(),
 }
+
+# Disconnect tools are idempotent + no-op-when-not-connected, so they
+# unconditionally PASS regardless of profile. Apply the override AFTER the
+# per-profile NOT_APPLICABLE wholesale assignments.
+for _profile in PROFILES.values():
+    _profile.update(DISCONNECT_TOOLS_ALWAYS_PASS)
 
 
 def classify(profile_name: str, tool: str, success: bool) -> tuple[str, str]:

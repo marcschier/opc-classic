@@ -54,7 +54,7 @@ install into `System32`.**
 | coclass UUID | `F8582CF8-88FB-11DA-A5ED-0060B0692061`           | `OpcTestServer.idl:45`         |
 | **CLSID**    | **`F8582CF9-88FB-11DA-A5ED-0060B0692061`**       | `OpcTestServer.cpp:50` (`OPC_IMPLEMENT_LOCAL_SERVER`) |
 | Category     | `CATID_OPCDAServer20` (`63D5F432-CFE4-11D1-B2C8-0060083BA1FB`) | `OpcTestServer.cpp:46` (`OPC_CATEGORY_TABLE_ENTRY`) |
-| ProgID       | (derived by `OPC_DECLARE_APPLICATION`) `OPC.OpcTestServer_x64.1` (assumption — verify in the OpcUtilityClasses helper) | macros expand at compile time  |
+| ProgID       | **`OpcTestServer_x64.1`** (verified against `HKLM\SOFTWARE\Classes\CLSID\{F8582CF9-...}\ProgID` after `/RegServer`; macro expansion in `OpcUtilityClasses` does NOT prepend `OPC.`) | macros expand at compile time  |
 | Description  | `"OPC DA 2.05a Test Server (x64)"`               | `OpcTestServer.cpp:42`         |
 
 The corresponding x86 build uses `F8582CF4-...` (CLSID) and
@@ -81,20 +81,20 @@ HKCR\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}
 HKCR\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\LocalServer32
   (Default) = "<full path to OpcTestServer_x64.exe>"
 HKCR\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\ProgID
-  (Default) = "OPC.OpcTestServer_x64.1"                 -- assumed; verify
+  (Default) = "OpcTestServer_x64.1"                     -- verified
 HKCR\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\VersionIndependentProgID
-  (Default) = "OPC.OpcTestServer_x64"
+  (Default) = "OpcTestServer_x64"
 HKCR\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\TypeLib
   (Default) = "{F8582CF7-88FB-11DA-A5ED-0060B0692061}"
 HKCR\CLSID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}\Implemented Categories\{63D5F432-CFE4-11D1-B2C8-0060083BA1FB}
   (no value — category-presence entry only; CATID_OPCDAServer20)
 
-HKCR\OPC.OpcTestServer_x64.1
+HKCR\OpcTestServer_x64.1
   (Default) = "OPC DA 2.05a Test Server (x64)"
-HKCR\OPC.OpcTestServer_x64.1\CLSID
+HKCR\OpcTestServer_x64.1\CLSID
   (Default) = "{F8582CF9-88FB-11DA-A5ED-0060B0692061}"
-HKCR\OPC.OpcTestServer_x64\CurVer
-  (Default) = "OPC.OpcTestServer_x64.1"
+HKCR\OpcTestServer_x64\CurVer
+  (Default) = "OpcTestServer_x64.1"
 
 HKCR\AppID\{F8582CF9-88FB-11DA-A5ED-0060B0692061}
   (Default) = "OPC DA 2.05a Test Server (x64)"

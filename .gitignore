@@ -43,3 +43,6 @@ copilot-session-*.md
 __pycache__/
 *.pyc
 
+# Cross-impl matrix run output (regenerated per run)
+matrix-out/
+
