@@ -6,8 +6,10 @@ See docs/interop/probe-matrikon.json + probe-testserver.json.
 
 ## Headline numbers
 
-- Matrikon: 19/95 tools OK; 76 FAIL.
+- Matrikon: 25/95 tools OK; 70 FAIL. (Track AY+ delta: was 22/95.)
 - TestServer: 10/95 OK (session + disconnect-without-connect only); 85 FAIL; da.connect timeout-blocked at 15s (CO_E_SERVER_EXEC_FAILURE).
+
+**Track AY+ (commit 6a8f32ce + follow-up) closed da.get_properties, da.read_sync, and da.poll_subscription against Matrikon by fixing three stacking NDR VARIANT codec bugs (embedded VARIANT is a [unique] pointer, missing 4-byte ULONG discriminator before union body, FLAGGED_WORD_BLOB missing max_count). All DA tools now work end-to-end against live Matrikon Simulation Server.**
 
 ## Matrikon DA: per-tool outcome
 

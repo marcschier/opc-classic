@@ -54,10 +54,23 @@ public sealed class IOPCSyncIOClientProxy : IOPCSyncIO
         var reader = new NdrReader(result.ResponsePayload.Span);
         // Response IDL: [out, size_is(,dwCount)] OPCITEMSTATE **ppItemValues,
         // [out, size_is(,dwCount)] HRESULT **ppErrors. Both T** are unique
-        // pointers; consume the outer referent before max_count.
-        OpcItemState[] states = ReadUniqueArray(ref reader, NdrOpcItemStateCodec.Read);
+        // pointers; consume the outer referent + max_count, then use the
+        // deferred-pile codec because OPCITEMSTATE contains a [unique]
+        // VARIANT whose body lives in the deferred section (per Matrikon
+        // wire capture, see Track AY+ / get_properties fix).
+        OpcItemState[] states = ReadConformantOpcItemStateArray(ref reader);
         int[] errors = ReadUniqueInt32Array(ref reader);
         return new ReadResult(states, errors);
+    }
+
+    private static OpcItemState[] ReadConformantOpcItemStateArray(ref NdrReader reader)
+    {
+        if (!reader.TryReadReferentId(out _))
+        {
+            return [];
+        }
+        int count = reader.ReadInt32();
+        return NdrOpcItemStateCodec.ReadConformantArray(ref reader, count);
     }
 
     public async Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default)

@@ -42,7 +42,7 @@ public sealed class DaFileTimeFuzzTests
             w.WriteUInt16(0xC0);                 // wQuality
             w.WriteUInt16(0);                    // wReserved
             // VARIANT body: VT_I4 with payload 99
-            NdrVariantExtensions.WriteVariant(ref w, OpcVariant.FromInt32(99));
+            w.WriteUniquePointerReferent(true); NdrVariantExtensions.WriteVariant(ref w, OpcVariant.FromInt32(99));
         });
 
         var reader = new NdrReader(wire);
@@ -63,7 +63,7 @@ public sealed class DaFileTimeFuzzTests
             w.WriteFileTime(bogusFileTime);
             w.WriteUInt16(0);
             w.WriteUInt16(0);
-            NdrVariantExtensions.WriteVariant(ref w, OpcVariant.Empty);
+            w.WriteUniquePointerReferent(true); NdrVariantExtensions.WriteVariant(ref w, OpcVariant.Empty);
         });
 
         await Assert.That(() =>
@@ -82,7 +82,7 @@ public sealed class DaFileTimeFuzzTests
             w.WriteFileTime(-1L);
             w.WriteUInt16(0);
             w.WriteUInt16(0);
-            NdrVariantExtensions.WriteVariant(ref w, OpcVariant.Empty);
+            w.WriteUniquePointerReferent(true); NdrVariantExtensions.WriteVariant(ref w, OpcVariant.Empty);
         });
 
         try
