@@ -23,6 +23,9 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
+# Per-server expected-outcome matrices for the optional --expect-matrix flag.
+import probe_matrix
+
 
 ProbeArgs = Callable[["ProbeRunner"], dict[str, Any]]
 ProbeAfter = Callable[["ProbeRunner", Any], None]
@@ -670,6 +673,17 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--expect-matrix",
+        default=None,
+        choices=probe_matrix.known_profile_names(),
+        help="Apply the expected-outcome matrix for the named server profile. "
+             "Each result row gets expectedOutcome + verdict columns, and the "
+             "process exits non-zero when there are REGRESSION rows (PASS-expected "
+             "tools that actually failed). UNEXPECTED_PASS rows are informational. "
+             "Profiles: " + ", ".join(probe_matrix.known_profile_names()) + ".",
+    )
+
+    parser.add_argument(
         "--probe",
         action="append",
         default=None,
@@ -717,6 +731,7 @@ def main() -> int:
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     proc: Optional[subprocess.Popen[bytes]] = None
     results: list[dict[str, Any]] = []
+    exit_code = 0
     try:
         proc = launch_server(repo_root, capture_dir=getattr(args, "save_wire_payloads", None))
         time.sleep(args.server_start_delay)
@@ -725,10 +740,9 @@ def main() -> int:
         tools = client.list_tools()
         runner = ProbeRunner(args, client)
         results = runner.run(tools)
-        return 0
     except Exception as ex:
         results.append(make_result("__fatal__", {}, False, first_line(str(ex)), ""))
-        return 1
+        exit_code = 1
     finally:
         if proc is not None:
             try:
@@ -736,8 +750,16 @@ def main() -> int:
                 proc.wait(timeout=5)
             except Exception:
                 proc.kill()
+        # Annotate result rows with the per-profile expected-outcome verdict.
+        # This must run AFTER the probe sweep so failures during teardown
+        # still get classified, and BEFORE the json.dump so the output
+        # already carries the verdict columns the consumer cares about.
+        probe_matrix.annotate(results, getattr(args, "expect_matrix", None))
+        if probe_matrix.has_regressions(results) and exit_code == 0:
+            exit_code = 2
         json.dump(results, sys.stdout, indent=2, default=str)
         sys.stdout.write("\n")
+    return exit_code
 
 
 if __name__ == "__main__":

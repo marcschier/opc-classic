@@ -51,3 +51,74 @@ jobs:
           name: docker-test-fleet-results
           path: docker/results/*.xml
           if-no-files-found: warn
+
+  cross-impl-matrix:
+    # Track DV2: run the MCP probe + every sample server through the
+    # tools/run-cross-impl-matrix.ps1 driver and upload the per-profile
+    # JSON reports + (optional) wire captures. This validates that every
+    # opcclassic.* MCP tool that's expected to work against a given
+    # server profile actually works, and that the spec-mandated failures
+    # (e.g. IOPCItemIO on a DA 2.05a server) fail in the documented way.
+    #
+    # Gated on workflow_dispatch so the matrix only runs when an operator
+    # explicitly triggers it. Once BH4-BH7 lands TestServer/TestClient
+    # Docker containers, this job will become part of the standard fleet
+    # cadence above.
+    runs-on: windows-2022
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'marcschier/opc-classic'
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build sample servers
+        shell: pwsh
+        run: |
+          $projects = @(
+            'samples\Opc.Classic.Samples.DaServer\Opc.Classic.Samples.DaServer.csproj',
+            'samples\Opc.Classic.Samples.CttServer\Opc.Classic.Samples.CttServer.csproj',
+            'samples\Opc.Classic.Samples.AeServer\Opc.Classic.Samples.AeServer.csproj',
+            'samples\Opc.Classic.Samples.HdaServer\Opc.Classic.Samples.HdaServer.csproj',
+            'samples\Opc.Classic.Samples.OpcSecurityServer\Opc.Classic.Samples.OpcSecurityServer.csproj'
+          )
+          foreach ($p in $projects) {
+            dotnet build $p --nologo -v:m
+            if ($LASTEXITCODE -ne 0) { throw "Build failed: $p" }
+          }
+
+      - name: Build MCP host
+        shell: pwsh
+        run: dotnet build mcp\Opc.Classic.Mcp\Opc.Classic.Mcp.csproj --nologo -v:m
+
+      - name: Run cross-impl matrix (sample servers only)
+        shell: pwsh
+        # Exclude the testserver + matrikon profiles because they need
+        # external prerequisites (TestServer install + BH3 ACL grant;
+        # Matrikon vendor binary on a different host). The sample-only
+        # subset validates everything we own end-to-end.
+        run: |
+          .\tools\run-cross-impl-matrix.ps1 `
+            -Profile samples-da `
+            -Profile ctt-da `
+            -Profile samples-ae `
+            -Profile samples-hda `
+            -Profile security-da `
+            -OutputDir matrix-out
+
+      - name: Upload cross-impl matrix reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-impl-matrix-reports
+          path: matrix-out/*.json
+          if-no-files-found: warn
+

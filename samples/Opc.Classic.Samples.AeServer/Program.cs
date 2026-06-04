@@ -6,13 +6,39 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Opc.Classic.Ae.Hosting;
 using Opc.Classic.Hosting;
+using Opc.Classic.Hosting.Windows;
 
 namespace Opc.Classic.Samples.AeServer;
 
 internal static class Program
 {
+    private static readonly Guid SampleClsid = new("C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F");
+    private const string SampleProgId = "Opc.Classic.Samples.AeServer.1";
+    private const string SampleFriendlyName = "Opc.Classic Sample AE Server";
+    private const string SampleAssemblyName = "Opc.Classic.Samples.AeServer";
+    private const string SampleTypeName = "Opc.Classic.Samples.AeServer.SampleAeServer";
+
     public static async Task<int> Main(string[] args)
     {
+        ArgumentNullException.ThrowIfNull(args);
+
+        var registration = new OpcClsidRegistration(
+            Clsid: SampleClsid,
+            ProgId: SampleProgId,
+            AssemblyName: SampleAssemblyName,
+            TypeName: SampleTypeName,
+            FriendlyName: SampleFriendlyName);
+        IReadOnlyList<OpcComponentCategory> implementedCategories =
+        [
+            OpcComponentCategories.OpcAeServer10,
+        ];
+
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
+        {
+            return registrationExitCode;
+        }
+
+        bool embedded = SampleServerRegistrationCommand.HasEmbeddingFlag(args);
         int port = int.TryParse(
             Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
             out int parsed) && parsed > 0 ? parsed : 51301;
@@ -20,27 +46,60 @@ internal static class Program
             ?? $"0.0.0.0:{port}";
         Console.WriteLine($"Listening on {listenAddress}");
 
-        var host = Host.CreateApplicationBuilder(args);
+        var builder = Host.CreateApplicationBuilder(args);
 
-        host.Logging.ClearProviders();
-        host.Logging.AddSimpleConsole(static opt =>
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSimpleConsole(static opt =>
         {
             opt.SingleLine = true;
             opt.TimestampFormat = "HH:mm:ss ";
         });
 
-        host.Services.AddClassicServer();
-        host.Services.AddClassicClsidRegistry(host.Configuration);
-        host.Services.AddOpcAeServer<SampleAeServer>(opt =>
+        builder.Services.AddClassicServer();
+        builder.Services.AddClassicClsidRegistry(builder.Configuration);
+        builder.Services.AddOpcAeServer<SampleAeServer>(opt =>
         {
-            opt.Clsid = new Guid("C4BF6E70-3BA2-4F9C-AE3D-8F6C1D9F2B4F");
-            opt.ProgId = "Opc.Classic.Samples.AeServer.1";
-            opt.FriendlyName = "Opc.Classic Sample AE Server";
+            opt.Clsid = SampleClsid;
+            opt.ProgId = SampleProgId;
+            opt.FriendlyName = SampleFriendlyName;
             opt.ListenAddress = listenAddress;
         });
-        host.Services.AddHostedService<EventEmitter>();
+        builder.Services.AddHostedService<EventEmitter>();
 
-        await host.Build().RunAsync().ConfigureAwait(false);
+        var host = builder.Build();
+
+        uint comClassObjectCookie = 0;
+        if (embedded && OperatingSystem.IsWindows())
+        {
+            comClassObjectCookie = RegisterScmFactory(host.Services);
+        }
+
+        try
+        {
+            await host.RunAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
+            {
+                ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
+                ComClassObjectRegistrar.Uninitialize();
+            }
+        }
+
         return 0;
+    }
+
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    private static uint RegisterScmFactory(IServiceProvider services)
+    {
+        var serverImpl = services.GetRequiredService<IOpcAeServer>();
+        ComClassObjectRegistrar.InitializeApartmentThreaded();
+        uint cookie = ComClassObjectRegistrar.RegisterClassObject(
+            SampleClsid,
+            createInstanceCallback: requestedIid =>
+                Opc.Classic.Ae.Hosting.Windows.OpcAeServerCcw.Create(serverImpl, requestedIid));
+        ComClassObjectRegistrar.ResumeClassObjects();
+        return cookie;
     }
 }

@@ -11,6 +11,7 @@ using Opc.Classic.Da.Hosting;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Hosting;
+using Opc.Classic.Hosting.Windows;
 using Opc.Classic.Security;
 using Opc.Classic.Security.Dcom;
 
@@ -21,10 +22,28 @@ internal static class Program
     private static readonly Guid SampleClsid = new("5A0DA9C7-56D2-4768-9CB3-6FC5E57B6D51");
     private const string SampleProgId = "Opc.Classic.Samples.OpcSecurityServer.1";
     private const string SampleFriendlyName = "Opc.Classic Sample OPC Security Server";
+    private const string SampleAssemblyName = "Opc.Classic.Samples.OpcSecurityServer";
+    private const string SampleTypeName = "Opc.Classic.Samples.OpcSecurityServer.Program+SecuritySampleDaServer";
 
     public static async Task<int> Main(string[] args)
     {
         ArgumentNullException.ThrowIfNull(args);
+
+        var registration = new OpcClsidRegistration(
+            Clsid: SampleClsid,
+            ProgId: SampleProgId,
+            AssemblyName: SampleAssemblyName,
+            TypeName: SampleTypeName,
+            FriendlyName: SampleFriendlyName);
+        IReadOnlyList<OpcComponentCategory> implementedCategories =
+        [
+            OpcComponentCategories.OpcDaServer20,
+        ];
+
+        if (SampleServerRegistrationCommand.TryHandle(args, registration, implementedCategories, out int registrationExitCode))
+        {
+            return registrationExitCode;
+        }
 
         int port = int.TryParse(
             Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
