@@ -4,7 +4,7 @@
     "args": {},
     "success": true,
     "error": null,
-    "summary": "sessionId=f742d2da278b478bbd217158cfd62dac daConnected=False"
+    "summary": "sessionId=2aeac60d2acd45f1a2cf051ab06030a6 daConnected=False"
   },
   {
     "tool": "opcclassic.session.list",
@@ -19,26 +19,26 @@
       "host": "localhost",
       "useSso": true
     },
-    "success": false,
-    "error": "An error occurred invoking 'opcclassic.discovery.enumerate_servers'.",
-    "summary": ""
+    "success": true,
+    "error": null,
+    "summary": "count=3 firstKeys=classId,progId,userType,verIndProgId,categories,host"
   },
   {
     "tool": "opcclassic.da.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "host": "localhost",
-      "clsid": "F8582CF2-88FB-11D0-B850-00C0F0104305",
+      "progId": "Matrikon.OPC.Simulation.1",
       "useSso": true
     },
     "success": true,
     "error": null,
-    "summary": "sessionId=f742d2da278b478bbd217158cfd62dac daConnected=True"
+    "summary": "sessionId=2aeac60d2acd45f1a2cf051ab06030a6 daConnected=True"
   },
   {
     "tool": "opcclassic.da.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -47,7 +47,7 @@
   {
     "tool": "opcclassic.da.browse",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemId": "",
       "browseFilter": "all"
     },
@@ -58,7 +58,7 @@
   {
     "tool": "opcclassic.da.browse",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemId": "Random",
       "browseFilter": "leaf"
     },
@@ -69,7 +69,7 @@
   {
     "tool": "opcclassic.da.get_properties",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemIds": [
         "Random.Int4"
       ],
@@ -82,7 +82,7 @@
   {
     "tool": "opcclassic.da.read_items_by_id",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemIds": [
         "Random.Int4"
       ],
@@ -97,7 +97,7 @@
   {
     "tool": "opcclassic.da.add_group",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "name": "BB",
       "active": true,
       "updateRateMs": 500
@@ -109,8 +109,8 @@
   {
     "tool": "opcclassic.da.add_items",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
-      "groupHandle": 21231192,
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
+      "groupHandle": 16725896,
       "itemIds": [
         "Bucket Brigade.Int4",
         "Bucket Brigade.String"
@@ -128,11 +128,11 @@
   {
     "tool": "opcclassic.da.read_sync",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
-      "groupHandle": 21231192,
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
+      "groupHandle": 16725896,
       "serverHandles": [
-        21494840,
-        21495200
+        16869824,
+        16871968
       ],
       "fromCache": false
     },
@@ -143,11 +143,11 @@
   {
     "tool": "opcclassic.da.write_sync",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
-      "groupHandle": 21231192,
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
+      "groupHandle": 16725896,
       "serverHandles": [
-        21494840,
-        21495200
+        16869824,
+        16871968
       ],
       "values": [
         12345,
@@ -161,19 +161,19 @@
   {
     "tool": "opcclassic.da.subscribe",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
-      "groupHandle": 21231192,
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
+      "groupHandle": 16725896,
       "fromCache": true
     },
     "success": true,
     "error": null,
-    "summary": "Subscription 'd5e12511a16d4dc1a996764562649050' created. Poll for values with opcclassic.da.poll_subscription. succeeded=True hResult=0x00000000"
+    "summary": "Subscription 'c469d975d4d84f1aba8e9333891fd5c6' created. Poll for values with opcclassic.da.poll_subscription. succeeded=True hResult=0x00000000"
   },
   {
     "tool": "opcclassic.da.poll_subscription",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
-      "subscriptionId": "d5e12511a16d4dc1a996764562649050",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
+      "subscriptionId": "c469d975d4d84f1aba8e9333891fd5c6",
       "maxNotifications": 0
     },
     "success": true,
@@ -183,7 +183,7 @@
   {
     "tool": "opcclassic.da.get_error_string",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "hresult": 0,
       "localeId": 0
     },
@@ -194,7 +194,7 @@
   {
     "tool": "opcclassic.security.is_available_nt",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
     "error": "An error occurred invoking 'opcclassic.security.is_available_nt'.",
@@ -203,7 +203,7 @@
   {
     "tool": "opcclassic.security.is_available_private",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
     "error": "An error occurred invoking 'opcclassic.security.is_available_private'.",
@@ -212,7 +212,7 @@
   {
     "tool": "opcclassic.security.logon",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "username": "mcp_probe",
       "password": "***"
     },
@@ -223,7 +223,7 @@
   {
     "tool": "opcclassic.security.logoff",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
     "error": "An error occurred invoking 'opcclassic.security.logoff'.",
@@ -232,7 +232,7 @@
   {
     "tool": "opcclassic.cpx.get_type_system",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "typeSystemId": "OPCBinary"
     },
     "success": true,
@@ -242,7 +242,7 @@
   {
     "tool": "opcclassic.cpx.get_complex_type",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemId": "Random.Int4"
     },
     "success": false,
@@ -252,7 +252,7 @@
   {
     "tool": "opcclassic.cpx.get_dictionary",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "dictionaryId": "OPCBinary"
     },
     "success": false,
@@ -262,18 +262,18 @@
   {
     "tool": "opcclassic.da.remove_group",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
-      "groupHandle": 21231192,
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
+      "groupHandle": 16725896,
       "force": true
     },
     "success": true,
     "error": null,
-    "summary": "Group 21231192 removed. succeeded=True hResult=0x00000000"
+    "summary": "Group 16725896 removed. succeeded=True hResult=0x00000000"
   },
   {
     "tool": "opcclassic.da.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -282,7 +282,7 @@
   {
     "tool": "opcclassic.hda.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "host": "localhost"
     },
     "success": false,
@@ -292,39 +292,39 @@
   {
     "tool": "opcclassic.hda.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.get_status': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.get_status': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.browse",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemIdPrefix": "",
       "browseType": "leaf"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.browse': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.browse': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.validate_items",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemIds": [
         "Random.Int4"
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.validate_items': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.validate_items': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.get_item_handles",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemIds": [
         "Random.Int4"
       ],
@@ -333,13 +333,13 @@
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.get_item_handles': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.get_item_handles': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.read_raw",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "startTime": "NOW-1H",
       "endTime": "NOW",
       "maxValuesPerItem": 10,
@@ -349,13 +349,13 @@
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.read_raw': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.read_raw': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.read_processed",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "startTime": "NOW-1H",
       "endTime": "NOW",
       "resampleIntervalSeconds": 60,
@@ -365,13 +365,13 @@
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.read_processed': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.read_processed': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.read_at_time",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "timestamps": [
         "1970-01-01T00:00:00Z"
       ],
@@ -380,13 +380,13 @@
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.read_at_time': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.read_at_time': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.read_modified",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "startTime": "NOW-1H",
       "endTime": "NOW",
       "maxValuesPerItem": 10,
@@ -395,13 +395,13 @@
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.read_modified': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.read_modified': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.read_attribute",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandle": 0,
       "attributeIds": [
         1,
@@ -411,13 +411,13 @@
       "endTime": "NOW"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.read_attribute': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.read_attribute': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.read_annotations",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "startTime": "NOW-1H",
       "endTime": "NOW",
       "itemIds": [
@@ -425,84 +425,84 @@
       ]
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.read_annotations': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.read_annotations': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.get_aggregates",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.get_aggregates': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.get_aggregates': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.insert_data",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandles": [],
       "timestamps": [],
       "values": [],
       "qualities": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.insert_data': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.insert_data': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.replace_data",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandles": [],
       "timestamps": [],
       "values": [],
       "qualities": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.replace_data': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.replace_data': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.insert_replace_data",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandles": [],
       "timestamps": [],
       "values": [],
       "qualities": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.insert_replace_data': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.insert_replace_data': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.delete_raw",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "startTime": "NOW-1H",
       "endTime": "NOW",
       "serverHandles": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.delete_raw': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.delete_raw': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.delete_at_time",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandles": [],
       "timestamps": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.delete_at_time': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.delete_at_time': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.insert_annotations",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandles": [],
       "timestamps": [],
       "annotationTexts": [],
@@ -510,23 +510,23 @@
       "annotationTimes": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.insert_annotations': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.insert_annotations': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.release_item_handles",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverHandles": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.hda.release_item_handles': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.hda.release_item_handles': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC HDA server. Call opcclassic.hda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.hda.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -535,7 +535,7 @@
   {
     "tool": "opcclassic.ae.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "host": "localhost"
     },
     "success": false,
@@ -545,59 +545,59 @@
   {
     "tool": "opcclassic.ae.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.get_status': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.get_status': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.browse_areas",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "areaQualifiedName": ""
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.browse_areas': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.browse_areas': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.query_event_categories",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "eventTypes": "all"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.query_event_categories': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.query_event_categories': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.query_event_attributes",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "eventCategory": 0
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.query_event_attributes': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.query_event_attributes': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.create_subscription",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "active": true,
       "bufferTimeMs": 1000,
       "maxBufferSize": 0,
       "clientSubscription": 1
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.create_subscription': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.create_subscription': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.set_filter",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "subscriptionId": "",
       "eventTypes": "all",
       "eventCategories": [],
@@ -607,47 +607,47 @@
       "sources": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.set_filter': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.set_filter': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.poll_events",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "subscriptionId": "",
       "maxNotifications": 10,
       "waitMilliseconds": 100
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.poll_events': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.poll_events': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.refresh_subscription",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "subscriptionId": ""
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.refresh_subscription': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.refresh_subscription': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.get_condition_state",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "source": "Random.Int4",
       "conditionName": "Condition",
       "attributeIds": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.get_condition_state': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.get_condition_state': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.ack_condition",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "source": "Random.Int4",
       "conditionName": "Condition",
       "actor": "mcp-probe",
@@ -655,23 +655,23 @@
       "cookie": 0
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.ack_condition': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.ack_condition': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.cancel_subscription",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "subscriptionId": ""
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.ae.cancel_subscription': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
+    "error": "An error occurred invoking 'opcclassic.ae.cancel_subscription': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC AE server. Call opcclassic.ae.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.ae.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -680,7 +680,7 @@
   {
     "tool": "opcclassic.batch.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "host": "localhost"
     },
     "success": false,
@@ -690,57 +690,57 @@
   {
     "tool": "opcclassic.batch.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.batch.get_status': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "error": "An error occurred invoking 'opcclassic.batch.get_status': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.batch.query_batch_summaries",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "model": "OPCBBatchModel",
       "maxResults": 10
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.batch.query_batch_summaries': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "error": "An error occurred invoking 'opcclassic.batch.query_batch_summaries': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.batch.query_enumeration_sets",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration_sets': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration_sets': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.batch.query_enumeration",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "enumerationSetId": 0,
       "enumerationValue": 0
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.batch.query_enumeration_list",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "enumerationSetId": 0
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration_list': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
+    "error": "An error occurred invoking 'opcclassic.batch.query_enumeration_list': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Batch server. Call opcclassic.batch.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.batch.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -749,7 +749,7 @@
   {
     "tool": "opcclassic.commands.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "host": "localhost"
     },
     "success": false,
@@ -759,27 +759,27 @@
   {
     "tool": "opcclassic.commands.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.commands.get_status': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "error": "An error occurred invoking 'opcclassic.commands.get_status': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.commands.get_command_descriptions",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "commandNamespace": "",
       "commandNames": []
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.commands.get_command_descriptions': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "error": "An error occurred invoking 'opcclassic.commands.get_command_descriptions': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.commands.invoke_command",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "commandName": "__mcp_probe_noop__",
       "commandNamespace": "",
       "targetId": "",
@@ -790,34 +790,34 @@
       "keepAliveTimeMs": 30000
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.commands.invoke_command': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "error": "An error occurred invoking 'opcclassic.commands.invoke_command': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.commands.poll_command_state",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "invocationId": "__mcp_probe_noop__",
       "waitTimeMs": 0
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.commands.poll_command_state': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "error": "An error occurred invoking 'opcclassic.commands.poll_command_state': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.commands.cancel_command",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "invocationId": "__mcp_probe_noop__"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.commands.cancel_command': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
+    "error": "An error occurred invoking 'opcclassic.commands.cancel_command': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC Commands server. Call opcclassic.commands.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.commands.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -826,7 +826,7 @@
   {
     "tool": "opcclassic.dx.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "host": "localhost"
     },
     "success": false,
@@ -836,37 +836,37 @@
   {
     "tool": "opcclassic.dx.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.get_status': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.get_status': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.query_connections",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "browsePath": "",
       "connectionMasks": [],
       "recursive": false
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.query_connections': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.query_connections': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.query_source_servers",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.query_source_servers': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.query_source_servers': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -875,7 +875,7 @@
   {
     "tool": "opcclassic.dx.add_source_server",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "sourceServer": {
         "name": "__mcp_probe_source__",
         "serverUrl": "opcda://localhost/probe",
@@ -890,13 +890,13 @@
       }
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.add_source_server': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.add_source_server': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.modify_source_server",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "sourceServer": {
         "name": "__mcp_probe_source__",
         "serverUrl": "opcda://localhost/probe",
@@ -911,13 +911,13 @@
       }
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.modify_source_server': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.modify_source_server': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.add_connection",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "connection": {
         "name": "__mcp_probe_connection__",
         "description": "MCP probe connection",
@@ -941,13 +941,13 @@
       }
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.add_connection': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.add_connection': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.modify_connection",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "connection": {
         "name": "__mcp_probe_connection__",
         "description": "MCP probe connection",
@@ -971,13 +971,13 @@
       }
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.modify_connection': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.modify_connection': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.update_connection",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "connectionName": "__mcp_probe_connection__",
       "connection": {
         "name": "__mcp_probe_connection__",
@@ -1004,35 +1004,35 @@
       "recursive": false
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.update_connection': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.update_connection': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.delete_connection",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "connectionName": "__mcp_probe_connection__",
       "browsePath": "",
       "recursive": false
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.delete_connection': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.delete_connection': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.dx.reset_configuration",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "configurationVersion": ""
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.dx.reset_configuration': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
+    "error": "An error occurred invoking 'opcclassic.dx.reset_configuration': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC DX server. Call opcclassic.dx.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.connect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "endpointUrl": "inmemory://probe-missing"
     },
     "success": false,
@@ -1042,17 +1042,17 @@
   {
     "tool": "opcclassic.xmlda.get_status",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "clientRequestHandle": "probe-status"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.get_status': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.get_status': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.browse",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemName": "",
       "itemPath": "",
       "continuationPoint": "",
@@ -1062,13 +1062,13 @@
       "clientRequestHandle": "probe-browse"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.browse': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.browse': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.get_properties",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "itemNames": [
         "Random.Int4"
       ],
@@ -1080,13 +1080,13 @@
       "clientRequestHandle": "probe-properties"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.get_properties': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.get_properties': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.read",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "items": [
         {
           "itemName": "Random.Int4",
@@ -1098,13 +1098,13 @@
       "clientRequestHandle": "probe-read"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.read': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.read': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.write",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "items": [
         {
           "itemName": "Bucket Brigade.Int4",
@@ -1117,13 +1117,13 @@
       "clientRequestHandle": "probe-write"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.write': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.write': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.subscribe",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "items": [
         {
           "itemName": "Random.Int4",
@@ -1141,13 +1141,13 @@
       "clientRequestHandle": "probe-subscribe"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.subscribe': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.subscribe': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.poll_subscription",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverSubHandles": [],
       "waitTime": 0,
       "returnAllItems": true,
@@ -1155,24 +1155,24 @@
       "clientRequestHandle": "probe-poll"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.poll_subscription': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.poll_subscription': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.cancel_subscription",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac",
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6",
       "serverSubHandle": "probe",
       "clientRequestHandle": "probe-cancel"
     },
     "success": false,
-    "error": "An error occurred invoking 'opcclassic.xmlda.cancel_subscription': Session 'f742d2da278b478bbd217158cfd62dac' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
+    "error": "An error occurred invoking 'opcclassic.xmlda.cancel_subscription': Session '2aeac60d2acd45f1a2cf051ab06030a6' is not connected to an OPC XML-DA endpoint. Call opcclassic.xmlda.connect first.",
     "summary": ""
   },
   {
     "tool": "opcclassic.xmlda.disconnect",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
@@ -1181,10 +1181,10 @@
   {
     "tool": "opcclassic.session.close",
     "args": {
-      "sessionId": "f742d2da278b478bbd217158cfd62dac"
+      "sessionId": "2aeac60d2acd45f1a2cf051ab06030a6"
     },
     "success": true,
     "error": null,
-    "summary": "Session 'f742d2da278b478bbd217158cfd62dac' closed. succeeded=True hResult=0x00000000"
+    "summary": "Session '2aeac60d2acd45f1a2cf051ab06030a6' closed. succeeded=True hResult=0x00000000"
   }
 ]

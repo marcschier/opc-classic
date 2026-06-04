@@ -115,32 +115,36 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 targetHost,
                 activated.InterfaceRef,
                 serverListIid,
+                activated.OxidBindings,
                 cancellationToken).ConfigureAwait(false);
 
             if (activated.SupportsServerList2)
             {
                 try
                 {
-                    return await EnumerateWithServerList2Async(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+                    return await EnumerateWithServerList2Async(targetHost, serverListChannel, requestedCategories, activated.OxidBindings, cancellationToken).ConfigureAwait(false);
                 }
-                catch (InvalidOperationException ex) when (IsBindRejectionForUnsupportedAbstractSyntax(ex))
+                catch (InvalidOperationException ex) when (IsBindRejectionForUnsupportedAbstractSyntax(ex, OpcGuids.IID_IOPCServerList2))
                 {
                     // OPCEnum's activator marshaled an OBJREF claiming IOPCServerList2
                     // support, but the underlying RPC server rejects the bind for that
-                    // IID (common with older OPC Core Components installs that only
-                    // ship IOPCServerList). Discard the IOPCServerList2 channel and
-                    // re-bind against IOPCServerList (DA 2.0).
+                    // specific IID (common with older OPC Core Components installs that
+                    // only ship IOPCServerList). Discard the IOPCServerList2 channel
+                    // and re-bind against IOPCServerList (DA 2.0). The IID-specific
+                    // filter prevents us from mis-treating an IEnumGUID downstream
+                    // bind failure as an IOPCServerList2-not-implemented signal.
                     await DisposeChannelAsync(serverListChannel).ConfigureAwait(false);
                     serverListChannel = await _channelFactory.CreateObjectChannelAsync(
                         targetHost,
                         activated.InterfaceRef,
                         OpcGuids.IID_IOPCServerList,
+                        activated.OxidBindings,
                         cancellationToken).ConfigureAwait(false);
-                    return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+                    return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, activated.OxidBindings, cancellationToken).ConfigureAwait(false);
                 }
             }
 
-            return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+            return await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, activated.OxidBindings, cancellationToken).ConfigureAwait(false);
         }
         finally
         {
@@ -150,13 +154,34 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
     private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex)
     {
+        return IsBindRejectionForUnsupportedAbstractSyntax(ex, expectedIid: null);
+    }
+
+    private static bool IsBindRejectionForUnsupportedAbstractSyntax(InvalidOperationException ex, Guid? expectedIid)
+    {
         // BindAck for an unsupported IID surfaces as
-        // 'Presentation context rejected: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.'
+        // 'Presentation context rejected for IID <iid>: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.'
         // from DcomCallChannel.EnsurePresentationContextAsync. Match by substring so we
         // don't accidentally downgrade on unrelated InvalidOperationException paths.
         string message = ex.Message ?? string.Empty;
-        return message.Contains("Presentation context rejected", StringComparison.Ordinal)
-            && message.Contains("ABSTRACT_SYNTAX_NOT_SUPPORTED", StringComparison.Ordinal);
+        if (!message.Contains("Presentation context rejected", StringComparison.Ordinal)
+            || !message.Contains("ABSTRACT_SYNTAX_NOT_SUPPORTED", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        if (expectedIid is null)
+        {
+            return true;
+        }
+
+        // The exception message embeds the requested IID; only treat the
+        // rejection as a downgrade trigger when it matches the IID we expect
+        // to be unsupported. This avoids confusing a downstream sub-object
+        // bind rejection (for example IEnumGUID on the enumerator channel)
+        // with a server-level "IOPCServerList2 is not implemented" rejection.
+        string iidText = expectedIid.Value.ToString("D");
+        return message.Contains(iidText, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <inheritdoc />
@@ -182,6 +207,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         string host,
         ICallChannel serverListChannel,
         Guid[] requestedCategories,
+        ReadOnlyMemory<byte> oxidBindings,
         CancellationToken cancellationToken)
     {
         var serverList = new IOPCServerList2ClientProxy(serverListChannel);
@@ -189,6 +215,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
             host,
             requestedCategories,
             (category, token) => serverList.EnumClassesOfCategoriesAsync(new[] { category }, Array.Empty<Guid>(), token),
+            oxidBindings,
             cancellationToken).ConfigureAwait(false);
 
         var descriptors = new List<OpcServerDescriptor>(merge.ClassIds.Count);
@@ -206,6 +233,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         string host,
         ICallChannel serverListChannel,
         Guid[] requestedCategories,
+        ReadOnlyMemory<byte> oxidBindings,
         CancellationToken cancellationToken)
     {
         var serverList = new IOPCServerListClientProxy(serverListChannel);
@@ -213,6 +241,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
             host,
             requestedCategories,
             (category, token) => serverList.EnumClassesOfCategoriesAsync(new[] { category }, Array.Empty<Guid>(), token),
+            oxidBindings,
             cancellationToken).ConfigureAwait(false);
 
         var descriptors = new List<OpcServerDescriptor>(merge.ClassIds.Count);
@@ -230,6 +259,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         string host,
         IReadOnlyList<Guid> requestedCategories,
         Func<Guid, CancellationToken, Task<IOpcInterfaceRef>> enumFactory,
+        ReadOnlyMemory<byte> oxidBindings,
         CancellationToken cancellationToken)
     {
         var classIds = new List<Guid>();
@@ -242,10 +272,16 @@ public sealed class OpcEnumClient : IOpcDiscovery
             ICallChannel? enumChannel = null;
             try
             {
+                // The enumerator returned by EnumClassesOfCategories lives on the
+                // same OXID as the parent IOPCServerList(2) object — both run in
+                // the OPCEnum process. Reuse the parent's OXID bindings so the
+                // enumerator channel binds the actual data port instead of the
+                // OXID resolver (port 135).
                 enumChannel = await _channelFactory.CreateObjectChannelAsync(
                     host,
                     enumRef,
                     OpcGuids.IID_IOPCEnumGUID,
+                    oxidBindings,
                     cancellationToken).ConfigureAwait(false);
                 var enumerator = new IOPCEnumGUIDClientProxy(enumChannel);
                 await AddEnumeratedClassIdsAsync(enumerator, category, classIds, categoriesByClassId, cancellationToken).ConfigureAwait(false);
@@ -303,19 +339,19 @@ public sealed class OpcEnumClient : IOpcDiscovery
     {
         try
         {
-            IOpcInterfaceRef serverList2 = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList2, cancellationToken)
+            ActivationOutcome serverList2 = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList2, cancellationToken)
                 .ConfigureAwait(false);
-            return new ActivatedServerList(serverList2, SupportsServerList2: true);
+            return new ActivatedServerList(serverList2.InterfaceRef, serverList2.OxidBindings, SupportsServerList2: true);
         }
         catch (OpcException ex) when (ex.ResultId.Code == ENoInterface)
         {
-            IOpcInterfaceRef serverList = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList, cancellationToken)
+            ActivationOutcome serverList = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList, cancellationToken)
                 .ConfigureAwait(false);
-            return new ActivatedServerList(serverList, SupportsServerList2: false);
+            return new ActivatedServerList(serverList.InterfaceRef, serverList.OxidBindings, SupportsServerList2: false);
         }
     }
 
-    private async Task<IOpcInterfaceRef> RemoteCreateInstanceAsync(
+    private async Task<ActivationOutcome> RemoteCreateInstanceAsync(
         string host,
         Guid requestedIid,
         CancellationToken cancellationToken)
@@ -330,7 +366,8 @@ public sealed class OpcEnumClient : IOpcDiscovery
                 RemoteCreateInstanceOpnum,
                 payload,
                 cancellationToken).ConfigureAwait(false);
-            return DecodeRemoteCreateInstanceResponse(result);
+            IOpcInterfaceRef objRef = DecodeRemoteCreateInstanceResponse(result);
+            return new ActivationOutcome(objRef, ReadOnlyMemory<byte>.Empty);
         }
         catch (InvalidOperationException ex) when (ShouldFallbackToLegacyActivation(ex))
         {
@@ -342,7 +379,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
         }
     }
 
-    private async Task<IOpcInterfaceRef> LegacyRemoteActivationAsync(
+    private async Task<ActivationOutcome> LegacyRemoteActivationAsync(
         string host,
         Guid requestedIid,
         CancellationToken cancellationToken)
@@ -415,7 +452,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
     private static int ToActivationAuthenticationLevel(OpcProtectionLevel protectionLevel) =>
         (int)NormalizeActivationProtection(protectionLevel);
 
-    private static IOpcInterfaceRef DecodeLegacyRemoteActivationResponse(NdrCallResult result)
+    private static ActivationOutcome DecodeLegacyRemoteActivationResponse(NdrCallResult result)
     {
         ThrowIfFailed(result.Hresult, "IActivation::RemoteActivation");
         var response = Opc.Classic.Dcom.Activation.IActivationCodec.DecodeRemoteActivationResponse(
@@ -436,7 +473,7 @@ public sealed class OpcEnumClient : IOpcDiscovery
 
         if (TryDecodeObjRef(interfaceResult.ObjRef.Span, out IOpcInterfaceRef? objRef))
         {
-            return objRef!;
+            return new ActivationOutcome(objRef!, response.OxidBindings);
         }
 
         throw new InvalidOperationException("IActivation::RemoteActivation returned an invalid OPCEnum OBJREF.");
@@ -609,7 +646,9 @@ public sealed class OpcEnumClient : IOpcDiscovery
         }
     }
 
-    private sealed record ActivatedServerList(IOpcInterfaceRef InterfaceRef, bool SupportsServerList2);
+    private sealed record ActivatedServerList(IOpcInterfaceRef InterfaceRef, ReadOnlyMemory<byte> OxidBindings, bool SupportsServerList2);
+
+    private sealed record ActivationOutcome(IOpcInterfaceRef InterfaceRef, ReadOnlyMemory<byte> OxidBindings);
 
     private sealed record CategoryMerge(
         IReadOnlyList<Guid> ClassIds,

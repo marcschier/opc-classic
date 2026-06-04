@@ -96,6 +96,14 @@ public static class OpcGuids
     public static readonly Guid IID_IOPCShutdown =
         new("F31DFDE1-07B6-11D2-B2D8-0060083BA1FB");
 
+    /// <summary><c>IRemUnknown</c> — runtime navigation interface used to query for, add references to, and release additional interfaces on a remote DCOM object. Universal across every spec.</summary>
+    public static readonly Guid IID_IRemUnknown =
+        new("00000131-0000-0000-C000-000000000046");
+
+    /// <summary><c>IRemUnknown2</c> — DCOM 5.6 extension returning the IPID for the requested interface; superset of IRemUnknown.</summary>
+    public static readonly Guid IID_IRemUnknown2 =
+        new("00000143-0000-0000-C000-000000000046");
+
     // ============================================================
     // OpcEnum — server discovery (the well-known component-category manager)
     // ============================================================

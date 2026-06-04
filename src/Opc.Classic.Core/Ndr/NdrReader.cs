@@ -484,6 +484,36 @@ public ref struct NdrReader
         return result;
     }
 
+    /// <summary>
+    /// Reads a varying-conformant array of Guid values: max_count (ULONG) +
+    /// offset (ULONG) + actual_count (ULONG) + actual_count * 16 bytes. Used
+    /// by IDL <c>[out, size_is(N), length_is(*pceltFetched)] GUID* rgelt</c>
+    /// (for example <c>IEnumGUID::Next</c>) where the server returns fewer
+    /// elements than the caller-requested maximum.
+    /// </summary>
+    public Guid[] ReadVaryingConformantGuidArray()
+    {
+        _ = ReadBoundedConformanceCount(16, "NDR varying-conformant Guid array");
+        AlignTo(4);
+        _ = ReadUInt32();
+        int actualCount = (int)ReadUInt32();
+        if (actualCount < 0)
+        {
+            throw new InvalidOperationException("NDR varying-conformant Guid array length is negative.");
+        }
+
+        EnsureBoundedPayloadBytes((uint)actualCount, 16, "NDR varying-conformant Guid array length");
+        AlignTo(4);
+        EnsureAvailable(actualCount * 16);
+        var result = new Guid[actualCount];
+        for (int i = 0; i < actualCount; i++)
+        {
+            result[i] = new Guid(_buffer.Slice(_position, 16));
+            _position += 16;
+        }
+        return result;
+    }
+
     private int ReadBoundedConformanceCount(int elementSize, string context)
     {
         int count = ReadConformanceHeader();

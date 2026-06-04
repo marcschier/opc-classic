@@ -139,7 +139,7 @@ public sealed class IOPCEnumGUIDClientProxy
             cancellationToken).ConfigureAwait(false);
 
         var reader = new NdrReader(result.ResponsePayload.Span);
-        Guid[] classIds = reader.ReadConformantGuidArray();
+        Guid[] classIds = reader.ReadVaryingConformantGuidArray();
         int fetched = reader.ReadInt32();
         return new OpcEnumGuidNextResult(classIds, fetched);
     }
@@ -287,8 +287,16 @@ internal static class OpcEnumProxyCodec
     public static ReadOnlyMemory<byte> EncodeCategoryRequest(Guid[] implementedCategories, Guid[] requiredCategories) =>
         WritePayload((ref NdrWriter writer) =>
         {
-            writer.WriteConformantGuidArray(implementedCategories ?? Array.Empty<Guid>());
-            writer.WriteConformantGuidArray(requiredCategories ?? Array.Empty<Guid>());
+            // IDL: [in] ULONG cImplemented, [in, size_is(cImplemented)] CATID rgcatidImpl[],
+            //      [in] ULONG cRequired,    [in, size_is(cRequired)] CATID rgcatidReq[]
+            // Per DCE/RPC §14.3.4 the size_is parameter is emitted independently AND
+            // also as the conformant-array max_count prefix; both must be present.
+            Guid[] impl = implementedCategories ?? Array.Empty<Guid>();
+            Guid[] req = requiredCategories ?? Array.Empty<Guid>();
+            writer.WriteUInt32((uint)impl.Length);
+            writer.WriteConformantGuidArray(impl);
+            writer.WriteUInt32((uint)req.Length);
+            writer.WriteConformantGuidArray(req);
         });
 
     public static async Task<IOpcInterfaceRef> InvokeInterfaceRefAsync(
@@ -301,8 +309,57 @@ internal static class OpcEnumProxyCodec
     {
         NdrCallResult result = await InvokeAsync(channel, interfaceId, opnum, payload, operationDescription, cancellationToken)
             .ConfigureAwait(false);
-        var reader = new NdrReader(result.ResponsePayload.Span);
-        return OpcInterfaceRefCodec.Read(ref reader);
+        return DecodeInterfaceRefResponse(result.ResponsePayload.Span, operationDescription);
+    }
+
+    /// <summary>
+    /// Decodes a <c>[out] IUnknown**</c> response payload wrapped in
+    /// <c>MInterfacePointer</c> per MS-DCOM 2.2.18.7 (pointer referent +
+    /// ulCntData + conformant max_count + OBJREF bytes) and returns the
+    /// embedded OBJREF as an <see cref="IOpcInterfaceRef"/>.
+    /// </summary>
+    /// <remarks>
+    /// The IDL <c>[out] IFoo** ppFoo</c> emits an outer 4-byte pointer
+    /// referent on the wire (non-zero indicates a non-null result) followed
+    /// by a marshaled <c>MInterfacePointer</c> structure containing the
+    /// element count, conformant array max_count, and the OBJREF byte stream
+    /// (MEOW + STDOBJREF + DUALSTRINGARRAY). A bare OBJREF without the
+    /// wrapper is detected by the MEOW signature (0x574F454D) appearing in
+    /// the first four bytes — fallback path preserved for direct-OBJREF
+    /// activation responses.
+    /// </remarks>
+    public static IOpcInterfaceRef DecodeInterfaceRefResponse(ReadOnlySpan<byte> responsePayload, string operationDescription)
+    {
+        if (responsePayload.Length < sizeof(uint))
+        {
+            throw new InvalidOperationException($"{operationDescription} returned an empty payload.");
+        }
+
+        uint firstWord = System.Buffers.Binary.BinaryPrimitives.ReadUInt32LittleEndian(responsePayload);
+        if (firstWord == 0x574F454D)
+        {
+            var bareReader = new NdrReader(responsePayload);
+            return OpcInterfaceRefCodec.Read(ref bareReader);
+        }
+
+        // Wrapped MInterfacePointer: referent (4) + ulCntData (4) + max_count (4) + OBJREF bytes.
+        var reader = new NdrReader(responsePayload);
+        _ = reader.ReadUInt32();
+        uint ulCntData = reader.ReadUInt32();
+        uint conformantMaxCount = reader.ReadUInt32();
+        if (conformantMaxCount < ulCntData)
+        {
+            throw new InvalidOperationException($"{operationDescription} returned a malformed MInterfacePointer (max_count {conformantMaxCount} less than ulCntData {ulCntData}).");
+        }
+
+        if (ulCntData == 0)
+        {
+            throw new InvalidOperationException($"{operationDescription} returned an empty MInterfacePointer.");
+        }
+
+        ReadOnlySpan<byte> objRefSpan = reader.ReadRawBytes((int)ulCntData);
+        var objRefReader = new NdrReader(objRefSpan);
+        return OpcInterfaceRefCodec.Read(ref objRefReader);
     }
 
     public static async Task<NdrCallResult> InvokeAsync(

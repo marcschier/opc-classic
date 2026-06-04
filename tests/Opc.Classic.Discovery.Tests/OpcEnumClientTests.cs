@@ -300,9 +300,11 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
         {
             // Simulate the bind-time PROVIDER_REJECTION that DcomCallChannel surfaces
             // when an OPCEnum host's RPC server doesn't actually speak IOPCServerList2
-            // despite the activator returning an OBJREF claiming the IID.
+            // despite the activator returning an OBJREF claiming the IID. The IID
+            // is embedded in the message so OpcEnumClient's IID-specific catch can
+            // tell this rejection apart from downstream IEnumGUID bind failures.
             throw new InvalidOperationException(
-                "Presentation context rejected: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.");
+                $"Presentation context rejected for IID {OpcGuids.IID_IOPCServerList2:D}: PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED.");
         }
 
         if ((interfaceId == OpcGuids.IID_IOPCServerList2 || interfaceId == OpcGuids.IID_IOPCServerList) && opnum == 3)
@@ -361,7 +363,11 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
     private static Guid DecodeFirstImplementedCategory(ReadOnlyMemory<byte> requestPayload)
     {
         var reader = new NdrReader(requestPayload.Span);
+        // IDL: [in] ULONG cImplemented, [in, size_is(cImplemented)] CATID rgcatidImpl[],
+        //      [in] ULONG cRequired,    [in, size_is(cRequired)] CATID rgcatidReq[]
+        _ = reader.ReadUInt32();
         Guid[] implementedCategories = reader.ReadConformantGuidArray();
+        _ = reader.ReadUInt32();
         _ = reader.ReadConformantGuidArray();
         return implementedCategories.Length == 0 ? Guid.Empty : implementedCategories[0];
     }
@@ -410,7 +416,17 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
 
     private static byte[] EncodeNext(Guid[] classIds, int fetched) => WritePayload((ref NdrWriter writer) =>
     {
-        writer.WriteConformantGuidArray(classIds);
+        // IEnumGUID::Next response shape: [out, size_is(celt), length_is(*pceltFetched)] GUID* rgelt
+        // marshaled as a varying-conformant array (max_count + offset + actual_count + elements),
+        // followed by [out] ULONG* pceltFetched.
+        writer.WriteUInt32((uint)classIds.Length);
+        writer.WriteUInt32(0);
+        writer.WriteUInt32((uint)classIds.Length);
+        for (int i = 0; i < classIds.Length; i++)
+        {
+            writer.WriteGuid(classIds[i]);
+        }
+
         writer.WriteInt32(fetched);
     });
 

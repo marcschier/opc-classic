@@ -63,6 +63,32 @@ public sealed class DcomCallChannelFactory {
     }
 
     /// <summary>
+    /// Connects to a DCOM endpoint already activated for the supplied <paramref name="objectIpid"/>,
+    /// pre-declares presentation contexts in the initial bind, and routes every
+    /// <c>RequestCoPdu</c> to that IPID. Use this overload after a successful
+    /// <c>IActivation::RemoteActivation</c> when the activation returned an IPID for the target object.
+    /// </summary>
+    /// <param name="endpoint">The remote ncacn_ip_tcp endpoint.</param>
+    /// <param name="authContext">The authentication context for the channel.</param>
+    /// <param name="objectIpid">IPID returned by activation; routed in every request's Object field.</param>
+    /// <param name="preBindIids">Interface IIDs to include in the first DCE bind PDU.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The connected call channel.</returns>
+    public async Task<ICallChannel> ConnectActivatedAsync(
+        EndPoint endpoint,
+        IAuthContext authContext,
+        Guid objectIpid,
+        IReadOnlyList<Guid> preBindIids,
+        CancellationToken cancellationToken = default) {
+        ArgumentNullException.ThrowIfNull(endpoint);
+        ArgumentNullException.ThrowIfNull(authContext);
+        ArgumentNullException.ThrowIfNull(preBindIids);
+
+        IAsyncTransport transport = await _transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
+        return new DcomCallChannel(transport, authContext, objectIpid, preBindIids);
+    }
+
+    /// <summary>
     /// Convenience: opens a TCP connection via <see cref="TcpClientTransport.ConnectAsync(string,int,CancellationToken)" />
     /// and wraps the transport in a <see cref="DcomCallChannel" />. The
     /// caller owns the channel's lifetime; disposing the channel also

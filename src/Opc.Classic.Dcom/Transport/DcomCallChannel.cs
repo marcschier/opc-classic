@@ -198,13 +198,22 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
             PendingPresentationContext[] initialContexts = CreateInitialPresentationContexts(interfaceId);
             PresentationResult[] bindResults = await BindAsync(initialContexts, cancellationToken).ConfigureAwait(false);
             _bound = true;
+            if (string.Equals(System.Environment.GetEnvironmentVariable("OPC_CLASSIC_DCOM_WIRE_DUMP"), "1", System.StringComparison.Ordinal)) {
+                var culture = System.Globalization.CultureInfo.InvariantCulture;
+                var sb = new System.Text.StringBuilder();
+                sb.Append(culture, $"[bind] req-iid={interfaceId:D} contexts={initialContexts.Length}");
+                for (int i = 0; i < initialContexts.Length && i < bindResults.Length; i++) {
+                    sb.Append(culture, $" | [{i}] iid={initialContexts[i].InterfaceId:D} -> {bindResults[i]}");
+                }
+                await System.Console.Error.WriteLineAsync(sb.ToString()).ConfigureAwait(false);
+            }
             if (_contextIds.TryGetValue(interfaceId, out contextId)) {
                 return contextId;
             }
 
             PresentationResult? result = FindPresentationResult(initialContexts, bindResults, interfaceId);
             if (result is not null) {
-                throw new InvalidOperationException($"Presentation context rejected: {result}.");
+                throw new InvalidOperationException($"Presentation context rejected for IID {interfaceId:D}: {result}.");
             }
 
             throw new InvalidOperationException($"Bind acknowledge did not accept presentation context for IID {interfaceId:D}.");

@@ -79,7 +79,10 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
 
-        return new ValueTask<ICallChannel>(ConnectAsync(new DnsEndPoint(host, EndpointMapperPort), OpcGuids.CLSID_OpcEnum, cancellationToken));
+        // Activation channel binds the RPC endpoint mapper (port 135) which only
+        // exposes IActivation / IRemoteSCMActivator. Do NOT pre-bind Discovery
+        // interface IIDs here — port 135 will reject them with PROVIDER_REJECTION.
+        return new ValueTask<ICallChannel>(ConnectAsync(new DnsEndPoint(host, EndpointMapperPort), OpcGuids.CLSID_OpcEnum, preBindIids: null, cancellationToken));
     }
 
     /// <inheritdoc />
@@ -87,17 +90,133 @@ public sealed class DcomOpcEnumCallChannelFactory : IOpcEnumCallChannelFactory
         string host,
         IOpcInterfaceRef interfaceRef,
         Guid interfaceId,
+        CancellationToken cancellationToken = default) =>
+        CreateObjectChannelAsync(host, interfaceRef, interfaceId, oxidBindings: default, cancellationToken);
+
+    /// <inheritdoc />
+    public ValueTask<ICallChannel> CreateObjectChannelAsync(
+        string host,
+        IOpcInterfaceRef interfaceRef,
+        Guid interfaceId,
+        ReadOnlyMemory<byte> oxidBindings,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         ArgumentNullException.ThrowIfNull(interfaceRef);
 
-        DnsEndPoint endpoint = ResolveObjectEndpoint(host, interfaceRef);
-        return new ValueTask<ICallChannel>(ConnectAsync(endpoint, Guid.Empty, cancellationToken));
+        DnsEndPoint endpoint = ResolveDataPortEndpoint(host, interfaceRef, oxidBindings);
+        // Data-port channel binds the activated OPCEnum endpoint which exposes the
+        // Discovery interface family. Pre-declare the full Discovery IID set so the
+        // bind PDU's presentation-context list covers IOPCServerList(2),
+        // IOPCEnumGUID, IEnumGUID, and IRemUnknown(2) in one round-trip and the
+        // server preloads all stub marshalers. Route every RequestCoPdu to the
+        // activated IPID — without that, OPCEnum cannot identify which object the
+        // call targets and returns RPC_E_DISCONNECTED (0x80010108).
+        return ConnectActivatedAsync(endpoint, interfaceRef.Ipid, OpcDiscoverySpecCatalog.Discovery, cancellationToken);
     }
 
-    private Task<ICallChannel> ConnectAsync(EndPoint endpoint, Guid clsidToActivate, CancellationToken cancellationToken) =>
-        _channelFactory.ConnectAsync(endpoint, clsidToActivate, _authContextFactory(), cancellationToken);
+    private async ValueTask<ICallChannel> ConnectActivatedAsync(EndPoint endpoint, Guid objectIpid, IReadOnlyList<Guid> preBindIids, CancellationToken cancellationToken) =>
+        await _channelFactory.ConnectActivatedAsync(endpoint, _authContextFactory(), objectIpid, preBindIids, cancellationToken).ConfigureAwait(false);
+
+    private static DnsEndPoint ResolveDataPortEndpoint(string fallbackHost, IOpcInterfaceRef interfaceRef, ReadOnlyMemory<byte> oxidBindings)
+    {
+        // The OBJREF's own ResolverBindings carry only the OXID-resolver address
+        // (typically port 135 / the RPC endpoint mapper) and lack the data-port
+        // suffix. Prefer the OXID-level DUALSTRINGARRAY returned by the activation
+        // call when available — it includes the per-interface data port (e.g.
+        // ncacn_ip_tcp:HOST[57539]) and lets us bind the activated object directly.
+        if (!oxidBindings.IsEmpty
+            && TryResolveDataPortFromOxidBindings(fallbackHost, oxidBindings.Span, out DnsEndPoint? dataPortEndpoint))
+        {
+            return dataPortEndpoint!;
+        }
+
+        return ResolveObjectEndpoint(fallbackHost, interfaceRef);
+    }
+
+    private static bool TryResolveDataPortFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> bindings, out DnsEndPoint? endpoint)
+    {
+        endpoint = null;
+        if (bindings.Length < 4)
+        {
+            return false;
+        }
+
+        ushort secOffset = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(2));
+        int idx = 4;
+        int entriesConsumed = 2;
+        while (idx + 2 <= bindings.Length && entriesConsumed < secOffset)
+        {
+            ushort tower = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(idx));
+            idx += 2;
+            entriesConsumed++;
+            if (tower == 0)
+            {
+                return false;
+            }
+
+            string address = ReadNullTerminatedWideString(bindings, ref idx, ref entriesConsumed, secOffset);
+            if (tower != TcpTowerId)
+            {
+                continue;
+            }
+
+            if (TryParseHostPort(address, fallbackHost, out string host, out int port))
+            {
+                endpoint = new DnsEndPoint(host, port);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static string ReadNullTerminatedWideString(ReadOnlySpan<byte> bindings, ref int idx, ref int entriesConsumed, ushort secOffset)
+    {
+        var sb = new System.Text.StringBuilder();
+        while (idx + 2 <= bindings.Length && entriesConsumed < secOffset)
+        {
+            ushort ch = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(bindings.Slice(idx));
+            idx += 2;
+            entriesConsumed++;
+            if (ch == 0)
+            {
+                break;
+            }
+
+            sb.Append((char)ch);
+        }
+
+        return sb.ToString();
+    }
+
+    private static bool TryParseHostPort(string address, string fallbackHost, out string host, out int port)
+    {
+        host = string.Empty;
+        port = 0;
+        int bracket = address.LastIndexOf('[');
+        if (bracket < 0 || !address.EndsWith(']'))
+        {
+            return false;
+        }
+
+        string portText = address.Substring(bracket + 1, address.Length - bracket - 2);
+        if (!int.TryParse(portText, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out port))
+        {
+            return false;
+        }
+
+        host = address.Substring(0, bracket);
+        if (string.IsNullOrWhiteSpace(host))
+        {
+            host = fallbackHost;
+        }
+
+        return true;
+    }
+
+    private Task<ICallChannel> ConnectAsync(EndPoint endpoint, Guid clsidToActivate, IReadOnlyList<Guid>? preBindIids, CancellationToken cancellationToken) =>
+        _channelFactory.ConnectAsync(endpoint, clsidToActivate, _authContextFactory(), preBindIids, cancellationToken);
 
     private static Func<IAuthContext> CreateAuthContextFactory(OpcConnectData connectData)
     {

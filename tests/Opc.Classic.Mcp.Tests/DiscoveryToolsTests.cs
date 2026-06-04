@@ -147,7 +147,11 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
     private static Guid DecodeFirstImplementedCategory(ReadOnlyMemory<byte> requestPayload)
     {
         var reader = new NdrReader(requestPayload.Span);
+        // IDL: [in] ULONG cImplemented, [in, size_is(cImplemented)] CATID rgcatidImpl[],
+        //      [in] ULONG cRequired,    [in, size_is(cRequired)] CATID rgcatidReq[]
+        _ = reader.ReadUInt32();
         Guid[] implementedCategories = reader.ReadConformantGuidArray();
+        _ = reader.ReadUInt32();
         _ = reader.ReadConformantGuidArray();
         return implementedCategories.Length == 0 ? Guid.Empty : implementedCategories[0];
     }
@@ -181,7 +185,16 @@ internal sealed class SyntheticOpcEnumServer : IOpcEnumCallChannelFactory
 
     private static byte[] EncodeNext(Guid[] classIds, int fetched) => WritePayload((ref NdrWriter writer) =>
     {
-        writer.WriteConformantGuidArray(classIds);
+        // IEnumGUID::Next response: varying-conformant GUID array (max + offset + length + elements)
+        // followed by pceltFetched ULONG.
+        writer.WriteUInt32((uint)classIds.Length);
+        writer.WriteUInt32(0);
+        writer.WriteUInt32((uint)classIds.Length);
+        for (int i = 0; i < classIds.Length; i++)
+        {
+            writer.WriteGuid(classIds[i]);
+        }
+
         writer.WriteInt32(fetched);
     });
 
