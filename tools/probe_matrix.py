@@ -235,9 +235,15 @@ def _testserver_matrix() -> dict[str, str]:
 
 
 def _da_3_matrix() -> dict[str, str]:
-    """Matrikon + our DaServer + CttServer (DA 2.05a + DA 3.0)."""
+    """Matrikon + our DaServer + CttServer (DA 2.05a + DA 3.0).
+
+    Matrikon implements IOPCTypeSystem returning a (typically empty)
+    supported list, so cpx.get_type_system is PASS. The other CPX tools
+    still EXPECTED_FAIL unless an OPCBinary dictionary is registered.
+    """
     matrix = _da_205a_matrix()
     matrix["opcclassic.da.read_items_by_id"] = "PASS"
+    matrix["opcclassic.cpx.get_type_system"] = "PASS"
     return matrix
 
 

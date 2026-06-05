@@ -84,8 +84,48 @@ internal static class Program
             services.GetRequiredService<OpcObjectRegistry>(),
             services.GetRequiredService<ILogger<OpcSecuritySampleHost>>()));
 
-        await builder.Build().RunAsync().ConfigureAwait(false);
+        var host = builder.Build();
+
+        uint comClassObjectCookie = 0;
+        bool embedded = SampleServerRegistrationCommand.HasEmbeddingFlag(args);
+        if (embedded && OperatingSystem.IsWindows())
+        {
+            comClassObjectCookie = RegisterScmFactory(host.Services);
+        }
+
+        try
+        {
+            await host.RunAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            if (embedded && OperatingSystem.IsWindows() && comClassObjectCookie != 0)
+            {
+                ComClassObjectRegistrar.RevokeClassObject(comClassObjectCookie);
+                ComClassObjectRegistrar.Uninitialize();
+            }
+        }
         return 0;
+    }
+
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    private static uint RegisterScmFactory(IServiceProvider services)
+    {
+        // The DA-with-Security sample uses the standard OpcDaServerCcw for
+        // the IOPCServer CCW; the IOPCSecurityNT / IOPCSecurityPrivate
+        // interfaces are exposed through the listening transport endpoint
+        // (registered via OpcSecuritySampleHost) and aren't part of the
+        // direct CoCreateInstance return — so the SCM factory just hands
+        // back the DA CCW. Clients that want IOPCSecurityNT QueryInterface
+        // it from the IOPCServer object.
+        var serverImpl = services.GetRequiredService<IOpcDaServer>();
+        ComClassObjectRegistrar.InitializeMultithreaded();
+        uint cookie = ComClassObjectRegistrar.RegisterClassObject(
+            SampleClsid,
+            createInstanceCallback: requestedIid =>
+                Opc.Classic.Da.Hosting.Windows.OpcDaServerCcw.Create(serverImpl, requestedIid));
+        ComClassObjectRegistrar.ResumeClassObjects();
+        return cookie;
     }
 
     private sealed class OpcSecuritySampleHost : IOpcServerHost, IAsyncDisposable

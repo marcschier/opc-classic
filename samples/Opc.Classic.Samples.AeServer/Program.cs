@@ -94,7 +94,7 @@ internal static class Program
     private static uint RegisterScmFactory(IServiceProvider services)
     {
         var serverImpl = services.GetRequiredService<IOpcAeServer>();
-        ComClassObjectRegistrar.InitializeApartmentThreaded();
+        ComClassObjectRegistrar.InitializeMultithreaded();
         uint cookie = ComClassObjectRegistrar.RegisterClassObject(
             SampleClsid,
             createInstanceCallback: requestedIid =>

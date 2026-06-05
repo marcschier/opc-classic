@@ -97,7 +97,7 @@ internal static class Program
         // that hands out an OpcDaServerCcw backed by it, and register the
         // class object with SCM via the ocom-6 callback overload.
         var serverImpl = services.GetRequiredService<IOpcDaServer>();
-        ComClassObjectRegistrar.InitializeApartmentThreaded();
+        ComClassObjectRegistrar.InitializeMultithreaded();
         uint cookie = ComClassObjectRegistrar.RegisterClassObject(
             SampleClsid,
             createInstanceCallback: requestedIid =>

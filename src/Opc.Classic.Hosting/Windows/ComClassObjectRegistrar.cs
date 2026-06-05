@@ -57,6 +57,7 @@ public static unsafe class ComClassObjectRegistrar
     private const int REGCLS_MULTIPLEUSE = 1;
     private const int REGCLS_SUSPENDED = 4;
     private const uint COINIT_APARTMENTTHREADED = 0x2;
+    private const uint COINIT_MULTITHREADED = 0x0;
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
     private static readonly Guid IID_IClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
@@ -67,6 +68,17 @@ public static unsafe class ComClassObjectRegistrar
     /// Initializes the calling thread's COM apartment as STA. Idempotent: subsequent
     /// calls after the first successful init are no-ops at the OS level.
     /// </summary>
+    /// <remarks>
+    /// STA threads require a Win32 message pump to dispatch incoming COM calls.
+    /// If the caller's main thread doesn't run a <c>GetMessage</c>/<c>DispatchMessage</c>
+    /// loop (e.g. when using <c>Host.RunAsync</c> from
+    /// Microsoft.Extensions.Hosting which only runs the .NET hosted-service loop),
+    /// incoming activation requests from SCM will queue forever and the client
+    /// observes <c>CO_E_SERVER_EXEC_FAILURE</c> after the SCM timeout. For most
+    /// OPC server scenarios <see cref="InitializeMultithreaded" /> is the better
+    /// choice — MTA dispatches COM calls on a pool thread without requiring a
+    /// message pump.
+    /// </remarks>
     public static void InitializeApartmentThreaded()
     {
         int hr = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
@@ -75,6 +87,22 @@ public static unsafe class ComClassObjectRegistrar
         {
             throw new InvalidOperationException(
                 $"CoInitializeEx failed with HRESULT 0x{hr:X8}.");
+        }
+    }
+
+    /// <summary>
+    /// Initializes the calling thread's COM apartment as MTA. Idempotent
+    /// at the OS level. MTA is the preferred apartment for non-UI COM
+    /// servers because incoming activation requests from SCM dispatch on
+    /// a pool thread without requiring a Win32 <c>GetMessage</c> loop.
+    /// </summary>
+    public static void InitializeMultithreaded()
+    {
+        int hr = CoInitializeEx(IntPtr.Zero, COINIT_MULTITHREADED);
+        if (hr < 0)
+        {
+            throw new InvalidOperationException(
+                $"CoInitializeEx(MULTITHREADED) failed with HRESULT 0x{hr:X8}.");
         }
     }
 
