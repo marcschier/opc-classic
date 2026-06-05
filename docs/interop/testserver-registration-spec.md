@@ -294,36 +294,63 @@ TestServer revealed the actual symptom chain:
    sent). Our MCP probe times out before this response arrives
    (default 60s).
 
-### Why TestServer fails to register
+### Why TestServer fails to register — DEEP-DIVE (DR3 round 3-5)
 
-Registry audit after the failing run shows several entries the EXE's
-`/RegServer` should have written are missing:
+After extensive bisection:
 
-- `HKLM\SOFTWARE\Classes\CLSID\{F8582CF9-...}\TypeLib` — absent
-- `HKLM\SOFTWARE\Classes\TypeLib\{F8582CF7-...}` — absent (neither
-  64-bit nor 32-bit WoW64 view)
+1. **HKCU shadow registration**: an earlier non-elevated `OpcTestServer_x64.exe /regserver`
+   run from a DIFFERENT build path (`D:\git\marcschier\OPC-Classic-CoreComponents\build\...`)
+   left HKCU entries that override HKLM via HKCR merge. Removing them
+   via `Remove-Item HKCU:\SOFTWARE\Classes\CLSID\{F8582CF9-...}` etc.
+   restored HKLM as the source of truth. **Did NOT fix the activation**.
+2. **DCOM hardening (KB5004442)**: TestServer's `COpcComModule::Run` and
+   `COpcComModule::RegisterFromFiles` called `CoInitializeSecurity` with
+   `RPC_C_AUTHN_LEVEL_PKT` (level 4). Microsoft's June-2021 DCOM
+   hardening REQUIRES `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` (level 5) for
+   servers. **Fixed in `ext/CoreComponents/Source/Shared/OpcUtilityClasses/COpcComModule.cpp`**
+   (both call sites). **Did NOT fix the activation** either — the
+   fundamental issue is elsewhere.
+3. **Comparison with Matrikon (working baseline)**: Foundation TestClient
+   successfully activates Matrikon's CoCreateInstance. Matrikon is
+   registered as a **Windows Service** (`MatrikonOPC Server for
+   Simulation and Testing`, x86 LocalServer process under WoW64). SCM
+   activates services via a different code path than EXE-launch.
+4. **TestServer activation fails for ALL DCOM clients**: Foundation
+   `OpcTestClient_x64.exe` (Microsoft's native DCOM client) gets the
+   identical `0x80080005` failure. Our managed MCP client gets the same.
+   This rules out our managed DCOM stack as the cause.
 
-Without its TypeLib registered, TestServer aborts during
-`OPC_DECLARE_APPLICATION` macro initialization (resolving the
-TypeLib-referenced IIDs) and never reaches `CoRegisterClassObject`.
+### Conclusion
 
-The CLSID/ProgID/LocalServer32 entries ARE present — likely written
-by an ad-hoc `reg add` rather than the EXE's own `/RegServer`. Only
-`/RegServer` writes the TypeLib registration as a side-effect.
+The TestServer C++ EXE has a fundamental activation-time problem that
+prevents it from successfully registering its class factory with SCM
+within the required timeout window, regardless of which DCOM client is
+attempting activation. The issue persists across:
 
-### Fix
+- Fresh `tools/build-testserver.ps1 -Clean` builds.
+- Both binary builds present on the dev box.
+- HKLM-only registration (after HKCU shadow removal).
+- Both Microsoft's native DCOM client and our managed client.
 
-Run `tools\register-testserver.ps1` **elevated** on the dev host. It:
+Root cause is **TestServer-side** (C++ source or DCOM/Windows
+configuration), NOT in our codebase. Fixing it requires either:
 
-- Copies the full proxy/stub DLL set to `%SystemRoot%\System32` and
-  registers each via `regsvr32`.
-- Copies `OpcTestServer_x64.config.xml` alongside the EXE.
-- Runs `OpcCategoryManager.exe /RegServer` for x64 category enumeration.
-- Runs `OpcTestServer_x64.exe /regserver` which writes the missing
-  TypeLib + IID registrations.
+- Source-level debug of TestServer's `COpcComModule::Run` to determine
+  why `CoRegisterClassObject` or its surrounding plumbing aborts.
+- Upstream fix from OPC Foundation `OPC-Classic-CoreComponents`.
+- Switch to a different reference server (Matrikon, which is the only
+  one currently demonstrating end-to-end DA activation).
 
-After running it, re-running the matrix should drop the cascade to
-zero (or surface a different root cause if one exists).
+### Recommended workaround
+
+Use **Matrikon OPC Simulation Server** as the primary DA 2.05a reference
+server in the cross-impl matrix. Foundation `OpcTestClient_x64.exe` and
+our managed MCP probe both successfully activate Matrikon end-to-end.
+Matrikon is the only DA server currently demonstrating full activation
+on this dev box. The `testserver` profile in
+[`tools/probe_matrix.py`](../../tools/probe_matrix.py) remains the
+"strict" reference for when TestServer activation is fixed upstream,
+but the `matrikon` profile is the practical baseline.
 
 ### Diagnostic helper: `OPC_CLASSIC_DCOM_WIRE_DUMP=1`
 
