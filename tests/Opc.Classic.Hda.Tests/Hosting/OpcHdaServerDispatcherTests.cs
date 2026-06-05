@@ -43,11 +43,18 @@ public sealed class OpcHdaServerDispatcherTests
     {
         var server = new StubHdaServer { ValidateResults = [0, OpcResultId.UnknownItemId.Code] };
         var dispatcher = new OpcHdaServerDispatcher(server);
+        // Per [OpcEmitArrayCount, OpcDeferredElements] on IOPCHDA_Server.ValidateItemIDsAsync:
+        // sibling DWORD count, then conformant array of LPWSTR with per-element
+        // referent IDs followed by per-element string bodies (DCE 1.1 §14.3.12.3).
+        // This matches the wire shape opchda_ps.dll (MS-DCOM proxy/stub) emits.
         byte[] request = WritePayload((ref NdrWriter writer) =>
         {
-            writer.WriteUInt32(2);
-            writer.WriteUnicodeStringPtr("Random.Real8");
-            writer.WriteUnicodeStringPtr("Missing.Tag");
+            writer.WriteUInt32(2);             // sibling count (from [OpcEmitArrayCount])
+            writer.WriteUInt32(2);             // array conformance (from [OpcDeferredElements])
+            _ = writer.WriteReferentId();      // per-element referent for element 0
+            _ = writer.WriteReferentId();      // per-element referent for element 1
+            writer.WriteUnicodeString("Random.Real8");
+            writer.WriteUnicodeString("Missing.Tag");
         });
 
         NdrCallResult result = await dispatcher.DispatchAsync(
@@ -57,6 +64,9 @@ public sealed class OpcHdaServerDispatcherTests
             CancellationToken.None);
 
         var reader = new NdrReader(result.ResponsePayload.Span);
+        // [return: OpcUniquePointer] on ValidateItemIDsAsync wraps the array
+        // in a 4-byte unique-pointer referent before the conformance count.
+        _ = reader.TryReadReferentId(out _);
         uint count = reader.ReadUInt32();
         int first = reader.ReadInt32();
         int second = reader.ReadInt32();

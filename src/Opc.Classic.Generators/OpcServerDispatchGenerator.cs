@@ -229,6 +229,7 @@ namespace Opc.Classic.Generators
 
             DetectUniquePointer(parameter, out bool isUniquePointer, out string? underlyingValueType);
             bool emitArrayCount = HasEmitArrayCountAttribute(parameter);
+            bool deferredElements = HasDeferredElementsAttribute(parameter);
             bool fileTimeElements = HasFileTimeElementsAttribute(parameter);
             bool variantElements = HasVariantElementsAttribute(parameter);
             bool refString = HasRefStringAttribute(parameter);
@@ -246,7 +247,8 @@ namespace Opc.Classic.Generators
                 emitArrayCount,
                 fileTimeElements,
                 variantElements,
-                refString));
+                refString,
+                deferredElements));
         }
 
         TaskReturnKind taskReturnKind = ClassifyTaskReturn(method.ReturnType, out string? taskResultType, out string? taskResultMarshallingType);
@@ -324,6 +326,19 @@ namespace Opc.Classic.Generators
         {
             if (attr.AttributeClass is null) { continue; }
             if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcEmitArrayCountAttributeFullName, System.StringComparison.Ordinal))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static bool HasDeferredElementsAttribute(IParameterSymbol parameter)
+    {
+        foreach (var attr in parameter.GetAttributes())
+        {
+            if (attr.AttributeClass is null) { continue; }
+            if (string.Equals(attr.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), "global::" + OpcDeferredElementsAttributeFullName, System.StringComparison.Ordinal))
             {
                 return true;
             }
@@ -575,6 +590,27 @@ namespace Opc.Classic.Generators
                     sb.Append(indent).Append("        for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
                     sb.Append(indent).AppendLine("        {");
                     sb.Append(indent).Append("            ").Append(parameter.Name).Append('[').Append(idxLocal).Append("] = global::Opc.Classic.Ndr.NdrVariantExtensions.ReadVariantElement(ref ").Append(readerLocal).AppendLine(");");
+                    sb.Append(indent).AppendLine("        }");
+                    continue;
+                }
+                // [OpcDeferredElements] on a string[] request parameter: read
+                // the C706 §14.3.12.3 deferred-pile layout that the proxy
+                // emits (max_count + N per-element referent IDs + N
+                // per-element conformant-varying string bodies, no per-
+                // element referent before each body).
+                if (parameter.DeferredElements && string.Equals(parameter.MarshallingType, "global::System.String[]", System.StringComparison.Ordinal))
+                {
+                    string countLocal = parameter.Name + "Count";
+                    string idxLocal = parameter.Name + "Idx";
+                    sb.Append(indent).Append("        int ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
+                    sb.Append(indent).Append("        for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
+                    sb.Append(indent).AppendLine("        {");
+                    sb.Append(indent).Append("            _ = ").Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
+                    sb.Append(indent).AppendLine("        }");
+                    sb.Append(indent).Append("        var ").Append(parameter.Name).Append(" = new global::System.String[").Append(countLocal).AppendLine("];");
+                    sb.Append(indent).Append("        for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
+                    sb.Append(indent).AppendLine("        {");
+                    sb.Append(indent).Append("            ").Append(parameter.Name).Append('[').Append(idxLocal).Append("] = ").Append(readerLocal).AppendLine(".ReadUnicodeString()!;");
                     sb.Append(indent).AppendLine("        }");
                     continue;
                 }
@@ -1481,7 +1517,7 @@ namespace Opc.Classic.Generators
 
     private sealed class ParameterModel
     {
-        public ParameterModel(string name, string resultMemberName, string declaredType, string marshallingType, bool isCancellationToken, RefKind refKind, bool isOpcInterface, bool isUniquePointer = false, string? underlyingValueType = null, bool emitArrayCount = false, bool fileTimeElements = false, bool variantElements = false, bool refString = false)
+        public ParameterModel(string name, string resultMemberName, string declaredType, string marshallingType, bool isCancellationToken, RefKind refKind, bool isOpcInterface, bool isUniquePointer = false, string? underlyingValueType = null, bool emitArrayCount = false, bool fileTimeElements = false, bool variantElements = false, bool refString = false, bool deferredElements = false)
         {
             Name = name;
             ResultMemberName = resultMemberName;
@@ -1496,6 +1532,7 @@ namespace Opc.Classic.Generators
             FileTimeElements = fileTimeElements;
             VariantElements = variantElements;
             RefString = refString;
+            DeferredElements = deferredElements;
         }
 
         public string Name { get; }
@@ -1512,6 +1549,8 @@ namespace Opc.Classic.Generators
         public bool VariantElements { get; }
         /// <summary>True when [OpcRefString] is present — bare conformant string with no referent.</summary>
         public bool RefString { get; }
+        /// <summary>True when [OpcDeferredElements] is present: the array decoder expects per-element referent IDs followed by deferred per-element string bodies (matching the proxy's two-pass write).</summary>
+        public bool DeferredElements { get; }
         public bool IsRequestValue => !IsCancellationToken && RefKind != RefKind.Out;
         public bool IsResponseValue => !IsCancellationToken && (RefKind == RefKind.Out || RefKind == RefKind.Ref);
     }

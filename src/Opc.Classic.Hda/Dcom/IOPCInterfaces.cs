@@ -38,15 +38,18 @@ public partial interface IOPCHDA_Server
 
     /// <summary><c>IOPCHDA_Server::GetItemHandles</c> (opnum 6).</summary>
     [OpcMethod(6)]
-    Task<int[]> GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> GetItemHandlesAsync([OpcEmitArrayCount, OpcDeferredElements] string[] itemIds, int[] clientHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_Server::ReleaseItemHandles</c> (opnum 7).</summary>
     [OpcMethod(7)]
+    [return: OpcUniquePointer]
     Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_Server::ValidateItemIDs</c> (opnum 8).</summary>
     [OpcMethod(8)]
-    Task<int[]> ValidateItemIDsAsync(string[] itemIds, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> ValidateItemIDsAsync([OpcEmitArrayCount, OpcDeferredElements] string[] itemIds, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCHDA_Browser</c> — HDA address-space browse (IID_IOPCHDA_Browser).</summary>
