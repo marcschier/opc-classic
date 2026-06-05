@@ -956,8 +956,11 @@ internal static unsafe class OpcAeServerCcwMethods
         return ptr;
     }
 
-    /// <summary>Native OPC AE <c>OPCEVENTSERVERSTATUS</c> layout for CoTaskMemAlloc.</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    /// <summary>Native OPC AE <c>OPCEVENTSERVERSTATUS</c> layout for CoTaskMemAlloc.
+    /// Natural alignment (no <c>Pack</c>) matches MIDL's default; a packed
+    /// layout would put <c>szVendorInfo</c> at an offset Windows DCOM's
+    /// MIDL stub reads as garbage and resets the wire connection.</summary>
+    [StructLayout(LayoutKind.Sequential)]
     private struct OPCEVENTSERVERSTATUS_NATIVE
     {
         public long ftStartTime;

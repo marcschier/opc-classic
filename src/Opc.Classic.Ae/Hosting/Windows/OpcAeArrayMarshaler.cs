@@ -573,7 +573,11 @@ internal static unsafe class OpcAeArrayMarshaler
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    // OPC AE OPCCONDITIONSTATE: use natural alignment (no Pack) so the
+    // pointer fields align to 8 bytes on x64, matching the MIDL stub.
+    // A packed layout puts pointers at unaligned offsets and Windows DCOM's
+    // proxy/stub reads garbage when marshalling the response.
+    [StructLayout(LayoutKind.Sequential)]
     private struct OPCCONDITIONSTATE_NATIVE
     {
         public ushort wState;

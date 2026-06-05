@@ -424,7 +424,12 @@ internal static unsafe class OpcDaGroupCcwMethods
 
     // ===== Helpers =====
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    // Native OPCITEMDEF/OPCITEMRESULT use natural alignment (no Pack)
+    // so pointer fields land on 8-byte boundaries on x64, matching MIDL's
+    // default. A packed layout caused Windows DCOM's proxy/stub to read
+    // garbage when marshalling AddItems results, closing the wire
+    // connection mid-call (manifests as RPC_S_CALL_FAILED on the client).
+    [StructLayout(LayoutKind.Sequential)]
     private struct OPCITEMDEF_NATIVE
     {
         public IntPtr szAccessPath;
@@ -437,7 +442,7 @@ internal static unsafe class OpcDaGroupCcwMethods
         public ushort wReserved;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    [StructLayout(LayoutKind.Sequential)]
     private struct OPCITEMRESULT_NATIVE
     {
         public uint hServer;

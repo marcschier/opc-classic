@@ -610,11 +610,16 @@ public static unsafe class OpcDaServerCcw
     // ----- COM allocation helpers -----
 
     /// <summary>
-    /// OPC DA's <c>OPCSERVERSTATUS</c> struct laid out for direct CoTaskMemAlloc.
-    /// Wire layout matches the C IDL: 3 FILETIMEs, OPCSERVERSTATE (4), GroupCount/BandWidth (8),
-    /// 4 WORDs, then LPWSTR pointer. <c>Pack = 4</c> matches the x86/x64 COM ABI.
+    /// Native marshalling of <c>OPCSERVERSTATUS</c> as defined in
+    /// <c>ext\inc\opcda.h</c> (MIDL-generated). LayoutKind.Sequential with
+    /// default packing (natural alignment) matches MIDL's default on x64,
+    /// where <c>szVendorInfo</c> (LPWSTR = pointer) needs 8-byte alignment.
+    /// A non-default <c>Pack</c> value would put the pointer at an
+    /// unaligned offset and Windows DCOM's MIDL stub would read garbage
+    /// when marshalling the response, causing the wire connection to be
+    /// closed mid-call (observed as RPC_S_CALL_FAILED on the client side).
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    [StructLayout(LayoutKind.Sequential)]
     private struct OPCSERVERSTATUS_NATIVE
     {
         public long ftStartTime;
