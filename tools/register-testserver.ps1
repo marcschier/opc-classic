@@ -320,8 +320,8 @@ function Copy-TestServerConfig {
     $destination = Join-Path $ExeDirectory $configName
 
     $candidates = @(
-        Join-Path $ArtifactDirectory $configName,
-        Join-Path $PSScriptRoot '..\ext\CoreComponents\Source\Test\TestServer\OpcTestServer.config.xml'
+        (Join-Path $ArtifactDirectory $configName),
+        (Join-Path $PSScriptRoot '..\ext\CoreComponents\Source\Test\TestServer\OpcTestServer.config.xml')
     )
 
     foreach ($candidate in $candidates) {
