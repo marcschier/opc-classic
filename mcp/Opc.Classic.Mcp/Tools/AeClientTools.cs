@@ -17,6 +17,7 @@ using Opc.Classic.Ae;
 using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Dcom;
 using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Remoting;
 using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Discovery;
@@ -845,35 +846,150 @@ internal static class OpcMcpDcomConnectionHelper
         CancellationToken cancellationToken)
     {
         Guid clsid = await ResolveClsidAsync(request, categoryIds, opcScheme, cancellationToken).ConfigureAwait(false);
-        var channelFactory = new DcomCallChannelFactory(new TcpSocketTransportFactory());
-        ICallChannel? activationChannel = null;
+        // Use the legacy IActivation::RemoteActivation (opnum 0) path rather than
+        // the newer IRemoteSCMActivator::RemoteCreateInstance (opnum 4). The former
+        // is the only activation path whose wire format the in-repo encoder produces
+        // correctly. The modern SCM activator's CustomREMOTE_TYPED_HEADER +
+        // ActivationPropertiesIn marshaling per MS-DCOM §2.2.22 has known bugs
+        // (returns E_ACCESSDENIED against KB5004442-hardened managed CCWs and
+        // against many real-world OPC servers). Matches the DA-side pattern in
+        // DaClientTools.DefaultOpcDaConnectionFactory.ConnectAsync.
+        Opc.Classic.Dcom.Activation.ActivationClient? activationClient = null;
         try
         {
             IAuthContext activationAuth = CreateAuthContext(request, clsid, opcScheme);
-            activationChannel = await channelFactory.ConnectAsync(
-                new DnsEndPoint(request.Host, EndpointMapperPort),
-                clsid,
-                activationAuth,
-                cancellationToken).ConfigureAwait(false);
-            byte[] payload = EncodeRemoteCreateInstanceRequest(request.Host, clsid, requestedIid, activationAuth.ProtectionLevel);
-            NdrCallResult activationResult = await activationChannel.InvokeAsync(
-                RemoteScmActivatorInterfaceId,
-                RemoteCreateInstanceOpnum,
-                payload,
-                cancellationToken).ConfigureAwait(false);
-            IOpcInterfaceRef serverRef = DecodeRemoteCreateInstanceResponse(activationResult);
-            EndPoint endpoint = ResolveObjectEndpoint(request.Host, serverRef);
-            ICallChannel serverChannel = await channelFactory.ConnectAsync(
-                endpoint,
-                Guid.Empty,
-                CreateAuthContext(request, clsid, opcScheme),
-                cancellationToken).ConfigureAwait(false);
+            activationClient = await Opc.Classic.Dcom.Activation.ActivationClient.ConnectTcpAsync(
+                request.Host, activationAuth, cancellationToken).ConfigureAwait(false);
+
+            Guid[] requestedIids = { requestedIid };
+            Opc.Classic.Dcom.Activation.RemoteActivationResponse activation =
+                await activationClient.RemoteActivationAsync(
+                    clsid,
+                    new[] { "ncacn_ip_tcp" },
+                    null,
+                    requestedIids,
+                    cancellationToken).ConfigureAwait(false);
+
+            if (activation.Hresult != 0)
+            {
+                throw new InvalidOperationException(
+                    $"IActivation::RemoteActivation returned HRESULT 0x{unchecked((uint)activation.Hresult):X8}.");
+            }
+            if (activation.InterfaceResults is null || activation.InterfaceResults.Count == 0)
+            {
+                throw new InvalidOperationException("IActivation::RemoteActivation returned no per-IID results.");
+            }
+            var primary = activation.InterfaceResults[0];
+            if (primary.Hresult != 0 || primary.ObjRef.Length == 0)
+            {
+                throw new InvalidOperationException(
+                    $"IActivation::RemoteActivation did not return an OBJREF for {requestedIid:D} (per-IID HRESULT 0x{unchecked((uint)primary.Hresult):X8}).");
+            }
+
+            if (!TryDecodeObjRef(primary.ObjRef.Span, out IOpcInterfaceRef? serverRef))
+            {
+                throw new InvalidOperationException("IActivation::RemoteActivation returned an OBJREF that could not be decoded.");
+            }
+
+            EndPoint endpoint = ResolveObjectEndpointFromOxidBindings(request.Host, activation.OxidBindings.Span)
+                ?? ResolveObjectEndpoint(request.Host, serverRef!);
+
+            IAuthContext serverAuth = CreateAuthContext(request, clsid, opcScheme);
+            var transportFactory = new TcpSocketTransportFactory();
+            ICallChannel serverChannel;
+            if (!serverRef!.Ipid.Equals(Guid.Empty))
+            {
+                var transport = await transportFactory.ConnectAsync(endpoint, cancellationToken).ConfigureAwait(false);
+                serverChannel = new DcomCallChannel(
+                    transport,
+                    serverAuth,
+                    serverRef.Ipid,
+                    new[] { requestedIid });
+            }
+            else
+            {
+                var channelFactory = new DcomCallChannelFactory(new TcpSocketTransportFactory());
+                serverChannel = await channelFactory.ConnectAsync(
+                    endpoint,
+                    Guid.Empty,
+                    serverAuth,
+                    new[] { requestedIid },
+                    cancellationToken).ConfigureAwait(false);
+            }
+
+            // Register IRemUnknown routing so QueryInterface / Release path works.
+            if (serverChannel is DcomCallChannel routableChannel
+                && !activation.IpidRemUnknown.Equals(Guid.Empty))
+            {
+                routableChannel.RegisterInterfaceIpid(IRemUnknown.InterfaceId, activation.IpidRemUnknown);
+            }
+
             return (serverChannel, clsid);
         }
         finally
         {
-            await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
+            if (activationClient is not null)
+            {
+                await activationClient.DisposeAsync().ConfigureAwait(false);
+            }
         }
+    }
+
+    private static EndPoint? ResolveObjectEndpointFromOxidBindings(string fallbackHost, ReadOnlySpan<byte> oxidBindings)
+    {
+        // Mirror of DaClientTools.DefaultOpcDaConnectionFactory.ResolveObjectEndpointFromOxidBindings.
+        // Walks the DUALSTRINGARRAY in the activation response to find the first
+        // ncacn_ip_tcp entry that carries an explicit [port] suffix (the OXID
+        // resolver's own entry is port-less and gets skipped).
+        if (oxidBindings.Length < 4)
+        {
+            return null;
+        }
+
+        ushort secOffset = BinaryPrimitives.ReadUInt16LittleEndian(oxidBindings.Slice(2));
+        int idx = 4;
+        int entriesConsumed = 2;
+        while (idx + 2 <= oxidBindings.Length && entriesConsumed < secOffset)
+        {
+            ushort tower = BinaryPrimitives.ReadUInt16LittleEndian(oxidBindings.Slice(idx));
+            idx += 2;
+            entriesConsumed++;
+            if (tower == 0)
+            {
+                return null;
+            }
+            var sb = new System.Text.StringBuilder();
+            while (idx + 2 <= oxidBindings.Length && entriesConsumed < secOffset)
+            {
+                ushort ch = BinaryPrimitives.ReadUInt16LittleEndian(oxidBindings.Slice(idx));
+                idx += 2;
+                entriesConsumed++;
+                if (ch == 0) break;
+                sb.Append((char)ch);
+            }
+            if (tower != TcpTowerId)
+            {
+                continue;
+            }
+            string address = sb.ToString();
+            int bracket = address.LastIndexOf('[');
+            if (bracket < 0 || !address.EndsWith(']'))
+            {
+                continue;
+            }
+            string portStr = address.Substring(bracket + 1, address.Length - bracket - 2);
+            if (!int.TryParse(portStr, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int port))
+            {
+                continue;
+            }
+            string host = address.Substring(0, bracket);
+            if (string.IsNullOrWhiteSpace(host))
+            {
+                host = fallbackHost;
+            }
+            return new DnsEndPoint(host, port);
+        }
+        return null;
     }
 
     private static async Task<Guid> ResolveClsidAsync(
