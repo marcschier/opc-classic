@@ -7,11 +7,75 @@ See docs/interop/probe-matrikon.json + probe-testserver.json.
 ## Headline numbers
 
 - Matrikon: **25/95 tools OK**; 70 FAIL. ALL DA tools pass against live Matrikon Simulation Server when using `--da-clsid F8582CF2-88FB-11D0-B850-00C0F0104305` (direct activation). The `--da-progid` path currently fails because OPCEnum's data port rejects `IOPCServerList2` and `IOPCServerList` binds with `PROVIDER_REJECTION; ABSTRACT_SYNTAX_NOT_SUPPORTED` (see Issue D below).
-- TestServer: 10/95 OK (session + disconnect-without-connect only); 85 FAIL; da.connect timeout-blocked at 15s (CO_E_SERVER_EXEC_FAILURE).
+- **TestServer: 104/104 MATCH, 0 REGRESSION, 0 UNEXPECTED_PASS, 0 MISSING** (commit `a18f8c29`). Full cross-impl matrix green end-to-end via `tools/run-cross-impl-matrix.ps1 -Profile testserver`. Foundation `OpcTestClient_x64.exe` also activates successfully and runs the full DA 2.x lifecycle exerciser (GetStatus, AddGroup, AddItems, read/write). See [Issue E](#issue-e-testserver-config-xml-clsid-bug-fixed-a18f8c29) for the root cause + fix.
 
 **Track AY+ (commit `6a8f32ce` + follow-up) closed da.get_properties by fixing three stacking NDR VARIANT codec bugs (embedded VARIANT is a `[unique]` pointer, missing 4-byte ULONG discriminator before union body, FLAGGED_WORD_BLOB missing max_count).**
 
 **Track AY++ (commit `7fce8b45`) closed da.read_sync and da.poll_subscription by refactoring `OPCITEMSTATE` decode to the deferred-pile model for the same `[unique] VARIANT` pattern.**
+
+**Track DR3 round 6 (commit `a18f8c29`) closed the TestServer profile by identifying + working around the upstream OPC Foundation TestServer source bug where `__uuidof(OpcTestServer_x64)` (F8582CF8 from IDL coclass) ≠ `OPC_IMPLEMENT_LOCAL_SERVER` GUID (F8582CF9 the runtime CLSID). The fix runs in `tools/register-testserver.ps1` and patches the `<CLSID>` element of TestServer's auto-generated `OpcTestServer_x64.config.xml`. See Issue E below.**
+
+## Issue E: TestServer config XML CLSID bug (FIXED `a18f8c29`)
+
+The OPC Foundation TestServer source has a long-standing inconsistency
+between two CLSIDs that should be identical but aren't:
+
+| Source | UUID | Where |
+| --- | --- | --- |
+| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | `Source/Test/TestServer/OpcTestServer.idl:45` |
+| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | `Source/Test/TestServer/OpcTestServer.cpp:53` |
+
+The class table macro `OPC_CLASS_TABLE_ENTRY(COpcTestServer, OpcTestServer_x64, ...)`
+expands to `__uuidof(OpcTestServer_x64)` which resolves to the IDL coclass UUID (F8582CF8).
+But the AppID, HKLM `CLSID` registration, and Windows DCOM SCM activation all use the
+`OPC_IMPLEMENT_LOCAL_SERVER` GUID (F8582CF9).
+
+On the first `OpcTestServer_x64.exe /regserver`, the EXE writes a
+`<SelfRegInfo>` block into `OpcTestServer_x64.config.xml` populating
+`<CLSID>` with the value from `pClasses[0].pClsid` (which is the IDL
+coclass UUID F8582CF8). On every subsequent activation,
+`RegisterFromFiles` reads `<CLSID>=F8582CF8` and registers the class
+factory under F8582CF8. SCM waits for F8582CF9. They never meet,
+SCM times out, returns `CO_E_SERVER_EXEC_FAILURE` (0x80080005).
+
+**Fix**: `tools/register-testserver.ps1` now patches the `<CLSID>`
+element of `OpcTestServer_x64.config.xml` after copying it alongside
+the EXE. After patching, `pClasses[0].pClsid` becomes F8582CF9 and
+the class factory registers under the SCM-expected CLSID.
+
+Validated via:
+
+- Foundation `OpcTestClient_x64.exe` successfully `CoCreateInstance` +
+  `GetStatus` + AddGroup + AddItem.
+- `tools/run-cross-impl-matrix.ps1 -Profile testserver` reports
+  104 MATCH / 0 REGRESSION / 0 UNEXPECTED_PASS / 0 MISSING.
+
+## TestServer (DA 2.05a + Track AB5 DA 3.0): per-tool outcome
+
+After applying `tools/register-testserver.ps1` (Issue E fix) and the
+BH3 ACL grant (`tools/grant-testserver-acl.ps1`), every applicable
+MCP tool passes against TestServer. The matrix invocation is:
+
+```powershell
+.\tools\run-cross-impl-matrix.ps1 -Profile testserver
+# expected: testserver  da  104  0  0  0
+```
+
+The full per-tool outcome list mirrors the Matrikon table below; key
+TestServer-specific notes:
+
+- `da.read_items_by_id` (IOPCItemIO, DA 3.0) **PASS** — TestServer
+  advertises CATID_OPCDAServer30 (Track AB5 divergence vs. upstream
+  OPC-Classic-CoreComponents). Returns `hr=0xC0040007 (OPC_E_UNKNOWNITEMID)`
+  for unknown items, which proves the interface marshalling is healthy
+  end-to-end.
+- `cpx.get_type_system` **PASS** — TestServer implements `IOPCTypeSystem`;
+  returns the supported-type-system list (typically just OPCBinary).
+- All `hda.*`, `ae.*`, `batch.*`, `commands.*`, `dx.*`, `xmlda.*`
+  NOT_APPLICABLE — TestServer is DA-only.
+- All `security.*` EXPECTED_FAIL (`E_NOINTERFACE`) — TestServer doesn't
+  implement `IOPCSecurityNT`/`IOPCSecurityPrivate` (only the
+  `Opc.Classic.Samples.OpcSecurityServer` `security-da` profile does).
 
 ## Matrikon DA: per-tool outcome (with `--da-clsid` direct activation)
 

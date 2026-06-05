@@ -53,14 +53,14 @@ Cell legend:
 
 | Client ↓ \ Server → | `testserver` | `matrikon` | `samples-da` | `ctt-da` | `samples-hda` | `samples-ae` | `security-da` |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MCP probe (DA tools, DA 2.05a subset) | 🚧 TODO 🔒 | ✅ (26/95 OK, 0 DA failures) | 🚧 TODO | 🚧 TODO | ⛔ wrong spec | ⛔ wrong spec | 🚧 TODO 🔒 |
-| MCP probe (DA tools, DA 3.0 only) | ❌ NOINTERFACE | ✅ | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | ❌ NOINTERFACE |
+| MCP probe (DA tools, DA 2.05a subset) | ✅ **104/0** (a18f8c29) | ✅ (26/95 OK, 0 DA failures) | 🚧 TODO | 🚧 TODO | ⛔ wrong spec | ⛔ wrong spec | 🚧 TODO 🔒 |
+| MCP probe (DA tools, DA 3.0 IOPCItemIO) | ✅ (TestServer Track AB5 divergence) | ✅ | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | ❌ NOINTERFACE |
 | MCP probe (HDA tools) | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ | ⛔ |
 | MCP probe (AE tools) | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ |
 | MCP probe (security tools) | ❌ | ❌ | ❌ | ❌ | ⛔ | ⛔ | 🚧 TODO 🔒 |
 | MCP probe (capture tools) | ✅ local | ✅ local | ✅ local | ✅ local | ✅ local | ✅ local | ✅ local |
-| OPC Foundation `OpcTestClient_x64.exe` | 🚧 TODO 🔒 | n/a (vendor server) | 🚧 TODO | 🚧 TODO | ⛔ DA-only client | ⛔ DA-only client | 🚧 TODO |
-| Managed `DaClient` sample | 🚧 TODO 🔒 | 🚧 TODO | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | 🚧 TODO |
+| OPC Foundation `OpcTestClient_x64.exe` | ✅ (a18f8c29) | ✅ (verified GetStatus + AddGroup + AddItems) | 🚧 TODO | 🚧 TODO | ⛔ DA-only client | ⛔ DA-only client | 🚧 TODO |
+| Managed `DaClient` sample | 🚧 TODO | 🚧 TODO | 🚧 TODO | 🚧 TODO | ⛔ | ⛔ | 🚧 TODO |
 | Managed `AeClient` sample | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ |
 | Managed `HdaClient` sample | ⛔ | ⛔ | ⛔ | ⛔ | 🚧 TODO | ⛔ | ⛔ |
 
