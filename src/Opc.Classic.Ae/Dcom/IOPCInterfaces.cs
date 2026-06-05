@@ -313,6 +313,7 @@ public partial interface IOPCEventSink
 
 /// <summary><c>IEnumString</c> — COM string enumerator returned by AE browser methods.</summary>
 [OpcInterface("00000101-0000-0000-C000-000000000046")]
+[GenerateOpcProxy]
 public partial interface IEnumString
 {
 }

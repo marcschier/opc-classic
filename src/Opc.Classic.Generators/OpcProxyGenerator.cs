@@ -831,11 +831,19 @@ namespace Opc.Classic.Generators
 
     private static void EmitInvokeCoreSignature(StringBuilder sb, string indent, MethodModel method)
     {
-        sb.Append(indent).Append("        static async "); if (ResponseItemCount(method) > 0) { sb.Append("global::System.Threading.Tasks.Task<").Append(ResponseValueType(method)).Append('>'); } else { sb.Append("global::System.Threading.Tasks.Task"); } sb.Append(' ').Append(InvokeCoreName(method)).AppendLine("(");
+        // Drop 'static' when an out param is an OpcInterface so the local
+        // function can construct sub-proxies via the enclosing instance's
+        // _channel field. Static local functions cannot capture instance
+        // state, but non-static ones inherit the closure.
+        string staticOrInstance = MethodHasOpcInterfaceOutput(method) ? string.Empty : "static ";
+        sb.Append(indent).Append("        ").Append(staticOrInstance).Append("async ");
+        if (ResponseItemCount(method) > 0) { sb.Append("global::System.Threading.Tasks.Task<").Append(ResponseValueType(method)).Append('>'); } else { sb.Append("global::System.Threading.Tasks.Task"); } sb.Append(' ').Append(InvokeCoreName(method)).AppendLine("(");
     }
     private static void EmitDecodeResponseLocalFunction(StringBuilder sb, string indent, MethodModel method, string responsePayloadLocal, string responseSpanLocal, string readerLocal)
     {
-        sb.Append(indent).Append("        static ").Append(ResponseValueType(method)).Append(' ').Append(DecodeResponseName(method)).Append("(global::System.ReadOnlyMemory<byte> ").Append(responsePayloadLocal).AppendLine(")"); sb.Append(indent).AppendLine("        {"); sb.Append(indent).Append("            var ").Append(responseSpanLocal).Append(" = ").Append(responsePayloadLocal).AppendLine(".Span;"); sb.Append(indent).Append("            var ").Append(readerLocal).Append(" = new global::Opc.Classic.Ndr.NdrReader(").Append(responseSpanLocal).AppendLine(");"); EmitCodecReadResponse(sb, indent, readerLocal, method, responsePayloadLocal, responseSpanLocal); sb.Append(indent).AppendLine("        }");
+        // See EmitInvokeCoreSignature for the rationale on the static/instance toggle.
+        string staticOrInstance = MethodHasOpcInterfaceOutput(method) ? string.Empty : "static ";
+        sb.Append(indent).Append("        ").Append(staticOrInstance).Append(ResponseValueType(method)).Append(' ').Append(DecodeResponseName(method)).Append("(global::System.ReadOnlyMemory<byte> ").Append(responsePayloadLocal).AppendLine(")"); sb.Append(indent).AppendLine("        {"); sb.Append(indent).Append("            var ").Append(responseSpanLocal).Append(" = ").Append(responsePayloadLocal).AppendLine(".Span;"); sb.Append(indent).Append("            var ").Append(readerLocal).Append(" = new global::Opc.Classic.Ndr.NdrReader(").Append(responseSpanLocal).AppendLine(");"); EmitCodecReadResponse(sb, indent, readerLocal, method, responsePayloadLocal, responseSpanLocal); sb.Append(indent).AppendLine("        }");
     }
     private static string InvokeCoreName(MethodModel method) => "__opcInvoke" + method.Name + "CoreAsync";
 
@@ -1205,6 +1213,38 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("}");
     }
 
+    /// <summary>
+    /// Emits decode code for a single <c>out IOpcInterface</c> parameter: reads
+    /// the wrapped MInterfacePointer OBJREF, registers its IPID against the
+    /// requested IID on the enclosing <c>_channel</c>, and constructs the
+    /// generated <c>{InterfaceName}ClientProxy</c> wrapping that channel. The
+    /// caller is responsible for ensuring the surrounding InvokeCore/Decode
+    /// local function is non-static (see <see cref="MethodHasOpcInterfaceOutput"/>).
+    /// </summary>
+    private static void EmitOpcInterfaceSubProxyRead(
+        StringBuilder sb,
+        string statementIndent,
+        string readerLocal,
+        string declaredType,
+        string targetLocal)
+    {
+        string nonNullableType = declaredType.EndsWith("?", System.StringComparison.Ordinal)
+            ? declaredType.Substring(0, declaredType.Length - 1)
+            : declaredType;
+        string clientProxyType = nonNullableType + "ClientProxy";
+        string interfaceIdExpr = nonNullableType + ".InterfaceId";
+        string objRefLocal = targetLocal + "__objRef";
+        string chanLocal = targetLocal + "__channel";
+        sb.Append(statementIndent).Append("var ").Append(objRefLocal)
+            .Append(" = global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Read(ref ").Append(readerLocal).AppendLine(");");
+        sb.Append(statementIndent).Append("var ").Append(chanLocal)
+            .Append(" = global::Opc.Classic.Dcom.OpcSubProxyHelper.RegisterAndYieldChannel(_channel, ")
+            .Append(interfaceIdExpr).Append(", ").Append(objRefLocal).AppendLine(");");
+        sb.Append(statementIndent).Append(nonNullableType).Append(' ').Append(targetLocal)
+            .Append(" = ").Append(chanLocal).Append(" is null ? null! : new ").Append(clientProxyType)
+            .Append('(').Append(chanLocal).AppendLine(");");
+    }
+
     private static void EmitCodecReadLocal(
         StringBuilder sb,
         string statementIndent,
@@ -1220,12 +1260,12 @@ namespace Opc.Classic.Generators
     {
         if (isOpcInterface || IsOpcInterfaceRefType(marshallingType))
         {
-            // [out, iid_is(riid)] LPUNKNOWN *ppUnk: a unique pointer to an
-            // MInterfacePointer wrapper (MS-DCOM §2.2.1.10) containing an
-            // OBJREF. Opt-in via [OpcUniquePointer] on the out/return symbol so
-            // legacy "raw OBJREF on the wire" call paths (e.g. inside our
-            // loopback path which doesn't yet round-trip the wrapper) continue
-            // to use the unwrapped codec.
+            if (isOpcInterface)
+            {
+                EmitOpcInterfaceSubProxyRead(sb, statementIndent, readerLocal, declaredType, targetLocal);
+                return;
+            }
+
             string interfaceRead = isUniquePointer
                 ? FormatMInterfacePointerReadExpression(readerLocal, declaredType)
                 : FormatInterfaceReadExpression(readerLocal, declaredType);
@@ -1379,6 +1419,31 @@ namespace Opc.Classic.Generators
         }
 
         return count;
+    }
+
+    /// <summary>
+    /// Returns true if the method has any out-parameter or return-value that is an
+    /// IOpcInterface (real interface type, not the raw IOpcInterfaceRef). In that
+    /// case the proxy generator emits the InvokeCore/Decode local functions as
+    /// non-static so they can capture the instance <c>_channel</c> field via
+    /// closure and construct sub-proxies for the returned interface OBJREFs.
+    /// </summary>
+    private static bool MethodHasOpcInterfaceOutput(MethodModel method)
+    {
+        if (method.TaskResultIsOpcInterface)
+        {
+            return true;
+        }
+
+        foreach (var parameter in method.Parameters)
+        {
+            if (parameter.IsResponseValue && parameter.IsOpcInterface)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static string ResponseValueType(MethodModel method)
