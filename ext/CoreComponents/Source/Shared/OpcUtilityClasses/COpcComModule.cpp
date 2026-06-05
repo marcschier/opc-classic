@@ -35,11 +35,75 @@
 #include "COpcList.h"
 #include "COpcMap.h"
 #include "COpcXmlDocument.h"
+#include <stdio.h>
+#include <time.h>
 
 //==============================================================================
 // Static Data
 
 static COpcComModule* g_pModule = NULL;
+
+//==============================================================================
+// Diagnostic helper (Opc.Classic addition)
+//
+// SCM-launched OOP servers run in session 0 with no console / no parent
+// stdout / no debugger attached. When activation fails with
+// CO_E_SERVER_EXEC_FAILURE the only signal is the Windows Event Log
+// 10010 ("server did not register with DCOM"). To make the startup path
+// inspectable we append every diagnostic milestone to a fixed file
+// path that any user (including the SYSTEM-launched -Embedding process)
+// can write to.
+//
+// Enable by setting OPC_CLASSIC_TESTSERVER_DIAG=1 in the launching
+// environment OR by leaving the default ALWAYS-ON sink which writes to
+// %ProgramData%\OpcClassic\TestServer_diag.log (created on demand,
+// world-writable so SCM-launched SYSTEM and user-launched probes both
+// land in the same file). Each entry includes a millisecond-precision
+// timestamp and the current process id for ordering across runs.
+
+static void OpcDiagLog(const char* tag, const char* msg)
+{
+    // Opc.Classic: gated diagnostic sink. Set OPC_CLASSIC_TESTSERVER_DIAG=1
+    // in the environment to capture every startup milestone to
+    // %ProgramData%\OpcClassic\TestServer_diag.log. Used to diagnose
+    // SCM-launched activation failures (where no console / parent stdout
+    // is available). When the env var is unset (the default) this is a
+    // single GetEnvironmentVariable call with no IO.
+    char gate[8];
+    DWORD glen = GetEnvironmentVariableA("OPC_CLASSIC_TESTSERVER_DIAG", gate, sizeof(gate));
+    if (glen == 0 || gate[0] != '1')
+    {
+        return;
+    }
+    SYSTEMTIME st;
+    GetSystemTime(&st);
+    char path[MAX_PATH];
+    DWORD len = GetEnvironmentVariableA("ProgramData", path, MAX_PATH);
+    if (len == 0 || len >= MAX_PATH)
+    {
+        strcpy_s(path, "C:\\ProgramData");
+    }
+    strcat_s(path, "\\OpcClassic");
+    CreateDirectoryA(path, NULL);
+    strcat_s(path, "\\TestServer_diag.log");
+    FILE* f = NULL;
+    if (fopen_s(&f, path, "ab") != 0 || f == NULL)
+    {
+        return;
+    }
+    fprintf(f, "%04u-%02u-%02uT%02u:%02u:%02u.%03uZ pid=%u tag=%s msg=%s\r\n",
+        st.wYear, st.wMonth, st.wDay,
+        st.wHour, st.wMinute, st.wSecond, st.wMilliseconds,
+        GetCurrentProcessId(), tag, msg);
+    fclose(f);
+}
+
+static void OpcDiagLogHR(const char* tag, const char* phase, HRESULT hr)
+{
+    char buf[160];
+    sprintf_s(buf, "%s hr=0x%08X", phase, (unsigned)hr);
+    OpcDiagLog(tag, buf);
+}
 
 //==============================================================================
 // Local Declarations
@@ -99,12 +163,14 @@ OPCUTILS_API DWORD OpcWinMain(
 )
 {
     OPC_ASSERT(pModule != NULL);
+    OpcDiagLog("OpcWinMain", "entered");
 
     g_pModule = pModule;
 
     DWORD dwResult = g_pModule->WinMain(hInstance, lpCmdLine);
 
     g_pModule = NULL;
+    OpcDiagLog("OpcWinMain", "leaving");
 
     return dwResult;
 }
@@ -273,6 +339,7 @@ DWORD COpcComModule::WinMain(
     LPTSTR    lpCmdLine
 )
 {
+    OpcDiagLog("WinMain", "entered");
 	m_hModule = hInstance;
 
     // parse command line arguments.
@@ -294,13 +361,13 @@ DWORD COpcComModule::WinMain(
             COpcString cFlags = ((COpcString&)cText).ToLower();
 
             // register module as local server.
-            if (cFlags== _T("regserver")) return RegisterServer(false);
+            if (cFlags== _T("regserver")) { OpcDiagLog("WinMain", "regserver branch"); return RegisterServer(false); }
         
             // register module as service.
-            if (cFlags== _T("service")) return RegisterServer(true);
+            if (cFlags== _T("service")) { OpcDiagLog("WinMain", "service branch"); return RegisterServer(true); }
         
             // unregister module.
-            if (cFlags == _T("unregserver")) return UnregisterServer();
+            if (cFlags == _T("unregserver")) { OpcDiagLog("WinMain", "unregserver branch"); return UnregisterServer(); }
         }
     }
 
@@ -317,12 +384,15 @@ DWORD COpcComModule::WinMain(
 	// enter the main execution loop when running as an EXE server.
     if (!bService)
 	{
+        OpcDiagLog("WinMain", "calling Run()");
 		Run();
+        OpcDiagLog("WinMain", "Run() returned");
 	}
 
 	// start the service main thread when running as a service.
 	else
 	{
+        OpcDiagLog("WinMain", "service branch (LocalService present)");
         OpcFree(tsValue);
 
         // initialize status structure.
@@ -408,6 +478,7 @@ void COpcComModule::EventHandler(DWORD fdwControl)
 // Run
 void COpcComModule::Run()
 {
+    OpcDiagLog("Run", "entered");
     HRESULT hResult = S_OK;
 
     // record service control thread.
@@ -415,9 +486,11 @@ void COpcComModule::Run()
 
     // intialize thread as free threaded service.
 	hResult = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    OpcDiagLogHR("Run", "CoInitializeEx", hResult);
 
     if (FAILED(hResult))
     {
+        OpcDiagLog("Run", "exit on CoInitializeEx failure");
         return;
     }
 
@@ -425,9 +498,11 @@ void COpcComModule::Run()
 	COpcSecurity cSecurity;
 
     hResult = cSecurity.InitializeFromThreadToken();
+    OpcDiagLogHR("Run", "InitializeFromThreadToken", hResult);
 
     if (FAILED(hResult))
     {
+        OpcDiagLog("Run", "exit on token init failure");
         return;
     }
 
@@ -442,27 +517,33 @@ void COpcComModule::Run()
 	    NULL,
 	    EOAC_NONE,
 	    NULL);
+    OpcDiagLogHR("Run", "CoInitializeSecurity", hResult);
 
     if (FAILED(hResult))
     {
 		// security may have already been initialized when registering classes from config file.
 		if (hResult != RPC_E_TOO_LATE)
 		{
+            OpcDiagLog("Run", "exit on CoInitializeSecurity failure (not RPC_E_TOO_LATE)");
 	        return;
 		}
+        OpcDiagLog("Run", "CoInitializeSecurity returned RPC_E_TOO_LATE (already initialized) -- continuing");
     }
 
     DWORD pdwRegister[256];
 
     // register class objects.
+    OpcDiagLog("Run", "calling OpcRegisterClassObjects");
     hResult = OpcRegisterClassObjects(
         m_pClasses, 
         CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER, 
         REGCLS_MULTIPLEUSE,
         pdwRegister);
+    OpcDiagLogHR("Run", "OpcRegisterClassObjects", hResult);
 
     if (FAILED(hResult))
     {
+        OpcDiagLog("Run", "exit on OpcRegisterClassObjects failure");
         return;
     }
 	
@@ -491,6 +572,7 @@ void COpcComModule::Run()
 		SetServiceStatus(m_hServiceStatus, &m_cServiceStatus);
 	}
 
+    OpcDiagLog("Run", "entering message pump");
     TRY
     {
         // enter message loop.
@@ -500,6 +582,7 @@ void COpcComModule::Run()
     CATCH
     {
     }
+    OpcDiagLog("Run", "exited message pump");
 	
 	// revoke wrapped classes.
 	if (m_pWrappedClasses != NULL)
@@ -512,6 +595,7 @@ void COpcComModule::Run()
 
     // unregister com libraries.
 	CoUninitialize();
+    OpcDiagLog("Run", "leaving");
 }
 
 // RegisterServer
@@ -547,15 +631,19 @@ HRESULT COpcComModule::UnregisterServer()
 // RegisterFromFiles
 HRESULT COpcComModule::RegisterFromFiles(HINSTANCE hModule)
 {
-    CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    OpcDiagLog("RegisterFromFiles", "entered");
+    HRESULT hr0 = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    OpcDiagLogHR("RegisterFromFiles", "CoInitializeEx", hr0);
 	
     // create a NULL DACL which will allow access to everyone.
 	COpcSecurity cSecurity;
 
     HRESULT hResult = cSecurity.InitializeFromThreadToken();
+    OpcDiagLogHR("RegisterFromFiles", "InitializeFromThreadToken", hResult);
 
     if (FAILED(hResult))
     {
+        OpcDiagLog("RegisterFromFiles", "exit on token init failure");
         return hResult;
     }
 
@@ -570,9 +658,11 @@ HRESULT COpcComModule::RegisterFromFiles(HINSTANCE hModule)
 	    NULL,
 	    EOAC_NONE,
 	    NULL);
+    OpcDiagLogHR("RegisterFromFiles", "CoInitializeSecurity", hResult);
 
     if (FAILED(hResult))
     {
+       OpcDiagLog("RegisterFromFiles", "exit on CoInitializeSecurity failure");
        return hResult;
     }
 
@@ -582,6 +672,7 @@ HRESULT COpcComModule::RegisterFromFiles(HINSTANCE hModule)
     GUID          cAppID;
 
     // get classes from config file(s).
+    OpcDiagLog("RegisterFromFiles", "calling GetClassesFromFiles");
     TOpcClassTableEntry* pClassesFromFile = GetClassesFromFiles(
 		hModule, 
 		m_pClasses,
@@ -590,6 +681,7 @@ HRESULT COpcComModule::RegisterFromFiles(HINSTANCE hModule)
 		cApplicationDescription,
 		cAppID
 	);
+    OpcDiagLog("RegisterFromFiles", pClassesFromFile != NULL ? "GetClassesFromFiles returned non-null" : "GetClassesFromFiles returned NULL -- using defaults");
 
 	// check for error reading from file - use defaults.
 	if (pClassesFromFile == NULL)

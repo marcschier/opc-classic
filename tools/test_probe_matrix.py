@@ -53,20 +53,22 @@ class MatrixSmokeTests(unittest.TestCase):
         ):
             self.assertIn(required, names)
 
-    def test_testserver_profile_marks_iopcitemio_as_expected_fail(self) -> None:
-        # IOPCItemIO is DA 3.0 -- TestServer is DA 2.05a only.
-        expected, verdict = probe_matrix.classify(
-            "testserver", "opcclassic.da.read_items_by_id", success=False)
-        self.assertEqual(expected, "EXPECTED_FAIL")
-        self.assertEqual(verdict, "MATCH")
-
-    def test_testserver_unexpected_pass_when_da3_tool_succeeds(self) -> None:
-        # If TestServer somehow returned a successful response to a DA 3.0
-        # tool, the matrix should flag it as UNEXPECTED_PASS (informational).
+    def test_testserver_profile_marks_iopcitemio_as_pass(self) -> None:
+        # TestServer (per our Track AB5 divergence) advertises both
+        # CATID_OPCDAServer20 AND CATID_OPCDAServer30 — so it implements
+        # IOPCItemIO and read_items_by_id should succeed.
         expected, verdict = probe_matrix.classify(
             "testserver", "opcclassic.da.read_items_by_id", success=True)
-        self.assertEqual(expected, "EXPECTED_FAIL")
-        self.assertEqual(verdict, "UNEXPECTED_PASS")
+        self.assertEqual(expected, "PASS")
+        self.assertEqual(verdict, "MATCH")
+
+    def test_testserver_regression_when_da3_tool_fails(self) -> None:
+        # If TestServer regresses and IOPCItemIO stops working, the
+        # matrix should flag it.
+        expected, verdict = probe_matrix.classify(
+            "testserver", "opcclassic.da.read_items_by_id", success=False)
+        self.assertEqual(expected, "PASS")
+        self.assertEqual(verdict, "REGRESSION")
 
     def test_matrikon_profile_marks_iopcitemio_as_pass(self) -> None:
         # Matrikon is DA 3.0 capable -- IOPCItemIO should pass.
@@ -124,12 +126,14 @@ class MatrixSmokeTests(unittest.TestCase):
     def test_annotate_writes_columns_in_place(self) -> None:
         results = [
             {"tool": "opcclassic.da.get_status", "success": True, "args": {}, "error": None, "summary": "ok"},
-            {"tool": "opcclassic.da.read_items_by_id", "success": False, "args": {}, "error": "E_NOINTERFACE", "summary": ""},
+            # security-da profile classifies hda.connect as NOT_APPLICABLE.
+            # Use that to exercise the EXPECTED_FAIL/NOT_APPLICABLE annotation.
+            {"tool": "opcclassic.hda.connect", "success": False, "args": {}, "error": "wrong spec", "summary": ""},
         ]
-        probe_matrix.annotate(results, "testserver")
+        probe_matrix.annotate(results, "security-da")
         self.assertEqual(results[0]["expectedOutcome"], "PASS")
         self.assertEqual(results[0]["verdict"], "MATCH")
-        self.assertEqual(results[1]["expectedOutcome"], "EXPECTED_FAIL")
+        self.assertEqual(results[1]["expectedOutcome"], "NOT_APPLICABLE")
         self.assertEqual(results[1]["verdict"], "MATCH")
 
     def test_annotate_noop_when_profile_is_none(self) -> None:
@@ -147,8 +151,10 @@ class MatrixSmokeTests(unittest.TestCase):
         self.assertTrue(probe_matrix.has_regressions(results))
 
     def test_has_regressions_false_when_only_expected_fail(self) -> None:
+        # Security tools against the bare testserver profile are
+        # EXPECTED_FAIL; failures match expectation.
         results = [
-            {"tool": "opcclassic.da.read_items_by_id", "success": False, "args": {}, "error": "E_NOINTERFACE", "summary": ""},
+            {"tool": "opcclassic.security.logon", "success": False, "args": {}, "error": "E_NOINTERFACE", "summary": ""},
         ]
         probe_matrix.annotate(results, "testserver")
         self.assertFalse(probe_matrix.has_regressions(results))
@@ -156,8 +162,8 @@ class MatrixSmokeTests(unittest.TestCase):
     def test_summarize_verdicts_counts_all_verdict_kinds(self) -> None:
         results = [
             {"tool": "opcclassic.da.get_status", "success": True, "args": {}, "error": None, "summary": ""},
-            {"tool": "opcclassic.da.read_items_by_id", "success": False, "args": {}, "error": "x", "summary": ""},
-            {"tool": "opcclassic.hda.connect", "success": False, "args": {}, "error": "x", "summary": ""},
+            {"tool": "opcclassic.security.logon", "success": False, "args": {}, "error": "E_NOINTERFACE", "summary": ""},
+            {"tool": "opcclassic.hda.connect", "success": False, "args": {}, "error": "wrong spec", "summary": ""},
         ]
         probe_matrix.annotate(results, "testserver")
         summary = probe_matrix.summarize_verdicts(results)

@@ -327,13 +327,32 @@ function Copy-TestServerConfig {
     foreach ($candidate in $candidates) {
         if (Test-Path -LiteralPath $candidate) {
             $resolved = (Resolve-Path -LiteralPath $candidate).Path
-            if ($resolved -ieq (Resolve-Path -LiteralPath $destination -ErrorAction SilentlyContinue).Path) {
+            $alreadyInPlace = ($resolved -ieq (Resolve-Path -LiteralPath $destination -ErrorAction SilentlyContinue).Path)
+            if (-not $alreadyInPlace) {
+                Write-Host "  Copying $configName from $resolved to $ExeDirectory"
+                Copy-Item -LiteralPath $resolved -Destination $destination -Force
+            } else {
                 Write-Host "  $configName already in place beside the EXE."
-                return
             }
-
-            Write-Host "  Copying $configName from $resolved to $ExeDirectory"
-            Copy-Item -LiteralPath $resolved -Destination $destination -Force
+            # OPC Foundation TestServer source bug: the auto-generated
+            # <SelfRegInfo>/<CLSID> element written by /regserver uses the
+            # IDL coclass UUID F8582CF8-... but the runtime CoRegisterClassObject
+            # uses the OPC_IMPLEMENT_LOCAL_SERVER UUID F8582CF9-... Without
+            # this patch the class factory registers under the WRONG CLSID
+            # (the coclass UUID) and SCM activation of the registered
+            # F8582CF9 CLSID times out with CO_E_SERVER_EXEC_FAILURE.
+            # See docs/interop/testserver-registration-spec.md for the full
+            # diagnostic trace.
+            if (Test-Path -LiteralPath $destination) {
+                $content = Get-Content -Raw -LiteralPath $destination
+                $patched = $content -replace '<CLSID>\{F8582CF8-88FB-11DA-A5ED-0060B0692061\}</CLSID>', '<CLSID>{F8582CF9-88FB-11DA-A5ED-0060B0692061}</CLSID>'
+                if ($patched -ne $content) {
+                    Write-Host "  Patching <CLSID> in $configName: F8582CF8 -> F8582CF9 (OPC_IMPLEMENT_LOCAL_SERVER alignment)"
+                    # [IO.File]::WriteAllText (vs Set-Content -NoNewline) avoids a
+                    # trailing newline insertion that Set-Content adds on PS 5.1.
+                    [System.IO.File]::WriteAllText($destination, $patched)
+                }
+            }
             return
         }
     }

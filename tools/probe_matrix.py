@@ -220,6 +220,20 @@ def _da_205a_matrix() -> dict[str, str]:
     return matrix
 
 
+def _testserver_matrix() -> dict[str, str]:
+    """OPC Foundation OpcTestServer_x64.exe specifically.
+
+    TestServer's OpcTestServer.cpp advertises BOTH CATID_OPCDAServer20 AND
+    CATID_OPCDAServer30 (Track AB5 divergence vs. upstream) so it implements
+    DA 3.0 IOPCItemIO. The COpcTestServer also implements IOPCTypeSystem so
+    cpx.get_type_system can negotiate (returns empty supported list).
+    """
+    matrix = _da_205a_matrix()
+    matrix["opcclassic.da.read_items_by_id"] = "PASS"
+    matrix["opcclassic.cpx.get_type_system"] = "PASS"
+    return matrix
+
+
 def _da_3_matrix() -> dict[str, str]:
     """Matrikon + our DaServer + CttServer (DA 2.05a + DA 3.0)."""
     matrix = _da_205a_matrix()
@@ -270,7 +284,7 @@ def _security_da_matrix() -> dict[str, str]:
 
 
 PROFILES: dict[str, dict[str, str]] = {
-    "testserver": _da_205a_matrix(),
+    "testserver": _testserver_matrix(),
     "matrikon": _da_3_matrix(),
     "samples-da": _da_3_matrix(),
     "ctt-da": _da_3_matrix(),
