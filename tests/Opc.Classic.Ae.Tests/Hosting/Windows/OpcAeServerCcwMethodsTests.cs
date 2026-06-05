@@ -388,7 +388,9 @@ public sealed class OpcAeServerCcwMethodsTests
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate int SetStateDelegate(IntPtr pThis, IntPtr pActive, IntPtr pBufferTime, IntPtr pMaxSize, int clientSubscription, IntPtr pRevisedBufferTime, IntPtr pRevisedMaxSize);
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        // Mirror production OpcAeServerCcwMethods.OPCEVENTSERVERSTATUS_NATIVE
+        // which uses natural alignment (no Pack) — see DR7 fix.
+        [StructLayout(LayoutKind.Sequential)]
         private struct OPCEVENTSERVERSTATUS_NATIVE
         {
             public long ftStartTime;

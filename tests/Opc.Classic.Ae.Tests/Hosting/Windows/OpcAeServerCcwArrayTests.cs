@@ -998,7 +998,10 @@ public sealed class OpcAeServerCcwArrayTests
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate int GetReturnedAttributesDelegate(IntPtr pThis, int eventCategory, IntPtr pCount, out IntPtr ppAttributeIds);
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        // Mirror production OpcAeArrayMarshaler.OPCCONDITIONSTATE_NATIVE which
+        // uses natural alignment (no Pack) so x64 pointer fields land at
+        // 8-byte aligned offsets the MIDL stub expects (see DR7 fix).
+        [StructLayout(LayoutKind.Sequential)]
         internal struct OPCCONDITIONSTATE_NATIVE
         {
             public ushort wState;

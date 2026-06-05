@@ -148,8 +148,10 @@ public sealed class OpcDaServerCcwTests
         finally
         {
             // Free the allocated CoTaskMem (caller-owned per OPC contract).
-            // OPCSERVERSTATUS contains szVendorInfo LPWSTR at offset 44 -- free it first.
-            IntPtr vendorInfoPtr = System.Runtime.InteropServices.Marshal.ReadIntPtr(statusPtr, 44);
+            // OPCSERVERSTATUS contains szVendorInfo LPWSTR at offset 48 (after
+            // wReserved at off 42-43 + 4-byte padding to 8-align the pointer
+            // on x64 -- natural alignment per DR7 fix to OPCSERVERSTATUS_NATIVE).
+            IntPtr vendorInfoPtr = System.Runtime.InteropServices.Marshal.ReadIntPtr(statusPtr, 48);
             if (vendorInfoPtr != IntPtr.Zero)
             {
                 System.Runtime.InteropServices.Marshal.FreeCoTaskMem(vendorInfoPtr);

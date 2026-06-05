@@ -1334,7 +1334,9 @@ public sealed class OpcDaGroupCcwTests
                 Array.Empty<int>());
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        // Mirror production OpcDaGroupCcwMethods.OPCITEMDEF_NATIVE which uses
+        // natural alignment (no Pack) — see DR7 fix.
+        [StructLayout(LayoutKind.Sequential)]
         private struct OPCITEMDEF_NATIVE
         {
             public IntPtr szAccessPath;
@@ -1347,7 +1349,9 @@ public sealed class OpcDaGroupCcwTests
             public ushort wReserved;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        // Mirror production OpcDaGroupCcwMethods.OPCITEMRESULT_NATIVE which
+        // uses natural alignment (no Pack) — see DR7 fix.
+        [StructLayout(LayoutKind.Sequential)]
         private struct OPCITEMRESULT_NATIVE
         {
             public uint hServer;
