@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="..\_Fixtures\Testcontainers\KerberosKdcFixture.cs" Link="Fixtures\Testcontainers\KerberosKdcFixture.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.AeServer\SampleAeServer.cs" Link="Samples\AeServer\SampleAeServer.cs" />
+    <Compile Include="..\..\samples\Opc.Classic.Samples.AeServer\SampleAeSubscription.cs" Link="Samples\AeServer\SampleAeSubscription.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.DaServer\SampleDaServer.cs" Link="Samples\DaServer\SampleDaServer.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.DaServer\TagTree.cs" Link="Samples\DaServer\TagTree.cs" />
     <Compile Include="..\..\samples\Opc.Classic.Samples.HdaServer\HistoricalDataStore.cs" Link="Samples\HdaServer\HistoricalDataStore.cs" />
