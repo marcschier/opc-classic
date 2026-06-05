@@ -1035,8 +1035,17 @@ internal static class OpcMcpDcomConnectionHelper
         NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
         OpcUrl url = OpcUrl.Parse($"{opcScheme}://{request.Host}/{(request.ProgId ?? clsid.ToString("D"))}");
         OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
+        // KB5004442 DCOM hardening rejects activation calls without packet
+        // integrity. When the caller didn't supply credentials, fall back to
+        // Windows SSO (NEGOSSP NegotiateAuthentication via the current logon
+        // token) instead of an anonymous channel -- anonymous bind succeeds
+        // but the activation call returns E_ACCESSDENIED on a hardened host.
+        // This mirrors the DA path (DaClientTools.CreateAuthContext) which
+        // promotes useSso=true into WindowsSso. AE/HDA/Batch/Commands/DX
+        // don't yet have a useSso flag on their MCP tool signatures, so we
+        // assume Windows SSO whenever no explicit credentials are present.
         OpcConnectData connectData = credentials is null
-            ? new OpcConnectData(url, credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
+            ? OpcConnectData.WithWindowsSso(url, protectionLevel)
             : request.UseKerberos
                 ? OpcConnectData.WithKerberos(url, credentials, protectionLevel)
                 : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
