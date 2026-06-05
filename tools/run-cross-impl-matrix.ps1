@@ -97,6 +97,29 @@ try {
         throw "dotnet SDK not found on PATH."
     }
 
+    # Kill any stale sample-server processes left over from a previous
+    # matrix run. SCM activates samples on-demand and Opc.Classic samples
+    # bind a TCP listener at startup; if a previous instance is still
+    # alive on its port, the new one fails with EADDRINUSE -> CO_E_SERVER_EXEC_FAILURE.
+    # Production samples now bind ephemeral 127.0.0.1:0 under -Embedding
+    # (DR5 follow-up), but this cleanup is still useful when re-running
+    # the matrix after a previous registration switch (e.g. HKCU -> HKLM
+    # transition) leaves zombie processes from the old build path.
+    $stale = @(
+        'Opc.Classic.Samples.DaServer',
+        'Opc.Classic.Samples.CttServer',
+        'Opc.Classic.Samples.AeServer',
+        'Opc.Classic.Samples.HdaServer',
+        'Opc.Classic.Samples.OpcSecurityServer'
+    ) | ForEach-Object { Get-Process -Name $_ -ErrorAction SilentlyContinue }
+    if ($stale.Count -gt 0) {
+        Write-Host "Stopping $($stale.Count) stale sample server process(es) from a previous matrix run..." -ForegroundColor Yellow
+        foreach ($p in $stale) {
+            try { Stop-Process -Id $p.Id -Force -ErrorAction Stop } catch { Write-Warning "Could not stop PID $($p.Id): $_" }
+        }
+        Start-Sleep -Seconds 2
+    }
+
     # SampleProfile -> (exePath, sampleProgId) map. Lines up with the
     # PROFILE_TARGETS dict in tools/run_cross_impl_matrix.py and the
     # CLSIDs/ProgIDs defined in each sample's Program.cs.

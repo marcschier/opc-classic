@@ -43,8 +43,16 @@ internal static class Program
         int port = int.TryParse(
             Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
             out int parsed) && parsed > 0 ? parsed : 51300;
+        // When SCM activates the sample (-Embedding), bind an ephemeral
+        // port instead of the fixed default so multiple SCM-launched
+        // instances (or repeated activations after a previous instance is
+        // still alive) don't fail with EADDRINUSE during host startup.
+        // DCOM activation doesn't depend on the sample's TCP listener --
+        // it routes through the CoRegisterClassObject factory directly --
+        // so any port is fine.
+        string defaultBind = embedded ? "127.0.0.1:0" : $"0.0.0.0:{port}";
         string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
-            ?? $"0.0.0.0:{port}";
+            ?? defaultBind;
         Console.WriteLine($"Listening on {listenAddress}");
 
         var builder = Host.CreateApplicationBuilder(args);

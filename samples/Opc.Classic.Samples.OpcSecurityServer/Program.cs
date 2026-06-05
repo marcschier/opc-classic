@@ -45,11 +45,17 @@ internal static class Program
             return registrationExitCode;
         }
 
+        bool embedded = SampleServerRegistrationCommand.HasEmbeddingFlag(args);
         int port = int.TryParse(
             Environment.GetEnvironmentVariable("OPC_CLASSIC_SAMPLE_PORT"),
             out int parsed) && parsed > 0 ? parsed : 51304;
+        // When SCM activates the sample (-Embedding), bind an ephemeral
+        // port to avoid EADDRINUSE if a previous SCM-launched instance
+        // is still alive. DCOM activation doesn't depend on the sample's
+        // TCP listener -- it routes through CoRegisterClassObject.
+        string defaultBind = embedded ? "127.0.0.1:0" : $"0.0.0.0:{port}";
         string listenAddress = Environment.GetEnvironmentVariable("OPC_CLASSIC_LISTEN_ADDRESS")
-            ?? $"0.0.0.0:{port}";
+            ?? defaultBind;
         Console.WriteLine($"Listening on {listenAddress}");
 
         var builder = Host.CreateApplicationBuilder(args);
@@ -87,7 +93,6 @@ internal static class Program
         var host = builder.Build();
 
         uint comClassObjectCookie = 0;
-        bool embedded = SampleServerRegistrationCommand.HasEmbeddingFlag(args);
         if (embedded && OperatingSystem.IsWindows())
         {
             comClassObjectCookie = RegisterScmFactory(host.Services);
