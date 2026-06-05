@@ -774,6 +774,7 @@ internal static class OpcMcpDcomConnectionHelper
     private const uint ObjRefSignature = 0x574F454D;
     private const ushort TcpTowerId = 0x07;
     private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
+    private static readonly Guid IID_IUnknown = new("00000000-0000-0000-C000-000000000046");
 
     public static OpcMcpDcomConnectionRequest NormalizeRequest(
         string host,
@@ -861,7 +862,14 @@ internal static class OpcMcpDcomConnectionHelper
             activationClient = await Opc.Classic.Dcom.Activation.ActivationClient.ConnectTcpAsync(
                 request.Host, activationAuth, cancellationToken).ConfigureAwait(false);
 
-            Guid[] requestedIids = { requestedIid };
+            // Request both the target interface and IUnknown to mirror what
+            // production OPC clients do (DA's path requests 6+ IIDs). Single-IID
+            // activation requests trigger SCM oddities for some CLSIDs where
+            // the response comes back as RPC_S_SERVER_UNAVAILABLE even when
+            // the server is registered and reachable.
+            Guid[] requestedIids = requestedIid == IID_IUnknown
+                ? new[] { requestedIid }
+                : new[] { requestedIid, IID_IUnknown };
             Opc.Classic.Dcom.Activation.RemoteActivationResponse activation =
                 await activationClient.RemoteActivationAsync(
                     clsid,
@@ -1056,14 +1064,16 @@ internal static class OpcMcpDcomConnectionHelper
     {
         NetworkCredential? credentials = CreateCredential(request.Username, request.Password);
         OpcProtectionLevel protectionLevel = OpcMcpAuthLevel.ParseOrDefault(request.AuthLevel);
+        OpcUrl url = OpcUrl.Parse($"{opcScheme}://{request.Host}/OPC.ServerList.1");
+        // KB5004442 DCOM hardening rejects anonymous OpcEnum activation. When
+        // no credentials are supplied, default to Windows SSO so the discovery
+        // bind+activation use a valid logon token. This mirrors the main
+        // server connection in CreateAuthContext.
         if (credentials is null)
         {
-            return OpcMcpAuthLevel.IsSpecified(request.AuthLevel)
-                ? new OpcConnectData(OpcUrl.Parse($"{opcScheme}://{request.Host}/OPC.ServerList.1"), credentials: null, authMode: OpcAuthMode.Anonymous, protectionLevel: protectionLevel)
-                : null;
+            return OpcConnectData.WithWindowsSso(url, protectionLevel);
         }
 
-        OpcUrl url = OpcUrl.Parse($"{opcScheme}://{request.Host}/OPC.ServerList.1");
         return request.UseKerberos
             ? OpcConnectData.WithKerberos(url, credentials, protectionLevel)
             : OpcConnectData.WithNtlmV2(url, credentials, protectionLevel);
