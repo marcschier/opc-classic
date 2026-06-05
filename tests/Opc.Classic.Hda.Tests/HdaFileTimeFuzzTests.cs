@@ -34,7 +34,12 @@ public sealed class HdaFileTimeFuzzTests
         byte[] wire = WriteOne((ref NdrWriter w) =>
         {
             w.WriteUInt32(1);                  // historian status = Up = Running
+            // [out] FILETIME** pftCurrentTime: 4-byte unique-pointer referent
+            // before each FILETIME on the wire (matches the OS COM proxy/stub
+            // shape that the production codec now emits).
+            _ = w.WriteReferentId();
             w.WriteFileTime(0L);               // ftCurrentTime
+            _ = w.WriteReferentId();
             w.WriteFileTime(0L);               // ftStartTime
             w.WriteUInt16(1);                  // major
             w.WriteUInt16(0);                  // minor
@@ -59,7 +64,9 @@ public sealed class HdaFileTimeFuzzTests
         byte[] wire = WriteOne((ref NdrWriter w) =>
         {
             w.WriteUInt32(1);
+            _ = w.WriteReferentId();
             w.WriteFileTime(bogus);            // ftCurrentTime FIRST → named
+            _ = w.WriteReferentId();
             w.WriteFileTime(0L);
             w.WriteUInt16(1);
             w.WriteUInt16(0);

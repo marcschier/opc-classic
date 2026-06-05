@@ -20,7 +20,14 @@ public static class NdrOpcHdaServerStatusCodec
         ArgumentNullException.ThrowIfNull(status);
 
         writer.WriteUInt32(ToHistorianStatus(status.State));
+        // [out] FILETIME **pftCurrentTime / pftStartTime per IDL — the OS
+        // COM proxy/stub (opchda_ps.dll) emits a 4-byte unique-pointer
+        // referent before each FILETIME on the wire (MS-RPCE §14.3.10).
+        // Without these referents the client-side decoder reads the
+        // FILETIME bytes as the referent and the trailing fields slide.
+        _ = writer.WriteReferentId();
         writer.WriteFileTime(ToFileTime(status.CurrentTime));
+        _ = writer.WriteReferentId();
         writer.WriteFileTime(ToFileTime(status.StartTime));
         writer.WriteUInt16(checked((ushort)status.ServerVersion.Major));
         writer.WriteUInt16(checked((ushort)status.ServerVersion.Minor));
@@ -35,7 +42,12 @@ public static class NdrOpcHdaServerStatusCodec
     public static OpcServerStatus Read(ref NdrReader reader)
     {
         OpcServerState state = FromHistorianStatus(reader.ReadUInt32());
+        // [out] FILETIME **pftCurrentTime / pftStartTime: skip the outer
+        // unique-pointer referent that the OS COM proxy/stub emits before
+        // each FILETIME (see Write for the symmetric encoding rationale).
+        _ = reader.TryReadReferentId(out _);
         DateTimeOffset current = ReadAndDecodeFileTime(ref reader, "ftCurrentTime");
+        _ = reader.TryReadReferentId(out _);
         DateTimeOffset start = ReadAndDecodeFileTime(ref reader, "ftStartTime");
         ushort major = reader.ReadUInt16();
         ushort minor = reader.ReadUInt16();

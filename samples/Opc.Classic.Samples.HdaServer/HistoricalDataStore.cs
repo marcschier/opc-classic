@@ -27,8 +27,12 @@ public sealed class HistoricalDataStore
 
     private void Seed(string tagId, DateTimeOffset start, DateTimeOffset end, Func<TimeSpan, double> generator)
     {
-        var list = new List<(DateTimeOffset, double)>();
-        for (var t = start; t <= end; t = t.AddSeconds(1))
+        // Sample every 10 seconds (was 1 second) to keep the seed loop under
+        // ~10k entries per tag. The original 1-second cadence over a 24-hour
+        // window produced 86,400 entries per tag, pushing startup past 2s
+        // and contributing to SCM activation timing flakiness on some hosts.
+        var list = new List<(DateTimeOffset, double)>(capacity: 8700);
+        for (var t = start; t <= end; t = t.AddSeconds(10))
         {
             list.Add((t, generator(t - start)));
         }
