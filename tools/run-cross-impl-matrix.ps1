@@ -37,19 +37,38 @@
     Enable Track CA wire capture per profile. Artifacts land under
     matrix-out/wire-captures/<profile>/.
 
+.PARAMETER HklmRegister
+    Register sample servers in HKLM (system-wide) instead of HKCU
+    (per-user, default). HKLM registration is required for OPCEnum
+    and the Foundation OpcTestClient_x64.exe to discover the samples
+    (OPCEnum runs as a SYSTEM service and doesn't enumerate per-user
+    HKCU registrations). Requires an elevated PowerShell session.
+
 .PARAMETER RequestTimeoutSeconds
     Per-tool MCP request timeout. Default: 60.
 
 .EXAMPLE
     .\tools\run-cross-impl-matrix.ps1
 
-    Run every profile against localhost with default settings.
+    Run every profile against localhost with default settings (HKCU
+    registration; samples invisible to OPCEnum but our MCP probe
+    discovers them via direct CLSID activation).
 
 .EXAMPLE
     .\tools\run-cross-impl-matrix.ps1 -Profile samples-da -Profile samples-hda -WireCapture
 
     Only run the managed DA + HDA sample profiles, with wire capture
     artifacts written under matrix-out/wire-captures/.
+
+.EXAMPLE
+    # Elevated PowerShell required:
+    .\tools\run-cross-impl-matrix.ps1 -HklmRegister
+    & ext\CoreComponents\build\x64\Release\OpcTestClient_x64.exe
+
+    HKLM-register every sample server so OPCEnum can enumerate them,
+    then run the Foundation OpcTestClient_x64.exe to verify the
+    samples appear in its DA 2.0 server list with CoCreateInstance
+    + GetStatus success.
 #>
 
 [CmdletBinding()]
@@ -59,6 +78,7 @@ param(
     [switch]$SkipRegistration,
     [switch]$UseClsid,
     [switch]$WireCapture,
+    [switch]$HklmRegister,
     [int]$RequestTimeoutSeconds = 60
 )
 
@@ -89,7 +109,15 @@ try {
     )
 
     if (-not $SkipRegistration) {
-        Write-Host "=== HKCU registration of sample servers ===" -ForegroundColor Cyan
+        $hive = if ($HklmRegister) { 'hklm' } else { 'hkcu' }
+        $hiveLabel = if ($HklmRegister) { 'HKLM (system-wide; visible to OPCEnum + Foundation TestClient)' } else { 'HKCU (per-user, no admin)' }
+        Write-Host "=== $($hive.ToUpper()) registration of sample servers ($hiveLabel) ===" -ForegroundColor Cyan
+        if ($HklmRegister) {
+            $isAdmin = ([System.Security.Principal.WindowsPrincipal][System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+            if (-not $isAdmin) {
+                throw "HKLM registration requires elevation. Re-run from an elevated PowerShell, or omit -HklmRegister to use per-user HKCU."
+            }
+        }
         foreach ($sample in $sampleRegistrations) {
             # If this profile is excluded by -Profile, skip its registration.
             if ($Profile -and ($Profile -notcontains $sample.Profile)) {
@@ -103,14 +131,14 @@ try {
                     throw "Failed to build $($sample.Project)"
                 }
             }
-            Write-Host "  Registering $($sample.Profile) ($exe --register --registry-hive=hkcu)"
-            & $exe --register --registry-hive=hkcu | Out-Host
+            Write-Host "  Registering $($sample.Profile) ($exe --register --registry-hive=$hive)"
+            & $exe --register "--registry-hive=$hive" | Out-Host
             if ($LASTEXITCODE -ne 0) {
                 throw "Registration failed for $($sample.Profile) (exit code $LASTEXITCODE)"
             }
         }
     } else {
-        Write-Host "-- skipping HKCU registration (per -SkipRegistration) --" -ForegroundColor Yellow
+        Write-Host "-- skipping registration (per -SkipRegistration) --" -ForegroundColor Yellow
     }
 
     # --- run the cross-impl driver ---
