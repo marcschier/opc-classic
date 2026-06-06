@@ -44,7 +44,7 @@ public partial interface IOPCHDA_Server
     /// <summary><c>IOPCHDA_Server::ReleaseItemHandles</c> (opnum 7).</summary>
     [OpcMethod(7)]
     [return: OpcUniquePointer]
-    Task<int[]> ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int[]> ReleaseItemHandlesAsync([OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_Server::ValidateItemIDs</c> (opnum 8).</summary>
     [OpcMethod(8)]
