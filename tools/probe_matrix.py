@@ -275,18 +275,34 @@ def _ae_matrix() -> dict[str, str]:
     matrix.update(SESSION_AND_CAPTURE)
     matrix.update(_all(DISCOVERY_TOOLS, "PASS"))
     matrix.update(_all(AE_TOOLS, "PASS"))
-    # IOPCEventServer::GetConditionState (opnum 12) and ::AckCondition
-    # (opnum 17) currently return RPC_E_INVALID_DATA (0x800706F7) from
-    # the OS COM proxy/stub when invoked through the Windows DCOM SCM
-    # activation path that the matrix probe uses. Per `ext/inc/opc_ae_p.c`
-    # the MIDL stub treats szSource/szConditionName/pszSource/pszConditionName
-    # as [simple ref] (no outer [unique] referent) but our managed proxy
-    # currently emits the [unique] referent for LPWSTR parameters. Reworking
-    # the proxy to suppress the outer referent for these specific LPWSTR
-    # params requires per-method [OpcRefString] tagging plus matching
-    # dispatcher updates and broke the disconnect tear-down when
-    # attempted (forcibly-closed connection). Tracked as a known gap;
-    # matrix-wide pass rate is 728/2 = 99.7%.
+    # DR33 investigation (wire tracing + opcae_ps.dll MIDL format-string
+    # analysis + server-side CCW instrumentation). Both tools remain
+    # EXPECTED_FAIL, but the root causes are now well understood:
+    #
+    # GetConditionState (opnum 12) -- REQUEST decode is solved, RESPONSE
+    # round-trip is not. opcae_ps.dll marks szSource/szConditionName as
+    # [simple ref] (ext/inc/opc_ae_p.c flags 0x10b, type offset 144
+    # FC_C_WSTRING behind FC_RP [simple_pointer]) -- no outer [unique]
+    # referent. Tagging those params [OpcRefString] makes the stub decode the
+    # request and reach our CCW (verified: CCW logged ENTER -> decoded ->
+    # RETURN S_OK). BUT the OPCCONDITIONSTATE response round-trip then crashes
+    # opcae_ps.dll intermittently (TCP RST), and the crash was masked by the
+    # diagnostic File I/O timing during investigation -- so the fix is not
+    # robust. The OPCCONDITIONSTATE FILETIME members must stay 8-byte aligned
+    # (C# long): a 4-byte-aligned "fix" deterministically crashes the stub.
+    # Zeroing the native buffer did not help, so it is not uninitialized
+    # padding. Needs a Wireshark capture of a real OPC AE client GetCondition
+    # State call to pin down the response-marshal discrepancy.
+    #
+    # AckCondition (opnum 17) -- with the simple-ref scalars fixed,
+    # opcae_ps.dll still rejects the [in] unmarshal before reaching our CCW.
+    # Every encoding is individually validated by passing methods
+    # (get_condition_state simple-ref strings; read_items_by_id /
+    # IOPCItemIO::Read deferred FC_PP wstring arrays + DWORD arrays); the
+    # captured 164-byte request matches inline-conformance NDR. The only
+    # structural delta vs the passing read_items_by_id is AckCondition's TWO
+    # deferred FC_PP wstring arrays plus an [in] FILETIME array. Also needs a
+    # known-good Wireshark capture to byte-diff. See plan DR33 for detail.
     matrix["opcclassic.ae.get_condition_state"] = "EXPECTED_FAIL"
     matrix["opcclassic.ae.ack_condition"] = "EXPECTED_FAIL"
     # Wrong spec.
