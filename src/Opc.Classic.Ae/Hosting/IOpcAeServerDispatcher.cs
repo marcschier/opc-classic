@@ -104,10 +104,10 @@ public interface IOpcAeServerDispatcher
     Task<int[]> AckConditionAsync(
         string acknowledgerId,
         string comment,
-        long[] activeTimes,
-        int[] cookies,
         string[] sources,
         string[] conditionNames,
+        long[] activeTimes,
+        int[] cookies,
         CancellationToken cancellationToken = default) =>
         throw new OpcException(OpcResultId.NotImplemented);
 

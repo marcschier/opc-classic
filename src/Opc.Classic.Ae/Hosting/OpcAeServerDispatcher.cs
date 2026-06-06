@@ -141,14 +141,14 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
     public Task<int[]> AckConditionAsync(
         string acknowledgerId,
         string comment,
-        long[] activeTimes,
-        int[] cookies,
         string[] sources,
         string[] conditionNames,
+        long[] activeTimes,
+        int[] cookies,
         CancellationToken cancellationToken = default)
     {
         IOPCEventServer server = _server;
-        return server.AckConditionAsync(acknowledgerId, comment, activeTimes, cookies, sources, conditionNames, cancellationToken);
+        return server.AckConditionAsync(acknowledgerId, comment, sources, conditionNames, activeTimes, cookies, cancellationToken);
     }
 
     /// <inheritdoc />

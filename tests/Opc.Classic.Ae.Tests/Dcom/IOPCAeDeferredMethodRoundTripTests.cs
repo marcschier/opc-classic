@@ -432,10 +432,10 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
         public Task<int[]> AckConditionAsync(
             string acknowledgerId,
             string comment,
-            long[] activeTimes,
-            int[] cookies,
             string[] sources,
             string[] conditionNames,
+            long[] activeTimes,
+            int[] cookies,
             CancellationToken cancellationToken = default) =>
             Task.FromResult(cookies.Select(static _ => OpcResultId.Ok.Code).ToArray());
 

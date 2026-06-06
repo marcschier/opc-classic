@@ -423,10 +423,10 @@ public sealed class AeClientTools
         int[] errors = await client.EventServer.AckConditionAsync(
             actor,
             comment ?? string.Empty,
-            [activeFileTime],
-            [cookie],
             [source],
             [conditionName],
+            [activeFileTime],
+            [cookie],
             cancellationToken).ConfigureAwait(false);
         return errors.Select(error => new OpcResultDto(error, DescribeHResult(error), new OpcResultId(error, null).IsSuccess, ItemName: source + "::" + conditionName)).ToArray();
     }

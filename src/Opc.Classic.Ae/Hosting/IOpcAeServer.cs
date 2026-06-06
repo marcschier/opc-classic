@@ -89,10 +89,10 @@ public interface IOpcAeServer : IOPCEventServer
     Task<int[]> IOPCEventServer.AckConditionAsync(
         string acknowledgerId,
         string comment,
-        long[] activeTimes,
-        int[] cookies,
         string[] sources,
         string[] conditionNames,
+        long[] activeTimes,
+        int[] cookies,
         CancellationToken cancellationToken) =>
         throw NotImplemented();
 

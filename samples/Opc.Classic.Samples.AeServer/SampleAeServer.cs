@@ -233,10 +233,10 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer
     Task<int[]> IOPCEventServer.AckConditionAsync(
         string acknowledgerId,
         string comment,
-        long[] activeTimes,
-        int[] cookies,
         string[] sources,
         string[] conditionNames,
+        long[] activeTimes,
+        int[] cookies,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(sources);

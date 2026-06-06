@@ -130,10 +130,10 @@ public partial interface IOPCEventServer
     Task<int[]> AckConditionAsync(
         string acknowledgerId,
         string comment,
-        [OpcEmitArrayCount, OpcFileTimeElements] long[] activeTimes,
-        int[] cookies,
-        [OpcDeferredElements] string[] sources,
+        [OpcEmitArrayCount, OpcDeferredElements] string[] sources,
         [OpcDeferredElements] string[] conditionNames,
+        [OpcFileTimeElements] long[] activeTimes,
+        int[] cookies,
         CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::CreateAreaBrowser</c> (opnum 18). Creates an area browser object.</summary>

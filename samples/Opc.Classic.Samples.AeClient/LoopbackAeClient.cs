@@ -126,10 +126,10 @@ internal sealed class LoopbackAeClient : IAeServer
         int[] errors = await _eventServerProxy.AckConditionAsync(
             actor,
             comment ?? string.Empty,
-            new long[conditions.Count],
-            new int[conditions.Count],
             conditions.Select(static condition => condition.Source).ToArray(),
             conditions.Select(static condition => condition.ConditionName).ToArray(),
+            new long[conditions.Count],
+            new int[conditions.Count],
             cancellationToken).ConfigureAwait(false);
         return ToAckResults(conditions, errors);
     }
