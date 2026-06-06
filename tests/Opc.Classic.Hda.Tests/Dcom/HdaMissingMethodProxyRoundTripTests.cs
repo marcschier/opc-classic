@@ -150,7 +150,12 @@ public sealed class HdaMissingMethodProxyRoundTripTests
                 await AssertRoundTripAsync(
                     IOPCHDA_SyncRead.InterfaceId,
                     7,
-                    (ref NdrWriter w) => WriteAttributeArray(ref w, [SampleAttribute()]),
+                    (ref NdrWriter w) =>
+                    {
+                        // [return: OpcUniquePointer] emits outer referent before conformance.
+                        w.WriteUInt32(0x00020000u);
+                        WriteAttributeArray(ref w, [SampleAttribute()]);
+                    },
                     async channel =>
                     {
                         OpcHdaAttribute[] attributes = await new IOPCHDA_SyncReadClientProxy(channel).ReadAttributeAsync(SampleStart(), SampleEnd(), 100, [1], CancellationToken.None);
@@ -188,7 +193,12 @@ public sealed class HdaMissingMethodProxyRoundTripTests
                 await AssertRoundTripAsync(
                     IOPCHDA_SyncAnnotations.InterfaceId,
                     4,
-                    (ref NdrWriter w) => WriteAnnotationArray(ref w, [SampleAnnotation()]),
+                    (ref NdrWriter w) =>
+                    {
+                        // [return: OpcUniquePointer] emits outer referent before conformance.
+                        w.WriteUInt32(0x00020000u);
+                        WriteAnnotationArray(ref w, [SampleAnnotation()]);
+                    },
                     async channel =>
                     {
                         OpcHdaAnnotation[] annotations = await new IOPCHDA_SyncAnnotationsClientProxy(channel).ReadAsync(SampleStart(), SampleEnd(), [10], CancellationToken.None);
@@ -323,7 +333,12 @@ public sealed class HdaMissingMethodProxyRoundTripTests
         await AssertRoundTripAsync(
             expectedIid,
             expectedOpnum,
-            (ref NdrWriter w) => WriteIntArray(ref w, [0, OpcResultId.UnknownItemId.Code]),
+            (ref NdrWriter w) =>
+            {
+                // [return: OpcUniquePointer] emits outer referent before conformance.
+                w.WriteUInt32(0x00020000u);
+                WriteIntArray(ref w, [0, OpcResultId.UnknownItemId.Code]);
+            },
             async channel =>
             {
                 int[] values = await invoke(channel);
