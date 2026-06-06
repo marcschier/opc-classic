@@ -240,10 +240,16 @@ def _da_3_matrix() -> dict[str, str]:
     Matrikon implements IOPCTypeSystem returning a (typically empty)
     supported list, so cpx.get_type_system is PASS. The other CPX tools
     still EXPECTED_FAIL unless an OPCBinary dictionary is registered.
+
+    Security tools always return success (true/false based on server reply
+    or false-on-OpcException for servers that don't implement them), so
+    they pass against any DA-capable server.
     """
     matrix = _da_205a_matrix()
     matrix["opcclassic.da.read_items_by_id"] = "PASS"
     matrix["opcclassic.cpx.get_type_system"] = "PASS"
+    for name in SECURITY_TOOLS:
+        matrix[name] = "PASS"
     return matrix
 
 
