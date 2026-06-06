@@ -82,23 +82,28 @@ public partial interface IOPCHDA_SyncRead
 {
     /// <summary><c>IOPCHDA_SyncRead::ReadRaw</c> (opnum 3).</summary>
     [OpcMethod(3)]
-    Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<OpcHdaItem[]> ReadRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncRead::ReadProcessed</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<OpcHdaItem[]> ReadProcessedAsync(OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer] int[] aggregateIds, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncRead::ReadAtTime</c> (opnum 5).</summary>
     [OpcMethod(5)]
-    Task<OpcHdaItem[]> ReadAtTimeAsync(long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<OpcHdaItem[]> ReadAtTimeAsync([OpcEmitArrayCount, OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncRead::ReadModified</c> (opnum 6).</summary>
     [OpcMethod(6)]
-    Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<OpcHdaModifiedItem[]> ReadModifiedAsync(OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncRead::ReadAttribute</c> (opnum 7).</summary>
     [OpcMethod(7)]
-    Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<OpcHdaAttribute[]> ReadAttributeAsync(OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, [OpcEmitArrayCount, OpcUniquePointer] int[] attributeIds, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCHDA_SyncUpdate</c> — synchronous HDA insert/replace/delete (IID_IOPCHDA_SyncUpdate).</summary>
