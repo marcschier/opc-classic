@@ -110,19 +110,19 @@ public partial interface IOPCEventServer
 
     /// <summary><c>IOPCEventServer::EnableConditionByArea</c> (opnum 13). Enables conditions by area.</summary>
     [OpcMethod(13)]
-    Task EnableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default);
+    Task EnableConditionByAreaAsync([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] areas, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::EnableConditionBySource</c> (opnum 14). Enables conditions by source.</summary>
     [OpcMethod(14)]
-    Task EnableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default);
+    Task EnableConditionBySourceAsync([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] sources, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::DisableConditionByArea</c> (opnum 15). Disables conditions by area.</summary>
     [OpcMethod(15)]
-    Task DisableConditionByAreaAsync(string[] areas, CancellationToken cancellationToken = default);
+    Task DisableConditionByAreaAsync([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] areas, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::DisableConditionBySource</c> (opnum 16). Disables conditions by source.</summary>
     [OpcMethod(16)]
-    Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default);
+    Task DisableConditionBySourceAsync([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] sources, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::AckCondition</c> (opnum 17). Acknowledges condition events and returns per-event HRESULTs.</summary>
     [OpcMethod(17)]
@@ -152,19 +152,23 @@ public partial interface IOPCEventServer2
 {
     /// <summary><c>IOPCEventServer2::EnableConditionByArea2</c> (opnum 19). Enables conditions by area with per-area HRESULTs.</summary>
     [OpcMethod(19)]
-    Task<int[]> EnableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> EnableConditionByArea2Async([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] areas, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer2::EnableConditionBySource2</c> (opnum 20). Enables conditions by source with per-source HRESULTs.</summary>
     [OpcMethod(20)]
-    Task<int[]> EnableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> EnableConditionBySource2Async([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] sources, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer2::DisableConditionByArea2</c> (opnum 21). Disables conditions by area with per-area HRESULTs.</summary>
     [OpcMethod(21)]
-    Task<int[]> DisableConditionByArea2Async(string[] areas, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> DisableConditionByArea2Async([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] areas, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer2::DisableConditionBySource2</c> (opnum 22). Disables conditions by source with per-source HRESULTs.</summary>
     [OpcMethod(22)]
-    Task<int[]> DisableConditionBySource2Async(string[] sources, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> DisableConditionBySource2Async([OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] sources, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer2::GetEnableStateByArea</c> (opnum 23). Returns direct and effective enable state per area.</summary>
     [OpcMethod(23)]
