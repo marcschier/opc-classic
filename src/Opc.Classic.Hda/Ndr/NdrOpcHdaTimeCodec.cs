@@ -29,25 +29,49 @@ public static class NdrOpcHdaTimeCodec
     private const long FileTimeEpochOffsetTicks = 504911232000000000L;
 
     /// <summary>Encodes a single OPCHDA_TIME in NDR.</summary>
+    /// <remarks>
+    /// NDR layout per OPC HDA 1.20 §3.4 (OPCHDA_TIME struct):
+    ///   primary part:  BOOL bString (4) + LPWSTR szTime referent (4) + FILETIME ftTime (8)
+    ///   deferred part: szTime body (max_count + offset + actual_count + WSTR chars)
+    /// The OS proxy/stub serializes all primary parts first then deferred parts,
+    /// so a naive inline write of WriteUnicodeStringPtr (referent + body) puts
+    /// the body BEFORE ftTime and breaks RPC decoding (RPC_S_BAD_STUB_DATA).
+    /// </remarks>
     public static void Write(ref NdrWriter writer, OpcHdaTime value)
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteInt32(value.IsStringExpression ? Win32BoolTrue : 0);
-        writer.WriteUnicodeStringPtr(value.StringExpression);
-
         long fileTimeTicks = value.IsStringExpression
             ? 0L
             : value.Timestamp.UtcTicks - FileTimeEpochOffsetTicks;
+
+        // Primary part: bString + szTime referent + ftTime.
+        writer.WriteInt32(value.IsStringExpression ? Win32BoolTrue : 0);
+        bool hasString = value.StringExpression is not null;
+        if (hasString)
+        {
+            _ = writer.WriteReferentId();
+        }
+        else
+        {
+            writer.WriteNullReferent();
+        }
         writer.WriteFileTime(fileTimeTicks);
+
+        // Deferred part: szTime body, only when the referent is non-null.
+        if (hasString)
+        {
+            writer.WriteUnicodeString(value.StringExpression!);
+        }
     }
 
     /// <summary>Decodes a single OPCHDA_TIME from NDR.</summary>
     public static OpcHdaTime Read(ref NdrReader reader)
     {
         int bString = reader.ReadInt32();
-        string? szTime = reader.ReadUnicodeStringPtr();
+        uint szTimeRef = reader.ReadUInt32();
         long fileTimeTicks = reader.ReadFileTime();
+        string? szTime = szTimeRef != 0 ? reader.ReadUnicodeString() : null;
 
         bool isString = bString != 0;
         DateTimeOffset timestamp = isString
