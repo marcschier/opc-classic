@@ -125,13 +125,14 @@ public partial interface IOPCEventServer
 
     /// <summary><c>IOPCEventServer::AckCondition</c> (opnum 17). Acknowledges condition events and returns per-event HRESULTs.</summary>
     [OpcMethod(17)]
+    [return: OpcUniquePointer]
     Task<int[]> AckConditionAsync(
         string acknowledgerId,
         string comment,
-        long[] activeTimes,
-        int[] cookies,
-        string[] sources,
-        string[] conditionNames,
+        [OpcEmitArrayCount, OpcUniquePointer, OpcFileTimeElements] long[] activeTimes,
+        [OpcUniquePointer] int[] cookies,
+        [OpcUniquePointer, OpcDeferredElements] string[] sources,
+        [OpcUniquePointer, OpcDeferredElements] string[] conditionNames,
         CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::CreateAreaBrowser</c> (opnum 18). Creates an area browser object.</summary>
@@ -195,11 +196,11 @@ public partial interface IOPCEventSubscriptionMgt
     [OpcMethod(3)]
     Task SetFilterAsync(
         int eventType,
-        int[] eventCategories,
+        [OpcEmitArrayCount, OpcUniquePointer] int[] eventCategories,
         int lowSeverity,
         int highSeverity,
-        string[] areas,
-        string[] sources,
+        [OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] areas,
+        [OpcEmitArrayCount, OpcUniquePointer, OpcDeferredElements] string[] sources,
         CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventSubscriptionMgt::GetFilter</c> (opnum 4). Returns the current subscription filter.</summary>
