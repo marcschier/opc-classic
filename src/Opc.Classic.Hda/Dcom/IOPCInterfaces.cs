@@ -151,7 +151,8 @@ public partial interface IOPCHDA_SyncAnnotations
 
     /// <summary><c>IOPCHDA_SyncAnnotations::Insert</c> (opnum 5).</summary>
     [OpcMethod(5)]
-    Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> InsertAsync([OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCHDA_AsyncRead</c> — asynchronous HDA read (IID_IOPCHDA_AsyncRead).</summary>
