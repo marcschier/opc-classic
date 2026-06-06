@@ -125,11 +125,13 @@ public partial interface IOPCHDA_SyncUpdate
 
     /// <summary><c>IOPCHDA_SyncUpdate::DeleteRaw</c> (opnum 7).</summary>
     [OpcMethod(7)]
-    Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> DeleteRawAsync(OpcHdaTime startTime, OpcHdaTime endTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncUpdate::DeleteAtTime</c> (opnum 8).</summary>
     [OpcMethod(8)]
-    Task<int[]> DeleteAtTimeAsync(int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> DeleteAtTimeAsync([OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCHDA_SyncAnnotations</c> — synchronous HDA annotation management (IID_IOPCHDA_SyncAnnotations).</summary>
