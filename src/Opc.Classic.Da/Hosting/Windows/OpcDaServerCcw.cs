@@ -61,6 +61,8 @@ public static unsafe class OpcDaServerCcw
     private const int ItemPropertiesVtableSlotCount = 6; // 3 IUnknown + 3 IOPCItemProperties (QueryAvailable, GetItem, LookupItemIDs)
     private const int ItemIoVtableSlotCount = 5; // 3 IUnknown + 2 IOPCItemIO (Read, WriteVQT)
     private const int BrowseSasVtableSlotCount = 8; // 3 IUnknown + 5 IOPCBrowseServerAddressSpace
+    private const int SecurityNtVtableSlotCount = 6; // 3 IUnknown + 3 IOPCSecurityNT
+    private const int SecurityPrivateVtableSlotCount = 6; // 3 IUnknown + 3 IOPCSecurityPrivate
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
@@ -102,8 +104,12 @@ public static unsafe class OpcDaServerCcw
         IntPtr itemIoInstance = AllocateInstance(itemIoVtable);
         IntPtr* browseSasVtable = AllocateBrowseSasVtable();
         IntPtr browseSasInstance = AllocateInstance(browseSasVtable);
+        IntPtr* securityNtVtable = AllocateSecurityNtVtable();
+        IntPtr securityNtInstance = AllocateInstance(securityNtVtable);
+        IntPtr* securityPrivVtable = AllocateSecurityPrivateVtable();
+        IntPtr securityPrivInstance = AllocateInstance(securityPrivVtable);
         var handle = GCHandle.Alloc(server, GCHandleType.Normal);
-        var entry = new CcwEntry(handle, serverInstance, commonInstance, browseInstance, itemPropsInstance, itemIoInstance, browseSasInstance);
+        var entry = new CcwEntry(handle, serverInstance, commonInstance, browseInstance, itemPropsInstance, itemIoInstance, browseSasInstance, securityNtInstance, securityPrivInstance);
         entry.RefCount = 1;
         s_ccws[serverInstance] = entry;
         s_ccws[commonInstance] = entry;
@@ -111,6 +117,8 @@ public static unsafe class OpcDaServerCcw
         s_ccws[itemPropsInstance] = entry;
         s_ccws[itemIoInstance] = entry;
         s_ccws[browseSasInstance] = entry;
+        s_ccws[securityNtInstance] = entry;
+        s_ccws[securityPrivInstance] = entry;
         return entry.GetInterfacePointer(requestedIid);
     }
 
@@ -125,7 +133,9 @@ public static unsafe class OpcDaServerCcw
         || iid == Dcom.IOPCBrowse.InterfaceId
         || iid == Dcom.IOPCItemProperties.InterfaceId
         || iid == Dcom.IOPCItemIO.InterfaceId
-        || iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId;
+        || iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId
+        || iid == OpcGuids.IID_IOPCSecurityNT
+        || iid == OpcGuids.IID_IOPCSecurityPrivate;
 
     /// <summary>
     /// Test helper: returns the current reference count for a CCW pointer, or
@@ -377,6 +387,82 @@ public static unsafe class OpcDaServerCcw
     {
         _ = pThis; _ = szItemID;
         if (ppIEnumString != null) { *ppIEnumString = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    // ===== IOPCSecurityNT / IOPCSecurityPrivate (OPC Security 1.00) =====
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateSecurityNtVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(SecurityNtVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        // IOPCSecurityNT: opnum 3 = IsAvailableNT, opnum 4 = QueryMinImpersonationLevel, opnum 5 = ChangeUser
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, int*, int>)&SecurityNtIsAvailableNT;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint*, int>)&SecurityNtQueryMinImpersonationLevel;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int>)&SecurityNtChangeUser;
+        return v;
+    }
+
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateSecurityPrivateVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(SecurityPrivateVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        // IOPCSecurityPrivate: opnum 3 = IsAvailablePriv, opnum 4 = Logon, opnum 5 = Logoff
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, int*, int>)&SecurityPrivateIsAvailablePriv;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr, int>)&SecurityPrivateLogon;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, int>)&SecurityPrivateLogoff;
+        return v;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int SecurityNtIsAvailableNT(IntPtr pThis, int* pbAvailable)
+    {
+        _ = pThis;
+        if (pbAvailable != null) { *pbAvailable = -1; /* TRUE */ }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int SecurityNtQueryMinImpersonationLevel(IntPtr pThis, uint* pdwLevel)
+    {
+        _ = pThis;
+        // RPC_C_IMP_LEVEL_IDENTIFY (2)
+        if (pdwLevel != null) { *pdwLevel = 2; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int SecurityNtChangeUser(IntPtr pThis)
+    {
+        _ = pThis;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int SecurityPrivateIsAvailablePriv(IntPtr pThis, int* pbAvailable)
+    {
+        _ = pThis;
+        if (pbAvailable != null) { *pbAvailable = -1; /* TRUE */ }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int SecurityPrivateLogon(IntPtr pThis, IntPtr szUserID, IntPtr szPassword)
+    {
+        _ = pThis; _ = szUserID; _ = szPassword;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int SecurityPrivateLogoff(IntPtr pThis)
+    {
+        _ = pThis;
         return S_OK;
     }
 
@@ -799,7 +885,7 @@ public static unsafe class OpcDaServerCcw
 
     private sealed class CcwEntry
     {
-        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer)
+        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer, IntPtr securityNtPointer, IntPtr securityPrivPointer)
         {
             ServerHandle = serverHandle;
             ServerPointer = serverPointer;
@@ -808,6 +894,8 @@ public static unsafe class OpcDaServerCcw
             ItemPropertiesPointer = itemPropsPointer;
             ItemIoPointer = itemIoPointer;
             BrowseSasPointer = browseSasPointer;
+            SecurityNtPointer = securityNtPointer;
+            SecurityPrivatePointer = securityPrivPointer;
         }
 
         public GCHandle ServerHandle { get; }
@@ -824,6 +912,10 @@ public static unsafe class OpcDaServerCcw
 
         public IntPtr BrowseSasPointer { get; }
 
+        public IntPtr SecurityNtPointer { get; }
+
+        public IntPtr SecurityPrivatePointer { get; }
+
         public string ClientName { get; set; } = string.Empty;
 
         public long RefCount;
@@ -835,6 +927,8 @@ public static unsafe class OpcDaServerCcw
             if (iid == Dcom.IOPCItemProperties.InterfaceId) { return ItemPropertiesPointer; }
             if (iid == Dcom.IOPCItemIO.InterfaceId) { return ItemIoPointer; }
             if (iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId) { return BrowseSasPointer; }
+            if (iid == OpcGuids.IID_IOPCSecurityNT) { return SecurityNtPointer; }
+            if (iid == OpcGuids.IID_IOPCSecurityPrivate) { return SecurityPrivatePointer; }
             return ServerPointer;
         }
     }

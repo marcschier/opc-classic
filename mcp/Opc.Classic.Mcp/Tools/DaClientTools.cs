@@ -1062,6 +1062,8 @@ public sealed class DaClientTools
                     IOPCBrowseServerAddressSpace.InterfaceId,
                     IOPCItemProperties.InterfaceId,
                     IOPCItemIO.InterfaceId,
+                    OpcGuids.IID_IOPCSecurityNT,
+                    OpcGuids.IID_IOPCSecurityPrivate,
                 };
                 Opc.Classic.Dcom.Activation.RemoteActivationResponse activation = await activationClient.RemoteActivationAsync(
                     clsid,

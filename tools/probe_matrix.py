@@ -282,8 +282,13 @@ def _ae_matrix() -> dict[str, str]:
 
 
 def _security_da_matrix() -> dict[str, str]:
-    """OpcSecurityServer = DA 2.05a + IOPCSecurityNT + IOPCSecurityPrivate."""
-    matrix = _da_205a_matrix()
+    """OpcSecurityServer = DA 2.05a + DA 3.0 IOPCItemIO + IOPCSecurityNT + IOPCSecurityPrivate.
+
+    The sample security server now uses the unified OpcDaServerCcw which
+    exposes IOPCBrowse / IOPCItemProperties / IOPCItemIO tearoffs (DA 3.0)
+    and IOPCSecurityNT / IOPCSecurityPrivate tearoffs (OPC Security 1.00).
+    """
+    matrix = _da_3_matrix()
     for name in SECURITY_TOOLS:
         matrix[name] = "PASS"
     return matrix
