@@ -87,6 +87,7 @@ public interface IOpcAeServer : IOPCEventServer
         throw NotImplemented();
 
     Task<int[]> IOPCEventServer.AckConditionAsync(
+        int dwCount,
         string acknowledgerId,
         string comment,
         string[] sources,

@@ -421,6 +421,7 @@ public sealed class AeClientTools
 
         long activeFileTime = (activeTime ?? DateTimeOffset.UnixEpoch).ToFileTime();
         int[] errors = await client.EventServer.AckConditionAsync(
+            1,
             actor,
             comment ?? string.Empty,
             [source],

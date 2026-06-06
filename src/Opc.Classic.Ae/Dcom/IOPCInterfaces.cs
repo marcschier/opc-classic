@@ -125,12 +125,22 @@ public partial interface IOPCEventServer
     Task DisableConditionBySourceAsync([OpcEmitArrayCount, OpcDeferredElements] string[] sources, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::AckCondition</c> (opnum 17). Acknowledges condition events and returns per-event HRESULTs.</summary>
+    /// <remarks>
+    /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID,
+    /// LPWSTR szComment, [size_is(N)] LPWSTR *pszSource, [size_is(N)] LPWSTR *pszConditionName,
+    /// [size_is(N)] FILETIME *pftActiveTime, [size_is(N)] DWORD *pdwCookie, ...)</c>.
+    /// Note: dwCount is the FIRST wire field (before the string parameters), so we
+    /// expose it as an explicit leading parameter rather than relying on
+    /// <see cref="OpcEmitArrayCountAttribute"/> which would emit it before the
+    /// arrays only.
+    /// </remarks>
     [OpcMethod(17)]
     [return: OpcUniquePointer]
     Task<int[]> AckConditionAsync(
+        int dwCount,
         string acknowledgerId,
         string comment,
-        [OpcEmitArrayCount, OpcDeferredElements] string[] sources,
+        [OpcDeferredElements] string[] sources,
         [OpcDeferredElements] string[] conditionNames,
         [OpcFileTimeElements] long[] activeTimes,
         int[] cookies,

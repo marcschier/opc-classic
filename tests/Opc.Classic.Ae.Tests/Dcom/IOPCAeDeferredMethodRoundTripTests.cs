@@ -430,6 +430,7 @@ public sealed class IOPCAeDeferredMethodRoundTripTests
         public Task DisableConditionBySourceAsync(string[] sources, CancellationToken cancellationToken = default) => Task.CompletedTask;
 
         public Task<int[]> AckConditionAsync(
+            int dwCount,
             string acknowledgerId,
             string comment,
             string[] sources,

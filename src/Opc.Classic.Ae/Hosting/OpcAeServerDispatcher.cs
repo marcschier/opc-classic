@@ -148,7 +148,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
         CancellationToken cancellationToken = default)
     {
         IOPCEventServer server = _server;
-        return server.AckConditionAsync(acknowledgerId, comment, sources, conditionNames, activeTimes, cookies, cancellationToken);
+        return server.AckConditionAsync(sources?.Length ?? 0, acknowledgerId, comment, sources!, conditionNames, activeTimes, cookies, cancellationToken);
     }
 
     /// <inheritdoc />

@@ -231,6 +231,7 @@ public sealed class SampleAeServer : IAeServer, IOpcAeServer
     // signature uses positional cookie/source arrays rather than the
     // managed ConditionRef list.
     Task<int[]> IOPCEventServer.AckConditionAsync(
+        int dwCount,
         string acknowledgerId,
         string comment,
         string[] sources,
