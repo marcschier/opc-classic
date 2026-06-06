@@ -2204,11 +2204,18 @@ internal sealed class HdaEndToEndPipeline
                 yield break;
             }
 
-            if (itemIdPrefix.Equals("Sensor", StringComparison.OrdinalIgnoreCase) && browseType != HdaBrowseType.Branch)
+            if (browseType != HdaBrowseType.Branch)
             {
+                // Filter leaves to those that live under the requested
+                // prefix (e.g. "Sensor" returns only "Sensor.*" leaves,
+                // not the Random.* leaves at the same root level).
+                string prefix = itemIdPrefix + ".";
                 foreach (string itemId in _store.ItemIds.Order(StringComparer.OrdinalIgnoreCase))
                 {
-                    yield return CreateLeaf(itemId);
+                    if (itemId.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        yield return CreateLeaf(itemId);
+                    }
                 }
             }
         }

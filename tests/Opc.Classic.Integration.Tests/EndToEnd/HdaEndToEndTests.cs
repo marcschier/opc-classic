@@ -60,7 +60,10 @@ public sealed class HdaEndToEndTests
         var pipeline = new HdaEndToEndPipeline();
         string itemId = "Sensor.Temperature";
         DateTimeOffset start = pipeline.Store.StartTime;
-        DateTimeOffset end = start.AddSeconds(10);
+        // HistoricalDataStore (DR9.1) seeds at a 10-second cadence, so a
+        // [start, start+20s] window with bounds=true contains exactly 3
+        // samples (start, +10s, +20s) — matching the maxValues=3 cap below.
+        DateTimeOffset end = start.AddSeconds(20);
         int[] handles = await pipeline.Server.GetItemHandlesAsync([itemId], [0x701], CancellationToken.None);
 
         OpcHdaItem[] items = await pipeline.SyncRead.ReadRawAsync(

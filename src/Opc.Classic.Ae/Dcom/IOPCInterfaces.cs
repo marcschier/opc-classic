@@ -100,6 +100,18 @@ public partial interface IOPCEventServer
         CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 12). Returns a condition-state snapshot.</summary>
+    /// <remarks>
+    /// Per <c>ext/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
+    /// marks <c>szSource</c>/<c>szConditionName</c> as <c>[simple ref]</c>
+    /// (flags <c>0x10b</c>). Applying <see cref="OpcRefStringAttribute"/>
+    /// emits the spec-compliant wire (bare conformant-varying string body,
+    /// no outer referent) but currently triggers a server-side connection
+    /// drop after the call completes — likely because the OS RPC stack
+    /// expects the same disconnect handshake as the unique-pointer path and
+    /// our managed listener tears down differently. Tracked as DR32 gap;
+    /// matrix marks these two tools <c>EXPECTED_FAIL</c> in
+    /// <c>tools/probe_matrix.py</c>.
+    /// </remarks>
     [OpcMethod(12)]
     [return: OpcUniquePointer]
     Task<OpcConditionState> GetConditionStateAsync(
@@ -129,10 +141,12 @@ public partial interface IOPCEventServer
     /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID,
     /// LPWSTR szComment, [size_is(N)] LPWSTR *pszSource, [size_is(N)] LPWSTR *pszConditionName,
     /// [size_is(N)] FILETIME *pftActiveTime, [size_is(N)] DWORD *pdwCookie, ...)</c>.
-    /// Note: dwCount is the FIRST wire field (before the string parameters), so we
-    /// expose it as an explicit leading parameter rather than relying on
-    /// <see cref="OpcEmitArrayCountAttribute"/> which would emit it before the
-    /// arrays only.
+    /// Per <c>ext/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
+    /// marks every LPWSTR / LPWSTR* parameter as <c>[simple ref]</c> (flags
+    /// <c>0x10b</c>) — no outer <c>[unique]</c> referent precedes the body.
+    /// Applying <see cref="OpcRefStringAttribute"/> to the LPWSTR scalars
+    /// produces a spec-compliant wire but triggers a server-side connection
+    /// drop after the call (see DR32 note on GetConditionState).
     /// </remarks>
     [OpcMethod(17)]
     [return: OpcUniquePointer]

@@ -873,13 +873,14 @@ namespace Opc.Classic.Generators
             "global::Opc.Classic.Da.Ndr.NdrOpcItemResultCodec.WriteConformantArray",
         "global::Opc.Classic.Da.OpcItemAttributes" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcItemAttributesCodec.WriteConformantArray",
-        // NdrOpcItemStateCodec writes inline+variant per item with the variant
-        // immediately after each inline (interleaved, not deferred-pile). The
-        // hand-written IOPCSyncIOClientProxy.ReadConformantOpcItemStateArray
-        // also reads inline+variant per item, so generator-emitted Encode for
-        // OpcItemState[] must NOT use the deferred-pile WriteConformantArray
-        // helper (which would put all bodies after all inlines and mismatch
-        // the client decoder).
+        // OpcItemState contains a [unique] VARIANT body. NDR §14.3.12.3 requires
+        // conformant arrays of structs with deferred pointers to use the
+        // deferred-pile layout: N inline parts followed by N deferred bodies
+        // (NOT inline+body interleaved per item). NdrOpcItemStateCodec.WriteConformantArray
+        // implements this layout and matches the hand-written
+        // IOPCSyncIOClientProxy.ReadConformantOpcItemStateArray reader.
+        "global::Opc.Classic.Da.OpcItemState" =>
+            "global::Opc.Classic.Da.Ndr.NdrOpcItemStateCodec.WriteConformantArray",
         _ => null,
     };
 

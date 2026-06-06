@@ -43,13 +43,24 @@ public static class NdrOpcItemStateCodec
     }
 
     /// <summary>
-    /// Writes a conformant array of OPCITEMSTATE in NDR deferred-pile layout:
-    /// N inline parts followed by N deferred wireVARIANT bodies. The caller
-    /// is responsible for any outer max_count / referent.
+    /// Writes a conformant array of OPCITEMSTATE in NDR deferred-pile layout
+    /// prefixed by the standard <c>[out] T**</c> envelope: <c>[unique]</c>
+    /// referent + max_count + N inline parts + N deferred wireVARIANT bodies.
+    /// Matches the wire shape produced by other deferred-pile helpers
+    /// (<see cref="NdrOpcItemResultCodec.WriteConformantArray"/>) and
+    /// consumed by <see cref="ReadConformantArray"/> when paired with a
+    /// preceding referent + count read.
     /// </summary>
-    public static void WriteConformantArray(ref NdrWriter writer, OpcItemState[] states)
+    public static void WriteConformantArray(ref NdrWriter writer, OpcItemState[]? states)
     {
-        ArgumentNullException.ThrowIfNull(states);
+        if (states is null || states.Length == 0)
+        {
+            writer.WriteUniquePointerReferent(false);
+            return;
+        }
+
+        writer.WriteUniquePointerReferent(true);
+        writer.WriteUInt32(unchecked((uint)states.Length));
         foreach (OpcItemState s in states) { WriteInlinePart(ref writer, s); }
         foreach (OpcItemState s in states) { writer.WriteVariant(s.Value); }
     }
