@@ -747,7 +747,11 @@ public sealed class AeClientTools
                 IOPCEventServer.InterfaceId,
                 [OpcGuids.CATID_OPCAEServer10],
                 "opcae",
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken,
+                additionalIids: new[]
+                {
+                    IOPCEventServer2.InterfaceId,
+                }).ConfigureAwait(false);
             return new AeClientState(normalized.Host, normalized.ProgId, clsid, channel, ownsChannel: true);
         }
     }
@@ -844,7 +848,8 @@ internal static class OpcMcpDcomConnectionHelper
         Guid requestedIid,
         Guid[] categoryIds,
         string opcScheme,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        Guid[]? additionalIids = null)
     {
         Guid clsid = await ResolveClsidAsync(request, categoryIds, opcScheme, cancellationToken).ConfigureAwait(false);
         // Use the legacy IActivation::RemoteActivation (opnum 0) path rather than
@@ -862,14 +867,26 @@ internal static class OpcMcpDcomConnectionHelper
             activationClient = await Opc.Classic.Dcom.Activation.ActivationClient.ConnectTcpAsync(
                 request.Host, activationAuth, cancellationToken).ConfigureAwait(false);
 
-            // Request both the target interface and IUnknown to mirror what
-            // production OPC clients do (DA's path requests 6+ IIDs). Single-IID
-            // activation requests trigger SCM oddities for some CLSIDs where
-            // the response comes back as RPC_S_SERVER_UNAVAILABLE even when
-            // the server is registered and reachable.
-            Guid[] requestedIids = requestedIid == IID_IUnknown
-                ? new[] { requestedIid }
-                : new[] { requestedIid, IID_IUnknown };
+            // Request the primary IID plus any tearoff IIDs the caller wants
+            // bound at activation. Multi-IID activation lets the SCM return
+            // distinct IPIDs per interface so subsequent AlterContext for
+            // tearoff interfaces succeeds. Mirrors the DA pattern (6+ IIDs).
+            var iidList = new List<Guid> { requestedIid };
+            if (additionalIids is not null)
+            {
+                foreach (Guid extra in additionalIids)
+                {
+                    if (extra != Guid.Empty && extra != requestedIid && !iidList.Contains(extra))
+                    {
+                        iidList.Add(extra);
+                    }
+                }
+            }
+            if (requestedIid != IID_IUnknown && !iidList.Contains(IID_IUnknown))
+            {
+                iidList.Add(IID_IUnknown);
+            }
+            Guid[] requestedIids = iidList.ToArray();
             Opc.Classic.Dcom.Activation.RemoteActivationResponse activation =
                 await activationClient.RemoteActivationAsync(
                     clsid,
@@ -912,7 +929,7 @@ internal static class OpcMcpDcomConnectionHelper
                     transport,
                     serverAuth,
                     serverRef.Ipid,
-                    new[] { requestedIid });
+                    requestedIids);
             }
             else
             {
@@ -921,7 +938,7 @@ internal static class OpcMcpDcomConnectionHelper
                     endpoint,
                     Guid.Empty,
                     serverAuth,
-                    new[] { requestedIid },
+                    requestedIids,
                     cancellationToken).ConfigureAwait(false);
             }
 
@@ -930,6 +947,25 @@ internal static class OpcMcpDcomConnectionHelper
                 && !activation.IpidRemUnknown.Equals(Guid.Empty))
             {
                 routableChannel.RegisterInterfaceIpid(IRemUnknown.InterfaceId, activation.IpidRemUnknown);
+            }
+
+            // Register per-IID IPIDs so subsequent AlterContext requests for
+            // tearoff interfaces route to the matching server-side IPID.
+            if (serverChannel is DcomCallChannel multiIidChannel)
+            {
+                for (int i = 0; i < activation.InterfaceResults.Count && i < requestedIids.Length; i++)
+                {
+                    var ir = activation.InterfaceResults[i];
+                    if (ir.Hresult != 0 || ir.ObjRef.Length == 0)
+                    {
+                        continue;
+                    }
+                    if (!TryDecodeObjRef(ir.ObjRef.Span, out IOpcInterfaceRef? ifaceRef) || ifaceRef!.Ipid.Equals(Guid.Empty))
+                    {
+                        continue;
+                    }
+                    multiIidChannel.RegisterInterfaceIpid(requestedIids[i], ifaceRef.Ipid);
+                }
             }
 
             return (serverChannel, clsid);

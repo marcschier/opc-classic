@@ -903,7 +903,17 @@ public sealed class HdaClientTools
                 IOPCHDA_Server.InterfaceId,
                 [OpcGuids.CATID_OPCHDAServer10],
                 "opchda",
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken,
+                additionalIids: new[]
+                {
+                    IOPCHDA_SyncRead.InterfaceId,
+                    IOPCHDA_SyncUpdate.InterfaceId,
+                    IOPCHDA_SyncAnnotations.InterfaceId,
+                    IOPCHDA_AsyncRead.InterfaceId,
+                    IOPCHDA_AsyncUpdate.InterfaceId,
+                    IOPCHDA_AsyncAnnotations.InterfaceId,
+                    IOPCHDA_Playback.InterfaceId,
+                }).ConfigureAwait(false);
             return new HdaClientState(normalized.Host, normalized.ProgId, clsid, channel, ownsChannel: true);
         }
     }

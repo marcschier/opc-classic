@@ -38,6 +38,11 @@ public sealed class HistoricalDataStore
         Seed(data, "Sensor.Temperature", StartTime, EndTime, t => 20.0 + 5.0 * Math.Sin(t.TotalHours / 12.0 * Math.PI));
         Seed(data, "Sensor.Pressure", StartTime, EndTime, t => 101.3 + 0.5 * Math.Cos(t.TotalHours / 6.0 * Math.PI));
         Seed(data, "Sensor.FlowRate", StartTime, EndTime, t => 50.0 + 10.0 * Math.Sin(t.TotalHours * Math.PI));
+        // OPC Foundation TestServer-compatible Random.* item names so
+        // probes targeting default Matrikon/TestServer item IDs work.
+        Seed(data, "Random.Int4", StartTime, EndTime, t => 1000.0 * Math.Sin(t.TotalHours));
+        Seed(data, "Random.Real8", StartTime, EndTime, t => 3.14 * Math.Cos(t.TotalHours));
+        Seed(data, "Random.String", StartTime, EndTime, t => (int)t.TotalSeconds);
         return data;
     }
 
