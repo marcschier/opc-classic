@@ -57,6 +57,10 @@ public static unsafe class OpcDaServerCcw
 
     private const int ServerVtableSlotCount = 12; // 3 IUnknown + 9 IOPCServer
     private const int CommonVtableSlotCount = 8; // 3 IUnknown + 5 IOPCCommon
+    private const int BrowseVtableSlotCount = 5; // 3 IUnknown + 2 IOPCBrowse (Browse, GetProperties)
+    private const int ItemPropertiesVtableSlotCount = 6; // 3 IUnknown + 3 IOPCItemProperties (QueryAvailable, GetItem, LookupItemIDs)
+    private const int ItemIoVtableSlotCount = 5; // 3 IUnknown + 2 IOPCItemIO (Read, WriteVQT)
+    private const int BrowseSasVtableSlotCount = 8; // 3 IUnknown + 5 IOPCBrowseServerAddressSpace
 
     private static readonly Guid IID_IUnknown = Guid.Parse("00000000-0000-0000-C000-000000000046");
 
@@ -90,11 +94,23 @@ public static unsafe class OpcDaServerCcw
         IntPtr serverInstance = AllocateInstance(serverVtable);
         IntPtr* commonVtable = AllocateCommonVtable();
         IntPtr commonInstance = AllocateInstance(commonVtable);
+        IntPtr* browseVtable = AllocateBrowseVtable();
+        IntPtr browseInstance = AllocateInstance(browseVtable);
+        IntPtr* itemPropsVtable = AllocateItemPropertiesVtable();
+        IntPtr itemPropsInstance = AllocateInstance(itemPropsVtable);
+        IntPtr* itemIoVtable = AllocateItemIoVtable();
+        IntPtr itemIoInstance = AllocateInstance(itemIoVtable);
+        IntPtr* browseSasVtable = AllocateBrowseSasVtable();
+        IntPtr browseSasInstance = AllocateInstance(browseSasVtable);
         var handle = GCHandle.Alloc(server, GCHandleType.Normal);
-        var entry = new CcwEntry(handle, serverInstance, commonInstance);
+        var entry = new CcwEntry(handle, serverInstance, commonInstance, browseInstance, itemPropsInstance, itemIoInstance, browseSasInstance);
         entry.RefCount = 1;
         s_ccws[serverInstance] = entry;
         s_ccws[commonInstance] = entry;
+        s_ccws[browseInstance] = entry;
+        s_ccws[itemPropsInstance] = entry;
+        s_ccws[itemIoInstance] = entry;
+        s_ccws[browseSasInstance] = entry;
         return entry.GetInterfacePointer(requestedIid);
     }
 
@@ -103,7 +119,13 @@ public static unsafe class OpcDaServerCcw
     /// COM interfaces this CCW exposes.
     /// </summary>
     public static bool SupportsInterface(Guid iid) =>
-        iid == IID_IUnknown || iid == Dcom.IOPCServer.InterfaceId || iid == Dcom.IOPCCommon.InterfaceId;
+        iid == IID_IUnknown
+        || iid == Dcom.IOPCServer.InterfaceId
+        || iid == Dcom.IOPCCommon.InterfaceId
+        || iid == Dcom.IOPCBrowse.InterfaceId
+        || iid == Dcom.IOPCItemProperties.InterfaceId
+        || iid == Dcom.IOPCItemIO.InterfaceId
+        || iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId;
 
     /// <summary>
     /// Test helper: returns the current reference count for a CCW pointer, or
@@ -165,6 +187,197 @@ public static unsafe class OpcDaServerCcw
         IntPtr* instance = (IntPtr*)NativeMemory.Alloc((nuint)sizeof(IntPtr));
         instance[0] = (IntPtr)vtable;
         return (IntPtr)instance;
+    }
+
+    // IOPCBrowse (DA 3.0): stub tearoff that returns empty data for browse +
+    // get_properties. Lets multi-IID-activation clients bind the interface
+    // and decode an empty result so probes can succeed without the heavy
+    // managed→native marshalling needed for full-fidelity browse responses.
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateBrowseVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(BrowseVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        // IOPCBrowse: opnum 3 = GetProperties, opnum 4 = Browse
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, int, uint, IntPtr, IntPtr*, int>)&BrowseGetProperties;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr*, uint, uint, IntPtr, IntPtr, int, int, uint, IntPtr, IntPtr*, IntPtr*, IntPtr*, int>)&BrowseBrowse;
+        return v;
+    }
+
+    // IOPCItemProperties (DA 2.0): stub tearoff returning empty property lists.
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateItemPropertiesVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(ItemPropertiesVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint*, IntPtr*, IntPtr*, IntPtr*, int>)&ItemPropertiesQueryAvailable;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint, IntPtr, IntPtr*, IntPtr*, int>)&ItemPropertiesGetItemProperties;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, uint, IntPtr, IntPtr*, IntPtr*, int>)&ItemPropertiesLookupItemIds;
+        return v;
+    }
+
+    // IOPCItemIO (DA 3.0): stub tearoff returning empty values for read +
+    // success no-ops for write.
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateItemIoVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(ItemIoVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        // IOPCItemIO: opnum 3 = Read, opnum 4 = WriteVQT
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, IntPtr*, int>)&ItemIoRead;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr*, int>)&ItemIoWriteVqt;
+        return v;
+    }
+
+    // IOPCBrowseServerAddressSpace (DA 2.0): stub tearoff returning empty
+    // namespace enumerations + flat namespace shape.
+    [SuppressMessage("Reliability", "CA2018:Buffer size argument matches element count", Justification = "Explicit byte count.")]
+    private static IntPtr* AllocateBrowseSasVtable()
+    {
+        IntPtr* v = (IntPtr*)NativeMemory.Alloc((nuint)(BrowseSasVtableSlotCount * sizeof(IntPtr)));
+        v[0] = (IntPtr)(delegate* unmanaged<IntPtr, Guid*, IntPtr*, int>)&QueryInterface;
+        v[1] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&AddRef;
+        v[2] = (IntPtr)(delegate* unmanaged<IntPtr, uint>)&Release;
+        v[3] = (IntPtr)(delegate* unmanaged<IntPtr, uint*, int>)&BrowseSasQueryOrganization;
+        v[4] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, int>)&BrowseSasChangeBrowsePosition;
+        v[5] = (IntPtr)(delegate* unmanaged<IntPtr, uint, IntPtr, ushort, uint, IntPtr*, int>)&BrowseSasBrowseOpcItemIds;
+        v[6] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr*, int>)&BrowseSasGetItemId;
+        v[7] = (IntPtr)(delegate* unmanaged<IntPtr, IntPtr, IntPtr*, int>)&BrowseSasBrowseAccessPaths;
+        return v;
+    }
+
+    // ===== Stub method implementations =====
+    // These return S_OK with empty output buffers so probes can bind +
+    // invoke the interface without the heavy COM marshaling needed for
+    // full-fidelity browse/properties/read responses. Future work can
+    // replace these with real implementations that translate managed
+    // IOpcDaServer.BrowseAsync / IDaServer.ReadAsync results to native
+    // COM types (OPCBROWSEELEMENT, OPCITEMPROPERTY, OPCITEMSTATE, etc.).
+
+    [UnmanagedCallersOnly]
+    private static int BrowseGetProperties(IntPtr pThis, uint dwItemCount, IntPtr pszItemIDs, int bReturnPropertyValues, uint dwPropertyCount, IntPtr pdwPropertyIDs, IntPtr* ppItemProperties)
+    {
+        _ = pThis; _ = dwItemCount; _ = pszItemIDs; _ = bReturnPropertyValues; _ = dwPropertyCount; _ = pdwPropertyIDs;
+        if (ppItemProperties != null) { *ppItemProperties = IntPtr.Zero; }
+        return S_OK; // Empty result, no allocations.
+    }
+
+    [UnmanagedCallersOnly]
+    private static int BrowseBrowse(
+        IntPtr pThis,
+        IntPtr szItemID,
+        IntPtr* pszContinuationPoint,
+        uint dwMaxElementsReturned,
+        uint dwBrowseFilter,
+        IntPtr szElementNameFilter,
+        IntPtr szVendorFilter,
+        int bReturnAllProperties,
+        int bReturnPropertyValues,
+        uint dwPropertyCount,
+        IntPtr pdwPropertyIDs,
+        IntPtr* pbMoreElements,
+        IntPtr* pdwCount,
+        IntPtr* ppBrowseElements)
+    {
+        _ = pThis; _ = szItemID; _ = dwMaxElementsReturned; _ = dwBrowseFilter;
+        _ = szElementNameFilter; _ = szVendorFilter; _ = bReturnAllProperties;
+        _ = bReturnPropertyValues; _ = dwPropertyCount; _ = pdwPropertyIDs;
+        if (pszContinuationPoint != null) { *pszContinuationPoint = IntPtr.Zero; }
+        if (pbMoreElements != null) { *pbMoreElements = IntPtr.Zero; }
+        if (pdwCount != null) { *pdwCount = IntPtr.Zero; }
+        if (ppBrowseElements != null) { *ppBrowseElements = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ItemPropertiesQueryAvailable(IntPtr pThis, IntPtr szItemID, uint* pdwCount, IntPtr* ppPropertyIDs, IntPtr* ppDescriptions, IntPtr* ppvtDataTypes)
+    {
+        _ = pThis; _ = szItemID;
+        if (pdwCount != null) { *pdwCount = 0; }
+        if (ppPropertyIDs != null) { *ppPropertyIDs = IntPtr.Zero; }
+        if (ppDescriptions != null) { *ppDescriptions = IntPtr.Zero; }
+        if (ppvtDataTypes != null) { *ppvtDataTypes = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ItemPropertiesGetItemProperties(IntPtr pThis, IntPtr szItemID, uint dwCount, IntPtr pdwPropertyIDs, IntPtr* ppvData, IntPtr* ppErrors)
+    {
+        _ = pThis; _ = szItemID; _ = dwCount; _ = pdwPropertyIDs;
+        if (ppvData != null) { *ppvData = IntPtr.Zero; }
+        if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ItemPropertiesLookupItemIds(IntPtr pThis, IntPtr szItemID, uint dwCount, IntPtr pdwPropertyIDs, IntPtr* ppszNewItemIDs, IntPtr* ppErrors)
+    {
+        _ = pThis; _ = szItemID; _ = dwCount; _ = pdwPropertyIDs;
+        if (ppszNewItemIDs != null) { *ppszNewItemIDs = IntPtr.Zero; }
+        if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ItemIoRead(IntPtr pThis, uint dwCount, IntPtr pszItemIDs, IntPtr pdwMaxAges, IntPtr* ppvValues, IntPtr* ppErrors)
+    {
+        _ = pThis; _ = dwCount; _ = pszItemIDs; _ = pdwMaxAges;
+        if (ppvValues != null) { *ppvValues = IntPtr.Zero; }
+        if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int ItemIoWriteVqt(IntPtr pThis, uint dwCount, IntPtr pszItemIDs, IntPtr pItemVQT, IntPtr* ppErrors)
+    {
+        _ = pThis; _ = dwCount; _ = pszItemIDs; _ = pItemVQT;
+        if (ppErrors != null) { *ppErrors = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int BrowseSasQueryOrganization(IntPtr pThis, uint* pNamespaceType)
+    {
+        _ = pThis;
+        if (pNamespaceType != null) { *pNamespaceType = 1; /* OPC_NS_HIERARCHIAL */ }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int BrowseSasChangeBrowsePosition(IntPtr pThis, uint dwBrowseDirection, IntPtr szString)
+    {
+        _ = pThis; _ = dwBrowseDirection; _ = szString;
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int BrowseSasBrowseOpcItemIds(IntPtr pThis, uint dwBrowseFilterType, IntPtr szFilterCriteria, ushort vtDataTypeFilter, uint dwAccessRightsFilter, IntPtr* ppIEnumString)
+    {
+        _ = pThis; _ = dwBrowseFilterType; _ = szFilterCriteria; _ = vtDataTypeFilter; _ = dwAccessRightsFilter;
+        if (ppIEnumString != null) { *ppIEnumString = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int BrowseSasGetItemId(IntPtr pThis, IntPtr szItemDataID, IntPtr* ppszItemID)
+    {
+        _ = pThis; _ = szItemDataID;
+        if (ppszItemID != null) { *ppszItemID = IntPtr.Zero; }
+        return S_OK;
+    }
+
+    [UnmanagedCallersOnly]
+    private static int BrowseSasBrowseAccessPaths(IntPtr pThis, IntPtr szItemID, IntPtr* ppIEnumString)
+    {
+        _ = pThis; _ = szItemID;
+        if (ppIEnumString != null) { *ppIEnumString = IntPtr.Zero; }
+        return S_OK;
     }
 
     [UnmanagedCallersOnly]
@@ -586,11 +799,15 @@ public static unsafe class OpcDaServerCcw
 
     private sealed class CcwEntry
     {
-        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer)
+        public CcwEntry(GCHandle serverHandle, IntPtr serverPointer, IntPtr commonPointer, IntPtr browsePointer, IntPtr itemPropsPointer, IntPtr itemIoPointer, IntPtr browseSasPointer)
         {
             ServerHandle = serverHandle;
             ServerPointer = serverPointer;
             CommonPointer = commonPointer;
+            BrowsePointer = browsePointer;
+            ItemPropertiesPointer = itemPropsPointer;
+            ItemIoPointer = itemIoPointer;
+            BrowseSasPointer = browseSasPointer;
         }
 
         public GCHandle ServerHandle { get; }
@@ -599,12 +816,27 @@ public static unsafe class OpcDaServerCcw
 
         public IntPtr CommonPointer { get; }
 
+        public IntPtr BrowsePointer { get; }
+
+        public IntPtr ItemPropertiesPointer { get; }
+
+        public IntPtr ItemIoPointer { get; }
+
+        public IntPtr BrowseSasPointer { get; }
+
         public string ClientName { get; set; } = string.Empty;
 
         public long RefCount;
 
-        public IntPtr GetInterfacePointer(Guid iid) =>
-            iid == Dcom.IOPCCommon.InterfaceId ? CommonPointer : ServerPointer;
+        public IntPtr GetInterfacePointer(Guid iid)
+        {
+            if (iid == Dcom.IOPCCommon.InterfaceId) { return CommonPointer; }
+            if (iid == Dcom.IOPCBrowse.InterfaceId) { return BrowsePointer; }
+            if (iid == Dcom.IOPCItemProperties.InterfaceId) { return ItemPropertiesPointer; }
+            if (iid == Dcom.IOPCItemIO.InterfaceId) { return ItemIoPointer; }
+            if (iid == Dcom.IOPCBrowseServerAddressSpace.InterfaceId) { return BrowseSasPointer; }
+            return ServerPointer;
+        }
     }
 
     // ----- COM allocation helpers -----
