@@ -101,10 +101,11 @@ public partial interface IOPCEventServer
 
     /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 12). Returns a condition-state snapshot.</summary>
     [OpcMethod(12)]
+    [return: OpcUniquePointer]
     Task<OpcConditionState> GetConditionStateAsync(
         string source,
         string conditionName,
-        int[] attributeIds,
+        [OpcEmitArrayCount, OpcUniquePointer] int[] attributeIds,
         CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCEventServer::EnableConditionByArea</c> (opnum 13). Enables conditions by area.</summary>
