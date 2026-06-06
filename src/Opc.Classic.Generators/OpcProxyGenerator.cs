@@ -966,11 +966,12 @@ namespace Opc.Classic.Generators
                     sb.Append(statementIndent).Append(writerLocal).Append(".WriteUniquePointerReferent(").Append(parameter.Name).AppendLine(" is not null);");
                     sb.Append(statementIndent).Append("if (").Append(parameter.Name).AppendLine(" is not null)");
                     sb.Append(statementIndent).AppendLine("{");
-                    EmitArrayCodecWrite(sb, statementIndent + "    ", writerLocal, parameter.Name, codec, method.ParameterNames, parameter.DeferredElements);
+                    EmitArrayCodecWrite(sb, statementIndent + "    ", writerLocal, parameter.Name, codec, method.ParameterNames, parameter.DeferredElements, parameter.FileTimeElements);
                     sb.Append(statementIndent).AppendLine("}");
                     return;
                 }
-                EmitArrayCodecWrite(sb, statementIndent, writerLocal, parameter.Name, codec, method.ParameterNames, parameter.DeferredElements);
+
+                EmitArrayCodecWrite(sb, statementIndent, writerLocal, parameter.Name, codec, method.ParameterNames, parameter.DeferredElements, parameter.FileTimeElements);
                 return;
             }
 
@@ -1032,7 +1033,8 @@ namespace Opc.Classic.Generators
         string parameterName,
         CodecEmitter codec,
         ImmutableArray<string> parameterNames,
-        bool deferredElements = false)
+        bool deferredElements = false,
+        bool fileTimeElements = false)
     {
         // [OpcDeferredElements] on a string[] parameter switches to the
         // C706 §14.3.12.3 two-pass layout: max_count + per-element referent
@@ -1073,7 +1075,17 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("{");
         sb.Append(statementIndent).Append("    foreach (var ").Append(itemLocal).Append(" in ").Append(parameterName).AppendLine(")");
         sb.Append(statementIndent).AppendLine("    {");
-        sb.Append(statementIndent).Append("        ").Append(FormatWriteExpression(codec, writerLocal, itemLocal)).AppendLine(";");
+        if (fileTimeElements && IsLongElementType(codec.ArrayElementType))
+        {
+            // [OpcFileTimeElements] on long[]: serialize each element as
+            // FILETIME (two 4-byte DWORDs aligned to 4) rather than Int64
+            // (aligned to 8). Matches the OPC HDA IDL FILETIME marshalling.
+            sb.Append(statementIndent).Append("        ").Append(writerLocal).Append(".WriteFileTime(").Append(itemLocal).AppendLine(");");
+        }
+        else
+        {
+            sb.Append(statementIndent).Append("        ").Append(FormatWriteExpression(codec, writerLocal, itemLocal)).AppendLine(";");
+        }
         sb.Append(statementIndent).AppendLine("    }");
         sb.Append(statementIndent).AppendLine("}");
     }
@@ -1171,6 +1183,11 @@ namespace Opc.Classic.Generators
     private static bool IsLongArrayMarshallingType(string marshallingType) =>
         string.Equals(marshallingType, "global::System.Int64[]", System.StringComparison.Ordinal) ||
         string.Equals(marshallingType, "long[]", System.StringComparison.Ordinal);
+
+    private static bool IsLongElementType(string? elementType) =>
+        elementType is not null && (
+            string.Equals(elementType, "global::System.Int64", System.StringComparison.Ordinal) ||
+            string.Equals(elementType, "long", System.StringComparison.Ordinal));
 
     private static bool IsVariantArrayMarshallingType(string marshallingType) =>
         string.Equals(marshallingType, "global::Opc.Classic.OpcVariant[]", System.StringComparison.Ordinal);

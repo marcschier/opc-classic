@@ -817,18 +817,57 @@ public sealed class HdaClientTools
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return OpcHdaTime.FromString("NOW");
+            return OpcHdaTime.FromTimestamp(DateTimeOffset.UtcNow);
         }
 
         string trimmed = value.Trim();
         if (trimmed.StartsWith("NOW", StringComparison.OrdinalIgnoreCase))
         {
-            return OpcHdaTime.FromString(trimmed);
+            // Convert relative "NOW-1H" expressions to absolute UTC timestamps
+            // so the wire format stays struct-only (no LPWSTR field that
+            // requires deferred NDR encoding inside OPCHDA_TIME).
+            DateTimeOffset resolved = ResolveRelativeTime(trimmed, DateTimeOffset.UtcNow);
+            return OpcHdaTime.FromTimestamp(resolved);
         }
 
         return DateTimeOffset.TryParse(trimmed, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTimeOffset parsed)
             ? OpcHdaTime.FromTimestamp(parsed)
-            : OpcHdaTime.FromString(trimmed);
+            : OpcHdaTime.FromTimestamp(DateTimeOffset.UtcNow);
+    }
+
+    private static DateTimeOffset ResolveRelativeTime(string expression, DateTimeOffset reference)
+    {
+        // Accepts "NOW", "NOW-1H", "NOW+30M", "NOW-2D", etc. Falls back to
+        // reference time when the suffix is unrecognized.
+        string trimmed = expression.Trim();
+        if (string.Equals(trimmed, "NOW", StringComparison.OrdinalIgnoreCase))
+        {
+            return reference;
+        }
+        if (trimmed.Length < 5)
+        {
+            return reference;
+        }
+        char sign = trimmed[3];
+        if (sign != '+' && sign != '-')
+        {
+            return reference;
+        }
+        string magnitudePart = trimmed[4..^1];
+        char unit = char.ToUpperInvariant(trimmed[^1]);
+        if (!double.TryParse(magnitudePart, NumberStyles.Number, CultureInfo.InvariantCulture, out double magnitude))
+        {
+            return reference;
+        }
+        TimeSpan delta = unit switch
+        {
+            'S' => TimeSpan.FromSeconds(magnitude),
+            'M' => TimeSpan.FromMinutes(magnitude),
+            'H' => TimeSpan.FromHours(magnitude),
+            'D' => TimeSpan.FromDays(magnitude),
+            _ => TimeSpan.Zero,
+        };
+        return sign == '+' ? reference + delta : reference - delta;
     }
 
     private static HdaBrowseType ParseBrowseType(string browseType) => browseType?.Trim().ToLowerInvariant() switch

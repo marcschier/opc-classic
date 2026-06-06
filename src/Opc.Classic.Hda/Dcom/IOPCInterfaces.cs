@@ -93,7 +93,7 @@ public partial interface IOPCHDA_SyncRead
     /// <summary><c>IOPCHDA_SyncRead::ReadAtTime</c> (opnum 5).</summary>
     [OpcMethod(5)]
     [return: OpcUniquePointer]
-    Task<OpcHdaItem[]> ReadAtTimeAsync([OpcEmitArrayCount, OpcFileTimeElements] long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<OpcHdaItem[]> ReadAtTimeAsync([OpcEmitArrayCount, OpcFileTimeElements] long[] timestampFileTimes, [OpcEmitArrayCount] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncRead::ReadModified</c> (opnum 6).</summary>
     [OpcMethod(6)]
