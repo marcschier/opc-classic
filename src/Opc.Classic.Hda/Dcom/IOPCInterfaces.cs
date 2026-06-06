@@ -171,31 +171,31 @@ public partial interface IOPCHDA_AsyncRead
 {
     /// <summary><c>IOPCHDA_AsyncRead::ReadRaw</c> (opnum 3).</summary>
     [OpcMethod(3)]
-    Task<int> ReadRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> ReadRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, bool bounds, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::AdviseRaw</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<int> AdviseRawAsync(int transactionId, OpcHdaTime startTime, long updateIntervalFileTime, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> AdviseRawAsync(int transactionId, OpcHdaTime startTime, long updateIntervalFileTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::ReadProcessed</c> (opnum 5).</summary>
     [OpcMethod(5)]
-    Task<int> ReadProcessedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default);
+    Task<int> ReadProcessedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer] int[] aggregateIds, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::AdviseProcessed</c> (opnum 6).</summary>
     [OpcMethod(6)]
-    Task<int> AdviseProcessedAsync(int transactionId, OpcHdaTime startTime, long resampleIntervalFileTime, int[] serverHandles, int[] aggregateIds, int intervalCount, CancellationToken cancellationToken = default);
+    Task<int> AdviseProcessedAsync(int transactionId, OpcHdaTime startTime, long resampleIntervalFileTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer] int[] aggregateIds, int intervalCount, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::ReadAtTime</c> (opnum 7).</summary>
     [OpcMethod(7)]
-    Task<int> ReadAtTimeAsync(int transactionId, long[] timestampFileTimes, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> ReadAtTimeAsync(int transactionId, [OpcEmitArrayCount, OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::ReadModified</c> (opnum 8).</summary>
     [OpcMethod(8)]
-    Task<int> ReadModifiedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> ReadModifiedAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::ReadAttribute</c> (opnum 9).</summary>
     [OpcMethod(9)]
-    Task<int> ReadAttributeAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, int[] attributeIds, CancellationToken cancellationToken = default);
+    Task<int> ReadAttributeAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int serverHandle, [OpcEmitArrayCount, OpcUniquePointer] int[] attributeIds, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncRead::Cancel</c> (opnum 10).</summary>
     [OpcMethod(10)]
@@ -214,23 +214,23 @@ public partial interface IOPCHDA_AsyncUpdate
 
     /// <summary><c>IOPCHDA_AsyncUpdate::Insert</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<int> InsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default);
+    Task<int> InsertAsync(int transactionId, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcVariant[] dataValues, [OpcUniquePointer] int[] qualities, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncUpdate::Replace</c> (opnum 5).</summary>
     [OpcMethod(5)]
-    Task<int> ReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default);
+    Task<int> ReplaceAsync(int transactionId, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcVariant[] dataValues, [OpcUniquePointer] int[] qualities, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncUpdate::InsertReplace</c> (opnum 6).</summary>
     [OpcMethod(6)]
-    Task<int> InsertReplaceAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default);
+    Task<int> InsertReplaceAsync(int transactionId, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcVariant[] dataValues, [OpcUniquePointer] int[] qualities, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncUpdate::DeleteRaw</c> (opnum 7).</summary>
     [OpcMethod(7)]
-    Task<int> DeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> DeleteRawAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncUpdate::DeleteAtTime</c> (opnum 8).</summary>
     [OpcMethod(8)]
-    Task<int> DeleteAtTimeAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, CancellationToken cancellationToken = default);
+    Task<int> DeleteAtTimeAsync(int transactionId, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncUpdate::Cancel</c> (opnum 9).</summary>
     [OpcMethod(9)]
@@ -249,11 +249,11 @@ public partial interface IOPCHDA_AsyncAnnotations
 
     /// <summary><c>IOPCHDA_AsyncAnnotations::Read</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<int> ReadAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> ReadAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncAnnotations::Insert</c> (opnum 5).</summary>
     [OpcMethod(5)]
-    Task<int> InsertAsync(int transactionId, int[] serverHandles, long[] timestampFileTimes, OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default);
+    Task<int> InsertAsync(int transactionId, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcHdaAnnotation[] annotationValues, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_AsyncAnnotations::Cancel</c> (opnum 6).</summary>
     [OpcMethod(6)]
@@ -268,11 +268,11 @@ public partial interface IOPCHDA_Playback
 {
     /// <summary><c>IOPCHDA_Playback::ReadRawWithUpdate</c> (opnum 3).</summary>
     [OpcMethod(3)]
-    Task<int> ReadRawWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, long updateDurationFileTime, long updateIntervalFileTime, int[] serverHandles, CancellationToken cancellationToken = default);
+    Task<int> ReadRawWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, int maxValues, long updateDurationFileTime, long updateIntervalFileTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_Playback::ReadProcessedWithUpdate</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<int> ReadProcessedWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int intervalCount, long updateIntervalFileTime, int[] serverHandles, int[] aggregateIds, CancellationToken cancellationToken = default);
+    Task<int> ReadProcessedWithUpdateAsync(int transactionId, OpcHdaTime startTime, OpcHdaTime endTime, long resampleIntervalFileTime, int intervalCount, long updateIntervalFileTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer] int[] aggregateIds, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_Playback::Cancel</c> (opnum 5).</summary>
     [OpcMethod(5)]
