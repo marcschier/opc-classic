@@ -113,15 +113,18 @@ public partial interface IOPCHDA_SyncUpdate
 
     /// <summary><c>IOPCHDA_SyncUpdate::Insert</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<int[]> InsertAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> InsertAsync([OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcVariant[] dataValues, [OpcUniquePointer] int[] qualities, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncUpdate::Replace</c> (opnum 5).</summary>
     [OpcMethod(5)]
-    Task<int[]> ReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> ReplaceAsync([OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcVariant[] dataValues, [OpcUniquePointer] int[] qualities, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncUpdate::InsertReplace</c> (opnum 6).</summary>
     [OpcMethod(6)]
-    Task<int[]> InsertReplaceAsync(int[] serverHandles, long[] timestampFileTimes, OpcVariant[] dataValues, int[] qualities, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<int[]> InsertReplaceAsync([OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, [OpcUniquePointer, OpcFileTimeElements] long[] timestampFileTimes, [OpcUniquePointer] OpcVariant[] dataValues, [OpcUniquePointer] int[] qualities, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncUpdate::DeleteRaw</c> (opnum 7).</summary>
     [OpcMethod(7)]
