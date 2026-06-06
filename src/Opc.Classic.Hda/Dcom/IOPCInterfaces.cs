@@ -146,7 +146,8 @@ public partial interface IOPCHDA_SyncAnnotations
 
     /// <summary><c>IOPCHDA_SyncAnnotations::Read</c> (opnum 4).</summary>
     [OpcMethod(4)]
-    Task<OpcHdaAnnotation[]> ReadAsync(OpcHdaTime startTime, OpcHdaTime endTime, int[] serverHandles, CancellationToken cancellationToken = default);
+    [return: OpcUniquePointer]
+    Task<OpcHdaAnnotation[]> ReadAsync(OpcHdaTime startTime, OpcHdaTime endTime, [OpcEmitArrayCount, OpcUniquePointer] int[] serverHandles, CancellationToken cancellationToken = default);
 
     /// <summary><c>IOPCHDA_SyncAnnotations::Insert</c> (opnum 5).</summary>
     [OpcMethod(5)]
