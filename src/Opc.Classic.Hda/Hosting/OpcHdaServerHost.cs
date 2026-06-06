@@ -76,13 +76,47 @@ public sealed class OpcHdaServerHost : IOpcServerHost, IDisposable, IAsyncDispos
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
-        var dispatcher = new IOPCHDA_ServerServerDispatcher(_serverImpl);
-        var processor = new RpcServerConnectionProcessor(
-            new Dictionary<Guid, IOpcServerDispatcher>
-            {
-                [IOPCHDA_Server.InterfaceId] = dispatcher,
-            },
-            _logger);
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [IOPCHDA_Server.InterfaceId] = new IOPCHDA_ServerServerDispatcher(_serverImpl),
+        };
+
+        // Register additional HDA interface dispatchers when the user impl
+        // provides them. Each dispatcher reads the request, calls the matching
+        // method on the impl, and encodes the response per the OPC HDA 1.20 IDL.
+        if (_serverImpl is IOPCHDA_SyncRead syncRead)
+        {
+            dispatchers[IOPCHDA_SyncRead.InterfaceId] = new IOPCHDA_SyncReadServerDispatcher(syncRead);
+        }
+        if (_serverImpl is IOPCHDA_SyncUpdate syncUpdate)
+        {
+            dispatchers[IOPCHDA_SyncUpdate.InterfaceId] = new IOPCHDA_SyncUpdateServerDispatcher(syncUpdate);
+        }
+        if (_serverImpl is IOPCHDA_SyncAnnotations syncAnnotations)
+        {
+            dispatchers[IOPCHDA_SyncAnnotations.InterfaceId] = new IOPCHDA_SyncAnnotationsServerDispatcher(syncAnnotations);
+        }
+        // IOPCHDA_Browser: per-instance browser objects are created by
+        // IOPCHDA_Server::CreateBrowse and tracked via per-IPID dispatch
+        // (sub-object pattern); skipped at root level for now.
+        if (_serverImpl is IOPCHDA_AsyncRead asyncRead)
+        {
+            dispatchers[IOPCHDA_AsyncRead.InterfaceId] = new IOPCHDA_AsyncReadServerDispatcher(asyncRead);
+        }
+        if (_serverImpl is IOPCHDA_AsyncUpdate asyncUpdate)
+        {
+            dispatchers[IOPCHDA_AsyncUpdate.InterfaceId] = new IOPCHDA_AsyncUpdateServerDispatcher(asyncUpdate);
+        }
+        if (_serverImpl is IOPCHDA_AsyncAnnotations asyncAnnotations)
+        {
+            dispatchers[IOPCHDA_AsyncAnnotations.InterfaceId] = new IOPCHDA_AsyncAnnotationsServerDispatcher(asyncAnnotations);
+        }
+        if (_serverImpl is IOPCHDA_Playback playback)
+        {
+            dispatchers[IOPCHDA_Playback.InterfaceId] = new IOPCHDA_PlaybackServerDispatcher(playback);
+        }
+
+        var processor = new RpcServerConnectionProcessor(dispatchers, _logger);
         _listener = new OpcServerListener(endpoint, processor, _logger);
 
         Task started = _listener.StartAsync(cancellationToken);

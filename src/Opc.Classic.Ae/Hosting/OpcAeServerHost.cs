@@ -76,13 +76,31 @@ public sealed class OpcAeServerHost : IOpcServerHost, IDisposable, IAsyncDisposa
 
         IPEndPoint listenEndpoint = ListenAddressParser.Parse(_options.ListenAddress ?? "127.0.0.1:0");
         var endpoint = new TcpServerEndpoint(listenEndpoint);
-        var dispatcher = new IOPCEventServerServerDispatcher(_serverImpl);
-        var processor = new RpcServerConnectionProcessor(
-            new Dictionary<Guid, IOpcServerDispatcher>
-            {
-                [IOPCEventServer.InterfaceId] = dispatcher,
-            },
-            _logger);
+        var dispatchers = new Dictionary<Guid, IOpcServerDispatcher>
+        {
+            [IOPCEventServer.InterfaceId] = new IOPCEventServerServerDispatcher(_serverImpl),
+        };
+
+        // Register additional AE interface dispatchers when the impl provides
+        // them (AE 1.10 extensions + subscription / browser tearoffs).
+        if (_serverImpl is IOPCEventServer2 eventServer2)
+        {
+            dispatchers[IOPCEventServer2.InterfaceId] = new IOPCEventServer2ServerDispatcher(eventServer2);
+        }
+        if (_serverImpl is IOPCEventSubscriptionMgt subscriptionMgt)
+        {
+            dispatchers[IOPCEventSubscriptionMgt.InterfaceId] = new IOPCEventSubscriptionMgtServerDispatcher(subscriptionMgt);
+        }
+        if (_serverImpl is IOPCEventSubscriptionMgt2 subscriptionMgt2)
+        {
+            dispatchers[IOPCEventSubscriptionMgt2.InterfaceId] = new IOPCEventSubscriptionMgt2ServerDispatcher(subscriptionMgt2);
+        }
+        if (_serverImpl is IOPCEventAreaBrowser areaBrowser)
+        {
+            dispatchers[IOPCEventAreaBrowser.InterfaceId] = new IOPCEventAreaBrowserServerDispatcher(areaBrowser);
+        }
+
+        var processor = new RpcServerConnectionProcessor(dispatchers, _logger);
         _listener = new OpcServerListener(endpoint, processor, _logger);
 
         Task started = _listener.StartAsync(cancellationToken);

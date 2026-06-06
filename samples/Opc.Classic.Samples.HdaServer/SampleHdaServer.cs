@@ -8,7 +8,7 @@ using Opc.Classic.Hda.Hosting;
 
 namespace Opc.Classic.Samples.HdaServer;
 
-public sealed class SampleHdaServer : IOpcHdaServer
+public sealed partial class SampleHdaServer : IOpcHdaServer
 {
     private static readonly Action<ILogger, Exception?> GetStatusMessage = LoggerMessage.Define(
         LogLevel.Information,
