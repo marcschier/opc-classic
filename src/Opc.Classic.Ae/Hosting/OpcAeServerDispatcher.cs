@@ -139,6 +139,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
 
     /// <inheritdoc />
     public Task<int[]> AckConditionAsync(
+        int dwCount,
         string acknowledgerId,
         string comment,
         string[] sources,
@@ -148,7 +149,7 @@ public sealed class OpcAeServerDispatcher : IOpcAeServerDispatcher
         CancellationToken cancellationToken = default)
     {
         IOPCEventServer server = _server;
-        return server.AckConditionAsync(sources?.Length ?? 0, acknowledgerId, comment, sources!, conditionNames, activeTimes, cookies, cancellationToken);
+        return server.AckConditionAsync(dwCount, acknowledgerId, comment, sources!, conditionNames, activeTimes, cookies, cancellationToken);
     }
 
     /// <inheritdoc />

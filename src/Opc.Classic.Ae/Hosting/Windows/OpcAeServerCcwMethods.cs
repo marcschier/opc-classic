@@ -465,7 +465,7 @@ internal static unsafe class OpcAeServerCcwMethods
             long[] activeTimeValues = OpcAeArrayMarshaler.ReadFileTimeArray(activeTimes, count);
             int[] cookieValues = OpcAeArrayMarshaler.ReadDwordArray(cookies, count);
 #pragma warning disable VSTHRD002
-            int[] errors = dispatcher!.AckConditionAsync(acknowledger, ackComment, sourceNames, conditionNameValues, activeTimeValues, cookieValues, CancellationToken.None)
+            int[] errors = dispatcher!.AckConditionAsync(count, acknowledger, ackComment, sourceNames, conditionNameValues, activeTimeValues, cookieValues, CancellationToken.None)
                 .GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
             errors ??= [];

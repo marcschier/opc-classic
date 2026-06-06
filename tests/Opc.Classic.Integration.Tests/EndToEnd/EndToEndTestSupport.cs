@@ -1569,14 +1569,16 @@ internal sealed class AeEndToEndPipeline
         }
 
         public Task<int[]> AckConditionAsync(
+            int dwCount,
             string acknowledgerId,
             string comment,
-            long[] activeTimes,
-            int[] cookies,
             string[] sources,
             string[] conditionNames,
+            long[] activeTimes,
+            int[] cookies,
             CancellationToken cancellationToken = default)
         {
+            _ = dwCount;
             cancellationToken.ThrowIfCancellationRequested();
             LastAck = new AeAckObservation(acknowledgerId, comment, activeTimes, cookies, sources, conditionNames);
             return Task.FromResult(cookies.Select(_ => OpcResultId.Ok.Code).ToArray());

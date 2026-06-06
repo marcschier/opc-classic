@@ -118,12 +118,13 @@ public sealed class AeEndToEndTests
         long activeTime = new DateTimeOffset(2026, 2, 3, 4, 5, 6, TimeSpan.Zero).ToFileTime();
 
         int[] errors = await pipeline.EventServer.AckConditionAsync(
+            1,
             "operator.alpha",
             "Acknowledged during E2E test",
-            [activeTime],
-            [0x6A7B],
             ["Plant1.AreaA.Tank7"],
             ["LevelHigh"],
+            [activeTime],
+            [0x6A7B],
             CancellationToken.None);
 
         AeAckObservation ack = pipeline.LastAck!;

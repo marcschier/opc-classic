@@ -447,9 +447,10 @@ internal sealed class SyntheticAeServer : IOpcAeServer, IAeServer
         return Task.FromResult<IReadOnlyList<AckResult>>(conditions.Select(static condition => new AckResult { Condition = condition, ResultId = OpcResultId.Ok }).ToArray());
     }
 
-    public Task<int[]> AckConditionAsync(string acknowledgerId, string comment, long[] activeTimes, int[] cookies, string[] sources, string[] conditionNames, CancellationToken cancellationToken = default)
+    public Task<int[]> AckConditionAsync(int dwCount, string acknowledgerId, string comment, string[] sources, string[] conditionNames, long[] activeTimes, int[] cookies, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        _ = dwCount;
         _ = comment;
         _ = activeTimes;
         _ = sources;

@@ -156,13 +156,18 @@ public sealed class HdaEndToEndTests
         HdaBrowseWireElement[] root = await pipeline.BrowseViaWireAsync(string.Empty, HdaBrowseType.Flat, CancellationToken.None);
         HdaBrowseWireElement[] sensor = await pipeline.BrowseViaWireAsync("Sensor", HdaBrowseType.Leaf, CancellationToken.None);
 
-        await Assert.That(root.Length).IsEqualTo(4);
-        await Assert.That(root[0].Name).IsEqualTo("Sensor");
-        await Assert.That(root[0].ItemId).IsEqualTo("Sensor");
-        await Assert.That(root[0].BrowseType).IsEqualTo(HdaBrowseType.Branch);
+        // Flat browse returns Sensor branch + 3 Sensor leaves + 3 Random leaves = 7.
+        // The Random.* items live alongside Sensor.* so cross-impl matrix probes
+        // that target default Matrikon/TestServer item IDs work against this
+        // sample server (HistoricalDataStore seeds Random.Int4/Real8/String).
+        await Assert.That(root.Length).IsEqualTo(7);
+        await Assert.That(root.Any(static element => element.Name == "Sensor" && element.ItemId == "Sensor" && element.BrowseType == HdaBrowseType.Branch)).IsTrue();
         await Assert.That(root.Any(static element => element.ItemId == "Sensor.Temperature" && element.BrowseType == HdaBrowseType.Leaf)).IsTrue();
         await Assert.That(root.Any(static element => element.ItemId == "Sensor.Pressure" && element.Name == "Pressure")).IsTrue();
         await Assert.That(root.Any(static element => element.ItemId == "Sensor.FlowRate" && element.Name == "FlowRate")).IsTrue();
+        await Assert.That(root.Any(static element => element.ItemId == "Random.Int4" && element.BrowseType == HdaBrowseType.Leaf)).IsTrue();
+        await Assert.That(root.Any(static element => element.ItemId == "Random.Real8" && element.BrowseType == HdaBrowseType.Leaf)).IsTrue();
+        await Assert.That(root.Any(static element => element.ItemId == "Random.String" && element.BrowseType == HdaBrowseType.Leaf)).IsTrue();
         await Assert.That(sensor.Length).IsEqualTo(3);
         await Assert.That(sensor.All(static element => element.BrowseType == HdaBrowseType.Leaf)).IsTrue();
         await Assert.That(pipeline.Channel.CallLog.Last().InterfaceId).IsEqualTo(IOPCHDA_Browser.InterfaceId);

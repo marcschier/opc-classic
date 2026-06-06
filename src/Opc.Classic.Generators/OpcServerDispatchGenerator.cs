@@ -597,11 +597,39 @@ namespace Opc.Classic.Generators
                 // the C706 §14.3.12.3 deferred-pile layout that the proxy
                 // emits (max_count + N per-element referent IDs + N
                 // per-element conformant-varying string bodies, no per-
-                // element referent before each body).
+                // element referent before each body). If combined with
+                // [OpcUniquePointer], the outer [unique] referent precedes
+                // the max_count; if the outer referent is NULL the array is
+                // entirely absent on the wire (proxy writes only the
+                // referent), so we synthesise an empty array.
                 if (parameter.DeferredElements && string.Equals(parameter.MarshallingType, "global::System.String[]", System.StringComparison.Ordinal))
                 {
                     string countLocal = parameter.Name + "Count";
                     string idxLocal = parameter.Name + "Idx";
+                    if (parameter.IsUniquePointer)
+                    {
+                        string refLocal = parameter.Name + "Ref";
+                        sb.Append(indent).Append("        uint ").Append(refLocal).Append(" = ").Append(readerLocal).AppendLine(".ReadUInt32();");
+                        sb.Append(indent).Append("        global::System.String[] ").Append(parameter.Name).AppendLine(";");
+                        sb.Append(indent).Append("        if (").Append(refLocal).AppendLine(" != 0u)");
+                        sb.Append(indent).AppendLine("        {");
+                        sb.Append(indent).Append("            int ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
+                        sb.Append(indent).Append("            for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
+                        sb.Append(indent).AppendLine("            {");
+                        sb.Append(indent).Append("                _ = ").Append(readerLocal).AppendLine(".TryReadReferentId(out _);");
+                        sb.Append(indent).AppendLine("            }");
+                        sb.Append(indent).Append("            ").Append(parameter.Name).Append(" = new global::System.String[").Append(countLocal).AppendLine("];");
+                        sb.Append(indent).Append("            for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
+                        sb.Append(indent).AppendLine("            {");
+                        sb.Append(indent).Append("                ").Append(parameter.Name).Append('[').Append(idxLocal).Append("] = ").Append(readerLocal).AppendLine(".ReadUnicodeString()!;");
+                        sb.Append(indent).AppendLine("            }");
+                        sb.Append(indent).AppendLine("        }");
+                        sb.Append(indent).AppendLine("        else");
+                        sb.Append(indent).AppendLine("        {");
+                        sb.Append(indent).Append("            ").Append(parameter.Name).AppendLine(" = global::System.Array.Empty<global::System.String>();");
+                        sb.Append(indent).AppendLine("        }");
+                        continue;
+                    }
                     sb.Append(indent).Append("        int ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
                     sb.Append(indent).Append("        for (int ").Append(idxLocal).Append(" = 0; ").Append(idxLocal).Append(" < ").Append(countLocal).Append("; ").Append(idxLocal).AppendLine("++)");
                     sb.Append(indent).AppendLine("        {");
@@ -614,7 +642,7 @@ namespace Opc.Classic.Generators
                     sb.Append(indent).AppendLine("        }");
                     continue;
                 }
-                EmitCodecReadLocal(sb, indent + "        ", readerLocal, method, parameter.DeclaredType, parameter.MarshallingType, parameter.IsOpcInterface, parameter.IsUniquePointer, parameter.UnderlyingValueType, parameter.Name);
+                EmitCodecReadLocal(sb, indent + "        ", readerLocal, method, parameter.DeclaredType, parameter.MarshallingType, parameter.IsOpcInterface, parameter.IsUniquePointer, parameter.UnderlyingValueType, parameter.Name, parameter.FileTimeElements);
             }
         }
     }
@@ -845,6 +873,13 @@ namespace Opc.Classic.Generators
             "global::Opc.Classic.Da.Ndr.NdrOpcItemResultCodec.WriteConformantArray",
         "global::Opc.Classic.Da.OpcItemAttributes" =>
             "global::Opc.Classic.Da.Ndr.NdrOpcItemAttributesCodec.WriteConformantArray",
+        // NdrOpcItemStateCodec writes inline+variant per item with the variant
+        // immediately after each inline (interleaved, not deferred-pile). The
+        // hand-written IOPCSyncIOClientProxy.ReadConformantOpcItemStateArray
+        // also reads inline+variant per item, so generator-emitted Encode for
+        // OpcItemState[] must NOT use the deferred-pile WriteConformantArray
+        // helper (which would put all bodies after all inlines and mismatch
+        // the client decoder).
         _ => null,
     };
 
@@ -905,7 +940,7 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).AppendLine("}");
     }
 
-    private static void EmitCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, MethodModel method, string declaredType, string marshallingType, bool isOpcInterface, bool isUniquePointer, string? underlyingValueType, string targetLocal)
+    private static void EmitCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, MethodModel method, string declaredType, string marshallingType, bool isOpcInterface, bool isUniquePointer, string? underlyingValueType, string targetLocal, bool fileTimeElements = false)
     {
         if (isOpcInterface)
         {
@@ -946,13 +981,28 @@ namespace Opc.Classic.Generators
         {
             if (codec.IsArray)
             {
-                // [in] T** unique-pointer-prefixed conformant array. Skip the
-                // 4-byte referent before reading the array header + elements.
+                // [in] T** unique-pointer-prefixed conformant array. Read the
+                // 4-byte referent; if non-zero, read max_count + elements. If
+                // zero (NULL), set the target to an empty array — the proxy
+                // writes only the referent in that case (per DCE 1.1 §14.3.10).
                 if (isUniquePointer)
                 {
-                    sb.Append(statementIndent).Append("_ = ").Append(readerLocal).AppendLine(".ReadUInt32();");
+                    string refLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Ref", readerLocal, targetLocal);
+                    sb.Append(statementIndent).Append("uint ").Append(refLocal).Append(" = ").Append(readerLocal).AppendLine(".ReadUInt32();");
+                    sb.Append(statementIndent).Append(codec.ArrayElementType).Append("[] ").Append(targetLocal).AppendLine(";");
+                    sb.Append(statementIndent).Append("if (").Append(refLocal).AppendLine(" != 0u)");
+                    sb.Append(statementIndent).AppendLine("{");
+                    string innerTargetLocal = UniqueLocalName(method.ParameterNames, targetLocal + "Body", readerLocal, targetLocal, refLocal);
+                    EmitArrayCodecReadLocal(sb, statementIndent + "    ", readerLocal, codec, method.ParameterNames, innerTargetLocal, fileTimeElements);
+                    sb.Append(statementIndent).Append("    ").Append(targetLocal).Append(" = ").Append(innerTargetLocal).AppendLine(";");
+                    sb.Append(statementIndent).AppendLine("}");
+                    sb.Append(statementIndent).AppendLine("else");
+                    sb.Append(statementIndent).AppendLine("{");
+                    sb.Append(statementIndent).Append("    ").Append(targetLocal).Append(" = global::System.Array.Empty<").Append(codec.ArrayElementType).AppendLine(">();");
+                    sb.Append(statementIndent).AppendLine("}");
+                    return;
                 }
-                EmitArrayCodecReadLocal(sb, statementIndent, readerLocal, codec, method.ParameterNames, targetLocal);
+                EmitArrayCodecReadLocal(sb, statementIndent, readerLocal, codec, method.ParameterNames, targetLocal, fileTimeElements);
                 return;
             }
 
@@ -964,7 +1014,7 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append(declaredType).Append(' ').Append(targetLocal).AppendLine(" = default!;");
     }
 
-    private static void EmitArrayCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, CodecEmitter codec, ImmutableArray<string> parameterNames, string targetLocal)
+    private static void EmitArrayCodecReadLocal(StringBuilder sb, string statementIndent, string readerLocal, CodecEmitter codec, ImmutableArray<string> parameterNames, string targetLocal, bool fileTimeElements = false)
     {
         string countLocal = UniqueLocalName(parameterNames, targetLocal + "Count", readerLocal, targetLocal);
         string arrayLocal = UniqueLocalName(parameterNames, targetLocal + "Array", readerLocal, targetLocal, countLocal);
@@ -980,7 +1030,14 @@ namespace Opc.Classic.Generators
         sb.Append(statementIndent).Append("var ").Append(arrayLocal).Append(" = new ").Append(codec.ArrayElementType).Append('[').Append(countLocal).AppendLine("]; ");
         sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
         sb.Append(statementIndent).AppendLine("{");
-        sb.Append(statementIndent).Append("    ").Append(arrayLocal).Append('[').Append(indexLocal).Append("] = ").Append(FormatReadExpression(codec, readerLocal)).AppendLine(";");
+        // [OpcFileTimeElements] on a long[] array means the wire elements are
+        // FILETIME (2x DWORD, 4-byte aligned 8 bytes) rather than NDR
+        // hyper/int64 (8-byte aligned). Use ReadFileTime instead of ReadInt64
+        // to match the proxy's WriteFileTime emit.
+        string elemReadExpr = (fileTimeElements && string.Equals(codec.ArrayElementType, "global::System.Int64", System.StringComparison.Ordinal))
+            ? readerLocal + ".ReadFileTime()"
+            : FormatReadExpression(codec, readerLocal);
+        sb.Append(statementIndent).Append("    ").Append(arrayLocal).Append('[').Append(indexLocal).Append("] = ").Append(elemReadExpr).AppendLine(";");
         sb.Append(statementIndent).AppendLine("}");
         sb.Append(statementIndent).Append("var ").Append(targetLocal).Append(" = ").Append(arrayLocal).AppendLine(";");
     }

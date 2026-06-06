@@ -37,12 +37,13 @@ public sealed class CrossSpecEndToEndTests
         var aeProxy = new IOPCEventServerClientProxy(aeChannel.Channel);
 
         int[] errors = await aeProxy.AckConditionAsync(
+            1,
             "operator.cross",
             "Ack triggers nested DA status",
-            [new DateTimeOffset(2026, 3, 4, 5, 6, 7, TimeSpan.Zero).ToFileTime()],
-            [0x7711],
             ["Plant1.AreaA.Tank7"],
             ["LevelHigh"],
+            [new DateTimeOffset(2026, 3, 4, 5, 6, 7, TimeSpan.Zero).ToFileTime()],
+            [0x7711],
             CancellationToken.None);
 
         ObservedOrpcCall aeCall = aeChannel.Calls.Single();
@@ -235,14 +236,16 @@ public sealed class CrossSpecEndToEndTests
         public Task<int> QueryAvailableFiltersAsync(CancellationToken cancellationToken = default) => Task.FromResult(0x1F);
 
         public async Task<int[]> AckConditionAsync(
+            int dwCount,
             string acknowledgerId,
             string comment,
-            long[] activeTimes,
-            int[] cookies,
             string[] sources,
             string[] conditionNames,
+            long[] activeTimes,
+            int[] cookies,
             CancellationToken cancellationToken = default)
         {
+            _ = dwCount;
             _ = acknowledgerId;
             _ = comment;
             _ = activeTimes;

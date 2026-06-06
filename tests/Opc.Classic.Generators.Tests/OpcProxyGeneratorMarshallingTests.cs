@@ -51,6 +51,7 @@ public sealed class OpcProxyGeneratorMarshallingTests
         public sealed class UnknownPayload { }
 
         [OpcInterface("33333333-4444-5555-6666-777777777771")]
+        [GenerateOpcProxy]
         public partial interface IChildObject
         {
         }
@@ -200,8 +201,14 @@ public sealed class OpcProxyGeneratorMarshallingTests
     {
         string method = GeneratedMethodSection("GetChildAsync");
 
-        await Assert.That(method).Contains("global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref __opcReader)");
-        await Assert.That(method).Contains("(global::Test.IChildObject)(object)");
+        // DR10 changed the proxy generator to wrap an out IOpcInterface return
+        // value in a generated sub-proxy (e.g. IChildObjectClientProxy) so the
+        // caller can immediately invoke methods on it. The wire decode still
+        // routes through OpcMInterfacePointerCodec which yields the OBJREF
+        // (DCOM MInterfacePointer wrapping), and the proxy then constructs
+        // an IChildObjectClientProxy bound to the registered IPID.
+        await Assert.That(method).Contains("global::Opc.Classic.Dcom.OpcMInterfacePointerCodec.Read(ref __opcReader)");
+        await Assert.That(method).Contains("global::Test.IChildObjectClientProxy");
     }
 
     [Test]
@@ -221,7 +228,7 @@ public sealed class OpcProxyGeneratorMarshallingTests
     [Test]
     public async Task AeStatusMethod_emits_event_server_status_codec()
     {
-        string method = GeneratedMethodSection("GetStatusAsync", AeStatusSource);
+        string method = GeneratedMethodSection("GetStatusAsync", AeStatusSource, "IAeMarshalTest");
 
         await Assert.That(method).Contains("global::Opc.Classic.Ae.Ndr.NdrOpcEventServerStatusCodec.Read(ref __opcReader)");
     }
@@ -278,16 +285,22 @@ public sealed class OpcProxyGeneratorMarshallingTests
         await Assert.That(Convert.ToHexString(observedPayload!)).IsEqualTo(Convert.ToHexString(expectedPayload));
     }
 
-    private static string GeneratedMethodSection(string methodName, string? source = null)
+    private static string GeneratedMethodSection(string methodName, string? source = null, string interfaceTypeName = "IMarshalTest")
     {
         GeneratorDriverRunResult result = RunGenerator(source ?? SampleSource, out Compilation outputCompilation, out _);
         ThrowIfCompilationHasErrors(outputCompilation);
-        return MethodSection(GeneratedProxySource(result), methodName);
+        return MethodSection(GeneratedProxySource(result, interfaceTypeName), methodName);
     }
 
-    private static string GeneratedProxySource(GeneratorDriverRunResult result) =>
+    private static string GeneratedProxySource(GeneratorDriverRunResult result, string interfaceTypeName = "IMarshalTest") =>
         result.Results.SelectMany(static generator => generator.GeneratedSources)
-            .Single(static generated => generated.HintName.EndsWith(".OpcProxy.g.cs", StringComparison.Ordinal))
+            // Pick the requested interface's proxy specifically: adding
+            // [GenerateOpcProxy] to the test's IChildObject (so out IChildObject
+            // params can construct a sub-proxy per DR10) made multiple
+            // .OpcProxy.g.cs files match.
+            .Single(generated =>
+                generated.HintName.EndsWith(".OpcProxy.g.cs", StringComparison.Ordinal)
+                && generated.HintName.Contains(interfaceTypeName, StringComparison.Ordinal))
             .SourceText.ToString();
 
     private static void ThrowIfCompilationHasErrors(Compilation compilation)

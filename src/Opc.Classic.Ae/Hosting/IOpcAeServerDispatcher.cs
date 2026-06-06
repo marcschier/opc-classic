@@ -101,7 +101,13 @@ public interface IOpcAeServerDispatcher
         throw new OpcException(OpcResultId.NotImplemented);
 
     /// <summary>Acknowledges conditions and returns per-event HRESULTs.</summary>
+    /// <remarks>
+    /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID, LPWSTR szComment,
+    /// [size_is(dwCount)] LPWSTR *pszSource, [size_is(dwCount)] LPWSTR *pszConditionName,
+    /// [size_is(dwCount)] FILETIME *pftActiveTime, [size_is(dwCount)] DWORD *pdwCookie, ...)</c>.
+    /// </remarks>
     Task<int[]> AckConditionAsync(
+        int dwCount,
         string acknowledgerId,
         string comment,
         string[] sources,
