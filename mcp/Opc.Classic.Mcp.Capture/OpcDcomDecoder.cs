@@ -7,6 +7,7 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Logging;
@@ -82,6 +83,8 @@ public sealed class OpcDcomDecoder
         {
             yield break;
         }
+
+        ValidateCapturedFrame(packet);
 
         Packet parsed;
         try
@@ -466,6 +469,113 @@ public sealed class OpcDcomDecoder
 
     private static string FormatEndpoint(IPAddress ip, int port) =>
         string.Create(CultureInfo.InvariantCulture, $"{ip}:{port}");
+
+    private static void ValidateCapturedFrame(CapturedPacket packet)
+    {
+        if (packet.LinkType != (int)LinkLayers.Ethernet)
+        {
+            return;
+        }
+
+        ReadOnlySpan<byte> data = packet.Data.Span;
+        RequireFrameLength(data.Length, 14, 0);
+
+        int etherTypeOffset = 12;
+        ushort etherType = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(etherTypeOffset, 2));
+        int networkOffset = 14;
+        if (etherType == 0x8100 || etherType == 0x88A8)
+        {
+            RequireFrameLength(data.Length, networkOffset + 4, networkOffset);
+            etherType = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(networkOffset + 2, 2));
+            networkOffset += 4;
+        }
+
+        switch (etherType)
+        {
+            case 0x0800:
+                ValidateIpv4Frame(data, networkOffset);
+                break;
+            case 0x86DD:
+                ValidateIpv6Frame(data, networkOffset);
+                break;
+        }
+    }
+
+    private static void ValidateIpv4Frame(ReadOnlySpan<byte> data, int ipOffset)
+    {
+        RequireFrameLength(data.Length, ipOffset + 20, ipOffset);
+
+        int version = data[ipOffset] >> 4;
+        int headerLength = (data[ipOffset] & 0x0F) * 4;
+        if (version != 4)
+        {
+            throw new InvalidDataException($"ethernet frame has invalid IPv4 version {version} at offset {ipOffset}.");
+        }
+
+        if (headerLength < 20)
+        {
+            throw new InvalidDataException($"ethernet frame has invalid IPv4 header length {headerLength} at offset {ipOffset}.");
+        }
+
+        RequireFrameLength(data.Length, ipOffset + headerLength, ipOffset);
+
+        int totalLength = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(ipOffset + 2, 2));
+        if (totalLength < headerLength)
+        {
+            throw new InvalidDataException($"ethernet frame has invalid IPv4 total length {totalLength} at offset {ipOffset}.");
+        }
+
+        RequireFrameLength(data.Length, ipOffset + totalLength, ipOffset);
+
+        if (data[ipOffset + 9] == 6)
+        {
+            ValidateTcpSegment(data, ipOffset + headerLength, ipOffset + totalLength);
+        }
+    }
+
+    private static void ValidateIpv6Frame(ReadOnlySpan<byte> data, int ipOffset)
+    {
+        RequireFrameLength(data.Length, ipOffset + 40, ipOffset);
+
+        int payloadLength = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(ipOffset + 4, 2));
+        int totalLength = 40 + payloadLength;
+        RequireFrameLength(data.Length, ipOffset + totalLength, ipOffset);
+
+        if (data[ipOffset + 6] == 6)
+        {
+            ValidateTcpSegment(data, ipOffset + 40, ipOffset + totalLength);
+        }
+    }
+
+    private static void ValidateTcpSegment(ReadOnlySpan<byte> data, int tcpOffset, int segmentEnd)
+    {
+        RequireFrameLength(data.Length, tcpOffset + 20, tcpOffset);
+        if (segmentEnd < tcpOffset + 20)
+        {
+            throw new InvalidDataException($"ethernet frame too short: expected {tcpOffset + 20} bytes, got {segmentEnd} at offset {tcpOffset}.");
+        }
+
+        int headerLength = (data[tcpOffset + 12] >> 4) * 4;
+        if (headerLength < 20)
+        {
+            throw new InvalidDataException($"ethernet frame has invalid TCP header length {headerLength} at offset {tcpOffset}.");
+        }
+
+        if (segmentEnd < tcpOffset + headerLength)
+        {
+            throw new InvalidDataException($"ethernet frame too short: expected {tcpOffset + headerLength} bytes, got {segmentEnd} at offset {tcpOffset}.");
+        }
+
+        RequireFrameLength(data.Length, tcpOffset + headerLength, tcpOffset);
+    }
+
+    private static void RequireFrameLength(int actualLength, int expectedLength, int offset)
+    {
+        if (actualLength < expectedLength)
+        {
+            throw new InvalidDataException($"ethernet frame too short: expected {expectedLength} bytes, got {actualLength} at offset {offset}.");
+        }
+    }
 
     private sealed record class FlowKey(IPAddress SrcIp, int SrcPort, IPAddress DstIp, int DstPort);
 
