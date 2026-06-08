@@ -9,9 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\mcp\Opc.Classic.Mcp.Capture\Opc.Classic.Mcp.Capture.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\Opc.Classic.Tests.Fuzz\Opc.Classic.Tests.Fuzz.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsCheck" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 

@@ -1,0 +1,11 @@
+<!--
+  SPDX-License-Identifier: MIT
+  Copyright (c) 2026 Opc.Classic .NET Contributors
+-->
+<Project>
+  <PropertyGroup>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+</Project>

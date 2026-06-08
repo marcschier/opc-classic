@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Tests.Fuzz\Opc.Classic.Tests.Fuzz.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
   </ItemGroup>

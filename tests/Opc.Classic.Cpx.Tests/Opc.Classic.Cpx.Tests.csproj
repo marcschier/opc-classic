@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Tests.Fuzz\Opc.Classic.Tests.Fuzz.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
   </ItemGroup>

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CsCheck" />
+    <ProjectReference Include="..\Opc.Classic.Tests.Fuzz\Opc.Classic.Tests.Fuzz.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
     <ProjectReference Include="..\..\src\Opc.Classic.Ae\Opc.Classic.Ae.csproj" />

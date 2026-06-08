@@ -30,6 +30,7 @@
     <Project Path="tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dcom.Logging.Tests/Opc.Classic.Dcom.Logging.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dcom.Smb.Tests/Opc.Classic.Dcom.Smb.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Tests.Fuzz/Opc.Classic.Tests.Fuzz.csproj" />
     <Project Path="tests/Opc.Classic.Dcom.Tests/Opc.Classic.Dcom.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Discovery.Tests/Opc.Classic.Discovery.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dx.Tests/Opc.Classic.Dx.Tests.csproj" />
