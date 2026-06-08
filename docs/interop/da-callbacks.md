@@ -209,7 +209,7 @@ For Matrikon Simulation Server to reach the MCP host's listener:
    the callback CLSID's AppID. See
    [`opcenum-auth.md`](opcenum-auth.md) for the equivalent OPCEnum-side
    recipe and the
-   [`grant-opcenum-acl.ps1`](../../tools/grant-opcenum-acl.ps1) helper.
+   [`grant-opcenum-acl.ps1`](../../external/tools/grant-opcenum-acl.ps1) helper.
 4. **Authentication compatibility**: Matrikon's outbound callback uses
    the auth level it was Advised under. The MCP listener must accept the
    same auth level (PKT_INTEGRITY by default).

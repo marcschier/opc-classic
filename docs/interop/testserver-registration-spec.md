@@ -5,17 +5,17 @@ entry, COM CLSID, AppID, category, and self-registration step needed when
 installing the OPC Foundation `OpcTestServer_x64.exe` and the proxy/stub DLLs
 required for DCOM marshalling. It was originally derived from the upstream
 installer manifests, but local WiX/MSI packaging is no longer vendored. It is
-the source-of-truth reference for auditing `tools/register-testserver.ps1` and
+the source-of-truth reference for auditing `external/tools/register-testserver.ps1` and
 the suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
 `docs/interop/probe-coverage.md`).
 
 ## Source artifacts audited
 
 - Legacy upstream installer manifests (not vendored in this tree)
-- `external\redist\samples\OpcTestServer\OpcTestServer.cpp`
-- `external\redist\samples\OpcTestServer\OpcTestServer.idl`
-- `external\redist\samples\OpcTestServer\OpcTestServer.config.xml`
-- `external\redist\src\Shared\OpcUtilityClasses`
+- `OpcTestServer.cpp` (vendored OPC Foundation TestServer)
+- `OpcTestServer.idl` (vendored OPC Foundation TestServer)
+- `OpcTestServer.config.xml` (vendored OPC Foundation TestServer)
+- `OpcUtilityClasses` (vendored OPC Foundation shared utilities)
 
 ## Canonical install layout (x64)
 
@@ -164,9 +164,9 @@ IIDs (via TypeLib imports) — so `opccomn_ps.dll` must be registered FIRST.
 Otherwise the dependent DLLs will fail to load their type library
 references when registering.
 
-## What our `tools/register-testserver.ps1` does TODAY (script-only path)
+## What our `external/tools/register-testserver.ps1` does TODAY (script-only path)
 
-From `D:\git\marcschier\opc-classic\tools\register-testserver.ps1`:
+From `D:\git\marcschier\opc-classic\external\tools\register-testserver.ps1`:
 
 1. Copies `opccomn_ps.dll` and `opcproxy.dll` to `%SystemRoot%\System32`.
 2. Runs `regsvr32 %SystemRoot%\System32\opccomn_ps.dll`.
@@ -208,8 +208,8 @@ the suspected causes ranked by likelihood:
    (no DCOM involved) succeeds — the EXE stays alive and registers
    its class factory normally. So the EXE itself is healthy; the
    failure is in the SCM activation path.
-   **Fix surface**: a new helper `tools/grant-testserver-acl.ps1`
-   modeled on `tools/grant-opcenum-acl.ps1` that writes a permissive
+   **Fix surface**: a new helper `external/tools/grant-testserver-acl.ps1`
+   modeled on `external/tools/grant-opcenum-acl.ps1` that writes a permissive
    `LaunchPermission` + `AccessPermission` SD on the TestServer AppID
    (CLSID `{F8582CF9-...}`).
 2. **Missing `OpcTestServer_x64.config.xml`** alongside the EXE. BH2's
@@ -264,7 +264,7 @@ the post-install state is:
   `MergeModule.wxs:88-94`); the x64 MSI installs the x86 merge module
   which provides OpcEnum on the SysWOW64 side.
 
-`tools/register-testserver.ps1` is a no-MSI shortcut for developer
+`external/tools/register-testserver.ps1` is a no-MSI shortcut for developer
 machines. The BH2 fixes above bring it to functional parity with the
 MSI for the **TestServer-only DA case**; full multi-spec marshalling
 would also require the additional proxy/stub registrations from the
@@ -307,7 +307,7 @@ After extensive bisection:
    `COpcComModule::RegisterFromFiles` called `CoInitializeSecurity` with
    `RPC_C_AUTHN_LEVEL_PKT` (level 4). Microsoft's June-2021 DCOM
    hardening REQUIRES `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` (level 5) for
-   servers. **Fixed in `external/redist/src/Shared/OpcUtilityClasses/COpcComModule.cpp`**
+   servers. **Fixed in the vendored OPC Foundation `COpcComModule.cpp`**
    (both call sites). **Did NOT fix the activation** either — the
    fundamental issue is elsewhere.
 3. **Comparison with Matrikon (working baseline)**: Foundation TestClient
@@ -327,7 +327,7 @@ prevents it from successfully registering its class factory with SCM
 within the required timeout window, regardless of which DCOM client is
 attempting activation. The issue persists across:
 
-- Fresh `tools/build-testserver.ps1 -Clean` builds.
+- Fresh `external/tools/build-testserver.ps1 -Clean` builds.
 - Both binary builds present on the dev box.
 - HKLM-only registration (after HKCU shadow removal).
 - Both Microsoft's native DCOM client and our managed client.

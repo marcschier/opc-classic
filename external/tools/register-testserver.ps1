@@ -37,7 +37,7 @@
 .PARAMETER ExePath
     Full path to OpcTestServer_x64.exe (default: looks for it under
     external\redist\build\x64\Release\, the vendored CMake output
-    produced by tools\build-testserver.ps1). The sibling proxy/stub
+    produced by external\tools\build-testserver.ps1). The sibling proxy/stub
     DLLs and OpcTestServer_x64.config.xml are expected alongside.
 
 .PARAMETER Unregister
@@ -47,8 +47,8 @@
     if present.
 
 .EXAMPLE
-    .\tools\register-testserver.ps1                  # register
-    .\tools\register-testserver.ps1 -Unregister      # remove TestServer entries and copied DLLs
+    .\external\tools\register-testserver.ps1                  # register
+    .\external\tools\register-testserver.ps1 -Unregister      # remove TestServer entries and copied DLLs
 #>
 
 [CmdletBinding()]
@@ -66,7 +66,7 @@ function Test-IsAdministrator {
 }
 
 function Resolve-DefaultTestServerPath {
-    $repoRoot = Split-Path -Parent $PSScriptRoot
+    $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
     $candidate = Join-Path $repoRoot 'external\redist\build\x64\Release\OpcTestServer_x64.exe'
     if (Test-Path -LiteralPath $candidate) {
         return $candidate
@@ -220,7 +220,7 @@ function Install-ProxyStubDlls {
     foreach ($dllName in $dllNames) {
         $source = Join-Path $ArtifactDirectory $dllName
         if (-not (Test-Path -LiteralPath $source)) {
-            Write-Warning "Skipping $dllName; not present in $ArtifactDirectory. Re-run tools\build-testserver.ps1 to produce the full proxy/stub set; DA-only marshalling needs opccomn_ps + opcproxy at a minimum."
+            Write-Warning "Skipping $dllName; not present in $ArtifactDirectory. Re-run external\tools\build-testserver.ps1 to produce the full proxy/stub set; DA-only marshalling needs opccomn_ps + opcproxy at a minimum."
             continue
         }
 
@@ -320,7 +320,7 @@ function Copy-TestServerConfig {
 
     $candidates = @(
         (Join-Path $ArtifactDirectory $configName),
-        (Join-Path $PSScriptRoot '..\external\redist\samples\OpcTestServer\OpcTestServer.config.xml')
+        (Join-Path $PSScriptRoot '..\redist\samples\OpcTestServer\OpcTestServer.config.xml')
     )
 
     foreach ($candidate in $candidates) {
@@ -489,7 +489,7 @@ if ($ExePath -and (Test-Path -LiteralPath $ExePath)) {
     $ExePath = (Resolve-Path -LiteralPath $ExePath).Path
 }
 elseif (-not $Unregister) {
-    Write-Error 'Cannot find OpcTestServer_x64.exe. Run tools\build-testserver.ps1 first, or pass -ExePath explicitly.'
+    Write-Error 'Cannot find OpcTestServer_x64.exe. Run external\tools\build-testserver.ps1 first, or pass -ExePath explicitly.'
     exit 1
 }
 else {

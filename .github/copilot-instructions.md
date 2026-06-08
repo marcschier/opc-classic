@@ -84,7 +84,7 @@ Use source generation for static dispatch tables, proxy methods, and server disp
 - **Tests**: use TUnit, `[Test]`, `[Arguments]`, and `await Assert.That(actual).IsEqualTo(expected)`. Prefer hand-written test doubles over runtime-proxy mocking frameworks.
 - **Solutions**: `Opc.Classic.slnx` is the only root solution and uses the .NET XML solution format.
 - **Packages**: central package versions live in `src\Directory.Packages.props` and `tests\Directory.Packages.props`.
-- **Conformance**: All code must conform strictly to the specifications in `external/private/docs`.
+- **Conformance**: All code must conform strictly to the vendored OPC/MS specifications.
 
 ## Quick task pointers
 

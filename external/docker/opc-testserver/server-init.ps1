@@ -62,7 +62,7 @@ function Start-OpcEnumIfPresent {
 }
 
 function Register-TestServer {
-    Write-Host '-- Registering OpcTestServer_x64.1 via tools/register-testserver.ps1'
+    Write-Host '-- Registering OpcTestServer_x64.1 via external/tools/register-testserver.ps1'
     & $registerScript -ExePath $serverExe
     if ($LASTEXITCODE -ne 0) {
         throw "register-testserver.ps1 failed with exit code $LASTEXITCODE"

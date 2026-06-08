@@ -16,15 +16,15 @@ built without an external clone. Key paths:
 
 | Path | Purpose |
 |------|---------|
-| `external/redist/samples/OpcTestServer/COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `src/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
-| `external/redist/samples/OpcTestServer/COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
-| `external/redist/samples/OpcTestServer/OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
-| `external/redist/samples/OpcTestServer/OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
-| `external/redist/samples/OpcTestClient/OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
+| Vendored OPC Foundation TestServer `COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `src/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
+| Vendored OPC Foundation TestServer `COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
+| Vendored OPC Foundation TestServer `OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
+| Vendored OPC Foundation TestServer `OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
+| Vendored OPC Foundation TestClient `OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
 | `src/Shared/` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
 | `src/Common/`, `src/DataAccess/`, `src/Security/` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
 | `src/Include/` | Shared headers (CATID GUIDs, error codes). |
-| `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by `tools\build-testserver.ps1`. |
+| `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by `external\tools\build-testserver.ps1`. |
 | `external/docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
 | `build.ps1`, `docker-build.ps1` | One-shot build entry points (native + docker). |
 
@@ -42,11 +42,11 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 
 ## Building
 
-### Option 1 — `tools\build-testserver.ps1` (recommended)
+### Option 1 — `external\tools\build-testserver.ps1` (recommended)
 
 ```powershell
-.\tools\build-testserver.ps1            # Release x64
-.\tools\build-testserver.ps1 -Clean     # wipe build\ first
+.\external\tools\build-testserver.ps1            # Release x64
+.\external\tools\build-testserver.ps1 -Clean     # wipe build\ first
 ```
 
 The script discovers VS's bundled CMake (or any cmake.exe on PATH),
@@ -89,11 +89,11 @@ use the local no-MSI registration path below, or install the official OPC
 Foundation Core Components package externally when validating a machine-wide
 deployment.
 
-### `tools\register-testserver.ps1` (local x64, no MSI)
+### `external\tools\register-testserver.ps1` (local x64, no MSI)
 
 ```powershell
 # From an ELEVATED 64-bit PowerShell window:
-.\tools\register-testserver.ps1
+.\external\tools\register-testserver.ps1
 ```
 
 The script performs the no-MSI setup needed for x64 DCOM activation:
@@ -110,7 +110,7 @@ Defaults to looking for the EXE and sibling proxy/stub DLLs under
 `external\redist\build\x64\Release\`; pass `-ExePath` to override.
 
 To remove the TestServer entries and the System32 proxy/stub DLLs
-copied by this script: `.\tools\register-testserver.ps1 -Unregister`.
+copied by this script: `.\external\tools\register-testserver.ps1 -Unregister`.
 Missing files are skipped; mismatched files without this script's install
 marker are left in place to avoid removing an unrelated external install.
 
@@ -119,8 +119,8 @@ non-elevated shell:
 
 ```powershell
 # Elevated
-.\tools\build-testserver.ps1
-.\tools\register-testserver.ps1
+.\external\tools\build-testserver.ps1
+.\external\tools\register-testserver.ps1
 Test-Path "$env:SystemRoot\System32\opccomn_ps.dll"
 Test-Path "$env:SystemRoot\System32\opcproxy.dll"
 
@@ -150,7 +150,7 @@ AppID via `dcomcnfg.exe`.
 
 ### Known residual blocker: `CO_E_SERVER_EXEC_FAILURE` after no-MSI registration
 
-Even when `tools/register-testserver.ps1` completes successfully — proxy/stub
+Even when `external/tools/register-testserver.ps1` completes successfully — proxy/stub
 DLLs are copied into `%SystemRoot%\System32`, `regsvr32` reports no error,
 `OpcTestServer_x64.exe /regserver` exits 0, and the HKLM CLSID/AppID/Implemented
 Categories entries exist — DCOM SCM can still time out with
@@ -233,6 +233,6 @@ Test.String  value='OPC Test' type=VT_BSTR q=0x00C0  hr=0x00000000
 
 When TestServer and Matrikon disagree on the wire format for a
 particular method, the MIDL-generated format strings under
-`external/redist/src/DataAccess/ProxyStub/` are the authoritative
+the vendored OPC Foundation DataAccess proxy/stub sources are the authoritative
 reference — they're literally the bytes the OPC proxy/stub DLLs
 marshal.

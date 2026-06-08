@@ -132,7 +132,7 @@ Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from
 Builds the OPC Foundation CoreComponents CMake targets for
 `OpcTestServer_x64.exe`, `OpcTestClient_x64.exe`, `OpcCategoryManager.exe`, and
 the eight proxy/stub DLLs. `server-init.ps1` invokes
-`tools\register-testserver.ps1`, starts `OpcTestServer_x64.exe`, and unregisters
+`external\tools\register-testserver.ps1`, starts `OpcTestServer_x64.exe`, and unregisters
 on shutdown. See `external\docker\opc-testserver\README.md`.
 
 ### `opc-classic/testclient`

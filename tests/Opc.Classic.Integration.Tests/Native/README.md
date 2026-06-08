@@ -2,7 +2,7 @@
 
 Tests under this folder connect from the managed .NET 10 client (via
 OpcProxyGenerator-emitted shims) against the C++ OPC Foundation Sample
-Servers preserved under `external/redist/samples/`.
+Servers preserved from the vendored OPC Foundation native samples.
 
 ## Loopback equivalent
 
@@ -21,7 +21,7 @@ in-process before a real native DCOM endpoint is available.
    (places `opcproxy.dll` etc.; the redistributable installers are no longer
    vendored, so build/register `external\redist` or install the
    official package externally), build the native `.vcxproj` sample servers as
-   documented in `external/redist/samples/README.md`, and register them:
+   documented in the vendored native samples README, and register them:
    ```cmd
    .\external\redist\samples\regserver.cmd
    ```

@@ -2,7 +2,7 @@
 
 See docs/interop/probe-matrikon.json + probe-testserver.json.
 - Matrikon OPC Simulation 1: CLSID F8582CF2-88FB-11D0-B850-00C0F0104305 (vendor MSI install).
-- OPC Foundation TestServer x64: CLSID F8582CF9-88FB-11DA-A5ED-0060B0692061 (built via tools/build-testserver.ps1; no MSI).
+- OPC Foundation TestServer x64: CLSID F8582CF9-88FB-11DA-A5ED-0060B0692061 (built via external/tools/build-testserver.ps1; no MSI).
 
 ## Headline numbers
 
@@ -13,7 +13,7 @@ See docs/interop/probe-matrikon.json + probe-testserver.json.
 
 **Track AY++ (commit `7fce8b45`) closed da.read_sync and da.poll_subscription by refactoring `OPCITEMSTATE` decode to the deferred-pile model for the same `[unique] VARIANT` pattern.**
 
-**Track DR3 round 6 (commit `a18f8c29`) closed the TestServer profile by identifying + working around the upstream OPC Foundation TestServer source bug where `__uuidof(OpcTestServer_x64)` (F8582CF8 from IDL coclass) ≠ `OPC_IMPLEMENT_LOCAL_SERVER` GUID (F8582CF9 the runtime CLSID). The fix runs in `tools/register-testserver.ps1` and patches the `<CLSID>` element of TestServer's auto-generated `OpcTestServer_x64.config.xml`. See Issue E below.**
+**Track DR3 round 6 (commit `a18f8c29`) closed the TestServer profile by identifying + working around the upstream OPC Foundation TestServer source bug where `__uuidof(OpcTestServer_x64)` (F8582CF8 from IDL coclass) ≠ `OPC_IMPLEMENT_LOCAL_SERVER` GUID (F8582CF9 the runtime CLSID). The fix runs in `external/tools/register-testserver.ps1` and patches the `<CLSID>` element of TestServer's auto-generated `OpcTestServer_x64.config.xml`. See Issue E below.**
 
 ## Issue E: TestServer config XML CLSID bug (FIXED `a18f8c29`)
 
@@ -22,8 +22,8 @@ between two CLSIDs that should be identical but aren't:
 
 | Source | UUID | Where |
 | --- | --- | --- |
-| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | `external/redist/samples/OpcTestServer/OpcTestServer.idl:45` |
-| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | `external/redist/samples/OpcTestServer/OpcTestServer.cpp:53` |
+| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | vendored OPC Foundation TestServer `OpcTestServer.idl:45` |
+| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | vendored OPC Foundation TestServer `OpcTestServer.cpp:53` |
 
 The class table macro `OPC_CLASS_TABLE_ENTRY(COpcTestServer, OpcTestServer_x64, ...)`
 expands to `__uuidof(OpcTestServer_x64)` which resolves to the IDL coclass UUID (F8582CF8).
@@ -38,7 +38,7 @@ coclass UUID F8582CF8). On every subsequent activation,
 factory under F8582CF8. SCM waits for F8582CF9. They never meet,
 SCM times out, returns `CO_E_SERVER_EXEC_FAILURE` (0x80080005).
 
-**Fix**: `tools/register-testserver.ps1` now patches the `<CLSID>`
+**Fix**: `external/tools/register-testserver.ps1` now patches the `<CLSID>`
 element of `OpcTestServer_x64.config.xml` after copying it alongside
 the EXE. After patching, `pClasses[0].pClsid` becomes F8582CF9 and
 the class factory registers under the SCM-expected CLSID.
@@ -52,8 +52,8 @@ Validated via:
 
 ## TestServer (DA 2.05a + Track AB5 DA 3.0): per-tool outcome
 
-After applying `tools/register-testserver.ps1` (Issue E fix) and the
-BH3 ACL grant (`tools/grant-testserver-acl.ps1`), every applicable
+After applying `external/tools/register-testserver.ps1` (Issue E fix) and the
+BH3 ACL grant (`external/tools/grant-testserver-acl.ps1`), every applicable
 MCP tool passes against TestServer. The matrix invocation is:
 
 ```powershell
@@ -138,7 +138,7 @@ non-DA IIDs. **Track BG** extends the catalog to close that residual.
 
 Locally built TestServer EXE activation fails with HRESULT `0x80080005` and DCOM event log
 10010 ("server did not register with DCOM within the required timeout") even after
-`tools/register-testserver.ps1` runs. Suspected cause: the ad-hoc registration script is
+`external/tools/register-testserver.ps1` runs. Suspected cause: the ad-hoc registration script is
 missing one or more entries that the legacy installer writes (most likely the DCOM
 AppID entry for `OpcTestServer_x64.exe`, COM Implemented/Required Categories under each
 CLSID, or wrong proxy-stub registration order). **Track BH** audits the upstream
@@ -155,7 +155,7 @@ credentials used for the target server and upgrades weak activation protection t
 Launch/Activation and Access permissions on the OPCEnum AppID
 `{13486D44-4821-11D2-A494-3CB306C10000}` (note: AppID is distinct from the CLSID
 `{13486D51-4821-11D2-A494-3CB306C10000}`, differing in one hex digit). The helper
-`tools/grant-opcenum-acl.ps1` (Track AN) automates this once per host.
+`external/tools/grant-opcenum-acl.ps1` (Track AN) automates this once per host.
 
 ### Issue D: OPCEnum **data-port bind** rejects IOPCServerList(2) (NEW finding, 2026-06-04 probe)
 
@@ -204,7 +204,7 @@ paths validated against the live server.
   covers presentation-context attribute experiments.
 - **`discovery.enumerate_servers`**: same Issue D root cause.
 - **TestServer end-to-end** (Issue B): Track BH audits the upstream WiX spec and fixes
-  `tools/register-testserver.ps1` in-place.
+  `external/tools/register-testserver.ps1` in-place.
 - **Non-DA specs (HDA / AE / Batch / Commands / DX / XML-DA)**: Matrikon Simulation does not
   implement them. Track BH adds the Foundation `OpcTestServer` as a probe target via the
   `opc-classic/testserver` Docker container — TestServer + bundled spec plugins cover all
@@ -254,6 +254,6 @@ Matrikon: **22/95 OK** (was 21/95 headline). The headline count only moved by on
 - AI2: Full TUnit suite green (1+ pre-existing flaky TCP test outside scope).
 
 **Outstanding work (tracked as follow-up todos):**
-- AJ1: TestServer activation timeout (CO_E_SERVER_EXEC_FAILURE). Even after `tools/register-testserver.ps1` registers the proxy/stub DLLs into System32, DCOM SCM times out activating the local EXE. Requires either upstream WiX MSI build or AppID/DCOM ACL investigation.
+- AJ1: TestServer activation timeout (CO_E_SERVER_EXEC_FAILURE). Even after `external/tools/register-testserver.ps1` registers the proxy/stub DLLs into System32, DCOM SCM times out activating the local EXE. Requires either upstream WiX MSI build or AppID/DCOM ACL investigation.
 - AJ2: Implement `IOPCServerList::EnumClassesOfCategories` + `GetClassDetails` (currently TODO comments) to unblock `discovery.enumerate_servers` once OPCEnum ACLs are granted.
 - Live wire decode fixes for `read_sync` / `get_properties` / `cpx.*`: needs Wireshark capture of an equivalent Windows DCOM call to disambiguate the actual VARIANT-array padding Matrikon emits. The proxy code paths are correct per DCE/MIDL spec; Matrikon may use a non-spec layout for these specific fields that requires server-specific accommodation.

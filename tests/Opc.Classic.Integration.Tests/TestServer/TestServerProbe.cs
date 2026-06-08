@@ -12,7 +12,7 @@ internal static class TestServerProbe
     public const string TestServerClsid = "F8582CF9-88FB-11DA-A5ED-0060B0692061";
 
     /// <summary>Matching ProgID emitted by <c>OpcTestServer_x64.exe /regserver</c>
-    /// or by <c>tools\register-testserver.ps1</c>.</summary>
+    /// or by <c>external\tools\register-testserver.ps1</c>.</summary>
     public const string TestServerProgId = "OpcTestServer_x64.1";
 
     /// <summary>The three items exposed by <c>OpcTestServer.config.xml</c>.</summary>

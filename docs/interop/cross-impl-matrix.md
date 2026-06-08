@@ -49,7 +49,7 @@ Cell legend:
 - ⛔ **NOT APPLICABLE** — wrong spec entirely (HDA tool against a DA
   server).
 - 🔒 **PERMISSION** — server requires admin elevation or explicit DCOM
-  ACL grant (see `tools/grant-testserver-acl.ps1`).
+  ACL grant (see `external/tools/grant-testserver-acl.ps1`).
 
 | Client ↓ \ Server → | `testserver` | `matrikon` | `samples-da` | `ctt-da` | `samples-hda` | `samples-ae` | `security-da` |
 | --- | --- | --- | --- | --- | --- | --- | --- |

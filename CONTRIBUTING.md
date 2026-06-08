@@ -187,7 +187,7 @@ The CI matrix includes Windows conformance coverage that can:
 
 1. install OPC Foundation Core Components,
 2. build preserved native C++ OPC sample servers under `external\redist\samples\`,
-3. register them via `external\redist\samples\regserver.cmd`,
+3. register them via the vendored `regserver.cmd` COM-registration helper,
 4. run managed native-conformance subsets against those servers.
 
 The `.github\workflows\opc-ctt.yml` workflow installs the vendored CTT MSIs from `external\private\ctt\`, registers `samples\Opc.Classic.Samples.CttServer`, and uploads `opc-ctt-results`. The `.github\workflows\docker-test-fleet.yml` workflow builds the Windows-container fleet under `external\docker\` and runs the managed CTT smoke when a Windows-container host is available.

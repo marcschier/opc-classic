@@ -37,19 +37,19 @@
     and LaunchPermission. Other ACEs are preserved.
 
 .EXAMPLE
-    .\tools\grant-opcenum-acl.ps1
+    .\external\tools\grant-opcenum-acl.ps1
     # Grants the current user OPCEnum Launch + Activation + Access.
 
 .EXAMPLE
-    .\tools\grant-opcenum-acl.ps1 -Account "CORP\opcprobe"
+    .\external\tools\grant-opcenum-acl.ps1 -Account "CORP\opcprobe"
     # Grants a service account.
 
 .EXAMPLE
-    .\tools\grant-opcenum-acl.ps1 -Account "BUILTIN\Distributed COM Users"
+    .\external\tools\grant-opcenum-acl.ps1 -Account "BUILTIN\Distributed COM Users"
     # Grants every member of the standard DCOM users group.
 
 .EXAMPLE
-    .\tools\grant-opcenum-acl.ps1 -Unregister
+    .\external\tools\grant-opcenum-acl.ps1 -Unregister
     # Removes the calling user's ACE from both descriptors.
 #>
 

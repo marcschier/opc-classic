@@ -50,7 +50,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: external/redist/build/x64/Release
-          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('external/redist/CMakeLists.txt', 'external/redist/cmake/**', 'external/redist/src/**', 'external/redist/samples/OpcTestServer/**', 'external/redist/samples/OpcTestClient/**', 'tools/build-testserver.ps1', 'external/docker/opc-testserver/Dockerfile') }}
+          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('external/redist/CMakeLists.txt', 'external/redist/cmake/**', 'external/redist/src/**', 'external/redist/samples/OpcTestServer/**', 'external/redist/samples/OpcTestClient/**', 'external/tools/build-testserver.ps1', 'external/docker/opc-testserver/Dockerfile') }}
           restore-keys: |
             corecomponents-ltsc2022-vs2022-${{ runner.os }}-
 
@@ -75,7 +75,7 @@ jobs:
           $missing = $required | Where-Object { -not (Test-Path (Join-Path $release $_)) }
           if ($missing.Count -gt 0) {
             Write-Host "CoreComponents cache miss; building Release artifacts on the Windows runner."
-            .\tools\build-testserver.ps1 -Configuration Release
+            .\external\tools\build-testserver.ps1 -Configuration Release
           } else {
             Write-Host "CoreComponents Release artifacts already present."
           }

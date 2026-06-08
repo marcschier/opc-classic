@@ -71,7 +71,7 @@ ReadOnlyMemory<byte> rpcResponse = adapter.Transceive(rpcPduBytes);
 
 ## Specifications referenced
 
-All section references in source-file comments target the vendored Microsoft Open Specifications under `external\private\docs\`:
+All section references in source-file comments target the vendored Microsoft Open Specifications:
 
 - `MS-SMB2.md` — SMB 2.0/2.1/3.0/3.1.1 wire format
 - `MS-CIFS.md` — NetBIOS-over-TCP framing

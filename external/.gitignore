@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Opc.Classic .NET Contributors
+#
+# Vendored CoreComponents CMake / VS build outputs (not committed).
+redist/build/**
+redist/out/**
+redist/.vs/**

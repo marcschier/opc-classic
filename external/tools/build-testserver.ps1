@@ -27,8 +27,8 @@
     Wipe the build/ directory before configuring.
 
 .EXAMPLE
-    .\tools\build-testserver.ps1
-    .\tools\build-testserver.ps1 -Clean
+    .\external\tools\build-testserver.ps1
+    .\external\tools\build-testserver.ps1 -Clean
 #>
 
 [CmdletBinding()]
@@ -39,7 +39,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$repoRoot = Split-Path -Parent $PSScriptRoot
+$repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $sourceDir = Join-Path $repoRoot 'external\redist'
 $buildDir  = Join-Path $sourceDir 'build\x64'
 $samplesDir = Join-Path $sourceDir 'samples'
@@ -81,7 +81,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "cmake configure failed (exit $LASTEXITCODE)" }
 
     Write-Host "Building CMake project ($Configuration) ..."
-    # Build the full proxy/stub set so the tools\register-testserver.ps1 script
+    # Build the full proxy/stub set so the external\tools\register-testserver.ps1 script
     # has all 8 DLLs available to register (matches what the CoreComponents
     # install rules deploy; see docs\interop\testserver-registration-spec.md).
     & $cmake --build $buildDir --config $Configuration --target `
@@ -92,7 +92,7 @@ try {
     $exe = Join-Path $buildDir "$Configuration\OpcTestServer_x64.exe"
     if (Test-Path $exe) {
         Write-Host "Build succeeded. Artifact: $exe"
-        Write-Host "Next: register with 'tools\register-testserver.ps1' (elevated)."
+        Write-Host "Next: register with 'external\tools\register-testserver.ps1' (elevated)."
     } else {
         Write-Warning "Build completed but $exe not found."
     }

@@ -36,11 +36,6 @@
 # Ignore editor backup files
 *~
 
-# Vendored CoreComponents CMake build outputs (do not commit binaries)
-/external/redist/build/**
-/external/redist/out/**
-/external/redist/.vs/**
-
 # CLI session transcripts dumped to repo root by the agent
 copilot-session-*.md
 

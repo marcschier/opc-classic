@@ -34,7 +34,7 @@ Do not rely on disabling DCOM hardening. Configure AppID permissions and use pac
 
 ## Grant OPCEnum ACLs without `dcomcnfg`
 
-`tools/grant-opcenum-acl.ps1` automates the manual steps above by reading
+`external/tools/grant-opcenum-acl.ps1` automates the manual steps above by reading
 the OPCEnum AppID's existing `AccessPermission` and `LaunchPermission`
 REG_BINARY security descriptors, appending an
 `(A;;CCDCLCSWRP;;;<SID>)` ACE for the supplied account, and writing the
@@ -43,16 +43,16 @@ is a no-op once the ACE is present. Requires elevated 64-bit PowerShell.
 
 ```powershell
 # Grant the current user (default):
-.\tools\grant-opcenum-acl.ps1
+.\external\tools\grant-opcenum-acl.ps1
 
 # Grant a specific account:
-.\tools\grant-opcenum-acl.ps1 -Account "CORP\opcprobe"
+.\external\tools\grant-opcenum-acl.ps1 -Account "CORP\opcprobe"
 
 # Grant the standard DCOM users group:
-.\tools\grant-opcenum-acl.ps1 -Account "BUILTIN\Distributed COM Users"
+.\external\tools\grant-opcenum-acl.ps1 -Account "BUILTIN\Distributed COM Users"
 
 # Remove the ACE (rollback):
-.\tools\grant-opcenum-acl.ps1 -Unregister
+.\external\tools\grant-opcenum-acl.ps1 -Unregister
 ```
 
 ### What the script does

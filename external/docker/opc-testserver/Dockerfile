@@ -25,7 +25,7 @@ WORKDIR C:/src
 COPY external/redist C:/src/external/redist
 COPY external/redist/samples/OpcTestServer C:/src/external/redist/samples/OpcTestServer
 COPY external/redist/samples/OpcTestClient C:/src/external/redist/samples/OpcTestClient
-COPY tools/build-testserver.ps1 C:/src/tools/build-testserver.ps1
+COPY external/tools/build-testserver.ps1 C:/src/external/tools/build-testserver.ps1
 
 RUN $release = 'C:/src/external/redist/build/x64/Release'; `
     $required = @( `
@@ -56,7 +56,7 @@ RUN $release = 'C:/src/external/redist/build/x64/Release'; `
         $vs = Start-Process -FilePath C:/vs_buildtools.exe -ArgumentList $vsArgs -Wait -PassThru; `
         if ($vs.ExitCode -ne 0 -and $vs.ExitCode -ne 3010) { throw ('VS Build Tools install failed with exit code {0}' -f $vs.ExitCode) }; `
         Remove-Item C:/vs_buildtools.exe -Force; `
-        C:/src/tools/build-testserver.ps1 -Configuration Release; `
+        C:/src/external/tools/build-testserver.ps1 -Configuration Release; `
     }; `
     New-Item -ItemType Directory -Path C:/out -Force | Out-Null; `
     foreach ($name in $required) { `
@@ -87,7 +87,7 @@ LABEL maintainer="Opc.Classic .NET Contributors" `
 COPY --from=build C:/out/ C:/server/
 COPY external/docker/opc-testserver/dcom-test-acls.reg C:/dcom-test-acls.reg
 COPY external/docker/opc-testserver/server-init.ps1 C:/server-init.ps1
-COPY tools/register-testserver.ps1 C:/register-testserver.ps1
+COPY external/tools/register-testserver.ps1 C:/register-testserver.ps1
 
 RUN reg import C:/dcom-test-acls.reg ; Remove-Item C:/dcom-test-acls.reg
 

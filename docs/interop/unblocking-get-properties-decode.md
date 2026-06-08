@@ -52,7 +52,7 @@ Shipped scaffolding that makes this cheap:
 
       ```powershell
       # Elevated 64-bit PowerShell on the Matrikon host:
-      .\tools\grant-opcenum-acl.ps1
+      .\external\tools\grant-opcenum-acl.ps1
       ```
 
       (Shipped in Track AN, commit `1a1de5db`. Idempotent; rolls back
@@ -354,8 +354,7 @@ What a programmatic walk of the response payload revealed:
    "consumes" 48 bytes for the first inline part instead of 28, and
    the 20-byte over-read cascades.
 4. **`OPCITEMPROPERTY` IDL is identical** between
-   `external/inc/opcda.idl`, `external/inc/opcda.h`, and
-   `external/redist/src/DataAccess/ProxyStub/opcda.idl` — so the
+   the vendored `opcda.idl`, `opcda.h`, and DataAccess proxy/stub `opcda.idl` — so the
    layout difference is not an IDL-level vendor extension. Matrikon
    ships their own proxy/stub DLL alongside the simulation server; the
    wire shape produced by that proxy is what we are observing.
@@ -418,11 +417,11 @@ decoder branch without ground truth risks shipping a guess.
   including the `get_properties` failure mode.
 - [Wire captures](wire-captures/README.md) — capture format reference
   and replay helper documentation.
-- [OPCEnum DCOM auth](opcenum-auth.md) — `tools/grant-opcenum-acl.ps1`
+- [OPCEnum DCOM auth](opcenum-auth.md) — `external/tools/grant-opcenum-acl.ps1`
   helper used in prerequisites.
 - [`tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs`](../../tests/Opc.Classic.Da.Tests/Wire/GetItemPropertiesStandardSetFixtureTests.cs)
   — the AT2 synthetic fixtures to diff against.
 - [`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs)
   — the parser that turns a captured `.hex` back into a `byte[]`.
-- [OPC DA 3.00 §6.5](../../external/private/docs/OPC-DA-3.00.md) — the
+- OPC DA 3.00 §6.5 in the vendored `OPC-DA-3.00.md` spec — the
   `IOPCItemProperties` interface specification.

@@ -4,7 +4,7 @@ This directory's tests validate the SMB2 codec byte-for-byte against the publish
 
 ## (1) Synthetic fixtures — `Smb2WireFixtureTests.cs`
 
-Hand-built byte sequences derived from the field layout tables in `external\private\docs\MS-SMB2.md` and `external\private\docs\MS-CIFS.md`. Each test asserts that the codec produces (or accepts) the exact byte layout documented by the spec. These tests have no external infrastructure dependency and run on every CI matrix entry (Ubuntu / macOS / Windows).
+Hand-built byte sequences derived from the field layout tables in the vendored `MS-SMB2.md` and `MS-CIFS.md` specs. Each test asserts that the codec produces (or accepts) the exact byte layout documented by the spec. These tests have no external infrastructure dependency and run on every CI matrix entry (Ubuntu / macOS / Windows).
 
 ## (2) Captured WINREG fixtures — capture and replay
 

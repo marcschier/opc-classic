@@ -8,14 +8,14 @@
 .DESCRIPTION
     OPC Foundation TestServer (`OpcTestServer_x64.exe`, CLSID
     `{F8582CF9-88FB-11DA-A5ED-0060B0692061}`) is registered via
-    `tools/register-testserver.ps1`. The EXE's self-registration writes its
+    `external/tools/register-testserver.ps1`. The EXE's self-registration writes its
     AppID alias but does NOT install custom LaunchPermission / AccessPermission
     ACLs — so DCOM SCM falls back to the per-host
     `DefaultLaunchPermission` (typically Administrators + INTERACTIVE only).
     Non-admin probe callers (for example `REDMOND\<user>`) then trigger
     `CO_E_SERVER_EXEC_FAILURE` because SCM denies the activation.
 
-    This script delegates to `tools/grant-opcenum-acl.ps1` (the same
+    This script delegates to `external/tools/grant-opcenum-acl.ps1` (the same
     underlying SD-merge logic; see that script for the full description) with
     the TestServer's AppID. Each invocation appends
     `(A;;CCDCLCSWRP;;;<SID>)` ACEs for the supplied account; the operation
@@ -33,15 +33,15 @@
     and LaunchPermission. Other ACEs are preserved.
 
 .EXAMPLE
-    .\tools\grant-testserver-acl.ps1
+    .\external\tools\grant-testserver-acl.ps1
     # Grants the current user TestServer Launch + Activation + Access.
 
 .EXAMPLE
-    .\tools\grant-testserver-acl.ps1 -Account "BUILTIN\Distributed COM Users"
+    .\external\tools\grant-testserver-acl.ps1 -Account "BUILTIN\Distributed COM Users"
     # Grants every member of the standard DCOM users group.
 
 .EXAMPLE
-    .\tools\grant-testserver-acl.ps1 -Unregister
+    .\external\tools\grant-testserver-acl.ps1 -Unregister
     # Removes the calling user's ACE from both descriptors.
 #>
 

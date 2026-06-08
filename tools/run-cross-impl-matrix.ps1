@@ -17,7 +17,7 @@
       - Python 3.10+ on PATH.
       - Sample servers built (`dotnet build` of samples/).
       - For TestServer profile: requires the TestServer DCOM ACL grant from
-        `tools/grant-testserver-acl.ps1` to have run elevated once.
+        `external/tools/grant-testserver-acl.ps1` to have run elevated once.
 
 .PARAMETER Profile
     Restrict to specific profiles. May be repeated. Default: every profile.

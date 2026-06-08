@@ -20,8 +20,8 @@ namespace Opc.Classic.Tests.Integration.TestServer;
 /// These tests are gated by <see cref="TestServerProbe.ShouldSkip"/> —
 /// they soft-skip when the TestServer CLSID
 /// <c>{F8582CF9-88FB-11DA-A5ED-0060B0692061}</c> is not registered on
-/// the host. To enable: build via <c>tools\build-testserver.ps1</c>
-/// and register via <c>tools\register-testserver.ps1</c> (elevated).
+/// the host. To enable: build via <c>external\tools\build-testserver.ps1</c>
+/// and register via <c>external\tools\register-testserver.ps1</c> (elevated).
 /// </para>
 /// <para>
 /// Live activation against the locally built TestServer may also fail

@@ -20,12 +20,12 @@ docker run --rm --network opc-test-net --hostname opc-classic-testserver opc-cla
 ```
 
 The cold Docker build installs VS Build Tools 2022 with VCTools, ATL, and CMake
-and runs `tools\build-testserver.ps1 -Configuration Release`. Subsequent builds
+and runs `external\tools\build-testserver.ps1 -Configuration Release`. Subsequent builds
 should reuse Docker layers or the CI cache for
 `external\redist\build\x64\Release`.
 
 At startup, `server-init.ps1` imports the shared DCOM ACL policy, invokes
-`tools\register-testserver.ps1` for the no-MSI registration path, starts
+`external\tools\register-testserver.ps1` for the no-MSI registration path, starts
 `OpcTestServer_x64.exe`, and unregisters on shutdown.
 
 The registered ProgID is `OpcTestServer_x64.1`; the CLSID is
