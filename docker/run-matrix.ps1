@@ -9,18 +9,21 @@
 #   docker/run-matrix.ps1                        # build + run both smokes
 #   docker/run-matrix.ps1 -SkipBuild             # use existing images
 #   docker/run-matrix.ps1 -OnlyManaged           # only the managed-server smoke
+#   docker/run-matrix.ps1 -IncludeTestServer     # also smoke OpcTestServer_x64.1 (requires ext/CoreComponents)
 
 [CmdletBinding()]
 param(
     [switch] $SkipBuild,
     [switch] $OnlyManaged,
-    [switch] $OnlyNative
+    [switch] $OnlyNative,
+    [switch] $IncludeTestServer
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSCommandPath
 $compose = "$root/docker-compose.test.yml"
 $results = "$root/results"
+$runTestServer = $IncludeTestServer -and -not $OnlyManaged
 
 if (-not (Test-Path $results)) {
     New-Item -ItemType Directory -Path $results -Force | Out-Null
@@ -48,13 +51,29 @@ if (-not $existing) {
 # 1. Build (unless skipped).
 if (-not $SkipBuild) {
     Invoke-Step 'Building fleet images' {
-        docker compose --file $compose --profile interactive build
+        $buildServices = @('c-server', 'managed-server', 'ctt', 'c-client')
+        if ($runTestServer) {
+            $buildServices += 'testserver'
+        }
+
+        docker compose --file $compose --profile interactive build @buildServices
+    }
+
+    if ($runTestServer) {
+        Invoke-Step 'Building OPC Foundation TestClient image from testserver artifacts' {
+            docker compose --file $compose --profile interactive build testclient
+        }
     }
 }
 
 # 2. Bring up the servers (always; CTT runs against them).
 Invoke-Step 'Starting server containers' {
-    docker compose --file $compose up -d c-server managed-server
+    $serverServices = @('c-server', 'managed-server')
+    if ($runTestServer) {
+        $serverServices += 'testserver'
+    }
+
+    docker compose --file $compose up -d @serverServices
 }
 
 try {
@@ -69,6 +88,19 @@ try {
                 -ProgId OPC.SampleServer.1 `
                 -TargetHost opc-classic-c-server `
                 -OutputPath C:/results/ctt-native.xml
+        }
+    }
+    if ($runTestServer) {
+        Invoke-Step 'CTT vs OPC Foundation TestServer [reference]' {
+            docker compose --file $compose run --rm ctt `
+                -ProgId OpcTestServer_x64.1 `
+                -TargetHost opc-classic-testserver `
+                -OutputPath C:/results/ctt-testserver.xml
+        }
+        Invoke-Step 'OpcTestClient vs OPC Foundation TestServer [reference]' {
+            docker compose --file $compose run --rm testclient `
+                -ProgId OpcTestServer_x64.1 `
+                -TargetHost opc-classic-testserver
         }
     }
     if (-not $OnlyNative) {

@@ -7,10 +7,13 @@ implementation against:
   AE, HDA, XML-DA) — installed from the six vendored MSIs in `ext/private/ctt/`.
 - A **native (C-built) OPC DA smoke server** — hand-rolled in `docker\opc-c-server\build\` with OPC Foundation headers.
 - A **native (C-built) OPC DA smoke client** — hand-rolled in `docker\opc-c-client\build\` with OPC Foundation headers.
+- The **OPC Foundation TestServer/TestClient x64 pair** — built from the
+  vendored `ext\CoreComponents` CMake tree and gated behind
+  `docker\run-matrix.ps1 -IncludeTestServer`.
 
-The managed `Opc.Classic.Samples.CttServer` runs in a fourth container so all
-combinations of {managed, native} × {client, server} can be cross-tested on
-a single Windows host. The rc.10 baseline is 0 build warnings/errors and
+The managed `Opc.Classic.Samples.CttServer` runs beside the native C and OPC
+Foundation reference containers so cross-implementation client/server pairs can
+be tested on a single Windows host. The rc.10 baseline is 0 build warnings/errors and
 2113 passed / 12 skipped / 0 failed across 23 .NET test projects.
 
 ## Status
@@ -21,7 +24,9 @@ a single Windows host. The rc.10 baseline is 0 build warnings/errors and
 | `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
 | `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
 | `opc-classic/c-client` | ✅ Ready — builds the hand-rolled native DA smoke client (`opc-test.exe`) from `opc-test.cpp` |
-| `docker-compose.test.yml` | ✅ Ready — orchestrates all four images on `opc-test-net` |
+| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `ext\CoreComponents`; validate on a Windows Docker host |
+| `opc-classic/testclient` | 🧱 Scaffolded — copies `OpcTestClient_x64.exe` from the testserver image; validate on a Windows Docker host |
+| `docker-compose.test.yml` | ✅ Ready — orchestrates all six images on `opc-test-net` |
 | `.github/workflows/docker-test-fleet.yml` | ✅ Ready — CI entry point for the fleet |
 
 The native C server/client images now build real MVP binaries. Their entrypoint scripts still retain missing-binary checks so failed local builds are easy to debug with `docker exec`.
@@ -53,9 +58,14 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
 - **Hyper-V isolation** (default on Win11) or **process isolation** (Windows
   Server hosts) — required for `windowsservercore:ltsc2022` to start.
 - **~10 GB free disk** for the layered images during build (build stage uses
-  the ~10 GB `dotnet/framework/sdk` image; runtime layer is ~3 GB).
+  the ~10 GB `dotnet/framework/sdk` image; the TestServer cold build also
+  installs VS Build Tools in a Server Core layer).
 - **One `l2bridge` Docker network** named `opc-test-net` (created on first
   `docker/run-matrix.ps1` invocation).
+- **Optional `ext\CoreComponents` vendor tree** for
+  `opc-classic/testserver` and `opc-classic/testclient`. OPERATOR: if the tree
+  is omitted locally, restore `ext\CoreComponents\build\x64\Release` from CI or
+  build the TestServer image on a machine with the vendored sources.
 
 ## Quick start
 
@@ -65,6 +75,10 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
 docker compose --file docker/docker-compose.test.yml --profile interactive build
 ```
 
+This includes `opc-classic/testserver` and `opc-classic/testclient`, so it
+requires `ext\CoreComponents`. To keep the historical four-image smoke path,
+use `docker\run-matrix.ps1` without `-IncludeTestServer`.
+
 ### Run the CTT matrix smoke
 
 ```pwsh
@@ -72,6 +86,14 @@ docker/run-matrix.ps1
 # Produces:
 #   docker/results/ctt-native.xml   — CTT vs OPC.SampleServer.1 (native baseline)
 #   docker/results/ctt-managed.xml  — CTT vs Opc.Classic.DaSample.1 (SUT)
+```
+
+Add the OPC Foundation TestServer/TestClient reference cells:
+
+```pwsh
+docker/run-matrix.ps1 -IncludeTestServer
+# Also produces:
+#   docker/results/ctt-testserver.xml — CTT vs OpcTestServer_x64.1
 ```
 
 ### Open an interactive c-client shell
@@ -105,6 +127,22 @@ Builds and runs the hand-rolled native OPC DA smoke server (`opc_exe.exe`) from 
 
 Builds and runs the hand-rolled native OPC DA smoke client (`opc-test.exe`) from `docker\opc-c-client\build\opc-test.cpp`. It resolves a ProgID on a target host, calls `AddGroup`, `AddItems`, `Read`, then removes the group.
 
+### `opc-classic/testserver`
+
+Builds the OPC Foundation CoreComponents CMake targets for
+`OpcTestServer_x64.exe`, `OpcTestClient_x64.exe`, `OpcCategoryManager.exe`, and
+the eight proxy/stub DLLs. `server-init.ps1` invokes
+`tools\register-testserver.ps1`, starts `OpcTestServer_x64.exe`, and unregisters
+on shutdown. See `docker\opc-testserver\README.md`.
+
+### `opc-classic/testclient`
+
+Copies `OpcTestClient_x64.exe` and the proxy/stub DLLs from the
+`opc-classic/testserver` image to avoid a second CoreComponents build. Its
+entrypoint redirects local OpcEnum activation to `opc-classic-testserver` via
+DCOM `RemoteServerName`, then verifies `OpcTestServer_x64.1` appears in the
+enumeration output. See `docker\opc-testclient\README.md`.
+
 ## Networking
 
 DCOM in containers **requires** an `l2bridge` (or `transparent`) network.
@@ -125,8 +163,10 @@ Containers get fixed IPs:
 | --- | --- |
 | `opc-classic-c-server` | 10.0.1.10 |
 | `opc-classic-managed` | 10.0.1.11 |
+| `opc-classic-testserver` | 10.0.1.12 |
 | `opc-classic-ctt` | 10.0.1.20 |
 | `opc-classic-c-client` | 10.0.1.21 |
+| `opc-classic-testclient` | 10.0.1.22 |
 
 DCOM dynamic ports are pinned to `49152-49200` (via
 `HKLM\SOFTWARE\Microsoft\Rpc\Internet\Ports` in `dcom-test-acls.reg`) so
@@ -151,6 +191,10 @@ disposable test rig but **must never be applied to a production host**.
 - **CTT CLI flags**: the `OpcCtt.exe /AUTO /Output: /ServerProgId: /TargetHost:`
   invocation in `run-ctt.ps1` is the best-guess syntax until we verify against
   the v2.0.15 help output (also a known TODO in `.github/workflows/opc-ctt.yml`).
+- **TestServer/TestClient scaffold**: CoreComponents builds and DCOM
+  `RemoteServerName` redirection cannot be validated without a Windows Docker
+  host. OPERATOR: run `docker\run-matrix.ps1 -IncludeTestServer` and tune the
+  VS Build Tools component IDs, OpcEnum availability, or port pinning if needed.
 - **DcomContainerSample's open issue**: even the simplest reference example
   in [DcomContainerSample](https://github.com/wazzzaatosh/DcomContainerSample)
   has unresolved cross-container `access denied` errors. If the fleet hits the

@@ -22,9 +22,63 @@ jobs:
   docker-test-fleet:
     runs-on: windows-2022
     if: github.repository == 'marcschier/opc-classic'
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
+
+      - name: Detect CoreComponents vendor tree
+        id: corecomponents
+        shell: pwsh
+        run: |
+          $root = "$env:GITHUB_WORKSPACE\ext\CoreComponents"
+          $required = @(
+            "$root\CMakeLists.txt",
+            "$root\Source\Test\TestServer\OpcTestServer.cpp",
+            "$root\Source\Test\TestClient\OpcTestClient.cpp"
+          )
+          $missing = $required | Where-Object { -not (Test-Path $_) }
+          if ($missing.Count -gt 0) {
+            Write-Warning "CoreComponents vendor tree is not complete; TestServer/TestClient Docker cells will soft-skip."
+            "present=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          } else {
+            "present=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+
+      - name: Restore CoreComponents CMake cache
+        if: steps.corecomponents.outputs.present == 'true'
+        id: corecomponents-cache
+        uses: actions/cache@v4
+        with:
+          path: ext/CoreComponents/build/x64/Release
+          key: corecomponents-ltsc2022-vs2022-${{ runner.os }}-${{ hashFiles('ext/CoreComponents/CMakeLists.txt', 'ext/CoreComponents/cmake/**', 'ext/CoreComponents/Source/**', 'tools/build-testserver.ps1', 'docker/opc-testserver/Dockerfile') }}
+          restore-keys: |
+            corecomponents-ltsc2022-vs2022-${{ runner.os }}-
+
+      - name: Prime CoreComponents CMake cache
+        if: steps.corecomponents.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          $release = "$env:GITHUB_WORKSPACE\ext\CoreComponents\build\x64\Release"
+          $required = @(
+            'OpcTestServer_x64.exe',
+            'OpcTestClient_x64.exe',
+            'OpcCategoryManager.exe',
+            'opccomn_ps.dll',
+            'opcproxy.dll',
+            'opc_aeps.dll',
+            'opcbc_ps.dll',
+            'OpcCmdPs.dll',
+            'OpcDxPs.dll',
+            'opchda_ps.dll',
+            'opcsec_ps.dll'
+          )
+          $missing = $required | Where-Object { -not (Test-Path (Join-Path $release $_)) }
+          if ($missing.Count -gt 0) {
+            Write-Host "CoreComponents cache miss; building Release artifacts on the Windows runner."
+            .\tools\build-testserver.ps1 -Configuration Release
+          } else {
+            Write-Host "CoreComponents Release artifacts already present."
+          }
 
       - name: Switch Docker daemon to Windows containers
         shell: pwsh
@@ -42,7 +96,13 @@ jobs:
 
       - name: Build fleet images
         shell: pwsh
-        run: docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
+        run: |
+          if ('${{ steps.corecomponents.outputs.present }}' -eq 'true') {
+            docker/run-matrix.ps1 -SkipBuild:$false -IncludeTestServer
+          } else {
+            Write-Warning 'CoreComponents missing; running existing managed-only Docker fleet smoke.'
+            docker/run-matrix.ps1 -SkipBuild:$false -OnlyManaged
+          }
 
       - name: Upload CTT matrix results
         if: always()
@@ -61,9 +121,9 @@ jobs:
     # (e.g. IOPCItemIO on a DA 2.05a server) fail in the documented way.
     #
     # Gated on workflow_dispatch so the matrix only runs when an operator
-    # explicitly triggers it. Once BH4-BH7 lands TestServer/TestClient
-    # Docker containers, this job will become part of the standard fleet
-    # cadence above.
+    # explicitly triggers it. The TestServer/TestClient Docker containers are
+    # covered by the standard fleet cadence above when ext/CoreComponents is
+    # available; this job remains sample-server-only.
     runs-on: windows-2022
     if: github.event_name == 'workflow_dispatch' && github.repository == 'marcschier/opc-classic'
     timeout-minutes: 30
@@ -121,4 +181,3 @@ jobs:
           name: cross-impl-matrix-reports
           path: matrix-out/*.json
           if-no-files-found: warn
-

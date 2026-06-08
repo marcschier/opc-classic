@@ -3,13 +3,16 @@
 #
 # Docker Compose definition for the opc-classic Windows-container test fleet.
 #
-# Brings up four Windows containers on a shared l2bridge network so they can
+# Brings up the Windows-container test fleet on a shared l2bridge network so they can
 # exchange DCOM RPC traffic (port 135 + the pinned 49152-49200 dynamic range).
 # NAT networking will NOT work because DCOM's OXID resolver announces the
 # server's internal IP and the client cannot route back through NAT.
 #
 # Usage:
 #   docker compose --file docker/docker-compose.test.yml build
+#   # OPERATOR: the testserver service requires ext/CoreComponents; use
+#   # docker/run-matrix.ps1 without -IncludeTestServer for the historical
+#   # four-image path when that vendor tree is absent.
 #   docker compose --file docker/docker-compose.test.yml up -d c-server managed-server
 #   docker compose --file docker/docker-compose.test.yml run --rm ctt `
 #       -ProgId Opc.Classic.DaSample.1 -TargetHost opc-classic-managed
@@ -52,6 +55,17 @@ services:
       opc-test-net:
         ipv4_address: 10.0.1.11
 
+  testserver:
+    image: opc-classic/testserver
+    container_name: opc-classic-testserver
+    build:
+      context: ..
+      dockerfile: docker/opc-testserver/Dockerfile
+    hostname: opc-classic-testserver
+    networks:
+      opc-test-net:
+        ipv4_address: 10.0.1.12
+
   ctt:
     image: opc-classic/ctt
     container_name: opc-classic-ctt
@@ -81,5 +95,19 @@ services:
     depends_on:
       - c-server
       - managed-server
+    profiles:
+      - interactive
+
+  testclient:
+    image: opc-classic/testclient
+    container_name: opc-classic-testclient
+    build:
+      context: ..
+      dockerfile: docker/opc-testclient/Dockerfile
+    networks:
+      opc-test-net:
+        ipv4_address: 10.0.1.22
+    depends_on:
+      - testserver
     profiles:
       - interactive
