@@ -122,7 +122,7 @@ function(add_opc_proxy_stub)
     target_include_directories(${PS_TARGET} PRIVATE
         "${BIN_DIR}"
         "${SRC_DIR}"
-        "${CMAKE_SOURCE_DIR}/Source/Include"
+        "${CMAKE_SOURCE_DIR}/src/Include"
     )
 
     # Static CRT (RuntimeLibrary=0 in original vcproj = /MT)

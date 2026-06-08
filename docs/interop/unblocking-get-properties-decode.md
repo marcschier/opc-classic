@@ -355,7 +355,7 @@ What a programmatic walk of the response payload revealed:
    the 20-byte over-read cascades.
 4. **`OPCITEMPROPERTY` IDL is identical** between
    `ext/inc/opcda.idl`, `ext/inc/opcda.h`, and
-   `ext/CoreComponents/Source/DataAccess/ProxyStub/opcda.idl` — so the
+   `ext/redist/CoreComponents/src/DataAccess/ProxyStub/opcda.idl` — so the
    layout difference is not an IDL-level vendor extension. Matrikon
    ships their own proxy/stub DLL alongside the simulation server; the
    wire shape produced by that proxy is what we are observing.
@@ -401,14 +401,12 @@ not produced by stock MIDL. Two plausible next-step hypotheses:
 
 ### Recommended next step
 
-Run the OPC Foundation's stock reference proxy (from
-`ext/redist/OPC Core Components Redistributable (x86) 3.00.107.msi`)
-against the same Matrikon item and capture the response. If the wire
-bytes match what we captured, the layout IS Matrikon's documented
-proxy convention and we can model it. If they differ, our managed
-proxy must be sending something subtly wrong in the request (e.g. a
-context ID mismatch) that's triggering Matrikon to fall back to a
-custom response shape.
+Run the OPC Foundation's stock reference proxy from an external official Core
+Components install against the same Matrikon item and capture the response. If
+the wire bytes match what we captured, the layout IS Matrikon's documented proxy
+convention and we can model it. If they differ, our managed proxy must be
+sending something subtly wrong in the request (e.g. a context ID mismatch)
+that's triggering Matrikon to fall back to a custom response shape.
 
 Until that comparison is done, **do not change the codec** — the
 in-tree synthetic fixtures all pass and adding a Matrikon-shaped

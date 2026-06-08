@@ -33,7 +33,7 @@ add_opc_proxy_stub(
     DEF     opccomn_ps.def
     RC      opccomn_ps.rc
     TLB     opccomn.tlb
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub"
 )
 
 # ============================================================================
@@ -46,7 +46,7 @@ add_opc_proxy_stub(
     RC      opcda_ps.rc
     TLB     opcda.tlb
     MC      opcerror.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/DataAccess/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/DataAccess/ProxyStub"
 )
 
 # ============================================================================
@@ -59,7 +59,7 @@ add_opc_proxy_stub(
     RC      opc_ae.rc
     TLB     opc_ae.tlb
     MC      opcae_er.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/AlarmsAndEvents/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/AlarmsAndEvents/ProxyStub"
 )
 
 # ============================================================================
@@ -72,7 +72,7 @@ add_opc_proxy_stub(
     RC      opcbc_ps.rc
     TLB     opcbc.tlb
     MC      OpcBatchError.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Batch/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/Batch/ProxyStub"
 )
 
 # ============================================================================
@@ -85,7 +85,7 @@ add_opc_proxy_stub(
     RC      OpcCmdPs.rc
     TLB     opccmd.tlb
     MC      OpcCmdError.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Commands/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/Commands/ProxyStub"
 )
 
 # ============================================================================
@@ -98,7 +98,7 @@ add_opc_proxy_stub(
     RC      OpcDxPs.rc
     TLB     opcdx.tlb
     MC      OpcDxError.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/DataExchange/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/DataExchange/ProxyStub"
 )
 
 # ============================================================================
@@ -111,7 +111,7 @@ add_opc_proxy_stub(
     RC      opchda_ps.rc
     TLB     opchda.tlb
     MC      OpcHda_Error.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/HistoricalDataAccess/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/HistoricalDataAccess/ProxyStub"
 )
 
 # ============================================================================
@@ -124,7 +124,7 @@ add_opc_proxy_stub(
     RC      opcSec_PS.rc
     TLB     opcsec.tlb
     MC      OpcErrSec.mc
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Security/ProxyStub"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/Security/ProxyStub"
 )
 
 # ============================================================================
@@ -132,7 +132,7 @@ add_opc_proxy_stub(
 # ============================================================================
 if(CMAKE_SIZEOF_VOID_P EQUAL 4)
 
-set(OPCENUM_SRC_DIR "${CMAKE_SOURCE_DIR}/Source/Common/ServerEnumerator")
+set(OPCENUM_SRC_DIR "${CMAKE_SOURCE_DIR}/src/Common/ServerEnumerator")
 set(OPCENUM_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}/OpcEnum")
 file(MAKE_DIRECTORY "${OPCENUM_BIN_DIR}")
 
@@ -143,13 +143,13 @@ add_custom_command(
         "${OPCENUM_BIN_DIR}/OpcEnum_i.c"
         "${OPCENUM_BIN_DIR}/OpcEnum.tlb"
     COMMAND midl /nologo /no_robust /env win32
-        /I "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub"
+        /I "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub"
         /tlb "${OPCENUM_BIN_DIR}/OpcEnum.tlb"
         /h   "${OPCENUM_BIN_DIR}/OpcEnum.h"
         /iid "${OPCENUM_BIN_DIR}/OpcEnum_i.c"
         "${OPCENUM_SRC_DIR}/OpcEnum.idl"
     DEPENDS "${OPCENUM_SRC_DIR}/OpcEnum.idl"
-            "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub/opccomn.idl"
+            "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub/opccomn.idl"
     WORKING_DIRECTORY "${OPCENUM_SRC_DIR}"
     COMMENT "MIDL: OpcEnum.idl"
     VERBATIM
@@ -189,7 +189,7 @@ target_include_directories(OpcEnum PRIVATE
     "${OPCENUM_BIN_DIR}"
     "${OPCENUM_SRC_DIR}"
     "${OPCCOMN_BIN_DIR}"
-    "${CMAKE_SOURCE_DIR}/Source/Include"
+    "${CMAKE_SOURCE_DIR}/src/Include"
 )
 
 set_property(TARGET OpcEnum PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
@@ -215,9 +215,9 @@ endif() # x86 only
 # ============================================================================
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
-set(CATMGR_SRC_DIR "${CMAKE_SOURCE_DIR}/Source/Common/CategoryManager")
+set(CATMGR_SRC_DIR "${CMAKE_SOURCE_DIR}/src/Common/CategoryManager")
 set(CATMGR_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}/OpcCategoryManager")
-set(OPC_UTILS_DIR  "${CMAKE_SOURCE_DIR}/Source/Shared/OpcUtilityClasses")
+set(OPC_UTILS_DIR  "${CMAKE_SOURCE_DIR}/src/Shared/OpcUtilityClasses")
 file(MAKE_DIRECTORY "${CATMGR_BIN_DIR}")
 
 # MIDL: CategoryManager.idl → CategoryManager.h, CategoryManager_i.c, CategoryManager.tlb
@@ -227,13 +227,13 @@ add_custom_command(
         "${CATMGR_BIN_DIR}/CategoryManager_i.c"
         "${CATMGR_BIN_DIR}/CategoryManager.tlb"
     COMMAND midl /nologo /env x64
-        /I "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub"
+        /I "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub"
         /tlb "${CATMGR_BIN_DIR}/CategoryManager.tlb"
         /h   "${CATMGR_BIN_DIR}/CategoryManager.h"
         /iid "${CATMGR_BIN_DIR}/CategoryManager_i.c"
         "${CATMGR_SRC_DIR}/CategoryManager.idl"
     DEPENDS "${CATMGR_SRC_DIR}/CategoryManager.idl"
-            "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub/opccomn.idl"
+            "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub/opccomn.idl"
     WORKING_DIRECTORY "${CATMGR_SRC_DIR}"
     COMMENT "MIDL: CategoryManager.idl"
     VERBATIM
@@ -247,7 +247,7 @@ set(OPCSEC_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}/opcsec_ps")
 set(OPCDA_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}/opcproxy")
 
 # OPC utility framework sources + DCOM Config sources needed by COpcClassFactory
-set(DCOM_CFG_DIR "${CMAKE_SOURCE_DIR}/Source/Common/ServerEnumerator/DCOM Config")
+set(DCOM_CFG_DIR "${CMAKE_SOURCE_DIR}/src/Common/ServerEnumerator/DCOM Config")
 file(GLOB OPC_UTILS_SOURCES "${OPC_UTILS_DIR}/*.cpp")
 file(GLOB DCOM_CFG_SOURCES  "${DCOM_CFG_DIR}/*.cpp")
 
@@ -284,8 +284,8 @@ target_include_directories(OpcCategoryManager PRIVATE
     "${OPCCOMN_BIN_DIR}"
     "${OPCSEC_BIN_DIR}"
     "${OPCDA_BIN_DIR}"
-    "${CMAKE_SOURCE_DIR}/Source/Common/ServerEnumerator"
-    "${CMAKE_SOURCE_DIR}/Source/Include"
+    "${CMAKE_SOURCE_DIR}/src/Common/ServerEnumerator"
+    "${CMAKE_SOURCE_DIR}/src/Include"
 )
 
 set_property(TARGET OpcCategoryManager PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
@@ -316,12 +316,19 @@ endif() # x64 only
 # ============================================================================
 if(OPC_BUILD_TESTS)
 
-set(TESTSVR_SRC_DIR  "${CMAKE_SOURCE_DIR}/Source/Test/TestServer")
+# Native OPC Foundation test apps were relocated from src/Test/* to the repo
+# samples/ tree (OpcTestServer / OpcTestClient). Default to the repo-relative
+# location; build-testserver.ps1 passes -DOPC_TEST_SAMPLES_DIR explicitly.
+set(OPC_TEST_SAMPLES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../samples"
+    CACHE PATH "Directory containing the OpcTestServer/OpcTestClient sample sources")
+get_filename_component(OPC_TEST_SAMPLES_DIR "${OPC_TEST_SAMPLES_DIR}" ABSOLUTE)
+
+set(TESTSVR_SRC_DIR  "${OPC_TEST_SAMPLES_DIR}/OpcTestServer")
 set(TESTSVR_BIN_DIR  "${CMAKE_CURRENT_BINARY_DIR}/OpcTestServer")
-set(OPC_UTILS_DIR    "${CMAKE_SOURCE_DIR}/Source/Shared/OpcUtilityClasses")
-set(SAMPLE_SVR_DIR   "${CMAKE_SOURCE_DIR}/Source/Shared/SampleServerClasses")
-set(SAMPLE_DEV_DIR   "${CMAKE_SOURCE_DIR}/Source/Shared/SampleDevice")
-set(SAMPLE_205_DIR   "${CMAKE_SOURCE_DIR}/Source/Shared/SampleServer205")
+set(OPC_UTILS_DIR    "${CMAKE_SOURCE_DIR}/src/Shared/OpcUtilityClasses")
+set(SAMPLE_SVR_DIR   "${CMAKE_SOURCE_DIR}/src/Shared/SampleServerClasses")
+set(SAMPLE_DEV_DIR   "${CMAKE_SOURCE_DIR}/src/Shared/SampleDevice")
+set(SAMPLE_205_DIR   "${CMAKE_SOURCE_DIR}/src/Shared/SampleServer205")
 file(MAKE_DIRECTORY "${TESTSVR_BIN_DIR}")
 
 # Determine platform tag and MIDL environment
@@ -345,15 +352,15 @@ add_custom_command(
         "${TESTSVR_BIN_DIR}/OpcTestServer.tlb"
     COMMAND midl /nologo ${TESTSVR_MIDL_ROBUST} /env ${TESTSVR_MIDL_ENV}
         ${TESTSVR_MIDL_DEFINE}
-        /I "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub"
-        /I "${CMAKE_SOURCE_DIR}/Source/DataAccess/ProxyStub"
+        /I "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub"
+        /I "${CMAKE_SOURCE_DIR}/src/DataAccess/ProxyStub"
         /tlb "${TESTSVR_BIN_DIR}/OpcTestServer.tlb"
         /h   "${TESTSVR_BIN_DIR}/OpcTestServer.h"
         /iid "${TESTSVR_BIN_DIR}/OpcTestServer_i.c"
         "${TESTSVR_SRC_DIR}/OpcTestServer.idl"
     DEPENDS "${TESTSVR_SRC_DIR}/OpcTestServer.idl"
-            "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub/opccomn.idl"
-            "${CMAKE_SOURCE_DIR}/Source/DataAccess/ProxyStub/opcda.idl"
+            "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub/opccomn.idl"
+            "${CMAKE_SOURCE_DIR}/src/DataAccess/ProxyStub/opcda.idl"
     WORKING_DIRECTORY "${TESTSVR_SRC_DIR}"
     COMMENT "MIDL: OpcTestServer.idl (${TESTSVR_PLATFORM})"
     VERBATIM
@@ -365,7 +372,7 @@ set(OPCSEC_BIN_DIR  "${CMAKE_CURRENT_BINARY_DIR}/opcsec_ps")
 set(OPCDA_BIN_DIR   "${CMAKE_CURRENT_BINARY_DIR}/opcproxy")
 
 # Gather reused source files
-set(DCOM_CFG_DIR "${CMAKE_SOURCE_DIR}/Source/Common/ServerEnumerator/DCOM Config")
+set(DCOM_CFG_DIR "${CMAKE_SOURCE_DIR}/src/Common/ServerEnumerator/DCOM Config")
 file(GLOB TESTSVR_OPC_UTILS_SOURCES "${OPC_UTILS_DIR}/*.cpp")
 file(GLOB TESTSVR_DCOM_CFG_SOURCES  "${DCOM_CFG_DIR}/*.cpp")
 file(GLOB TESTSVR_SAMPLE_SVR_SOURCES "${SAMPLE_SVR_DIR}/*.cpp")
@@ -412,8 +419,8 @@ target_include_directories(OpcTestServer PRIVATE
     "${SAMPLE_SVR_DIR}"
     "${SAMPLE_DEV_DIR}"
     "${SAMPLE_205_DIR}"
-    "${CMAKE_SOURCE_DIR}/Source/Common/ServerEnumerator"
-    "${CMAKE_SOURCE_DIR}/Source/Include"
+    "${CMAKE_SOURCE_DIR}/src/Common/ServerEnumerator"
+    "${CMAKE_SOURCE_DIR}/src/Include"
 )
 
 set_property(TARGET OpcTestServer PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
@@ -450,7 +457,7 @@ install(FILES "${TESTSVR_SRC_DIR}/OpcTestServer.config.xml"
 # ============================================================================
 
 add_executable(OpcTestClient
-    "${CMAKE_SOURCE_DIR}/Source/Test/TestClient/OpcTestClient.cpp"
+    "${OPC_TEST_SAMPLES_DIR}/OpcTestClient/OpcTestClient.cpp"
 )
 add_dependencies(OpcTestClient opccomn_ps_generate opcproxy_generate)
 
@@ -529,22 +536,22 @@ install(FILES
 
 # IDL source files
 install(FILES
-    "${CMAKE_SOURCE_DIR}/Source/Common/ProxyStub/opccomn.idl"
-    "${CMAKE_SOURCE_DIR}/Source/DataAccess/ProxyStub/opcda.idl"
-    "${CMAKE_SOURCE_DIR}/Source/AlarmsAndEvents/ProxyStub/opc_ae.idl"
-    "${CMAKE_SOURCE_DIR}/Source/Batch/ProxyStub/opcbc.idl"
-    "${CMAKE_SOURCE_DIR}/Source/Commands/ProxyStub/OpcCmd.idl"
-    "${CMAKE_SOURCE_DIR}/Source/DataExchange/ProxyStub/OpcDx.idl"
-    "${CMAKE_SOURCE_DIR}/Source/HistoricalDataAccess/ProxyStub/opchda.idl"
-    "${CMAKE_SOURCE_DIR}/Source/Security/ProxyStub/opcSec.idl"
+    "${CMAKE_SOURCE_DIR}/src/Common/ProxyStub/opccomn.idl"
+    "${CMAKE_SOURCE_DIR}/src/DataAccess/ProxyStub/opcda.idl"
+    "${CMAKE_SOURCE_DIR}/src/AlarmsAndEvents/ProxyStub/opc_ae.idl"
+    "${CMAKE_SOURCE_DIR}/src/Batch/ProxyStub/opcbc.idl"
+    "${CMAKE_SOURCE_DIR}/src/Commands/ProxyStub/OpcCmd.idl"
+    "${CMAKE_SOURCE_DIR}/src/DataExchange/ProxyStub/OpcDx.idl"
+    "${CMAKE_SOURCE_DIR}/src/HistoricalDataAccess/ProxyStub/opchda.idl"
+    "${CMAKE_SOURCE_DIR}/src/Security/ProxyStub/opcSec.idl"
     DESTINATION include
 )
 
 # Static definition/property headers (not generated by MIDL/MC)
 install(FILES
-    "${CMAKE_SOURCE_DIR}/Source/AlarmsAndEvents/ProxyStub/opcaedef.h"
-    "${CMAKE_SOURCE_DIR}/Source/Batch/ProxyStub/OpcBatchProps.h"
-    "${CMAKE_SOURCE_DIR}/Source/Batch/ProxyStub/OpcBatchDef.h"
+    "${CMAKE_SOURCE_DIR}/src/AlarmsAndEvents/ProxyStub/opcaedef.h"
+    "${CMAKE_SOURCE_DIR}/src/Batch/ProxyStub/OpcBatchProps.h"
+    "${CMAKE_SOURCE_DIR}/src/Batch/ProxyStub/OpcBatchDef.h"
     DESTINATION include
 )
 
@@ -553,7 +560,7 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 4)
     install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/OpcEnum/OpcEnum.h"
         "${CMAKE_CURRENT_BINARY_DIR}/OpcEnum/OpcEnum_i.c"
-        "${CMAKE_SOURCE_DIR}/Source/Common/ServerEnumerator/OpcEnum.idl"
+        "${CMAKE_SOURCE_DIR}/src/Common/ServerEnumerator/OpcEnum.idl"
         DESTINATION include
     )
 endif()

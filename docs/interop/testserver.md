@@ -6,30 +6,29 @@ are MIT-licensed and source-traceable — when our managed proxy fails a
 call against TestServer we can debug into the MIDL-generated stub to see
 exactly which byte rejected it.
 
-## What's in `ext/CoreComponents/`
+## What's in `ext/redist/CoreComponents/`
 
 The entire OPC Foundation
 [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents)
-repository is vendored verbatim into `ext/CoreComponents/` so the
-native TestServer + proxy/stub DLLs can be built without an external
-clone. Key paths:
+repository is vendored in pruned/restructured form under
+`ext/redist/CoreComponents/` so the native TestServer + proxy/stub DLLs can be
+built without an external clone. Key paths:
 
 | Path | Purpose |
 |------|---------|
-| `Source/Test/TestServer/COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `Source/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
-| `Source/Test/TestServer/COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
-| `Source/Test/TestServer/OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
-| `Source/Test/TestServer/OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
-| `Source/Test/TestClient/OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
-| `Source/Shared/` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
-| `Source/Common/`, `Source/DataAccess/`, `Source/Security/` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
-| `Source/Include/` | Shared headers (CATID GUIDs, error codes). |
+| `samples/OpcTestServer/COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `src/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
+| `samples/OpcTestServer/COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
+| `samples/OpcTestServer/OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
+| `samples/OpcTestServer/OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
+| `samples/OpcTestClient/OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
+| `src/Shared/` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
+| `src/Common/`, `src/DataAccess/`, `src/Security/` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
+| `src/Include/` | Shared headers (CATID GUIDs, error codes). |
 | `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by `tools\build-testserver.ps1`. |
 | `docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
-| `build.ps1`, `docker-build.ps1` | Upstream one-shot build entry points (native + docker). |
-| `WiX/` | MSI installer scaffolding (optional). |
+| `build.ps1`, `docker-build.ps1` | One-shot build entry points (native + docker). |
 
-See `ext/CoreComponents/VENDORED.md` for the snapshot provenance and
+See `ext/redist/CoreComponents/VENDORED.md` for the snapshot provenance and
 re-sync workflow. The OPC Foundation MIT License 1.00 grant lives in
 the file headers; `LICENSE.md` at the vendor root is the umbrella
 OPC Foundation license that governs the broader specification suite.
@@ -51,10 +50,10 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 ```
 
 The script discovers VS's bundled CMake (or any cmake.exe on PATH),
-configures `ext\CoreComponents\build\x64`, and builds the
+configures `ext\redist\CoreComponents\build\x64`, and builds the
 `OpcTestServer`, `OpcTestClient`, `OpcCategoryManager`, `opccomn_ps`
 and `opcproxy` targets. Output lands in
-`ext\CoreComponents\build\x64\Release\`.
+`ext\redist\CoreComponents\build\x64\Release\`.
 
 Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
 C++ + ATL + Win11 SDK + MSVC v14.44 or later), CMake 3.20+ (bundled
@@ -63,18 +62,17 @@ with VS).
 ### Option 2 — upstream `build.ps1` directly
 
 ```powershell
-cd ext\CoreComponents
+cd ext\redist\CoreComponents
 .\build.ps1
 ```
 
-Builds **all** targets including the WiX MSI installers (requires
-`dotnet tool install --global wix`). Slower but produces a
-distributable MSI.
+Builds **all** native targets for both platforms and installs outputs under
+`out\`. MSI packaging was removed from the vendored tree.
 
 ### Option 3 — Docker (fully reproducible, no local VS)
 
 ```powershell
-cd ext\CoreComponents
+cd ext\redist\CoreComponents
 .\docker-build.ps1
 ```
 
@@ -85,23 +83,13 @@ artifacts as the native build to the `out/` directory.
 
 ## Installation / registration
 
-After building, you have two options to register the TestServer
-with DCOM so the managed Opc.Classic client can activate it:
+After building, register the TestServer with DCOM so the managed Opc.Classic
+client can activate it. The redistributable installers are no longer vendored;
+use the local no-MSI registration path below, or install the official OPC
+Foundation Core Components package externally when validating a machine-wide
+deployment.
 
-### Option A — full MSI install (canonical Core Components install)
-
-`ext\CoreComponents\build.ps1` (or option 3 above) produces an MSI
-under `out\x64\`. Install it:
-
-```powershell
-msiexec /i ext\CoreComponents\out\x64\OpcClassicCoreComponents-x64-*.msi /qn
-```
-
-This registers OpcEnum, the proxy/stub DLLs, the x64 category manager,
-and both TestServer flavors. Use this path when validating OpcEnum,
-discovery, or mixed x86/x64 installs.
-
-### Option B — `tools\register-testserver.ps1` (local x64, no MSI)
+### `tools\register-testserver.ps1` (local x64, no MSI)
 
 ```powershell
 # From an ELEVATED 64-bit PowerShell window:
@@ -119,12 +107,12 @@ The script performs the no-MSI setup needed for x64 DCOM activation:
    AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
 
 Defaults to looking for the EXE and sibling proxy/stub DLLs under
-`ext\CoreComponents\build\x64\Release\`; pass `-ExePath` to override.
+`ext\redist\CoreComponents\build\x64\Release\`; pass `-ExePath` to override.
 
 To remove the TestServer entries and the System32 proxy/stub DLLs
 copied by this script: `.\tools\register-testserver.ps1 -Unregister`.
 Missing files are skipped; mismatched files without this script's install
-marker are left in place to avoid removing an unrelated MSI install.
+marker are left in place to avoid removing an unrelated external install.
 
 Validate from a fresh elevated 64-bit PowerShell, then probe from a
 non-elevated shell:
@@ -194,11 +182,11 @@ Investigation paths (in increasing complexity):
    should already work — but explicit "interactive user" can resolve
    service-context launch failures.
 
-3. **Build and install the upstream WiX MSI.** `ext/CoreComponents/build.ps1`
-   produces an `.msi` under `ext/CoreComponents/WiX/`. The MSI sets
-   AppID Launch/Activation/Access ACLs, RunAs identity, and registers
-   the proxy/stub DLLs to their canonical install location. This is the
-   OPC Foundation's tested install path and bypasses every no-MSI quirk.
+3. **Compare against an official OPC Foundation Core Components install.** The
+   redistributable installer is no longer vendored here, but an external
+   official install can confirm AppID Launch/Activation/Access ACLs, RunAs
+   identity, and canonical proxy/stub registration independently of this
+   no-MSI path.
 
 4. **Capture the EXE's stderr at SCM launch.** Use
    `procmon.exe` filtered to `Process Name = OpcTestServer_x64.exe` to
@@ -245,6 +233,6 @@ Test.String  value='OPC Test' type=VT_BSTR q=0x00C0  hr=0x00000000
 
 When TestServer and Matrikon disagree on the wire format for a
 particular method, the MIDL-generated format strings under
-`ext/CoreComponents/Source/DataAccess/ProxyStub/` are the authoritative
+`ext/redist/CoreComponents/src/DataAccess/ProxyStub/` are the authoritative
 reference — they're literally the bytes the OPC proxy/stub DLLs
 marshal.

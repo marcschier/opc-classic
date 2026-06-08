@@ -22,8 +22,8 @@ between two CLSIDs that should be identical but aren't:
 
 | Source | UUID | Where |
 | --- | --- | --- |
-| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | `Source/Test/TestServer/OpcTestServer.idl:45` |
-| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | `Source/Test/TestServer/OpcTestServer.cpp:53` |
+| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | `samples/OpcTestServer/OpcTestServer.idl:45` |
+| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | `samples/OpcTestServer/OpcTestServer.cpp:53` |
 
 The class table macro `OPC_CLASS_TABLE_ENTRY(COpcTestServer, OpcTestServer_x64, ...)`
 expands to `__uuidof(OpcTestServer_x64)` which resolves to the IDL coclass UUID (F8582CF8).
@@ -139,10 +139,10 @@ non-DA IIDs. **Track BG** extends the catalog to close that residual.
 Locally built TestServer EXE activation fails with HRESULT `0x80080005` and DCOM event log
 10010 ("server did not register with DCOM within the required timeout") even after
 `tools/register-testserver.ps1` runs. Suspected cause: the ad-hoc registration script is
-missing one or more entries that the canonical WiX MSI install writes (most likely the DCOM
+missing one or more entries that the legacy installer writes (most likely the DCOM
 AppID entry for `OpcTestServer_x64.exe`, COM Implemented/Required Categories under each
 CLSID, or wrong proxy-stub registration order). **Track BH** audits the upstream
-`OPC-Classic-CoreComponents` WiX manifests (`Installer.wxs`, `MergeModule.wxs`,
+`OPC-Classic-CoreComponents` installer manifests (`Installer.wxs`, `MergeModule.wxs`,
 `MergeModuleSdk.wxs`) as the canonical registration spec and fixes the script in-place
 (NO `msiexec`-driven install path).
 

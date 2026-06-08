@@ -9,7 +9,7 @@
 #   docker/run-matrix.ps1                        # build + run both smokes
 #   docker/run-matrix.ps1 -SkipBuild             # use existing images
 #   docker/run-matrix.ps1 -OnlyManaged           # only the managed-server smoke
-#   docker/run-matrix.ps1 -IncludeTestServer     # also smoke OpcTestServer_x64.1 (requires ext/CoreComponents)
+#   docker/run-matrix.ps1 -IncludeTestServer     # also smoke OpcTestServer_x64.1 (requires ext/redist/CoreComponents)
 
 [CmdletBinding()]
 param(

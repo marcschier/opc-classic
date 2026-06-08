@@ -12,9 +12,13 @@ echo ============================================================
 echo.
 
 :: Verify mounts
-if not exist "C:\src\build.ps1" (
-    echo ERROR: Source not mounted. Mount the source directory to C:\src
-    echo   docker run --rm -v path\to\source:C:\src -v path\to\out:C:\out IMAGE
+if not exist "C:\repo\ext\redist\CoreComponents\build.ps1" (
+    echo ERROR: Repository not mounted. Mount the repo root to C:\repo
+    echo   docker run --rm -v path\to\repo:C:\repo -v path\to\out:C:\out IMAGE
+    exit /b 1
+)
+if not exist "C:\repo\samples\OpcTestServer\OpcTestServer.cpp" (
+    echo ERROR: OpcTestServer samples not mounted at C:\repo\samples\OpcTestServer
     exit /b 1
 )
 if not exist "C:\out" (
@@ -30,9 +34,8 @@ if errorlevel 1 (
 )
 
 :: Build with intermediate files on container-local disk (PDB locking fails on volume mounts)
-set "DOTNET_ROOT=C:\dotnet"
-cd /d "C:\src"
-%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File "C:\src\build.ps1" -Platform %BUILD_PLATFORM% -BuildRoot C:\build -OutDir C:\out_local -WixCmd C:\wix\wix.exe
+cd /d "C:\repo\ext\redist\CoreComponents"
+%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File "C:\repo\ext\redist\CoreComponents\build.ps1" -Platform %BUILD_PLATFORM% -BuildRoot C:\build -OutDir C:\out_local
 if errorlevel 1 (
     echo ERROR: Build failed.
     exit /b 1
@@ -42,12 +45,6 @@ if errorlevel 1 (
 echo.
 echo Copying output to C:\out ...
 %SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -Command "Copy-Item -Path 'C:\out_local\*' -Destination 'C:\out' -Recurse -Force"
-
-:: Copy dist/ output (ZIP redistributable) if it exists
-if exist "C:\src\dist" (
-    echo Copying redistributable ZIP to C:\out\dist ...
-    %SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -Command "New-Item -ItemType Directory -Path 'C:\out\dist' -Force | Out-Null; Copy-Item -Path 'C:\src\dist\*' -Destination 'C:\out\dist' -Recurse -Force"
-)
 
 echo.
 echo  Docker build complete. Output copied to mounted output directory.

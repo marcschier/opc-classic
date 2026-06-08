@@ -6,9 +6,8 @@
 .DESCRIPTION
     Performs the no-MSI registration steps that DCOM SCM needs to activate
     the OPC Foundation TestServer x64. The canonical reference is the
-    upstream OPC-Classic-CoreComponents WiX manifests
-    (Installer.wxs + MergeModule.wxs); this script mirrors what the MSI
-    would do without requiring msiexec. See
+    legacy OPC-Classic-CoreComponents installer manifests; this script mirrors
+    the required no-MSI registration without requiring msiexec. See
     docs/interop/testserver-registration-spec.md for the full audit.
 
     Concretely the script:
@@ -37,7 +36,7 @@
 
 .PARAMETER ExePath
     Full path to OpcTestServer_x64.exe (default: looks for it under
-    ext\CoreComponents\build\x64\Release\, the vendored CMake output
+    ext\redist\CoreComponents\build\x64\Release\, the vendored CMake output
     produced by tools\build-testserver.ps1). The sibling proxy/stub
     DLLs and OpcTestServer_x64.config.xml are expected alongside.
 
@@ -68,7 +67,7 @@ function Test-IsAdministrator {
 
 function Resolve-DefaultTestServerPath {
     $repoRoot = Split-Path -Parent $PSScriptRoot
-    $candidate = Join-Path $repoRoot 'ext\CoreComponents\build\x64\Release\OpcTestServer_x64.exe'
+    $candidate = Join-Path $repoRoot 'ext\redist\CoreComponents\build\x64\Release\OpcTestServer_x64.exe'
     if (Test-Path -LiteralPath $candidate) {
         return $candidate
     }
@@ -201,8 +200,8 @@ function Install-ProxyStubDlls {
         [string]$RegistrationDirectory
     )
 
-    # Register the FULL canonical proxy/stub DLL set per the upstream WiX
-    # MergeModule.wxs (x64 path, lines 156-219). Order matters: opccomn_ps must
+    # Register the FULL canonical proxy/stub DLL set per the legacy upstream
+    # installer manifest order. Order matters: opccomn_ps must
     # be registered first because the other DLLs reference its IOPCCommon/
     # IOPCShutdown IIDs via TypeLib imports. See:
     # docs/interop/testserver-registration-spec.md
@@ -306,22 +305,22 @@ function Copy-TestServerConfig {
         [string]$ExeDirectory
     )
 
-    # The upstream WiX (Installer.wxs:85-90, comp_OpcTestServerConfig) deploys
-    # OpcTestServer_x64.config.xml alongside the EXE. The TestServer reads this
+    # The CoreComponents install rules deploy OpcTestServer_x64.config.xml
+    # alongside the EXE. The TestServer reads this
     # file on startup (loaded by COpcTestServer init); absence may cause the
     # EXE to fail before it registers a class factory, producing
     # CO_E_SERVER_EXEC_FAILURE during DCOM activation.
     #
     # The CMake build only copies/renames this file via `cmake --install` (rule
-    # at ext/CoreComponents/CMakeLists.txt:444); a plain `cmake --build` step
-    # leaves the source file at ext/CoreComponents/Source/Test/TestServer/
+    # at ext/redist/CoreComponents/CMakeLists.txt); a plain `cmake --build` step
+    # leaves the source file at samples/OpcTestServer/
     # OpcTestServer.config.xml. Look for it in both locations.
     $configName = 'OpcTestServer_x64.config.xml'
     $destination = Join-Path $ExeDirectory $configName
 
     $candidates = @(
         (Join-Path $ArtifactDirectory $configName),
-        (Join-Path $PSScriptRoot '..\ext\CoreComponents\Source\Test\TestServer\OpcTestServer.config.xml')
+        (Join-Path $PSScriptRoot '..\samples\OpcTestServer\OpcTestServer.config.xml')
     )
 
     foreach ($candidate in $candidates) {
@@ -347,7 +346,7 @@ function Copy-TestServerConfig {
                 $content = Get-Content -Raw -LiteralPath $destination
                 $patched = $content -replace '<CLSID>\{F8582CF8-88FB-11DA-A5ED-0060B0692061\}</CLSID>', '<CLSID>{F8582CF9-88FB-11DA-A5ED-0060B0692061}</CLSID>'
                 if ($patched -ne $content) {
-                    Write-Host "  Patching <CLSID> in $configName: F8582CF8 -> F8582CF9 (OPC_IMPLEMENT_LOCAL_SERVER alignment)"
+                    Write-Host "  Patching <CLSID> in ${configName}: F8582CF8 -> F8582CF9 (OPC_IMPLEMENT_LOCAL_SERVER alignment)"
                     # [IO.File]::WriteAllText (vs Set-Content -NoNewline) avoids a
                     # trailing newline insertion that Set-Content adds on PS 5.1.
                     [System.IO.File]::WriteAllText($destination, $patched)
@@ -366,8 +365,8 @@ function Register-OpcCategoryManager {
         [string]$ArtifactDirectory
     )
 
-    # Upstream WiX (MergeModule.wxs:233-253) registers OpcCategoryManager.exe
-    # as a COM local server via /RegServer. It handles x64 category-presence
+    # CoreComponents registers OpcCategoryManager.exe as a COM local server via
+    # /RegServer. It handles x64 category-presence
     # enumeration (CATID_OPCDAServer*) that some clients rely on when
     # resolving CLSID-to-category mappings.
     $exeName = 'OpcCategoryManager.exe'

@@ -17,12 +17,12 @@ in-process before a real native DCOM endpoint is available.
 1. CI handles this automatically via the `windows-conformance` job
    on `windows-2022` (see `.github/workflows/build.yml`).
 
-2. Locally on Windows, install the OPC Foundation Core Components
-   (places `opcproxy.dll` etc.), build the native `.vcxproj` sample servers
-   as documented in `ext/samples/README.md`, and register them:
+2. Locally on Windows, make the OPC Foundation Core Components available
+   (places `opcproxy.dll` etc.; the redistributable installers are no longer
+   vendored, so build/register `ext\redist\CoreComponents` or install the
+   official package externally), build the native `.vcxproj` sample servers as
+   documented in `ext/samples/README.md`, and register them:
    ```cmd
-   msiexec /i ".\ext\redist\OPC Core Components Redistributable (x86) 3.00.107.msi" /quiet /norestart
-   msiexec /i ".\ext\redist\OPC Core Components Redistributable (x64) 3.00.107.msi" /quiet /norestart
    .\ext\samples\regserver.cmd
    ```
 

@@ -117,7 +117,7 @@ After registering the sample servers (via the same
 Foundation TestClient:
 
 ```powershell
-& ext\CoreComponents\build\x64\Release\OpcTestClient_x64.exe
+& ext\redist\CoreComponents\build\x64\Release\OpcTestClient_x64.exe
 ```
 
 The TestClient walks `IOPCServerList::EnumClassesOfCategories(CATID_OPCDAServer20)`

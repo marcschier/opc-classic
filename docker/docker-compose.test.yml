@@ -10,7 +10,7 @@
 #
 # Usage:
 #   docker compose --file docker/docker-compose.test.yml build
-#   # OPERATOR: the testserver service requires ext/CoreComponents; use
+#   # OPERATOR: the testserver service requires ext/redist/CoreComponents; use
 #   # docker/run-matrix.ps1 without -IncludeTestServer for the historical
 #   # four-image path when that vendor tree is absent.
 #   docker compose --file docker/docker-compose.test.yml up -d c-server managed-server

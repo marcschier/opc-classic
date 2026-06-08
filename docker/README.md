@@ -8,7 +8,7 @@ implementation against:
 - A **native (C-built) OPC DA smoke server** — hand-rolled in `docker\opc-c-server\build\` with OPC Foundation headers.
 - A **native (C-built) OPC DA smoke client** — hand-rolled in `docker\opc-c-client\build\` with OPC Foundation headers.
 - The **OPC Foundation TestServer/TestClient x64 pair** — built from the
-  vendored `ext\CoreComponents` CMake tree and gated behind
+  vendored `ext\redist\CoreComponents` CMake tree and gated behind
   `docker\run-matrix.ps1 -IncludeTestServer`.
 
 The managed `Opc.Classic.Samples.CttServer` runs beside the native C and OPC
@@ -24,7 +24,7 @@ be tested on a single Windows host. The rc.10 baseline is 0 build warnings/error
 | `opc-classic/managed` | ✅ Ready — publishes `Opc.Classic.Samples.CttServer` and registers `Opc.Classic.DaSample.1` |
 | `opc-classic/c-server` | ✅ Ready — builds the hand-rolled native DA smoke server (`opc_exe.exe`) from `opc-sample-server.cpp` |
 | `opc-classic/c-client` | ✅ Ready — builds the hand-rolled native DA smoke client (`opc-test.exe`) from `opc-test.cpp` |
-| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `ext\CoreComponents`; validate on a Windows Docker host |
+| `opc-classic/testserver` | 🧱 Scaffolded — builds OPC Foundation `OpcTestServer_x64.exe` from `ext\redist\CoreComponents`; validate on a Windows Docker host |
 | `opc-classic/testclient` | 🧱 Scaffolded — copies `OpcTestClient_x64.exe` from the testserver image; validate on a Windows Docker host |
 | `docker-compose.test.yml` | ✅ Ready — orchestrates all six images on `opc-test-net` |
 | `.github/workflows/docker-test-fleet.yml` | ✅ Ready — CI entry point for the fleet |
@@ -62,9 +62,9 @@ The `opc-classic/managed` container runs `Opc.Classic.Samples.CttServer` with th
   installs VS Build Tools in a Server Core layer).
 - **One `l2bridge` Docker network** named `opc-test-net` (created on first
   `docker/run-matrix.ps1` invocation).
-- **Optional `ext\CoreComponents` vendor tree** for
+- **Optional `ext\redist\CoreComponents` vendor tree** for
   `opc-classic/testserver` and `opc-classic/testclient`. OPERATOR: if the tree
-  is omitted locally, restore `ext\CoreComponents\build\x64\Release` from CI or
+  is omitted locally, restore `ext\redist\CoreComponents\build\x64\Release` from CI or
   build the TestServer image on a machine with the vendored sources.
 
 ## Quick start
@@ -76,7 +76,7 @@ docker compose --file docker/docker-compose.test.yml --profile interactive build
 ```
 
 This includes `opc-classic/testserver` and `opc-classic/testclient`, so it
-requires `ext\CoreComponents`. To keep the historical four-image smoke path,
+requires `ext\redist\CoreComponents`. To keep the historical four-image smoke path,
 use `docker\run-matrix.ps1` without `-IncludeTestServer`.
 
 ### Run the CTT matrix smoke

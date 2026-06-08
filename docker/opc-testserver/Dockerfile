@@ -8,9 +8,11 @@
 #   2. runtime stage: servercore + TestServer/TestClient/category manager +
 #      the full proxy/stub DLL set + no-MSI DCOM registration on boot.
 #
-# OPERATOR: ext/CoreComponents must be present in the Docker build context. If
+# OPERATOR: ext/redist/CoreComponents and samples/OpcTestServer|OpcTestClient
+# must be present in the Docker build context. If
 # this vendor tree is intentionally omitted, build the artifacts out-of-band and
-# restore ext/CoreComponents/build/x64/Release via CI/cache before building.
+# restore ext/redist/CoreComponents/build/x64/Release via CI/cache before
+# building.
 # OPERATOR: the VS Build Tools install is slow (~30 min on a cold builder).
 # Keep Docker layer caching and the GitHub Actions CoreComponents cache enabled.
 
@@ -20,10 +22,12 @@ SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';
 
 WORKDIR C:/src
 
-COPY ext/CoreComponents C:/src/ext/CoreComponents
+COPY ext/redist/CoreComponents C:/src/ext/redist/CoreComponents
+COPY samples/OpcTestServer C:/src/samples/OpcTestServer
+COPY samples/OpcTestClient C:/src/samples/OpcTestClient
 COPY tools/build-testserver.ps1 C:/src/tools/build-testserver.ps1
 
-RUN $release = 'C:/src/ext/CoreComponents/build/x64/Release'; `
+RUN $release = 'C:/src/ext/redist/CoreComponents/build/x64/Release'; `
     $required = @( `
         'OpcTestServer_x64.exe', `
         'OpcTestClient_x64.exe', `
@@ -62,7 +66,7 @@ RUN $release = 'C:/src/ext/CoreComponents/build/x64/Release'; `
     }; `
     $configCandidates = @( `
         (Join-Path $release 'OpcTestServer_x64.config.xml'), `
-        'C:/src/ext/CoreComponents/Source/Test/TestServer/OpcTestServer.config.xml' `
+        'C:/src/samples/OpcTestServer/OpcTestServer.config.xml' `
     ); `
     $configSource = $configCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1; `
     if (-not $configSource) { throw 'OpcTestServer_x64.config.xml/OpcTestServer.config.xml not found in CoreComponents output or source tree.' }; `

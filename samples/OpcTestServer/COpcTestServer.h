@@ -60,7 +60,7 @@ class COpcTestServer :
         // against TestServer (the upstream COpcDaServer base class implements
         // both; upstream COpcTestServer just doesn't list them here).
         // Re-syncing with upstream OPC-Classic-CoreComponents requires
-        // re-applying this divergence — see ext/CoreComponents/VENDORED.md.
+        // re-applying this divergence — see ext/redist/CoreComponents/VENDORED.md.
         OPC_INTERFACE_ENTRY(IOPCBrowse)
         OPC_INTERFACE_ENTRY(IOPCItemIO)
     OPC_END_INTERFACE_TABLE()

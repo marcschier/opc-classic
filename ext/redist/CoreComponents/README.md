@@ -1,8 +1,8 @@
 # OPC Classic Core Components
 
 Build system for the OPC Classic COM proxy/stub DLLs, server enumerator,
-and MSI installers. These are the core runtime components that OPC Classic
-(COM/DCOM) clients and servers need to communicate.
+and native OPC Foundation test applications. These are the core runtime
+components that OPC Classic (COM/DCOM) clients and servers need to communicate.
 
 ## What's in this repo
 
@@ -10,17 +10,13 @@ and MSI installers. These are the core runtime components that OPC Classic
   Commands, Data Exchange, Security, and Common interfaces
 - **OpcEnum.exe** — OPC Server Enumerator service (x86)
 - **OpcCategoryManager.exe** — OPC component category registration (x64)
-- **Merge modules (.msm)** — WiX merge modules for embedding in third-party installers
-- **SDK merge modules (.msm)** — headers, IDLs, and reference DLLs for developers
-- **MSI installers (.msi)** — standalone redistributable installers. The x64 MSI
-  includes all x86 components and is the only installer needed on 64-bit systems.
-- **Test Applications** — OPC DA 2.05a test server and test client (x86 and x64)
+- **Test Applications** — OPC DA 2.05a test server and test client (x86 and x64),
+  with sources relocated to the repository `samples/` tree.
 
 The test applications allow you to quickly verify that x86 COM servers can be
 discovered by an x64 client and vice versa. On a 64-bit system with the test
-components installed, running either the x86 or x64 version of the test client
-should show two servers (one for each platform). If only the x86 installer is
-installed, only one server will appear.
+components registered, running either the x86 or x64 version of the test client
+should show two servers (one for each platform).
 
 ## Prerequisites
 
@@ -37,26 +33,6 @@ Both x86 and x64 builds use static CRT (`/MT`) and target Windows 7 SP1
 
 CMake 3.20 or later. Included with Visual Studio (Desktop C++ workload) or
 install separately from https://cmake.org.
-
-### .NET SDK
-
-Required to install WiX and AzureSignTool as .NET global tools.
-Download from https://dotnet.microsoft.com.
-
-### WiX Toolset
-
-Install the WiX v4+ command-line tool:
-
-```
-dotnet tool install --global wix
-```
-
-The build script automatically installs the required WixToolset.UI.wixext
-extension at the correct version.
-
-> **NuGet package source mapping**: If your NuGet.Config uses
-> `<packageSourceMapping>`, add patterns for `wix`, `WixToolset.*`,
-> and `AzureSignTool` under the nuget.org source.
 
 ### AzureSignTool (for code signing)
 
@@ -85,8 +61,7 @@ Run from a **Developer Command Prompt for VS** (or any shell where
 |---|---|---|---|
 | `-Platform` | | `both` | Target platform: `x86`, `x64`, or `both` |
 | `-BuildRoot` | `BUILD_ROOT` | `.\build` | CMake build directory |
-| `-OutDir` | `OUT_DIR` | `.\out` | Output directory for DLLs and installers |
-| `-WixCmd` | `WIX_CMD` | `wix` | Path to wix executable |
+| `-OutDir` | `OUT_DIR` | `.\out` | Output directory for binaries and SDK headers |
 
 ### Code signing
 
@@ -102,8 +77,7 @@ If `SigningClientSecret` is empty or not set, signing is skipped automatically.
 If credentials are set but AzureSignTool is not installed, the build fails
 immediately with an error message.
 
-Signing order: DLLs/EXEs are signed first, then packaged into merge modules
-which are signed, then packaged into MSI installers which are also signed.
+Signing applies to built DLLs and EXEs after install.
 
 ### Spectre mitigation (optional)
 
@@ -121,7 +95,6 @@ out\
   x64\bin\          proxy/stub DLLs, OpcCategoryManager.exe, test server/client (64-bit)
   x86\include\      SDK headers, IDLs, reference DLL copies (32-bit)
   x64\include\      SDK headers, IDLs, reference DLL copies (64-bit)
-  wix\              merge modules (.msm) and MSI installers (.msi)
 ```
 
 ## Security hardening

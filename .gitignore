@@ -37,9 +37,9 @@
 *~
 
 # Vendored CoreComponents CMake build outputs (do not commit binaries)
-/ext/CoreComponents/build/**
-/ext/CoreComponents/out/**
-/ext/CoreComponents/.vs/**
+/ext/redist/CoreComponents/build/**
+/ext/redist/CoreComponents/out/**
+/ext/redist/CoreComponents/.vs/**
 
 # CLI session transcripts dumped to repo root by the agent
 copilot-session-*.md
@@ -50,4 +50,3 @@ __pycache__/
 
 # Cross-impl matrix run output (regenerated per run)
 matrix-out/
-

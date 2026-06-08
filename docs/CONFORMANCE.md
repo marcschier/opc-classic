@@ -202,7 +202,7 @@ Interface-pointer methods use hand-written proxy/dispatcher paths where needed:
 
 ### Structures and Error Codes
 
-| Feature | Status | Source/Test |
+| Feature | Status | Source / Test |
 | --- | --- | --- |
 | `OPCBATCHSUMMARY` | ✅ codec | `src/Opc.Classic.Batch/Ndr/NdrOpcBatchSummaryCodec.cs`; `tests/Opc.Classic.Batch.Tests/NdrOpcBatchSummaryCodecTests.cs:1-116` |
 | `OPCBATCHSUMMARYFILTER` | ✅ codec | `src/Opc.Classic.Batch/Ndr/NdrOpcBatchSummaryFilterCodec.cs`; `tests/Opc.Classic.Batch.Tests/NdrOpcBatchSummaryFilterCodecTests.cs:1-137` |

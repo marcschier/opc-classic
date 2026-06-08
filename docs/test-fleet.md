@@ -18,8 +18,8 @@ docker\run-matrix.ps1 -OnlyManaged
 Result: `docker/results/ctt-managed.xml` — open in a text viewer or the CTT
 report viewer.
 
-Add the OPC Foundation TestServer reference cells when `ext\CoreComponents` is
-vendored or `ext\CoreComponents\build\x64\Release` has been restored from CI:
+Add the OPC Foundation TestServer reference cells when `ext\redist\CoreComponents` is
+vendored or `ext\redist\CoreComponents\build\x64\Release` has been restored from CI:
 
 ```pwsh
 docker\run-matrix.ps1 -IncludeTestServer
@@ -58,7 +58,7 @@ docker compose --file docker\docker-compose.test.yml run --rm c-client `
 
 The `opc-testserver` image builds `OpcTestServer_x64.exe`,
 `OpcTestClient_x64.exe`, `OpcCategoryManager.exe`, and the eight proxy/stub DLLs
-from `ext\CoreComponents`. The `opc-testclient` image copies its executable and
+from `ext\redist\CoreComponents`. The `opc-testclient` image copies its executable and
 DLLs from the `opc-classic/testserver` image so the slow CMake build is not
 repeated.
 
@@ -144,8 +144,8 @@ The rc.10 repository baseline outside the Windows-container gate is **0 build wa
 
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. When
-`ext\CoreComponents` is present, the workflow restores/saves
-`ext\CoreComponents\build\x64\Release` with `actions/cache` and runs
+`ext\redist\CoreComponents` is present, the workflow restores/saves
+`ext\redist\CoreComponents\build\x64\Release` with `actions/cache` and runs
 `docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
 cells soft-skip and the existing managed smoke still runs. Inspect runs via:
 
@@ -163,7 +163,7 @@ gh run download <run-id> --name docker-test-fleet-results
   member-only. The `opc-classic/ctt` image bakes them in; don't publish to
   a public registry without OPC Foundation approval.
 - **CoreComponents cache is best-effort**: CI caches
-  `ext\CoreComponents\build\x64\Release`, but a source/toolchain hash change
+  `ext\redist\CoreComponents\build\x64\Release`, but a source/toolchain hash change
   still triggers a cold rebuild.
 - **Validation is environment-blocked**: the managed CTT smoke and native C server/client interop paths have source, project files, and Dockerfiles wired, but compiling/running them still requires a Windows Docker host.
 - **TestServer/TestClient validation is environment-blocked**: the BH4-BH7

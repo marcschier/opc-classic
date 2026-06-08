@@ -44,6 +44,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $ScriptDir  = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$RepoRoot   = (Resolve-Path (Join-Path $ScriptDir '..\..\..')).Path
 $ImageName  = 'opc-core-builder'
 $DockerDir  = Join-Path $ScriptDir 'docker'
 
@@ -102,12 +103,12 @@ Write-Host '============================================================'
 Write-Host "  Running Docker build ($Platform)"
 Write-Host '============================================================'
 Write-Host ''
-Write-Host "  Source:  $ScriptDir"
+Write-Host "  Source:  $RepoRoot"
 Write-Host "  Output:  $OutDir"
 Write-Host ''
 
 & docker run --rm `
-    -v "${ScriptDir}:C:\src" `
+    -v "${RepoRoot}:C:\repo" `
     -v "${OutDir}:C:\out" `
     $ImageName $Platform
 

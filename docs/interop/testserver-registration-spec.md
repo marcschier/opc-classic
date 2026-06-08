@@ -1,21 +1,21 @@
-# TestServer registration spec (canonical, derived from upstream WiX)
+# TestServer registration spec (no-MSI local registration)
 
 **Track BH1 audit output.** This document enumerates every file, registry
-entry, COM CLSID, AppID, category, and self-registration step that the
-upstream `OPC-Classic-CoreComponents` WiX MSI performs when installing the
-OPC Foundation `OpcTestServer_x64.exe` and the proxy/stub DLLs required for
-DCOM marshalling. It is the source-of-truth reference for auditing
-`tools/register-testserver.ps1` and the suspected `CO_E_SERVER_EXEC_FAILURE`
-root cause (Issue B in `docs/interop/probe-coverage.md`).
+entry, COM CLSID, AppID, category, and self-registration step needed when
+installing the OPC Foundation `OpcTestServer_x64.exe` and the proxy/stub DLLs
+required for DCOM marshalling. It was originally derived from the upstream
+installer manifests, but local WiX/MSI packaging is no longer vendored. It is
+the source-of-truth reference for auditing `tools/register-testserver.ps1` and
+the suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
+`docs/interop/probe-coverage.md`).
 
 ## Source artifacts audited
 
-- `D:\git\marcschier\OPC-Classic-CoreComponents\WiX\Installer.wxs`
-- `D:\git\marcschier\OPC-Classic-CoreComponents\WiX\MergeModule.wxs`
-- `D:\git\marcschier\OPC-Classic-CoreComponents\WiX\MergeModuleSdk.wxs`
-- `D:\git\marcschier\OPC-Classic-CoreComponents\Source\Test\TestServer\OpcTestServer.cpp`
-- `D:\git\marcschier\OPC-Classic-CoreComponents\Source\Test\TestServer\OpcTestServer.idl`
-- `D:\git\marcschier\OPC-Classic-CoreComponents\Source\Test\TestServer\OpcTestServer.config.xml`
+- Legacy upstream installer manifests (not vendored in this tree)
+- `samples\OpcTestServer\OpcTestServer.cpp`
+- `samples\OpcTestServer\OpcTestServer.idl`
+- `samples\OpcTestServer\OpcTestServer.config.xml`
+- `ext\redist\CoreComponents\src\Shared\OpcUtilityClasses`
 
 ## Canonical install layout (x64)
 
@@ -39,8 +39,8 @@ install into `System32`.**
 | `OpcTestServer_x64.config.xml` | `Installer.wxs:comp_OpcTestServerConfig` | None (loaded by the EXE at runtime) |
 | `OpcTestClient_x64.exe`      | `Installer.wxs:comp_OpcTestClient`  | None (standalone client app)                      |
 
-> **Important:** the WiX installer also includes the x86 components when the
-> x64 MSI is selected — `MergeModuleX86` reference inside `Installer.wxs`
+> **Important:** the legacy installer also includes the x86 components when the
+> x64 package is selected — `MergeModuleX86` reference inside `Installer.wxs`
 > brings in the x86 DLLs to `[SystemFolder]` (= `SysWOW64`). That gives
 > 32-bit COM clients access to the proxy/stub DLLs even on a 64-bit box.
 
@@ -68,7 +68,7 @@ The corresponding x86 build uses `F8582CF4-...` (CLSID) and
 ## What `/RegServer` actually writes (inferred from the OPC_ macros)
 
 The `OPC_IMPLEMENT_LOCAL_SERVER` macro from
-`D:\git\marcschier\OPC-Classic-CoreComponents\Source\Shared\OpcUtilityClasses`
+`D:\git\marcschier\OPC-Classic-CoreComponents\src\Shared\OpcUtilityClasses`
 expands into a class-factory-with-self-registration pattern equivalent to
 ATL's `CAtlExeModuleT`. When invoked with `/RegServer`, the EXE writes the
 following keys under `HKEY_CLASSES_ROOT` (which is the merged view of
@@ -178,14 +178,14 @@ From `D:\git\marcschier\opc-classic\tools\register-testserver.ps1`:
 
 ## Diff: script vs. canonical (BH2 fix-list)
 
-| # | Item                                       | WiX canonical                             | Script today                          | Verdict       |
+| # | Item                                       | Installer canonical                       | Script today                          | Verdict       |
 | - | ------------------------------------------ | ----------------------------------------- | ------------------------------------- | ------------- |
 | 1 | Install path for proxy/stub DLLs            | `[CommonFiles64Folder]\OPC Foundation\Bin\` | `%SystemRoot%\System32`                | Diverges (script's choice still works — System32 is on the DLL search path — but inconsistent with vendor install) |
 | 2 | Number of proxy/stub DLLs registered        | All 8 (`opccomn_ps`, `opcproxy`, `opc_aeps`, `opcbc_ps`, `OpcCmdPs`, `OpcDxPs`, `opchda_ps`, `opcsec_ps`) | 2 (`opccomn_ps`, `opcproxy`)          | **Gap — DA-only works; AE/HDA/Batch/Commands/DX/Security marshalling will fail without the missing PS DLLs** |
 | 3 | `OpcCategoryManager.exe /RegServer`         | Yes (deferred CustomAction, SYSTEM)       | Not run                               | **Gap — x64 category enumeration needs it (used by the category-resolution helpers in OPCEnum)** |
 | 4 | `OpcTestServer_x64.exe /RegServer`          | Yes (deferred CustomAction, SYSTEM)       | Yes                                   | ✅ Match     |
 | 5 | `OpcTestServer_x64.config.xml` deployed alongside the EXE | Yes (`comp_OpcTestServerConfig`)          | Not copied                            | **Likely gap — the EXE may load this on startup; without it the EXE could fail to initialize and never register its class factory (could cause `CO_E_SERVER_EXEC_FAILURE`)** |
-| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory (`ext\CoreComponents\build\x64\Release\`) | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
+| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory (`ext\redist\CoreComponents\build\x64\Release\`) | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
 | 7 | Registry entries written by `/RegServer`    | CLSID + LocalServer32 + ProgID + AppID + TypeLib + Implemented Categories | Same (the EXE writes them itself)     | ✅ Match (the EXE does the work; script just invokes /RegServer) |
 | 8 | DCOM AppID `LaunchPermission` / `AccessPermission` | None written (SCM defaults apply)         | None written                          | ✅ Match     |
 | 9 | DCOM AppID `RunAs`                          | None written                              | None written                          | ✅ Match (means activation uses default "Launching User") |
@@ -232,8 +232,8 @@ the suspected causes ranked by likelihood:
 ## BH2 actionable script changes (next-track fix list)
 
 1. **Copy `OpcTestServer_x64.config.xml`** to the same directory as the
-   EXE before running `/RegServer`. (Cited from `Installer.wxs:85-90` —
-   the WiX `comp_OpcTestServerConfig` component.)
+   EXE before running `/RegServer`. (Cited from the legacy
+   `Installer.wxs:85-90` `comp_OpcTestServerConfig` component.)
 2. **Register all 8 proxy/stub DLLs**, in the order:
    `opccomn_ps.dll` → `opcproxy.dll` → `opc_aeps.dll` → `opcbc_ps.dll`
    → `OpcCmdPs.dll` → `OpcDxPs.dll` → `opchda_ps.dll` → `opcsec_ps.dll`.
@@ -243,10 +243,10 @@ the suspected causes ranked by likelihood:
 4. **Mirror unregistration order** on `-Unregister` (reverse of
    registration; TestServer `/UnRegServer` first, then EXEs, then DLLs
    from `opcsec_ps` back to `opccomn_ps`).
-5. Document the divergence from WiX's `Common Files\OPC Foundation\Bin\`
+5. Document the divergence from the installer `Common Files\OPC Foundation\Bin\`
    install path (System32 is acceptable but non-standard).
 6. Add a unit test under `tests/Opc.Classic.Tools.Tests/` (new project
-   if needed) that parses the script and asserts each WiX-cited entry
+   if needed) that parses the script and asserts each installer-cited entry
    from the table above is covered.
 
 ## What canonical install would do for non-Matrikon-cwd-style test
@@ -307,7 +307,7 @@ After extensive bisection:
    `COpcComModule::RegisterFromFiles` called `CoInitializeSecurity` with
    `RPC_C_AUTHN_LEVEL_PKT` (level 4). Microsoft's June-2021 DCOM
    hardening REQUIRES `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` (level 5) for
-   servers. **Fixed in `ext/CoreComponents/Source/Shared/OpcUtilityClasses/COpcComModule.cpp`**
+   servers. **Fixed in `ext/redist/CoreComponents/src/Shared/OpcUtilityClasses/COpcComModule.cpp`**
    (both call sites). **Did NOT fix the activation** either — the
    fundamental issue is elsewhere.
 3. **Comparison with Matrikon (working baseline)**: Foundation TestClient
@@ -367,4 +367,3 @@ own log.
 $env:OPC_CLASSIC_DCOM_WIRE_DUMP = '1'
 .\tools\run-cross-impl-matrix.ps1 -Profile testserver
 ```
-

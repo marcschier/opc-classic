@@ -23,7 +23,11 @@ Requires:
 
 - Windows + Visual Studio 2022 Build Tools (or full VS 2022)
 - Windows SDK 10
-- OPC Foundation Core Components installed from `ext\redist\OPC Core Components Redistributable (x86) 3.00.107.msi` and/or the x64 MSI (provides `opcproxy.dll` for marshalling and OpcEnum)
+- OPC Foundation Core Components available on the host (provides
+  `opcproxy.dll` for marshalling and OpcEnum). The redistributable installers
+  are no longer vendored; build/register the CoreComponents tree under
+  `ext\redist\CoreComponents` or install the official OPC Foundation package
+  externally.
 - C++ desktop workload with ATL/MFC components
 
 Build steps (the projects include OPC headers from `ext\inc`):

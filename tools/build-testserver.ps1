@@ -2,18 +2,18 @@
 <#
 .SYNOPSIS
     Build the OPC Foundation TestServer (x64) from the vendored
-    ext/CoreComponents/ tree using CMake + MSVC.
+    ext/redist/CoreComponents/ tree using CMake + MSVC.
 
 .DESCRIPTION
     Wraps the upstream OPC-Classic-CoreComponents CMake harness so the
     native TestServer + supporting proxy/stub DLLs can be built without
-    an external clone.     Produces (under ext/CoreComponents/build/x64/Release/):
+    an external clone. Produces (under ext/redist/CoreComponents/build/x64/Release/):
       OpcTestServer_x64.exe + OpcTestServer_x64.config.xml
       OpcTestClient_x64.exe
       OpcCategoryManager.exe
       opccomn_ps.dll, opcproxy.dll, opc_aeps.dll, opcbc_ps.dll,
       OpcCmdPs.dll, OpcDxPs.dll, opchda_ps.dll, opcsec_ps.dll
-      (matches the full proxy/stub set that the upstream WiX MSI deploys;
+      (matches the full proxy/stub set that the CoreComponents install rules deploy;
       see docs\interop\testserver-registration-spec.md)
 
     Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
@@ -40,8 +40,9 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$sourceDir = Join-Path $repoRoot 'ext\CoreComponents'
+$sourceDir = Join-Path $repoRoot 'ext\redist\CoreComponents'
 $buildDir  = Join-Path $sourceDir 'build\x64'
+$samplesDir = Join-Path $repoRoot 'samples'
 
 if (-not (Test-Path $sourceDir)) {
     Write-Error "Vendored CoreComponents not found at $sourceDir"
@@ -76,13 +77,13 @@ Write-Host "Using cmake: $cmake"
 Push-Location $sourceDir
 try {
     Write-Host "Configuring CMake (x64) ..."
-    & $cmake -S . -B $buildDir -A x64
+    & $cmake -S . -B $buildDir -A x64 "-DOPC_TEST_SAMPLES_DIR=$samplesDir"
     if ($LASTEXITCODE -ne 0) { throw "cmake configure failed (exit $LASTEXITCODE)" }
 
     Write-Host "Building CMake project ($Configuration) ..."
     # Build the full proxy/stub set so the tools\register-testserver.ps1 script
-    # has all 8 DLLs available to register (matches what the upstream WiX MSI
-    # would deploy; see docs\interop\testserver-registration-spec.md).
+    # has all 8 DLLs available to register (matches what the CoreComponents
+    # install rules deploy; see docs\interop\testserver-registration-spec.md).
     & $cmake --build $buildDir --config $Configuration --target `
         OpcTestServer OpcTestClient OpcCategoryManager `
         opccomn_ps opcproxy opc_aeps opcbc_ps OpcCmdPs OpcDxPs opchda_ps opcsec_ps
