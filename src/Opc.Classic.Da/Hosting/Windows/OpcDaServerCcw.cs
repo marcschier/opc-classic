@@ -14,8 +14,11 @@ namespace Opc.Classic.Da.Hosting.Windows;
 
 /// <summary>
 /// Builds a Windows COM-callable wrapper (CCW) over an <see cref="IOpcDaServer"/>
-/// instance. The CCW exposes <c>IUnknown</c> + <c>IOPCServer</c> vtables
-/// allocated in native memory; vtable thunks are
+/// instance. The CCW exposes native vtables for <c>IUnknown</c>,
+/// <c>IOPCServer</c>, <c>IOPCCommon</c>, <c>IOPCBrowse</c>,
+/// <c>IOPCItemProperties</c>, <c>IOPCItemIO</c>,
+/// <c>IOPCBrowseServerAddressSpace</c>, <c>IOPCSecurityNT</c> and
+/// <c>IOPCSecurityPrivate</c>; vtable thunks are
 /// <see cref="UnmanagedCallersOnlyAttribute"/>-decorated static methods so the
 /// assembly remains NativeAOT-compatible (<c>[ComImport]</c> is banned in
 /// <c>src/</c>).
@@ -23,19 +26,23 @@ namespace Opc.Classic.Da.Hosting.Windows;
 /// <remarks>
 /// <para>
 /// The OPC DA root server object (the one returned from
-/// <c>IClassFactory::CreateInstance</c> on activation) supports
-/// <c>IID_IUnknown</c> and <c>IID_IOPCServer</c>. Other interfaces
-/// (<c>IOPCBrowse</c>, <c>IOPCCommon</c>, ...) will be added in follow-up
-/// work alongside the per-object IPID registry (ocom-3b).
+/// <c>IClassFactory::CreateInstance</c> on activation) answers
+/// <c>QueryInterface</c> for every IID listed in
+/// <see cref="SupportsInterface(Guid)"/>: <c>IID_IUnknown</c>,
+/// <c>IID_IOPCServer</c>, <c>IID_IOPCCommon</c>, <c>IID_IOPCBrowse</c>,
+/// <c>IID_IOPCItemProperties</c>, <c>IID_IOPCItemIO</c>,
+/// <c>IID_IOPCBrowseServerAddressSpace</c>, <c>IID_IOPCSecurityNT</c> and
+/// <c>IID_IOPCSecurityPrivate</c>. Each interface gets its own CCW instance
+/// (sharing one <see cref="CcwEntry"/>) so native clients can hold independent
+/// interface pointers.
 /// </para>
 /// <para>
-/// <b>Method stubs.</b> ocom-6 ships with all 9 <c>IOPCServer</c> vtable slots
-/// returning <c>E_NOTIMPL</c>. This is enough for the SCM activation path to
-/// complete (client gets a real interface pointer, marshaling succeeds); actual
-/// per-method dispatch from native CCW into managed <see cref="IOpcDaServer"/>
-/// is wired up by a follow-up task. Today the goal is to unblock the
-/// "activation succeeds, method calls fail with a known error" stage rather
-/// than the previous "activation fails with E_NOINTERFACE" stage.
+/// <b>Method dispatch.</b> The vtable thunks marshal the OPC NDR parameters and
+/// dispatch into the managed <see cref="IOpcDaServer"/> (and the browse /
+/// item-property / security helpers), so native OPC clients (e.g. the OPC
+/// Foundation <c>OpcTestClient</c>) and the cross-impl interop matrix drive the
+/// sample servers end-to-end. The cross-implementation matrix exercises
+/// activation plus the browse / get-properties / read-by-id paths over this CCW.
 /// </para>
 /// <para>
 /// <b>Lifetime.</b> CCW instances and their vtables are never freed
@@ -75,9 +82,12 @@ public static unsafe class OpcDaServerCcw
     /// </summary>
     /// <param name="server">The managed server instance to expose via COM.</param>
     /// <param name="requestedIid">
-    /// The IID requested by <c>IClassFactory::CreateInstance</c>. The CCW
-    /// supports <c>IID_IUnknown</c> and <see cref="Dcom.IOPCServer.InterfaceId"/>;
-    /// other IIDs return <see cref="IntPtr.Zero"/>.
+    /// The IID requested by <c>IClassFactory::CreateInstance</c>. Any IID
+    /// accepted by <see cref="SupportsInterface(Guid)"/> (IUnknown, IOPCServer,
+    /// IOPCCommon, IOPCBrowse, IOPCItemProperties, IOPCItemIO,
+    /// IOPCBrowseServerAddressSpace, IOPCSecurityNT, IOPCSecurityPrivate)
+    /// returns a live interface pointer; other IIDs return
+    /// <see cref="IntPtr.Zero"/>.
     /// </param>
     /// <returns>
     /// A CCW <see cref="IntPtr"/> with reference count = 1 (the caller's
