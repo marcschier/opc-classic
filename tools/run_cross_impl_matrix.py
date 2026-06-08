@@ -65,6 +65,7 @@ LEFTOVER_PROCESS_NAMES = (
     "Opc.Classic.Samples.HdaServer",
     "Opc.Classic.Samples.OpcSecurityServer",
     "Opc.Classic.Mcp",
+    "OpcTestServer_x64",
 )
 
 
