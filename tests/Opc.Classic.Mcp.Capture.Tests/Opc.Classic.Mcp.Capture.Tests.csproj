@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based tests for Opc.Classic.Mcp.Capture packet-capture + DCE/RPC decode engine.</Description>
+    <RootNamespace>Opc.Classic.Mcp.Capture.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Mcp.Capture.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\mcp\Opc.Classic.Mcp.Capture\Opc.Classic.Mcp.Capture.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+</Project>
