@@ -101,7 +101,7 @@ public partial interface IOPCEventServer
 
     /// <summary><c>IOPCEventServer::GetConditionState</c> (opnum 12). Returns a condition-state snapshot.</summary>
     /// <remarks>
-    /// Per <c>ext/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
+    /// Per <c>external/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
     /// marks <c>szSource</c>/<c>szConditionName</c> as <c>[simple ref]</c>
     /// (flags <c>0x10b</c>). Applying <see cref="OpcRefStringAttribute"/>
     /// emits the spec-compliant wire (bare conformant-varying string body,
@@ -141,7 +141,7 @@ public partial interface IOPCEventServer
     /// IDL signature: <c>HRESULT AckCondition(DWORD dwCount, LPWSTR szAcknowledgerID,
     /// LPWSTR szComment, [size_is(N)] LPWSTR *pszSource, [size_is(N)] LPWSTR *pszConditionName,
     /// [size_is(N)] FILETIME *pftActiveTime, [size_is(N)] DWORD *pdwCookie, ...)</c>.
-    /// Per <c>ext/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
+    /// Per <c>external/inc/opc_ae_p.c</c> the OS COM proxy/stub <c>opcae_ps.dll</c>
     /// marks every LPWSTR / LPWSTR* parameter as <c>[simple ref]</c> (flags
     /// <c>0x10b</c>) — no outer <c>[unique]</c> referent precedes the body.
     /// Applying <see cref="OpcRefStringAttribute"/> to the LPWSTR scalars

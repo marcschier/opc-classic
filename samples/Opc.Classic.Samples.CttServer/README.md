@@ -62,7 +62,7 @@ Unregister removes the per-server tree but leaves the shared `Component Categori
 
 ## CI and Docker integration
 
-`.github\workflows\opc-ctt.yml` invokes this sample via `dotnet run` before the CTT runs. The Windows-container test fleet publishes this project into `opc-classic/managed`; see `samples\README.docker.md` and `docker\README.md` for the compose workflow.
+`.github\workflows\opc-ctt.yml` invokes this sample via `dotnet run` before the CTT runs. The Windows-container test fleet publishes this project into `opc-classic/managed`; see `samples\README.docker.md` and `external\docker\README.md` for the compose workflow.
 
 ## COM SCM activation (-Embedding)
 

@@ -207,7 +207,7 @@ loopback tests honest about the wire shape the proxy expects.
 When adding new `[OpcInterface]` methods, audit each pointer parameter
 against the IDL signature:
 
-1. Open `ext/inc/opcda.idl` (or the relevant spec file).
+1. Open `external/inc/opcda.idl` (or the relevant spec file).
 2. For every `[in, unique]` scalar: use `int?` / `float?` / `Guid?` or
    tag with `[OpcUniquePointer]`.
 3. For every `[out] T**`: tag the return value with

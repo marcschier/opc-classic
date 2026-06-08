@@ -2,7 +2,7 @@
 
 Tests under this folder connect from the managed .NET 10 client (via
 OpcProxyGenerator-emitted shims) against the C++ OPC Foundation Sample
-Servers preserved under `ext/samples/`.
+Servers preserved under `external/redist/samples/`.
 
 ## Loopback equivalent
 
@@ -19,11 +19,11 @@ in-process before a real native DCOM endpoint is available.
 
 2. Locally on Windows, make the OPC Foundation Core Components available
    (places `opcproxy.dll` etc.; the redistributable installers are no longer
-   vendored, so build/register `ext\redist\CoreComponents` or install the
+   vendored, so build/register `external\redist` or install the
    official package externally), build the native `.vcxproj` sample servers as
-   documented in `ext/samples/README.md`, and register them:
+   documented in `external/redist/samples/README.md`, and register them:
    ```cmd
-   .\ext\samples\regserver.cmd
+   .\external\redist\samples\regserver.cmd
    ```
 
 3. Run only the conformance subset:

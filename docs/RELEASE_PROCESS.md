@@ -81,7 +81,7 @@ The manual input must match an existing release tag and the tag format accepted 
 | --- | --- |
 | `NUGET_API_KEY` | nuget.org API key used by `dotnet nuget push`; when absent, package artifacts are still uploaded for review. |
 
-The CTT workflows use vendored installers from `ext\private\ctt\`; no `OPC_CTT_INSTALLER_URL` secret is required in the current tree.
+The CTT workflows use vendored installers from `external\private\ctt\`; no `OPC_CTT_INSTALLER_URL` secret is required in the current tree.
 
 ## Package install smoke checks
 

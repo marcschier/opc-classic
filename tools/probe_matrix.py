@@ -281,7 +281,7 @@ def _ae_matrix() -> dict[str, str]:
     #
     # GetConditionState (opnum 12) -- REQUEST decode is solved, RESPONSE
     # round-trip is not. opcae_ps.dll marks szSource/szConditionName as
-    # [simple ref] (ext/inc/opc_ae_p.c flags 0x10b, type offset 144
+    # [simple ref] (external/inc/opc_ae_p.c flags 0x10b, type offset 144
     # FC_C_WSTRING behind FC_RP [simple_pointer]) -- no outer [unique]
     # referent. Tagging those params [OpcRefString] makes the stub decode the
     # request and reach our CCW (verified: CCW logged ENTER -> decoded ->

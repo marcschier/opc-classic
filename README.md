@@ -53,8 +53,8 @@ Walk through the [first DA client tutorial](docs/tutorials/01-build-your-first-d
 | [`tests/`](tests/) | TUnit projects on Microsoft.Testing.Platform: primitives, transports, auth, generators, codecs, hosting, discovery, integration matrices, property-based, snapshot, and crypto. |
 | [`samples/`](samples/) | Ten runnable apps — three DA/AE/HDA servers, three clients, a loopback demo, the OPC CTT sample server, the OPC Security sample server, and a NativeAOT canary. |
 | [`docs/`](docs/README.md) | Documentation hub: architecture, adoption, tutorials, cookbook, migration analyzer, security, conformance, roadmap, and architecture diagrams. |
-| [`docker/`](docker/README.md) | Windows Docker test fleet — CTT image, managed-server image, C-built native server/client images, `docker-compose.test.yml`. |
-| [`ext/`](ext/) | OPC Foundation conformance assets: `ext/inc`, `ext/redist`, `ext/private/docs`, `ext/private/ctt`, and native C++ sample servers in `ext/samples`. |
+| [`external/docker/`](external/docker/README.md) | Windows Docker test fleet — CTT image, managed-server image, C-built native server/client images, `docker-compose.test.yml`. |
+| [`external/`](external/) | OPC Foundation conformance assets: `external/inc`, `external/redist`, `external/private/docs`, `external/private/ctt`, and native C++ sample servers/test apps in `external/redist/samples`. |
 | [`.github/`](.github/) | Build, OPC CTT, Docker test fleet, and release workflows. |
 
 ## Samples
@@ -74,7 +74,7 @@ Start with the [documentation hub](docs/README.md). Common entry points:
 - [Migration analyzer](docs/migration/README.md) — diagnostics for porting from the legacy .NET Framework OPC API.
 - [MCP integration](docs/mcp/README.md) — using Opc.Classic from VS Code Copilot, Cursor, Claude Desktop, Copilot CLI.
 - [OPC CTT conformance](docs/CONFORMANCE.md#opc-ctt-conformance) — running the OPC Compliance Test Tool against the managed sample.
-- [Docker test fleet](docker/README.md) — the multi-container Windows interop test setup.
+- [Docker test fleet](external/docker/README.md) — the multi-container Windows interop test setup.
 - [Roadmap](docs/ROADMAP.md) — forward-looking gates and gaps.
 - [Release blockers](docs/release-blockers.md) — what stands between the rc.* series and 1.0.0 FINAL.
 - [Changelog](CHANGELOG.md) — release-by-release detail.
@@ -111,6 +111,6 @@ The expected baseline at every commit on `master`: **0 build warnings, 0 build e
 
 Contributions are welcome. Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a pull request, and report security issues through [`SECURITY.md`](SECURITY.md).
 
-Opc.Classic is licensed under the [MIT License](LICENSE). The `ext/` tree retains upstream OPC Foundation sample, redistributable, CTT, and reference-asset license terms; see [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md) for the full attribution list.
+Opc.Classic is licensed under the [MIT License](LICENSE). The `external/` tree retains upstream OPC Foundation sample, redistributable, CTT, and reference-asset license terms; see [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md) for the full attribution list.
 
 Opc.Classic is an independent implementation. It is not endorsed by, affiliated with, or certified by the OPC Foundation. OPC, OPC Classic, OPC DA, OPC AE, OPC HDA, OPC UA and related marks are trademarks of the OPC Foundation. Use of those marks here refers only to the published specifications this codebase implements.

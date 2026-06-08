@@ -39,7 +39,7 @@ OpcEnumClient (OPC.ServerList.1) instead."` and returns an empty list.
 ## Microsoft specifications driving the design
 
 The repository vendors the relevant Microsoft Open Specifications in
-`ext/private/docs/`:
+`external/private/docs/`:
 
 | Spec | Relevance |
 | --- | --- |
@@ -106,4 +106,4 @@ Only the connection / session / file / pipe primitives are needed:
 - `docs\architecture\activation-transports.md` — TCP vs SMB activation paths
 - `src\Opc.Classic.Dcom.Smb\README.md` — SMB2 project public surface
 - `samples\Opc.Classic.Samples.CttServer\README.md` — current Windows-only registration cookbook
-- `ext\private\docs\MS-SMB2.md` etc. — vendored Microsoft specs
+- `external\private\docs\MS-SMB2.md` etc. — vendored Microsoft specs

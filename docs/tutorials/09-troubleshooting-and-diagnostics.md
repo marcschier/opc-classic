@@ -114,7 +114,7 @@ NDR mismatches usually mean the client and server disagree about the IDL shape, 
 Checklist:
 
 - Verify the interface IID and opnum.
-- Compare the method signature with `ext\inc\*.idl` and the `Dcom\IOPCInterfaces.cs` projection.
+- Compare the method signature with `external\inc\*.idl` and the `Dcom\IOPCInterfaces.cs` projection.
 - Confirm conformant array counts match the number of elements decoded.
 - Check whether a string is `LPWSTR`, `BSTR`, or an array of string pointers.
 - Confirm `FILETIME` is two 32-bit halves, not an aligned 64-bit integer.

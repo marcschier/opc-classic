@@ -6,29 +6,29 @@ are MIT-licensed and source-traceable — when our managed proxy fails a
 call against TestServer we can debug into the MIDL-generated stub to see
 exactly which byte rejected it.
 
-## What's in `ext/redist/CoreComponents/`
+## What's in `external/redist/`
 
 The entire OPC Foundation
 [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents)
 repository is vendored in pruned/restructured form under
-`ext/redist/CoreComponents/` so the native TestServer + proxy/stub DLLs can be
+`external/redist/` so the native TestServer + proxy/stub DLLs can be
 built without an external clone. Key paths:
 
 | Path | Purpose |
 |------|---------|
-| `samples/OpcTestServer/COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `src/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
-| `samples/OpcTestServer/COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
-| `samples/OpcTestServer/OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
-| `samples/OpcTestServer/OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
-| `samples/OpcTestClient/OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
+| `external/redist/samples/OpcTestServer/COpcTestServer.{h,cpp}` | Server class derived from `COpcDaServer` (in `src/Shared/SampleServerClasses/`). Exposes `IOPCServer` / `IOPCBrowseServerAddressSpace` / `IOPCItemProperties` on the server object and `IOPCItemMgt` / `IOPCSyncIO` / `IOPCAsyncIO2` / `IOPCGroupStateMgt` on the group object. |
+| `external/redist/samples/OpcTestServer/COpcTestGroup.h` | Group class derived from `COpcDaGroup`. |
+| `external/redist/samples/OpcTestServer/OpcTestServer.{cpp,idl,rc}` | Local-server entry point (`_tWinMain`), per-bitness CLSIDs, MIDL IDL for the empty server interface. |
+| `external/redist/samples/OpcTestServer/OpcTestServer.config.xml` | 3-item address space: `Test.Int32` (=42), `Test.Float` (=3.14159), `Test.String` ("OPC Test"), each carrying property 6 (Item Quality) = 100. |
+| `external/redist/samples/OpcTestClient/OpcTestClient.cpp` | 179-line console exerciser — enumerates DA 2.0 servers via OpcEnum, calls `GetStatus` on each. |
 | `src/Shared/` | Sample server scaffolding TestServer derives from (`OpcUtilityClasses`, `SampleServerClasses`, `SampleDevice`, `SampleServer205`). |
 | `src/Common/`, `src/DataAccess/`, `src/Security/` | Per-spec IDLs + proxy/stub builds for `opccomn_ps.dll`, `opcproxy.dll`, `opcsec_ps.dll` (the DLLs the TestServer's COM activation needs for marshalling). |
 | `src/Include/` | Shared headers (CATID GUIDs, error codes). |
 | `CMakeLists.txt`, `cmake/` | Upstream CMake harness — invoked by `tools\build-testserver.ps1`. |
-| `docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
+| `external/docker/` | Windows Server Core 2022 + VS 2022 build-tools docker harness for reproducible builds without a local VS install. |
 | `build.ps1`, `docker-build.ps1` | One-shot build entry points (native + docker). |
 
-See `ext/redist/CoreComponents/VENDORED.md` for the snapshot provenance and
+See `external/redist/VENDORED.md` for the snapshot provenance and
 re-sync workflow. The OPC Foundation MIT License 1.00 grant lives in
 the file headers; `LICENSE.md` at the vendor root is the umbrella
 OPC Foundation license that governs the broader specification suite.
@@ -50,10 +50,10 @@ Both register under the `OPC DA 2.05a Test Server` ProgID prefix.
 ```
 
 The script discovers VS's bundled CMake (or any cmake.exe on PATH),
-configures `ext\redist\CoreComponents\build\x64`, and builds the
+configures `external\redist\build\x64`, and builds the
 `OpcTestServer`, `OpcTestClient`, `OpcCategoryManager`, `opccomn_ps`
 and `opcproxy` targets. Output lands in
-`ext\redist\CoreComponents\build\x64\Release\`.
+`external\redist\build\x64\Release\`.
 
 Prerequisites: Visual Studio 2022 17.14+ (Desktop development with
 C++ + ATL + Win11 SDK + MSVC v14.44 or later), CMake 3.20+ (bundled
@@ -62,7 +62,7 @@ with VS).
 ### Option 2 — upstream `build.ps1` directly
 
 ```powershell
-cd ext\redist\CoreComponents
+cd external\redist
 .\build.ps1
 ```
 
@@ -72,7 +72,7 @@ Builds **all** native targets for both platforms and installs outputs under
 ### Option 3 — Docker (fully reproducible, no local VS)
 
 ```powershell
-cd ext\redist\CoreComponents
+cd external\redist
 .\docker-build.ps1
 ```
 
@@ -107,7 +107,7 @@ The script performs the no-MSI setup needed for x64 DCOM activation:
    AppID + Implemented Categories for DA 1.0, DA 2.0, and DA 3.0).
 
 Defaults to looking for the EXE and sibling proxy/stub DLLs under
-`ext\redist\CoreComponents\build\x64\Release\`; pass `-ExePath` to override.
+`external\redist\build\x64\Release\`; pass `-ExePath` to override.
 
 To remove the TestServer entries and the System32 proxy/stub DLLs
 copied by this script: `.\tools\register-testserver.ps1 -Unregister`.
@@ -233,6 +233,6 @@ Test.String  value='OPC Test' type=VT_BSTR q=0x00C0  hr=0x00000000
 
 When TestServer and Matrikon disagree on the wire format for a
 particular method, the MIDL-generated format strings under
-`ext/redist/CoreComponents/src/DataAccess/ProxyStub/` are the authoritative
+`external/redist/src/DataAccess/ProxyStub/` are the authoritative
 reference — they're literally the bytes the OPC proxy/stub DLLs
 marshal.

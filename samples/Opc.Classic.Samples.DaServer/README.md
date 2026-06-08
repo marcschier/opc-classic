@@ -1,6 +1,6 @@
 # Opc.Classic.Samples.DaServer
 
-Managed OPC DA sample server that mirrors the well-known Matrikon Simulation-style tag tree and the preserved `ext\samples\Sample Server\Da\` reference.
+Managed OPC DA sample server that mirrors the well-known Matrikon Simulation-style tag tree and the preserved `external\redist\samples\SampleServer\Da\` reference.
 
 ## Tags
 

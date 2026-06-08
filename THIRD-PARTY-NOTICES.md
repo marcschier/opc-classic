@@ -111,24 +111,24 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 
 ## Reference / Conformance Assets (NOT redistributed in built packages)
 
-### ext/samples/ (native C++ OPC Foundation sample servers)
+### external/redist/samples/ (native C++ OPC Foundation sample servers)
 - Source: OPC Foundation
 - License: OPC Foundation sample license (older Sample Server SDK) — preserved verbatim in the original files
 - Status: Used only as a conformance reference; no redistribution
 
-### ext/redist/CoreComponents/ (vendored OPC-Classic-CoreComponents sources)
-- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (pruned/restructured vendoring; see `ext/redist/CoreComponents/VENDORED.md` for snapshot freshness + re-sync workflow)
+### external/redist/ (vendored OPC-Classic-CoreComponents sources)
+- Source: OPC Foundation [OPC-Classic-CoreComponents](https://github.com/OPCFoundation/OPC-Classic-CoreComponents) repository (pruned/restructured vendoring; see `external/redist/VENDORED.md` for snapshot freshness + re-sync workflow)
 - License: OPC Foundation MIT License 1.00 (per-source-file headers); `LICENSE.md` at the vendor root is the umbrella OPC Foundation specification license
 - Status: Vendored so the native C++ DA 2.05a TestServer + proxy/stub DLLs can be built without an external clone (see `docs/interop/testserver.md`). Not redistributed in the published Opc.Classic NuGet packages.
 
-### ext/ (OPC Foundation reference + redistributable assets)
+### external/ (OPC Foundation reference + redistributable assets)
 - Source: OPC Foundation
 - License: OPC Foundation specification, sample, and CTT installer terms preserved in-place
 - Subfolders:
-  - `ext/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
-  - `ext/private/ctt/` — vendored OPC Compliance Test Tool installers
-  - `ext/redist/` — OPC COM Core Components readme PDF and vendored CoreComponents sources
-  - `ext/private/docs/` — spec markdown (auto-generated from PDFs) and Microsoft Open Specifications used for cross-reference
-  - `ext/samples/` — OPC Foundation native C++ sample servers used by conformance validation
-  - `ext/redist/CoreComponents/` — pruned/restructured vendoring of the OPC-Classic-CoreComponents repository (MIT-licensed); see entry above
+  - `external/inc/` — OPC IDL/headers used by the Docker C-server and C-client builds
+  - `external/private/ctt/` — vendored OPC Compliance Test Tool installers
+  - `external/redist/` — OPC COM Core Components readme PDF and vendored CoreComponents sources
+  - `external/private/docs/` — spec markdown (auto-generated from PDFs) and Microsoft Open Specifications used for cross-reference
+  - `external/redist/samples/` — OPC Foundation native C++ sample servers used by conformance validation
+  - `external/redist/` — pruned/restructured vendoring of the OPC-Classic-CoreComponents repository (MIT-licensed); see entry above
 - Status: Used for IDL definitions, redistributable inputs, conformance validation, and developer reference; do not redistribute outside the rights granted by the OPC Foundation

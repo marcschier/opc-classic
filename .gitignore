@@ -37,9 +37,9 @@
 *~
 
 # Vendored CoreComponents CMake build outputs (do not commit binaries)
-/ext/redist/CoreComponents/build/**
-/ext/redist/CoreComponents/out/**
-/ext/redist/CoreComponents/.vs/**
+/external/redist/build/**
+/external/redist/out/**
+/external/redist/.vs/**
 
 # CLI session transcripts dumped to repo root by the agent
 copilot-session-*.md

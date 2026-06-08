@@ -12,10 +12,10 @@ the suspected `CO_E_SERVER_EXEC_FAILURE` root cause (Issue B in
 ## Source artifacts audited
 
 - Legacy upstream installer manifests (not vendored in this tree)
-- `samples\OpcTestServer\OpcTestServer.cpp`
-- `samples\OpcTestServer\OpcTestServer.idl`
-- `samples\OpcTestServer\OpcTestServer.config.xml`
-- `ext\redist\CoreComponents\src\Shared\OpcUtilityClasses`
+- `external\redist\samples\OpcTestServer\OpcTestServer.cpp`
+- `external\redist\samples\OpcTestServer\OpcTestServer.idl`
+- `external\redist\samples\OpcTestServer\OpcTestServer.config.xml`
+- `external\redist\src\Shared\OpcUtilityClasses`
 
 ## Canonical install layout (x64)
 
@@ -185,7 +185,7 @@ From `D:\git\marcschier\opc-classic\tools\register-testserver.ps1`:
 | 3 | `OpcCategoryManager.exe /RegServer`         | Yes (deferred CustomAction, SYSTEM)       | Not run                               | **Gap — x64 category enumeration needs it (used by the category-resolution helpers in OPCEnum)** |
 | 4 | `OpcTestServer_x64.exe /RegServer`          | Yes (deferred CustomAction, SYSTEM)       | Yes                                   | ✅ Match     |
 | 5 | `OpcTestServer_x64.config.xml` deployed alongside the EXE | Yes (`comp_OpcTestServerConfig`)          | Not copied                            | **Likely gap — the EXE may load this on startup; without it the EXE could fail to initialize and never register its class factory (could cause `CO_E_SERVER_EXEC_FAILURE`)** |
-| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory (`ext\redist\CoreComponents\build\x64\Release\`) | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
+| 6 | `OpcTestServer_x64.exe` path stability      | Stable (`Common Files\OPC Foundation\Bin\`) | Build directory (`external\redist\build\x64\Release\`) | **Risk — if the path contains characters DCOM SCM can't handle, or if SYSTEM lacks read access, activation fails. Build dir is typically OK but worth verifying.** |
 | 7 | Registry entries written by `/RegServer`    | CLSID + LocalServer32 + ProgID + AppID + TypeLib + Implemented Categories | Same (the EXE writes them itself)     | ✅ Match (the EXE does the work; script just invokes /RegServer) |
 | 8 | DCOM AppID `LaunchPermission` / `AccessPermission` | None written (SCM defaults apply)         | None written                          | ✅ Match     |
 | 9 | DCOM AppID `RunAs`                          | None written                              | None written                          | ✅ Match (means activation uses default "Launching User") |
@@ -307,7 +307,7 @@ After extensive bisection:
    `COpcComModule::RegisterFromFiles` called `CoInitializeSecurity` with
    `RPC_C_AUTHN_LEVEL_PKT` (level 4). Microsoft's June-2021 DCOM
    hardening REQUIRES `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` (level 5) for
-   servers. **Fixed in `ext/redist/CoreComponents/src/Shared/OpcUtilityClasses/COpcComModule.cpp`**
+   servers. **Fixed in `external/redist/src/Shared/OpcUtilityClasses/COpcComModule.cpp`**
    (both call sites). **Did NOT fix the activation** either — the
    fundamental issue is elsewhere.
 3. **Comparison with Matrikon (working baseline)**: Foundation TestClient

@@ -1,8 +1,8 @@
 # Docker test fleet — adopter cookbook
 
-How to use the `docker/` fleet for end-to-end DCOM testing of the managed
-implementation. For the architectural overview see [`docker/README.md`](../docker/README.md).
-The fleet contains six Windows-container targets from `docker/docker-compose.test.yml`:
+How to use the `external/docker/` fleet for end-to-end DCOM testing of the managed
+implementation. For the architectural overview see [`external/docker/README.md`](../external/docker/README.md).
+The fleet contains six Windows-container targets from `external/docker/docker-compose.test.yml`:
 `c-server`, `managed-server`, `testserver`, `ctt`, `c-client`, and `testclient`.
 
 ## Common workflows
@@ -12,31 +12,31 @@ The fleet contains six Windows-container targets from `docker/docker-compose.tes
 ```pwsh
 # From the repo root, on a Windows host with Docker Desktop in Windows mode:
 docker network create --driver l2bridge --subnet 10.0.1.0/24 --gateway 10.0.1.1 opc-test-net
-docker\run-matrix.ps1 -OnlyManaged
+external\docker\run-matrix.ps1 -OnlyManaged
 ```
 
-Result: `docker/results/ctt-managed.xml` — open in a text viewer or the CTT
+Result: `external/docker/results/ctt-managed.xml` — open in a text viewer or the CTT
 report viewer.
 
-Add the OPC Foundation TestServer reference cells when `ext\redist\CoreComponents` is
-vendored or `ext\redist\CoreComponents\build\x64\Release` has been restored from CI:
+Add the OPC Foundation TestServer reference cells when `external\redist` is
+vendored or `external\redist\build\x64\Release` has been restored from CI:
 
 ```pwsh
-docker\run-matrix.ps1 -IncludeTestServer
+external\docker\run-matrix.ps1 -IncludeTestServer
 ```
 
-This adds `docker/results/ctt-testserver.xml` and runs
+This adds `external/docker/results/ctt-testserver.xml` and runs
 `OpcTestClient_x64.exe` from the `opc-classic/testclient` image against
 `OpcTestServer_x64.1` on `opc-classic-testserver`.
 
 ### 2. Drive the managed server from a native C client
 
 The `opc-c-client` image builds the hand-rolled DA client MVP from
-`docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
+`external/docker/opc-c-client/build/opc-test.cpp` and can target the managed server:
 
 ```pwsh
-docker compose --file docker\docker-compose.test.yml up -d managed-server
-docker compose --file docker\docker-compose.test.yml run --rm c-client `
+docker compose --file external\docker\docker-compose.test.yml up -d managed-server
+docker compose --file external\docker\docker-compose.test.yml run --rm c-client `
     -ProgId Opc.Classic.DaSample.1 `
     -TargetHost opc-classic-managed
 ```
@@ -44,12 +44,12 @@ docker compose --file docker\docker-compose.test.yml run --rm c-client `
 ### 3. Smoke the native C server/client MVPs
 
 The `opc-c-server` image builds the hand-rolled DA server MVP from
-`docker/opc-c-server/build/opc-sample-server.cpp`; the `opc-c-client` image can
+`external/docker/opc-c-server/build/opc-sample-server.cpp`; the `opc-c-client` image can
 be pointed at it on the same `opc-test-net` l2bridge network.
 
 ```pwsh
-docker compose --file docker\docker-compose.test.yml up -d c-server
-docker compose --file docker\docker-compose.test.yml run --rm c-client `
+docker compose --file external\docker\docker-compose.test.yml up -d c-server
+docker compose --file external\docker\docker-compose.test.yml run --rm c-client `
     -ProgId Opc.SampleServer.1 `
     -TargetHost opc-classic-c-server
 ```
@@ -58,18 +58,18 @@ docker compose --file docker\docker-compose.test.yml run --rm c-client `
 
 The `opc-testserver` image builds `OpcTestServer_x64.exe`,
 `OpcTestClient_x64.exe`, `OpcCategoryManager.exe`, and the eight proxy/stub DLLs
-from `ext\redist\CoreComponents`. The `opc-testclient` image copies its executable and
+from `external\redist`. The `opc-testclient` image copies its executable and
 DLLs from the `opc-classic/testserver` image so the slow CMake build is not
 repeated.
 
 ```pwsh
-docker compose --file docker\docker-compose.test.yml build testserver
-docker compose --file docker\docker-compose.test.yml build testclient
-docker compose --file docker\docker-compose.test.yml up -d testserver
-docker compose --file docker\docker-compose.test.yml run --rm testclient `
+docker compose --file external\docker\docker-compose.test.yml build testserver
+docker compose --file external\docker\docker-compose.test.yml build testclient
+docker compose --file external\docker\docker-compose.test.yml up -d testserver
+docker compose --file external\docker\docker-compose.test.yml run --rm testclient `
     -TargetHost opc-classic-testserver `
     -ProgId OpcTestServer_x64.1
-docker compose --file docker\docker-compose.test.yml down
+docker compose --file external\docker\docker-compose.test.yml down
 ```
 
 OPERATOR: the `testclient` shim uses the DCOM `RemoteServerName` AppID value
@@ -144,9 +144,9 @@ The rc.10 repository baseline outside the Windows-container gate is **0 build wa
 
 `.github/workflows/docker-test-fleet.yml` runs the matrix monthly on
 `windows-2022` and can also be started manually with `workflow_dispatch`. When
-`ext\redist\CoreComponents` is present, the workflow restores/saves
-`ext\redist\CoreComponents\build\x64\Release` with `actions/cache` and runs
-`docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
+`external\redist` is present, the workflow restores/saves
+`external\redist\build\x64\Release` with `actions/cache` and runs
+`external\docker\run-matrix.ps1 -IncludeTestServer`; otherwise the TestServer/TestClient
 cells soft-skip and the existing managed smoke still runs. Inspect runs via:
 
 ```pwsh
@@ -163,7 +163,7 @@ gh run download <run-id> --name docker-test-fleet-results
   member-only. The `opc-classic/ctt` image bakes them in; don't publish to
   a public registry without OPC Foundation approval.
 - **CoreComponents cache is best-effort**: CI caches
-  `ext\redist\CoreComponents\build\x64\Release`, but a source/toolchain hash change
+  `external\redist\build\x64\Release`, but a source/toolchain hash change
   still triggers a cold rebuild.
 - **Validation is environment-blocked**: the managed CTT smoke and native C server/client interop paths have source, project files, and Dockerfiles wired, but compiling/running them still requires a Windows Docker host.
 - **TestServer/TestClient validation is environment-blocked**: the BH4-BH7

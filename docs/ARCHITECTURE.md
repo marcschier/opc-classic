@@ -26,7 +26,7 @@ The architecture is designed around three constraints:
 +------------------------------------------------------------------------+
 ```
 
-The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `ext/samples/` and redistributable inputs in `ext/redist/` and spec/reference material in `ext/private/docs/` as conformance assets; they are not part of the portable runtime libraries.
+The portable runtime is pure managed code. Windows-specific features, such as local COM registry writes for native client activation, are isolated behind platform-guarded components. The repository also keeps OPC Foundation C++ sample servers in `external/redist/samples/` and redistributable inputs in `external/redist/` and spec/reference material in `external/private/docs/` as conformance assets; they are not part of the portable runtime libraries.
 
 | Area | Current state |
 | --- | --- |

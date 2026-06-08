@@ -13,7 +13,7 @@ namespace Opc.Classic;
 /// not collide with DA or AE codes. The 0x40041xxx-style success codes carry
 /// FACILITY_ITF severity-success-with-customer-bit; treat them as success.
 /// <para>
-/// Values sourced from <c>ext/inc/OpcHda_Error.h</c>.
+/// Values sourced from <c>external/inc/OpcHda_Error.h</c>.
 /// </para>
 /// </remarks>
 public static class OpcHdaResultId

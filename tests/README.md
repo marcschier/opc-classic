@@ -50,10 +50,10 @@ This list matches the current `tests\` top-level project directories.
 ## Environment-dependent categories
 
 - `Kerberos` — Docker/Testcontainers-backed MIT krb5 KDC integration tests. They are skipped unless Docker is running and `OPC_CLASSIC_RUN_KDC_TESTS=1` is set.
-- `NativeConformance` — tests that need the OPC Foundation native sample servers built/registered from `ext\samples\`.
+- `NativeConformance` — tests that need the OPC Foundation native sample servers built/registered from `external\redist\samples\`.
 - `MatrikonConformance` — tests that need Matrikon OPC Simulation Server installed/registered.
 - `CompatMatrix` — compatibility-matrix and native-client/server orchestration tests.
-- `WinRegSambaSmoke` — opt-in Samba WINREG smoke; requires `docker\samba` and `OPC_CLASSIC_INTEGRATION_SAMBA=1`.
+- `WinRegSambaSmoke` — opt-in Samba WINREG smoke; requires `external\docker\samba` and `OPC_CLASSIC_INTEGRATION_SAMBA=1`.
 - `Da.FullLifecycle` / `Da.Loopback` — loopback TCP DA integration coverage for object-IPID group dispatch, item attributes, callbacks, and namespaced browse continuation tokens (`opc-da-browse:N`).
 
 Folder-specific details live under `tests\Opc.Classic.Integration.Tests\Native\README.md`, `tests\Opc.Classic.Integration.Tests\Matrikon\README.md`, and `tests\Opc.Classic.Integration.Tests\CompatMatrix\README.md`.

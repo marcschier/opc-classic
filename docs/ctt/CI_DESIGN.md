@@ -12,14 +12,14 @@ rc.10 validation baseline: `dotnet build Opc.Classic.slnx` is 0 warnings / 0 err
 
 | Component | Version | Source |
 | --- | --- | --- |
-| OPC CTT Common Modules (Test Tool shell) | v2.0.15 | `ext/private/ctt/` |
-| OPC CTT DataAccess 2.05a Plugin | v2.0.22 | `ext/private/ctt/` |
-| OPC CTT DataAccess 3.0 Plugin | v1.0.18 | `ext/private/ctt/` |
-| OPC CTT Alarms & Events Plugin | v1.0.14 | `ext/private/ctt/` |
-| OPC CTT Historical Data Plugin | v1.0.8 | `ext/private/ctt/` |
-| OPC CTT XML-DA Plugin | v1.0.8 | `ext/private/ctt/` |
+| OPC CTT Common Modules (Test Tool shell) | v2.0.15 | `external/private/ctt/` |
+| OPC CTT DataAccess 2.05a Plugin | v2.0.22 | `external/private/ctt/` |
+| OPC CTT DataAccess 3.0 Plugin | v1.0.18 | `external/private/ctt/` |
+| OPC CTT Alarms & Events Plugin | v1.0.14 | `external/private/ctt/` |
+| OPC CTT Historical Data Plugin | v1.0.8 | `external/private/ctt/` |
+| OPC CTT XML-DA Plugin | v1.0.8 | `external/private/ctt/` |
 
-All six MSIs are vendored in the repository (`ext/private/ctt/`, ~13 MB total)
+All six MSIs are vendored in the repository (`external/private/ctt/`, ~13 MB total)
 and tracked in git. No external download is required at CI time.
 
 ## Install order
@@ -85,7 +85,7 @@ limitation.
 
 `.github\workflows\build.yml` is the primary build/test gate. It restores and builds `Opc.Classic.slnx` on Ubuntu, macOS, and Windows for Debug and Release, runs each `tests\**\*.csproj` with coverage, verifies coverage thresholds, runs `dotnet format --verify-no-changes`, publishes the NativeAOT canary on Ubuntu and Windows, and runs the Windows conformance job on `main` or manual dispatch.
 
-`.github\workflows\docker-test-fleet.yml` is a Windows-container smoke. It runs manually or monthly, switches the runner to Windows containers, executes `docker\run-matrix.ps1 -SkipBuild:$false -OnlyManaged`, and uploads `docker\results\*.xml`.
+`.github\workflows\docker-test-fleet.yml` is a Windows-container smoke. It runs manually or monthly, switches the runner to Windows containers, executes `external\docker\run-matrix.ps1 -SkipBuild:$false -OnlyManaged`, and uploads `external\docker\results\*.xml`.
 
 ## Unknowns / TBDs
 
@@ -121,7 +121,7 @@ MSIs are vendored.
 - `.github\workflows\opc-ctt.yml` — standalone diagnostic workflow
 - `.github\workflows\build.yml` — cross-platform build/test/coverage, format, AOT canary, and Windows conformance gate
 - `.github\workflows\docker-test-fleet.yml` — Windows-container CTT smoke matrix
-- `docker\docker-compose.test.yml` and `docker\run-matrix.ps1` — four-container fleet orchestration
+- `external\docker\docker-compose.test.yml` and `external\docker\run-matrix.ps1` — four-container fleet orchestration
 - `samples\Opc.Classic.Samples.CttServer\README.md` — sample-level CLI docs
 - `src\Opc.Classic.Hosting\Windows\README.md` — registration plumbing reference
 - `docs\CONFORMANCE.md#opc-ctt-conformance` — adopter-facing usage docs

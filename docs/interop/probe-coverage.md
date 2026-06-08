@@ -22,8 +22,8 @@ between two CLSIDs that should be identical but aren't:
 
 | Source | UUID | Where |
 | --- | --- | --- |
-| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | `samples/OpcTestServer/OpcTestServer.idl:45` |
-| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | `samples/OpcTestServer/OpcTestServer.cpp:53` |
+| IDL `coclass OpcTestServer_x64` | `F8582CF8-...` | `external/redist/samples/OpcTestServer/OpcTestServer.idl:45` |
+| `OPC_IMPLEMENT_LOCAL_SERVER` GUID | `F8582CF9-...` | `external/redist/samples/OpcTestServer/OpcTestServer.cpp:53` |
 
 The class table macro `OPC_CLASS_TABLE_ENTRY(COpcTestServer, OpcTestServer_x64, ...)`
 expands to `__uuidof(OpcTestServer_x64)` which resolves to the IDL coclass UUID (F8582CF8).

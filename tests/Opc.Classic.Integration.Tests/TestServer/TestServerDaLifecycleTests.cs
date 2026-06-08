@@ -39,7 +39,7 @@ public sealed class TestServerDaLifecycleTests
     public async Task TestServer_clsid_and_progid_match_upstream_constants()
     {
         // Scaffold assertion: confirms the well-known CLSID/ProgID match
-        // the upstream `ext/redist/CoreComponents/samples/OpcTestServer/OpcTestServer.cpp`
+        // the upstream `external/redist/samples/OpcTestServer/OpcTestServer.cpp`
         // declarations. Catches accidental drift if upstream rev-bumps the GUID.
         await Assert.That(ConformanceMetadata.ReadString(TestServerProbe.TestServerClsid)).IsEqualTo("F8582CF9-88FB-11DA-A5ED-0060B0692061");
         await Assert.That(ConformanceMetadata.ReadString(TestServerProbe.TestServerProgId)).IsEqualTo("OpcTestServer_x64.1");

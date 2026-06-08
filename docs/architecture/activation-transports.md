@@ -9,7 +9,7 @@ DCOM activation RPC against one of two interfaces:
 | `IActivation` (legacy) | `4d9f4ab8-7d1c-11cf-861e-0020af6e7c57` | 0 `RemoteActivation` | Pre-XP-SP2 | `ncacn_np` (SMB) on `\PIPE\epmapper` OR `ncacn_ip_tcp` on `[135]` |
 | `IRemoteSCMActivator` (modern) | `000001A0-0000-0000-C000-000000000046` | 3 `RemoteGetClassObject`, 4 `RemoteCreateInstance` | XP SP2+ / Vista+ / 2008+ | `ncacn_ip_tcp` on `[135]` |
 
-Reference: `ext/private/docs/MS-DCOM.md` sections 3.1.2.5.2.3 (legacy) and
+Reference: `external/private/docs/MS-DCOM.md` sections 3.1.2.5.2.3 (legacy) and
 3.1.2.5.2.4-5 (modern).
 
 ## What this codebase supports today
@@ -84,8 +84,8 @@ additional opnum dispatcher and a wrapper that adapts the legacy wire shape
 
 ## References
 
-- `ext/private/docs/MS-DCOM.md` — DCOM Remote Protocol
-- `ext/private/docs/MS-RPCE.md` — RPC Protocol Extensions
+- `external/private/docs/MS-DCOM.md` — DCOM Remote Protocol
+- `external/private/docs/MS-RPCE.md` — RPC Protocol Extensions
 - `src\Opc.Classic.Dcom\Activation\IRemoteSCMActivator.cs` — modern activator definition
 - `src\Opc.Classic.Dcom\Activation\RemoteSCMActivatorServer.cs` — modern activator server
 - `src\Opc.Classic.Dcom\Activation\ActivationProperties.cs` — shared activation-property carrier

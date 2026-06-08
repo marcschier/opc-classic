@@ -35,7 +35,7 @@ jobs:
       - name: Install CTT Common Modules
         shell: pwsh
         run: |
-          $msi = Resolve-Path 'ext/private/ctt/OPC CTT Common Modules 2.0.15.msi'
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT Common Modules 2.0.15.msi'
           Write-Host "Installing $msi"
           $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
@@ -45,7 +45,7 @@ jobs:
       - name: Install CTT Data Access 2.05a Plugin
         shell: pwsh
         run: |
-          $msi = Resolve-Path 'ext/private/ctt/OPC CTT DataAccess2 Modules 2.0.22.msi'
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT DataAccess2 Modules 2.0.22.msi'
           $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
             throw "msiexec failed with exit code $($p.ExitCode)"
@@ -54,7 +54,7 @@ jobs:
       - name: Install CTT Data Access 3.0 Plugin
         shell: pwsh
         run: |
-          $msi = Resolve-Path 'ext/private/ctt/OPC CTT DataAccess3 Modules 1.0.18.msi'
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT DataAccess3 Modules 1.0.18.msi'
           $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
             throw "msiexec failed with exit code $($p.ExitCode)"
@@ -63,7 +63,7 @@ jobs:
       - name: Install CTT Alarms & Events Plugin
         shell: pwsh
         run: |
-          $msi = Resolve-Path 'ext/private/ctt/OPC CTT AlarmEvents Modules 1.0.14.msi'
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT AlarmEvents Modules 1.0.14.msi'
           $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
             throw "msiexec failed with exit code $($p.ExitCode)"
@@ -72,7 +72,7 @@ jobs:
       - name: Install CTT Historical Data Plugin
         shell: pwsh
         run: |
-          $msi = Resolve-Path 'ext/private/ctt/OPC CTT Historical DA Modules 1.0.8.msi'
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT Historical DA Modules 1.0.8.msi'
           $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
             throw "msiexec failed with exit code $($p.ExitCode)"
@@ -81,7 +81,7 @@ jobs:
       - name: Install CTT XML-DA Plugin
         shell: pwsh
         run: |
-          $msi = Resolve-Path 'ext/private/ctt/OPC CTT XMLDA Modules 1.0.8.msi'
+          $msi = Resolve-Path 'external/private/ctt/OPC CTT XMLDA Modules 1.0.8.msi'
           $p = Start-Process msiexec -ArgumentList '/i', "`"$msi`"", '/quiet', '/norestart' -Wait -PassThru -NoNewWindow
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) {
             throw "msiexec failed with exit code $($p.ExitCode)"

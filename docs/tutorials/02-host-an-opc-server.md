@@ -2,7 +2,7 @@
 
 This tutorial walks through hosting a managed OPC Data Access server. The canonical repository example is `samples\Opc.Classic.Samples.DaServer\`, which registers `Opc.Classic.Samples.DaServer.1`, wires a `TagTree`, and exposes a small `IOpcDaServer` implementation through `Opc.Classic.Hosting`. Here we build the same production shape from scratch and explain the pieces you need to keep stable when a legacy Windows DA client connects through `IOPCServer`, `IOPCGroupStateMgt`, and subscription callbacks.
 
-The server-hosting surface keeps protocol hosting separate from business state: `IOpcDaServer` provides status, group lifecycle, and localized error strings, while generated dispatchers and callback publishers route protocol calls through the common host infrastructure. Design your server with tag storage separate from group lifecycle, explicit HRESULT mapping, data-change publishing as a server-side stream, and stable CLSID/ProgID metadata. The concepts in this article match OPC DA 3.00 and the IDL terminology in `ext\inc\opcda.idl`.
+The server-hosting surface keeps protocol hosting separate from business state: `IOpcDaServer` provides status, group lifecycle, and localized error strings, while generated dispatchers and callback publishers route protocol calls through the common host infrastructure. Design your server with tag storage separate from group lifecycle, explicit HRESULT mapping, data-change publishing as a server-side stream, and stable CLSID/ProgID metadata. The concepts in this article match OPC DA 3.00 and the IDL terminology in `external\inc\opcda.idl`.
 
 ## Prerequisites
 

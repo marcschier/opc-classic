@@ -14,7 +14,7 @@ public sealed class OpcSampleAeServerConformanceTests
 {
     private const string SampleProgId = "OPCSample.OPCEventServer.1";
     private static readonly Guid SampleClsid = new("65168852-5783-11D1-84A0-00608CB8A7E9");
-    // ProgID and CLSID match ext/samples/Sample Server/Ae/OPCEventServer.rgs.
+    // ProgID and CLSID match external/redist/samples/SampleServer/Ae/OPCEventServer.rgs.
 
     [Test]
     [Category("NativeConformance")]

@@ -354,8 +354,8 @@ What a programmatic walk of the response payload revealed:
    "consumes" 48 bytes for the first inline part instead of 28, and
    the 20-byte over-read cascades.
 4. **`OPCITEMPROPERTY` IDL is identical** between
-   `ext/inc/opcda.idl`, `ext/inc/opcda.h`, and
-   `ext/redist/CoreComponents/src/DataAccess/ProxyStub/opcda.idl` — so the
+   `external/inc/opcda.idl`, `external/inc/opcda.h`, and
+   `external/redist/src/DataAccess/ProxyStub/opcda.idl` — so the
    layout difference is not an IDL-level vendor extension. Matrikon
    ships their own proxy/stub DLL alongside the simulation server; the
    wire shape produced by that proxy is what we are observing.
@@ -424,5 +424,5 @@ decoder branch without ground truth risks shipping a guess.
   — the AT2 synthetic fixtures to diff against.
 - [`tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs`](../../tests/Opc.Classic.Da.Tests/Wire/Replay/WireCaptureFile.cs)
   — the parser that turns a captured `.hex` back into a `byte[]`.
-- [OPC DA 3.00 §6.5](../../ext/private/docs/OPC-DA-3.00.md) — the
+- [OPC DA 3.00 §6.5](../../external/private/docs/OPC-DA-3.00.md) — the
   `IOPCItemProperties` interface specification.
