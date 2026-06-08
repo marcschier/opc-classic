@@ -44,6 +44,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from typing import Optional
@@ -55,6 +56,16 @@ if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 
 import probe_matrix
+
+
+LEFTOVER_PROCESS_NAMES = (
+    "Opc.Classic.Samples.DaServer",
+    "Opc.Classic.Samples.CttServer",
+    "Opc.Classic.Samples.AeServer",
+    "Opc.Classic.Samples.HdaServer",
+    "Opc.Classic.Samples.OpcSecurityServer",
+    "Opc.Classic.Mcp",
+)
 
 
 # Default per-profile CLSIDs / ProgIDs / kind. Each profile picks ONE
@@ -169,6 +180,49 @@ def build_overrides(arg: Optional[list[str]]) -> dict[str, str]:
     return out
 
 
+def cleanup_leftover_processes(reason: str) -> None:
+    """Stop Windows SCM/MCP processes that can survive a single profile run."""
+    if os.name != "nt":
+        return
+    shell = shutil.which("pwsh") or shutil.which("powershell")
+    if shell is None:
+        return
+
+    names = "@(" + ",".join("'" + name.replace("'", "''") + "'" for name in LEFTOVER_PROCESS_NAMES) + ")"
+    script = f"""
+$ErrorActionPreference = 'SilentlyContinue'
+$names = {names}
+$stopped = New-Object System.Collections.Generic.List[string]
+Get-Process | Where-Object {{ $names -contains $_.ProcessName }} | ForEach-Object {{
+        try {{
+            Stop-Process -Id $_.Id -Force -ErrorAction Stop
+            $stopped.Add("$($_.ProcessName):$($_.Id)")
+        }} catch {{ }}
+}}
+Get-CimInstance Win32_Process | Where-Object {{
+        $_.Name -ieq 'dotnet.exe' -and $_.CommandLine -and
+        ($_.CommandLine -like '*mcp*Opc.Classic.Mcp*' -or $_.CommandLine -like '*Opc.Classic.Mcp.dll*')
+}} | ForEach-Object {{
+        try {{
+            Stop-Process -Id $_.ProcessId -Force -ErrorAction Stop
+            $stopped.Add("dotnet:$($_.ProcessId)")
+        }} catch {{ }}
+}}
+if ($stopped.Count -gt 0) {{ $stopped -join ', ' }}
+"""
+    result = subprocess.run(
+        [shell, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", script],
+        cwd=_REPO,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    stopped = result.stdout.strip()
+    if stopped:
+        print(f"Stopped leftover process(es) {reason}: {stopped}", file=sys.stderr)
+
+
 def run_profile(args: argparse.Namespace, profile: str, overrides: dict[str, str]) -> dict[str, object]:
     target = PROFILE_TARGETS[profile]
     kind = target["kind"]
@@ -256,8 +310,13 @@ def main() -> int:
     aggregate: list[dict[str, object]] = []
     any_fatal = False
 
+    cleanup_leftover_processes("before matrix")
     for profile in profiles:
-        entry = run_profile(args, profile, overrides)
+        cleanup_leftover_processes(f"before {profile}")
+        try:
+            entry = run_profile(args, profile, overrides)
+        finally:
+            cleanup_leftover_processes(f"after {profile}")
         report_path = os.path.join(args.output_dir, f"{profile}.json")
         with open(report_path, "w", encoding="utf-8") as fh:
             json.dump(entry.get("raw_results", []), fh, indent=2, default=str)
