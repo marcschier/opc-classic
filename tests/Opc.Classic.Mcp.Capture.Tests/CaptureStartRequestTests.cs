@@ -22,6 +22,20 @@ public sealed class CaptureStartRequestTests
         await Assert.That(request.MaxPackets).IsNull();
         await Assert.That(request.MaxDurationSeconds).IsNull();
         await Assert.That(request.ReplaySourceDirectory).IsNull();
+        await Assert.That(request.ServerPorts).IsNull();
+    }
+
+    [Test]
+    public async Task Constructor_ServerPortsSupplied_IsPersisted()
+    {
+        var request = new CaptureStartRequest(
+            InterfaceName: "eth0",
+            ServerPorts: [51301, 51302]);
+
+        await Assert.That(request.ServerPorts).IsNotNull();
+        await Assert.That(request.ServerPorts!.Count).IsEqualTo(2);
+        await Assert.That(request.ServerPorts[0]).IsEqualTo(51301);
+        await Assert.That(request.ServerPorts[1]).IsEqualTo(51302);
     }
 
     [Test]

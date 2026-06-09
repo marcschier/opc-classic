@@ -54,6 +54,57 @@ public sealed class PcapCaptureSource : ICaptureSource
     /// </summary>
     public const string DefaultOpcBpfFilter = "tcp and (port 135 or (portrange 49152-65535))";
 
+    /// <summary>
+    /// Composes a BPF filter that captures TCP on port 135 (DCOM SCM
+    /// endpoint mapper) PLUS the given explicit set of OPC server data
+    /// ports. Used by <see cref="CaptureStartRequest.ServerPorts"/> to
+    /// narrow the default port-range filter to a specific known set
+    /// (dramatically reduces captured noise on busy NICs).
+    /// </summary>
+    /// <param name="serverPorts">
+    /// Explicit port list (1..65535, duplicates tolerated). Null/empty
+    /// returns <see cref="DefaultOpcBpfFilter"/> unchanged so callers
+    /// don't need a special-case branch upstream. Ports outside the
+    /// valid 1..65535 range are silently skipped (per BPF semantics
+    /// they could not match anyway).
+    /// </param>
+    public static string BuildServerPortBpfFilter(IReadOnlyList<int>? serverPorts)
+    {
+        if (serverPorts is null || serverPorts.Count == 0)
+        {
+            return DefaultOpcBpfFilter;
+        }
+
+        var seen = new SortedSet<int>();
+        foreach (int p in serverPorts)
+        {
+            if (p > 0 && p <= 65535)
+            {
+                seen.Add(p);
+            }
+        }
+
+        if (seen.Count == 0)
+        {
+            return DefaultOpcBpfFilter;
+        }
+
+        // tcp and (port 135 or port P1 or port P2 ...). Always include
+        // port 135 so the bind/activation traffic is still captured
+        // alongside the activated data-port traffic.
+        var sb = new System.Text.StringBuilder("tcp and (port 135");
+        foreach (int p in seen)
+        {
+            if (p == 135)
+            {
+                continue;
+            }
+            sb.Append(" or port ").Append(p.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        }
+        sb.Append(')');
+        return sb.ToString();
+    }
+
     private readonly ILogger _logger;
     private readonly string _filePath;
     private readonly Lock _lock = new();
@@ -132,7 +183,7 @@ public sealed class PcapCaptureSource : ICaptureSource
         }
 
         string filter = string.IsNullOrWhiteSpace(request.BpfFilter)
-            ? DefaultOpcBpfFilter
+            ? BuildServerPortBpfFilter(request.ServerPorts)
             : request.BpfFilter!;
         try
         {

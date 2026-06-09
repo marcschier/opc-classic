@@ -112,7 +112,7 @@ public sealed class CaptureTools
     public async Task<CaptureSessionDto> StartCapture(
         [Description("Network interface name from opcclassic.capture.list_interfaces (required for pcap source).")]
         string interfaceName,
-        [Description("Optional BPF filter override. Default = TCP port 135 + dynamic ephemeral range (Opc DCOM).")]
+        [Description("Optional BPF filter override. Default = TCP port 135 + dynamic ephemeral range (Opc DCOM). Takes precedence over serverPorts when both are set.")]
         string? bpfFilter = null,
         [Description("True (default) opens the interface in promiscuous mode.")]
         bool promiscuous = true,
@@ -122,6 +122,8 @@ public sealed class CaptureTools
         long? maxPackets = null,
         [Description("Optional cap on wall-clock duration in seconds; defaults to 1800 (30 min).")]
         int? maxDurationSeconds = null,
+        [Description("Optional explicit list of OPC server data ports. When set AND bpfFilter is null, narrows the default port-range filter to 'tcp and (port 135 or port P1 or port P2 …)'. Reduces captured noise dramatically when the target server ports are known (look them up via opcclassic.discovery.list_servers + opcclassic.da.connect, or read them from your operator run-book).")]
+        int[]? serverPorts = null,
         CancellationToken cancellationToken = default)
     {
         try
@@ -135,7 +137,8 @@ public sealed class CaptureTools
                     Promiscuous: promiscuous,
                     MaxBytes: maxBytes,
                     MaxPackets: maxPackets,
-                    MaxDurationSeconds: maxDurationSeconds),
+                    MaxDurationSeconds: maxDurationSeconds,
+                    ServerPorts: serverPorts),
                 cancellationToken).ConfigureAwait(false);
             return CaptureSessionDto.From(session);
         }

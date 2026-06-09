@@ -28,6 +28,55 @@ public sealed class PcapCaptureSourceTests
     }
 
     [Test]
+    public async Task BuildServerPortBpfFilter_NullOrEmpty_ReturnsDefaultFilter()
+    {
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter(null)).IsEqualTo(PcapCaptureSource.DefaultOpcBpfFilter);
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter(Array.Empty<int>())).IsEqualTo(PcapCaptureSource.DefaultOpcBpfFilter);
+    }
+
+    [Test]
+    public async Task BuildServerPortBpfFilter_AllInvalidPorts_ReturnsDefaultFilter()
+    {
+        // Negative, zero, and out-of-range ports are all silently skipped per the
+        // documented BPF semantics; if every entry is invalid, behave as if the
+        // caller passed an empty list (fall back to the default port-range filter).
+        int[] invalid = [-1, 0, 65536, 100000];
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter(invalid)).IsEqualTo(PcapCaptureSource.DefaultOpcBpfFilter);
+    }
+
+    [Test]
+    public async Task BuildServerPortBpfFilter_SinglePort_NarrowsToPort135PlusGivenPort()
+    {
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([51301]))
+            .IsEqualTo("tcp and (port 135 or port 51301)");
+    }
+
+    [Test]
+    public async Task BuildServerPortBpfFilter_MultiplePorts_AreSortedAndDeduplicated()
+    {
+        // Duplicate 51301 + reverse order to assert dedupe + sort.
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([51301, 49500, 51301, 8080]))
+            .IsEqualTo("tcp and (port 135 or port 8080 or port 49500 or port 51301)");
+    }
+
+    [Test]
+    public async Task BuildServerPortBpfFilter_IncludesPort135ExactlyOnce()
+    {
+        // Caller already included 135 explicitly; should not appear twice in the output.
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([135, 51301]))
+            .IsEqualTo("tcp and (port 135 or port 51301)");
+        // 135 always present even if not in the input list.
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([51301])).Contains("port 135");
+    }
+
+    [Test]
+    public async Task BuildServerPortBpfFilter_MixedValidAndInvalidPorts_DropsTheInvalidOnes()
+    {
+        await Assert.That(PcapCaptureSource.BuildServerPortBpfFilter([0, 51301, -5, 65535, 70000]))
+            .IsEqualTo("tcp and (port 135 or port 51301 or port 65535)");
+    }
+
+    [Test]
     public async Task Constructor_NullOrEmptySessionFolder_Throws()
     {
         await Assert.That(() => new PcapCaptureSource(null!)).Throws<ArgumentNullException>();

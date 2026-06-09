@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 namespace Opc.Classic.Mcp.Capture;
 
@@ -17,7 +18,8 @@ namespace Opc.Classic.Mcp.Capture;
 /// <param name="BpfFilter">
 /// Optional Berkeley Packet Filter expression. When null/empty the
 /// source applies its default filter (typically the OPC Classic DCOM
-/// port set for <see cref="PcapCaptureSource"/>).
+/// port set for <see cref="PcapCaptureSource"/>). When non-null this
+/// takes precedence over <paramref name="ServerPorts"/>.
 /// </param>
 /// <param name="Promiscuous">
 /// True to open the interface in promiscuous mode (sees frames not
@@ -41,6 +43,19 @@ namespace Opc.Classic.Mcp.Capture;
 /// For <c>OpcWireCaptureSource</c>: directory of <c>.hex</c> files to
 /// replay as if they were live frames. Ignored by live NIC sources.
 /// </param>
+/// <param name="ServerPorts">
+/// Optional explicit list of TCP server data ports to include in the
+/// auto-built BPF filter (in addition to port 135, the DCOM SCM
+/// endpoint mapper). When non-empty AND <paramref name="BpfFilter"/>
+/// is null/empty, the source narrows the default
+/// <c>tcp and (port 135 or portrange 49152-65535)</c> filter down to
+/// <c>tcp and (port 135 or port p1 or port p2 …)</c>. Reduces captured
+/// noise dramatically when the target OPC server ports are known
+/// (e.g. discovered out-of-band via OPCEnum or read from the operator
+/// run-book). Ignored when an explicit BPF filter is supplied. Each
+/// port must be a positive 1..65535 value; duplicates are tolerated
+/// and de-duplicated before composing.
+/// </param>
 public sealed record class CaptureStartRequest(
     string? InterfaceName = null,
     string? BpfFilter = null,
@@ -48,4 +63,5 @@ public sealed record class CaptureStartRequest(
     long? MaxBytes = null,
     long? MaxPackets = null,
     int? MaxDurationSeconds = null,
-    string? ReplaySourceDirectory = null);
+    string? ReplaySourceDirectory = null,
+    IReadOnlyList<int>? ServerPorts = null);
