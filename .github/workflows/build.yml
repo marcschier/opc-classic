@@ -196,7 +196,15 @@ jobs:
           global-json-file: global.json
       - name: Publish NativeAOT canary
         if: hashFiles('samples/Opc.Classic.Samples.AotCanary/*.csproj') != ''
-        run: dotnet publish samples/Opc.Classic.Samples.AotCanary --configuration Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
+        # Do NOT pass `-p:PublishAot=true` on the command line: it would
+        # propagate as a global property through the project graph and
+        # trigger NETSDK1207 ("Ahead-of-time compilation is not supported
+        # for the target framework") on transitive netstandard2.0 deps like
+        # Opc.Classic.Generators. The AotCanary csproj already sets
+        # `<PublishAot>true</PublishAot>` as a local property, which the
+        # SDK honours for the publish output but does not propagate to
+        # referenced projects.
+        run: dotnet publish samples/Opc.Classic.Samples.AotCanary --configuration Release -p:TreatWarningsAsErrors=true
 
   windows-conformance:
     needs: build
