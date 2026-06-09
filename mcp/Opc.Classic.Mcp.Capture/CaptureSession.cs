@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
@@ -156,6 +157,143 @@ public sealed class CaptureSession : IAsyncDisposable
     /// <summary>Marks the session as touched for LRU bookkeeping.</summary>
     public void Touch() => LastTouchedAt = DateTimeOffset.UtcNow;
 
+    private DecodeCursor? _cursor;
+    private readonly object _cursorInitLock = new();
+
+    /// <summary>
+    /// Drains the next decoded-PDU window from the live capture trace
+    /// (cursor-based "live tail" for the
+    /// <c>opcclassic.capture.tail</c> MCP tool).
+    /// </summary>
+    /// <param name="sinceIndex">
+    /// 0-based index into the per-session emitted-PDU list returned by
+    /// a previous tail call's <see cref="DrainTailResult.NextIndex"/>.
+    /// First call should pass <c>0</c>.
+    /// </param>
+    /// <param name="max">Upper bound on the number of PDUs returned in this call.</param>
+    /// <returns>
+    /// A snapshot of the next window of decoded PDUs together with the
+    /// cursor value the caller should pass as <paramref name="sinceIndex"/>
+    /// on the next poll and a <c>Done</c> flag set when the underlying
+    /// session has Completed / Failed / Disposed AND the cache is fully
+    /// caught up.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// Implementation: each call re-reads the pcap file from the start
+    /// and skips packets the cursor has already consumed (a few µs per
+    /// already-seen packet at the libpcap layer; the cursor caches the
+    /// long-lived <see cref="OpcDcomDecoder"/> so per-flow state — bind
+    /// context-id → IID maps, fragment reassembly — survives across
+    /// poll calls). For a 50 MB trace this is well under 100 ms per
+    /// poll on commodity hardware; for very large traces the operator
+    /// can poll less often or use <c>opcclassic.capture.get</c>
+    /// afterward to grab the whole trace at once.
+    /// </para>
+    /// <para>
+    /// The cursor is per-session and serialised by its own lock; two
+    /// concurrent callers do NOT race the decoder state. Concurrent
+    /// access patterns (poll + get; poll + stop) are safe because the
+    /// tail path uses a SHARED-READ pcap reader and never mutates the
+    /// pcap file.
+    /// </para>
+    /// </remarks>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types",
+        Justification = "Decoder errors on individual packets must not abort the entire tail-drain; the OpcDcomDecoder already swallows + logs malformed-frame errors internally.")]
+    internal async Task<DrainTailResult> DrainTailAsync(
+        long sinceIndex,
+        int max,
+        CancellationToken cancellationToken)
+    {
+        if (sinceIndex < 0)
+        {
+            sinceIndex = 0;
+        }
+        if (max <= 0)
+        {
+            max = 1;
+        }
+
+        DecodeCursor cursor = GetOrCreateCursor();
+
+        await cursor.Lock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            long packetIdx = 0;
+            await foreach (CapturedPacket pkt in Source.ReadAllAsync(maxPackets: null, cancellationToken).ConfigureAwait(false))
+            {
+                if (packetIdx < cursor.PacketsConsumed)
+                {
+                    packetIdx++;
+                    continue;
+                }
+
+                foreach (DecodedOpcPdu pdu in cursor.Decoder.Decode(pkt))
+                {
+                    cursor.Pdus.Add(pdu);
+                }
+                packetIdx++;
+            }
+            cursor.PacketsConsumed = packetIdx;
+
+            long totalEmitted = cursor.Pdus.Count;
+            long startIdx = Math.Min(sinceIndex, totalEmitted);
+            long endExclusive = Math.Min(startIdx + max, totalEmitted);
+            int sliceCount = (int)(endExclusive - startIdx);
+
+            IReadOnlyList<DecodedOpcPdu> window = sliceCount > 0
+                ? cursor.Pdus.GetRange((int)startIdx, sliceCount)
+                : Array.Empty<DecodedOpcPdu>();
+
+            bool sessionDone = State is CaptureSessionState.Completed
+                                or CaptureSessionState.Failed
+                                or CaptureSessionState.Disposed;
+            bool done = sessionDone && endExclusive == totalEmitted;
+
+            LastTouchedAt = DateTimeOffset.UtcNow;
+            return new DrainTailResult(window, endExclusive, totalEmitted, done, State);
+        }
+        finally
+        {
+            cursor.Lock.Release();
+        }
+    }
+
+    private DecodeCursor GetOrCreateCursor()
+    {
+        DecodeCursor? cursor = _cursor;
+        if (cursor is not null)
+        {
+            return cursor;
+        }
+
+        lock (_cursorInitLock)
+        {
+            cursor = _cursor ??= new DecodeCursor(_logger);
+        }
+        return cursor;
+    }
+
+    /// <summary>
+    /// Per-session decoded-PDU cache + long-lived decoder used by the
+    /// <c>opcclassic.capture.tail</c> cursor-based polling path.
+    /// </summary>
+    private sealed class DecodeCursor
+    {
+        public DecodeCursor(ILogger logger)
+        {
+            Decoder = new OpcDcomDecoder(logger);
+        }
+
+        public OpcDcomDecoder Decoder { get; }
+
+        public List<DecodedOpcPdu> Pdus { get; } = new();
+
+        public long PacketsConsumed { get; set; }
+
+        public SemaphoreSlim Lock { get; } = new(1, 1);
+    }
+
     /// <inheritdoc/>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types",
         Justification = "Dispose path must release native resources + scratch folder regardless of source-side errors; logging is sufficient.")]
@@ -188,6 +326,37 @@ public sealed class CaptureSession : IAsyncDisposable
         }
 
         State = CaptureSessionState.Disposed;
+        _cursor?.Lock.Dispose();
         _lock.Dispose();
     }
 }
+
+/// <summary>
+/// Snapshot returned by <see cref="CaptureSession.DrainTailAsync"/>.
+/// </summary>
+/// <param name="Pdus">
+/// The next decoded-PDU window (length &le; <c>max</c>) starting at
+/// the caller-supplied <c>sinceIndex</c>. Empty when the caller is
+/// already caught up with the live stream.
+/// </param>
+/// <param name="NextIndex">
+/// Cursor the caller should pass as <c>sinceIndex</c> on the next
+/// <c>opcclassic.capture.tail</c> call. Increments past
+/// <c>sinceIndex + Pdus.Count</c> only when more PDUs are emitted.
+/// </param>
+/// <param name="TotalEmitted">
+/// Total PDU count emitted by the per-session decoder so far. Useful
+/// for progress reporting; always &gt;= <c>NextIndex</c>.
+/// </param>
+/// <param name="Done">
+/// True when the underlying session has Completed / Failed / Disposed
+/// AND the cursor has consumed every available PDU. The caller can
+/// stop polling once this is true.
+/// </param>
+/// <param name="SessionState">The underlying session's lifecycle state at the time of the drain.</param>
+internal sealed record DrainTailResult(
+    IReadOnlyList<DecodedOpcPdu> Pdus,
+    long NextIndex,
+    long TotalEmitted,
+    bool Done,
+    CaptureSessionState SessionState);

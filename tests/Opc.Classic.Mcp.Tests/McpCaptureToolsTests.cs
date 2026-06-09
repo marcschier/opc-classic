@@ -80,6 +80,59 @@ public sealed class McpCaptureToolsTests
     }
 
     [Test]
+    public async Task CaptureTools_TailCapture_RunningSessionWithNoPackets_ReturnsEmptyWindow_NotDone()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+        CaptureSession session = await manager.CreateAndStartAsync(
+            "synthetic",
+            _ => new SyntheticCaptureSource(rawPcapPath: null),
+            new CaptureStartRequest(InterfaceName: "lo"),
+            CancellationToken.None);
+
+        CaptureTailResultDto result = await tools.TailCapture(session.Id, max: 200, sinceIndex: 0, cancellationToken: CancellationToken.None);
+
+        await Assert.That(result.SessionId).IsEqualTo(session.Id);
+        await Assert.That(result.Pdus.Count).IsEqualTo(0);
+        await Assert.That(result.NextIndex).IsEqualTo(0);
+        await Assert.That(result.TotalEmitted).IsEqualTo(0);
+        await Assert.That(result.SessionState).IsEqualTo(CaptureSessionState.Running);
+        // Session is still running so Done MUST be false even though the cache
+        // is empty - the caller should keep polling.
+        await Assert.That(result.Done).IsFalse();
+    }
+
+    [Test]
+    public async Task CaptureTools_TailCapture_AfterStop_ReportsDoneTrue()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+        CaptureSession session = await manager.CreateAndStartAsync(
+            "synthetic",
+            _ => new SyntheticCaptureSource(rawPcapPath: null),
+            new CaptureStartRequest(InterfaceName: "lo"),
+            CancellationToken.None);
+        await tools.StopCapture(session.Id, CancellationToken.None);
+
+        CaptureTailResultDto result = await tools.TailCapture(session.Id, max: 200, sinceIndex: 0, cancellationToken: CancellationToken.None);
+
+        await Assert.That(result.SessionState).IsEqualTo(CaptureSessionState.Completed);
+        // Session ended + cache fully drained (no packets) → caller should stop polling.
+        await Assert.That(result.Done).IsTrue();
+    }
+
+    [Test]
+    public async Task CaptureTools_TailCapture_UnknownSession_ThrowsMcpException()
+    {
+        await using CaptureSessionManager manager = CreateManager();
+        var tools = new CaptureTools(manager);
+
+        await Assert.That(async () =>
+            await tools.TailCapture("missing", max: 10, sinceIndex: 0, cancellationToken: CancellationToken.None))
+            .Throws<McpException>();
+    }
+
+    [Test]
     public async Task CaptureTools_GetCapture_Returns_pcap_path_and_empty_summaries_without_decoding_live_traffic()
     {
         await using CaptureSessionManager manager = CreateManager();

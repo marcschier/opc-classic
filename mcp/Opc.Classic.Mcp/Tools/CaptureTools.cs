@@ -281,6 +281,52 @@ public sealed class CaptureTools
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Polling-cursor "tail" of a live capture: returns the next
+    /// decoded-PDU window since the caller's cursor. The caller polls
+    /// at whatever cadence they want (e.g. every 100 ms) by passing
+    /// the previous response's <c>nextIndex</c> as <c>sinceIndex</c>.
+    /// </summary>
+    [McpServerTool(Name = "opcclassic.capture.tail", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
+    [Description("Polling-cursor tail of a LIVE (or completed) capture. Returns the next decoded-PDU window since the caller's cursor. Idempotent given the same sinceIndex. To follow a live stream, poll repeatedly at your preferred cadence (e.g. 100-500 ms) passing the previous response's nextIndex as sinceIndex; stop when done=true (session ended AND cursor caught up).")]
+    public async Task<CaptureTailResultDto> TailCapture(
+        [Description("Capture session id from opcclassic.capture.start.")]
+        string sessionId,
+        [Description("Maximum PDUs to return in this call (default 200, hard cap 5000 to keep MCP payload bounded).")]
+        int max = 200,
+        [Description("Cursor returned by the previous tail call as nextIndex. Pass 0 for the first call.")]
+        long sinceIndex = 0,
+        CancellationToken cancellationToken = default)
+    {
+        if (!_manager.TryGet(sessionId, out CaptureSession session))
+        {
+            throw new McpException($"Capture session '{sessionId}' not found.");
+        }
+
+        // Hard upper-bound the per-call cap so a misbehaving client can't
+        // request a huge window and stall the MCP transport. The cursor
+        // pattern means the caller just polls more often to drain quickly.
+        int effectiveMax = max <= 0 ? 200 : Math.Min(max, 5000);
+
+        try
+        {
+            DrainTailResult result = await session.DrainTailAsync(sinceIndex, effectiveMax, cancellationToken).ConfigureAwait(false);
+            return new CaptureTailResultDto
+            {
+                SessionId = sessionId,
+                Pdus = result.Pdus,
+                NextIndex = result.NextIndex,
+                TotalEmitted = result.TotalEmitted,
+                Done = result.Done,
+                SessionState = result.SessionState,
+            };
+        }
+        catch (CaptureException ex)
+        {
+            throw new McpException(ex.Message);
+        }
+    }
+
     /// <summary>Returns a top-N roll-up of a completed capture.</summary>
     [McpServerTool(Name = "opcclassic.capture.summarize", ReadOnly = true, Idempotent = true, Destructive = false, OpenWorld = false)]
     [Description("Returns top-N talkers, ports, IIDs, opnums, IPIDs, fault codes, and bind-reject reasons for a completed capture session.")]
@@ -459,6 +505,33 @@ public sealed record class CaptureInterfaceDto(
     IReadOnlyList<string> Addresses,
     string? LinkType,
     bool IsLoopback);
+
+/// <summary>
+/// Result envelope returned by <c>opcclassic.capture.tail</c>. The
+/// caller drives the polling loop by reading <see cref="NextIndex"/>
+/// from each response and passing it as <c>sinceIndex</c> on the next
+/// call. Stop polling when <see cref="Done"/> is true.
+/// </summary>
+public sealed record class CaptureTailResultDto
+{
+    /// <summary>The capture session id that owns this drain.</summary>
+    public required string SessionId { get; init; }
+
+    /// <summary>The next decoded-PDU window (length &le; <c>max</c>).</summary>
+    public required IReadOnlyList<DecodedOpcPdu> Pdus { get; init; }
+
+    /// <summary>Cursor to pass as <c>sinceIndex</c> on the next call.</summary>
+    public required long NextIndex { get; init; }
+
+    /// <summary>Total PDU count emitted by the session decoder so far.</summary>
+    public required long TotalEmitted { get; init; }
+
+    /// <summary>True when the session has ended AND the cursor is caught up.</summary>
+    public required bool Done { get; init; }
+
+    /// <summary>Underlying session lifecycle state at the time of the drain.</summary>
+    public required CaptureSessionState SessionState { get; init; }
+}
 
 /// <summary>Capture session info DTO surfaced by opcclassic.capture.* tools.</summary>
 public sealed record class CaptureSessionDto
