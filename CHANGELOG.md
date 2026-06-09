@@ -43,6 +43,123 @@ FINAL tag.
 
 ## [Unreleased]
 
+Post-`1.0.0-rc.11` work: broad test-coverage sweep, integration suites for the
+deferred DCOM paths, two large `external/` tree restructures, a
+security-focused fuzz campaign that surfaced and fixed a real bug, the docker
+test fleet authoring, and a matrix-driver process-cleanup hardening.
+
+### Added
+
+- **Track CV — broad unit-test coverage sweep** (commit `7f8381a9`). New
+  `tests/Opc.Classic.Mcp.Capture.Tests` project (was 0 % / no tests) plus
+  ~286 new TUnit tests across Core, Da, Dx, Cpx, Xml, Mcp, Discovery, Ae, Hda,
+  Hosting, and Dcom. Gated unit coverage rose from 71 %/51.5 % (line/branch)
+  to **75.8 %/58.6 %**; the CI gate floors in `.github/workflows/build.yml`
+  raised from 70/50 to 73/55 with conservative cross-OS headroom. New
+  per-assembly highlights: Mcp.Capture 0→80.2, Cpx 57.8→77.1, Discovery
+  52.1→66.7, Ae 58.7→65.8, Mcp 60.1→65.2, Hda 70.3→74.5, Core 82.5→86.4,
+  Dx 85→89.8.
+- **Track IT — real-TCP integration suites for the deferred paths**
+  (commit `10c9e6f5`). Convert the previously-deferred "integration-only"
+  paths into real, cross-platform, non-flaky tests: AE/HDA managed
+  client↔server over the real `OpcServerListener` TCP transport (AE
+  GetStatus/QueryAvailableFilters/QueryEventCategories; HDA GetStatus/
+  GetItemAttributes/ValidateItemIDs), bounded 8×10 concurrency, client-side
+  in-flight cancellation (TCS-gated; asserts client OperationCanceledException
+  + clean host stop), NTLMv2 handshake protocol coverage (Type1→Type2→Type3
+  + MIC + channel-binding incl. tampered/wrong-password negatives),
+  Windows-gated `ComClassObjectRegistrar` register/resume/revoke smoke on a
+  dedicated MTA thread, and offline pcap-fixture decode through
+  `PcapCaptureSource` + `OpcDcomDecoder` (soft-skips only when native
+  libpcap/Npcap is unavailable). F4Auth listener-auth tests stay honestly
+  skipped (managed listener does not implement server-side NTLM bind
+  challenge).
+- **Docker conformance fleet authoring** (commit `3a4a7474`). Add
+  `external/docker/opc-testserver/` and `external/docker/opc-testclient/`
+  Windows-container images built from the vendored CoreComponents CMake
+  tree via `external/tools/build-testserver.ps1` (cache-aware multi-stage
+  Dockerfile installs VS Build Tools 2022 VCTools+ATL+CMake only on a cold
+  cache; testclient reuses the testserver image as artifact source to avoid
+  a second ~30-min build). `docker-compose.test.yml` adds the new services
+  on `opc-test-net` (10.0.1.12 / 10.0.1.22). `run-matrix.ps1` gains an
+  `-IncludeTestServer` switch; `docker-test-fleet.yml` detects
+  `external/redist`, caches+primes the CMake build, and soft-skips to
+  managed-only when the vendor tree is absent.
+- **Track FZ — CsCheck-driven parser-fuzz campaign + deep-run CI**
+  (commit `791714cd`). Six phases delivering a shared
+  `tests/Opc.Classic.Tests.Fuzz` library (`FuzzHarness` with edge-weighted
+  `Gen<byte[]>`, structural `MutateValid` mutator, `AssertParseDoesNotCrash`
+  with closed exception set + bounded time/memory, deterministic seeds via
+  `OPCCLASSIC_FUZZ_SEED`/`OPCCLASSIC_FUZZ_ITERATIONS`, hex-dump +
+  corpus helpers) and ~110 fuzz test cases across 12 attacker-controlled
+  parser surfaces: DCE/RPC `PduCodec` + 11 PDU types, NTLM Type1/2/3 +
+  AvPairs + MIC, SMB2 message decoders, SPNEGO ASN.1 DER, `NdrReader`
+  (incl. `ReadVariant` recursion + length-confusion), `OrpcExtentArrayCodec`,
+  OBJREF/`InterfacePointer`, CPX recursive type-dictionary + binary
+  decoder, OPCEnum response, XML-DA `SoapEnvelopeReader`, MCP
+  `OpcDcomDecoder`. `.github/workflows/fuzz-deep.yml` runs every fuzz
+  surface at 10000+ iterations on a workflow_dispatch + weekly schedule.
+  `docs/security/THREAT_MODEL.md` §4.1 documents the coverage map.
+- **`docs/security/audit-packet/`** (new). Self-contained NTLMSSP
+  audit-prep packet (9 docs, 421 lines: README / scope / threat-model
+  subset / file inventory / design / KAT references / test-coverage map /
+  limitations / reviewer checklist) for the external `rw-e4` review.
+
+### Changed
+
+- **Repository restructure: `ext/` → `external/`** (commits `52773c1c`,
+  `f40cf2a5`). Renamed `ext/` → `external/`; flattened
+  `ext/redist/CoreComponents/*` up to `external/redist/*` (CoreComponents
+  dir removed); consolidated native sample apps under
+  `external/redist/samples/` (`OpcTestServer` + `OpcTestClient` from repo
+  `samples/`, and the de-spaced `SampleServer`/`SampleClient` +
+  `Shared`/README/`regserver.cmd` from `ext/samples/`); moved the
+  Windows-container test fleet `docker/` → `external/docker/`. All native
+  `.vcxproj` include dirs adjusted (+1 `..` depth, ClCompile + MIDL);
+  `OpcTestServer.rc` rewritten to `#include "version.h"`; new
+  `OPC_TEST_SAMPLES_DIR` CMake cache variable located the test-app
+  sources. Build-tooling scripts moved to `external/tools/` with
+  `$PSScriptRoot` math updated. .md citations under `docs/`/`src/`
+  rewritten to use filename + "external" provenance phrasing instead of
+  hard-coded paths; layout descriptions and runnable command paths
+  preserved. New `external/.gitignore` for the CMake build outputs.
+- **Vendored CoreComponents pruning** (commit `29d6dc65`). Removed
+  `ext/redist/*.msi` and `*.msm`, `ext/CoreComponents/.github`, and the
+  upstream WiX/ packaging tree (MSI/MSM packaging removed from `build.ps1`).
+  Renamed `Source/` → `src/` throughout the vendored tree.
+- **OpcDaServerCcw class-doc refresh + AE opcae_ps.dll waiver** (commit
+  `1e482f93`). The CCW class-doc XML comment was refreshed to reflect that
+  all 8 tearoffs (IOPCServer/IOPCCommon/IOPCBrowse/IOPCItemProperties/
+  IOPCItemIO/IOPCBrowseServerAddressSpace/IOPCSecurityNT/IOPCSecurityPrivate)
+  have real managed dispatch (the previous note still claimed
+  `E_NOTIMPL` stubs). `docs/CONFORMANCE.md` AE section documents the
+  `samples-ae` `get_condition_state`/`ack_condition` `EXPECTED_FAIL` as a
+  known external-component limitation: the OPC Foundation `opcae_ps.dll`
+  MIDL stub crashes on the `OPCCONDITIONSTATE` round-trip / rejects the
+  `AckCondition` `[in]` unmarshal (DR33); the managed proxy↔dispatcher
+  round-trip passes.
+- **Cross-impl matrix process-cleanup hardening** (commit `f66012800`).
+  `tools/run_cross_impl_matrix.py` now stops leftover
+  `Opc.Classic.Samples.*` server EXEs and orphan `Opc.Classic.Mcp` `dotnet`
+  hosts before the matrix, before each profile, and (in a finally) after
+  each profile. The earlier `security-da` `__fatal__` "initialize timed out
+  after 60s" regression was caused by SCM-activated samples accumulating
+  across profiles, starving the 6th profile's MCP host startup.
+  Windows-only; no-op elsewhere so CI is unaffected.
+
+### Fixed
+
+- **OpcDcomDecoder rejects truncated Ethernet inputs cleanly** (commit
+  `3db24c20`). Fuzz finding (Track FZ-5): the MCP capture decoder threw
+  raw `IndexOutOfRangeException` on malformed/truncated Ethernet frames.
+  New private `ValidateCapturedFrame` helper validates Ethernet / VLAN /
+  IPv4 / IPv6 / TCP lengths up-front and throws `InvalidDataException`
+  with offset context. 4 previously-skipped fuzz tests un-skipped; 20-file
+  corpus at `tests/_Fixtures/Fuzz/OpcDcomDecoder/` retained as regression
+  fixtures.
+
+## [1.0.0-rc.11] - 2026-06-09
+
 Post-`1.0.0-rc.10` work focused on Matrikon DA interop completeness, wire-trace diagnostics,
 and MCP-side IOPCDataCallback queue plumbing. The 1.0.0 release-blocker gates
 (`release-100-tag`, `rw-e1-ntlmv2-realserver`, `rw-e4-ntlm-audit`) remain open.
