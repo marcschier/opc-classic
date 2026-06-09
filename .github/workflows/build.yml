@@ -24,16 +24,16 @@ jobs:
     name: build-${{ matrix.os }}-${{ matrix.configuration }}
     # On push to master we only run the ubuntu-Release cell to cap CI cost.
     # PRs and manual dispatch get the full 3 OS x 2 configuration matrix so
-    # OS-specific regressions are caught before merge. Skipped cells don't
-    # consume runner minutes.
-    if: >-
-      github.event_name != 'push' ||
-      (matrix.os == 'ubuntu-latest' && matrix.configuration == 'Release')
+    # OS-specific regressions are caught before merge. The matrix is sized
+    # dynamically via fromJSON() against `github.event_name` because matrix
+    # context is NOT available in job-level `if:` expressions (only step-
+    # level — and that would still spin up runners for every cell just to
+    # immediately skip work, defeating the cost-savings purpose).
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        configuration: [Debug, Release]
+        os: ${{ fromJSON(github.event_name == 'push' && '["ubuntu-latest"]' || '["ubuntu-latest", "macos-latest", "windows-latest"]') }}
+        configuration: ${{ fromJSON(github.event_name == 'push' && '["Release"]' || '["Debug", "Release"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -163,14 +163,13 @@ jobs:
   aot-canary:
     name: aot-canary-${{ matrix.os }}
     needs: build
-    # On push: ubuntu only. PR/manual: full Ubuntu+Windows matrix.
-    if: >-
-      github.event_name != 'push' ||
-      matrix.os == 'ubuntu-latest'
+    # On push: ubuntu only. PR/manual: full Ubuntu+Windows matrix. Same
+    # dynamic-matrix pattern as the `build` job — matrix context cannot
+    # be used in job-level `if:` so we size the matrix via fromJSON().
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: ${{ fromJSON(github.event_name == 'push' && '["ubuntu-latest"]' || '["ubuntu-latest", "windows-latest"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
